@@ -27,15 +27,13 @@
                 @focusCell="onFocusCell"
                 @removeRow="onRemoveRow"
                 @dropColumn="onDropColumn"
-                @insertFilter="insertFilterAtIndex"
-                @setGhostFilter="setGhostFilterAtIndex"
                 @removeFilter="removeFilterAtIndex"
                 @updateFilter="updateFilterValueAtIndex"
                 @clearFilter="clearFilterAtIndex"
                 @swapFilters="swapFiltersPosition"
                 @removeAllFilters="removeAllFilters"
                 @clearAllFilters="clearAllFilters"
-                @dropFilter="dropFilterAtIndex"
+                @dropFilter="dropFilter"
                 @fetchData="getGridData">
                 <template #actions>
                     <!--

@@ -8,6 +8,16 @@
             'grid-header--borders': isCenteredView,
             'grid-header--disabled': isFilterExists
         }]">
+        <GridDropZone
+            v-show="isListElementDragging && !isFilterExists"
+            :style="{ margin: '8px', width: 'calc(100% - 16px)', height: 'calc(100% - 16px)' }"
+            :orientation="horizontalOrientation"
+            title="ADD FILTER"
+            @drop="onDropFilter">
+            <template #icon="{ color }">
+                <IconAddFilter :fill-color="color" />
+            </template>
+        </GridDropZone>
         <div class="grid-header__settings">
             <div class="grid-header__actions">
                 <!-- TODO: Uncomment when mass actions are implemented-->
@@ -53,24 +63,17 @@
             :is-collection-layout="isCollectionLayout"
             @close="onCloseModal"
             @apply="onApplySettings" />
-        <GridAdvancedFiltersContainer
-            v-show="isFiltersExpanded && isAdvancedFilters"
-            @mouseOverFilters="onMouseOverFilters">
+        <GridAdvancedFiltersContainer v-show="isFiltersExpanded && isAdvancedFilters">
             <GridAdvancedFilter
                 v-for="(filter, index) in filters"
                 :key="index"
                 :index="index"
                 :filter="filter"
-                :is-mouse-over-filters="isMouseOverFilters"
-                @mouseOverFilters="onMouseOverFilters"
                 @clear="onClearFilterAtIndex"
                 @apply="onApplyFilter"
                 @update="onUpdateFilterAtIndex"
                 @remove="onRemoveFilterAtIndex"
-                @insert="onInsertFilterAtIndex"
-                @setGhost="onSetGhostFilterAtIndex"
-                @swap="onSwapFiltersPosition"
-                @drop="onDropFilterAtIndex" />
+                @swap="onSwapFiltersPosition" />
             <GridAdvancedFilterPlaceholder v-if="!filters.length && !isListElementDragging" />
             <GridAdvancedFiltersRemoveAllButton
                 v-show="filtersNumber"
@@ -84,14 +87,18 @@ import { mapActions, mapState } from 'vuex';
 import { THEME } from '@Core/defaults/theme';
 import { GRID_LAYOUT } from '@Core/defaults/grid';
 import { ARROW } from '@Core/defaults/icons';
+import { LayoutOrientation } from '@Core/defaults/layout';
 import GridTableLayoutActivator from '@Core/components/Grid/Layout/Table/GridTableLayoutActivator';
 import GridCollectionLayoutActivator from '@Core/components/Grid/Layout/Collection/GridCollectionLayoutActivator';
+import GridDropZone from '@Core/components/Grid/GridDropZone';
 
 export default {
     name: 'GridHeader',
     components: {
         GridTableLayoutActivator,
         GridCollectionLayoutActivator,
+        GridDropZone,
+        IconAddFilter: () => import('@Core/components/Icons/Actions/IconAddFilter'),
         GridSettingsModalForm: () => import('@Core/components/Grid/Modals/GridSettingsModalForm'),
         // ActionButton: () => import('@Core/components/Buttons/ActionButton'),
         ExpandNumericButton: () => import('@Core/components/Buttons/ExpandNumericButton'),
@@ -141,7 +148,6 @@ export default {
         return {
             isFiltersExpanded: false,
             isSettingsModal: false,
-            isMouseOverFilters: false,
         };
     },
     computed: {
@@ -149,8 +155,11 @@ export default {
             isListElementDragging: state => state.isListElementDragging,
             draggedElement: state => state.draggedElement,
         }),
+        horizontalOrientation() {
+            return LayoutOrientation.HORIZONTAL;
+        },
         filtersNumber() {
-            return this.filters.filter(filter => !filter.isGhost).length;
+            return this.filters.length;
         },
         isFilterExists() {
             const draggedElIndex = this.filters.findIndex(
@@ -169,23 +178,9 @@ export default {
             return GRID_LAYOUT;
         },
     },
-    watch: {
-        isListElementDragging() {
-            this.isMouseOverFilters = false;
-
-            if (this.isListElementDragging) {
-                if (!this.isFiltersExpanded) {
-                    this.isFiltersExpanded = true;
-                }
-                this.addGhostFilter();
-            } else {
-                this.removeGhostFilter();
-            }
-        },
-    },
     methods: {
         ...mapActions('draggable', [
-            'setGhostFilterIndex',
+            'setGhostIndex',
         ]),
         onLayoutActivate(layout) {
             this.$emit('layoutChange', layout);
@@ -203,11 +198,8 @@ export default {
             this.isSettingsModal = false;
             this.$emit('applySettings', payload);
         },
-        onMouseOverFilters(isOver) {
-            this.isMouseOverFilters = isOver;
-        },
-        onDropFilterAtIndex(payload) {
-            this.$emit('dropFilter', payload);
+        onDropFilter(id) {
+            this.$emit('dropFilter', id);
         },
         onUpdateFilterAtIndex(payload) {
             this.$emit('updateFilter', payload);
@@ -215,14 +207,8 @@ export default {
         onRemoveFilterAtIndex(index) {
             this.$emit('removeFilter', index);
         },
-        onInsertFilterAtIndex(payload) {
-            this.$emit('insertFilter', payload);
-        },
         onClearFilterAtIndex(index) {
             this.$emit('clearFilter', index);
-        },
-        onSetGhostFilterAtIndex(payload) {
-            this.$emit('setGhostFilter', payload);
         },
         onSwapFiltersPosition(payload) {
             this.$emit('swapFilters', payload);
@@ -233,36 +219,13 @@ export default {
         onRemoveAll() {
             this.$emit('removeAllFilters');
         },
-        addGhostFilter() {
-            if (!this.isFilterExists) {
-                const ghostIndex = 0;
-
-                this.onInsertFilterAtIndex({
-                    index: ghostIndex,
-                    filter: {
-                        isGhost: true,
-                        value: {},
-                    },
-                });
-                this.setGhostFilterIndex(ghostIndex);
-            }
-        },
-        removeGhostFilter() {
-            const ghostIndex = this.filters.findIndex(
-                filter => filter.isGhost,
-            );
-
-            if (ghostIndex !== -1 && !this.isMouseOverFilters) {
-                this.$emit('removeGhostFilter', ghostIndex);
-                this.setGhostFilterIndex();
-            }
-        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
     .grid-header {
+        position: relative;
         display: flex;
         flex-direction: column;
         padding-bottom: 16px;

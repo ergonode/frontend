@@ -56,10 +56,13 @@ export default {
                             maxHeight = this.$el.clientHeight;
                         }
 
-                        if (innerHeight - this.offset.y < maxHeight) {
-                            const offsetBottom = innerHeight - this.offset.y;
+                        const yPos = innerHeight - this.offset.y;
 
-                            position.bottom = `${offsetBottom}px`;
+                        if (yPos < maxHeight
+                            && this.offset.y >= maxHeight) {
+                            position.bottom = `${yPos}px`;
+                        } else if (this.offset.y < maxHeight) {
+                            position.top = 0;
                         } else {
                             position.top = `${this.offset.y + this.offset.height}px`;
                         }

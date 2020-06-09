@@ -61,6 +61,7 @@ export default function ({ path }) {
 
                 requests.push(getAdvancedFiltersData({
                     $axios: this.$axios,
+                    $addAlert: this.$addAlert,
                     path: `${this.$store.state.authentication.user.language}/${dynamicPath}`,
                     params: filtersParams,
                 }));
@@ -207,26 +208,13 @@ export default function ({ path }) {
                     }
                 });
             },
-            dropFilterAtIndex({ data, index }) {
-                try {
-                    const filter = JSON.parse(data);
+            dropFilter(data) {
+                const [code, languageCode] = data.split(':');
 
-                    this.updateFilterAtIndex({
-                        index,
-                        filter,
-                    });
-                } catch (e) {
-                    const [code, languageCode] = data.split(':');
-
-                    this.getAttributeFilter({
-                        index,
-                        languageCode,
-                        code,
-                    });
-                }
-            },
-            insertFilterAtIndex({ index, filter }) {
-                this.advancedFilters = insertValueAtIndex([...this.advancedFilters], filter, index);
+                this.getAttributeFilter({
+                    languageCode,
+                    code,
+                });
             },
             swapFiltersPosition({ from, to }) {
                 this.advancedFilters = [
@@ -245,10 +233,6 @@ export default function ({ path }) {
 
                 this.advancedFilters = [];
                 this.$cookies.remove(ADV_FILTERS_IDS);
-            },
-            setGhostFilterAtIndex({ index, isGhost }) {
-                this.advancedFilters[index].isGhost = isGhost;
-                this.advancedFilters = [...this.advancedFilters];
             },
             clearAllFilters() {
                 const { length } = this.advancedFilters;
@@ -274,7 +258,8 @@ export default function ({ path }) {
                     [key]: value,
                 };
             },
-            async getAttributeFilter({ index, languageCode, code }) {
+            async getAttributeFilter({ languageCode, code }) {
+                const index = 0;
                 const attributeCode = `${code}:${languageCode}`;
                 const params = {
                     limit: 1,
@@ -284,28 +269,36 @@ export default function ({ path }) {
 
                 const advancedFilters = await getAdvancedFiltersData({
                     $axios: this.$axios,
+                    $addAlert: this.$addAlert,
                     path: `${languageCode}/${path}`,
                     params,
                 });
 
                 const [advancedFilter] = advancedFilters;
 
-                this.insertFilterAtIndex({
-                    index,
-                    filter: advancedFilter,
-                });
-                try {
-                    insertCookieAtIndex({
-                        cookies: this.$cookies,
-                        cookieName: ADV_FILTERS_IDS,
+                if (advancedFilter) {
+                    this.advancedFilters = insertValueAtIndex(
+                        [...this.advancedFilters],
+                        advancedFilter,
                         index,
-                        data: attributeCode,
-                    });
-                } catch {
-                    this.$cookies.set(ADV_FILTERS_IDS, attributeCode);
-                }
+                    );
 
-                this.disableListElement({ languageCode, attributeId: advancedFilter.attributeId });
+                    try {
+                        insertCookieAtIndex({
+                            cookies: this.$cookies,
+                            cookieName: ADV_FILTERS_IDS,
+                            index,
+                            data: attributeCode,
+                        });
+                    } catch {
+                        this.$cookies.set(ADV_FILTERS_IDS, attributeCode);
+                    }
+
+                    this.disableListElement({
+                        languageCode,
+                        attributeId: advancedFilter.attributeId,
+                    });
+                }
             },
             disableListElement({ languageCode, attributeId }) {
                 if (this.disabledElements[languageCode]

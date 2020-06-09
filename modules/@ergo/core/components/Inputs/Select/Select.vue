@@ -101,6 +101,7 @@
 import { ARROW } from '@Core/defaults/icons';
 import SelectDropDown from '@Core/components/Inputs/Select/DropDown/SelectDropDown';
 import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
+import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'Select',
@@ -110,6 +111,7 @@ export default {
         InfoHint: () => import('@Core/components/Hints/InfoHint'),
         ErrorHint: () => import('@Core/components/Hints/ErrorHint'),
     },
+    mixins: [associatedLabelMixin],
     props: {
         value: {
             type: [Array, String, Number, Object],
@@ -211,7 +213,6 @@ export default {
             isBlurringNeeded: false,
             isMouseMoving: false,
             isMenuActive: false,
-            associatedLabel: '',
             hasAnyValueSelected: false,
             needsToRender: false,
             offset: {},
@@ -300,8 +301,6 @@ export default {
                 this.$refs.input.focus();
             });
         }
-
-        this.associatedLabel = `input-${this._uid}`;
     },
     methods: {
         getDropDownOffset() {

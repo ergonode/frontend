@@ -7,6 +7,7 @@ import {
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
 import { getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export const getGridData = ({ $axios, path, params }) => $axios
     .$get(path, { params })
@@ -32,7 +33,9 @@ export const getGridData = ({ $axios, path, params }) => $axios
         };
     });
 
-export const getAdvancedFiltersData = ({ $axios, path, params }) => $axios
+export const getAdvancedFiltersData = ({
+    $axios, $addAlert, path, params,
+}) => $axios
     .$get(path, { params })
     .then(({
         columns,
@@ -41,27 +44,30 @@ export const getAdvancedFiltersData = ({ $axios, path, params }) => $axios
         const advancedFilters = [];
 
         for (let i = 0; i < length; i += 1) {
-            const filter = {
-                id: columns[i].id,
-                attributeId: columns[i].element_id || '',
-                languageCode: columns[i].language,
-                type: columns[i].filter.type,
-                label: columns[i].label,
-                parameters: columns[i].parameters,
-                isGhost: false,
-                value: {
-                    isEmptyRecord: false,
-                },
-            };
-
-            if (columns[i].filter && columns[i].filter.options) {
-                filter.options = getMappedObjectOptions({
-                    options: columns[i].filter.options,
+            if (columns[i].filter) {
+                const filter = {
+                    id: columns[i].id,
+                    attributeId: columns[i].element_id || '',
                     languageCode: columns[i].language,
-                });
-            }
+                    type: columns[i].filter.type,
+                    label: columns[i].label,
+                    parameters: columns[i].parameters,
+                    value: {
+                        isEmptyRecord: false,
+                    },
+                };
 
-            advancedFilters.push(filter);
+                if (columns[i].filter.options) {
+                    filter.options = getMappedObjectOptions({
+                        options: columns[i].filter.options,
+                        languageCode: columns[i].language,
+                    });
+                }
+
+                advancedFilters.push(filter);
+            } else {
+                $addAlert({ type: ALERT_TYPE.ERROR, message: 'Attribute has no filter' });
+            }
         }
 
         return advancedFilters;
