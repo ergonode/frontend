@@ -21,7 +21,7 @@ import { debounce } from 'debounce';
 import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
-} from '@Core/models/template_grid/TreeElementCopy';
+} from '@Core/models/layout/ElementCopy';
 import {
     getRowBounds,
     getRowBellowMouse,
@@ -63,13 +63,6 @@ export default {
         constantRoot: {
             type: Boolean,
             default: false,
-        },
-        draggedElementSize: {
-            type: Object,
-            default: () => ({
-                width: 247,
-                height: 40,
-            }),
         },
     },
     data: () => ({
@@ -171,10 +164,10 @@ export default {
                     }
                     this.setDraggedElement(item);
                     this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENT.TEMPLATE });
-                    addElementCopyToDocumentBody(event, {
-                        element,
-                        width: this.draggedElementSize.width,
-                        height: this.draggedElementSize.height,
+                    addElementCopyToDocumentBody({
+                        event,
+                        element: element.childNodes[0],
+                        id: itemId,
                     });
                     this.setChildrenLength({ id: parent, value: -1 });
                     this.removeGridItem(index);
