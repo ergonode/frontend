@@ -266,7 +266,6 @@ export default {
             this.$emit('clear', this.index);
         },
         onApply() {
-            console.log('Applied');
             this.deactivateFilter();
             this.$emit('apply');
         },
