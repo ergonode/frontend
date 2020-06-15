@@ -84,6 +84,11 @@
                     v-show="hasOptions"
                     key="attrHasOptions"
                     :disabled="isDisabledByPrivileges" />
+                <Toggler
+                    v-if="isTextArea"
+                    :value="parameter"
+                    label="Rich text content enabled"
+                    @input="setAttributeParameter" />
             </FormSection>
         </template>
     </Form>
@@ -91,7 +96,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
-import { SCOPE } from '@Attributes/defaults/attributes';
+import { SCOPE, TYPES } from '@Attributes/defaults/attributes';
 import { toCapitalize } from '@Core/models/stringWrapper';
 import { getKeyByValue } from '@Core/models/objectWrapper';
 import {
@@ -109,6 +114,7 @@ export default {
         InfoHint: () => import('@Core/components/Hints/InfoHint'),
         TextField: () => import('@Core/components/Inputs/TextField'),
         Select: () => import('@Core/components/Inputs/Select/Select'),
+        Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
         TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
         Divider: () => import('@Core/components/Dividers/Divider'),
     },
@@ -145,6 +151,9 @@ export default {
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess(['ATTRIBUTE_UPDATE']))
             || (!this.isDisabled && !this.$hasAccess(['ATTRIBUTE_CREATE']));
+        },
+        isTextArea() {
+            return this.typeKey === TYPES.TEXT_AREA;
         },
         hasParams() {
             return hasParams(this.typeKey);
