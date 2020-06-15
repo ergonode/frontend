@@ -63,8 +63,8 @@ export default {
         },
         commandCallback() {
             if (this.commands[this.extension.name]) {
-                if (this.params) {
-                    return this.commands[this.extension.name](this.extension.params);
+                if (this.extension.params) {
+                    return () => this.commands[this.extension.name](this.extension.params);
                 }
 
                 return this.commands[this.extension.name];
@@ -74,7 +74,7 @@ export default {
         },
         isSelected() {
             if (this.isActive[this.extension.name]) {
-                if (this.params) {
+                if (this.extension.params) {
                     return this.isActive[this.extension.name](this.extension.params);
                 }
 

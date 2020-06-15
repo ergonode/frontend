@@ -65,7 +65,7 @@ export default async function ({
 
     if (typeKey === TYPES.TEXT_AREA) {
         data.parameters = {
-            simpleHtml: parameter,
+            richEdit: parameter,
         };
     }
 

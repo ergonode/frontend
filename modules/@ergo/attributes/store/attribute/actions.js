@@ -105,7 +105,7 @@ export default {
             if (type === TYPES.TEXT_AREA) {
                 commit(
                     types.SET_ATTRIBUTE_PARAMETER,
-                    parameters.simple_html,
+                    parameters.rich_edit,
                 );
             }
         });

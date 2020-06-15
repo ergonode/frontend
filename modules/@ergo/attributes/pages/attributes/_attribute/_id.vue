@@ -142,7 +142,7 @@ export default {
 
             if (typeKey === TYPES.TEXT_AREA) {
                 data.parameters = {
-                    simpleHtml: this.parameter,
+                    richEdit: this.parameter,
                 };
             }
 

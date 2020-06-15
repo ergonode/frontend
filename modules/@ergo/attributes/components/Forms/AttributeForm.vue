@@ -87,7 +87,7 @@
                 <Toggler
                     v-if="isTextArea"
                     :value="parameter"
-                    label="Rich text content disabled"
+                    label="Rich text content enabled"
                     @input="setAttributeParameter" />
             </FormSection>
         </template>
