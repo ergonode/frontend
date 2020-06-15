@@ -8,6 +8,7 @@
             v-if="rte"
             :style="{height: '134px'}"
             :value="localValue"
+            :autofocus="true"
             @blur="onRTEValueChange" />
         <GridTextEditContentCell
             v-else

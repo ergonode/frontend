@@ -132,6 +132,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        autofocus: {
+            type: Boolean,
+            default: false,
+        },
         placeholder: {
             type: String,
             default: 'Placeholder',
@@ -196,6 +200,7 @@ export default {
                     showOnlyCurrent: true,
                 }),
             ],
+            autofocus: this.autofocus,
             content: this.value,
             onBlur: this.onBlur,
         });
