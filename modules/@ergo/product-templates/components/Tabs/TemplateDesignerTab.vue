@@ -183,9 +183,7 @@ export default {
             this.highlightedPositions = positions;
         },
         updateLayoutElement(position) {
-            console.log(position, this.draggedElement);
             this.highlightedPositions = [];
-
 
             if (typeof this.draggedElement === 'object') {
                 const { row, column } = position;

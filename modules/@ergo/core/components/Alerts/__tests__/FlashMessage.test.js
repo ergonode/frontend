@@ -28,6 +28,7 @@ describe('Alerts/FlashMessage', () => {
     let wrapper;
 
     beforeEach(() => {
+        // eslint-disable-next-line no-unused-vars
         wrapper = shallowMount(FlashMessage, {
             localVue,
             mocks,
