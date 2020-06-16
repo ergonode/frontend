@@ -103,12 +103,12 @@
 
         &--required {
             padding-right: 8px;
-        }
 
-        &--required::after {
-            position: absolute;
-            color: $RED;
-            content: "*";
+            &::after {
+                position: absolute;
+                color: $RED;
+                content: "*";
+            }
         }
     }
 

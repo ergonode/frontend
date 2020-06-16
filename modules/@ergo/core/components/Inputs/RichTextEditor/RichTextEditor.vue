@@ -12,7 +12,12 @@
             v-if="solid"
             class="rich-text-editor__fieldset">
             <legend
-                class="rich-text-editor__label"
+                :class="[
+                    'rich-text-editor__label',
+                    {
+                        'rich-text-editor__label--required': required,
+                    }
+                ]"
                 v-text="label" />
         </fieldset>
         <RichTextEditorMenuBubble
@@ -119,7 +124,15 @@ export default {
             type: String,
             default: '',
         },
+        required: {
+            type: Boolean,
+            default: false,
+        },
         solid: {
+            type: Boolean,
+            default: false,
+        },
+        autofocus: {
             type: Boolean,
             default: false,
         },
@@ -132,6 +145,7 @@ export default {
             default: () => [],
         },
     },
+    // TODO: Required
     data() {
         return {
             editor: null,
@@ -186,6 +200,7 @@ export default {
                     showOnlyCurrent: true,
                 }),
             ],
+            autofocus: this.autofocus,
             content: this.value,
             onBlur: this.onBlur,
         });
@@ -221,6 +236,7 @@ export default {
         flex-direction: column;
         height: 100%;
         box-sizing: border-box;
+        background-color: $WHITE;
 
         &.solid {
             #{$editor}__menu {
@@ -233,7 +249,7 @@ export default {
             }
 
             #{$editor}__content {
-                margin: 10px 0 30px;
+                margin: 10px 0 38px;
             }
         }
 
@@ -275,9 +291,20 @@ export default {
         }
 
         &__label {
+            position: relative;
             background-color: $WHITE;
             color: $GRAPHITE_LIGHT;
             font: $FONT_MEDIUM_12_16;
+
+            &--required {
+                padding-right: 8px;
+
+                &::after {
+                    position: absolute;
+                    color: $RED;
+                    content: "*";
+                }
+            }
         }
 
         &__menu {
@@ -314,6 +341,7 @@ export default {
             word-wrap: break-word;
             word-break: break-word;
             outline: unset;
+            font: $FONT_MEDIUM_14_20;
 
             p.is-editor-empty:first-child::before {
                 float: left;
@@ -342,6 +370,17 @@ export default {
                 }
             }
 
+            blockquote {
+                border-left: 3px solid rgba($GRAPHITE_COAL, 0.1);
+                color: rgba($GRAPHITE_COAL, 0.8);
+                padding-left: 0.8rem;
+                font-style: italic;
+
+                p {
+                    margin: 0;
+                }
+            }
+
             p code {
                 padding: 0.2rem 0.4rem;
                 border-radius: 5px;
@@ -358,7 +397,7 @@ export default {
                 list-style-type: decimal;
             }
 
-            p > em {
+            em {
                 font-style: italic;
             }
 

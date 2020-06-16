@@ -18,6 +18,7 @@
             <GridTextAreaEditCell
                 v-if="isEditing"
                 :value="cellData.value"
+                :rte="column.parameters && column.parameters.rich_edit"
                 :width="$el.offsetWidth"
                 @input="onValueChange" />
             <GridPresentationCell

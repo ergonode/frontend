@@ -4,16 +4,23 @@
  */
 import { SIZE, THEME } from '@Core/defaults/theme';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
+import Page from '@Core/components/Layout/Page';
+import TitleBar from '@Core/components/TitleBar/TitleBar';
+import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
+import Footer from '@Core/components/Layout/Footer/Footer';
+import Button from '@Core/components/Buttons/Button';
+import IconDelete from '@Core/components/Icons/Actions/IconDelete';
+import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 
 export default {
     components: {
-        Page: () => import('@Core/components/Layout/Page'),
-        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
-        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
-        Footer: () => import('@Core/components/Layout/Footer/Footer'),
-        Button: () => import('@Core/components/Buttons/Button'),
-        IconDelete: () => import('@Core/components/Icons/Actions/IconDelete'),
-        IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
+        Page,
+        TitleBar,
+        HorizontalRoutingTabBar,
+        Footer,
+        Button,
+        IconDelete,
+        IconAdd,
     },
     props: {
         title: {
