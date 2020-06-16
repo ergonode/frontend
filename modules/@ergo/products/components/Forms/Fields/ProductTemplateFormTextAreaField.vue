@@ -127,8 +127,8 @@ export default {
             });
         },
         onRTEValueChange(value) {
-            this.onFocus(false);
             this.onValueChange(value);
+            this.onFocus(false);
         },
     },
 };
