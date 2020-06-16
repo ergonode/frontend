@@ -25,10 +25,13 @@
 
 <script>
 import { mapState } from 'vuex';
+import { TYPES } from '@Attributes/defaults/attributes';
 import { getGridData } from '@Core/services/grid/getGridData.service';
 import { getParsedFilters } from '@Core/models/mappers/gridDataMapper';
 import { DATA_LIMIT } from '@Core/defaults/grid';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+
+const getAttributesByFilter = () => import('@Attributes/services/getAttributesByFilter.service');
 
 export default {
     name: 'ProductVariantsTab',
@@ -36,14 +39,81 @@ export default {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('@Core/components/Grid/Grid'),
     },
-    fetch() {
-        return this.getGridData(this.localParams);
+    asyncData({ app, store, params: { id } }) {
+        const { language: languageCode } = store.state.authentication.user;
+        const productsParams = {
+            limit: 9999,
+            offset: 0,
+            view: 'list',
+            order: 'ASC',
+        };
+
+        return Promise.all([
+            getAttributesByFilter().then(
+                response => response.default({
+                    $axios: app.$axios,
+                    $store: store,
+                    filter: `type=${TYPES.SELECT}`,
+                }),
+            ),
+            app.$axios.$get(`${languageCode}/products/${id}/bindings`),
+            app.$axios.$get(`${languageCode}/products/${id}/children`, { params: productsParams }),
+        ]).then(([selectAttributes, productBindings, productChildren]) => {
+            const attributeCodes = selectAttributes
+                .filter(
+                    attribute => productBindings
+                        .some(
+                            attrId => attribute.id === attrId,
+                        ),
+                )
+                .map(({ key }) => key).join(',');
+            const params = {
+                offset: 0,
+                limit: DATA_LIMIT,
+                extended: true,
+                columns: `esa_default_image:${languageCode},esa_default_label:${languageCode},${attributeCodes},sku,esa_template:${languageCode}`,
+            };
+
+            return getGridData({
+                $axios: app.$axios,
+                path: `${languageCode}/products`,
+                params,
+            }).then(({
+                columns,
+                data,
+                filtered,
+            }) => {
+                const tmpData = { ...data, esa_attached: [] };
+
+                for (let j = 0; j < data.id.length; j += 1) {
+                    tmpData.esa_attached[j] = {
+                        value: productChildren.collection.some(item => item.id === data.id[j]),
+                        sku: data.sku[j].value,
+                    };
+                }
+
+                return {
+                    columns: [
+                        ...columns.map(column => ({ ...column, editable: false })),
+                        {
+                            language: languageCode,
+                            id: 'esa_attached',
+                            type: 'ATTACHMENT',
+                            label: 'Attached',
+                            visible: true,
+                            editable: true,
+                            deletable: false,
+                            parameters: [],
+                        },
+                    ],
+                    filtered,
+                    data: tmpData,
+                };
+            });
+        });
     },
     data() {
         return {
-            data: {},
-            columns: [],
-            filtered: 0,
             localParams: {
                 offset: 0,
                 limit: DATA_LIMIT,
@@ -54,6 +124,7 @@ export default {
     },
     computed: {
         ...mapState('product', {
+            id: state => state.id,
             selectAttributes: state => state.selectAttributes,
             bindingAttributesIds: state => state.bindingAttributesIds,
         }),
@@ -106,9 +177,39 @@ export default {
                 data,
                 filtered,
             }) => {
-                this.columns = columns;
-                this.data = data;
-                this.filtered = filtered;
+                const productsParams = {
+                    limit: 9999,
+                    offset: 0,
+                    view: 'list',
+                    order: 'ASC',
+                };
+
+                return this.$axios.$get(`${this.languageCode}/products/${this.id}/children`, { params: productsParams }).then(({ collection }) => {
+                    const tmpData = { ...data, esa_attached: [] };
+
+                    for (let j = 0; j < data.id.length; j += 1) {
+                        tmpData.esa_attached[j] = {
+                            value: collection.some(item => item.id === data.id[j]),
+                            sku: data.sku[j].value,
+                        };
+                    }
+
+                    this.columns = [
+                        ...columns.map(column => ({ ...column, editable: false })),
+                        {
+                            language: this.languageCode,
+                            id: 'esa_attached',
+                            type: 'ATTACHMENT',
+                            label: 'Attached',
+                            visible: true,
+                            editable: true,
+                            deletable: false,
+                            parameters: [],
+                        },
+                    ];
+                    this.filtered = filtered;
+                    this.data = tmpData;
+                });
             });
         },
     },

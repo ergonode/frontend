@@ -31,8 +31,10 @@ export default {
         const { defaultLanguageCodeByPrivileges } = store.state.core;
         const { id } = params;
 
-        await store.dispatch('product/getProductDraft', { languageCode: defaultLanguageCodeByPrivileges, id });
-        await store.dispatch('product/getProductById', id);
+        await Promise.all([
+            store.dispatch('product/getProductDraft', { languageCode: defaultLanguageCodeByPrivileges, id }),
+            store.dispatch('product/getProductById', id),
+        ]);
     },
     computed: {
         ...mapState('product', {
