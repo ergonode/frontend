@@ -31,15 +31,15 @@
 </template>
 
 <script>
-import DatePickerDays from '@Core/components/Inputs/DatePicker/DatePickerDays';
 import DatePickerContentHeader from '@Core/components/Inputs/DatePicker/DatePickerContentHeader';
+import DatePickerDays from '@Core/components/Inputs/DatePicker/DatePickerDays';
 import DatePickerMonths from '@Core/components/Inputs/DatePicker/DatePickerMonths';
 import DatePickerYears from '@Core/components/Inputs/DatePicker/DatePickerYears';
 import calendar, {
+    CALENDAR_MONTHS,
     getHeaderForCalendarDaysType,
     getMonthIndex,
     WEEK_DAYS,
-    CALENDAR_MONTHS,
 } from '@Core/models/calendar/calendar';
 import { CalendarType } from '@Core/models/calendar/CalendarType';
 

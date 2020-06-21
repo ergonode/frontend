@@ -4,13 +4,13 @@
  */
 import {
     getKeyByValue,
+    getKeysByValues,
+    getMaxKeyValue,
+    getValueByKey,
+    getValuesByKeys,
+    isEmpty,
     objectToArray,
     objectToArrayWithPropsName,
-    getValueByKey,
-    getKeysByValues,
-    getValuesByKeys,
-    getMaxKeyValue,
-    isEmpty,
     removeFromObjectByKey,
 } from '@Core/models/objectWrapper';
 
@@ -99,7 +99,6 @@ describe('objectWrapper/getMaxKeyValue', () => {
         expect(fun).toBe(10);
     });
 });
-
 
 describe('objectWrapper/isEmpty', () => {
     it('Get false when object is not empty', () => {

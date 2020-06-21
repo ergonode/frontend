@@ -36,10 +36,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { cellDataCompose } from '@Core/models/mappers/gridDataMapper';
 import GridLabelPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridLabelPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
+import { cellDataCompose } from '@Core/models/mappers/gridDataMapper';
+import { mapState } from 'vuex';
 
 export default {
     name: 'GridLabelDataCell',

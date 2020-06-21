@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { getMappedPrivilegesBasedOnGridData } from '@Users/models/gridDataMapper';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { MODAL_TYPE } from '@Core/defaults/modals';
+import { getMappedPrivilegesBasedOnGridData } from '@Users/models/gridDataMapper';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'EditUserRoles',

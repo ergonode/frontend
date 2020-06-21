@@ -2,9 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { shallowMount } from '@vue/test-utils';
 import GridAdvancedFilterBaseContent from '@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
 import GridAdvancedFilterTextContent from '@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent';
+import { shallowMount } from '@vue/test-utils';
 
 describe('Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent', () => {
     let wrapper;

@@ -26,7 +26,7 @@
                             v-if="parameter"
                             :suffix="parameter" />
                     </template>
-                    <template #informationLabel>
+                    <template #details>
                         <div />
                     </template>
                 </TextField>
@@ -36,11 +36,11 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
+import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import TextField from '@Core/components/Inputs/TextField';
 import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
-import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'ProductTemplateFormPriceField',

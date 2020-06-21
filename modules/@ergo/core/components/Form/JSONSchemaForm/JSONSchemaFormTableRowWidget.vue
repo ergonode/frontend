@@ -25,11 +25,11 @@
 </template>
 
 <script>
-import { toCapitalize } from '@Core/models/stringWrapper';
-import { THEME } from '@Core/defaults/theme';
-import { ARROW } from '@Core/defaults/icons';
-import IconDelete from '@Core/components/Icons/Actions/IconDelete';
 import Fab from '@Core/components/Buttons/Fab';
+import IconDelete from '@Core/components/Icons/Actions/IconDelete';
+import { ARROW } from '@Core/defaults/icons';
+import { THEME } from '@Core/defaults/theme';
+import { toCapitalize } from '@Core/models/stringWrapper';
 
 export default {
     name: 'JSONSchemaFormTableRowWidget',

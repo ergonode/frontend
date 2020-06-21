@@ -36,8 +36,8 @@
         <template #value>
             <span v-text="parsedValue" />
         </template>
-        <template #informationLabel>
-            <slot name="informationLabel" />
+        <template #details>
+            <slot name="details" />
         </template>
         <template #option="{ option, isSelected }">
             <slot
@@ -61,11 +61,11 @@
 </template>
 
 <script>
+import CheckBox from '@Core/components/Inputs/CheckBox';
 import LazySelect from '@Core/components/Inputs/Select/LazySelect';
+import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
-import ListElementAction from '@Core/components/List/ListElementAction';
-import CheckBox from '@Core/components/Inputs/CheckBox';
 
 export default {
     name: 'TranslationLazySelect',

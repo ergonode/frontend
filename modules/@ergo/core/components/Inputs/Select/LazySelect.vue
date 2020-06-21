@@ -43,8 +43,8 @@
                     :color="graphiteColor" />
             </FadeTransition>
         </template>
-        <template #informationLabel>
-            <slot name="informationLabel" />
+        <template #details>
+            <slot name="details" />
         </template>
         <template #option="{ option, isSelected }">
             <slot
@@ -57,8 +57,8 @@
 
 <script>
 import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
-import Select from '@Core/components/Inputs/Select/Select';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import Select from '@Core/components/Inputs/Select/Select';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 
 export default {

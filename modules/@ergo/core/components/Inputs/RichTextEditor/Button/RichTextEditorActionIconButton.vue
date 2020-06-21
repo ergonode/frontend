@@ -21,10 +21,10 @@
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
 import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
 import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 import RichTextEditorButton from '@Core/components/Inputs/RichTextEditor/Button/RichTextEditorButton';
+import { SIZE, THEME } from '@Core/defaults/theme';
 
 export default {
     name: 'RichTextEditorActionIconButton',

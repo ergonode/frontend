@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import { ARROW } from '@Core/defaults/icons';
 import Icon from '@Core/components/Icons/Icon';
+import { ARROW } from '@Core/defaults/icons';
 
 export default {
     name: 'IconArrowPointer',

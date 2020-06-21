@@ -16,11 +16,11 @@
 </template>
 
 <script>
-import privilegesDefaults from '@Users/defaults/privileges';
-import { getMappedGridData } from '@Users/models/gridDataMapper';
-import { getSortedColumnsByIDs } from '@Core/models/mappers/gridDataMapper';
 import Grid from '@Core/components/Grid/Grid';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import { getSortedColumnsByIDs } from '@Core/models/mappers/gridDataMapper';
+import privilegesDefaults from '@Users/defaults/privileges';
+import { getMappedGridData } from '@Users/models/gridDataMapper';
 
 export default {
     name: 'UserPrivilegesGridTab',

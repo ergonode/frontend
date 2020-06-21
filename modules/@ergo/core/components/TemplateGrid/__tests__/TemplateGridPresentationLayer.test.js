@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { mount } from '@vue/test-utils';
+
 import TemplateGridPresentationLayer from '../TemplateGridPresentationLayer';
 
 describe('TemplateGrid/TemplateGridPresentationLayer', () => {

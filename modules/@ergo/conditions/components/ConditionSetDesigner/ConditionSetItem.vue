@@ -43,13 +43,13 @@
     </div>
 </template>
 <script>
-import { mapState } from 'vuex';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { isEmpty } from '@Core/models/objectWrapper';
-import { hasOptions } from '@Conditions/models/conditionTypes';
 import ConditionSetParameters from '@Conditions/components/ConditionSetDesigner/ConditionSetParameters';
+import { hasOptions } from '@Conditions/models/conditionTypes';
 import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
 import IconDots from '@Core/components/Icons/Others/IconDots';
+import { SIZE, THEME } from '@Core/defaults/theme';
+import { isEmpty } from '@Core/models/objectWrapper';
+import { mapState } from 'vuex';
 
 export default {
     name: 'ConditionSetItem',

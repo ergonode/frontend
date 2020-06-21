@@ -19,9 +19,9 @@
 </template>
 
 <script>
-import { getMappedObjectOption, getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
 import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import { getMappedObjectOption, getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
 
 export default {
     name: 'GridSelectEditCell',

@@ -24,10 +24,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { THEME } from '@Core/defaults/theme';
 import { MODAL_ACTION } from '@Core/defaults/modals';
+import { THEME } from '@Core/defaults/theme';
 import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
+import { mapActions, mapState } from 'vuex';
 
 const createStatusTransition = () => import('@Transitions/services/createStatusTransition.service');
 

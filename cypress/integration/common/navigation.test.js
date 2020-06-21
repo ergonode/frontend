@@ -3,8 +3,10 @@
  * See LICENSE for license details.
  */
 import {
-    Given, Then, When, And,
+    And,
+    Given, Then, When,
 } from 'cypress-cucumber-preprocessor/steps';
+
 import { MultiSteps } from '../models';
 
 MultiSteps([Given, And], 'I open {string} page', (page) => {

@@ -21,10 +21,9 @@
     </GridActionColumn>
 </template>
 
-
 <script>
-import GridActionColumn from '@Core/components/Grid/Layout/Table/Columns/Action/GridActionColumn';
 import GridRowEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridRowEditCell';
+import GridActionColumn from '@Core/components/Grid/Layout/Table/Columns/Action/GridActionColumn';
 
 export default {
     name: 'GridEditActionColumn',

@@ -54,8 +54,8 @@
 </template>
 
 <script>
-import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
 
 export default {
     name: 'CollectionPage',

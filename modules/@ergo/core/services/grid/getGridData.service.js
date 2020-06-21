@@ -2,12 +2,12 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 import {
     getMappedData,
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
 import { getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export const getGridData = ({ $axios, path, params }) => $axios
     .$get(path, { params })

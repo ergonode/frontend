@@ -27,10 +27,10 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import { isEmpty } from '@Core/models/objectWrapper';
-import { THEME } from '@Core/defaults/theme';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { THEME } from '@Core/defaults/theme';
+import { isEmpty } from '@Core/models/objectWrapper';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'AddProductsToCollectionModalForm',

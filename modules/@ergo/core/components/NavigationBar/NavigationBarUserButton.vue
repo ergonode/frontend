@@ -29,10 +29,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import { WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
-import { toCapitalize } from '@Core/models/stringWrapper';
 import { ARROW } from '@Core/defaults/icons';
+import { toCapitalize } from '@Core/models/stringWrapper';
+import { mapState } from 'vuex';
 
 export default {
     name: 'NavigationBarUserButton',

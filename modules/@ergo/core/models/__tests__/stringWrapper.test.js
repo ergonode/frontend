@@ -3,9 +3,9 @@
  * See LICENSE for license details.
  */
 import {
-    toCapitalize,
     capitalizeAndConcatenationArray,
     getUUID,
+    toCapitalize,
 } from '@Core/models/stringWrapper';
 
 describe('String operations', () => {

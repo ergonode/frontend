@@ -95,13 +95,14 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
 import { SCOPE, TYPES } from '@Attributes/defaults/attributes';
-import { toCapitalize } from '@Core/models/stringWrapper';
-import { getKeyByValue } from '@Core/models/objectWrapper';
 import {
-    hasParams, hasOptions, getParamsKeyForType, getParamsOptionsForType,
+    getParamsKeyForType, getParamsOptionsForType,
+    hasOptions, hasParams,
 } from '@Attributes/models/attributeTypes';
+import { getKeyByValue } from '@Core/models/objectWrapper';
+import { toCapitalize } from '@Core/models/stringWrapper';
+import { mapActions, mapGetters, mapState } from 'vuex';
 
 const getAttributeGroupsOptions = () => import('@Attributes/services/getAttributeGroupsOptions.service');
 

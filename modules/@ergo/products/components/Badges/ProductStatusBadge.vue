@@ -10,10 +10,11 @@
 </template>
 
 <script>
+import { GRAPHITE_DARK, WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 import {
-    hexToRGB, calculateRelativeLuminance, calculateContrastRatio,
+    calculateContrastRatio,
+    calculateRelativeLuminance, hexToRGB,
 } from '@Core/models/color/ColorContrast';
-import { WHITE, GRAPHITE_DARK } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'ProductStatusBadge',

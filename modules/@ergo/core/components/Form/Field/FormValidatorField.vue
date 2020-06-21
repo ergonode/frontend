@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'FormValidatorField',

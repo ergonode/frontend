@@ -20,17 +20,17 @@
     </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex';
 import {
-    addElementCopyToDocumentBody,
-    removeElementCopyFromDocumentBody,
-} from '@Core/models/layout/ElementCopy';
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import {
     getDraggedColumnPositionState,
 } from '@Core/models/drag_and_drop/helpers';
 import {
-    DRAGGED_ELEMENT,
-} from '@Core/defaults/grid';
+    addElementCopyToDocumentBody,
+    removeElementCopyFromDocumentBody,
+} from '@Core/models/layout/ElementCopy';
+import { mapActions, mapState } from 'vuex';
 
 const updateColumnsTransform = () => import('@Core/models/drag_and_drop/updateColumnsTransform');
 
@@ -212,7 +212,6 @@ export default {
     },
 };
 </script>
-
 
 <style lang="scss" scoped>
     .draggable-column {

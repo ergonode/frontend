@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 import {
-    getParsedType,
     getParsedParameterKeys,
+    getParsedType,
 } from '../attributeMapper';
 
 describe('attributeMapper/getParsedParameterKeys', () => {

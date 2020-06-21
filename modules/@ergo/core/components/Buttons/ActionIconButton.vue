@@ -39,12 +39,13 @@
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
 import {
-    GREEN, GRAPHITE, WHITE, GREY_DARK,
+    GRAPHITE, GREEN, GREY_DARK,
+    WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import ActionBaseButton from '@Core/components/Buttons/ActionBaseButton';
 import IconButton from '@Core/components/Buttons/IconButton';
+import { SIZE, THEME } from '@Core/defaults/theme';
 
 export default {
     name: 'ActionButton',

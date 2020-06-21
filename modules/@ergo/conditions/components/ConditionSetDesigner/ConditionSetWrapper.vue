@@ -25,9 +25,9 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { ROW_HEIGHT, COLUMNS, CONTEXT_NAME } from '@Conditions/defaults/conditionsDesigner';
+import { COLUMNS, CONTEXT_NAME, ROW_HEIGHT } from '@Conditions/defaults/conditionsDesigner';
 import TemplateGridWrapper from '@Core/components/TemplateGrid/TemplateGridWrapper';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'ConditionSetWrapper',

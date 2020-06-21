@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'NotificationsListElement',

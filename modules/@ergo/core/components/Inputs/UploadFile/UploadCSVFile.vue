@@ -22,12 +22,12 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 import { GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import UploadFile from '@Core/components/Inputs/UploadFile/UploadFile';
-import IconFile from '@Core/components/Icons/Others/IconFile';
 import LinkButton from '@Core/components/Buttons/LinkButton';
+import IconFile from '@Core/components/Icons/Others/IconFile';
+import UploadFile from '@Core/components/Inputs/UploadFile/UploadFile';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'UploadCSVFile',

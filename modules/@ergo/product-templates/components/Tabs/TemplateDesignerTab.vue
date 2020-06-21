@@ -58,17 +58,17 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 import { SYSTEM_TYPES } from '@Attributes/defaults/attributes';
+import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
 import { getObjectWithMaxValueInArrayByObjectKey } from '@Core/models/arrayWrapper';
+import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
+import TemplateGridDraggableLayer from '@Templates/components/Template/Base/TemplateGridDraggableLayer';
+import TemplateGridPlaceholderItem from '@Templates/components/Template/Base/TemplateGridPlaceholderItem';
+import LayoutElement from '@Templates/components/Template/ProductDesigner/LayoutElement';
 import {
     getHighlightingLayoutDropPositions,
 } from '@Templates/models/layout/LayoutCalculations';
-import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
-import TemplateGridDraggableLayer from '@Templates/components/Template/Base/TemplateGridDraggableLayer';
-import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
-import TemplateGridPlaceholderItem from '@Templates/components/Template/Base/TemplateGridPlaceholderItem';
-import LayoutElement from '@Templates/components/Template/ProductDesigner/LayoutElement';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'TemplateDesignerTab',

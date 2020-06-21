@@ -21,14 +21,14 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { SIZE } from '@Core/defaults/theme';
-import { MODAL_TYPE } from '@Core/defaults/modals';
-import MainSettingsForm from '@Core/components/Forms/MainSettingsForm';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import FooterActions from '@Core/components/Layout/Footer/FooterActions';
 import Button from '@Core/components/Buttons/Button';
+import MainSettingsForm from '@Core/components/Forms/MainSettingsForm';
+import FooterActions from '@Core/components/Layout/Footer/FooterActions';
+import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { MODAL_TYPE } from '@Core/defaults/modals';
+import { SIZE } from '@Core/defaults/theme';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'MainSettingsTab',

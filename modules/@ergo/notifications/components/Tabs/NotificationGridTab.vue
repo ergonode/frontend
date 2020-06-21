@@ -30,10 +30,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { LayoutOrientation } from '@Core/defaults/layout';
-import { DATA_LIMIT } from '@Core/defaults/grid';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import { DATA_LIMIT } from '@Core/defaults/grid';
+import { LayoutOrientation } from '@Core/defaults/layout';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'NotificationGridTab',

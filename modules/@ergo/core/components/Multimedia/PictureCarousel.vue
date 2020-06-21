@@ -45,11 +45,11 @@
 </template>
 
 <script>
-import { ARROW } from '@Core/defaults/icons';
-import { THEME, SIZE } from '@Core/defaults/theme';
-import Picture from '@Core/components/Multimedia/Picture';
-import IconArrowSingle from '@Core/components/Icons/Arrows/IconArrowSingle';
 import Fab from '@Core/components/Buttons/Fab';
+import IconArrowSingle from '@Core/components/Icons/Arrows/IconArrowSingle';
+import Picture from '@Core/components/Multimedia/Picture';
+import { ARROW } from '@Core/defaults/icons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 
 export default {
     name: 'PictureCarousel',

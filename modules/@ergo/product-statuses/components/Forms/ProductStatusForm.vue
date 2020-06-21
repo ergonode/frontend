@@ -46,8 +46,8 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 import { STATUS as COLOR_STATUS } from '@Statuses/defaults/colors';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'ProductStatusForm',

@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { THEME } from '@Core/defaults/theme';
+import { mapActions } from 'vuex';
 
 const deleteAttributeValue = () => import('@Products/services/deleteAttributeValue.service');
 

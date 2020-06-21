@@ -26,12 +26,17 @@ module.exports = {
         'notice',
         'cypress',
         'markdown',
+        'simple-import-sort',
+        'import',
     ],
     rules: {
         'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
-        'import/no-mutable-exports': 'error',
+        'func-names': 'off',
+        'simple-import-sort/sort': 'error',
         'import/order': 'error',
+        'import/no-mutable-exports': 'error',
         'import/first': 'error',
+        'import/no-duplicates': 'error',
         'notice/notice': [
             'error', {
                 templateFile: './config/.copyright',

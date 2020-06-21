@@ -42,7 +42,6 @@ export function getParsedConditionSetData(conditions, conditionsData) {
         const { type, ...parameters } = conditions[i];
         const uniqId = `${type}--${getUUID()}`;
 
-
         Object.keys(parameters).forEach((key) => {
             const {
                 options,

@@ -2,8 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { SUCCESS, ALERT_TIME_TO_LEAVE } from '@Core/defaults/alerts';
+import { ALERT_TIME_TO_LEAVE, SUCCESS } from '@Core/defaults/alerts';
 import { getUUID } from '@Core/models/stringWrapper';
+
 import { types } from './mutations';
 
 export default {

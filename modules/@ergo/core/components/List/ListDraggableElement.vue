@@ -15,11 +15,11 @@
 </template>
 
 <script>
+import IconDragDrop from '@Core/components/Icons/Actions/IconDragDrop';
 import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
-import IconDragDrop from '@Core/components/Icons/Actions/IconDragDrop';
 
 export default {
     name: 'ListDraggableElement',

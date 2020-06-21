@@ -84,18 +84,18 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import {
-    ROW_HEIGHT,
-    GRID_LAYOUT,
-    DATA_LIMIT,
-    IMAGE_SCALING,
-    COLUMNS_NUMBER,
     COLUMN_ACTIONS_ID,
+    COLUMNS_NUMBER,
+    DATA_LIMIT,
+    GRID_LAYOUT,
+    IMAGE_SCALING,
+    ROW_HEIGHT,
 } from '@Core/defaults/grid';
 import {
     insertCookieAtIndex,
 } from '@Core/models/cookies';
+import { mapState } from 'vuex';
 
 export default {
     name: 'Grid',

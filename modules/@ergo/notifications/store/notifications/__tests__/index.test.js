@@ -2,14 +2,15 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import Vuex from 'vuex';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import Vue from 'vue';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import axios from 'axios';
-import defaultState from '../state';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import Vue from 'vue';
+import Vuex from 'vuex';
+
 import actions from '../actions';
 import mutations, { types } from '../mutations';
+import defaultState from '../state';
 
 let store;
 let mockAxiosGetResult;
@@ -92,7 +93,6 @@ describe('Notifications', () => {
 
             testedAction({ commit, state: store.state });
             expect(store.state.requestTimeInterval).toBe(fiveMinutesInMs);
-
 
             commit(types.SET_REQUEST_TIME_INTERVAL, fiveMinutesInMs - 1);
 

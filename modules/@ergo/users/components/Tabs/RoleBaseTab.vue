@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import UserRoleForm from '@Users/components/Forms/UserRoleForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import UserRoleForm from '@Users/components/Forms/UserRoleForm';
 
 export default {
     name: 'RoleBaseTab',

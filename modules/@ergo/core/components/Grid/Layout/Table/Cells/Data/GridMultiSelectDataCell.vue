@@ -34,11 +34,11 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { arraysAreEqual } from '@Core/models/arrayWrapper';
-import { cellDataCompose } from '@Core/models/mappers/gridDataMapper';
 import GridMultiSelectPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridMultiSelectPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
+import { arraysAreEqual } from '@Core/models/arrayWrapper';
+import { cellDataCompose } from '@Core/models/mappers/gridDataMapper';
+import { mapState } from 'vuex';
 
 export default {
     name: 'GridMultiSelectDataCell',

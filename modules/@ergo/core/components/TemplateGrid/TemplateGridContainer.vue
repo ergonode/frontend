@@ -16,22 +16,22 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
-import { debounce } from 'debounce';
+import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
+import { getObjectWithMaxValueInArrayByObjectKey } from '@Core/models/arrayWrapper';
+import {
+    getPositionForBrowser,
+    isMouseOutOfBoundsElement,
+} from '@Core/models/drag_and_drop/helpers';
 import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
 import {
-    getRowBounds,
     getRowBellowMouse,
+    getRowBounds,
 } from '@Core/models/template_grid/TreeCalculations';
-import { getObjectWithMaxValueInArrayByObjectKey } from '@Core/models/arrayWrapper';
-import {
-    isMouseOutOfBoundsElement,
-    getPositionForBrowser,
-} from '@Core/models/drag_and_drop/helpers';
-import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
+import { debounce } from 'debounce';
+import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default {
     name: 'TemplateGridContainer',

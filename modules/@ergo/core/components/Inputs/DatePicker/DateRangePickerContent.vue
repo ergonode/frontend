@@ -77,22 +77,22 @@
 </template>
 
 <script>
-import { THEME } from '@Core/defaults/theme';
+import Fab from '@Core/components/Buttons/Fab';
+import Divider from '@Core/components/Dividers/Divider';
+import IconArrowSingle from '@Core/components/Icons/Arrows/IconArrowSingle';
+import DatePickerContentHeader from '@Core/components/Inputs/DatePicker/DatePickerContentHeader';
+import DatePickerDays from '@Core/components/Inputs/DatePicker/DatePickerDays';
+import DatePickerHeader from '@Core/components/Inputs/DatePicker/DatePickerHeader';
+import DatePickerInputHeader from '@Core/components/Inputs/DatePicker/DatePickerInputHeader';
+import DatePickerNavigationHeader from '@Core/components/Inputs/DatePicker/DatePickerNavigationHeader';
 import { ARROW } from '@Core/defaults/icons';
+import { THEME } from '@Core/defaults/theme';
 import calendar, {
+    CALENDAR_MONTHS,
     getNextMonth,
     getPreviousMonth,
     WEEK_DAYS,
-    CALENDAR_MONTHS,
 } from '@Core/models/calendar/calendar';
-import Fab from '@Core/components/Buttons/Fab';
-import IconArrowSingle from '@Core/components/Icons/Arrows/IconArrowSingle';
-import DatePickerDays from '@Core/components/Inputs/DatePicker/DatePickerDays';
-import DatePickerContentHeader from '@Core/components/Inputs/DatePicker/DatePickerContentHeader';
-import DatePickerNavigationHeader from '@Core/components/Inputs/DatePicker/DatePickerNavigationHeader';
-import Divider from '@Core/components/Dividers/Divider';
-import DatePickerHeader from '@Core/components/Inputs/DatePicker/DatePickerHeader';
-import DatePickerInputHeader from '@Core/components/Inputs/DatePicker/DatePickerInputHeader';
 
 export default {
     name: 'DateRangePickerContent',

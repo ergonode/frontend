@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import IconEdit from '@Core/components/Icons/Actions/IconEdit';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
+import IconEdit from '@Core/components/Icons/Actions/IconEdit';
 
 export default {
     name: 'GridRowEditCell',

@@ -2,8 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { removeFromObjectByKey } from '@Core/models/objectWrapper';
 import { getFlattenedTreeData } from '@Core/models/mappers/treeMapper';
+import { removeFromObjectByKey } from '@Core/models/objectWrapper';
+
 import defaultState from './state';
 
 export const types = {

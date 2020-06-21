@@ -2,13 +2,14 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import {
-    getMappedLayoutElements,
-    getMappedLayoutElement,
-    getMappedLayoutSectionElement,
-} from '@Templates/models/templateMapper';
 import { SYSTEM_TYPES } from '@Attributes/defaults/attributes';
 import { SKU_MODEL_ID } from '@Templates/defaults/product';
+import {
+    getMappedLayoutElement,
+    getMappedLayoutElements,
+    getMappedLayoutSectionElement,
+} from '@Templates/models/templateMapper';
+
 import { types } from './mutations';
 
 export default {

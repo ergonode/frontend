@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 
-import { mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { mapActions } from 'vuex';
 
 export default function ({ action, namespace, request }) {
     return {

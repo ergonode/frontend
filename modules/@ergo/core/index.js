@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { join } from 'path';
+
 import configuration from './config';
 
 export default async function ({ allModules }) {

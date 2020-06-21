@@ -2,14 +2,15 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { Then, And } from 'cypress-cucumber-preprocessor/steps';
+import { And, Then } from 'cypress-cucumber-preprocessor/steps';
+
 import {
-    sendPostRequest,
-    getToken,
     checkGridRow,
-    removeRequest,
-    removeOnGrid,
+    getToken,
     noGridRow,
+    removeOnGrid,
+    removeRequest,
+    sendPostRequest,
 } from '../../models/addingItems';
 
 beforeEach(() => {

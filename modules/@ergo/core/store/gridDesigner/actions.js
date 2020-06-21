@@ -3,12 +3,13 @@
  * See LICENSE for license details.
  */
 import {
-    getTreeWhenElementRemoved,
-    getTreeWhenGhostElementRemoved,
+    getFullTree,
     getTreeWhenElementCollapse,
     getTreeWhenElementExpand,
-    getFullTree,
+    getTreeWhenElementRemoved,
+    getTreeWhenGhostElementRemoved,
 } from '@Core/models/template_grid/TreeCalculations';
+
 import { types } from './mutations';
 
 export default {

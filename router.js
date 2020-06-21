@@ -5,8 +5,10 @@
  */
 import Vue from 'vue';
 import Router from 'vue-router';
-import routerModules from '~/.nuxt/router.modules';
+
 import extendsModules from '~/.nuxt/extends.modules';
+import routerModules from '~/.nuxt/router.modules';
+
 import routerLocal from './router.local';
 
 Vue.use(Router);

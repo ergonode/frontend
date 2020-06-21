@@ -43,13 +43,13 @@
 </template>
 
 <script>
-import { isObject } from '@Core/models/objectWrapper';
 import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
 import List from '@Core/components/List/List';
 import ListElement from '@Core/components/List/ListElement';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
+import { isObject } from '@Core/models/objectWrapper';
 
 export default {
     name: 'ActionButton',

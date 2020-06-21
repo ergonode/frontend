@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
+import { mapState } from 'vuex';
 
 export default {
     name: 'SystemAttributesListTab',

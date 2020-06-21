@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { shallowMount } from '@vue/test-utils';
+
 import UserPage from '../UserPage';
 
 const mocks = {

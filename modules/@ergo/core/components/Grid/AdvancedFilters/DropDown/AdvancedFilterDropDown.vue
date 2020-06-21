@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
+import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import { COLUMN_FILTER_TYPE } from '@Core/defaults/grid';
 
 export default {

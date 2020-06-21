@@ -14,10 +14,10 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { getUUID } from '@Core/models/stringWrapper';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
+import { getUUID } from '@Core/models/stringWrapper';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'ConditionsListElement',

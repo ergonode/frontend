@@ -2,8 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { objectToArrayWithPropsName } from '@Core/models/objectWrapper';
 import { getParsedConditionSetData } from '@Conditions/models/conditionSetMapper';
+import { objectToArrayWithPropsName } from '@Core/models/objectWrapper';
+
 import { types } from './mutations';
 
 export default {

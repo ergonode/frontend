@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'EditImportProfile',

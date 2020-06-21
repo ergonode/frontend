@@ -2,13 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mapState, mapActions } from 'vuex';
-import { insertCookieAtIndex } from '@Core/models/cookies';
-import { getGridData, getAdvancedFiltersData } from '@Core/services/grid/getGridData.service';
 import { DATA_LIMIT } from '@Core/defaults/grid';
-import { getParsedFilters, getParsedAdvancedFilters } from '@Core/models/mappers/gridDataMapper';
-import { swapItemPosition, insertValueAtIndex } from '@Core/models/arrayWrapper';
 import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
+import { insertValueAtIndex, swapItemPosition } from '@Core/models/arrayWrapper';
+import { insertCookieAtIndex } from '@Core/models/cookies';
+import { getParsedAdvancedFilters, getParsedFilters } from '@Core/models/mappers/gridDataMapper';
+import { getAdvancedFiltersData, getGridData } from '@Core/services/grid/getGridData.service';
+import { mapActions, mapState } from 'vuex';
 
 export default function ({ path }) {
     return {

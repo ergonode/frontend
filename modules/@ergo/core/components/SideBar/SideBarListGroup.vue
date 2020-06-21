@@ -56,10 +56,11 @@
 </template>
 
 <script>
-import { GREEN, WHITE, GREY_DARK } from '@Core/assets/scss/_js-variables/colors.scss';
-import { ARROW } from '@Core/defaults/icons';
+import { GREEN, GREY_DARK, WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 import FadeSideBarTextTransition from '@Core/components/Transitions/FadeSideBarTextTransition';
+import { ARROW } from '@Core/defaults/icons';
+
 import SideBarListGroupElement from './SideBarListGroupElement';
 
 export default {

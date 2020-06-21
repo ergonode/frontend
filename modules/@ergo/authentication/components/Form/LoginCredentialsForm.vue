@@ -13,17 +13,20 @@
             <TextField
                 data-cy="login-email"
                 v-model="email"
-                solid
-                regular
                 label="E-mail" />
             <TextField
                 data-cy="login-pass"
                 v-model="password"
-                solid
                 :input="passwordInputType"
-                regular
                 label="Password"
                 @keyup.13="onSubmit" />
+            <!--            <RichTextEditor-->
+            <!--                :style="{height: '200px'}"-->
+            <!--            />-->
+            <!--            <RichTextEditor-->
+            <!--                :style="{height: '200px'}"-->
+            <!--                :type="underlineInputType"-->
+            <!--            />-->
             <Toggler
                 v-model="isPasswordVisible"
                 label="Show password" />
@@ -39,12 +42,14 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import LoginForm from '@Authentication/components/Form/LoginForm';
-import TextField from '@Core/components/Inputs/TextField';
 import Button from '@Core/components/Buttons/Button';
-import Toggler from '@Core/components/Inputs/Toggler/Toggler';
 import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
+import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
+import TextField from '@Core/components/Inputs/TextField';
+import Toggler from '@Core/components/Inputs/Toggler/Toggler';
+import { INPUT_TYPE } from '@Core/defaults/theme';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'LoginCredentialsForm',
@@ -54,6 +59,7 @@ export default {
         Button,
         Toggler,
         IconLogoName,
+        RichTextEditor,
     },
     data() {
         return {
@@ -65,6 +71,9 @@ export default {
     computed: {
         passwordInputType() {
             return { type: this.isPasswordVisible ? 'text' : 'password' };
+        },
+        underlineInputType() {
+            return INPUT_TYPE.UNDERLINE;
         },
     },
     methods: {

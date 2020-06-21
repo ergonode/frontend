@@ -2,8 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { shallowMount } from '@vue/test-utils';
 import TitleBar from '@Core/components/TitleBar/TitleBar';
+import { shallowMount } from '@vue/test-utils';
 
 describe('TitleBar/TitleBar', () => {
     let wrapper;

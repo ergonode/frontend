@@ -2,9 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { shallowMount } from '@vue/test-utils';
-import { THEME } from '@Core/defaults/theme';
 import NumericBadge from '@Core/components/Badges/NumericBadge.vue';
+import { THEME } from '@Core/defaults/theme';
+import { shallowMount } from '@vue/test-utils';
 
 describe('Badges/NumericBadge', () => {
     let wrapper;

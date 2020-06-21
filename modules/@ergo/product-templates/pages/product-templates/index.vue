@@ -49,10 +49,10 @@
 </template>
 
 <script>
-import { SIZE } from '@Core/defaults/theme';
-import { GRID_LAYOUT } from '@Core/defaults/grid';
-import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import { GRID_LAYOUT } from '@Core/defaults/grid';
+import { SIZE } from '@Core/defaults/theme';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
 export default {
     name: 'Templates',

@@ -31,14 +31,14 @@
 </template>
 
 <script>
-import { debounce } from 'debounce';
 import {
-    GREEN, GRAPHITE, WHITE,
+    GRAPHITE, GREEN, WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import ListHeader from '@Core/components/List/ListHeader';
 import Fab from '@Core/components/Buttons/Fab';
-import TextField from '@Core/components/Inputs/TextField';
 import IconSearch from '@Core/components/Icons/Actions/IconSearch';
+import TextField from '@Core/components/Inputs/TextField';
+import ListHeader from '@Core/components/List/ListHeader';
+import { debounce } from 'debounce';
 
 export default {
     name: 'ListSearchHeader',

@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { removeValueAtIndex } from '@Core/models/arrayWrapper';
+
 import defaultState from './state';
 
 export const types = {

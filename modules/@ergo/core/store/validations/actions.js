@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { getMappedErrors } from '@Core/models/mappers/errorsMapper';
+
 import { types } from './mutations';
 
 export default {

@@ -25,9 +25,9 @@
 </template>
 
 <script>
-import { FILTER_OPERATOR } from '@Core/defaults/operators';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 import GridSelectFilterPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSelectFilterPresentationCell';
+import { FILTER_OPERATOR } from '@Core/defaults/operators';
 
 export default {
     name: 'GridMultiSelectFilterCell',

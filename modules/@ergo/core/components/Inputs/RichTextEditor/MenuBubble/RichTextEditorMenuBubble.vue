@@ -44,14 +44,14 @@
 </template>
 
 <script>
-import {
-    EditorMenuBubble,
-} from 'tiptap';
 import { WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
-import { SIZE, THEME } from '@Core/defaults/theme';
 import IconButton from '@Core/components/Buttons/IconButton';
 import IconLink from '@Core/components/Icons/Editor/IconLink';
 import IconClose from '@Core/components/Icons/Window/IconClose';
+import { SIZE, THEME } from '@Core/defaults/theme';
+import {
+    EditorMenuBubble,
+} from 'tiptap';
 
 export default {
     name: 'RichTextEditorMenuBubble',

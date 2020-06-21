@@ -34,10 +34,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { SORTING_ORDER } from '@Core/defaults/icons';
 import { GRAPHITE_LIGHT } from '@Core/assets/scss/_js-variables/colors.scss';
+import { SORTING_ORDER } from '@Core/defaults/icons';
+import { SIZE, THEME } from '@Core/defaults/theme';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'GridInteractiveHeaderCell',

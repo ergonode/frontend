@@ -20,8 +20,8 @@
 </template>
 
 <script>
+import { SCOPE, SYSTEM_TYPES } from '@Attributes/defaults/attributes';
 import { mapGetters } from 'vuex';
-import { SYSTEM_TYPES, SCOPE } from '@Attributes/defaults/attributes';
 
 export default {
     name: 'RestoreForm',

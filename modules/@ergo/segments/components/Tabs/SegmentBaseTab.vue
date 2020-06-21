@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import SegmentForm from '@Segments/components/Forms/SegmentForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import SegmentForm from '@Segments/components/Forms/SegmentForm';
 
 export default {
     name: 'SegmentBaseTab',

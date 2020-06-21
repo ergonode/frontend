@@ -50,8 +50,8 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 import { isEmpty } from '@Core/models/objectWrapper';
+import { mapActions, mapState } from 'vuex';
 
 const getRolesOptions = () => import('@Users/services/getRolesOptions.service');
 

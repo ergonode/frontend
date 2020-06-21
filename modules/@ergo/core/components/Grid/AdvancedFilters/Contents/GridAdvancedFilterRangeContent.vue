@@ -11,27 +11,28 @@
                 :value="filter.value[operators.GREATER_OR_EQUAL]"
                 :input="{ type: 'number' }"
                 placeholder="From"
-                underline
-                center-alignment
-                small
+                :type="underlineInputType"
+                :alignment="centerAlignment"
+                :size="smallSize"
                 @input="(fromValue) => onValueChange(fromValue, operators.GREATER_OR_EQUAL)" />
             <span class="dash">-</span>
             <TextField
                 :value="filter.value[operators.SMALLER_OR_EQUAL]"
                 :input="{ type: 'number' }"
                 placeholder="To"
-                underline
-                center-alignment
-                small
+                :type="underlineInputType"
+                :alignment="centerAlignment"
+                :size="smallSize"
                 @input="(toValue) => onValueChange(toValue, operators.SMALLER_OR_EQUAL)" />
         </div>
     </GridAdvancedFilterBaseContent>
 </template>
 
 <script>
-import TextField from '@Core/components/Inputs/TextField';
 import GridAdvancedFilterBaseContent from '@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
+import TextField from '@Core/components/Inputs/TextField';
 import { FILTER_OPERATOR } from '@Core/defaults/operators';
+import { ALIGNMENT, INPUT_TYPE, SIZE } from '@Core/defaults/theme';
 
 export default {
     name: 'GridAdvancedFilterRangeContent',
@@ -48,6 +49,15 @@ export default {
     computed: {
         operators() {
             return FILTER_OPERATOR;
+        },
+        underlineInputType() {
+            return INPUT_TYPE.UNDERLINE;
+        },
+        smallSize() {
+            return SIZE.SMALL;
+        },
+        centerAlignment() {
+            return ALIGNMENT.CENTER;
         },
     },
     methods: {

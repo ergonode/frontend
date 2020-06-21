@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { getMappedPrivileges } from '@Authentication/models/userMapper';
+
 import { types } from './mutations';
 
 export default {

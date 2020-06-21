@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
-import languagesDefaults from '@Users/defaults/languages';
-import { getMappedGridData, getMappedRestrictions } from '@Users/models/gridDataMapper';
-import { getSortedColumnsByIDs } from '@Core/models/mappers/gridDataMapper';
 import Grid from '@Core/components/Grid/Grid';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import { getSortedColumnsByIDs } from '@Core/models/mappers/gridDataMapper';
+import languagesDefaults from '@Users/defaults/languages';
+import { getMappedGridData, getMappedRestrictions } from '@Users/models/gridDataMapper';
+import { mapGetters, mapState } from 'vuex';
 
 export default {
     name: 'UserLanguageRestrictionsTab',

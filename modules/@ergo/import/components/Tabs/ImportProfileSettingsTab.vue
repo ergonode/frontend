@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import JSONSchemaForm from '@Core/components/Form/JSONSchemaForm/JSONSchemaForm';
+import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'CollectionBaseTab',

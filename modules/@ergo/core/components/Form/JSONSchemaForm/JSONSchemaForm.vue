@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import { toCapitalize } from '@Core/models/stringWrapper';
 import Form from '@Core/components/Form/Form';
+import { toCapitalize } from '@Core/models/stringWrapper';
 
 export default {
     name: 'JSONSchemaForm',

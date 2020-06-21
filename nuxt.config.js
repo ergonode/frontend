@@ -3,11 +3,12 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { join } from 'path';
 import dotenv from 'dotenv';
 import getRepoInfo from 'git-repo-info';
-import { keywords, description, version } from './package';
+import { join } from 'path';
+
 import modulesConfig from './modules.config';
+import { description, keywords, version } from './package';
 
 dotenv.config({ path: '.env' });
 

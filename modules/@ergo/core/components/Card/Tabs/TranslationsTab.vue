@@ -23,10 +23,10 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
-import { TRANSLATIONS_LANGUAGES } from '@Core/defaults/cookies';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import { TRANSLATIONS_LANGUAGES } from '@Core/defaults/cookies';
+import { mapGetters, mapState } from 'vuex';
 
 export default {
     name: 'TranslationsTab',

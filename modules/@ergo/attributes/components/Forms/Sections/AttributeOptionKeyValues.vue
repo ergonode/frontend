@@ -39,12 +39,12 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { getUUID } from '@Core/models/stringWrapper';
-import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import FormListElementField from '@Core/components/Form/Field/FormListElementField';
+import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import FormListSection from '@Core/components/Form/Section/FormListSection';
 import FormListSubsection from '@Core/components/Form/Subsection/FormListSubsection';
+import { getUUID } from '@Core/models/stringWrapper';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'AttributeOptionKeyValues',

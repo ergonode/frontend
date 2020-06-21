@@ -4,6 +4,7 @@
  */
 
 import { COLUMN_WIDTH } from '@Core/defaults/grid';
+
 import { Components } from './imports';
 
 export default {

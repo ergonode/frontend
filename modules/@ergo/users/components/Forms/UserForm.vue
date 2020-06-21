@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 
 const getRolesOptions = () => import('@Users/services/getRolesOptions.service');
 

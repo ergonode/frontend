@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import { LayoutOrientation } from '@Core/defaults/layout';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import { LayoutOrientation } from '@Core/defaults/layout';
 import ProductCollection from '@Products/components/ProductCollection/ProductCollection';
 import ProductCollectionItem from '@Products/components/ProductCollection/ProductCollectionItem';
 

@@ -35,10 +35,11 @@
 
 <script>
 import {
-    WHITE, GRAPHITE,
+    GRAPHITE,
+    WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import { LayoutOrientation } from '@Core/defaults/layout';
 import IconAddColumn from '@Core/components/Icons/Actions/IconAddColumn';
+import { LayoutOrientation } from '@Core/defaults/layout';
 
 export default {
     name: 'GridDropZone',

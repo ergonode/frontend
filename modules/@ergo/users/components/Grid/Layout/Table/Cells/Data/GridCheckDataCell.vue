@@ -22,10 +22,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { cellDataCompose } from '@Core/models/mappers/gridDataMapper';
 import GridCheckEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
+import { cellDataCompose } from '@Core/models/mappers/gridDataMapper';
+import { mapState } from 'vuex';
 
 export default {
     name: 'GridCheckDataCell',

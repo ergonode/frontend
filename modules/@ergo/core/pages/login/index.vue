@@ -27,14 +27,14 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { format as formatDate } from 'date-fns';
-import { DEFAULT_DATA_HOUR_FORMAT } from '@Core/defaults/date';
 import { LOGIN_STATE } from '@Authentication/defaults/login-state';
-import Footer from '@Core/components/Layout/Footer/Footer';
-import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
 import FluidBlob from '@Core/components/Blob/FluidBlob';
 import LinkButton from '@Core/components/Buttons/LinkButton';
+import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
+import Footer from '@Core/components/Layout/Footer/Footer';
+import { DEFAULT_DATA_HOUR_FORMAT } from '@Core/defaults/date';
+import { format as formatDate } from 'date-fns';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'Login',

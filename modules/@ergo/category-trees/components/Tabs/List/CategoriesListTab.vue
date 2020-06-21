@@ -33,9 +33,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import { mapState } from 'vuex';
 
 export default {
     name: 'CategoriesListTab',

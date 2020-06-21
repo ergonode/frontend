@@ -81,12 +81,12 @@
 </template>
 
 <script>
+import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
+import GridInteractiveHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridInteractiveHeaderCell';
+import GridDraggableColumn from '@Core/components/Grid/Layout/Table/Columns/GridDraggableColumn';
 import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';
-import GridDraggableColumn from '@Core/components/Grid/Layout/Table/Columns/GridDraggableColumn';
-import GridInteractiveHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridInteractiveHeaderCell';
-import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 
 export default {
     name: 'GridColumn',

@@ -74,12 +74,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { THEME } from '@Core/defaults/theme';
 import {
     GRAPHITE, GREEN, RED, WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import { THEME } from '@Core/defaults/theme';
 import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
+import { mapState } from 'vuex';
 
 export default {
     name: 'UploadFile',

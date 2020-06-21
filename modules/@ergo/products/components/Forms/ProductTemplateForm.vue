@@ -24,10 +24,10 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
 import { SCOPE } from '@Attributes/defaults/attributes';
 import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
+import { mapGetters, mapState } from 'vuex';
 
 const updateProductDraft = () => import('@Products/services/updateProductDraft.service');
 

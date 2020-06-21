@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import { toCapitalize } from '@Core/models/stringWrapper';
 import FormSection from '@Core/components/Form/Section/FormSection';
+import { toCapitalize } from '@Core/models/stringWrapper';
 
 export default {
     name: 'JSONSchemaFormObject',

@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
 import GridHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridHeaderCell';
+import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'GridPrivilegeCheckColumn',

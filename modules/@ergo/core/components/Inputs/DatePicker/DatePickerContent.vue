@@ -27,21 +27,21 @@
 </template>
 
 <script>
+import DatePickerCalendar from '@Core/components/Inputs/DatePicker/Calendar/DatePickerCalendar';
 import DatePickerHeader from '@Core/components/Inputs/DatePicker/DatePickerHeader';
 import DatePickerNavigationHeader from '@Core/components/Inputs/DatePicker/DatePickerNavigationHeader';
-import DatePickerCalendar from '@Core/components/Inputs/DatePicker/Calendar/DatePickerCalendar';
 import {
-    getNextYear,
-    getPreviousYear,
-    getNextMonth,
-    getPreviousMonth,
-    getNextYearsRange,
-    getPreviousYearsRange,
-    getYearsWithinRange,
+    CALENDAR_MONTHS,
     getHeaderForCalendarDaysType,
     getHeaderForCalendarYearsType,
+    getNextMonth,
+    getNextYear,
+    getNextYearsRange,
+    getPreviousMonth,
+    getPreviousYear,
+    getPreviousYearsRange,
+    getYearsWithinRange,
     zeroPad,
-    CALENDAR_MONTHS,
 } from '@Core/models/calendar/calendar';
 import { CalendarType } from '@Core/models/calendar/CalendarType';
 

@@ -37,12 +37,12 @@
 
 <script>
 
+import CheckBox from '@Core/components/Inputs/CheckBox';
 import Select from '@Core/components/Inputs/Select/Select';
-import ListElementTree from '@Core/components/List/ListElementTree';
 import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
-import CheckBox from '@Core/components/Inputs/CheckBox';
+import ListElementTree from '@Core/components/List/ListElementTree';
 
 export default {
     name: 'TreeSelect',

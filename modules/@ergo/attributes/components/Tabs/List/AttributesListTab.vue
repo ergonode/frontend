@@ -51,10 +51,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 import { UNASSIGNED_GROUP_ID } from '@Core/defaults/list';
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import fetchListGroupDataMixin from '@Core/mixins/list/fetchListGroupDataMixin';
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'AttributesListTab',

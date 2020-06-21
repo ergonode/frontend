@@ -2,8 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getParsedTreeData } from '@Trees/models/treeMapper';
 import { getListItems } from '@Core/services/list/getList.service';
+import { getParsedTreeData } from '@Trees/models/treeMapper';
+
 import { types } from './mutations';
 
 export default {

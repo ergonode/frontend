@@ -26,7 +26,7 @@
                             v-if="parameter"
                             :suffix="parameter" />
                     </template>
-                    <template #informationLabel>
+                    <template #details>
                         <div />
                     </template>
                 </DatePicker>
@@ -36,13 +36,13 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { format as formatDate } from 'date-fns';
+import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
+import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
 import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
-import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
-import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
-import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
+import { format as formatDate } from 'date-fns';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'ProductTemplateFormDateField',

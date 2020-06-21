@@ -26,10 +26,10 @@
 </template>
 
 <script>
-import { ARROW } from '@Core/defaults/icons';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
-import ListElementTitle from '@Core/components/List/ListElementTitle';
 import ListElementHint from '@Core/components/List/ListElementHint';
+import ListElementTitle from '@Core/components/List/ListElementTitle';
+import { ARROW } from '@Core/defaults/icons';
 
 export default {
     name: 'ListGroupElement',

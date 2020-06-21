@@ -21,10 +21,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
-import ListElementTitle from '@Core/components/List/ListElementTitle';
 import ListElementHint from '@Core/components/List/ListElementHint';
+import ListElementTitle from '@Core/components/List/ListElementTitle';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'CategoriesListElement',

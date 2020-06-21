@@ -82,14 +82,14 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import { THEME } from '@Core/defaults/theme';
+import GridDropZone from '@Core/components/Grid/GridDropZone';
+import GridCollectionLayoutActivator from '@Core/components/Grid/Layout/Collection/GridCollectionLayoutActivator';
+import GridTableLayoutActivator from '@Core/components/Grid/Layout/Table/GridTableLayoutActivator';
 import { GRID_LAYOUT } from '@Core/defaults/grid';
 import { ARROW } from '@Core/defaults/icons';
 import { LayoutOrientation } from '@Core/defaults/layout';
-import GridTableLayoutActivator from '@Core/components/Grid/Layout/Table/GridTableLayoutActivator';
-import GridCollectionLayoutActivator from '@Core/components/Grid/Layout/Collection/GridCollectionLayoutActivator';
-import GridDropZone from '@Core/components/Grid/GridDropZone';
+import { THEME } from '@Core/defaults/theme';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'GridHeader',

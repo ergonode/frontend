@@ -49,17 +49,17 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
 import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
 import IconDots from '@Core/components/Icons/Others/IconDots';
 import CheckBox from '@Core/components/Inputs/CheckBox';
-import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
 import ListElement from '@Core/components/List/ListElement';
 import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
+import { SIZE, THEME } from '@Core/defaults/theme';
+import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
+import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'AttributeElementContent',

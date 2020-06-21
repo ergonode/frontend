@@ -8,15 +8,16 @@
         <TextField
             :value="value"
             :placeholder="dateFormat"
-            small
-            underline
-            center-alignment
+            :size="smallSize"
+            :type="underlineInputType"
+            :alignment="centerAlignment"
             @input="onValueChange" />
     </div>
 </template>
 
 <script>
 import TextField from '@Core/components/Inputs/TextField';
+import { ALIGNMENT, INPUT_TYPE, SIZE } from '@Core/defaults/theme';
 import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
 
 export default {
@@ -35,8 +36,17 @@ export default {
         },
     },
     computed: {
+        centerAlignment() {
+            return ALIGNMENT.CENTER;
+        },
+        underlineInputType() {
+            return INPUT_TYPE.UNDERLINE;
+        },
         dateFormat() {
             return DEFAULT_FORMAT;
+        },
+        smallSize() {
+            return SIZE.SMALL;
         },
     },
     methods: {

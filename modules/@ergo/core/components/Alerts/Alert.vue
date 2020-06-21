@@ -21,18 +21,18 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { THEME } from '@Core/defaults/theme';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { toCapitalize } from '@Core/models/stringWrapper';
-import Fab from '@Core/components/Buttons/Fab';
-import IconClose from '@Core/components/Icons/Window/IconClose';
 import {
+    BLUE,
+    GREEN,
     RED,
     YELLOW,
-    GREEN,
-    BLUE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import Fab from '@Core/components/Buttons/Fab';
+import IconClose from '@Core/components/Icons/Window/IconClose';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { THEME } from '@Core/defaults/theme';
+import { toCapitalize } from '@Core/models/stringWrapper';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'Alert',

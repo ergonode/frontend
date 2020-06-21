@@ -24,10 +24,10 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import UploadFile from '@Core/components/Inputs/UploadFile/UploadFile';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { getImageData } from '@Core/models/multimedia';
-import UploadFile from '@Core/components/Inputs/UploadFile/UploadFile';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'UploadImageFile',

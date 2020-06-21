@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import { THEME } from '@Core/defaults/theme';
-import { GRID_LAYOUT } from '@Core/defaults/grid';
 import { GRAPHITE, GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
 import Fab from '@Core/components/Buttons/Fab';
 import IconListMedium from '@Core/components/Icons/Others/IconListMedium';
+import { GRID_LAYOUT } from '@Core/defaults/grid';
+import { THEME } from '@Core/defaults/theme';
 
 export default {
     name: 'GridTableLayoutActivator',

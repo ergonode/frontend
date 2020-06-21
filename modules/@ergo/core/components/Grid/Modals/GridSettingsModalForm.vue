@@ -54,15 +54,15 @@
 
 <script>
 
-import { ROW_HEIGHT, IMAGE_SCALING, COLUMNS_NUMBER } from '@Core/defaults/grid';
-import { toCapitalize } from '@Core/models/stringWrapper';
-import { getKeyByValue } from '@Core/models/objectWrapper';
-import { SIZE, THEME } from '@Core/defaults/theme';
 import Button from '@Core/components/Buttons/Button';
-import ModalForm from '@Core/components/Modal/ModalForm';
+import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import Select from '@Core/components/Inputs/Select/Select';
-import Form from '@Core/components/Form/Form';
+import ModalForm from '@Core/components/Modal/ModalForm';
+import { COLUMNS_NUMBER, IMAGE_SCALING, ROW_HEIGHT } from '@Core/defaults/grid';
+import { SIZE, THEME } from '@Core/defaults/theme';
+import { getKeyByValue } from '@Core/models/objectWrapper';
+import { toCapitalize } from '@Core/models/stringWrapper';
 
 export default {
     name: 'GridSettingsModalForm',

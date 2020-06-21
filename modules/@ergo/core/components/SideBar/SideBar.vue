@@ -40,12 +40,13 @@
 </template>
 
 <script>
-import { THEME } from '@Core/defaults/theme';
-import { ARROW } from '@Core/defaults/icons';
 import { GREEN, WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
-import IconArrowDouble from '@Core/components/Icons/Arrows/IconArrowDouble';
 import Fab from '@Core/components/Buttons/Fab';
+import IconArrowDouble from '@Core/components/Icons/Arrows/IconArrowDouble';
 import SideBarLogo from '@Core/components/SideBar/SideBarLogo';
+import { ARROW } from '@Core/defaults/icons';
+import { THEME } from '@Core/defaults/theme';
+
 import SideBarListElement from './SideBarListElement';
 import SideBarListGroup from './SideBarListGroup';
 

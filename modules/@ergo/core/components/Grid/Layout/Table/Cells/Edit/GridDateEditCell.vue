@@ -18,10 +18,10 @@
 </template>
 
 <script>
-import { format as formatDate, parse as parseDate } from 'date-fns';
-import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
 import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
+import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
+import { format as formatDate, parse as parseDate } from 'date-fns';
 
 export default {
     name: 'GridDateEditCell',

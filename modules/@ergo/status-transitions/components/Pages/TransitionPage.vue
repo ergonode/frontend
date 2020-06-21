@@ -36,9 +36,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import { Z_INDEX_LVL_0 } from '@Core/assets/scss/_js-variables/indexes.scss';
 import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
+import { mapState } from 'vuex';
 
 export default {
     name: 'TransitionPage',

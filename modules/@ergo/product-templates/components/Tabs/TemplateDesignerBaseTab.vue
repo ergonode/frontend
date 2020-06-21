@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import TemplateDesignerForm from '@Templates/components/Forms/TemplateDesignerForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import TemplateDesignerForm from '@Templates/components/Forms/TemplateDesignerForm';
 
 export default {
     name: 'TemplateDesignerBaseTab',

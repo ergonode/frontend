@@ -16,10 +16,10 @@
 </template>
 
 <script>
+import DatePickerNode from '@Core/components/Inputs/DatePicker/Node/DatePickerNode';
 import {
     isSameDay,
 } from '@Core/models/calendar/calendar';
-import DatePickerNode from '@Core/components/Inputs/DatePicker/Node/DatePickerNode';
 
 export default {
     name: 'DatePickerDays',

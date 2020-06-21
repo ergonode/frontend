@@ -2,13 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { isEmpty, getKeyByValue } from '@Core/models/objectWrapper';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { TYPES } from '@Attributes/defaults/attributes';
 import {
     getParsedParameterKeys,
 } from '@Attributes/models/attributeMapper';
 import { getParamsOptionsForType } from '@Attributes/models/attributeTypes';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { getKeyByValue, isEmpty } from '@Core/models/objectWrapper';
 
 export default async function ({
     $axios,

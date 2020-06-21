@@ -2,8 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { shallowMount } from '@vue/test-utils';
 import RadioButton from '@Core/components/Inputs/RadioButton';
+import { shallowMount } from '@vue/test-utils';
 
 describe('Inputs/RadioButton', () => {
     let wrapper;

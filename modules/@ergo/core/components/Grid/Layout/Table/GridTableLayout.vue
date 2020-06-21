@@ -75,18 +75,15 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import GridDropZone from '@Core/components/Grid/GridDropZone';
+import GridTableLayoutColumnsSection from '@Core/components/Grid/Layout/Table/Sections/GridTableLayoutColumnsSection';
 import {
-    PINNED_COLUMN_STATE,
-    COLUMN_WIDTH,
     COLUMN_ACTIONS_ID,
-    ROW_HEIGHT,
+    COLUMN_WIDTH,
     GRID_ACTIONS,
+    PINNED_COLUMN_STATE,
+    ROW_HEIGHT,
 } from '@Core/defaults/grid';
-import {
-    capitalizeAndConcatenationArray,
-    toCapitalize,
-} from '@Core/models/stringWrapper';
 import {
     swapItemPosition,
 } from '@Core/models/arrayWrapper';
@@ -94,8 +91,11 @@ import {
     changeCookiePosition,
     removeCookieAtIndex,
 } from '@Core/models/cookies';
-import GridTableLayoutColumnsSection from '@Core/components/Grid/Layout/Table/Sections/GridTableLayoutColumnsSection';
-import GridDropZone from '@Core/components/Grid/GridDropZone';
+import {
+    capitalizeAndConcatenationArray,
+    toCapitalize,
+} from '@Core/models/stringWrapper';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'GridTableLayout',

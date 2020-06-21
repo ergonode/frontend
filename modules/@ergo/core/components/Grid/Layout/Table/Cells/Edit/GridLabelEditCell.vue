@@ -38,12 +38,12 @@
 </template>
 
 <script>
+import PointBadge from '@Core/components/Badges/PointBadge';
 import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
-import ListElementAction from '@Core/components/List/ListElementAction';
-import PointBadge from '@Core/components/Badges/PointBadge';
 
 export default {
     name: 'GridLabelEditCell',

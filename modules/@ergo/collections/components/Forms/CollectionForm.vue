@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 const getCollectionTypesOptions = () => import('@Collections/services/getCollectionTypesOptions.service');
 

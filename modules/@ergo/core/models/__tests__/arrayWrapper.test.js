@@ -3,15 +3,15 @@
  * See LICENSE for license details.
  */
 import {
-    swapItemPosition,
-    getObjectWithMaxValueInArrayByObjectKey,
     arraysAreEqual,
     arrayToObject,
-    removeValueAtIndex,
-    sumIntegers,
+    firstElementInList,
+    getObjectWithMaxValueInArrayByObjectKey,
     insertValueAtIndex,
     lastElementInList,
-    firstElementInList,
+    removeValueAtIndex,
+    sumIntegers,
+    swapItemPosition,
 } from '@Core/models/arrayWrapper';
 
 describe('arrayWrapper/swapItemPosition', () => {

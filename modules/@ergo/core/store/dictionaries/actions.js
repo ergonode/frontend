@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import extendsModules from '~/.nuxt/extends.modules';
+
 import { types } from './mutations';
 
 const modulesDictionaries = Object.values(extendsModules)

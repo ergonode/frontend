@@ -3,11 +3,11 @@
  * See LICENSE for license details.
  */
 import {
-    hasOptions,
-    hasPlaceholder,
-    hasParams,
-    getParamsOptionsForType,
     getParamsKeyForType,
+    getParamsOptionsForType,
+    hasOptions,
+    hasParams,
+    hasPlaceholder,
 } from '../attributeTypes';
 
 describe('AttributeTypes/hasOptions', () => {

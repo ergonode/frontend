@@ -2,10 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { shallowMount } from '@vue/test-utils';
-import PointBadge from '@Core/components/Badges/PointBadge.vue';
 import { GRAPHITE_DARK } from '@Core/assets/scss/_js-variables/colors.scss';
-
+import PointBadge from '@Core/components/Badges/PointBadge.vue';
+import { shallowMount } from '@vue/test-utils';
 
 describe('Badges/PointBadge', () => {
     let wrapper;
@@ -21,7 +20,6 @@ describe('Badges/PointBadge', () => {
         expect(typeof PointBadge.name).toBe('string');
         expect(PointBadge.name).toEqual('PointBadge');
     });
-
 
     describe('Props validations', () => {
         it('size', () => {

@@ -3,58 +3,71 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
+    <Component
+        :is="styleComponent"
+        ref="activator"
         :data-cy="dataCy"
-        :class="inputClasses"
-        @keydown="onKeyDown">
-        <div
-            ref="activator"
-            :class="activatorClasses"
-            @mousedown="onMouseDown"
-            @mouseup="onMouseUp">
-            <slot name="prepend" />
-            <div
-                :data-cy="`${dataCy}-value`"
-                class="input__value"
-                v-if="hasAnyValueSelected">
-                <slot name="value">
-                    <span v-text="multiselect ? value.join(', ') : value" />
-                </slot>
-            </div>
-            <input
-                :id="associatedLabel"
-                ref="input"
-                :placeholder="placeholderValue"
-                :disabled="disabled"
-                :aria-label="label || 'no description'"
-                type="text"
-                readonly
-                @focus="onFocus"
-                @blur="onBlur">
-            <label
-                v-if="label"
-                :for="associatedLabel"
-                :class="floatingLabelClasses"
-                v-text="label" />
-            <div class="input__append">
-                <slot name="append" />
-                <ErrorHint
-                    v-if="isError"
-                    :hint="errorMessages" />
-                <InfoHint
-                    v-if="isDescription"
-                    :hint="description" />
-                <IconArrowDropDown :state="dropDownState" />
-            </div>
-        </div>
+        :focused="isFocused"
+        :error="isError"
+        :disabled="disabled"
+        :alignment="alignment"
+        :size="size"
+        :details-label="details"
+        @keydown.native="onKeyDown"
+        @mousedown="onMouseDown"
+        @mouseup="onMouseUp">
+        <template #activator>
+            <InputController
+                :size="size">
+                <slot name="prepend" />
+                <InputSelectValue
+                    v-if="hasAnyValueSelected"
+                    :data-cy="`${dataCy}-value`"
+                    :size="size"
+                    :alignment="alignment"
+                    :disabled="disabled"
+                    :value="multiselect ? value.join(', ') : value">
+                    <template #value>
+                        <slot name="value" />
+                    </template>
+                </InputSelectValue>
+                <input
+                    :id="associatedLabel"
+                    :class="inputClasses"
+                    ref="input"
+                    :placeholder="placeholderValue"
+                    :disabled="disabled"
+                    :aria-label="label || 'no description'"
+                    type="text"
+                    readonly
+                    @focus="onFocus"
+                    @blur="onBlur">
+                <InputLabel
+                    v-if="label"
+                    :for="associatedLabel"
+                    :required="required"
+                    :size="size"
+                    :floating="isFocused || hasAnyValueSelected"
+                    :focused="isFocused"
+                    :disabled="disabled"
+                    :error="isError"
+                    :label="label" />
+                <template #append>
+                    <slot name="append" />
+                    <ErrorHint
+                        v-if="isError"
+                        :hint="errorMessages" />
+                    <IconArrowDropDown :state="dropDownState" />
+                </template>
+            </InputController>
+        </template>
         <SelectDropDown
             v-if="needsToRender"
             :data-cy="`${dataCy}-drop-down`"
             ref="menu"
             :offset="offset"
             :fixed="fixedContent"
-            :small="small"
-            :regular="regular"
+            :size="size"
             :multiselect="multiselect"
             :clearable="clearable"
             :fixed-content="fixedContent"
@@ -63,7 +76,7 @@
             :options="options"
             :selected-options="selectedOptions"
             :search-result="searchResult"
-            :is-visible="isMenuActive"
+            :is-visible="isFocused"
             @dismiss="onDismiss"
             @clear="onClear"
             @search="onSearch"
@@ -74,11 +87,12 @@
                     name="dropdown"
                     :on-select-value-callback="onSelectValue" />
             </template>
-            <template #option="{ option, isSelected, index }">
+            <template #option="{ index, option, isSelected, isSmallSize }">
                 <slot
                     name="option"
                     :option="option"
                     :is-selected="isSelected"
+                    :is-small-size="isSmallSize"
                     :index="index" />
             </template>
             <template #footer>
@@ -88,27 +102,31 @@
                     :apply="onDismiss" />
             </template>
         </SelectDropDown>
-        <slot name="informationLabel">
-            <label
-                v-if="informationLabel"
-                :class="informationLabelClasses"
-                v-text="informationLabel" />
-        </slot>
-    </div>
+        <template #details>
+            <slot name="details" />
+        </template>
+    </Component>
 </template>
 
 <script>
-import { ARROW } from '@Core/defaults/icons';
-import SelectDropDown from '@Core/components/Inputs/Select/DropDown/SelectDropDown';
 import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
+import InputController from '@Core/components/Inputs/InputController';
+import InputLabel from '@Core/components/Inputs/InputLabel';
+import InputSelectValue from '@Core/components/Inputs/InputSelectValue';
+import SelectDropDown from '@Core/components/Inputs/Select/DropDown/SelectDropDown';
+import { ARROW } from '@Core/defaults/icons';
+import { ALIGNMENT, INPUT_TYPE, SIZE } from '@Core/defaults/theme';
 import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
+import { toCapitalize } from '@Core/models/stringWrapper';
 
 export default {
     name: 'Select',
     components: {
         SelectDropDown,
         IconArrowDropDown,
-        InfoHint: () => import('@Core/components/Hints/InfoHint'),
+        InputController,
+        InputLabel,
+        InputSelectValue,
         ErrorHint: () => import('@Core/components/Hints/ErrorHint'),
     },
     mixins: [associatedLabelMixin],
@@ -121,25 +139,24 @@ export default {
             type: Array,
             default: () => [],
         },
-        solid: {
-            type: Boolean,
-            default: false,
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [SIZE.SMALL, SIZE.REGULAR].indexOf(value) !== -1,
         },
-        underline: {
-            type: Boolean,
-            default: false,
+        alignment: {
+            type: String,
+            default: ALIGNMENT.LEFT,
+            validator: value => Object.values(ALIGNMENT).indexOf(value) !== -1,
+        },
+        type: {
+            type: String,
+            default: INPUT_TYPE.SOLID,
+            validator: value => Object.values(INPUT_TYPE).indexOf(value) !== -1,
         },
         fixedContent: {
             type: Boolean,
             default: true,
-        },
-        leftAlignment: {
-            type: Boolean,
-            default: false,
-        },
-        centerAlignment: {
-            type: Boolean,
-            default: false,
         },
         dismissible: {
             type: Boolean,
@@ -150,10 +167,6 @@ export default {
             default: null,
         },
         placeholder: {
-            type: String,
-            default: null,
-        },
-        description: {
             type: String,
             default: null,
         },
@@ -185,14 +198,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        small: {
-            type: Boolean,
-            default: false,
-        },
-        regular: {
-            type: Boolean,
-            default: false,
-        },
         searchable: {
             type: Boolean,
             default: false,
@@ -212,54 +217,26 @@ export default {
             searchResult: '',
             isBlurringNeeded: false,
             isMouseMoving: false,
-            isMenuActive: false,
+            isFocused: false,
             hasAnyValueSelected: false,
             needsToRender: false,
             offset: {},
         };
     },
     computed: {
-        dropDownState() {
-            return this.isMenuActive
-                ? ARROW.UP
-                : ARROW.DOWN;
-        },
-        isDescription() {
-            return this.description !== '' && this.description !== null;
+        styleComponent() {
+            return () => import(`@Core/components/Inputs/Input${toCapitalize(this.type)}Style`);
         },
         inputClasses() {
             return [
-                'input',
-                {
-                    solid: this.solid,
-                    underline: this.underline,
-                    small: this.small,
-                    regular: this.regular,
-                    'left-alignment': this.leftAlignment,
-                    'center-alignment': this.centerAlignment,
-                    'floating-label': this.label && this.label.length > 0,
-                    'input--error': this.isError,
-                    'input--focused': this.isMenuActive,
-                    'input--disabled': this.disabled,
-                    'input--has-value': this.hasAnyValueSelected,
-                },
+                'select',
+                `select--${this.alignment}`,
             ];
         },
-        activatorClasses() {
-            return [
-                'input__activator',
-            ];
-        },
-        informationLabelClasses() {
-            return [
-                'input__information-label',
-            ];
-        },
-        floatingLabelClasses() {
-            return [
-                'input__label',
-                { 'input__label--required': this.required },
-            ];
+        dropDownState() {
+            return this.isFocused
+                ? ARROW.UP
+                : ARROW.DOWN;
         },
         informationLabel() {
             return this.errorMessages || this.hint;
@@ -268,7 +245,7 @@ export default {
             return Boolean(this.errorMessages);
         },
         placeholderValue() {
-            if (!this.hasAnyValueSelected && this.label && !this.isMenuActive) return null;
+            if (!this.hasAnyValueSelected && this.label && !this.isFocused) return null;
 
             return !this.hasAnyValueSelected ? this.placeholder : null;
         },
@@ -297,7 +274,7 @@ export default {
     },
     mounted() {
         if (this.autofocus) {
-            this.$nextTick(() => {
+            window.requestAnimationFrame(() => {
                 this.$refs.input.focus();
             });
         }
@@ -306,14 +283,14 @@ export default {
         getDropDownOffset() {
             const {
                 x, y, width, height,
-            } = this.$refs.activator.getBoundingClientRect();
+            } = this.$refs.activator.$el.getBoundingClientRect();
 
             return {
                 x, y, width, height,
             };
         },
         blur() {
-            this.isMenuActive = false;
+            this.isFocused = false;
             this.searchResult = '';
 
             this.onSearch(this.searchResult);
@@ -341,7 +318,7 @@ export default {
         onFocus() {
             this.isBlurringNeeded = false;
             this.offset = this.getDropDownOffset();
-            this.isMenuActive = true;
+            this.isFocused = true;
 
             if (!this.needsToRender) {
                 this.needsToRender = true;
@@ -362,7 +339,7 @@ export default {
             }
         },
         onMouseDown(event) {
-            this.$refs.activator.addEventListener('mousemove', this.onMouseMove);
+            this.$refs.activator.$el.addEventListener('mousemove', this.onMouseMove);
 
             event.preventDefault();
             event.stopPropagation();
@@ -370,10 +347,10 @@ export default {
             this.isMouseMoving = false;
         },
         onMouseUp() {
-            this.$refs.activator.removeEventListener('mousemove', this.onMouseMove);
+            this.$refs.activator.$el.removeEventListener('mousemove', this.onMouseMove);
 
             if (this.dismissible) {
-                if (this.isMenuActive) {
+                if (this.isFocused) {
                     this.isBlurringNeeded = true;
                     this.$refs.input.blur();
                 } else {
@@ -389,7 +366,7 @@ export default {
             this.isMouseMoving = true;
         },
         onClickOutside({ event, isClickedOutside }) {
-            const isClickedInsideActivator = this.$refs.activator.contains(event.target);
+            const isClickedInsideActivator = this.$refs.activator.$el.contains(event.target);
 
             if (isClickedOutside
                 || (isClickedInsideActivator && !this.dismissible)
@@ -408,5 +385,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import "@Core/assets/scss/input/input.scss";
+    .select {
+        flex: 1;
+        outline: none;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        border: none;
+        padding: 0;
+        background-color: transparent;
+        color: $GRAPHITE_DARK;
+
+        &::placeholder {
+            opacity: 0.4;
+            color: $GRAPHITE_DARK;
+        }
+    }
 </style>

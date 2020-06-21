@@ -44,15 +44,15 @@
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { DATA_LIMIT } from '@Core/defaults/grid';
-import { getGridData } from '@Core/services/grid/getGridData.service';
-import ModalOverlay from '@Core/components/Modal/ModalOverlay';
+import Button from '@Core/components/Buttons/Button';
+import Fab from '@Core/components/Buttons/Fab';
+import Grid from '@Core/components/Grid/Grid';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import IconClose from '@Core/components/Icons/Window/IconClose';
-import Grid from '@Core/components/Grid/Grid';
-import Fab from '@Core/components/Buttons/Fab';
-import Button from '@Core/components/Buttons/Button';
+import ModalOverlay from '@Core/components/Modal/ModalOverlay';
+import { DATA_LIMIT } from '@Core/defaults/grid';
+import { SIZE, THEME } from '@Core/defaults/theme';
+import { getGridData } from '@Core/services/grid/getGridData.service';
 
 export default {
     name: 'ModalGrid',

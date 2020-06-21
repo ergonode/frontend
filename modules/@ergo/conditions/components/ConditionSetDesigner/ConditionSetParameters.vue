@@ -21,9 +21,9 @@
     </FormValidatorField>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex';
 import { TYPES } from '@Conditions/defaults/conditionsDesigner';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'ConditionSetParameters',

@@ -67,14 +67,14 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
 // import getProductDraft from '@Products/services/getProductDraft.service';
 import Button from '@Core/components/Buttons/Button';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import { mapActions, mapState } from 'vuex';
 
 const updateProductDraft = () => import('@Products/services/updateProductDraft.service');
 

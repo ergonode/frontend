@@ -29,10 +29,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { cellDataCompose } from '@Core/models/mappers/gridDataMapper';
 import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
+import { cellDataCompose } from '@Core/models/mappers/gridDataMapper';
+import { mapState } from 'vuex';
 
 export default {
     name: 'GridIntegerDataCell',

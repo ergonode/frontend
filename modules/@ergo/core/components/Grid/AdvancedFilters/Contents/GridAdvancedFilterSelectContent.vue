@@ -24,12 +24,12 @@
 </template>
 
 <script>
-import { FILTER_OPERATOR } from '@Core/defaults/operators';
 import GridAdvancedFilterBaseContent from '@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
 import List from '@Core/components/List/List';
 import ListElement from '@Core/components/List/ListElement';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
+import { FILTER_OPERATOR } from '@Core/defaults/operators';
 
 export default {
     name: 'GridAdvancedFilterSelectContent',

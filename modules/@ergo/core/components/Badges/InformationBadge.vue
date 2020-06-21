@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import { SIZE } from '@Core/defaults/theme';
-import { WHITE, GRAPHITE_DARK } from '@Core/assets/scss/_js-variables/colors.scss';
+import { GRAPHITE_DARK, WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 import BadgeLabel from '@Core/components/Badges/BadgeLabel';
+import { SIZE } from '@Core/defaults/theme';
 
 export default {
     name: 'InformationBadge',

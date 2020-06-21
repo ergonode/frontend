@@ -2,10 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getListGroups, getListItems } from '@Core/services/list/getList.service';
 import { UNASSIGNED_GROUP_ID } from '@Core/defaults/list';
 import { getMappedGroupItemsCount } from '@Core/models/mappers/listMapper';
 import { getUUID } from '@Core/models/stringWrapper';
+import { getListGroups, getListItems } from '@Core/services/list/getList.service';
 
 export default function ({ namespace }) {
     return {

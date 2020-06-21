@@ -2,16 +2,16 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mappingTree, hiddenItems } from './__mocks__/categoryTree.mock';
 import {
     getCoordinatesForHiddenElements,
+    getFullTree,
     getNearestNeighborRowId,
-    getTreeWhenElementRemoved,
-    getTreeWhenGhostElementRemoved,
     getTreeWhenElementCollapse,
     getTreeWhenElementExpand,
-    getFullTree,
+    getTreeWhenElementRemoved,
+    getTreeWhenGhostElementRemoved,
 } from '../TreeCalculations';
+import { hiddenItems, mappingTree } from './__mocks__/categoryTree.mock';
 
 describe('TreeCalculations/getCoordinatesForHiddenElements', () => {
     it('New positions for hidden elements (col: 2, row: 3)', () => {

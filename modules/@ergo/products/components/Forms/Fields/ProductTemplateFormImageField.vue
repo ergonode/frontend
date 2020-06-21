@@ -19,9 +19,9 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
 import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
+import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'ProductTemplateFormNumericField',

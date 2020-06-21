@@ -21,26 +21,26 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import {
-    getHighlightingPositions,
-    getHighlightingLayoutDropPositions,
-    getMaxRowForGivenColumn,
-    getMaxColumnForGivenRow,
-    getRowBasedOnHeight,
-    getColumnBasedOnWidth,
-} from '@Templates/models/layout/LayoutCalculations';
+import { GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
+import { ELEVATOR_HOLE } from '@Core/assets/scss/_js-variables/elevators.scss';
+import IconResize from '@Core/components/Icons/Others/IconResize';
+import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
+import { addElementCopyToDocumentBody, removeElementCopyFromDocumentBody } from '@Core/models/layout/ElementCopy';
 import {
     addResizablePlaceholder,
-    updateResizablePlaceholderWidth,
-    updateResizablePlaceholderHeight,
     removeResizablePlaceholder,
+    updateResizablePlaceholderHeight,
+    updateResizablePlaceholderWidth,
 } from '@Templates/models/layout/GhostElement';
-import { addElementCopyToDocumentBody, removeElementCopyFromDocumentBody } from '@Core/models/layout/ElementCopy';
-import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
-import { ELEVATOR_HOLE } from '@Core/assets/scss/_js-variables/elevators.scss';
-import { GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
-import IconResize from '@Core/components/Icons/Others/IconResize';
+import {
+    getColumnBasedOnWidth,
+    getHighlightingLayoutDropPositions,
+    getHighlightingPositions,
+    getMaxColumnForGivenRow,
+    getMaxRowForGivenColumn,
+    getRowBasedOnHeight,
+} from '@Templates/models/layout/LayoutCalculations';
+import { mapActions, mapState } from 'vuex';
 
 const registerResizeEventListeners = () => import('@Core/models/resize/registerResizeEventListeners');
 const unregisterResizeEventListeners = () => import('@Core/models/resize/unregisterResizeEventListeners');

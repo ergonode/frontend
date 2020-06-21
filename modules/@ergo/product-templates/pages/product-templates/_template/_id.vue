@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { SKU_MODEL_ID } from '@Templates/defaults/product';
 import { MODAL_TYPE } from '@Core/defaults/modals';
+import { SKU_MODEL_ID } from '@Templates/defaults/product';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'Edit',

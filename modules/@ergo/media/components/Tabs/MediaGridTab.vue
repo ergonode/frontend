@@ -31,14 +31,15 @@
 </template>
 
 <script>
-import { debounce } from 'debounce';
 import {
-    GREEN, GRAPHITE,
+    GRAPHITE,
+    GREEN,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import Grid from '@Core/components/Grid/Grid';
 import IconSearch from '@Core/components/Icons/Actions/IconSearch';
 import TextField from '@Core/components/Inputs/TextField';
-import Grid from '@Core/components/Grid/Grid';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import { debounce } from 'debounce';
 
 export default {
     name: 'MediaGridTab',

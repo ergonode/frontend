@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import IconDelete from '@Core/components/Icons/Actions/IconDelete';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
+import IconDelete from '@Core/components/Icons/Actions/IconDelete';
 import { MODAL_TYPE } from '@Core/defaults/modals';
 
 export default {

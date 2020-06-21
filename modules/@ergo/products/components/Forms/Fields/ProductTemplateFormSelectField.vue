@@ -21,7 +21,7 @@
                     :disabled="disabled"
                     :description="properties.hint"
                     @input="debounceValueChange">
-                    <template #informationLabel>
+                    <template #details>
                         <div />
                     </template>
                 </TranslationSelect>
@@ -31,12 +31,12 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { debounce } from 'debounce';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
-import { getMappedObjectOptions, getMappedObjectOption } from '@Core/models/mappers/translationsMapper';
+import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import { getMappedObjectOption, getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
+import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
+import { debounce } from 'debounce';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'ProductTemplateFormSelectField',

@@ -51,8 +51,8 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 import { TYPES } from '@Attributes/defaults/attributes';
+import { mapActions, mapState } from 'vuex';
 
 const getAttributesOptionsByType = () => import('@Attributes/services/getAttributesOptionsByType.service');
 

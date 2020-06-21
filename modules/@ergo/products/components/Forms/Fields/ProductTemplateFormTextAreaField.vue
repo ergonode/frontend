@@ -34,7 +34,7 @@
                     :description="properties.hint"
                     @focus="onFocus"
                     @input="onValueChange">
-                    <template #informationLabel>
+                    <template #details>
                         <div />
                     </template>
                 </TextArea>
@@ -44,11 +44,11 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
-import TextArea from '@Core/components/Inputs/TextArea';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
+import TextArea from '@Core/components/Inputs/TextArea';
+import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'ProductTemplateFormTextAreaField',

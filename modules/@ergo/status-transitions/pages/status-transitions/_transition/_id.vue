@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 import { getMappedConditionSetData } from '@Conditions/models/conditionSetMapper';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { MODAL_TYPE } from '@Core/defaults/modals';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'TransitionEdit',

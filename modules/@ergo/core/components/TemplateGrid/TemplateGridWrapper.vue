@@ -72,14 +72,14 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
-import { getNearestNeighborRowId } from '@Core/models/template_grid/TreeCalculations';
-import TemplateGridPresentationLayer from '@Core/components/TemplateGrid/TemplateGridPresentationLayer';
-import TemplateGridItemsContainer from '@Core/components/TemplateGrid/TemplateGridItemsContainer';
 import TemplateGridContainer from '@Core/components/TemplateGrid/TemplateGridContainer';
 import TemplateGridGhostItem from '@Core/components/TemplateGrid/TemplateGridGhostItem';
-import TemplateGridItemArea from '@Core/components/TemplateGrid/TemplateGridItemArea';
 import TemplateGridItem from '@Core/components/TemplateGrid/TemplateGridItem';
+import TemplateGridItemArea from '@Core/components/TemplateGrid/TemplateGridItemArea';
+import TemplateGridItemsContainer from '@Core/components/TemplateGrid/TemplateGridItemsContainer';
+import TemplateGridPresentationLayer from '@Core/components/TemplateGrid/TemplateGridPresentationLayer';
+import { getNearestNeighborRowId } from '@Core/models/template_grid/TreeCalculations';
+import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default {
     name: 'TemplateGridWrapper',

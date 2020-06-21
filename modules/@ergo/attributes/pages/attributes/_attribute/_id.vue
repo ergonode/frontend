@@ -10,13 +10,13 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { isEmpty, getKeyByValue } from '@Core/models/objectWrapper';
+import { TYPES } from '@Attributes/defaults/attributes';
 import { getParsedParameterKeys } from '@Attributes/models/attributeMapper';
 import { getParamsOptionsForType } from '@Attributes/models/attributeTypes';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { MODAL_TYPE } from '@Core/defaults/modals';
-import { TYPES } from '@Attributes/defaults/attributes';
+import { getKeyByValue, isEmpty } from '@Core/models/objectWrapper';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'EditAttribute',

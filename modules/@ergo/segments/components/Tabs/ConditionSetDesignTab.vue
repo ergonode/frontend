@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'ConditionSetDesignTab',

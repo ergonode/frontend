@@ -63,13 +63,13 @@
     </Page>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex';
+import Button from '@Core/components/Buttons/Button';
+import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { MODAL_TYPE } from '@Core/defaults/modals';
-import Button from '@Core/components/Buttons/Button';
-import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
-import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
 import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
+import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'ProductPage',

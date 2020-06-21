@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 const getCategoriesOptions = () => import('@Categories/services/getCategoriesOptions.service');
 const getTemplatesOptions = () => import('@Templates/services/getTemplatesOptions.service');

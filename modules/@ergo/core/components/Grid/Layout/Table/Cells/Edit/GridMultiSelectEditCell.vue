@@ -19,10 +19,10 @@
 </template>
 
 <script>
-import { arraysAreEqual } from '@Core/models/arrayWrapper';
-import { getMappedObjectOptions, getMappedMatchedArrayOptions } from '@Core/models/mappers/translationsMapper';
 import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import { arraysAreEqual } from '@Core/models/arrayWrapper';
+import { getMappedMatchedArrayOptions, getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
 
 export default {
     name: 'GridMultiSelectEditCell',

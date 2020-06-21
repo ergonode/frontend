@@ -38,14 +38,14 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { THEME } from '@Core/defaults/theme';
-import ModalForm from '@Core/components/Modal/ModalForm';
-import TextField from '@Core/components/Inputs/TextField';
 import Button from '@Core/components/Buttons/Button';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
+import TextField from '@Core/components/Inputs/TextField';
+import ModalForm from '@Core/components/Modal/ModalForm';
+import { THEME } from '@Core/defaults/theme';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'SectionTemplateModalForm',

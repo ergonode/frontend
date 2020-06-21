@@ -2,9 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { shallowMount } from '@vue/test-utils';
 import App from '@Core/components/Layout/App.vue';
-
+import { shallowMount } from '@vue/test-utils';
 
 describe('Layout/App', () => {
     let wrapper;

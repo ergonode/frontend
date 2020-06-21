@@ -2,10 +2,11 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import {
-    isObject, getKeyByValue,
-} from '@Core/models/objectWrapper';
 import { getParamsKeyForType, getParamsOptionsForType } from '@Attributes/models/attributeTypes';
+import {
+    getKeyByValue,
+    isObject,
+} from '@Core/models/objectWrapper';
 import { getUUID } from '@Core/models/stringWrapper';
 
 export function getParsedType(types, selectedType) {

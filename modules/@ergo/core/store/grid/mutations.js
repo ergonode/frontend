@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import deepmerge from 'deepmerge';
+
 import defaultState from './state';
 
 export const types = {

@@ -68,22 +68,22 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { ARROW } from '@Core/defaults/icons';
 import { TYPES } from '@Attributes/defaults/attributes';
-import { WHITE, GRAPHITE_DARK } from '@Core/assets/scss/_js-variables/colors.scss';
+import { GRAPHITE_DARK, WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+import AdvancedFilterDropDown from '@Core/components/Grid/AdvancedFilters/DropDown/AdvancedFilterDropDown';
+import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
+import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
+import { ARROW } from '@Core/defaults/icons';
+import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
+import { changeCookiePosition } from '@Core/models/cookies';
+import {
+    getDraggedColumnPositionState,
+} from '@Core/models/drag_and_drop/helpers';
 import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
-import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
-import {
-    getDraggedColumnPositionState,
-} from '@Core/models/drag_and_drop/helpers';
-import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
-import { changeCookiePosition } from '@Core/models/cookies';
-import AdvancedFilterDropDown from '@Core/components/Grid/AdvancedFilters/DropDown/AdvancedFilterDropDown';
-import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'GridAdvancedFilter',

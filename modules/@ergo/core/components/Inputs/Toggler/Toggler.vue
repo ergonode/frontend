@@ -119,7 +119,7 @@ export default {
             left: 0;
             opacity: 0;
 
-            &:focus + label {
+            &:focus + label, &:hover + label {
                 #{$toggler}__state {
                     box-shadow: $ELEVATOR_HOVER_FOCUS;
                 }

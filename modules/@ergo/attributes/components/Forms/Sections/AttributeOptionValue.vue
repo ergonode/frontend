@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'AttributeOptionValue',

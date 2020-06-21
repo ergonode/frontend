@@ -34,10 +34,10 @@
 </template>
 
 <script>
-import { THEME } from '@Core/defaults/theme';
-import { ARROW } from '@Core/defaults/icons';
 import Fab from '@Core/components/Buttons/Fab';
 import IconArrowSingle from '@Core/components/Icons/Arrows/IconArrowSingle';
+import { ARROW } from '@Core/defaults/icons';
+import { THEME } from '@Core/defaults/theme';
 
 export default {
     name: 'DatePickerNavigationHeader',

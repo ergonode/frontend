@@ -2,8 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Alert from '@Core/components/Alerts/Alert.vue';
+import { createLocalVue, shallowMount } from '@vue/test-utils';
 
 const localVue = createLocalVue();
 

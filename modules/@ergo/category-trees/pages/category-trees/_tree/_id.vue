@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { getMappedTreeData } from '@Trees/models/treeMapper';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { MODAL_TYPE } from '@Core/defaults/modals';
+import { getMappedTreeData } from '@Trees/models/treeMapper';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'EditCategoryTree',

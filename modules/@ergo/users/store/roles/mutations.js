@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { isObject } from '@Core/models/objectWrapper';
+
 import defaultState from './state';
 
 export const types = {

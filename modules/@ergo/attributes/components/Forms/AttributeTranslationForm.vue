@@ -50,17 +50,17 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { getKeyByValue } from '@Core/models/objectWrapper';
-import { hasPlaceholder, hasOptions } from '@Attributes/models/attributeTypes';
 import AttributeOptionValues from '@Attributes/components/Forms/Sections/AttributeOptionValues';
-import translationCardMixin from '@Core/mixins/card/translationCardMixin';
-import TextField from '@Core/components/Inputs/TextField';
-import TextArea from '@Core/components/Inputs/TextArea';
-import Divider from '@Core/components/Dividers/Divider';
+import { hasOptions, hasPlaceholder } from '@Attributes/models/attributeTypes';
 import Card from '@Core/components/Card/Card';
+import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
+import TextArea from '@Core/components/Inputs/TextArea';
+import TextField from '@Core/components/Inputs/TextField';
+import translationCardMixin from '@Core/mixins/card/translationCardMixin';
+import { getKeyByValue } from '@Core/models/objectWrapper';
+import { mapState } from 'vuex';
 
 export default {
     name: 'AttributeTranslationForm',

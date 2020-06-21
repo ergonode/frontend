@@ -2,8 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { shallowMount, createLocalVue } from '@vue/test-utils';
+import { createLocalVue, shallowMount } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
+
 import TemplateGridDraggableLayer from '../Base/TemplateGridDraggableLayer';
 
 const localVue = createLocalVue();

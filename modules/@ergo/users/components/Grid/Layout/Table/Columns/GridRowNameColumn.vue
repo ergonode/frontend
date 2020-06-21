@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
 import GridHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridHeaderCell';
+import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
 
 export default {
     name: 'GridRowNameColumn',

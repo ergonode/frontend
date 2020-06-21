@@ -23,10 +23,11 @@
     </button>
 </template>
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
 import {
-    GREEN, GRAPHITE, WHITE, GREY_DARK,
+    GRAPHITE, GREEN, GREY_DARK,
+    WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import { SIZE, THEME } from '@Core/defaults/theme';
 
 export default {
     name: 'Fab',

@@ -47,15 +47,15 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import CommentEdit from '@Comments/components/Comments/CommentEdit';
+import CommentStateChanger from '@Comments/components/Comments/CommentStateChanger';
+import CommentsList from '@Comments/components/List/CommentsList';
+import Button from '@Core/components/Buttons/Button';
+import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import Loader from '@Core/components/Loader/Loader';
 import { DATA_LIMIT } from '@Core/defaults/grid';
 import { LayoutOrientation } from '@Core/defaults/layout';
-import Button from '@Core/components/Buttons/Button';
-import Loader from '@Core/components/Loader/Loader';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import CommentsList from '@Comments/components/List/CommentsList';
-import CommentStateChanger from '@Comments/components/Comments/CommentStateChanger';
-import CommentEdit from '@Comments/components/Comments/CommentEdit';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'ProductCommentsForm',

@@ -51,17 +51,17 @@
 
 <script>
 import { GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
-import { SIZE } from '@Core/defaults/theme';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { formatBytes } from '@Core/models/stringWrapper';
-import { getMappedErrors } from '@Core/models/mappers/errorsMapper';
-import IconUploadFile from '@Core/components/Icons/Actions/IconUploadFile';
 import Button from '@Core/components/Buttons/Button';
+import IconUploadFile from '@Core/components/Icons/Actions/IconUploadFile';
 import UploadFileList from '@Core/components/Inputs/UploadFile/List/UploadFileList';
 import UploadFileListElement from '@Core/components/Inputs/UploadFile/List/UploadFileListElement';
 import UploadFileListLoadingElement from '@Core/components/Inputs/UploadFile/List/UploadFileListLoadingElement';
 import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { SIZE } from '@Core/defaults/theme';
 import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
+import { getMappedErrors } from '@Core/models/mappers/errorsMapper';
+import { formatBytes } from '@Core/models/stringWrapper';
 
 export default {
     name: 'UploadFileTab',

@@ -24,10 +24,10 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { THEME } from '@Core/defaults/theme';
 import { MODAL_ACTION } from '@Core/defaults/modals';
+import { THEME } from '@Core/defaults/theme';
 import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
+import { mapActions } from 'vuex';
 
 const createSegment = () => import('@Segments/services/createSegment.service');
 

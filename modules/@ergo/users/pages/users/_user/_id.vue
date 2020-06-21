@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import deepmerge from 'deepmerge';
-import { mapState, mapActions, mapGetters } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+import deepmerge from 'deepmerge';
+import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default {
     name: 'EditUser',

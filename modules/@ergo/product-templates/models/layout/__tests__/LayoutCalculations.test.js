@@ -3,12 +3,12 @@
  * See LICENSE for license details.
  */
 import {
-    getObstaclePositionsForElement,
+    getColumnBasedOnWidth,
     getHighlightingPositions,
     // getHighlightingLayoutDropPositions,
     getMaxColumnForGivenRow,
     getMaxRowForGivenColumn,
-    getColumnBasedOnWidth,
+    getObstaclePositionsForElement,
     getRowBasedOnHeight,
 } from '../LayoutCalculations';
 

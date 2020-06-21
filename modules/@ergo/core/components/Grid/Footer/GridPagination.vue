@@ -71,8 +71,8 @@
 </template>
 
 <script>
-import { THEME } from '@Core/defaults/theme';
 import { ARROW } from '@Core/defaults/icons';
+import { THEME } from '@Core/defaults/theme';
 
 export default {
     name: 'GridPagination',

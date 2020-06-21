@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import CategoryTreeForm from '@Trees/components/Forms/CategoryTreeForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CategoryTreeForm from '@Trees/components/Forms/CategoryTreeForm';
 
 export default {
     name: 'CategoryTreeBaseTab',
