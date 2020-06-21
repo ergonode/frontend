@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <DropDownFooter :small="true">
+    <DropDownFooter :size="smallSize">
         <Button
             :theme="secondaryTheme"
             :size="tinySize"
@@ -29,6 +29,9 @@ export default {
     computed: {
         tinySize() {
             return SIZE.TINY;
+        },
+        smallSize() {
+            return SIZE.SMALL;
         },
         secondaryTheme() {
             return THEME.SECONDARY;

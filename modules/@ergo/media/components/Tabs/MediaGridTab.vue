@@ -17,7 +17,7 @@
         <template #actions>
             <TextField
                 :value="searchResult"
-                small
+                :size="smallSize"
                 placeholder="Search..."
                 @input="debouncedSearch"
                 @focus="onSearchFocus">
@@ -37,6 +37,9 @@ import {
 import Grid from '@Core/components/Grid/Grid';
 import IconSearch from '@Core/components/Icons/Actions/IconSearch';
 import TextField from '@Core/components/Inputs/TextField';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import {
     debounce,
@@ -70,6 +73,9 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         searchIconFillColor() {
             return this.isSearchFocused
                 ? GREEN

@@ -8,7 +8,7 @@
             v-show="isSearchButtonClicked"
             :value="searchResult"
             class="search-text-field"
-            small
+            :size="smallSize"
             placeholder="Search..."
             @input="debouncedSearch"
             @focus="onSearchFocus">
@@ -40,6 +40,9 @@ import IconSearch from '@Core/components/Icons/Actions/IconSearch';
 import TextField from '@Core/components/Inputs/TextField';
 import ListHeader from '@Core/components/List/ListHeader';
 import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
     debounce,
 } from 'debounce';
 
@@ -69,6 +72,9 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         whiteColor() {
             return WHITE;
         },

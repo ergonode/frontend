@@ -4,7 +4,7 @@
  */
 <template>
     <DropDownFooter
-        :small="true"
+        :size="smallSize"
         :space-between="true">
         <Button
             :size="tinySize"
@@ -33,6 +33,9 @@ export default {
         Button,
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         tinySize() {
             return SIZE.TINY;
         },

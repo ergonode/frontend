@@ -10,7 +10,7 @@
                 name="select">
                 <Select
                     :value="selectedOption"
-                    small
+                    :size="smallSize"
                     :options="options"
                     @input="onLanguageSelect" />
             </slot>
@@ -20,7 +20,7 @@
             :value="searchResult"
             class="search-text-field"
             autofocus
-            small
+            :size="smallSize"
             placeholder="Search..."
             @input="debouncedSearch"
             @focus="onSearchFocus">
@@ -51,6 +51,9 @@ import IconSearch from '@Core/components/Icons/Actions/IconSearch';
 import Select from '@Core/components/Inputs/Select/Select';
 import TextField from '@Core/components/Inputs/TextField';
 import ListHeader from '@Core/components/List/ListHeader';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import {
     debounce,
 } from 'debounce';
@@ -86,6 +89,9 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         whiteColor() {
             return WHITE;
         },

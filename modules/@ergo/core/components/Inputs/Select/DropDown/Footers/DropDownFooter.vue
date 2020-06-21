@@ -4,16 +4,17 @@
  */
 <template>
     <div
-        :class="['dropdown-footer', {
-            'space-between': spaceBetween,
-            'small': small,
-        }]"
+        :class="classes"
         @click.stop>
         <slot />
     </div>
 </template>
 
 <script>
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+
 export default {
     name: 'DropDownFooter',
     props: {
@@ -21,9 +22,24 @@ export default {
             type: Boolean,
             default: false,
         },
-        small: {
-            type: Boolean,
-            default: false,
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
+        },
+    },
+    computed: {
+        classes() {
+            return [
+                'drop-down-footer',
+                `drop-down-footer--${this.size}`,
+                {
+                    'drop-down-footer--space-between': this.spaceBetween,
+                },
+            ];
         },
     },
 };
@@ -35,19 +51,22 @@ export default {
         flex-shrink: 0;
         justify-content: flex-end;
         align-items: center;
-        flex-basis: 48px;
-        padding: 0 12px;
         box-sizing: border-box;
         background-color: $WHITE;
         box-shadow: 0 -5px 5px -5px rgba(0, 0, 0, 0.12);
 
-        &.space-between {
+        &--space-between {
             justify-content: space-between;
         }
 
-        &.small {
+        &--small {
             flex-basis: 40px;
             padding: 0 8px;
+        }
+
+        &--regular {
+            flex-basis: 48px;
+            padding: 0 12px;
         }
     }
 </style>

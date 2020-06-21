@@ -11,7 +11,7 @@
                 :alignment="leftAlignment"
                 :error-messages="errorMessages"
                 :input="{ type: 'number' }"
-                small />
+                :size="smallSize" />
         </GridTextEditContentCell>
     </GridActivatorEditCell>
 </template>
@@ -22,6 +22,7 @@ import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit
 import TextField from '@Core/components/Inputs/TextField';
 import {
     ALIGNMENT,
+    SIZE,
 } from '@Core/defaults/theme';
 
 export default {
@@ -54,6 +55,9 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         leftAlignment() {
             return ALIGNMENT.LEFT;
         },

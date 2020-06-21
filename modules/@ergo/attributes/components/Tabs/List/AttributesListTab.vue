@@ -11,7 +11,7 @@
             <template #select>
                 <TreeSelect
                     :value="language"
-                    small
+                    :size="smallSize"
                     :options="languageOptions"
                     @input="onSelect" />
             </template>
@@ -53,6 +53,9 @@
 import {
     UNASSIGNED_GROUP_ID,
 } from '@Core/defaults/list';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import fetchListGroupDataMixin from '@Core/mixins/list/fetchListGroupDataMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import {
@@ -99,6 +102,9 @@ export default {
             defaultLanguageCodeByPrivileges: state => state.defaultLanguageCodeByPrivileges,
             languagesTree: state => state.languagesTree,
         }),
+        smallSize() {
+            return SIZE.SMALL;
+        },
         languageGroups() {
             const {
                 code,

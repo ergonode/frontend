@@ -20,7 +20,7 @@
         </template>
         <template #footer="{ clear, apply }">
             <DropDownFooter
-                :small="$attrs.small"
+                :size="$attrs.size"
                 :space-between="true">
                 <Button
                     :size="tinySize"

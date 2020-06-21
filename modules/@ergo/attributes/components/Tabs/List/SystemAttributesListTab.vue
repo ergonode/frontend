@@ -11,7 +11,7 @@
             <template #select>
                 <TreeSelect
                     :value="language"
-                    small
+                    :size="smallSize"
                     :options="languageOptions"
                     @input="onSelect" />
             </template>
@@ -34,6 +34,9 @@
 </template>
 
 <script>
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
 import {
     mapState,
@@ -74,6 +77,9 @@ export default {
             defaultLanguageCodeByPrivileges: state => state.defaultLanguageCodeByPrivileges,
             languagesTree: state => state.languagesTree,
         }),
+        smallSize() {
+            return SIZE.SMALL;
+        },
         isUserAllowedToDragAttributes() {
             const {
                 languagePrivileges,

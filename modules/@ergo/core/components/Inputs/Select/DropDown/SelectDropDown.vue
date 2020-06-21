@@ -58,7 +58,7 @@
                     :clear="onClear"
                     :apply="onDismiss">
                     <DropDownFooter
-                        :small="small"
+                        :size="size"
                         :space-between="multiselect">
                         <Button
                             v-if="multiselect"
