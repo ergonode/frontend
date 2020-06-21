@@ -26,7 +26,6 @@ export default {
     name: 'UsersGridTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        Grid: () => import('@Core/components/Grid/Grid'),
     },
     mixins: [fetchGridDataMixin({ path: 'accounts' })],
     methods: {

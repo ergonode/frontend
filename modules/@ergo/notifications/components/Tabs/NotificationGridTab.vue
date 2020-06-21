@@ -32,7 +32,7 @@
 <script>
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import { DATA_LIMIT } from '@Core/defaults/grid';
-import { LayoutOrientation } from '@Core/defaults/layout';
+import { LAYOUT_ORIENTATION } from '@Core/defaults/layout';
 import { mapActions, mapState } from 'vuex';
 
 export default {
@@ -53,7 +53,7 @@ export default {
             count: state => state.count,
         }),
         horizontalOrientation() {
-            return LayoutOrientation.HORIZONTAL;
+            return LAYOUT_ORIENTATION.HORIZONTAL;
         },
         buttonTitle() {
             const { length: listLength } = this.notifications;

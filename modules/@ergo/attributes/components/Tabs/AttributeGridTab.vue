@@ -26,7 +26,6 @@ export default {
     name: 'AttributeGridTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        Grid: () => import('@Core/components/Grid/Grid'),
     },
     mixins: [fetchGridDataMixin({ path: 'attributes' })],
     methods: {

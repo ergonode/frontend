@@ -55,7 +55,7 @@ export default [
             {
                 name: 'collection-id-general',
                 path: 'general',
-                component: Tabs.CollectionBaseTab,
+                component: Tabs.CollectionGeneralTab,
                 meta: {
                     title: 'General',
                     breadcrumbs: [

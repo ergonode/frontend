@@ -8,6 +8,18 @@
         :fields-keys="[skuFieldKey, templateIdFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
+                <Select
+                    :value="type"
+                    solid
+                    regular
+                    required
+                    :disabled="isDisabled"
+                    label="Product type"
+                    :options="productTypesValues"
+                    @input="setProductType" />
+                <ProductAttributesBindingFormSection
+                    v-show="isProductWithVariants"
+                    :disabled="isDisabledByPrivileges" />
                 <TextField
                     :value="sku"
                     hint="Products SKU must be unique"
@@ -44,6 +56,8 @@
 </template>
 
 <script>
+import { getKeyByValue } from '@Core/models/objectWrapper';
+import { PRODUCT_TYPE } from '@Products/defaults';
 import { mapActions, mapState } from 'vuex';
 
 const getCategoriesOptions = () => import('@Categories/services/getCategoriesOptions.service');
@@ -54,21 +68,36 @@ export default {
     components: {
         Form: () => import('@Core/components/Form/Form'),
         FormSection: () => import('@Core/components/Form/Section/FormSection'),
+        Select: () => import('@Core/components/Inputs/Select/Select'),
         TextField: () => import('@Core/components/Inputs/TextField'),
         TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
+        ProductAttributesBindingFormSection: () => import('@Products/components/Form/Section/ProductAttributesBindingFormSection'),
     },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
+        ...mapState('dictionaries', {
+            productTypes: state => state.productTypes,
+        }),
         ...mapState('product', {
             productID: state => state.id,
             sku: state => state.sku,
+            type: state => state.type,
             template: state => state.template,
             categories: state => state.categories,
         }),
+        productTypeKey() {
+            return getKeyByValue(this.productTypes, this.type);
+        },
+        productTypesValues() {
+            return Object.values(this.productTypes);
+        },
         isDisabled() {
             return Boolean(this.productID);
+        },
+        isProductWithVariants() {
+            return this.productTypeKey === PRODUCT_TYPE.WITH_VARIANTS;
         },
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess(['PRODUCT_UPDATE']))
@@ -86,6 +115,7 @@ export default {
             'setProductSku',
             'setProductTemplate',
             'setProductCategories',
+            'setProductType',
         ]),
         getCategoriesOptionsRequest() {
             return getCategoriesOptions().then(response => response.default(

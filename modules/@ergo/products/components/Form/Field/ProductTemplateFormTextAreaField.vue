@@ -8,28 +8,46 @@
         :position="position">
         <FormValidatorField :field-key="fieldKey">
             <template #validator="{ errorMessages }">
-                <TextField
+                <RichTextEditor
+                    v-if="isRTEEditor"
+                    solid
+                    :style="{ height: '100%' }"
+                    :disabled="disabled"
+                    :required="properties.required"
+                    :placeholder="properties.placeholder"
+                    :error-messages="errorMessages"
+                    :label="label"
+                    :value="fieldData"
+                    @blur="onRTEValueChange">
+                    <template #append>
+                        <InfoHint
+                            v-if="properties.hint"
+                            :hint="properties.hint" />
+                    </template>
+                </RichTextEditor>
+                <TextArea
+                    v-else
+                    :style="{ height: '100%' }"
                     :value="fieldData"
                     solid
                     regular
+                    resize="none"
                     :label="label"
-                    :input="{ type: 'number'}"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
                     :required="properties.required"
                     :disabled="disabled"
-                    :description="properties.hint"
                     @focus="onFocus"
                     @input="onValueChange">
                     <template #append>
-                        <TextFieldSuffix
-                            v-if="parameter"
-                            :suffix="parameter" />
+                        <InfoHint
+                            v-if="properties.hint"
+                            :hint="properties.hint" />
                     </template>
                     <template #details>
                         <div />
                     </template>
-                </TextField>
+                </TextArea>
             </template>
         </FormValidatorField>
     </ProductTemplateFormField>
@@ -37,18 +55,20 @@
 
 <script>
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
-import TextField from '@Core/components/Inputs/TextField';
-import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
+import InfoHint from '@Core/components/Hints/InfoHint';
+import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
+import TextArea from '@Core/components/Inputs/TextArea';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import { mapActions, mapState } from 'vuex';
 
 export default {
-    name: 'ProductTemplateFormNumericField',
+    name: 'ProductTemplateFormTextAreaField',
     components: {
         ProductTemplateFormField,
-        TextField,
+        TextArea,
+        RichTextEditor,
         FormValidatorField,
-        TextFieldSuffix,
+        InfoHint,
     },
     props: {
         size: {
@@ -89,15 +109,11 @@ export default {
 
             return this.draft[this.languageCode][attribute_code] || '';
         },
-        parameter() {
-            if (!this.properties.parameters) return null;
-
-            const [key] = Object.keys(this.properties.parameters);
-
-            return this.properties.parameters[key];
-        },
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;
+        },
+        isRTEEditor() {
+            return this.properties.parameters.rich_edit;
         },
     },
     methods: {
@@ -121,6 +137,10 @@ export default {
                 key: this.properties.attribute_code,
                 value,
             });
+        },
+        onRTEValueChange(value) {
+            this.onValueChange(value);
+            this.onFocus(false);
         },
     },
 };

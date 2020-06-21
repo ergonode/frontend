@@ -8,23 +8,30 @@
         :position="position">
         <FormValidatorField :field-key="fieldKey">
             <template #validator="{ errorMessages }">
-                <TranslationSelect
+                <TextField
                     :value="fieldData"
                     solid
                     regular
-                    :clearable="true"
                     :label="label"
-                    :options="options"
+                    :input="{ type: 'number'}"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
                     :required="properties.required"
                     :disabled="disabled"
-                    :description="properties.hint"
-                    @input="debounceValueChange">
+                    @focus="onFocus"
+                    @input="onValueChange">
+                    <template #append>
+                        <TextFieldSuffix
+                            v-if="parameter"
+                            :suffix="parameter" />
+                        <InfoHint
+                            v-if="properties.hint"
+                            :hint="properties.hint" />
+                    </template>
                     <template #details>
                         <div />
                     </template>
-                </TranslationSelect>
+                </TextField>
             </template>
         </FormValidatorField>
     </ProductTemplateFormField>
@@ -32,18 +39,20 @@
 
 <script>
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
-import { getMappedObjectOption, getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
-import { debounce } from 'debounce';
+import InfoHint from '@Core/components/Hints/InfoHint';
+import TextField from '@Core/components/Inputs/TextField';
+import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import { mapActions, mapState } from 'vuex';
 
 export default {
-    name: 'ProductTemplateFormSelectField',
+    name: 'ProductTemplateFormPriceField',
     components: {
         ProductTemplateFormField,
-        TranslationSelect,
+        TextField,
         FormValidatorField,
+        TextFieldSuffix,
+        InfoHint,
     },
     props: {
         size: {
@@ -75,66 +84,46 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            debounceValueChange: null,
-        };
-    },
     computed: {
         ...mapState('product', {
             draft: state => state.draft,
         }),
         fieldData() {
             const { attribute_code } = this.properties;
-            const value = this.draft[this.languageCode][attribute_code];
 
-            if (!this.hasOptions || !value) {
-                return '';
-            }
+            return this.draft[this.languageCode][attribute_code] || '';
+        },
+        parameter() {
+            if (!this.properties.parameters) return null;
 
-            return getMappedObjectOption({
-                option: {
-                    id: value,
-                    ...this.properties.options[value],
-                },
-                languageCode: this.languageCode,
-            });
+            const [key] = Object.keys(this.properties.parameters);
+
+            return this.properties.parameters[key];
         },
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;
         },
-        hasOptions() {
-            return typeof this.properties.options !== 'undefined';
-        },
-        options() {
-            if (!this.hasOptions) return [];
-
-            return getMappedObjectOptions({
-                options: this.properties.options,
-                languageCode: this.languageCode,
-            });
-        },
-    },
-    created() {
-        this.debounceValueChange = debounce(this.onValueChange, 500);
     },
     methods: {
         ...mapActions('product', [
             'setDraftValue',
         ]),
+        onFocus(isFocused) {
+            if (!isFocused) {
+                this.$emit('input', {
+                    fieldKey: this.fieldKey,
+                    languageCode: this.languageCode,
+                    productId: this.$route.params.id,
+                    elementId: this.properties.attribute_id,
+                    value: this.fieldData,
+                });
+            }
+        },
         onValueChange(value) {
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,
-                value: value.id,
-            });
-
-            this.$emit('input', {
-                fieldKey: this.fieldKey,
-                languageCode: this.languageCode,
-                productId: this.$route.params.id,
-                elementId: this.properties.attribute_id,
-                value: value.id,
+                value,
             });
         },
     },

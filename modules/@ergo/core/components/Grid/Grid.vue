@@ -34,7 +34,13 @@
                 <slot name="configuration" />
             </template>
         </GridHeader>
-        <div :class="['grid__body', { 'grid__body--disabled': isColumnExists }]">
+        <div
+            :class="[
+                'grid__body',
+                {
+                    'grid__body--disabled': isListElementDragging && isColumnExists,
+                }
+            ]">
             <GridDropZone
                 v-show="isListElementDragging && !isColumnExists"
                 @drop="onDropColumn" />
@@ -219,12 +225,14 @@ export default {
         collectionData() {
             const { imageColumn, descriptionColumn } = this.collectionCellBinding;
 
-            if (!(imageColumn && descriptionColumn) || !this.data[COLUMN_ACTIONS_ID]) {
+            if (!(imageColumn && descriptionColumn && this.data[descriptionColumn])) {
                 return [];
             }
 
             const collectionData = [];
-            const actionKeys = Object.keys(this.data[COLUMN_ACTIONS_ID]);
+            const actionKeys = this.data[COLUMN_ACTIONS_ID]
+                ? Object.keys(this.data[COLUMN_ACTIONS_ID])
+                : [];
 
             for (let i = 0; i < this.data[descriptionColumn].length; i += 1) {
                 const actions = {};
@@ -371,19 +379,17 @@ export default {
             border: $BORDER_1_GREY;
             background-color: $WHITESMOKE;
 
+            &::after {
+                position: absolute;
+                z-index: $Z_INDEX_NEGATIVE;
+                width: 100%;
+                height: 100%;
+                content: "";
+            }
+
             &--disabled {
                 &::after {
-                    position: absolute;
-                    z-index: $Z_INDEX_NEGATIVE;
-                    width: 100%;
-                    height: 100%;
-                    content: "";
-                }
-
-                &--disabled {
-                    &::after {
-                        z-index: $Z_INDEX_LVL_4;
-                    }
+                    z-index: $Z_INDEX_LVL_4;
                 }
             }
         }

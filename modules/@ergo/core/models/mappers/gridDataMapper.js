@@ -101,7 +101,9 @@ export function getMappedData({ columns, rows, hasLinks }) {
                     data[COLUMN_ACTIONS_ID][key] = {};
                 }
 
-                data[COLUMN_ACTIONS_ID][key][j] = rows[j]._links.value[key];
+                if (rows[j]._links.value[key]) {
+                    data[COLUMN_ACTIONS_ID][key][j] = rows[j]._links.value[key];
+                }
             }
         }
     }

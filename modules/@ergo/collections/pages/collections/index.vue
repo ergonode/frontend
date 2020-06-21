@@ -53,11 +53,11 @@ export default {
     },
     mixins: [gridModalMixin],
     computed: {
-        tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
         smallSize() {
             return SIZE.SMALL;
+        },
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },
     },
     head() {

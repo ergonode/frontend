@@ -5,20 +5,20 @@
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #centeredContent>
-            <ProductForm />
+            <CollectionForm />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
+import CollectionForm from '@Collections/components/Forms/CollectionForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import ProductForm from '@Products/components/Forms/ProductForm';
 
 export default {
-    name: 'ProductBaseTab',
+    name: 'CollectionGeneralTab',
     components: {
-        ProductForm,
         ResponsiveCenteredViewTemplate,
+        CollectionForm,
     },
 };
 </script>

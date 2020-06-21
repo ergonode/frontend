@@ -36,7 +36,13 @@ export default {
         presentationValue() {
             if (!this.value) return '';
 
-            return this.value.map(option => this.options[option].label || `#${this.options[option].code}`).join(', ');
+            return this.value.map((option) => {
+                if (typeof this.options[option] === 'undefined') {
+                    return '';
+                }
+
+                return this.options[option].label || `#${this.options[option].code}`;
+            }).join(', ');
         },
     },
 };

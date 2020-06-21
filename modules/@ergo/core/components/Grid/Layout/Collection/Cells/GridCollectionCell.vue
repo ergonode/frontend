@@ -4,12 +4,8 @@
  */
 <template>
     <div
-        :class="[
-            'collection-cell',
-            { 'collection-cell--hovered': isHovered },
-        ]"
-        @mouseenter="onMouseEnter"
-        @mouseleave="onMouseLeave">
+        class="collection-cell"
+        @click="onClick">
         <Picture
             v-if="image"
             :object-fit="objectFit"
@@ -27,28 +23,17 @@
                 class="collection-cell__title"
                 v-text="description" />
         </div>
-        <Fab
-            v-if="isEditCell"
-            class="collection-cell__edit"
-            :theme="secondaryTheme"
-            :floating="{ top: '8px', right: '8px' }"
-            @click.native="onClick">
-            <template #icon="{ color }">
-                <IconEdit :fill-color="color" />
-            </template>
-        </Fab>
     </div>
 </template>
 
 <script>
+import Picture from '@Core/components/Multimedia/Picture';
 import { THEME } from '@Core/defaults/theme';
 
 export default {
     name: 'GridCollectionCell',
     components: {
-        Fab: () => import('@Core/components/Buttons/Fab'),
-        IconEdit: () => import('@Core/components/Icons/Actions/IconEdit'),
-        Picture: () => import('@Core/components/Multimedia/Picture'),
+        Picture,
     },
     props: {
         actions: {
@@ -80,17 +65,8 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        isEditCell() {
-            return typeof this.actions.edit !== 'undefined';
-        },
     },
     methods: {
-        onMouseEnter() {
-            this.isHovered = true;
-        },
-        onMouseLeave() {
-            this.isHovered = false;
-        },
         onClick() {
             if (this.actions.edit) {
                 const args = this.actions.edit.href.split('/');
@@ -112,11 +88,6 @@ export default {
         border: $BORDER_1_GREY;
         background-color: $WHITE;
         cursor: pointer;
-
-        &__edit {
-            background-color: $WHITE;
-            opacity: 0;
-        }
 
         &__placeholder {
             justify-self: center;
@@ -143,13 +114,9 @@ export default {
             overflow: hidden;
         }
 
-        &--hovered {
+        &:hover {
             border-color: $WHITESMOKE;
             box-shadow: $ELEVATOR_2_DP;
-
-            #{$cell}__edit {
-                opacity: 1;
-            }
         }
     }
 </style>

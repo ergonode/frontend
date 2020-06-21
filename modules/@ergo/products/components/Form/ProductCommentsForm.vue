@@ -54,7 +54,7 @@ import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import Loader from '@Core/components/Loader/Loader';
 import { DATA_LIMIT } from '@Core/defaults/grid';
-import { LayoutOrientation } from '@Core/defaults/layout';
+import { LAYOUT_ORIENTATION } from '@Core/defaults/layout';
 import { mapActions, mapState } from 'vuex';
 
 export default {
@@ -81,7 +81,7 @@ export default {
             currentPage: state => state.currentPage,
         }),
         horizontalOrientation() {
-            return LayoutOrientation.HORIZONTAL;
+            return LAYOUT_ORIENTATION.HORIZONTAL;
         },
         showMoreText() {
             const { length: listLength } = this.commentList;

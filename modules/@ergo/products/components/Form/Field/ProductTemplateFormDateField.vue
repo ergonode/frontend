@@ -18,13 +18,15 @@
                     :error-messages="errorMessages"
                     :required="properties.required"
                     :disabled="disabled"
-                    :description="properties.hint"
                     @focus="onFocus"
                     @input="onValueChange">
                     <template #append>
                         <TextFieldSuffix
                             v-if="parameter"
                             :suffix="parameter" />
+                        <InfoHint
+                            v-if="properties.hint"
+                            :hint="properties.hint" />
                     </template>
                     <template #details>
                         <div />
@@ -37,10 +39,11 @@
 
 <script>
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import InfoHint from '@Core/components/Hints/InfoHint';
 import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
 import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import { format as formatDate } from 'date-fns';
 import { mapActions, mapState } from 'vuex';
 
@@ -51,6 +54,7 @@ export default {
         DatePicker,
         FormValidatorField,
         TextFieldSuffix,
+        InfoHint,
     },
     props: {
         size: {

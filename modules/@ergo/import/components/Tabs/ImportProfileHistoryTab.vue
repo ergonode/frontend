@@ -23,7 +23,6 @@ export default {
     name: 'CollectionProductsTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        Grid: () => import('@Core/components/Grid/Grid'),
     },
     mixins: [fetchGridDataMixin({ path: 'sources/_id/imports' })],
 };

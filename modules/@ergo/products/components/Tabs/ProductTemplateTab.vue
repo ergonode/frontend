@@ -55,7 +55,7 @@ import IconRestore from '@Core/components/Icons/Actions/IconRestore';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import { SIZE, THEME } from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
-import ProductTemplateForm from '@Products/components/Forms/ProductTemplateForm';
+import ProductTemplateForm from '@Products/components/Form/ProductTemplateForm';
 import getProductCompleteness from '@Products/services/getProductCompleteness.service';
 import getProductTemplate from '@Products/services/getProductTemplate.service';
 import { mapActions, mapGetters, mapState } from 'vuex';

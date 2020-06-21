@@ -12,6 +12,8 @@
 <script>
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { MODAL_TYPE } from '@Core/defaults/modals';
+import { getKeyByValue } from '@Core/models/objectWrapper';
+import { PRODUCT_TYPE } from '@Products/defaults';
 import { mapActions, mapState } from 'vuex';
 
 export default {
@@ -29,15 +31,22 @@ export default {
         const { defaultLanguageCodeByPrivileges } = store.state.core;
         const { id } = params;
 
-        await store.dispatch('product/getProductDraft', { languageCode: defaultLanguageCodeByPrivileges, id });
-        await store.dispatch('product/getProductById', id);
+        await Promise.all([
+            store.dispatch('product/getProductDraft', { languageCode: defaultLanguageCodeByPrivileges, id }),
+            store.dispatch('product/getProductById', id),
+        ]);
     },
     computed: {
         ...mapState('product', {
             id: state => state.id,
             sku: state => state.sku,
+            type: state => state.type,
             template: state => state.template,
             categories: state => state.categories,
+            bindingAttributesIds: state => state.bindingAttributesIds,
+        }),
+        ...mapState('dictionaries', {
+            productTypes: state => state.productTypes,
         }),
     },
     destroyed() {
@@ -68,13 +77,18 @@ export default {
         },
         async onSave() {
             const { params: { id } } = this.$route;
+            const data = {
+                templateId: this.template,
+                categoryIds: this.categories,
+            };
+
+            if (getKeyByValue(this.productTypes, this.type) === PRODUCT_TYPE.WITH_VARIANTS) {
+                data.bindings = this.bindingAttributesIds;
+            }
 
             await this.updateProduct({
                 id,
-                data: {
-                    templateId: this.template,
-                    categoryIds: this.categories,
-                },
+                data,
             });
             await this.applyDraft({
                 id: this.id,

@@ -56,8 +56,8 @@ export default {
                     filter: `type=${TYPES.SELECT}`,
                 }),
             ),
-            // app.$axios.$get(`${languageCode}/products/${id}/bindings`),
-            // app.$axios.$get(`${languageCode}/products/${id}/children`, { params: productsParams }),
+            app.$axios.$get(`${languageCode}/products/${id}/bindings`),
+            app.$axios.$get(`${languageCode}/products/${id}/children`, { params: productsParams }),
         ]).then(([selectAttributes, productBindings, productChildren]) => {
             const attributeCodes = selectAttributes
                 .filter(

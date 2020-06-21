@@ -20,28 +20,9 @@
                         <IconDelete :fill-color="color" />
                     </template>
                 </Button>
-                <Button
-                    title="ADD PRODUCTS TO COLLECTION"
-                    :size="smallSize"
-                    :disabled="!$hasAccess(['PRODUCT_COLLECTION_UPDATE'])"
-                    @click.native="onShowModal">
-                    <template #prepend="{ color }">
-                        <IconAdd :fill-color="color" />
-                    </template>
-                </Button>
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs">
-            <template #content>
-                <HorizontalRoutingTabBarContent
-                    :is-fetching-needed="fetchGridData"
-                    @fetched="onFetchedGridData" />
-            </template>
-        </HorizontalRoutingTabBar>
-        <AddProductsToCollectionModalForm
-            v-if="isModalVisible"
-            @close="onCloseModal"
-            @added="onCreatedData" />
+        <HorizontalRoutingTabBar :items="tabs" />
         <Footer flex-end>
             <Button
                 data-cy="save-collection"
@@ -54,14 +35,10 @@
 </template>
 
 <script>
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
 
 export default {
     name: 'CollectionPage',
-    components: {
-        AddProductsToCollectionModalForm: () => import('@Collections/components/Modals/AddProductsToCollectionModalForm'),
-    },
-    mixins: [categoryManagementPageMixin, gridModalMixin],
+    mixins: [categoryManagementPageMixin],
 };
 </script>

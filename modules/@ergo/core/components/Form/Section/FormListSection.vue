@@ -6,7 +6,6 @@
     <FormSection :title="sectionTitle">
         <slot />
         <Button
-            ref="addField"
             :title="addListTitle"
             :size="smallSize"
             :theme="secondaryTheme"
@@ -56,7 +55,7 @@ export default {
     },
     methods: {
         onAddListElement() {
-            this.$refs.addField.$el.scrollIntoView(true);
+            this.$el.scrollIntoView(false);
             this.$emit('add');
         },
     },

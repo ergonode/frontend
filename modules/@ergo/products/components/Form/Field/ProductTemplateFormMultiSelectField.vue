@@ -20,9 +20,13 @@
                     :error-messages="errorMessages"
                     :required="properties.required"
                     :disabled="disabled"
-                    :description="properties.hint"
                     @focus="onFocus"
                     @input="debounceValueChange">
+                    <template #append>
+                        <InfoHint
+                            v-if="properties.hint"
+                            :hint="properties.hint" />
+                    </template>
                     <template #details>
                         <div />
                     </template>
@@ -34,9 +38,10 @@
 
 <script>
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import InfoHint from '@Core/components/Hints/InfoHint';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import { getMappedMatchedArrayOptions, getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import { debounce } from 'debounce';
 import { mapActions, mapState } from 'vuex';
 
@@ -46,6 +51,7 @@ export default {
         ProductTemplateFormField,
         TranslationSelect,
         FormValidatorField,
+        InfoHint,
     },
     props: {
         size: {

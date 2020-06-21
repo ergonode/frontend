@@ -8,36 +8,27 @@
         :position="position">
         <FormValidatorField :field-key="fieldKey">
             <template #validator="{ errorMessages }">
-                <RichTextEditor
-                    v-if="isRTEEditor"
-                    solid
-                    :description="properties.hint"
-                    :disabled="disabled"
-                    :required="properties.required"
-                    :placeholder="properties.placeholder"
-                    :error-messages="errorMessages"
-                    :label="label"
-                    :value="fieldData"
-                    @blur="onRTEValueChange" />
-                <TextArea
-                    v-else
-                    :style="{ height: '100%' }"
+                <TranslationSelect
                     :value="fieldData"
                     solid
                     regular
-                    resize="none"
+                    :clearable="true"
                     :label="label"
+                    :options="options"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
                     :required="properties.required"
                     :disabled="disabled"
-                    :description="properties.hint"
-                    @focus="onFocus"
-                    @input="onValueChange">
+                    @input="debounceValueChange">
+                    <template #append>
+                        <InfoHint
+                            v-if="properties.hint"
+                            :hint="properties.hint" />
+                    </template>
                     <template #details>
                         <div />
                     </template>
-                </TextArea>
+                </TranslationSelect>
             </template>
         </FormValidatorField>
     </ProductTemplateFormField>
@@ -45,18 +36,20 @@
 
 <script>
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
-import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
-import TextArea from '@Core/components/Inputs/TextArea';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
+import InfoHint from '@Core/components/Hints/InfoHint';
+import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import { getMappedObjectOption, getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import { debounce } from 'debounce';
 import { mapActions, mapState } from 'vuex';
 
 export default {
-    name: 'ProductTemplateFormTextAreaField',
+    name: 'ProductTemplateFormSelectField',
     components: {
         ProductTemplateFormField,
-        TextArea,
-        RichTextEditor,
+        TranslationSelect,
         FormValidatorField,
+        InfoHint,
     },
     props: {
         size: {
@@ -88,47 +81,67 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            debounceValueChange: null,
+        };
+    },
     computed: {
         ...mapState('product', {
             draft: state => state.draft,
         }),
         fieldData() {
             const { attribute_code } = this.properties;
+            const value = this.draft[this.languageCode][attribute_code];
 
-            return this.draft[this.languageCode][attribute_code] || '';
+            if (!this.hasOptions || !value) {
+                return '';
+            }
+
+            return getMappedObjectOption({
+                option: {
+                    id: value,
+                    ...this.properties.options[value],
+                },
+                languageCode: this.languageCode,
+            });
         },
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;
         },
-        isRTEEditor() {
-            return this.properties.parameters.rich_edit;
+        hasOptions() {
+            return typeof this.properties.options !== 'undefined';
         },
+        options() {
+            if (!this.hasOptions) return [];
+
+            return getMappedObjectOptions({
+                options: this.properties.options,
+                languageCode: this.languageCode,
+            });
+        },
+    },
+    created() {
+        this.debounceValueChange = debounce(this.onValueChange, 500);
     },
     methods: {
         ...mapActions('product', [
             'setDraftValue',
         ]),
-        onFocus(isFocused) {
-            if (!isFocused) {
-                this.$emit('input', {
-                    fieldKey: this.fieldKey,
-                    languageCode: this.languageCode,
-                    productId: this.$route.params.id,
-                    elementId: this.properties.attribute_id,
-                    value: this.fieldData,
-                });
-            }
-        },
         onValueChange(value) {
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,
-                value,
+                value: value.id,
             });
-        },
-        onRTEValueChange(value) {
-            this.onValueChange(value);
-            this.onFocus(false);
+
+            this.$emit('input', {
+                fieldKey: this.fieldKey,
+                languageCode: this.languageCode,
+                productId: this.$route.params.id,
+                elementId: this.properties.attribute_id,
+                value: value.id,
+            });
         },
     },
 };

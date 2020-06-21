@@ -19,7 +19,7 @@ import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/Re
 import { mapActions, mapState } from 'vuex';
 
 export default {
-    name: 'CollectionBaseTab',
+    name: 'CollectionGeneralTab',
     components: {
         ResponsiveCenteredViewTemplate,
         JSONSchemaForm,

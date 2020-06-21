@@ -12,7 +12,7 @@
 
 <script>
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import ProductStatusForm from '@Statuses/components/Forms/ProductStatusForm';
+import ProductStatusForm from '@Statuses/components/Form/ProductStatusForm';
 
 export default {
     name: 'ProductStatusBaseTab',

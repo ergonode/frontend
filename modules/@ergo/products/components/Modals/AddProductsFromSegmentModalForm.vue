@@ -4,18 +4,17 @@
  */
 <template>
     <ModalForm
-        title="Add products to collection"
+        title="Add products from segment"
         @close="onClose">
         <template #body>
-            <AddProductsToCollectionForm
+            <AddProductsFromSegmentForm
                 :segment-options="segmentOptions"
                 :segments="segments"
-                :product-skus="productSkus"
                 @input="onFormValueChange" />
         </template>
         <template #footer>
             <Button
-                title="ADD TO COLLECTION"
+                title="ADD TO PRODUCT"
                 :disabled="isRequestPending"
                 @click.native="onAdd" />
             <Button
@@ -29,13 +28,12 @@
 <script>
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { THEME } from '@Core/defaults/theme';
-import { isEmpty } from '@Core/models/objectWrapper';
 import { mapActions, mapState } from 'vuex';
 
 export default {
-    name: 'AddProductsToCollectionModalForm',
+    name: 'AddProductsFromSegmentModalForm',
     components: {
-        AddProductsToCollectionForm: () => import('@Collections/components/Forms/AddProductsToCollectionForm'),
+        AddProductsFromSegmentForm: () => import('@Products/components/Form/AddProductsFromSegmentForm'),
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
         Button: () => import('@Core/components/Buttons/Button'),
     },
@@ -43,7 +41,6 @@ export default {
         return {
             segmentOptions: [],
             segments: [],
-            productSkus: '',
             isRequestPending: false,
         };
     },
@@ -51,7 +48,7 @@ export default {
         ...mapState('authentication', {
             language: state => state.user.language,
         }),
-        ...mapState('collections', {
+        ...mapState('product', {
             id: state => state.id,
         }),
         secondaryTheme() {
@@ -73,34 +70,24 @@ export default {
             'onError',
             'removeValidationErrors',
         ]),
-        onFormValueChange({ key, value }) {
-            this[key] = value;
+        onFormValueChange(value) {
+            this.segments = value;
         },
         onClose() {
             this.$emit('close');
         },
         onAdd() {
             this.removeValidationErrors();
-            const preValidationErrors = {};
             const data = {
                 segments: this.segments.map(segment => segment.id),
-                skus: this.productSkus,
             };
 
-            if (data.segments.length < 1 && data.skus === '') {
-                preValidationErrors.skus = ['Both fields can not be empty'];
-                preValidationErrors.segments = ['Both fields can not be empty'];
-            }
-            if (!isEmpty(preValidationErrors)) {
-                this.onError({ errors: preValidationErrors });
-                return;
-            }
-
             this.isRequestPending = true;
-            this.$axios.$post(`${this.language}/collections/${this.id}/elements/multiple`, data).then(() => {
+
+            this.$axios.$post(`${this.language}/products/${this.id}/children/add-from-segments`, data).then(() => {
                 this.isRequestPending = false;
                 this.removeValidationErrors();
-                this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Products has been added to collection' });
+                this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Products has been added' });
 
                 this.$emit('added');
             }).catch((e) => {

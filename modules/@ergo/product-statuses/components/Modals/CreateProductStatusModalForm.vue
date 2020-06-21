@@ -36,7 +36,7 @@ export default {
     components: {
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
         Button: () => import('@Core/components/Buttons/Button'),
-        ProductStatusForm: () => import('@Statuses/components/Forms/ProductStatusForm'),
+        ProductStatusForm: () => import('@Statuses/components/Form/ProductStatusForm'),
     },
     mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Product status', request: createProductStatus })],
     computed: {

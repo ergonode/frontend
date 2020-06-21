@@ -12,19 +12,21 @@
                     :value="fieldData"
                     solid
                     regular
-                    :input="{ type: 'number' }"
                     :label="label"
+                    :input="{ type: 'number'}"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
                     :required="properties.required"
                     :disabled="disabled"
-                    :description="properties.hint"
                     @focus="onFocus"
                     @input="onValueChange">
                     <template #append>
                         <TextFieldSuffix
                             v-if="parameter"
                             :suffix="parameter" />
+                        <InfoHint
+                            v-if="properties.hint"
+                            :hint="properties.hint" />
                     </template>
                     <template #details>
                         <div />
@@ -37,18 +39,20 @@
 
 <script>
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import InfoHint from '@Core/components/Hints/InfoHint';
 import TextField from '@Core/components/Inputs/TextField';
 import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import { mapActions, mapState } from 'vuex';
 
 export default {
-    name: 'ProductTemplateFormUnitField',
+    name: 'ProductTemplateFormNumericField',
     components: {
         ProductTemplateFormField,
         TextField,
         FormValidatorField,
         TextFieldSuffix,
+        InfoHint,
     },
     props: {
         size: {
