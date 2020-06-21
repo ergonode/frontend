@@ -23,7 +23,9 @@ import {
 
 export default {
     name: 'ListDraggableElement',
-    components: { IconDragDrop },
+    components: {
+        IconDragDrop,
+    },
     props: {
         isDisabled: {
             type: Boolean,

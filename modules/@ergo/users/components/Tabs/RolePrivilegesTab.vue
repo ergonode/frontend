@@ -18,10 +18,16 @@
 <script>
 import Grid from '@Core/components/Grid/Grid';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import { getSortedColumnsByIDs } from '@Core/models/mappers/gridDataMapper';
+import {
+    getSortedColumnsByIDs,
+} from '@Core/models/mappers/gridDataMapper';
 import privilegesDefaults from '@Users/defaults/privileges';
-import { getMappedGridData } from '@Users/models/gridDataMapper';
-import { mapState } from 'vuex';
+import {
+    getMappedGridData,
+} from '@Users/models/gridDataMapper';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'RolePrivilegesTab',
@@ -31,8 +37,10 @@ export default {
     },
     data() {
         return {
-            columns: [],
-            data: {},
+            columns: [
+            ],
+            data: {
+            },
             dataCount: 0,
         };
     },
@@ -44,7 +52,9 @@ export default {
             privileges: state => state.privileges,
         }),
         isEditingAllowed() {
-            return this.$hasAccess(['USER_ROLE_UPDATE']);
+            return this.$hasAccess([
+                'USER_ROLE_UPDATE',
+            ]);
         },
     },
     watch: {

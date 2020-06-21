@@ -13,7 +13,9 @@ export const types = {
 };
 
 export default {
-    [types.SET_DRAGGABLE_STATE](state, { propName, value }) {
+    [types.SET_DRAGGABLE_STATE](state, {
+        propName, value,
+    }) {
         state[propName] = value;
     },
     [types.SET_GHOST_INDEX](state, index = -1) {

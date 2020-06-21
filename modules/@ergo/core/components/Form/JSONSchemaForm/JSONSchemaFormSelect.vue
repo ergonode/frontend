@@ -5,9 +5,7 @@
 <template>
     <Select
         :value="localValue"
-        solid
-        :regular="!schema.small"
-        :small="schema.small"
+        :size="size"
         :label="schema.title"
         :required="schema.isRequired"
         :options="schema.enum_titles || schema.enum"
@@ -17,6 +15,9 @@
 
 <script>
 import Select from '@Core/components/Inputs/Select/Select';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'JSONSchemaFormSelect',
@@ -38,7 +39,9 @@ export default {
         },
     },
     data() {
-        const { enum: options, enum_titles } = this.schema;
+        const {
+            enum: options, enum_titles,
+        } = this.schema;
         let localValue = '';
 
         if (!enum_titles) {
@@ -53,11 +56,17 @@ export default {
         };
     },
     computed: {
+        size() {
+            return this.schema.small ? SIZE.SMALL : SIZE.REGULAR;
+        },
         mappedOptions() {
             if (!this.schema.enum_titles) return null;
 
-            const { length } = this.schema.enum;
-            const mappedOptions = {};
+            const {
+                length,
+            } = this.schema.enum;
+            const mappedOptions = {
+            };
 
             for (let i = 0; i < length; i += 1) {
                 mappedOptions[this.schema.enum_titles[i]] = this.schema.enum[i];

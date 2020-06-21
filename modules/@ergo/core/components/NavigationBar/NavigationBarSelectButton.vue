@@ -48,8 +48,12 @@ export default {
             let isClickedInsideMenu = false;
 
             if (this.isFocused) {
-                const { pageX, pageY } = event;
-                const { menu } = this.$refs;
+                const {
+                    pageX, pageY,
+                } = event;
+                const {
+                    menu,
+                } = this.$refs;
 
                 isClickedInsideMenu = !isMouseOutOfBoundsElement(menu, pageX, pageY);
 

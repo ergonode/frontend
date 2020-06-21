@@ -28,7 +28,10 @@
 </template>
 
 <script>
-import { GRAPHITE, GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    GRAPHITE,
+    GREEN,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import IconCheck from '@Core/components/Icons/Feedback/IconCheck';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 
@@ -41,7 +44,8 @@ export default {
     props: {
         files: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
     },
     computed: {

@@ -24,10 +24,16 @@
 </template>
 
 <script>
-import { MODAL_ACTION } from '@Core/defaults/modals';
-import { THEME } from '@Core/defaults/theme';
+import {
+    MODAL_ACTION,
+} from '@Core/defaults/modals';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
-import { mapActions } from 'vuex';
+import {
+    mapActions,
+} from 'vuex';
 
 const createProduct = () => import('@Products/services/createProduct.service');
 
@@ -38,7 +44,13 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         ProductForm: () => import('@Products/components/Form/ProductForm'),
     },
-    mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Product', request: createProduct })],
+    mixins: [
+        actionModalFormMixin({
+            action: MODAL_ACTION.CREATE,
+            namespace: 'Product',
+            request: createProduct,
+        }),
+    ],
     fetch() {
         this.getSelectAttributes();
     },

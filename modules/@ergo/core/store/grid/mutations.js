@@ -19,29 +19,40 @@ export const types = {
 };
 export default {
     [types.INITIALIZE_ROW_DRAFT](state, rowId) {
-        state.drafts[rowId] = {};
+        state.drafts[rowId] = {
+        };
     },
-    [types.INITIALIZE_COLUMN_DRAFT](state, { rowId, columnId }) {
-        state.drafts[rowId][columnId] = {};
+    [types.INITIALIZE_COLUMN_DRAFT](state, {
+        rowId, columnId,
+    }) {
+        state.drafts[rowId][columnId] = {
+        };
     },
     [types.SET_DRAFTS_VALUES](state, drafts) {
         state.drafts = deepmerge(state.drafts, drafts);
     },
-    [types.SET_DRAFT_ROW_VALUES](state, { rowId, value }) {
+    [types.SET_DRAFT_ROW_VALUES](state, {
+        rowId, value,
+    }) {
         state.drafts[rowId] = value;
-        state.drafts = { ...state.drafts };
+        state.drafts = {
+            ...state.drafts,
+        };
     },
     [types.SET_DRAFT_VALUE](state, {
         rowId, columnId, value,
     }) {
         state.drafts[rowId][columnId] = value;
-        state.drafts = { ...state.drafts };
+        state.drafts = {
+            ...state.drafts,
+        };
     },
     [types.REMOVE_DRAFT_ROW](state, rowId) {
         delete state.drafts[rowId];
     },
     [types.REMOVE_DRAFTS](state) {
-        state.drafts = {};
+        state.drafts = {
+        };
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();

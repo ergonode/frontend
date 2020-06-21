@@ -10,7 +10,9 @@ context('Page not found', () => {
 
     describe('Enter to invlide page URL', () => {
         it('Invalid URL', () => {
-            cy.visit('page/not/found', { failOnStatusCode: false });
+            cy.visit('page/not/found', {
+                failOnStatusCode: false,
+            });
             cy.get('h1').invoke('text').should('include', 'Not found');
         });
     });

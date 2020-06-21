@@ -15,7 +15,9 @@
 
 <script>
 import FormSection from '@Core/components/Form/Section/FormSection';
-import { toCapitalize } from '@Core/models/stringWrapper';
+import {
+    toCapitalize,
+} from '@Core/models/stringWrapper';
 
 export default {
     name: 'JSONSchemaFormArray',
@@ -29,11 +31,13 @@ export default {
         },
         value: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
         errorMessages: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
     },
     data() {
@@ -46,7 +50,10 @@ export default {
     },
     methods: {
         onValueChange(value) {
-            this.$emit('input', { key: this.$vnode.key, value });
+            this.$emit('input', {
+                key: this.$vnode.key,
+                value,
+            });
         },
     },
 };

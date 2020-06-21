@@ -3,9 +3,18 @@
  * See LICENSE for license details.
  */
 
-export default function ({ $axios, $store }) {
-    const { language } = $store.state.authentication.user;
-    const { name, description } = $store.state.roles;
+export default function ({
+    $axios, $store,
+}) {
+    const {
+        language,
+    } = $store.state.authentication.user;
+    const {
+        name, description,
+    } = $store.state.roles;
 
-    return $axios.$post(`${language}/roles`, { name, description });
+    return $axios.$post(`${language}/roles`, {
+        name,
+        description,
+    });
 }

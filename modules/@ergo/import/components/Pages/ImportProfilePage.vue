@@ -41,6 +41,9 @@ export default {
     components: {
         UploadImportFileModalForm: () => import('@Import/components/Modals/UploadImportFileModalForm'),
     },
-    mixins: [categoryManagementPageMixin, gridModalMixin],
+    mixins: [
+        categoryManagementPageMixin,
+        gridModalMixin,
+    ],
 };
 </script>

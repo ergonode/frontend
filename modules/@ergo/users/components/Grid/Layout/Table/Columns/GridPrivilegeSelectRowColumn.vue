@@ -35,17 +35,35 @@ import selectRowMixin from '@Users/mixins/grid/columns/selectRowMixin';
 
 export default {
     name: 'GridPrivilegeSelectRowColumn',
-    mixins: [selectRowMixin],
+    mixins: [
+        selectRowMixin,
+    ],
     methods: {
         onSelectAllRows(value) {
-            const draftValues = {};
+            const draftValues = {
+            };
 
             this.rowIds.forEach((rowId) => {
-                if (!draftValues[rowId]) draftValues[rowId] = {};
-                if (!draftValues[rowId].read) draftValues[rowId].read = {};
-                if (!draftValues[rowId].create) draftValues[rowId].create = {};
-                if (!draftValues[rowId].update) draftValues[rowId].update = {};
-                if (!draftValues[rowId].delete) draftValues[rowId].delete = {};
+                if (!draftValues[rowId]) {
+                    draftValues[rowId] = {
+                    };
+                }
+                if (!draftValues[rowId].read) {
+                    draftValues[rowId].read = {
+                    };
+                }
+                if (!draftValues[rowId].create) {
+                    draftValues[rowId].create = {
+                    };
+                }
+                if (!draftValues[rowId].update) {
+                    draftValues[rowId].update = {
+                    };
+                }
+                if (!draftValues[rowId].delete) {
+                    draftValues[rowId].delete = {
+                    };
+                }
 
                 draftValues[rowId] = {
                     read: value,
@@ -58,11 +76,17 @@ export default {
             });
 
             this.setDraftsValues(draftValues);
-            this.selectedRows = { ...this.selectedRows };
+            this.selectedRows = {
+                ...this.selectedRows,
+            };
         },
-        onSelectRow({ rowId, value }) {
+        onSelectRow({
+            rowId, value,
+        }) {
             this.selectedRows[rowId] = +value;
-            this.selectedRows = { ...this.selectedRows };
+            this.selectedRows = {
+                ...this.selectedRows,
+            };
 
             this.setDraftRowValues({
                 rowId,

@@ -27,9 +27,15 @@
 </template>
 
 <script>
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { THEME } from '@Core/defaults/theme';
-import { mapActions } from 'vuex';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    THEME,
+} from '@Core/defaults/theme';
+import {
+    mapActions,
+} from 'vuex';
 
 const deleteAttributeValue = () => import('@Products/services/deleteAttributeValue.service');
 
@@ -47,7 +53,8 @@ export default {
         },
         elements: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
     },
     data() {
@@ -74,7 +81,13 @@ export default {
         },
         onRestore() {
             if (!this.restoredElement) {
-                this.onError({ errors: { restored_elements: ['Please mark attribute to restore'] } });
+                this.onError({
+                    errors: {
+                        restored_elements: [
+                            'Please mark attribute to restore',
+                        ],
+                    },
+                });
                 return;
             }
 
@@ -88,7 +101,10 @@ export default {
             }).then(() => {
                 this.isRequestPending = false;
                 this.removeValidationErrors();
-                this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: `${this.restoredElement} value restored` });
+                this.$addAlert({
+                    type: ALERT_TYPE.SUCCESS,
+                    message: `${this.restoredElement} value restored`,
+                });
                 this.$emit('restore');
                 this.$emit('close');
             }).catch((e) => {

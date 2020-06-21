@@ -74,7 +74,8 @@ export default {
     },
     data() {
         return {
-            selectedRows: {},
+            selectedRows: {
+            },
             isSelectedAllRows: false,
         };
     },
@@ -97,7 +98,8 @@ export default {
             const anyRowsSelected = Object.entries(this.selectedRows).length;
 
             if (anyRowsSelected) {
-                this.selectedRows = {};
+                this.selectedRows = {
+                };
 
                 this.$emit('rowSelect', this.selectedRows);
             } else {
@@ -106,7 +108,9 @@ export default {
                 this.$emit('rowsSelect', this.isSelectedAllRows);
             }
         },
-        onSelectRow({ row, isSelected }) {
+        onSelectRow({
+            row, isSelected,
+        }) {
             if (isSelected) {
                 this.selectedRows[row] = true;
             } else {
@@ -129,7 +133,9 @@ export default {
                 }
             }
 
-            this.selectedRows = { ...this.selectedRows };
+            this.selectedRows = {
+                ...this.selectedRows,
+            };
 
             this.$emit('rowSelect', this.selectedRows);
         },

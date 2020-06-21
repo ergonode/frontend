@@ -2,7 +2,11 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { Icons, Pages, Tabs } from './imports';
+import {
+    Icons,
+    Pages,
+    Tabs,
+} from './imports';
 import Privileges from './privileges';
 
 export default [
@@ -39,7 +43,8 @@ export default [
                             icon: Icons.Settings,
                         },
                     ],
-                    privileges: [],
+                    privileges: [
+                    ],
                 },
             },
         ],
@@ -69,7 +74,8 @@ export default [
                             routeName: 'users-grid',
                         },
                     ],
-                    privileges: [],
+                    privileges: [
+                    ],
                 },
             },
             {
@@ -88,7 +94,8 @@ export default [
                             routeName: 'users-grid',
                         },
                     ],
-                    privileges: [],
+                    privileges: [
+                    ],
                 },
             },
             {
@@ -107,7 +114,8 @@ export default [
                             routeName: 'users-grid',
                         },
                     ],
-                    privileges: [],
+                    privileges: [
+                    ],
                 },
             },
         ],
@@ -145,7 +153,8 @@ export default [
                             icon: Icons.Settings,
                         },
                     ],
-                    privileges: [],
+                    privileges: [
+                    ],
                 },
             },
         ],
@@ -175,7 +184,8 @@ export default [
                             routeName: 'user-roles-grid',
                         },
                     ],
-                    privileges: [],
+                    privileges: [
+                    ],
                 },
             },
             {
@@ -194,7 +204,8 @@ export default [
                             routeName: 'user-roles-grid',
                         },
                     ],
-                    privileges: [],
+                    privileges: [
+                    ],
                 },
             },
         ],
@@ -214,7 +225,8 @@ export default [
                 component: Tabs.UserActivityLogsGridTab,
                 meta: {
                     title: 'Activity log',
-                    privileges: [],
+                    privileges: [
+                    ],
                 },
             },
             {
@@ -223,7 +235,8 @@ export default [
                 component: Tabs.UserPrivilegesGridTab,
                 meta: {
                     title: 'Privileges',
-                    privileges: [],
+                    privileges: [
+                    ],
                 },
             },
         ],

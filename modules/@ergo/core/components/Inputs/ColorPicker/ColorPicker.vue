@@ -38,7 +38,10 @@
 
 <script>
 import Select from '@Core/components/Inputs/Select/Select';
-import { SIZE, THEME } from '@Core/defaults/theme';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'ColorPicker',

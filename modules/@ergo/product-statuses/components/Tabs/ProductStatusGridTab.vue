@@ -27,12 +27,21 @@ export default {
     components: {
         ResponsiveCenteredViewTemplate,
     },
-    mixins: [fetchGridDataMixin({ path: 'status' })],
+    mixins: [
+        fetchGridDataMixin({
+            path: 'status',
+        }),
+    ],
     methods: {
         onEditRow(args) {
             const lastIndex = args.length - 1;
 
-            this.$router.push({ name: 'product-status-id-general', params: { id: args[lastIndex] } });
+            this.$router.push({
+                name: 'product-status-id-general',
+                params: {
+                    id: args[lastIndex],
+                },
+            });
         },
     },
 };

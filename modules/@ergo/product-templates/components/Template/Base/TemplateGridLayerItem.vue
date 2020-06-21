@@ -15,7 +15,9 @@
     </div>
 </template>
 <script>
-import { mapState } from 'vuex';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'TemplateGridLayerItem',
@@ -29,7 +31,8 @@ export default {
         },
         highlightingPositions: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
     },
     data() {
@@ -52,15 +55,23 @@ export default {
             return this.highlightingPositions.find(this.isEqualToPosition);
         },
         isTopNeighbour() {
-            const { row: rowPos, column: columnPos } = this.position;
+            const {
+                row: rowPos, column: columnPos,
+            } = this.position;
             return this.highlightingPositions.some(
-                ({ row, column }) => row === rowPos - 1 && column === columnPos,
+                ({
+                    row, column,
+                }) => row === rowPos - 1 && column === columnPos,
             );
         },
         isRightNeighbour() {
-            const { row: rowPos, column: columnPos } = this.position;
+            const {
+                row: rowPos, column: columnPos,
+            } = this.position;
             return this.highlightingPositions.some(
-                ({ row, column }) => row === rowPos && column === columnPos + 1,
+                ({
+                    row, column,
+                }) => row === rowPos && column === columnPos + 1,
             );
         },
         ghostItemBoundsStyle() {
@@ -108,7 +119,9 @@ export default {
             }
         },
         isEqualToPosition(position) {
-            const { row, column } = this.position;
+            const {
+                row, column,
+            } = this.position;
             return row === position.row && column === position.column;
         },
     },

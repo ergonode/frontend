@@ -11,8 +11,6 @@
                 <TextField
                     :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
-                    solid
-                    regular
                     required
                     :error-messages="errorMessages[codeFieldKey]"
                     :disabled="isDisabled || isDisabledByPrivileges"
@@ -25,7 +23,10 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'AttributeGroupForm',
@@ -43,15 +44,21 @@ export default {
             return Boolean(this.id);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess(['ATTRIBUTE_UPDATE']))
-            || (!this.isDisabled && !this.$hasAccess(['ATTRIBUTE_CREATE']));
+            return (this.isDisabled && !this.$hasAccess([
+                'ATTRIBUTE_UPDATE',
+            ]))
+            || (!this.isDisabled && !this.$hasAccess([
+                'ATTRIBUTE_CREATE',
+            ]));
         },
         codeFieldKey() {
             return 'code';
         },
     },
     methods: {
-        ...mapActions('attributeGroup', ['setAttributeGroupCode']),
+        ...mapActions('attributeGroup', [
+            'setAttributeGroupCode',
+        ]),
         dataCyGenerator(key) {
             return `attribute-group-${key}`;
         },

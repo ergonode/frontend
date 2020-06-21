@@ -8,7 +8,6 @@
             v-show="isSearchButtonClicked"
             :value="searchResult"
             class="search-text-field"
-            solid
             small
             placeholder="Search..."
             @input="debouncedSearch"
@@ -32,13 +31,17 @@
 
 <script>
 import {
-    GRAPHITE, GREEN, WHITE,
+    GRAPHITE,
+    GREEN,
+    WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import Fab from '@Core/components/Buttons/Fab';
 import IconSearch from '@Core/components/Icons/Actions/IconSearch';
 import TextField from '@Core/components/Inputs/TextField';
 import ListHeader from '@Core/components/List/ListHeader';
-import { debounce } from 'debounce';
+import {
+    debounce,
+} from 'debounce';
 
 export default {
     name: 'ListSearchHeader',

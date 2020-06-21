@@ -8,7 +8,6 @@
             <TextField
                 :value="translationOptionValue"
                 :label="option.key"
-                solid
                 small
                 :disabled="disabled"
                 :error-messages="errorMessages"
@@ -24,7 +23,9 @@
 
 <script>
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
-import { mapActions } from 'vuex';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'AttributeOptionValue',

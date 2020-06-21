@@ -33,9 +33,15 @@
 <script>
 import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
-import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
-import { cellDataCompose } from '@Core/models/mappers/gridDataMapper';
-import { mapState } from 'vuex';
+import {
+    DEFAULT_FORMAT,
+} from '@Core/models/calendar/calendar';
+import {
+    cellDataCompose,
+} from '@Core/models/mappers/gridDataMapper';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'GridDateDataCell',
@@ -43,7 +49,9 @@ export default {
         GridPresentationCell,
         GridDateEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridDateEditCell'),
     },
-    mixins: [gridDataCellMixin],
+    mixins: [
+        gridDataCellMixin,
+    ],
     props: {
         format: {
             type: String,

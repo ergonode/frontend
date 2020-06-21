@@ -3,7 +3,10 @@
  * See LICENSE for license details.
  */
 import NavigationBarSelectButton from '@Core/components/NavigationBar/NavigationBarSelectButton';
-import { createLocalVue, shallowMount } from '@vue/test-utils';
+import {
+    createLocalVue,
+    shallowMount,
+} from '@vue/test-utils';
 
 const localVue = createLocalVue();
 
@@ -27,7 +30,9 @@ describe('/NavigationBar/NavigationBarSelectButton', () => {
 
     it('Check click', () => {
         const onClickStub = jest.fn();
-        wrapper.setMethods({ onClick: onClickStub });
+        wrapper.setMethods({
+            onClick: onClickStub,
+        });
         wrapper.find('.bar-button').trigger('click');
         expect(onClickStub).toHaveBeenCalled();
     });

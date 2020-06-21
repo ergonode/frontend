@@ -10,20 +10,33 @@
 </template>
 
 <script>
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { MODAL_TYPE } from '@Core/defaults/modals';
-import { getMappedTreeData } from '@Trees/models/treeMapper';
-import { mapActions, mapState } from 'vuex';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import {
+    getMappedTreeData,
+} from '@Trees/models/treeMapper';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'EditCategoryTree',
     components: {
         CategoryTreePage: () => import('@Trees/components/Pages/CategoryTreePage'),
     },
-    validate({ params }) {
+    validate({
+        params,
+    }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
-    async fetch({ store, params }) {
+    async fetch({
+        store, params,
+    }) {
         await Promise.all([
             store.dispatch('tree/clearStorage'),
             store.dispatch('translations/clearStorage'),
@@ -69,7 +82,9 @@ export default {
             });
         },
         onSave() {
-            const { name } = this.translations;
+            const {
+                name,
+            } = this.translations;
             const data = {
                 name,
                 categories: getMappedTreeData(this.fullGridData),
@@ -84,11 +99,19 @@ export default {
         },
         onUpdateSuccess() {
             this.removeValidationErrors();
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Tree updated' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Tree updated',
+            });
         },
         onRemoveSuccess() {
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Category tree removed' });
-            this.$router.push({ name: 'category-trees-grid' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Category tree removed',
+            });
+            this.$router.push({
+                name: 'category-trees-grid',
+            });
         },
     },
     head() {

@@ -11,7 +11,6 @@
             <template #select>
                 <TreeSelect
                     :value="language"
-                    solid
                     small
                     :options="languageOptions"
                     @input="onSelect" />
@@ -36,7 +35,9 @@
 
 <script>
 import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
-import { mapState } from 'vuex';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'SystemAttributesListTab',
@@ -49,7 +50,11 @@ export default {
         AttributesListElement: () => import('@Attributes/components/Lists/AttributesListElement'),
         TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
     },
-    mixins: [fetchListDataMixin({ namespace: 'attributes/system' })],
+    mixins: [
+        fetchListDataMixin({
+            namespace: 'attributes/system',
+        }),
+    ],
     props: {
         isSelectLanguage: {
             type: Boolean,
@@ -58,7 +63,8 @@ export default {
     },
     data() {
         return {
-            language: {},
+            language: {
+            },
         };
     },
     computed: {
@@ -70,13 +76,21 @@ export default {
             languagesTree: state => state.languagesTree,
         }),
         isUserAllowedToDragAttributes() {
-            const { languagePrivileges } = this.user;
-            const { code } = this.language;
+            const {
+                languagePrivileges,
+            } = this.user;
+            const {
+                code,
+            } = this.language;
 
-            return this.$hasAccess(['ATTRIBUTE_UPDATE']) && languagePrivileges[code].read;
+            return this.$hasAccess([
+                'ATTRIBUTE_UPDATE',
+            ]) && languagePrivileges[code].read;
         },
         languageOptions() {
-            const { languagePrivileges } = this.user;
+            const {
+                languagePrivileges,
+            } = this.user;
 
             return this.languagesTree.map(language => ({
                 ...language,

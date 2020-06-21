@@ -10,8 +10,6 @@
                     <TextField
                         :data-cy="dataCyGenerator(nameFieldKey)"
                         :value="translations.name[languageCode]"
-                        solid
-                        regular
                         label="Tree name"
                         :disabled="!isUserAllowedToUpdate"
                         :error-messages="errorMessages[nameFieldKey]"
@@ -37,10 +35,14 @@ export default {
         Card,
         TextField,
     },
-    mixins: [translationCardMixin],
+    mixins: [
+        translationCardMixin,
+    ],
     computed: {
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['CATEGORY_TREE_UPDATE']);
+            return this.$hasAccess([
+                'CATEGORY_TREE_UPDATE',
+            ]);
         },
         nameFieldKey() {
             return `name_${this.languageCode}`;

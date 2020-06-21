@@ -2,7 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount } from '@vue/test-utils';
+import {
+    mount,
+} from '@vue/test-utils';
 
 import TemplateGridPresentationLayer from '../TemplateGridPresentationLayer';
 
@@ -25,7 +27,8 @@ describe('TemplateGrid/TemplateGridPresentationLayer', () => {
 
     it('Check number of items', () => {
         expect(TemplateGridPresentationLayer.computed.numberOfItems.call({
-            columns: 3, rows: 10,
+            columns: 3,
+            rows: 10,
         })).toBe(30);
     });
 
@@ -62,10 +65,22 @@ describe('TemplateGrid/TemplateGridPresentationLayer', () => {
     // });
 
     it.each([
-        [1, false],
-        [2, false],
-        [3, true],
-        [4, true],
+        [
+            1,
+            false,
+        ],
+        [
+            2,
+            false,
+        ],
+        [
+            3,
+            true,
+        ],
+        [
+            4,
+            true,
+        ],
     ])(
         'Set index (%s) get (%s)',
         (nr, bool) => {

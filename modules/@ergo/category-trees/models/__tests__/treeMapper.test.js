@@ -2,9 +2,17 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getMappedTreeData, getParsedTreeData } from '../treeMapper';
-import { categoryList } from './__mocks__/categories.mock';
-import { mappingTree, parsingTree } from './__mocks__/categoryTree.mock';
+import {
+    getMappedTreeData,
+    getParsedTreeData,
+} from '../treeMapper';
+import {
+    categoryList,
+} from './__mocks__/categories.mock';
+import {
+    mappingTree,
+    parsingTree,
+} from './__mocks__/categoryTree.mock';
 
 describe('treeMapper/getParsedTreeData', () => {
     it('Tree parsing with valid input data', () => {
@@ -13,13 +21,17 @@ describe('treeMapper/getParsedTreeData', () => {
     });
 
     it('Tree parsing with empty categories array', () => {
-        const result = getParsedTreeData(parsingTree, []);
-        expect(result).toStrictEqual([]);
+        const result = getParsedTreeData(parsingTree, [
+        ]);
+        expect(result).toStrictEqual([
+        ]);
     });
 
     it('Tree parsing without input data', () => {
-        const result = getParsedTreeData([], '');
-        expect(result).toStrictEqual([]);
+        const result = getParsedTreeData([
+        ], '');
+        expect(result).toStrictEqual([
+        ]);
     });
 });
 
@@ -30,7 +42,9 @@ describe('treeMapper/getMappedTreeData', () => {
     });
 
     it('Tree mapping without input data', () => {
-        const result = getMappedTreeData([]);
-        expect(result).toStrictEqual([]);
+        const result = getMappedTreeData([
+        ]);
+        expect(result).toStrictEqual([
+        ]);
     });
 });

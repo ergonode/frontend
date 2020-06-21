@@ -10,7 +10,6 @@
                 name="select">
                 <Select
                     :value="selectedOption"
-                    solid
                     small
                     :options="options"
                     @input="onLanguageSelect" />
@@ -20,7 +19,6 @@
             v-if="isSearchButtonClicked"
             :value="searchResult"
             class="search-text-field"
-            solid
             autofocus
             small
             placeholder="Search..."
@@ -44,14 +42,18 @@
 
 <script>
 import {
-    GRAPHITE, GREEN, WHITE,
+    GRAPHITE,
+    GREEN,
+    WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import Fab from '@Core/components/Buttons/Fab';
 import IconSearch from '@Core/components/Icons/Actions/IconSearch';
 import Select from '@Core/components/Inputs/Select/Select';
 import TextField from '@Core/components/Inputs/TextField';
 import ListHeader from '@Core/components/List/ListHeader';
-import { debounce } from 'debounce';
+import {
+    debounce,
+} from 'debounce';
 
 export default {
     name: 'ListSearchSelectHeader',
@@ -69,7 +71,8 @@ export default {
         },
         options: {
             type: Array,
-            default: () => ([]),
+            default: () => ([
+            ]),
         },
         selectedOption: {
             type: String,

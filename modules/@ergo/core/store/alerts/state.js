@@ -3,5 +3,6 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    alerts: [],
+    alerts: [
+    ],
 });

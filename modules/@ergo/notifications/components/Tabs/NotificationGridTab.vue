@@ -31,9 +31,16 @@
 
 <script>
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import { DATA_LIMIT } from '@Core/defaults/grid';
-import { LAYOUT_ORIENTATION } from '@Core/defaults/layout';
-import { mapActions, mapState } from 'vuex';
+import {
+    DATA_LIMIT,
+} from '@Core/defaults/grid';
+import {
+    LAYOUT_ORIENTATION,
+} from '@Core/defaults/layout';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'NotificationGridTab',
@@ -56,13 +63,17 @@ export default {
             return LAYOUT_ORIENTATION.HORIZONTAL;
         },
         buttonTitle() {
-            const { length: listLength } = this.notifications;
+            const {
+                length: listLength,
+            } = this.notifications;
             const notificationsNumber = this.count - listLength;
 
             return `LOAD MORE NOTIFICATIONS (${notificationsNumber})`;
         },
         isMoreButtonVisible() {
-            const { length: listLength } = this.notifications;
+            const {
+                length: listLength,
+            } = this.notifications;
 
             return listLength
                 && listLength < this.count

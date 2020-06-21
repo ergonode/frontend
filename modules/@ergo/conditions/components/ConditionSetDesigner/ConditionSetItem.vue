@@ -44,12 +44,21 @@
 </template>
 <script>
 import ConditionSetParameters from '@Conditions/components/ConditionSetDesigner/ConditionSetParameters';
-import { hasOptions } from '@Conditions/models/conditionTypes';
+import {
+    hasOptions,
+} from '@Conditions/models/conditionTypes';
 import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
 import IconDots from '@Core/components/Icons/Others/IconDots';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { isEmpty } from '@Core/models/objectWrapper';
-import { mapState } from 'vuex';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
+import {
+    isEmpty,
+} from '@Core/models/objectWrapper';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ConditionSetItem',
@@ -74,7 +83,9 @@ export default {
     },
     data() {
         return {
-            contextualMenuItems: ['Remove'],
+            contextualMenuItems: [
+                'Remove',
+            ],
             isContextualMenuActive: false,
             isHovered: false,
         };
@@ -93,20 +104,26 @@ export default {
             return !isEmpty(this.condition);
         },
         conditionPhrase() {
-            const { phrase } = this.condition;
+            const {
+                phrase,
+            } = this.condition;
             const placeholders = this.conditionsValues[this.itemId];
 
             if (!placeholders) return phrase;
             return this.replacePlaceholderOnPhrase(placeholders);
         },
         parametersStyle() {
-            const { parameters } = this.condition;
+            const {
+                parameters,
+            } = this.condition;
             return {
                 gridTemplateColumns: `repeat(${parameters.length}, minmax(max-content, 33%))`,
             };
         },
         contextualMenuHoveStateClasses() {
-            return { 'condition__contextual-menu--hovered': this.isHovered };
+            return {
+                'condition__contextual-menu--hovered': this.isHovered,
+            };
         },
     },
     methods: {
@@ -119,7 +136,9 @@ export default {
             }
         },
         replacePlaceholderOnPhrase(placeholders) {
-            const { phrase, parameters } = this.condition;
+            const {
+                phrase, parameters,
+            } = this.condition;
             const findKeyWhenSelect = clearedKey => parameters.findIndex(
                 parameter => parameter.name === clearedKey
                 && hasOptions(parameter.type),

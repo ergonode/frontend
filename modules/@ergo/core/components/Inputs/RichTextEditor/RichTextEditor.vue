@@ -84,9 +84,15 @@ import {
     EXTENSION_BUTTON_WIDTH,
     EXTENSIONS,
 } from '@Core/defaults/inputs/rich-text-editor';
-import { ALIGNMENT, INPUT_TYPE, SIZE } from '@Core/defaults/theme';
+import {
+    ALIGNMENT,
+    INPUT_TYPE,
+    SIZE,
+} from '@Core/defaults/theme';
 import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
-import { toCapitalize } from '@Core/models/stringWrapper';
+import {
+    toCapitalize,
+} from '@Core/models/stringWrapper';
 import {
     Editor,
     EditorContent,
@@ -121,7 +127,9 @@ export default {
         VerticalFixedScroll,
         ErrorHint: () => import('@Core/components/Hints/ErrorHint'),
     },
-    mixins: [associatedLabelMixin],
+    mixins: [
+        associatedLabelMixin,
+    ],
     props: {
         value: {
             type: String,
@@ -130,7 +138,10 @@ export default {
         size: {
             type: String,
             default: SIZE.REGULAR,
-            validator: value => [SIZE.SMALL, SIZE.REGULAR].indexOf(value) !== -1,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
         },
         alignment: {
             type: String,
@@ -172,7 +183,8 @@ export default {
         },
         actionableExtensions: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
     },
     data() {
@@ -218,7 +230,13 @@ export default {
                 new Link(),
                 new ListItem(),
                 new History(),
-                new Heading({ levels: [1, 2, 3] }),
+                new Heading({
+                    levels: [
+                        1,
+                        2,
+                        3,
+                    ],
+                }),
                 new Placeholder({
                     emptyEditorClass: 'is-editor-empty',
                     emptyNodeClass: 'is-empty',

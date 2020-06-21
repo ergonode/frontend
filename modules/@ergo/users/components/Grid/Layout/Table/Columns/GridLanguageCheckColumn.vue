@@ -15,7 +15,9 @@
 <script>
 import GridHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridHeaderCell';
 import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
-import { mapActions } from 'vuex';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'GridLanguageCheckColumn',
@@ -28,7 +30,9 @@ export default {
         ...mapActions('grid', [
             'setDraftValue',
         ]),
-        onValueChange({ rowId, columnId, value }) {
+        onValueChange({
+            rowId, columnId, value,
+        }) {
             if (columnId !== 'read' && value) {
                 this.setDraftValue({
                     rowId,

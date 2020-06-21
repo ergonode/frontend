@@ -10,7 +10,9 @@
 
 <script>
 import Icon from '@Core/components/Icons/Icon';
-import { ALIGN } from '@Core/defaults/icons';
+import {
+    ALIGN,
+} from '@Core/defaults/icons';
 
 export default {
     name: 'IconAlignLeft',

@@ -9,7 +9,9 @@
 </template>
 
 <script>
-import { SIZE } from '@Core/defaults/theme';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'InputLabel',
@@ -17,7 +19,10 @@ export default {
         size: {
             type: String,
             default: SIZE.REGULAR,
-            validator: value => [SIZE.SMALL, SIZE.REGULAR].indexOf(value) !== -1,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
         },
         required: {
             type: Boolean,

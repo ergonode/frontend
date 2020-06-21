@@ -34,14 +34,19 @@ export default {
         };
     },
     created() {
-        const { enum: options } = this.schema;
+        const {
+            enum: options,
+        } = this.schema;
 
         if (options) this.stringComponent = () => import('@Core/components/Form/JSONSchemaForm/JSONSchemaFormSelect');
         else this.stringComponent = () => import('@Core/components/Form/JSONSchemaForm/JSONSchemaFormText');
     },
     methods: {
         onValueChange(value) {
-            this.$emit('input', { key: this.$vnode.key, value });
+            this.$emit('input', {
+                key: this.$vnode.key,
+                value,
+            });
         },
     },
 };

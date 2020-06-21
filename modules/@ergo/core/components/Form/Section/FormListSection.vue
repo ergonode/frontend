@@ -22,7 +22,10 @@
 import Button from '@Core/components/Buttons/Button';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import { SIZE, THEME } from '@Core/defaults/theme';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'FormListSection',

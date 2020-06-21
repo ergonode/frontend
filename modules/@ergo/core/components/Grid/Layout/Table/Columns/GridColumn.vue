@@ -105,19 +105,23 @@ export default {
         },
         sortedColumn: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         selectedRows: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         data: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
         rowIds: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
         columnIndex: {
             type: Number,

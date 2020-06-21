@@ -2,7 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export default ({ app }, inject) => {
+export default ({
+    app,
+}, inject) => {
     inject('setLoader', (key) => {
         app.store.dispatch('core/setLoader', key);
     });
@@ -13,7 +15,9 @@ export default ({ app }, inject) => {
         app.store.dispatch('core/openModal', payload);
     });
     inject('getModal', (key) => {
-        const { modals } = app.store.state.core;
+        const {
+            modals,
+        } = app.store.state.core;
 
         return modals[key];
     });
@@ -21,7 +25,9 @@ export default ({ app }, inject) => {
         app.store.dispatch('core/closeModal', key);
     });
     inject('isLoading', (key) => {
-        const { loaders } = app.store.state.core;
+        const {
+            loaders,
+        } = app.store.state.core;
 
         return Boolean(loaders[key]);
     });

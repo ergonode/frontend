@@ -48,8 +48,13 @@
 import Fab from '@Core/components/Buttons/Fab';
 import IconArrowSingle from '@Core/components/Icons/Arrows/IconArrowSingle';
 import Picture from '@Core/components/Multimedia/Picture';
-import { ARROW } from '@Core/defaults/icons';
-import { SIZE, THEME } from '@Core/defaults/theme';
+import {
+    ARROW,
+} from '@Core/defaults/icons';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'PictureCarousel',
@@ -61,7 +66,8 @@ export default {
     props: {
         imageIds: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
     },
     data() {

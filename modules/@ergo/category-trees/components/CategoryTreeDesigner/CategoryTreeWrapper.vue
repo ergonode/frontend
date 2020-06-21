@@ -12,7 +12,11 @@
 
 <script>
 import TemplateGridWrapper from '@Core/components/TemplateGrid/TemplateGridWrapper';
-import { COLUMNS, CONTEXT_NAME, ROW_HEIGHT } from '@Trees/defaults/designer';
+import {
+    COLUMNS,
+    CONTEXT_NAME,
+    ROW_HEIGHT,
+} from '@Trees/defaults/designer';
 
 export default {
     name: 'CategoryTreeWrapper',

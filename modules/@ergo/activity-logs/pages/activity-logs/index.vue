@@ -12,7 +12,9 @@
 </template>
 
 <script>
-import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
+import {
+    getNestedTabRoutes,
+} from '@Core/models/navigation/tabs';
 
 export default {
     name: 'UsersTabs',

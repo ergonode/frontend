@@ -68,14 +68,27 @@
 </template>
 
 <script>
-import { TYPES } from '@Attributes/defaults/attributes';
-import { GRAPHITE_DARK, WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    TYPES,
+} from '@Attributes/defaults/attributes';
+import {
+    GRAPHITE_DARK,
+    WHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import AdvancedFilterDropDown from '@Core/components/Grid/AdvancedFilters/DropDown/AdvancedFilterDropDown';
-import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
-import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
-import { ARROW } from '@Core/defaults/icons';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
+import {
+    ADV_FILTERS_IDS,
+} from '@Core/defaults/grid/cookies';
+import {
+    ARROW,
+} from '@Core/defaults/icons';
 import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
-import { changeCookiePosition } from '@Core/models/cookies';
+import {
+    changeCookiePosition,
+} from '@Core/models/cookies';
 import {
     getDraggedColumnPositionState,
 } from '@Core/models/drag_and_drop/helpers';
@@ -83,7 +96,10 @@ import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
-import { mapActions, mapState } from 'vuex';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'GridAdvancedFilter',
@@ -91,7 +107,9 @@ export default {
         AdvancedFilterDropDown,
         IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
     },
-    mixins: [associatedLabelMixin],
+    mixins: [
+        associatedLabelMixin,
+    ],
     props: {
         index: {
             type: Number,
@@ -108,7 +126,8 @@ export default {
             isFocused: false,
             isClickedOutside: false,
             needsToRender: false,
-            offset: {},
+            offset: {
+            },
         };
     },
     computed: {
@@ -120,7 +139,9 @@ export default {
         parameter() {
             if (!this.filter.parameters) return null;
 
-            const [key] = Object.keys(this.filter.parameters);
+            const [
+                key,
+            ] = Object.keys(this.filter.parameters);
 
             return this.filter.parameters[key];
         },
@@ -132,25 +153,32 @@ export default {
             return this.isFilterExists ? WHITE : GRAPHITE_DARK;
         },
         title() {
-            const [code] = this.filter.id.split(':');
+            const [
+                code,
+            ] = this.filter.id.split(':');
 
             return this.filter.label || `#${code}`;
         },
         hint() {
-            const [code, languageCode] = this.filter.id.split(':');
+            const [
+                code,
+                languageCode,
+            ] = this.filter.id.split(':');
 
             return this.filter.label ? `${code} ${languageCode}` : null;
         },
         filterValue() {
             if (this.filter.value.isEmptyRecord) return 'Empty records';
 
-            const value = [];
+            const value = [
+            ];
 
             Object.keys(this.filter.value).forEach((key) => {
                 if (this.filter.value[key]) {
                     if (this.filter.options) {
                         const optionIds = this.filter.value[key].split(', ');
-                        const values = [];
+                        const values = [
+                        ];
 
                         optionIds.forEach((id) => {
                             const option = this.filter.options.find(opt => opt.id === id);
@@ -188,11 +216,16 @@ export default {
             } = this.$refs.activator.getBoundingClientRect();
 
             return {
-                x, y, width, height,
+                x,
+                y,
+                width,
+                height,
             };
         },
         onDragStart(event) {
-            const { width } = this.$el.getBoundingClientRect();
+            const {
+                width,
+            } = this.$el.getBoundingClientRect();
 
             addElementCopyToDocumentBody({
                 event,
@@ -201,7 +234,10 @@ export default {
                 id: this.filter.id,
             });
             this.setDraggedElement(this.filter);
-            this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENT.FILTER });
+            this.setDraggableState({
+                propName: 'draggedElementOnGrid',
+                value: DRAGGED_ELEMENT.FILTER,
+            });
 
             window.requestAnimationFrame(() => {
                 this.setGhostIndex(this.index);
@@ -216,13 +252,18 @@ export default {
             });
 
             removeElementCopyFromDocumentBody(event);
-            this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
+            this.setDraggableState({
+                propName: 'draggedElementOnGrid',
+                value: null,
+            });
             this.setDraggedElement();
         },
         onDragOver(event) {
             event.preventDefault();
 
-            const { pageX } = event;
+            const {
+                pageX,
+            } = event;
             const {
                 x: columnXPos, width: columnWidth,
             } = this.$el.getBoundingClientRect();
@@ -247,7 +288,9 @@ export default {
 
             return true;
         },
-        onValueChange({ key, value }) {
+        onValueChange({
+            key, value,
+        }) {
             if (value) {
                 this.$emit('update', {
                     index: this.index,
@@ -315,7 +358,9 @@ export default {
                 this.onFocus();
             }
         },
-        onClickOutside({ event, isClickedOutside }) {
+        onClickOutside({
+            event, isClickedOutside,
+        }) {
             const isClickedInsideActivator = this.$refs.activator.contains(event.target);
 
             this.isClickedOutside = isClickedOutside

@@ -24,10 +24,17 @@
 </template>
 
 <script>
-import { MODAL_ACTION } from '@Core/defaults/modals';
-import { THEME } from '@Core/defaults/theme';
+import {
+    MODAL_ACTION,
+} from '@Core/defaults/modals';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
-import { mapActions, mapState } from 'vuex';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 const createStatusTransition = () => import('@Transitions/services/createStatusTransition.service');
 
@@ -38,7 +45,13 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         TransitionForm: () => import('@Transitions/components/Forms/TransitionForm'),
     },
-    mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Status transition', request: createStatusTransition })],
+    mixins: [
+        actionModalFormMixin({
+            action: MODAL_ACTION.CREATE,
+            namespace: 'Status transition',
+            request: createStatusTransition,
+        }),
+    ],
     computed: {
         ...mapState('transitions', {
             source: state => state.source,

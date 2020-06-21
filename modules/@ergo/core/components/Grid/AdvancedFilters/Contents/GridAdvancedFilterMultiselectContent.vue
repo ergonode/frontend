@@ -37,7 +37,9 @@ import ListElement from '@Core/components/List/ListElement';
 import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
-import { FILTER_OPERATOR } from '@Core/defaults/operators';
+import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
 
 export default {
     name: 'GridAdvancedFilterMultiselectContent',
@@ -58,14 +60,16 @@ export default {
     },
     data() {
         return {
-            selectedOptions: {},
+            selectedOptions: {
+            },
         };
     },
     computed: {
         filterValue() {
             return this.filter.value[FILTER_OPERATOR.EQUAL]
                 ? this.filter.value[FILTER_OPERATOR.EQUAL].split(', ')
-                : [];
+                : [
+                ];
         },
     },
     watch: {
@@ -79,9 +83,12 @@ export default {
     methods: {
         initSelectedOptions() {
             if (this.filterValue.length === 0) {
-                this.selectedOptions = {};
+                this.selectedOptions = {
+                };
             } else {
-                const { length } = this.filterValue;
+                const {
+                    length,
+                } = this.filterValue;
 
                 for (let i = 0; i < length; i += 1) {
                     const optionIndex = this.filter.options
@@ -98,7 +105,10 @@ export default {
                 this.selectedOptions[index] = value.id;
             }
 
-            this.$emit('input', { value: Object.values(this.selectedOptions).join(', '), key: FILTER_OPERATOR.EQUAL });
+            this.$emit('input', {
+                value: Object.values(this.selectedOptions).join(', '),
+                key: FILTER_OPERATOR.EQUAL,
+            });
         },
         onEmptyRecordChange(value) {
             this.$emit('emptyRecord', value);

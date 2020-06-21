@@ -24,10 +24,16 @@
 </template>
 
 <script>
-import { MODAL_ACTION } from '@Core/defaults/modals';
-import { THEME } from '@Core/defaults/theme';
+import {
+    MODAL_ACTION,
+} from '@Core/defaults/modals';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
-import { mapActions } from 'vuex';
+import {
+    mapActions,
+} from 'vuex';
 
 const createUser = () => import('@Users/services/createUser.service');
 
@@ -38,7 +44,13 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         UserForm: () => import('@Users/components/Forms/UserForm'),
     },
-    mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'User', request: createUser })],
+    mixins: [
+        actionModalFormMixin({
+            action: MODAL_ACTION.CREATE,
+            namespace: 'User',
+            request: createUser,
+        }),
+    ],
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;

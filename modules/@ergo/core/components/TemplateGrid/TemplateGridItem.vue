@@ -43,8 +43,13 @@
 import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
 import IconArrowDouble from '@Core/components/Icons/Arrows/IconArrowDouble';
 import IconDots from '@Core/components/Icons/Others/IconDots';
-import { ARROW } from '@Core/defaults/icons';
-import { SIZE, THEME } from '@Core/defaults/theme';
+import {
+    ARROW,
+} from '@Core/defaults/icons';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'TemplateGridItem',
@@ -77,7 +82,9 @@ export default {
     },
     data() {
         return {
-            contextualMenuItems: ['Remove'],
+            contextualMenuItems: [
+                'Remove',
+            ],
             isHovered: false,
         };
     },
@@ -95,7 +102,9 @@ export default {
             return this.isExpanded ? ARROW.DOWN : ARROW.UP;
         },
         contextualMenuHoveStateClasses() {
-            return { 'grid-item__contextual-menu--hovered': this.isHovered };
+            return {
+                'grid-item__contextual-menu--hovered': this.isHovered,
+            };
         },
     },
     methods: {

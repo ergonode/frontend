@@ -18,7 +18,10 @@ export default {
             required: true,
         },
         hint: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             default: '',
         },
     },

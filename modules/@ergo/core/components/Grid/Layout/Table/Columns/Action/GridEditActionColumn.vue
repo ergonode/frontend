@@ -38,7 +38,8 @@ export default {
         },
         data: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         rowsOffset: {
             type: Number,
@@ -58,12 +59,16 @@ export default {
         },
         selectedRows: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
     },
     methods: {
         onEdit(index) {
-            this.$emit('action', { action: 'editRow', value: index });
+            this.$emit('action', {
+                action: 'editRow',
+                value: index,
+            });
         },
     },
 };

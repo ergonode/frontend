@@ -38,8 +38,12 @@ import FormParagraph from '@Core/components/Form/FormParagraph';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import UploadCSVFile from '@Core/components/Inputs/UploadFile/UploadCSVFile';
 import ModalForm from '@Core/components/Modal/ModalForm';
-import { THEME } from '@Core/defaults/theme';
-import { mapActions } from 'vuex';
+import {
+    THEME,
+} from '@Core/defaults/theme';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'UploadImportFileModalForm',

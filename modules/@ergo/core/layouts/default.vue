@@ -39,9 +39,16 @@
 </template>
 
 <script>
-import { COMPONENTS } from '@Core/defaults/extends';
-import { MODAL_TYPE } from '@Core/defaults/modals';
-import { mapActions, mapState } from 'vuex';
+import {
+    COMPONENTS,
+} from '@Core/defaults/extends';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'DefaultLayout',
@@ -56,7 +63,8 @@ export default {
     },
     data() {
         return {
-            breadcrumbs: [],
+            breadcrumbs: [
+            ],
         };
     },
     computed: {
@@ -72,11 +80,13 @@ export default {
     },
     watch: {
         $route() {
-            this.breadcrumbs = this.$route.meta.breadcrumbs || [];
+            this.breadcrumbs = this.$route.meta.breadcrumbs || [
+            ];
         },
     },
     created() {
-        this.breadcrumbs = this.$route.meta.breadcrumbs || [];
+        this.breadcrumbs = this.$route.meta.breadcrumbs || [
+        ];
     },
     mounted() {
         this.setRequestTimeout();

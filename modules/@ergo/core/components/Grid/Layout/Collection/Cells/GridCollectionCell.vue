@@ -28,7 +28,9 @@
 
 <script>
 import Picture from '@Core/components/Multimedia/Picture';
-import { THEME } from '@Core/defaults/theme';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridCollectionCell',
@@ -38,7 +40,8 @@ export default {
     props: {
         actions: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         image: {
             type: String,

@@ -58,9 +58,15 @@
 <script>
 import InputController from '@Core/components/Inputs/InputController';
 import InputLabel from '@Core/components/Inputs/InputLabel';
-import { ALIGNMENT, INPUT_TYPE, SIZE } from '@Core/defaults/theme';
+import {
+    ALIGNMENT,
+    INPUT_TYPE,
+    SIZE,
+} from '@Core/defaults/theme';
 import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
-import { toCapitalize } from '@Core/models/stringWrapper';
+import {
+    toCapitalize,
+} from '@Core/models/stringWrapper';
 
 export default {
     name: 'TextArea',
@@ -69,12 +75,17 @@ export default {
         InputLabel,
         ErrorHint: () => import('@Core/components/Hints/ErrorHint'),
     },
-    mixins: [associatedLabelMixin],
+    mixins: [
+        associatedLabelMixin,
+    ],
     props: {
         size: {
             type: String,
             default: SIZE.REGULAR,
-            validator: value => [SIZE.SMALL, SIZE.REGULAR].indexOf(value) !== -1,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
         },
         alignment: {
             type: String,
@@ -87,7 +98,10 @@ export default {
             validator: value => Object.values(INPUT_TYPE).indexOf(value) !== -1,
         },
         value: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             default: null,
         },
         label: {

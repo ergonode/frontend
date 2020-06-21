@@ -2,18 +2,29 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getUUID } from '@Core/models/stringWrapper';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
 
 export function getMappedConditionSetData(conditionSetData, conditions) {
-    const mappedData = [];
+    const mappedData = [
+    ];
 
     Object.keys(conditionSetData).forEach((key) => {
-        const [conditionId] = key.split('--');
-        const conditionData = { ...conditionSetData[key] };
-        const { parameters } = conditions[conditionId];
+        const [
+            conditionId,
+        ] = key.split('--');
+        const conditionData = {
+            ...conditionSetData[key],
+        };
+        const {
+            parameters,
+        } = conditions[conditionId];
 
         Object.keys(conditionData).forEach((conditionKey) => {
-            const parameter = parameters.find(({ name }) => name === conditionKey);
+            const parameter = parameters.find(({
+                name,
+            }) => name === conditionKey);
 
             if (parameter && (parameter.options || parameter.complexOptions)) {
                 if (Array.isArray(conditionData[conditionKey])) {
@@ -36,10 +47,17 @@ export function getMappedConditionSetData(conditionSetData, conditions) {
 }
 
 export function getParsedConditionSetData(conditions, conditionsData) {
-    const parsedData = { conditionsData: {}, conditionsTree: [] };
+    const parsedData = {
+        conditionsData: {
+        },
+        conditionsTree: [
+        ],
+    };
 
     for (let i = 0; i < conditions.length; i += 1) {
-        const { type, ...parameters } = conditions[i];
+        const {
+            type, ...parameters
+        } = conditions[i];
         const uniqId = `${type}--${getUUID()}`;
 
         Object.keys(parameters).forEach((key) => {

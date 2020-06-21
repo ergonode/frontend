@@ -30,7 +30,10 @@ export default {
         offset: {
             type: Object,
             default: () => ({
-                x: 0, y: 0, width: 0, height: 0,
+                x: 0,
+                y: 0,
+                width: 0,
+                height: 0,
             }),
         },
     },
@@ -45,8 +48,12 @@ export default {
             handler() {
                 this.$nextTick(() => {
                     window.requestAnimationFrame(() => {
-                        const { innerHeight } = window;
-                        const position = { left: `${this.offset.x}px` };
+                        const {
+                            innerHeight,
+                        } = window;
+                        const position = {
+                            left: `${this.offset.x}px`,
+                        };
                         let maxHeight = 200;
 
                         if (this.fixed) {

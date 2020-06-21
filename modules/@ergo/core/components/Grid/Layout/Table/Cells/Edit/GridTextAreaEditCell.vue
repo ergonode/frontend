@@ -31,7 +31,9 @@ import GridTextEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Ed
 import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
 import TextArea from '@Core/components/Inputs/TextArea';
-import { INPUT_TYPE } from '@Core/defaults/theme';
+import {
+    INPUT_TYPE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridTextAreaEditCell',

@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
-import { mapState } from 'vuex';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     components: {
@@ -12,7 +14,8 @@ export default {
     props: {
         data: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         column: {
             type: Object,
@@ -27,7 +30,10 @@ export default {
             required: true,
         },
         rowId: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
         editKeyCode: {

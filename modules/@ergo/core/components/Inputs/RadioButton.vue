@@ -31,7 +31,9 @@ import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'RadioButton',
-    mixins: [associatedLabelMixin],
+    mixins: [
+        associatedLabelMixin,
+    ],
     props: {
         value: {
             type: String,

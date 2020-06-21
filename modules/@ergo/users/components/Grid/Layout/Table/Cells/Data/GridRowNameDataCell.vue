@@ -22,15 +22,21 @@
 <script>
 import GridHintPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridHintPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
-import { cellDataCompose } from '@Core/models/mappers/gridDataMapper';
-import { mapState } from 'vuex';
+import {
+    cellDataCompose,
+} from '@Core/models/mappers/gridDataMapper';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'GridRowNameDataCell',
     components: {
         GridHintPresentationCell,
     },
-    mixins: [gridDataCellMixin],
+    mixins: [
+        gridDataCellMixin,
+    ],
     computed: {
         ...mapState('grid', {
             drafts: state => state.drafts,

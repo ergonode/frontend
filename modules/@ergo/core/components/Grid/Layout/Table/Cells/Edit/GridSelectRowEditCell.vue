@@ -36,7 +36,10 @@ export default {
     },
     methods: {
         onSelect() {
-            this.$emit('select', { row: this.row, isSelected: !this.isSelected });
+            this.$emit('select', {
+                row: this.row,
+                isSelected: !this.isSelected,
+            });
         },
     },
 };

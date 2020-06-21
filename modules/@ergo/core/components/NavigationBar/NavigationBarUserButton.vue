@@ -29,10 +29,18 @@
 </template>
 
 <script>
-import { WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
-import { ARROW } from '@Core/defaults/icons';
-import { toCapitalize } from '@Core/models/stringWrapper';
-import { mapState } from 'vuex';
+import {
+    WHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    ARROW,
+} from '@Core/defaults/icons';
+import {
+    toCapitalize,
+} from '@Core/models/stringWrapper';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'NavigationBarUserButton',
@@ -58,12 +66,16 @@ export default {
             return this.isFocused ? ARROW.UP : ARROW.DOWN;
         },
         capitalizedUserFirstName() {
-            const { firstName } = this.user;
+            const {
+                firstName,
+            } = this.user;
 
             return toCapitalize(firstName);
         },
         capitalizedUserLastName() {
-            const { lastName } = this.user;
+            const {
+                lastName,
+            } = this.user;
 
             return toCapitalize(lastName);
         },

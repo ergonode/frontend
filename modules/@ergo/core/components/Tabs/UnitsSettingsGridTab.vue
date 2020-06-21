@@ -37,7 +37,10 @@
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import { SIZE, THEME } from '@Core/defaults/theme';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
 export default {
@@ -47,7 +50,11 @@ export default {
         Button,
         IconAdd,
     },
-    mixins: [fetchGridDataMixin({ path: 'units' })],
+    mixins: [
+        fetchGridDataMixin({
+            path: 'units',
+        }),
+    ],
     computed: {
         smallSize() {
             return SIZE.SMALL;
@@ -56,17 +63,26 @@ export default {
             return THEME.SECONDARY;
         },
         isUserAllowedToCreate() {
-            return this.$hasAccess(['SETTINGS_CREATE']);
+            return this.$hasAccess([
+                'SETTINGS_CREATE',
+            ]);
         },
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['SETTINGS_UPDATE']);
+            return this.$hasAccess([
+                'SETTINGS_UPDATE',
+            ]);
         },
     },
     methods: {
         onEditRow(args) {
             const lastIndex = args.length - 1;
 
-            this.$router.push({ name: 'unit-id-general', params: { id: args[lastIndex] } });
+            this.$router.push({
+                name: 'unit-id-general',
+                params: {
+                    id: args[lastIndex],
+                },
+            });
         },
         onShowModal() {
             this.$emit('showModal', 'units');

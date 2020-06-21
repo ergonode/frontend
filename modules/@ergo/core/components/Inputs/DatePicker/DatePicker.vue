@@ -5,10 +5,6 @@
 <template>
     <Select
         :value="parsedDate"
-        :solid="solid"
-        :underline="underline"
-        :left-alignment="leftAlignment"
-        :center-alignment="centerAlignment"
         :label="label"
         :placeholder="placeholder"
         :error-messages="errorMessages"
@@ -16,8 +12,6 @@
         :required="required"
         :autofocus="autofocus"
         :disabled="disabled"
-        :small="small"
-        :regular="regular"
         :fixed-content="false"
         :dismissible="false"
         clearable
@@ -46,8 +40,12 @@
 import DatePickerContent from '@Core/components/Inputs/DatePicker/DatePickerContent';
 import SelectDropdownApplyFooter from '@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownApplyFooter';
 import Select from '@Core/components/Inputs/Select/Select';
-import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
-import { format as formatDate } from 'date-fns';
+import {
+    DEFAULT_FORMAT,
+} from '@Core/models/calendar/calendar';
+import {
+    format as formatDate,
+} from 'date-fns';
 
 export default {
     name: 'DatePicker',
@@ -64,22 +62,6 @@ export default {
         format: {
             type: String,
             default: DEFAULT_FORMAT,
-        },
-        solid: {
-            type: Boolean,
-            default: false,
-        },
-        underline: {
-            type: Boolean,
-            default: false,
-        },
-        leftAlignment: {
-            type: Boolean,
-            default: false,
-        },
-        centerAlignment: {
-            type: Boolean,
-            default: false,
         },
         label: {
             type: String,
@@ -106,14 +88,6 @@ export default {
             default: false,
         },
         disabled: {
-            type: Boolean,
-            default: false,
-        },
-        small: {
-            type: Boolean,
-            default: false,
-        },
-        regular: {
             type: Boolean,
             default: false,
         },

@@ -14,7 +14,9 @@ import tabBarItemMixin from '@Core/mixins/tabBar/tabBarItemMixin';
 
 export default {
     name: 'HorizontalRoutingTabBarItem',
-    mixins: [tabBarItemMixin],
+    mixins: [
+        tabBarItemMixin,
+    ],
     methods: {
         onSelect() {
             this.$emit('select', this.index);

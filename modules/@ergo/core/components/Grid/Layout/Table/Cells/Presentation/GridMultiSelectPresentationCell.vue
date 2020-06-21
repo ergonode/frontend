@@ -25,7 +25,8 @@ export default {
         },
         options: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         isLocked: {
             type: Boolean,

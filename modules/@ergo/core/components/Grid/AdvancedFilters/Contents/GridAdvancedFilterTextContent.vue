@@ -19,8 +19,13 @@
 <script>
 import GridAdvancedFilterBaseContent from '@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
 import TextField from '@Core/components/Inputs/TextField';
-import { FILTER_OPERATOR } from '@Core/defaults/operators';
-import { INPUT_TYPE, SIZE } from '@Core/defaults/theme';
+import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
+import {
+    INPUT_TYPE,
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridAdvancedFilterTextContent',
@@ -48,7 +53,10 @@ export default {
     methods: {
         onValueChange(value) {
             if (value !== this.filterValue) {
-                this.$emit('input', { value, key: FILTER_OPERATOR.EQUAL });
+                this.$emit('input', {
+                    value,
+                    key: FILTER_OPERATOR.EQUAL,
+                });
             }
         },
         onEmptyRecordChange(value) {

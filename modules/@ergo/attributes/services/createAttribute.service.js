@@ -2,13 +2,22 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { TYPES } from '@Attributes/defaults/attributes';
+import {
+    TYPES,
+} from '@Attributes/defaults/attributes';
 import {
     getParsedParameterKeys,
 } from '@Attributes/models/attributeMapper';
-import { getParamsOptionsForType } from '@Attributes/models/attributeTypes';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { getKeyByValue, isEmpty } from '@Core/models/objectWrapper';
+import {
+    getParamsOptionsForType,
+} from '@Attributes/models/attributeTypes';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    getKeyByValue,
+    isEmpty,
+} from '@Core/models/objectWrapper';
 
 export default async function ({
     $axios,
@@ -23,8 +32,12 @@ export default async function ({
         parameter,
         options,
     } = $store.state.attribute;
-    const { language } = $store.state.authentication.user;
-    const { attrTypes } = $store.state.dictionaries;
+    const {
+        language,
+    } = $store.state.authentication.user;
+    const {
+        attrTypes,
+    } = $store.state.dictionaries;
     const typeKey = type ? getKeyByValue(attrTypes, type) : null;
     const data = {
         code,
@@ -38,11 +51,17 @@ export default async function ({
         const uniqueOptions = new Set(optionKeys);
 
         if (optionKeys.some(key => key === '')) {
-            $addAlert({ type: ALERT_TYPE.WARNING, message: 'Options cannot have an empty keys' });
+            $addAlert({
+                type: ALERT_TYPE.WARNING,
+                message: 'Options cannot have an empty keys',
+            });
         }
 
         if (optionKeys.length !== uniqueOptions.size) {
-            $addAlert({ type: ALERT_TYPE.WARNING, message: 'Option code must be unique' });
+            $addAlert({
+                type: ALERT_TYPE.WARNING,
+                message: 'Option code must be unique',
+            });
         }
     }
 
@@ -69,14 +88,20 @@ export default async function ({
         };
     }
 
-    const { id } = await $axios.$post(`${language}/attributes`, data);
+    const {
+        id,
+    } = await $axios.$post(`${language}/attributes`, data);
 
     await Promise.all(
         Object.keys(options).map(key => $axios.$post(
             `${language}/attributes/${id}/options`,
-            { code: options[key].key },
+            {
+                code: options[key].key,
+            },
         )),
     );
 
-    return { id };
+    return {
+        id,
+    };
 }

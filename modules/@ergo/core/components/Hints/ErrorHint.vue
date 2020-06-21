@@ -11,7 +11,9 @@
 </template>
 
 <script>
-import { RED } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    RED,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import IconError from '@Core/components/Icons/Feedback/IconError';
 
 export default {

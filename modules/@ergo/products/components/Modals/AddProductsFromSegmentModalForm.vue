@@ -26,9 +26,16 @@
 </template>
 
 <script>
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { THEME } from '@Core/defaults/theme';
-import { mapActions, mapState } from 'vuex';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    THEME,
+} from '@Core/defaults/theme';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'AddProductsFromSegmentModalForm',
@@ -39,8 +46,10 @@ export default {
     },
     data() {
         return {
-            segmentOptions: [],
-            segments: [],
+            segmentOptions: [
+            ],
+            segments: [
+            ],
             isRequestPending: false,
         };
     },
@@ -56,8 +65,12 @@ export default {
         },
     },
     created() {
-        this.$axios.$get(`${this.language}/segments?limit=5000&offset=0`).then(({ collection }) => {
-            this.segmentOptions = collection.map(({ id, code, name }) => ({
+        this.$axios.$get(`${this.language}/segments?limit=5000&offset=0`).then(({
+            collection,
+        }) => {
+            this.segmentOptions = collection.map(({
+                id, code, name,
+            }) => ({
                 id,
                 key: code,
                 value: name,
@@ -87,7 +100,10 @@ export default {
             this.$axios.$post(`${this.language}/products/${this.id}/children/add-from-segments`, data).then(() => {
                 this.isRequestPending = false;
                 this.removeValidationErrors();
-                this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Products has been added' });
+                this.$addAlert({
+                    type: ALERT_TYPE.SUCCESS,
+                    message: 'Products has been added',
+                });
 
                 this.$emit('added');
             }).catch((e) => {

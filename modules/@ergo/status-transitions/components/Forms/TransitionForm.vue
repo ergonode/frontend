@@ -10,8 +10,6 @@
             <FormSection>
                 <TranslationSelect
                     :value="source"
-                    :solid="true"
-                    :regular="true"
                     :required="true"
                     label="From"
                     :clearable="true"
@@ -21,8 +19,6 @@
                     @input="setSource" />
                 <TranslationSelect
                     :value="destination"
-                    :solid="true"
-                    :regular="true"
                     :required="true"
                     label="To"
                     :clearable="true"
@@ -35,8 +31,6 @@
             <FormSection title="Send notification to">
                 <TranslationLazySelect
                     :value="roles"
-                    :solid="true"
-                    :regular="true"
                     :clearable="true"
                     :multiselect="true"
                     label="Role"
@@ -50,8 +44,13 @@
 </template>
 
 <script>
-import { isEmpty } from '@Core/models/objectWrapper';
-import { mapActions, mapState } from 'vuex';
+import {
+    isEmpty,
+} from '@Core/models/objectWrapper';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 const getRolesOptions = () => import('@Users/services/getRolesOptions.service');
 
@@ -75,8 +74,13 @@ export default {
         }),
         isDisabled() {
             if (!isEmpty(this.$route.params)) {
-                const { id } = this.$route.params;
-                const [source, destination] = id.split('--');
+                const {
+                    id,
+                } = this.$route.params;
+                const [
+                    source,
+                    destination,
+                ] = id.split('--');
 
                 return Boolean(source) && Boolean(destination);
             }
@@ -91,8 +95,12 @@ export default {
                 || status.id !== this.source.id);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess(['WORKFLOW_UPDATE']))
-            || (!this.isDisabled && !this.$hasAccess(['WORKFLOW_CREATE']));
+            return (this.isDisabled && !this.$hasAccess([
+                'WORKFLOW_UPDATE',
+            ]))
+            || (!this.isDisabled && !this.$hasAccess([
+                'WORKFLOW_CREATE',
+            ]));
         },
         roleFieldKey() {
             return 'roleId';
@@ -112,7 +120,10 @@ export default {
         ]),
         getRolesOptionsRequest() {
             return getRolesOptions().then(response => response.default(
-                { $axios: this.$axios, $store: this.$store },
+                {
+                    $axios: this.$axios,
+                    $store: this.$store,
+                },
             ));
         },
     },

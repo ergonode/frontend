@@ -17,9 +17,14 @@
 </template>
 
 <script>
-import { GREEN, GREY } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    GREEN,
+    GREY,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import Icon from '@Core/components/Icons/Icon';
-import { SORTING_ORDER } from '@Core/defaults/icons';
+import {
+    SORTING_ORDER,
+} from '@Core/defaults/icons';
 
 export default {
     name: 'IconArrowSort',

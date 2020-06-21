@@ -49,7 +49,10 @@ test('Element has correct values of obstacle points', () => {
         height: 1,
     };
 
-    expect(getObstaclePositionsForElement(elementBounds)[0]).toEqual({ row: 1, column: 1 });
+    expect(getObstaclePositionsForElement(elementBounds)[0]).toEqual({
+        row: 1,
+        column: 1,
+    });
 });
 
 test('Based on theme elements getting number of elements to highlight', () => {
@@ -116,7 +119,8 @@ test('Based on theme elements getting number of elements to highlight', () => {
 
     expect(highlightingPositions.length).toEqual(5);
 
-    highlightingPositions = getHighlightingPositions(elementPosition, []);
+    highlightingPositions = getHighlightingPositions(elementPosition, [
+    ]);
 
     expect(highlightingPositions.length)
         .toEqual(elementPosition.maxWidth * elementPosition.maxHeight);
@@ -165,7 +169,8 @@ test('Getting max column (limited by obstacles - first obstacle met at column br
     expect(getMaxColumnForGivenRow(-1, highlightingPositions)).toEqual(2);
     expect(getMaxColumnForGivenRow(null, highlightingPositions)).toEqual(2);
     expect(getMaxColumnForGivenRow(undefined, highlightingPositions)).toEqual(2);
-    expect(getMaxColumnForGivenRow(10, [])).toEqual(0);
+    expect(getMaxColumnForGivenRow(10, [
+    ])).toEqual(0);
 });
 
 test('Getting max row (limited by obstacles - first obstacle met at row breaks iteration) for given column', () => {
@@ -211,7 +216,8 @@ test('Getting max row (limited by obstacles - first obstacle met at row breaks i
     expect(getMaxRowForGivenColumn(-1, highlightingPositions)).toEqual(5);
     expect(getMaxRowForGivenColumn(null, highlightingPositions)).toEqual(5);
     expect(getMaxRowForGivenColumn(undefined, highlightingPositions)).toEqual(5);
-    expect(getMaxRowForGivenColumn(10, [])).toEqual(0);
+    expect(getMaxRowForGivenColumn(10, [
+    ])).toEqual(0);
 });
 
 test('Getting normalized column', () => {

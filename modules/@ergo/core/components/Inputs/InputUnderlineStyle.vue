@@ -18,7 +18,10 @@
 </template>
 
 <script>
-import { ALIGNMENT, SIZE } from '@Core/defaults/theme';
+import {
+    ALIGNMENT,
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'InputSolidStyle',
@@ -26,7 +29,10 @@ export default {
         size: {
             type: String,
             default: SIZE.REGULAR,
-            validator: value => [SIZE.SMALL, SIZE.REGULAR].indexOf(value) !== -1,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
         },
         alignment: {
             type: String,

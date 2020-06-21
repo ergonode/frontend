@@ -17,7 +17,9 @@
 
 <script>
 import FormSection from '@Core/components/Form/Section/FormSection';
-import { toCapitalize } from '@Core/models/stringWrapper';
+import {
+    toCapitalize,
+} from '@Core/models/stringWrapper';
 
 export default {
     name: 'JSONSchemaFormObject',
@@ -27,7 +29,8 @@ export default {
     props: {
         value: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         schema: {
             type: Object,
@@ -35,12 +38,14 @@ export default {
         },
         errorMessages: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
     },
     data() {
         return {
-            objectComponents: [],
+            objectComponents: [
+            ],
             localValue: this.value,
         };
     },
@@ -54,8 +59,11 @@ export default {
     },
     methods: {
         initializeComponents() {
-            const { length } = this.fieldsKeys;
-            const components = [];
+            const {
+                length,
+            } = this.fieldsKeys;
+            const components = [
+            ];
 
             for (let i = 0; i < length; i += 1) {
                 const key = this.fieldsKeys[i];
@@ -75,9 +83,14 @@ export default {
 
             return components;
         },
-        onValueChange({ key, value }) {
+        onValueChange({
+            key, value,
+        }) {
             this.localValue[key] = value;
-            this.$emit('input', { key: this.$vnode.key, value: this.localValue });
+            this.$emit('input', {
+                key: this.$vnode.key,
+                value: this.localValue,
+            });
         },
     },
 };

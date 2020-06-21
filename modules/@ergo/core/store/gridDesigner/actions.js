@@ -10,49 +10,93 @@ import {
     getTreeWhenGhostElementRemoved,
 } from '@Core/models/template_grid/TreeCalculations';
 
-import { types } from './mutations';
+import {
+    types,
+} from './mutations';
 
 export default {
-    setRowsCount: ({ commit }, value) => {
+    setRowsCount: ({
+        commit,
+    }, value) => {
         commit(types.SET_ROWS_COUNT, value);
     },
-    setGridData: ({ commit }, data) => {
+    setGridData: ({
+        commit,
+    }, data) => {
         commit(types.SET_GRID_DATA, data);
     },
-    setFullGridData: ({ commit, state }, data) => {
+    setFullGridData: ({
+        commit, state,
+    }, data) => {
         const newFullGridData = getFullTree(state.hiddenItems, data);
 
         commit(types.SET_FULL_GRID_DATA, newFullGridData);
     },
-    setGridWhenCollapse: ({ commit }, { data, index }) => {
+    setGridWhenCollapse: ({
+        commit,
+    }, {
+        data, index,
+    }) => {
         const newGrid = getTreeWhenElementCollapse(data, index);
 
         commit(types.SET_GRID_DATA, newGrid);
     },
-    setGridWhenExpand: ({ commit, state }, { id, index }) => {
+    setGridWhenExpand: ({
+        commit, state,
+    }, {
+        id, index,
+    }) => {
         const newGrid = getTreeWhenElementExpand(state.hiddenItems[id], state.gridData, index);
 
         commit(types.SET_GRID_DATA, newGrid);
     },
-    setExpandItem: ({ commit }, { index, value }) => {
-        commit(types.SET_EXPAND_ITEM, { index, value });
+    setExpandItem: ({
+        commit,
+    }, {
+        index, value,
+    }) => {
+        commit(types.SET_EXPAND_ITEM, {
+            index,
+            value,
+        });
     },
-    setChildrenLength: ({ commit, state, getters }, { id, value }) => {
+    setChildrenLength: ({
+        commit, state, getters,
+    }, {
+        id, value,
+    }) => {
         if (id !== 'root') {
             const index = getters.getIndexById(id);
-            const { children } = state.gridData[index];
+            const {
+                children,
+            } = state.gridData[index];
 
-            commit(types.SET_CHILDREN_LENGTH, { index, value: children + value });
+            commit(types.SET_CHILDREN_LENGTH, {
+                index,
+                value: children + value,
+            });
         }
     },
-    setHiddenItem: ({ commit }, { key, value }) => {
-        commit(types.SET_HIDDEN_ITEM, { key, value });
+    setHiddenItem: ({
+        commit,
+    }, {
+        key, value,
+    }) => {
+        commit(types.SET_HIDDEN_ITEM, {
+            key,
+            value,
+        });
     },
-    addGridItem: ({ commit, getters }, item) => {
+    addGridItem: ({
+        commit, getters,
+    }, item) => {
         const findIndex = getters.getIndexById(item.id);
 
         if (findIndex >= 0) {
-            commit(types.SET_GRID_ITEM, { index: findIndex, item });
+            commit(types.SET_GRID_ITEM, {
+                index: findIndex,
+                item,
+            });
         } else {
             commit(types.ADD_GRID_ITEM, item);
         }
@@ -66,8 +110,11 @@ export default {
         dispatch('setGridData', newGrid);
         dispatch('setFullGridData', newGrid);
     },
-    removeGridItem: ({ state, dispatch }, id) => {
-        let newGrid = [];
+    removeGridItem: ({
+        state, dispatch,
+    }, id) => {
+        let newGrid = [
+        ];
 
         if (Number.isInteger(id)) {
             newGrid = getTreeWhenElementRemoved(state.gridData, id);
@@ -77,8 +124,12 @@ export default {
         }
         dispatch('setGridData', newGrid);
     },
-    removeHiddenItem: ({ commit }, key) => {
+    removeHiddenItem: ({
+        commit,
+    }, key) => {
         commit(types.REMOVE_HIDDEN_ITEM, key);
     },
-    clearStorage: ({ commit }) => commit(types.CLEAR_STATE),
+    clearStorage: ({
+        commit,
+    }) => commit(types.CLEAR_STATE),
 };

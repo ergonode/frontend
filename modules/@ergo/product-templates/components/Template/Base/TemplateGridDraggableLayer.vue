@@ -32,13 +32,15 @@ export default {
         },
         highlightedPositions: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
     },
     computed: {
         gridLayerPositions() {
             const length = this.rowsNumber * this.columnsNumber;
-            const positions = [];
+            const positions = [
+            ];
 
             for (let i = 1; i <= length; i += 1) {
                 const row = Math.ceil(i / this.columnsNumber);

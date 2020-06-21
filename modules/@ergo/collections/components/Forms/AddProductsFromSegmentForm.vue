@@ -8,10 +8,8 @@
             <FormSection>
                 <TranslationSelect
                     :value="segments"
-                    solid
                     :multiselect="true"
                     label="From segmentation rules"
-                    regular
                     :disabled="isDisabledByPrivileges"
                     :error-messages="errorMessages[segmentsFieldKey]"
                     :options="segmentOptions"
@@ -33,17 +31,23 @@ export default {
     props: {
         segments: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
         segmentOptions: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
     },
     computed: {
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess(['PRODUCT_COLLECTION_UPDATE']))
-                || (!this.isDisabled && !this.$hasAccess(['PRODUCT_COLLECTION_CREATE']));
+            return (this.isDisabled && !this.$hasAccess([
+                'PRODUCT_COLLECTION_UPDATE',
+            ]))
+                || (!this.isDisabled && !this.$hasAccess([
+                    'PRODUCT_COLLECTION_CREATE',
+                ]));
         },
         segmentsFieldKey() {
             return 'segments';

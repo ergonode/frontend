@@ -27,7 +27,11 @@ export default {
     components: {
         ResponsiveCenteredViewTemplate,
     },
-    mixins: [fetchGridDataMixin({ path: 'workflow/default/transitions' })],
+    mixins: [
+        fetchGridDataMixin({
+            path: 'workflow/default/transitions',
+        }),
+    ],
     methods: {
         onEditRow(args) {
             const lastIndex = args.length - 1;
@@ -35,7 +39,9 @@ export default {
 
             this.$router.push({
                 name: 'transition-id-general',
-                params: { id },
+                params: {
+                    id,
+                },
             });
         },
     },

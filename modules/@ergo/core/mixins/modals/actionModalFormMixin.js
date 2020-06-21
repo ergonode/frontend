@@ -3,10 +3,16 @@
  * See LICENSE for license details.
  */
 
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { mapActions } from 'vuex';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    mapActions,
+} from 'vuex';
 
-export default function ({ action, namespace, request }) {
+export default function ({
+    action, namespace, request,
+}) {
     return {
         data() {
             return {
@@ -28,10 +34,15 @@ export default function ({ action, namespace, request }) {
                 request().then(response => response.default({
                     $axios: this.$axios,
                     $store: this.$store,
-                }).then(({ id }) => {
+                }).then(({
+                    id,
+                }) => {
                     this.isRequestPending = false;
                     this.removeValidationErrors();
-                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: `${namespace} has been ${action.toLowerCase()}d` });
+                    this.$addAlert({
+                        type: ALERT_TYPE.SUCCESS,
+                        message: `${namespace} has been ${action.toLowerCase()}d`,
+                    });
 
                     onSuccess(id);
 

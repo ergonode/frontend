@@ -44,11 +44,16 @@
 </template>
 
 <script>
-import { WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    WHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import IconButton from '@Core/components/Buttons/IconButton';
 import IconLink from '@Core/components/Icons/Editor/IconLink';
 import IconClose from '@Core/components/Icons/Window/IconClose';
-import { SIZE, THEME } from '@Core/defaults/theme';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 import {
     EditorMenuBubble,
 } from 'tiptap';
@@ -97,7 +102,9 @@ export default {
             this.linkMenuIsActive = false;
         },
         setLinkUrl(commands) {
-            commands.link({ href: this.linkUrl });
+            commands.link({
+                href: this.linkUrl,
+            });
             this.onHideLinkMenu();
         },
     },

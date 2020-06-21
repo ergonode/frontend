@@ -43,7 +43,9 @@ import {
     getYearsWithinRange,
     zeroPad,
 } from '@Core/models/calendar/calendar';
-import { CalendarType } from '@Core/models/calendar/CalendarType';
+import {
+    CalendarType,
+} from '@Core/models/calendar/CalendarType';
 
 export default {
     name: 'DatePickerContent',
@@ -70,7 +72,8 @@ export default {
         const month = this.calendarDate.getMonth() + 1;
 
         return {
-            years: getYearsWithinRange([], year),
+            years: getYearsWithinRange([
+            ], year),
             currentYear: today.getFullYear(),
             currentMonth: today.getMonth() + 1,
             month,

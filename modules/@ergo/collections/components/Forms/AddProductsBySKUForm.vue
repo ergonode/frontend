@@ -8,7 +8,6 @@
             <FormSection>
                 <TextArea
                     :value="productSkus"
-                    solid
                     label="By SKU"
                     hint="Separate multiple SKU’s by using enter or comma, e.g. “SKU1, SKU2, SKU3”"
                     resize="none"
@@ -38,8 +37,12 @@ export default {
     },
     computed: {
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess(['PRODUCT_COLLECTION_UPDATE']))
-                || (!this.isDisabled && !this.$hasAccess(['PRODUCT_COLLECTION_CREATE']));
+            return (this.isDisabled && !this.$hasAccess([
+                'PRODUCT_COLLECTION_UPDATE',
+            ]))
+                || (!this.isDisabled && !this.$hasAccess([
+                    'PRODUCT_COLLECTION_CREATE',
+                ]));
         },
         skusFieldKey() {
             return 'skus';

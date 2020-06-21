@@ -114,10 +114,18 @@ import InputController from '@Core/components/Inputs/InputController';
 import InputLabel from '@Core/components/Inputs/InputLabel';
 import InputSelectValue from '@Core/components/Inputs/InputSelectValue';
 import SelectDropDown from '@Core/components/Inputs/Select/DropDown/SelectDropDown';
-import { ARROW } from '@Core/defaults/icons';
-import { ALIGNMENT, INPUT_TYPE, SIZE } from '@Core/defaults/theme';
+import {
+    ARROW,
+} from '@Core/defaults/icons';
+import {
+    ALIGNMENT,
+    INPUT_TYPE,
+    SIZE,
+} from '@Core/defaults/theme';
 import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
-import { toCapitalize } from '@Core/models/stringWrapper';
+import {
+    toCapitalize,
+} from '@Core/models/stringWrapper';
 
 export default {
     name: 'Select',
@@ -129,20 +137,31 @@ export default {
         InputSelectValue,
         ErrorHint: () => import('@Core/components/Hints/ErrorHint'),
     },
-    mixins: [associatedLabelMixin],
+    mixins: [
+        associatedLabelMixin,
+    ],
     props: {
         value: {
-            type: [Array, String, Number, Object],
+            type: [
+                Array,
+                String,
+                Number,
+                Object,
+            ],
             default: '',
         },
         options: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
         size: {
             type: String,
             default: SIZE.REGULAR,
-            validator: value => [SIZE.SMALL, SIZE.REGULAR].indexOf(value) !== -1,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
         },
         alignment: {
             type: String,
@@ -213,14 +232,16 @@ export default {
     },
     data() {
         return {
-            selectedOptions: {},
+            selectedOptions: {
+            },
             searchResult: '',
             isBlurringNeeded: false,
             isMouseMoving: false,
             isFocused: false,
             hasAnyValueSelected: false,
             needsToRender: false,
-            offset: {},
+            offset: {
+            },
         };
     },
     computed: {
@@ -254,7 +275,8 @@ export default {
         value: {
             immediate: true,
             handler() {
-                let selectedOptions = {};
+                let selectedOptions = {
+                };
 
                 if (Array.isArray(this.value) && this.value.length) {
                     this.value.forEach((option) => {
@@ -262,7 +284,9 @@ export default {
                     });
                     this.hasAnyValueSelected = true;
                 } else if (!Array.isArray(this.value) && (this.value || this.value === 0)) {
-                    selectedOptions = { [JSON.stringify(this.value)]: this.value };
+                    selectedOptions = {
+                        [JSON.stringify(this.value)]: this.value,
+                    };
                     this.hasAnyValueSelected = true;
                 } else {
                     this.hasAnyValueSelected = false;
@@ -286,7 +310,10 @@ export default {
             } = this.$refs.activator.$el.getBoundingClientRect();
 
             return {
-                x, y, width, height,
+                x,
+                y,
+                width,
+                height,
             };
         },
         blur() {
@@ -300,9 +327,11 @@ export default {
             this.$emit('search', value);
         },
         onClear() {
-            this.selectedOptions = {};
+            this.selectedOptions = {
+            };
 
-            this.$emit('input', this.multiselect ? [] : '');
+            this.$emit('input', this.multiselect ? [
+            ] : '');
         },
         onSelectValue(value) {
             this.$emit('input', value);
@@ -365,7 +394,9 @@ export default {
         onMouseMove() {
             this.isMouseMoving = true;
         },
-        onClickOutside({ event, isClickedOutside }) {
+        onClickOutside({
+            event, isClickedOutside,
+        }) {
             const isClickedInsideActivator = this.$refs.activator.$el.contains(event.target);
 
             if (isClickedOutside

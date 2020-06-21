@@ -40,8 +40,12 @@ import Button from '@Core/components/Buttons/Button';
 import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
 import TextField from '@Core/components/Inputs/TextField';
 import Toggler from '@Core/components/Inputs/Toggler/Toggler';
-import { INPUT_TYPE } from '@Core/defaults/theme';
-import { mapActions } from 'vuex';
+import {
+    INPUT_TYPE,
+} from '@Core/defaults/theme';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'LoginCredentialsForm',
@@ -61,7 +65,9 @@ export default {
     },
     computed: {
         passwordInputType() {
-            return { type: this.isPasswordVisible ? 'text' : 'password' };
+            return {
+                type: this.isPasswordVisible ? 'text' : 'password',
+            };
         },
         underlineInputType() {
             return INPUT_TYPE.UNDERLINE;
@@ -79,7 +85,9 @@ export default {
                         password: this.password,
                     },
                 });
-                this.$router.push({ name: 'dashboard' });
+                this.$router.push({
+                    name: 'dashboard',
+                });
             } catch (e) {
                 console.error(e);
             }

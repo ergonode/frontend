@@ -10,8 +10,6 @@
             <template #validator="{ errorMessages }">
                 <TranslationSelect
                     :value="fieldData"
-                    solid
-                    regular
                     :clearable="true"
                     :label="label"
                     :options="options"
@@ -38,10 +36,18 @@
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import InfoHint from '@Core/components/Hints/InfoHint';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
-import { getMappedObjectOption, getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
+import {
+    getMappedObjectOption,
+    getMappedObjectOptions,
+} from '@Core/models/mappers/translationsMapper';
 import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
-import { debounce } from 'debounce';
-import { mapActions, mapState } from 'vuex';
+import {
+    debounce,
+} from 'debounce';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductTemplateFormSelectField',
@@ -54,19 +60,23 @@ export default {
     props: {
         size: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         position: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         parameters: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         properties: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         disabled: {
             type: Boolean,
@@ -91,7 +101,9 @@ export default {
             draft: state => state.draft,
         }),
         fieldData() {
-            const { attribute_code } = this.properties;
+            const {
+                attribute_code,
+            } = this.properties;
             const value = this.draft[this.languageCode][attribute_code];
 
             if (!this.hasOptions || !value) {
@@ -113,7 +125,10 @@ export default {
             return typeof this.properties.options !== 'undefined';
         },
         options() {
-            if (!this.hasOptions) return [];
+            if (!this.hasOptions) {
+                return [
+                ];
+            }
 
             return getMappedObjectOptions({
                 options: this.properties.options,

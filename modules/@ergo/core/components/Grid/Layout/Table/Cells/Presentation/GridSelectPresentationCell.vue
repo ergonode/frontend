@@ -20,12 +20,16 @@ export default {
     },
     props: {
         value: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
         options: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         isLocked: {
             type: Boolean,
@@ -38,7 +42,9 @@ export default {
                 return '';
             }
 
-            const { code, label } = this.options[this.value];
+            const {
+                code, label,
+            } = this.options[this.value];
 
             return label || `${code}`;
         },

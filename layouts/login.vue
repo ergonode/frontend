@@ -15,7 +15,9 @@ export default {
     components: {
         LoginLayout: () => import('@Core/layouts/login'),
     },
-    middleware({ store, redirect }) {
+    middleware({
+        store, redirect,
+    }) {
         if (store.state.authentication.isLogged) {
             return redirect('/dashboard');
         }

@@ -3,9 +3,13 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    loaders: {},
-    modals: {},
-    languagesTree: [],
-    languages: [],
+    loaders: {
+    },
+    modals: {
+    },
+    languagesTree: [
+    ],
+    languages: [
+    ],
     defaultLanguageCodeByPrivileges: null,
 });

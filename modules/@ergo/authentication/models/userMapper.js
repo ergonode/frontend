@@ -4,8 +4,11 @@
  */
 
 export function getMappedPrivileges(privileges) {
-    const { length } = privileges;
-    const mappedPrivileges = {};
+    const {
+        length,
+    } = privileges;
+    const mappedPrivileges = {
+    };
 
     for (let i = 0; i < length; i += 1) {
         mappedPrivileges[privileges[i]] = true;

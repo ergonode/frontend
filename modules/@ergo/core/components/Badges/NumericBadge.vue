@@ -11,7 +11,9 @@
 <script>
 import BadgeLabel from '@Core/components/Badges/BadgeLabel';
 import RoundedBadge from '@Core/components/Badges/RoundedBadge';
-import { THEME } from '@Core/defaults/theme';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'NumericBadge',

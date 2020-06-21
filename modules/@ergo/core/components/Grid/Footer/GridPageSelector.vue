@@ -11,7 +11,6 @@
             :value="value"
             style="width: 72px;"
             :options="rowIntervalOptions"
-            solid
             small
             @input="onValueChange" />
         <span
@@ -21,7 +20,9 @@
 </template>
 
 <script>
-import { ROW_INTERVALS } from '@Core/defaults/grid';
+import {
+    ROW_INTERVALS,
+} from '@Core/defaults/grid';
 
 export default {
     name: 'GridPageSelector',

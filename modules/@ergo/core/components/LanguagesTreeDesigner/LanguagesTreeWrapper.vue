@@ -13,7 +13,11 @@
 
 <script>
 import TemplateGridWrapper from '@Core/components/TemplateGrid/TemplateGridWrapper';
-import { COLUMNS, CONTEXT_NAME, ROW_HEIGHT } from '@Core/defaults/languagesDesigner';
+import {
+    COLUMNS,
+    CONTEXT_NAME,
+    ROW_HEIGHT,
+} from '@Core/defaults/languagesDesigner';
 
 export default {
     name: 'LanguagesTreeWrapper',

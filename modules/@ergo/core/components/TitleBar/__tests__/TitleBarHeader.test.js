@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 import TitleBarHeader from '@Core/components/TitleBar/TitleBarHeader';
-import { mount } from '@vue/test-utils';
+import {
+    mount,
+} from '@vue/test-utils';
 
 describe('TitleBar/TitleBarHeader', () => {
     let wrapper;

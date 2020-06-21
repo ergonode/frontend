@@ -6,7 +6,9 @@ import {
     COLUMN_ACTIONS_ID,
     GRID_ACTIONS,
 } from '@Core/defaults/grid';
-import { getUUID } from '@Core/models/stringWrapper';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
 
 export function cellDataCompose(check) {
     return (data, draft, colId) => {
@@ -25,17 +27,25 @@ export function cellDataCompose(check) {
     };
 }
 
-export function getParsedFilters(filters, advancedFilters = []) {
+export function getParsedFilters(filters, advancedFilters = [
+]) {
     const entries = Object.entries(filters);
-    const { length: entriesLength } = entries;
+    const {
+        length: entriesLength,
+    } = entries;
 
     let mappedFilter = '';
 
     for (let i = 0; i < entriesLength; i += 1) {
-        const [key, filter] = entries[i];
+        const [
+            key,
+            filter,
+        ] = entries[i];
 
         if (filter) {
-            const { value, operator } = filter;
+            const {
+                value, operator,
+            } = filter;
             const advancedFilter = advancedFilters
                 .find(advFilter => advFilter.id === key
                     && Object.keys(advFilter.value).length > 1);
@@ -52,7 +62,8 @@ export function getParsedFilters(filters, advancedFilters = []) {
 }
 
 export function getParsedAdvancedFilters(filters) {
-    const mappedFilter = [];
+    const mappedFilter = [
+    ];
 
     filters.forEach((filter) => {
         if (filter.value.isEmptyRecord) {
@@ -70,20 +81,32 @@ export function getParsedAdvancedFilters(filters) {
 }
 
 export function getSortedColumnsByIDs(columns, columnsID) {
-    return [...columns.sort((a, b) => columnsID.indexOf(a.id) - columnsID.indexOf(b.id))];
+    return [
+        ...columns.sort((a, b) => columnsID.indexOf(a.id) - columnsID.indexOf(b.id)),
+    ];
 }
 
-export function getMappedData({ columns, rows, hasLinks }) {
-    const { length: columnsNumber } = columns;
-    const { length: rowsNumber } = rows;
-    const data = {};
+export function getMappedData({
+    columns, rows, hasLinks,
+}) {
+    const {
+        length: columnsNumber,
+    } = columns;
+    const {
+        length: rowsNumber,
+    } = rows;
+    const data = {
+    };
 
     for (let j = 0; j < rowsNumber; j += 1) {
         for (let i = 0; i < columnsNumber; i += 1) {
-            const { id } = columns[i];
+            const {
+                id,
+            } = columns[i];
 
             if (!data[id]) {
-                data[id] = [];
+                data[id] = [
+                ];
             }
 
             data[id].push(rows[j][id]);
@@ -91,14 +114,16 @@ export function getMappedData({ columns, rows, hasLinks }) {
 
         if (hasLinks) {
             if (!data[COLUMN_ACTIONS_ID]) {
-                data[COLUMN_ACTIONS_ID] = {};
+                data[COLUMN_ACTIONS_ID] = {
+                };
             }
 
             for (let x = 0; x < GRID_ACTIONS.length; x += 1) {
                 const key = GRID_ACTIONS[x];
 
                 if (!data[COLUMN_ACTIONS_ID][key]) {
-                    data[COLUMN_ACTIONS_ID][key] = {};
+                    data[COLUMN_ACTIONS_ID][key] = {
+                    };
                 }
 
                 if (rows[j]._links.value[key]) {
@@ -108,7 +133,8 @@ export function getMappedData({ columns, rows, hasLinks }) {
         }
     }
 
-    const idColumn = [];
+    const idColumn = [
+    ];
 
     for (let i = 0; i < rowsNumber; i += 1) {
         idColumn.push(rows[i].id ? rows[i].id.value : getUUID());

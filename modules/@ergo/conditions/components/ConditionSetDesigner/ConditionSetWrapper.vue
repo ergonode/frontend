@@ -25,9 +25,16 @@
 </template>
 
 <script>
-import { COLUMNS, CONTEXT_NAME, ROW_HEIGHT } from '@Conditions/defaults/conditionsDesigner';
+import {
+    COLUMNS,
+    CONTEXT_NAME,
+    ROW_HEIGHT,
+} from '@Conditions/defaults/conditionsDesigner';
 import TemplateGridWrapper from '@Core/components/TemplateGrid/TemplateGridWrapper';
-import { mapActions, mapState } from 'vuex';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ConditionSetWrapper',
@@ -59,14 +66,21 @@ export default {
             'removeGridItem',
         ]),
         getCondition(id) {
-            const [correctId] = id.split('--');
-            return this.conditions[correctId] || {};
+            const [
+                correctId,
+            ] = id.split('--');
+            return this.conditions[correctId] || {
+            };
         },
         onGetConditionConfigurationById(id) {
-            const [correctId] = id.split('--');
+            const [
+                correctId,
+            ] = id.split('--');
 
             if (!this.conditions[correctId]) {
-                this.getConditionConfigurationById({ conditionId: correctId });
+                this.getConditionConfigurationById({
+                    conditionId: correctId,
+                });
             }
             this.setConditionValue({
                 conditionId: id,

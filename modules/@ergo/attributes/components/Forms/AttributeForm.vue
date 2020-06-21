@@ -18,11 +18,9 @@
                 <TextField
                     :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
-                    solid
                     required
                     :error-messages="errorMessages[codeFieldKey]"
                     :disabled="isDisabled || isDisabledByPrivileges"
-                    regular
                     label="System name"
                     hint="Attribute code must be unique"
                     @input="setAttributeCode" />
@@ -30,8 +28,6 @@
                     :data-cy="dataCyGenerator(groupsFieldKey)"
                     :value="groups"
                     label="Groups"
-                    :solid="true"
-                    :regular="true"
                     :multiselect="true"
                     :clearable="true"
                     :disabled="isDisabledByPrivileges"
@@ -41,10 +37,8 @@
                 <Select
                     :data-cy="dataCyGenerator(typeFieldKey)"
                     :value="type"
-                    solid
                     required
                     label="Type"
-                    regular
                     :disabled="isDisabled || isDisabledByPrivileges"
                     :options="attributeTypeOptions"
                     :error-messages="errorMessages[typeFieldKey]"
@@ -55,10 +49,8 @@
                 <Select
                     :data-cy="dataCyGenerator(scopeFieldKey)"
                     :value="scope"
-                    solid
                     required
                     label="Scope"
-                    regular
                     :disabled="isDisabledByPrivileges"
                     :options="attributeScopeOptions"
                     :error-messages="errorMessages[scopeFieldKey]"
@@ -72,9 +64,7 @@
                     :data-cy="dataCyGenerator('params')"
                     key="attrHasParams"
                     :value="parameter"
-                    solid
                     required
-                    regular
                     :label="paramsLabel"
                     :options="attributeParametersOptions"
                     :error-messages="errorMessages[paramsFieldKey]"
@@ -95,14 +85,27 @@
 </template>
 
 <script>
-import { SCOPE, TYPES } from '@Attributes/defaults/attributes';
 import {
-    getParamsKeyForType, getParamsOptionsForType,
-    hasOptions, hasParams,
+    SCOPE,
+    TYPES,
+} from '@Attributes/defaults/attributes';
+import {
+    getParamsKeyForType,
+    getParamsOptionsForType,
+    hasOptions,
+    hasParams,
 } from '@Attributes/models/attributeTypes';
-import { getKeyByValue } from '@Core/models/objectWrapper';
-import { toCapitalize } from '@Core/models/stringWrapper';
-import { mapActions, mapGetters, mapState } from 'vuex';
+import {
+    getKeyByValue,
+} from '@Core/models/objectWrapper';
+import {
+    toCapitalize,
+} from '@Core/models/stringWrapper';
+import {
+    mapActions,
+    mapGetters,
+    mapState,
+} from 'vuex';
 
 const getAttributeGroupsOptions = () => import('@Attributes/services/getAttributeGroupsOptions.service');
 
@@ -150,8 +153,12 @@ export default {
             return Boolean(this.attrID);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess(['ATTRIBUTE_UPDATE']))
-            || (!this.isDisabled && !this.$hasAccess(['ATTRIBUTE_CREATE']));
+            return (this.isDisabled && !this.$hasAccess([
+                'ATTRIBUTE_UPDATE',
+            ]))
+            || (!this.isDisabled && !this.$hasAccess([
+                'ATTRIBUTE_CREATE',
+            ]));
         },
         isTextArea() {
             return this.typeKey === TYPES.TEXT_AREA;
@@ -218,7 +225,10 @@ export default {
         },
         getAttributeGroupOptionsRequest() {
             return getAttributeGroupsOptions().then(response => response.default(
-                { $axios: this.$axios, $store: this.$store },
+                {
+                    $axios: this.$axios,
+                    $store: this.$store,
+                },
             ));
         },
         onTypeChange(type) {

@@ -22,7 +22,10 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+import {
+    mapGetters,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'LanguagesListTab',
@@ -53,13 +56,17 @@ export default {
                 const rgx = new RegExp(this.filteredValue, 'i');
 
                 return this.getActiveLanguages.filter(
-                    ({ code, name }) => code.match(rgx) || name.match(rgx),
+                    ({
+                        code, name,
+                    }) => code.match(rgx) || name.match(rgx),
                 );
             }
             return this.getActiveLanguages;
         },
         isUserAllowedToUpdateTree() {
-            return this.$hasAccess(['SETTINGS_UPDATE']);
+            return this.$hasAccess([
+                'SETTINGS_UPDATE',
+            ]);
         },
     },
     methods: {

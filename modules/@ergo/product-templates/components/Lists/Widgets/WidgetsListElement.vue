@@ -22,7 +22,9 @@ import ListElementDescription from '@Core/components/List/ListElementDescription
 import ListElementHint from '@Core/components/List/ListElementHint';
 import ListElementIcon from '@Core/components/List/ListElementIcon';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
-import { mapActions } from 'vuex';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'WidgetsListElement',
@@ -56,7 +58,10 @@ export default {
                 this.setDraggedElement();
             }
 
-            this.setDraggableState({ propName: 'isListElementDragging', value: isDragged });
+            this.setDraggableState({
+                propName: 'isListElementDragging',
+                value: isDragged,
+            });
         },
     },
 };

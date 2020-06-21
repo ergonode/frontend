@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 import Blur from '@Core/components/Blur/Blur.vue';
-import { shallowMount } from '@vue/test-utils';
+import {
+    shallowMount,
+} from '@vue/test-utils';
 
 describe('Blur/Blur', () => {
     let wrapper;

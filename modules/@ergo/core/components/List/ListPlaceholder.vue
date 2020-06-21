@@ -19,7 +19,9 @@
 </template>
 
 <script>
-import { LAYOUT_ORIENTATION } from '@Core/defaults/layout';
+import {
+    LAYOUT_ORIENTATION,
+} from '@Core/defaults/layout';
 
 export default {
     name: 'ListPlaceholder',

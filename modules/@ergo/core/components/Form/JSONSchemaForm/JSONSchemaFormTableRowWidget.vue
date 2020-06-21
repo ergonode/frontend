@@ -27,9 +27,15 @@
 <script>
 import Fab from '@Core/components/Buttons/Fab';
 import IconDelete from '@Core/components/Icons/Actions/IconDelete';
-import { ARROW } from '@Core/defaults/icons';
-import { THEME } from '@Core/defaults/theme';
-import { toCapitalize } from '@Core/models/stringWrapper';
+import {
+    ARROW,
+} from '@Core/defaults/icons';
+import {
+    THEME,
+} from '@Core/defaults/theme';
+import {
+    toCapitalize,
+} from '@Core/models/stringWrapper';
 
 export default {
     name: 'JSONSchemaFormTableRowWidget',
@@ -48,13 +54,16 @@ export default {
         },
         value: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
     },
     data() {
         return {
-            localValue: {},
-            rowComponents: [],
+            localValue: {
+            },
+            rowComponents: [
+            ],
         };
     },
     computed: {
@@ -64,7 +73,9 @@ export default {
         gridTemplateColumns() {
             const gridTemplateColumns = this.rowComponents.map((component, index) => (index % 2 === 0 ? '1fr' : 'max-content')).join(' ');
 
-            return { gridTemplateColumns };
+            return {
+                gridTemplateColumns,
+            };
         },
         fieldsKeys() {
             return Object.keys(this.schema.properties);
@@ -75,8 +86,11 @@ export default {
     },
     methods: {
         initializeComponents() {
-            const { length } = this.fieldsKeys;
-            const components = [];
+            const {
+                length,
+            } = this.fieldsKeys;
+            const components = [
+            ];
 
             for (let i = 0; i < length; i += 1) {
                 const key = this.fieldsKeys[i];
@@ -106,9 +120,14 @@ export default {
 
             return components;
         },
-        onValueChange({ key, value }) {
+        onValueChange({
+            key, value,
+        }) {
             this.localValue[key] = value;
-            this.$emit('input', { index: this.index, value: this.localValue });
+            this.$emit('input', {
+                index: this.index,
+                value: this.localValue,
+            });
         },
         onRemoveRow() {
             this.$emit('remove', this.index);

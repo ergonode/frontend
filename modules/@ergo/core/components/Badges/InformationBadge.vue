@@ -12,9 +12,14 @@
 </template>
 
 <script>
-import { GRAPHITE_DARK, WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    GRAPHITE_DARK,
+    WHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import BadgeLabel from '@Core/components/Badges/BadgeLabel';
-import { SIZE } from '@Core/defaults/theme';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'InformationBadge',
@@ -23,7 +28,10 @@ export default {
     },
     props: {
         title: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
         background: {

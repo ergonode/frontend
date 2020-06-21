@@ -27,12 +27,21 @@ export default {
     components: {
         ResponsiveCenteredViewTemplate,
     },
-    mixins: [fetchGridDataMixin({ path: 'segments' })],
+    mixins: [
+        fetchGridDataMixin({
+            path: 'segments',
+        }),
+    ],
     methods: {
         onEditRow(args) {
             const lastIndex = args.length - 1;
 
-            this.$router.push({ name: 'segment-id-general', params: { id: args[lastIndex] } });
+            this.$router.push({
+                name: 'segment-id-general',
+                params: {
+                    id: args[lastIndex],
+                },
+            });
         },
     },
 };

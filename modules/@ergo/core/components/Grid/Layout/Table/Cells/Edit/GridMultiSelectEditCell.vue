@@ -8,7 +8,6 @@
             :style="{ width: `${width}px`, height: `${height}px` }"
             v-model="localValue"
             :autofocus="true"
-            :solid="true"
             :small="true"
             :clearable="true"
             :multiselect="true"
@@ -21,12 +20,19 @@
 <script>
 import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
-import { arraysAreEqual } from '@Core/models/arrayWrapper';
-import { getMappedMatchedArrayOptions, getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
+import {
+    arraysAreEqual,
+} from '@Core/models/arrayWrapper';
+import {
+    getMappedMatchedArrayOptions,
+    getMappedObjectOptions,
+} from '@Core/models/mappers/translationsMapper';
 
 export default {
     name: 'GridMultiSelectEditCell',
-    inject: ['setEditingCellCoordinates'],
+    inject: [
+        'setEditingCellCoordinates',
+    ],
     components: {
         GridActivatorEditCell,
         TranslationSelect,
@@ -34,11 +40,13 @@ export default {
     props: {
         value: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
         options: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         languageCode: {
             type: String,

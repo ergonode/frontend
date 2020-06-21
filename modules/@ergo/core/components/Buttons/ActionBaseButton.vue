@@ -49,7 +49,9 @@ import ListElement from '@Core/components/List/ListElement';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
-import { isObject } from '@Core/models/objectWrapper';
+import {
+    isObject,
+} from '@Core/models/objectWrapper';
 
 export default {
     name: 'ActionButton',
@@ -67,7 +69,8 @@ export default {
          */
         options: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
         /**
          * The flag which tells if the dropdown has fixed content to it's parent width
@@ -104,7 +107,10 @@ export default {
             } = this.$refs.activator.getBoundingClientRect();
 
             return {
-                x, y, width, height: height + 1,
+                x,
+                y,
+                width,
+                height: height + 1,
             };
         },
         onMouseEnter() {
@@ -118,7 +124,9 @@ export default {
         onClick() {
             this.isFocused = !this.isFocused;
         },
-        onClickOutside({ isClickedOutside }) {
+        onClickOutside({
+            isClickedOutside,
+        }) {
             if (isClickedOutside || (this.dismissible && !isClickedOutside)) {
                 this.isFocused = false;
             }

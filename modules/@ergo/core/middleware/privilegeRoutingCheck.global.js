@@ -5,12 +5,19 @@
 export default ({
     route, app, error, store,
 }) => {
-    const { meta: { privileges = [] } } = route;
+    const {
+        meta: {
+            privileges = [
+            ],
+        },
+    } = route;
 
     if (store.state.authentication.jwt && store.state.authentication.user) {
         if (privileges.length
             && !app.$hasAccess(privileges)) {
-            error({ statusCode: 403 });
+            error({
+                statusCode: 403,
+            });
         }
     }
 };

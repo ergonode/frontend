@@ -35,7 +35,9 @@
 
 <script>
 import LoginForm from '@Authentication/components/Form/LoginForm';
-import { LOGIN_STATE } from '@Authentication/defaults/login-state';
+import {
+    LOGIN_STATE,
+} from '@Authentication/defaults/login-state';
 import Button from '@Core/components/Buttons/Button';
 import Fab from '@Core/components/Buttons/Fab';
 import LinkButton from '@Core/components/Buttons/LinkButton';

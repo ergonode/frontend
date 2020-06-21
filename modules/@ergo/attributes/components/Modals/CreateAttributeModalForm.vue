@@ -24,10 +24,16 @@
 </template>
 
 <script>
-import { MODAL_ACTION } from '@Core/defaults/modals';
-import { THEME } from '@Core/defaults/theme';
+import {
+    MODAL_ACTION,
+} from '@Core/defaults/modals';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
-import { mapActions } from 'vuex';
+import {
+    mapActions,
+} from 'vuex';
 
 const createAttribute = () => import('@Attributes/services/createAttribute.service');
 
@@ -38,7 +44,13 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         AttributeForm: () => import('@Attributes/components/Forms/AttributeForm'),
     },
-    mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Attribute', request: createAttribute })],
+    mixins: [
+        actionModalFormMixin({
+            action: MODAL_ACTION.CREATE,
+            namespace: 'Attribute',
+            request: createAttribute,
+        }),
+    ],
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;

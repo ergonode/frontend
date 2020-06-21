@@ -30,7 +30,10 @@ import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
-import { mapActions, mapState } from 'vuex';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 const updateColumnsTransform = () => import('@Core/models/drag_and_drop/updateColumnsTransform');
 
@@ -86,7 +89,9 @@ export default {
         onDragStart(event) {
             if (this.isResizing) return false;
 
-            const [header] = this.$el.children;
+            const [
+                header,
+            ] = this.$el.children;
             const isMouseAboveColumnHeader = event.offsetY < header.offsetHeight;
 
             if (!isMouseAboveColumnHeader) {
@@ -106,7 +111,10 @@ export default {
             this.setGhostIndex(this.index);
             this.setDraggedElIndex(this.index);
             this.setDraggedElement(this.column.id);
-            this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENT.COLUMN });
+            this.setDraggableState({
+                propName: 'draggedElementOnGrid',
+                value: DRAGGED_ELEMENT.COLUMN,
+            });
 
             return true;
         },
@@ -122,13 +130,18 @@ export default {
 
             this.removeColumnsTransform();
             this.resetDraggedElementCache();
-            this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
+            this.setDraggableState({
+                propName: 'draggedElementOnGrid',
+                value: null,
+            });
             this.isDragged = false;
         },
         onDragOver(event) {
             event.preventDefault();
 
-            const { pageX } = event;
+            const {
+                pageX,
+            } = event;
             const {
                 x: columnXPos, width: columnWidth,
             } = this.$el.getBoundingClientRect();
@@ -164,7 +177,8 @@ export default {
         },
         onUpdateWidth(width) {
             this.$emit('updateWidth', {
-                index: this.index, width,
+                index: this.index,
+                width,
             });
         },
         onResize(isResizing) {
@@ -198,7 +212,9 @@ export default {
         },
         removeColumnsTransform() {
             const contentGrid = this.getGridContentElement();
-            const { length } = contentGrid.children;
+            const {
+                length,
+            } = contentGrid.children;
 
             for (let i = 0; i < length; i += 1) {
                 contentGrid.children[i].style.transform = null;

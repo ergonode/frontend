@@ -24,12 +24,22 @@
 </template>
 
 <script>
-import { TYPES } from '@Attributes/defaults/attributes';
+import {
+    TYPES,
+} from '@Attributes/defaults/attributes';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import { DATA_LIMIT } from '@Core/defaults/grid';
-import { getParsedFilters } from '@Core/models/mappers/gridDataMapper';
-import { getGridData } from '@Core/services/grid/getGridData.service';
-import { mapState } from 'vuex';
+import {
+    DATA_LIMIT,
+} from '@Core/defaults/grid';
+import {
+    getParsedFilters,
+} from '@Core/models/mappers/gridDataMapper';
+import {
+    getGridData,
+} from '@Core/services/grid/getGridData.service';
+import {
+    mapState,
+} from 'vuex';
 
 const getAttributesByFilter = () => import('@Attributes/services/getAttributesByFilter.service');
 
@@ -39,8 +49,14 @@ export default {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('@Core/components/Grid/Grid'),
     },
-    asyncData({ app, store, params: { id } }) {
-        const { language: languageCode } = store.state.authentication.user;
+    asyncData({
+        app, store, params: {
+            id,
+        },
+    }) {
+        const {
+            language: languageCode,
+        } = store.state.authentication.user;
         const productsParams = {
             limit: 9999,
             offset: 0,
@@ -57,8 +73,14 @@ export default {
                 }),
             ),
             app.$axios.$get(`${languageCode}/products/${id}/bindings`),
-            app.$axios.$get(`${languageCode}/products/${id}/children`, { params: productsParams }),
-        ]).then(([selectAttributes, productBindings, productChildren]) => {
+            app.$axios.$get(`${languageCode}/products/${id}/children`, {
+                params: productsParams,
+            }),
+        ]).then(([
+            selectAttributes,
+            productBindings,
+            productChildren,
+        ]) => {
             const attributeCodes = selectAttributes
                 .filter(
                     attribute => productBindings
@@ -66,7 +88,9 @@ export default {
                             attrId => attribute.id === attrId,
                         ),
                 )
-                .map(({ key }) => key).join(',');
+                .map(({
+                    key,
+                }) => key).join(',');
             const params = {
                 offset: 0,
                 limit: DATA_LIMIT,
@@ -83,7 +107,11 @@ export default {
                 data,
                 filtered,
             }) => {
-                const tmpData = { ...data, esa_attached: [] };
+                const tmpData = {
+                    ...data,
+                    esa_attached: [
+                    ],
+                };
 
                 for (let j = 0; j < data.id.length; j += 1) {
                     tmpData.esa_attached[j] = {
@@ -94,7 +122,10 @@ export default {
 
                 return {
                     columns: [
-                        ...columns.map(column => ({ ...column, editable: false })),
+                        ...columns.map(column => ({
+                            ...column,
+                            editable: false,
+                        })),
                         {
                             language: languageCode,
                             id: 'esa_attached',
@@ -103,7 +134,8 @@ export default {
                             visible: true,
                             editable: true,
                             deletable: false,
-                            parameters: [],
+                            parameters: [
+                            ],
                         },
                     ],
                     filtered,
@@ -117,8 +149,10 @@ export default {
             localParams: {
                 offset: 0,
                 limit: DATA_LIMIT,
-                filters: {},
-                sortedColumn: {},
+                filters: {
+                },
+                sortedColumn: {
+                },
             },
         };
     },
@@ -132,7 +166,9 @@ export default {
             languageCode: state => state.user.language,
         }),
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['PRODUCT_UPDATE']);
+            return this.$hasAccess([
+                'PRODUCT_UPDATE',
+            ]);
         },
         attributeCodes() {
             return this.selectAttributes
@@ -142,7 +178,9 @@ export default {
                             id => attribute.id === id,
                         ),
                 )
-                .map(({ key }) => key).join(',');
+                .map(({
+                    key,
+                }) => key).join(',');
         },
     },
     methods: {
@@ -150,19 +188,25 @@ export default {
             offset, limit, filters, sortedColumn,
         }) {
             this.localParams = {
-                offset, limit, filters, sortedColumn,
+                offset,
+                limit,
+                filters,
+                sortedColumn,
             };
 
             const params = {
                 offset,
                 limit,
                 extended: true,
-                filter: getParsedFilters(filters, []),
+                filter: getParsedFilters(filters, [
+                ]),
                 columns: `esa_default_image:${this.languageCode},esa_default_label:${this.languageCode},${this.attributeCodes},sku,esa_template:${this.languageCode}`,
             };
 
             if (Object.keys(sortedColumn).length) {
-                const { index: colSortID, orderState } = sortedColumn;
+                const {
+                    index: colSortID, orderState,
+                } = sortedColumn;
 
                 params.field = colSortID;
                 params.order = orderState;
@@ -184,8 +228,16 @@ export default {
                     order: 'ASC',
                 };
 
-                return this.$axios.$get(`${this.languageCode}/products/${this.id}/children`, { params: productsParams }).then(({ collection }) => {
-                    const tmpData = { ...data, esa_attached: [] };
+                return this.$axios.$get(`${this.languageCode}/products/${this.id}/children`, {
+                    params: productsParams,
+                }).then(({
+                    collection,
+                }) => {
+                    const tmpData = {
+                        ...data,
+                        esa_attached: [
+                        ],
+                    };
 
                     for (let j = 0; j < data.id.length; j += 1) {
                         tmpData.esa_attached[j] = {
@@ -195,7 +247,10 @@ export default {
                     }
 
                     this.columns = [
-                        ...columns.map(column => ({ ...column, editable: false })),
+                        ...columns.map(column => ({
+                            ...column,
+                            editable: false,
+                        })),
                         {
                             language: this.languageCode,
                             id: 'esa_attached',
@@ -204,7 +259,8 @@ export default {
                             visible: true,
                             editable: true,
                             deletable: false,
-                            parameters: [],
+                            parameters: [
+                            ],
                         },
                     ];
                     this.filtered = filtered;

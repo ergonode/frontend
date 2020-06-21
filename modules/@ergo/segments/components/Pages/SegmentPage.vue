@@ -38,16 +38,22 @@
 </template>
 
 <script>
-import { Z_INDEX_LVL_0 } from '@Core/assets/scss/_js-variables/indexes.scss';
+import {
+    Z_INDEX_LVL_0,
+} from '@Core/assets/scss/_js-variables/indexes.scss';
 import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
-import { mapState } from 'vuex';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'SegmentPage',
     components: {
         Blur: () => import('@Core/components/Blur/Blur'),
     },
-    mixins: [categoryManagementPageMixin],
+    mixins: [
+        categoryManagementPageMixin,
+    ],
     computed: {
         ...mapState('draggable', {
             isListElementDragging: state => state.isListElementDragging,
@@ -58,7 +64,9 @@ export default {
         },
         blurZIndex() {
             if (this.isBlurVisible) {
-                return { zIndex: Z_INDEX_LVL_0 };
+                return {
+                    zIndex: Z_INDEX_LVL_0,
+                };
             }
             return null;
         },

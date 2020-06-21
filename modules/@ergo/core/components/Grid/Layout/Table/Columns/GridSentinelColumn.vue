@@ -7,7 +7,9 @@
 </template>
 
 <script>
-import { PINNED_COLUMN_STATE } from '@Core/defaults/grid';
+import {
+    PINNED_COLUMN_STATE,
+} from '@Core/defaults/grid';
 
 export default {
     name: 'GridSentinelColumn',
@@ -42,7 +44,9 @@ export default {
     methods: {
         initializeObserver() {
             this.observer = new IntersectionObserver(((entries) => {
-                const { length } = entries;
+                const {
+                    length,
+                } = entries;
                 for (let i = length - 1; i > -1; i -= 1) {
                     const entry = entries[i];
                     this.$emit('sticky', {
@@ -51,7 +55,9 @@ export default {
                     });
                 }
             }), {
-                threshold: [0.0],
+                threshold: [
+                    0.0,
+                ],
             });
         },
     },

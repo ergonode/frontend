@@ -31,8 +31,14 @@
 <script>
 import GridAdvancedFilterBaseContent from '@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
 import TextField from '@Core/components/Inputs/TextField';
-import { FILTER_OPERATOR } from '@Core/defaults/operators';
-import { ALIGNMENT, INPUT_TYPE, SIZE } from '@Core/defaults/theme';
+import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
+import {
+    ALIGNMENT,
+    INPUT_TYPE,
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridAdvancedFilterRangeContent',
@@ -62,7 +68,10 @@ export default {
     },
     methods: {
         onValueChange(value, operator) {
-            this.$emit('input', { value, key: operator });
+            this.$emit('input', {
+                value,
+                key: operator,
+            });
         },
         onEmptyRecordChange(value) {
             this.$emit('emptyRecord', value);

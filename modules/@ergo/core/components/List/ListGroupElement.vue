@@ -29,7 +29,9 @@
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementHint from '@Core/components/List/ListElementHint';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
-import { ARROW } from '@Core/defaults/icons';
+import {
+    ARROW,
+} from '@Core/defaults/icons';
 
 export default {
     name: 'ListGroupElement',
@@ -69,7 +71,9 @@ export default {
     },
     methods: {
         expandGroup() {
-            this.$emit('expand', { isExpanded: !this.isExpanded });
+            this.$emit('expand', {
+                isExpanded: !this.isExpanded,
+            });
         },
     },
 };

@@ -19,7 +19,10 @@
 import GridTextEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
 import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import TextField from '@Core/components/Inputs/TextField';
-import { INPUT_TYPE, SIZE } from '@Core/defaults/theme';
+import {
+    INPUT_TYPE,
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridTextEditCell',

@@ -60,7 +60,10 @@
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import UploadFileNew from '@Core/components/Inputs/UploadFile/UploadFileNew';
-import { SIZE, THEME } from '@Core/defaults/theme';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'UploadImageFileNew',
@@ -78,7 +81,10 @@ export default {
     },
     props: {
         value: {
-            type: [String, Array],
+            type: [
+                String,
+                Array,
+            ],
             default: '',
         },
         label: {
@@ -141,7 +147,8 @@ export default {
                     title: 'Upload files',
                     content: {
                         component: () => import('@Core/components/Inputs/UploadFile/UploadFileTab'),
-                        listeners: {},
+                        listeners: {
+                        },
                     },
                 },
             ];

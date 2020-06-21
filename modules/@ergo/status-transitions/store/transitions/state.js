@@ -5,6 +5,7 @@
 export default () => ({
     source: null,
     destination: null,
-    roles: [],
+    roles: [
+    ],
     conditionSetId: null,
 });

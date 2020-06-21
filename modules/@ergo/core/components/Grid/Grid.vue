@@ -101,7 +101,9 @@ import {
 import {
     insertCookieAtIndex,
 } from '@Core/models/cookies';
-import { mapState } from 'vuex';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'Grid',
@@ -117,15 +119,18 @@ export default {
     props: {
         columns: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
         data: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         advancedFilters: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
         collectionCellBinding: {
             type: Object,
@@ -181,8 +186,10 @@ export default {
             layout: this.defaultLayout,
             maxRows: DATA_LIMIT,
             currentPage: 1,
-            filters: {},
-            sortedColumn: {},
+            filters: {
+            },
+            sortedColumn: {
+            },
             collectionLayoutConfig: {
                 columnsNumber: COLUMNS_NUMBER.FOURTH_COLUMNS.value,
                 scaling: IMAGE_SCALING.FIT_TO_SIZE.value,
@@ -211,8 +218,11 @@ export default {
             return Math.ceil(this.dataCount / this.maxRows) || 1;
         },
         advancedFiltersValues() {
-            const { length } = this.advancedFilters;
-            const advancedFiltersValues = {};
+            const {
+                length,
+            } = this.advancedFilters;
+            const advancedFiltersValues = {
+            };
 
             for (let i = 0; i < length; i += 1) {
                 if (Object.keys(this.advancedFilters[i].value).length > 1) {
@@ -223,19 +233,25 @@ export default {
             return advancedFiltersValues;
         },
         collectionData() {
-            const { imageColumn, descriptionColumn } = this.collectionCellBinding;
+            const {
+                imageColumn, descriptionColumn,
+            } = this.collectionCellBinding;
 
             if (!(imageColumn && descriptionColumn && this.data[descriptionColumn])) {
-                return [];
+                return [
+                ];
             }
 
-            const collectionData = [];
+            const collectionData = [
+            ];
             const actionKeys = this.data[COLUMN_ACTIONS_ID]
                 ? Object.keys(this.data[COLUMN_ACTIONS_ID])
-                : [];
+                : [
+                ];
 
             for (let i = 0; i < this.data[descriptionColumn].length; i += 1) {
-                const actions = {};
+                const actions = {
+                };
 
                 if (this.data[COLUMN_ACTIONS_ID]) {
                     for (let j = 0; j < actionKeys.length; j += 1) {
@@ -260,7 +276,9 @@ export default {
         },
     },
     methods: {
-        onApplySettings({ tableConfig, collectionConfig }) {
+        onApplySettings({
+            tableConfig, collectionConfig,
+        }) {
             this.tableLayoutConfig = tableConfig;
             this.collectionLayoutConfig = collectionConfig;
         },

@@ -11,7 +11,6 @@
             <template #select>
                 <TreeSelect
                     :value="language"
-                    solid
                     small
                     :options="languageOptions"
                     @input="onSelect" />
@@ -51,10 +50,15 @@
 </template>
 
 <script>
-import { UNASSIGNED_GROUP_ID } from '@Core/defaults/list';
+import {
+    UNASSIGNED_GROUP_ID,
+} from '@Core/defaults/list';
 import fetchListGroupDataMixin from '@Core/mixins/list/fetchListGroupDataMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
-import { mapActions, mapState } from 'vuex';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'AttributesListTab',
@@ -70,7 +74,12 @@ export default {
         CreateAttributeModalForm: () => import('@Attributes/components/Modals/CreateAttributeModalForm'),
         TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
     },
-    mixins: [gridModalMixin, fetchListGroupDataMixin({ namespace: 'attributes' })],
+    mixins: [
+        gridModalMixin,
+        fetchListGroupDataMixin({
+            namespace: 'attributes',
+        }),
+    ],
     props: {
         isSelectLanguage: {
             type: Boolean,
@@ -79,7 +88,8 @@ export default {
     },
     data() {
         return {
-            language: {},
+            language: {
+            },
         };
     },
     computed: {
@@ -91,25 +101,40 @@ export default {
             languagesTree: state => state.languagesTree,
         }),
         languageGroups() {
-            const { code } = this.language;
+            const {
+                code,
+            } = this.language;
 
             if (!code || !this.groups[code]) {
-                return [];
+                return [
+                ];
             }
 
-            return this.groups[code].filter(({ id }) => this.groupItemsCount[id]);
+            return this.groups[code].filter(({
+                id,
+            }) => this.groupItemsCount[id]);
         },
         isUserAllowedToCreateAttribute() {
-            return this.$hasAccess(['ATTRIBUTE_CREATE']);
+            return this.$hasAccess([
+                'ATTRIBUTE_CREATE',
+            ]);
         },
         isUserAllowedToDragAttributes() {
-            const { languagePrivileges } = this.user;
-            const { code } = this.language;
+            const {
+                languagePrivileges,
+            } = this.user;
+            const {
+                code,
+            } = this.language;
 
-            return this.$hasAccess(['ATTRIBUTE_UPDATE']) && languagePrivileges[code].read;
+            return this.$hasAccess([
+                'ATTRIBUTE_UPDATE',
+            ]) && languagePrivileges[code].read;
         },
         languageOptions() {
-            const { languagePrivileges } = this.user;
+            const {
+                languagePrivileges,
+            } = this.user;
 
             return this.languagesTree.map(language => ({
                 ...language,
@@ -124,7 +149,8 @@ export default {
             .find(languegeCode => languegeCode.code === this.defaultLanguageCodeByPrivileges);
     },
     beforeDestroy() {
-        this.setDisabledElements({});
+        this.setDisabledElements({
+        });
     },
     methods: {
         ...mapActions('list', [
@@ -138,18 +164,25 @@ export default {
         },
         onSearch(value) {
             this.codeFilter = value;
-            this.getAllGroupsItems({ languageCode: this.language.code });
+            this.getAllGroupsItems({
+                languageCode: this.language.code,
+            });
         },
         async onSelect(value) {
-            const { code: languageCode } = value;
+            const {
+                code: languageCode,
+            } = value;
 
             if (typeof this.groups[languageCode] === 'undefined') {
                 await this.getGroups(value.code);
             }
 
-            const requests = [];
+            const requests = [
+            ];
 
-            if (!this.groups[languageCode].find(({ id }) => id === UNASSIGNED_GROUP_ID)) {
+            if (!this.groups[languageCode].find(({
+                id,
+            }) => id === UNASSIGNED_GROUP_ID)) {
                 requests.push(
                     this.getUnassignedGroupItems(languageCode),
                 );
@@ -158,7 +191,9 @@ export default {
             if (this.expandedGroupId) {
                 const {
                     id: groupId,
-                } = this.groups[languageCode].find(({ id }) => id === this.expandedGroupId);
+                } = this.groups[languageCode].find(({
+                    id,
+                }) => id === this.expandedGroupId);
 
                 requests.push(
                     this.getGroupItems({

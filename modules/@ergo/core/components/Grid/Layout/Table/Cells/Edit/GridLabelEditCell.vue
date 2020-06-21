@@ -8,7 +8,6 @@
             :style="{ width: `${width}px`, height: `${height}px` }"
             :value="localValue"
             :autofocus="true"
-            :solid="true"
             :small="true"
             :clearable="true"
             :options="options"
@@ -47,7 +46,9 @@ import ListElementTitle from '@Core/components/List/ListElementTitle';
 
 export default {
     name: 'GridLabelEditCell',
-    inject: ['setEditingCellCoordinates'],
+    inject: [
+        'setEditingCellCoordinates',
+    ],
     components: {
         GridActivatorEditCell,
         TranslationSelect,
@@ -63,7 +64,8 @@ export default {
         },
         colors: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         languageCode: {
             type: String,
@@ -74,7 +76,10 @@ export default {
             default: '',
         },
         rowId: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
         width: {
@@ -88,12 +93,16 @@ export default {
     },
     data() {
         return {
-            options: [],
+            options: [
+            ],
             localValue: null,
         };
     },
     created() {
-        this.$axios.$get(`${this.languageCode}/products/${this.rowId}`).then(({ workflow = [] }) => {
+        this.$axios.$get(`${this.languageCode}/products/${this.rowId}`).then(({
+            workflow = [
+            ],
+        }) => {
             this.options = workflow.map(e => ({
                 id: e.code,
                 key: e.code,

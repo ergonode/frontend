@@ -48,13 +48,19 @@
 </template>
 
 <script>
-import { GREEN, RED } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    GREEN,
+    RED,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import IconButton from '@Core/components/Buttons/IconButton';
 import IconCheck from '@Core/components/Icons/Feedback/IconCheck';
 import IconError from '@Core/components/Icons/Feedback/IconError';
 import IconFilledClose from '@Core/components/Icons/Window/IconFilledClose';
 import ProgressBar from '@Core/components/Inputs/ProgressBar';
-import { SIZE, THEME } from '@Core/defaults/theme';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'UploadFileListElement',

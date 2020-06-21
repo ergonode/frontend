@@ -32,7 +32,13 @@ export default function ({
         if (!errorResponse || !errorResponse.response) {
             return Promise.reject(new Error('Network Error'));
         }
-        const { response: { data: { message }, status, config } } = errorResponse;
+        const {
+            response: {
+                data: {
+                    message,
+                }, status, config,
+            },
+        } = errorResponse;
 
         switch (true) {
         case regExp.errors.test(status):
@@ -47,7 +53,10 @@ export default function ({
             break;
         case regExp.access.test(status):
             msg = 'Access denied';
-            error({ statusCode: 403, message: msg });
+            error({
+                statusCode: 403,
+                message: msg,
+            });
             break;
         case regExp.notFound.test(status):
             if (config.url.includes('multimedia')) {
@@ -55,7 +64,10 @@ export default function ({
                 break;
             }
             msg = 'Page not found';
-            error({ statusCode: 404, message: msg });
+            error({
+                statusCode: 404,
+                message: msg,
+            });
             break;
         case regExp.conflict.test(status):
             msg = 'Data inconsistency';
@@ -65,7 +77,10 @@ export default function ({
         }
 
         if (process.client) {
-            store.dispatch('alerts/addAlert', { type: 'error', message: msg });
+            store.dispatch('alerts/addAlert', {
+                type: 'error',
+                message: msg,
+            });
         }
         if (dev) console.error(errorResponse.response);
 

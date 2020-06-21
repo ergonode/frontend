@@ -2,15 +2,21 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-function registerStore({ module, moduleName, store }) {
+function registerStore({
+    module, moduleName, store,
+}) {
     const moduleIsRegistered = store._modules.root._children[moduleName] !== undefined;
     const stateExists = store.state[moduleName];
     if (!moduleIsRegistered) {
-        store.registerModule(moduleName, module, { preserveState: stateExists });
+        store.registerModule(moduleName, module, {
+            preserveState: stateExists,
+        });
     }
 }
 
 // eslint-disable-next-line no-unused-vars
-export default ({ app }, inject) => {
+export default ({
+    app,
+}, inject) => {
     inject('registerStore', registerStore);
 };

@@ -85,8 +85,12 @@ import DatePickerDays from '@Core/components/Inputs/DatePicker/DatePickerDays';
 import DatePickerHeader from '@Core/components/Inputs/DatePicker/DatePickerHeader';
 import DatePickerInputHeader from '@Core/components/Inputs/DatePicker/DatePickerInputHeader';
 import DatePickerNavigationHeader from '@Core/components/Inputs/DatePicker/DatePickerNavigationHeader';
-import { ARROW } from '@Core/defaults/icons';
-import { THEME } from '@Core/defaults/theme';
+import {
+    ARROW,
+} from '@Core/defaults/icons';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 import calendar, {
     CALENDAR_MONTHS,
     getNextMonth,
@@ -110,7 +114,10 @@ export default {
         value: {
             type: Object,
             required: false,
-            default: () => ({ from: null, to: null }),
+            default: () => ({
+                from: null,
+                to: null,
+            }),
         },
         inputHeader: {
             type: Boolean,
@@ -153,7 +160,8 @@ export default {
                 }
 
                 return previous;
-            }, []);
+            }, [
+            ]);
         },
         fromHeader() {
             if (this.value.from) {
@@ -224,15 +232,24 @@ export default {
 
             if (from) {
                 if (+from > +dateToInsert) {
-                    this.$emit('input', { from: dateToInsert, to });
+                    this.$emit('input', {
+                        from: dateToInsert,
+                        to,
+                    });
                     return;
                 }
             } else {
-                this.$emit('input', { from: dateToInsert, to });
+                this.$emit('input', {
+                    from: dateToInsert,
+                    to,
+                });
                 return;
             }
 
-            this.$emit('input', { from, to: dateToInsert });
+            this.$emit('input', {
+                from,
+                to: dateToInsert,
+            });
         },
     },
 };

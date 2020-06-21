@@ -4,11 +4,13 @@
  */
 
 export default () => ({
-    layoutElements: [],
+    layoutElements: [
+    ],
     title: '',
     image: null,
     titleValidationError: null,
-    types: [],
+    types: [
+    ],
     defaultTextAttribute: null,
     defaultImageAttribute: null,
 });

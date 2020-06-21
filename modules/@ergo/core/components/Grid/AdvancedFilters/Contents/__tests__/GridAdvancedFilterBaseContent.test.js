@@ -4,14 +4,21 @@
  */
 import GridAdvancedFilterBaseContent from '@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
 import GridAdvancedFilterTextContent from '@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent';
-import { shallowMount } from '@vue/test-utils';
+import {
+    shallowMount,
+} from '@vue/test-utils';
 
 describe('Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent', () => {
     let wrapper;
     beforeEach(() => {
         const contentWrapper = {
             render(h) {
-                return h(GridAdvancedFilterTextContent, { props: { filter: {} } });
+                return h(GridAdvancedFilterTextContent, {
+                    props: {
+                        filter: {
+                        },
+                    },
+                });
             },
         };
 

@@ -56,10 +56,17 @@ import ListElement from '@Core/components/List/ListElement';
 import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
+import {
+    capitalizeAndConcatenationArray,
+} from '@Core/models/stringWrapper';
 import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
-import { mapActions } from 'vuex';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'AttributeElementContent',
@@ -89,7 +96,10 @@ export default {
     },
     data() {
         return {
-            contextualMenuItems: ['Required', 'Remove'],
+            contextualMenuItems: [
+                'Required',
+                'Remove',
+            ],
             isContextualMenuActive: false,
             isHovered: false,
         };
@@ -102,7 +112,9 @@ export default {
             return THEME.SECONDARY_PLAIN;
         },
         typeLabelRequireClass() {
-            return { 'element-content--required': this.element.required };
+            return {
+                'element-content--required': this.element.required,
+            };
         },
         typeLabelClasses() {
             return 'element-content__header';
@@ -116,7 +128,9 @@ export default {
             return () => import(`@Core/components/Icons/Attributes/Icon${attributeName}`);
         },
         contextualMenuHoveStateClasses() {
-            return { 'element-content__contextual-menu--hovered': this.isHovered };
+            return {
+                'element-content__contextual-menu--hovered': this.isHovered,
+            };
         },
     },
     methods: {

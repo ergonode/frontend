@@ -2,10 +2,17 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { GRAPHITE_DARK, WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    GRAPHITE_DARK,
+    WHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import InformationBadge from '@Core/components/Badges/InformationBadge.vue';
-import { SIZE } from '@Core/defaults/theme';
-import { shallowMount } from '@vue/test-utils';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
+    shallowMount,
+} from '@vue/test-utils';
 
 describe('Badges/InformationBadge', () => {
     let wrapper;
@@ -33,7 +40,9 @@ describe('Badges/InformationBadge', () => {
 
     describe('Props validations', () => {
         it('size', () => {
-            const { size } = wrapper.vm.$options.props;
+            const {
+                size,
+            } = wrapper.vm.$options.props;
 
             expect(size.required).toBeFalsy();
             expect(size.default).toBe(SIZE.REGULAR);

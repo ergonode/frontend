@@ -2,8 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { createLocalVue, shallowMount } from '@vue/test-utils';
-import { Store } from 'vuex-mock-store';
+import {
+    createLocalVue,
+    shallowMount,
+} from '@vue/test-utils';
+import {
+    Store,
+} from 'vuex-mock-store';
 
 import LayoutElement from '../ProductDesigner/LayoutElement';
 
@@ -11,7 +16,8 @@ const localVue = createLocalVue();
 const store = new Store({
     state: {
         draggable: {
-            draggedElement: {},
+            draggedElement: {
+            },
         },
     },
     mutations: {
@@ -36,7 +42,11 @@ describe('Template/ProductDesigner/LayoutElement', () => {
                 index: 1,
                 disabled: false,
                 element: {
-                    id: 'testId', width: 1, height: 1, row: 1, column: 1,
+                    id: 'testId',
+                    width: 1,
+                    height: 1,
+                    row: 1,
+                    column: 1,
                 },
                 columnsNumber: 4,
                 rowsNumber: 10,
@@ -58,7 +68,8 @@ describe('Template/ProductDesigner/LayoutElement', () => {
             wrapper.vm.resetDataForEndResizeInteraction();
 
             expect(wrapper.vm.isDraggingEnabled).toEqual(true);
-            expect(wrapper.vm.highlightingPositions).toEqual([]);
+            expect(wrapper.vm.highlightingPositions).toEqual([
+            ]);
         });
 
         it('Element width and height is reseted', () => {

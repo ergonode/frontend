@@ -2,29 +2,41 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { types } from './mutations';
+import {
+    types,
+} from './mutations';
 
 export default {
-    setCode({ commit }, code) {
+    setCode({
+        commit,
+    }, code) {
         commit(types.SET_CODE, code);
     },
-    setType({ commit }, type) {
+    setType({
+        commit,
+    }, type) {
         commit(types.SET_TYPE, type);
     },
     getCollectionById(
         {
             commit, dispatch, rootState,
         },
-        { collectionId, onError = () => {} },
+        {
+            collectionId, onError = () => {},
+        },
     ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
 
         return this.app.$axios.$get(`${userLanguageCode}/collections/${collectionId}`).then(({
             id,
             code,
             type_id,
-            name = {},
-            description = {},
+            name = {
+            },
+            description = {
+            },
         }) => {
             const translations = {
                 name,
@@ -35,11 +47,15 @@ export default {
             commit(types.SET_CODE, code);
             commit(types.SET_TYPE, type_id);
 
-            dispatch('translations/setTabTranslations', translations, { root: true });
+            dispatch('translations/setTabTranslations', translations, {
+                root: true,
+            });
         }).catch(onError);
     },
     updateCollection(
-        { rootState },
+        {
+            rootState,
+        },
         {
             id,
             data,
@@ -47,15 +63,27 @@ export default {
             onError,
         },
     ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
         return this.app.$axios.$put(`${userLanguageCode}/collections/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
     },
-    removeCollection({ state, rootState }, { onSuccess }) {
-        const { id } = state;
-        const { language: userLanguageCode } = rootState.authentication.user;
+    removeCollection({
+        state, rootState,
+    }, {
+        onSuccess,
+    }) {
+        const {
+            id,
+        } = state;
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
         return this.app.$axios.$delete(`${userLanguageCode}/collections/${id}`).then(() => onSuccess());
     },
-    clearStorage({ commit }) {
+    clearStorage({
+        commit,
+    }) {
         commit(types.CLEAR_STATE);
     },
 };

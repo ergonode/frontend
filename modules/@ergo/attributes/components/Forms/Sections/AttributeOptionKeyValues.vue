@@ -20,7 +20,6 @@
                         <TextField
                             :data-cy="dataCyGenerator(i)"
                             :value="options[fieldKey].key"
-                            solid
                             required
                             small
                             :disabled="disabled"
@@ -43,8 +42,13 @@ import FormListElementField from '@Core/components/Form/Field/FormListElementFie
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import FormListSection from '@Core/components/Form/Section/FormListSection';
 import FormListSubsection from '@Core/components/Form/Subsection/FormListSubsection';
-import { getUUID } from '@Core/models/stringWrapper';
-import { mapActions, mapState } from 'vuex';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'AttributeOptionKeyValues',
@@ -82,7 +86,10 @@ export default {
             'addMultilingualOptionTranslation',
         ]),
         removeAttribute(fieldKey) {
-            this.removeAttributeOptionKey({ index: fieldKey, id: this.options[fieldKey].id });
+            this.removeAttributeOptionKey({
+                index: fieldKey,
+                id: this.options[fieldKey].id,
+            });
         },
         addOptionKey() {
             this.addAttributeOptionKey(getUUID());

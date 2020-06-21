@@ -25,8 +25,12 @@
 <script>
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 import GridSelectFilterPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSelectFilterPresentationCell';
-import { FILTER_OPERATOR } from '@Core/defaults/operators';
-import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
+import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
+import {
+    DEFAULT_FORMAT,
+} from '@Core/models/calendar/calendar';
 
 export default {
     name: 'GridDateFilterCell',
@@ -46,7 +50,8 @@ export default {
         },
         data: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         filter: {
             type: Object,

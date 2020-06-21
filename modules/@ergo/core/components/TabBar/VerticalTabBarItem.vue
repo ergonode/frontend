@@ -22,12 +22,17 @@
 </template>
 
 <script>
-import { GRAPHITE, GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    GRAPHITE,
+    GREEN,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import tabBarItemMixin from '@Core/mixins/tabBar/tabBarItemMixin';
 
 export default {
     name: 'VerticalTabBarItem',
-    mixins: [tabBarItemMixin],
+    mixins: [
+        tabBarItemMixin,
+    ],
     computed: {
         tabIconComponent() {
             return this.item.iconComponent || null;

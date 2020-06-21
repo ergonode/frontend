@@ -22,12 +22,19 @@
 </template>
 
 <script>
-import { GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    GREEN,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import LinkButton from '@Core/components/Buttons/LinkButton';
 import IconFile from '@Core/components/Icons/Others/IconFile';
 import UploadFile from '@Core/components/Inputs/UploadFile/UploadFile';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { mapActions, mapState } from 'vuex';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'UploadCSVFile',
@@ -93,14 +100,19 @@ export default {
             this.$emit('progress', true);
 
             if (file) {
-                const { name } = file;
+                const {
+                    name,
+                } = file;
 
                 const formData = new FormData();
                 formData.append('upload', file, name);
 
                 this.$axios.$post(`${this.languageCode}/sources/${this.sourceId}/upload`, formData).then(() => {
                     this.file = file;
-                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'File uploaded' });
+                    this.$addAlert({
+                        type: ALERT_TYPE.SUCCESS,
+                        message: 'File uploaded',
+                    });
                     this.removeValidationError('upload');
                     this.isRequestPending = false;
                     this.$emit('progress', false);

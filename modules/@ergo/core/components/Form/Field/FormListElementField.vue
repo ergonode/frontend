@@ -26,7 +26,10 @@ export default {
     },
     props: {
         fieldKey: {
-            type: [Number, String],
+            type: [
+                Number,
+                String,
+            ],
             required: true,
         },
         disabled: {

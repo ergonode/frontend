@@ -10,16 +10,13 @@
             <FormSection>
                 <TextField
                     :value="name"
-                    solid
                     required
-                    regular
                     label="Role name"
                     :error-messages="errorMessages[nameFieldKey]"
                     :disabled="isDisabledByPrivileges"
                     @input="setName" />
                 <TextArea
                     :value="description"
-                    solid
                     required
                     label="Role description"
                     resize="none"
@@ -33,7 +30,10 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'UserRoleForm',
@@ -53,8 +53,12 @@ export default {
             return Boolean(this.roleID);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess(['USER_ROLE_UPDATE']))
-            || (!this.isDisabled && !this.$hasAccess(['USER_ROLE_CREATE']));
+            return (this.isDisabled && !this.$hasAccess([
+                'USER_ROLE_UPDATE',
+            ]))
+            || (!this.isDisabled && !this.$hasAccess([
+                'USER_ROLE_CREATE',
+            ]));
         },
         descriptionFieldKey() {
             return 'description';

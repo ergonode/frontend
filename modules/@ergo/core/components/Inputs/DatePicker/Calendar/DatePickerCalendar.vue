@@ -41,7 +41,9 @@ import calendar, {
     getMonthIndex,
     WEEK_DAYS,
 } from '@Core/models/calendar/calendar';
-import { CalendarType } from '@Core/models/calendar/CalendarType';
+import {
+    CalendarType,
+} from '@Core/models/calendar/CalendarType';
 
 export default {
     name: 'DatePickerCalendar',
@@ -94,7 +96,8 @@ export default {
                 ];
             }
 
-            return [];
+            return [
+            ];
         },
         parsedCurrentMonth() {
             if (this.year === this.currentYear) {
@@ -105,7 +108,9 @@ export default {
         },
         parsedSelectedMonth() {
             if (this.parsedDate.length) {
-                const [date] = this.parsedDate;
+                const [
+                    date,
+                ] = this.parsedDate;
 
                 if (date.getFullYear() === this.year) {
                     return this.months[date.getMonth()];
@@ -116,7 +121,9 @@ export default {
         },
         parsedSelectedYear() {
             if (this.parsedDate.length) {
-                const [date] = this.parsedDate;
+                const [
+                    date,
+                ] = this.parsedDate;
 
                 return date.getFullYear();
             }

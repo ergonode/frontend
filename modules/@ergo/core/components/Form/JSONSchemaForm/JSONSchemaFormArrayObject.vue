@@ -33,7 +33,10 @@ import JSONSchemaFormTableRowWidget from '@Core/components/Form/JSONSchemaForm/J
 import FormSection from '@Core/components/Form/Section/FormSection';
 import FormSubsection from '@Core/components/Form/Subsection/FormSubsection';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import { SIZE, THEME } from '@Core/defaults/theme';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'JSONSchemaFormArrayObject',
@@ -51,16 +54,21 @@ export default {
         },
         errorMessages: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         value: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
     },
     data() {
         return {
-            rowValues: this.value.length ? this.value : [{}],
+            rowValues: this.value.length ? this.value : [
+                {
+                },
+            ],
         };
     },
     computed: {
@@ -74,12 +82,15 @@ export default {
     methods: {
         onAddRow() {
             this.$refs.addSectionButton.$el.scrollIntoView(true);
-            this.rowValues.push({});
+            this.rowValues.push({
+            });
         },
         onRemoveRowAtIndex(index) {
             this.rowValues.splice(index, 1);
         },
-        onValueChangeAtIndex({ index, value }) {
+        onValueChangeAtIndex({
+            index, value,
+        }) {
             this.rowValues[index] = value;
             this.$emit('input', this.rowValues);
         },

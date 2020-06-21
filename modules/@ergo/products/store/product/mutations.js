@@ -36,7 +36,9 @@ export default {
     [types.SET_PRODUCT_STATUS](state, status) {
         state.status = status;
     },
-    [types.SET_BINDING_ATTRIBUTE_ID](state, { index, id }) {
+    [types.SET_BINDING_ATTRIBUTE_ID](state, {
+        index, id,
+    }) {
         state.bindingAttributesIds[index] = id;
         state.bindingAttributesIds = [
             ...state.bindingAttributesIds,
@@ -66,11 +68,21 @@ export default {
     [types.SET_PRODUCT_DATA](state, data) {
         state.data = data;
     },
-    [types.SET_PRODUCT_DRAFT](state, { languageCode, draft }) {
-        state.draft = { ...state.draft, [languageCode]: draft };
+    [types.SET_PRODUCT_DRAFT](state, {
+        languageCode, draft,
+    }) {
+        state.draft = {
+            ...state.draft,
+            [languageCode]: draft,
+        };
     },
-    [types.SET_DRAFT_VALUE](state, { languageCode, key, value }) {
-        state.draft[languageCode] = { ...state.draft[languageCode], [key]: value };
+    [types.SET_DRAFT_VALUE](state, {
+        languageCode, key, value,
+    }) {
+        state.draft[languageCode] = {
+            ...state.draft[languageCode],
+            [key]: value,
+        };
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();

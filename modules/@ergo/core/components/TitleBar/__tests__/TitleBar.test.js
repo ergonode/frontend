@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 import TitleBar from '@Core/components/TitleBar/TitleBar';
-import { shallowMount } from '@vue/test-utils';
+import {
+    shallowMount,
+} from '@vue/test-utils';
 
 describe('TitleBar/TitleBar', () => {
     let wrapper;

@@ -11,16 +11,25 @@
 
 <script>
 
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { MODAL_TYPE } from '@Core/defaults/modals';
-import { mapActions, mapState } from 'vuex';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'StatusEdit',
     components: {
         ProductStatusPage: () => import('@Statuses/components/Pages/ProductStatusPage'),
     },
-    validate({ params }) {
+    validate({
+        params,
+    }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
@@ -70,12 +79,20 @@ export default {
             });
         },
         onRemoveProductStatusSuccess() {
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Product status removed' });
-            this.$router.push({ name: 'product-statuses-grid' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product status removed',
+            });
+            this.$router.push({
+                name: 'product-statuses-grid',
+            });
         },
         onProductStatusUpdated() {
             this.removeValidationErrors();
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Product status updated' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product status updated',
+            });
         },
     },
     head() {

@@ -19,9 +19,14 @@
 </template>
 <script>
 import {
-    GRAPHITE, GREY_DARK, WHITE,
+    GRAPHITE,
+    GREY_DARK,
+    WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import { SIZE, THEME } from '@Core/defaults/theme';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'IconButton',

@@ -80,10 +80,17 @@
 import ActionButton from '@Core/components/Buttons/ActionButton';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import { LAYOUT_ORIENTATION } from '@Core/defaults/layout';
-import { SIZE, THEME } from '@Core/defaults/theme';
+import {
+    LAYOUT_ORIENTATION,
+} from '@Core/defaults/layout';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
-import { ADD_PRODUCT } from '@Products/defaults';
+import {
+    ADD_PRODUCT,
+} from '@Products/defaults';
 
 export default {
     name: 'ProductGroupTab',
@@ -94,7 +101,11 @@ export default {
         ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
         Button: () => import('@Core/components/Buttons/Button'),
     },
-    mixins: [fetchGridDataMixin({ path: 'products/_id/children' })],
+    mixins: [
+        fetchGridDataMixin({
+            path: 'products/_id/children',
+        }),
+    ],
     data() {
         return {
             selectedAppModalOption: null,
@@ -102,7 +113,9 @@ export default {
     },
     computed: {
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['PRODUCT_UPDATE']);
+            return this.$hasAccess([
+                'PRODUCT_UPDATE',
+            ]);
         },
         horizontalOrientation() {
             return LAYOUT_ORIENTATION.HORIZONTAL;

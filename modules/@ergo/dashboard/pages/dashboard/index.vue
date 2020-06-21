@@ -12,7 +12,9 @@
 </template>
 
 <script>
-import { GRID_ITEMS } from '@Dashboard/defaults/dashboard';
+import {
+    GRID_ITEMS,
+} from '@Dashboard/defaults/dashboard';
 
 export default {
     name: 'Dashboard',

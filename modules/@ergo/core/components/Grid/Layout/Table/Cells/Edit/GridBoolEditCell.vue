@@ -17,10 +17,15 @@ import Toggler from '@Core/components/Inputs/Toggler/Toggler';
 
 export default {
     name: 'GridBoolEditCell',
-    components: { Toggler },
+    components: {
+        Toggler,
+    },
     props: {
         value: {
-            type: [Boolean, Number],
+            type: [
+                Boolean,
+                Number,
+            ],
             default: false,
         },
         isDisabled: {

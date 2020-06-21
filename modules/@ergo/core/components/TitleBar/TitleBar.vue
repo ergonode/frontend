@@ -35,7 +35,11 @@
 </template>
 
 <script>
-import { BLUE, GREEN, WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    BLUE,
+    GREEN,
+    WHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import InformationIconBadge from '@Core/components/Badges/InformationIconBadge';
 import Fab from '@Core/components/Buttons/Fab';
 import IconLock from '@Core/components/Icons/Feedback/IconLock';
@@ -83,7 +87,9 @@ export default {
     },
     methods: {
         onBack() {
-            const { breadcrumbs } = this.$route.meta;
+            const {
+                breadcrumbs,
+            } = this.$route.meta;
 
             if (!breadcrumbs) {
                 if (process.env.NODE_ENV !== 'production') {
@@ -93,7 +99,9 @@ export default {
                 return false;
             }
 
-            this.$router.push({ name: breadcrumbs[breadcrumbs.length - 1].routeName });
+            this.$router.push({
+                name: breadcrumbs[breadcrumbs.length - 1].routeName,
+            });
 
             return true;
         },

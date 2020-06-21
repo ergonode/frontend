@@ -11,8 +11,6 @@
                 <TextField
                     :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
-                    solid
-                    regular
                     required
                     :error-messages="errorMessages[codeFieldKey]"
                     :disabled="isDisabled || isDisabledByPrivileges"
@@ -25,7 +23,10 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'CategoryForm',
@@ -43,15 +44,21 @@ export default {
             return Boolean(this.categoryID);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess(['CATEGORY_UPDATE']))
-            || (!this.isDisabled && !this.$hasAccess(['CATEGORY_CREATE']));
+            return (this.isDisabled && !this.$hasAccess([
+                'CATEGORY_UPDATE',
+            ]))
+            || (!this.isDisabled && !this.$hasAccess([
+                'CATEGORY_CREATE',
+            ]));
         },
         codeFieldKey() {
             return 'code';
         },
     },
     methods: {
-        ...mapActions('categories', ['setCategoryCode']),
+        ...mapActions('categories', [
+            'setCategoryCode',
+        ]),
         dataCyGenerator(key) {
             return `category-${key}`;
         },

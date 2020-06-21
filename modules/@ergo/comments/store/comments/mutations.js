@@ -2,7 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { removeValueAtIndex } from '@Core/models/arrayWrapper';
+import {
+    removeValueAtIndex,
+} from '@Core/models/arrayWrapper';
 
 import defaultState from './state';
 
@@ -45,10 +47,14 @@ export default {
         state.comments.unshift(comment);
     },
     [types.EDIT_COMMENT](state, comment) {
-        const { id } = comment;
+        const {
+            id,
+        } = comment;
         const indexToEdit = state.comments.findIndex(e => e.id === id);
         state.comments[indexToEdit] = comment;
-        state.comments = [...state.comments];
+        state.comments = [
+            ...state.comments,
+        ];
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();

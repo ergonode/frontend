@@ -24,14 +24,21 @@
 </template>
 
 <script>
-import { TYPES } from '@Attributes/defaults/attributes';
+import {
+    TYPES,
+} from '@Attributes/defaults/attributes';
 import ListDraggableElement from '@Core/components/List/ListDraggableElement';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementHint from '@Core/components/List/ListElementHint';
 import ListElementIcon from '@Core/components/List/ListElementIcon';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
-import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
-import { mapActions, mapState } from 'vuex';
+import {
+    capitalizeAndConcatenationArray,
+} from '@Core/models/stringWrapper';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'AttributesListElement',
@@ -85,7 +92,10 @@ export default {
                 this.setDraggedElement();
             }
 
-            this.setDraggableState({ propName: 'isListElementDragging', value: isDragged });
+            this.setDraggableState({
+                propName: 'isListElementDragging',
+                value: isDragged,
+            });
         },
     },
 };

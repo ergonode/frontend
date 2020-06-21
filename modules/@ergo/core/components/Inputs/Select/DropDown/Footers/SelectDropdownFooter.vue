@@ -15,7 +15,10 @@
 <script>
 import Button from '@Core/components/Buttons/Button';
 import DropDownFooter from '@Core/components/Inputs/Select/DropDown/Footers/DropDownFooter';
-import { SIZE, THEME } from '@Core/defaults/theme';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'SelectDropdownFooter',

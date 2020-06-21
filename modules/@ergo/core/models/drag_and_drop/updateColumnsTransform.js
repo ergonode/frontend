@@ -4,10 +4,17 @@
  */
 
 function getColumnElBounds(contentGrid, index) {
-    const { width } = contentGrid.children[index].getBoundingClientRect();
-    const { transform } = contentGrid.children[index].style;
+    const {
+        width,
+    } = contentGrid.children[index].getBoundingClientRect();
+    const {
+        transform,
+    } = contentGrid.children[index].style;
 
-    return { colWidth: parseInt(width, 10), colTransform: +transform.replace(/[^0-9\-.,]/g, '') };
+    return {
+        colWidth: parseInt(width, 10),
+        colTransform: +transform.replace(/[^0-9\-.,]/g, ''),
+    };
 }
 
 function getLowerBoundsTransforms(
@@ -18,7 +25,8 @@ function getLowerBoundsTransforms(
     draggedElIndex,
     ghostIndex,
 ) {
-    const transforms = {};
+    const transforms = {
+    };
     let lowerBound = ghostIndex - 1; // We can shift to next iteration - no need to do anything with ghost column
     let updatedGhostTransform = ghostTransform;
 
@@ -46,7 +54,10 @@ function getLowerBoundsTransforms(
         lowerBound -= 1;
     }
 
-    return { transforms, updatedGhostTransform };
+    return {
+        transforms,
+        updatedGhostTransform,
+    };
 }
 
 function getUpperBoundsTransforms(
@@ -57,7 +68,8 @@ function getUpperBoundsTransforms(
     draggedElIndex,
     ghostIndex,
 ) {
-    const transforms = {};
+    const transforms = {
+    };
     let upperBound = ghostIndex + 1; // We can shift to next iteration - no need to do anything with ghost column
     let updatedGhostTransform = ghostTransform;
 
@@ -85,15 +97,21 @@ function getUpperBoundsTransforms(
         upperBound += 1;
     }
 
-    return { transforms, updatedGhostTransform };
+    return {
+        transforms,
+        updatedGhostTransform,
+    };
 }
 
 export default function (targetGhostIndex, draggedElIndex, ghostIndex) {
     const columnsSection = document.documentElement.querySelector('.columns-section');
-    const { width: ghostWidth } = columnsSection.children[draggedElIndex]
+    const {
+        width: ghostWidth,
+    } = columnsSection.children[draggedElIndex]
         .getBoundingClientRect();
     const ghostTransform = +columnsSection.children[draggedElIndex].style.transform.replace(/[^0-9\-.,]/g, '');
-    let bounds = {};
+    let bounds = {
+    };
 
     if (targetGhostIndex < ghostIndex) {
         bounds = getLowerBoundsTransforms(

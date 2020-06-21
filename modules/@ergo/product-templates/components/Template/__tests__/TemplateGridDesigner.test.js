@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 import TemplateGridPresentationLayer from '@Core/components/TemplateGrid/TemplateGridPresentationLayer';
-import { shallowMount } from '@vue/test-utils';
+import {
+    shallowMount,
+} from '@vue/test-utils';
 
 import TemplateGridDesigner from '../Base/TemplateGridDesigner';
 

@@ -35,7 +35,9 @@
 <script>
 import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
-import { mapState } from 'vuex';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'CategoriesListTab',
@@ -49,13 +51,20 @@ export default {
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
         Fab: () => import('@Core/components/Buttons/Fab'),
     },
-    mixins: [gridModalMixin, fetchListDataMixin({ namespace: 'categories' })],
+    mixins: [
+        gridModalMixin,
+        fetchListDataMixin({
+            namespace: 'categories',
+        }),
+    ],
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
         isUserAllowedToUpdateTree() {
-            return this.$hasAccess(['CATEGORY_TREE_UPDATE']);
+            return this.$hasAccess([
+                'CATEGORY_TREE_UPDATE',
+            ]);
         },
     },
     methods: {

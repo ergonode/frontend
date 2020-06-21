@@ -10,29 +10,49 @@
 </template>
 
 <script>
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { MODAL_TYPE } from '@Core/defaults/modals';
-import { getKeyByValue } from '@Core/models/objectWrapper';
-import { PRODUCT_TYPE } from '@Products/defaults';
-import { mapActions, mapState } from 'vuex';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import {
+    getKeyByValue,
+} from '@Core/models/objectWrapper';
+import {
+    PRODUCT_TYPE,
+} from '@Products/defaults';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductEdit',
     components: {
         ProductPage: () => import('@Products/components/Pages/ProductPage'),
     },
-    validate({ params }) {
+    validate({
+        params,
+    }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
         store,
         params,
     }) {
-        const { defaultLanguageCodeByPrivileges } = store.state.core;
-        const { id } = params;
+        const {
+            defaultLanguageCodeByPrivileges,
+        } = store.state.core;
+        const {
+            id,
+        } = params;
 
         await Promise.all([
-            store.dispatch('product/getProductDraft', { languageCode: defaultLanguageCodeByPrivileges, id }),
+            store.dispatch('product/getProductDraft', {
+                languageCode: defaultLanguageCodeByPrivileges,
+                id,
+            }),
             store.dispatch('product/getProductById', id),
         ]);
     },
@@ -60,11 +80,19 @@ export default {
             'clearStorage',
         ]),
         onDraftAppliedSuccess() {
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Product updated' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product updated',
+            });
         },
         onRemoveSuccess() {
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Product removed' });
-            this.$router.push({ name: 'catalog-products' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product removed',
+            });
+            this.$router.push({
+                name: 'catalog-products',
+            });
         },
         onRemove() {
             this.$openModal({
@@ -76,7 +104,11 @@ export default {
             });
         },
         async onSave() {
-            const { params: { id } } = this.$route;
+            const {
+                params: {
+                    id,
+                },
+            } = this.$route;
             const data = {
                 templateId: this.template,
                 categoryIds: this.categories,

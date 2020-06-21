@@ -3,7 +3,10 @@
  * See LICENSE for license details.
  */
 import Alert from '@Core/components/Alerts/Alert.vue';
-import { createLocalVue, shallowMount } from '@vue/test-utils';
+import {
+    createLocalVue,
+    shallowMount,
+} from '@vue/test-utils';
 
 const localVue = createLocalVue();
 

@@ -4,9 +4,14 @@
  */
 import GridCheckEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
-import { STATE } from '@Core/defaults/inputs/checkbox';
+import {
+    STATE,
+} from '@Core/defaults/inputs/checkbox';
 import deepmerge from 'deepmerge';
-import { mapActions, mapState } from 'vuex';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     components: {
@@ -16,11 +21,13 @@ export default {
     props: {
         rowIds: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
         data: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
         rowsOffset: {
             type: Number,
@@ -29,7 +36,8 @@ export default {
     },
     data() {
         return {
-            selectedRows: {},
+            selectedRows: {
+            },
             isSelectedAllRows: false,
         };
     },
@@ -62,12 +70,15 @@ export default {
         drafts: {
             deep: true,
             handler(value) {
-                const draftValues = {};
+                const draftValues = {
+                };
                 this.rowIds.forEach((rowId, index) => {
                     this.selectedRows[rowId] = this.data[index].value;
                 });
 
-                this.selectedRows = { ...this.selectedRows };
+                this.selectedRows = {
+                    ...this.selectedRows,
+                };
 
                 Object.keys(value).forEach((rowId) => {
                     const checkValues = state => Object.values(value[rowId])
@@ -90,7 +101,9 @@ export default {
             this.selectedRows[rowId] = this.data[index].value;
         });
 
-        this.selectedRows = { ...this.selectedRows };
+        this.selectedRows = {
+            ...this.selectedRows,
+        };
     },
     methods: {
         ...mapActions('grid', [

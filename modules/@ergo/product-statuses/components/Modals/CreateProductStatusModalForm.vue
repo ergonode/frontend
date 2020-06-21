@@ -24,10 +24,16 @@
 </template>
 
 <script>
-import { MODAL_ACTION } from '@Core/defaults/modals';
-import { THEME } from '@Core/defaults/theme';
+import {
+    MODAL_ACTION,
+} from '@Core/defaults/modals';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
-import { mapActions } from 'vuex';
+import {
+    mapActions,
+} from 'vuex';
 
 const createProductStatus = () => import('@Statuses/services/createProductStatus.service');
 
@@ -38,7 +44,13 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         ProductStatusForm: () => import('@Statuses/components/Form/ProductStatusForm'),
     },
-    mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Product status', request: createProductStatus })],
+    mixins: [
+        actionModalFormMixin({
+            action: MODAL_ACTION.CREATE,
+            namespace: 'Product status',
+            request: createProductStatus,
+        }),
+    ],
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;

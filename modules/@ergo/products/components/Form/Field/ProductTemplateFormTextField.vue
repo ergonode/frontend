@@ -10,8 +10,6 @@
             <template #validator="{ errorMessages }">
                 <TextField
                     :value="fieldData"
-                    solid
-                    regular
                     :label="label"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
@@ -42,7 +40,10 @@ import InfoHint from '@Core/components/Hints/InfoHint';
 import TextField from '@Core/components/Inputs/TextField';
 import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
 import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
-import { mapActions, mapState } from 'vuex';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductTemplateFormTextField',
@@ -56,19 +57,23 @@ export default {
     props: {
         size: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         position: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         parameters: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         properties: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         disabled: {
             type: Boolean,
@@ -88,14 +93,18 @@ export default {
             draft: state => state.draft,
         }),
         fieldData() {
-            const { attribute_code } = this.properties;
+            const {
+                attribute_code,
+            } = this.properties;
 
             return this.draft[this.languageCode][attribute_code] || '';
         },
         parameter() {
             if (!this.properties.parameters) return null;
 
-            const [key] = Object.keys(this.properties.parameters);
+            const [
+                key,
+            ] = Object.keys(this.properties.parameters);
 
             return this.properties.parameters[key];
         },

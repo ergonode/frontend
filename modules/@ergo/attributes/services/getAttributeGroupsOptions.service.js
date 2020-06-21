@@ -3,8 +3,12 @@
  * See LICENSE for license details.
  */
 
-export default function ({ $axios, $store }) {
-    const { language } = $store.state.authentication.user;
+export default function ({
+    $axios, $store,
+}) {
+    const {
+        language,
+    } = $store.state.authentication.user;
     const params = {
         limit: 9999,
         offset: 0,
@@ -13,7 +17,11 @@ export default function ({ $axios, $store }) {
         columns: 'id,code,name',
     };
 
-    return $axios.$get(`${language}/attributes/groups`, { params }).then(({ collection }) => ({
+    return $axios.$get(`${language}/attributes/groups`, {
+        params,
+    }).then(({
+        collection,
+    }) => ({
         options: collection.map(element => ({
             id: element.id,
             key: element.code,

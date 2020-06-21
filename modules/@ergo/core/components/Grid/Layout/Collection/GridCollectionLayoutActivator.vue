@@ -13,11 +13,18 @@
 </template>
 
 <script>
-import { GRAPHITE, GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    GRAPHITE,
+    GREEN,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import Fab from '@Core/components/Buttons/Fab';
 import IconGrid from '@Core/components/Icons/Others/IconGrid';
-import { GRID_LAYOUT } from '@Core/defaults/grid';
-import { THEME } from '@Core/defaults/theme';
+import {
+    GRID_LAYOUT,
+} from '@Core/defaults/grid';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridCollectionLayoutActivator',

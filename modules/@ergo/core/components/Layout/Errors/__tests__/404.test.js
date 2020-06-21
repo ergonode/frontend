@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 import Error404 from '@Core/components/Layout/Errors/404.vue';
-import { shallowMount } from '@vue/test-utils';
+import {
+    shallowMount,
+} from '@vue/test-utils';
 
 describe('Errors/404', () => {
     let wrapper;

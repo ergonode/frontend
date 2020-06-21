@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 import GridAdvancedFilterShowOnly from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilterShowOnly';
-import { shallowMount } from '@vue/test-utils';
+import {
+    shallowMount,
+} from '@vue/test-utils';
 
 describe('Grid/AdvancedFilters/Contents/GridAdvancedFilterShowOnly', () => {
     let wrapper;

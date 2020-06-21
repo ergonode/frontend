@@ -3,16 +3,23 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    draft: {},
-    data: {},
+    draft: {
+    },
+    data: {
+    },
     id: null,
     sku: '',
     status: null,
     type: '',
-    workflow: [],
+    workflow: [
+    ],
     template: null,
-    categories: [],
-    templates: [],
-    selectAttributes: [],
-    bindingAttributesIds: [],
+    categories: [
+    ],
+    templates: [
+    ],
+    selectAttributes: [
+    ],
+    bindingAttributesIds: [
+    ],
 });

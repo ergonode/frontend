@@ -28,9 +28,40 @@ module.exports = {
         'markdown',
         'simple-import-sort',
         'import',
+        'modules-newline',
     ],
     rules: {
-        'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
+        'modules-newline/import-declaration-newline': 'error',
+        'modules-newline/export-declaration-newline': 'error',
+        'multiline-ternary': [
+            'error',
+            'always',
+        ],
+        'object-property-newline': [
+            'error',
+            {
+                allowMultiplePropertiesPerLine: false,
+            },
+        ],
+        'array-bracket-newline': [
+            'error',
+            'always',
+        ],
+        'object-curly-newline': [
+            'error',
+            'always',
+        ],
+        'array-element-newline': [
+            'error',
+            'always',
+        ],
+        'arrow-parens': [
+            'error',
+            'as-needed',
+            {
+                requireForBlockBody: true,
+            },
+        ],
         'func-names': 'off',
         'simple-import-sort/sort': 'error',
         'import/order': 'error',
@@ -38,7 +69,8 @@ module.exports = {
         'import/first': 'error',
         'import/no-duplicates': 'error',
         'notice/notice': [
-            'error', {
+            'error',
+            {
                 templateFile: './config/.copyright',
                 messages: {
                     whenFailedToMatch: "Couldn't find 'License Header', are you sure you added it?",
@@ -46,73 +78,130 @@ module.exports = {
             },
         ],
         'import/extensions': 'off',
-        'import/no-extraneous-dependencies': ['error', { devDependencies: ['cypress/**/*.js', '**/**/*.test.js', '**/**/*.spec.js'] }],
+        'import/no-extraneous-dependencies': [
+            'error',
+            {
+                devDependencies: [
+                    'cypress/**/*.js',
+                    '**/**/*.test.js',
+                    '**/**/*.spec.js',
+                ],
+            },
+        ],
         'no-console': 'off',
         'no-alert': 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
-        'import/no-unresolved': ['off'],
-        'import/prefer-default-export': ['off'],
-        'vue/html-indent': ['error', 4],
-        'vue/html-closing-bracket-newline': ['off'],
-        indent: ['error', 4],
-        'no-param-reassign': ['error', {
-            props: true,
-            ignorePropertyModificationsFor: [
-                'state',
-            ],
-        }],
-        camelcase: ['off'],
-        'class-methods-use-this': ['off'],
-        'global-require': ['off'],
-        'import/no-dynamic-require': ['off'],
+        'import/no-unresolved': [
+            'off',
+        ],
+        'import/prefer-default-export': [
+            'off',
+        ],
+        'vue/html-indent': [
+            'error',
+            4,
+        ],
+        'vue/html-closing-bracket-newline': [
+            'off',
+        ],
+        indent: [
+            'error',
+            4,
+        ],
+        'no-param-reassign': [
+            'error',
+            {
+                props: true,
+                ignorePropertyModificationsFor: [
+                    'state',
+                ],
+            },
+        ],
+        camelcase: [
+            'off',
+        ],
+        'class-methods-use-this': [
+            'off',
+        ],
+        'global-require': [
+            'off',
+        ],
+        'import/no-dynamic-require': [
+            'off',
+        ],
         'no-underscore-dangle': 'off',
-        'no-unused-vars': ['error', { argsIgnorePattern: 'commit' }],
-        'max-len': ['error', {
-            code: 100,
-            ignoreTrailingComments: true,
-            ignoreComments: true,
-            ignoreUrls: true,
-            ignoreStrings: true,
-            ignoreTemplateLiterals: true,
-        }],
-        'vue/component-name-in-template-casing': ['error',
+        'no-unused-vars': [
+            'error',
+            {
+                argsIgnorePattern: 'commit',
+            },
+        ],
+        'max-len': [
+            'error',
+            {
+                code: 100,
+                ignoreTrailingComments: true,
+                ignoreComments: true,
+                ignoreUrls: true,
+                ignoreStrings: true,
+                ignoreTemplateLiterals: true,
+            },
+        ],
+        'vue/component-name-in-template-casing': [
+            'error',
             'PascalCase',
         ],
-        'vue/order-in-components': ['error', {
-            order: [
-                'el',
-                'name',
-                'parent',
-                'functional',
-                ['delimiters', 'comments'],
-                ['components', 'directives', 'filters'],
-                'extends',
-                'mixins',
-                'beforeRouteEnter',
-                'beforeRouteUpdate',
-                'beforeRouteLeave',
-                'middleware',
-                'validate',
-                'inheritAttrs',
-                'model',
-                ['props', 'propsData'],
-                'fetch',
-                'asyncData',
-                'data',
-                'computed',
-                'watch',
-                'watchQuery',
-                'LIFECYCLE_HOOKS',
-                'methods',
-                'head',
-                'layout',
-                ['template', 'render'],
-                'renderError',
-                'transition',
-                'loading',
-                'scrollToTop',
-            ],
-        }],
+        'vue/order-in-components': [
+            'error',
+            {
+                order: [
+                    'el',
+                    'name',
+                    'parent',
+                    'functional',
+                    [
+                        'delimiters',
+                        'comments',
+                    ],
+                    [
+                        'components',
+                        'directives',
+                        'filters',
+                    ],
+                    'extends',
+                    'mixins',
+                    'beforeRouteEnter',
+                    'beforeRouteUpdate',
+                    'beforeRouteLeave',
+                    'middleware',
+                    'validate',
+                    'inheritAttrs',
+                    'model',
+                    [
+                        'props',
+                        'propsData',
+                    ],
+                    'fetch',
+                    'asyncData',
+                    'data',
+                    'computed',
+                    'watch',
+                    'watchQuery',
+                    'LIFECYCLE_HOOKS',
+                    'methods',
+                    'head',
+                    'layout',
+                    [
+                        'template',
+                        'render',
+                    ],
+                    'renderError',
+                    'transition',
+                    'loading',
+                    'scrollToTop',
+                ],
+            },
+        ],
         'jest/no-commented-out-tests': 'off',
         'jest/expect-expect': 'off',
         'jest/no-mocks-import': 'off',

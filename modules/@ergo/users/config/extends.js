@@ -3,15 +3,20 @@
  * See LICENSE for license details.
  */
 
-import { COLUMN_WIDTH } from '@Core/defaults/grid';
+import {
+    COLUMN_WIDTH,
+} from '@Core/defaults/grid';
 
-import { Components } from './imports';
+import {
+    Components,
+} from './imports';
 
 export default {
     dictionaries: [
         {
             stateProp: 'privileges',
-            dataFormat: {},
+            dataFormat: {
+            },
             requestPath: '/dictionary/privileges',
         },
     ],

@@ -2,7 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { removeFromObjectByKey } from '@Core/models/objectWrapper';
+import {
+    removeFromObjectByKey,
+} from '@Core/models/objectWrapper';
 
 import defaultState from './state';
 
@@ -33,21 +35,29 @@ export default {
         state.updatedOptions[id] = true;
     },
     [types.REMOVE_UPDATED_OPTION](state) {
-        state.updatedOptions = {};
+        state.updatedOptions = {
+        };
     },
-    [types.INITIALIZE_OPTIONS](state, options = {}) {
+    [types.INITIALIZE_OPTIONS](state, options = {
+    }) {
         state.options = options;
     },
     [types.ADD_ATTRIBUTE_OPTION_KEY](state, index) {
         state.options = {
             ...state.options,
-            [index]: { id: null, key: null, value: null },
+            [index]: {
+                id: null,
+                key: null,
+                value: null,
+            },
         };
     },
     [types.REMOVE_ATTRIBUTE_OPTION_KEY](state, key) {
         state.options = removeFromObjectByKey(state.options, key);
     },
-    [types.SET_ATTRIBUTE_OPTION_KEY](state, { id, index, key }) {
+    [types.SET_ATTRIBUTE_OPTION_KEY](state, {
+        id, index, key,
+    }) {
         state.options = {
             ...state.options,
             [index]: {
@@ -57,10 +67,17 @@ export default {
             },
         };
     },
-    [types.SET_OPTION_LANGUAGE_CODE_FOR_VALUE](state, { index, languageCode }) {
-        state.options[index].value = { ...state.options[index].value, [languageCode]: '' };
+    [types.SET_OPTION_LANGUAGE_CODE_FOR_VALUE](state, {
+        index, languageCode,
+    }) {
+        state.options[index].value = {
+            ...state.options[index].value,
+            [languageCode]: '',
+        };
     },
-    [types.SET_OPTION_VALUE_FOR_LANGUAGE_CODE](state, { index, languageCode, value }) {
+    [types.SET_OPTION_VALUE_FOR_LANGUAGE_CODE](state, {
+        index, languageCode, value,
+    }) {
         if (!value) {
             state.options[index].value = removeFromObjectByKey(
                 state.options[index].value,
@@ -69,11 +86,17 @@ export default {
         } else {
             state.options[index].value[languageCode] = value;
         }
-        state.options = { ...state.options };
+        state.options = {
+            ...state.options,
+        };
     },
-    [types.SET_OPTION_VALUE](state, { index, value }) {
+    [types.SET_OPTION_VALUE](state, {
+        index, value,
+    }) {
         state.options[index].value = value || null;
-        state.options = { ...state.options };
+        state.options = {
+            ...state.options,
+        };
     },
     [types.SET_ATTRIBUTE_SCOPE](state, scope) {
         state.scope = scope;

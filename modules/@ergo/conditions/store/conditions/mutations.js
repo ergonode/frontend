@@ -2,7 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { removeFromObjectByKey } from '@Core/models/objectWrapper';
+import {
+    removeFromObjectByKey,
+} from '@Core/models/objectWrapper';
 
 import defaultState from './state';
 
@@ -25,22 +27,37 @@ export default {
     [types.SET_CONDITION_SETS](state, value) {
         state.conditionSets = value;
     },
-    [types.SET_CONDITIONS](state, { key, value }) {
-        state.conditions = { ...state.conditions, [key]: value };
+    [types.SET_CONDITIONS](state, {
+        key, value,
+    }) {
+        state.conditions = {
+            ...state.conditions,
+            [key]: value,
+        };
     },
     [types.SET_CONDITIONS_DICTIONARY](state, value) {
         state.conditionsDictionary = value;
     },
-    [types.ADD_CONDITION_VALUE](state, { conditionId, parameterName, parameterValue }) {
-        const condition = parameterName === null ? {} : { [parameterName]: parameterValue };
+    [types.ADD_CONDITION_VALUE](state, {
+        conditionId, parameterName, parameterValue,
+    }) {
+        const condition = parameterName === null ? {
+        } : {
+            [parameterName]: parameterValue,
+        };
 
         state.conditionsValues = {
             ...state.conditionsValues,
             [conditionId]: condition,
         };
     },
-    [types.SET_CONDITION_VALUE](state, { conditionId, parameterName, parameterValue }) {
-        const condition = parameterName === null ? {} : { [parameterName]: parameterValue };
+    [types.SET_CONDITION_VALUE](state, {
+        conditionId, parameterName, parameterValue,
+    }) {
+        const condition = parameterName === null ? {
+        } : {
+            [parameterName]: parameterValue,
+        };
 
         state.conditionsValues[conditionId] = {
             ...state.conditionsValues[conditionId],

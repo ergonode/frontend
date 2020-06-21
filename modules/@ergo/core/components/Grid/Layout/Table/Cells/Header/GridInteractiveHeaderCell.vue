@@ -34,10 +34,20 @@
 </template>
 
 <script>
-import { GRAPHITE_LIGHT } from '@Core/assets/scss/_js-variables/colors.scss';
-import { SORTING_ORDER } from '@Core/defaults/icons';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { mapActions, mapState } from 'vuex';
+import {
+    GRAPHITE_LIGHT,
+} from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    SORTING_ORDER,
+} from '@Core/defaults/icons';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'GridInteractiveHeaderCell',
@@ -53,7 +63,10 @@ export default {
             default: 'Header',
         },
         columnId: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
         sortedColumn: {
@@ -81,7 +94,9 @@ export default {
             draggedElement: state => state.draggedElement,
         }),
         contextualMenuItems() {
-            return ['Remove'];
+            return [
+                'Remove',
+            ];
         },
         tinySize() {
             return SIZE.TINY;
@@ -110,14 +125,20 @@ export default {
                     || this.isColumnHovered);
         },
         title() {
-            const [code, languageCode] = this.columnId.split(':');
+            const [
+                code,
+                languageCode,
+            ] = this.columnId.split(':');
             const title = this.label || `#${code}`;
             const languageTitle = languageCode ? languageCode.toUpperCase() : '';
 
             return `${title} ${languageTitle}`;
         },
         hint() {
-            const [code, languageCode] = this.columnId.split(':');
+            const [
+                code,
+                languageCode,
+            ] = this.columnId.split(':');
 
             return this.label ? `${code} ${languageCode}` : null;
         },
@@ -170,7 +191,9 @@ export default {
         },
         getColumnAtIndex(index) {
             const gridColumns = document.querySelector('.columns-section');
-            const { children } = gridColumns;
+            const {
+                children,
+            } = gridColumns;
 
             return children[index];
         },

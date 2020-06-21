@@ -10,16 +10,13 @@
                     <TextField
                         :data-cy="dataCyGenerator(nameKeyField)"
                         :value="translations.name[languageCode]"
-                        solid
                         label="Condition set name"
-                        regular
                         :error-messages="errorMessages[nameKeyField]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'name')" />
                     <TextArea
                         :data-cy="dataCyGenerator(descriptionKeyField)"
                         :value="translations.description[languageCode]"
-                        solid
                         label="Description"
                         resize="vertical"
                         :style="{height: '150px'}"
@@ -49,10 +46,14 @@ export default {
         TextField,
         TextArea,
     },
-    mixins: [translationCardMixin],
+    mixins: [
+        translationCardMixin,
+    ],
     computed: {
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['SEGMENT_UPDATE']);
+            return this.$hasAccess([
+                'SEGMENT_UPDATE',
+            ]);
         },
         descriptionKeyField() {
             return `description_${this.languageCode}`;

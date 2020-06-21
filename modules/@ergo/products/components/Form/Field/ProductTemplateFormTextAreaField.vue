@@ -10,7 +10,6 @@
             <template #validator="{ errorMessages }">
                 <RichTextEditor
                     v-if="isRTEEditor"
-                    solid
                     :style="{ height: '100%' }"
                     :disabled="disabled"
                     :required="properties.required"
@@ -29,8 +28,6 @@
                     v-else
                     :style="{ height: '100%' }"
                     :value="fieldData"
-                    solid
-                    regular
                     resize="none"
                     :label="label"
                     :placeholder="properties.placeholder"
@@ -59,7 +56,10 @@ import InfoHint from '@Core/components/Hints/InfoHint';
 import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
 import TextArea from '@Core/components/Inputs/TextArea';
 import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
-import { mapActions, mapState } from 'vuex';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductTemplateFormTextAreaField',
@@ -73,19 +73,23 @@ export default {
     props: {
         size: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         position: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         parameters: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         properties: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         disabled: {
             type: Boolean,
@@ -105,7 +109,9 @@ export default {
             draft: state => state.draft,
         }),
         fieldData() {
-            const { attribute_code } = this.properties;
+            const {
+                attribute_code,
+            } = this.properties;
 
             return this.draft[this.languageCode][attribute_code] || '';
         },

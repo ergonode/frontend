@@ -28,7 +28,8 @@ export default {
     props: {
         comment: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         isAdditionFormVisible: {
             type: Boolean,

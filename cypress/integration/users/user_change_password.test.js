@@ -22,7 +22,9 @@ context('Change User password', () => {
                 .should('have.value', '123');
             cy.url().then((url) => {
                 const urlElements = url.split('/');
-                const { length } = urlElements;
+                const {
+                    length,
+                } = urlElements;
                 const userId = urlElements[length - 2];
 
                 cy.server();
@@ -45,7 +47,9 @@ context('Change User password', () => {
 
             cy.url().then((url) => {
                 const urlElements = url.split('/');
-                const { length } = urlElements;
+                const {
+                    length,
+                } = urlElements;
                 const userId = urlElements[length - 2];
 
                 cy.server();

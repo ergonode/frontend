@@ -9,8 +9,13 @@ import Footer from '@Core/components/Layout/Footer/Footer';
 import Page from '@Core/components/Layout/Page';
 import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@Core/components/TitleBar/TitleBar';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
+import {
+    getNestedTabRoutes,
+} from '@Core/models/navigation/tabs';
 
 export default {
     components: {

@@ -89,8 +89,13 @@ import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { isObject } from '@Core/models/objectWrapper';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
+import {
+    isObject,
+} from '@Core/models/objectWrapper';
 
 export default {
     name: 'SelectDropDown',
@@ -138,7 +143,8 @@ export default {
         },
         options: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
         offset: {
             type: Object,
@@ -146,7 +152,8 @@ export default {
         },
         selectedOptions: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         searchResult: {
             type: String,
@@ -189,7 +196,9 @@ export default {
         },
         onSelectValue(value, index) {
             if (this.multiselect) {
-                const selectedOptions = { ...this.selectedOptions };
+                const selectedOptions = {
+                    ...this.selectedOptions,
+                };
 
                 if (this.isOptionSelected(index)) {
                     delete selectedOptions[this.stringifiedOptions[index]];

@@ -6,15 +6,10 @@
     <Select
         :value="value"
         :options="options"
-        :solid="solid"
-        :underline="underline"
         :fixed-content="fixedContent"
-        :left-alignment="leftAlignment"
-        :center-alignment="centerAlignment"
         :dismissible="dismissible"
         :label="label"
         :placeholder="placeholder"
-        :description="description"
         :error-messages="errorMessages"
         :hint="hint"
         :required="required"
@@ -22,8 +17,6 @@
         :disabled="disabled"
         :clearable="clearable"
         :multiselect="multiselect"
-        :small="small"
-        :regular="regular"
         :searchable="searchable"
         :data-cy="dataCy"
         @focus="onFocus"
@@ -56,7 +49,9 @@
 </template>
 
 <script>
-import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    GRAPHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import Select from '@Core/components/Inputs/Select/Select';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
@@ -70,28 +65,17 @@ export default {
     },
     props: {
         value: {
-            type: [Array, String, Number, Object],
+            type: [
+                Array,
+                String,
+                Number,
+                Object,
+            ],
             default: '',
-        },
-        solid: {
-            type: Boolean,
-            default: false,
-        },
-        underline: {
-            type: Boolean,
-            default: false,
         },
         fixedContent: {
             type: Boolean,
             default: true,
-        },
-        leftAlignment: {
-            type: Boolean,
-            default: false,
-        },
-        centerAlignment: {
-            type: Boolean,
-            default: false,
         },
         dismissible: {
             type: Boolean,
@@ -102,10 +86,6 @@ export default {
             default: null,
         },
         placeholder: {
-            type: String,
-            default: null,
-        },
-        description: {
             type: String,
             default: null,
         },
@@ -137,14 +117,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        small: {
-            type: Boolean,
-            default: false,
-        },
-        regular: {
-            type: Boolean,
-            default: false,
-        },
         searchable: {
             type: Boolean,
             default: false,
@@ -164,7 +136,8 @@ export default {
     },
     data() {
         return {
-            options: [],
+            options: [
+            ],
             isFetchingOptions: false,
         };
     },
@@ -176,7 +149,9 @@ export default {
     created() {
         if (this.fetchOptionsRequest) {
             this.isFetchingOptions = true;
-            this.fetchOptionsRequest().then(({ options }) => {
+            this.fetchOptionsRequest().then(({
+                options,
+            }) => {
                 this.options = options;
                 this.isFetchingOptions = false;
                 this.$emit('fetchedOptions', options);

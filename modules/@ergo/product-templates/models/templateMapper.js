@@ -2,8 +2,12 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { SYSTEM_TYPES } from '@Attributes/defaults/attributes';
-import { getUUID } from '@Core/models/stringWrapper';
+import {
+    SYSTEM_TYPES,
+} from '@Attributes/defaults/attributes';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
 
 export function getMappedLayoutElement(
     elementID,
@@ -11,10 +15,17 @@ export function getMappedLayoutElement(
     elementLabel,
     position,
     required = false,
-    size = { width: 1, height: 1 },
+    size = {
+        width: 1,
+        height: 1,
+    },
 ) {
-    const { row, column } = position;
-    const { width, height } = size;
+    const {
+        row, column,
+    } = position;
+    const {
+        width, height,
+    } = size;
     const {
         min_width: minWidth,
         min_height: minHeight,
@@ -43,10 +54,17 @@ export function getMappedLayoutSectionElement(
     title,
     elementData,
     position,
-    size = { width: 1, height: 1 },
+    size = {
+        width: 1,
+        height: 1,
+    },
 ) {
-    const { row, column } = position;
-    const { width, height } = size;
+    const {
+        row, column,
+    } = position;
+    const {
+        width, height,
+    } = size;
     const {
         min_width: minWidth,
         min_height: minHeight,
@@ -70,14 +88,21 @@ export function getMappedLayoutSectionElement(
 }
 
 export function getMappedLayoutElements(elements, elementsDescription, types) {
-    if (!elementsDescription.length) return [];
+    if (!elementsDescription.length) {
+        return [
+        ];
+    }
 
     return elements.map((element) => {
         const {
             position, size, properties, type,
         } = element;
-        const { attribute_id: attrID, required, label } = properties;
-        const { x: column, y: row } = position;
+        const {
+            attribute_id: attrID, required, label,
+        } = properties;
+        const {
+            x: column, y: row,
+        } = position;
         if (type !== SYSTEM_TYPES.SECTION) {
             const {
                 code: descCode, label: descLabel,
@@ -87,7 +112,10 @@ export function getMappedLayoutElements(elements, elementsDescription, types) {
                 attrID,
                 types.find(attributeType => attributeType.type === type),
                 descLabel || descCode,
-                { row: row + 1, column: column + 1 },
+                {
+                    row: row + 1,
+                    column: column + 1,
+                },
                 required,
                 size,
             );
@@ -96,7 +124,10 @@ export function getMappedLayoutElements(elements, elementsDescription, types) {
         return getMappedLayoutSectionElement(
             label,
             types.find(attributeType => attributeType.type === SYSTEM_TYPES.SECTION),
-            { row: row + 1, column: column + 1 },
+            {
+                row: row + 1,
+                column: column + 1,
+            },
             size,
         );
     });
@@ -121,7 +152,8 @@ export function getMappedLayoutElementsForAPIUpdate(elements) {
             width,
             height,
         };
-        const properties = {};
+        const properties = {
+        };
         let parsedType = type;
 
         if (type !== SYSTEM_TYPES.SECTION) {

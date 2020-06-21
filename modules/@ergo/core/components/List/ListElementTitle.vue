@@ -16,11 +16,17 @@ export default {
     name: 'ListElementTitle',
     props: {
         title: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
         hint: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             default: '',
         },
         small: {

@@ -67,8 +67,12 @@ export function swapItemPosition(array, pos1, pos2) {
  * @returns {boolean}
  */
 export function arraysAreEqual(arr1, arr2) {
-    const { length: arr1Length } = arr1;
-    const { length: arr2Length } = arr2;
+    const {
+        length: arr1Length,
+    } = arr1;
+    const {
+        length: arr2Length,
+    } = arr2;
 
     if (arr1Length !== arr2Length) return false;
 
@@ -107,7 +111,10 @@ export function insertValueAtIndex(array, value, index) {
  * @returns {number} Transformed array
  */
 export function removeValueAtIndex(array, index) {
-    return [...array.slice(0, index), ...array.slice(index + 1)];
+    return [
+        ...array.slice(0, index),
+        ...array.slice(index + 1),
+    ];
 }
 
 /**
@@ -119,7 +126,9 @@ export function removeValueAtIndex(array, index) {
 export function sumIntegers(arr) {
     if (!Array.isArray(arr)) return 0;
 
-    const { length } = arr;
+    const {
+        length,
+    } = arr;
     let value = 0;
 
     for (let i = 0; i < length; i += 1) {
@@ -142,7 +151,8 @@ export function arrayToObject(array, keyField, value) {
         const newObject = prev;
         newObject[current[keyField]] = current[value];
         return newObject;
-    }, {});
+    }, {
+    });
 }
 
 /**

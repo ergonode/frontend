@@ -11,8 +11,6 @@
                 <TextField
                     :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
-                    solid
-                    regular
                     required
                     label="System name"
                     :disabled="isDisabled || isDisabledByPrivileges"
@@ -25,7 +23,10 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'SegmentForm',
@@ -47,8 +48,12 @@ export default {
             return Boolean(this.segmentId);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess(['SEGMENT_UPDATE']))
-            || (!this.isDisabled && !this.$hasAccess(['SEGMENT_CREATE']));
+            return (this.isDisabled && !this.$hasAccess([
+                'SEGMENT_UPDATE',
+            ]))
+            || (!this.isDisabled && !this.$hasAccess([
+                'SEGMENT_CREATE',
+            ]));
         },
         codeFieldKey() {
             return 'code';

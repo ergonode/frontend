@@ -10,17 +10,28 @@
 </template>
 
 <script>
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { MODAL_TYPE } from '@Core/defaults/modals';
-import { getMappedPrivilegesBasedOnGridData } from '@Users/models/gridDataMapper';
-import { mapActions, mapState } from 'vuex';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import {
+    getMappedPrivilegesBasedOnGridData,
+} from '@Users/models/gridDataMapper';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'EditUserRoles',
     components: {
         UserRolesPage: () => import('@Users/components/Pages/UserRolesPage'),
     },
-    validate({ params }) {
+    validate({
+        params,
+    }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
@@ -61,11 +72,21 @@ export default {
             'removeDrafts',
         ]),
         onRemoveRoleSuccess() {
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Role removed' });
-            this.$router.push({ name: 'user-roles-grid' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Role removed',
+            });
+            this.$router.push({
+                name: 'user-roles-grid',
+            });
         },
-        onRemoveRoleError({ message }) {
-            this.$addAlert({ type: ALERT_TYPE.ERROR, message });
+        onRemoveRoleError({
+            message,
+        }) {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message,
+            });
         },
         onSave() {
             const role = {
@@ -82,10 +103,17 @@ export default {
                 data: role,
                 onSuccess: () => {
                     const privileges = role.privileges
-                        .reduce((acc, ele) => ({ ...acc, [ele]: true }), {});
+                        .reduce((acc, ele) => ({
+                            ...acc,
+                            [ele]: true,
+                        }), {
+                        });
 
                     this.removeValidationErrors();
-                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Role updated' });
+                    this.$addAlert({
+                        type: ALERT_TYPE.SUCCESS,
+                        message: 'Role updated',
+                    });
                     this.setPrivileges(privileges);
                     this.removeDrafts();
                 },

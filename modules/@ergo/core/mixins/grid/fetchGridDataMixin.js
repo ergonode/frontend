@@ -2,15 +2,35 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { DATA_LIMIT } from '@Core/defaults/grid';
-import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
-import { insertValueAtIndex, swapItemPosition } from '@Core/models/arrayWrapper';
-import { insertCookieAtIndex } from '@Core/models/cookies';
-import { getParsedAdvancedFilters, getParsedFilters } from '@Core/models/mappers/gridDataMapper';
-import { getAdvancedFiltersData, getGridData } from '@Core/services/grid/getGridData.service';
-import { mapActions, mapState } from 'vuex';
+import {
+    DATA_LIMIT,
+} from '@Core/defaults/grid';
+import {
+    ADV_FILTERS_IDS,
+} from '@Core/defaults/grid/cookies';
+import {
+    insertValueAtIndex,
+    swapItemPosition,
+} from '@Core/models/arrayWrapper';
+import {
+    insertCookieAtIndex,
+} from '@Core/models/cookies';
+import {
+    getParsedAdvancedFilters,
+    getParsedFilters,
+} from '@Core/models/mappers/gridDataMapper';
+import {
+    getAdvancedFiltersData,
+    getGridData,
+} from '@Core/services/grid/getGridData.service';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
-export default function ({ path }) {
+export default function ({
+    path,
+}) {
     return {
         components: {
             Grid: () => import('@Core/components/Grid/Grid'),
@@ -67,10 +87,19 @@ export default function ({ path }) {
                 }));
             }
 
-            const [gridData, advancedFilters = []] = await Promise.all(requests);
-            const { columns, data, filtered } = gridData;
-            const disabledElements = {};
-            const setDisabledElement = ({ languageCode, attributeId }) => {
+            const [
+                gridData,
+                advancedFilters = [
+                ],
+            ] = await Promise.all(requests);
+            const {
+                columns, data, filtered,
+            } = gridData;
+            const disabledElements = {
+            };
+            const setDisabledElement = ({
+                languageCode, attributeId,
+            }) => {
                 if (attributeId) {
                     if (disabledElements[languageCode]
                         && typeof disabledElements[languageCode][attributeId] !== 'undefined') {
@@ -87,13 +116,23 @@ export default function ({ path }) {
                 }
             };
             columns.forEach((column) => {
-                const { element_id: attributeId, language: languageCode } = column;
-                setDisabledElement({ languageCode, attributeId });
+                const {
+                    element_id: attributeId, language: languageCode,
+                } = column;
+                setDisabledElement({
+                    languageCode,
+                    attributeId,
+                });
             });
 
             advancedFilters.forEach((filter) => {
-                const { attributeId, languageCode } = filter;
-                setDisabledElement({ languageCode, attributeId });
+                const {
+                    attributeId, languageCode,
+                } = filter;
+                setDisabledElement({
+                    languageCode,
+                    attributeId,
+                });
             });
 
             this.setDisabledElements(disabledElements);
@@ -105,15 +144,20 @@ export default function ({ path }) {
         },
         data() {
             return {
-                data: {},
-                columns: [],
+                data: {
+                },
+                columns: [
+                ],
                 filtered: 0,
-                advancedFilters: [],
+                advancedFilters: [
+                ],
                 localParams: {
                     offset: 0,
                     limit: DATA_LIMIT,
-                    filters: {},
-                    sortedColumn: {},
+                    filters: {
+                    },
+                    sortedColumn: {
+                    },
                 },
             };
         },
@@ -144,7 +188,10 @@ export default function ({ path }) {
                 const parsedAdvancedFilter = getParsedAdvancedFilters(this.advancedFilters);
 
                 this.localParams = {
-                    offset, limit, filters, sortedColumn,
+                    offset,
+                    limit,
+                    filters,
+                    sortedColumn,
                 };
                 let filter = parsedFilter;
 
@@ -163,7 +210,9 @@ export default function ({ path }) {
                 };
 
                 if (Object.keys(sortedColumn).length) {
-                    const { index: colSortID, orderState } = sortedColumn;
+                    const {
+                        index: colSortID, orderState,
+                    } = sortedColumn;
 
                     params.field = colSortID;
                     params.order = orderState;
@@ -198,7 +247,9 @@ export default function ({ path }) {
             },
             onDropColumn(columnId) {
                 this.getGridData(this.localParams).then(() => {
-                    const column = this.columns.find(({ id }) => id === columnId);
+                    const column = this.columns.find(({
+                        id,
+                    }) => id === columnId);
 
                     if (column && column.element_id) {
                         this.disableListElement({
@@ -209,14 +260,19 @@ export default function ({ path }) {
                 });
             },
             dropFilter(data) {
-                const [code, languageCode] = data.split(':');
+                const [
+                    code,
+                    languageCode,
+                ] = data.split(':');
 
                 this.getAttributeFilter({
                     languageCode,
                     code,
                 });
             },
-            swapFiltersPosition({ from, to }) {
+            swapFiltersPosition({
+                from, to,
+            }) {
                 this.advancedFilters = [
                     ...swapItemPosition(this.advancedFilters, from, to),
                 ];
@@ -225,17 +281,24 @@ export default function ({ path }) {
                 this.advancedFilters.splice(index, 1);
             },
             removeAllFilters() {
-                this.advancedFilters.forEach(({ attributeId, languageCode }) => {
+                this.advancedFilters.forEach(({
+                    attributeId, languageCode,
+                }) => {
                     this.setDisabledElement({
-                        languageCode, elementId: attributeId, disabled: false,
+                        languageCode,
+                        elementId: attributeId,
+                        disabled: false,
                     });
                 });
 
-                this.advancedFilters = [];
+                this.advancedFilters = [
+                ];
                 this.$cookies.remove(ADV_FILTERS_IDS);
             },
             clearAllFilters() {
-                const { length } = this.advancedFilters;
+                const {
+                    length,
+                } = this.advancedFilters;
 
                 for (let i = 0; i < length; i += 1) {
                     this.advancedFilters[i].value = {
@@ -248,17 +311,25 @@ export default function ({ path }) {
                     isEmptyRecord: false,
                 };
             },
-            updateFilterAtIndex({ index, filter }) {
+            updateFilterAtIndex({
+                index, filter,
+            }) {
                 this.advancedFilters[index] = filter;
-                this.advancedFilters = [...this.advancedFilters];
+                this.advancedFilters = [
+                    ...this.advancedFilters,
+                ];
             },
-            updateFilterValueAtIndex({ index, key, value }) {
+            updateFilterValueAtIndex({
+                index, key, value,
+            }) {
                 this.advancedFilters[index].value = {
                     ...this.advancedFilters[index].value,
                     [key]: value,
                 };
             },
-            async getAttributeFilter({ languageCode, code }) {
+            async getAttributeFilter({
+                languageCode, code,
+            }) {
                 const index = 0;
                 const attributeCode = `${code}:${languageCode}`;
                 const params = {
@@ -274,11 +345,15 @@ export default function ({ path }) {
                     params,
                 });
 
-                const [advancedFilter] = advancedFilters;
+                const [
+                    advancedFilter,
+                ] = advancedFilters;
 
                 if (advancedFilter) {
                     this.advancedFilters = insertValueAtIndex(
-                        [...this.advancedFilters],
+                        [
+                            ...this.advancedFilters,
+                        ],
                         advancedFilter,
                         index,
                     );
@@ -300,15 +375,21 @@ export default function ({ path }) {
                     });
                 }
             },
-            disableListElement({ languageCode, attributeId }) {
+            disableListElement({
+                languageCode, attributeId,
+            }) {
                 if (this.disabledElements[languageCode]
                     && typeof this.disabledElements[languageCode][attributeId] !== 'undefined') {
                     this.setDisabledElement({
-                        languageCode, elementId: attributeId, disabled: true,
+                        languageCode,
+                        elementId: attributeId,
+                        disabled: true,
                     });
                 } else {
                     this.setDisabledElement({
-                        languageCode, elementId: attributeId, disabled: false,
+                        languageCode,
+                        elementId: attributeId,
+                        disabled: false,
                     });
                 }
             },

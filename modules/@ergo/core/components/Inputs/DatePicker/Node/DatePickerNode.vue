@@ -25,7 +25,10 @@ export default {
             default: false,
         },
         title: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
     },

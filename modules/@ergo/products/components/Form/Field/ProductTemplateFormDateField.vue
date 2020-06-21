@@ -10,8 +10,6 @@
             <template #validator="{ errorMessages }">
                 <DatePicker
                     :value="fieldData"
-                    solid
-                    regular
                     :label="label"
                     :placeholder="properties.placeholder"
                     :foramt="parameter"
@@ -42,10 +40,17 @@ import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import InfoHint from '@Core/components/Hints/InfoHint';
 import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
-import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
+import {
+    DEFAULT_FORMAT,
+} from '@Core/models/calendar/calendar';
 import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
-import { format as formatDate } from 'date-fns';
-import { mapActions, mapState } from 'vuex';
+import {
+    format as formatDate,
+} from 'date-fns';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductTemplateFormDateField',
@@ -59,19 +64,23 @@ export default {
     props: {
         size: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         position: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         parameters: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         properties: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         disabled: {
             type: Boolean,
@@ -91,7 +100,9 @@ export default {
             draft: state => state.draft,
         }),
         fieldData() {
-            const { attribute_code } = this.properties;
+            const {
+                attribute_code,
+            } = this.properties;
             const value = this.draft[this.languageCode][attribute_code];
 
             return value ? new Date(value) : null;
@@ -99,7 +110,9 @@ export default {
         parameter() {
             if (!this.properties.parameters) return DEFAULT_FORMAT;
 
-            const [key] = Object.keys(this.properties.parameters);
+            const [
+                key,
+            ] = Object.keys(this.properties.parameters);
 
             return this.properties.parameters[key];
         },

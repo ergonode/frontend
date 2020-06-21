@@ -9,9 +9,7 @@
                 <TranslationSelect
                     :value="activeLanguages"
                     :options="languageOptions"
-                    :solid="true"
                     label="Languages"
-                    :regular="true"
                     :multiselect="true"
                     :clearable="true"
                     :searchable="true"
@@ -25,7 +23,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'MainSettingsForm',
@@ -37,8 +37,10 @@ export default {
     data() {
         return {
             filteredValue: '',
-            tmpLanguages: [],
-            activeLanguages: [],
+            tmpLanguages: [
+            ],
+            activeLanguages: [
+            ],
         };
     },
     computed: {
@@ -50,13 +52,17 @@ export default {
                 const rgx = new RegExp(this.filteredValue, 'i');
 
                 return this.tmpLanguages.filter(
-                    ({ key, value }) => key.match(rgx) || value.match(rgx),
+                    ({
+                        key, value,
+                    }) => key.match(rgx) || value.match(rgx),
                 );
             }
             return this.tmpLanguages;
         },
         hint() {
-            return this.activeLanguages.map(({ value }) => value).join(', ');
+            return this.activeLanguages.map(({
+                value,
+            }) => value).join(', ');
         },
     },
     watch: {
@@ -64,11 +70,19 @@ export default {
             deep: true,
             immediate: true,
             handler(value) {
-                const mappedLanguage = ({ id, name, code }) => ({ id, key: code, value: name });
+                const mappedLanguage = ({
+                    id, name, code,
+                }) => ({
+                    id,
+                    key: code,
+                    value: name,
+                });
 
                 this.tmpLanguages = value.map(mappedLanguage);
                 this.activeLanguages = value
-                    .filter(({ active }) => active === true)
+                    .filter(({
+                        active,
+                    }) => active === true)
                     .map(mappedLanguage);
                 this.$emit('selectedLanguages', this.activeLanguages);
             },

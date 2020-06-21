@@ -3,7 +3,10 @@
  * See LICENSE for license details.
  */
 import Button from '@Core/components/Buttons/Button';
-import { createLocalVue, shallowMount } from '@vue/test-utils';
+import {
+    createLocalVue,
+    shallowMount,
+} from '@vue/test-utils';
 
 const localVue = createLocalVue();
 

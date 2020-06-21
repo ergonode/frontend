@@ -34,15 +34,27 @@ import selectRowMixin from '@Users/mixins/grid/columns/selectRowMixin';
 
 export default {
     name: 'GridLanguageSelectRowColumn',
-    mixins: [selectRowMixin],
+    mixins: [
+        selectRowMixin,
+    ],
     methods: {
         onSelectAllRows(value) {
-            const draftValues = {};
+            const draftValues = {
+            };
 
             this.rowIds.forEach((rowId) => {
-                if (!draftValues[rowId]) draftValues[rowId] = {};
-                if (!draftValues[rowId].edit) draftValues[rowId].edit = {};
-                if (!draftValues[rowId].read) draftValues[rowId].read = {};
+                if (!draftValues[rowId]) {
+                    draftValues[rowId] = {
+                    };
+                }
+                if (!draftValues[rowId].edit) {
+                    draftValues[rowId].edit = {
+                    };
+                }
+                if (!draftValues[rowId].read) {
+                    draftValues[rowId].read = {
+                    };
+                }
 
                 draftValues[rowId] = {
                     edit: value,
@@ -53,11 +65,17 @@ export default {
             });
 
             this.setDraftsValues(draftValues);
-            this.selectedRows = { ...this.selectedRows };
+            this.selectedRows = {
+                ...this.selectedRows,
+            };
         },
-        onSelectRow({ rowId, value }) {
+        onSelectRow({
+            rowId, value,
+        }) {
             this.selectedRows[rowId] = +value;
-            this.selectedRows = { ...this.selectedRows };
+            this.selectedRows = {
+                ...this.selectedRows,
+            };
 
             this.setDraftRowValues({
                 rowId,

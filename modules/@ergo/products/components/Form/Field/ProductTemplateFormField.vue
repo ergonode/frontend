@@ -32,13 +32,19 @@ export default {
     },
     computed: {
         formFieldPosition() {
-            const { x, y } = this.position;
-            const { width, height } = this.size;
+            const {
+                x, y,
+            } = this.position;
+            const {
+                width, height,
+            } = this.size;
             const offset = 1;
             const fixedRow = y + offset;
             const fixedColumn = x + offset;
 
-            return { gridArea: `${fixedRow} / ${fixedColumn} / ${fixedRow + height} / ${fixedColumn + width}` };
+            return {
+                gridArea: `${fixedRow} / ${fixedColumn} / ${fixedRow + height} / ${fixedColumn + width}`,
+            };
         },
     },
 };

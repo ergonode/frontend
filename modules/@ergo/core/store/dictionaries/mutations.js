@@ -10,7 +10,9 @@ export const types = {
 };
 
 export default {
-    [types.SET_CUSTOM_STATE_PROPERTY](state, { stateProp, value }) {
+    [types.SET_CUSTOM_STATE_PROPERTY](state, {
+        stateProp, value,
+    }) {
         state[stateProp] = value;
     },
     [types.CLEAR_STATE](state) {

@@ -20,7 +20,10 @@
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementHint from '@Core/components/List/ListElementHint';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
-import { mapActions, mapState } from 'vuex';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'LanguagesListElement',
@@ -56,13 +59,22 @@ export default {
         ]),
         onDrag(isDragged) {
             if (isDragged) {
-                const { id, code, name } = this.item;
-                this.setDraggedElement({ id, code, name });
+                const {
+                    id, code, name,
+                } = this.item;
+                this.setDraggedElement({
+                    id,
+                    code,
+                    name,
+                });
             } else {
                 this.setDraggedElement();
             }
 
-            this.setDraggableState({ propName: 'isListElementDragging', value: isDragged });
+            this.setDraggableState({
+                propName: 'isListElementDragging',
+                value: isDragged,
+            });
         },
     },
 };

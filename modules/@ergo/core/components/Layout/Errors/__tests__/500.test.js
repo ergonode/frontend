@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 import Error500 from '@Core/components/Layout/Errors/500.vue';
-import { shallowMount } from '@vue/test-utils';
+import {
+    shallowMount,
+} from '@vue/test-utils';
 
 describe('Errors/500', () => {
     let wrapper;

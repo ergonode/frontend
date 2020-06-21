@@ -29,7 +29,9 @@ import List from '@Core/components/List/List';
 import ListElement from '@Core/components/List/ListElement';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
-import { FILTER_OPERATOR } from '@Core/defaults/operators';
+import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
 
 export default {
     name: 'GridAdvancedFilterSelectContent',
@@ -70,7 +72,10 @@ export default {
                 .findIndex(option => option.key === this.filterValue);
         },
         onSelectValue(value) {
-            this.$emit('input', { value: value.key, key: FILTER_OPERATOR.EQUAL });
+            this.$emit('input', {
+                value: value.key,
+                key: FILTER_OPERATOR.EQUAL,
+            });
         },
         onEmptyRecordChange(value) {
             this.$emit('emptyRecord', value);

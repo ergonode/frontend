@@ -5,15 +5,10 @@
 <template>
     <LazySelect
         :value="localValue"
-        :solid="solid"
-        :underline="underline"
         :fixed-content="fixedContent"
-        :left-alignment="leftAlignment"
-        :center-alignment="centerAlignment"
         :dismissible="dismissible"
         :label="label"
         :placeholder="placeholder"
-        :description="description"
         :error-messages="errorMessages"
         :hint="hint"
         :required="required"
@@ -21,8 +16,6 @@
         :disabled="disabled"
         :clearable="clearable"
         :multiselect="multiselect"
-        :small="small"
-        :regular="regular"
         :searchable="searchable"
         :fetch-options-request="fetchOptionsRequest"
         :data-cy="dataCy"
@@ -78,28 +71,17 @@ export default {
     },
     props: {
         value: {
-            type: [Array, String, Number, Object],
+            type: [
+                Array,
+                String,
+                Number,
+                Object,
+            ],
             default: '',
-        },
-        solid: {
-            type: Boolean,
-            default: false,
-        },
-        underline: {
-            type: Boolean,
-            default: false,
         },
         fixedContent: {
             type: Boolean,
             default: true,
-        },
-        leftAlignment: {
-            type: Boolean,
-            default: false,
-        },
-        centerAlignment: {
-            type: Boolean,
-            default: false,
         },
         dismissible: {
             type: Boolean,
@@ -110,10 +92,6 @@ export default {
             default: null,
         },
         placeholder: {
-            type: String,
-            default: null,
-        },
-        description: {
             type: String,
             default: null,
         },
@@ -142,14 +120,6 @@ export default {
             default: false,
         },
         multiselect: {
-            type: Boolean,
-            default: false,
-        },
-        small: {
-            type: Boolean,
-            default: false,
-        },
-        regular: {
             type: Boolean,
             default: false,
         },

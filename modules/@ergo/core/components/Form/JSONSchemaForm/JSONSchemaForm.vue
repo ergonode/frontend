@@ -22,7 +22,9 @@
 
 <script>
 import Form from '@Core/components/Form/Form';
-import { toCapitalize } from '@Core/models/stringWrapper';
+import {
+    toCapitalize,
+} from '@Core/models/stringWrapper';
 
 export default {
     name: 'JSONSchemaForm',
@@ -36,7 +38,8 @@ export default {
         },
         uiSchema: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         value: {
             type: String,
@@ -45,8 +48,10 @@ export default {
     },
     data() {
         return {
-            model: {},
-            schemaComponents: [],
+            model: {
+            },
+            schemaComponents: [
+            ],
         };
     },
     computed: {
@@ -61,8 +66,11 @@ export default {
     },
     methods: {
         initializeComponents() {
-            const { length } = this.fieldsKeys;
-            const components = [];
+            const {
+                length,
+            } = this.fieldsKeys;
+            const components = [
+            ];
 
             for (let i = 0; i < length; i += 1) {
                 const key = this.fieldsKeys[i];
@@ -83,14 +91,17 @@ export default {
                 if (i + 1 !== length) {
                     components.push({
                         key: `[${i}]-divider`,
-                        props: {},
+                        props: {
+                        },
                         component: () => import('@Core/components/Dividers/Divider'),
                     });
                 }
             }
             return components;
         },
-        onValueChange({ key, value }) {
+        onValueChange({
+            key, value,
+        }) {
             this.model[key] = value;
             this.$emit('input', JSON.stringify(this.model));
         },

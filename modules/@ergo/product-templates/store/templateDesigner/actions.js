@@ -2,22 +2,30 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { SYSTEM_TYPES } from '@Attributes/defaults/attributes';
-import { SKU_MODEL_ID } from '@Templates/defaults/product';
+import {
+    SYSTEM_TYPES,
+} from '@Attributes/defaults/attributes';
+import {
+    SKU_MODEL_ID,
+} from '@Templates/defaults/product';
 import {
     getMappedLayoutElement,
     getMappedLayoutElements,
     getMappedLayoutSectionElement,
 } from '@Templates/models/templateMapper';
 
-import { types } from './mutations';
+import {
+    types,
+} from './mutations';
 
 export default {
     getTemplateByID(
         {
             commit, dispatch, state, rootState,
         },
-        { path },
+        {
+            path,
+        },
     ) {
         return this.app.$axios.$get(path).then(({
             name,
@@ -26,7 +34,9 @@ export default {
             default_image: defaultImage,
             elements,
         }) => {
-            const { language: languageCode } = rootState.authentication.user;
+            const {
+                language: languageCode,
+            } = rootState.authentication.user;
             // TODO: BE has no filter via ID's - we gonna wait for them
             // const attributesId = elements.map(el => el.properties.attribute_id);
             const params = {
@@ -38,9 +48,19 @@ export default {
             commit(types.SET_DEFAULT_IMAGE_ATTRIBUTE, defaultImage);
 
             return Promise.all([
-                this.app.$axios.$get(`${languageCode}/attributes`, { params }).then(({ collection }) => {
+                this.app.$axios.$get(`${languageCode}/attributes`, {
+                    params,
+                }).then(({
+                    collection,
+                }) => {
                     const elementsDescription = collection.map(
-                        ({ id, code, label }) => ({ id, code, label }),
+                        ({
+                            id, code, label,
+                        }) => ({
+                            id,
+                            code,
+                            label,
+                        }),
                     );
                     const layoutElements = getMappedLayoutElements(
                         elements,
@@ -49,8 +69,16 @@ export default {
                     );
 
                     for (let i = layoutElements.length - 1; i > -1; i -= 1) {
-                        const { id } = layoutElements[i];
-                        dispatch('list/setDisabledElement', { languageCode, elementId: id, disabled: true }, { root: true });
+                        const {
+                            id,
+                        } = layoutElements[i];
+                        dispatch('list/setDisabledElement', {
+                            languageCode,
+                            elementId: id,
+                            disabled: true,
+                        }, {
+                            root: true,
+                        });
                     }
 
                     commit(types.INITIALIZE_LAYOUT_ELEMENTS, layoutElements);
@@ -61,7 +89,9 @@ export default {
         });
     },
     async updateTemplateDesigner(
-        { rootState },
+        {
+            rootState,
+        },
         {
             id,
             data,
@@ -69,24 +99,35 @@ export default {
             onError,
         },
     ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
 
         await this.$setLoader('footerButton');
         await this.app.$axios.$put(`${userLanguageCode}/templates/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
-    getTypes({ commit }, {
+    getTypes({
+        commit,
+    }, {
         path,
     }) {
-        return this.app.$axios.$get(path).then(({ collection }) => {
+        return this.app.$axios.$get(path).then(({
+            collection,
+        }) => {
             commit(types.SET_TYPES, collection);
         });
     },
     addListElementToLayout({
         commit, dispatch, rootState, state,
     }, position) {
-        const { draggedElement } = rootState.draggable;
-        const [value, languageCode] = draggedElement.split(':');
+        const {
+            draggedElement,
+        } = rootState.draggable;
+        const [
+            value,
+            languageCode,
+        ] = draggedElement.split(':');
         const params = {
             limit: 1,
             offset: 0,
@@ -94,8 +135,14 @@ export default {
             field: 'code',
             order: 'ASC',
         };
-        this.app.$axios.$get(`${languageCode}/attributes`, { params }).then(({ collection }) => {
-            const [element] = collection;
+        this.app.$axios.$get(`${languageCode}/attributes`, {
+            params,
+        }).then(({
+            collection,
+        }) => {
+            const [
+                element,
+            ] = collection;
 
             const layoutElement = getMappedLayoutElement(
                 element.id,
@@ -104,56 +151,100 @@ export default {
                 position,
             );
 
-            dispatch('list/setDisabledElement', { languageCode, elementId: element.id, disabled: true }, { root: true });
+            dispatch('list/setDisabledElement', {
+                languageCode,
+                elementId: element.id,
+                disabled: true,
+            }, {
+                root: true,
+            });
             commit(types.ADD_ELEMENT_TO_LAYOUT, layoutElement);
         });
     },
     addSectionElementToLayout: ({
         commit, state,
-    }, { row, column, title }) => {
+    }, {
+        row, column, title,
+    }) => {
         const layoutElement = getMappedLayoutSectionElement(
             title,
             state.types.find(attributeType => attributeType.type === SYSTEM_TYPES.SECTION),
-            { row, column },
+            {
+                row,
+                column,
+            },
         );
 
         commit(types.ADD_ELEMENT_TO_LAYOUT, layoutElement);
     },
-    updateLayoutElementBounds: ({ commit }, bounds) => {
+    updateLayoutElementBounds: ({
+        commit,
+    }, bounds) => {
         commit(types.UPDATE_LAYOUT_ELEMENT_BOUNDS, bounds);
     },
-    updateLayoutElementPosition: ({ commit }, position) => {
+    updateLayoutElementPosition: ({
+        commit,
+    }, position) => {
         commit(types.UPDATE_LAYOUT_ELEMENT_POSITION, position);
     },
-    updateSectionElementTitle: ({ commit }, title) => {
+    updateSectionElementTitle: ({
+        commit,
+    }, title) => {
         commit(types.UPDATE_SECTION_ELEMENT_TITLE, title);
     },
     removeLayoutElementAtIndex: ({
         commit, dispatch, state, rootState,
     }, index) => {
-        const { layoutElements } = state;
-        const { user } = rootState.authentication;
-        dispatch('list/removeDisabledElement', { languageCode: user.language, elementId: layoutElements[index].id }, { root: true });
+        const {
+            layoutElements,
+        } = state;
+        const {
+            user,
+        } = rootState.authentication;
+        dispatch('list/removeDisabledElement', {
+            languageCode: user.language,
+            elementId: layoutElements[index].id,
+        }, {
+            root: true,
+        });
         commit(types.REMOVE_LAYOUT_ELEMENT_AT_INDEX, index);
     },
-    setTitle: ({ commit }, title) => {
+    setTitle: ({
+        commit,
+    }, title) => {
         commit(types.SET_TEMPLATE_DESIGNER_TITLE, title);
     },
-    setImage: ({ commit }, image) => {
+    setImage: ({
+        commit,
+    }, image) => {
         commit(types.SET_TEMPLATE_DESIGNER_IMAGE, image);
     },
-    setDefaultTextAttribute: ({ commit }, defaultTextAttribute) => {
+    setDefaultTextAttribute: ({
+        commit,
+    }, defaultTextAttribute) => {
         commit(types.SET_DEFAULT_TEXT_ATTRIBUTE, defaultTextAttribute);
     },
-    setDefaultImageAttribute: ({ commit }, defaultImageAttribute) => {
+    setDefaultImageAttribute: ({
+        commit,
+    }, defaultImageAttribute) => {
         commit(types.SET_DEFAULT_IMAGE_ATTRIBUTE, defaultImageAttribute);
     },
-    setLayoutElementRequirement: ({ commit }, payload) => {
+    setLayoutElementRequirement: ({
+        commit,
+    }, payload) => {
         commit(types.SET_LAYOUT_ELEMENT_REQUIREMENT, payload);
     },
-    removeTemplate({ rootState }, { id, onSuccess }) {
-        const { language: userLanguageCode } = rootState.authentication.user;
+    removeTemplate({
+        rootState,
+    }, {
+        id, onSuccess,
+    }) {
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
         return this.app.$axios.$delete(`${userLanguageCode}/templates/${id}`).then(() => onSuccess());
     },
-    clearStorage: ({ commit }) => commit(types.CLEAR_STATE),
+    clearStorage: ({
+        commit,
+    }) => commit(types.CLEAR_STATE),
 };

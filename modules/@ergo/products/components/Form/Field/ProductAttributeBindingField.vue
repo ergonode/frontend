@@ -9,7 +9,6 @@
         @remove="removeBindingAttribute">
         <TranslationSelect
             :value="attribute"
-            solid
             required
             small
             :disabled="disabled"
@@ -21,7 +20,10 @@
 <script>
 import FormListElementField from '@Core/components/Form/Field/FormListElementField';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
-import { mapActions, mapState } from 'vuex';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductAttributeBindingField',
@@ -40,7 +42,8 @@ export default {
         },
         attributes: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
         disabled: {
             type: Boolean,

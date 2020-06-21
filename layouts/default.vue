@@ -9,15 +9,21 @@
 </template>
 
 <script>
-import { isEmpty } from '@Core/models/objectWrapper';
+import {
+    isEmpty,
+} from '@Core/models/objectWrapper';
 
 export default {
     name: 'NuxtDefaultLayout',
     components: {
         DefaultLayout: () => import('@Core/layouts/default'),
     },
-    async middleware({ store, redirect }) {
-        const { dictionaries, authentication } = store.state;
+    async middleware({
+        store, redirect,
+    }) {
+        const {
+            dictionaries, authentication,
+        } = store.state;
         let emptyState = 0;
 
         if (!authentication.isLogged) {

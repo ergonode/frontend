@@ -10,9 +10,7 @@
                     <TextField
                         :data-cy="dataCyGenerator(labelFieldKey)"
                         :value="translations.label[languageCode]"
-                        solid
                         label="Attribute name"
-                        regular
                         :error-messages="errorMessages[labelFieldKey]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'label')" />
@@ -20,7 +18,6 @@
                         v-if="hasPlaceholder"
                         :data-cy="dataCyGenerator(placeholderFieldKey)"
                         :value="translations.placeholder[languageCode]"
-                        solid
                         label="Placeholder"
                         resize="none"
                         :style="{height: '150px'}"
@@ -30,7 +27,6 @@
                     <TextArea
                         :data-cy="dataCyGenerator(hintFieldKey)"
                         :value="translations.hint[languageCode]"
-                        solid
                         label="Tooltip for writers"
                         resize="none"
                         :style="{height: '150px'}"
@@ -51,7 +47,10 @@
 
 <script>
 import AttributeOptionValues from '@Attributes/components/Forms/Sections/AttributeOptionValues';
-import { hasOptions, hasPlaceholder } from '@Attributes/models/attributeTypes';
+import {
+    hasOptions,
+    hasPlaceholder,
+} from '@Attributes/models/attributeTypes';
 import Card from '@Core/components/Card/Card';
 import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
@@ -59,8 +58,12 @@ import FormSection from '@Core/components/Form/Section/FormSection';
 import TextArea from '@Core/components/Inputs/TextArea';
 import TextField from '@Core/components/Inputs/TextField';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
-import { getKeyByValue } from '@Core/models/objectWrapper';
-import { mapState } from 'vuex';
+import {
+    getKeyByValue,
+} from '@Core/models/objectWrapper';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'AttributeTranslationForm',
@@ -73,7 +76,9 @@ export default {
         TextArea,
         AttributeOptionValues,
     },
-    mixins: [translationCardMixin],
+    mixins: [
+        translationCardMixin,
+    ],
     computed: {
         ...mapState('dictionaries', {
             attrTypes: state => state.attrTypes,
@@ -91,7 +96,9 @@ export default {
             return getKeyByValue(this.attrTypes, this.type);
         },
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['ATTRIBUTE_UPDATE']);
+            return this.$hasAccess([
+                'ATTRIBUTE_UPDATE',
+            ]);
         },
         hintFieldKey() {
             return `hint_${this.languageCode}`;

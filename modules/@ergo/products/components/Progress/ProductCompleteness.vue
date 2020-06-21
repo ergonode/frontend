@@ -17,7 +17,9 @@
 
 <script>
 import {
-    GREEN, RED, YELLOW,
+    GREEN,
+    RED,
+    YELLOW,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
@@ -41,7 +43,9 @@ export default {
             return `${this.progress}% Completed`;
         },
         progress() {
-            const { filled, required } = this.completeness;
+            const {
+                filled, required,
+            } = this.completeness;
             const progress = Math.round((filled / required) * 100);
 
             if (Number.isNaN(progress)) {
@@ -50,7 +54,11 @@ export default {
             return progress;
         },
         color() {
-            return [RED, YELLOW, GREEN][Math.floor(this.progress / 40)];
+            return [
+                RED,
+                YELLOW,
+                GREEN,
+            ][Math.floor(this.progress / 40)];
         },
     },
 };

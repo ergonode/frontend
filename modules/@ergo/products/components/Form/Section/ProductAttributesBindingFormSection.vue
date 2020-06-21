@@ -23,7 +23,10 @@
 import FormListSection from '@Core/components/Form/Section/FormListSection';
 import FormListSubsection from '@Core/components/Form/Subsection/FormListSubsection';
 import ProductAttributeBindingField from '@Products/components/Form/Field/ProductAttributeBindingField';
-import { mapActions, mapState } from 'vuex';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductAttributesBindingFormSection',

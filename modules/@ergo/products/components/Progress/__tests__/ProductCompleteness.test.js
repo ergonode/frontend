@@ -2,8 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { createLocalVue, shallowMount } from '@vue/test-utils';
-import { Store } from 'vuex-mock-store';
+import {
+    createLocalVue,
+    shallowMount,
+} from '@vue/test-utils';
+import {
+    Store,
+} from 'vuex-mock-store';
 
 import ProductCompleteness from '../ProductCompleteness.vue';
 
@@ -32,7 +37,8 @@ describe('Badges/ProductCompleteness', () => {
                 completeness: {
                     filled: 1,
                     required: 1,
-                    missing: [],
+                    missing: [
+                    ],
                 },
             },
             computed: {

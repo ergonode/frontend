@@ -2,7 +2,11 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { Icons, Pages, Tabs } from './imports';
+import {
+    Icons,
+    Pages,
+    Tabs,
+} from './imports';
 import Privileges from './privileges';
 
 export default [
@@ -38,7 +42,8 @@ export default [
                             icon: Icons.Product,
                         },
                     ],
-                    privileges: [],
+                    privileges: [
+                    ],
                 },
             },
         ],
@@ -68,7 +73,8 @@ export default [
                             routeName: 'collections-grid',
                         },
                     ],
-                    privileges: [],
+                    privileges: [
+                    ],
                 },
             },
             {
@@ -87,7 +93,8 @@ export default [
                             routeName: 'collections-grid',
                         },
                     ],
-                    privileges: [],
+                    privileges: [
+                    ],
                 },
             },
             {
@@ -106,7 +113,8 @@ export default [
                             routeName: 'collections-grid',
                         },
                     ],
-                    privileges: [],
+                    privileges: [
+                    ],
                 },
             },
         ],

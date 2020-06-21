@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 import NavigationBarButton from '@Core/components/NavigationBar/NavigationBarButton';
-import { shallowMount } from '@vue/test-utils';
+import {
+    shallowMount,
+} from '@vue/test-utils';
 
 describe('NavigationBar/NavigationBarButton', () => {
     let wrapper;

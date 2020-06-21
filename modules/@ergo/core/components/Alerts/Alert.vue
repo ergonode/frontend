@@ -29,10 +29,18 @@ import {
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import Fab from '@Core/components/Buttons/Fab';
 import IconClose from '@Core/components/Icons/Window/IconClose';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { THEME } from '@Core/defaults/theme';
-import { toCapitalize } from '@Core/models/stringWrapper';
-import { mapActions } from 'vuex';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    THEME,
+} from '@Core/defaults/theme';
+import {
+    toCapitalize,
+} from '@Core/models/stringWrapper';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'Alert',

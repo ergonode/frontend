@@ -2,12 +2,17 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getParamsKeyForType, getParamsOptionsForType } from '@Attributes/models/attributeTypes';
+import {
+    getParamsKeyForType,
+    getParamsOptionsForType,
+} from '@Attributes/models/attributeTypes';
 import {
     getKeyByValue,
     isObject,
 } from '@Core/models/objectWrapper';
-import { getUUID } from '@Core/models/stringWrapper';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
 
 export function getParsedType(types, selectedType) {
     return getKeyByValue(types, selectedType);
@@ -18,7 +23,9 @@ export function getMappedParameterValues(type, parameters, data) {
         type,
         data,
     );
-    const [parsedParameters] = Object.values(parameters);
+    const [
+        parsedParameters,
+    ] = Object.values(parameters);
 
     // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
     if (Array.isArray(typeParameters)) {
@@ -35,10 +42,14 @@ export function getParsedParameterKeys({
     const paramKey = getParamsKeyForType(selectedType);
 
     if (isObject(selectedParam)) {
-        return { [paramKey]: Object.keys(selectedParam) };
+        return {
+            [paramKey]: Object.keys(selectedParam),
+        };
     }
 
-    return { [paramKey]: selectedParam };
+    return {
+        [paramKey]: selectedParam,
+    };
 }
 
 export function getMappedArrayOptions(options) {
@@ -51,5 +62,6 @@ export function getMappedArrayOptions(options) {
             value: !current.label || current.label.length < 1 ? null : current.label,
         };
         return newObject;
-    }, {});
+    }, {
+    });
 }

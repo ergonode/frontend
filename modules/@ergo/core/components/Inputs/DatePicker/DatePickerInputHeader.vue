@@ -17,8 +17,14 @@
 
 <script>
 import TextField from '@Core/components/Inputs/TextField';
-import { ALIGNMENT, INPUT_TYPE, SIZE } from '@Core/defaults/theme';
-import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
+import {
+    ALIGNMENT,
+    INPUT_TYPE,
+    SIZE,
+} from '@Core/defaults/theme';
+import {
+    DEFAULT_FORMAT,
+} from '@Core/models/calendar/calendar';
 
 export default {
     name: 'DatePickerInputHeader',
@@ -27,7 +33,10 @@ export default {
     },
     props: {
         header: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
         value: {

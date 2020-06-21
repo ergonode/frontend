@@ -7,7 +7,8 @@ export default {
     dictionaries: [
         {
             stateProp: 'sources',
-            dataFormat: {},
+            dataFormat: {
+            },
             requestPath: '/dictionary/sources',
         },
     ],

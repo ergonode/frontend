@@ -38,6 +38,8 @@ import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPag
 
 export default {
     name: 'UserPage',
-    mixins: [categoryManagementPageMixin],
+    mixins: [
+        categoryManagementPageMixin,
+    ],
 };
 </script>

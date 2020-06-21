@@ -13,18 +13,27 @@ export const types = {
 };
 
 export default {
-    [types.SET_DISABLED_ELEMENT](state, { languageCode, elementId, disabled }) {
+    [types.SET_DISABLED_ELEMENT](state, {
+        languageCode, elementId, disabled,
+    }) {
         state.disabledElements[languageCode] = {
-            ...state.disabledElements[languageCode], [elementId]: disabled,
+            ...state.disabledElements[languageCode],
+            [elementId]: disabled,
         };
-        state.disabledElements = { ...state.disabledElements };
+        state.disabledElements = {
+            ...state.disabledElements,
+        };
     },
     [types.SET_DISABLED_ELEMENTS](state, disabledElements) {
         state.disabledElements = disabledElements;
     },
-    [types.REMOVE_DISABLED_ELEMENT](state, { languageCode, elementId }) {
+    [types.REMOVE_DISABLED_ELEMENT](state, {
+        languageCode, elementId,
+    }) {
         delete state.disabledElements[languageCode][elementId];
-        state.disabledElements[languageCode] = { ...state.disabledElements[languageCode] };
+        state.disabledElements[languageCode] = {
+            ...state.disabledElements[languageCode],
+        };
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();

@@ -17,7 +17,6 @@
         <template #actions>
             <TextField
                 :value="searchResult"
-                solid
                 small
                 placeholder="Search..."
                 @input="debouncedSearch"
@@ -39,7 +38,9 @@ import Grid from '@Core/components/Grid/Grid';
 import IconSearch from '@Core/components/Icons/Actions/IconSearch';
 import TextField from '@Core/components/Inputs/TextField';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
-import { debounce } from 'debounce';
+import {
+    debounce,
+} from 'debounce';
 
 export default {
     name: 'MediaGridTab',
@@ -49,7 +50,11 @@ export default {
         IconSearch,
     },
     // TODO: URL path
-    mixins: [fetchGridDataMixin({ path: 'products' })],
+    mixins: [
+        fetchGridDataMixin({
+            path: 'products',
+        }),
+    ],
     props: {
         // TODO: When allow for selection more rows
         multiple: {
@@ -87,7 +92,8 @@ export default {
         delete this.debouncedSearch;
         this.observer.disconnect();
         // TODO: Send back selected files
-        this.$emit('input', this.multiple ? [] : 123124);
+        this.$emit('input', this.multiple ? [
+        ] : 123124);
     },
     methods: {
         onSearchFocus(isFocused) {
@@ -99,7 +105,12 @@ export default {
         onEditRow(args) {
             const lastIndex = args.length - 1;
 
-            this.$router.push({ name: 'multimedia-id-general', params: { id: args[lastIndex] } });
+            this.$router.push({
+                name: 'multimedia-id-general',
+                params: {
+                    id: args[lastIndex],
+                },
+            });
         },
     },
 };

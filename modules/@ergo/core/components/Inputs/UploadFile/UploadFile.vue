@@ -75,11 +75,18 @@
 
 <script>
 import {
-    GRAPHITE, GREEN, RED, WHITE,
+    GRAPHITE,
+    GREEN,
+    RED,
+    WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import { THEME } from '@Core/defaults/theme';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
-import { mapState } from 'vuex';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'UploadFile',
@@ -89,7 +96,9 @@ export default {
         IconRefresh: () => import('@Core/components/Icons/Actions/IconRefresh'),
         IconUploadFile: () => import('@Core/components/Icons/Actions/IconUploadFile'),
     },
-    mixins: [associatedLabelMixin],
+    mixins: [
+        associatedLabelMixin,
+    ],
     props: {
         label: {
             type: String,
@@ -157,7 +166,9 @@ export default {
             this.$emit('remove');
         },
         onUpload(event) {
-            const [file] = event.target.files;
+            const [
+                file,
+            ] = event.target.files;
 
             this.$emit('upload', file);
         },

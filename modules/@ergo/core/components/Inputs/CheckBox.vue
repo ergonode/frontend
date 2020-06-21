@@ -34,10 +34,16 @@ import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'CheckBox',
-    mixins: [associatedLabelMixin],
+    mixins: [
+        associatedLabelMixin,
+    ],
     props: {
         value: {
-            type: [Array, Boolean, Number],
+            type: [
+                Array,
+                Boolean,
+                Number,
+            ],
             default: false,
         },
         disabled: {

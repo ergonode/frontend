@@ -5,7 +5,8 @@
 
 import {
     calculateContrastRatio,
-    calculateRelativeLuminance, hexToRGB,
+    calculateRelativeLuminance,
+    hexToRGB,
 } from '../ColorContrast';
 
 describe('Color contrast conversion', () => {

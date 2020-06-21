@@ -10,9 +10,16 @@
 </template>
 
 <script>
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { MODAL_TYPE } from '@Core/defaults/modals';
-import { mapActions, mapState } from 'vuex';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 const updateCollectionProduct = () => import('@Collections/services/updateCollectionProduct.service');
 
@@ -21,10 +28,14 @@ export default {
     components: {
         CollectionPage: () => import('@Collections/components/Pages/CollectionPage'),
     },
-    validate({ params }) {
+    validate({
+        params,
+    }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
-    async fetch({ store, params }) {
+    async fetch({
+        store, params,
+    }) {
         await store.dispatch('collections/getCollectionById', {
             collectionId: params.id,
         });
@@ -62,8 +73,14 @@ export default {
         },
         onSave() {
             this.removeValidationErrors();
-            const { name, description } = this.translations;
-            const data = { typeId: this.type, name, description };
+            const {
+                name, description,
+            } = this.translations;
+            const data = {
+                typeId: this.type,
+                name,
+                description,
+            };
 
             updateCollectionProduct().then(response => response.default({
                 $axios: this.$axios,
@@ -79,11 +96,19 @@ export default {
         },
         onUpdateCollectionSuccess() {
             this.removeValidationErrors();
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Product collection updated' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product collection updated',
+            });
         },
         onRemoveSuccess() {
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Product collection removed' });
-            this.$router.push({ name: 'collections-grid' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product collection removed',
+            });
+            this.$router.push({
+                name: 'collections-grid',
+            });
         },
     },
     head() {

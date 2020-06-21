@@ -8,8 +8,7 @@
             :style="{ width: `${width}px`, height: `${height}px` }"
             :value="localValue"
             :autofocus="true"
-            :solid="true"
-            :small="true"
+            :size="smallSize"
             :clearable="true"
             :options="mappedOptions"
             :error-messages="errorMessages"
@@ -21,11 +20,19 @@
 <script>
 import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
-import { getMappedObjectOption, getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
+    getMappedObjectOption,
+    getMappedObjectOptions,
+} from '@Core/models/mappers/translationsMapper';
 
 export default {
     name: 'GridSelectEditCell',
-    inject: ['setEditingCellCoordinates'],
+    inject: [
+        'setEditingCellCoordinates',
+    ],
     components: {
         GridActivatorEditCell,
         TranslationSelect,
@@ -37,7 +44,8 @@ export default {
         },
         options: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         languageCode: {
             type: String,
@@ -74,6 +82,9 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         mappedOptions() {
             return getMappedObjectOptions({
                 options: this.options,

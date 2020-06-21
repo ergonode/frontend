@@ -16,7 +16,9 @@
 <script>
 
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
-import { mapActions } from 'vuex';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'ConditionSetDesignTab',
@@ -25,8 +27,12 @@ export default {
         VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
         ConditionSetWrapper: () => import('@Conditions/components/ConditionSetDesigner/ConditionSetWrapper'),
     },
-    fetch({ store }) {
-        return store.dispatch('conditions/getConditions', { group: 'workflow' });
+    fetch({
+        store,
+    }) {
+        return store.dispatch('conditions/getConditions', {
+            group: 'workflow',
+        });
     },
     computed: {
         verticalTabs() {

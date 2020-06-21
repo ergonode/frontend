@@ -39,7 +39,9 @@ import {
     WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import IconAddColumn from '@Core/components/Icons/Actions/IconAddColumn';
-import { LAYOUT_ORIENTATION } from '@Core/defaults/layout';
+import {
+    LAYOUT_ORIENTATION,
+} from '@Core/defaults/layout';
 
 export default {
     name: 'GridDropZone',

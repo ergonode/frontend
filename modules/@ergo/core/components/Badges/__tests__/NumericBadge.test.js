@@ -3,8 +3,12 @@
  * See LICENSE for license details.
  */
 import NumericBadge from '@Core/components/Badges/NumericBadge.vue';
-import { THEME } from '@Core/defaults/theme';
-import { shallowMount } from '@vue/test-utils';
+import {
+    THEME,
+} from '@Core/defaults/theme';
+import {
+    shallowMount,
+} from '@vue/test-utils';
 
 describe('Badges/NumericBadge', () => {
     let wrapper;
@@ -23,7 +27,9 @@ describe('Badges/NumericBadge', () => {
 
     describe('Props validations', () => {
         it('theme', () => {
-            const { theme } = wrapper.vm.$options.props;
+            const {
+                theme,
+            } = wrapper.vm.$options.props;
 
             expect(theme.required).toBeFalsy();
             expect(theme.default).toBe(THEME.PRIMARY);

@@ -10,10 +10,14 @@
 </template>
 
 <script>
-import { GRAPHITE_DARK, WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    GRAPHITE_DARK,
+    WHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import {
     calculateContrastRatio,
-    calculateRelativeLuminance, hexToRGB,
+    calculateRelativeLuminance,
+    hexToRGB,
 } from '@Core/models/color/ColorContrast';
 
 export default {

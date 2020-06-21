@@ -20,8 +20,13 @@
 </template>
 
 <script>
-import { SCOPE, SYSTEM_TYPES } from '@Attributes/defaults/attributes';
-import { mapGetters } from 'vuex';
+import {
+    SCOPE,
+    SYSTEM_TYPES,
+} from '@Attributes/defaults/attributes';
+import {
+    mapGetters,
+} from 'vuex';
 
 export default {
     name: 'RestoreForm',
@@ -33,7 +38,8 @@ export default {
     props: {
         elements: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
         language: {
             type: Object,
@@ -53,7 +59,9 @@ export default {
             return this.elements.filter(element => element.type !== SYSTEM_TYPES.SECTION);
         },
         modalTitle() {
-            const { name, parent } = this.language;
+            const {
+                name, parent,
+            } = this.language;
             const parentName = this.getLanguageById(parent).name;
 
             return `Select attributes which values you want to restore from ${name} to parent translation (${parentName})`;

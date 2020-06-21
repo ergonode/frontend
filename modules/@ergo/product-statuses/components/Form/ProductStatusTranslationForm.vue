@@ -9,15 +9,12 @@
                 <FormSection>
                     <TextField
                         :value="translations.name[languageCode]"
-                        solid
                         label="Status name"
-                        regular
                         :error-messages="errorMessages[nameKeyField]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'name')" />
                     <TextArea
                         :value="translations.description[languageCode]"
-                        solid
                         label="Status description"
                         resize="none"
                         :style="{height: '150px'}"
@@ -47,10 +44,14 @@ export default {
         TextField,
         TextArea,
     },
-    mixins: [translationCardMixin],
+    mixins: [
+        translationCardMixin,
+    ],
     computed: {
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['WORKFLOW_UPDATE']);
+            return this.$hasAccess([
+                'WORKFLOW_UPDATE',
+            ]);
         },
         descriptionKeyField() {
             return `description_${this.languageCode}`;

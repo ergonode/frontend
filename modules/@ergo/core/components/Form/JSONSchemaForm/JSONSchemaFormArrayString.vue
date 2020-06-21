@@ -30,21 +30,30 @@ export default {
         },
         value: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
         errorMessages: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
     },
     data() {
         return {
-            localValue: this.getMappedTitles({ key: 'enum', value: 'enum_titles', data: this.value }),
+            localValue: this.getMappedTitles({
+                key: 'enum',
+                value: 'enum_titles',
+                data: this.value,
+            }),
         };
     },
     methods: {
-        getMappedTitles({ key, value, data }) {
-            const titles = [];
+        getMappedTitles({
+            key, value, data,
+        }) {
+            const titles = [
+            ];
 
             for (let i = 0; i < data.length; i += 1) {
                 const titleIndex = this.schema.items[key].findIndex(
@@ -59,7 +68,11 @@ export default {
         onValueChange(value) {
             this.localValue = value;
 
-            this.$emit('input', this.getMappedTitles({ key: 'enum_titles', value: 'enum', data: value }));
+            this.$emit('input', this.getMappedTitles({
+                key: 'enum_titles',
+                value: 'enum',
+                data: value,
+            }));
         },
     },
 };

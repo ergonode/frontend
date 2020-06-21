@@ -6,7 +6,8 @@ export default {
     dictionaries: [
         {
             stateProp: 'attrTypes',
-            dataFormat: {},
+            dataFormat: {
+            },
             requestPath: '/dictionary/attributes/types',
         },
     ],

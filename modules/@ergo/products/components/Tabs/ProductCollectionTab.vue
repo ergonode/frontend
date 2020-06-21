@@ -39,11 +39,17 @@
 
 <script>
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import { LAYOUT_ORIENTATION } from '@Core/defaults/layout';
-import { SIZE } from '@Core/defaults/theme';
+import {
+    LAYOUT_ORIENTATION,
+} from '@Core/defaults/layout';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import ProductCollection from '@Products/components/ProductCollection/ProductCollection';
 import ProductCollectionItem from '@Products/components/ProductCollection/ProductCollectionItem';
-import { mapState } from 'vuex';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductCollectionTab',
@@ -57,7 +63,8 @@ export default {
     },
     data() {
         return {
-            collections: [],
+            collections: [
+            ],
         };
     },
     computed: {
@@ -72,8 +79,12 @@ export default {
         },
     },
     async created() {
-        const { collection: types } = await this.$axios.$get(`${this.languageCode}/collections/type`);
-        const { collection: collections } = await this.$axios.$get(`${this.languageCode}/products/${this.$route.params.id}/collections`);
+        const {
+            collection: types,
+        } = await this.$axios.$get(`${this.languageCode}/collections/type`);
+        const {
+            collection: collections,
+        } = await this.$axios.$get(`${this.languageCode}/products/${this.$route.params.id}/collections`);
 
         this.collections = collections.map(({
             id, code, name, description, elements_count, type_id,
@@ -85,16 +96,23 @@ export default {
                 subtitle: collectionType ? collectionType.name : '',
                 description,
                 itemsCount: elements_count,
-                items: [],
+                items: [
+                ],
             };
         });
     },
     methods: {
         onNavigateToCollections() {
-            this.$router.push({ name: 'collections-grid' });
+            this.$router.push({
+                name: 'collections-grid',
+            });
         },
-        fetchCollectionItems({ id, index }) {
-            this.$axios.$get(`${this.$store.state.authentication.user.language}/collections/${id}/elements`).then(({ collection }) => {
+        fetchCollectionItems({
+            id, index,
+        }) {
+            this.$axios.$get(`${this.$store.state.authentication.user.language}/collections/${id}/elements`).then(({
+                collection,
+            }) => {
                 this.collections[index].items = collection.map(({
                     sku,
                     default_image,

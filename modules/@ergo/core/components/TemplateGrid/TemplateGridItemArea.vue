@@ -30,7 +30,9 @@ export default {
     },
     computed: {
         gridItemStyles() {
-            const { column } = this.item;
+            const {
+                column,
+            } = this.item;
 
             return {
                 gridColumn: `${column + 1} / ${this.columns + 1}`,

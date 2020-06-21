@@ -9,18 +9,27 @@
 </template>
 
 <script>
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { mapActions, mapState } from 'vuex';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'EditImportProfile',
     components: {
         ImportProfilePage: () => import('@Import/components/Pages/ImportProfilePage'),
     },
-    validate({ params }) {
+    validate({
+        params,
+    }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
-    async fetch({ store, params }) {
+    async fetch({
+        store, params,
+    }) {
         await store.dispatch('import/getImportProfileById', {
             id: params.id,
         });
@@ -44,18 +53,30 @@ export default {
             this.removeValidationErrors();
             this.updateImportProfile({
                 id: this.$route.params.id,
-                data: { type: this.type, name: this.name, ...JSON.parse(this.configuration) },
+                data: {
+                    type: this.type,
+                    name: this.name,
+                    ...JSON.parse(this.configuration),
+                },
                 onSuccess: this.onUpdateImportProfileSuccess,
                 onError: this.onError,
             });
         },
         onUpdateImportProfileSuccess() {
             this.removeValidationErrors();
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Import profiles updated' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Import profiles updated',
+            });
         },
         onRemoveSuccess() {
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Import profiles removed' });
-            this.$router.push({ name: 'import-grid' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Import profiles removed',
+            });
+            this.$router.push({
+                name: 'import-grid',
+            });
         },
     },
     head() {

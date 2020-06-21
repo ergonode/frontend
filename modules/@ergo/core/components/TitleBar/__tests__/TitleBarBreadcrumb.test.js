@@ -3,7 +3,10 @@
  * See LICENSE for license details.
  */
 import TitleBarBreadcrumb from '@Core/components/TitleBar/TitleBarBreadcrumb';
-import { createLocalVue, shallowMount } from '@vue/test-utils';
+import {
+    createLocalVue,
+    shallowMount,
+} from '@vue/test-utils';
 
 const localVue = createLocalVue();
 

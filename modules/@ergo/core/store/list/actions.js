@@ -2,17 +2,27 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { types } from './mutations';
+import {
+    types,
+} from './mutations';
 
 export default {
-    setDisabledElement: ({ commit }, payload) => {
+    setDisabledElement: ({
+        commit,
+    }, payload) => {
         commit(types.SET_DISABLED_ELEMENT, payload);
     },
-    setDisabledElements: ({ commit }, disabledElements) => {
+    setDisabledElements: ({
+        commit,
+    }, disabledElements) => {
         commit(types.SET_DISABLED_ELEMENTS, disabledElements);
     },
-    removeDisabledElement: ({ commit }, payload) => {
+    removeDisabledElement: ({
+        commit,
+    }, payload) => {
         commit(types.REMOVE_DISABLED_ELEMENT, payload);
     },
-    clearStorage: ({ commit }) => commit(types.CLEAR_STATE),
+    clearStorage: ({
+        commit,
+    }) => commit(types.CLEAR_STATE),
 };

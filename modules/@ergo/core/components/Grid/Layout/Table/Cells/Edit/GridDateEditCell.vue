@@ -7,8 +7,7 @@
         <DatePicker
             :style="{width: `${width}px`, height: `${height}px`}"
             v-model="localValue"
-            solid
-            small
+            :size="smallSize"
             autofocus
             :placeholder="format"
             :format="format"
@@ -20,12 +19,22 @@
 <script>
 import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
-import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
-import { format as formatDate, parse as parseDate } from 'date-fns';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
+    DEFAULT_FORMAT,
+} from '@Core/models/calendar/calendar';
+import {
+    format as formatDate,
+    parse as parseDate,
+} from 'date-fns';
 
 export default {
     name: 'GridDateEditCell',
-    inject: ['setEditingCellCoordinates'],
+    inject: [
+        'setEditingCellCoordinates',
+    ],
     components: {
         GridActivatorEditCell,
         DatePicker,
@@ -62,6 +71,11 @@ export default {
         return {
             localValue,
         };
+    },
+    computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
     },
     beforeDestroy() {
         if (this.localValue) {

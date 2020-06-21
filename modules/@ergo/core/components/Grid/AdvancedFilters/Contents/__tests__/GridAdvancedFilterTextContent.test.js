@@ -3,8 +3,12 @@
  * See LICENSE for license details.
  */
 import GridAdvancedFilterTextContent from '@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent';
-import { FILTER_OPERATOR } from '@Core/defaults/operators';
-import { shallowMount } from '@vue/test-utils';
+import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
+import {
+    shallowMount,
+} from '@vue/test-utils';
 
 describe('Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent', () => {
     let wrapper;
@@ -31,7 +35,9 @@ describe('Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent', () => {
         it('Has value', () => {
             wrapper.setProps({
                 filter: {
-                    value: { [FILTER_OPERATOR.EQUAL]: 'Test value' },
+                    value: {
+                        [FILTER_OPERATOR.EQUAL]: 'Test value',
+                    },
                 },
             });
 

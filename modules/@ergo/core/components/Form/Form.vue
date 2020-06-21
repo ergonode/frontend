@@ -39,8 +39,13 @@
 </template>
 
 <script>
-import { RED } from '@Core/assets/scss/_js-variables/colors.scss';
-import { mapActions, mapState } from 'vuex';
+import {
+    RED,
+} from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'Form',
@@ -56,7 +61,8 @@ export default {
         },
         fieldsKeys: {
             type: Array,
-            default: () => [],
+            default: () => [
+            ],
         },
     },
     computed: {
@@ -73,7 +79,8 @@ export default {
                 }
 
                 return errors;
-            }, {});
+            }, {
+            });
         },
         formGlobalError() {
             return this.getValidationErrorForKey('form');

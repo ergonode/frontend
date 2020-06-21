@@ -30,13 +30,18 @@
 
 <script>
 import {
-    GRAPHITE, GREEN, RED, WHITE,
+    GRAPHITE,
+    GREEN,
+    RED,
+    WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'UploadFile',
-    mixins: [associatedLabelMixin],
+    mixins: [
+        associatedLabelMixin,
+    ],
     props: {
         label: {
             type: String,
@@ -89,7 +94,9 @@ export default {
             this.isModalVisible = false;
         },
         onUpload(event) {
-            const [file] = event.target.files;
+            const [
+                file,
+            ] = event.target.files;
 
             this.$emit('upload', file);
         },

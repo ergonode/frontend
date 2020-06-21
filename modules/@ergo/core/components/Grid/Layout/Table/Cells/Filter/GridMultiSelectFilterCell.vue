@@ -27,7 +27,9 @@
 <script>
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 import GridSelectFilterPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSelectFilterPresentationCell';
-import { FILTER_OPERATOR } from '@Core/defaults/operators';
+import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
 
 export default {
     name: 'GridMultiSelectFilterCell',
@@ -47,7 +49,8 @@ export default {
         },
         data: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         languageCode: {
             type: String,
@@ -70,12 +73,16 @@ export default {
         options() {
             if (this.data.options) {
                 // TODO: BE has to unify types!
-                if (Array.isArray(this.data.options)) return {};
+                if (Array.isArray(this.data.options)) {
+                    return {
+                    };
+                }
 
                 return this.data.options;
             }
 
-            return {};
+            return {
+            };
         },
         presentationValue() {
             if (!this.filter) return '';
@@ -83,7 +90,10 @@ export default {
             return this.filter.value.map(option => this.options[option].label || `#${this.options[option].code}`).join(', ');
         },
         value() {
-            if (!this.filter) return [];
+            if (!this.filter) {
+                return [
+                ];
+            }
 
             return this.filter.value;
         },

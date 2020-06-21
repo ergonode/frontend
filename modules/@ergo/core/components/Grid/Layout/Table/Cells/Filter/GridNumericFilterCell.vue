@@ -24,7 +24,9 @@
 <script>
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 import GridFilterPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridFilterPresentationCell';
-import { FILTER_OPERATOR } from '@Core/defaults/operators';
+import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
 
 export default {
     name: 'GridNumericFilterCell',
@@ -44,7 +46,8 @@ export default {
         },
         data: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+            }),
         },
         filter: {
             type: Object,

@@ -50,9 +50,16 @@ import Grid from '@Core/components/Grid/Grid';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import IconClose from '@Core/components/Icons/Window/IconClose';
 import ModalOverlay from '@Core/components/Modal/ModalOverlay';
-import { DATA_LIMIT } from '@Core/defaults/grid';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { getGridData } from '@Core/services/grid/getGridData.service';
+import {
+    DATA_LIMIT,
+} from '@Core/defaults/grid';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
+import {
+    getGridData,
+} from '@Core/services/grid/getGridData.service';
 
 export default {
     name: 'ModalGrid',
@@ -86,8 +93,10 @@ export default {
     },
     data() {
         return {
-            columns: [],
-            data: {},
+            columns: [
+            ],
+            data: {
+            },
             count: 0,
             filtered: 0,
         };

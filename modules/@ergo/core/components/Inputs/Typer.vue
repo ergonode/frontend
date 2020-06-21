@@ -11,7 +11,9 @@ export default {
     name: 'Typer',
     props: {
         value: {
-            type: [Array],
+            type: [
+                Array,
+            ],
             required: true,
         },
     },

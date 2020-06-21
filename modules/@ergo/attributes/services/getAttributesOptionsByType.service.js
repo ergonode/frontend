@@ -3,11 +3,19 @@
  * See LICENSE for license details.
  */
 
-import { TYPES } from '@Attributes/defaults/attributes';
-import { SKU_MODEL } from '@Templates/defaults/product';
+import {
+    TYPES,
+} from '@Attributes/defaults/attributes';
+import {
+    SKU_MODEL,
+} from '@Templates/defaults/product';
 
-export default function ({ $axios, $store, type }) {
-    const { language } = $store.state.authentication.user;
+export default function ({
+    $axios, $store, type,
+}) {
+    const {
+        language,
+    } = $store.state.authentication.user;
     const params = {
         limit: 9999,
         offset: 0,
@@ -17,7 +25,11 @@ export default function ({ $axios, $store, type }) {
         columns: 'id,code,name',
     };
 
-    return $axios.$get(`${language}/attributes`, { params }).then(({ collection }) => {
+    return $axios.$get(`${language}/attributes`, {
+        params,
+    }).then(({
+        collection,
+    }) => {
         const options = collection.map(element => ({
             id: element.id,
             key: element.code,

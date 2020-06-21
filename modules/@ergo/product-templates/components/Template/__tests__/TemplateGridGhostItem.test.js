@@ -2,8 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { createLocalVue, shallowMount } from '@vue/test-utils';
-import { Store } from 'vuex-mock-store';
+import {
+    createLocalVue,
+    shallowMount,
+} from '@vue/test-utils';
+import {
+    Store,
+} from 'vuex-mock-store';
 
 import TemplateGridLayerItem from '../Base/TemplateGridLayerItem';
 
@@ -11,7 +16,8 @@ const localVue = createLocalVue();
 const store = new Store({
     state: {
         draggable: {
-            draggedElement: {},
+            draggedElement: {
+            },
         },
     },
 });
@@ -27,7 +33,10 @@ describe('Template/Base/TemplateGridLayerItem', () => {
             localVue,
             mocks,
             propsData: {
-                position: { row: 1, column: 1 },
+                position: {
+                    row: 1,
+                    column: 1,
+                },
             },
         });
     });

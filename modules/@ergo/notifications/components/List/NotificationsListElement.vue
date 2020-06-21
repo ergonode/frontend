@@ -23,8 +23,12 @@
 </template>
 
 <script>
-import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
-import { mapActions } from 'vuex';
+import {
+    GRAPHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'NotificationsListElement',
@@ -47,10 +51,14 @@ export default {
             'markNotificationAsRead',
         ]),
         markAsRead() {
-            const { id, read_at: readAt } = this.notification;
+            const {
+                id, read_at: readAt,
+            } = this.notification;
 
             if (readAt === null) {
-                this.markNotificationAsRead({ id });
+                this.markNotificationAsRead({
+                    id,
+                });
             }
         },
     },

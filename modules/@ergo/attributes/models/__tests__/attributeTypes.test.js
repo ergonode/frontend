@@ -47,15 +47,34 @@ describe('AttributeTypes/hasParams', () => {
 
 describe('AttributeTypes/getParamsOptionsForType', () => {
     const data = {
-        units: ['Kg'],
-        dateFormats: ['YYYY-MM-DD'],
-        currencies: ['PLN'],
+        units: [
+            'Kg',
+        ],
+        dateFormats: [
+            'YYYY-MM-DD',
+        ],
+        currencies: [
+            'PLN',
+        ],
     };
     it.each([
-        ['PRICE', data.currencies],
-        ['UNIT', data.units],
-        ['DATE', data.dateFormats],
-        ['OTHER_TYPE', {}],
+        [
+            'PRICE',
+            data.currencies,
+        ],
+        [
+            'UNIT',
+            data.units,
+        ],
+        [
+            'DATE',
+            data.dateFormats,
+        ],
+        [
+            'OTHER_TYPE',
+            {
+            },
+        ],
 
     ])(
         ' Set type (%s) and get params options (%s)',
@@ -68,10 +87,22 @@ describe('AttributeTypes/getParamsOptionsForType', () => {
 
 describe('AttributeTypes/getParamsKeyForType', () => {
     it.each([
-        ['PRICE', 'currency'],
-        ['UNIT', 'unit'],
-        ['DATE', 'format'],
-        ['OTHER_TYPE', ''],
+        [
+            'PRICE',
+            'currency',
+        ],
+        [
+            'UNIT',
+            'unit',
+        ],
+        [
+            'DATE',
+            'format',
+        ],
+        [
+            'OTHER_TYPE',
+            '',
+        ],
 
     ])(
         ' Set type (%s) and get params key (%s)',

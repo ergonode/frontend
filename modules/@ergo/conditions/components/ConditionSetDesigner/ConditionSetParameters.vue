@@ -7,10 +7,9 @@
         <template #validator="{ errorMessages }">
             <Component
                 :is="getComponentViaType"
-                :solid="true"
                 :required="true"
                 :clearable="true"
-                :small="true"
+                :size="smallSize"
                 :label="parameter.name"
                 :options="conditionOptions"
                 :value="conditionValue"
@@ -21,9 +20,17 @@
     </FormValidatorField>
 </template>
 <script>
-import { TYPES } from '@Conditions/defaults/conditionsDesigner';
+import {
+    TYPES,
+} from '@Conditions/defaults/conditionsDesigner';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
-import { mapActions, mapState } from 'vuex';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ConditionSetParameters',
@@ -53,6 +60,9 @@ export default {
         ...mapState('conditions', {
             conditionsValues: state => state.conditionsValues,
         }),
+        smallSize() {
+            return SIZE.SMALL;
+        },
         isConditionTypeMultiSelect() {
             return this.parameter.type === TYPES.MULTI_SELECT;
         },
@@ -70,10 +80,15 @@ export default {
             }
         },
         conditionValue() {
-            const { name } = this.parameter;
+            const {
+                name,
+            } = this.parameter;
 
             if (!this.conditionsValues[this.itemId] || !this.conditionsValues[this.itemId][name]) {
-                if (this.isConditionTypeMultiSelect) return [];
+                if (this.isConditionTypeMultiSelect) {
+                    return [
+                    ];
+                }
                 return '';
             }
 
@@ -85,18 +100,27 @@ export default {
 
                 return options
                     ? Object.keys(options).map(key => ({
-                        id: key, key, value: options[key],
+                        id: key,
+                        key,
+                        value: options[key],
                     }))
-                    : [];
+                    : [
+                    ];
             }
             return this.parameter.options
                 ? Object.keys(this.parameter.options).map(key => ({
-                    id: key, key, value: this.parameter.options[key],
+                    id: key,
+                    key,
+                    value: this.parameter.options[key],
                 }))
-                : [];
+                : [
+                ];
         },
         paramFieldKeys() {
-            return [`conditions_element-${this.itemRow}`, this.parameter.name];
+            return [
+                `conditions_element-${this.itemRow}`,
+                this.parameter.name,
+            ];
         },
     },
     watch: {
@@ -119,7 +143,9 @@ export default {
             'setConditionValue',
         ]),
         setConditionValueByType(value) {
-            const { name } = this.parameter;
+            const {
+                name,
+            } = this.parameter;
 
             this.setConditionValue({
                 conditionId: this.itemId,

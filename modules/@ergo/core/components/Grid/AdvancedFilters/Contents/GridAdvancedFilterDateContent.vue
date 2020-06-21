@@ -16,9 +16,16 @@
 <script>
 import GridAdvancedFilterBaseContent from '@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
 import DateRangePickerContent from '@Core/components/Inputs/DatePicker/DateRangePickerContent';
-import { FILTER_OPERATOR } from '@Core/defaults/operators';
-import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
-import { format as formatDate, parse as parseDate } from 'date-fns';
+import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
+import {
+    DEFAULT_FORMAT,
+} from '@Core/models/calendar/calendar';
+import {
+    format as formatDate,
+    parse as parseDate,
+} from 'date-fns';
 
 export default {
     name: 'GridAdvancedFilterDateContent',
@@ -51,14 +58,25 @@ export default {
         },
     },
     methods: {
-        onValueChange({ from, to }) {
+        onValueChange({
+            from, to,
+        }) {
             const dateFrom = from ? formatDate(from, this.dateFormat) : null;
             const dateTo = to ? formatDate(to, this.dateFormat) : null;
 
             if (this.filter.value[FILTER_OPERATOR.GREATER_OR_EQUAL] !== dateFrom
-                && dateFrom) this.$emit('input', { value: dateFrom, key: FILTER_OPERATOR.GREATER_OR_EQUAL });
-            else if (this.filter.value[FILTER_OPERATOR.SMALLER_OR_EQUAL] !== dateTo
-                && dateTo) this.$emit('input', { value: dateTo, key: FILTER_OPERATOR.SMALLER_OR_EQUAL });
+                && dateFrom) {
+                this.$emit('input', {
+                    value: dateFrom,
+                    key: FILTER_OPERATOR.GREATER_OR_EQUAL,
+                });
+            } else if (this.filter.value[FILTER_OPERATOR.SMALLER_OR_EQUAL] !== dateTo
+                && dateTo) {
+                this.$emit('input', {
+                    value: dateTo,
+                    key: FILTER_OPERATOR.SMALLER_OR_EQUAL,
+                });
+            }
         },
         onEmptyRecordChange(value) {
             this.$emit('emptyRecord', value);

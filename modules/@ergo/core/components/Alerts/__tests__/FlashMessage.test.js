@@ -3,8 +3,13 @@
  * See LICENSE for license details.
  */
 import FlashMessage from '@Core/components/Alerts/FlashMessage.vue';
-import { createLocalVue, shallowMount } from '@vue/test-utils';
-import { Store } from 'vuex-mock-store';
+import {
+    createLocalVue,
+    shallowMount,
+} from '@vue/test-utils';
+import {
+    Store,
+} from 'vuex-mock-store';
 
 const localVue = createLocalVue();
 

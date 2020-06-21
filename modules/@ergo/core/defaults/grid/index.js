@@ -11,11 +11,15 @@ export const GHOST_ELEMENT_MODEL = {
 };
 
 export const ROW_INTERVALS = [
-    25, 50, 100, 200,
+    25,
+    50,
+    100,
+    200,
 ];
 
 export const GRID_ACTIONS = [
-    'edit', 'delete',
+    'edit',
+    'delete',
 ];
 
 export const COLUMN_WIDTH = {
@@ -38,16 +42,37 @@ export const ROW_HEIGHT = {
 };
 
 export const IMAGE_SCALING = {
-    FIT_TO_SIZE: { value: 'cover', description: 'Fit to size' },
-    FILL_CONTAINER: { value: 'fill', description: 'Fill container' },
+    FIT_TO_SIZE: {
+        value: 'cover',
+        description: 'Fit to size',
+    },
+    FILL_CONTAINER: {
+        value: 'fill',
+        description: 'Fill container',
+    },
 };
 
 export const COLUMNS_NUMBER = {
-    TWO_COLUMNS: { value: 2, description: '2 columns' },
-    THREE_COLUMNS: { value: 3, description: '3 columns' },
-    FOURTH_COLUMNS: { value: 4, description: '4 columns' },
-    FIVE_COLUMNS: { value: 5, description: '5 columns' },
-    SIX_COLUMNS: { value: 6, description: '6 columns' },
+    TWO_COLUMNS: {
+        value: 2,
+        description: '2 columns',
+    },
+    THREE_COLUMNS: {
+        value: 3,
+        description: '3 columns',
+    },
+    FOURTH_COLUMNS: {
+        value: 4,
+        description: '4 columns',
+    },
+    FIVE_COLUMNS: {
+        value: 5,
+        description: '5 columns',
+    },
+    SIX_COLUMNS: {
+        value: 6,
+        description: '6 columns',
+    },
 };
 
 export const GRID_LAYOUT = {
