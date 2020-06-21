@@ -60,16 +60,14 @@ export default {
     },
     data() {
         return {
-            selectedOptions: {
-            },
+            selectedOptions: {},
         };
     },
     computed: {
         filterValue() {
             return this.filter.value[FILTER_OPERATOR.EQUAL]
                 ? this.filter.value[FILTER_OPERATOR.EQUAL].split(', ')
-                : [
-                ];
+                : [];
         },
     },
     watch: {
@@ -83,8 +81,7 @@ export default {
     methods: {
         initSelectedOptions() {
             if (this.filterValue.length === 0) {
-                this.selectedOptions = {
-                };
+                this.selectedOptions = {};
             } else {
                 const {
                     length,

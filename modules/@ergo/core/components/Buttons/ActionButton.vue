@@ -119,8 +119,7 @@ export default {
          */
         options: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
         /**
          * The flag which tells if the dropdown has fixed content to it's parent width

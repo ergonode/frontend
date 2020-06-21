@@ -24,8 +24,7 @@ export default {
         };
     },
     [types.REMOVE_VALIDATION_ERRORS](state) {
-        state.validationErrors = {
-        };
+        state.validationErrors = {};
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();

@@ -143,8 +143,7 @@ export default {
         },
         options: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
         offset: {
             type: Object,
@@ -152,8 +151,7 @@ export default {
         },
         selectedOptions: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         searchResult: {
             type: String,

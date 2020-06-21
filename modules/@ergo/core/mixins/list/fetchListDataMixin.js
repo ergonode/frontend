@@ -12,8 +12,7 @@ export default function ({
     return {
         data() {
             return {
-                items: {
-                },
+                items: {},
                 codeFilter: '',
             };
         },

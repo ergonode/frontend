@@ -43,8 +43,7 @@ export default [
                             icon: Icons.Templates,
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],
@@ -74,8 +73,7 @@ export default [
                             routeName: 'categories-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
             {
@@ -94,8 +92,7 @@ export default [
                             routeName: 'categories-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],

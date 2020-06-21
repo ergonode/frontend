@@ -16,8 +16,7 @@ const localVue = createLocalVue();
 const store = new Store({
     state: {
         draggable: {
-            draggedElement: {
-            },
+            draggedElement: {},
         },
     },
 });

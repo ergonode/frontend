@@ -152,8 +152,7 @@ export default {
         },
         options: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
         size: {
             type: String,
@@ -232,16 +231,14 @@ export default {
     },
     data() {
         return {
-            selectedOptions: {
-            },
+            selectedOptions: {},
             searchResult: '',
             isBlurringNeeded: false,
             isMouseMoving: false,
             isFocused: false,
             hasAnyValueSelected: false,
             needsToRender: false,
-            offset: {
-            },
+            offset: {},
         };
     },
     computed: {
@@ -275,8 +272,7 @@ export default {
         value: {
             immediate: true,
             handler() {
-                let selectedOptions = {
-                };
+                let selectedOptions = {};
 
                 if (Array.isArray(this.value) && this.value.length) {
                     this.value.forEach((option) => {
@@ -327,11 +323,9 @@ export default {
             this.$emit('search', value);
         },
         onClear() {
-            this.selectedOptions = {
-            };
+            this.selectedOptions = {};
 
-            this.$emit('input', this.multiselect ? [
-            ] : '');
+            this.$emit('input', this.multiselect ? [] : '');
         },
         onSelectValue(value) {
             this.$emit('input', value);

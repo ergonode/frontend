@@ -65,8 +65,7 @@ export default {
             const {
                 length,
             } = this.schema.enum;
-            const mappedOptions = {
-            };
+            const mappedOptions = {};
 
             for (let i = 0; i < length; i += 1) {
                 mappedOptions[this.schema.enum_titles[i]] = this.schema.enum[i];

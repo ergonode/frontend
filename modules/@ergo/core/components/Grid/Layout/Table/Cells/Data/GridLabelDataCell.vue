@@ -68,15 +68,13 @@ export default {
             if (this.column.filter && this.column.filter.options) {
                 // TODO: BE has to unify types!
                 if (Array.isArray(this.column.filter.options)) {
-                    return {
-                    };
+                    return {};
                 }
 
                 return this.column.filter.options;
             }
 
-            return {
-            };
+            return {};
         },
     },
 };

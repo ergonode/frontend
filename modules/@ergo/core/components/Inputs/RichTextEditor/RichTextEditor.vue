@@ -183,8 +183,7 @@ export default {
         },
         actionableExtensions: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
     },
     data() {

@@ -31,8 +31,7 @@ export default {
         },
         highlightingPositions: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
     },
     data() {

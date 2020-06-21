@@ -11,8 +11,7 @@ export default {
         NAVIGATION_BAR: [
             {
                 component: Components.NavigationBarNotificationButton,
-                props: {
-                },
+                props: {},
             },
         ],
     },

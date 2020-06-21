@@ -16,12 +16,10 @@ export default {
         ({
             code,
         }) => code === c,
-    ) || {
-    },
+    ) || {},
     getActiveLanguageByName: (state, getters) => n => getters.getActiveLanguages.find(
         ({
             name,
         }) => name === n,
-    ) || {
-    },
+    ) || {},
 };

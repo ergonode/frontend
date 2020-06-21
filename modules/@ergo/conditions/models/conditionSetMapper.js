@@ -7,8 +7,7 @@ import {
 } from '@Core/models/stringWrapper';
 
 export function getMappedConditionSetData(conditionSetData, conditions) {
-    const mappedData = [
-    ];
+    const mappedData = [];
 
     Object.keys(conditionSetData).forEach((key) => {
         const [
@@ -48,10 +47,8 @@ export function getMappedConditionSetData(conditionSetData, conditions) {
 
 export function getParsedConditionSetData(conditions, conditionsData) {
     const parsedData = {
-        conditionsData: {
-        },
-        conditionsTree: [
-        ],
+        conditionsData: {},
+        conditionsTree: [],
     };
 
     for (let i = 0; i < conditions.length; i += 1) {

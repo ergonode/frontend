@@ -74,8 +74,7 @@ export default {
     },
     data() {
         return {
-            selectedRows: {
-            },
+            selectedRows: {},
             isSelectedAllRows: false,
         };
     },
@@ -98,8 +97,7 @@ export default {
             const anyRowsSelected = Object.entries(this.selectedRows).length;
 
             if (anyRowsSelected) {
-                this.selectedRows = {
-                };
+                this.selectedRows = {};
 
                 this.$emit('rowSelect', this.selectedRows);
             } else {

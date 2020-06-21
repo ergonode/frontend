@@ -38,8 +38,7 @@ export default {
         },
         uiSchema: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         value: {
             type: String,
@@ -48,10 +47,8 @@ export default {
     },
     data() {
         return {
-            model: {
-            },
-            schemaComponents: [
-            ],
+            model: {},
+            schemaComponents: [],
         };
     },
     computed: {
@@ -69,8 +66,7 @@ export default {
             const {
                 length,
             } = this.fieldsKeys;
-            const components = [
-            ];
+            const components = [];
 
             for (let i = 0; i < length; i += 1) {
                 const key = this.fieldsKeys[i];
@@ -91,8 +87,7 @@ export default {
                 if (i + 1 !== length) {
                     components.push({
                         key: `[${i}]-divider`,
-                        props: {
-                        },
+                        props: {},
                         component: () => import('@Core/components/Dividers/Divider'),
                     });
                 }

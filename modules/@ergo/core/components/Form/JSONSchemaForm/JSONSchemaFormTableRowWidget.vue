@@ -54,16 +54,13 @@ export default {
         },
         value: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
     },
     data() {
         return {
-            localValue: {
-            },
-            rowComponents: [
-            ],
+            localValue: {},
+            rowComponents: [],
         };
     },
     computed: {
@@ -89,8 +86,7 @@ export default {
             const {
                 length,
             } = this.fieldsKeys;
-            const components = [
-            ];
+            const components = [];
 
             for (let i = 0; i < length; i += 1) {
                 const key = this.fieldsKeys[i];

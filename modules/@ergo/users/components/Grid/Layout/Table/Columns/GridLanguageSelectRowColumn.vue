@@ -39,21 +39,17 @@ export default {
     ],
     methods: {
         onSelectAllRows(value) {
-            const draftValues = {
-            };
+            const draftValues = {};
 
             this.rowIds.forEach((rowId) => {
                 if (!draftValues[rowId]) {
-                    draftValues[rowId] = {
-                    };
+                    draftValues[rowId] = {};
                 }
                 if (!draftValues[rowId].edit) {
-                    draftValues[rowId].edit = {
-                    };
+                    draftValues[rowId].edit = {};
                 }
                 if (!draftValues[rowId].read) {
-                    draftValues[rowId].read = {
-                    };
+                    draftValues[rowId].read = {};
                 }
 
                 draftValues[rowId] = {

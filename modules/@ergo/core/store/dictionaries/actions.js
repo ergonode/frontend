@@ -19,8 +19,7 @@ const modulesDictionaries = Object.values(extendsModules)
             ];
         }
         return connectedArray;
-    }, [
-    ]);
+    }, []);
 
 export default {
     getDictionaries({

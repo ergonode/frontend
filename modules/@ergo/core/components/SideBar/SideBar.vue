@@ -87,10 +87,8 @@ export default {
             return WHITE;
         },
         routes() {
-            const routes = [
-            ];
-            const groups = {
-            };
+            const routes = [];
+            const groups = {};
 
             this.$router.options.routes.forEach((route) => {
                 if (route.meta && route.meta.isMenu && (!route.meta.privileges

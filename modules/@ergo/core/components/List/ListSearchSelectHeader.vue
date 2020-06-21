@@ -71,8 +71,7 @@ export default {
         },
         options: {
             type: Array,
-            default: () => ([
-            ]),
+            default: () => ([]),
         },
         selectedOption: {
             type: String,

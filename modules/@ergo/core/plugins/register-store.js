@@ -14,9 +14,7 @@ function registerStore({
     }
 }
 
-// eslint-disable-next-line no-unused-vars
-export default ({
-    app,
-}, inject) => {
+// eslint-disable-next-line no-empty-pattern
+export default ({}, inject) => {
     inject('registerStore', registerStore);
 };

@@ -39,8 +39,7 @@ export default {
     props: {
         element: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
     },
     data() {

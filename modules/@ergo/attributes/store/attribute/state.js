@@ -5,13 +5,10 @@
 export default () => ({
     id: null,
     code: '',
-    groups: [
-    ],
+    groups: [],
     type: null,
     scope: null,
     parameter: null,
-    options: {
-    },
-    updatedOptions: {
-    },
+    options: {},
+    updatedOptions: {},
 });

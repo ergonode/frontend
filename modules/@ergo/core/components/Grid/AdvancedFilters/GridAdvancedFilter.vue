@@ -126,8 +126,7 @@ export default {
             isFocused: false,
             isClickedOutside: false,
             needsToRender: false,
-            offset: {
-            },
+            offset: {},
         };
     },
     computed: {
@@ -170,15 +169,13 @@ export default {
         filterValue() {
             if (this.filter.value.isEmptyRecord) return 'Empty records';
 
-            const value = [
-            ];
+            const value = [];
 
             Object.keys(this.filter.value).forEach((key) => {
                 if (this.filter.value[key]) {
                     if (this.filter.options) {
                         const optionIds = this.filter.value[key].split(', ');
-                        const values = [
-                        ];
+                        const values = [];
 
                         optionIds.forEach((id) => {
                             const option = this.filter.options.find(opt => opt.id === id);

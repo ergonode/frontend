@@ -37,10 +37,8 @@ export default {
     },
     data() {
         return {
-            columns: [
-            ],
-            data: {
-            },
+            columns: [],
+            data: {},
             dataCount: 0,
         };
     },

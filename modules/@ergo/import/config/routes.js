@@ -43,8 +43,7 @@ export default [
                             icon: Icons.Export,
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],
@@ -74,8 +73,7 @@ export default [
                             routeName: 'import-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
             {
@@ -94,8 +92,7 @@ export default [
                             routeName: 'import-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
             {
@@ -114,8 +111,7 @@ export default [
                             routeName: 'import-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],

@@ -42,8 +42,7 @@ export default [
                             icon: Icons.Product,
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],
@@ -73,8 +72,7 @@ export default [
                             routeName: 'collections-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
             {
@@ -93,8 +91,7 @@ export default [
                             routeName: 'collections-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
             {
@@ -113,8 +110,7 @@ export default [
                             routeName: 'collections-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],

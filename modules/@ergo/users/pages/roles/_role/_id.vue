@@ -106,8 +106,7 @@ export default {
                         .reduce((acc, ele) => ({
                             ...acc,
                             [ele]: true,
-                        }), {
-                        });
+                        }), {});
 
                     this.removeValidationErrors();
                     this.$addAlert({

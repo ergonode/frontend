@@ -7,6 +7,5 @@ export default () => ({
     code: null,
     color: null,
     isDefaultStatus: false,
-    statuses: [
-    ],
+    statuses: [],
 });

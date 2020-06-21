@@ -41,8 +41,7 @@ export default {
     [types.ADD_CONDITION_VALUE](state, {
         conditionId, parameterName, parameterValue,
     }) {
-        const condition = parameterName === null ? {
-        } : {
+        const condition = parameterName === null ? {} : {
             [parameterName]: parameterValue,
         };
 
@@ -54,8 +53,7 @@ export default {
     [types.SET_CONDITION_VALUE](state, {
         conditionId, parameterName, parameterValue,
     }) {
-        const condition = parameterName === null ? {
-        } : {
+        const condition = parameterName === null ? {} : {
             [parameterName]: parameterValue,
         };
 

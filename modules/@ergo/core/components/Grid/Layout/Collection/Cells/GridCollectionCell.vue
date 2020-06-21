@@ -40,8 +40,7 @@ export default {
     props: {
         actions: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         image: {
             type: String,

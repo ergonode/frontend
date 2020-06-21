@@ -184,10 +184,8 @@ export default {
         const {
             language: userLanguageCode,
         } = rootState.authentication.user;
-        const optionsToAddRequests = [
-        ];
-        const optionsToUpdateRequests = [
-        ];
+        const optionsToAddRequests = [];
+        const optionsToUpdateRequests = [];
 
         Object.keys(state.options).forEach((key) => {
             const option = state.options[key];

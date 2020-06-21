@@ -19,8 +19,7 @@ describe('listMapper/getMappedGroupItemsCount', () => {
             const oneGroup = [
                 'first',
             ];
-            const noneGroup = [
-            ];
+            const noneGroup = [];
             const elements = [
                 {
                     groups: allGroups,

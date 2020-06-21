@@ -16,16 +16,11 @@ const localVue = createLocalVue();
 const store = new Store({
     state: {
         draggable: {
-            draggedElement: {
-            },
+            draggedElement: {},
         },
     },
-    mutations: {
-
-    },
-    actions: {
-
-    },
+    mutations: {},
+    actions: {},
 });
 const mocks = {
     $store: store,
@@ -68,8 +63,7 @@ describe('Template/ProductDesigner/LayoutElement', () => {
             wrapper.vm.resetDataForEndResizeInteraction();
 
             expect(wrapper.vm.isDraggingEnabled).toEqual(true);
-            expect(wrapper.vm.highlightingPositions).toEqual([
-            ]);
+            expect(wrapper.vm.highlightingPositions).toEqual([]);
         });
 
         it('Element width and height is reseted', () => {

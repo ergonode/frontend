@@ -31,13 +31,11 @@ export default {
         },
         value: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
         errorMessages: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
     },
     data() {

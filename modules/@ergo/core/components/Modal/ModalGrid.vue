@@ -93,10 +93,8 @@ export default {
     },
     data() {
         return {
-            columns: [
-            ],
-            data: {
-            },
+            columns: [],
+            data: {},
             count: 0,
             filtered: 0,
         };

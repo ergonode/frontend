@@ -72,8 +72,7 @@ describe('AttributeTypes/getParamsOptionsForType', () => {
         ],
         [
             'OTHER_TYPE',
-            {
-            },
+            {},
         ],
 
     ])(

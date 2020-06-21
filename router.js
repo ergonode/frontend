@@ -53,10 +53,8 @@ const extendRoutes = () => {
                 ];
             }
             return connectedArray;
-        }, [
-        ]);
-    const extendedRoutes = [
-    ].concat(...Object.values(routerModules), routerLocal);
+        }, []);
+    const extendedRoutes = [].concat(...Object.values(routerModules), routerLocal);
 
     for (let i = 0; i < extendTabs.length; i += 1) {
         const index = extendedRoutes.findIndex(e => e.name === extendTabs[i].name);

@@ -7,8 +7,7 @@ export const getNestedTabRoutes = (hasAccess, routes, currentRoute) => {
     const {
         length,
     } = routes;
-    const childRoutes = [
-    ];
+    const childRoutes = [];
 
     for (let i = 0; i < length; i += 1) {
         const {
@@ -32,8 +31,7 @@ export const getNestedTabRoutes = (hasAccess, routes, currentRoute) => {
         }
     }
 
-    return [
-    ];
+    return [];
 };
 
 export const getParentRoutePath = currentRoute => `/${currentRoute.path.split('/')[1]}`;

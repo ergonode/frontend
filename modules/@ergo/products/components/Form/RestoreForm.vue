@@ -38,8 +38,7 @@ export default {
     props: {
         elements: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
         language: {
             type: Object,

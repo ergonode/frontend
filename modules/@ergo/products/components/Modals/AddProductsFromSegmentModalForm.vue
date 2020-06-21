@@ -46,10 +46,8 @@ export default {
     },
     data() {
         return {
-            segmentOptions: [
-            ],
-            segments: [
-            ],
+            segmentOptions: [],
+            segments: [],
             isRequestPending: false,
         };
     },

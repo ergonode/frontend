@@ -147,8 +147,7 @@ export default {
                     title: 'Upload files',
                     content: {
                         component: () => import('@Core/components/Inputs/UploadFile/UploadFileTab'),
-                        listeners: {
-                        },
+                        listeners: {},
                     },
                 },
             ];

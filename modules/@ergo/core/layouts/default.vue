@@ -63,8 +63,7 @@ export default {
     },
     data() {
         return {
-            breadcrumbs: [
-            ],
+            breadcrumbs: [],
         };
     },
     computed: {
@@ -80,13 +79,11 @@ export default {
     },
     watch: {
         $route() {
-            this.breadcrumbs = this.$route.meta.breadcrumbs || [
-            ];
+            this.breadcrumbs = this.$route.meta.breadcrumbs || [];
         },
     },
     created() {
-        this.breadcrumbs = this.$route.meta.breadcrumbs || [
-        ];
+        this.breadcrumbs = this.$route.meta.breadcrumbs || [];
     },
     mounted() {
         this.setRequestTimeout();

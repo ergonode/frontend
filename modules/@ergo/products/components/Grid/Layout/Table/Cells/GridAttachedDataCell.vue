@@ -36,8 +36,7 @@ export default {
     props: {
         data: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         rowIndex: {
             type: Number,

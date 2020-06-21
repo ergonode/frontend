@@ -21,13 +21,11 @@ export default {
     props: {
         rowIds: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
         data: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
         rowsOffset: {
             type: Number,
@@ -36,8 +34,7 @@ export default {
     },
     data() {
         return {
-            selectedRows: {
-            },
+            selectedRows: {},
             isSelectedAllRows: false,
         };
     },
@@ -70,8 +67,7 @@ export default {
         drafts: {
             deep: true,
             handler(value) {
-                const draftValues = {
-                };
+                const draftValues = {};
                 this.rowIds.forEach((rowId, index) => {
                     this.selectedRows[rowId] = this.data[index].value;
                 });

@@ -86,8 +86,7 @@ export default {
 
             if (!this.conditionsValues[this.itemId] || !this.conditionsValues[this.itemId][name]) {
                 if (this.isConditionTypeMultiSelect) {
-                    return [
-                    ];
+                    return [];
                 }
                 return '';
             }
@@ -104,8 +103,7 @@ export default {
                         key,
                         value: options[key],
                     }))
-                    : [
-                    ];
+                    : [];
             }
             return this.parameter.options
                 ? Object.keys(this.parameter.options).map(key => ({
@@ -113,8 +111,7 @@ export default {
                     key,
                     value: this.parameter.options[key],
                 }))
-                : [
-                ];
+                : [];
         },
         paramFieldKeys() {
             return [

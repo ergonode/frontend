@@ -44,8 +44,7 @@ export default {
         },
         options: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         languageCode: {
             type: String,

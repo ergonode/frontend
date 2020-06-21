@@ -4,8 +4,7 @@
  */
 export default () => ({
     objectId: null,
-    comments: [
-    ],
+    comments: [],
     count: 0,
     currentPage: 1,
 });

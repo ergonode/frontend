@@ -28,8 +28,7 @@ export function objectToArray(object) {
             title: object[current],
         });
         return previous;
-    }, [
-    ]);
+    }, []);
 }
 
 /**
@@ -42,14 +41,12 @@ export function objectToArray(object) {
  */
 export function objectToArrayWithPropsName(object, valueName = 'name', indexName = 'id') {
     return Object.keys(object).reduce((previous, current) => {
-        const insertObject = {
-        };
+        const insertObject = {};
         insertObject[indexName] = current;
         insertObject[valueName] = object[current];
         previous.push(insertObject);
         return previous;
-    }, [
-    ]);
+    }, []);
 }
 
 /**
@@ -76,8 +73,7 @@ export function getValueByKey(object, key) {
  * @returns {Array} Keys for values
  */
 export function getKeysByValues(object, values) {
-    const array = [
-    ];
+    const array = [];
     values.forEach((element) => {
         array.push(getKeyByValue(object, element));
     });
@@ -92,8 +88,7 @@ export function getKeysByValues(object, values) {
  * @returns {Array} Values for keys
  */
 export function getValuesByKeys(object, keys) {
-    const values = [
-    ];
+    const values = [];
     keys.forEach((key) => {
         values.push(getValueByKey(object, key));
     });
@@ -146,6 +141,5 @@ export function removeFromObjectByKey(object, keyToRemove) {
             itemCopy[key] = object[key];
         }
         return itemCopy;
-    }, {
-    });
+    }, {});
 }

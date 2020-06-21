@@ -15,8 +15,7 @@ describe('Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent', () => {
             render(h) {
                 return h(GridAdvancedFilterTextContent, {
                     props: {
-                        filter: {
-                        },
+                        filter: {},
                     },
                 });
             },

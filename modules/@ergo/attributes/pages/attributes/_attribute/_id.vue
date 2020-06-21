@@ -133,8 +133,7 @@ export default {
             };
 
             if (!isEmpty(this.options)) {
-                const preValidationErrors = {
-                };
+                const preValidationErrors = {};
 
                 Object.keys(this.options).forEach((optionKey) => {
                     const fieldKey = `option_${optionKey}`;

@@ -60,23 +60,19 @@ export default {
     props: {
         size: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         position: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         parameters: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         properties: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         disabled: {
             type: Boolean,
@@ -126,8 +122,7 @@ export default {
         },
         options() {
             if (!this.hasOptions) {
-                return [
-                ];
+                return [];
             }
 
             return getMappedObjectOptions({

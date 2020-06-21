@@ -103,11 +103,9 @@ describe('objectWrapper/getKeysByValues', () => {
     });
 
     it('Get empty key array when values array is empty ', () => {
-        const values = [
-        ];
+        const values = [];
         const fun = getKeysByValues(obj, values);
-        expect(fun).toEqual([
-        ]);
+        expect(fun).toEqual([]);
     });
 });
 
@@ -125,11 +123,9 @@ describe('objectWrapper/getValuesByKeys', () => {
     });
 
     it('Get empty value array when keys array is empty ', () => {
-        const keys = [
-        ];
+        const keys = [];
         const fun = getValuesByKeys(obj, keys);
-        expect(fun).toEqual([
-        ]);
+        expect(fun).toEqual([]);
     });
 });
 
@@ -157,8 +153,7 @@ describe('objectWrapper/isEmpty', () => {
     });
 
     it('Get true when object is empty', () => {
-        const localObj = {
-        };
+        const localObj = {};
         const fun = isEmpty(localObj);
         expect(fun).toBeTruthy();
     });

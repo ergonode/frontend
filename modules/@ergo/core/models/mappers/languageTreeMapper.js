@@ -3,8 +3,7 @@
  * See LICENSE for license details.
  */
 export function getMappedTreeData(treeArray) {
-    const newTree = [
-    ];
+    const newTree = [];
 
     for (let i = 0; i < treeArray.length; i += 1) {
         const {
@@ -12,8 +11,7 @@ export function getMappedTreeData(treeArray) {
         } = treeArray[i];
         const childrenElement = {
             language_id: id,
-            children: [
-            ],
+            children: [],
         };
         const setChild = (childArray) => {
             for (let j = 0; j < childArray.length; j += 1) {

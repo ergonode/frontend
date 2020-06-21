@@ -113,8 +113,7 @@ export default {
     },
     data() {
         return {
-            language: {
-            },
+            language: {},
         };
     },
     computed: {

@@ -31,13 +31,11 @@ export default {
         },
         options: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         colors: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         isLocked: {
             type: Boolean,

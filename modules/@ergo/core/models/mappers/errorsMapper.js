@@ -6,8 +6,7 @@
 export const getMappedErrors = ({
     errors, fieldKey = null,
 }) => {
-    let mappedErrors = {
-    };
+    let mappedErrors = {};
 
     Object.keys(errors).forEach((errorKey) => {
         if (!Array.isArray(errors[errorKey])) {
@@ -25,8 +24,7 @@ export const getMappedErrors = ({
                     }
 
                     return tmp;
-                }, {
-                }),
+                }, {}),
             };
         } else if (fieldKey) {
             mappedErrors[fieldKey] = errors[errorKey].join(', ');

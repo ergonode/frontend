@@ -99,8 +99,7 @@ export default {
             newHeight: 0,
             actualElementRow: 0,
             actualElementColumn: 0,
-            highlightingPositions: [
-            ],
+            highlightingPositions: [],
             elementsGap: 16,
             isDragged: false,
         };
@@ -160,8 +159,7 @@ export default {
         },
         onDragEnd(event) {
             this.isDragged = false;
-            this.highlightingPositions = [
-            ];
+            this.highlightingPositions = [];
             this.setDraggedElement();
             this.setDraggableState({
                 propName: 'draggedElementOnGrid',
@@ -173,8 +171,7 @@ export default {
                 value: null,
             });
 
-            this.$emit('highlightedPositionChange', [
-            ]);
+            this.$emit('highlightedPositionChange', []);
         },
         onInitResize(event) {
             this.highlightingPositions = getHighlightingPositions(
@@ -233,8 +230,7 @@ export default {
                 response.default(this.onResize, this.onStopResizing);
             });
 
-            this.$emit('highlightedPositionChange', [
-            ]);
+            this.$emit('highlightedPositionChange', []);
         },
         getElementWidthBasedOnMouseXPosition(xPos) {
             return this.startWidth + xPos - this.startX;
@@ -375,8 +371,7 @@ export default {
         },
         resetDataForEndResizeInteraction() {
             this.isDraggingEnabled = true;
-            this.highlightingPositions = [
-            ];
+            this.highlightingPositions = [];
         },
     },
 };

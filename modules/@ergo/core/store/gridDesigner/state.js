@@ -4,10 +4,7 @@
  */
 export default () => ({
     rows: 0,
-    gridData: [
-    ],
-    fullGridData: [
-    ],
-    hiddenItems: {
-    },
+    gridData: [],
+    fullGridData: [],
+    hiddenItems: {},
 });

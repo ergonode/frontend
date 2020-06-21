@@ -92,8 +92,7 @@ export default {
     },
     data() {
         return {
-            highlightedPositions: [
-            ],
+            highlightedPositions: [],
             isSectionAdded: false,
             sectionPosition: null,
             sectionIndex: null,
@@ -177,8 +176,7 @@ export default {
                     layoutElements: this.layoutElements,
                 });
             } else {
-                this.highlightedPositions = [
-                ];
+                this.highlightedPositions = [];
             }
         },
     },
@@ -202,8 +200,7 @@ export default {
             this.highlightedPositions = positions;
         },
         updateLayoutElement(position) {
-            this.highlightedPositions = [
-            ];
+            this.highlightedPositions = [];
 
             if (typeof this.draggedElement === 'object') {
                 const {

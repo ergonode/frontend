@@ -6,8 +6,7 @@ export default async function ({
     $axios, $store, languageCode, elements, productId = null,
 }) {
     const id = productId || $store.state.product.id;
-    const elementsRequests = [
-    ];
+    const elementsRequests = [];
 
     elements.forEach((attributeId) => {
         elementsRequests.push($axios.$delete(`${languageCode}/products/${id}/draft/${attributeId}/value`));

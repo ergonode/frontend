@@ -136,8 +136,7 @@ export default {
     },
     data() {
         return {
-            options: [
-            ],
+            options: [],
             isFetchingOptions: false,
         };
     },

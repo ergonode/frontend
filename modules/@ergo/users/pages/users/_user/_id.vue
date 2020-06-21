@@ -94,8 +94,7 @@ export default {
                         languages[languageCode] = this.languagePrivilegesCollection[languageCode];
                     }
                     return languages;
-                }, {
-                });
+                }, {});
             const user = {
                 firstName: this.firstName,
                 lastName: this.lastName,

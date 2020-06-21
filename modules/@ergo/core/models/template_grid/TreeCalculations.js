@@ -32,8 +32,7 @@ export function getNearestNeighborRowId(tree, column, row) {
 }
 
 export function getTreeWhenElementRemoved(oldTree, index) {
-    const newTree = [
-    ];
+    const newTree = [];
     const filteredTree = oldTree.filter((el, idx) => idx !== index);
     for (let i = 0; i < filteredTree.length; i += 1) {
         const currentElement = filteredTree[i];
@@ -48,8 +47,7 @@ export function getTreeWhenElementRemoved(oldTree, index) {
 }
 
 export function getTreeWhenGhostElementRemoved(oldTree, index) {
-    const newTree = [
-    ];
+    const newTree = [];
 
     for (let i = 0; i < oldTree.length; i += 1) {
         const currentElement = oldTree[i];
@@ -69,8 +67,7 @@ export function getTreeWhenGhostElementRemoved(oldTree, index) {
 }
 
 export function getTreeWhenElementCollapse(oldTree, index) {
-    const newTree = [
-    ];
+    const newTree = [];
 
     for (let i = 0; i < oldTree.length; i += 1) {
         newTree.push(i > index ? {
@@ -82,8 +79,7 @@ export function getTreeWhenElementCollapse(oldTree, index) {
 }
 
 export function getTreeWhenElementExpand(hiddenChildren, oldTree, index) {
-    let newTree = [
-    ];
+    let newTree = [];
 
     for (let i = 0; i < oldTree.length; i += 1) {
         const current = oldTree[i];
@@ -109,8 +105,7 @@ export function getTreeWhenElementExpand(hiddenChildren, oldTree, index) {
 }
 
 export function getRowBounds(elements) {
-    const elementBounds = [
-    ];
+    const elementBounds = [];
 
     for (let i = 0; i < elements.length; i += 1) {
         const bounds = elements[i].getBoundingClientRect();

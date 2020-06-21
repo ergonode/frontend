@@ -88,8 +88,7 @@ export default {
     },
     data() {
         return {
-            language: {
-            },
+            language: {},
         };
     },
     computed: {
@@ -106,8 +105,7 @@ export default {
             } = this.language;
 
             if (!code || !this.groups[code]) {
-                return [
-                ];
+                return [];
             }
 
             return this.groups[code].filter(({
@@ -149,8 +147,7 @@ export default {
             .find(languegeCode => languegeCode.code === this.defaultLanguageCodeByPrivileges);
     },
     beforeDestroy() {
-        this.setDisabledElements({
-        });
+        this.setDisabledElements({});
     },
     methods: {
         ...mapActions('list', [
@@ -177,8 +174,7 @@ export default {
                 await this.getGroups(value.code);
             }
 
-            const requests = [
-            ];
+            const requests = [];
 
             if (!this.groups[languageCode].find(({
                 id,

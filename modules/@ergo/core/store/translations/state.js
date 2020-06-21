@@ -3,6 +3,5 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    translations: {
-    },
+    translations: {},
 });

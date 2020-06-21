@@ -30,13 +30,11 @@ export default {
         },
         value: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
         errorMessages: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
     },
     data() {
@@ -52,8 +50,7 @@ export default {
         getMappedTitles({
             key, value, data,
         }) {
-            const titles = [
-            ];
+            const titles = [];
 
             for (let i = 0; i < data.length; i += 1) {
                 const titleIndex = this.schema.items[key].findIndex(

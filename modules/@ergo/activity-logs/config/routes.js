@@ -43,8 +43,7 @@ export default [
                             icon: Icons.Settings,
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],

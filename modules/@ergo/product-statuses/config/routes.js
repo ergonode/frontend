@@ -42,8 +42,7 @@ export default [
                             icon: Icons.Flow,
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],
@@ -73,8 +72,7 @@ export default [
                             routeName: 'product-statuses-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
             {
@@ -93,8 +91,7 @@ export default [
                             routeName: 'product-statuses-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],

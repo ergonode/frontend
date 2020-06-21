@@ -15,8 +15,7 @@ export default {
     dictionaries: [
         {
             stateProp: 'privileges',
-            dataFormat: {
-            },
+            dataFormat: {},
             requestPath: '/dictionary/privileges',
         },
     ],

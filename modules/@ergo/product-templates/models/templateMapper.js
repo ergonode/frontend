@@ -89,8 +89,7 @@ export function getMappedLayoutSectionElement(
 
 export function getMappedLayoutElements(elements, elementsDescription, types) {
     if (!elementsDescription.length) {
-        return [
-        ];
+        return [];
     }
 
     return elements.map((element) => {
@@ -152,8 +151,7 @@ export function getMappedLayoutElementsForAPIUpdate(elements) {
             width,
             height,
         };
-        const properties = {
-        };
+        const properties = {};
         let parsedType = type;
 
         if (type !== SYSTEM_TYPES.SECTION) {

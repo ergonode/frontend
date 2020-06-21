@@ -61,8 +61,7 @@ export default {
         },
         fieldsKeys: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
     },
     computed: {
@@ -79,8 +78,7 @@ export default {
                 }
 
                 return errors;
-            }, {
-            });
+            }, {});
         },
         formGlobalError() {
             return this.getValidationErrorForKey('form');

@@ -43,8 +43,7 @@ export default [
                             icon: Icons.Templates,
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],
@@ -74,8 +73,7 @@ export default [
                             routeName: 'attributes-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
             {
@@ -94,8 +92,7 @@ export default [
                             routeName: 'attributes-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],
@@ -133,8 +130,7 @@ export default [
                             icon: Icons.Templates,
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],
@@ -164,8 +160,7 @@ export default [
                             routeName: 'attribute-groups-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
             {
@@ -184,8 +179,7 @@ export default [
                             routeName: 'attribute-groups-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],

@@ -27,9 +27,7 @@ jest.mock('axios', () => ({
 let action;
 const $setLoader = jest.fn();
 const $removeLoader = jest.fn();
-const testedAction = (context = {
-}, payload = {
-}) => actions[action]
+const testedAction = (context = {}, payload = {}) => actions[action]
     .bind({
         app: {
             $axios: axios,
@@ -42,8 +40,7 @@ describe('Notifications', () => {
     beforeEach(() => {
         store = new Vuex.Store({
             state: defaultState(),
-            getters: {
-            },
+            getters: {},
             mutations,
             actions,
         });

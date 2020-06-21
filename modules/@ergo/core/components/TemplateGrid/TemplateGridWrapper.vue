@@ -196,10 +196,8 @@ export default {
                     }
                     return acc;
                 }, {
-                    hiddenCategories: [
-                    ],
-                    visibleCategories: [
-                    ],
+                    hiddenCategories: [],
+                    visibleCategories: [],
                 });
 
                 this.setHiddenItem({

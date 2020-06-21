@@ -43,8 +43,7 @@ export default [
                             icon: Icons.Settings,
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],
@@ -74,8 +73,7 @@ export default [
                             routeName: 'users-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
             {
@@ -94,8 +92,7 @@ export default [
                             routeName: 'users-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
             {
@@ -114,8 +111,7 @@ export default [
                             routeName: 'users-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],
@@ -153,8 +149,7 @@ export default [
                             icon: Icons.Settings,
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],
@@ -184,8 +179,7 @@ export default [
                             routeName: 'user-roles-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
             {
@@ -204,8 +198,7 @@ export default [
                             routeName: 'user-roles-grid',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],
@@ -225,8 +218,7 @@ export default [
                 component: Tabs.UserActivityLogsGridTab,
                 meta: {
                     title: 'Activity log',
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
             {
@@ -235,8 +227,7 @@ export default [
                 component: Tabs.UserPrivilegesGridTab,
                 meta: {
                     title: 'Privileges',
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],

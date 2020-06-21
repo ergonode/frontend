@@ -35,8 +35,7 @@ export default {
         },
         items: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
         itemsCount: {
             type: Number,

@@ -33,10 +33,8 @@ export default {
             id,
             code,
             type_id,
-            name = {
-            },
-            description = {
-            },
+            name = {},
+            description = {},
         }) => {
             const translations = {
                 name,

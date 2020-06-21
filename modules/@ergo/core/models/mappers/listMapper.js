@@ -7,8 +7,7 @@ import {
 } from '@Core/defaults/list';
 
 export function getMappedGroupItemsCount(items) {
-    const groupItemsCount = {
-    };
+    const groupItemsCount = {};
     const {
         length,
     } = items;

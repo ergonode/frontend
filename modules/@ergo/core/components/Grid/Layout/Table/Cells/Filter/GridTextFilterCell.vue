@@ -46,8 +46,7 @@ export default {
         },
         data: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         filter: {
             type: Object,

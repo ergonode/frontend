@@ -49,8 +49,7 @@ export default {
         },
         data: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         languageCode: {
             type: String,
@@ -74,15 +73,13 @@ export default {
             if (this.data.options) {
                 // TODO: BE has to unify types!
                 if (Array.isArray(this.data.options)) {
-                    return {
-                    };
+                    return {};
                 }
 
                 return this.data.options;
             }
 
-            return {
-            };
+            return {};
         },
         value() {
             if (!this.filter) return '';

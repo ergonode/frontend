@@ -172,9 +172,7 @@ export default {
             const {
                 element_id,
             } = this.columns.find(column => column.id === columnId);
-            const [,
-                languageCode,
-            ] = columnId.split(':');
+            const languageCode = columnId.split(':')[1];
 
             updateProductDraft().then(response => response.default({
                 $axios: this.$axios,
@@ -193,15 +191,12 @@ export default {
                 const {
                     element_id,
                 } = this.columns.find(column => column.id === columnId);
-                const [,
-                    languageCode,
-                ] = columnId.split(':');
 
                 return updateProductDraft().then(response => response.default({
                     $axios: this.$axios,
                     $store: this.$store,
                     fieldKey: `${rowId}/${columnId}`,
-                    languageCode,
+                    languageCode: columnId.split(':')[1],
                     productId: rowId,
                     elementId: element_id,
                     value,
@@ -251,8 +246,7 @@ export default {
             });
         },
         saveDrafts() {
-            const promises = [
-            ];
+            const promises = [];
 
             Object.keys(this.drafts).forEach((rowId) => {
                 promises.push(this.applyDraft({

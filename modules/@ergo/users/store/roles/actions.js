@@ -41,8 +41,7 @@ export default {
             id,
             name = '',
             description = '',
-            privileges = [
-            ],
+            privileges = [],
         }) => {
             commit(types.SET_ROLE_ID, id);
             commit(types.SET_ROLE_NAME, name);

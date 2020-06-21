@@ -19,14 +19,12 @@ export const types = {
 };
 export default {
     [types.INITIALIZE_ROW_DRAFT](state, rowId) {
-        state.drafts[rowId] = {
-        };
+        state.drafts[rowId] = {};
     },
     [types.INITIALIZE_COLUMN_DRAFT](state, {
         rowId, columnId,
     }) {
-        state.drafts[rowId][columnId] = {
-        };
+        state.drafts[rowId][columnId] = {};
     },
     [types.SET_DRAFTS_VALUES](state, drafts) {
         state.drafts = deepmerge(state.drafts, drafts);
@@ -51,8 +49,7 @@ export default {
         delete state.drafts[rowId];
     },
     [types.REMOVE_DRAFTS](state) {
-        state.drafts = {
-        };
+        state.drafts = {};
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();

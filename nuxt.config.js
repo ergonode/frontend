@@ -115,8 +115,7 @@ module.exports = {
         extend(config, {
             isDev, isClient,
         }) {
-            const alias = config.resolve.alias || {
-            };
+            const alias = config.resolve.alias || {};
 
             alias['@Root'] = join(__dirname, './');
             alias['@Modules'] = join(__dirname, '/modules');

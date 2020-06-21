@@ -7,8 +7,7 @@ export default ({
 }) => {
     const {
         meta: {
-            privileges = [
-            ],
+            privileges = [],
         },
     } = route;
 

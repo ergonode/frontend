@@ -49,8 +49,7 @@ export default {
     },
     data() {
         return {
-            selectedLanguages: [
-            ],
+            selectedLanguages: [],
         };
     },
     computed: {

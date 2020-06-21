@@ -109,8 +109,7 @@ export default {
             }) => {
                 const tmpData = {
                     ...data,
-                    esa_attached: [
-                    ],
+                    esa_attached: [],
                 };
 
                 for (let j = 0; j < data.id.length; j += 1) {
@@ -134,8 +133,7 @@ export default {
                             visible: true,
                             editable: true,
                             deletable: false,
-                            parameters: [
-                            ],
+                            parameters: [],
                         },
                     ],
                     filtered,
@@ -149,10 +147,8 @@ export default {
             localParams: {
                 offset: 0,
                 limit: DATA_LIMIT,
-                filters: {
-                },
-                sortedColumn: {
-                },
+                filters: {},
+                sortedColumn: {},
             },
         };
     },
@@ -198,8 +194,7 @@ export default {
                 offset,
                 limit,
                 extended: true,
-                filter: getParsedFilters(filters, [
-                ]),
+                filter: getParsedFilters(filters, []),
                 columns: `esa_default_image:${this.languageCode},esa_default_label:${this.languageCode},${this.attributeCodes},sku,esa_template:${this.languageCode}`,
             };
 
@@ -235,8 +230,7 @@ export default {
                 }) => {
                     const tmpData = {
                         ...data,
-                        esa_attached: [
-                        ],
+                        esa_attached: [],
                     };
 
                     for (let j = 0; j < data.id.length; j += 1) {
@@ -259,8 +253,7 @@ export default {
                             visible: true,
                             editable: true,
                             deletable: false,
-                            parameters: [
-                            ],
+                            parameters: [],
                         },
                     ];
                     this.filtered = filtered;

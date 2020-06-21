@@ -44,8 +44,7 @@ export default {
     props: {
         files: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
     },
     computed: {

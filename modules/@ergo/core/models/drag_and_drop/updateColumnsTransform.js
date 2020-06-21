@@ -25,8 +25,7 @@ function getLowerBoundsTransforms(
     draggedElIndex,
     ghostIndex,
 ) {
-    const transforms = {
-    };
+    const transforms = {};
     let lowerBound = ghostIndex - 1; // We can shift to next iteration - no need to do anything with ghost column
     let updatedGhostTransform = ghostTransform;
 
@@ -68,8 +67,7 @@ function getUpperBoundsTransforms(
     draggedElIndex,
     ghostIndex,
 ) {
-    const transforms = {
-    };
+    const transforms = {};
     let upperBound = ghostIndex + 1; // We can shift to next iteration - no need to do anything with ghost column
     let updatedGhostTransform = ghostTransform;
 
@@ -110,8 +108,7 @@ export default function (targetGhostIndex, draggedElIndex, ghostIndex) {
     } = columnsSection.children[draggedElIndex]
         .getBoundingClientRect();
     const ghostTransform = +columnsSection.children[draggedElIndex].style.transform.replace(/[^0-9\-.,]/g, '');
-    let bounds = {
-    };
+    let bounds = {};
 
     if (targetGhostIndex < ghostIndex) {
         bounds = getLowerBoundsTransforms(

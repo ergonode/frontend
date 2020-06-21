@@ -62,6 +62,5 @@ export function getMappedArrayOptions(options) {
             value: !current.label || current.label.length < 1 ? null : current.label,
         };
         return newObject;
-    }, {
-    });
+    }, {});
 }

@@ -61,8 +61,7 @@ export default [
                             routeName: 'product-templates',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
             {
@@ -81,8 +80,7 @@ export default [
                             routeName: 'product-templates',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],

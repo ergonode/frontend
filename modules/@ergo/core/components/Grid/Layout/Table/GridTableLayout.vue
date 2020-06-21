@@ -112,18 +112,15 @@ export default {
     props: {
         columns: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
         data: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         advancedFiltersValues: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         currentPage: {
             type: Number,
@@ -155,8 +152,7 @@ export default {
             isHeaderFocused: false,
             hasInitialWidths: true,
             isSelectedAllRows: false,
-            selectedRows: {
-            },
+            selectedRows: {},
             editingCellCoordinates: {
                 row: null,
                 column: null,
@@ -165,18 +161,12 @@ export default {
                 row: null,
                 column: null,
             },
-            orderedColumns: [
-            ],
-            columnComponents: [
-            ],
-            columnWidths: [
-            ],
-            filters: {
-            },
-            sortedColumn: {
-            },
-            pinnedSections: {
-            },
+            orderedColumns: [],
+            columnComponents: [],
+            columnWidths: [],
+            filters: {},
+            sortedColumn: {},
+            pinnedSections: {},
         };
     },
     computed: {
@@ -203,8 +193,7 @@ export default {
                 }
 
                 return tmp;
-            }, [
-            ]);
+            }, []);
         },
         dataCount() {
             const keys = Object.keys(this.data);
@@ -430,10 +419,8 @@ export default {
         }) {
             const rowIndex = this.data.id.findIndex(id => id === rowId);
             const offset = from.row - rowIndex;
-            const drafts = {
-            };
-            const editedCells = [
-            ];
+            const drafts = {};
+            const editedCells = [];
 
             if (from.row < to.row) {
                 for (let i = from.row - offset; i <= to.row - offset; i += 1) {
@@ -481,12 +468,9 @@ export default {
                 );
             }
 
-            const orderedColumns = [
-            ];
-            const columnComponents = [
-            ];
-            const columnWidths = [
-            ];
+            const orderedColumns = [];
+            const columnComponents = [];
+            const columnWidths = [];
             const {
                 length,
             } = this.columns;

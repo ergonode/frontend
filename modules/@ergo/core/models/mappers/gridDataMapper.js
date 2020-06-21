@@ -27,8 +27,7 @@ export function cellDataCompose(check) {
     };
 }
 
-export function getParsedFilters(filters, advancedFilters = [
-]) {
+export function getParsedFilters(filters, advancedFilters = []) {
     const entries = Object.entries(filters);
     const {
         length: entriesLength,
@@ -62,8 +61,7 @@ export function getParsedFilters(filters, advancedFilters = [
 }
 
 export function getParsedAdvancedFilters(filters) {
-    const mappedFilter = [
-    ];
+    const mappedFilter = [];
 
     filters.forEach((filter) => {
         if (filter.value.isEmptyRecord) {
@@ -95,8 +93,7 @@ export function getMappedData({
     const {
         length: rowsNumber,
     } = rows;
-    const data = {
-    };
+    const data = {};
 
     for (let j = 0; j < rowsNumber; j += 1) {
         for (let i = 0; i < columnsNumber; i += 1) {
@@ -105,8 +102,7 @@ export function getMappedData({
             } = columns[i];
 
             if (!data[id]) {
-                data[id] = [
-                ];
+                data[id] = [];
             }
 
             data[id].push(rows[j][id]);
@@ -114,16 +110,14 @@ export function getMappedData({
 
         if (hasLinks) {
             if (!data[COLUMN_ACTIONS_ID]) {
-                data[COLUMN_ACTIONS_ID] = {
-                };
+                data[COLUMN_ACTIONS_ID] = {};
             }
 
             for (let x = 0; x < GRID_ACTIONS.length; x += 1) {
                 const key = GRID_ACTIONS[x];
 
                 if (!data[COLUMN_ACTIONS_ID][key]) {
-                    data[COLUMN_ACTIONS_ID][key] = {
-                    };
+                    data[COLUMN_ACTIONS_ID][key] = {};
                 }
 
                 if (rows[j]._links.value[key]) {
@@ -133,8 +127,7 @@ export function getMappedData({
         }
     }
 
-    const idColumn = [
-    ];
+    const idColumn = [];
 
     for (let i = 0; i < rowsNumber; i += 1) {
         idColumn.push(rows[i].id ? rows[i].id.value : getUUID());

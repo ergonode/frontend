@@ -72,8 +72,7 @@ export default {
         const month = this.calendarDate.getMonth() + 1;
 
         return {
-            years: getYearsWithinRange([
-            ], year),
+            years: getYearsWithinRange([], year),
             currentYear: today.getFullYear(),
             currentMonth: today.getMonth() + 1,
             month,

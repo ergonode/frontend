@@ -39,8 +39,7 @@ export default {
     props: {
         options: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
         isActive: {
             type: Object,

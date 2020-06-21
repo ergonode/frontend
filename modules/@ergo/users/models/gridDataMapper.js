@@ -22,8 +22,7 @@ export function getMappedRestrictions(data) {
             }
         }
         return response;
-    }, {
-    });
+    }, {});
 }
 
 export function getMappedGridData({
@@ -32,21 +31,16 @@ export function getMappedGridData({
     defaults,
     isEditable = false,
 }) {
-    const data = {
-    };
-    const columns = [
-    ];
+    const data = {};
+    const columns = [];
 
     if (isEditable) {
-        data.selectRow = [
-        ];
+        data.selectRow = [];
         columns.push(defaults.selectRowColumn);
     }
 
-    data.name = [
-    ];
-    data.id = [
-    ];
+    data.name = [];
+    data.id = [];
     columns.push(defaults.nameColumn);
 
     for (let i = 0; i < fullDataList.length; i += 1) {
@@ -71,8 +65,7 @@ export function getMappedGridData({
             const type = optionTypes[j];
 
             if (!data[type]) {
-                data[type] = [
-                ];
+                data[type] = [];
                 columns.push(defaults.getCheckColumn(type, isEditable));
             }
             const value = isObject(selectedData) ? selectedData[types[type]] : false;

@@ -59,8 +59,7 @@ export const getAdvancedFiltersData = ({
         const {
             length,
         } = columns;
-        const advancedFilters = [
-        ];
+        const advancedFilters = [];
 
         for (let i = 0; i < length; i += 1) {
             if (columns[i].filter) {

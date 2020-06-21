@@ -64,23 +64,19 @@ export default {
     props: {
         size: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         position: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         parameters: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         properties: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         disabled: {
             type: Boolean,

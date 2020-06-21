@@ -31,13 +31,11 @@ export default {
     props: {
         segments: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
         segmentOptions: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
     },
     computed: {

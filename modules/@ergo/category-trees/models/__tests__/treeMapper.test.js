@@ -21,17 +21,13 @@ describe('treeMapper/getParsedTreeData', () => {
     });
 
     it('Tree parsing with empty categories array', () => {
-        const result = getParsedTreeData(parsingTree, [
-        ]);
-        expect(result).toStrictEqual([
-        ]);
+        const result = getParsedTreeData(parsingTree, []);
+        expect(result).toStrictEqual([]);
     });
 
     it('Tree parsing without input data', () => {
-        const result = getParsedTreeData([
-        ], '');
-        expect(result).toStrictEqual([
-        ]);
+        const result = getParsedTreeData([], '');
+        expect(result).toStrictEqual([]);
     });
 });
 
@@ -42,9 +38,7 @@ describe('treeMapper/getMappedTreeData', () => {
     });
 
     it('Tree mapping without input data', () => {
-        const result = getMappedTreeData([
-        ]);
-        expect(result).toStrictEqual([
-        ]);
+        const result = getMappedTreeData([]);
+        expect(result).toStrictEqual([]);
     });
 });

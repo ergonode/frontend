@@ -33,10 +33,7 @@ module.exports = {
     rules: {
         'modules-newline/import-declaration-newline': 'error',
         'modules-newline/export-declaration-newline': 'error',
-        'multiline-ternary': [
-            'error',
-            'always',
-        ],
+        'newline-per-chained-call': 'error',
         'object-property-newline': [
             'error',
             {
@@ -45,11 +42,15 @@ module.exports = {
         ],
         'array-bracket-newline': [
             'error',
-            'always',
+            {
+                minItems: 1,
+            },
         ],
         'object-curly-newline': [
             'error',
-            'always',
+            {
+                minProperties: 1,
+            },
         ],
         'array-element-newline': [
             'error',

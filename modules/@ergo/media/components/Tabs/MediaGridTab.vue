@@ -92,8 +92,7 @@ export default {
         delete this.debouncedSearch;
         this.observer.disconnect();
         // TODO: Send back selected files
-        this.$emit('input', this.multiple ? [
-        ] : 123124);
+        this.$emit('input', this.multiple ? [] : 123124);
     },
     methods: {
         onSearchFocus(isFocused) {

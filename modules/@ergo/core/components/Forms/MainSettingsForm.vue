@@ -37,10 +37,8 @@ export default {
     data() {
         return {
             filteredValue: '',
-            tmpLanguages: [
-            ],
-            activeLanguages: [
-            ],
+            tmpLanguages: [],
+            activeLanguages: [],
         };
     },
     computed: {

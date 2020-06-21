@@ -21,13 +21,11 @@ export const parsingTree = [
                 children: [
                     {
                         category_id: 'fb471778-cbe7-56ca-ace7-0edd936092d7',
-                        children: [
-                        ],
+                        children: [],
                     },
                     {
                         category_id: 'f9e4f5a5-7a87-5efc-a680-cfbdb68b869f',
-                        children: [
-                        ],
+                        children: [],
                     },
                 ],
             },
@@ -35,8 +33,7 @@ export const parsingTree = [
     },
     {
         category_id: 'b07154ca-3e19-5d69-9238-8fe2b0c5e49e',
-        children: [
-        ],
+        children: [],
     },
 ];
 

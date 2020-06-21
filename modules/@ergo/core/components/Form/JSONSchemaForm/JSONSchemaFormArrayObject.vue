@@ -54,20 +54,17 @@ export default {
         },
         errorMessages: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         value: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
     },
     data() {
         return {
             rowValues: this.value.length ? this.value : [
-                {
-                },
+                {},
             ],
         };
     },
@@ -82,8 +79,7 @@ export default {
     methods: {
         onAddRow() {
             this.$refs.addSectionButton.$el.scrollIntoView(true);
-            this.rowValues.push({
-            });
+            this.rowValues.push({});
         },
         onRemoveRowAtIndex(index) {
             this.rowValues.splice(index, 1);

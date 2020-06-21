@@ -33,8 +33,7 @@ export default {
         },
         selectedDates: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
     },
     data() {

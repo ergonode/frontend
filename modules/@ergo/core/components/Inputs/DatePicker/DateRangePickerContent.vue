@@ -160,8 +160,7 @@ export default {
                 }
 
                 return previous;
-            }, [
-            ]);
+            }, []);
         },
         fromHeader() {
             if (this.value.from) {

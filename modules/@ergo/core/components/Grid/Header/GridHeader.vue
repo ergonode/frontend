@@ -135,8 +135,7 @@ export default {
         },
         filters: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
         isActionsSelected: {
             type: Boolean,

@@ -18,12 +18,9 @@ export const getListGroups = ({
     }).then(({
         collection,
     }) => {
-        const groups = [
-        ];
-        const items = {
-        };
-        const groupItemsCount = {
-        };
+        const groups = [];
+        const items = {};
+        const groupItemsCount = {};
         const {
             length,
         } = collection;
@@ -44,8 +41,7 @@ export const getListGroups = ({
                 });
 
                 groupItemsCount[id] = collection[i].elements_count;
-                items[id] = [
-                ];
+                items[id] = [];
             }
         }
 

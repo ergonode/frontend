@@ -6,21 +6,18 @@ export default {
     dictionaries: [
         {
             stateProp: 'currencies',
-            dataFormat: {
-            },
+            dataFormat: {},
             requestPath: '/dictionary/currencies',
         },
         {
             stateProp: 'units',
-            dataFormat: [
-            ],
+            dataFormat: [],
             requestPath: '/units',
             isGrid: true,
         },
         {
             stateProp: 'dateFormats',
-            dataFormat: {
-            },
+            dataFormat: {},
             requestPath: '/dictionary/date_format',
         },
     ],

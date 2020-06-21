@@ -9,8 +9,7 @@ import {
 export default () => ({
     limit: DATA_LIMIT,
     count: 0,
-    notifications: [
-    ],
+    notifications: [],
     requestTimeInterval: 1000,
     requestTimeout: null,
 });

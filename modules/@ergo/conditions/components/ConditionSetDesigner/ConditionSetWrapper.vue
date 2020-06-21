@@ -69,8 +69,7 @@ export default {
             const [
                 correctId,
             ] = id.split('--');
-            return this.conditions[correctId] || {
-            };
+            return this.conditions[correctId] || {};
         },
         onGetConditionConfigurationById(id) {
             const [

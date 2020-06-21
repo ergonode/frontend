@@ -96,8 +96,7 @@ export default {
                 ];
             }
 
-            return [
-            ];
+            return [];
         },
         parsedCurrentMonth() {
             if (this.year === this.currentYear) {

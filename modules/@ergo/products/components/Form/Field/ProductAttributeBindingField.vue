@@ -42,8 +42,7 @@ export default {
         },
         attributes: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
         disabled: {
             type: Boolean,

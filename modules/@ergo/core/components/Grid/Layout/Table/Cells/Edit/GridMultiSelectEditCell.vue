@@ -40,13 +40,11 @@ export default {
     props: {
         value: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
         options: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         languageCode: {
             type: String,

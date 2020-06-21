@@ -21,13 +21,11 @@ export default {
         },
         props: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         listeners: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
     },
 };

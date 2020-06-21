@@ -13,13 +13,11 @@ export default async function ({
 }) {
     const {
         name,
-        styleResources = {
-        },
+        styleResources = {},
     } = configuration;
 
     if (!this.options.styleResources) {
-        this.options.styleResources = {
-        };
+        this.options.styleResources = {};
     }
 
     Object.keys(styleResources).forEach((resource) => {

@@ -3,15 +3,12 @@
  * See LICENSE for license details.
  */
 export function getFlattenedTreeData({
-    treeData, mappedId, reducer = () => ({
-    }),
+    treeData, mappedId, reducer = () => ({}),
 }) {
     if (!treeData || !mappedId) {
-        return [
-        ];
+        return [];
     }
-    const flattenedCollection = [
-    ];
+    const flattenedCollection = [];
     const flatStructure = (tree, parent, level) => {
         if (!tree || tree.length === 0) return;
         for (let i = 0; i < tree.length; i += 1) {

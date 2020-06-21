@@ -22,12 +22,9 @@ export default function ({
     return {
         data() {
             return {
-                groups: {
-                },
-                groupItemsCount: {
-                },
-                items: {
-                },
+                groups: {},
+                groupItemsCount: {},
+                items: {},
                 codeFilter: '',
                 expandedGroupId: '',
             };
@@ -69,8 +66,7 @@ export default function ({
                     hint: '',
                 };
                 this.groups[languageCode].push(unassignedGroup);
-                this.items[languageCode][UNASSIGNED_GROUP_ID] = [
-                ];
+                this.items[languageCode][UNASSIGNED_GROUP_ID] = [];
 
                 await this.getGroupItems({
                     groupId: UNASSIGNED_GROUP_ID,

@@ -151,8 +151,7 @@ export function arrayToObject(array, keyField, value) {
         const newObject = prev;
         newObject[current[keyField]] = current[value];
         return newObject;
-    }, {
-    });
+    }, {});
 }
 
 /**

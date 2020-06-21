@@ -21,8 +21,7 @@ export default {
     },
     getConditions({
         commit, rootState,
-    }, params = {
-    }) {
+    }, params = {}) {
         const {
             language: userLanguageCode,
         } = rootState.authentication.user;
@@ -45,8 +44,7 @@ export default {
         } = rootState.authentication.user;
         await this.app.$axios.$get(`${userLanguageCode}/conditionsets/${conditionSetId}`).then(async ({
             id,
-            conditions = [
-            ],
+            conditions = [],
         }) => {
             await Promise.all(conditions.map(async (condition) => {
                 const {

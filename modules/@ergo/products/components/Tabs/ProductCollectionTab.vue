@@ -63,8 +63,7 @@ export default {
     },
     data() {
         return {
-            collections: [
-            ],
+            collections: [],
         };
     },
     computed: {
@@ -96,8 +95,7 @@ export default {
                 subtitle: collectionType ? collectionType.name : '',
                 description,
                 itemsCount: elements_count,
-                items: [
-                ],
+                items: [],
             };
         });
     },

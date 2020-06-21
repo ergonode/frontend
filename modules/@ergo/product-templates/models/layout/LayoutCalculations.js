@@ -28,8 +28,7 @@ const fillHighlightingPositions = (highlightingPositions, x, y, xRange, yRange) 
     }
 };
 const positionsSetToArray = (set) => {
-    const array = [
-    ];
+    const array = [];
 
     set.forEach((position) => {
         const [
@@ -97,12 +96,10 @@ export function getObstaclePositionsForElement({
     row, column, width, height,
 }) {
     if (width < 0 || height < 0) {
-        return [
-        ];
+        return [];
     }
 
-    const obstaclePositions = [
-    ];
+    const obstaclePositions = [];
 
     for (let y = row; y < row + height; y += 1) {
         let x = column;
@@ -125,8 +122,7 @@ export function getHighlightingLayoutDropPositions({
     const {
         length,
     } = layoutElements;
-    let layoutObstaclePositions = [
-    ];
+    let layoutObstaclePositions = [];
 
     for (let i = 0; i < length; i += 1) {
         const elementObstaclePositions = getObstaclePositionsForElement(layoutElements[i]);
@@ -178,11 +174,9 @@ export function getHighlightingPositions({
     maxWidth,
     maxHeight,
 }, layoutElements) {
-    const highlightingPositions = [
-    ];
+    const highlightingPositions = [];
     const maxColumn = column + maxWidth;
-    const layoutObstaclePositions = [
-    ];
+    const layoutObstaclePositions = [];
     let maxRowForGivenColumn = row + maxHeight;
 
     layoutElements.forEach((element) => {

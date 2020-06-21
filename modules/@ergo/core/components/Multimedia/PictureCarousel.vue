@@ -66,8 +66,7 @@ export default {
     props: {
         imageIds: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
     },
     data() {

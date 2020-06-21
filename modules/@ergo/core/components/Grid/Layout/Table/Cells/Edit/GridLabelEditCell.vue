@@ -64,8 +64,7 @@ export default {
         },
         colors: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         languageCode: {
             type: String,
@@ -93,15 +92,13 @@ export default {
     },
     data() {
         return {
-            options: [
-            ],
+            options: [],
             localValue: null,
         };
     },
     created() {
         this.$axios.$get(`${this.languageCode}/products/${this.rowId}`).then(({
-            workflow = [
-            ],
+            workflow = [],
         }) => {
             this.options = workflow.map(e => ({
                 id: e.code,

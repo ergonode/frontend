@@ -89,8 +89,7 @@ describe('arrayWrapper/maxObjectValueInArrayByObjectKeyByObjectKey', () => {
     });
 
     it('Array has no elements', () => {
-        const maxObject = getObjectWithMaxValueInArrayByObjectKey([
-        ], 'a');
+        const maxObject = getObjectWithMaxValueInArrayByObjectKey([], 'a');
 
         expect(maxObject).toEqual(null);
     });
@@ -115,10 +114,8 @@ describe('arrayWrapper/arraysAreEqual', () => {
 
         expect(areEqual).toEqual(true);
 
-        arr1 = [
-        ];
-        arr2 = [
-        ];
+        arr1 = [];
+        arr2 = [];
 
         areEqual = arraysAreEqual(arr1, arr2);
 
@@ -280,8 +277,7 @@ describe('arrayWrapper/insertValueAtIndex', () => {
             3,
             0,
             -2,
-            {
-            },
+            {},
             'ads',
         ];
         const result = insertValueAtIndex(array, 5, 3);
@@ -293,8 +289,7 @@ describe('arrayWrapper/insertValueAtIndex', () => {
             5,
             0,
             -2,
-            {
-            },
+            {},
             'ads',
         ]);
     });
@@ -313,8 +308,7 @@ describe('objectWrapper/lastElementInList', () => {
     });
 
     it('Get null from empty array', () => {
-        const array = [
-        ];
+        const array = [];
         const fun = lastElementInList(array);
         expect(fun).toBeNull();
     });
@@ -333,8 +327,7 @@ describe('objectWrapper/firstElementInList', () => {
     });
 
     it('Get null from empty array', () => {
-        const array = [
-        ];
+        const array = [];
         const fun = firstElementInList(array);
         expect(fun).toBeNull();
     });

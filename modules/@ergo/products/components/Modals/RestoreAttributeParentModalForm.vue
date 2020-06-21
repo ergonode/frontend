@@ -53,8 +53,7 @@ export default {
         },
         elements: {
             type: Array,
-            default: () => [
-            ],
+            default: () => [],
         },
     },
     data() {

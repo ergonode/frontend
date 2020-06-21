@@ -14,8 +14,7 @@ export default {
     dictionaries: [
         {
             stateProp: 'productTypes',
-            dataFormat: {
-            },
+            dataFormat: {},
             requestPath: '/dictionary/product-type',
         },
     ],

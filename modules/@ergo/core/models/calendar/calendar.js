@@ -117,8 +117,7 @@ export const getNextYear = year => year + 1;
 
 export const getPreviousYearsRange = (years) => {
     const offset = 20;
-    const newYears = [
-    ];
+    const newYears = [];
     const [
         firstYear,
     ] = years;
@@ -133,8 +132,7 @@ export const getNextYearsRange = (years) => {
         length,
     } = years;
     const offset = 20;
-    const newYears = [
-    ];
+    const newYears = [];
     const lastYear = years[length - 1];
 
     for (let i = lastYear + 1; i < lastYear + offset + 1; i += 1) newYears.push(i);
@@ -143,8 +141,7 @@ export const getNextYearsRange = (years) => {
 };
 
 export const getYearsWithinRange = (years, currentYear) => {
-    const newYears = [
-    ];
+    const newYears = [];
     const offset = 10;
 
     for (let i = currentYear - offset + 1; i <= currentYear + offset; i += 1) newYears.push(i);

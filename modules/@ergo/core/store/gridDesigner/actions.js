@@ -113,8 +113,7 @@ export default {
     removeGridItem: ({
         state, dispatch,
     }, id) => {
-        let newGrid = [
-        ];
+        let newGrid = [];
 
         if (Number.isInteger(id)) {
             newGrid = getTreeWhenElementRemoved(state.gridData, id);

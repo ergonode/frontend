@@ -89,14 +89,12 @@ export default function ({
 
             const [
                 gridData,
-                advancedFilters = [
-                ],
+                advancedFilters = [],
             ] = await Promise.all(requests);
             const {
                 columns, data, filtered,
             } = gridData;
-            const disabledElements = {
-            };
+            const disabledElements = {};
             const setDisabledElement = ({
                 languageCode, attributeId,
             }) => {
@@ -144,20 +142,15 @@ export default function ({
         },
         data() {
             return {
-                data: {
-                },
-                columns: [
-                ],
+                data: {},
+                columns: [],
                 filtered: 0,
-                advancedFilters: [
-                ],
+                advancedFilters: [],
                 localParams: {
                     offset: 0,
                     limit: DATA_LIMIT,
-                    filters: {
-                    },
-                    sortedColumn: {
-                    },
+                    filters: {},
+                    sortedColumn: {},
                 },
             };
         },
@@ -291,8 +284,7 @@ export default function ({
                     });
                 });
 
-                this.advancedFilters = [
-                ];
+                this.advancedFilters = [];
                 this.$cookies.remove(ADV_FILTERS_IDS);
             },
             clearAllFilters() {

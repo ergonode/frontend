@@ -29,8 +29,7 @@ export default {
     props: {
         value: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
         schema: {
             type: Object,
@@ -38,14 +37,12 @@ export default {
         },
         errorMessages: {
             type: Object,
-            default: () => ({
-            }),
+            default: () => ({}),
         },
     },
     data() {
         return {
-            objectComponents: [
-            ],
+            objectComponents: [],
             localValue: this.value,
         };
     },
@@ -62,8 +59,7 @@ export default {
             const {
                 length,
             } = this.fieldsKeys;
-            const components = [
-            ];
+            const components = [];
 
             for (let i = 0; i < length; i += 1) {
                 const key = this.fieldsKeys[i];

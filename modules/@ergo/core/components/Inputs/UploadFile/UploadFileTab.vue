@@ -88,8 +88,7 @@ export default {
     ],
     data() {
         return {
-            files: [
-            ],
+            files: [],
             isDraggedFileOver: false,
         };
     },

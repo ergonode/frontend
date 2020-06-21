@@ -15,12 +15,10 @@ const dictionaries = Object.values(extendsModules)
             ];
         }
         return connectedArray;
-    }, [
-    ]);
+    }, []);
 
 export default () => dictionaries.reduce((acc, current) => {
     const newObject = acc;
     newObject[current.stateProp] = current.dataFormat;
     return newObject;
-}, {
-});
+}, {});

@@ -65,8 +65,7 @@ export default [
                             icon: Icons.Settings,
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
             {
@@ -81,8 +80,7 @@ export default [
                             icon: Icons.Settings,
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
             {
@@ -97,8 +95,7 @@ export default [
                             icon: Icons.Settings,
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],
@@ -128,8 +125,7 @@ export default [
                             routeName: 'settings-units',
                         },
                     ],
-                    privileges: [
-                    ],
+                    privileges: [],
                 },
             },
         ],

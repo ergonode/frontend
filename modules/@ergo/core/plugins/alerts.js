@@ -5,8 +5,7 @@
 export default ({
     app,
 }, inject) => {
-    inject('addAlert', (data = {
-    }) => {
+    inject('addAlert', (data = {}) => {
         app.store.dispatch('alerts/addAlert', data);
     });
 };

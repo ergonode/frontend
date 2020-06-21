@@ -44,8 +44,7 @@ export default {
         {
             commit,
         },
-        categories = [
-        ],
+        categories = [],
     ) => commit(types.SET_PRODUCT_CATEGORIES, categories),
     getProductDraft({
         commit,
@@ -78,8 +77,7 @@ export default {
             sku,
             type,
             status,
-            workflow = [
-            ],
+            workflow = [],
         }) => {
             if (categoryIds) {
                 commit(types.SET_PRODUCT_CATEGORIES, categoryIds);
@@ -168,8 +166,7 @@ export default {
         } = rootState;
 
         await this.$setLoader('footerDraftButton');
-        await this.app.$axios.$put(`${language}/products/${id}/draft/persist`, {
-        }).then(() => onSuccess());
+        await this.app.$axios.$put(`${language}/products/${id}/draft/persist`, {}).then(() => onSuccess());
         await this.$removeLoader('footerDraftButton');
     },
     async updateProduct(

@@ -3,12 +3,10 @@
  * See LICENSE for license details.
  */
 export function getParsedTreeData(tree, categories) {
-    const newTree = [
-    ];
+    const newTree = [];
     let rowCounter = 0;
     if (!Array.isArray(categories) || categories.length <= 0) {
-        return [
-        ];
+        return [];
     }
     const buildTree = (treeArray, parent, column) => {
         for (let i = 0; i < treeArray.length; i += 1) {
@@ -39,16 +37,14 @@ export function getParsedTreeData(tree, categories) {
 }
 
 export function getMappedTreeData(treeArray) {
-    const newTree = [
-    ];
+    const newTree = [];
     for (let i = 0; i < treeArray.length; i += 1) {
         const {
             parent, id,
         } = treeArray[i];
         const childrenElement = {
             category_id: id,
-            children: [
-            ],
+            children: [],
         };
         const setChild = (childArray) => {
             for (let j = 0; j < childArray.length; j += 1) {
