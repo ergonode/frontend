@@ -3,19 +3,34 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['element-action', {'element-action--small': small}]">
+    <div :class="classes">
         <slot />
     </div>
 </template>
 
 <script>
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'ListElementAction',
     props: {
-        small: {
-            type: Boolean,
-            default: false,
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
+        },
+    },
+    computed: {
+        classes() {
+            return [
+                'list-element-action',
+                `list-element-action--${this.size}`,
+            ];
         },
     },
 };
@@ -27,7 +42,11 @@ export default {
         justify-content: center;
         align-items: center;
 
-        &:not(&--small) {
+        &--small {
+            margin: 0;
+        }
+
+        &--regular {
             margin: 0 4px;
         }
     }

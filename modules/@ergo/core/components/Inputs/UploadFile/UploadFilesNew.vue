@@ -20,7 +20,7 @@
                     <ListElementDescription>
                         <ListElementTitle :title="file" />
                     </ListElementDescription>
-                    <ListElementAction>
+                    <ListElementAction :size="smallSize">
                         <IconButton
                             :size="smallSize"
                             :theme="secondaryTheme"

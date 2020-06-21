@@ -33,7 +33,7 @@
                 </InputSelectValue>
                 <input
                     :id="associatedLabel"
-                    :class="inputClasses"
+                    :class="classes"
                     ref="input"
                     :placeholder="placeholderValue"
                     :disabled="disabled"
@@ -245,7 +245,7 @@ export default {
         styleComponent() {
             return () => import(`@Core/components/Inputs/Input${toCapitalize(this.type)}Style`);
         },
-        inputClasses() {
+        classes() {
             return [
                 'select',
                 `select--${this.alignment}`,

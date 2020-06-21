@@ -5,7 +5,7 @@
 <template>
     <button
         type="button"
-        :class="buttonClasses"
+        :class="classes"
         :disabled="disabled"
         :aria-label="title">
         <!--
@@ -90,7 +90,7 @@ export default {
 
             return WHITE;
         },
-        buttonClasses() {
+        classes() {
             return [
                 'button',
                 `button--${this.theme}`,

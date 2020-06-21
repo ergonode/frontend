@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="solidInputStyleClasses">
+    <div :class="classes">
         <div class="input-underline-style__input">
             <slot name="activator" />
         </div>
@@ -57,7 +57,7 @@ export default {
         },
     },
     computed: {
-        solidInputStyleClasses() {
+        classes() {
             return [
                 'input-underline-style',
                 `input-underline-style--${this.size}`,

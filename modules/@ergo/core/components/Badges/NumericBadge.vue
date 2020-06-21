@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <RoundedBadge :class="numericBadgeClasses">
+    <RoundedBadge :class="classes">
         <BadgeLabel :label="number" />
     </RoundedBadge>
 </template>
@@ -33,7 +33,7 @@ export default {
         },
     },
     computed: {
-        numericBadgeClasses() {
+        classes() {
             return `badge--${this.theme}`;
         },
     },

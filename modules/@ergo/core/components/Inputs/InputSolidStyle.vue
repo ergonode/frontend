@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="solidInputStyleClasses">
+    <div :class="classes">
         <div
             class="input-solid-style__input"
             @mousedown="onMouseDown"
@@ -61,7 +61,7 @@ export default {
         },
     },
     computed: {
-        solidInputStyleClasses() {
+        classes() {
             return [
                 'input-solid-style',
                 `input-solid-style--${this.size}`,

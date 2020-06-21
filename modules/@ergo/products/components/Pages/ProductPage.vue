@@ -37,7 +37,7 @@
                         :fixed-content="true"
                         @input="onUpdateStatus">
                         <template #option="{ option }">
-                            <ListElementAction>
+                            <ListElementAction :size="smallSize">
                                 <PointBadge :color="option.color" />
                             </ListElementAction>
                             <ListElementDescription>

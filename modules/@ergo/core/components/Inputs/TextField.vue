@@ -21,7 +21,7 @@
                 <slot name="prepend" />
                 <input
                     :id="associatedLabel"
-                    :class="inputClasses"
+                    :class="classes"
                     ref="input"
                     :value="value"
                     :placeholder="placeholderValue"
@@ -150,7 +150,7 @@ export default {
         };
     },
     computed: {
-        inputClasses() {
+        classes() {
             return [
                 'text-field',
                 `text-field--${this.size}`,

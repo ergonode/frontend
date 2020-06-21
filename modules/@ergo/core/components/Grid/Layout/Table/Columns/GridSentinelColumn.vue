@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['column-sentinel', pinnedStateClasses]" />
+    <div :class="classes" />
 </template>
 
 <script>
@@ -26,11 +26,14 @@ export default {
         };
     },
     computed: {
-        pinnedStateClasses() {
-            return {
-                'column-sentinel--left': this.pinnedState === PINNED_COLUMN_STATE.LEFT,
-                'column-sentinel--right': this.pinnedState === PINNED_COLUMN_STATE.RIGHT,
-            };
+        classes() {
+            return [
+                'column-sentinel',
+                {
+                    'column-sentinel--left': this.pinnedState === PINNED_COLUMN_STATE.LEFT,
+                    'column-sentinel--right': this.pinnedState === PINNED_COLUMN_STATE.RIGHT,
+                }
+            ];
         },
     },
     mounted() {

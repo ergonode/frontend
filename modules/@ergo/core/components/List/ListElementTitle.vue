@@ -4,7 +4,7 @@
  */
 <template>
     <span
-        :class="listElementTitleClasses"
+        :class="classes"
         :title="hint"
         v-text="title" />
 </template>
@@ -41,7 +41,7 @@ export default {
         },
     },
     computed: {
-        listElementTitleClasses() {
+        classes() {
             return [
                 'list-element-title',
                 `list-element-title--${this.size}`,

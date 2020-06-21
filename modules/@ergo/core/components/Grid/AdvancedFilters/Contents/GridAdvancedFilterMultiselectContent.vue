@@ -14,7 +14,7 @@
                 :size="smallSize"
                 @click.native.prevent="onSelectValue(option, index)">
                 <template #default="{ isSelected }">
-                    <ListElementAction :small="true">
+                    <ListElementAction :size="smallSize">
                         <CheckBox :value="isSelected" />
                     </ListElementAction>
                     <ListElementDescription>

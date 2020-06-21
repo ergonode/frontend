@@ -5,7 +5,7 @@
 <template>
     <div
         :tabindex="-1"
-        :class="gridCellClasses"
+        :class="classes"
         @mousedown="onMouseDown"
         @keydown="onKeyDown"
         @focus="onFocus"
@@ -69,7 +69,7 @@ export default {
         },
     },
     computed: {
-        gridCellClasses() {
+        classes() {
             return [
                 'grid-table-cell',
                 `coordinates-${this.column}-${this.row}`,

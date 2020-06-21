@@ -4,7 +4,7 @@
  */
 <template>
     <li
-        :class="listElementClasses">
+        :class="classes">
         <slot :is-selected="selected" />
     </li>
 </template>
@@ -32,7 +32,7 @@ export default {
         },
     },
     computed: {
-        listElementClasses() {
+        classes() {
             return [
                 'list-element',
                 `list-element--${this.size}`,

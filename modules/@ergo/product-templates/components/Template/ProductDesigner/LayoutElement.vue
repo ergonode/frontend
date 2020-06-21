@@ -4,7 +4,7 @@
  */
 <template>
     <div
-        :class="['layout-element', draggableClasses]"
+        :class="classes"
         :draggable="isDraggingEnabled && !disabled"
         ref="layoutElement"
         @dragstart="onDragStart"
@@ -111,12 +111,15 @@ export default {
         ...mapState('draggable', {
             draggedElement: state => state.draggedElement,
         }),
-        draggableClasses() {
-            return {
-                'layout-element--dragged': this.isDragged,
-                'layout-element--resized': !this.isDraggingEnabled,
-                'layout-element--disabled': this.disabled,
-            };
+        classes() {
+            return [
+                'layout-element',
+                {
+                    'layout-element--dragged': this.isDragged,
+                    'layout-element--resized': !this.isDraggingEnabled,
+                    'layout-element--disabled': this.disabled,
+                }
+            ];
         },
     },
     methods: {

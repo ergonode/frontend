@@ -4,7 +4,7 @@
  */
 <template>
     <li
-        :class="elementClasses"
+        :class="classes"
         :draggable="!isDragged && isDraggable"
         :title="hint"
         @dragstart="onDragStart"
@@ -50,12 +50,12 @@ export default {
         };
     },
     computed: {
-        elementClasses() {
+        classes() {
             return [
-                'draggable-element',
+                'list--draggable-element',
                 {
-                    'draggable-element--dragged': this.isDragged,
-                    'draggable-element--disabled': this.isDisabled,
+                    'list--draggable-element--dragged': this.isDragged,
+                    'list--draggable-element--disabled': this.isDisabled,
                 },
             ];
         },
@@ -82,7 +82,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .draggable-element {
+    .list--draggable-element {
         $element: &;
 
         position: relative;

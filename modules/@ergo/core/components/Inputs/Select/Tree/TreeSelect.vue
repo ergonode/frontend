@@ -19,7 +19,7 @@
                 :multiselect="$attrs.multiselect">
                 <ListElementAction
                     v-if="$attrs.multiselect"
-                    :small="$attrs.small">
+                    :size="$attrs.size">
                     <CheckBox
                         :value="isSelected"
                         :disabled="option.disabled" />

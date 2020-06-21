@@ -36,7 +36,7 @@
                             :title="option"
                             :size="smallSize" />
                     </ListElementDescription>
-                    <ListElementAction>
+                    <ListElementAction :size="smallSize">
                         <CheckBox
                             v-if="option === 'Required'"
                             ref="checkbox"

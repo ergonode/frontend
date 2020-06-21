@@ -4,7 +4,7 @@
  */
 <template>
     <span
-        :class="calendarNodeStateClasses"
+        :class="classes"
         v-text="title" />
 </template>
 
@@ -33,7 +33,7 @@ export default {
         },
     },
     computed: {
-        calendarNodeStateClasses() {
+        classes() {
             return [
                 'node',
                 {

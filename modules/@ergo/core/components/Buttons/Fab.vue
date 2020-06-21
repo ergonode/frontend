@@ -5,7 +5,7 @@
 <template>
     <button
         :style="floatingStyle"
-        :class="fabClasses"
+        :class="classes"
         :disabled="disabled"
         @mouseenter="onFocus"
         @mouseleave="onBlur"
@@ -99,7 +99,7 @@ export default {
                 ...this.floating,
             };
         },
-        fabClasses() {
+        classes() {
             return [
                 'fab',
                 `fab--${this.theme}`,

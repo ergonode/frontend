@@ -19,7 +19,7 @@
                 <slot name="prepend" />
                 <textarea
                     :id="associatedLabel"
-                    :class="inputClasses"
+                    :class="classes"
                     ref="input"
                     :style="textareaStyle"
                     :value="value"
@@ -144,7 +144,7 @@ export default {
         };
     },
     computed: {
-        inputClasses() {
+        classes() {
             return [
                 'textarea',
                 `textarea--${this.size}`,

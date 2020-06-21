@@ -4,7 +4,7 @@
  */
 <template>
     <div
-        :class="['template-grid-layer-item', highlightedStateClasses]"
+        :class="classes"
         @dragenter="onDragEnter"
         @dragleave="onDragLeave"
         @dragover="onDragOver"
@@ -43,12 +43,15 @@ export default {
         ...mapState('draggable', {
             draggedElement: state => state.draggedElement,
         }),
-        highlightedStateClasses() {
-            return {
-                'template-grid-layer-item--highlighted': this.highlightedElement,
-                'template-grid-layer-item--top-border': this.highlightedElement && !this.isTopNeighbour,
-                'template-grid-layer-item--right-border': this.highlightedElement && !this.isRightNeighbour,
-            };
+        classes() {
+            return [
+                'template-grid-layer-item',
+                {
+                    'template-grid-layer-item--highlighted': this.highlightedElement,
+                    'template-grid-layer-item--top-border': this.highlightedElement && !this.isTopNeighbour,
+                    'template-grid-layer-item--right-border': this.highlightedElement && !this.isRightNeighbour,
+                },
+            ];
         },
         highlightedElement() {
             return this.highlightingPositions.find(this.isEqualToPosition);

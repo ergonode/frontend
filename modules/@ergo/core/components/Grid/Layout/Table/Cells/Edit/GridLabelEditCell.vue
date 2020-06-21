@@ -8,7 +8,7 @@
             :style="{ width: `${width}px`, height: `${height}px` }"
             :value="localValue"
             :autofocus="true"
-            :small="true"
+            :size="smallSize"
             :clearable="true"
             :options="options"
             :error-messages="errorMessages"
@@ -22,7 +22,7 @@
                 </div>
             </template>
             <template #option="{ option }">
-                <ListElementAction>
+                <ListElementAction :size="smallSize">
                     <PointBadge :color="colors[option.id]" />
                 </ListElementAction>
                 <ListElementDescription>

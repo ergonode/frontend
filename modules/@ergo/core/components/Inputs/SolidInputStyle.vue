@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="solidInputStyleClasses">
+    <div :class="classes">
         <div class="solid-input-style__input">
             <fieldset>
                 <legend :style="{ width: `${labelWidth}px` }" />
@@ -43,7 +43,7 @@ export default {
         hasDetailsSlot() {
             return !!this.$slots.details;
         },
-        solidInputStyleClasses() {
+        classes() {
             return [
                 'solid-input-style',
                 {

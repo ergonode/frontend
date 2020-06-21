@@ -5,7 +5,7 @@
 <template>
     <button
         type="button"
-        :class="buttonClasses"
+        :class="classes"
         :disabled="disabled">
         <!--
             @slot Icon
@@ -77,7 +77,7 @@ export default {
 
             return WHITE;
         },
-        buttonClasses() {
+        classes() {
             return [
                 'icon-button',
                 `icon-button--${this.theme}`,

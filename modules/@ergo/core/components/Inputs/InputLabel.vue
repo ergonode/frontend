@@ -4,7 +4,7 @@
  */
 <template>
     <label
-        :class="labelClasses"
+        :class="classes"
         v-text="label" />
 </template>
 
@@ -50,7 +50,7 @@ export default {
         },
     },
     computed: {
-        labelClasses() {
+        classes() {
             return [
                 'input-label',
                 `input-label--${this.size}`,

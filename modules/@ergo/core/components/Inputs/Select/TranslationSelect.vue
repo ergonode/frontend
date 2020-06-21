@@ -22,7 +22,7 @@
                 :selected="isSelected">
                 <ListElementAction
                     v-if="$attrs.multiselect"
-                    :small="$attrs.small">
+                    :size="$attrs.size">
                     <CheckBox :value="isSelected" />
                 </ListElementAction>
                 <ListElementDescription>

@@ -29,13 +29,12 @@
                                 <slot
                                     name="option"
                                     :option="option"
-                                    :small="small"
                                     :is-selected="isSelected"
                                     :index="index">
                                     <template v-if="isOptionsValid">
                                         <ListElementAction
                                             v-if="multiselect"
-                                            :small="small">
+                                            :size="size">
                                             <CheckBox
                                                 :value="isSelected" />
                                         </ListElementAction>
