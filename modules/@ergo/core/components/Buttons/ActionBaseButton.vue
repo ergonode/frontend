@@ -31,7 +31,7 @@
                                 <ListElementDescription v-if="isOptionsValid">
                                     <ListElementTitle
                                         :title="option"
-                                        :small="true" />
+                                        :size="smallSize" />
                                 </ListElementDescription>
                             </slot>
                         </ListElement>

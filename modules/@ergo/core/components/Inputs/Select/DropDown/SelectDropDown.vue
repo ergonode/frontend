@@ -41,7 +41,7 @@
                                         </ListElementAction>
                                         <ListElementDescription>
                                             <ListElementTitle
-                                                :small="small"
+                                                :size="size"
                                                 :title="option" />
                                         </ListElementDescription>
                                     </template>

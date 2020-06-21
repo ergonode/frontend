@@ -19,7 +19,7 @@
                     </ListElementAction>
                     <ListElementDescription>
                         <ListElementTitle
-                            :small="true"
+                            :size="smallSize"
                             :hint="option.value ? `#${option.key} ${filter.languageCode}` : ''"
                             :title="option.value || `#${option.key}`" />
                     </ListElementDescription>

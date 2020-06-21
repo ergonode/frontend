@@ -27,7 +27,7 @@
                 </ListElementAction>
                 <ListElementDescription>
                     <ListElementTitle
-                        :small="true"
+                        :size="smallSize"
                         :hint="option.hint"
                         :title="option.value || `#${option.key}`" />
                 </ListElementDescription>
@@ -43,6 +43,9 @@ import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect'
 import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridLabelEditCell',
@@ -95,6 +98,11 @@ export default {
             options: [],
             localValue: null,
         };
+    },
+    computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
     },
     created() {
         this.$axios.$get(`${this.languageCode}/products/${this.rowId}`).then(({

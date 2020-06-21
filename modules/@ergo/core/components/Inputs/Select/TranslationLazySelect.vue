@@ -47,7 +47,7 @@
                 </ListElementAction>
                 <ListElementDescription>
                     <ListElementTitle
-                        :small="small"
+                        :size="size"
                         :hint="option.hint"
                         :title="option.value || `#${option.key}`" />
                 </ListElementDescription>

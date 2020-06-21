@@ -34,7 +34,7 @@
                     <ListElementDescription>
                         <ListElementTitle
                             :title="option"
-                            :small="true" />
+                            :size="smallSize" />
                     </ListElementDescription>
                     <ListElementAction>
                         <CheckBox
@@ -105,6 +105,9 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         tinySize() {
             return SIZE.TINY;
         },

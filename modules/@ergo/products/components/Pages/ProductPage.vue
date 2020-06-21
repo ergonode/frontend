@@ -43,7 +43,7 @@
                             <ListElementDescription>
                                 <ListElementTitle
                                     :title="option.name || `#${option.code}`"
-                                    :small="true" />
+                                    :size="smallSize" />
                             </ListElementDescription>
                         </template>
                     </ActionButton>
@@ -69,6 +69,9 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
 import {
     getNestedTabRoutes,
@@ -109,6 +112,9 @@ export default {
         ...mapState('dictionaries', {
             productTypes: state => state.productTypes,
         }),
+        smallSize() {
+            return SIZE.SMALL;
+        },
         isUserAllowedToUpdateProduct() {
             return this.$hasAccess([
                 'PRODUCT_UPDATE',

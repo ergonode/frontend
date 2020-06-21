@@ -45,7 +45,7 @@
                         <template #option="{ option }">
                             <ListElementDescription>
                                 <ListElementTitle
-                                    small
+                                    :size="smallSize"
                                     :title="option.text" />
                             </ListElementDescription>
                         </template>

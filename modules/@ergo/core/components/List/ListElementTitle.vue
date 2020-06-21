@@ -4,14 +4,16 @@
  */
 <template>
     <span
-        :class="['element-title', {
-            'element-title--small': small
-        }]"
+        :class="listElementTitleClasses"
         :title="hint"
         v-text="title" />
 </template>
 
 <script>
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+
 export default {
     name: 'ListElementTitle',
     props: {
@@ -22,6 +24,14 @@ export default {
             ],
             required: true,
         },
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
+        },
         hint: {
             type: [
                 String,
@@ -29,9 +39,13 @@ export default {
             ],
             default: '',
         },
-        small: {
-            type: Boolean,
-            default: false,
+    },
+    computed: {
+        listElementTitleClasses() {
+            return [
+                'list-element-title',
+                `list-element-title--${this.size}`,
+            ];
         },
     },
 };
@@ -45,12 +59,12 @@ export default {
         overflow: hidden;
         white-space: nowrap;
 
-        &:not(&--small) {
-            font: $FONT_MEDIUM_14_20;
-        }
-
         &--small {
             font: $FONT_MEDIUM_12_16;
+        }
+
+        &--regular {
+            font: $FONT_MEDIUM_14_20;
         }
     }
 </style>

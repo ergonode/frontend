@@ -15,7 +15,7 @@
         <template #option="{ option, isSelected }">
             <ListElementTree
                 :level="option.level"
-                :small="$attrs.small"
+                :size="$attrs.size"
                 :multiselect="$attrs.multiselect">
                 <ListElementAction
                     v-if="$attrs.multiselect"
@@ -26,7 +26,7 @@
                 </ListElementAction>
                 <ListElementDescription>
                     <ListElementTitle
-                        :small="$attrs.small"
+                        :size="$attrs.size"
                         :hint="option.hint"
                         :title="option.value || `#${option.key}`" />
                 </ListElementDescription>
