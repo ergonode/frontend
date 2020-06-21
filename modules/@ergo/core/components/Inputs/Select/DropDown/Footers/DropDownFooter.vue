@@ -46,7 +46,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .dropdown-footer {
+    .drop-down-footer {
         display: flex;
         flex-shrink: 0;
         justify-content: flex-end;

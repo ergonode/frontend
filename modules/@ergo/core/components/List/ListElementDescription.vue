@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template functional>
-    <div class="element-description">
+    <div class="list-element-description">
         <slot />
     </div>
 </template>
@@ -16,7 +16,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .element-description {
+    .list-element-description {
         display: flex;
         flex: 1;
         flex-direction: column;

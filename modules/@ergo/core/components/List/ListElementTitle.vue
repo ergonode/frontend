@@ -52,7 +52,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .element-title {
+    .list-element-title {
         width: 100%;
         text-align: left;
         text-overflow: ellipsis;

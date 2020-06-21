@@ -3,10 +3,10 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="input-select-value">
-        <span v-text="value">
-            <slot name="value" />
-        </span>
+    <div :class="classes">
+        <slot name="value">
+            <span v-text="value" />
+        </slot>
     </div>
 </template>
 
@@ -45,13 +45,24 @@ export default {
             validator: value => Object.values(ALIGNMENT).indexOf(value) !== -1,
         },
     },
+    computed: {
+        classes() {
+            return [
+                'input-select-value',
+                `input-select-value--${this.size}`,
+                `input-select-value--${this.alignment}`,
+            ];
+        },
+    },
 };
 </script>
 
 <style lang="scss" scoped>
     .input-select-value {
         display: flex;
+        align-items: center;
         width: 100%;
+        color: $GRAPHITE_DARK;
 
         & > span {
             flex: 1 1 auto;
@@ -59,6 +70,22 @@ export default {
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
+        }
+
+        &--left {
+            justify-content: flex-start;
+        }
+
+        &--center {
+            justify-content: center;
+        }
+
+        &--small {
+            font: $FONT_MEDIUM_12_16;
+        }
+
+        &--regular {
+            font: $FONT_MEDIUM_14_20;
         }
     }
 </style>

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template functional>
-    <span class="element-icon">
+    <span class="list-element-icon">
         <slot />
     </span>
 </template>
@@ -15,7 +15,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .element-icon {
+    .list-element-icon {
         display: flex;
         justify-content: flex-start;
         align-items: center;

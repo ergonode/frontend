@@ -37,7 +37,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .element-action {
+    .list-element-action {
         display: flex;
         justify-content: center;
         align-items: center;
