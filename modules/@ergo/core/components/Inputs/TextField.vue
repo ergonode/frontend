@@ -5,12 +5,13 @@
 <template>
     <Component
         :is="styleComponent"
+        ref="activator"
         :focused="isFocused"
         :error="isError"
         :disabled="disabled"
         :alignment="alignment"
         :size="size"
-        :details-label="details"
+        :details-label="informationLabel"
         @mousedown="onMouseDown"
         @mouseup="onMouseUp">
         <template #activator>
@@ -195,7 +196,6 @@ export default {
         },
         onMouseDown(event) {
             this.$refs.activator.$el.addEventListener('mousemove', this.onMouseMove);
-
             const isClickedInsideInput = event.target === this.$refs.input;
 
             if (!isClickedInsideInput) {

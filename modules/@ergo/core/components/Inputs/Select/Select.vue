@@ -12,7 +12,7 @@
         :disabled="disabled"
         :alignment="alignment"
         :size="size"
-        :details-label="details"
+        :details-label="informationLabel"
         @keydown.native="onKeyDown"
         @mousedown="onMouseDown"
         @mouseup="onMouseUp">

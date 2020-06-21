@@ -11,7 +11,7 @@
         :disabled="disabled"
         :alignment="alignment"
         :size="size"
-        :details-label="details"
+        :details-label="informationLabel"
         @mousedown="onMouseDown"
         @mouseup="onMouseUp">
         <template #activator>
