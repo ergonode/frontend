@@ -7,6 +7,9 @@
         :value="localValue"
         :fixed-content="fixedContent"
         :dismissible="dismissible"
+        :type="type"
+        :alignment="alignment"
+        :size="size"
         :label="label"
         :placeholder="placeholder"
         :error-messages="errorMessages"
@@ -59,6 +62,11 @@ import LazySelect from '@Core/components/Inputs/Select/LazySelect';
 import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
+import {
+    ALIGNMENT,
+    INPUT_TYPE,
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'TranslationLazySelect',
@@ -78,6 +86,24 @@ export default {
                 Object,
             ],
             default: '',
+        },
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
+        },
+        alignment: {
+            type: String,
+            default: ALIGNMENT.LEFT,
+            validator: value => Object.values(ALIGNMENT).indexOf(value) !== -1,
+        },
+        type: {
+            type: String,
+            default: INPUT_TYPE.SOLID,
+            validator: value => Object.values(INPUT_TYPE).indexOf(value) !== -1,
         },
         fixedContent: {
             type: Boolean,

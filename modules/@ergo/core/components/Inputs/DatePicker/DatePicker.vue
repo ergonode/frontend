@@ -6,6 +6,9 @@
     <Select
         :value="parsedDate"
         :label="label"
+        :type="type"
+        :alignment="alignment"
+        :size="size"
         :placeholder="placeholder"
         :error-messages="errorMessages"
         :hint="hint"
@@ -41,6 +44,11 @@ import DatePickerContent from '@Core/components/Inputs/DatePicker/DatePickerCont
 import SelectDropdownApplyFooter from '@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownApplyFooter';
 import Select from '@Core/components/Inputs/Select/Select';
 import {
+    ALIGNMENT,
+    INPUT_TYPE,
+    SIZE,
+} from '@Core/defaults/theme';
+import {
     DEFAULT_FORMAT,
 } from '@Core/models/calendar/calendar';
 import {
@@ -58,6 +66,24 @@ export default {
         value: {
             type: Date,
             default: null,
+        },
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
+        },
+        alignment: {
+            type: String,
+            default: ALIGNMENT.LEFT,
+            validator: value => Object.values(ALIGNMENT).indexOf(value) !== -1,
+        },
+        type: {
+            type: String,
+            default: INPUT_TYPE.SOLID,
+            validator: value => Object.values(INPUT_TYPE).indexOf(value) !== -1,
         },
         format: {
             type: String,

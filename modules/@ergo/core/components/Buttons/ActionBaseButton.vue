@@ -23,7 +23,7 @@
                         <ListElement
                             v-for="(option, index) in options"
                             :key="index"
-                            :small="true"
+                            :size="smallSize"
                             @click.native.prevent="onSelectedValue(index)">
                             <slot
                                 name="option"
@@ -49,6 +49,9 @@ import ListElement from '@Core/components/List/ListElement';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import {
     isObject,
 } from '@Core/models/objectWrapper';
@@ -90,6 +93,9 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         isOptionsValid() {
             return this.options.length && !isObject(this.options[0]);
         },

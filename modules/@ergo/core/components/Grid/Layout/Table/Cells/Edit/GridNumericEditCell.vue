@@ -8,7 +8,7 @@
             <TextField
                 v-model="localValue"
                 autofocus
-                left-alignment
+                :alignment="leftAlignment"
                 :error-messages="errorMessages"
                 :input="{ type: 'number' }"
                 small />
@@ -20,6 +20,9 @@
 import GridTextEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
 import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import TextField from '@Core/components/Inputs/TextField';
+import {
+    ALIGNMENT,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridNumericEditCell',
@@ -49,6 +52,11 @@ export default {
         return {
             localValue: this.value,
         };
+    },
+    computed: {
+        leftAlignment() {
+            return ALIGNMENT.LEFT;
+        },
     },
     beforeDestroy() {
         if (+this.localValue !== +this.value) {

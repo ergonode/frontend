@@ -21,8 +21,7 @@
                         <ListElement
                             v-for="(option, index) in options"
                             :key="index"
-                            :small="small"
-                            :regular="regular"
+                            :size="size"
                             :disabled="option.disabled || false"
                             :selected="isOptionSelected(index)"
                             @click.native.prevent="onSelectValue(option, index)">
@@ -113,13 +112,13 @@ export default {
         DropDownListSearch: () => import('@Core/components/Inputs/Select/DropDown/DropDownListSearch'),
     },
     props: {
-        small: {
-            type: Boolean,
-            default: false,
-        },
-        regular: {
-            type: Boolean,
-            default: false,
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
         },
         multiselect: {
             type: Boolean,

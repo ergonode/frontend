@@ -8,7 +8,7 @@
             :style="{ width: `${width}px`, height: `${height}px` }"
             v-model="localValue"
             :autofocus="true"
-            :small="true"
+            :size="smallSize"
             :clearable="true"
             :multiselect="true"
             :options="mappedOptions"
@@ -20,6 +20,9 @@
 <script>
 import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import {
     arraysAreEqual,
 } from '@Core/models/arrayWrapper';
@@ -73,6 +76,9 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         mappedOptions() {
             return getMappedObjectOptions({
                 options: this.options,

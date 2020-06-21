@@ -5,7 +5,7 @@
 <template>
     <ul>
         <ListElement
-            large
+            :size="largeSize"
             @click.native="expandGroup">
             <ListElementDescription>
                 <ListElementTitle
@@ -32,6 +32,9 @@ import ListElementTitle from '@Core/components/List/ListElementTitle';
 import {
     ARROW,
 } from '@Core/defaults/icons';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'ListGroupElement',
@@ -63,6 +66,9 @@ export default {
         },
     },
     computed: {
+        largeSize() {
+            return SIZE.LARGE;
+        },
         iconState() {
             return this.isExpanded
                 ? ARROW.UP

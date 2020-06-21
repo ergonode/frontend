@@ -10,6 +10,7 @@
             <ListElement
                 v-for="(option, index) in filter.options"
                 :key="index"
+                :size="smallSize"
                 :selected="index === selectedOptionIndex"
                 @click.native="onSelectValue(option, index)">
                 <ListElementDescription>
@@ -32,6 +33,9 @@ import ListElementTitle from '@Core/components/List/ListElementTitle';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridAdvancedFilterSelectContent',
@@ -54,6 +58,9 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         filterValue() {
             return this.filter.value[FILTER_OPERATOR.EQUAL] || '';
         },

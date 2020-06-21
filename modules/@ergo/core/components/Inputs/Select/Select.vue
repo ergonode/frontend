@@ -263,9 +263,9 @@ export default {
             return Boolean(this.errorMessages);
         },
         placeholderValue() {
-            if (!this.hasAnyValueSelected && this.label && !this.isFocused) return null;
+            if (!this.hasAnyValueSelected || (this.label && !this.isFocused)) return null;
 
-            return !this.hasAnyValueSelected ? this.placeholder : null;
+            return this.placeholder;
         },
     },
     watch: {

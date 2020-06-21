@@ -169,9 +169,9 @@ export default {
             return this.errorMessages || this.hint;
         },
         placeholderValue() {
-            if (!this.value && this.label && !this.isFocused) return null;
+            if (!this.value || (this.label && !this.isFocused)) return null;
 
-            return !this.value ? this.placeholder : null;
+            return this.placeholder;
         },
     },
     mounted() {

@@ -12,6 +12,7 @@
             <List v-if="isValue">
                 <ListElement
                     v-for="file in value"
+                    :size="size"
                     :key="file">
                     <ListElementIcon>
                         <IconFile :fill-color="greenColor" />
@@ -83,6 +84,14 @@ export default {
         value: {
             type: Array,
             default: () => [],
+        },
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
         },
         label: {
             type: String,

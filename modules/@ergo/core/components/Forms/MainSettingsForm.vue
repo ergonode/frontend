@@ -13,16 +13,22 @@
                     :multiselect="true"
                     :clearable="true"
                     :searchable="true"
-                    :description="hint"
                     :sticky-search="true"
                     @input="setSelectedLanguages"
-                    @search="onSearch" />
+                    @search="onSearch">
+                    <template #append>
+                        <InfoHint
+                            v-if="hint"
+                            :hint="hint" />
+                    </template>
+                </TranslationSelect>
             </FormSection>
         </template>
     </Form>
 </template>
 
 <script>
+import InfoHint from '@Core/components/Hints/InfoHint';
 import {
     mapState,
 } from 'vuex';
@@ -30,6 +36,7 @@ import {
 export default {
     name: 'MainSettingsForm',
     components: {
+        InfoHint,
         Form: () => import('@Core/components/Form/Form'),
         FormSection: () => import('@Core/components/Form/Section/FormSection'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),

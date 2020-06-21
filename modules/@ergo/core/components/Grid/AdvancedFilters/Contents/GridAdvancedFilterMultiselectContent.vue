@@ -11,7 +11,7 @@
                 v-for="(option, index) in filter.options"
                 :key="index"
                 :selected="typeof selectedOptions[index] !== 'undefined'"
-                :small="true"
+                :size="smallSize"
                 @click.native.prevent="onSelectValue(option, index)">
                 <template #default="{ isSelected }">
                     <ListElementAction :small="true">
@@ -40,6 +40,9 @@ import ListElementTitle from '@Core/components/List/ListElementTitle';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridAdvancedFilterMultiselectContent',
@@ -64,6 +67,9 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         filterValue() {
             return this.filter.value[FILTER_OPERATOR.EQUAL]
                 ? this.filter.value[FILTER_OPERATOR.EQUAL].split(', ')

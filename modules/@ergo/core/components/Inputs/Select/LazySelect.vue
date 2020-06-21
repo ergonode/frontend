@@ -6,6 +6,9 @@
     <Select
         :value="value"
         :options="options"
+        :type="type"
+        :alignment="alignment"
+        :size="size"
         :fixed-content="fixedContent"
         :dismissible="dismissible"
         :label="label"
@@ -55,6 +58,11 @@ import {
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import Select from '@Core/components/Inputs/Select/Select';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
+import {
+    ALIGNMENT,
+    INPUT_TYPE,
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'LazySelect',
@@ -72,6 +80,24 @@ export default {
                 Object,
             ],
             default: '',
+        },
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
+        },
+        alignment: {
+            type: String,
+            default: ALIGNMENT.LEFT,
+            validator: value => Object.values(ALIGNMENT).indexOf(value) !== -1,
+        },
+        type: {
+            type: String,
+            default: INPUT_TYPE.SOLID,
+            validator: value => Object.values(INPUT_TYPE).indexOf(value) !== -1,
         },
         fixedContent: {
             type: Boolean,
