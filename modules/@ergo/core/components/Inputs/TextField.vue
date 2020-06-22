@@ -190,6 +190,7 @@ export default {
             this.$nextTick(() => {
                 window.requestAnimationFrame(() => {
                     this.$refs.input.focus();
+                    this.$refs.input.focus();
                 });
             });
         }
@@ -220,9 +221,6 @@ export default {
         onMouseUp() {
             this.$refs.activator.$el.removeEventListener('mousemove', this.onMouseMove);
 
-            console.log(this.isMouseMoving);
-
-            // Manual handling of input focus
             if (!this.isMouseMoving) {
                 this.$refs.input.focus();
             }

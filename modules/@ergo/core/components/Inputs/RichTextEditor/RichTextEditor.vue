@@ -5,7 +5,7 @@
 <template>
     <Component
         :is="styleComponent"
-        ref="editor"
+        ref="activator"
         :focused="isFocused"
         :error="isError"
         :disabled="disabled"
@@ -16,8 +16,8 @@
         @mouseup="onMouseUp">
         <template #activator>
             <RichTextEditorMenuBubble
-                v-if="isFocused"
                 :editor="editor"
+                ref="menuBubble"
                 @active="onMenuBubbleActive" />
             <slot #prepand />
             <InputController :size="size">
@@ -25,28 +25,14 @@
                     <VerticalFixedScroll>
                         <EditorContent
                             class="rich-text-editor__content"
-                            :editor="editor"
-                            ref="editorContent" />
+                            ref="editorContent"
+                            :editor="editor" />
                     </VerticalFixedScroll>
-                    <EditorMenuBar
-                        :editor="editor"
-                        ref="menu">
-                        <template #default="{ commands, isActive }">
-                            <div class="rich-text-editor__menu">
-                                <RichTextEditorButton
-                                    v-for="(extension, index) in visibleExtensions"
-                                    :key="`${extension.name}|${index}`"
-                                    :extension="extension"
-                                    :is-active="isActive"
-                                    :commands="commands" />
-                                <RichTextEditorActionIconButton
-                                    v-if="hiddenExtensions.length"
-                                    :options="hiddenExtensions"
-                                    :is-active="isActive"
-                                    :commands="commands" />
-                            </div>
-                        </template>
-                    </EditorMenuBar>
+                    <RichTextEditorMenu
+                        v-if="isSolidType"
+                        ref="menu"
+                        :type="type"
+                        :editor="editor" />
                 </div>
                 <InputLabel
                     v-if="label"
@@ -67,6 +53,11 @@
                 </template>
             </InputController>
         </template>
+        <RichTextEditorMenu
+            v-if="!isSolidType"
+            ref="menu"
+            :type="type"
+            :editor="editor" />
         <template #details>
             <slot name="details" />
         </template>
@@ -76,14 +67,9 @@
 <script>
 import InputController from '@Core/components/Inputs/InputController';
 import InputLabel from '@Core/components/Inputs/InputLabel';
-import RichTextEditorActionIconButton from '@Core/components/Inputs/RichTextEditor/Button/RichTextEditorActionIconButton';
-import RichTextEditorButton from '@Core/components/Inputs/RichTextEditor/Button/RichTextEditorButton';
+import RichTextEditorMenu from '@Core/components/Inputs/RichTextEditor/Menu/RichTextEditorMenu';
 import RichTextEditorMenuBubble from '@Core/components/Inputs/RichTextEditor/MenuBubble/RichTextEditorMenuBubble';
 import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
-import {
-    EXTENSION_BUTTON_WIDTH,
-    EXTENSIONS,
-} from '@Core/defaults/inputs/rich-text-editor';
 import {
     ALIGNMENT,
     INPUT_TYPE,
@@ -96,7 +82,6 @@ import {
 import {
     Editor,
     EditorContent,
-    EditorMenuBar,
 } from 'tiptap';
 import {
     Blockquote,
@@ -119,11 +104,9 @@ export default {
     components: {
         InputController,
         InputLabel,
+        RichTextEditorMenu,
         RichTextEditorMenuBubble,
-        RichTextEditorActionIconButton,
-        EditorMenuBar,
         EditorContent,
-        RichTextEditorButton,
         VerticalFixedScroll,
         ErrorHint: () => import('@Core/components/Hints/ErrorHint'),
     },
@@ -150,7 +133,7 @@ export default {
         },
         type: {
             type: String,
-            default: INPUT_TYPE.UNDERLINE,
+            default: INPUT_TYPE.SOLID,
             validator: value => Object.values(INPUT_TYPE).indexOf(value) !== -1,
         },
         label: {
@@ -189,11 +172,14 @@ export default {
     data() {
         return {
             isFocused: false,
+            isMouseMoving: false,
             editor: null,
-            editorWidth: 0,
         };
     },
     computed: {
+        isSolidType() {
+            return this.type === INPUT_TYPE.SOLID;
+        },
         styleComponent() {
             return () => import(`@Core/components/Inputs/Input${toCapitalize(this.type)}Style`);
         },
@@ -202,17 +188,6 @@ export default {
         },
         informationLabel() {
             return this.errorMessages || this.hint;
-        },
-        maxVisibleExtensions() {
-            const max = Math.floor(this.editorWidth / EXTENSION_BUTTON_WIDTH);
-
-            return max === EXTENSIONS.length ? max : max - 1;
-        },
-        visibleExtensions() {
-            return EXTENSIONS.slice(0, this.maxVisibleExtensions);
-        },
-        hiddenExtensions() {
-            return EXTENSIONS.slice(this.maxVisibleExtensions, EXTENSIONS.length);
         },
     },
     mounted() {
@@ -249,14 +224,6 @@ export default {
             onFocus: this.onFocus,
             onBlur: this.onBlur,
         });
-
-        this.$nextTick(() => {
-            window.requestAnimationFrame(() => {
-                const paddingOffset = 24;
-
-                this.editorWidth = this.$el.querySelector('.rich-text-editor').offsetWidth - paddingOffset;
-            });
-        });
     },
     beforeDestroy() {
         this.editor.destroy();
@@ -270,18 +237,33 @@ export default {
         },
         onBlur() {
             this.isFocused = false;
+            this.isMouseMoving = false;
+
             this.$emit('blur', this.editor.getHTML());
         },
         onMouseDown(event) {
-            if ((this.$refs.menu.$el.contains(event.target)
-                || !this.$refs.editorContent.$el.contains(event.target))) {
+            this.$refs.activator.$el.addEventListener('mousemove', this.onMouseMove);
+
+            const isClickedInsideMenu = this.$refs.menu.$el.contains(event.target);
+            const isClickedInsideEditor = this.$refs.editorContent.$el.contains(event.target);
+
+            if (isClickedInsideMenu || !isClickedInsideEditor) {
                 event.preventDefault();
                 event.stopPropagation();
             }
         },
         onMouseUp() {
-            this.editor.focus();
-            this.isFocused = true;
+            this.$refs.activator.$el.removeEventListener('mousemove', this.onMouseMove);
+
+            if (!this.isMouseMoving) {
+                this.editor.focus();
+                this.isFocused = true;
+            }
+
+            this.isMouseMoving = false;
+        },
+        onMouseMove() {
+            this.isMouseMoving = true;
         },
     },
 };
@@ -297,21 +279,8 @@ export default {
         flex: 1;
         flex-direction: column;
         height: 100%;
-        padding-bottom: 38px;
         box-sizing: border-box;
         background-color: $WHITE;
-
-        &__menu {
-            position: absolute;
-            bottom: 0;
-            display: grid;
-            grid-auto-flow: column;
-            grid-column-gap: 3px;
-            padding: 3px;
-            background-color: $WHITESMOKE;
-            box-shadow: $ELEVATOR_2_DP;
-            opacity: 0;
-        }
 
         &__content {
             position: relative;
@@ -400,9 +369,14 @@ export default {
         }
 
         &:focus-within {
-            #{$editor}__menu {
+            .rich-text-editor-menu {
                 opacity: 1;
             }
         }
+    }
+
+    .input-underline-style {
+        padding: 8px 12px 12px;
+        box-shadow: $ELEVATOR_6_DP;
     }
 </style>

@@ -4,7 +4,10 @@
  */
 <template>
     <div :class="classes">
-        <div class="input-underline-style__input">
+        <div
+            class="input-underline-style__input"
+            @mousedown="onMouseDown"
+            @mouseup="onMouseUp">
             <slot name="activator" />
         </div>
         <slot />
@@ -70,6 +73,14 @@ export default {
             ];
         },
     },
+    methods: {
+        onMouseDown(event) {
+            this.$emit('mousedown', event);
+        },
+        onMouseUp(event) {
+            this.$emit('mouseup', event);
+        },
+    },
 };
 </script>
 
@@ -81,6 +92,7 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
+        height: 100%;
 
         &__input {
             position: relative;
@@ -88,23 +100,23 @@ export default {
             flex: 1;
             flex-direction: column;
 
-            &::before {
+            &::before, &::after {
                 position: absolute;
                 left: 0;
+                z-index: $Z_INDEX_LVL_3;
+                transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+                will-change: transform;
+                content: "";
+            }
+
+            &::before {
                 bottom: 0;
                 width: 100%;
                 border: solid $GREY;
                 border-width: thin 0 0;
-                transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-                content: "";
             }
 
             &::after {
-                position: absolute;
-                left: 0;
-                transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-                content: "";
-                will-change: transform;
                 transform: scaleX(0);
             }
         }

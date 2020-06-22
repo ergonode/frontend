@@ -68,7 +68,7 @@ export default {
     props: {
         editor: {
             type: Object,
-            required: true,
+            default: null,
         },
     },
     data() {
