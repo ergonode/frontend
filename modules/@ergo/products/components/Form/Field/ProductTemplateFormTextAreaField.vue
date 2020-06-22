@@ -10,7 +10,6 @@
             <template #validator="{ errorMessages }">
                 <RichTextEditor
                     v-if="isRTEEditor"
-                    :style="{ height: '100%' }"
                     :disabled="disabled"
                     :required="properties.required"
                     :placeholder="properties.placeholder"
@@ -26,7 +25,6 @@
                 </RichTextEditor>
                 <TextArea
                     v-else
-                    :style="{ height: '100%' }"
                     :value="fieldData"
                     resize="none"
                     :label="label"

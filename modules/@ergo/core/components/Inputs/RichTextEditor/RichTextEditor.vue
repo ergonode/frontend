@@ -16,7 +16,7 @@
         @mouseup="onMouseUp">
         <template #activator>
             <RichTextEditorMenuBubble
-                v-if="editor"
+                v-if="isFocused"
                 :editor="editor"
                 @active="onMenuBubbleActive" />
             <slot #prepand />
@@ -150,7 +150,7 @@ export default {
         },
         type: {
             type: String,
-            default: INPUT_TYPE.SOLID,
+            default: INPUT_TYPE.UNDERLINE,
             validator: value => Object.values(INPUT_TYPE).indexOf(value) !== -1,
         },
         label: {
@@ -273,8 +273,8 @@ export default {
             this.$emit('blur', this.editor.getHTML());
         },
         onMouseDown(event) {
-            if (this.$refs.menu.$el.contains(event.target)
-                || !this.$refs.editorContent.$el.contains(event.target)) {
+            if ((this.$refs.menu.$el.contains(event.target)
+                || !this.$refs.editorContent.$el.contains(event.target))) {
                 event.preventDefault();
                 event.stopPropagation();
             }
@@ -292,6 +292,7 @@ export default {
         $editor: &;
 
         position: relative;
+        z-index: $Z_INDEX_LVL_2;
         display: flex;
         flex: 1;
         flex-direction: column;

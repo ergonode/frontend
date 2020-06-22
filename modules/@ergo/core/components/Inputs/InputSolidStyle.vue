@@ -92,6 +92,9 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
+        height: 100%;
+        padding-top: 8px;
+        box-sizing: border-box;
 
         &__input {
             position: relative;

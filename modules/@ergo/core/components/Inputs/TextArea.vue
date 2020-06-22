@@ -32,7 +32,7 @@
                     @blur="onBlur" />
                 <InputLabel
                     v-if="label"
-                    :style="{ top: '10px' }"
+                    :style="{ top: 0 }"
                     :for="associatedLabel"
                     :required="required"
                     :size="size"
@@ -227,6 +227,7 @@ export default {
 <style lang="scss" scoped>
     .textarea {
         flex: 1;
+        z-index: $Z_INDEX_LVL_2;
         outline: none;
         width: 100%;
         max-width: 100%;

@@ -220,6 +220,8 @@ export default {
         onMouseUp() {
             this.$refs.activator.$el.removeEventListener('mousemove', this.onMouseMove);
 
+            console.log(this.isMouseMoving);
+
             // Manual handling of input focus
             if (!this.isMouseMoving) {
                 this.$refs.input.focus();
@@ -237,6 +239,7 @@ export default {
 <style lang="scss" scoped>
     .text-field {
         flex: 1;
+        z-index: $Z_INDEX_LVL_2;
         outline: none;
         width: 100%;
         max-width: 100%;
