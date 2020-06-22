@@ -8,44 +8,46 @@
         :position="position">
         <FormValidatorField :field-key="fieldKey">
             <template #validator="{ errorMessages }">
-                <TranslationSelect
+                <TextField
                     :value="fieldData"
                     solid
                     regular
-                    :clearable="true"
-                    :multiselect="true"
                     :label="label"
-                    :options="options"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
                     :required="properties.required"
                     :disabled="disabled"
                     :description="properties.hint"
                     @focus="onFocus"
-                    @input="debounceValueChange">
+                    @input="onValueChange">
+                    <template #append>
+                        <TextFieldSuffix
+                            v-if="parameter"
+                            :suffix="parameter" />
+                    </template>
                     <template #informationLabel>
                         <div />
                     </template>
-                </TranslationSelect>
+                </TextField>
             </template>
         </FormValidatorField>
     </ProductTemplateFormField>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { debounce } from 'debounce';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import { mapActions, mapState } from 'vuex';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import TextField from '@Core/components/Inputs/TextField';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
-import { getMappedMatchedArrayOptions, getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
+import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
 
 export default {
-    name: 'ProductTemplateFormMultiSelectField',
+    name: 'ProductTemplateFormTextField',
     components: {
         ProductTemplateFormField,
-        TranslationSelect,
+        TextField,
         FormValidatorField,
+        TextFieldSuffix,
     },
     props: {
         size: {
@@ -77,46 +79,25 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            debounceValueChange: null,
-        };
-    },
     computed: {
         ...mapState('product', {
             draft: state => state.draft,
         }),
+        fieldData() {
+            const { attribute_code } = this.properties;
+
+            return this.draft[this.languageCode][attribute_code] || '';
+        },
+        parameter() {
+            if (!this.properties.parameters) return null;
+
+            const [key] = Object.keys(this.properties.parameters);
+
+            return this.properties.parameters[key];
+        },
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;
         },
-        hasOptions() {
-            return typeof this.properties.options !== 'undefined';
-        },
-        options() {
-            if (!this.hasOptions) return [];
-
-            return getMappedObjectOptions({
-                options: this.properties.options,
-                languageCode: this.languageCode,
-            });
-        },
-        fieldData() {
-            const { attribute_code } = this.properties;
-            const value = this.draft[this.languageCode][attribute_code];
-
-            if (!this.hasOptions || !value) {
-                return [];
-            }
-
-            return getMappedMatchedArrayOptions({
-                optionIds: value,
-                options: this.properties.options,
-                languageCode: this.languageCode,
-            });
-        },
-    },
-    created() {
-        this.debounceValueChange = debounce(this.onValueChange, 500);
     },
     methods: {
         ...mapActions('product', [
@@ -129,7 +110,7 @@ export default {
                     languageCode: this.languageCode,
                     productId: this.$route.params.id,
                     elementId: this.properties.attribute_id,
-                    value: this.fieldData.map(({ id }) => id),
+                    value: this.fieldData,
                 });
             }
         },
@@ -137,7 +118,7 @@ export default {
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,
-                value: value.map(({ id }) => id),
+                value,
             });
         },
     },

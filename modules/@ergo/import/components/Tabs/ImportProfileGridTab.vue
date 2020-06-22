@@ -26,7 +26,6 @@ export default {
     name: 'ImportProfileGridTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        Grid: () => import('@Core/components/Grid/Grid'),
     },
     mixins: [fetchGridDataMixin({ path: 'sources' })],
     methods: {

@@ -8,24 +8,11 @@
         :position="position">
         <FormValidatorField :field-key="fieldKey">
             <template #validator="{ errorMessages }">
-                <RichTextEditor
-                    v-if="isRTEEditor"
-                    solid
-                    :description="properties.hint"
-                    :disabled="disabled"
-                    :required="properties.required"
-                    :placeholder="properties.placeholder"
-                    :error-messages="errorMessages"
-                    :label="label"
-                    :value="fieldData"
-                    @blur="onRTEValueChange" />
-                <TextArea
-                    v-else
-                    :style="{ height: '100%' }"
+                <TextField
                     :value="fieldData"
                     solid
                     regular
-                    resize="none"
+                    :input="{ type: 'number' }"
                     :label="label"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
@@ -34,10 +21,15 @@
                     :description="properties.hint"
                     @focus="onFocus"
                     @input="onValueChange">
+                    <template #append>
+                        <TextFieldSuffix
+                            v-if="parameter"
+                            :suffix="parameter" />
+                    </template>
                     <template #informationLabel>
                         <div />
                     </template>
-                </TextArea>
+                </TextField>
             </template>
         </FormValidatorField>
     </ProductTemplateFormField>
@@ -45,18 +37,18 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
-import TextArea from '@Core/components/Inputs/TextArea';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import TextField from '@Core/components/Inputs/TextField';
+import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
-import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
 
 export default {
-    name: 'ProductTemplateFormTextAreaField',
+    name: 'ProductTemplateFormUnitField',
     components: {
         ProductTemplateFormField,
-        TextArea,
-        RichTextEditor,
+        TextField,
         FormValidatorField,
+        TextFieldSuffix,
     },
     props: {
         size: {
@@ -97,11 +89,15 @@ export default {
 
             return this.draft[this.languageCode][attribute_code] || '';
         },
+        parameter() {
+            if (!this.properties.parameters) return null;
+
+            const [key] = Object.keys(this.properties.parameters);
+
+            return this.properties.parameters[key];
+        },
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;
-        },
-        isRTEEditor() {
-            return this.properties.parameters.rich_edit;
         },
     },
     methods: {
@@ -125,10 +121,6 @@ export default {
                 key: this.properties.attribute_code,
                 value,
             });
-        },
-        onRTEValueChange(value) {
-            this.onValueChange(value);
-            this.onFocus(false);
         },
     },
 };

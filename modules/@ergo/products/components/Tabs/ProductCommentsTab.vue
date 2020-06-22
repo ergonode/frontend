@@ -12,7 +12,7 @@
 
 <script>
 import { DATA_LIMIT } from '@Core/defaults/grid';
-import ProductCommentsForm from '@Products/components/Forms/ProductCommentsForm';
+import ProductCommentsForm from '@Products/components/Form/ProductCommentsForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
 export default {

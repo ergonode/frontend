@@ -13,6 +13,7 @@
                     solid
                     regular
                     :clearable="true"
+                    :multiselect="true"
                     :label="label"
                     :options="options"
                     :placeholder="properties.placeholder"
@@ -20,6 +21,7 @@
                     :required="properties.required"
                     :disabled="disabled"
                     :description="properties.hint"
+                    @focus="onFocus"
                     @input="debounceValueChange">
                     <template #informationLabel>
                         <div />
@@ -33,13 +35,13 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { debounce } from 'debounce';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
-import { getMappedObjectOptions, getMappedObjectOption } from '@Core/models/mappers/translationsMapper';
+import { getMappedMatchedArrayOptions, getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
 
 export default {
-    name: 'ProductTemplateFormSelectField',
+    name: 'ProductTemplateFormMultiSelectField',
     components: {
         ProductTemplateFormField,
         TranslationSelect,
@@ -84,22 +86,6 @@ export default {
         ...mapState('product', {
             draft: state => state.draft,
         }),
-        fieldData() {
-            const { attribute_code } = this.properties;
-            const value = this.draft[this.languageCode][attribute_code];
-
-            if (!this.hasOptions || !value) {
-                return '';
-            }
-
-            return getMappedObjectOption({
-                option: {
-                    id: value,
-                    ...this.properties.options[value],
-                },
-                languageCode: this.languageCode,
-            });
-        },
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;
         },
@@ -114,6 +100,20 @@ export default {
                 languageCode: this.languageCode,
             });
         },
+        fieldData() {
+            const { attribute_code } = this.properties;
+            const value = this.draft[this.languageCode][attribute_code];
+
+            if (!this.hasOptions || !value) {
+                return [];
+            }
+
+            return getMappedMatchedArrayOptions({
+                optionIds: value,
+                options: this.properties.options,
+                languageCode: this.languageCode,
+            });
+        },
     },
     created() {
         this.debounceValueChange = debounce(this.onValueChange, 500);
@@ -122,19 +122,22 @@ export default {
         ...mapActions('product', [
             'setDraftValue',
         ]),
+        onFocus(isFocused) {
+            if (!isFocused) {
+                this.$emit('input', {
+                    fieldKey: this.fieldKey,
+                    languageCode: this.languageCode,
+                    productId: this.$route.params.id,
+                    elementId: this.properties.attribute_id,
+                    value: this.fieldData.map(({ id }) => id),
+                });
+            }
+        },
         onValueChange(value) {
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,
-                value: value.id,
-            });
-
-            this.$emit('input', {
-                fieldKey: this.fieldKey,
-                languageCode: this.languageCode,
-                productId: this.$route.params.id,
-                elementId: this.properties.attribute_id,
-                value: value.id,
+                value: value.map(({ id }) => id),
             });
         },
     },

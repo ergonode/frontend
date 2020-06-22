@@ -26,7 +26,6 @@ export default {
     name: 'SegmentsGridTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        Grid: () => import('@Core/components/Grid/Grid'),
     },
     mixins: [fetchGridDataMixin({ path: 'segments' })],
     methods: {

@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
+import { SIZE } from '@Core/defaults/theme';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
@@ -55,9 +55,6 @@ export default {
     computed: {
         smallSize() {
             return SIZE.SMALL;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
         },
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);

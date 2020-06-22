@@ -51,9 +51,7 @@
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar :items="tabs" />
-        <Footer
-            v-if="!$route.path.includes('history')"
-            flex-end>
+        <Footer flex-end>
             <Button
                 title="SAVE PRODUCT"
                 :size="smallSize"
@@ -66,6 +64,9 @@
 import { mapState, mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { MODAL_TYPE } from '@Core/defaults/modals';
+import { PRODUCT_TYPE } from '@Products/defaults';
+import { getKeyByValue } from '@Core/models/objectWrapper';
+import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 import Button from '@Core/components/Buttons/Button';
 import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
 import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
@@ -87,10 +88,29 @@ export default {
     computed: {
         ...mapState('product', {
             status: state => state.status,
+            type: state => state.type,
             workflow: state => state.workflow,
+        }),
+        ...mapState('dictionaries', {
+            productTypes: state => state.productTypes,
         }),
         isUserAllowedToUpdateProduct() {
             return this.$hasAccess(['PRODUCT_UPDATE']);
+        },
+        tabs() {
+            const tabs = getNestedTabRoutes(
+                this.$hasAccess,
+                this.$router.options.routes,
+                this.$route,
+            );
+
+            switch (getKeyByValue(this.productTypes, this.type)) {
+            case PRODUCT_TYPE.WITH_VARIANTS:
+                return tabs.filter(tab => tab.title !== 'Group');
+            case PRODUCT_TYPE.GROUPING:
+                return tabs.filter(tab => tab.title !== 'Variants');
+            default: return tabs.filter(tab => tab.title !== 'Variants' && tab.title !== 'Group');
+            }
         },
     },
     methods: {

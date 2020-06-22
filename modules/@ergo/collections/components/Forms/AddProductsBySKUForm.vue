@@ -3,19 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form :fields-keys="[skusFieldKey, segmentsFieldKey]">
+    <Form :fields-keys="[skusFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
-                <TranslationSelect
-                    :value="segments"
-                    solid
-                    :multiselect="true"
-                    label="From segmentation rules"
-                    regular
-                    :disabled="isDisabledByPrivileges"
-                    :error-messages="errorMessages[segmentsFieldKey]"
-                    :options="segmentOptions"
-                    @input="(value) => $emit('input', { key: 'segments', value })" />
                 <TextArea
                     :value="productSkus"
                     solid
@@ -25,7 +15,7 @@
                     :style="{height: '150px'}"
                     :error-messages="errorMessages[skusFieldKey]"
                     :disabled="isDisabledByPrivileges"
-                    @input="(value) => $emit('input', { key: 'productSkus', value })" />
+                    @input="onSKUChange" />
             </FormSection>
         </template>
     </Form>
@@ -34,25 +24,16 @@
 <script>
 
 export default {
-    name: 'AddProductsToCollectionForm',
+    name: 'AddProductsBySKUForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
         FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
         TextArea: () => import('@Core/components/Inputs/TextArea'),
     },
     props: {
-        segments: {
-            type: Array,
-            default: () => [],
-        },
         productSkus: {
             type: String,
             default: '',
-        },
-        segmentOptions: {
-            type: Array,
-            default: () => [],
         },
     },
     computed: {
@@ -63,8 +44,10 @@ export default {
         skusFieldKey() {
             return 'skus';
         },
-        segmentsFieldKey() {
-            return 'segments';
+    },
+    methods: {
+        onSKUChange(value) {
+            this.$emit('input', value);
         },
     },
 };

@@ -8,13 +8,13 @@
         :position="position">
         <FormValidatorField :field-key="fieldKey">
             <template #validator="{ errorMessages }">
-                <DatePicker
+                <TextField
                     :value="fieldData"
                     solid
                     regular
                     :label="label"
+                    :input="{ type: 'number'}"
                     :placeholder="properties.placeholder"
-                    :foramt="parameter"
                     :error-messages="errorMessages"
                     :required="properties.required"
                     :disabled="disabled"
@@ -29,26 +29,24 @@
                     <template #informationLabel>
                         <div />
                     </template>
-                </DatePicker>
+                </TextField>
             </template>
         </FormValidatorField>
     </ProductTemplateFormField>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { format as formatDate } from 'date-fns';
-import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
-import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
-import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import { mapActions, mapState } from 'vuex';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import TextField from '@Core/components/Inputs/TextField';
 import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
+import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 
 export default {
-    name: 'ProductTemplateFormDateField',
+    name: 'ProductTemplateFormPriceField',
     components: {
         ProductTemplateFormField,
-        DatePicker,
+        TextField,
         FormValidatorField,
         TextFieldSuffix,
     },
@@ -88,12 +86,11 @@ export default {
         }),
         fieldData() {
             const { attribute_code } = this.properties;
-            const value = this.draft[this.languageCode][attribute_code];
 
-            return value ? new Date(value) : null;
+            return this.draft[this.languageCode][attribute_code] || '';
         },
         parameter() {
-            if (!this.properties.parameters) return DEFAULT_FORMAT;
+            if (!this.properties.parameters) return null;
 
             const [key] = Object.keys(this.properties.parameters);
 
@@ -114,19 +111,15 @@ export default {
                     languageCode: this.languageCode,
                     productId: this.$route.params.id,
                     elementId: this.properties.attribute_id,
-                    value: this.fieldData
-                        ? formatDate(this.fieldData, DEFAULT_FORMAT)
-                        : '',
+                    value: this.fieldData,
                 });
             }
         },
         onValueChange(value) {
-            const date = value ? formatDate(value, DEFAULT_FORMAT) : null;
-
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,
-                value: date,
+                value,
             });
         },
     },

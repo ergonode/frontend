@@ -14,19 +14,20 @@
                 class="placeholder__subtitle"
                 v-text="subtitle" />
         </div>
+        <slot name="append" />
     </div>
 </template>
 
 <script>
-import { LayoutOrientation } from '@Core/defaults/layout';
+import { LAYOUT_ORIENTATION } from '@Core/defaults/layout';
 
 export default {
     name: 'ListPlaceholder',
     props: {
         layoutOrientation: {
             type: String,
-            default: LayoutOrientation.VERTICAL,
-            validator: value => Object.values(LayoutOrientation).indexOf(value) !== -1,
+            default: LAYOUT_ORIENTATION.VERTICAL,
+            validator: value => Object.values(LAYOUT_ORIENTATION).indexOf(value) !== -1,
         },
         title: {
             type: String,

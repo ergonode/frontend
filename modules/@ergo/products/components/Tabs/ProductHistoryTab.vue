@@ -20,10 +20,9 @@ import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/Re
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
 export default {
-    name: 'ProductHistoryGridTab',
+    name: 'ProductHistoryTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        Grid: () => import('@Core/components/Grid/Grid'),
     },
     mixins: [fetchGridDataMixin({ path: 'products/_id/history' })],
 };

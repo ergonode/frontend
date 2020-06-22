@@ -15,7 +15,7 @@ import CollectionForm from '@Collections/components/Forms/CollectionForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
 export default {
-    name: 'CollectionBaseTab',
+    name: 'CollectionGeneralTab',
     components: {
         ResponsiveCenteredViewTemplate,
         CollectionForm,
