@@ -75,7 +75,7 @@ export default {
             this.localValue = !this.localValue;
 
             if (this.localValue) {
-                this.$axios.$post(`${this.languageCode}/products/${this.id}/children/add-from-skus`, { skus: this.data.sku }).then(() => {
+                this.$axios.$post(`${this.languageCode}/products/${this.id}/children/add-from-skus`, { skus: [this.data.sku] }).then(() => {
                     this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Products has been added' });
                 }).catch((e) => {
                     this.$addAlert({ type: ALERT_TYPE.ERROR, message: e.data });

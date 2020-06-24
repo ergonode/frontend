@@ -6,8 +6,7 @@
     <div class="bool-presentation-cell">
         <Toggler
             :value="Boolean(value)"
-            :disabled="isDisabled"
-            @input="onValueChange" />
+            :disabled="isDisabled" />
     </div>
 </template>
 
@@ -26,11 +25,6 @@ export default {
         isDisabled: {
             type: Boolean,
             default: false,
-        },
-    },
-    methods: {
-        onValueChange(value) {
-            this.$emit('input', value);
         },
     },
 };

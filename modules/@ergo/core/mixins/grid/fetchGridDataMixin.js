@@ -31,7 +31,7 @@ export default function ({ path }) {
             const columnsConfig = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
 
             if (columnsConfig) {
-                gridParams.columns = `${columnsConfig}`;
+                gridParams.columns = `${columnsConfig},_links`;
             } else if (path === 'products') {
                 gridParams.columns = `index,sku,_links,esa_default_image:${this.languageCode},esa_default_label:${this.languageCode}`;
             }

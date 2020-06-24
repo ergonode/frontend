@@ -97,7 +97,7 @@ export default {
 
                 return {
                     columns: [
-                        ...columns.map(column => ({ ...column, editable: false })),
+                        ...columns.map(column => ({ ...column, editable: false, deletable: false })),
                         {
                             language: languageCode,
                             id: 'esa_attached',
@@ -221,7 +221,7 @@ export default {
                     }
 
                     this.columns = [
-                        ...columns.map(column => ({ ...column, editable: false })),
+                        ...columns.map(column => ({ ...column, editable: false, deletable: false })),
                         {
                             language: this.languageCode,
                             id: 'esa_attached',
