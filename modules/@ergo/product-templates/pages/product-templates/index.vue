@@ -73,7 +73,7 @@ export default {
             return {
                 imageColumn: 'image_id',
                 descriptionColumn: 'name',
-            }
+            };
         },
         smallSize() {
             return SIZE.SMALL;

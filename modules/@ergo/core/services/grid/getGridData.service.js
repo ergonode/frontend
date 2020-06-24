@@ -42,6 +42,7 @@ export const getAdvancedFiltersData = ({
     }) => {
         const { length } = columns;
         const advancedFilters = [];
+        const { units } = $store.state.dictionaries;
 
         for (let i = 0; i < length; i += 1) {
             const {
@@ -53,7 +54,7 @@ export const getAdvancedFiltersData = ({
 
                 if (parameters) {
                     if (parameters.unit) {
-                        mappedParameters = $store.state.dictionaries.units.find(unit => unit.id === parameters.unit).symbol;
+                        mappedParameters = units.find(unit => unit.id === parameters.unit).symbol;
                     } else {
                         mappedParameters = Object.values(parameters).join(', ');
                     }

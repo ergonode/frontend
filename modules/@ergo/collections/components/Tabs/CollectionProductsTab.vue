@@ -73,8 +73,8 @@ export default {
         collectionCellBinding() {
             return {
                 imageColumn: `esa_default_image:${this.languageCode}`,
-                descriptionColumn: `esa_default_label:${this.languageCode}`
-            }
+                descriptionColumn: `esa_default_label:${this.languageCode}`,
+            };
         },
         smallSize() {
             return SIZE.SMALL;

@@ -67,7 +67,7 @@ export default {
         onAdd() {
             this.removeValidationErrors();
             const data = {
-                skus: this.productSkus.replace(/\n/g, ",").split(','),
+                skus: this.productSkus.replace(/\n/g, ',').split(','),
             };
 
             this.isRequestPending = true;
