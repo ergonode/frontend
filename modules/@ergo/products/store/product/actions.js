@@ -94,7 +94,7 @@ export default {
             }),
         );
     },
-    async applyDraft(
+    applyDraft(
         { rootState },
         {
             id,
@@ -103,9 +103,7 @@ export default {
     ) {
         const { authentication: { user: { language } } } = rootState;
 
-        await this.$setLoader('footerDraftButton');
-        await this.app.$axios.$put(`${language}/products/${id}/draft/persist`, {}).then(() => onSuccess());
-        await this.$removeLoader('footerDraftButton');
+        return this.app.$axios.$put(`${language}/products/${id}/draft/persist`, {}).then(() => onSuccess());
     },
     async updateProduct(
         { rootState, dispatch },
@@ -117,9 +115,7 @@ export default {
     ) {
         const { authentication: { user: { language } } } = rootState;
 
-        await this.$setLoader('footerButton');
         await this.app.$axios.$put(`${language}/products/${id}`, data).then(onSuccess).catch(e => dispatch('validations/onError', e.data, { root: true }));
-        await this.$removeLoader('footerButton');
     },
     removeProduct({ state, rootState }, { onSuccess }) {
         const { id } = state;

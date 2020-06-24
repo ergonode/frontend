@@ -7,13 +7,11 @@
         :row="rowIndex"
         :column="columnIndex"
         :locked="isLocked"
-        :copyable="false"
+        :copyable="isCopyable"
         :edit-key-code="32"
         :selected="isSelected"
         @edit="onValueChange">
-        <GridBoolEditCell
-            :value="localValue"
-            @input="onValueChange" />
+        <GridBoolEditCell :value="localValue" />
     </GridTableCell>
 </template>
 
@@ -47,6 +45,10 @@ export default {
             required: true,
         },
         isLocked: {
+            type: Boolean,
+            default: false,
+        },
+        isCopyable: {
             type: Boolean,
             default: false,
         },

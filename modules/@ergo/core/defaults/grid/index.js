@@ -38,8 +38,8 @@ export const ROW_HEIGHT = {
 };
 
 export const IMAGE_SCALING = {
-    FIT_TO_SIZE: { value: 'cover', description: 'Fit to size' },
-    FILL_CONTAINER: { value: 'fill', description: 'Fill container' },
+    FIT_TO_SIZE: { value: 'contain', description: 'Fit to size' },
+    FILL_CONTAINER: { value: 'cover', description: 'Fill container' },
 };
 
 export const COLUMNS_NUMBER = {

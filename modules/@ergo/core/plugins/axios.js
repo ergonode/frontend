@@ -2,19 +2,33 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import { cacheAdapterEnhancer } from 'axios-extensions';
+
 export default function ({
-    $axios, store, error, redirect,
-}) {
-    $axios.setHeader('Content-Type', 'application/json');
-    $axios.setHeader('Accept', 'application/json');
-    $axios.onRequest((config) => {
+    $axios,
+    store,
+    error,
+    redirect,
+}, inject) {
+    const axios = $axios.create({
+        headers: {
+            common: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        },
+        adapter: cacheAdapterEnhancer($axios.defaults.adapter, { enabledByDefault: false, cacheFlag: 'useCache' }),
+    });
+
+    axios.onRequest((config) => {
         const configLocal = config;
+
         configLocal.headers.JWTAuthorization = `Bearer ${store.state.authentication.jwt}`;
 
         return configLocal;
     });
 
-    $axios.onError((errorResponse) => {
+    axios.onError((errorResponse) => {
         let msg = '';
         const dev = process.env.NODE_ENV === 'development';
         const regExp = {
@@ -71,4 +85,6 @@ export default function ({
 
         return Promise.reject(errorResponse.response);
     });
+
+    inject('axios', axios);
 }

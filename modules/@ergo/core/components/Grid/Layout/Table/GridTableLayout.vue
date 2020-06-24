@@ -385,21 +385,25 @@ export default {
 
             if (from.row < to.row) {
                 for (let i = from.row - offset; i <= to.row - offset; i += 1) {
-                    drafts[this.data.id[i]] = { [columnId]: value };
-                    editedCells.push({
-                        rowId: this.data.id[i],
-                        columnId,
-                        value,
-                    });
+                    if (this.data[columnId][i] && this.data[columnId][i].value !== value) {
+                        drafts[this.data.id[i]] = { [columnId]: value };
+                        editedCells.push({
+                            rowId: this.data.id[i],
+                            columnId,
+                            value,
+                        });
+                    }
                 }
             } else {
                 for (let i = to.row - offset; i <= from.row - offset; i += 1) {
-                    drafts[this.data.id[i]] = { [columnId]: value };
-                    editedCells.push({
-                        rowId: this.data.id[i],
-                        columnId,
-                        value,
-                    });
+                    if (this.data[columnId][i] && this.data[columnId][i].value !== value) {
+                        drafts[this.data.id[i]] = { [columnId]: value };
+                        editedCells.push({
+                            rowId: this.data.id[i],
+                            columnId,
+                            value,
+                        });
+                    }
                 }
             }
 

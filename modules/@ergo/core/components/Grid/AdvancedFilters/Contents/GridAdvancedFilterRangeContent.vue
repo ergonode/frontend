@@ -9,21 +9,21 @@
         <div class="container">
             <TextField
                 :value="filter.value[operators.GREATER_OR_EQUAL]"
-                :input="{ type: 'number' }"
+                :input="{ type: 'number', max: filter.value[operators.SMALLER_OR_EQUAL] }"
                 placeholder="From"
                 underline
                 center-alignment
                 small
-                @input="(fromValue) => onValueChange(fromValue, operators.GREATER_OR_EQUAL)" />
+                @input="onFromValueChange" />
             <span class="dash">-</span>
             <TextField
                 :value="filter.value[operators.SMALLER_OR_EQUAL]"
-                :input="{ type: 'number' }"
+                :input="{ type: 'number', min: filter.value[operators.GREATER_OR_EQUAL] }"
                 placeholder="To"
                 underline
                 center-alignment
                 small
-                @input="(toValue) => onValueChange(toValue, operators.SMALLER_OR_EQUAL)" />
+                @input="onToValueChange" />
         </div>
     </GridAdvancedFilterBaseContent>
 </template>
@@ -51,8 +51,29 @@ export default {
         },
     },
     methods: {
-        onValueChange(value, operator) {
-            this.$emit('input', { value, key: operator });
+        onFromValueChange(value) {
+            const filterValue = this.filter.value[FILTER_OPERATOR.GREATER_OR_EQUAL];
+
+            if (+value <= +this.filter.value[FILTER_OPERATOR.SMALLER_OR_EQUAL]
+                || typeof filterValue === 'undefined'
+                || filterValue === '') {
+                this.$emit('input', {
+                    value,
+                    key: FILTER_OPERATOR.GREATER_OR_EQUAL,
+                });
+            }
+        },
+        onToValueChange(value) {
+            const filterValue = this.filter.value[FILTER_OPERATOR.SMALLER_OR_EQUAL];
+
+            if (+value >= +this.filter.value[FILTER_OPERATOR.GREATER_OR_EQUAL]
+                || typeof filterValue === 'undefined'
+                || filterValue === '') {
+                this.$emit('input', {
+                    value,
+                    key: FILTER_OPERATOR.SMALLER_OR_EQUAL,
+                });
+            }
         },
         onEmptyRecordChange(value) {
             this.$emit('emptyRecord', value);

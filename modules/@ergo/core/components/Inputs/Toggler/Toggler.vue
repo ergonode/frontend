@@ -5,13 +5,13 @@
 <template>
     <div class="toggler">
         <input
-            :id="associatedLabel"
+            :id="1234"
             :value="value"
             :disabled="disabled"
             :checked="value"
             type="checkbox"
             @input="onValueChange">
-        <label :for="associatedLabel">
+        <label :for="1234">
             <div class="toggler__state-background">
                 <div class="toggler__state" />
             </div>

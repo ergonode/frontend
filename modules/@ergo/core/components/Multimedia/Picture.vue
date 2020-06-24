@@ -39,12 +39,14 @@ export default {
     data() {
         return {
             observer: null,
+            cancelToken: null,
+            isLoading: true,
         };
     },
     computed: {
         imageStyle() {
             return {
-                objectFit: this.objectFit,
+                objectFit: this.isLoading ? 'unset' : this.objectFit,
             };
         },
     },
@@ -65,6 +67,9 @@ export default {
         this.observer.observe(this.$el);
     },
     beforeDestroy() {
+        if (this.cancelToken) {
+            this.cancelToken.cancel();
+        }
         this.observer.disconnect();
     },
     methods: {
@@ -72,19 +77,29 @@ export default {
             'onError',
         ]),
         getImageById() {
+            this.cancelToken = this.$axios.CancelToken.source();
+
             this.$axios.$get(`multimedia/${this.imageId}`, {
+                useCache: true,
+                cancelToken: this.cancelToken.token,
                 responseType: 'arraybuffer',
-            }).then(response => this.onSuccess(response)).catch(this.imageLoadOnError);
+            })
+                .then(response => this.onSuccess(response))
+                .catch(this.imageLoadOnError);
         },
         onSuccess(response) {
             if (this.$refs.img) {
                 this.$refs.img.src = getImageData(response);
             }
+
+            this.isLoading = false;
         },
         imageLoadOnError() {
             if (this.$refs.img) {
                 this.$refs.img.src = require('@Core/assets/images/placeholders/image_error.svg'); // eslint-disable-line global-require, import/no-dynamic-require
             }
+
+            this.isLoading = false;
         },
     },
 };
