@@ -52,7 +52,7 @@ import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import ActionButton from '@Core/components/Buttons/ActionButton';
 
 export default {
-    name: 'ProductVariantsTab',
+    name: 'ProductGroupTab',
     components: {
         ResponsiveCenteredViewTemplate,
         ActionButton,
