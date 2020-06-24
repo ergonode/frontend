@@ -23,12 +23,10 @@
                     :id="associatedLabel"
                     :class="classes"
                     ref="input"
+                    v-bind="{ ...input }"
                     :value="value"
                     :placeholder="placeholderValue"
                     :autofocus="autofocus"
-                    :type="input.type"
-                    :min="minRange"
-                    :max="maxRange"
                     autocomplete="on"
                     :disabled="disabled"
                     :aria-label="label || 'no description'"
@@ -83,6 +81,10 @@ export default {
         associatedLabelMixin,
     ],
     props: {
+        /**
+         * The input HTML attributes
+         * @values
+         */
         input: {
             type: Object,
             default: () => ({
@@ -156,16 +158,6 @@ export default {
                 `text-field--${this.size}`,
                 `text-field--${this.alignment}`,
             ];
-        },
-        minRange() {
-            if (this.input.type === 'number') return this.input.min;
-
-            return null;
-        },
-        maxRange() {
-            if (this.input === 'number') return this.input.max;
-
-            return null;
         },
         styleComponent() {
             return () => import(`@Core/components/Inputs/Input${toCapitalize(this.type)}Style`);

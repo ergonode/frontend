@@ -64,7 +64,6 @@ export default {
         },
         /**
          * The title of the button
-         * @values primary, secondary
          */
         title: {
             type: String,
@@ -72,7 +71,6 @@ export default {
         },
         /**
          * The disabled state of the button
-         * @values primary, secondary
          */
         disabled: {
             type: Boolean,
