@@ -97,12 +97,14 @@ export function getMappedData({ columns, rows, hasLinks }) {
             for (let x = 0; x < GRID_ACTIONS.length; x += 1) {
                 const key = GRID_ACTIONS[x];
 
-                if (!data[COLUMN_ACTIONS_ID][key]) {
-                    data[COLUMN_ACTIONS_ID][key] = {};
-                }
-
                 if (rows[j]._links.value[key]) {
-                    data[COLUMN_ACTIONS_ID][key][j] = rows[j]._links.value[key];
+                    if (!data[COLUMN_ACTIONS_ID][key]) {
+                        data[COLUMN_ACTIONS_ID][key] = {};
+                    }
+
+                    if (rows[j]._links.value[key]) {
+                        data[COLUMN_ACTIONS_ID][key][j] = rows[j]._links.value[key];
+                    }
                 }
             }
         }

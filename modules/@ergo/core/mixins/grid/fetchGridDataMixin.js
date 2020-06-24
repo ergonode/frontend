@@ -32,6 +32,8 @@ export default function ({ path }) {
 
             if (columnsConfig) {
                 gridParams.columns = `${columnsConfig},_links`;
+            } else if (path === 'products') {
+                gridParams.columns = `index,sku,_links,esa_default_image:${this.languageCode},esa_default_label:${this.languageCode}`;
             }
 
             let dynamicPath = path;
@@ -45,7 +47,7 @@ export default function ({ path }) {
             const requests = [
                 getGridData({
                     $axios: this.$axios,
-                    path: `${this.$store.state.authentication.user.language}/${dynamicPath}`,
+                    path: `${this.languageCode}/${dynamicPath}`,
                     params: gridParams,
                 }),
             ];
@@ -61,8 +63,9 @@ export default function ({ path }) {
 
                 requests.push(getAdvancedFiltersData({
                     $axios: this.$axios,
+                    $store: this.$store,
                     $addAlert: this.$addAlert,
-                    path: `${this.$store.state.authentication.user.language}/${dynamicPath}`,
+                    path: `${this.languageCode}/${dynamicPath}`,
                     params: filtersParams,
                 }));
             }
@@ -234,23 +237,14 @@ export default function ({ path }) {
                 this.advancedFilters = [];
                 this.$cookies.remove(ADV_FILTERS_IDS);
             },
-            clearAllFilters() {
-                const { length } = this.advancedFilters;
-
-                for (let i = 0; i < length; i += 1) {
-                    this.advancedFilters[i].value = {
-                        isEmptyRecord: false,
-                    };
-                }
+            updateFilterAtIndex({ index, filter }) {
+                this.advancedFilters[index] = filter;
+                this.advancedFilters = [...this.advancedFilters];
             },
             clearFilterAtIndex(index) {
                 this.advancedFilters[index].value = {
                     isEmptyRecord: false,
                 };
-            },
-            updateFilterAtIndex({ index, filter }) {
-                this.advancedFilters[index] = filter;
-                this.advancedFilters = [...this.advancedFilters];
             },
             updateFilterValueAtIndex({ index, key, value }) {
                 this.advancedFilters[index].value = {
@@ -269,6 +263,7 @@ export default function ({ path }) {
 
                 const advancedFilters = await getAdvancedFiltersData({
                     $axios: this.$axios,
+                    $store: this.$store,
                     $addAlert: this.$addAlert,
                     path: `${languageCode}/${path}`,
                     params,

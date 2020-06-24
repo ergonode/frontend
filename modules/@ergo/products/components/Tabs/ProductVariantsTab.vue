@@ -17,7 +17,6 @@
                 :is-collection-layout="true"
                 :is-header-visible="true"
                 :is-centered-view="true"
-                :is-basic-filter="true"
                 @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>
@@ -29,6 +28,7 @@ import { TYPES } from '@Attributes/defaults/attributes';
 import { getGridData } from '@Core/services/grid/getGridData.service';
 import { getParsedFilters } from '@Core/models/mappers/gridDataMapper';
 import { DATA_LIMIT } from '@Core/defaults/grid';
+import { PRODUCT_TYPE } from '@Products/defaults';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
 const getAttributesByFilter = () => import('@Attributes/services/getAttributesByFilter.service');
@@ -66,12 +66,14 @@ export default {
                             attrId => attribute.id === attrId,
                         ),
                 )
-                .map(({ key }) => key).join(',');
+                .map(({ key }) => key);
+
             const params = {
                 offset: 0,
                 limit: DATA_LIMIT,
                 extended: true,
-                columns: `esa_default_image:${languageCode},esa_default_label:${languageCode},${attributeCodes},sku,esa_template:${languageCode}`,
+                filter: `${attributeCodes.map(attr => `${attr}!=`).join(';')},esa_product_type:${languageCode}=${PRODUCT_TYPE.SIMPLE_PRODUCT}`,
+                columns: `esa_default_image:${languageCode},esa_default_label:${languageCode},${attributeCodes.join(',')},sku,esa_template:${languageCode}`,
             };
 
             return getGridData({
@@ -94,7 +96,11 @@ export default {
 
                 return {
                     columns: [
-                        ...columns.map(column => ({ ...column, editable: false })),
+                        ...columns.map(column => ({
+                            ...column,
+                            editable: false,
+                            deletable: false,
+                        })),
                         {
                             language: languageCode,
                             id: 'esa_attached',
@@ -157,7 +163,7 @@ export default {
                 offset,
                 limit,
                 extended: true,
-                filter: getParsedFilters(filters, []),
+                filter: `${getParsedFilters(filters, [])},esa_product_type:${this.languageCode}=${PRODUCT_TYPE.SIMPLE_PRODUCT}`,
                 columns: `esa_default_image:${this.languageCode},esa_default_label:${this.languageCode},${this.attributeCodes},sku,esa_template:${this.languageCode}`,
             };
 
@@ -195,7 +201,11 @@ export default {
                     }
 
                     this.columns = [
-                        ...columns.map(column => ({ ...column, editable: false })),
+                        ...columns.map(column => ({
+                            ...column,
+                            editable: false,
+                            deletable: false,
+                        })),
                         {
                             language: this.languageCode,
                             id: 'esa_attached',

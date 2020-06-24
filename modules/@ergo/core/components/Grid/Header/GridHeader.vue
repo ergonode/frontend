@@ -68,9 +68,9 @@
                 :key="index"
                 :index="index"
                 :filter="filter"
-                @clear="onClearFilterAtIndex"
                 @apply="onApplyFilter"
                 @update="onUpdateFilterAtIndex"
+                @clear="onClearFilterAtIndex"
                 @remove="onRemoveFilterAtIndex"
                 @swap="onSwapFiltersPosition" />
             <GridAdvancedFilterPlaceholder v-if="!filters.length && !isListElementDragging" />
@@ -203,11 +203,11 @@ export default {
         onUpdateFilterAtIndex(payload) {
             this.$emit('updateFilter', payload);
         },
+        onClearFilterAtIndex(payload) {
+            this.$emit('clearFilter', payload);
+        },
         onRemoveFilterAtIndex(index) {
             this.$emit('removeFilter', index);
-        },
-        onClearFilterAtIndex(index) {
-            this.$emit('clearFilter', index);
         },
         onSwapFiltersPosition(payload) {
             this.$emit('swapFilters', payload);

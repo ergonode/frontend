@@ -350,6 +350,7 @@ export default {
         },
         onClearFilterAtIndex(index) {
             this.$emit('clearFilter', index);
+            this.emitFetchData();
         },
         onSwapFiltersPosition(payload) {
             this.$emit('swapFilters', payload);

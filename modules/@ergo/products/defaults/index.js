@@ -5,11 +5,10 @@
 export const ADD_PRODUCT = {
     BY_SKU: 'Add by SKU',
     FROM_SEGMENT: 'Add from segment',
-    // TODO: Uncomment when planned
-    // FROM_LIST: 'Select from list',
 };
 
 export const PRODUCT_TYPE = {
     WITH_VARIANTS: 'VARIABLE-PRODUCT',
     GROUPING: 'GROUPING-PRODUCT',
+    SIMPLE_PRODUCT: 'SIMPLE-PRODUCT',
 };

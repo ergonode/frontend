@@ -21,7 +21,7 @@ export default {
         const promises = modulesDictionaries.map(({ stateProp, requestPath, isGrid = false }) => {
             const path = `${userLanguageCode}${requestPath}${isGrid ? '?view=list' : ''}`;
 
-            return this.app.$axios.$get(path).then((response) => {
+            return this.app.$axios.$get(path, { useCache: isGrid }).then((response) => {
                 const value = isGrid ? response.collection : response;
 
                 commit(types.SET_CUSTOM_STATE_PROPERTY, { stateProp, value });
@@ -39,7 +39,7 @@ export default {
         } = modulesDictionaries.find(({ stateProp: name }) => name === dictionaryName);
         const path = `${userLanguageCode}${requestPath}${isGrid ? '?view=list' : ''}`;
 
-        return this.app.$axios.$get(path).then((response) => {
+        return this.app.$axios.$get(path, { useCache: isGrid }).then((response) => {
             const value = isGrid ? response.collection : response;
 
             commit(types.SET_CUSTOM_STATE_PROPERTY, { stateProp, value });

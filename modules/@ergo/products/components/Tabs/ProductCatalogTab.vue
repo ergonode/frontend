@@ -14,10 +14,7 @@
                 :data="data"
                 :advanced-filters="advancedFilters"
                 :data-count="filtered"
-                :collection-cell-binding="{
-                    imageColumn: 'esa_default_image:en',
-                    descriptionColumn: 'esa_default_label:en'
-                }"
+                :collection-cell-binding="collectionCellBinding"
                 :is-advanced-filters="true"
                 :is-header-visible="true"
                 :is-basic-filter="true"
@@ -33,7 +30,6 @@
                 @clearFilter="clearFilterAtIndex"
                 @swapFilters="swapFiltersPosition"
                 @removeAllFilters="removeAllFilters"
-                @clearAllFilters="clearAllFilters"
                 @dropFilter="dropFilter"
                 @fetchData="getGridData">
                 <template #actions>
@@ -105,6 +101,12 @@ export default {
         ...mapState('grid', {
             drafts: state => state.drafts,
         }),
+        collectionCellBinding() {
+            return {
+                imageColumn: `esa_default_image:${this.userLanguageCode}`,
+                descriptionColumn: `esa_default_label:${this.userLanguageCode}`,
+            };
+        },
         smallSize() {
             return SIZE.SMALL;
         },
@@ -162,8 +164,14 @@ export default {
             }));
         },
         onEditCells(editedCells) {
+            const cachedElementIds = {};
+
             const requests = editedCells.map(({ rowId, columnId, value }) => {
-                const { element_id } = this.columns.find(column => column.id === columnId);
+                if (!cachedElementIds[columnId]) {
+                    const { element_id } = this.columns.find(column => column.id === columnId);
+
+                    cachedElementIds[columnId] = element_id;
+                }
                 const [, languageCode] = columnId.split(':');
 
                 return updateProductDraft().then(response => response.default({
@@ -172,7 +180,7 @@ export default {
                     fieldKey: `${rowId}/${columnId}`,
                     languageCode,
                     productId: rowId,
-                    elementId: element_id,
+                    elementId: cachedElementIds[columnId],
                     value,
                 }));
             });
@@ -212,7 +220,7 @@ export default {
 
             this.$router.push({ name: 'product-id-general', params: { id: args[lastIndex] } });
         },
-        saveDrafts() {
+        async saveDrafts() {
             const promises = [];
 
             Object.keys(this.drafts).forEach((rowId) => {
@@ -222,10 +230,12 @@ export default {
                 }));
             });
 
-            Promise.all(promises).then(() => {
+            await this.$setLoader('footerDraftButton');
+            await Promise.all(promises).then(() => {
                 this.getGridData(this.localParams);
                 this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Product changes saved' });
             });
+            await this.$removeLoader('footerDraftButton');
         },
     },
 };
