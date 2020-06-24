@@ -5,7 +5,7 @@
 <template>
     <Select
         :value="localValue"
-        :size="size"
+        :size="schema.size"
         :label="schema.title"
         :required="schema.isRequired"
         :options="schema.enum_titles || schema.enum"
@@ -15,9 +15,6 @@
 
 <script>
 import Select from '@Core/components/Inputs/Select/Select';
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 
 export default {
     name: 'JSONSchemaFormSelect',
@@ -56,9 +53,6 @@ export default {
         };
     },
     computed: {
-        size() {
-            return this.schema.small ? SIZE.SMALL : SIZE.REGULAR;
-        },
         mappedOptions() {
             if (!this.schema.enum_titles) return null;
 

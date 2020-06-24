@@ -17,8 +17,7 @@
         <GridBoolEditCell
             :value="cellData.value"
             :suffix="data.suffix"
-            :is-disabled="isLocked"
-            @input="onValueChange" />
+            :is-disabled="isLocked" />
     </GridTableCell>
 </template>
 

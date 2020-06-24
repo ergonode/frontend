@@ -118,7 +118,7 @@ export default {
                     'layout-element--dragged': this.isDragged,
                     'layout-element--resized': !this.isDraggingEnabled,
                     'layout-element--disabled': this.disabled,
-                }
+                },
             ];
         },
     },

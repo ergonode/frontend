@@ -11,7 +11,6 @@
             :key="element.key"
             :is="element.component"
             :value="value[element.key]"
-            :small="true"
             :schema="element.props"
             @input="onValueChange" />
         <Fab
@@ -31,6 +30,7 @@ import {
     ARROW,
 } from '@Core/defaults/icons';
 import {
+    SIZE,
     THEME,
 } from '@Core/defaults/theme';
 import {
@@ -99,6 +99,7 @@ export default {
                     props: {
                         isRequired: this.schema.required.indexOf(key) !== -1,
                         ...rest,
+                        size: SIZE.SMALL,
                     },
                     component: () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),
                 });
@@ -141,12 +142,7 @@ export default {
         grid-column-gap: 4px;
 
         & > .fab {
-            margin-top: 8px;
             margin-left: 4px;
-        }
-
-        & > svg {
-            margin-top: 8px;
         }
     }
 </style>

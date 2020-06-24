@@ -32,7 +32,7 @@ export default {
                 {
                     'column-sentinel--left': this.pinnedState === PINNED_COLUMN_STATE.LEFT,
                     'column-sentinel--right': this.pinnedState === PINNED_COLUMN_STATE.RIGHT,
-                }
+                },
             ];
         },
     },

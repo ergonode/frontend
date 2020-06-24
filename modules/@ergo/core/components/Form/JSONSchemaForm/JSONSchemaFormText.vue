@@ -5,7 +5,7 @@
 <template>
     <TextField
         :value="localValue"
-        :size="size"
+        :size="schema.size"
         :label="schema.title"
         :required="schema.isRequired"
         :error-messages="errorMessages"
@@ -14,9 +14,6 @@
 
 <script>
 import TextField from '@Core/components/Inputs/TextField';
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 
 export default {
     name: 'JSONSchemaFormText',
@@ -41,11 +38,6 @@ export default {
         return {
             localValue: '',
         };
-    },
-    computed: {
-        size() {
-            return this.schema.small ? SIZE.SMALL : SIZE.REGULAR;
-        },
     },
     created() {
         this.localValue = this.value;

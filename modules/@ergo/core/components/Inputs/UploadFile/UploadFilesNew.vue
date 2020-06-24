@@ -3,52 +3,52 @@
  * See LICENSE for license details.
  */
 <template>
-    <UploadFileNew
-        :label="label"
-        :required="required"
-        :disabled="disabled"
-        :fixed-height="fixedHeight">
+    <InputSolidStyle
+        :size="size"
+        :disabled="disabled">
         <template #activator>
-            <List v-if="isValue">
-                <ListElement
-                    v-for="file in value"
-                    :size="size"
-                    :key="file">
-                    <ListElementIcon>
-                        <IconFile :fill-color="greenColor" />
-                    </ListElementIcon>
-                    <ListElementDescription>
-                        <ListElementTitle :title="file" />
-                    </ListElementDescription>
-                    <ListElementAction :size="smallSize">
-                        <IconButton
-                            :size="smallSize"
-                            :theme="secondaryTheme"
-                            @click.native="onRemoveFile(file)">
-                            <template #icon="{ color }">
-                                <IconFilledClose :fill-color="color" />
-                            </template>
-                        </IconButton>
-                    </ListElementAction>
-                </ListElement>
-            </List>
-            <div class="horizontal-wrapper">
-                <Button
-                    :title="title"
-                    :size="smallSize"
-                    :theme="secondaryTheme"
-                    @click.native="onShowModal">
-                    <template #prepend="{ color }">
-                        <IconAdd :fill-color="color" />
-                    </template>
-                </Button>
-            </div>
+            <InputController>
+                <List v-if="isValue">
+                    <ListElement
+                        v-for="file in value"
+                        :size="size"
+                        :key="file">
+                        <ListElementIcon>
+                            <IconFile :fill-color="greenColor" />
+                        </ListElementIcon>
+                        <ListElementDescription>
+                            <ListElementTitle :title="file" />
+                        </ListElementDescription>
+                        <ListElementAction :size="smallSize">
+                            <IconButton
+                                :size="smallSize"
+                                :theme="secondaryTheme"
+                                @click.native="onRemoveFile(file)">
+                                <template #icon="{ color }">
+                                    <IconFilledClose :fill-color="color" />
+                                </template>
+                            </IconButton>
+                        </ListElementAction>
+                    </ListElement>
+                </List>
+                <div class="horizontal-wrapper">
+                    <Button
+                        :title="title"
+                        :size="smallSize"
+                        :theme="secondaryTheme"
+                        @click.native="onShowModal">
+                        <template #prepend="{ color }">
+                            <IconAdd :fill-color="color" />
+                        </template>
+                    </Button>
+                </div>
+            </InputController>
             <ModalTabBar
                 v-if="isModalVisible"
                 :items="tabs"
                 @close="onCloseModal" />
         </template>
-    </UploadFileNew>
+    </InputSolidStyle>
 </template>
 
 <script>
@@ -57,18 +57,21 @@ import {
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import UploadFileNew from '@Core/components/Inputs/UploadFile/UploadFileNew';
+import InputSolidStyle from '@Core/components/Inputs/InputSolidStyle';
 import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
 
+import InputController from '../InputController';
+
 export default {
     name: 'UploadImageFilesNew',
     components: {
-        UploadFileNew,
+        InputController,
         Button,
         IconAdd,
+        InputSolidStyle,
         ModalTabBar: () => import('@Core/components/Modal/ModalTabBar'),
         IconFile: () => import('@Core/components/Icons/Others/IconFile'),
         IconFilledClose: () => import('@Core/components/Icons/Window/IconFilledClose'),

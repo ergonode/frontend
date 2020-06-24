@@ -48,7 +48,7 @@ export const getGridData = ({
     });
 
 export const getAdvancedFiltersData = ({
-    $axios, $addAlert, path, params,
+    $axios, $store, $addAlert, path, params,
 }) => $axios
     .$get(path, {
         params,
@@ -60,29 +60,46 @@ export const getAdvancedFiltersData = ({
             length,
         } = columns;
         const advancedFilters = [];
+        const {
+            units,
+        } = $store.state.dictionaries;
 
         for (let i = 0; i < length; i += 1) {
-            if (columns[i].filter) {
-                const filter = {
-                    id: columns[i].id,
-                    attributeId: columns[i].element_id || '',
-                    languageCode: columns[i].language,
-                    type: columns[i].filter.type,
-                    label: columns[i].label,
-                    parameters: columns[i].parameters,
+            const {
+                id, element_id, language, filter, label, parameters,
+            } = columns[i];
+
+            if (filter) {
+                let mappedParameters = '';
+
+                if (parameters) {
+                    if (parameters.unit) {
+                        mappedParameters = units.find(unit => unit.id === parameters.unit).symbol;
+                    } else {
+                        mappedParameters = Object.values(parameters).join(', ');
+                    }
+                }
+
+                const mappedFilter = {
+                    id,
+                    attributeId: element_id || '',
+                    languageCode: language,
+                    type: filter.type,
+                    label,
+                    parameters: mappedParameters,
                     value: {
                         isEmptyRecord: false,
                     },
                 };
 
-                if (columns[i].filter.options) {
-                    filter.options = getMappedObjectOptions({
-                        options: columns[i].filter.options,
-                        languageCode: columns[i].language,
+                if (filter.options) {
+                    mappedFilter.options = getMappedObjectOptions({
+                        options: filter.options,
+                        languageCode: language,
                     });
                 }
 
-                advancedFilters.push(filter);
+                advancedFilters.push(mappedFilter);
             } else {
                 $addAlert({
                     type: ALERT_TYPE.ERROR,

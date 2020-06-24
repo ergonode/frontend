@@ -43,11 +43,11 @@ export const ROW_HEIGHT = {
 
 export const IMAGE_SCALING = {
     FIT_TO_SIZE: {
-        value: 'cover',
+        value: 'contain',
         description: 'Fit to size',
     },
     FILL_CONTAINER: {
-        value: 'fill',
+        value: 'cover',
         description: 'Fill container',
     },
 };

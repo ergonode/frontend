@@ -43,9 +43,9 @@
                         class="advanced-filter__value"
                         v-text="filterValue" />
                     <span
-                        v-if="parameter"
+                        v-if="filter.parameters"
                         class="advanced-filter__parameter"
-                        v-text="parameter" />
+                        v-text="filter.parameters" />
                 </template>
                 <IconArrowDropDown
                     class="advanced-filter__icon"
@@ -62,7 +62,6 @@
             @input="onValueChange"
             @clear="onClear"
             @apply="onApply"
-            @click.native.prevent
             @clickOutside="onClickOutside" />
     </div>
 </template>
@@ -135,15 +134,6 @@ export default {
             draggedElementOnGrid: state => state.draggedElementOnGrid,
             draggedElement: state => state.draggedElement,
         }),
-        parameter() {
-            if (!this.filter.parameters) return null;
-
-            const [
-                key,
-            ] = Object.keys(this.filter.parameters);
-
-            return this.filter.parameters[key];
-        },
         isFilterExists() {
             return this.draggedElement === this.filter.id
                 || (this.draggedElement && this.draggedElement.id === this.filter.id);
@@ -288,15 +278,11 @@ export default {
         onValueChange({
             key, value,
         }) {
-            if (value) {
-                this.$emit('update', {
-                    index: this.index,
-                    key,
-                    value,
-                });
-            } else {
-                this.$emit('clear', this.index);
-            }
+            this.$emit('update', {
+                index: this.index,
+                key,
+                value,
+            });
 
             if (this.filter.type === TYPES.SELECT) {
                 this.onApply();
@@ -441,7 +427,10 @@ export default {
             background-color: $GREEN;
             box-shadow: $ELEVATOR_HOLE;
 
-            #{$filter}__label, #{$filter}__placeholder, #{$filter}__value {
+            #{$filter}__label,
+            #{$filter}__placeholder,
+            #{$filter}__value,
+            #{$filter}__parameter {
                 color: $WHITE;
             }
         }

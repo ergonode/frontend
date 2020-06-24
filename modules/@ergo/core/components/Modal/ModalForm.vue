@@ -78,7 +78,7 @@ export default {
         overflow: auto;
 
         &__header {
-            height: 48px;
+            min-height: 48px;
             padding: 24px 24px 0;
             box-sizing: border-box;
 

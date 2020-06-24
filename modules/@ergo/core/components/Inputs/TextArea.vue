@@ -226,8 +226,8 @@ export default {
 
 <style lang="scss" scoped>
     .textarea {
-        flex: 1;
         z-index: $Z_INDEX_LVL_2;
+        flex: 1;
         outline: none;
         width: 100%;
         max-width: 100%;

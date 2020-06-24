@@ -6,8 +6,7 @@
     <CheckBox
         class="check-cell"
         :value="value"
-        :disabled="disabled"
-        @input="onSelect" />
+        :disabled="disabled" />
 </template>
 
 <script>
@@ -30,11 +29,6 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
-        },
-    },
-    methods: {
-        onSelect(value) {
-            this.$emit('input', value);
         },
     },
 };

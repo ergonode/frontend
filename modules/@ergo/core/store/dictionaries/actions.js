@@ -33,7 +33,9 @@ export default {
         }) => {
             const path = `${userLanguageCode}${requestPath}${isGrid ? '?view=list' : ''}`;
 
-            return this.app.$axios.$get(path).then((response) => {
+            return this.app.$axios.$get(path, {
+                useCache: isGrid,
+            }).then((response) => {
                 const value = isGrid ? response.collection : response;
 
                 commit(types.SET_CUSTOM_STATE_PROPERTY, {
@@ -62,7 +64,9 @@ export default {
         }) => name === dictionaryName);
         const path = `${userLanguageCode}${requestPath}${isGrid ? '?view=list' : ''}`;
 
-        return this.app.$axios.$get(path).then((response) => {
+        return this.app.$axios.$get(path, {
+            useCache: isGrid,
+        }).then((response) => {
             const value = isGrid ? response.collection : response;
 
             commit(types.SET_CUSTOM_STATE_PROPERTY, {

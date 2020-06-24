@@ -10,10 +10,7 @@
                 :columns="columns"
                 :data-count="filtered"
                 :data="data"
-                :collection-cell-binding="{
-                    imageColumn: 'default_image',
-                    descriptionColumn: 'default_label'
-                }"
+                :collection-cell-binding="collectionCellBinding"
                 :is-basic-filter="true"
                 :is-collection-layout="true"
                 :is-header-visible="true"
@@ -85,6 +82,12 @@ export default {
             return this.$hasAccess([
                 'PRODUCT_COLLECTION_UPDATE',
             ]);
+        },
+        collectionCellBinding() {
+            return {
+                imageColumn: `esa_default_image:${this.languageCode}`,
+                descriptionColumn: `esa_default_label:${this.languageCode}`,
+            };
         },
         smallSize() {
             return SIZE.SMALL;

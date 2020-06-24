@@ -118,6 +118,7 @@ export default {
                 data.bindings = this.bindingAttributesIds;
             }
 
+            await this.$setLoader('footerButton');
             await this.updateProduct({
                 id,
                 data,
@@ -126,6 +127,7 @@ export default {
                 id: this.id,
                 onSuccess: this.onDraftAppliedSuccess,
             });
+            await this.$removeLoader('footerButton');
         },
     },
     head() {

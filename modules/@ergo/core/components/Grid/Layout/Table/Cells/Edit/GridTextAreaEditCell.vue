@@ -4,18 +4,17 @@
  */
 <template>
     <GridActivatorEditCell>
+        <RichTextEditor
+            v-if="rte"
+            :style="{height: '134px'}"
+            :value="localValue"
+            :autofocus="true"
+            :type="underlineInputType"
+            @blur="onRTEValueChange" />
         <GridTextEditContentCell
+            v-else
             :style="{width: `${width + 8}px`}">
-            <RichTextEditor
-                v-if="rte"
-                :style="{height: '134px'}"
-                :value="localValue"
-                :autofocus="true"
-                :type="underlineInputType"
-                @blur="onRTEValueChange" />
             <TextArea
-                v-else
-
                 :style="{height: '134px'}"
                 v-model="localValue"
                 :autofocus="true"

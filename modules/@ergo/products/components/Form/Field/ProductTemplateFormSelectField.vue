@@ -121,9 +121,7 @@ export default {
             return typeof this.properties.options !== 'undefined';
         },
         options() {
-            if (!this.hasOptions) {
-                return [];
-            }
+            if (!this.hasOptions) return [];
 
             return getMappedObjectOptions({
                 options: this.properties.options,

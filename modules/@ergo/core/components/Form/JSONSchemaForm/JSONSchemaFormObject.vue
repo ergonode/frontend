@@ -8,7 +8,6 @@
             v-for="element in objectComponents"
             :key="element.key"
             :is="element.component"
-            :small="true"
             :value="value[element.key]"
             :schema="element.props"
             @input="onValueChange" />
@@ -17,6 +16,9 @@
 
 <script>
 import FormSection from '@Core/components/Form/Section/FormSection';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
@@ -72,6 +74,7 @@ export default {
                     props: {
                         isRequired: this.schema.required.indexOf(key) !== -1,
                         ...rest,
+                        size: SIZE.SMALL,
                     },
                     component: () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),
                 });

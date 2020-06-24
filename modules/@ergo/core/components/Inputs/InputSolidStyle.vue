@@ -93,7 +93,6 @@ export default {
         flex: 1;
         flex-direction: column;
         height: 100%;
-        padding-top: 8px;
         box-sizing: border-box;
 
         &__input {
@@ -103,18 +102,6 @@ export default {
             flex-direction: column;
             justify-content: center;
             box-sizing: border-box;
-
-            &::after {
-                position: absolute;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                right: 0;
-                z-index: $Z_INDEX_LVL_1;
-                border: $BORDER_2_GREEN;
-                opacity: 0;
-                content: "";
-            }
         }
 
         fieldset {
@@ -126,6 +113,19 @@ export default {
             border: $BORDER_1_GREY;
             box-sizing: border-box;
             transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+
+            &::after {
+                position: absolute;
+                top: -1px;
+                left: -1px;
+                bottom: -1px;
+                right: -1px;
+                z-index: $Z_INDEX_LVL_1;
+                border: $BORDER_2_GREEN;
+                opacity: 0;
+                will-change: opacity;
+                content: "";
+            }
         }
 
         &__details-label {
@@ -168,13 +168,13 @@ export default {
         }
 
         &--focused {
-            #{$solid}__input::after {
+            fieldset::after {
                 opacity: 1;
             }
         }
 
         &--error {
-            #{$solid}__input::after {
+            fieldset::after {
                 border-color: $RED;
                 opacity: 1;
             }

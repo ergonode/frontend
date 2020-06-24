@@ -7,13 +7,11 @@
         :row="rowIndex"
         :column="columnIndex"
         :locked="isLocked"
-        :copyable="false"
+        :copyable="isCopyable"
         :edit-key-code="32"
         :selected="isSelected"
         @edit="onValueChange">
-        <GridBoolEditCell
-            :value="localValue"
-            @input="onValueChange" />
+        <GridBoolEditCell :value="localValue" />
     </GridTableCell>
 </template>
 
@@ -57,6 +55,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        isCopyable: {
+            type: Boolean,
+            default: false,
+        },
         isSelected: {
             type: Boolean,
             default: false,
@@ -81,7 +83,9 @@ export default {
 
             if (this.localValue) {
                 this.$axios.$post(`${this.languageCode}/products/${this.id}/children/add-from-skus`, {
-                    skus: this.data.sku,
+                    skus: [
+                        this.data.sku,
+                    ],
                 }).then(() => {
                     this.$addAlert({
                         type: ALERT_TYPE.SUCCESS,

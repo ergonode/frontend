@@ -66,7 +66,7 @@ export default {
             'getRootOnLanguagesTree',
         ]),
         templateRowHeight() {
-            return 48;
+            return 40;
         },
         maxRows() {
             const heights = this.elements.map(({

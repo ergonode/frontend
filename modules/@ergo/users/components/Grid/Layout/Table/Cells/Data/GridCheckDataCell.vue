@@ -16,8 +16,7 @@
         <GridCheckEditCell
             :value="cellData.value"
             :suffix="data.suffix"
-            :disabled="isLocked"
-            @input="onValueChange" />
+            :disabled="isLocked" />
     </GridTableCell>
 </template>
 

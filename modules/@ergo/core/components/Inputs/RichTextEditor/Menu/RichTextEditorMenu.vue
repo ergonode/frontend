@@ -99,18 +99,18 @@ export default {
 
 <style lang="scss" scoped>
     .rich-text-editor-menu {
+        z-index: $Z_INDEX_LVL_2;
         display: grid;
         grid-auto-flow: column;
         grid-column-gap: 3px;
-        z-index: $Z_INDEX_LVL_2;
         padding: 3px;
         background-color: $WHITESMOKE;
         box-shadow: $ELEVATOR_2_DP;
         transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
 
         &--solid {
+            margin: 8px 0 4px;
             opacity: 0;
-            margin: 8px 0 4px 0;
         }
 
         &--underline {

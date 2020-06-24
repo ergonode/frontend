@@ -8,9 +8,12 @@ import {
 } from '@Core/models/stringWrapper';
 
 export default {
-    computed: {
-        associatedLabel() {
-            return getUUID();
-        },
+    data() {
+        return {
+            associatedLabel: '',
+        };
+    },
+    mounted() {
+        this.associatedLabel = getUUID();
     },
 };

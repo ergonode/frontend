@@ -9,21 +9,21 @@
         <div class="container">
             <TextField
                 :value="filter.value[operators.GREATER_OR_EQUAL]"
-                :input="{ type: 'number' }"
+                :input="{ type: 'number', max: filter.value[operators.SMALLER_OR_EQUAL] }"
                 placeholder="From"
-                :type="underlineInputType"
-                :alignment="centerAlignment"
-                :size="smallSize"
-                @input="(fromValue) => onValueChange(fromValue, operators.GREATER_OR_EQUAL)" />
+                underline
+                center-alignment
+                small
+                @input="onFromValueChange" />
             <span class="dash">-</span>
             <TextField
                 :value="filter.value[operators.SMALLER_OR_EQUAL]"
-                :input="{ type: 'number' }"
+                :input="{ type: 'number', min: filter.value[operators.GREATER_OR_EQUAL] }"
                 placeholder="To"
-                :type="underlineInputType"
-                :alignment="centerAlignment"
-                :size="smallSize"
-                @input="(toValue) => onValueChange(toValue, operators.SMALLER_OR_EQUAL)" />
+                underline
+                center-alignment
+                small
+                @input="onToValueChange" />
         </div>
     </GridAdvancedFilterBaseContent>
 </template>
@@ -34,11 +34,6 @@ import TextField from '@Core/components/Inputs/TextField';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
-import {
-    ALIGNMENT,
-    INPUT_TYPE,
-    SIZE,
-} from '@Core/defaults/theme';
 
 export default {
     name: 'GridAdvancedFilterRangeContent',
@@ -56,22 +51,31 @@ export default {
         operators() {
             return FILTER_OPERATOR;
         },
-        underlineInputType() {
-            return INPUT_TYPE.UNDERLINE;
-        },
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        centerAlignment() {
-            return ALIGNMENT.CENTER;
-        },
     },
     methods: {
-        onValueChange(value, operator) {
-            this.$emit('input', {
-                value,
-                key: operator,
-            });
+        onFromValueChange(value) {
+            const filterValue = this.filter.value[FILTER_OPERATOR.GREATER_OR_EQUAL];
+
+            if (+value <= +this.filter.value[FILTER_OPERATOR.SMALLER_OR_EQUAL]
+                || typeof filterValue === 'undefined'
+                || filterValue === '') {
+                this.$emit('input', {
+                    value,
+                    key: FILTER_OPERATOR.GREATER_OR_EQUAL,
+                });
+            }
+        },
+        onToValueChange(value) {
+            const filterValue = this.filter.value[FILTER_OPERATOR.SMALLER_OR_EQUAL];
+
+            if (+value >= +this.filter.value[FILTER_OPERATOR.GREATER_OR_EQUAL]
+                || typeof filterValue === 'undefined'
+                || filterValue === '') {
+                this.$emit('input', {
+                    value,
+                    key: FILTER_OPERATOR.SMALLER_OR_EQUAL,
+                });
+            }
         },
         onEmptyRecordChange(value) {
             this.$emit('emptyRecord', value);
