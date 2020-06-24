@@ -6,6 +6,7 @@
     <ActionBaseButton
         :options="options"
         :dismissible="dismissible"
+        :disabled="disabled"
         :fixed-content="fixedContent"
         @focus="onFocus"
         @hover="onHover"
@@ -17,7 +18,7 @@
                 :disabled="disabled">
                 <template #icon>
                     <!--
-                        @slot Append element - icon recommended
+                        @slot Icon element
                         @binding {string} color color of an element
                     -->
                     <slot
@@ -52,6 +53,10 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 
+/**
+ * `ActionIconButton` is an `ActionBaseButton` with a `IconButton` inside named slot `button`.
+ * It's implementing `IconButton` props.
+ */
 export default {
     name: 'ActionButton',
     components: {

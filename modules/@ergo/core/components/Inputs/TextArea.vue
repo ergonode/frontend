@@ -68,6 +68,10 @@ import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
 
+/**
+ * `TextArea` is a default textarea input component.
+ *  It might be configured with `prepend` and `append` slots.
+ */
 export default {
     name: 'TextArea',
     components: {

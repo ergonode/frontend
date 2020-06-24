@@ -3,16 +3,16 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['alert', typeClass]">
+    <div :class="classes">
         <Component
             :is="feedbackIconComponent"
             :fill-color="feedbackIconFillColor" />
         <span
             class="alert__title"
-            v-text="alert.message" />
+            v-text="message" />
         <Fab
             :theme="secondaryPlainTheme"
-            @click.native="removeAlert(alert)">
+            @click.native="removeAlert(id)">
             <template #icon="{ color }">
                 <IconClose :fill-color="color" />
             </template>
@@ -42,6 +42,10 @@ import {
     mapActions,
 } from 'vuex';
 
+/**
+ * `Alert` is a default feedback component for user on http response.
+ * Alerts are going to be displayed as default `FlashMessage`.
+ */
 export default {
     name: 'Alert',
     components: {
@@ -49,27 +53,52 @@ export default {
         IconClose,
     },
     props: {
-        alert: {
-            type: Object,
+        /**
+         * The unique ID
+         */
+        id: {
+            type: [
+                String,
+                Number,
+            ],
             required: true,
-            validator: value => Object.values(ALERT_TYPE).indexOf(value.type) !== -1,
+        },
+        /**
+         * The type of alert
+         * @values success, info, warning, error
+         */
+        type: {
+            type: String,
+            default: ALERT_TYPE.SUCCESS,
+            validator: value => Object.values(ALERT_TYPE).indexOf(value) !== -1,
+        },
+        /**
+         * The message
+         * @values small, regular
+         */
+        message: {
+            type: String,
+            default: '',
         },
     },
     computed: {
         secondaryPlainTheme() {
             return THEME.SECONDARY_PLAIN;
         },
-        typeClass() {
-            return `alert--${this.alert.type}`;
+        classes() {
+            return [
+                'alert',
+                `alert--${this.type}`,
+            ];
         },
         capitalizedAlertType() {
-            return toCapitalize(this.alert.type);
+            return toCapitalize(this.type);
         },
         feedbackIconComponent() {
             return () => import(`@Core/components/Icons/Feedback/Icon${this.capitalizedAlertType}`);
         },
         feedbackIconFillColor() {
-            switch (this.alert.type) {
+            switch (this.type) {
             case ALERT_TYPE.SUCCESS:
                 return GREEN;
             case ALERT_TYPE.ERROR:

@@ -6,6 +6,7 @@
     <ActionBaseButton
         :options="options"
         :dismissible="dismissible"
+        :disabled="disabled"
         :fixed-content="fixedContent"
         @focus="onFocus"
         @hover="onHover"
@@ -64,6 +65,10 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 
+/**
+ * `ActionButton` is an `ActionBaseButton` with a `Button` inside named slot `button`.
+ * It's implementing `Button` props.
+ */
 export default {
     name: 'ActionButton',
     components: {

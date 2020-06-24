@@ -3,9 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="action-button">
+    <div :class="classes">
         <div
-            class="action-button__activator"
+            class="action-base-button__activator"
             ref="activator"
             @click="onClick"
             @mouseenter="onMouseEnter"
@@ -81,6 +81,16 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * The disabled flag
+         */
+        disabled: {
+            type: Boolean,
+            default: true,
+        },
+        /**
+         * The dismissible flag is telling if we can toggle between active an inactive state
+         */
         dismissible: {
             type: Boolean,
             default: true,
@@ -93,6 +103,14 @@ export default {
         };
     },
     computed: {
+        classes() {
+            return [
+                'action-base-button',
+                {
+                    'action-base-button--disabled': this.disabled,
+                },
+            ];
+        },
         smallSize() {
             return SIZE.SMALL;
         },
@@ -144,11 +162,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .action-button {
+    .action-base-button {
         position: relative;
         display: flex;
         flex-direction: column;
         width: max-content;
+
+        &--disabled {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
 
         &__activator {
             position: relative;

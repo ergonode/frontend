@@ -41,6 +41,10 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 
+/**
+ * `Button` is a default component to display action in page.
+ * It may have any icon component inside `prepend` and `append` slots.
+ */
 export default {
     name: 'Button',
     props: {

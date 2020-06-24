@@ -1,4 +1,4 @@
-import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Preview, Props, Description } from '@storybook/addon-docs/blocks';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import { SIZE, THEME } from '@Core/defaults/theme';
@@ -7,7 +7,7 @@ import { SIZE, THEME } from '@Core/defaults/theme';
 
 # Button
 
-`Button` is a default component to display action in page. It may have any icon component inside `prepend` and `append` slots.
+<Description of={Button} />
 
 ```
     import Button from '@Core/components/Buttons/Button'
@@ -15,7 +15,11 @@ import { SIZE, THEME } from '@Core/defaults/theme';
 
 ### Theme
 
-<Preview>
+<Preview mdxSource={`
+   <Button title="PRIMARY" theme="${THEME.PRIMARY}" />
+    <!-- -->
+   <Button title="SECONDARY" theme="${THEME.SECONDARY}" />
+`}>
     <Story name="primary">
         {{
             components: { Button },
@@ -42,7 +46,11 @@ import { SIZE, THEME } from '@Core/defaults/theme';
 
 ### Disabled
 
-<Preview>
+<Preview mdxSource={`
+    <Button title="PRIMARY" theme="${THEME.PRIMARY}" :disabled="true" />
+    <!-- -->
+    <Button title="SECONDARY" theme="${THEME.SECONDARY}" :disabled="true" />
+`}>
     <Story name="disabled-primary">
         {{
             components: { Button },
@@ -69,7 +77,13 @@ import { SIZE, THEME } from '@Core/defaults/theme';
 
 ### Size
 
-<Preview>
+<Preview mdxSource={`
+    <Button title="PRIMARY" theme="${THEME.PRIMARY}" size="${SIZE.REGULAR}" />
+    <!-- -->
+    <Button title="PRIMARY" theme="${THEME.PRIMARY}" size="${SIZE.SMALL}" />
+    <!-- -->
+    <Button title="PRIMARY" theme="${THEME.PRIMARY}" size="${SIZE.TINY}" />
+`}>
     <Story name="regular">
         {{
             components: { Button },
@@ -116,7 +130,28 @@ import { SIZE, THEME } from '@Core/defaults/theme';
 
 ### Slots
 
-<Preview>
+<Preview mdxSource={`
+    <Button title="APPEND">
+        <template #append="{ color }">
+            <IconAdd :fill-color="color" />
+        </template>
+    </Button>
+    <!-- -->
+    <Button title="PREPEND">
+        <template #prepend="{ color }">
+            <IconAdd :fill-color="color" />
+        </template>
+    </Button>
+    <!-- -->
+    <Button title="APPEND | PREPEND">
+        <template #append="{ color }">
+            <IconAdd :fill-color="color" />
+        </template>
+        <template #prepend="{ color }">
+            <IconAdd :fill-color="color" />
+        </template>
+    </Button>
+`}>
     <Story name="append">
         {{
             components: { Button, IconAdd },

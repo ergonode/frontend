@@ -34,6 +34,10 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 
+/**
+ * `Fab` is a default component to display action in page.
+ * It may have any icon component inside `icon` slot.
+ */
 export default {
     name: 'Fab',
     props: {

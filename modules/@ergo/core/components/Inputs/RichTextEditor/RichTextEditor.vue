@@ -290,7 +290,7 @@ export default {
             outline: unset;
             font: $FONT_MEDIUM_14_20;
 
-            p.is-editor-empty:first-child::before {
+            p.is-editor-empty:nth-child(1)::before {
                 float: left;
                 height: 0;
                 opacity: 0.4;

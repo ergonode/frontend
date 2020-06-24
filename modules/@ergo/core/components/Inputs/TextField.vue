@@ -18,6 +18,9 @@
             <InputController
                 ref="activator"
                 :size="size">
+                <!--
+                    @slot Prepend element - icon recommended
+                -->
                 <slot name="prepend" />
                 <input
                     :id="associatedLabel"
@@ -44,6 +47,9 @@
                     :error="isError"
                     :label="label" />
                 <template #append>
+                    <!--
+                        @slot Append element - icon recommended
+                    -->
                     <slot name="append" />
                     <ErrorHint
                         v-if="isError"
@@ -52,6 +58,9 @@
             </InputController>
         </template>
         <template #details>
+            <!--
+                @slot Details element - text recommended
+            -->
             <slot name="details" />
         </template>
     </Component>
@@ -70,6 +79,10 @@ import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
 
+/**
+ * `TextField` is a default text input component.
+ *  It might be configured with `prepend` and `append` slots.
+ */
 export default {
     name: 'TextField',
     components: {
@@ -83,7 +96,6 @@ export default {
     props: {
         /**
          * The input HTML attributes
-         * @values
          */
         input: {
             type: Object,
@@ -91,6 +103,10 @@ export default {
                 type: 'text',
             }),
         },
+        /**
+         * The size of the input
+         * @values small, regular
+         */
         size: {
             type: String,
             default: SIZE.REGULAR,
@@ -99,16 +115,26 @@ export default {
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
         },
+        /**
+         * The alignment of text inside input
+         */
         alignment: {
             type: String,
             default: ALIGNMENT.LEFT,
             validator: value => Object.values(ALIGNMENT).indexOf(value) !== -1,
         },
+        /**
+         * The style type
+         * @values solid, underline
+         */
         type: {
             type: String,
             default: INPUT_TYPE.SOLID,
             validator: value => Object.values(INPUT_TYPE).indexOf(value) !== -1,
         },
+        /**
+         * The value of the input
+         */
         value: {
             type: [
                 String,
@@ -116,30 +142,51 @@ export default {
             ],
             default: null,
         },
+        /**
+         * The floating label
+         */
         label: {
             type: String,
             default: null,
         },
+        /**
+         * The placeholder
+         */
         placeholder: {
             type: String,
             default: null,
         },
+        /**
+         * The error messages
+         */
         errorMessages: {
             type: String,
             default: '',
         },
+        /**
+         * The hint
+         */
         hint: {
             type: String,
             default: '',
         },
+        /**
+         * The required flag
+         */
         required: {
             type: Boolean,
             default: false,
         },
+        /**
+         * The autofocus flag
+         */
         autofocus: {
             type: Boolean,
             default: false,
         },
+        /**
+         * The disabled flag
+         */
         disabled: {
             type: Boolean,
             default: false,
