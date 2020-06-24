@@ -10,7 +10,9 @@
             <Alert
                 v-for="alert in alerts"
                 :key="alert.id"
-                :alert="alert" />
+                :id="alert.id"
+                :type="alert.type"
+                :message="alert.message" />
         </TransitionGroup>
     </div>
 </template>
