@@ -26,7 +26,6 @@
 import { mapState } from 'vuex';
 import { TYPES } from '@Attributes/defaults/attributes';
 import { getGridData } from '@Core/services/grid/getGridData.service';
-import { getParsedFilters } from '@Core/models/mappers/gridDataMapper';
 import { DATA_LIMIT } from '@Core/defaults/grid';
 import { PRODUCT_TYPE } from '@Products/defaults';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
@@ -163,7 +162,7 @@ export default {
                 offset,
                 limit,
                 extended: true,
-                filter: `${getParsedFilters(filters, [])},esa_product_type:${this.languageCode}=${PRODUCT_TYPE.SIMPLE_PRODUCT}`,
+                filter: `esa_product_type:${this.languageCode}=${PRODUCT_TYPE.SIMPLE_PRODUCT}`,
                 columns: `esa_default_image:${this.languageCode},esa_default_label:${this.languageCode},${this.attributeCodes},sku,esa_template:${this.languageCode}`,
             };
 
