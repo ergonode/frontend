@@ -9,6 +9,7 @@
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
+                    :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
                     solid
                     required
@@ -19,6 +20,7 @@
                     hint="Product collection code must be unique"
                     @input="setCode" />
                 <TranslationLazySelect
+                    :data-cy="dataCyGenerator(typeIdFieldKey)"
                     :value="type"
                     solid
                     required
@@ -75,6 +77,9 @@ export default {
             return getCollectionTypesOptions().then(response => response.default(
                 { $axios: this.$axios, $store: this.$store },
             ));
+        },
+        dataCyGenerator(key) {
+            return `collection-${key}`;
         },
     },
 };

@@ -30,9 +30,11 @@
 </template>
 
 <script>
+import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'CheckBox',
+    mixins: [associatedLabelMixin],
     props: {
         value: {
             type: [Array, Boolean, Number],
@@ -46,11 +48,6 @@ export default {
             type: String,
             default: '',
         },
-    },
-    data() {
-        return {
-            associatedLabel: '',
-        };
     },
     computed: {
         checkValue: {
@@ -72,7 +69,6 @@ export default {
     },
     mounted() {
         this.setIndeterminateState();
-        this.associatedLabel = `checkbox-${this._uid}`;
     },
     methods: {
         setIndeterminateState() {

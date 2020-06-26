@@ -78,7 +78,7 @@ export default {
         TemplateGridDraggableLayer,
         TemplateGridPlaceholderItem,
         LayoutElement,
-        VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
+        VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
         SectionTemplateModalForm: () => import('@Templates/components/Modals/SectionTemplateModalForm'),
         AttributeElementContent: () => import('@Templates/components/Template/ProductDesigner/AttributeElementContent'),
         SectionElementContent: () => import('@Templates/components/Template/ProductDesigner/SectionElementContent'),

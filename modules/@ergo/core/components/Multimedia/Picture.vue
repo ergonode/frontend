@@ -19,7 +19,6 @@
 <script>
 import { mapActions } from 'vuex';
 import { getImageData } from '@Core/models/multimedia';
-import { WHITESMOKE } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'Picture',
@@ -39,20 +38,16 @@ export default {
     },
     data() {
         return {
-            isPlaceholder: false,
             observer: null,
+            cancelToken: null,
+            isLoading: true,
         };
     },
     computed: {
         imageStyle() {
-            return this.isPlaceholder
-                ? {
-                    backgroundColor: WHITESMOKE,
-                    objectFit: 'none',
-                }
-                : {
-                    objectFit: this.objectFit,
-                };
+            return {
+                objectFit: this.isLoading ? 'unset' : this.objectFit,
+            };
         },
     },
     watch: {
@@ -72,6 +67,9 @@ export default {
         this.observer.observe(this.$el);
     },
     beforeDestroy() {
+        if (this.cancelToken) {
+            this.cancelToken.cancel();
+        }
         this.observer.disconnect();
     },
     methods: {
@@ -79,22 +77,29 @@ export default {
             'onError',
         ]),
         getImageById() {
-            this.isPlaceholder = true;
+            this.cancelToken = this.$axios.CancelToken.source();
+
             this.$axios.$get(`multimedia/${this.imageId}`, {
+                useCache: true,
+                cancelToken: this.cancelToken.token,
                 responseType: 'arraybuffer',
-            }).then(response => this.onSuccess(response)).catch(this.imageLoadOnError);
+            })
+                .then(response => this.onSuccess(response))
+                .catch(this.imageLoadOnError);
         },
         onSuccess(response) {
             if (this.$refs.img) {
                 this.$refs.img.src = getImageData(response);
             }
-            this.isPlaceholder = false;
+
+            this.isLoading = false;
         },
         imageLoadOnError() {
-            this.isPlaceholder = true;
             if (this.$refs.img) {
                 this.$refs.img.src = require('@Core/assets/images/placeholders/image_error.svg'); // eslint-disable-line global-require, import/no-dynamic-require
             }
+
+            this.isLoading = false;
         },
     },
 };

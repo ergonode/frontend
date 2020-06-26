@@ -55,7 +55,7 @@ describe('AttributeTypes/getParamsOptionsForType', () => {
         ['PRICE', data.currencies],
         ['UNIT', data.units],
         ['DATE', data.dateFormats],
-        ['OTHER_TYPE', []],
+        ['OTHER_TYPE', {}],
 
     ])(
         ' Set type (%s) and get params options (%s)',

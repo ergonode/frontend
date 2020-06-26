@@ -59,7 +59,7 @@ import fetchListGroupDataMixin from '@Core/mixins/list/fetchListGroupDataMixin';
 export default {
     name: 'AttributesListTab',
     components: {
-        VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
+        VerticalTabBarListWrapper: () => import('@Core/components/TabBar/VerticalTabBarListWrapper'),
         List: () => import('@Core/components/List/List'),
         ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
         AttributesListGroup: () => import('@Attributes/components/Lists/AttributesListGroup'),
@@ -87,9 +87,7 @@ export default {
             user: state => state.user,
         }),
         ...mapState('core', {
-            languagePrivilegesDefaultCode: state => state.languagePrivilegesDefaultCode,
-        }),
-        ...mapState('dictionaries', {
+            defaultLanguageCodeByPrivileges: state => state.defaultLanguageCodeByPrivileges,
             languagesTree: state => state.languagesTree,
         }),
         languageGroups() {
@@ -111,17 +109,19 @@ export default {
             return this.$hasAccess(['ATTRIBUTE_UPDATE']) && languagePrivileges[code].read;
         },
         languageOptions() {
-            return Object.values(this.languagesTree).map(language => ({
+            const { languagePrivileges } = this.user;
+
+            return this.languagesTree.map(language => ({
                 ...language,
                 key: language.code,
                 value: language.name,
-                disabled: !language.privileges.read,
+                disabled: !languagePrivileges[language.code].read,
             }));
         },
     },
     created() {
         this.language = this.languageOptions
-            .find(languegeCode => languegeCode.code === this.languagePrivilegesDefaultCode);
+            .find(languegeCode => languegeCode.code === this.defaultLanguageCodeByPrivileges);
     },
     beforeDestroy() {
         this.setDisabledElements({});

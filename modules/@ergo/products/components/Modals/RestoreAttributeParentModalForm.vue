@@ -9,6 +9,7 @@
         <template #body>
             <RestoreForm
                 :elements="elements"
+                :language="language"
                 @update="updateRestoredElement" />
         </template>
         <template #footer>
@@ -37,7 +38,7 @@ export default {
     components: {
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
         Button: () => import('@Core/components/Buttons/Button'),
-        RestoreForm: () => import('@Products/components/Forms/RestoreForm'),
+        RestoreForm: () => import('@Products/components/Form/RestoreForm'),
     },
     props: {
         language: {

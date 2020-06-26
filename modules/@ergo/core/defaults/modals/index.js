@@ -8,3 +8,6 @@ export const MODAL_ACTION = {
     REMOVE: 'REMOVE',
     UPDATE: 'UPDATE',
 };
+export const MODAL_TYPE = {
+    GLOBAL_CONFIRM_MODAL: 'GLOBAL_CONFIRM_MODAL',
+};

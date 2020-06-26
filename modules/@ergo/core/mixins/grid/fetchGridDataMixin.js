@@ -21,38 +21,38 @@ export default function ({ path }) {
                 default: false,
             },
         },
-        async asyncData({
-            app, store, params, route,
-        }) {
+        async fetch() {
             const gridParams = {
                 offset: 0,
                 limit: DATA_LIMIT,
                 extended: true,
             };
 
-            const columnsConfig = app.$cookies.get(`GRID_CONFIG:${route.name}`);
+            const columnsConfig = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
 
             if (columnsConfig) {
                 gridParams.columns = `${columnsConfig},_links`;
+            } else if (path === 'products') {
+                gridParams.columns = `index,sku,_links,esa_default_image:${this.languageCode},esa_default_label:${this.languageCode}`;
             }
 
             let dynamicPath = path;
 
-            Object.keys(params).forEach((key) => {
+            Object.keys(this.$route.params).forEach((key) => {
                 if (path.includes(key)) {
-                    dynamicPath = dynamicPath.replace(`_${key}`, params[key]);
+                    dynamicPath = dynamicPath.replace(`_${key}`, this.$route.params[key]);
                 }
             });
 
             const requests = [
                 getGridData({
-                    $axios: app.$axios,
-                    path: `${store.state.authentication.user.language}/${dynamicPath}`,
+                    $axios: this.$axios,
+                    path: `${this.languageCode}/${dynamicPath}`,
                     params: gridParams,
                 }),
             ];
 
-            const advFiltersIds = app.$cookies.get(ADV_FILTERS_IDS);
+            const advFiltersIds = this.$cookies.get(ADV_FILTERS_IDS);
 
             if (advFiltersIds && path === 'products') {
                 const filtersParams = {
@@ -62,14 +62,16 @@ export default function ({ path }) {
                 };
 
                 requests.push(getAdvancedFiltersData({
-                    $axios: app.$axios,
-                    path: `${store.state.authentication.user.language}/${dynamicPath}`,
+                    $axios: this.$axios,
+                    $store: this.$store,
+                    $addAlert: this.$addAlert,
+                    path: `${this.languageCode}/${dynamicPath}`,
                     params: filtersParams,
                 }));
             }
 
             const [gridData, advancedFilters = []] = await Promise.all(requests);
-            const { columns } = gridData;
+            const { columns, data, filtered } = gridData;
             const disabledElements = {};
             const setDisabledElement = ({ languageCode, attributeId }) => {
                 if (attributeId) {
@@ -97,15 +99,18 @@ export default function ({ path }) {
                 setDisabledElement({ languageCode, attributeId });
             });
 
-            store.dispatch('list/setDisabledElements', disabledElements);
+            this.setDisabledElements(disabledElements);
 
-            return {
-                ...gridData,
-                advancedFilters,
-            };
+            this.columns = columns;
+            this.data = data;
+            this.filtered = filtered;
+            this.advancedFilters = advancedFilters;
         },
         data() {
             return {
+                data: {},
+                columns: [],
+                filtered: 0,
                 advancedFilters: [],
                 localParams: {
                     offset: 0,
@@ -133,6 +138,7 @@ export default function ({ path }) {
         methods: {
             ...mapActions('list', [
                 'setDisabledElement',
+                'setDisabledElements',
             ]),
             getGridData({
                 offset, limit, filters, sortedColumn,
@@ -181,12 +187,10 @@ export default function ({ path }) {
                 }).then(({
                     columns,
                     data,
-                    count,
                     filtered,
                 }) => {
                     this.columns = columns;
                     this.data = data;
-                    this.count = count;
                     this.filtered = filtered;
 
                     this.$emit('fetched');
@@ -207,26 +211,13 @@ export default function ({ path }) {
                     }
                 });
             },
-            dropFilterAtIndex({ data, index }) {
-                try {
-                    const filter = JSON.parse(data);
+            dropFilter(data) {
+                const [code, languageCode] = data.split(':');
 
-                    this.updateFilterAtIndex({
-                        index,
-                        filter,
-                    });
-                } catch (e) {
-                    const [code, languageCode] = data.split(':');
-
-                    this.getAttributeFilter({
-                        index,
-                        languageCode,
-                        code,
-                    });
-                }
-            },
-            insertFilterAtIndex({ index, filter }) {
-                this.advancedFilters = insertValueAtIndex([...this.advancedFilters], filter, index);
+                this.getAttributeFilter({
+                    languageCode,
+                    code,
+                });
             },
             swapFiltersPosition({ from, to }) {
                 this.advancedFilters = [
@@ -246,27 +237,14 @@ export default function ({ path }) {
                 this.advancedFilters = [];
                 this.$cookies.remove(ADV_FILTERS_IDS);
             },
-            setGhostFilterAtIndex({ index, isGhost }) {
-                this.advancedFilters[index].isGhost = isGhost;
+            updateFilterAtIndex({ index, filter }) {
+                this.advancedFilters[index] = filter;
                 this.advancedFilters = [...this.advancedFilters];
-            },
-            clearAllFilters() {
-                const { length } = this.advancedFilters;
-
-                for (let i = 0; i < length; i += 1) {
-                    this.advancedFilters[i].value = {
-                        isEmptyRecord: false,
-                    };
-                }
             },
             clearFilterAtIndex(index) {
                 this.advancedFilters[index].value = {
                     isEmptyRecord: false,
                 };
-            },
-            updateFilterAtIndex({ index, filter }) {
-                this.advancedFilters[index] = filter;
-                this.advancedFilters = [...this.advancedFilters];
             },
             updateFilterValueAtIndex({ index, key, value }) {
                 this.advancedFilters[index].value = {
@@ -274,7 +252,8 @@ export default function ({ path }) {
                     [key]: value,
                 };
             },
-            async getAttributeFilter({ index, languageCode, code }) {
+            async getAttributeFilter({ languageCode, code }) {
+                const index = 0;
                 const attributeCode = `${code}:${languageCode}`;
                 const params = {
                     limit: 1,
@@ -284,28 +263,37 @@ export default function ({ path }) {
 
                 const advancedFilters = await getAdvancedFiltersData({
                     $axios: this.$axios,
+                    $store: this.$store,
+                    $addAlert: this.$addAlert,
                     path: `${languageCode}/${path}`,
                     params,
                 });
 
                 const [advancedFilter] = advancedFilters;
 
-                this.insertFilterAtIndex({
-                    index,
-                    filter: advancedFilter,
-                });
-                try {
-                    insertCookieAtIndex({
-                        cookies: this.$cookies,
-                        cookieName: ADV_FILTERS_IDS,
+                if (advancedFilter) {
+                    this.advancedFilters = insertValueAtIndex(
+                        [...this.advancedFilters],
+                        advancedFilter,
                         index,
-                        data: attributeCode,
-                    });
-                } catch {
-                    this.$cookies.set(ADV_FILTERS_IDS, attributeCode);
-                }
+                    );
 
-                this.disableListElement({ languageCode, attributeId: advancedFilter.attributeId });
+                    try {
+                        insertCookieAtIndex({
+                            cookies: this.$cookies,
+                            cookieName: ADV_FILTERS_IDS,
+                            index,
+                            data: attributeCode,
+                        });
+                    } catch {
+                        this.$cookies.set(ADV_FILTERS_IDS, attributeCode);
+                    }
+
+                    this.disableListElement({
+                        languageCode,
+                        attributeId: advancedFilter.attributeId,
+                    });
+                }
             },
             disableListElement({ languageCode, attributeId }) {
                 if (this.disabledElements[languageCode]

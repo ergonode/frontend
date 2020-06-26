@@ -14,6 +14,10 @@ export const ROW_INTERVALS = [
     25, 50, 100, 200,
 ];
 
+export const GRID_ACTIONS = [
+    'edit', 'delete',
+];
+
 export const COLUMN_WIDTH = {
     SELECT_ROW: '40px',
     ACTION: 'max-content',
@@ -34,8 +38,8 @@ export const ROW_HEIGHT = {
 };
 
 export const IMAGE_SCALING = {
-    FIT_TO_SIZE: { value: 'cover', description: 'Fit to size' },
-    FILL_CONTAINER: { value: 'fill', description: 'Fill container' },
+    FIT_TO_SIZE: { value: 'contain', description: 'Fit to size' },
+    FILL_CONTAINER: { value: 'cover', description: 'Fill container' },
 };
 
 export const COLUMNS_NUMBER = {

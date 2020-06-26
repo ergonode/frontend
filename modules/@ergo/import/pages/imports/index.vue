@@ -19,13 +19,13 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs">
-            <template #item>
-                <HorizontalTabBarContent
+        <HorizontalRoutingTabBar :items="tabs">
+            <template #content>
+                <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
                     @fetched="onFetchedGridData" />
             </template>
-        </HorizontalTabBar>
+        </HorizontalRoutingTabBar>
         <CreateImportProfileModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
@@ -45,18 +45,18 @@ export default {
     components: {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
-        HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
         CreateImportProfileModalForm: () => import('@Import/components/Modals/CreateImportProfileModalForm'),
         Button,
         IconAdd,
     },
     mixins: [gridModalMixin],
     computed: {
-        tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
         smallSize() {
             return SIZE.SMALL;
+        },
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },
     },
     head() {

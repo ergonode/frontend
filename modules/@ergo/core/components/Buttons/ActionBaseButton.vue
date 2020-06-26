@@ -28,7 +28,7 @@
                             <slot
                                 name="option"
                                 :option="option">
-                                <ListElementDescription>
+                                <ListElementDescription v-if="isOptionsValid">
                                     <ListElementTitle
                                         :title="option"
                                         :small="true" />
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { isObject } from '@Core/models/objectWrapper';
 import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
 import List from '@Core/components/List/List';
 import ListElement from '@Core/components/List/ListElement';
@@ -85,6 +86,11 @@ export default {
             isFocused: false,
             isHovered: false,
         };
+    },
+    computed: {
+        isOptionsValid() {
+            return this.options.length && !isObject(this.options[0]);
+        },
     },
     watch: {
         isFocused() {

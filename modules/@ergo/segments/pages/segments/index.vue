@@ -9,6 +9,7 @@
             :is-read-only="$isReadOnly('SEGMENT')">
             <template #mainAction>
                 <Button
+                    data-cy="new-segment"
                     title="NEW SEGMENT"
                     :size="smallSize"
                     :disabled="!$hasAccess(['SEGMENT_CREATE'])"
@@ -19,13 +20,13 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs">
-            <template #item>
-                <HorizontalTabBarContent
+        <HorizontalRoutingTabBar :items="tabs">
+            <template #content>
+                <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
                     @fetched="onFetchedGridData" />
             </template>
-        </HorizontalTabBar>
+        </HorizontalRoutingTabBar>
         <CreateSegmentModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
@@ -45,7 +46,7 @@ export default {
     components: {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
-        HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
         CreateSegmentModalForm: () => import('@Segments/components/Modals/CreateSegmentModalForm'),
         Button,
         IconAdd,

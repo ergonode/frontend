@@ -42,9 +42,11 @@
                 <div
                     class="upload-file__placeholder"
                     v-if="!value">
-                    <img
-                        :src="require('@Core/assets/images/placeholders/upload_file.svg')"
-                        alt="Place to drag or browse file">
+                    <IconUploadFile
+                        :fill-color="greenColor"
+                        view-box="0 0 48 32"
+                        width="48"
+                        height="32" />
                     <span class="upload-file__description">
                         Drag the file here or browse
                     </span>
@@ -77,6 +79,7 @@ import { THEME } from '@Core/defaults/theme';
 import {
     GRAPHITE, GREEN, RED, WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'UploadFile',
@@ -84,7 +87,9 @@ export default {
         Fab: () => import('@Core/components/Buttons/Fab'),
         IconDelete: () => import('@Core/components/Icons/Actions/IconDelete'),
         IconRefresh: () => import('@Core/components/Icons/Actions/IconRefresh'),
+        IconUploadFile: () => import('@Core/components/Icons/Actions/IconUploadFile'),
     },
+    mixins: [associatedLabelMixin],
     props: {
         label: {
             type: String,
@@ -122,7 +127,6 @@ export default {
     data() {
         return {
             deleteIconFillColor: GRAPHITE,
-            associatedLabel: '',
         };
     },
     computed: {
@@ -135,12 +139,12 @@ export default {
         redColor() {
             return RED;
         },
+        greenColor() {
+            return GREEN;
+        },
         whiteColor() {
             return WHITE;
         },
-    },
-    mounted() {
-        this.associatedLabel = `input-${this._uid}`;
     },
     methods: {
         onMouseEnter() {

@@ -130,7 +130,8 @@ export default {
             });
         },
         onMouseDown() {
-            if (this.editKeyCode !== 32 && !this.isEditing) {
+            if ((this.editKeyCode !== 32 && !this.isEditing)
+                || this.editKeyCode === 32) {
                 this.isEditing = false;
                 this.$emit('edit');
             }

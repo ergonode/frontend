@@ -23,7 +23,7 @@
                         ref="linkInput"
                         @keydown.esc="onHideLinkMenu">
                     <IconButton
-                        :size="smallSize"
+                        :size="tinySize"
                         :theme="secondaryTheme"
                         @click.native="onHideLinkMenu">
                         <template #icon>
@@ -33,13 +33,10 @@
                 </form>
                 <Button
                     v-else
-                    :title="isActive.link() ? 'Update Link' : 'Add Link'"
-                    :size="smallSize"
-                    :theme="secondaryTheme"
-                    @click.native="onShowLinkMenu(getMarkAttrs)">
-                    <template #append="{ color }">
-                        <IconLink :fill-color="color" />
-                    </template>
+                    class="menububble__button"
+                    @click="onShowLinkMenu(getMarkAttrs)">
+                    <IconLink :fill-color="whiteColor" />
+                    <span>{{ isActive.link() ? 'Update Link' : 'Add Link' }}</span>
                 </Button>
             </div>
         </template>
@@ -50,8 +47,8 @@
 import {
     EditorMenuBubble,
 } from 'tiptap';
+import { WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 import { SIZE, THEME } from '@Core/defaults/theme';
-import Button from '@Core/components/Buttons/Button';
 import IconButton from '@Core/components/Buttons/IconButton';
 import IconLink from '@Core/components/Icons/Editor/IconLink';
 import IconClose from '@Core/components/Icons/Window/IconClose';
@@ -62,7 +59,6 @@ export default {
         EditorMenuBubble,
         IconLink,
         IconClose,
-        Button,
         IconButton,
     },
     props: {
@@ -78,8 +74,11 @@ export default {
         };
     },
     computed: {
-        smallSize() {
-            return SIZE.SMALL;
+        whiteColor() {
+            return WHITE;
+        },
+        tinySize() {
+            return SIZE.TINY;
         },
         secondaryTheme() {
             return THEME.SECONDARY;
@@ -111,7 +110,6 @@ export default {
         z-index: $Z_INDEX_MODAL;
         display: flex;
         padding: 4px;
-        background-color: $BLACK;
         transition:
             opacity,
             visibility 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
@@ -127,6 +125,24 @@ export default {
         &__form {
             display: flex;
             align-items: center;
+            background-color: $GRAPHITE_COAL;
+        }
+
+        &__button {
+            display: flex;
+            align-items: center;
+            height: 26px;
+            border: none;
+            padding: 0 8px;
+            box-sizing: border-box;
+            background-color: $GRAPHITE_COAL;
+            color: $WHITE;
+            font: $FONT_SEMI_BOLD_10_12;
+            cursor: pointer;
+
+            & > span {
+                margin-left: 4px;
+            }
         }
 
         &__input {

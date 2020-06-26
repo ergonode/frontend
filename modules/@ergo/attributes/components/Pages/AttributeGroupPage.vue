@@ -10,6 +10,7 @@
             :is-read-only="$isReadOnly('ATTRIBUTE')">
             <template #mainAction>
                 <Button
+                    data-cy="delete-attribute-group"
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE GROUP"
@@ -21,9 +22,10 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs" />
+        <HorizontalRoutingTabBar :items="tabs" />
         <Footer flex-end>
             <Button
+                data-cy="save-attribute-group"
                 title="SAVE GROUP"
                 :size="smallSize"
                 :disabled="$isLoading('footerButton')"

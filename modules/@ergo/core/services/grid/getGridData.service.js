@@ -7,13 +7,14 @@ import {
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
 import { getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export const getGridData = ({ $axios, path, params }) => $axios
     .$get(path, { params })
     .then(({
         collection,
         columns,
-        info: { count, filtered },
+        info: { filtered },
     }) => {
         const visibleColumns = columns.filter(({ visible }) => visible);
         const sortedColumns = params.columns
@@ -28,41 +29,60 @@ export const getGridData = ({ $axios, path, params }) => $axios
         return {
             columns: sortedColumns,
             data: mappedData,
-            count,
             filtered,
         };
     });
 
-export const getAdvancedFiltersData = ({ $axios, path, params }) => $axios
+export const getAdvancedFiltersData = ({
+    $axios, $store, $addAlert, path, params,
+}) => $axios
     .$get(path, { params })
     .then(({
         columns,
     }) => {
         const { length } = columns;
         const advancedFilters = [];
+        const { units } = $store.state.dictionaries;
 
         for (let i = 0; i < length; i += 1) {
-            const filter = {
-                id: columns[i].id,
-                attributeId: columns[i].element_id || '',
-                languageCode: columns[i].language,
-                type: columns[i].filter.type,
-                label: columns[i].label,
-                parameters: columns[i].parameters,
-                isGhost: false,
-                value: {
-                    isEmptyRecord: false,
-                },
-            };
+            const {
+                id, element_id, language, filter, label, parameters,
+            } = columns[i];
 
-            if (columns[i].filter && columns[i].filter.options) {
-                filter.options = getMappedObjectOptions({
-                    options: columns[i].filter.options,
-                    languageCode: columns[i].language,
-                });
+            if (filter) {
+                let mappedParameters = '';
+
+                if (parameters) {
+                    if (parameters.unit) {
+                        mappedParameters = units.find(unit => unit.id === parameters.unit).symbol;
+                    } else {
+                        mappedParameters = Object.values(parameters).join(', ');
+                    }
+                }
+
+                const mappedFilter = {
+                    id,
+                    attributeId: element_id || '',
+                    languageCode: language,
+                    type: filter.type,
+                    label,
+                    parameters: mappedParameters,
+                    value: {
+                        isEmptyRecord: false,
+                    },
+                };
+
+                if (filter.options) {
+                    mappedFilter.options = getMappedObjectOptions({
+                        options: filter.options,
+                        languageCode: language,
+                    });
+                }
+
+                advancedFilters.push(mappedFilter);
+            } else {
+                $addAlert({ type: ALERT_TYPE.ERROR, message: 'Attribute has no filter' });
             }
-
-            advancedFilters.push(filter);
         }
 
         return advancedFilters;

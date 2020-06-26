@@ -14,7 +14,7 @@
                 :is-centered-view="true"
                 :is-basic-filter="true"
                 @editRow="onEditRow"
-                @removeRow="onRemoveRow"
+                @removeRow="onRemoveUnit"
                 @fetchData="getGridData">
                 <template #actions>
                     <Button
@@ -39,6 +39,7 @@ import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/Re
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'UnitsSettingsGridTab',
@@ -63,6 +64,15 @@ export default {
         },
     },
     methods: {
+        ...mapActions('dictionaries', [
+            'getCurrentDictionary',
+        ]),
+        onRemoveUnit() {
+            Promise.all([
+                this.onRemoveRow(),
+                this.getCurrentDictionary({ dictionaryName: 'units' }),
+            ]);
+        },
         onEditRow(args) {
             const lastIndex = args.length - 1;
 

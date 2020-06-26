@@ -7,28 +7,21 @@
         <TitleBar
             title="Users activity logs"
             :is-read-only="$isReadOnly('USER')" />
-        <HorizontalTabBar :items="tabs" />
+        <HorizontalRoutingTabBar :items="tabs" />
     </Page>
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 
 export default {
     name: 'UsersTabs',
     components: {
-        HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
     },
     computed: {
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },

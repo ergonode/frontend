@@ -21,16 +21,26 @@
                 <ListPlaceholder
                     v-else
                     title="Nothing to see here"
-                    subtitle="Here you can see important notifications of product update"
+                    subtitle="This product has not been added to any collection"
                     :layout-orientation="horizontalOrientation"
-                    :bg-url="require('@Core/assets/images/placeholders/comments.svg')" />
+                    :bg-url="require('@Core/assets/images/placeholders/comments.svg')">
+                    <template #append>
+                        <Button
+                            class="navigate-to-collections-button"
+                            title="GO TO COLLECTIONS"
+                            :size="smallSize"
+                            @click.native="onNavigateToCollections" />
+                    </template>
+                </ListPlaceholder>
             </div>
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
-import { LayoutOrientation } from '@Core/defaults/layout';
+import { mapState } from 'vuex';
+import { SIZE } from '@Core/defaults/theme';
+import { LAYOUT_ORIENTATION } from '@Core/defaults/layout';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import ProductCollection from '@Products/components/ProductCollection/ProductCollection';
 import ProductCollectionItem from '@Products/components/ProductCollection/ProductCollectionItem';
@@ -43,33 +53,46 @@ export default {
         ProductCollectionItem,
         ExpandingCollection: () => import('@Core/components/ExpandingCollection/ExpandingCollection'),
         ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
+        Button: () => import('@Core/components/Buttons/Button'),
     },
-    async asyncData({ params, $axios, store }) {
-        const { collection: types } = await $axios.$get(`${store.state.authentication.user.language}/collections/type`);
-        const { collection: collections } = await $axios.$get(`${store.state.authentication.user.language}/products/${params.id}/collections`);
-
+    data() {
         return {
-            collections: collections.map(({
-                id, code, name, description, elements_count, type_id,
-            }) => {
-                const collectionType = types.find(type => type.id === type_id);
-                return {
-                    id,
-                    title: name || `#${code}`,
-                    subtitle: collectionType ? collectionType.name : '',
-                    description,
-                    itemsCount: elements_count,
-                    items: [],
-                };
-            }),
+            collections: [],
         };
     },
     computed: {
+        ...mapState('authentication', {
+            languageCode: state => state.user.language,
+        }),
         horizontalOrientation() {
-            return LayoutOrientation.HORIZONTAL;
+            return LAYOUT_ORIENTATION.HORIZONTAL;
+        },
+        smallSize() {
+            return SIZE.SMALL;
         },
     },
+    async created() {
+        const { collection: types } = await this.$axios.$get(`${this.languageCode}/collections/type`);
+        const { collection: collections } = await this.$axios.$get(`${this.languageCode}/products/${this.$route.params.id}/collections`);
+
+        this.collections = collections.map(({
+            id, code, name, description, elements_count, type_id,
+        }) => {
+            const collectionType = types.find(type => type.id === type_id);
+            return {
+                id,
+                title: name || `#${code}`,
+                subtitle: collectionType ? collectionType.name : '',
+                description,
+                itemsCount: elements_count,
+                items: [],
+            };
+        });
+    },
     methods: {
+        onNavigateToCollections() {
+            this.$router.push({ name: 'collections-grid' });
+        },
         fetchCollectionItems({ id, index }) {
             this.$axios.$get(`${this.$store.state.authentication.user.language}/collections/${id}/elements`).then(({ collection }) => {
                 this.collections[index].items = collection.map(({
@@ -91,5 +114,9 @@ export default {
         display: flex;
         align-items: center;
         padding: 24px;
+    }
+
+    .navigate-to-collections-button {
+        margin-top: 16px;
     }
 </style>

@@ -84,14 +84,19 @@
                     v-show="hasOptions"
                     key="attrHasOptions"
                     :disabled="isDisabledByPrivileges" />
+                <Toggler
+                    v-if="isTextArea"
+                    :value="parameter"
+                    label="Rich text content enabled"
+                    @input="setAttributeParameter" />
             </FormSection>
         </template>
     </Form>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { SCOPE } from '@Attributes/defaults/attributes';
+import { mapState, mapActions, mapGetters } from 'vuex';
+import { SCOPE, TYPES } from '@Attributes/defaults/attributes';
 import { toCapitalize } from '@Core/models/stringWrapper';
 import { getKeyByValue } from '@Core/models/objectWrapper';
 import {
@@ -109,6 +114,7 @@ export default {
         InfoHint: () => import('@Core/components/Hints/InfoHint'),
         TextField: () => import('@Core/components/Inputs/TextField'),
         Select: () => import('@Core/components/Inputs/Select/Select'),
+        Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
         TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
         Divider: () => import('@Core/components/Dividers/Divider'),
     },
@@ -127,14 +133,12 @@ export default {
         }),
         ...mapState('dictionaries', {
             attrTypes: state => state.attrTypes,
-            languagesTree: state => state.languagesTree,
         }),
-        languageRootCode() {
-            return Object.values(this.languagesTree)
-                .find(({ level }) => level === 0);
-        },
+        ...mapGetters('core', [
+            'getRootOnLanguagesTree',
+        ]),
         scopeHint() {
-            return `Global means the same attribute values for each language, inherited from the root language (${this.languageRootCode.name}). Option values can be translated, but cannot be changed in the product template.`;
+            return `Global means the same attribute values for each language, inherited from the root language (${this.getRootOnLanguagesTree.name}). Option values can be translated, but cannot be changed in the product template.`;
         },
         paramsLabel() {
             const paramsKey = getParamsKeyForType(this.typeKey);
@@ -147,6 +151,9 @@ export default {
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess(['ATTRIBUTE_UPDATE']))
             || (!this.isDisabled && !this.$hasAccess(['ATTRIBUTE_CREATE']));
+        },
+        isTextArea() {
+            return this.typeKey === TYPES.TEXT_AREA;
         },
         hasParams() {
             return hasParams(this.typeKey);
@@ -164,7 +171,7 @@ export default {
             return hasOptions(this.typeKey);
         },
         attributeTypeOptions() {
-            return Object.values(this.attrTypes);
+            return Object.values(this.attrTypes).sort();
         },
         attributeScopeOptions() {
             return Object.values(SCOPE);

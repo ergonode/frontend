@@ -26,7 +26,6 @@ export default {
     name: 'RolesGridTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        Grid: () => import('@Core/components/Grid/Grid'),
     },
     mixins: [fetchGridDataMixin({ path: 'roles' })],
     methods: {

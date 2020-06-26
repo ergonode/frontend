@@ -19,13 +19,11 @@
             :filters="advancedFilters"
             @layoutChange="onLayoutChange"
             @applySettings="onApplySettings"
-            @dropFilter="onDropFilterAtIndex"
+            @dropFilter="onDropFilter"
             @updateFilter="onUpdateFilterAtIndex"
             @removeFilter="onRemoveFilterAtIndex"
             @removeGhostFilter="onRemoveGhostFilterAtIndex"
-            @insertFilter="onInsertFilterAtIndex"
             @clearFilter="onClearFilterAtIndex"
-            @setGhostFilter="onSetGhostFilterAtIndex"
             @swapFilters="onSwapFiltersPosition"
             @applyFilter="emitFetchData"
             @removeAllFilters="onRemoveAll">
@@ -36,7 +34,16 @@
                 <slot name="configuration" />
             </template>
         </GridHeader>
-        <div class="grid__body">
+        <div
+            :class="[
+                'grid__body',
+                {
+                    'grid__body--disabled': isListElementDragging && isColumnExists,
+                }
+            ]">
+            <GridDropZone
+                v-show="isListElementDragging && !isColumnExists"
+                @drop="onDropColumn" />
             <GridTableLayout
                 v-if="isTableLayout"
                 :columns="columns"
@@ -57,7 +64,6 @@
                 @removeRow="onRemoveRow"
                 @removeColumn="onRemoveColumn"
                 @swapColumns="onSwapColumns"
-                @dropColumn="onDropColumn"
                 @insertColumn="onInsertColumn" />
             <GridCollectionLayout
                 v-else-if="isCollectionLayout && collectionData.length"
@@ -84,6 +90,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import {
     ROW_HEIGHT,
     GRID_LAYOUT,
@@ -92,6 +99,9 @@ import {
     COLUMNS_NUMBER,
     COLUMN_ACTIONS_ID,
 } from '@Core/defaults/grid';
+import {
+    insertCookieAtIndex,
+} from '@Core/models/cookies';
 
 export default {
     name: 'Grid',
@@ -102,6 +112,7 @@ export default {
         GridPlaceholder: () => import('@Core/components/Grid/GridPlaceholder'),
         GridPagination: () => import('@Core/components/Grid/Footer/GridPagination'),
         GridPageSelector: () => import('@Core/components/Grid/Footer/GridPageSelector'),
+        GridDropZone: () => import('@Core/components/Grid/GridDropZone'),
     },
     props: {
         columns: {
@@ -182,21 +193,29 @@ export default {
         };
     },
     computed: {
+        ...mapState('draggable', {
+            isListElementDragging: state => state.isListElementDragging,
+            draggedElement: state => state.draggedElement,
+        }),
+        isColumnExists() {
+            const draggedElIndex = this.columns.findIndex(
+                column => column.id === this.draggedElement,
+            );
+
+            return draggedElIndex !== -1;
+        },
         isTableLayout() {
             return this.layout === GRID_LAYOUT.TABLE;
         },
         maxPage() {
-            const result = Math.ceil(this.dataCount / this.maxRows);
-
-            return result > 0 ? result : 1;
+            return Math.ceil(this.dataCount / this.maxRows) || 1;
         },
         advancedFiltersValues() {
             const { length } = this.advancedFilters;
             const advancedFiltersValues = {};
 
             for (let i = 0; i < length; i += 1) {
-                if (!this.advancedFilters[i].isGhost
-                        && Object.keys(this.advancedFilters[i].value).length > 1) {
+                if (Object.keys(this.advancedFilters[i].value).length > 1) {
                     advancedFiltersValues[this.advancedFilters[i].id] = true;
                 }
             }
@@ -206,12 +225,14 @@ export default {
         collectionData() {
             const { imageColumn, descriptionColumn } = this.collectionCellBinding;
 
-            if (!(imageColumn && descriptionColumn) || !this.data[COLUMN_ACTIONS_ID]) {
+            if (!(imageColumn && descriptionColumn && this.data[descriptionColumn])) {
                 return [];
             }
 
             const collectionData = [];
-            const actionKeys = Object.keys(this.data[COLUMN_ACTIONS_ID]);
+            const actionKeys = this.data[COLUMN_ACTIONS_ID]
+                ? Object.keys(this.data[COLUMN_ACTIONS_ID])
+                : [];
 
             for (let i = 0; i < this.data[descriptionColumn].length; i += 1) {
                 const actions = {};
@@ -265,6 +286,12 @@ export default {
             this.$emit('removeRow', index);
         },
         onDropColumn(columnId) {
+            insertCookieAtIndex({
+                cookies: this.$cookies,
+                cookieName: `GRID_CONFIG:${this.$route.name}`,
+                index: this.isSelectColumn ? 1 : 0,
+                data: columnId,
+            });
             this.$emit('dropColumn', columnId);
         },
         onSwapColumns(payload) {
@@ -318,17 +345,12 @@ export default {
             this.$emit('removeAllFilters');
             this.emitFetchData();
         },
-        onDropFilterAtIndex(payload) {
+        onDropFilter(payload) {
             this.$emit('dropFilter', payload);
-        },
-        onInsertFilterAtIndex(payload) {
-            this.$emit('insertFilter', payload);
         },
         onClearFilterAtIndex(index) {
             this.$emit('clearFilter', index);
-        },
-        onSetGhostFilterAtIndex(payload) {
-            this.$emit('setGhostFilter', payload);
+            this.emitFetchData();
         },
         onSwapFiltersPosition(payload) {
             this.$emit('swapFilters', payload);
@@ -349,6 +371,7 @@ export default {
         overflow: hidden;
 
         &__body {
+            position: relative;
             display: flex;
             flex: 1 1 auto;
             flex-direction: column;
@@ -356,6 +379,20 @@ export default {
             height: 0;
             border: $BORDER_1_GREY;
             background-color: $WHITESMOKE;
+
+            &::after {
+                position: absolute;
+                z-index: $Z_INDEX_NEGATIVE;
+                width: 100%;
+                height: 100%;
+                content: "";
+            }
+
+            &--disabled {
+                &::after {
+                    z-index: $Z_INDEX_LVL_4;
+                }
+            }
         }
 
         &__footer {

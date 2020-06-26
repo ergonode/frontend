@@ -10,6 +10,7 @@
             :is-read-only="$isReadOnly('TEMPLATE_DESIGNER')">
             <template #mainAction>
                 <Button
+                    data-cy="delete-segment"
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE TEMPLATE"
@@ -22,9 +23,10 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs" />
+        <HorizontalRoutingTabBar :items="tabs" />
         <Footer flex-end>
             <Button
+                data-cy="save-template"
                 title="SAVE TEMPLATE"
                 :size="smallSize"
                 :disabled="$isLoading('footerButton')"

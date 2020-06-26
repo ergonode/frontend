@@ -6,7 +6,7 @@ import { getMappedErrors } from '@Core/models/mappers/errorsMapper';
 import { types } from './mutations';
 
 export default {
-    onError({ commit }, { errors, fieldKey = null }) {
+    onError({ commit }, { errors = null, fieldKey = null }) {
         if (errors) {
             commit(types.SET_VALIDATION_ERRORS, getMappedErrors({ errors, fieldKey }));
         }

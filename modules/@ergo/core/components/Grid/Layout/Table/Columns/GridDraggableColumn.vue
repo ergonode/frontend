@@ -11,18 +11,12 @@
         :draggable="isDraggable"
         @dragstart="onDragStart"
         @dragend="onDragEnd"
-        @dragover="onDragOver"
-        @drop="onDrop">
-        <template v-if="!isDragged">
-            <slot />
-            <GridColumnResizer
-                v-if="!isHeaderFocused"
-                @widthChange="onUpdateWidth"
-                @resize="onResize" />
-        </template>
-        <template v-else>
-            <GridGhostColumn />
-        </template>
+        @dragover="onDragOver">
+        <slot />
+        <GridColumnResizer
+            v-if="!isHeaderFocused"
+            @widthChange="onUpdateWidth"
+            @resize="onResize" />
     </div>
 </template>
 <script>
@@ -43,7 +37,6 @@ const updateColumnsTransform = () => import('@Core/models/drag_and_drop/updateCo
 export default {
     name: 'GridDraggableColumn',
     components: {
-        GridGhostColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridGhostColumn'),
         GridColumnResizer: () => import('@Core/components/Grid/Layout/Table/Columns/Resizer/GridColumnResizer'),
     },
     props: {
@@ -93,18 +86,10 @@ export default {
         onDragStart(event) {
             if (this.isResizing) return false;
 
-            const { pageX, pageY } = event;
             const [header] = this.$el.children;
-            const {
-                x: headerXPos, y: headerYPos, height: headerHeight, width: headerWidth,
-            } = header.getBoundingClientRect();
-            const xOffset = 2.5;
-            const isMouseAboveColumnHeader = headerYPos <= pageY
-                && headerYPos + headerHeight >= pageY;
-            const isMouseAboveLeftBorderLimit = pageX - headerXPos < xOffset;
+            const isMouseAboveColumnHeader = event.offsetY < header.offsetHeight;
 
-            if (!isMouseAboveColumnHeader
-                || isMouseAboveLeftBorderLimit) {
+            if (!isMouseAboveColumnHeader) {
                 event.preventDefault();
                 event.stopPropagation();
 
@@ -115,13 +100,12 @@ export default {
 
             addElementCopyToDocumentBody({
                 event,
-                element: this.$el,
-                width: headerWidth,
+                element: header,
                 id: this.column.id,
             });
             this.setGhostIndex(this.index);
             this.setDraggedElIndex(this.index);
-            this.setDraggedElement({ ...this.column, index: this.index });
+            this.setDraggedElement(this.column.id);
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENT.COLUMN });
 
             return true;
@@ -141,23 +125,7 @@ export default {
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
             this.isDragged = false;
         },
-        onDrop(event) {
-            event.preventDefault();
-
-            if (typeof this.draggedElement !== 'object') {
-                const columnId = event.dataTransfer.getData('text/plain');
-
-                this.$emit('drop', {
-                    from: this.draggedElIndex,
-                    to: this.ghostIndex,
-                    columnId,
-                });
-                this.resetDraggedElementCache();
-            }
-        },
         onDragOver(event) {
-            if (!this.draggedElement) return false;
-
             event.preventDefault();
 
             const { pageX } = event;
@@ -245,7 +213,6 @@ export default {
 };
 </script>
 
-
 <style lang="scss" scoped>
     .draggable-column {
         position: relative;
@@ -266,25 +233,28 @@ export default {
             position: absolute;
             top: 0;
             left: 0;
+            z-index: $Z_INDEX_LVL_4;
             width: 100%;
             height: 100%;
             box-shadow: $ELEVATOR_2_DP;
-            opacity: 0;
+            opacity: 1;
+            visibility: hidden;
             pointer-events: none;
             content: "";
         }
 
         &--hovered:not(&--dragged) {
-            z-index: $Z_INDEX_LVL_4;
-
             &::after {
-                opacity: 1;
+                visibility: visible;
             }
         }
 
         &--dragged {
             will-change: transform;
-            grid-template-rows: unset !important;
         }
+    }
+
+    .animation {
+        transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
     }
 </style>

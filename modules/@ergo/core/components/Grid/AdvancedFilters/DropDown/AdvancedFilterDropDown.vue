@@ -7,7 +7,6 @@
         <DropDown
             v-show="isVisible"
             :offset="offset"
-            :fixed-content="isSelectKind"
             @clickOutside="onClickOutside">
             <template #body>
                 <Component
@@ -52,10 +51,6 @@ export default {
         },
     },
     computed: {
-        isSelectKind() {
-            return this.filter.type === COLUMN_FILTER_TYPE.SELECT
-                || this.filter.type === COLUMN_FILTER_TYPE.MULTI_SELECT;
-        },
         selectFooterComponent() {
             switch (this.filter.type) {
             case COLUMN_FILTER_TYPE.SELECT:

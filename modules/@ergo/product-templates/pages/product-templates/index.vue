@@ -9,6 +9,7 @@
             :is-read-only="$isReadOnly('TEMPLATE_DESIGNER')">
             <template #mainAction>
                 <Button
+                    data-cy="new-template"
                     title="NEW TEMPLATE"
                     :size="smallSize"
                     :disabled="!$hasAccess(['TEMPLATE_DESIGNER_CREATE'])"
@@ -31,10 +32,7 @@
                     :is-header-visible="true"
                     :is-basic-filter="true"
                     :is-centered-view="true"
-                    :collection-cell-binding="{
-                        imageColumn: 'image_id',
-                        descriptionColumn: 'name'
-                    }"
+                    :collection-cell-binding="collectionCellBinding"
                     @editRow="onEditRow"
                     @removeRow="onRemoveRow"
                     @fetchData="getGridData" />
@@ -71,6 +69,12 @@ export default {
         };
     },
     computed: {
+        collectionCellBinding() {
+            return {
+                imageColumn: 'image_id',
+                descriptionColumn: 'name',
+            };
+        },
         smallSize() {
             return SIZE.SMALL;
         },

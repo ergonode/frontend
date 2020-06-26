@@ -14,6 +14,7 @@
                 </div>
                 <Fab
                     data-cy="modal-close"
+                    :floating="{ top: '12px', right: '12px' }"
                     :theme="secondaryTheme"
                     @click.native="onClose">
                     <template #icon="{ color }">
@@ -65,6 +66,7 @@ export default {
 
 <style lang="scss" scoped>
     .modal-form {
+        position: relative;
         display: flex;
         flex-direction: column;
         width: 400px;
@@ -74,10 +76,9 @@ export default {
         overflow: auto;
 
         &__header {
-            display: flex;
-            flex: 0;
-            justify-content: space-between;
-            padding: 24px 16px 0 24px;
+            min-height: 48px;
+            padding: 24px 24px 0;
+            box-sizing: border-box;
 
             .header-title {
                 display: grid;

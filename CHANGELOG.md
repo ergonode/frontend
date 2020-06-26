@@ -1,6 +1,15 @@
 # CHANGELOG
 This changelog references the relevant changes.
 
+## CHANGELOG FOR v0.9.0
+ - feature [#384](https://github.com/ergonode/frontend/issues/384) Product variants
+ - feature [#418](https://github.com/ergonode/frontend/issues/418) GridCollectionLayout for product related Grid's
+ - feature [#428](https://github.com/ergonode/frontend/issues/428) Integrate TextArea/RTE
+ - feature [#430](https://github.com/ergonode/frontend/issues/430) Optimisation for D&D at Grid and AdvancedFilters
+ - feature dependencies update
+ - perf - Language inheritance communication
+ - bugfix - Product template updating draft values
+
 ## CHANGELOG FOR v0.8.0
  - feature [#365](https://github.com/ergonode/frontend/issues/365) Language inheritance - privileges
  - feature [#366](https://github.com/ergonode/frontend/issues/366) Language inheritance - product changes

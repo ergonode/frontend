@@ -31,7 +31,7 @@ describe('Pages/CategoryPage', () => {
             stubs: {
                 NuxtLink: true,
                 Button: true,
-                HorizontalTabBar: true,
+                HorizontalRoutingTabBar: true,
             },
         });
     });

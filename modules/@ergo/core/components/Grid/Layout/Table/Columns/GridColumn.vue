@@ -9,8 +9,7 @@
         :is-header-focused="isHeaderFocused"
         @swapColumns="onSwapColumns"
         @remove="onRemoveColumn"
-        @updateWidth="onUpdateWidth"
-        @drop="onDrop">
+        @updateWidth="onUpdateWidth">
         <GridTableCell
             :row="rowsOffset"
             :column="columnIndex"
@@ -22,7 +21,9 @@
                 :sorted-column="sortedColumn">
                 <GridInteractiveHeaderCell
                     :column-index="columnIndex"
-                    :column="column"
+                    :column-id="column.id"
+                    :label="column.label"
+                    :deletable="column.deletable"
                     :sorted-column="sortedColumn"
                     @focus="onHeaderFocus"
                     @sort="onSortColumn"
@@ -46,11 +47,11 @@
                 :row="rowsOffset + basicFiltersOffset"
                 :column="columnIndex" />
         </template>
-        <template v-for="(row, rowIndex) in data">
+        <template v-for="(rowId, rowIndex) in rowIds">
             <slot
                 name="cell"
-                :data="row"
-                :row-id="rowIds[rowIndex]"
+                :data="data[rowIndex]"
+                :row-id="rowId"
                 :column="column"
                 :column-index="columnIndex"
                 :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
@@ -61,10 +62,10 @@
                 <Component
                     v-if="dataCellComponent"
                     :is="dataCellComponent"
-                    :key="`${rowIds[rowIndex]}|${column.id}`"
-                    :data="row"
+                    :key="`${rowId}|${column.id}`"
+                    :data="data[rowIndex]"
                     :column="column"
-                    :row-id="rowIds[rowIndex]"
+                    :row-id="rowId"
                     :column-index="columnIndex"
                     :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
                     :is-locked="!isEditingAllowed"
@@ -195,9 +196,6 @@ export default {
         },
         onUpdateWidth(payload) {
             this.$emit('updateWidth', payload);
-        },
-        onDrop(payload) {
-            this.$emit('drop', payload);
         },
         onEditCell(payload) {
             this.$emit('editCell', payload);

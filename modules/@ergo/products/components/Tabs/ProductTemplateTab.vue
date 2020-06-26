@@ -50,15 +50,15 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import { SIZE, THEME } from '@Core/defaults/theme';
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import getProductTemplate from '@Products/services/getProductTemplate.service';
 import getProductCompleteness from '@Products/services/getProductCompleteness.service';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import ProductTemplateForm from '@Products/components/Forms/ProductTemplateForm';
+import ProductTemplateForm from '@Products/components/Form/ProductTemplateForm';
 import Button from '@Core/components/Buttons/Button';
 import IconRestore from '@Core/components/Icons/Actions/IconRestore';
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
     name: 'ProductTemplateTab',
@@ -74,11 +74,11 @@ export default {
     },
     mixins: [gridModalMixin],
     asyncData({ app: { $axios }, store, params: { id } }) {
-        const { languagePrivilegesDefaultCode } = store.state.core;
+        const { defaultLanguageCodeByPrivileges } = store.state.core;
 
         return Promise.all([
-            getProductTemplate({ $axios, languageCode: languagePrivilegesDefaultCode, id }),
-            getProductCompleteness({ $axios, languageCode: languagePrivilegesDefaultCode, id }),
+            getProductTemplate({ $axios, languageCode: defaultLanguageCodeByPrivileges, id }),
+            getProductCompleteness({ $axios, languageCode: defaultLanguageCodeByPrivileges, id }),
         ]).then(([templateResponse, completenessResponse]) => ({
             elements: templateResponse.elements,
             completeness: completenessResponse,
@@ -94,31 +94,29 @@ export default {
             user: state => state.user,
         }),
         ...mapState('core', {
-            languagePrivilegesDefaultCode: state => state.languagePrivilegesDefaultCode,
-        }),
-        ...mapState('dictionaries', {
+            defaultLanguageCodeByPrivileges: state => state.defaultLanguageCodeByPrivileges,
             languagesTree: state => state.languagesTree,
         }),
         ...mapState('product', {
             id: state => state.id,
         }),
+        ...mapGetters('core', [
+            'getRootOnLanguagesTree',
+        ]),
         smallSize() {
             return SIZE.SMALL;
         },
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        languageRootCode() {
-            return Object
-                .keys(this.languagesTree)
-                .find(language => this.languagesTree[language].level === 0);
-        },
         languageOptions() {
-            return Object.values(this.languagesTree).map(language => ({
+            const { languagePrivileges } = this.user;
+
+            return this.languagesTree.map(language => ({
                 ...language,
                 key: language.code,
                 value: language.name,
-                disabled: !language.privileges.read,
+                disabled: !languagePrivileges[language.code].read,
             }));
         },
         isUserAllowedToRestore() {
@@ -127,12 +125,12 @@ export default {
 
             return this.$hasAccess(['PRODUCT_UPDATE'])
                 && languagePrivileges[code].edit
-                && this.languageRootCode !== code;
+                && this.getRootOnLanguagesTree.code !== code;
         },
     },
     created() {
         this.language = this.languageOptions
-            .find(languegeCode => languegeCode.code === this.languagePrivilegesDefaultCode);
+            .find(languegeCode => languegeCode.code === this.defaultLanguageCodeByPrivileges);
     },
     methods: {
         ...mapActions('product', [

@@ -13,6 +13,7 @@
 import { mapState, mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { SKU_MODEL_ID } from '@Templates/defaults/product';
+import { MODAL_TYPE } from '@Core/defaults/modals';
 
 export default {
     name: 'Edit',
@@ -75,14 +76,18 @@ export default {
             this.$router.push({ name: 'product-templates' });
         },
         onRemove() {
-            const isConfirmed = confirm('Are you sure you want to delete this template?'); /* eslint-disable-line no-restricted-globals */
-            if (isConfirmed) {
-                const { id } = this.$route.params;
-                this.removeTemplate({
-                    id,
-                    onSuccess: this.onRemoveSuccess,
-                });
-            }
+            this.$openModal({
+                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
+                message: 'Are you sure you want to delete this template?',
+                confirmCallback: () => {
+                    const { id } = this.$route.params;
+
+                    this.removeTemplate({
+                        id,
+                        onSuccess: this.onRemoveSuccess,
+                    });
+                },
+            });
         },
         onCreate() {
             import('@Templates/models/templateMapper').then(({ getMappedLayoutElementsForAPIUpdate }) => {
@@ -92,7 +97,7 @@ export default {
                     data: {
                         name: this.templateTitle,
                         image: this.templateImage,
-                        defaultText: this.defaultTextAttribute !== SKU_MODEL_ID
+                        defaultLabel: this.defaultTextAttribute !== SKU_MODEL_ID
                             ? this.defaultTextAttribute
                             : null,
                         defaultImage: this.defaultImageAttribute,

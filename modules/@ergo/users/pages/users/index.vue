@@ -19,13 +19,13 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs">
-            <template #item>
-                <HorizontalTabBarContent
+        <HorizontalRoutingTabBar :items="tabs">
+            <template #content>
+                <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
                     @fetched="onFetchedGridData" />
             </template>
-        </HorizontalTabBar>
+        </HorizontalRoutingTabBar>
         <CreateUserModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
+import { SIZE } from '@Core/defaults/theme';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
@@ -45,7 +45,7 @@ export default {
     components: {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
-        HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
         CreateUserModalForm: () => import('@Users/components/Modals/CreateUserModalForm'),
         Button,
         IconAdd,
@@ -54,9 +54,6 @@ export default {
     computed: {
         smallSize() {
             return SIZE.SMALL;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
         },
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);

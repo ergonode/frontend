@@ -2,15 +2,30 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import { getKeyByValue } from '@Core/models/objectWrapper';
 
-export default function ({ $axios, $store }) {
+export default async function ({ $axios, $store }) {
     const { language } = $store.state.authentication.user;
-    const { sku, template, categories } = $store.state.product;
+    const { productTypes } = $store.state.dictionaries;
+    const {
+        sku,
+        type,
+        template,
+        categories,
+        bindingAttributesIds,
+    } = $store.state.product;
     const data = {
         sku,
+        type: getKeyByValue(productTypes, type),
         templateId: template,
         categoryIds: categories,
     };
 
-    return $axios.$post(`${language}/products`, data);
+    if (bindingAttributesIds.length) {
+        data.bindings = bindingAttributesIds;
+    }
+
+    const { id } = await $axios.$post(`${language}/products`, data);
+
+    return { id };
 }
