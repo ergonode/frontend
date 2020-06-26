@@ -7,7 +7,7 @@
         :row="rowIndex"
         :column="columnIndex"
         :locked="isLocked"
-        :copyable="isCopyable"
+        :copyable="false"
         :edit-key-code="32"
         :selected="isSelected"
         @edit="onValueChange">
@@ -77,11 +77,14 @@ export default {
             id: state => state.id,
         }),
     },
+    watch: {
+        data() {
+            this.localValue = this.data.value;
+        },
+    },
     methods: {
         onValueChange() {
-            this.localValue = !this.localValue;
-
-            if (this.localValue) {
+            if (!this.localValue) {
                 this.$axios.$post(`${this.languageCode}/products/${this.id}/children/add-from-skus`, {
                     skus: [
                         this.data.sku,
@@ -91,6 +94,7 @@ export default {
                         type: ALERT_TYPE.SUCCESS,
                         message: 'Products has been added',
                     });
+                    this.localValue = true;
                 }).catch((e) => {
                     this.$addAlert({
                         type: ALERT_TYPE.ERROR,
@@ -105,6 +109,7 @@ export default {
                         type: ALERT_TYPE.SUCCESS,
                         message: 'Products has been removed',
                     });
+                    this.localValue = false;
                 }).catch((e) => {
                     this.$addAlert({
                         type: ALERT_TYPE.ERROR,

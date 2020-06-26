@@ -51,9 +51,6 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import {
-    getParsedFilters,
-} from '@Core/models/mappers/gridDataMapper';
-import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
 import {
@@ -216,7 +213,7 @@ export default {
                 offset,
                 limit,
                 extended: true,
-                filter: `${getParsedFilters(filters, [])},esa_product_type:${this.languageCode}=${PRODUCT_TYPE.SIMPLE_PRODUCT},${PRODUCT_TYPE.WITH_VARIANTS}`,
+                filter: `esa_product_type:${this.languageCode}=${PRODUCT_TYPE.SIMPLE_PRODUCT},${PRODUCT_TYPE.WITH_VARIANTS}`,
                 columns: `esa_default_image:${this.languageCode},esa_default_label:${this.languageCode},esa_product_type:${this.languageCode},sku,esa_template:${this.languageCode}`,
             };
 

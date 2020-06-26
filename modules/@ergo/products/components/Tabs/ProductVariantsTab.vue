@@ -10,10 +10,7 @@
                 :columns="columns"
                 :data-count="filtered"
                 :data="data"
-                :collection-cell-binding="{
-                    imageColumn: 'default_image',
-                    descriptionColumn: 'default_label'
-                }"
+                :collection-cell-binding="collectionCellBinding"
                 :is-collection-layout="true"
                 :is-header-visible="true"
                 :is-centered-view="true"
@@ -30,9 +27,6 @@ import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/Re
 import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
-import {
-    getParsedFilters,
-} from '@Core/models/mappers/gridDataMapper';
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
@@ -166,6 +160,12 @@ export default {
         ...mapState('authentication', {
             languageCode: state => state.user.language,
         }),
+        collectionCellBinding() {
+            return {
+                imageColumn: `esa_default_image:${this.languageCode}`,
+                descriptionColumn: `esa_default_label:${this.languageCode}`,
+            };
+        },
         isUserAllowedToUpdate() {
             return this.$hasAccess([
                 'PRODUCT_UPDATE',
@@ -199,7 +199,7 @@ export default {
                 offset,
                 limit,
                 extended: true,
-                filter: `${getParsedFilters(filters, [])},esa_product_type:${this.languageCode}=${PRODUCT_TYPE.SIMPLE_PRODUCT}`,
+                filter: `esa_product_type:${this.languageCode}=${PRODUCT_TYPE.SIMPLE_PRODUCT}`,
                 columns: `esa_default_image:${this.languageCode},esa_default_label:${this.languageCode},${this.attributeCodes},sku,esa_template:${this.languageCode}`,
             };
 
