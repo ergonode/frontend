@@ -6,6 +6,7 @@
     <Component
         :is="styleComponent"
         ref="activator"
+        :style="{ height: '100%' }"
         :focused="isFocused"
         :error="isError"
         :disabled="disabled"

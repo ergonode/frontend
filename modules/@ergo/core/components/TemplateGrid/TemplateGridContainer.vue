@@ -5,7 +5,7 @@
 <template>
     <div
         class="grid-container"
-        :draggable="isDraggingEnabled"
+        :draggable="isDraggingEnabled && gridData.length"
         @dragstart="onDragStart"
         @dragend="onDragEnd"
         @dragover="onDragOver"
@@ -149,22 +149,19 @@ export default {
             this.setRowsCount(totalRows);
         },
         onDragStart(event) {
+            if (this.gridData.length === 0) {
+                event.preventDefault();
+                return false;
+            }
+
             const {
                 pageY,
             } = event;
+
             const itemsContainer = this.$el.querySelector('.grid-items-container');
             const {
                 children: elements,
             } = itemsContainer;
-            const {
-                top: containerTop,
-                height: containerHeight,
-            } = itemsContainer.getBoundingClientRect();
-
-            if (pageY > containerHeight + containerTop) {
-                event.preventDefault();
-                return false;
-            }
             getRowBellowMouse({
                 pageY,
                 elements,
@@ -172,6 +169,14 @@ export default {
             }, ({
                 index, element,
             }) => {
+                const {
+                    xPos, yPos,
+                } = getPositionForBrowser(event);
+
+                const test = document.elementsFromPoint(xPos, yPos).find(element => element.hasAttribute('item-id'));
+
+                console.log(test, element);
+
                 if (element) {
                     const itemId = element.getAttribute('item-id');
                     const item = this.getItemById(itemId);
@@ -189,9 +194,10 @@ export default {
                     });
                     addElementCopyToDocumentBody({
                         event,
-                        element: element.childNodes[0],
                         id: itemId,
+                        label: item.code,
                     });
+
                     this.setChildrenLength({
                         id: parent,
                         value: -1,

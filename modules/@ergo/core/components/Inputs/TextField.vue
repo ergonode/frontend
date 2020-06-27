@@ -229,7 +229,6 @@ export default {
             this.$nextTick(() => {
                 window.requestAnimationFrame(() => {
                     this.$refs.input.focus();
-                    this.$refs.input.focus();
                 });
             });
         }

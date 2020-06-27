@@ -210,15 +210,10 @@ export default {
             };
         },
         onDragStart(event) {
-            const {
-                width,
-            } = this.$el.getBoundingClientRect();
-
             addElementCopyToDocumentBody({
                 event,
-                element: this.$el,
-                width,
                 id: this.filter.id,
+                label: this.title,
             });
             this.setDraggedElement(this.filter);
             this.setDraggableState({

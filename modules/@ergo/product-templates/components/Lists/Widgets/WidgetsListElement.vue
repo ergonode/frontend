@@ -6,6 +6,7 @@
     <ListDraggableElement
         :is-draggable="$hasAccess(['TEMPLATE_DESIGNER_UPDATE'])"
         :draggable-id="item.type"
+        :label="item.label"
         @drag="onDrag">
         <ListElementIcon>
             <Component :is="widgetIconComponent" />

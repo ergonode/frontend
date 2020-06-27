@@ -6,6 +6,7 @@
     <ListDraggableElement
         :is-draggable="$hasAccess(['SEGMENT_UPDATE'])"
         :draggable-id="item.id"
+        :label="item.name"
         @drag="onDrag">
         <ListElementDescription>
             <ListElementTitle :title="item.name" />

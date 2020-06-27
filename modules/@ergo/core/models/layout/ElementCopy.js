@@ -5,34 +5,32 @@
 import {
     WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import DraggedElement from '@Core/components/DraggedElement/DraggedElement';
+import Vue from 'vue';
+
+let instance = null;
 
 export function addElementCopyToDocumentBody({
     event,
-    element,
     id,
+    label,
 }) {
-    const {
-        offsetWidth, offsetHeight,
-    } = element;
-    const clonedDOMElement = element.cloneNode(true);
-    const clonedDOMElementStyle = `
-        position: absolute;
-        background-color: ${WHITE};
-        width: ${offsetWidth}px;
-        height: ${offsetHeight}px;
-        opacity: 1;
-    `;
-
-    clonedDOMElement.setAttribute('style', clonedDOMElementStyle);
-    clonedDOMElement.classList.add('cloned-element');
-    document.body.appendChild(clonedDOMElement);
-    event.dataTransfer.setDragImage(clonedDOMElement, offsetWidth / 2, offsetHeight / 2);
+    const ComponentClass = Vue.extend(DraggedElement);
+    instance = new ComponentClass({
+        propsData: {
+            label,
+        },
+    });
+    instance.$mount();
+    document.body.appendChild(instance.$el);
+    event.dataTransfer.setDragImage(instance.$el, instance.$el.offsetWidth / 2, instance.$el.offsetHeight / 2);
     event.dataTransfer.setData('text/plain', id);
 }
 
 export function removeElementCopyFromDocumentBody(event) {
-    const clonedDOMElement = document.documentElement.querySelector('.cloned-element');
-    document.body.removeChild(clonedDOMElement);
+    document.body.removeChild(instance.$el);
+    instance.$destroy();
+    instance = null;
 
     if (navigator.userAgent.toLowerCase().indexOf('firefox') === -1) {
         // TODO: Only Firefox Error: Modifications are not allowed for this document

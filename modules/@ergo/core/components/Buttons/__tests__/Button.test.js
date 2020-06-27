@@ -41,7 +41,7 @@ describe('Buttons/Button', () => {
     });
 
     it('Check button classes if no props', () => {
-        expect(wrapper.vm.buttonClasses).toStrictEqual([
+        expect(wrapper.vm.classes).toStrictEqual([
             'button',
             'button--primary',
             'button--regular',
@@ -53,7 +53,7 @@ describe('Buttons/Button', () => {
             theme: 'secondary',
             size: 'small',
         });
-        expect(wrapper.vm.buttonClasses).toStrictEqual([
+        expect(wrapper.vm.classes).toStrictEqual([
             'button',
             'button--secondary',
             'button--small',

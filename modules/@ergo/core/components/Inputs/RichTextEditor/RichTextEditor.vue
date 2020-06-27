@@ -5,6 +5,7 @@
 <template>
     <Component
         :is="styleComponent"
+        :style="{ height: '100%' }"
         ref="activator"
         :focused="isFocused"
         :error="isError"

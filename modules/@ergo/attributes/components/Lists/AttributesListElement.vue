@@ -8,13 +8,14 @@
         :is-draggable="isDraggable"
         :is-disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
         :hint="hint"
+        :label="title"
         @drag="onDrag">
         <ListElementIcon>
             <Component :is="typeIconComponent" />
         </ListElementIcon>
         <ListElementDescription>
             <ListElementTitle
-                :title="item.label || `#${item.code}`"
+                :title="title"
                 :hint="hint" />
             <ListElementHint
                 :title="formattedAttributeType"
@@ -67,6 +68,9 @@ export default {
         ...mapState('list', {
             disabledElements: state => state.disabledElements,
         }),
+        title() {
+            return this.item.label || `#${this.item.code}`
+        },
         typeIconComponent() {
             if (typeof TYPES[this.item.type] === 'undefined') {
                 return () => import('@Core/components/Icons/Attributes/IconText');

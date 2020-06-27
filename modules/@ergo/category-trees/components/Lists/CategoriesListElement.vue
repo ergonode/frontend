@@ -7,15 +7,16 @@
         :draggable-id="item.id"
         :is-draggable="isDraggable"
         :is-disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
-        :hint="item.name ? `#${item.code}` : ''"
+        :hint="hint"
+        :label="title"
         @drag="onDrag">
         <ListElementDescription>
             <ListElementTitle
-                :title="item.name || `#${item.code}`"
-                :hint="item.name ? `#${item.code}` : ''" />
+                :title="title"
+                :hint="hint" />
             <ListElementHint
                 :title="itemCount"
-                :hint="item.name ? `#${item.code}` : ''" />
+                :hint="hint" />
         </ListElementDescription>
     </ListDraggableElement>
 </template>
@@ -55,6 +56,12 @@ export default {
         ...mapState('list', {
             disabledElements: state => state.disabledElements,
         }),
+        hint() {
+            return this.item.name ? `#${this.item.code} ${this.languageCode}` : '';
+        },
+        title() {
+            return this.item.name || `#${this.item.code}`;
+        },
         itemCount() {
             return `${this.item.elements_count || 0} Product${this.item.elements_count === 1 ? '' : 's'}`;
         },

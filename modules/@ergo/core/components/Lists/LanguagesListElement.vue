@@ -8,6 +8,7 @@
         :is-draggable="isDraggable"
         :is-disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
         :hint="item.name ? `#${item.code}` : ''"
+        :label="item.name"
         @drag="onDrag">
         <ListElementDescription>
             <ListElementTitle :title="item.name" />

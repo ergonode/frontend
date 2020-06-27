@@ -147,9 +147,10 @@ export default {
             window.requestAnimationFrame(() => { this.isDragged = true; });
             addElementCopyToDocumentBody({
                 event,
-                element: this.$el,
                 id: 'layoutElement',
+                label: this.element.label,
             });
+
             this.highlightingPositions = getHighlightingLayoutDropPositions({
                 draggedElWidth: width,
                 draggedElHeight: height,

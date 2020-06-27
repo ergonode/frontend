@@ -92,7 +92,6 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
-        height: 100%;
         box-sizing: border-box;
 
         &__input {

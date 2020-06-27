@@ -55,7 +55,7 @@ export default {
             'getActiveLanguageByCode',
         ]),
         smallSize() {
-            return SIZE;
+            return SIZE.SMALL;
         },
         languageOptions() {
             return this.getActiveLanguages.map(({

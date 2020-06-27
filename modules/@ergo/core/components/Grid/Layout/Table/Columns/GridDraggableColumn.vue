@@ -103,11 +103,19 @@ export default {
 
             this.isDragged = true;
 
+            const [
+                code,
+                languageCode,
+            ] = this.column.id.split(':');
+            const title = this.column.label || `#${code}`;
+            const languageTitle = languageCode ? languageCode.toUpperCase() : '';
+
             addElementCopyToDocumentBody({
                 event,
-                element: header,
                 id: this.column.id,
+                label: `${title} ${languageTitle}`,
             });
+
             this.setGhostIndex(this.index);
             this.setDraggedElIndex(this.index);
             this.setDraggedElement(this.column.id);

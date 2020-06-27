@@ -27,7 +27,7 @@ export default {
         let emptyState = 0;
 
         if (!authentication.isLogged) {
-            redirect('/');
+            return redirect('/');
         }
 
         Object.values(dictionaries).forEach((value) => {
@@ -38,12 +38,18 @@ export default {
                 emptyState += 1;
             }
         });
+
         if (emptyState > 0) {
-            await store.dispatch('dictionaries/getDictionaries');
-            await store.dispatch('core/getLanguages');
-            await store.dispatch('core/getLanguagesTree');
-            await store.dispatch('core/setDefaultLanguage');
+            await Promise.all([
+                store.dispatch('dictionaries/getDictionaries'),
+                store.dispatch('core/getLanguages'),
+                store.dispatch('core/getLanguagesTree'),
+            ]);
+
+            store.dispatch('core/setDefaultLanguage');
         }
+
+        return null;
     },
 };
 </script>

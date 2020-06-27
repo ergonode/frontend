@@ -40,7 +40,9 @@ export default {
     },
     removeAlert({
         commit, state,
-    }, id) {
+    }, {
+        id,
+    }) {
         const indexToRemove = state.alerts.findIndex(
             alert => alert.id === id,
         );
