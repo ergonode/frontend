@@ -2,10 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import {
-    WHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
 import DraggedElement from '@Core/components/DraggedElement/DraggedElement';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import Vue from 'vue';
 
 let instance = null;
@@ -23,7 +21,13 @@ export function addElementCopyToDocumentBody({
     });
     instance.$mount();
     document.body.appendChild(instance.$el);
-    event.dataTransfer.setDragImage(instance.$el, instance.$el.offsetWidth / 2, instance.$el.offsetHeight / 2);
+
+    const {
+        offsetWidth,
+        offsetHeight,
+    } = instance.$el;
+
+    event.dataTransfer.setDragImage(instance.$el, offsetWidth / 2, offsetHeight / 2);
     event.dataTransfer.setData('text/plain', id);
 }
 

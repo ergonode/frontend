@@ -69,7 +69,7 @@ export default {
             disabledElements: state => state.disabledElements,
         }),
         title() {
-            return this.item.label || `#${this.item.code}`
+            return this.item.label || `#${this.item.code}`;
         },
         typeIconComponent() {
             if (typeof TYPES[this.item.type] === 'undefined') {

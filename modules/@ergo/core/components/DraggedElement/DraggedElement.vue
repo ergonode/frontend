@@ -32,9 +32,9 @@ export default {
     .dragged-element {
         display: flex;
         align-items: center;
+        width: max-content;
         padding: 4px;
         background-color: $WHITESMOKE;
-        width: max-content;
 
         &__label {
             margin: 0 4px;

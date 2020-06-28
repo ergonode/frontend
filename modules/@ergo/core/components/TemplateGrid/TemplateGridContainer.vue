@@ -169,14 +169,6 @@ export default {
             }, ({
                 index, element,
             }) => {
-                const {
-                    xPos, yPos,
-                } = getPositionForBrowser(event);
-
-                const test = document.elementsFromPoint(xPos, yPos).find(element => element.hasAttribute('item-id'));
-
-                console.log(test, element);
-
                 if (element) {
                     const itemId = element.getAttribute('item-id');
                     const item = this.getItemById(itemId);
