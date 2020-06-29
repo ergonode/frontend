@@ -15,8 +15,10 @@
 </template>
 
 <script>
-import { ARROW } from '@Core/defaults/icons';
 import Icon from '@Core/components/Icons/Icon';
+import {
+    ARROW,
+} from '@Core/defaults/icons';
 
 export default {
     name: 'IconArrowPointerBlock',
@@ -28,7 +30,11 @@ export default {
             return 'M18 7.415L13.42 12.005L18 16.595L16.59 18.005L10.59 12.005L16.59 6.005L18 7.415Z';
         },
         iconTransform() {
-            if (this.$attrs.state === ARROW.RIGHT) return { transform: 'rotate(-180deg)' };
+            if (this.$attrs.state === ARROW.RIGHT) {
+                return {
+                    transform: 'rotate(-180deg)',
+                };
+            }
 
             return null;
         },

@@ -13,7 +13,10 @@ export default {
     name: 'DatePickerHeader',
     props: {
         header: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
     },

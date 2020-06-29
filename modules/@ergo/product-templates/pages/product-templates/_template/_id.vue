@@ -10,24 +10,41 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { SKU_MODEL_ID } from '@Templates/defaults/product';
-import { MODAL_TYPE } from '@Core/defaults/modals';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import {
+    SKU_MODEL_ID,
+} from '@Templates/defaults/product';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'Edit',
     components: {
         TemplatePage: () => import('@Templates/components/Pages/TemplatePage'),
     },
-    validate({ params }) {
+    validate({
+        params,
+    }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
-    async fetch({ store, params }) {
+    async fetch({
+        store, params,
+    }) {
         const {
-            user: { language: userLanguageCode },
+            user: {
+                language: userLanguageCode,
+            },
         } = store.state.authentication;
-        const { id } = params;
+        const {
+            id,
+        } = params;
 
         await store.dispatch('templateDesigner/getTypes', {
             path: `${userLanguageCode}/templates/types`,
@@ -69,18 +86,28 @@ export default {
         ]),
         onUpdateTemplateDesignerSuccess() {
             this.removeValidationErrors();
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Template updated' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Template updated',
+            });
         },
         onRemoveSuccess() {
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Template removed' });
-            this.$router.push({ name: 'product-templates' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Template removed',
+            });
+            this.$router.push({
+                name: 'product-templates',
+            });
         },
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Are you sure you want to delete this template?',
                 confirmCallback: () => {
-                    const { id } = this.$route.params;
+                    const {
+                        id,
+                    } = this.$route.params;
 
                     this.removeTemplate({
                         id,
@@ -90,8 +117,12 @@ export default {
             });
         },
         onCreate() {
-            import('@Templates/models/templateMapper').then(({ getMappedLayoutElementsForAPIUpdate }) => {
-                const { id } = this.$route.params;
+            import('@Templates/models/templateMapper').then(({
+                getMappedLayoutElementsForAPIUpdate,
+            }) => {
+                const {
+                    id,
+                } = this.$route.params;
                 this.updateTemplateDesigner({
                     id,
                     data: {

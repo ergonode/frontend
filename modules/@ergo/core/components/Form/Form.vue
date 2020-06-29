@@ -39,8 +39,13 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { RED } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    RED,
+} from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'Form',

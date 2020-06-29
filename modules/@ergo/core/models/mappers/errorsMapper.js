@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 
-export const getMappedErrors = ({ errors, fieldKey = null }) => {
+export const getMappedErrors = ({
+    errors, fieldKey = null,
+}) => {
     let mappedErrors = {};
 
     Object.keys(errors).forEach((errorKey) => {
@@ -16,7 +18,9 @@ export const getMappedErrors = ({ errors, fieldKey = null }) => {
                     if (Array.isArray(errors[errorKey][current])) {
                         tmp[`${errorKey}_${current}`] = errors[errorKey][current].join(', ');
                     } else {
-                        tmp[`${errorKey}_${current}`] = getMappedErrors({ errors: errors[errorKey][current] });
+                        tmp[`${errorKey}_${current}`] = getMappedErrors({
+                            errors: errors[errorKey][current],
+                        });
                     }
 
                     return tmp;

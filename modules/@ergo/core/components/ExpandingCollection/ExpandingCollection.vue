@@ -69,7 +69,10 @@ export default {
         onExpand(isExpanded) {
             this.isExpanded = isExpanded;
             if (this.isExpanded && this.collection.itemsCount !== this.collection.items.length) {
-                this.$emit('fetch', { id: this.collection.id, index: this.index });
+                this.$emit('fetch', {
+                    id: this.collection.id,
+                    index: this.index,
+                });
             }
         },
     },

@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 
-export function getMappedObjectOption({ option, languageCode }) {
+export function getMappedObjectOption({
+    option, languageCode,
+}) {
     return {
         id: option.id,
         key: option.code,
@@ -14,11 +16,18 @@ export function getMappedObjectOption({ option, languageCode }) {
     };
 }
 
-export function getMappedArrayOptions({ options, languageCode }) {
-    return options.map(option => getMappedObjectOption({ option, languageCode }));
+export function getMappedArrayOptions({
+    options, languageCode,
+}) {
+    return options.map(option => getMappedObjectOption({
+        option,
+        languageCode,
+    }));
 }
 
-export function getMappedMatchedArrayOptions({ optionIds, options, languageCode }) {
+export function getMappedMatchedArrayOptions({
+    optionIds, options, languageCode,
+}) {
     return optionIds.map(id => getMappedObjectOption({
         option: {
             id,
@@ -28,7 +37,9 @@ export function getMappedMatchedArrayOptions({ optionIds, options, languageCode 
     }));
 }
 
-export function getMappedObjectOptions({ options, languageCode }) {
+export function getMappedObjectOptions({
+    options, languageCode,
+}) {
     return getMappedMatchedArrayOptions({
         optionIds: Object.keys(options),
         options,

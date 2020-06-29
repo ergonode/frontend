@@ -2,16 +2,24 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { types } from './mutations';
+import {
+    types,
+} from './mutations';
 
 export default {
-    setTabTranslations({ commit }, translation) {
+    setTabTranslations({
+        commit,
+    }, translation) {
         commit(types.SET_TAB_TRANSLATIONS, translation);
     },
-    setMultilingualTranslationPropertyValue({ commit }, params) {
+    setMultilingualTranslationPropertyValue({
+        commit,
+    }, params) {
         commit(types.SET_MULTILINGUAL_TRANSLATION_PROPERTY_VALUE, params);
     },
-    clearStorage({ commit }) {
+    clearStorage({
+        commit,
+    }) {
         commit(types.CLEAR_STATE);
     },
 };

@@ -9,27 +9,34 @@
                 <TranslationSelect
                     :value="activeLanguages"
                     :options="languageOptions"
-                    :solid="true"
                     label="Languages"
-                    :regular="true"
                     :multiselect="true"
                     :clearable="true"
                     :searchable="true"
-                    :description="hint"
                     :sticky-search="true"
                     @input="setSelectedLanguages"
-                    @search="onSearch" />
+                    @search="onSearch">
+                    <template #append>
+                        <InfoHint
+                            v-if="hint"
+                            :hint="hint" />
+                    </template>
+                </TranslationSelect>
             </FormSection>
         </template>
     </Form>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import InfoHint from '@Core/components/Hints/InfoHint';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'MainSettingsForm',
     components: {
+        InfoHint,
         Form: () => import('@Core/components/Form/Form'),
         FormSection: () => import('@Core/components/Form/Section/FormSection'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
@@ -50,13 +57,17 @@ export default {
                 const rgx = new RegExp(this.filteredValue, 'i');
 
                 return this.tmpLanguages.filter(
-                    ({ key, value }) => key.match(rgx) || value.match(rgx),
+                    ({
+                        key, value,
+                    }) => key.match(rgx) || value.match(rgx),
                 );
             }
             return this.tmpLanguages;
         },
         hint() {
-            return this.activeLanguages.map(({ value }) => value).join(', ');
+            return this.activeLanguages.map(({
+                value,
+            }) => value).join(', ');
         },
     },
     watch: {
@@ -64,11 +75,19 @@ export default {
             deep: true,
             immediate: true,
             handler(value) {
-                const mappedLanguage = ({ id, name, code }) => ({ id, key: code, value: name });
+                const mappedLanguage = ({
+                    id, name, code,
+                }) => ({
+                    id,
+                    key: code,
+                    value: name,
+                });
 
                 this.tmpLanguages = value.map(mappedLanguage);
                 this.activeLanguages = value
-                    .filter(({ active }) => active === true)
+                    .filter(({
+                        active,
+                    }) => active === true)
                     .map(mappedLanguage);
                 this.$emit('selectedLanguages', this.activeLanguages);
             },

@@ -8,17 +8,21 @@
             <TextField
                 v-model="localValue"
                 autofocus
-                left-alignment
-                small
+                :size="smallSize"
+                :type="underlineInputType"
                 :error-messages="errorMessages" />
         </GridTextEditContentCell>
     </GridActivatorEditCell>
 </template>
 
 <script>
-import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import GridTextEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
+import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import TextField from '@Core/components/Inputs/TextField';
+import {
+    INPUT_TYPE,
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridTextEditCell',
@@ -45,6 +49,14 @@ export default {
         return {
             localValue: this.value,
         };
+    },
+    computed: {
+        underlineInputType() {
+            return INPUT_TYPE.UNDERLINE;
+        },
+        smallSize() {
+            return SIZE.SMALL;
+        },
     },
     beforeDestroy() {
         if (this.localValue !== this.value) {

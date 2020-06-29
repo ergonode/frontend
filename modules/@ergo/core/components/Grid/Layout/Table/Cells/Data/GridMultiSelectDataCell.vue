@@ -34,11 +34,17 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { arraysAreEqual } from '@Core/models/arrayWrapper';
-import { cellDataCompose } from '@Core/models/mappers/gridDataMapper';
 import GridMultiSelectPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridMultiSelectPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
+import {
+    arraysAreEqual,
+} from '@Core/models/arrayWrapper';
+import {
+    cellDataCompose,
+} from '@Core/models/mappers/gridDataMapper';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'GridMultiSelectDataCell',
@@ -46,7 +52,9 @@ export default {
         GridMultiSelectPresentationCell,
         GridMultiSelectEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridMultiSelectEditCell'),
     },
-    mixins: [gridDataCellMixin],
+    mixins: [
+        gridDataCellMixin,
+    ],
     computed: {
         ...mapState('grid', {
             drafts: state => state.drafts,
@@ -60,7 +68,9 @@ export default {
         options() {
             if (this.column.filter && this.column.filter.options) {
                 // TODO: BE has to unify types!
-                if (Array.isArray(this.column.filter.options)) return {};
+                if (Array.isArray(this.column.filter.options)) {
+                    return {};
+                }
 
                 return this.column.filter.options;
             }

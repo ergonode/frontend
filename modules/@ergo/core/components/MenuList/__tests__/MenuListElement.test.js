@@ -2,10 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { shallowMount, createLocalVue } from '@vue/test-utils';
+import MenuListElement from '@Core/components/MenuList/MenuListElement';
+import {
+    createLocalVue,
+    shallowMount,
+} from '@vue/test-utils';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import VueRouter from 'vue-router';
-import MenuListElement from '@Core/components/MenuList/MenuListElement';
 
 const localVue = createLocalVue();
 const router = new VueRouter();
@@ -34,7 +37,9 @@ describe('Navigation/MenuListElement', () => {
                     isHover: false,
                 };
             },
-            stubs: ['NuxtLink'],
+            stubs: [
+                'NuxtLink',
+            ],
         });
     });
 
@@ -50,7 +55,9 @@ describe('Navigation/MenuListElement', () => {
     describe('mouseover event', () => {
         beforeEach(() => {
             const onMouseOver = jest.fn();
-            wrapper.setMethods({ onMouseOver });
+            wrapper.setMethods({
+                onMouseOver,
+            });
             wrapper.find('.list-element').trigger('mouseover');
         });
 
@@ -76,7 +83,9 @@ describe('Navigation/MenuListElement', () => {
 
     it('mouseout event', () => {
         const onMouseOut = jest.fn();
-        wrapper.setMethods({ onMouseOut });
+        wrapper.setMethods({
+            onMouseOut,
+        });
         wrapper.find('.list-element').trigger('mouseout');
         expect(onMouseOut).toHaveBeenCalled();
         expect(wrapper.vm.isHover).toBeFalsy();

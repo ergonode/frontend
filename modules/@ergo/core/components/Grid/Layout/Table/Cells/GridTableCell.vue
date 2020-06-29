@@ -5,7 +5,7 @@
 <template>
     <div
         :tabindex="-1"
-        :class="gridCellClasses"
+        :class="classes"
         @mousedown="onMouseDown"
         @keydown="onKeyDown"
         @focus="onFocus"
@@ -69,7 +69,7 @@ export default {
         },
     },
     computed: {
-        gridCellClasses() {
+        classes() {
             return [
                 'grid-table-cell',
                 `coordinates-${this.column}-${this.row}`,
@@ -84,7 +84,9 @@ export default {
         },
         isEditing: {
             get() {
-                const { row, column } = this.getEditingCellCoordinates();
+                const {
+                    row, column,
+                } = this.getEditingCellCoordinates();
 
                 return row === this.row && column === this.column;
             },
@@ -112,7 +114,10 @@ export default {
     },
     methods: {
         onFocus() {
-            this.setFocusedCellCoordinates({ row: this.row, column: this.column });
+            this.setFocusedCellCoordinates({
+                row: this.row,
+                column: this.column,
+            });
         },
         onBlur() {
             this.setFocusedCellCoordinates();
@@ -137,7 +142,9 @@ export default {
             }
         },
         onKeyDown(event) {
-            const { keyCode } = event;
+            const {
+                keyCode,
+            } = event;
 
             let element;
 

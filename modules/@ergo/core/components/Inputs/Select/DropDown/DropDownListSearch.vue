@@ -21,12 +21,14 @@
 </template>
 
 <script>
-import { debounce } from 'debounce';
 import {
-    GREEN, GRAPHITE,
+    GRAPHITE,
+    GREEN,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import IconSearch from '@Core/components/Icons/Actions/IconSearch';
-
+import {
+    debounce,
+} from 'debounce';
 
 export default {
     name: 'DropDownListSearch',

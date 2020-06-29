@@ -18,55 +18,45 @@
             <FormSection>
                 <TextField
                     :value="email"
-                    solid
                     required
-                    regular
                     label="Email"
                     :error-messages="errorMessages[emailFieldKey]"
                     :disabled="isDisabled || isDisabledByPrivileges"
-                    @input="(email) => setAction({ key: 'email', value: email })" />
+                    @input="(value) => setAction({ key: 'email', value })" />
                 <TextField
                     :value="firstName"
-                    solid
                     required
-                    regular
                     label="First name"
                     :error-messages="errorMessages[firstNameFieldKey]"
                     :disabled="isDisabledByPrivileges"
-                    @input="(firstName) => setAction({ key: 'firstName', value: firstName })" />
+                    @input="(value) => setAction({ key: 'firstName', value })" />
                 <TextField
                     :value="lastName"
-                    solid
                     required
-                    regular
                     label="Last name"
                     :error-messages="errorMessages[lastNameFieldKey]"
                     :disabled="isDisabledByPrivileges"
-                    @input="(lastName) => setAction({ key: 'lastName', value: lastName })" />
+                    @input="(value) => setAction({ key: 'lastName', value })" />
                 <TextField
                     :value="password"
-                    solid
                     required
-                    regular
                     type="password"
                     label="Password"
                     :input="{ type: 'password' }"
                     :error-messages="errorMessages[passwordFieldKey]"
                     :disabled="isDisabledByPrivileges"
-                    @input="(password) => setAction({ key: 'password', value: password })" />
+                    @input="(value) => setAction({ key: 'password', value })" />
                 <TextField
                     :value="passwordRepeat"
-                    solid
                     required
-                    regular
                     type="password"
                     label="Password repeat"
                     :input="{ type: 'password' }"
                     :error-messages="errorMessages[passwordRepeatFieldKey]"
                     :disabled="isDisabledByPrivileges"
-                    @input="(passwordRepeat) => setAction({
+                    @input="(value) => setAction({
                         key: 'passwordRepeat',
-                        value: passwordRepeat
+                        value
                     })" />
                 <Toggler
                     :value="isActive"
@@ -75,9 +65,7 @@
                     @input="onStatusChange" />
                 <Select
                     :value="language"
-                    solid
                     required
-                    regular
                     label="Language"
                     :options="languageOptions"
                     :disabled="isDisabledByPrivileges"
@@ -85,9 +73,7 @@
                     @input="onLanguageChange" />
                 <TranslationLazySelect
                     :value="role"
-                    :solid="true"
                     :required="true"
-                    :regular="true"
                     label="Role"
                     :disabled="isDisabledByPrivileges"
                     :error-messages="errorMessages[roleIdFieldKey]"
@@ -99,7 +85,11 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
+import {
+    mapActions,
+    mapGetters,
+    mapState,
+} from 'vuex';
 
 const getRolesOptions = () => import('@Users/services/getRolesOptions.service');
 
@@ -116,8 +106,14 @@ export default {
     data() {
         return {
             activityStatuses: [
-                { id: true, name: 'Active' },
-                { id: false, name: 'Inactive' },
+                {
+                    id: true,
+                    name: 'Active',
+                },
+                {
+                    id: false,
+                    name: 'Inactive',
+                },
             ],
         };
     },
@@ -137,17 +133,25 @@ export default {
             role: state => state.role,
         }),
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['USER_UPDATE']);
+            return this.$hasAccess([
+                'USER_UPDATE',
+            ]);
         },
         isDisabled() {
             return Boolean(this.userID);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess(['USER_UPDATE']))
-            || (!this.isDisabled && !this.$hasAccess(['USER_CREATE']));
+            return (this.isDisabled && !this.$hasAccess([
+                'USER_UPDATE',
+            ]))
+            || (!this.isDisabled && !this.$hasAccess([
+                'USER_CREATE',
+            ]));
         },
         languageOptions() {
-            return this.getActiveLanguages.map(({ name }) => name);
+            return this.getActiveLanguages.map(({
+                name,
+            }) => name);
         },
         emailFieldKey() {
             return 'email';
@@ -177,17 +181,29 @@ export default {
         ]),
         getRolesOptionsRequest() {
             return getRolesOptions().then(response => response.default(
-                { $axios: this.$axios, $store: this.$store },
+                {
+                    $axios: this.$axios,
+                    $store: this.$store,
+                },
             ));
         },
         onLanguageChange(language) {
-            this.setAction({ key: 'language', value: language });
+            this.setAction({
+                key: 'language',
+                value: language,
+            });
         },
         onRoleChange(role) {
-            this.setAction({ key: 'role', value: role });
+            this.setAction({
+                key: 'role',
+                value: role,
+            });
         },
         onStatusChange(isActive) {
-            this.setAction({ key: 'isActive', value: isActive });
+            this.setAction({
+                key: 'isActive',
+                value: isActive,
+            });
         },
     },
 };

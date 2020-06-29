@@ -48,19 +48,33 @@
     </Comment>
 </template>
 <script>
-import { mapActions } from 'vuex';
-import { format as formatDate } from 'date-fns';
-import { THEME } from '@Core/defaults/theme';
-import { MODAL_TYPE } from '@Core/defaults/modals';
-import { DEFAULT_DATA_HOUR_FORMAT } from '@Core/defaults/date';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import {
-    GREEN, RED, WHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
 import Comment from '@Comments/components/Comments/Comment';
+import {
+    GREEN,
+    RED,
+    WHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import Fab from '@Core/components/Buttons/Fab';
-import IconEdit from '@Core/components/Icons/Actions/IconEdit';
 import IconDelete from '@Core/components/Icons/Actions/IconDelete';
+import IconEdit from '@Core/components/Icons/Actions/IconEdit';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    DEFAULT_DATA_HOUR_FORMAT,
+} from '@Core/defaults/date';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import {
+    THEME,
+} from '@Core/defaults/theme';
+import {
+    format as formatDate,
+} from 'date-fns';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'CommentPresentation',
@@ -109,7 +123,9 @@ export default {
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Are you sure you want to delete this comment?',
                 confirmCallback: () => {
-                    const { id } = this.comment;
+                    const {
+                        id,
+                    } = this.comment;
 
                     this.removeComment({
                         id,
@@ -120,10 +136,18 @@ export default {
             });
         },
         onRemoveSuccess() {
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Comment removed' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Comment removed',
+            });
         },
-        onRemoveError({ message }) {
-            this.$addAlert({ type: ALERT_TYPE.ERROR, message });
+        onRemoveError({
+            message,
+        }) {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message,
+            });
         },
         formatDate(date) {
             if (!date) return null;

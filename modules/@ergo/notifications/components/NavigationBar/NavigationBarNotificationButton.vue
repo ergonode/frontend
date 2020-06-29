@@ -35,8 +35,13 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    WHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'NavigationBarNotificationButton',
@@ -64,9 +69,13 @@ export default {
             'requestForNotifications',
         ]),
         navigateToAllNotifications() {
-            this.$router.push({ name: 'notifications-grid' });
+            this.$router.push({
+                name: 'notifications-grid',
+            });
         },
-        onFocus({ focus, isClickedInsideMenu }) {
+        onFocus({
+            focus, isClickedInsideMenu,
+        }) {
             if (focus && !isClickedInsideMenu) {
                 this.requestForNotifications();
             }

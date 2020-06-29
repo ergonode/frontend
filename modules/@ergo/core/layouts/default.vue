@@ -39,9 +39,16 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { COMPONENTS } from '@Core/defaults/extends';
-import { MODAL_TYPE } from '@Core/defaults/modals';
+import {
+    COMPONENTS,
+} from '@Core/defaults/extends';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'DefaultLayout',

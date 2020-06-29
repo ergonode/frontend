@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <DropDownFooter :small="true">
+    <DropDownFooter :size="smallSize">
         <Button
             :theme="secondaryTheme"
             :size="tinySize"
@@ -13,9 +13,12 @@
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
-import DropDownFooter from '@Core/components/Inputs/Select/DropDown/Footers/DropDownFooter';
 import Button from '@Core/components/Buttons/Button';
+import DropDownFooter from '@Core/components/Inputs/Select/DropDown/Footers/DropDownFooter';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'SelectDropdownFooter',
@@ -26,6 +29,9 @@ export default {
     computed: {
         tinySize() {
             return SIZE.TINY;
+        },
+        smallSize() {
+            return SIZE.SMALL;
         },
         secondaryTheme() {
             return THEME.SECONDARY;

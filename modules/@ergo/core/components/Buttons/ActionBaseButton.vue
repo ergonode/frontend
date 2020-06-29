@@ -3,9 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="action-button">
+    <div :class="classes">
         <div
-            class="action-button__activator"
+            class="action-base-button__activator"
             ref="activator"
             @click="onClick"
             @mouseenter="onMouseEnter"
@@ -23,7 +23,7 @@
                         <ListElement
                             v-for="(option, index) in options"
                             :key="index"
-                            :small="true"
+                            :size="smallSize"
                             @click.native.prevent="onSelectedValue(index)">
                             <slot
                                 name="option"
@@ -31,7 +31,7 @@
                                 <ListElementDescription v-if="isOptionsValid">
                                     <ListElementTitle
                                         :title="option"
-                                        :small="true" />
+                                        :size="smallSize" />
                                 </ListElementDescription>
                             </slot>
                         </ListElement>
@@ -43,13 +43,18 @@
 </template>
 
 <script>
-import { isObject } from '@Core/models/objectWrapper';
 import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
 import List from '@Core/components/List/List';
 import ListElement from '@Core/components/List/ListElement';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
+    isObject,
+} from '@Core/models/objectWrapper';
 
 export default {
     name: 'ActionButton',
@@ -76,6 +81,16 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * The disabled flag
+         */
+        disabled: {
+            type: Boolean,
+            default: true,
+        },
+        /**
+         * The dismissible flag is telling if we can toggle between active an inactive state
+         */
         dismissible: {
             type: Boolean,
             default: true,
@@ -88,6 +103,17 @@ export default {
         };
     },
     computed: {
+        classes() {
+            return [
+                'action-base-button',
+                {
+                    'action-base-button--disabled': this.disabled,
+                },
+            ];
+        },
+        smallSize() {
+            return SIZE.SMALL;
+        },
         isOptionsValid() {
             return this.options.length && !isObject(this.options[0]);
         },
@@ -104,7 +130,10 @@ export default {
             } = this.$refs.activator.getBoundingClientRect();
 
             return {
-                x, y, width, height: height + 1,
+                x,
+                y,
+                width,
+                height: height + 1,
             };
         },
         onMouseEnter() {
@@ -118,7 +147,9 @@ export default {
         onClick() {
             this.isFocused = !this.isFocused;
         },
-        onClickOutside({ isClickedOutside }) {
+        onClickOutside({
+            isClickedOutside,
+        }) {
             if (isClickedOutside || (this.dismissible && !isClickedOutside)) {
                 this.isFocused = false;
             }
@@ -131,11 +162,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .action-button {
+    .action-base-button {
         position: relative;
         display: flex;
         flex-direction: column;
         width: max-content;
+
+        &--disabled {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
 
         &__activator {
             position: relative;

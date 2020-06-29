@@ -5,9 +5,7 @@
 <template>
     <Select
         :value="localValue"
-        solid
-        :regular="!schema.small"
-        :small="schema.small"
+        :size="schema.size"
         :label="schema.title"
         :required="schema.isRequired"
         :options="schema.enum_titles || schema.enum"
@@ -38,7 +36,9 @@ export default {
         },
     },
     data() {
-        const { enum: options, enum_titles } = this.schema;
+        const {
+            enum: options, enum_titles,
+        } = this.schema;
         let localValue = '';
 
         if (!enum_titles) {
@@ -56,7 +56,9 @@ export default {
         mappedOptions() {
             if (!this.schema.enum_titles) return null;
 
-            const { length } = this.schema.enum;
+            const {
+                length,
+            } = this.schema.enum;
             const mappedOptions = {};
 
             for (let i = 0; i < length; i += 1) {

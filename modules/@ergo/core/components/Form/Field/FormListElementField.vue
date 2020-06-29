@@ -14,7 +14,8 @@
 
 <script>
 import {
-    GREY, GRAPHITE,
+    GRAPHITE,
+    GREY,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import IconDelete from '@Core/components/Icons/Actions/IconDelete';
 
@@ -25,7 +26,10 @@ export default {
     },
     props: {
         fieldKey: {
-            type: [Number, String],
+            type: [
+                Number,
+                String,
+            ],
             required: true,
         },
         disabled: {

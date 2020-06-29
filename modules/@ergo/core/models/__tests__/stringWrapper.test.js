@@ -3,9 +3,9 @@
  * See LICENSE for license details.
  */
 import {
-    toCapitalize,
     capitalizeAndConcatenationArray,
     getUUID,
+    toCapitalize,
 } from '@Core/models/stringWrapper';
 
 describe('String operations', () => {
@@ -20,7 +20,10 @@ describe('String operations', () => {
     });
 
     it('Capitalize and concatenation array', () => {
-        const strings = ['test', 'jest'];
+        const strings = [
+            'test',
+            'jest',
+        ];
         const fun = capitalizeAndConcatenationArray(strings);
         expect(fun).toBe('TestJest');
     });

@@ -9,8 +9,10 @@
 </template>
 
 <script>
-import { ACTION } from '@Core/defaults/icons';
 import Icon from '@Core/components/Icons/Icon';
+import {
+    ACTION,
+} from '@Core/defaults/icons';
 
 export default {
     name: 'IconPlusMinus',

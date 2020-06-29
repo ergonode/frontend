@@ -10,26 +10,50 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { isEmpty, getKeyByValue } from '@Core/models/objectWrapper';
-import { getParsedParameterKeys } from '@Attributes/models/attributeMapper';
-import { getParamsOptionsForType } from '@Attributes/models/attributeTypes';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { MODAL_TYPE } from '@Core/defaults/modals';
-import { TYPES } from '@Attributes/defaults/attributes';
+import {
+    TYPES,
+} from '@Attributes/defaults/attributes';
+import {
+    getParsedParameterKeys,
+} from '@Attributes/models/attributeMapper';
+import {
+    getParamsOptionsForType,
+} from '@Attributes/models/attributeTypes';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import {
+    getKeyByValue,
+    isEmpty,
+} from '@Core/models/objectWrapper';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'EditAttribute',
     components: {
         AttributePage: () => import('@Attributes/components/Pages/AttributePage'),
     },
-    validate({ params }) {
+    validate({
+        params,
+    }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
-    async fetch({ store, params }) {
+    async fetch({
+        store, params,
+    }) {
         await Promise.all([
-            store.dispatch('attribute/getAttributeById', { id: params.id }),
-            store.dispatch('attribute/getAttributeOptionsById', { id: params.id }),
+            store.dispatch('attribute/getAttributeById', {
+                id: params.id,
+            }),
+            store.dispatch('attribute/getAttributeOptionsById', {
+                id: params.id,
+            }),
         ]);
     },
     computed: {
@@ -71,11 +95,19 @@ export default {
             clearTranslationsStorage: 'clearStorage',
         }),
         onUpdateAttributeSuccess() {
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Attribute updated' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Attribute updated',
+            });
         },
         onRemoveSuccess() {
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Attribute removed' });
-            this.$router.push({ name: 'attributes-grid' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Attribute removed',
+            });
+            this.$router.push({
+                name: 'attributes-grid',
+            });
         },
         onRemove() {
             this.$openModal({
@@ -89,7 +121,9 @@ export default {
         onSave() {
             this.removeValidationErrors();
             const typeKey = getKeyByValue(this.attrTypes, this.type);
-            const { label, placeholder, hint } = this.translations;
+            const {
+                label, placeholder, hint,
+            } = this.translations;
             const data = {
                 groups: this.groups,
                 scope: this.scope,
@@ -104,18 +138,26 @@ export default {
                 Object.keys(this.options).forEach((optionKey) => {
                     const fieldKey = `option_${optionKey}`;
                     const dupications = Object.values(this.options)
-                        .filter(({ key }) => key === this.options[optionKey].key);
+                        .filter(({
+                            key,
+                        }) => key === this.options[optionKey].key);
 
                     if (dupications.length > 1) {
-                        preValidationErrors[fieldKey] = ['Option code must be unique'];
+                        preValidationErrors[fieldKey] = [
+                            'Option code must be unique',
+                        ];
                     }
                     if (!this.options[optionKey].key) {
-                        preValidationErrors[fieldKey] = ['Option cannot be empty'];
+                        preValidationErrors[fieldKey] = [
+                            'Option cannot be empty',
+                        ];
                     }
                 });
 
                 if (!isEmpty(preValidationErrors)) {
-                    this.onError({ errors: preValidationErrors });
+                    this.onError({
+                        errors: preValidationErrors,
+                    });
                     return;
                 }
             }

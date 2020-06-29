@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 
-import { getUUID } from '@Core/models/stringWrapper';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
 
 export default {
     data() {

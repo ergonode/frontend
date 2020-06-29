@@ -4,47 +4,67 @@
  */
 <template>
     <span
-        :class="['element-title', {
-            'element-title--small': small
-        }]"
+        :class="classes"
         :title="hint"
         v-text="title" />
 </template>
 
 <script>
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+
 export default {
     name: 'ListElementTitle',
     props: {
         title: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
+        },
         hint: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             default: '',
         },
-        small: {
-            type: Boolean,
-            default: false,
+    },
+    computed: {
+        classes() {
+            return [
+                'list-element-title',
+                `list-element-title--${this.size}`,
+            ];
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .element-title {
+    .list-element-title {
         width: 100%;
         text-align: left;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
 
-        &:not(&--small) {
-            font: $FONT_MEDIUM_14_20;
-        }
-
         &--small {
             font: $FONT_MEDIUM_12_16;
+        }
+
+        &--regular {
+            font: $FONT_MEDIUM_14_20;
         }
     }
 </style>

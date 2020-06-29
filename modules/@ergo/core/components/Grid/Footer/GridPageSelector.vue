@@ -11,8 +11,7 @@
             :value="value"
             style="width: 72px;"
             :options="rowIntervalOptions"
-            solid
-            small
+            :size="smallSize"
             @input="onValueChange" />
         <span
             class="page-selector__text"
@@ -21,7 +20,12 @@
 </template>
 
 <script>
-import { ROW_INTERVALS } from '@Core/defaults/grid';
+import {
+    ROW_INTERVALS,
+} from '@Core/defaults/grid';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridPageSelector',
@@ -39,6 +43,9 @@ export default {
         },
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         infoText() {
             return `of ${this.maxRows}`;
         },

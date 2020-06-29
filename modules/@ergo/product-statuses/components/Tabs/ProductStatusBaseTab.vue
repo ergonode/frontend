@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import ProductStatusForm from '@Statuses/components/Forms/ProductStatusForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import ProductStatusForm from '@Statuses/components/Form/ProductStatusForm';
 
 export default {
     name: 'ProductStatusBaseTab',

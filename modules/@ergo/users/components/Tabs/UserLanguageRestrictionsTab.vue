@@ -16,12 +16,20 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
-import languagesDefaults from '@Users/defaults/languages';
-import { getMappedGridData, getMappedRestrictions } from '@Users/models/gridDataMapper';
-import { getSortedColumnsByIDs } from '@Core/models/mappers/gridDataMapper';
 import Grid from '@Core/components/Grid/Grid';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import {
+    getSortedColumnsByIDs,
+} from '@Core/models/mappers/gridDataMapper';
+import languagesDefaults from '@Users/defaults/languages';
+import {
+    getMappedGridData,
+    getMappedRestrictions,
+} from '@Users/models/gridDataMapper';
+import {
+    mapGetters,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'UserLanguageRestrictionsTab',
@@ -44,7 +52,9 @@ export default {
             languagePrivilegesCollection: state => state.languagePrivilegesCollection,
         }),
         isEditingAllowed() {
-            return this.$hasAccess(['USER_UPDATE']);
+            return this.$hasAccess([
+                'USER_UPDATE',
+            ]);
         },
     },
     watch: {
@@ -58,10 +68,15 @@ export default {
     },
     methods: {
         updateGridData() {
-            const fullDataList = this.getActiveLanguages.map(({ name, code }) => ({
+            const fullDataList = this.getActiveLanguages.map(({
+                name, code,
+            }) => ({
                 name,
                 description: code,
-                privileges: { edit: `${code}_EDIT`, read: `${code}_READ` },
+                privileges: {
+                    edit: `${code}_EDIT`,
+                    read: `${code}_READ`,
+                },
             }));
             const {
                 data, columns,

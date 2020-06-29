@@ -4,26 +4,32 @@
  */
 <template>
     <li
-        :class="elementClasses"
+        :class="classes"
         :draggable="!isDragged && isDraggable"
         :title="hint"
         @dragstart="onDragStart"
         @dragend="onDragEnd">
-        <slot v-if="!isDragged" />
-        <IconDragDrop class="draggable-element__icon" />
+        <template v-if="!isDragged">
+            <slot />
+            <IconDragDrop
+                class="list-draggable-element__icon"
+                v-if="isDragged" />
+        </template>
     </li>
 </template>
 
 <script>
+import IconDragDrop from '@Core/components/Icons/Actions/IconDragDrop';
 import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
-import IconDragDrop from '@Core/components/Icons/Actions/IconDragDrop';
 
 export default {
     name: 'ListDraggableElement',
-    components: { IconDragDrop },
+    components: {
+        IconDragDrop,
+    },
     props: {
         isDisabled: {
             type: Boolean,
@@ -41,6 +47,10 @@ export default {
             type: String,
             default: '',
         },
+        label: {
+            type: String,
+            default: '',
+        },
     },
     data() {
         return {
@@ -48,12 +58,12 @@ export default {
         };
     },
     computed: {
-        elementClasses() {
+        classes() {
             return [
-                'draggable-element',
+                'list-draggable-element',
                 {
-                    'draggable-element--dragged': this.isDragged,
-                    'draggable-element--disabled': this.isDisabled,
+                    'list-draggable-element--dragged': this.isDragged,
+                    'list-draggable-element--disabled': this.isDisabled,
                 },
             ];
         },
@@ -62,8 +72,8 @@ export default {
         onDragStart(event) {
             addElementCopyToDocumentBody({
                 event,
-                element: this.$el,
                 id: this.draggableId,
+                label: this.label,
             });
 
             this.isDragged = true;
@@ -80,7 +90,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .draggable-element {
+    .list-draggable-element {
         $element: &;
 
         position: relative;

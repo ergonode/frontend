@@ -10,16 +10,25 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { MODAL_TYPE } from '@Core/defaults/modals';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'EditCategory',
     components: {
         CategoryPage: () => import('@Categories/components/Pages/CategoryPage'),
     },
-    validate({ params }) {
+    validate({
+        params,
+    }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
@@ -63,8 +72,12 @@ export default {
         },
         onSave() {
             this.removeValidationErrors();
-            const { name } = this.translations;
-            const data = { name };
+            const {
+                name,
+            } = this.translations;
+            const data = {
+                name,
+            };
 
             this.updateCategory({
                 id: this.id,
@@ -75,11 +88,19 @@ export default {
         },
         onUpdateCategorySuccess() {
             this.removeValidationErrors();
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Category updated' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Category updated',
+            });
         },
         onRemoveSuccess() {
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Category removed' });
-            this.$router.push({ name: 'categories-grid' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Category removed',
+            });
+            this.$router.push({
+                name: 'categories-grid',
+            });
         },
     },
     head() {

@@ -9,8 +9,10 @@
 </template>
 
 <script>
-import { ALIGN } from '@Core/defaults/icons';
 import Icon from '@Core/components/Icons/Icon';
+import {
+    ALIGN,
+} from '@Core/defaults/icons';
 
 export default {
     name: 'IconAlignLeft',

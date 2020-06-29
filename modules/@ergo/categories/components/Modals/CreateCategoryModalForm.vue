@@ -24,10 +24,16 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { THEME } from '@Core/defaults/theme';
-import { MODAL_ACTION } from '@Core/defaults/modals';
+import {
+    MODAL_ACTION,
+} from '@Core/defaults/modals';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
+import {
+    mapActions,
+} from 'vuex';
 
 const createCategory = () => import('@Categories/services/createCategory.service');
 
@@ -38,7 +44,13 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         CategoryForm: () => import('@Categories/components/Forms/CategoryForm'),
     },
-    mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Category', request: createCategory })],
+    mixins: [
+        actionModalFormMixin({
+            action: MODAL_ACTION.CREATE,
+            namespace: 'Category',
+            request: createCategory,
+        }),
+    ],
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;

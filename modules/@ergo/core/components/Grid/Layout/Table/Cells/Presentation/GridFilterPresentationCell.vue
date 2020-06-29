@@ -21,7 +21,10 @@ export default {
             default: 'Search...',
         },
         value: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             default: '',
         },
     },

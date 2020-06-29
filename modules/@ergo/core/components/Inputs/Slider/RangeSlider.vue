@@ -35,7 +35,10 @@ export default {
     props: {
         value: {
             type: Object,
-            default: () => ({ from: 0, to: 0 }),
+            default: () => ({
+                from: 0,
+                to: 0,
+            }),
         },
     },
     data() {
@@ -49,7 +52,9 @@ export default {
     },
     computed: {
         progressStyle() {
-            const { from, to } = this.value;
+            const {
+                from, to,
+            } = this.value;
             const distance = to - from;
 
             return {
@@ -68,7 +73,9 @@ export default {
         },
     },
     mounted() {
-        const { width, x } = this.$refs.tracker.getBoundingClientRect();
+        const {
+            width, x,
+        } = this.$refs.tracker.getBoundingClientRect();
         this.width = width;
         this.xPos = x;
     },

@@ -2,8 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mapState } from 'vuex';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     components: {
@@ -27,7 +29,10 @@ export default {
             required: true,
         },
         rowId: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
         editKeyCode: {

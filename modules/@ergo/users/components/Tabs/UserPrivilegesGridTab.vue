@@ -16,11 +16,15 @@
 </template>
 
 <script>
-import privilegesDefaults from '@Users/defaults/privileges';
-import { getMappedGridData } from '@Users/models/gridDataMapper';
-import { getSortedColumnsByIDs } from '@Core/models/mappers/gridDataMapper';
 import Grid from '@Core/components/Grid/Grid';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import {
+    getSortedColumnsByIDs,
+} from '@Core/models/mappers/gridDataMapper';
+import privilegesDefaults from '@Users/defaults/privileges';
+import {
+    getMappedGridData,
+} from '@Users/models/gridDataMapper';
 
 export default {
     name: 'UserPrivilegesGridTab',
@@ -28,9 +32,15 @@ export default {
         ResponsiveCenteredViewTemplate,
         Grid,
     },
-    asyncData({ app, store, route }) {
-        const { privileges: privilegesDictionary } = store.state.dictionaries;
-        const { privileges } = store.state.authentication.user;
+    asyncData({
+        app, store, route,
+    }) {
+        const {
+            privileges: privilegesDictionary,
+        } = store.state.dictionaries;
+        const {
+            privileges,
+        } = store.state.authentication.user;
         const {
             data, columns,
         } = getMappedGridData({

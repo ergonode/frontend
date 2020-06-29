@@ -12,11 +12,16 @@ export const types = {
 };
 export default {
     [types.SET_VALIDATION_ERRORS](state, errors) {
-        state.validationErrors = { ...state.validationErrors, ...errors };
+        state.validationErrors = {
+            ...state.validationErrors,
+            ...errors,
+        };
     },
     [types.REMOVE_VALIDATION_ERROR](state, key) {
         delete state.validationErrors[key];
-        state.validationErrors = { ...state.validationErrors };
+        state.validationErrors = {
+            ...state.validationErrors,
+        };
     },
     [types.REMOVE_VALIDATION_ERRORS](state) {
         state.validationErrors = {};

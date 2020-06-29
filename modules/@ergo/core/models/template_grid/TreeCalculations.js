@@ -4,8 +4,14 @@
  */
 const positionBetweenRows = 0.5;
 
-export function getCoordinatesForHiddenElements(hiddenElements, { row, column }) {
-    const [{ row: firstRow, column: firstColumn }] = hiddenElements;
+export function getCoordinatesForHiddenElements(hiddenElements, {
+    row, column,
+}) {
+    const [
+        {
+            row: firstRow, column: firstColumn,
+        },
+    ] = hiddenElements;
     const getFixedRow = oldRow => oldRow - ((firstRow - 1) - row);
     const getFixedColumn = oldColumn => oldColumn - ((firstColumn - 1) - column);
 
@@ -17,7 +23,9 @@ export function getCoordinatesForHiddenElements(hiddenElements, { row, column })
 }
 
 export function getNearestNeighborRowId(tree, column, row) {
-    const [neighbor] = tree.filter(
+    const [
+        neighbor,
+    ] = tree.filter(
         e => e.column <= column && e.row > row,
     );
     return neighbor ? neighbor.row : tree.length;
@@ -29,7 +37,10 @@ export function getTreeWhenElementRemoved(oldTree, index) {
     for (let i = 0; i < filteredTree.length; i += 1) {
         const currentElement = filteredTree[i];
         newTree.push(i >= index
-            ? { ...currentElement, row: currentElement.row - 1 }
+            ? {
+                ...currentElement,
+                row: currentElement.row - 1,
+            }
             : currentElement);
     }
     return newTree;
@@ -47,7 +58,10 @@ export function getTreeWhenGhostElementRemoved(oldTree, index) {
         } else {
             newRow = currentElement.row + (oldTree[0].row < 0 ? 1 : 0);
         }
-        newTree.push({ ...currentElement, row: newRow });
+        newTree.push({
+            ...currentElement,
+            row: newRow,
+        });
     }
     return newTree;
 }
@@ -56,7 +70,10 @@ export function getTreeWhenElementCollapse(oldTree, index) {
     const newTree = [];
 
     for (let i = 0; i < oldTree.length; i += 1) {
-        newTree.push(i > index ? { ...oldTree[i], row: i } : oldTree[i]);
+        newTree.push(i > index ? {
+            ...oldTree[i],
+            row: i,
+        } : oldTree[i]);
     }
     return newTree;
 }
@@ -70,9 +87,16 @@ export function getTreeWhenElementExpand(hiddenChildren, oldTree, index) {
         if (i === index && hiddenChildren.length) {
             const hiddenElement = getCoordinatesForHiddenElements(hiddenChildren, current);
 
-            newTree = [...newTree, current, ...hiddenElement];
+            newTree = [
+                ...newTree,
+                current,
+                ...hiddenElement,
+            ];
         } else if (i > index) {
-            newTree.push({ ...current, row: current.row + hiddenChildren.length });
+            newTree.push({
+                ...current,
+                row: current.row + hiddenChildren.length,
+            });
         } else {
             newTree.push(current);
         }
@@ -90,12 +114,19 @@ export function getRowBounds(elements) {
     return elementBounds;
 }
 
-export function getRowBellowMouse({ pageY, elements, elementBounds }, completion) {
+export function getRowBellowMouse({
+    pageY, elements, elementBounds,
+}, completion) {
     for (let i = 0; i < elements.length; i += 1) {
-        const { y, height } = elementBounds[i];
+        const {
+            y, height,
+        } = elementBounds[i];
 
         if (y <= pageY && y + height >= pageY) {
-            return completion({ index: i, element: elements[i] });
+            return completion({
+                index: i,
+                element: elements[i],
+            });
         }
     }
     return null;

@@ -10,8 +10,6 @@
             <template #validator="{ errorMessages }">
                 <TranslationSelect
                     :value="fieldData"
-                    solid
-                    regular
                     :clearable="true"
                     :label="label"
                     :options="options"
@@ -19,9 +17,13 @@
                     :error-messages="errorMessages"
                     :required="properties.required"
                     :disabled="disabled"
-                    :description="properties.hint"
                     @input="debounceValueChange">
-                    <template #informationLabel>
+                    <template #append>
+                        <InfoHint
+                            v-if="properties.hint"
+                            :hint="properties.hint" />
+                    </template>
+                    <template #details>
                         <div />
                     </template>
                 </TranslationSelect>
@@ -31,12 +33,21 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { debounce } from 'debounce';
-import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
-import { getMappedObjectOptions, getMappedObjectOption } from '@Core/models/mappers/translationsMapper';
+import InfoHint from '@Core/components/Hints/InfoHint';
+import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import {
+    getMappedObjectOption,
+    getMappedObjectOptions,
+} from '@Core/models/mappers/translationsMapper';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import {
+    debounce,
+} from 'debounce';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductTemplateFormSelectField',
@@ -44,6 +55,7 @@ export default {
         ProductTemplateFormField,
         TranslationSelect,
         FormValidatorField,
+        InfoHint,
     },
     props: {
         size: {
@@ -85,7 +97,9 @@ export default {
             draft: state => state.draft,
         }),
         fieldData() {
-            const { attribute_code } = this.properties;
+            const {
+                attribute_code,
+            } = this.properties;
             const value = this.draft[this.languageCode][attribute_code];
 
             if (!this.hasOptions || !value) {

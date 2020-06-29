@@ -5,7 +5,7 @@
 <template>
     <button
         type="button"
-        :class="buttonClasses"
+        :class="classes"
         :disabled="disabled"
         :aria-label="title">
         <!--
@@ -31,11 +31,20 @@
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
 import {
-    GRAPHITE, GREY_DARK, WHITE,
+    GRAPHITE,
+    GREY_DARK,
+    WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
+/**
+ * `Button` is a default component to display action in page.
+ * It may have any icon component inside `prepend` and `append` slots.
+ */
 export default {
     name: 'Button',
     props: {
@@ -59,7 +68,6 @@ export default {
         },
         /**
          * The title of the button
-         * @values primary, secondary
          */
         title: {
             type: String,
@@ -67,7 +75,6 @@ export default {
         },
         /**
          * The disabled state of the button
-         * @values primary, secondary
          */
         disabled: {
             type: Boolean,
@@ -85,7 +92,7 @@ export default {
 
             return WHITE;
         },
-        buttonClasses() {
+        classes() {
             return [
                 'button',
                 `button--${this.theme}`,

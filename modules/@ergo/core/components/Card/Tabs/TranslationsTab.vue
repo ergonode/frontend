@@ -10,8 +10,7 @@
                 :style="{ flex: '0 0 192px' }"
                 v-model="selectedLanguages"
                 :options="languageOptions"
-                :solid="true"
-                :small="true"
+                :size="smallSize"
                 :multiselect="true"
                 :clearable="true"
                 label="Translations" />
@@ -23,10 +22,18 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
-import { TRANSLATIONS_LANGUAGES } from '@Core/defaults/cookies';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import {
+    TRANSLATIONS_LANGUAGES,
+} from '@Core/defaults/cookies';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
+    mapGetters,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'TranslationsTab',
@@ -47,9 +54,16 @@ export default {
             'getActiveLanguages',
             'getActiveLanguageByCode',
         ]),
+        smallSize() {
+            return SIZE.SMALL;
+        },
         languageOptions() {
-            return this.getActiveLanguages.map(({ code, name }) => ({
-                id: code, key: code, value: name,
+            return this.getActiveLanguages.map(({
+                code, name,
+            }) => ({
+                id: code,
+                key: code,
+                value: name,
             }));
         },
         selectedLanguageCodes() {

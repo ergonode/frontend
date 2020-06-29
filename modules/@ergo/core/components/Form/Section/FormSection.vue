@@ -31,7 +31,7 @@ export default {
         display: grid;
         grid-auto-flow: row;
         grid-template-columns: inherit;
-        grid-row-gap: 16px;
+        grid-row-gap: 24px;
 
         &__title {
             color: $GRAPHITE_DARK;

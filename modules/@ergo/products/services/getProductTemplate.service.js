@@ -3,6 +3,8 @@
  * See LICENSE for license details.
  */
 
-export default function ({ $axios, languageCode, id }) {
+export default function ({
+    $axios, languageCode, id,
+}) {
     return $axios.$get(`${languageCode}/products/${id}/template`);
 }

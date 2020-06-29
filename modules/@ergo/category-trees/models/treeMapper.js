@@ -5,11 +5,15 @@
 export function getParsedTreeData(tree, categories) {
     const newTree = [];
     let rowCounter = 0;
-    if (!Array.isArray(categories) || categories.length <= 0) return [];
+    if (!Array.isArray(categories) || categories.length <= 0) {
+        return [];
+    }
     const buildTree = (treeArray, parent, column) => {
         for (let i = 0; i < treeArray.length; i += 1) {
             const categoryId = treeArray[i].category_id;
-            const { length: childrenLength } = treeArray[i].children;
+            const {
+                length: childrenLength,
+            } = treeArray[i].children;
             const {
                 code: categoryCode,
                 name: categoryName,
@@ -35,8 +39,13 @@ export function getParsedTreeData(tree, categories) {
 export function getMappedTreeData(treeArray) {
     const newTree = [];
     for (let i = 0; i < treeArray.length; i += 1) {
-        const { parent, id } = treeArray[i];
-        const childrenElement = { category_id: id, children: [] };
+        const {
+            parent, id,
+        } = treeArray[i];
+        const childrenElement = {
+            category_id: id,
+            children: [],
+        };
         const setChild = (childArray) => {
             for (let j = 0; j < childArray.length; j += 1) {
                 if (childArray[j].category_id === parent) {

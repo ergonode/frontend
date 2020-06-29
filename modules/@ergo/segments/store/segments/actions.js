@@ -2,23 +2,37 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { types } from './mutations';
+import {
+    types,
+} from './mutations';
 
 export default {
-    setId({ commit }, value) {
+    setId({
+        commit,
+    }, value) {
         commit(types.SET_SEGMENT_ID, value);
     },
-    setCode({ commit }, value) {
+    setCode({
+        commit,
+    }, value) {
         commit(types.SET_SEGMENT_CODE, value);
     },
-    setConditionSetId({ commit }, value) {
+    setConditionSetId({
+        commit,
+    }, value) {
         commit(types.SET_CONDITION_SET_ID, value);
     },
     async getSegmentById(
-        { commit, dispatch, rootState },
-        { segmentId },
+        {
+            commit, dispatch, rootState,
+        },
+        {
+            segmentId,
+        },
     ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
         await this.app.$axios.$get(`${userLanguageCode}/segments/${segmentId}`).then(async ({
             id,
             code,
@@ -33,16 +47,22 @@ export default {
             commit(types.SET_SEGMENT_ID, id);
             commit(types.SET_SEGMENT_CODE, code);
             commit(types.SET_CONDITION_SET_ID, conditionSetId);
-            dispatch('translations/setTabTranslations', translations, { root: true });
+            dispatch('translations/setTabTranslations', translations, {
+                root: true,
+            });
             if (conditionSetId) {
                 await dispatch('conditions/getConditionSetById', {
                     conditionSetId,
-                }, { root: true });
+                }, {
+                    root: true,
+                });
             }
         });
     },
     async updateSegment(
-        { rootState },
+        {
+            rootState,
+        },
         {
             id,
             data,
@@ -50,15 +70,25 @@ export default {
             onError,
         },
     ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
 
         await this.$setLoader('footerButton');
         await this.app.$axios.$put(`${userLanguageCode}/segments/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
-    removeSegment({ state, rootState }, { onSuccess }) {
-        const { id, conditionSetId } = state;
-        const { language: userLanguageCode } = rootState.authentication.user;
+    removeSegment({
+        state, rootState,
+    }, {
+        onSuccess,
+    }) {
+        const {
+            id, conditionSetId,
+        } = state;
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
 
         return this.app.$axios.$delete(`${userLanguageCode}/segments/${id}`)
             .then(() => {
@@ -70,7 +100,9 @@ export default {
                 }
             });
     },
-    clearStorage({ commit }) {
+    clearStorage({
+        commit,
+    }) {
         commit(types.CLEAR_STATE);
     },
 };

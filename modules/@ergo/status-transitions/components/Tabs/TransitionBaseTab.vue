@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import TransitionForm from '@Transitions/components/Forms/TransitionForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import TransitionForm from '@Transitions/components/Forms/TransitionForm';
 
 export default {
     name: 'TransitionBaseTab',

@@ -5,9 +5,7 @@
 <template>
     <TextField
         :value="localValue"
-        solid
-        :regular="!schema.small"
-        :small="schema.small"
+        :size="schema.size"
         :label="schema.title"
         :required="schema.isRequired"
         :error-messages="errorMessages"

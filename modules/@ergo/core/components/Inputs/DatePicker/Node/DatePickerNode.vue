@@ -4,7 +4,7 @@
  */
 <template>
     <span
-        :class="calendarNodeStateClasses"
+        :class="classes"
         v-text="title" />
 </template>
 
@@ -25,12 +25,15 @@ export default {
             default: false,
         },
         title: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
     },
     computed: {
-        calendarNodeStateClasses() {
+        classes() {
             return [
                 'node',
                 {

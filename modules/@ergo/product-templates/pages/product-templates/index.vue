@@ -46,10 +46,14 @@
 </template>
 
 <script>
-import { SIZE } from '@Core/defaults/theme';
-import { GRID_LAYOUT } from '@Core/defaults/grid';
-import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import {
+    GRID_LAYOUT,
+} from '@Core/defaults/grid';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
 export default {
     name: 'Templates',
@@ -62,7 +66,11 @@ export default {
         CreateProductTemplateModalForm: () => import('@Templates/components/Modals/CreateProductTemplateModalForm'),
         Grid: () => import('@Core/components/Grid/Grid'),
     },
-    mixins: [fetchGridDataMixin({ path: 'templates' })],
+    mixins: [
+        fetchGridDataMixin({
+            path: 'templates',
+        }),
+    ],
     data() {
         return {
             isCreateProductTemplateVisible: false,
@@ -96,7 +104,12 @@ export default {
         onEditRow(args) {
             const lastIndex = args.length - 1;
 
-            this.$router.push({ name: 'product-template-id-general', params: { id: args[lastIndex] } });
+            this.$router.push({
+                name: 'product-template-id-general',
+                params: {
+                    id: args[lastIndex],
+                },
+            });
         },
     },
     head() {

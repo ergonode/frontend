@@ -24,6 +24,10 @@ export default {
     components: {
         ResponsiveCenteredViewTemplate,
     },
-    mixins: [fetchGridDataMixin({ path: 'sources/_id/imports' })],
+    mixins: [
+        fetchGridDataMixin({
+            path: 'sources/_id/imports',
+        }),
+    ],
 };
 </script>

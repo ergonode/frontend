@@ -21,8 +21,12 @@
 </template>
 
 <script>
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { THEME } from '@Core/defaults/theme';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 
 const deleteAttributeValues = () => import('@Products/services/deleteAttributeValues.service');
 
@@ -53,22 +57,36 @@ export default {
             this.$emit('close');
         },
         onRestore() {
-            const { languageCode, productId, attribute } = this.element;
+            const {
+                languageCode, productId, attribute,
+            } = this.element;
 
             deleteAttributeValues().then(response => response.default({
                 $axios: this.$axios,
                 $store: this.$store,
                 languageCode,
-                elements: [attribute.element_id],
+                elements: [
+                    attribute.element_id,
+                ],
                 productId,
             }).then(() => {
                 this.isRequestPending = false;
-                this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Value restored' });
-                this.$emit('restore', { languageCode, productId, attribute });
+                this.$addAlert({
+                    type: ALERT_TYPE.SUCCESS,
+                    message: 'Value restored',
+                });
+                this.$emit('restore', {
+                    languageCode,
+                    productId,
+                    attribute,
+                });
                 this.$emit('close');
             }).catch(() => {
                 this.isRequestPending = false;
-                this.$addAlert({ type: ALERT_TYPE.ERROR, message: 'Restore error' });
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Restore error',
+                });
             }));
         },
     },

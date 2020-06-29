@@ -37,13 +37,13 @@
                         :fixed-content="true"
                         @input="onUpdateStatus">
                         <template #option="{ option }">
-                            <ListElementAction>
+                            <ListElementAction :size="smallSize">
                                 <PointBadge :color="option.color" />
                             </ListElementAction>
                             <ListElementDescription>
                                 <ListElementTitle
                                     :title="option.name || `#${option.code}`"
-                                    :small="true" />
+                                    :size="smallSize" />
                             </ListElementDescription>
                         </template>
                     </ActionButton>
@@ -61,16 +61,32 @@
     </Page>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { MODAL_TYPE } from '@Core/defaults/modals';
-import { PRODUCT_TYPE } from '@Products/defaults';
-import { getKeyByValue } from '@Core/models/objectWrapper';
-import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 import Button from '@Core/components/Buttons/Button';
-import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
 import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
+import {
+    getNestedTabRoutes,
+} from '@Core/models/navigation/tabs';
+import {
+    getKeyByValue,
+} from '@Core/models/objectWrapper';
+import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
+import {
+    PRODUCT_TYPE,
+} from '@Products/defaults';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductPage',
@@ -84,7 +100,9 @@ export default {
         ActionButton: () => import('@Core/components/Buttons/ActionButton'),
         PointBadge: () => import('@Core/components/Badges/PointBadge'),
     },
-    mixins: [categoryManagementPageMixin],
+    mixins: [
+        categoryManagementPageMixin,
+    ],
     computed: {
         ...mapState('product', {
             status: state => state.status,
@@ -94,8 +112,13 @@ export default {
         ...mapState('dictionaries', {
             productTypes: state => state.productTypes,
         }),
+        smallSize() {
+            return SIZE.SMALL;
+        },
         isUserAllowedToUpdateProduct() {
-            return this.$hasAccess(['PRODUCT_UPDATE']);
+            return this.$hasAccess([
+                'PRODUCT_UPDATE',
+            ]);
         },
         tabs() {
             const tabs = getNestedTabRoutes(
@@ -118,7 +141,9 @@ export default {
             'updateProductStatus',
             'getProductById',
         ]),
-        onUpdateStatus({ code }) {
+        onUpdateStatus({
+            code,
+        }) {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: `Are you sure you want to change status to ${code}?`,
@@ -126,10 +151,17 @@ export default {
                     value: code,
                     attributeId: this.status.attribute_id,
                     onSuccess: () => {
-                        const { params: { id } } = this.$route;
+                        const {
+                            params: {
+                                id,
+                            },
+                        } = this.$route;
 
                         this.getProductById(id);
-                        this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Status updated' });
+                        this.$addAlert({
+                            type: ALERT_TYPE.SUCCESS,
+                            message: 'Status updated',
+                        });
                     },
                 }),
             });

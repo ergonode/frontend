@@ -24,10 +24,16 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { THEME } from '@Core/defaults/theme';
-import { MODAL_ACTION } from '@Core/defaults/modals';
+import {
+    MODAL_ACTION,
+} from '@Core/defaults/modals';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
+import {
+    mapActions,
+} from 'vuex';
 
 const createCollection = () => import('@Collections/services/createCollection.service');
 
@@ -38,7 +44,13 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         CollectionForm: () => import('@Collections/components/Forms/CollectionForm'),
     },
-    mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Product collection', request: createCollection })],
+    mixins: [
+        actionModalFormMixin({
+            action: MODAL_ACTION.CREATE,
+            namespace: 'Product collection',
+            request: createCollection,
+        }),
+    ],
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;

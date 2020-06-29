@@ -26,7 +26,9 @@ Cypress.Commands.add('logout', () => {
 
 Cypress.Commands.add('selectRandomUser', () => {
     cy.get('.action-link').then((links) => {
-        const { length } = links;
+        const {
+            length,
+        } = links;
         links[length - 1].click();
     });
     cy.url().should('include', 'users/edit');

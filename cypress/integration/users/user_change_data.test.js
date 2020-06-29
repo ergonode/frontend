@@ -2,7 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getUUID } from '@Core/models/stringWrapper';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
 
 context('Change User data', () => {
     const uuid = getUUID();
@@ -35,7 +37,9 @@ context('Change User data', () => {
 
         it('Select language', () => {
             cy.get('input[aria-label="Language"]')
-                .click({ force: true })
+                .click({
+                    force: true,
+                })
                 .should('be.visible');
             cy.get('.list').contains('Polish').click();
             cy.get('input[aria-label="Language"]').should('have.value', 'Polish');
@@ -43,7 +47,9 @@ context('Change User data', () => {
 
         it('Select role', () => {
             cy.get('input[aria-label="Role"]')
-                .click({ force: true })
+                .click({
+                    force: true,
+                })
                 .should('be.visible');
             cy.get('.list').contains('Data inputer').click();
             cy.get('input[aria-label="Role"]').should('have.value', 'Data inputer');

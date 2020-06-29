@@ -6,17 +6,17 @@
     <div class="list-element-tree">
         <div
             v-for="position in level"
-            class="list-element-tree__node"
-            :class="['list-element-tree__node', {
-                'list-element-tree__node--small': small,
-                'list-element-tree__node--multiselect': multiselect
-            }]"
+            :class="listElementTreeNodeClasses"
             :key="position" />
         <slot />
     </div>
 </template>
 
 <script>
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+
 export default {
     name: 'ListElementTree',
     props: {
@@ -24,13 +24,28 @@ export default {
             type: Number,
             default: 0,
         },
-        small: {
-            type: Boolean,
-            default: false,
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
         },
         multiselect: {
             type: Boolean,
             default: false,
+        },
+    },
+    computed: {
+        listElementTreeNodeClasses() {
+            return [
+                'list-element-tree__node',
+                `list-element-tree__node--${this.size}`,
+                {
+                    'list-element-tree__node--multiselect': this.multiselect,
+                },
+            ];
         },
     },
 };
@@ -42,11 +57,14 @@ export default {
 
         &__node {
             width: 1px;
-            margin: 0 8px 0 5px;
             background-color: $GREY;
 
             &--small {
                 margin: 0 6px 0 7px;
+            }
+
+            &--regular {
+                margin: 0 8px 0 5px;
             }
 
             &--multiselect {

@@ -40,8 +40,12 @@ export default {
         onMouseLeave() {
             this.isMouseOver = false;
         },
-        onInitResize({ pageX }) {
-            const { width } = this.$parent.$el.getBoundingClientRect();
+        onInitResize({
+            pageX,
+        }) {
+            const {
+                width,
+            } = this.$parent.$el.getBoundingClientRect();
 
             this.isResizing = true;
             this.startX = pageX;
@@ -53,7 +57,9 @@ export default {
                 response.default(this.onResize, this.onStopResizing);
             });
         },
-        onResize({ pageX }) {
+        onResize({
+            pageX,
+        }) {
             const width = this.startWidth + pageX - this.startX;
 
             if (width > this.minWidth) {

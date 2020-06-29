@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import RoundedBadge from '@Core/components/Badges/RoundedBadge';
 import BadgeLabel from '@Core/components/Badges/BadgeLabel';
+import RoundedBadge from '@Core/components/Badges/RoundedBadge';
 
 export default {
     name: 'NotificationBadge',

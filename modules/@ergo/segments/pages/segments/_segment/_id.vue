@@ -10,17 +10,28 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { getMappedConditionSetData } from '@Conditions/models/conditionSetMapper';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { MODAL_TYPE } from '@Core/defaults/modals';
+import {
+    getMappedConditionSetData,
+} from '@Conditions/models/conditionSetMapper';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'SegmentEdit',
     components: {
         SegmentPage: () => import('@Segments/components/Pages/SegmentPage'),
     },
-    validate({ params }) {
+    validate({
+        params,
+    }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
@@ -99,7 +110,9 @@ export default {
             }
         },
         onUpdateSegment(conditionSetId) {
-            const { name, description } = this.translations;
+            const {
+                name, description,
+            } = this.translations;
             const data = {
                 condition_set_id: conditionSetId,
                 name,
@@ -114,11 +127,19 @@ export default {
             });
         },
         onUpdateSegmentsSuccess() {
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Segment updated' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Segment updated',
+            });
         },
         onRemoveSegmentSuccess() {
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Segment removed' });
-            this.$router.push({ name: 'segments-grid' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Segment removed',
+            });
+            this.$router.push({
+                name: 'segments-grid',
+            });
         },
     },
     head() {

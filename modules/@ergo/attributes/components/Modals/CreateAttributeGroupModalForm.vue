@@ -24,11 +24,16 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { THEME } from '@Core/defaults/theme';
-import { MODAL_ACTION } from '@Core/defaults/modals';
-
+import {
+    MODAL_ACTION,
+} from '@Core/defaults/modals';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
+import {
+    mapActions,
+} from 'vuex';
 
 const createAttributeGroup = () => import('@Attributes/services/createAttributeGroup.service');
 
@@ -39,7 +44,13 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         AttributeGroupForm: () => import('@Attributes/components/Forms/AttributeGroupForm'),
     },
-    mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Attribute group', request: createAttributeGroup })],
+    mixins: [
+        actionModalFormMixin({
+            action: MODAL_ACTION.CREATE,
+            namespace: 'Attribute group',
+            request: createAttributeGroup,
+        }),
+    ],
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;

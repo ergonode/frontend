@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import UserForm from '@Users/components/Forms/UserForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import UserForm from '@Users/components/Forms/UserForm';
 
 export default {
     name: 'UserBaseTab',

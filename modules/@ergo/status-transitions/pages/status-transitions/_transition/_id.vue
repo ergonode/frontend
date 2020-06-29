@@ -10,10 +10,19 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { getMappedConditionSetData } from '@Conditions/models/conditionSetMapper';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { MODAL_TYPE } from '@Core/defaults/modals';
+import {
+    getMappedConditionSetData,
+} from '@Conditions/models/conditionSetMapper';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'TransitionEdit',
@@ -44,7 +53,9 @@ export default {
             conditions: state => state.conditions,
         }),
         params() {
-            const { id } = this.$route.params;
+            const {
+                id,
+            } = this.$route.params;
             return id.split('--');
         },
     },
@@ -118,11 +129,19 @@ export default {
             });
         },
         onTransitionUpdated() {
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Transition updated' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Transition updated',
+            });
         },
         onRemoveTransitionSuccess() {
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Transition removed' });
-            this.$router.push({ name: 'status-transitions-grid' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Transition removed',
+            });
+            this.$router.push({
+                name: 'status-transitions-grid',
+            });
         },
     },
     head() {

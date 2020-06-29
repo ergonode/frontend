@@ -2,16 +2,19 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mappingTree, hiddenItems } from './__mocks__/categoryTree.mock';
 import {
     getCoordinatesForHiddenElements,
+    getFullTree,
     getNearestNeighborRowId,
-    getTreeWhenElementRemoved,
-    getTreeWhenGhostElementRemoved,
     getTreeWhenElementCollapse,
     getTreeWhenElementExpand,
-    getFullTree,
+    getTreeWhenElementRemoved,
+    getTreeWhenGhostElementRemoved,
 } from '../TreeCalculations';
+import {
+    hiddenItems,
+    mappingTree,
+} from './__mocks__/categoryTree.mock';
 
 describe('TreeCalculations/getCoordinatesForHiddenElements', () => {
     it('New positions for hidden elements (col: 2, row: 3)', () => {
@@ -39,7 +42,10 @@ describe('TreeCalculations/getCoordinatesForHiddenElements', () => {
         ];
         const column = 2;
         const row = 3;
-        const result = getCoordinatesForHiddenElements(hiddenItems, { column, row });
+        const result = getCoordinatesForHiddenElements(hiddenItems, {
+            column,
+            row,
+        });
         expect(result.length).toBe(2);
         expect(result).toStrictEqual(expectedData);
     });
@@ -69,7 +75,10 @@ describe('TreeCalculations/getCoordinatesForHiddenElements', () => {
         ];
         const column = null;
         const row = null;
-        const result = getCoordinatesForHiddenElements(hiddenItems, { column, row });
+        const result = getCoordinatesForHiddenElements(hiddenItems, {
+            column,
+            row,
+        });
         expect(result.length).toBe(2);
         expect(result).toStrictEqual(expectedData);
     });
@@ -223,9 +232,21 @@ describe('TreeCalculations/getTreeWhenGhostElementRemoved', () => {
 
 describe('TreeCalculations/getTreeWhenElementCollapse', () => {
     const visibleCategories = [
-        { id: 'fb471778-cbe7-56ca-ace7-0edd936092d7', column: 1, row: 0 },
-        { id: 'f9e4f5a5-7a87-5efc-a680-cfbdb68b869f', column: 2, row: 1 },
-        { id: 'f9e4f5a5-7a87-5efc-a680-cfbdb68b869f', column: 2, row: 3 },
+        {
+            id: 'fb471778-cbe7-56ca-ace7-0edd936092d7',
+            column: 1,
+            row: 0,
+        },
+        {
+            id: 'f9e4f5a5-7a87-5efc-a680-cfbdb68b869f',
+            column: 2,
+            row: 1,
+        },
+        {
+            id: 'f9e4f5a5-7a87-5efc-a680-cfbdb68b869f',
+            column: 2,
+            row: 3,
+        },
     ];
     it('New tree when collapse not existing element (id:100)', () => {
         const collapsedIndex = 100;
@@ -236,9 +257,21 @@ describe('TreeCalculations/getTreeWhenElementCollapse', () => {
 
     it('New tree when collapse not existing element (id:0)', () => {
         const expected = [
-            { id: 'fb471778-cbe7-56ca-ace7-0edd936092d7', column: 1, row: 0 },
-            { id: 'f9e4f5a5-7a87-5efc-a680-cfbdb68b869f', column: 2, row: 1 },
-            { id: 'f9e4f5a5-7a87-5efc-a680-cfbdb68b869f', column: 2, row: 2 },
+            {
+                id: 'fb471778-cbe7-56ca-ace7-0edd936092d7',
+                column: 1,
+                row: 0,
+            },
+            {
+                id: 'f9e4f5a5-7a87-5efc-a680-cfbdb68b869f',
+                column: 2,
+                row: 1,
+            },
+            {
+                id: 'f9e4f5a5-7a87-5efc-a680-cfbdb68b869f',
+                column: 2,
+                row: 2,
+            },
         ];
         const collapsedIndex = 0;
         const result = getTreeWhenElementCollapse(visibleCategories, collapsedIndex);

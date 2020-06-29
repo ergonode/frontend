@@ -2,22 +2,39 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { types } from './mutations';
+import {
+    types,
+} from './mutations';
 
 export default {
-    setDraggableState({ commit }, { propName, value }) {
-        commit(types.SET_DRAGGABLE_STATE, { propName, value });
+    setDraggableState({
+        commit,
+    }, {
+        propName, value,
+    }) {
+        commit(types.SET_DRAGGABLE_STATE, {
+            propName,
+            value,
+        });
     },
-    setDraggedElIndex({ commit }, index) {
+    setDraggedElIndex({
+        commit,
+    }, index) {
         commit(types.SET_DRAGGED_EL_INDEX, index);
     },
-    setGhostIndex({ commit }, index) {
+    setGhostIndex({
+        commit,
+    }, index) {
         commit(types.SET_GHOST_INDEX, index);
     },
-    setDraggedElement({ commit }, element = null) {
+    setDraggedElement({
+        commit,
+    }, element = null) {
         commit(types.SET_DRAGGED_ELEMENT, element);
     },
-    clearStorage({ commit }) {
+    clearStorage({
+        commit,
+    }) {
         commit(types.CLEAR_STATE);
     },
 };

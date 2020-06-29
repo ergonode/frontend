@@ -4,27 +4,23 @@
  */
 <template>
     <li
-        :class="['element', {
-            'element--small': small,
-            'element--large': large,
-            'element--selected': selected,
-            'element--disabled': disabled,
-        }]">
+        :class="classes">
         <slot :is-selected="selected" />
     </li>
 </template>
 
 <script>
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+
 export default {
     name: 'ListElement',
     props: {
-        large: {
-            type: Boolean,
-            default: false,
-        },
-        small: {
-            type: Boolean,
-            default: false,
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => Object.values(SIZE).indexOf(value) !== -1,
         },
         selected: {
             type: Boolean,
@@ -35,27 +31,39 @@ export default {
             default: false,
         },
     },
+    computed: {
+        classes() {
+            return [
+                'list-element',
+                `list-element--${this.size}`,
+                {
+                    'list-element--selected': this.selected,
+                    'list-element--disabled': this.disabled,
+                },
+            ];
+        },
+    },
 };
 </script>
 
 <style lang="scss" scoped>
-    .element {
+    .list-element {
         display: flex;
         box-sizing: border-box;
         cursor: pointer;
 
-        &:not(&--small):not(&--large) {
-            height: 40px;
+        &--regular {
+            min-height: 40px;
             padding: 0 8px;
         }
 
         &--small {
-            height: 32px;
+            min-height: 32px;
             padding: 0 4px;
         }
 
         &--large {
-            height: 48px;
+            min-height: 48px;
             padding: 0 8px;
         }
 

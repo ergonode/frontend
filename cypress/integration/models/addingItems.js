@@ -5,7 +5,9 @@
 let responseID = null;
 let token = null;
 
-export const visitPage = ({ path, id }) => {
+export const visitPage = ({
+    path, id,
+}) => {
     let fullPath = `${path}/${id}`;
 
     if (id === 'this') {
@@ -22,7 +24,9 @@ export const getToken = () => {
         });
 };
 
-export const sendPostRequest = ({ reqType, status, urlRegExp }) => {
+export const sendPostRequest = ({
+    reqType, status, urlRegExp,
+}) => {
     cy.wait(`@${reqType}-REQUEST`).should((xhr) => {
         expect(xhr.method).to.equal(reqType);
         expect(xhr.status, 'Successful response').to.equal(status);
@@ -33,7 +37,9 @@ export const sendPostRequest = ({ reqType, status, urlRegExp }) => {
     });
 };
 
-export const checkGridRow = ({ gridId, rowNr, columns }) => {
+export const checkGridRow = ({
+    gridId, rowNr, columns,
+}) => {
     const parsedColumns = JSON.parse(columns.replace(/'/g, '"'));
 
     cy.get(`[data-cy=${gridId}]`).should('be.visible').as('grid');
@@ -48,7 +54,9 @@ export const checkGridRow = ({ gridId, rowNr, columns }) => {
     });
 };
 
-export const noGridRow = ({ gridId, rowNr, columns }) => {
+export const noGridRow = ({
+    gridId, rowNr, columns,
+}) => {
     const parsedColumns = JSON.parse(columns.replace(/'/g, '"'));
 
     cy.get(`[data-cy=${gridId}]`).should('be.visible').as('grid');
@@ -57,14 +65,20 @@ export const noGridRow = ({ gridId, rowNr, columns }) => {
     });
 };
 
-export const removeOnGrid = ({ gridId, action, rowNr }) => {
+export const removeOnGrid = ({
+    gridId, action, rowNr,
+}) => {
     cy.get(`[data-cy=${gridId}]`).should('be.visible').as('grid');
     cy.get('[data-cy=pinned-section]').as('pinned');
     cy.get('@pinned').find(`[column-id=${action}] .grid-table-cell`).eq(rowNr + 2).as('delete');
-    cy.get('@delete').click({ force: true });
+    cy.get('@delete').click({
+        force: true,
+    });
 };
 
-export const removeRequest = ({ element, reqType, path }) => {
+export const removeRequest = ({
+    element, reqType, path,
+}) => {
     let fullPath = `${path}/${element}`;
 
     if (element === 'this') {

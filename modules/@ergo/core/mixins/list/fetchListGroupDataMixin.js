@@ -2,12 +2,23 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getListGroups, getListItems } from '@Core/services/list/getList.service';
-import { UNASSIGNED_GROUP_ID } from '@Core/defaults/list';
-import { getMappedGroupItemsCount } from '@Core/models/mappers/listMapper';
-import { getUUID } from '@Core/models/stringWrapper';
+import {
+    UNASSIGNED_GROUP_ID,
+} from '@Core/defaults/list';
+import {
+    getMappedGroupItemsCount,
+} from '@Core/models/mappers/listMapper';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
+import {
+    getListGroups,
+    getListItems,
+} from '@Core/services/list/getList.service';
 
-export default function ({ namespace }) {
+export default function ({
+    namespace,
+}) {
     return {
         data() {
             return {
@@ -19,7 +30,9 @@ export default function ({ namespace }) {
             };
         },
         async created() {
-            const { defaultLanguageCodeByPrivileges } = this.$store.state.core;
+            const {
+                defaultLanguageCodeByPrivileges,
+            } = this.$store.state.core;
 
             await this.getGroups(defaultLanguageCodeByPrivileges);
             await this.getUnassignedGroupItems(defaultLanguageCodeByPrivileges);
@@ -31,7 +44,9 @@ export default function ({ namespace }) {
                     $axios: this.$axios,
                     path: `${languageCode}/${namespace}/groups`,
                     languageCode,
-                }).then(({ groups, items, groupItemsCount }) => {
+                }).then(({
+                    groups, items, groupItemsCount,
+                }) => {
                     this.groups = {
                         ...this.groups,
                         [languageCode]: groups,
@@ -63,8 +78,12 @@ export default function ({ namespace }) {
                     [UNASSIGNED_GROUP_ID]: this.items[languageCode][UNASSIGNED_GROUP_ID].length,
                 };
             },
-            getGroupItems({ groupId, languageCode }) {
-                const { length: currentItemsCount } = this.items[languageCode][groupId];
+            getGroupItems({
+                groupId, languageCode,
+            }) {
+                const {
+                    length: currentItemsCount,
+                } = this.items[languageCode][groupId];
 
                 if (currentItemsCount !== this.groupItemsCount[groupId]) {
                     const filter = this.codeFilter
@@ -82,7 +101,9 @@ export default function ({ namespace }) {
                             field: 'code',
                             order: 'ASC',
                         },
-                    }).then(({ items }) => {
+                    }).then(({
+                        items,
+                    }) => {
                         this.items[languageCode] = {
                             ...this.items[languageCode],
                             [groupId]: items,
@@ -92,7 +113,9 @@ export default function ({ namespace }) {
 
                 return null;
             },
-            getAllGroupsItems({ languageCode }) {
+            getAllGroupsItems({
+                languageCode,
+            }) {
                 const filter = this.codeFilter ? `code=${this.codeFilter}` : '';
 
                 return getListItems({
@@ -106,7 +129,9 @@ export default function ({ namespace }) {
                         field: 'code',
                         order: 'ASC',
                     },
-                }).then(({ items }) => {
+                }).then(({
+                    items,
+                }) => {
                     if (this.expandedGroupId !== '') {
                         const isAnyGroupInsideGroups = groups => groups.some(
                             grp => grp === this.expandedGroupId,
@@ -126,7 +151,9 @@ export default function ({ namespace }) {
                     this.groupItemsCount = getMappedGroupItemsCount(items);
                 });
             },
-            getGroupsAndExpandedGroupItems({ languageCode }) {
+            getGroupsAndExpandedGroupItems({
+                languageCode,
+            }) {
                 return this.getGroups(languageCode).then(() => {
                     const requests = [
                         this.getUnassignedGroupItems(languageCode),
@@ -135,7 +162,9 @@ export default function ({ namespace }) {
                     if (this.expandedGroupId) {
                         const {
                             id: groupId,
-                        } = this.groups[languageCode].find(({ id }) => id === this.expandedGroupId);
+                        } = this.groups[languageCode].find(({
+                            id,
+                        }) => id === this.expandedGroupId);
 
                         requests.push(
                             this.getGroupItems({
@@ -148,7 +177,9 @@ export default function ({ namespace }) {
                     return Promise.all(requests);
                 });
             },
-            onGroupExpand({ group, languageCode, isExpanded }) {
+            onGroupExpand({
+                group, languageCode, isExpanded,
+            }) {
                 if (isExpanded) {
                     this.getGroupItems({
                         groupId: group.id,

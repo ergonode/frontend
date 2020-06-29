@@ -19,9 +19,12 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductTemplateFormNumericField',
@@ -64,14 +67,18 @@ export default {
             draft: state => state.draft,
         }),
         fieldData() {
-            const { attribute_code } = this.properties;
+            const {
+                attribute_code,
+            } = this.properties;
 
             return this.draft[this.languageCode][attribute_code] || null;
         },
         parameter() {
             if (!this.properties.parameters) return null;
 
-            const [key] = Object.keys(this.properties.parameters);
+            const [
+                key,
+            ] = Object.keys(this.properties.parameters);
 
             return this.properties.parameters[key];
         },

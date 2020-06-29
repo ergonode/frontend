@@ -10,19 +10,30 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { MODAL_TYPE } from '@Core/defaults/modals';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'EditAttributeGroup',
     components: {
         AttributeGroupPage: () => import('@Attributes/components/Pages/AttributeGroupPage'),
     },
-    validate({ params }) {
+    validate({
+        params,
+    }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
-    async fetch({ store, params }) {
+    async fetch({
+        store, params,
+    }) {
         await store.dispatch('attributeGroup/getAttributeGroupById', {
             groupId: params.id,
         });
@@ -56,8 +67,12 @@ export default {
         },
         onSave() {
             this.removeValidationErrors();
-            const { name } = this.translations;
-            const data = { name };
+            const {
+                name,
+            } = this.translations;
+            const data = {
+                name,
+            };
 
             this.updateAttributeGroup({
                 id: this.id,
@@ -68,11 +83,19 @@ export default {
         },
         onUpdateAttributeGroupSuccess() {
             this.removeValidationErrors();
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Attribute Group updated' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Attribute Group updated',
+            });
         },
         onRemoveSuccess() {
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Attribute Group removed' });
-            this.$router.push({ name: 'attribute-groups-grid' });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Attribute Group removed',
+            });
+            this.$router.push({
+                name: 'attribute-groups-grid',
+            });
         },
     },
     head() {

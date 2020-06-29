@@ -11,8 +11,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import ModalGrid from '@Core/components/Modal/ModalGrid';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'AddProductsFromListModalGrid',

@@ -10,23 +10,23 @@
             <template #validator="{ errorMessages }">
                 <DatePicker
                     :value="fieldData"
-                    solid
-                    regular
                     :label="label"
                     :placeholder="properties.placeholder"
                     :foramt="parameter"
                     :error-messages="errorMessages"
                     :required="properties.required"
                     :disabled="disabled"
-                    :description="properties.hint"
                     @focus="onFocus"
                     @input="onValueChange">
                     <template #append>
                         <TextFieldSuffix
                             v-if="parameter"
                             :suffix="parameter" />
+                        <InfoHint
+                            v-if="properties.hint"
+                            :hint="properties.hint" />
                     </template>
-                    <template #informationLabel>
+                    <template #details>
                         <div />
                     </template>
                 </DatePicker>
@@ -36,13 +36,21 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { format as formatDate } from 'date-fns';
-import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
-import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
-import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import InfoHint from '@Core/components/Hints/InfoHint';
+import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
+import {
+    DEFAULT_FORMAT,
+} from '@Core/models/calendar/calendar';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import {
+    format as formatDate,
+} from 'date-fns';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductTemplateFormDateField',
@@ -51,6 +59,7 @@ export default {
         DatePicker,
         FormValidatorField,
         TextFieldSuffix,
+        InfoHint,
     },
     props: {
         size: {
@@ -87,7 +96,9 @@ export default {
             draft: state => state.draft,
         }),
         fieldData() {
-            const { attribute_code } = this.properties;
+            const {
+                attribute_code,
+            } = this.properties;
             const value = this.draft[this.languageCode][attribute_code];
 
             return value ? new Date(value) : null;
@@ -95,7 +106,9 @@ export default {
         parameter() {
             if (!this.properties.parameters) return DEFAULT_FORMAT;
 
-            const [key] = Object.keys(this.properties.parameters);
+            const [
+                key,
+            ] = Object.keys(this.properties.parameters);
 
             return this.properties.parameters[key];
         },

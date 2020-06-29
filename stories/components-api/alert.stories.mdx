@@ -1,4 +1,4 @@
-import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Preview, Props, Description } from '@storybook/addon-docs/blocks';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import Alert from '@Core/components/Alerts/Alert';
 
@@ -6,7 +6,7 @@ import Alert from '@Core/components/Alerts/Alert';
 
 # Alert
 
-`Alert` is a default feedback component for user on http response. Alerts are going to be displayed as default `FlashMessage`.
+<Description of={Alert} />
 
 ```
     import Alert from '@Core/components/Alerts/Alert'
@@ -14,60 +14,68 @@ import Alert from '@Core/components/Alerts/Alert';
 
 ### Types
 
-<Preview>
+<Preview mdxSource={`
+    <Alert :type="${ALERT_TYPE.SUCCESS}" message="That is success Alert" />
+    <!-- -->
+    <Alert :type="${ALERT_TYPE.INFO}" message="That is info Alert" />
+    <!-- -->
+    <Alert :type="${ALERT_TYPE.WARNING}" message="That is warning Alert" />
+    <!-- -->
+    <Alert :type="${ALERT_TYPE.ERROR}" message="That is error Alert" />
+`}>
     <Story name="success">
         {{
             components: { Alert },
-            template: `<Alert :alert="alert" />`,
+            template: `<Alert id="1" :type="type" :message="message" />`,
             computed: {
-                alert() {
-                    return {
-                        type: ALERT_TYPE.SUCCESS,
-                        message: 'That is success Alert',
-                    }
-                }
+                type() {
+                    return ALERT_TYPE.SUCCESS;
+                },
+                message() {
+                    return 'That is success Alert';
+                },
             }
         }}
     </Story>
     <Story name="warning">
         {{
             components: { Alert },
-            template: `<Alert :alert="alert" />`,
+            template: `<Alert id="2" :type="type" :message="message" />`,
             computed: {
-                alert() {
-                    return {
-                        type: ALERT_TYPE.WARNING,
-                        message: 'That is warning Alert',
-                    }
-                }
+                type() {
+                    return ALERT_TYPE.WARNING;
+                },
+                message() {
+                    return 'That is warning Alert';
+                },
             }
         }}
     </Story>
     <Story name="info">
         {{
             components: { Alert },
-            template: `<Alert :alert="alert" />`,
+            template: `<Alert id="4" :type="type" :message="message" />`,
             computed: {
-                alert() {
-                    return {
-                        type: ALERT_TYPE.INFO,
-                        message: 'That is info Alert',
-                    }
-                }
+                type() {
+                    return ALERT_TYPE.INFO;
+                },
+                message() {
+                    return 'That is info Alert';
+                },
             }
         }}
     </Story>
     <Story name="error">
         {{
             components: { Alert },
-            template: `<Alert :alert="alert" />`,
+            template: `<Alert id="4" :type="type" :message="message" />`,
             computed: {
-                alert() {
-                    return {
-                        type: ALERT_TYPE.ERROR,
-                        message: 'That is error Alert',
-                    }
-                }
+                type() {
+                    return ALERT_TYPE.ERROR;
+                },
+                message() {
+                    return 'That is error Alert';
+                },
             }
         }}
     </Story>

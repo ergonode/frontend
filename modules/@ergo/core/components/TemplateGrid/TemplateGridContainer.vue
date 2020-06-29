@@ -5,7 +5,7 @@
 <template>
     <div
         class="grid-container"
-        :draggable="isDraggingEnabled"
+        :draggable="isDraggingEnabled && gridData.length"
         @dragstart="onDragStart"
         @dragend="onDragEnd"
         @dragover="onDragOver"
@@ -16,22 +16,32 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
-import { debounce } from 'debounce';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
+import {
+    getObjectWithMaxValueInArrayByObjectKey,
+} from '@Core/models/arrayWrapper';
+import {
+    getPositionForBrowser,
+    isMouseOutOfBoundsElement,
+} from '@Core/models/drag_and_drop/helpers';
 import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
 import {
-    getRowBounds,
     getRowBellowMouse,
+    getRowBounds,
 } from '@Core/models/template_grid/TreeCalculations';
-import { getObjectWithMaxValueInArrayByObjectKey } from '@Core/models/arrayWrapper';
 import {
-    isMouseOutOfBoundsElement,
-    getPositionForBrowser,
-} from '@Core/models/drag_and_drop/helpers';
-import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
+    debounce,
+} from 'debounce';
+import {
+    mapActions,
+    mapGetters,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'TemplateGridContainer',
@@ -130,46 +140,60 @@ export default {
             'removeHiddenItem',
         ]),
         calculateRowsCount() {
-            const { clientHeight } = this.$el;
+            const {
+                clientHeight,
+            } = this.$el;
             const visibleRows = Math.ceil(clientHeight / this.rowHeight);
             const totalRows = Math.max(this.fullGridData.length, visibleRows) + this.additionalRows;
 
             this.setRowsCount(totalRows);
         },
         onDragStart(event) {
-            const { pageY } = event;
-            const itemsContainer = this.$el.querySelector('.grid-items-container');
-            const { children: elements } = itemsContainer;
-            const {
-                top: containerTop,
-                height: containerHeight,
-            } = itemsContainer.getBoundingClientRect();
-
-            if (pageY > containerHeight + containerTop) {
+            if (this.gridData.length === 0) {
                 event.preventDefault();
                 return false;
             }
+
+            const {
+                pageY,
+            } = event;
+
+            const itemsContainer = this.$el.querySelector('.grid-items-container');
+            const {
+                children: elements,
+            } = itemsContainer;
             getRowBellowMouse({
                 pageY,
                 elements,
                 elementBounds: getRowBounds(elements),
-            }, ({ index, element }) => {
+            }, ({
+                index, element,
+            }) => {
                 if (element) {
                     const itemId = element.getAttribute('item-id');
                     const item = this.getItemById(itemId);
-                    const { children, parent, expanded } = item;
+                    const {
+                        children, parent, expanded,
+                    } = item;
 
                     if (children && !expanded) {
                         this.$emit('toggleItem', item);
                     }
                     this.setDraggedElement(item);
-                    this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENT.TEMPLATE });
+                    this.setDraggableState({
+                        propName: 'draggedElementOnGrid',
+                        value: DRAGGED_ELEMENT.TEMPLATE,
+                    });
                     addElementCopyToDocumentBody({
                         event,
-                        element: element.childNodes[0],
                         id: itemId,
+                        label: item.code,
                     });
-                    this.setChildrenLength({ id: parent, value: -1 });
+
+                    this.setChildrenLength({
+                        id: parent,
+                        value: -1,
+                    });
                     this.removeGridItem(index);
                 } else {
                     event.preventDefault();
@@ -178,23 +202,32 @@ export default {
             return true;
         },
         onDrop(event) {
-            const { row, column } = this.ghostElement;
+            const {
+                row, column,
+            } = this.ghostElement;
 
             event.preventDefault();
             if (row !== null && column !== null) this.insertElementIntoGrid();
         },
         onDragEnd(event) {
-            const { isOutOfBounds } = this.getElementBelowMouse(event);
+            const {
+                isOutOfBounds,
+            } = this.getElementBelowMouse(event);
 
             if (isOutOfBounds) {
                 this.insertElementIntoGrid();
             }
             removeElementCopyFromDocumentBody(event);
             this.setDraggedElement();
-            this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
+            this.setDraggableState({
+                propName: 'draggedElementOnGrid',
+                value: null,
+            });
         },
         onDragLeave(event) {
-            const { isOutOfBounds } = this.getElementBelowMouse(event);
+            const {
+                isOutOfBounds,
+            } = this.getElementBelowMouse(event);
 
             if (isOutOfBounds) {
                 this.removeGhostElement();
@@ -203,8 +236,12 @@ export default {
         onDragOver(event) {
             event.preventDefault();
             if (this.onDragFirstItem()) return false;
-            const { pageX, pageY } = event;
-            const { overRow, directionOfCollision } = this.mousePosition;
+            const {
+                pageX, pageY,
+            } = event;
+            const {
+                overRow, directionOfCollision,
+            } = this.mousePosition;
             const localDirectionOfCollision = this.getMouseOverProps(pageX, pageY);
             const collidingItem = this.getCollidingItemAtRow(overRow);
             const isElementHasCollision = collidingItem !== null
@@ -214,7 +251,10 @@ export default {
             if (isElementHasCollision) {
                 this.setGhostItemPosition(this.getCollidingPosition(collidingItem));
             } else if (isElementBeyondCollision) {
-                let coordinates = { column: null, row: null };
+                let coordinates = {
+                    column: null,
+                    row: null,
+                };
                 const allowedColumn = this.getAllowedColumn();
 
                 if ((this.constantRoot && allowedColumn !== 0) || !this.constantRoot) {
@@ -233,7 +273,9 @@ export default {
             this.$emit('afterRemove', id);
         },
         insertElementIntoGrid() {
-            const { row: ghostRow, column: ghostColumn } = this.ghostElement;
+            const {
+                row: ghostRow, column: ghostColumn,
+            } = this.ghostElement;
             const {
                 id, code, name, row, column,
             } = this.draggedElement;
@@ -263,7 +305,10 @@ export default {
                     disabled: true,
                 });
             }
-            this.setChildrenLength({ id: parentId, value: 1 });
+            this.setChildrenLength({
+                id: parentId,
+                value: 1,
+            });
             this.rebuildGridById(id);
             if (childrenLength > 0) {
                 this.$emit('toggleItem', {
@@ -275,7 +320,9 @@ export default {
             this.$emit('afterDrop', id);
         },
         getElementBelowMouse(event) {
-            const { xPos, yPos } = getPositionForBrowser(event);
+            const {
+                xPos, yPos,
+            } = getPositionForBrowser(event);
             const itemsContainer = this.$el;
 
             return {
@@ -284,14 +331,20 @@ export default {
             };
         },
         removeGhostElement() {
-            const { id } = this.ghostElement;
+            const {
+                id,
+            } = this.ghostElement;
 
             this.ghostElement.row = null;
             this.ghostElement.column = null;
             this.removeGridItem(id);
         },
-        getBottomCollidingColumn({ neighborElColumn, collidingElColumn }) {
-            const { overColumn } = this.mousePosition;
+        getBottomCollidingColumn({
+            neighborElColumn, collidingElColumn,
+        }) {
+            const {
+                overColumn,
+            } = this.mousePosition;
 
             if (neighborElColumn !== null && collidingElColumn < neighborElColumn) {
                 return neighborElColumn;
@@ -299,8 +352,12 @@ export default {
 
             return overColumn > collidingElColumn ? collidingElColumn + 1 : collidingElColumn;
         },
-        getTopCollidingColumn({ neighborElColumn, collidingElColumn }) {
-            const { overColumn } = this.mousePosition;
+        getTopCollidingColumn({
+            neighborElColumn, collidingElColumn,
+        }) {
+            const {
+                overColumn,
+            } = this.mousePosition;
 
             if (overColumn >= collidingElColumn && overColumn <= neighborElColumn + 1) {
                 return overColumn;
@@ -309,7 +366,9 @@ export default {
             return collidingElColumn;
         },
         getGhostCollidingColumn(topNeighborColumn, bottomNeighborColumn) {
-            const { overColumn } = this.mousePosition;
+            const {
+                overColumn,
+            } = this.mousePosition;
             const isTopNeighborLowerThenBottom = topNeighborColumn < bottomNeighborColumn;
             const maxColumn = Math.max(topNeighborColumn, bottomNeighborColumn);
             const minColumn = Math.min(topNeighborColumn, bottomNeighborColumn);
@@ -326,7 +385,9 @@ export default {
             return null;
         },
         getCollidingPosition(collidingEl) {
-            const { id, row: collidingElRow, column: collidingElColumn } = collidingEl;
+            const {
+                id, row: collidingElRow, column: collidingElColumn,
+            } = collidingEl;
 
             if (id === 'ghost_item') {
                 const topNeighbor = this.dataWithoutGhostElement[
@@ -338,7 +399,10 @@ export default {
                 const columnForLastRow = !bottomNeighbor ? this.getAllowedColumn() : 0;
 
                 if (this.constantRoot && columnForLastRow === 0) {
-                    return { row: null, column: null };
+                    return {
+                        row: null,
+                        column: null,
+                    };
                 }
                 return {
                     column: bottomNeighbor && topNeighbor
@@ -347,9 +411,13 @@ export default {
                     row: collidingElRow,
                 };
             }
-            const { directionOfCollision } = this.mousePosition;
+            const {
+                directionOfCollision,
+            } = this.mousePosition;
             const isTop = directionOfCollision === 'top';
-            const [neighborEl] = this.dataWithoutGhostElement.filter(
+            const [
+                neighborEl,
+            ] = this.dataWithoutGhostElement.filter(
                 el => el.row === (isTop ? collidingElRow - 1 : collidingElRow + 1),
             );
             const isFirstElement = (!neighborEl || collidingElRow === 0) && isTop;
@@ -359,11 +427,17 @@ export default {
             };
 
             if (this.constantRoot && collidingElColumn === 0) {
-                return { row: null, column: null };
+                return {
+                    row: null,
+                    column: null,
+                };
             }
 
             if (isFirstElement) {
-                return { column: 0, row: -this.positionBetweenRows };
+                return {
+                    column: 0,
+                    row: -this.positionBetweenRows,
+                };
             }
 
             return {
@@ -395,7 +469,9 @@ export default {
             }
             return parentId;
         },
-        setGhostItemPosition({ column, row }) {
+        setGhostItemPosition({
+            column, row,
+        }) {
             const isPositionNotDuplicated = (this.ghostElement.column !== column
                 || this.ghostElement.row !== row) && (row !== null && column !== null);
 
@@ -403,7 +479,9 @@ export default {
                 this.ghostElement.row = row;
                 this.ghostElement.column = column;
                 this.ghostElement.parent = this.getParentId(row, column);
-                this.addGridItem({ ...this.ghostElement });
+                this.addGridItem({
+                    ...this.ghostElement,
+                });
             }
         },
         getMouseOverProps(pageX, pageY) {
@@ -438,12 +516,16 @@ export default {
             return layerPositionY > centerPosition ? 'bottom' : 'top';
         },
         isRowGet(row) {
-            const [item] = this.gridData.filter(element => element.row === row);
+            const [
+                item,
+            ] = this.gridData.filter(element => element.row === row);
 
             return item || null;
         },
         getCollidingItemAtRow(row) {
-            const { row: ghostRow } = this.ghostElement;
+            const {
+                row: ghostRow,
+            } = this.ghostElement;
             const newRow = ghostRow !== null && row > ghostRow
                 ? row - 1
                 : row;
@@ -455,8 +537,12 @@ export default {
             return this.isRowGet(newRow);
         },
         getAllowedColumn() {
-            const { overColumn } = this.mousePosition;
-            const { column: interactionColumn } = this.isRowGet(this.maxRow);
+            const {
+                overColumn,
+            } = this.mousePosition;
+            const {
+                column: interactionColumn,
+            } = this.isRowGet(this.maxRow);
 
             return overColumn > interactionColumn ? interactionColumn + 1 : overColumn;
         },

@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 
-import { TYPES } from '@Conditions/defaults/conditionsDesigner';
+import {
+    TYPES,
+} from '@Conditions/defaults/conditionsDesigner';
 
 export function hasOptions(type) {
     return type === TYPES.SELECT || type === TYPES.MULTI_SELECT;

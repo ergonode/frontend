@@ -10,8 +10,6 @@
                     <TextField
                         :data-cy="dataCyGenerator(nameKeyField)"
                         :value="translations.name[languageCode]"
-                        solid
-                        regular
                         label="Product collection name"
                         :disabled="!isUserAllowedToUpdate"
                         :error-messages="errorMessages[nameKeyField]"
@@ -19,7 +17,6 @@
                     <TextArea
                         :data-cy="dataCyGenerator(descriptionKeyField)"
                         :value="translations.description[languageCode]"
-                        solid
                         label="Description"
                         resize="vertical"
                         :style="{height: '150px'}"
@@ -33,12 +30,12 @@
 </template>
 
 <script>
-import translationCardMixin from '@Core/mixins/card/translationCardMixin';
-import TextField from '@Core/components/Inputs/TextField';
-import TextArea from '@Core/components/Inputs/TextArea';
 import Card from '@Core/components/Card/Card';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
+import TextArea from '@Core/components/Inputs/TextArea';
+import TextField from '@Core/components/Inputs/TextField';
+import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 
 export default {
     name: 'CollectionTranslationForm',
@@ -49,10 +46,14 @@ export default {
         TextArea,
         TextField,
     },
-    mixins: [translationCardMixin],
+    mixins: [
+        translationCardMixin,
+    ],
     computed: {
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['PRODUCT_COLLECTION_UPDATE']);
+            return this.$hasAccess([
+                'PRODUCT_COLLECTION_UPDATE',
+            ]);
         },
         descriptionKeyField() {
             return `description_${this.languageCode}`;

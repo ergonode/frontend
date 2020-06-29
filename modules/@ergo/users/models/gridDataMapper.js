@@ -2,8 +2,12 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { STATE } from '@Core/defaults/inputs/checkbox';
-import { isObject } from '@Core/models/objectWrapper';
+import {
+    STATE,
+} from '@Core/defaults/inputs/checkbox';
+import {
+    isObject,
+} from '@Core/models/objectWrapper';
 
 export function getMappedRestrictions(data) {
     if (!isObject(data)) return null;
@@ -66,16 +70,24 @@ export function getMappedGridData({
             }
             const value = isObject(selectedData) ? selectedData[types[type]] : false;
 
-            data[type].push({ value });
+            data[type].push({
+                value,
+            });
         }
 
         if (data.selectRow) {
             if (optionTypes.every(type => data[type][i].value)) {
-                data.selectRow.push({ value: STATE.CHECK });
+                data.selectRow.push({
+                    value: STATE.CHECK,
+                });
             } else if (optionTypes.every(type => !data[type][i].value)) {
-                data.selectRow.push({ value: STATE.UNCHECK });
+                data.selectRow.push({
+                    value: STATE.UNCHECK,
+                });
             } else {
-                data.selectRow.push({ value: STATE.CHECK_ANY });
+                data.selectRow.push({
+                    value: STATE.CHECK_ANY,
+                });
             }
         }
     }

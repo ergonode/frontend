@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 
-import { TYPES } from '@Attributes/defaults/attributes';
+import {
+    TYPES,
+} from '@Attributes/defaults/attributes';
 
 export function hasOptions(type) {
     return type === TYPES.SELECT || type === TYPES.MULTI_SELECT;

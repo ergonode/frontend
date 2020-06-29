@@ -20,7 +20,7 @@
         </template>
         <template #footer="{ clear, apply }">
             <DropDownFooter
-                :small="$attrs.small"
+                :size="$attrs.size"
                 :space-between="true">
                 <Button
                     :size="tinySize"
@@ -37,8 +37,11 @@
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
 import Select from '@Core/components/Inputs/Select/Select';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'ColorPicker',

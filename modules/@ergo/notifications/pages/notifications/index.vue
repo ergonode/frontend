@@ -19,7 +19,9 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
     },
-    async fetch({ store }) {
+    async fetch({
+        store,
+    }) {
         await store.dispatch('notifications/requestForNotifications');
     },
     computed: {
@@ -27,7 +29,9 @@ export default {
             return [
                 {
                     title: 'Notifications',
-                    route: { name: 'notifications-grid' },
+                    route: {
+                        name: 'notifications-grid',
+                    },
                 },
             ];
         },

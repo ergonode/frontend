@@ -5,7 +5,9 @@
 module.exports = {
     env: {
         test: { // test environment transforms
-            presets: ['@babel/env'],
+            presets: [
+                '@babel/env',
+            ],
             plugins: [
                 'dynamic-import-node',
                 '@babel/transform-runtime',

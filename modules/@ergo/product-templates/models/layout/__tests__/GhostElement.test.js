@@ -4,9 +4,9 @@
  */
 import {
     addResizablePlaceholder,
-    updateResizablePlaceholderWidth,
-    updateResizablePlaceholderHeight,
     removeResizablePlaceholder,
+    updateResizablePlaceholderHeight,
+    updateResizablePlaceholderWidth,
 } from '../GhostElement';
 
 beforeEach(() => {

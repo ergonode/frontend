@@ -34,11 +34,15 @@
 </template>
 
 <script>
-import { SIZE } from '@Core/defaults/theme';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import {
+    getNestedTabRoutes,
+} from '@Core/models/navigation/tabs';
 
 export default {
     name: 'Imports',
@@ -50,7 +54,9 @@ export default {
         Button,
         IconAdd,
     },
-    mixins: [gridModalMixin],
+    mixins: [
+        gridModalMixin,
+    ],
     computed: {
         smallSize() {
             return SIZE.SMALL;

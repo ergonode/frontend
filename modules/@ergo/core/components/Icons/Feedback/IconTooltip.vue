@@ -12,8 +12,10 @@
 </template>
 
 <script>
+import {
+    WHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import Icon from '@Core/components/Icons/Icon';
-import { WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'IconTooltip',

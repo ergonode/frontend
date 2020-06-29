@@ -2,8 +2,12 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export default function ({ $axios, $store }) {
-    const { language: loggedUserLanguage } = $store.state.authentication.user;
+export default function ({
+    $axios, $store,
+}) {
+    const {
+        language: loggedUserLanguage,
+    } = $store.state.authentication.user;
     const {
         email, firstName, lastName, password, passwordRepeat, role, isActive, language,
     } = $store.state.users;

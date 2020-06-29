@@ -34,10 +34,16 @@ import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'CheckBox',
-    mixins: [associatedLabelMixin],
+    mixins: [
+        associatedLabelMixin,
+    ],
     props: {
         value: {
-            type: [Array, Boolean, Number],
+            type: [
+                Array,
+                Boolean,
+                Number,
+            ],
             default: false,
         },
         disabled: {
@@ -96,6 +102,15 @@ export default {
             grid-auto-flow: column;
             column-gap: 8px;
             align-items: center;
+
+            &::after {
+                position: absolute;
+                width: 16px;
+                height: 16px;
+                box-shadow: $ELEVATOR_HOVER_FOCUS;
+                opacity: 0;
+                content: "";
+            }
         }
 
         &__label {
@@ -125,10 +140,8 @@ export default {
             margin: 0;
             opacity: 0;
 
-            &:checked:focus + label {
-                #{$checkbox}__box {
-                    box-shadow: $ELEVATOR_HOVER_FOCUS;
-                }
+            &:focus + label::after, &:hover + label::after {
+                opacity: 1;
             }
 
             &:not(:disabled) {

@@ -42,13 +42,20 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { ADD_PRODUCT } from '@Collections/defaults';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import {
+    ADD_PRODUCT,
+} from '@Collections/defaults';
 import ActionButton from '@Core/components/Buttons/ActionButton';
+import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'CollectionProductsTab',
@@ -57,7 +64,11 @@ export default {
         ActionButton,
         IconAdd,
     },
-    mixins: [fetchGridDataMixin({ path: 'collections/_id/elements' })],
+    mixins: [
+        fetchGridDataMixin({
+            path: 'collections/_id/elements',
+        }),
+    ],
     data() {
         return {
             selectedAppModalOption: null,
@@ -68,7 +79,9 @@ export default {
             languageCode: state => state.user.language,
         }),
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['PRODUCT_COLLECTION_UPDATE']);
+            return this.$hasAccess([
+                'PRODUCT_COLLECTION_UPDATE',
+            ]);
         },
         collectionCellBinding() {
             return {

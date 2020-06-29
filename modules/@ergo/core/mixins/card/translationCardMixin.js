@@ -2,7 +2,11 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mapState, mapActions, mapGetters } from 'vuex';
+import {
+    mapActions,
+    mapGetters,
+    mapState,
+} from 'vuex';
 
 export default {
     props: {

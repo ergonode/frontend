@@ -10,21 +10,17 @@
             <FormSection>
                 <TextField
                     :value="name"
-                    solid
                     required
                     :error-messages="errorMessages[nameFieldKey]"
                     :disabled="isDisabledByPrivileges"
-                    regular
                     label="Unit name"
                     hint="Unit name must be unique"
                     @input="setName" />
                 <TextField
                     :value="symbol"
-                    solid
                     required
                     :error-messages="errorMessages[symbolFieldKey]"
                     :disabled="isDisabledByPrivileges"
-                    regular
                     label="Unit symbol"
                     hint="Unit symbol must be unique"
                     @input="setSymbol" />
@@ -34,7 +30,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'UnitForm',
@@ -49,8 +48,12 @@ export default {
             symbol: state => state.symbol,
         }),
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess(['SETTINGS_UPDATE']))
-            || (!this.isDisabled && !this.$hasAccess(['SETTINGS_CREATE']));
+            return (this.isDisabled && !this.$hasAccess([
+                'SETTINGS_UPDATE',
+            ]))
+            || (!this.isDisabled && !this.$hasAccess([
+                'SETTINGS_CREATE',
+            ]));
         },
         nameFieldKey() {
             return 'name';

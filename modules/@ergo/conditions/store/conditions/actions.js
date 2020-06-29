@@ -2,17 +2,32 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { objectToArrayWithPropsName } from '@Core/models/objectWrapper';
-import { getParsedConditionSetData } from '@Conditions/models/conditionSetMapper';
-import { types } from './mutations';
+import {
+    getParsedConditionSetData,
+} from '@Conditions/models/conditionSetMapper';
+import {
+    objectToArrayWithPropsName,
+} from '@Core/models/objectWrapper';
+
+import {
+    types,
+} from './mutations';
 
 export default {
-    setId({ commit }, value) {
+    setId({
+        commit,
+    }, value) {
         commit(types.SET_CONDITION_SET_ID, value);
     },
-    getConditions({ commit, rootState }, params = {}) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$get(`${userLanguageCode}/dictionary/conditions`, { params }).then((data) => {
+    getConditions({
+        commit, rootState,
+    }, params = {}) {
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
+        return this.app.$axios.$get(`${userLanguageCode}/dictionary/conditions`, {
+            params,
+        }).then((data) => {
             commit(types.SET_CONDITIONS_DICTIONARY, objectToArrayWithPropsName(data));
         });
     },
@@ -20,17 +35,25 @@ export default {
         {
             state, commit, dispatch, rootState,
         },
-        { conditionSetId },
+        {
+            conditionSetId,
+        },
     ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
         await this.app.$axios.$get(`${userLanguageCode}/conditionsets/${conditionSetId}`).then(async ({
             id,
             conditions = [],
         }) => {
             await Promise.all(conditions.map(async (condition) => {
-                const { type } = condition;
+                const {
+                    type,
+                } = condition;
                 if (!state.conditions[type]) {
-                    await dispatch('getConditionConfigurationById', { conditionId: type });
+                    await dispatch('getConditionConfigurationById', {
+                        conditionId: type,
+                    });
                 }
             }));
 
@@ -40,26 +63,38 @@ export default {
 
             commit(types.SET_CONDITION_SET_ID, id);
             commit(types.SET_CONDITIONS_DATA, conditionsData);
-            dispatch('gridDesigner/setGridData', conditionsTree, { root: true });
-            dispatch('gridDesigner/setFullGridData', conditionsTree, { root: true });
+            dispatch('gridDesigner/setGridData', conditionsTree, {
+                root: true,
+            });
+            dispatch('gridDesigner/setFullGridData', conditionsTree, {
+                root: true,
+            });
         });
     },
     createConditionSet(
-        { commit, rootState },
+        {
+            commit, rootState,
+        },
         {
             data,
             onSuccess,
             onError,
         },
     ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$post(`${userLanguageCode}/conditionsets`, data).then(({ id }) => {
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
+        return this.app.$axios.$post(`${userLanguageCode}/conditionsets`, data).then(({
+            id,
+        }) => {
             commit(types.SET_CONDITION_SET_ID, id);
             onSuccess(id);
         }).catch(e => onError(e.data));
     },
     updateConditionSet(
-        { rootState },
+        {
+            rootState,
+        },
         {
             id,
             data,
@@ -67,34 +102,61 @@ export default {
             onError,
         },
     ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
         return this.app.$axios.$put(`${userLanguageCode}/conditionsets/${id}`, data)
             .then(() => onSuccess(id))
             .catch(e => onError(e.data));
     },
     async getConditionConfigurationById(
-        { commit, rootState },
-        { conditionId },
+        {
+            commit, rootState,
+        },
+        {
+            conditionId,
+        },
     ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
         await this.app.$axios.$get(`${userLanguageCode}/conditions/${conditionId}`).then((data) => {
-            commit(types.SET_CONDITIONS, { key: conditionId, value: data });
+            commit(types.SET_CONDITIONS, {
+                key: conditionId,
+                value: data,
+            });
         });
     },
-    setConditionValue({ commit, state },
-        { conditionId, parameterName, parameterValue }) {
+    setConditionValue({
+        commit, state,
+    },
+    {
+        conditionId, parameterName, parameterValue,
+    }) {
         if (!state.conditionsValues[conditionId]) {
-            commit(types.ADD_CONDITION_VALUE, { conditionId, parameterName, parameterValue });
+            commit(types.ADD_CONDITION_VALUE, {
+                conditionId,
+                parameterName,
+                parameterValue,
+            });
         } else {
-            commit(types.SET_CONDITION_VALUE, { conditionId, parameterName, parameterValue });
+            commit(types.SET_CONDITION_VALUE, {
+                conditionId,
+                parameterName,
+                parameterValue,
+            });
         }
     },
-    removeConditionValue({ commit, state }, conditionId) {
+    removeConditionValue({
+        commit, state,
+    }, conditionId) {
         if (state.conditionsValues[conditionId]) {
             commit(types.REMOVE_CONDITION_VALUE_FROM_SET, conditionId);
         }
     },
-    clearStorage({ commit }) {
+    clearStorage({
+        commit,
+    }) {
         commit(types.CLEAR_STATE);
     },
 };

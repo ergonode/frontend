@@ -5,13 +5,17 @@
 export function getFlattenedTreeData({
     treeData, mappedId, reducer = () => ({}),
 }) {
-    if (!treeData || !mappedId) return [];
+    if (!treeData || !mappedId) {
+        return [];
+    }
     const flattenedCollection = [];
     const flatStructure = (tree, parent, level) => {
         if (!tree || tree.length === 0) return;
         for (let i = 0; i < tree.length; i += 1) {
             const itemId = tree[i][mappedId];
-            const { children } = tree[i];
+            const {
+                children,
+            } = tree[i];
 
             flattenedCollection.push({
                 id: itemId,
@@ -23,7 +27,9 @@ export function getFlattenedTreeData({
             flatStructure(children, itemId, level + 1);
         }
     };
-    flatStructure([treeData], 'root', 0);
+    flatStructure([
+        treeData,
+    ], 'root', 0);
 
     return flattenedCollection;
 }

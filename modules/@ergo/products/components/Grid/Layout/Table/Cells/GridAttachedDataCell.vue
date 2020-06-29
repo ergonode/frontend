@@ -16,10 +16,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import GridBoolEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridBoolEditCell';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'GridAttachedDataCell',
@@ -37,7 +41,10 @@ export default {
             required: true,
         },
         rowId: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
         columnIndex: {
@@ -78,18 +85,36 @@ export default {
     methods: {
         onValueChange() {
             if (!this.localValue) {
-                this.$axios.$post(`${this.languageCode}/products/${this.id}/children/add-from-skus`, { skus: [this.data.sku] }).then(() => {
-                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Products has been added' });
+                this.$axios.$post(`${this.languageCode}/products/${this.id}/children/add-from-skus`, {
+                    skus: [
+                        this.data.sku,
+                    ],
+                }).then(() => {
+                    this.$addAlert({
+                        type: ALERT_TYPE.SUCCESS,
+                        message: 'Products has been added',
+                    });
                     this.localValue = true;
                 }).catch((e) => {
-                    this.$addAlert({ type: ALERT_TYPE.ERROR, message: e.data });
+                    this.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: e.data,
+                    });
                 });
             } else {
-                this.$axios.$delete(`${this.languageCode}/products/${this.id}/children/${this.rowId}`, { skus: this.data.sku }).then(() => {
-                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Products has been removed' });
+                this.$axios.$delete(`${this.languageCode}/products/${this.id}/children/${this.rowId}`, {
+                    skus: this.data.sku,
+                }).then(() => {
+                    this.$addAlert({
+                        type: ALERT_TYPE.SUCCESS,
+                        message: 'Products has been removed',
+                    });
                     this.localValue = false;
                 }).catch((e) => {
-                    this.$addAlert({ type: ALERT_TYPE.ERROR, message: e.data });
+                    this.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: e.data,
+                    });
                 });
             }
         },

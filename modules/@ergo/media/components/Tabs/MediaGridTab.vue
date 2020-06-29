@@ -17,8 +17,7 @@
         <template #actions>
             <TextField
                 :value="searchResult"
-                solid
-                small
+                :size="smallSize"
                 placeholder="Search..."
                 @input="debouncedSearch"
                 @focus="onSearchFocus">
@@ -31,14 +30,20 @@
 </template>
 
 <script>
-import { debounce } from 'debounce';
 import {
-    GREEN, GRAPHITE,
+    GRAPHITE,
+    GREEN,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import Grid from '@Core/components/Grid/Grid';
 import IconSearch from '@Core/components/Icons/Actions/IconSearch';
 import TextField from '@Core/components/Inputs/TextField';
-import Grid from '@Core/components/Grid/Grid';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import {
+    debounce,
+} from 'debounce';
 
 export default {
     name: 'MediaGridTab',
@@ -48,7 +53,11 @@ export default {
         IconSearch,
     },
     // TODO: URL path
-    mixins: [fetchGridDataMixin({ path: 'products' })],
+    mixins: [
+        fetchGridDataMixin({
+            path: 'products',
+        }),
+    ],
     props: {
         // TODO: When allow for selection more rows
         multiple: {
@@ -64,6 +73,9 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         searchIconFillColor() {
             return this.isSearchFocused
                 ? GREEN
@@ -98,7 +110,12 @@ export default {
         onEditRow(args) {
             const lastIndex = args.length - 1;
 
-            this.$router.push({ name: 'multimedia-id-general', params: { id: args[lastIndex] } });
+            this.$router.push({
+                name: 'multimedia-id-general',
+                params: {
+                    id: args[lastIndex],
+                },
+            });
         },
     },
 };

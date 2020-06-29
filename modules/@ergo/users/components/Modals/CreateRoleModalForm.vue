@@ -24,10 +24,16 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { THEME } from '@Core/defaults/theme';
-import { MODAL_ACTION } from '@Core/defaults/modals';
+import {
+    MODAL_ACTION,
+} from '@Core/defaults/modals';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
+import {
+    mapActions,
+} from 'vuex';
 
 const createRole = () => import('@Users/services/createRole.service');
 
@@ -38,7 +44,13 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         UserRoleForm: () => import('@Users/components/Forms/UserRoleForm'),
     },
-    mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Role', request: createRole })],
+    mixins: [
+        actionModalFormMixin({
+            action: MODAL_ACTION.CREATE,
+            namespace: 'Role',
+            request: createRole,
+        }),
+    ],
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;

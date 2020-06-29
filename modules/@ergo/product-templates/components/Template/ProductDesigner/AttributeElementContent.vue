@@ -34,9 +34,9 @@
                     <ListElementDescription>
                         <ListElementTitle
                             :title="option"
-                            :small="true" />
+                            :size="smallSize" />
                     </ListElementDescription>
-                    <ListElementAction>
+                    <ListElementAction :size="smallSize">
                         <CheckBox
                             v-if="option === 'Required'"
                             ref="checkbox"
@@ -49,17 +49,24 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
 import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
 import IconDots from '@Core/components/Icons/Others/IconDots';
 import CheckBox from '@Core/components/Inputs/CheckBox';
-import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
 import ListElement from '@Core/components/List/ListElement';
 import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
+import {
+    capitalizeAndConcatenationArray,
+} from '@Core/models/stringWrapper';
+import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'AttributeElementContent',
@@ -89,12 +96,18 @@ export default {
     },
     data() {
         return {
-            contextualMenuItems: ['Required', 'Remove'],
+            contextualMenuItems: [
+                'Required',
+                'Remove',
+            ],
             isContextualMenuActive: false,
             isHovered: false,
         };
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         tinySize() {
             return SIZE.TINY;
         },
@@ -102,7 +115,9 @@ export default {
             return THEME.SECONDARY_PLAIN;
         },
         typeLabelRequireClass() {
-            return { 'element-content--required': this.element.required };
+            return {
+                'element-content--required': this.element.required,
+            };
         },
         typeLabelClasses() {
             return 'element-content__header';
@@ -116,7 +131,9 @@ export default {
             return () => import(`@Core/components/Icons/Attributes/Icon${attributeName}`);
         },
         contextualMenuHoveStateClasses() {
-            return { 'element-content__contextual-menu--hovered': this.isHovered };
+            return {
+                'element-content__contextual-menu--hovered': this.isHovered,
+            };
         },
     },
     methods: {

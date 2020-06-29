@@ -39,11 +39,17 @@ export default {
     },
     data() {
         return {
-            localValue: this.getMappedTitles({ key: 'enum', value: 'enum_titles', data: this.value }),
+            localValue: this.getMappedTitles({
+                key: 'enum',
+                value: 'enum_titles',
+                data: this.value,
+            }),
         };
     },
     methods: {
-        getMappedTitles({ key, value, data }) {
+        getMappedTitles({
+            key, value, data,
+        }) {
             const titles = [];
 
             for (let i = 0; i < data.length; i += 1) {
@@ -59,7 +65,11 @@ export default {
         onValueChange(value) {
             this.localValue = value;
 
-            this.$emit('input', this.getMappedTitles({ key: 'enum_titles', value: 'enum', data: value }));
+            this.$emit('input', this.getMappedTitles({
+                key: 'enum_titles',
+                value: 'enum',
+                data: value,
+            }));
         },
     },
 };

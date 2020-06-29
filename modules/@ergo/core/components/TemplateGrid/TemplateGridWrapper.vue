@@ -72,14 +72,20 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
-import { getNearestNeighborRowId } from '@Core/models/template_grid/TreeCalculations';
-import TemplateGridPresentationLayer from '@Core/components/TemplateGrid/TemplateGridPresentationLayer';
-import TemplateGridItemsContainer from '@Core/components/TemplateGrid/TemplateGridItemsContainer';
 import TemplateGridContainer from '@Core/components/TemplateGrid/TemplateGridContainer';
 import TemplateGridGhostItem from '@Core/components/TemplateGrid/TemplateGridGhostItem';
-import TemplateGridItemArea from '@Core/components/TemplateGrid/TemplateGridItemArea';
 import TemplateGridItem from '@Core/components/TemplateGrid/TemplateGridItem';
+import TemplateGridItemArea from '@Core/components/TemplateGrid/TemplateGridItemArea';
+import TemplateGridItemsContainer from '@Core/components/TemplateGrid/TemplateGridItemsContainer';
+import TemplateGridPresentationLayer from '@Core/components/TemplateGrid/TemplateGridPresentationLayer';
+import {
+    getNearestNeighborRowId,
+} from '@Core/models/template_grid/TreeCalculations';
+import {
+    mapActions,
+    mapGetters,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'TemplateGridWrapper',
@@ -189,19 +195,43 @@ export default {
                         acc.visibleCategories.push(e);
                     }
                     return acc;
-                }, { hiddenCategories: [], visibleCategories: [] });
+                }, {
+                    hiddenCategories: [],
+                    visibleCategories: [],
+                });
 
-                this.setHiddenItem({ key: id, value: hiddenCategories });
-                this.setGridWhenCollapse({ data: visibleCategories, index: rowValue });
-                this.setExpandItem({ index: rowValue, value: true });
+                this.setHiddenItem({
+                    key: id,
+                    value: hiddenCategories,
+                });
+                this.setGridWhenCollapse({
+                    data: visibleCategories,
+                    index: rowValue,
+                });
+                this.setExpandItem({
+                    index: rowValue,
+                    value: true,
+                });
             } else {
-                this.setGridWhenExpand({ id, index: rowValue });
+                this.setGridWhenExpand({
+                    id,
+                    index: rowValue,
+                });
                 this.removeHiddenItem(id);
-                this.setExpandItem({ index: rowValue, value: false });
+                this.setExpandItem({
+                    index: rowValue,
+                    value: false,
+                });
             }
         },
-        connectionLineStyle({ id, row, parent }) {
-            if (this.constantRoot && row === 0) return { display: 'none' };
+        connectionLineStyle({
+            id, row, parent,
+        }) {
+            if (this.constantRoot && row === 0) {
+                return {
+                    display: 'none',
+                };
+            }
             const children = this.filteredGridData.filter(e => e.parent === parent);
             const connectionHeight = this.rowHeight * (
                 row - (children.length ? children[0].row : 0) + 1
@@ -225,12 +255,17 @@ export default {
             };
         },
         removeItem(item) {
-            const { id, row, parent } = item;
+            const {
+                id, row, parent,
+            } = item;
 
             this.toggleItem(item);
             this.removeDisabledElementsOnList(id);
             this.removeHiddenItem(id);
-            this.setChildrenLength({ id: parent, value: -1 });
+            this.setChildrenLength({
+                id: parent,
+                value: -1,
+            });
             this.removeGridItem(row);
         },
         removeDisabledElementsOnList(id) {

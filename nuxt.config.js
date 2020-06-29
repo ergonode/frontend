@@ -3,13 +3,22 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { join } from 'path';
 import dotenv from 'dotenv';
 import getRepoInfo from 'git-repo-info';
-import { keywords, description, version } from './package';
-import modulesConfig from './modules.config';
+import {
+    join,
+} from 'path';
 
-dotenv.config({ path: '.env' });
+import modulesConfig from './modules.config';
+import {
+    description,
+    keywords,
+    version,
+} from './package';
+
+dotenv.config({
+    path: '.env',
+});
 
 const IS_DEV = process.env.NODE_ENV !== 'production';
 const BASE_URL = process.env.API_BASE_URL || 'http://localhost:8000';
@@ -23,10 +32,23 @@ module.exports = {
         },
         title: 'Ergonode',
         meta: [
-            { charset: 'utf-8' },
-            { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-            { hid: 'keywords', name: 'keywords', content: keywords.join(', ') },
-            { hid: 'description', name: 'description', content: description },
+            {
+                charset: 'utf-8',
+            },
+            {
+                name: 'viewport',
+                content: 'width=device-width, initial-scale=1',
+            },
+            {
+                hid: 'keywords',
+                name: 'keywords',
+                content: keywords.join(', '),
+            },
+            {
+                hid: 'description',
+                name: 'description',
+                content: description,
+            },
         ],
         link: [
             {
@@ -43,8 +65,14 @@ module.exports = {
             },
         ],
     },
-    loading: { color: '#00BC87', height: '3px' },
-    modulesDir: ['node_modules', 'modules'],
+    loading: {
+        color: '#00BC87',
+        height: '3px',
+    },
+    modulesDir: [
+        'node_modules',
+        'modules',
+    ],
     buildModules: [
         '@ergonode/vuems',
         '@nuxtjs/router',
@@ -52,7 +80,12 @@ module.exports = {
     modules: [
         '@nuxtjs/axios',
         '@nuxtjs/style-resources',
-        ['@nuxtjs/component-cache', { maxAge: 1000 * 60 * 60 }],
+        [
+            '@nuxtjs/component-cache',
+            {
+                maxAge: 1000 * 60 * 60,
+            },
+        ],
         'cookie-universal-nuxt',
     ],
     vuems: {
@@ -65,7 +98,9 @@ module.exports = {
         isDev: process.env.NODE_ENV !== 'production',
     },
     router: {
-        middleware: ['modulesMiddlewareLoader'],
+        middleware: [
+            'modulesMiddlewareLoader',
+        ],
     },
     axios: {
         baseURL: BASE_URL || 'http://localhost:8000',
@@ -77,7 +112,9 @@ module.exports = {
         parallel: true,
         cssSourceMap: false,
         optimizeCSS: true,
-        extend(config, { isDev, isClient }) {
+        extend(config, {
+            isDev, isClient,
+        }) {
             const alias = config.resolve.alias || {};
 
             alias['@Root'] = join(__dirname, './');

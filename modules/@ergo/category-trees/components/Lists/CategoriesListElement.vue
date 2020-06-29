@@ -7,24 +7,28 @@
         :draggable-id="item.id"
         :is-draggable="isDraggable"
         :is-disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
-        :hint="item.name ? `#${item.code}` : ''"
+        :hint="hint"
+        :label="title"
         @drag="onDrag">
         <ListElementDescription>
             <ListElementTitle
-                :title="item.name || `#${item.code}`"
-                :hint="item.name ? `#${item.code}` : ''" />
+                :title="title"
+                :hint="hint" />
             <ListElementHint
                 :title="itemCount"
-                :hint="item.name ? `#${item.code}` : ''" />
+                :hint="hint" />
         </ListElementDescription>
     </ListDraggableElement>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
-import ListElementTitle from '@Core/components/List/ListElementTitle';
 import ListElementHint from '@Core/components/List/ListElementHint';
+import ListElementTitle from '@Core/components/List/ListElementTitle';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'CategoriesListElement',
@@ -52,6 +56,12 @@ export default {
         ...mapState('list', {
             disabledElements: state => state.disabledElements,
         }),
+        hint() {
+            return this.item.name ? `#${this.item.code} ${this.languageCode}` : '';
+        },
+        title() {
+            return this.item.name || `#${this.item.code}`;
+        },
         itemCount() {
             return `${this.item.elements_count || 0} Product${this.item.elements_count === 1 ? '' : 's'}`;
         },
@@ -63,13 +73,22 @@ export default {
         ]),
         onDrag(isDragged) {
             if (isDragged) {
-                const { id, code, name } = this.item;
-                this.setDraggedElement({ id, code, name });
+                const {
+                    id, code, name,
+                } = this.item;
+                this.setDraggedElement({
+                    id,
+                    code,
+                    name,
+                });
             } else {
                 this.setDraggedElement();
             }
 
-            this.setDraggableState({ propName: 'isListElementDragging', value: isDragged });
+            this.setDraggableState({
+                propName: 'isListElementDragging',
+                value: isDragged,
+            });
         },
     },
 };

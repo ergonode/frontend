@@ -28,10 +28,16 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { Z_INDEX_LVL_0 } from '@Core/assets/scss/_js-variables/indexes.scss';
-import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
+import {
+    Z_INDEX_LVL_0,
+} from '@Core/assets/scss/_js-variables/indexes.scss';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import {
+    getNestedTabRoutes,
+} from '@Core/models/navigation/tabs';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'Settings',
@@ -41,7 +47,9 @@ export default {
         HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
         Blur: () => import('@Core/components/Blur/Blur'),
     },
-    mixins: [gridModalMixin],
+    mixins: [
+        gridModalMixin,
+    ],
     data() {
         return {
             modalType: null,
@@ -68,7 +76,9 @@ export default {
         },
         blurZIndex() {
             if (this.isBlurVisible) {
-                return { zIndex: Z_INDEX_LVL_0 };
+                return {
+                    zIndex: Z_INDEX_LVL_0,
+                };
             }
             return null;
         },

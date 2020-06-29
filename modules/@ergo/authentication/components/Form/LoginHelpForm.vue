@@ -34,13 +34,15 @@
 </template>
 
 <script>
-import { LOGIN_STATE } from '@Authentication/defaults/login-state';
 import LoginForm from '@Authentication/components/Form/LoginForm';
+import {
+    LOGIN_STATE,
+} from '@Authentication/defaults/login-state';
+import Button from '@Core/components/Buttons/Button';
 import Fab from '@Core/components/Buttons/Fab';
+import LinkButton from '@Core/components/Buttons/LinkButton';
 import IconArrowPointer from '@Core/components/Icons/Arrows/IconArrowPointer';
 import IconEmail from '@Core/components/Icons/Others/IconEmail';
-import LinkButton from '@Core/components/Buttons/LinkButton';
-import Button from '@Core/components/Buttons/Button';
 
 export default {
     name: 'LoginHelpForm',

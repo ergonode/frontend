@@ -27,8 +27,10 @@
 </template>
 
 <script>
-import { THEME } from '@Core/defaults/theme';
 import Picture from '@Core/components/Multimedia/Picture';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridCollectionCell',

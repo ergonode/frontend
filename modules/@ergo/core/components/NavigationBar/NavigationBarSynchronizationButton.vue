@@ -9,7 +9,9 @@
 </template>
 
 <script>
-import { WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    WHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'NavigationBarSynchronizationButton',

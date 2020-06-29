@@ -31,17 +31,19 @@
 </template>
 
 <script>
-import DatePickerDays from '@Core/components/Inputs/DatePicker/DatePickerDays';
 import DatePickerContentHeader from '@Core/components/Inputs/DatePicker/DatePickerContentHeader';
+import DatePickerDays from '@Core/components/Inputs/DatePicker/DatePickerDays';
 import DatePickerMonths from '@Core/components/Inputs/DatePicker/DatePickerMonths';
 import DatePickerYears from '@Core/components/Inputs/DatePicker/DatePickerYears';
 import calendar, {
+    CALENDAR_MONTHS,
     getHeaderForCalendarDaysType,
     getMonthIndex,
     WEEK_DAYS,
-    CALENDAR_MONTHS,
 } from '@Core/models/calendar/calendar';
-import { CalendarType } from '@Core/models/calendar/CalendarType';
+import {
+    CalendarType,
+} from '@Core/models/calendar/CalendarType';
 
 export default {
     name: 'DatePickerCalendar',
@@ -105,7 +107,9 @@ export default {
         },
         parsedSelectedMonth() {
             if (this.parsedDate.length) {
-                const [date] = this.parsedDate;
+                const [
+                    date,
+                ] = this.parsedDate;
 
                 if (date.getFullYear() === this.year) {
                     return this.months[date.getMonth()];
@@ -116,7 +120,9 @@ export default {
         },
         parsedSelectedYear() {
             if (this.parsedDate.length) {
-                const [date] = this.parsedDate;
+                const [
+                    date,
+                ] = this.parsedDate;
 
                 return date.getFullYear();
             }

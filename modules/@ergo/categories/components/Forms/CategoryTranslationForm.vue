@@ -10,8 +10,6 @@
                     <TextField
                         :data-cy="dataCyGenerator(nameFieldKey)"
                         :value="translations.name[languageCode]"
-                        solid
-                        regular
                         label="Category name"
                         :disabled="!isUserAllowedToUpdate"
                         :error-messages="errorMessages[nameFieldKey]"
@@ -23,11 +21,11 @@
 </template>
 
 <script>
-import translationCardMixin from '@Core/mixins/card/translationCardMixin';
-import TextField from '@Core/components/Inputs/TextField';
 import Card from '@Core/components/Card/Card';
-import FormSection from '@Core/components/Form/Section/FormSection';
 import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TextField from '@Core/components/Inputs/TextField';
+import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 
 export default {
     name: 'CategoryTranslationForm',
@@ -37,10 +35,14 @@ export default {
         Card,
         TextField,
     },
-    mixins: [translationCardMixin],
+    mixins: [
+        translationCardMixin,
+    ],
     computed: {
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['CATEGORY_UPDATE']);
+            return this.$hasAccess([
+                'CATEGORY_UPDATE',
+            ]);
         },
         nameFieldKey() {
             return `name_${this.languageCode}`;

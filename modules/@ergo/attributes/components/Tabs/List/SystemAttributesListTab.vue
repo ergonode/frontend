@@ -11,8 +11,7 @@
             <template #select>
                 <TreeSelect
                     :value="language"
-                    solid
-                    small
+                    :size="smallSize"
                     :options="languageOptions"
                     @input="onSelect" />
             </template>
@@ -35,8 +34,13 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'SystemAttributesListTab',
@@ -49,7 +53,11 @@ export default {
         AttributesListElement: () => import('@Attributes/components/Lists/AttributesListElement'),
         TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
     },
-    mixins: [fetchListDataMixin({ namespace: 'attributes/system' })],
+    mixins: [
+        fetchListDataMixin({
+            namespace: 'attributes/system',
+        }),
+    ],
     props: {
         isSelectLanguage: {
             type: Boolean,
@@ -69,14 +77,25 @@ export default {
             defaultLanguageCodeByPrivileges: state => state.defaultLanguageCodeByPrivileges,
             languagesTree: state => state.languagesTree,
         }),
+        smallSize() {
+            return SIZE.SMALL;
+        },
         isUserAllowedToDragAttributes() {
-            const { languagePrivileges } = this.user;
-            const { code } = this.language;
+            const {
+                languagePrivileges,
+            } = this.user;
+            const {
+                code,
+            } = this.language;
 
-            return this.$hasAccess(['ATTRIBUTE_UPDATE']) && languagePrivileges[code].read;
+            return this.$hasAccess([
+                'ATTRIBUTE_UPDATE',
+            ]) && languagePrivileges[code].read;
         },
         languageOptions() {
-            const { languagePrivileges } = this.user;
+            const {
+                languagePrivileges,
+            } = this.user;
 
             return this.languagesTree.map(language => ({
                 ...language,

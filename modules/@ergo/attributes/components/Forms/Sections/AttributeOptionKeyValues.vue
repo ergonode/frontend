@@ -20,9 +20,8 @@
                         <TextField
                             :data-cy="dataCyGenerator(i)"
                             :value="options[fieldKey].key"
-                            solid
                             required
-                            small
+                            :size="smallSize"
                             :disabled="disabled"
                             label="Option code"
                             :error-messages="errorMessages"
@@ -39,12 +38,20 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { getUUID } from '@Core/models/stringWrapper';
-import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import FormListElementField from '@Core/components/Form/Field/FormListElementField';
+import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import FormListSection from '@Core/components/Form/Section/FormListSection';
 import FormListSubsection from '@Core/components/Form/Subsection/FormListSubsection';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'AttributeOptionKeyValues',
@@ -68,6 +75,9 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
+        smallSize() {
+            return SIZE.SMALL;
+        },
         optionIndexes() {
             return Object.keys(this.options);
         },
@@ -82,7 +92,10 @@ export default {
             'addMultilingualOptionTranslation',
         ]),
         removeAttribute(fieldKey) {
-            this.removeAttributeOptionKey({ index: fieldKey, id: this.options[fieldKey].id });
+            this.removeAttributeOptionKey({
+                index: fieldKey,
+                id: this.options[fieldKey].id,
+            });
         },
         addOptionKey() {
             this.addAttributeOptionKey(getUUID());

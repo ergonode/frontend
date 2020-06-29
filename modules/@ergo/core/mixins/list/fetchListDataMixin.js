@@ -2,9 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getListItems } from '@Core/services/list/getList.service';
+import {
+    getListItems,
+} from '@Core/services/list/getList.service';
 
-export default function ({ namespace, extraFilters = null }) {
+export default function ({
+    namespace, extraFilters = null,
+}) {
     return {
         data() {
             return {
@@ -13,7 +17,9 @@ export default function ({ namespace, extraFilters = null }) {
             };
         },
         async created() {
-            const { language: languageCode } = this.$store.state.authentication.user;
+            const {
+                language: languageCode,
+            } = this.$store.state.authentication.user;
 
             await this.getItems(languageCode);
         },
@@ -32,7 +38,9 @@ export default function ({ namespace, extraFilters = null }) {
                         field: 'code',
                         order: 'ASC',
                     },
-                }).then(({ items }) => {
+                }).then(({
+                    items,
+                }) => {
                     this.items = {
                         ...this.items,
                         [languageCode]: items,

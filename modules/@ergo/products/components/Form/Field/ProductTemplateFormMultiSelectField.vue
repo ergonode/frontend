@@ -10,8 +10,6 @@
             <template #validator="{ errorMessages }">
                 <TranslationSelect
                     :value="fieldData"
-                    solid
-                    regular
                     :clearable="true"
                     :multiselect="true"
                     :label="label"
@@ -20,10 +18,14 @@
                     :error-messages="errorMessages"
                     :required="properties.required"
                     :disabled="disabled"
-                    :description="properties.hint"
                     @focus="onFocus"
                     @input="debounceValueChange">
-                    <template #informationLabel>
+                    <template #append>
+                        <InfoHint
+                            v-if="properties.hint"
+                            :hint="properties.hint" />
+                    </template>
+                    <template #details>
                         <div />
                     </template>
                 </TranslationSelect>
@@ -33,12 +35,21 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { debounce } from 'debounce';
-import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
-import { getMappedMatchedArrayOptions, getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
+import InfoHint from '@Core/components/Hints/InfoHint';
+import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import {
+    getMappedMatchedArrayOptions,
+    getMappedObjectOptions,
+} from '@Core/models/mappers/translationsMapper';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import {
+    debounce,
+} from 'debounce';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductTemplateFormMultiSelectField',
@@ -46,6 +57,7 @@ export default {
         ProductTemplateFormField,
         TranslationSelect,
         FormValidatorField,
+        InfoHint,
     },
     props: {
         size: {
@@ -101,7 +113,9 @@ export default {
             });
         },
         fieldData() {
-            const { attribute_code } = this.properties;
+            const {
+                attribute_code,
+            } = this.properties;
             const value = this.draft[this.languageCode][attribute_code];
 
             if (!this.hasOptions || !value) {
@@ -129,7 +143,9 @@ export default {
                     languageCode: this.languageCode,
                     productId: this.$route.params.id,
                     elementId: this.properties.attribute_id,
-                    value: this.fieldData.map(({ id }) => id),
+                    value: this.fieldData.map(({
+                        id,
+                    }) => id),
                 });
             }
         },
@@ -137,7 +153,9 @@ export default {
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,
-                value: value.map(({ id }) => id),
+                value: value.map(({
+                    id,
+                }) => id),
             });
         },
     },

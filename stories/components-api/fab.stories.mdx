@@ -7,7 +7,7 @@ import { SIZE, THEME } from '@Core/defaults/theme';
 
 # Fab
 
-`Fab` is a default component to display action in page. It may have any icon component inside `icon` slot.
+<Description of={Fab} />
 
 ```
     import Fab from '@Core/components/Buttons/Fab'
@@ -15,7 +15,25 @@ import { SIZE, THEME } from '@Core/defaults/theme';
 
 ### Theme
 
-<Preview>
+<Preview mdxSource={`
+    <Fab theme="${THEME.PRIMARY}">
+        <template #icon="{ color, isHovered }">
+            <IconAdd :fill-color="color" />
+        </template>
+    </Fab>
+    <!-- -->
+    <Fab theme="${THEME.SECONDARY}">
+        <template #icon="{ color, isHovered }">
+            <IconAdd :fill-color="color" />
+        </template>
+    </Fab>
+    <!-- -->
+    <Fab theme="${THEME.SECONDARY_PLAIN}">
+        <template #icon="{ color, isHovered }">
+            <IconAdd :fill-color="color" />
+        </template>
+    </Fab>
+`}>
     <Story name="primary">
         {{
             components: { Fab, IconAdd },
@@ -71,7 +89,25 @@ import { SIZE, THEME } from '@Core/defaults/theme';
 
 ### Disabled
 
-<Preview>
+<Preview mdxSource={`
+    <Fab :disabled="true" theme="${THEME.PRIMARY}">
+        <template #icon="{ color, isHovered }">
+            <IconAdd :fill-color="color" />
+        </template>
+    </Fab>
+    <!-- -->
+    <Fab :disabled="true" theme="${THEME.SECONDARY}">
+        <template #icon="{ color, isHovered }">
+            <IconAdd :fill-color="color" />
+        </template>
+    </Fab>
+    <!-- -->
+    <Fab :disabled="true" theme="${THEME.SECONDARY_PLAIN}">
+        <template #icon="{ color, isHovered }">
+            <IconAdd :fill-color="color" />
+        </template>
+    </Fab>
+`}>
     <Story name="disabled-primary">
         {{
             components: { Fab, IconAdd },
@@ -126,8 +162,25 @@ import { SIZE, THEME } from '@Core/defaults/theme';
 </Preview>
 
 ### Size
-
-<Preview>
+<Preview mdxSource={`
+    <Fab theme="${THEME.PRIMARY}" size="${SIZE.REGULAR}">
+        <template #icon="{ color, isHovered }">
+            <IconAdd :fill-color="color" />
+        </template>
+    </Fab>
+    <!-- -->
+    <Fab theme="${THEME.PRIMARY}" size="${SIZE.SMALL}">
+        <template #icon="{ color, isHovered }">
+            <IconAdd :fill-color="color" />
+        </template>
+    </Fab>
+    <!-- -->
+    <Fab theme="${THEME.PRIMARY}" size="${SIZE.TINY}">
+        <template #icon="{ color, isHovered }">
+            <IconAdd :fill-color="color" />
+        </template>
+    </Fab>
+`}>
     <Story name="regular">
         {{
             components: { Fab, IconAdd },

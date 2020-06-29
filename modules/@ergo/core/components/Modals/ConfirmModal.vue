@@ -21,7 +21,9 @@
 </template>
 
 <script>
-import { THEME } from '@Core/defaults/theme';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'ConfirmModal',

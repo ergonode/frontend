@@ -21,8 +21,10 @@
 </template>
 
 <script>
-import { toCapitalize } from '@Core/models/stringWrapper';
 import Form from '@Core/components/Form/Form';
+import {
+    toCapitalize,
+} from '@Core/models/stringWrapper';
 
 export default {
     name: 'JSONSchemaForm',
@@ -61,7 +63,9 @@ export default {
     },
     methods: {
         initializeComponents() {
-            const { length } = this.fieldsKeys;
+            const {
+                length,
+            } = this.fieldsKeys;
             const components = [];
 
             for (let i = 0; i < length; i += 1) {
@@ -90,7 +94,9 @@ export default {
             }
             return components;
         },
-        onValueChange({ key, value }) {
+        onValueChange({
+            key, value,
+        }) {
             this.model[key] = value;
             this.$emit('input', JSON.stringify(this.model));
         },

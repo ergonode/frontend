@@ -2,14 +2,17 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import Vuex from 'vuex';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import Vue from 'vue';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import axios from 'axios';
-import defaultState from '../state';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import Vue from 'vue';
+import Vuex from 'vuex';
+
 import actions from '../actions';
-import mutations, { types } from '../mutations';
+import mutations, {
+    types,
+} from '../mutations';
+import defaultState from '../state';
 
 let store;
 let mockAxiosGetResult;
@@ -25,7 +28,13 @@ let action;
 const $setLoader = jest.fn();
 const $removeLoader = jest.fn();
 const testedAction = (context = {}, payload = {}) => actions[action]
-    .bind({ app: { $axios: axios }, $setLoader, $removeLoader })(context, payload);
+    .bind({
+        app: {
+            $axios: axios,
+        },
+        $setLoader,
+        $removeLoader,
+    })(context, payload);
 
 describe('Notifications', () => {
     beforeEach(() => {
@@ -65,7 +74,11 @@ describe('Notifications', () => {
                 },
             };
 
-            await testedAction({ commit, dispatch, state: store.state });
+            await testedAction({
+                commit,
+                dispatch,
+                state: store.state,
+            });
             expect(store.state.notifications.length).toBe(1);
             expect(store.state.notifications[0]).toStrictEqual(mockedNotification);
         });
@@ -73,30 +86,43 @@ describe('Notifications', () => {
         it('Setting up notifications limit', () => {
             action = 'setNotificationsLimit';
 
-            testedAction({ commit }, 100);
+            testedAction({
+                commit,
+            }, 100);
             expect(store.state.limit).toBe(100);
         });
 
         it('Increasing time interval', () => {
             action = 'increaseRequestTimeInterval';
 
-            testedAction({ commit, state: store.state });
+            testedAction({
+                commit,
+                state: store.state,
+            });
             expect(store.state.requestTimeInterval).toBe(2000);
 
-            testedAction({ commit, state: store.state });
+            testedAction({
+                commit,
+                state: store.state,
+            });
             expect(store.state.requestTimeInterval).toBe(4000);
 
             const fiveMinutesInMs = 300000;
 
             commit(types.SET_REQUEST_TIME_INTERVAL, fiveMinutesInMs);
 
-            testedAction({ commit, state: store.state });
+            testedAction({
+                commit,
+                state: store.state,
+            });
             expect(store.state.requestTimeInterval).toBe(fiveMinutesInMs);
-
 
             commit(types.SET_REQUEST_TIME_INTERVAL, fiveMinutesInMs - 1);
 
-            testedAction({ commit, state: store.state });
+            testedAction({
+                commit,
+                state: store.state,
+            });
             expect(store.state.requestTimeInterval).toBe(fiveMinutesInMs);
         });
 
@@ -118,7 +144,11 @@ describe('Notifications', () => {
                 },
             };
 
-            await testedAction({ commit, dispatch, state: store.state });
+            await testedAction({
+                commit,
+                dispatch,
+                state: store.state,
+            });
             expect(store.state.requestTimeout).toBeTruthy();
             setTimeout(() => {
                 expect(store.state.notifications.length).toBe(1);
@@ -129,7 +159,9 @@ describe('Notifications', () => {
         it('Clearing state', () => {
             action = 'clearStorage';
 
-            testedAction({ commit });
+            testedAction({
+                commit,
+            });
             expect(store.state).toStrictEqual(defaultState());
         });
     });

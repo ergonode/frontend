@@ -10,20 +10,16 @@
             <FormSection>
                 <TextField
                     :value="name"
-                    solid
                     required
                     :error-messages="errorMessages[nameFieldKey]"
                     :disabled="isDisabled || isDisabledByPrivileges"
-                    regular
                     label="System name"
                     hint="System name must be unique"
                     @input="setName" />
                 <Select
                     :value="type"
-                    solid
                     required
                     label="Profile type"
-                    regular
                     :disabled="isDisabledByPrivileges"
                     :options="sourcesOptions"
                     :error-messages="errorMessages[typeFieldKey]"
@@ -34,11 +30,14 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import TextField from '@Core/components/Inputs/TextField';
 import Select from '@Core/components/Inputs/Select/Select';
+import TextField from '@Core/components/Inputs/TextField';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ImportProfileForm',
@@ -58,8 +57,12 @@ export default {
             sources: state => state.sources,
         }),
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess(['IMPORT_UPDATE']))
-            || (!this.isDisabled && !this.$hasAccess(['IMPORT_CREATE']));
+            return (this.isDisabled && !this.$hasAccess([
+                'IMPORT_UPDATE',
+            ]))
+            || (!this.isDisabled && !this.$hasAccess([
+                'IMPORT_CREATE',
+            ]));
         },
         isDisabled() {
             return Boolean(this.id);

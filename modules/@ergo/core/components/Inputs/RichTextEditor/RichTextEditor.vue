@@ -3,116 +3,145 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        :class="richTextEditorClasses"
-        ref="editor"
+    <Component
+        :is="styleComponent"
+        :style="{ height: '100%' }"
+        ref="activator"
+        :focused="isFocused"
+        :error="isError"
+        :disabled="disabled"
+        :alignment="alignment"
+        :size="size"
+        :details-label="informationLabel"
         @mousedown="onMouseDown"
         @mouseup="onMouseUp">
-        <fieldset
-            v-if="solid"
-            class="rich-text-editor__fieldset">
-            <legend
-                :class="[
-                    'rich-text-editor__label',
-                    {
-                        'rich-text-editor__label--required': required,
-                    }
-                ]"
-                v-text="label" />
-        </fieldset>
-        <RichTextEditorMenuBubble
-            v-if="editor"
-            :editor="editor" />
-        <div class="rich-text-editor__activator">
+        <template #activator>
+            <RichTextEditorMenuBubble
+                :editor="editor"
+                ref="menuBubble"
+                @active="onMenuBubbleActive" />
             <slot #prepand />
-            <div class="rich-text-editor__wrapper">
-                <VerticalFixedScroll>
-                    <EditorContent
-                        class="rich-text-editor__content"
-                        :editor="editor"
-                        ref="editorContent" />
-                </VerticalFixedScroll>
-            </div>
-            <div class="rich-text-editor__append">
-                <slot #append />
-                <ErrorHint
-                    v-if="errorMessages"
-                    :hint="errorMessages" />
-                <InfoHint
-                    v-if="description"
-                    :hint="description" />
-            </div>
-        </div>
-        <EditorMenuBar
-            :editor="editor"
-            ref="menu">
-            <template #default="{ commands, isActive }">
-                <div class="rich-text-editor__menu">
-                    <RichTextEditorButton
-                        v-for="(extension, index) in visibleExtensions"
-                        :key="`${extension.name}|${index}`"
-                        :extension="extension"
-                        :is-active="isActive"
-                        :commands="commands" />
-                    <RichTextEditorActionIconButton
-                        v-if="hiddenExtensions.length"
-                        :options="hiddenExtensions"
-                        :is-active="isActive"
-                        :commands="commands" />
+            <InputController :size="size">
+                <div class="rich-text-editor">
+                    <VerticalFixedScroll>
+                        <EditorContent
+                            class="rich-text-editor__content"
+                            ref="editorContent"
+                            :editor="editor" />
+                    </VerticalFixedScroll>
+                    <RichTextEditorMenu
+                        v-if="isSolidType"
+                        ref="menu"
+                        :type="type"
+                        :editor="editor" />
                 </div>
-            </template>
-        </EditorMenuBar>
-    </div>
+                <InputLabel
+                    v-if="label"
+                    :style="{ top: 0 }"
+                    :for="associatedLabel"
+                    :required="required"
+                    :size="size"
+                    :floating="true"
+                    :focused="isFocused"
+                    :disabled="disabled"
+                    :error="isError"
+                    :label="label" />
+                <template #append>
+                    <slot name="append" />
+                    <ErrorHint
+                        v-if="isError"
+                        :hint="errorMessages" />
+                </template>
+            </InputController>
+        </template>
+        <RichTextEditorMenu
+            v-if="!isSolidType"
+            ref="menu"
+            :type="type"
+            :editor="editor" />
+        <template #details>
+            <slot name="details" />
+        </template>
+    </Component>
 </template>
 
 <script>
+import InputController from '@Core/components/Inputs/InputController';
+import InputLabel from '@Core/components/Inputs/InputLabel';
+import RichTextEditorMenu from '@Core/components/Inputs/RichTextEditor/Menu/RichTextEditorMenu';
+import RichTextEditorMenuBubble from '@Core/components/Inputs/RichTextEditor/MenuBubble/RichTextEditorMenuBubble';
+import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
+import {
+    ALIGNMENT,
+    INPUT_TYPE,
+    SIZE,
+} from '@Core/defaults/theme';
+import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
+import {
+    toCapitalize,
+} from '@Core/models/stringWrapper';
 import {
     Editor,
-    EditorMenuBar,
     EditorContent,
 } from 'tiptap';
 import {
-    ListItem,
-    Placeholder,
     Blockquote,
-    OrderedList,
-    BulletList,
     Bold,
-    Italic,
-    Underline,
-    HorizontalRule,
-    Strike,
-    Link,
+    BulletList,
     Heading,
     History,
+    HorizontalRule,
+    Italic,
+    Link,
+    ListItem,
+    OrderedList,
+    Placeholder,
+    Strike,
+    Underline,
 } from 'tiptap-extensions';
-import {
-    EXTENSION_BUTTON_WIDTH,
-    EXTENSIONS,
-} from '@Core/defaults/inputs/rich-text-editor';
-import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
-import RichTextEditorButton from '@Core/components/Inputs/RichTextEditor/Button/RichTextEditorButton';
-import RichTextEditorMenuBubble from '@Core/components/Inputs/RichTextEditor/MenuBubble/RichTextEditorMenuBubble';
-import RichTextEditorActionIconButton from '@Core/components/Inputs/RichTextEditor/Button/RichTextEditorActionIconButton';
 
 export default {
     name: 'RichTextEditor',
     components: {
+        InputController,
+        InputLabel,
+        RichTextEditorMenu,
         RichTextEditorMenuBubble,
-        RichTextEditorActionIconButton,
-        EditorMenuBar,
         EditorContent,
-        RichTextEditorButton,
         VerticalFixedScroll,
-        InfoHint: () => import('@Core/components/Hints/InfoHint'),
         ErrorHint: () => import('@Core/components/Hints/ErrorHint'),
     },
+    mixins: [
+        associatedLabelMixin,
+    ],
     props: {
         value: {
             type: String,
             default: '',
         },
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
+        },
+        alignment: {
+            type: String,
+            default: ALIGNMENT.LEFT,
+            validator: value => Object.values(ALIGNMENT).indexOf(value) !== -1,
+        },
+        type: {
+            type: String,
+            default: INPUT_TYPE.SOLID,
+            validator: value => Object.values(INPUT_TYPE).indexOf(value) !== -1,
+        },
         label: {
+            type: String,
+            default: '',
+        },
+        hint: {
             type: String,
             default: '',
         },
@@ -120,15 +149,11 @@ export default {
             type: String,
             default: '',
         },
-        description: {
-            type: String,
-            default: '',
-        },
         required: {
             type: Boolean,
             default: false,
         },
-        solid: {
+        disabled: {
             type: Boolean,
             default: false,
         },
@@ -145,39 +170,28 @@ export default {
             default: () => [],
         },
     },
-    // TODO: Required
     data() {
         return {
+            isFocused: false,
+            isMouseMoving: false,
             editor: null,
-            editorWidth: 0,
         };
     },
     computed: {
-        richTextEditorClasses() {
-            return [
-                'rich-text-editor',
-                {
-                    solid: this.solid,
-                },
-            ];
+        isSolidType() {
+            return this.type === INPUT_TYPE.SOLID;
         },
-        maxVisibleExtensions() {
-            const max = Math.floor(this.editorWidth / EXTENSION_BUTTON_WIDTH);
-
-            return max === EXTENSIONS.length ? max : max - 1;
+        styleComponent() {
+            return () => import(`@Core/components/Inputs/Input${toCapitalize(this.type)}Style`);
         },
-        visibleExtensions() {
-            return EXTENSIONS.slice(0, this.maxVisibleExtensions);
+        isError() {
+            return Boolean(this.errorMessages);
         },
-        hiddenExtensions() {
-            return EXTENSIONS.slice(this.maxVisibleExtensions, EXTENSIONS.length);
+        informationLabel() {
+            return this.errorMessages || this.hint;
         },
     },
     mounted() {
-        const paddingOffset = 24;
-
-        this.editorWidth = this.$refs.editor.offsetWidth - paddingOffset;
-
         this.editor = new Editor({
             extensions: [
                 new Bold(),
@@ -191,7 +205,13 @@ export default {
                 new Link(),
                 new ListItem(),
                 new History(),
-                new Heading({ levels: [1, 2, 3] }),
+                new Heading({
+                    levels: [
+                        1,
+                        2,
+                        3,
+                    ],
+                }),
                 new Placeholder({
                     emptyEditorClass: 'is-editor-empty',
                     emptyNodeClass: 'is-empty',
@@ -202,6 +222,7 @@ export default {
             ],
             autofocus: this.autofocus,
             content: this.value,
+            onFocus: this.onFocus,
             onBlur: this.onBlur,
         });
     },
@@ -209,19 +230,41 @@ export default {
         this.editor.destroy();
     },
     methods: {
+        onMenuBubbleActive(isActive) {
+            this.isFocused = isActive;
+        },
+        onFocus() {
+            this.isFocused = true;
+        },
         onBlur() {
+            this.isFocused = false;
+            this.isMouseMoving = false;
+
             this.$emit('blur', this.editor.getHTML());
         },
         onMouseDown(event) {
-            if (!this.linkMenuIsActive
-                && (this.$refs.menu.$el.contains(event.target)
-                    || !this.$refs.editorContent.$el.contains(event.target))) {
+            this.$refs.activator.$el.addEventListener('mousemove', this.onMouseMove);
+
+            const isClickedInsideMenu = this.$refs.menu.$el.contains(event.target);
+            const isClickedInsideEditor = this.$refs.editorContent.$el.contains(event.target);
+
+            if (isClickedInsideMenu || !isClickedInsideEditor) {
                 event.preventDefault();
                 event.stopPropagation();
             }
         },
         onMouseUp() {
-            this.editor.focus();
+            this.$refs.activator.$el.removeEventListener('mousemove', this.onMouseMove);
+
+            if (!this.isMouseMoving) {
+                this.editor.focus();
+                this.isFocused = true;
+            }
+
+            this.isMouseMoving = false;
+        },
+        onMouseMove() {
+            this.isMouseMoving = true;
         },
     },
 };
@@ -232,108 +275,13 @@ export default {
         $editor: &;
 
         position: relative;
+        z-index: $Z_INDEX_LVL_2;
         display: flex;
+        flex: 1;
         flex-direction: column;
         height: 100%;
         box-sizing: border-box;
         background-color: $WHITE;
-
-        &.solid {
-            #{$editor}__menu {
-                position: absolute;
-                left: 12px;
-                bottom: 12px;
-                right: 12px;
-                transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-                opacity: 0;
-            }
-
-            #{$editor}__content {
-                margin: 10px 0 38px;
-            }
-        }
-
-        &:not(.solid) {
-            box-shadow: $ELEVATOR_6_DP;
-
-            #{$editor}__menu {
-                margin: 0 12px 12px;
-            }
-
-            #{$editor}__activator {
-                &::after {
-                    position: absolute;
-                    left: 12px;
-                    bottom: 12px;
-                    right: 12px;
-                    height: 2px;
-                    background-color: $GREEN;
-                    transform-origin: left;
-                    transform: scaleX(0);
-                    transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-                    content: "";
-                    will-change: transform;
-                }
-            }
-        }
-
-        &__activator {
-            position: relative;
-            display: flex;
-            flex: 1 1 auto;
-        }
-
-        &__wrapper {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            padding: 12px;
-        }
-
-        &__label {
-            position: relative;
-            background-color: $WHITE;
-            color: $GRAPHITE_LIGHT;
-            font: $FONT_MEDIUM_12_16;
-
-            &--required {
-                padding-right: 8px;
-
-                &::after {
-                    position: absolute;
-                    color: $RED;
-                    content: "*";
-                }
-            }
-        }
-
-        &__menu {
-            display: grid;
-            grid-auto-flow: column;
-            grid-column-gap: 3px;
-            padding: 3px;
-            background-color: $WHITESMOKE;
-            box-shadow: $ELEVATOR_2_DP;
-        }
-
-        &__fieldset {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            border: $BORDER_1_GREY;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-
-        &__append {
-            display: grid;
-            grid-auto-flow: column;
-            justify-items: center;
-            align-items: center;
-            margin: 0 6px;
-        }
 
         &__content {
             position: relative;
@@ -343,7 +291,7 @@ export default {
             outline: unset;
             font: $FONT_MEDIUM_14_20;
 
-            p.is-editor-empty:first-child::before {
+            p.is-editor-empty:nth-child(1)::before {
                 float: left;
                 height: 0;
                 opacity: 0.4;
@@ -422,22 +370,14 @@ export default {
         }
 
         &:focus-within {
-            #{$editor}__fieldset {
-                border-color: $GREEN;
-                box-shadow: inset 0 0 0 1px $GREEN;
-            }
-
-            #{$editor}__label {
-                color: $GREEN;
-            }
-
-            #{$editor}__menu {
+            .rich-text-editor-menu {
                 opacity: 1;
             }
-
-            #{$editor}__activator::after {
-                transform: scaleX(1);
-            }
         }
+    }
+
+    .input-underline-style {
+        padding: 8px 12px 12px;
+        box-shadow: $ELEVATOR_6_DP;
     }
 </style>

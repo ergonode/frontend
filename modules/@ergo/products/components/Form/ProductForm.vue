@@ -10,8 +10,6 @@
             <FormSection>
                 <Select
                     :value="type"
-                    solid
-                    regular
                     required
                     :disabled="isDisabled"
                     label="Product type"
@@ -23,8 +21,6 @@
                 <TextField
                     :value="sku"
                     hint="Products SKU must be unique"
-                    solid
-                    regular
                     label="SKU"
                     required
                     :error-messages="errorMessages[skuFieldKey]"
@@ -32,9 +28,7 @@
                     @input="setProductSku" />
                 <TranslationLazySelect
                     :value="template"
-                    :solid="true"
                     :required="true"
-                    :regular="true"
                     label="Product template"
                     :error-messages="errorMessages[templateIdFieldKey]"
                     :disabled="isDisabled || isDisabledByPrivileges"
@@ -42,8 +36,6 @@
                     @input="setProductTemplate" />
                 <TranslationLazySelect
                     :value="categories"
-                    :solid="true"
-                    :regular="true"
                     :multiselect="true"
                     :clearable="true"
                     label="Category"
@@ -56,9 +48,16 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { getKeyByValue } from '@Core/models/objectWrapper';
-import { PRODUCT_TYPE } from '@Products/defaults';
+import {
+    getKeyByValue,
+} from '@Core/models/objectWrapper';
+import {
+    PRODUCT_TYPE,
+} from '@Products/defaults';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 const getCategoriesOptions = () => import('@Categories/services/getCategoriesOptions.service');
 const getTemplatesOptions = () => import('@Templates/services/getTemplatesOptions.service');
@@ -100,8 +99,12 @@ export default {
             return this.productTypeKey === PRODUCT_TYPE.WITH_VARIANTS;
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess(['PRODUCT_UPDATE']))
-            || (!this.isDisabled && !this.$hasAccess(['PRODUCT_CREATE']));
+            return (this.isDisabled && !this.$hasAccess([
+                'PRODUCT_UPDATE',
+            ]))
+            || (!this.isDisabled && !this.$hasAccess([
+                'PRODUCT_CREATE',
+            ]));
         },
         templateIdFieldKey() {
             return 'templateId';
@@ -119,12 +122,18 @@ export default {
         ]),
         getCategoriesOptionsRequest() {
             return getCategoriesOptions().then(response => response.default(
-                { $axios: this.$axios, $store: this.$store },
+                {
+                    $axios: this.$axios,
+                    $store: this.$store,
+                },
             ));
         },
         getTemplatesOptionsRequest() {
             return getTemplatesOptions().then(response => response.default(
-                { $axios: this.$axios, $store: this.$store },
+                {
+                    $axios: this.$axios,
+                    $store: this.$store,
+                },
             ));
         },
     },

@@ -15,7 +15,10 @@ export default {
     },
     props: {
         error: {
-            type: [Object, Error],
+            type: [
+                Object,
+                Error,
+            ],
             required: true,
         },
     },

@@ -9,15 +9,12 @@
                 <FormSection>
                     <TextField
                         :value="translations.name[languageCode]"
-                        solid
                         label="Status name"
-                        regular
                         :error-messages="errorMessages[nameKeyField]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'name')" />
                     <TextArea
                         :value="translations.description[languageCode]"
-                        solid
                         label="Status description"
                         resize="none"
                         :style="{height: '150px'}"
@@ -31,12 +28,12 @@
 </template>
 
 <script>
-import translationCardMixin from '@Core/mixins/card/translationCardMixin';
-import TextField from '@Core/components/Inputs/TextField';
-import TextArea from '@Core/components/Inputs/TextArea';
 import Card from '@Core/components/Card/Card';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
+import TextArea from '@Core/components/Inputs/TextArea';
+import TextField from '@Core/components/Inputs/TextField';
+import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 
 export default {
     name: 'ProductStatusTranslationForm',
@@ -47,10 +44,14 @@ export default {
         TextField,
         TextArea,
     },
-    mixins: [translationCardMixin],
+    mixins: [
+        translationCardMixin,
+    ],
     computed: {
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['WORKFLOW_UPDATE']);
+            return this.$hasAccess([
+                'WORKFLOW_UPDATE',
+            ]);
         },
         descriptionKeyField() {
             return `description_${this.languageCode}`;

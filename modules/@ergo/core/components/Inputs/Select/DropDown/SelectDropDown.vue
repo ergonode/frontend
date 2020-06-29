@@ -21,8 +21,7 @@
                         <ListElement
                             v-for="(option, index) in options"
                             :key="index"
-                            :small="small"
-                            :regular="regular"
+                            :size="size"
                             :disabled="option.disabled || false"
                             :selected="isOptionSelected(index)"
                             @click.native.prevent="onSelectValue(option, index)">
@@ -30,19 +29,18 @@
                                 <slot
                                     name="option"
                                     :option="option"
-                                    :small="small"
                                     :is-selected="isSelected"
                                     :index="index">
                                     <template v-if="isOptionsValid">
                                         <ListElementAction
                                             v-if="multiselect"
-                                            :small="small">
+                                            :size="size">
                                             <CheckBox
                                                 :value="isSelected" />
                                         </ListElementAction>
                                         <ListElementDescription>
                                             <ListElementTitle
-                                                :small="small"
+                                                :size="size"
                                                 :title="option" />
                                         </ListElementDescription>
                                     </template>
@@ -60,7 +58,7 @@
                     :clear="onClear"
                     :apply="onDismiss">
                     <DropDownFooter
-                        :small="small"
+                        :size="size"
                         :space-between="multiselect">
                         <Button
                             v-if="multiselect"
@@ -80,9 +78,7 @@
 </template>
 
 <script>
-import { isObject } from '@Core/models/objectWrapper';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import FadeTransition from '@Core/components/Transitions/FadeTransition';
+import CheckBox from '@Core/components/Inputs/CheckBox';
 import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
 import DropDownFooter from '@Core/components/Inputs/Select/DropDown/Footers/DropDownFooter';
 import List from '@Core/components/List/List';
@@ -90,7 +86,14 @@ import ListElement from '@Core/components/List/ListElement';
 import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
-import CheckBox from '@Core/components/Inputs/CheckBox';
+import FadeTransition from '@Core/components/Transitions/FadeTransition';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
+import {
+    isObject,
+} from '@Core/models/objectWrapper';
 
 export default {
     name: 'SelectDropDown',
@@ -108,13 +111,13 @@ export default {
         DropDownListSearch: () => import('@Core/components/Inputs/Select/DropDown/DropDownListSearch'),
     },
     props: {
-        small: {
-            type: Boolean,
-            default: false,
-        },
-        regular: {
-            type: Boolean,
-            default: false,
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
         },
         multiselect: {
             type: Boolean,
@@ -189,7 +192,9 @@ export default {
         },
         onSelectValue(value, index) {
             if (this.multiselect) {
-                const selectedOptions = { ...this.selectedOptions };
+                const selectedOptions = {
+                    ...this.selectedOptions,
+                };
 
                 if (this.isOptionSelected(index)) {
                     delete selectedOptions[this.stringifiedOptions[index]];

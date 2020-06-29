@@ -9,7 +9,9 @@ const isObstacle = (obstacles, x, y) => obstacles.some(
     obstacle => obstacle.row === y && obstacle.column === x,
 );
 const isObstacleInRangeOf = (obstacles, x, y, xRange, yRange) => obstacles.some((obstacle) => {
-    const { row, column } = obstacle;
+    const {
+        row, column,
+    } = obstacle;
 
     return row >= y && row <= yRange && column >= x && column <= xRange;
 });
@@ -29,8 +31,14 @@ const positionsSetToArray = (set) => {
     const array = [];
 
     set.forEach((position) => {
-        const [row, column] = position.split('|');
-        array.push({ row: +row, column: +column });
+        const [
+            row,
+            column,
+        ] = position.split('|');
+        array.push({
+            row: +row,
+            column: +column,
+        });
     });
 
     return array;
@@ -38,11 +46,17 @@ const positionsSetToArray = (set) => {
 const addObstaclesToHighlightingPositions = ({
     positions, obstacles, draggedElWidth, draggedElHeight, layoutWidth, layoutHeight,
 }) => {
-    const { length: obstaclesLength } = obstacles;
-    const tmpPositions = [...positions];
+    const {
+        length: obstaclesLength,
+    } = obstacles;
+    const tmpPositions = [
+        ...positions,
+    ];
 
     for (let i = 0; i < obstaclesLength; i += 1) {
-        const { row, column } = obstacles[i];
+        const {
+            row, column,
+        } = obstacles[i];
 
         for (let x = column - draggedElWidth + 1; x <= column; x += 1) {
             for (let y = row - draggedElHeight + 1; y <= row; y += 1) {
@@ -57,10 +71,14 @@ const addObstaclesToHighlightingPositions = ({
         }
     }
 
-    const { length: positionsLength } = tmpPositions;
+    const {
+        length: positionsLength,
+    } = tmpPositions;
 
     for (let i = 0; i < positionsLength; i += 1) {
-        const { row, column } = tmpPositions[i];
+        const {
+            row, column,
+        } = tmpPositions[i];
         const isOutOfBoundsWithWidth = column + draggedElWidth - 1 > layoutWidth;
         const isOutOfBoundsWithHeight = row + draggedElHeight - 1 > layoutHeight;
 
@@ -77,7 +95,9 @@ const addObstaclesToHighlightingPositions = ({
 export function getObstaclePositionsForElement({
     row, column, width, height,
 }) {
-    if (width < 0 || height < 0) return [];
+    if (width < 0 || height < 0) {
+        return [];
+    }
 
     const obstaclePositions = [];
 
@@ -85,7 +105,10 @@ export function getObstaclePositionsForElement({
         let x = column;
 
         while (x < column + width) {
-            obstaclePositions.push({ row: y, column: x });
+            obstaclePositions.push({
+                row: y,
+                column: x,
+            });
             x += 1;
         }
     }
@@ -96,13 +119,18 @@ export function getObstaclePositionsForElement({
 export function getHighlightingLayoutDropPositions({
     draggedElWidth, draggedElHeight, layoutWidth, layoutHeight, layoutElements,
 }) {
-    const { length } = layoutElements;
+    const {
+        length,
+    } = layoutElements;
     let layoutObstaclePositions = [];
 
     for (let i = 0; i < length; i += 1) {
         const elementObstaclePositions = getObstaclePositionsForElement(layoutElements[i]);
 
-        layoutObstaclePositions = [...layoutObstaclePositions, ...elementObstaclePositions];
+        layoutObstaclePositions = [
+            ...layoutObstaclePositions,
+            ...elementObstaclePositions,
+        ];
     }
 
     const highlightingPositions = new Set();
@@ -155,7 +183,9 @@ export function getHighlightingPositions({
         if (!(element.row === row && element.column === column)) {
             const elementObstaclePositions = getObstaclePositionsForElement(element);
             elementObstaclePositions.forEach((point) => {
-                const { row: pRow, column: pColumn } = point;
+                const {
+                    row: pRow, column: pColumn,
+                } = point;
                 if (pRow >= row
                     && pRow <= row + maxHeight
                     && pColumn >= column
@@ -173,7 +203,10 @@ export function getHighlightingPositions({
             }
 
             if (y < maxRowForGivenColumn) {
-                highlightingPositions.push({ row: y, column: x });
+                highlightingPositions.push({
+                    row: y,
+                    column: x,
+                });
             }
         }
     }

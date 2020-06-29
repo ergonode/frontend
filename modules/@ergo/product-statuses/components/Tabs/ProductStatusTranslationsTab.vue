@@ -18,7 +18,7 @@ export default {
     name: 'ProductStatusTranslationsTab',
     components: {
         TranslationsTab: () => import('@Core/components/Card/Tabs/TranslationsTab'),
-        ProductStatusTranslationForm: () => import('@Statuses/components/Forms/ProductStatusTranslationForm'),
+        ProductStatusTranslationForm: () => import('@Statuses/components/Form/ProductStatusTranslationForm'),
     },
 };
 </script>

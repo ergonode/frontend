@@ -40,7 +40,10 @@ export default {
             this.localValue = value;
 
             if (this.$vnode.key) {
-                this.$emit('input', { key: this.$vnode.key, value });
+                this.$emit('input', {
+                    key: this.$vnode.key,
+                    value,
+                });
             } else {
                 this.$emit('input', value);
             }
