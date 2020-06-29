@@ -123,7 +123,7 @@ export default {
 <style lang="scss" scoped>
     .products-template-grid {
         display: grid;
-        grid-gap: 16px 24px;
+        grid-gap: 24px;
         grid-template-columns: repeat(4, 1fr);
         width: 1008px;
         padding: 24px;
