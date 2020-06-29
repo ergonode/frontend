@@ -64,14 +64,22 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
 // import getProductDraft from '@Products/services/getProductDraft.service';
 import Button from '@Core/components/Buttons/Button';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 const updateProductDraft = () => import('@Products/services/updateProductDraft.service');
 
@@ -84,7 +92,12 @@ export default {
         // RestoreAttributeParentModalConfirm: () => import('@Products/components/Modals/RestoreAttributeParentModalConfirm'),
         // IconRestore: () => import('@Core/components/Icons/Actions/IconRestore'),
     },
-    mixins: [gridModalMixin, fetchGridDataMixin({ path: 'products' })],
+    mixins: [
+        gridModalMixin,
+        fetchGridDataMixin({
+            path: 'products',
+        }),
+    ],
     data() {
         return {
             focusedCellToRestore: null,
@@ -114,7 +127,9 @@ export default {
             return THEME.SECONDARY;
         },
         verticalTabs() {
-            const isUserAllowedToReadProduct = this.$hasAccess(['PRODUCT_READ']);
+            const isUserAllowedToReadProduct = this.$hasAccess([
+                'PRODUCT_READ',
+            ]);
             return [
                 {
                     title: 'Product attributes',
@@ -135,10 +150,14 @@ export default {
             ];
         },
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['PRODUCT_UPDATE']);
+            return this.$hasAccess([
+                'PRODUCT_UPDATE',
+            ]);
         },
         isUserAllowedToRestore() {
-            return this.$hasAccess(['PRODUCT_UPDATE']) && this.focusedCellToRestore;
+            return this.$hasAccess([
+                'PRODUCT_UPDATE',
+            ]) && this.focusedCellToRestore;
         },
     },
     methods: {
@@ -149,15 +168,18 @@ export default {
         ...mapActions('grid', [
             'removeDraftRow',
         ]),
-        onEditCell({ rowId, columnId, value }) {
-            const { element_id } = this.columns.find(column => column.id === columnId);
-            const [, languageCode] = columnId.split(':');
+        onEditCell({
+            rowId, columnId, value,
+        }) {
+            const {
+                element_id,
+            } = this.columns.find(column => column.id === columnId);
 
             updateProductDraft().then(response => response.default({
                 $axios: this.$axios,
                 $store: this.$store,
                 fieldKey: `${rowId}/${columnId}`,
-                languageCode,
+                languageCode: columnId.split(':')[1],
                 productId: rowId,
                 elementId: element_id,
                 value,
@@ -166,19 +188,22 @@ export default {
         onEditCells(editedCells) {
             const cachedElementIds = {};
 
-            const requests = editedCells.map(({ rowId, columnId, value }) => {
+            const requests = editedCells.map(({
+                rowId, columnId, value,
+            }) => {
                 if (!cachedElementIds[columnId]) {
-                    const { element_id } = this.columns.find(column => column.id === columnId);
+                    const {
+                        element_id,
+                    } = this.columns.find(column => column.id === columnId);
 
                     cachedElementIds[columnId] = element_id;
                 }
-                const [, languageCode] = columnId.split(':');
 
                 return updateProductDraft().then(response => response.default({
                     $axios: this.$axios,
                     $store: this.$store,
                     fieldKey: `${rowId}/${columnId}`,
-                    languageCode,
+                    languageCode: columnId.split(':')[1],
                     productId: rowId,
                     elementId: cachedElementIds[columnId],
                     value,
@@ -187,7 +212,9 @@ export default {
 
             Promise.all(requests);
         },
-        onFocusCell({ column, rowId }) {
+        onFocusCell({
+            column, rowId,
+        }) {
             if (column) {
                 if (rowId && column.element_id) {
                     this.focusedCellToRestore = {
@@ -218,7 +245,12 @@ export default {
         onEditRow(args) {
             const lastIndex = args.length - 1;
 
-            this.$router.push({ name: 'product-id-general', params: { id: args[lastIndex] } });
+            this.$router.push({
+                name: 'product-id-general',
+                params: {
+                    id: args[lastIndex],
+                },
+            });
         },
         async saveDrafts() {
             const promises = [];
@@ -233,7 +265,10 @@ export default {
             await this.$setLoader('footerDraftButton');
             await Promise.all(promises).then(() => {
                 this.getGridData(this.localParams);
-                this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Product changes saved' });
+                this.$addAlert({
+                    type: ALERT_TYPE.SUCCESS,
+                    message: 'Product changes saved',
+                });
             });
             await this.$removeLoader('footerDraftButton');
         },

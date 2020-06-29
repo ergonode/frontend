@@ -5,15 +5,13 @@
 <template>
     <LazySelect
         :value="localValue"
-        :solid="solid"
-        :underline="underline"
         :fixed-content="fixedContent"
-        :left-alignment="leftAlignment"
-        :center-alignment="centerAlignment"
         :dismissible="dismissible"
+        :type="type"
+        :alignment="alignment"
+        :size="size"
         :label="label"
         :placeholder="placeholder"
-        :description="description"
         :error-messages="errorMessages"
         :hint="hint"
         :required="required"
@@ -21,8 +19,6 @@
         :disabled="disabled"
         :clearable="clearable"
         :multiselect="multiselect"
-        :small="small"
-        :regular="regular"
         :searchable="searchable"
         :fetch-options-request="fetchOptionsRequest"
         :data-cy="dataCy"
@@ -36,8 +32,8 @@
         <template #value>
             <span v-text="parsedValue" />
         </template>
-        <template #informationLabel>
-            <slot name="informationLabel" />
+        <template #details>
+            <slot name="details" />
         </template>
         <template #option="{ option, isSelected }">
             <slot
@@ -46,12 +42,12 @@
                 :selected="isSelected">
                 <ListElementAction
                     v-if="multiselect"
-                    :small="small">
+                    :size="size">
                     <CheckBox :value="isSelected" />
                 </ListElementAction>
                 <ListElementDescription>
                     <ListElementTitle
-                        :small="small"
+                        :size="size"
                         :hint="option.hint"
                         :title="option.value || `#${option.key}`" />
                 </ListElementDescription>
@@ -61,11 +57,16 @@
 </template>
 
 <script>
+import CheckBox from '@Core/components/Inputs/CheckBox';
 import LazySelect from '@Core/components/Inputs/Select/LazySelect';
+import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
-import ListElementAction from '@Core/components/List/ListElementAction';
-import CheckBox from '@Core/components/Inputs/CheckBox';
+import {
+    ALIGNMENT,
+    INPUT_TYPE,
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'TranslationLazySelect',
@@ -78,28 +79,35 @@ export default {
     },
     props: {
         value: {
-            type: [Array, String, Number, Object],
+            type: [
+                Array,
+                String,
+                Number,
+                Object,
+            ],
             default: '',
         },
-        solid: {
-            type: Boolean,
-            default: false,
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
         },
-        underline: {
-            type: Boolean,
-            default: false,
+        alignment: {
+            type: String,
+            default: ALIGNMENT.LEFT,
+            validator: value => Object.values(ALIGNMENT).indexOf(value) !== -1,
+        },
+        type: {
+            type: String,
+            default: INPUT_TYPE.SOLID,
+            validator: value => Object.values(INPUT_TYPE).indexOf(value) !== -1,
         },
         fixedContent: {
             type: Boolean,
             default: true,
-        },
-        leftAlignment: {
-            type: Boolean,
-            default: false,
-        },
-        centerAlignment: {
-            type: Boolean,
-            default: false,
         },
         dismissible: {
             type: Boolean,
@@ -110,10 +118,6 @@ export default {
             default: null,
         },
         placeholder: {
-            type: String,
-            default: null,
-        },
-        description: {
             type: String,
             default: null,
         },
@@ -142,14 +146,6 @@ export default {
             default: false,
         },
         multiselect: {
-            type: Boolean,
-            default: false,
-        },
-        small: {
-            type: Boolean,
-            default: false,
-        },
-        regular: {
             type: Boolean,
             default: false,
         },

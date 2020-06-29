@@ -9,6 +9,9 @@ export default {
         '@Users': '/',
     },
     plugins: [
-        { ssr: true, src: './plugins/privilege' },
+        {
+            ssr: true,
+            src: './plugins/privilege',
+        },
     ],
 };

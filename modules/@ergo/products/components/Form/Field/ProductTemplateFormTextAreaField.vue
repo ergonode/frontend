@@ -10,31 +10,36 @@
             <template #validator="{ errorMessages }">
                 <RichTextEditor
                     v-if="isRTEEditor"
-                    solid
-                    :description="properties.hint"
                     :disabled="disabled"
                     :required="properties.required"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
                     :label="label"
                     :value="fieldData"
-                    @blur="onRTEValueChange" />
+                    @blur="onRTEValueChange">
+                    <template #append>
+                        <InfoHint
+                            v-if="properties.hint"
+                            :hint="properties.hint" />
+                    </template>
+                </RichTextEditor>
                 <TextArea
                     v-else
-                    :style="{ height: '100%' }"
                     :value="fieldData"
-                    solid
-                    regular
                     resize="none"
                     :label="label"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
                     :required="properties.required"
                     :disabled="disabled"
-                    :description="properties.hint"
                     @focus="onFocus"
                     @input="onValueChange">
-                    <template #informationLabel>
+                    <template #append>
+                        <InfoHint
+                            v-if="properties.hint"
+                            :hint="properties.hint" />
+                    </template>
+                    <template #details>
                         <div />
                     </template>
                 </TextArea>
@@ -44,11 +49,15 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
-import TextArea from '@Core/components/Inputs/TextArea';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import InfoHint from '@Core/components/Hints/InfoHint';
 import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
+import TextArea from '@Core/components/Inputs/TextArea';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductTemplateFormTextAreaField',
@@ -57,6 +66,7 @@ export default {
         TextArea,
         RichTextEditor,
         FormValidatorField,
+        InfoHint,
     },
     props: {
         size: {
@@ -93,7 +103,9 @@ export default {
             draft: state => state.draft,
         }),
         fieldData() {
-            const { attribute_code } = this.properties;
+            const {
+                attribute_code,
+            } = this.properties;
 
             return this.draft[this.languageCode][attribute_code] || '';
         },

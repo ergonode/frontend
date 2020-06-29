@@ -14,7 +14,7 @@
                 :is-centered-view="true"
                 :is-basic-filter="true"
                 @editRow="onEditRow"
-                @removeRow="onRemoveRow"
+                @removeRow="onRemoveUnit"
                 @fetchData="getGridData">
                 <template #actions>
                     <Button
@@ -34,11 +34,17 @@
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'UnitsSettingsGridTab',
@@ -47,7 +53,11 @@ export default {
         Button,
         IconAdd,
     },
-    mixins: [fetchGridDataMixin({ path: 'units' })],
+    mixins: [
+        fetchGridDataMixin({
+            path: 'units',
+        }),
+    ],
     computed: {
         smallSize() {
             return SIZE.SMALL;
@@ -56,17 +66,37 @@ export default {
             return THEME.SECONDARY;
         },
         isUserAllowedToCreate() {
-            return this.$hasAccess(['SETTINGS_CREATE']);
+            return this.$hasAccess([
+                'SETTINGS_CREATE',
+            ]);
         },
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['SETTINGS_UPDATE']);
+            return this.$hasAccess([
+                'SETTINGS_UPDATE',
+            ]);
         },
     },
     methods: {
+        ...mapActions('dictionaries', [
+            'getCurrentDictionary',
+        ]),
+        onRemoveUnit() {
+            Promise.all([
+                this.onRemoveRow(),
+                this.getCurrentDictionary({
+                    dictionaryName: 'units',
+                }),
+            ]);
+        },
         onEditRow(args) {
             const lastIndex = args.length - 1;
 
-            this.$router.push({ name: 'unit-id-general', params: { id: args[lastIndex] } });
+            this.$router.push({
+                name: 'unit-id-general',
+                params: {
+                    id: args[lastIndex],
+                },
+            });
         },
         onShowModal() {
             this.$emit('showModal', 'units');

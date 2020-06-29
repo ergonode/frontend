@@ -2,28 +2,49 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { types } from './mutations';
+import {
+    types,
+} from './mutations';
 
 export default {
-    setSource({ commit }, value) {
+    setSource({
+        commit,
+    }, value) {
         commit(types.SET_SOURCE, value);
     },
-    setDestination({ commit }, value) {
+    setDestination({
+        commit,
+    }, value) {
         commit(types.SET_DESTINATION, value);
     },
-    setConditionSetId({ commit }, value) {
+    setConditionSetId({
+        commit,
+    }, value) {
         commit(types.SET_CONDITION_SET_ID, value);
     },
-    setRoles({ commit }, value) {
+    setRoles({
+        commit,
+    }, value) {
         commit(types.SET_ROLES, value);
     },
     async getTransitionById(
-        { commit, dispatch, rootState },
-        { id },
+        {
+            commit, dispatch, rootState,
+        },
+        {
+            id,
+        },
     ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-        const { statuses: statusOptions } = rootState.productStatus;
-        const [source, destination] = id.split('--');
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
+        const {
+            statuses: statusOptions,
+        } = rootState.productStatus;
+        const [
+            source,
+            destination,
+        ] = id.split('--');
 
         await this.app.$axios.$get(`${userLanguageCode}/workflow/default/transitions/${source}/${destination}`).then(async ({
             condition_set_id: conditionSetId,
@@ -44,28 +65,44 @@ export default {
             if (conditionSetId) {
                 await dispatch('conditions/getConditionSetById', {
                     conditionSetId,
-                }, { root: true });
+                }, {
+                    root: true,
+                });
             }
         });
     },
     async updateTransition(
-        { state, rootState },
+        {
+            state, rootState,
+        },
         {
             data,
             onSuccess,
             onError,
         },
     ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-        const { source, destination } = state;
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
+        const {
+            source, destination,
+        } = state;
 
         await this.$setLoader('footerButton');
         await this.app.$axios.$put(`${userLanguageCode}/workflow/default/transitions/${source.id}/${destination.id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
-    removeTransition({ state, rootState }, { onSuccess }) {
-        const { source, destination, conditionSetId } = state;
-        const { language: userLanguageCode } = rootState.authentication.user;
+    removeTransition({
+        state, rootState,
+    }, {
+        onSuccess,
+    }) {
+        const {
+            source, destination, conditionSetId,
+        } = state;
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
 
         return this.app.$axios.$delete(`${userLanguageCode}/workflow/default/transitions/${source.key}/${destination.key}`)
             .then(() => {
@@ -77,7 +114,9 @@ export default {
                 }
             });
     },
-    clearStorage({ commit }) {
+    clearStorage({
+        commit,
+    }) {
         commit(types.CLEAR_STATE);
     },
 };

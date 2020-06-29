@@ -13,7 +13,10 @@ export default {
     name: 'BadgeLabel',
     props: {
         label: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             default: 'Label',
         },
     },

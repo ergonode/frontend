@@ -10,10 +10,7 @@
                 :columns="columns"
                 :data-count="filtered"
                 :data="data"
-                :collection-cell-binding="{
-                    imageColumn: 'default_image',
-                    descriptionColumn: 'default_label'
-                }"
+                :collection-cell-binding="collectionCellBinding"
                 :is-collection-layout="true"
                 :is-header-visible="true"
                 :is-centered-view="true"
@@ -23,13 +20,22 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { TYPES } from '@Attributes/defaults/attributes';
-import { getGridData } from '@Core/services/grid/getGridData.service';
-import { getParsedFilters } from '@Core/models/mappers/gridDataMapper';
-import { DATA_LIMIT } from '@Core/defaults/grid';
-import { PRODUCT_TYPE } from '@Products/defaults';
+import {
+    TYPES,
+} from '@Attributes/defaults/attributes';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import {
+    DATA_LIMIT,
+} from '@Core/defaults/grid';
+import {
+    getGridData,
+} from '@Core/services/grid/getGridData.service';
+import {
+    PRODUCT_TYPE,
+} from '@Products/defaults';
+import {
+    mapState,
+} from 'vuex';
 
 const getAttributesByFilter = () => import('@Attributes/services/getAttributesByFilter.service');
 
@@ -39,8 +45,14 @@ export default {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('@Core/components/Grid/Grid'),
     },
-    asyncData({ app, store, params: { id } }) {
-        const { language: languageCode } = store.state.authentication.user;
+    asyncData({
+        app, store, params: {
+            id,
+        },
+    }) {
+        const {
+            language: languageCode,
+        } = store.state.authentication.user;
         const productsParams = {
             limit: 9999,
             offset: 0,
@@ -57,8 +69,14 @@ export default {
                 }),
             ),
             app.$axios.$get(`${languageCode}/products/${id}/bindings`),
-            app.$axios.$get(`${languageCode}/products/${id}/children`, { params: productsParams }),
-        ]).then(([selectAttributes, productBindings, productChildren]) => {
+            app.$axios.$get(`${languageCode}/products/${id}/children`, {
+                params: productsParams,
+            }),
+        ]).then(([
+            selectAttributes,
+            productBindings,
+            productChildren,
+        ]) => {
             const attributeCodes = selectAttributes
                 .filter(
                     attribute => productBindings
@@ -66,7 +84,9 @@ export default {
                             attrId => attribute.id === attrId,
                         ),
                 )
-                .map(({ key }) => key);
+                .map(({
+                    key,
+                }) => key);
 
             const params = {
                 offset: 0,
@@ -85,7 +105,10 @@ export default {
                 data,
                 filtered,
             }) => {
-                const tmpData = { ...data, esa_attached: [] };
+                const tmpData = {
+                    ...data,
+                    esa_attached: [],
+                };
 
                 for (let j = 0; j < data.id.length; j += 1) {
                     tmpData.esa_attached[j] = {
@@ -137,8 +160,16 @@ export default {
         ...mapState('authentication', {
             languageCode: state => state.user.language,
         }),
+        collectionCellBinding() {
+            return {
+                imageColumn: `esa_default_image:${this.languageCode}`,
+                descriptionColumn: `esa_default_label:${this.languageCode}`,
+            };
+        },
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['PRODUCT_UPDATE']);
+            return this.$hasAccess([
+                'PRODUCT_UPDATE',
+            ]);
         },
         attributeCodes() {
             return this.selectAttributes
@@ -148,7 +179,9 @@ export default {
                             id => attribute.id === id,
                         ),
                 )
-                .map(({ key }) => key).join(',');
+                .map(({
+                    key,
+                }) => key).join(',');
         },
     },
     methods: {
@@ -156,19 +189,24 @@ export default {
             offset, limit, filters, sortedColumn,
         }) {
             this.localParams = {
-                offset, limit, filters, sortedColumn,
+                offset,
+                limit,
+                filters,
+                sortedColumn,
             };
 
             const params = {
                 offset,
                 limit,
                 extended: true,
-                filter: `${getParsedFilters(filters, [])},esa_product_type:${this.languageCode}=${PRODUCT_TYPE.SIMPLE_PRODUCT}`,
+                filter: `esa_product_type:${this.languageCode}=${PRODUCT_TYPE.SIMPLE_PRODUCT}`,
                 columns: `esa_default_image:${this.languageCode},esa_default_label:${this.languageCode},${this.attributeCodes},sku,esa_template:${this.languageCode}`,
             };
 
             if (Object.keys(sortedColumn).length) {
-                const { index: colSortID, orderState } = sortedColumn;
+                const {
+                    index: colSortID, orderState,
+                } = sortedColumn;
 
                 params.field = colSortID;
                 params.order = orderState;
@@ -190,8 +228,15 @@ export default {
                     order: 'ASC',
                 };
 
-                return this.$axios.$get(`${this.languageCode}/products/${this.id}/children`, { params: productsParams }).then(({ collection }) => {
-                    const tmpData = { ...data, esa_attached: [] };
+                return this.$axios.$get(`${this.languageCode}/products/${this.id}/children`, {
+                    params: productsParams,
+                }).then(({
+                    collection,
+                }) => {
+                    const tmpData = {
+                        ...data,
+                        esa_attached: [],
+                    };
 
                     for (let j = 0; j < data.id.length; j += 1) {
                         tmpData.esa_attached[j] = {

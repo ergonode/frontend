@@ -17,7 +17,9 @@ export function hexToRGB(hex) {
     const b = bigint & 255;
 
     return {
-        r, g, b,
+        r,
+        g,
+        b,
     };
 }
 

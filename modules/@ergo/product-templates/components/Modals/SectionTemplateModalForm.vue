@@ -15,9 +15,7 @@
                     <FormSection>
                         <TextField
                             :value="title"
-                            solid
                             label="Section title"
-                            regular
                             required
                             :error-messages="error"
                             @input="onTitleChange" />
@@ -38,14 +36,18 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { THEME } from '@Core/defaults/theme';
-import ModalForm from '@Core/components/Modal/ModalForm';
-import TextField from '@Core/components/Inputs/TextField';
 import Button from '@Core/components/Buttons/Button';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
+import TextField from '@Core/components/Inputs/TextField';
+import ModalForm from '@Core/components/Modal/ModalForm';
+import {
+    THEME,
+} from '@Core/defaults/theme';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'SectionTemplateModalForm',
@@ -111,9 +113,15 @@ export default {
         onSave() {
             if (this.title !== '' && this.title.length <= 255) {
                 if (!this.sectionTitle) {
-                    this.addSectionElementToLayout({ ...this.sectionPosition, title: this.title });
+                    this.addSectionElementToLayout({
+                        ...this.sectionPosition,
+                        title: this.title,
+                    });
                 } else {
-                    this.updateSectionElementTitle({ index: this.sectionIndex, title: this.title });
+                    this.updateSectionElementTitle({
+                        index: this.sectionIndex,
+                        title: this.title,
+                    });
                 }
                 this.title = '';
                 this.$emit('close');

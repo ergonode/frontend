@@ -18,7 +18,9 @@
 </template>
 
 <script>
-import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    GRAPHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     props: {
@@ -27,11 +29,17 @@ export default {
             default: 'box',
         },
         width: {
-            type: [Number, String],
+            type: [
+                Number,
+                String,
+            ],
             default: 24,
         },
         height: {
-            type: [Number, String],
+            type: [
+                Number,
+                String,
+            ],
             default: 24,
         },
         viewBox: {

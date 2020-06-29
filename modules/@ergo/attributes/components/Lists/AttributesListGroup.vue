@@ -61,7 +61,11 @@ export default {
     },
     methods: {
         onGroupExpand(payload) {
-            this.$emit('expand', { ...payload, group: this.group, languageCode: this.languageCode });
+            this.$emit('expand', {
+                ...payload,
+                group: this.group,
+                languageCode: this.languageCode,
+            });
         },
     },
 };

@@ -11,15 +11,15 @@
                 v-for="(option, index) in filter.options"
                 :key="index"
                 :selected="typeof selectedOptions[index] !== 'undefined'"
-                :small="true"
+                :size="smallSize"
                 @click.native.prevent="onSelectValue(option, index)">
                 <template #default="{ isSelected }">
-                    <ListElementAction :small="true">
+                    <ListElementAction :size="smallSize">
                         <CheckBox :value="isSelected" />
                     </ListElementAction>
                     <ListElementDescription>
                         <ListElementTitle
-                            :small="true"
+                            :size="smallSize"
                             :hint="option.value ? `#${option.key} ${filter.languageCode}` : ''"
                             :title="option.value || `#${option.key}`" />
                     </ListElementDescription>
@@ -30,14 +30,19 @@
 </template>
 
 <script>
-import { FILTER_OPERATOR } from '@Core/defaults/operators';
 import GridAdvancedFilterBaseContent from '@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
+import CheckBox from '@Core/components/Inputs/CheckBox';
 import List from '@Core/components/List/List';
 import ListElement from '@Core/components/List/ListElement';
 import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
-import CheckBox from '@Core/components/Inputs/CheckBox';
+import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridAdvancedFilterMultiselectContent',
@@ -62,6 +67,9 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         filterValue() {
             return this.filter.value[FILTER_OPERATOR.EQUAL]
                 ? this.filter.value[FILTER_OPERATOR.EQUAL].split(', ')
@@ -81,7 +89,9 @@ export default {
             if (this.filterValue.length === 0) {
                 this.selectedOptions = {};
             } else {
-                const { length } = this.filterValue;
+                const {
+                    length,
+                } = this.filterValue;
 
                 for (let i = 0; i < length; i += 1) {
                     const optionIndex = this.filter.options
@@ -98,7 +108,10 @@ export default {
                 this.selectedOptions[index] = value.id;
             }
 
-            this.$emit('input', { value: Object.values(this.selectedOptions).join(', '), key: FILTER_OPERATOR.EQUAL });
+            this.$emit('input', {
+                value: Object.values(this.selectedOptions).join(', '),
+                key: FILTER_OPERATOR.EQUAL,
+            });
         },
         onEmptyRecordChange(value) {
             this.$emit('emptyRecord', value);

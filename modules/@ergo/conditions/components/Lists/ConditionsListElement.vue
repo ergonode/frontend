@@ -6,6 +6,7 @@
     <ListDraggableElement
         :is-draggable="$hasAccess(['SEGMENT_UPDATE'])"
         :draggable-id="item.id"
+        :label="item.name"
         @drag="onDrag">
         <ListElementDescription>
             <ListElementTitle :title="item.name" />
@@ -14,10 +15,14 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { getUUID } from '@Core/models/stringWrapper';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'ConditionsListElement',
@@ -38,14 +43,23 @@ export default {
             'setDraggableState',
         ]),
         onDrag(isDragged) {
-            const { id, name, code } = this.item;
+            const {
+                id, name, code,
+            } = this.item;
             if (isDragged) {
-                this.setDraggedElement({ id: `${id}--${getUUID()}`, name, code });
+                this.setDraggedElement({
+                    id: `${id}--${getUUID()}`,
+                    name,
+                    code,
+                });
             } else {
                 this.setDraggedElement();
             }
 
-            this.setDraggableState({ propName: 'isListElementDragging', value: isDragged });
+            this.setDraggableState({
+                propName: 'isListElementDragging',
+                value: isDragged,
+            });
         },
     },
 };

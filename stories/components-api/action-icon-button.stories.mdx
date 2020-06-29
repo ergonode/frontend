@@ -1,15 +1,276 @@
-import { Meta, Props } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Preview, Props, Description } from '@storybook/addon-docs/blocks';
 import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
+import IconSettings from '@Core/components/Icons/Actions/IconSettings';
+import { SIZE, THEME } from '@Core/defaults/theme';
 
 <Meta title="Components API|ActionIconButton" />
 
 # ActionIconButton
 
-`ActionIconButton` is an `ActionBaseButton` with a `IconButton` inside named slot `button`. It's implementing `IconButton` props.
+<Description of={ActionIconButton} />
 
 ```
     import ActionIconButton from '@Core/components/Buttons/ActionIconButton'
 ```
+
+### Theme
+
+<Preview mdxSource={`
+    <ActionIconButton :theme="primaryTheme" :options="['first', 'second', 'third']">
+        <template #icon="{ color }">
+            <IconSettings :fill-color="color" />
+        </template>
+    </ActionIconButton>
+    <!-- -->
+    <ActionIconButton :theme="secondaryTheme" :options="['first', 'second', 'third']">
+        <template #icon="{ color }">
+            <IconSettings :fill-color="color" />
+        </template>
+    </ActionIconButton>
+    <!-- -->
+    <ActionIconButton :theme="secondaryPlainTheme" :options="['first', 'second', 'third']">
+        <template #icon="{ color }">
+            <IconSettings :fill-color="color" />
+        </template>
+    </ActionIconButton>
+`}>
+    <Story name="primary">
+        {{
+            components: { ActionIconButton, IconSettings },
+            template: `
+                <ActionIconButton :theme="primaryTheme" :options="['first', 'second', 'third']">
+                    <template #icon="{ color }">
+                        <IconSettings :fill-color="color" />
+                    </template>
+                </ActionIconButton>
+            `,
+            computed: {
+                primaryTheme() {
+                    return THEME.PRIMARY;
+                }
+            }
+        }}
+    </Story>
+    <Story name="secondary">
+        {{
+            components: { ActionIconButton, IconSettings },
+            template: `
+                <ActionIconButton :theme="secondaryTheme" :options="['first', 'second', 'third']">
+                    <template #icon="{ color }">
+                        <IconSettings :fill-color="color" />
+                    </template>
+                </ActionIconButton>
+            `,
+            computed: {
+                secondaryTheme() {
+                    return THEME.SECONDARY;
+                }
+            }
+        }}
+    </Story>
+    <Story name="secondary-plain">
+        {{
+            components: { ActionIconButton, IconSettings },
+            template: `
+                <ActionIconButton :theme="secondaryPlainTheme" :options="['first', 'second', 'third']">
+                    <template #icon="{ color }">
+                        <IconSettings :fill-color="color" />
+                    </template>
+                </ActionIconButton>
+            `,
+            computed: {
+                secondaryPlainTheme() {
+                    return THEME.SECONDARY_PLAIN;
+                }
+            }
+        }}
+    </Story>
+</Preview>
+
+### Disabled
+
+<Preview mdxSource={`
+    <ActionIconButton :theme="primaryTheme" :disabled="true" :options="['first', 'second', 'third']">
+        <template #icon="{ color }">
+            <IconSettings :fill-color="color" />
+        </template>
+    </ActionIconButton>
+    <!-- -->
+    <ActionIconButton :theme="secondaryTheme" :disabled="true" :options="['first', 'second', 'third']">
+        <template #icon="{ color }">
+            <IconSettings :fill-color="color" />
+        </template>
+    </ActionIconButton>
+`}>
+    <Story name="disabled-primary">
+        {{
+            components: { ActionIconButton, IconSettings },
+            template: `
+                <ActionIconButton :theme="primaryTheme" :disabled="true" :options="['first', 'second', 'third']">
+                    <template #icon="{ color }">
+                        <IconSettings :fill-color="color" />
+                    </template>
+                </ActionIconButton>
+            `,
+            computed: {
+                primaryTheme() {
+                    return THEME.PRIMARY;
+                }
+            }
+        }}
+    </Story>
+    <Story name="disabled-secondary">
+        {{
+            components: { ActionIconButton, IconSettings },
+            template: `
+                <ActionIconButton :theme="secondaryTheme" :disabled="true" :options="['first', 'second', 'third']">
+                    <template #icon="{ color }">
+                        <IconSettings :fill-color="color" />
+                    </template>
+                </ActionIconButton>
+            `,
+            computed: {
+                secondaryTheme() {
+                    return THEME.SECONDARY;
+                }
+            }
+        }}
+    </Story>
+</Preview>
+
+### Fixed Content
+
+<Preview mdxSource={`
+    <ActionIconButton :theme="primaryTheme" :fixed-content="true" :options="['first', 'second', 'third']">
+        <template #icon="{ color }">
+            <IconSettings :fill-color="color" />
+        </template>
+    </ActionIconButton>
+`}>
+    <Story name="fixed-content">
+        {{
+            components: { ActionIconButton, IconSettings },
+            template: `
+                <ActionIconButton :theme="primaryTheme" :fixed-content="true" :options="['first', 'second', 'third']">
+                    <template #icon="{ color }">
+                        <IconSettings :fill-color="color" />
+                    </template>
+                </ActionIconButton>
+            `,
+            computed: {
+                primaryTheme() {
+                    return THEME.PRIMARY;
+                }
+            }
+        }}
+    </Story>
+</Preview>
+
+### Size
+
+<Preview mdxSource={`
+    <ActionIconButton :theme="primaryTheme" :size="regularSize" :options="['first', 'second', 'third']">
+        <template #icon="{ color }">
+            <IconSettings :fill-color="color" />
+        </template>
+    </ActionIconButton>
+    <!-- -->
+    <ActionIconButton :theme="primaryTheme" :size="smallSize" :options="['first', 'second', 'third']">
+        <template #icon="{ color }">
+            <IconSettings :fill-color="color" />
+        </template>
+    </ActionIconButton>
+    <!-- -->
+    <ActionIconButton :theme="primaryTheme" :size="tinySize" :options="['first', 'second', 'third']">
+        <template #icon="{ color }">
+            <IconSettings :fill-color="color" />
+        </template>
+    </ActionIconButton>
+`}>
+    <Story name="regular">
+        {{
+            components: { ActionIconButton, IconSettings },
+            template: `
+                <ActionIconButton :theme="primaryTheme" :size="regularSize" :options="['first', 'second', 'third']">
+                    <template #icon="{ color }">
+                        <IconSettings :fill-color="color" />
+                    </template>
+                </ActionIconButton>
+            `,
+            computed: {
+                primaryTheme() {
+                    return THEME.PRIMARY;
+                },
+                regularSize() {
+                    return SIZE.REGULAR;
+                },
+            }
+        }}
+    </Story>
+    <Story name="small">
+        {{
+            components: { ActionIconButton, IconSettings },
+            template: `
+                <ActionIconButton :theme="primaryTheme" :size="smallSize" :options="['first', 'second', 'third']">
+                    <template #icon="{ color }">
+                        <IconSettings :fill-color="color" />
+                    </template>
+                </ActionIconButton>
+            `,
+            computed: {
+                primaryTheme() {
+                    return THEME.PRIMARY;
+                },
+                smallSize() {
+                    return SIZE.SMALL;
+                },
+            }
+        }}
+    </Story>
+    <Story name="tiny">
+        {{
+            components: { ActionIconButton, IconSettings },
+            template: `
+                <ActionIconButton :theme="primaryTheme" :size="tinySize" :options="['first', 'second', 'third']">
+                    <template #icon="{ color }">
+                        <IconSettings :fill-color="color" />
+                    </template>
+                </ActionIconButton>
+            `,
+            computed: {
+                primaryTheme() {
+                    return THEME.PRIMARY;
+                },
+                tinySize() {
+                    return SIZE.TINY;
+                },
+            }
+        }}
+    </Story>
+</Preview>
+
+### Slots
+
+<Preview mdxSource={`
+    <ActionIconButton :options="['first', 'second', 'third']">
+        <template #icon="{ color }">
+            <IconSettings :fill-color="color" />
+        </template>
+    </ActionIconButton>
+`}>
+    <Story name="icon">
+        {{
+            components: { ActionIconButton, IconSettings },
+            template: `
+                <ActionIconButton :options="['first', 'second', 'third']">
+                    <template #icon="{ color }">
+                        <IconSettings :fill-color="color" />
+                    </template>
+                </ActionIconButton>
+            `,
+        }}
+    </Story>
+</Preview>
 
 ### Props
 

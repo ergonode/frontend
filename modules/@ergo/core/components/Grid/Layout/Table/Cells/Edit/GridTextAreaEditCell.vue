@@ -9,6 +9,7 @@
             :style="{height: '134px'}"
             :value="localValue"
             :autofocus="true"
+            :type="underlineInputType"
             @blur="onRTEValueChange" />
         <GridTextEditContentCell
             v-else
@@ -17,7 +18,7 @@
                 :style="{height: '134px'}"
                 v-model="localValue"
                 :autofocus="true"
-                :left-alignment="true"
+                :type="underlineInputType"
                 :error-messages="errorMessages"
                 resize="none" />
         </GridTextEditContentCell>
@@ -25,10 +26,13 @@
 </template>
 
 <script>
-import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import GridTextEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
-import TextArea from '@Core/components/Inputs/TextArea';
+import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
+import TextArea from '@Core/components/Inputs/TextArea';
+import {
+    INPUT_TYPE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridTextAreaEditCell',
@@ -60,6 +64,11 @@ export default {
         return {
             localValue: this.value,
         };
+    },
+    computed: {
+        underlineInputType() {
+            return INPUT_TYPE.UNDERLINE;
+        },
     },
     beforeDestroy() {
         if (this.localValue !== this.value) {

@@ -11,7 +11,6 @@
             :key="element.key"
             :is="element.component"
             :value="value[element.key]"
-            :small="true"
             :schema="element.props"
             @input="onValueChange" />
         <Fab
@@ -25,11 +24,18 @@
 </template>
 
 <script>
-import { toCapitalize } from '@Core/models/stringWrapper';
-import { THEME } from '@Core/defaults/theme';
-import { ARROW } from '@Core/defaults/icons';
-import IconDelete from '@Core/components/Icons/Actions/IconDelete';
 import Fab from '@Core/components/Buttons/Fab';
+import IconDelete from '@Core/components/Icons/Actions/IconDelete';
+import {
+    ARROW,
+} from '@Core/defaults/icons';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
+import {
+    toCapitalize,
+} from '@Core/models/stringWrapper';
 
 export default {
     name: 'JSONSchemaFormTableRowWidget',
@@ -64,7 +70,9 @@ export default {
         gridTemplateColumns() {
             const gridTemplateColumns = this.rowComponents.map((component, index) => (index % 2 === 0 ? '1fr' : 'max-content')).join(' ');
 
-            return { gridTemplateColumns };
+            return {
+                gridTemplateColumns,
+            };
         },
         fieldsKeys() {
             return Object.keys(this.schema.properties);
@@ -75,7 +83,9 @@ export default {
     },
     methods: {
         initializeComponents() {
-            const { length } = this.fieldsKeys;
+            const {
+                length,
+            } = this.fieldsKeys;
             const components = [];
 
             for (let i = 0; i < length; i += 1) {
@@ -89,6 +99,7 @@ export default {
                     props: {
                         isRequired: this.schema.required.indexOf(key) !== -1,
                         ...rest,
+                        size: SIZE.SMALL,
                     },
                     component: () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),
                 });
@@ -106,9 +117,14 @@ export default {
 
             return components;
         },
-        onValueChange({ key, value }) {
+        onValueChange({
+            key, value,
+        }) {
             this.localValue[key] = value;
-            this.$emit('input', { index: this.index, value: this.localValue });
+            this.$emit('input', {
+                index: this.index,
+                value: this.localValue,
+            });
         },
         onRemoveRow() {
             this.$emit('remove', this.index);
@@ -126,12 +142,7 @@ export default {
         grid-column-gap: 4px;
 
         & > .fab {
-            margin-top: 8px;
             margin-left: 4px;
-        }
-
-        & > svg {
-            margin-top: 8px;
         }
     }
 </style>

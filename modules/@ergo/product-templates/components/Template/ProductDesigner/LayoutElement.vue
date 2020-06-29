@@ -4,7 +4,7 @@
  */
 <template>
     <div
-        :class="['layout-element', draggableClasses]"
+        :class="classes"
         :draggable="isDraggingEnabled && !disabled"
         ref="layoutElement"
         @dragstart="onDragStart"
@@ -21,26 +21,38 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 import {
-    getHighlightingPositions,
-    getHighlightingLayoutDropPositions,
-    getMaxRowForGivenColumn,
-    getMaxColumnForGivenRow,
-    getRowBasedOnHeight,
-    getColumnBasedOnWidth,
-} from '@Templates/models/layout/LayoutCalculations';
+    GREEN,
+} from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    ELEVATOR_HOLE,
+} from '@Core/assets/scss/_js-variables/elevators.scss';
+import IconResize from '@Core/components/Icons/Others/IconResize';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
+import {
+    addElementCopyToDocumentBody,
+    removeElementCopyFromDocumentBody,
+} from '@Core/models/layout/ElementCopy';
 import {
     addResizablePlaceholder,
-    updateResizablePlaceholderWidth,
-    updateResizablePlaceholderHeight,
     removeResizablePlaceholder,
+    updateResizablePlaceholderHeight,
+    updateResizablePlaceholderWidth,
 } from '@Templates/models/layout/GhostElement';
-import { addElementCopyToDocumentBody, removeElementCopyFromDocumentBody } from '@Core/models/layout/ElementCopy';
-import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
-import { ELEVATOR_HOLE } from '@Core/assets/scss/_js-variables/elevators.scss';
-import { GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
-import IconResize from '@Core/components/Icons/Others/IconResize';
+import {
+    getColumnBasedOnWidth,
+    getHighlightingLayoutDropPositions,
+    getHighlightingPositions,
+    getMaxColumnForGivenRow,
+    getMaxRowForGivenColumn,
+    getRowBasedOnHeight,
+} from '@Templates/models/layout/LayoutCalculations';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 const registerResizeEventListeners = () => import('@Core/models/resize/registerResizeEventListeners');
 const unregisterResizeEventListeners = () => import('@Core/models/resize/unregisterResizeEventListeners');
@@ -99,12 +111,15 @@ export default {
         ...mapState('draggable', {
             draggedElement: state => state.draggedElement,
         }),
-        draggableClasses() {
-            return {
-                'layout-element--dragged': this.isDragged,
-                'layout-element--resized': !this.isDraggingEnabled,
-                'layout-element--disabled': this.disabled,
-            };
+        classes() {
+            return [
+                'layout-element',
+                {
+                    'layout-element--dragged': this.isDragged,
+                    'layout-element--resized': !this.isDraggingEnabled,
+                    'layout-element--disabled': this.disabled,
+                },
+            ];
         },
     },
     methods: {
@@ -117,16 +132,25 @@ export default {
             'setDraggableState',
         ]),
         onDragStart(event) {
-            const { id, width, height } = this.element;
+            const {
+                id, width, height,
+            } = this.element;
 
-            this.setDraggedElement({ ...this.element, index: this.index });
-            this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENT.TEMPLATE });
+            this.setDraggedElement({
+                ...this.element,
+                index: this.index,
+            });
+            this.setDraggableState({
+                propName: 'draggedElementOnGrid',
+                value: DRAGGED_ELEMENT.TEMPLATE,
+            });
             window.requestAnimationFrame(() => { this.isDragged = true; });
             addElementCopyToDocumentBody({
                 event,
-                element: this.$el,
                 id: 'layoutElement',
+                label: this.element.label,
             });
+
             this.highlightingPositions = getHighlightingLayoutDropPositions({
                 draggedElWidth: width,
                 draggedElHeight: height,
@@ -141,9 +165,15 @@ export default {
             this.isDragged = false;
             this.highlightingPositions = [];
             this.setDraggedElement();
-            this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
+            this.setDraggableState({
+                propName: 'draggedElementOnGrid',
+                value: null,
+            });
             removeElementCopyFromDocumentBody(event);
-            this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
+            this.setDraggableState({
+                propName: 'draggedElementOnGrid',
+                value: null,
+            });
 
             this.$emit('highlightedPositionChange', []);
         },
@@ -179,7 +209,9 @@ export default {
             this.$emit('highlightedPositionChange', this.highlightingPositions);
         },
         onResize(event) {
-            const { pageX, pageY } = event;
+            const {
+                pageX, pageY,
+            } = event;
             const width = this.getElementWidthBasedOnMouseXPosition(pageX);
             const height = this.getElementHeightBasedOnMouseYPosition(pageY);
 
@@ -211,15 +243,21 @@ export default {
             return this.startHeight + yPos - this.startY;
         },
         getElementMinWidth() {
-            const { width } = this.element;
+            const {
+                width,
+            } = this.element;
             return (this.startWidth - (this.elementsGap * (width - 1))) / width;
         },
         getElementMinHeight() {
-            const { height } = this.element;
+            const {
+                height,
+            } = this.element;
             return (this.startHeight - (this.elementsGap * (height - 1))) / height;
         },
         getElementMaxWidth(maxWidth) {
-            const { column } = this.element;
+            const {
+                column,
+            } = this.element;
             const columnsNumberToFill = maxWidth - (column - 1);
             const elementGapsNumber = columnsNumberToFill - 1;
 
@@ -229,7 +267,9 @@ export default {
             return (this.minHeight * maxHeight) + ((maxHeight - 1) * this.elementsGap);
         },
         updateElementWidth(width) {
-            const { column } = this.element;
+            const {
+                column,
+            } = this.element;
             const columnBellowMouse = getColumnBasedOnWidth(width, this.minWidth, column);
             const maxColumn = getMaxColumnForGivenRow(
                 this.actualElementRow,
@@ -257,7 +297,9 @@ export default {
             }
         },
         updateElementHeight(height) {
-            const { row } = this.element;
+            const {
+                row,
+            } = this.element;
             const rowBellowMouse = getRowBasedOnHeight(height, this.minHeight, row);
             const maxRow = getMaxRowForGivenColumn(
                 this.actualElementColumn,
@@ -288,12 +330,16 @@ export default {
         blockOtherInteractionsOnResizeEvent() {
             this.isDraggingEnabled = false;
         },
-        initMousePosition({ pageX, pageY }) {
+        initMousePosition({
+            pageX, pageY,
+        }) {
             this.startX = pageX;
             this.startY = pageY;
         },
         initActualElementNormalizedBoundary() {
-            const { row, column } = this.element;
+            const {
+                row, column,
+            } = this.element;
 
             this.actualElementRow = row;
             this.actualElementColumn = column;
@@ -308,7 +354,9 @@ export default {
             this.startHeight = parseInt(elementHeight, 10);
         },
         initElementNormalizedBoundary() {
-            const { width, height } = this.element;
+            const {
+                width, height,
+            } = this.element;
 
             this.newWidth = width;
             this.newHeight = height;

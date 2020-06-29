@@ -45,7 +45,7 @@
                         <template #option="{ option }">
                             <ListElementDescription>
                                 <ListElementTitle
-                                    small
+                                    :size="smallSize"
                                     :title="option.text" />
                             </ListElementDescription>
                         </template>
@@ -57,10 +57,13 @@
 </template>
 
 <script>
-import { THEME, SIZE } from '@Core/defaults/theme';
-import UploadFileNew from '@Core/components/Inputs/UploadFile/UploadFileNew';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import UploadFileNew from '@Core/components/Inputs/UploadFile/UploadFileNew';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'UploadImageFileNew',
@@ -78,7 +81,10 @@ export default {
     },
     props: {
         value: {
-            type: [String, Array],
+            type: [
+                String,
+                Array,
+            ],
             default: '',
         },
         label: {

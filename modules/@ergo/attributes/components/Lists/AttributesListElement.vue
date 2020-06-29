@@ -8,13 +8,14 @@
         :is-draggable="isDraggable"
         :is-disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
         :hint="hint"
+        :label="title"
         @drag="onDrag">
         <ListElementIcon>
             <Component :is="typeIconComponent" />
         </ListElementIcon>
         <ListElementDescription>
             <ListElementTitle
-                :title="item.label || `#${item.code}`"
+                :title="title"
                 :hint="hint" />
             <ListElementHint
                 :title="formattedAttributeType"
@@ -24,14 +25,21 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { TYPES } from '@Attributes/defaults/attributes';
-import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
+import {
+    TYPES,
+} from '@Attributes/defaults/attributes';
+import ListDraggableElement from '@Core/components/List/ListDraggableElement';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
-import ListElementTitle from '@Core/components/List/ListElementTitle';
 import ListElementHint from '@Core/components/List/ListElementHint';
 import ListElementIcon from '@Core/components/List/ListElementIcon';
-import ListDraggableElement from '@Core/components/List/ListDraggableElement';
+import ListElementTitle from '@Core/components/List/ListElementTitle';
+import {
+    capitalizeAndConcatenationArray,
+} from '@Core/models/stringWrapper';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'AttributesListElement',
@@ -60,6 +68,9 @@ export default {
         ...mapState('list', {
             disabledElements: state => state.disabledElements,
         }),
+        title() {
+            return this.item.label || `#${this.item.code}`;
+        },
         typeIconComponent() {
             if (typeof TYPES[this.item.type] === 'undefined') {
                 return () => import('@Core/components/Icons/Attributes/IconText');
@@ -85,7 +96,10 @@ export default {
                 this.setDraggedElement();
             }
 
-            this.setDraggableState({ propName: 'isListElementDragging', value: isDragged });
+            this.setDraggableState({
+                propName: 'isListElementDragging',
+                value: isDragged,
+            });
         },
     },
 };

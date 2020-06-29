@@ -10,22 +10,22 @@
             <template #validator="{ errorMessages }">
                 <TextField
                     :value="fieldData"
-                    solid
-                    regular
                     :label="label"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
                     :required="properties.required"
                     :disabled="disabled"
-                    :description="properties.hint"
                     @focus="onFocus"
                     @input="onValueChange">
                     <template #append>
                         <TextFieldSuffix
                             v-if="parameter"
                             :suffix="parameter" />
+                        <InfoHint
+                            v-if="properties.hint"
+                            :hint="properties.hint" />
                     </template>
-                    <template #informationLabel>
+                    <template #details>
                         <div />
                     </template>
                 </TextField>
@@ -35,11 +35,15 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
-import TextField from '@Core/components/Inputs/TextField';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import InfoHint from '@Core/components/Hints/InfoHint';
+import TextField from '@Core/components/Inputs/TextField';
 import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductTemplateFormTextField',
@@ -48,6 +52,7 @@ export default {
         TextField,
         FormValidatorField,
         TextFieldSuffix,
+        InfoHint,
     },
     props: {
         size: {
@@ -84,14 +89,18 @@ export default {
             draft: state => state.draft,
         }),
         fieldData() {
-            const { attribute_code } = this.properties;
+            const {
+                attribute_code,
+            } = this.properties;
 
             return this.draft[this.languageCode][attribute_code] || '';
         },
         parameter() {
             if (!this.properties.parameters) return null;
 
-            const [key] = Object.keys(this.properties.parameters);
+            const [
+                key,
+            ] = Object.keys(this.properties.parameters);
 
             return this.properties.parameters[key];
         },

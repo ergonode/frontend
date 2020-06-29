@@ -2,12 +2,22 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { SUCCESS, ALERT_TIME_TO_LEAVE } from '@Core/defaults/alerts';
-import { getUUID } from '@Core/models/stringWrapper';
-import { types } from './mutations';
+import {
+    ALERT_TIME_TO_LEAVE,
+    SUCCESS,
+} from '@Core/defaults/alerts';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
+
+import {
+    types,
+} from './mutations';
 
 export default {
-    addAlert({ commit, dispatch }, alert) {
+    addAlert({
+        commit, dispatch,
+    }, alert) {
         const id = getUUID();
         const {
             message = '',
@@ -16,14 +26,23 @@ export default {
         } = alert;
 
         const timeOut = setTimeout(() => {
-            dispatch('removeAlert', { id });
+            dispatch('removeAlert', {
+                id,
+            });
         }, duration);
 
         commit(types.ADD_ALERT, {
-            id, type, message, timeOut,
+            id,
+            type,
+            message,
+            timeOut,
         });
     },
-    removeAlert({ commit, state }, { id }) {
+    removeAlert({
+        commit, state,
+    }, {
+        id,
+    }) {
         const indexToRemove = state.alerts.findIndex(
             alert => alert.id === id,
         );
@@ -34,7 +53,9 @@ export default {
             commit(types.REMOVE_ALERT, indexToRemove);
         }
     },
-    clearStorage({ commit }) {
+    clearStorage({
+        commit,
+    }) {
         commit(types.CLEAR_STATE);
     },
 };

@@ -4,7 +4,9 @@
  */
 
 export function getMappedPrivileges(privileges) {
-    const { length } = privileges;
+    const {
+        length,
+    } = privileges;
     const mappedPrivileges = {};
 
     for (let i = 0; i < length; i += 1) {

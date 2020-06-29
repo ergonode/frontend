@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import GridAdvancedFilterShowOnly from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilterShowOnly';
 import Divider from '@Core/components/Dividers/Divider';
+import GridAdvancedFilterShowOnly from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilterShowOnly';
 
 export default {
     name: 'GridAdvancedFilterBaseContent',

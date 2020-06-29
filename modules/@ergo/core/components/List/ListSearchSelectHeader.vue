@@ -10,8 +10,7 @@
                 name="select">
                 <Select
                     :value="selectedOption"
-                    solid
-                    small
+                    :size="smallSize"
                     :options="options"
                     @input="onLanguageSelect" />
             </slot>
@@ -20,9 +19,8 @@
             v-if="isSearchButtonClicked"
             :value="searchResult"
             class="search-text-field"
-            solid
             autofocus
-            small
+            :size="smallSize"
             placeholder="Search..."
             @input="debouncedSearch"
             @focus="onSearchFocus">
@@ -43,15 +41,22 @@
 </template>
 
 <script>
-import { debounce } from 'debounce';
 import {
-    GREEN, GRAPHITE, WHITE,
+    GRAPHITE,
+    GREEN,
+    WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import ListHeader from '@Core/components/List/ListHeader';
 import Fab from '@Core/components/Buttons/Fab';
+import IconSearch from '@Core/components/Icons/Actions/IconSearch';
 import Select from '@Core/components/Inputs/Select/Select';
 import TextField from '@Core/components/Inputs/TextField';
-import IconSearch from '@Core/components/Icons/Actions/IconSearch';
+import ListHeader from '@Core/components/List/ListHeader';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
+    debounce,
+} from 'debounce';
 
 export default {
     name: 'ListSearchSelectHeader',
@@ -84,6 +89,9 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         whiteColor() {
             return WHITE;
         },

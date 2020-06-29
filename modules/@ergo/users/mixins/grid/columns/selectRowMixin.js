@@ -2,11 +2,16 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import deepmerge from 'deepmerge';
-import { mapState, mapActions } from 'vuex';
-import { STATE } from '@Core/defaults/inputs/checkbox';
-import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 import GridCheckEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell';
+import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
+import {
+    STATE,
+} from '@Core/defaults/inputs/checkbox';
+import deepmerge from 'deepmerge';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     components: {
@@ -67,7 +72,9 @@ export default {
                     this.selectedRows[rowId] = this.data[index].value;
                 });
 
-                this.selectedRows = { ...this.selectedRows };
+                this.selectedRows = {
+                    ...this.selectedRows,
+                };
 
                 Object.keys(value).forEach((rowId) => {
                     const checkValues = state => Object.values(value[rowId])
@@ -90,7 +97,9 @@ export default {
             this.selectedRows[rowId] = this.data[index].value;
         });
 
-        this.selectedRows = { ...this.selectedRows };
+        this.selectedRows = {
+            ...this.selectedRows,
+        };
     },
     methods: {
         ...mapActions('grid', [

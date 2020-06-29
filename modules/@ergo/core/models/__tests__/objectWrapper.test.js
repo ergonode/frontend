@@ -4,17 +4,20 @@
  */
 import {
     getKeyByValue,
+    getKeysByValues,
+    getMaxKeyValue,
+    getValueByKey,
+    getValuesByKeys,
+    isEmpty,
     objectToArray,
     objectToArrayWithPropsName,
-    getValueByKey,
-    getKeysByValues,
-    getValuesByKeys,
-    getMaxKeyValue,
-    isEmpty,
     removeFromObjectByKey,
 } from '@Core/models/objectWrapper';
 
-const obj = { test: 1, jest: 2 };
+const obj = {
+    test: 1,
+    jest: 2,
+};
 
 describe('objectWrapper/getKeyByValue', () => {
     it('Get key by value when value is exist', () => {
@@ -31,19 +34,46 @@ describe('objectWrapper/getKeyByValue', () => {
 describe('objectWrapper/objectToArray', () => {
     it('Prepare array from the object', () => {
         const fun = objectToArray(obj);
-        expect(fun).toEqual([{ title: 1, value: 'test' }, { title: 2, value: 'jest' }]);
+        expect(fun).toEqual([
+            {
+                title: 1,
+                value: 'test',
+            },
+            {
+                title: 2,
+                value: 'jest',
+            },
+        ]);
     });
 });
 
 describe('objectWrapper/objectToArrayWithPropsName', () => {
     it('Convert object to array of objects - default ', () => {
         const fun = objectToArrayWithPropsName(obj);
-        expect(fun).toEqual([{ id: 'test', name: 1 }, { id: 'jest', name: 2 }]);
+        expect(fun).toEqual([
+            {
+                id: 'test',
+                name: 1,
+            },
+            {
+                id: 'jest',
+                name: 2,
+            },
+        ]);
     });
 
     it('Convert object to array of objects - own props', () => {
         const fun = objectToArrayWithPropsName(obj, 'value', 'key');
-        expect(fun).toEqual([{ key: 'test', value: 1 }, { key: 'jest', value: 2 }]);
+        expect(fun).toEqual([
+            {
+                key: 'test',
+                value: 1,
+            },
+            {
+                key: 'jest',
+                value: 2,
+            },
+        ]);
     });
 });
 
@@ -61,9 +91,15 @@ describe('objectWrapper/getValueByKey', () => {
 
 describe('objectWrapper/getKeysByValues', () => {
     it('Get keys by values', () => {
-        const values = [1, 2];
+        const values = [
+            1,
+            2,
+        ];
         const fun = getKeysByValues(obj, values);
-        expect(fun).toEqual(['test', 'jest']);
+        expect(fun).toEqual([
+            'test',
+            'jest',
+        ]);
     });
 
     it('Get empty key array when values array is empty ', () => {
@@ -75,9 +111,15 @@ describe('objectWrapper/getKeysByValues', () => {
 
 describe('objectWrapper/getValuesByKeys', () => {
     it('Get values by keys', () => {
-        const keys = ['test', 'jest'];
+        const keys = [
+            'test',
+            'jest',
+        ];
         const fun = getValuesByKeys(obj, keys);
-        expect(fun).toEqual([1, 2]);
+        expect(fun).toEqual([
+            1,
+            2,
+        ]);
     });
 
     it('Get empty value array when keys array is empty ', () => {
@@ -94,12 +136,15 @@ describe('objectWrapper/getMaxKeyValue', () => {
     });
 
     it('Get max key from number keys', () => {
-        const localObj = { 5: 'a', 3: 'r', 9: 'w' };
+        const localObj = {
+            5: 'a',
+            3: 'r',
+            9: 'w',
+        };
         const fun = getMaxKeyValue(localObj);
         expect(fun).toBe(10);
     });
 });
-
 
 describe('objectWrapper/isEmpty', () => {
     it('Get false when object is not empty', () => {
@@ -123,11 +168,16 @@ describe('objectWrapper/isEmpty', () => {
 describe('objectWrapper/removeFromObjectByKey', () => {
     it('Remove element from obect by key', () => {
         const fun = removeFromObjectByKey(obj, 'jest');
-        expect(fun).toEqual({ test: 1 });
+        expect(fun).toEqual({
+            test: 1,
+        });
     });
 
     it('Return object when key is invalid', () => {
         const fun = removeFromObjectByKey(obj, 'jest2');
-        expect(fun).toEqual({ test: 1, jest: 2 });
+        expect(fun).toEqual({
+            test: 1,
+            jest: 2,
+        });
     });
 });

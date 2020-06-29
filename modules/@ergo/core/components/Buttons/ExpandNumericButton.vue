@@ -26,8 +26,13 @@
 </template>
 
 <script>
-import { ARROW } from '@Core/defaults/icons';
-import { SIZE, THEME } from '@Core/defaults/theme';
+import {
+    ARROW,
+} from '@Core/defaults/icons';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'ExpandNumericButton',

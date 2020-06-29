@@ -5,8 +5,10 @@
  */
 import Vue from 'vue';
 import Router from 'vue-router';
-import routerModules from '~/.nuxt/router.modules';
+
 import extendsModules from '~/.nuxt/extends.modules';
+import routerModules from '~/.nuxt/router.modules';
+
 import routerLocal from './router.local';
 
 Vue.use(Router);
@@ -14,9 +16,15 @@ Vue.use(Router);
 const scrollBehavior = (to, from, savedPosition) => {
     let position = false;
     if (to.matched.length < 2) {
-        position = { x: 0, y: 0 };
+        position = {
+            x: 0,
+            y: 0,
+        };
     } else if (to.matched.some(r => r.components.default.options.scrollToTop)) {
-        position = { x: 0, y: 0 };
+        position = {
+            x: 0,
+            y: 0,
+        };
     }
     if (savedPosition) {
         position = savedPosition;
@@ -24,7 +32,9 @@ const scrollBehavior = (to, from, savedPosition) => {
     return new Promise((resolve) => {
         window.$nuxt.$once('triggerScroll', () => {
             if (to.hash && document.querySelector(to.hash)) {
-                position = { selector: to.hash };
+                position = {
+                    selector: to.hash,
+                };
             }
             resolve(position);
         });
@@ -37,7 +47,10 @@ const extendRoutes = () => {
             let connectedArray = acc;
 
             if (current.extendTabs) {
-                connectedArray = [...acc, ...current.extendTabs];
+                connectedArray = [
+                    ...acc,
+                    ...current.extendTabs,
+                ];
             }
             return connectedArray;
         }, []);

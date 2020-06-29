@@ -6,6 +6,7 @@
     <ActionBaseButton
         :options="options"
         :dismissible="dismissible"
+        :disabled="disabled"
         :fixed-content="fixedContent"
         @focus="onFocus"
         @hover="onHover"
@@ -53,12 +54,21 @@
 </template>
 
 <script>
-import { ARROW } from '@Core/defaults/icons';
-import { SIZE, THEME } from '@Core/defaults/theme';
 import ActionBaseButton from '@Core/components/Buttons/ActionBaseButton';
 import Button from '@Core/components/Buttons/Button';
 import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
+import {
+    ARROW,
+} from '@Core/defaults/icons';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
+/**
+ * `ActionButton` is an `ActionBaseButton` with a `Button` inside named slot `button`.
+ * It's implementing `Button` props.
+ */
 export default {
     name: 'ActionButton',
     components: {

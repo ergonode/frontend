@@ -16,10 +16,10 @@
 </template>
 
 <script>
+import DatePickerNode from '@Core/components/Inputs/DatePicker/Node/DatePickerNode';
 import {
     isSameDay,
 } from '@Core/models/calendar/calendar';
-import DatePickerNode from '@Core/components/Inputs/DatePicker/Node/DatePickerNode';
 
 export default {
     name: 'DatePickerDays',
@@ -43,20 +43,28 @@ export default {
     },
     methods: {
         onSelectDate(date) {
-            this.$emit('select', { ...date });
+            this.$emit('select', {
+                ...date,
+            });
         },
         isSelectedDate(date) {
-            const { length } = this.selectedDates;
+            const {
+                length,
+            } = this.selectedDates;
             const parsedDate = new Date(date.year, date.month - 1, date.day);
 
             if (!length || date.disabled) return null;
-            const { 0: firstDate } = this.selectedDates;
+            const {
+                0: firstDate,
+            } = this.selectedDates;
 
             if (length === 1) {
                 return isSameDay(parsedDate, firstDate);
             }
 
-            const { [length - 1]: lastDate } = this.selectedDates;
+            const {
+                [length - 1]: lastDate,
+            } = this.selectedDates;
 
             return +parsedDate >= firstDate && +parsedDate <= lastDate;
         },

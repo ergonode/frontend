@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 .menu-section {
-    &:not(:first-child) {
+    &:not(:nth-child(1)) {
         border-top: 1px solid rgba( $GREY, 0.5 );
     }
 

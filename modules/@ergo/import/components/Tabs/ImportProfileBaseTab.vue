@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import ImportProfileForm from '@Import/components/Forms/ImportProfileForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import ImportProfileForm from '@Import/components/Forms/ImportProfileForm';
 
 export default {
     name: 'ImportProfileBaseTab',

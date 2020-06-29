@@ -19,10 +19,13 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
+import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'UserAvatarForm',
@@ -36,7 +39,9 @@ export default {
             avatarId: state => state.avatarId,
         }),
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['USER_UPDATE']);
+            return this.$hasAccess([
+                'USER_UPDATE',
+            ]);
         },
     },
     methods: {
@@ -44,7 +49,10 @@ export default {
             'setAction',
         ]),
         uploadValue(value = '') {
-            this.setAction({ key: 'avatarId', value });
+            this.setAction({
+                key: 'avatarId',
+                value,
+            });
         },
     },
 };

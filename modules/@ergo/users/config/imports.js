@@ -10,7 +10,6 @@ export const Pages = {
     Profile: () => import('@Users/pages/profile/index').then(m => m.default || m),
 };
 
-
 export const Tabs = {
     UsersGridTab: () => import('@Users/components/Tabs/UsersGridTab').then(m => m.default || m),
     UserBaseTab: () => import('@Users/components/Tabs/UserBaseTab').then(m => m.default || m),

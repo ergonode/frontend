@@ -40,12 +40,20 @@
 </template>
 
 <script>
-import { THEME } from '@Core/defaults/theme';
-import { ARROW } from '@Core/defaults/icons';
-import { GREEN, WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
-import IconArrowDouble from '@Core/components/Icons/Arrows/IconArrowDouble';
+import {
+    GREEN,
+    WHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import Fab from '@Core/components/Buttons/Fab';
+import IconArrowDouble from '@Core/components/Icons/Arrows/IconArrowDouble';
 import SideBarLogo from '@Core/components/SideBar/SideBarLogo';
+import {
+    ARROW,
+} from '@Core/defaults/icons';
+import {
+    THEME,
+} from '@Core/defaults/theme';
+
 import SideBarListElement from './SideBarListElement';
 import SideBarListGroup from './SideBarListGroup';
 
@@ -84,11 +92,17 @@ export default {
 
             this.$router.options.routes.forEach((route) => {
                 if (route.meta && route.meta.isMenu && (!route.meta.privileges
-                    || this.$hasAccess([route.meta.privileges.read]))) {
+                    || this.$hasAccess([
+                        route.meta.privileges.read,
+                    ]))) {
                     if (route.meta.group && !groups[route.meta.group.title]) {
                         const routeData = {
-                            group: { ...route.meta.group },
-                            routes: [route],
+                            group: {
+                                ...route.meta.group,
+                            },
+                            routes: [
+                                route,
+                            ],
                         };
                         if (route.meta.group.menuPosition) {
                             routeData.menuPosition = route.meta.group.menuPosition;
@@ -99,9 +113,14 @@ export default {
                         const index = routes
                             .findIndex(r => r.group && r.group.title === route.meta.group.title);
 
-                        routes[index].routes.push({ ...route });
+                        routes[index].routes.push({
+                            ...route,
+                        });
                     } else {
-                        routes.push({ ...route, menuPosition: route.meta.menuPosition });
+                        routes.push({
+                            ...route,
+                            menuPosition: route.meta.menuPosition,
+                        });
                     }
                 }
             });

@@ -12,8 +12,8 @@
         <template #value>
             <span v-text="parsedValue" />
         </template>
-        <template #informationLabel>
-            <slot name="informationLabel" />
+        <template #details>
+            <slot name="details" />
         </template>
         <template #option="{ option, isSelected }">
             <slot
@@ -22,12 +22,12 @@
                 :selected="isSelected">
                 <ListElementAction
                     v-if="$attrs.multiselect"
-                    :small="$attrs.small">
+                    :size="$attrs.size">
                     <CheckBox :value="isSelected" />
                 </ListElementAction>
                 <ListElementDescription>
                     <ListElementTitle
-                        :small="$attrs.small"
+                        :size="$attrs.size"
                         :hint="option.hint"
                         :title="option.value || `#${option.key}`" />
                 </ListElementDescription>
@@ -37,11 +37,11 @@
 </template>
 
 <script>
+import CheckBox from '@Core/components/Inputs/CheckBox';
 import Select from '@Core/components/Inputs/Select/Select';
+import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
-import ListElementAction from '@Core/components/List/ListElementAction';
-import CheckBox from '@Core/components/Inputs/CheckBox';
 
 export default {
     name: 'TranslationSelect',

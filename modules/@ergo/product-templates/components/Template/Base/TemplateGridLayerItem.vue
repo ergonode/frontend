@@ -4,7 +4,7 @@
  */
 <template>
     <div
-        :class="['template-grid-layer-item', highlightedStateClasses]"
+        :class="classes"
         @dragenter="onDragEnter"
         @dragleave="onDragLeave"
         @dragover="onDragOver"
@@ -15,7 +15,9 @@
     </div>
 </template>
 <script>
-import { mapState } from 'vuex';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'TemplateGridLayerItem',
@@ -41,26 +43,37 @@ export default {
         ...mapState('draggable', {
             draggedElement: state => state.draggedElement,
         }),
-        highlightedStateClasses() {
-            return {
-                'template-grid-layer-item--highlighted': this.highlightedElement,
-                'template-grid-layer-item--top-border': this.highlightedElement && !this.isTopNeighbour,
-                'template-grid-layer-item--right-border': this.highlightedElement && !this.isRightNeighbour,
-            };
+        classes() {
+            return [
+                'template-grid-layer-item',
+                {
+                    'template-grid-layer-item--highlighted': this.highlightedElement,
+                    'template-grid-layer-item--top-border': this.highlightedElement && !this.isTopNeighbour,
+                    'template-grid-layer-item--right-border': this.highlightedElement && !this.isRightNeighbour,
+                },
+            ];
         },
         highlightedElement() {
             return this.highlightingPositions.find(this.isEqualToPosition);
         },
         isTopNeighbour() {
-            const { row: rowPos, column: columnPos } = this.position;
+            const {
+                row: rowPos, column: columnPos,
+            } = this.position;
             return this.highlightingPositions.some(
-                ({ row, column }) => row === rowPos - 1 && column === columnPos,
+                ({
+                    row, column,
+                }) => row === rowPos - 1 && column === columnPos,
             );
         },
         isRightNeighbour() {
-            const { row: rowPos, column: columnPos } = this.position;
+            const {
+                row: rowPos, column: columnPos,
+            } = this.position;
             return this.highlightingPositions.some(
-                ({ row, column }) => row === rowPos && column === columnPos + 1,
+                ({
+                    row, column,
+                }) => row === rowPos && column === columnPos + 1,
             );
         },
         ghostItemBoundsStyle() {
@@ -108,7 +121,9 @@ export default {
             }
         },
         isEqualToPosition(position) {
-            const { row, column } = this.position;
+            const {
+                row, column,
+            } = this.position;
             return row === position.row && column === position.column;
         },
     },

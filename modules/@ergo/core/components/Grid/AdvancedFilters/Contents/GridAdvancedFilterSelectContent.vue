@@ -10,11 +10,12 @@
             <ListElement
                 v-for="(option, index) in filter.options"
                 :key="index"
+                :size="smallSize"
                 :selected="index === selectedOptionIndex"
                 @click.native="onSelectValue(option, index)">
                 <ListElementDescription>
                     <ListElementTitle
-                        :small="true"
+                        :size="smallSize"
                         :hint="option.value ? `#${option.key} ${filter.languageCode}` : ''"
                         :title="option.value || `#${option.key}`" />
                 </ListElementDescription>
@@ -24,12 +25,17 @@
 </template>
 
 <script>
-import { FILTER_OPERATOR } from '@Core/defaults/operators';
 import GridAdvancedFilterBaseContent from '@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
 import List from '@Core/components/List/List';
 import ListElement from '@Core/components/List/ListElement';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
+import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridAdvancedFilterSelectContent',
@@ -52,6 +58,9 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         filterValue() {
             return this.filter.value[FILTER_OPERATOR.EQUAL] || '';
         },
@@ -70,7 +79,10 @@ export default {
                 .findIndex(option => option.key === this.filterValue);
         },
         onSelectValue(value) {
-            this.$emit('input', { value: value.key, key: FILTER_OPERATOR.EQUAL });
+            this.$emit('input', {
+                value: value.key,
+                key: FILTER_OPERATOR.EQUAL,
+            });
         },
         onEmptyRecordChange(value) {
             this.$emit('emptyRecord', value);

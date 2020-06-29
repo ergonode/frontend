@@ -3,10 +3,16 @@
  * See LICENSE for license details.
  */
 import {
-    isObject, getKeyByValue,
+    getParamsKeyForType,
+    getParamsOptionsForType,
+} from '@Attributes/models/attributeTypes';
+import {
+    getKeyByValue,
+    isObject,
 } from '@Core/models/objectWrapper';
-import { getParamsKeyForType, getParamsOptionsForType } from '@Attributes/models/attributeTypes';
-import { getUUID } from '@Core/models/stringWrapper';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
 
 export function getParsedType(types, selectedType) {
     return getKeyByValue(types, selectedType);
@@ -17,7 +23,9 @@ export function getMappedParameterValues(type, parameters, data) {
         type,
         data,
     );
-    const [parsedParameters] = Object.values(parameters);
+    const [
+        parsedParameters,
+    ] = Object.values(parameters);
 
     // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
     if (Array.isArray(typeParameters)) {
@@ -34,10 +42,14 @@ export function getParsedParameterKeys({
     const paramKey = getParamsKeyForType(selectedType);
 
     if (isObject(selectedParam)) {
-        return { [paramKey]: Object.keys(selectedParam) };
+        return {
+            [paramKey]: Object.keys(selectedParam),
+        };
     }
 
-    return { [paramKey]: selectedParam };
+    return {
+        [paramKey]: selectedParam,
+    };
 }
 
 export function getMappedArrayOptions(options) {

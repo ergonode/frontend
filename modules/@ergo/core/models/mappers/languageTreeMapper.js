@@ -6,8 +6,13 @@ export function getMappedTreeData(treeArray) {
     const newTree = [];
 
     for (let i = 0; i < treeArray.length; i += 1) {
-        const { parent, id } = treeArray[i];
-        const childrenElement = { language_id: id, children: [] };
+        const {
+            parent, id,
+        } = treeArray[i];
+        const childrenElement = {
+            language_id: id,
+            children: [],
+        };
         const setChild = (childArray) => {
             for (let j = 0; j < childArray.length; j += 1) {
                 if (childArray[j].language_id === parent) {

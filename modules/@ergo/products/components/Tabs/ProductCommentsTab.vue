@@ -11,9 +11,11 @@
 </template>
 
 <script>
-import { DATA_LIMIT } from '@Core/defaults/grid';
-import ProductCommentsForm from '@Products/components/Form/ProductCommentsForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import {
+    DATA_LIMIT,
+} from '@Core/defaults/grid';
+import ProductCommentsForm from '@Products/components/Form/ProductCommentsForm';
 
 export default {
     name: 'ProductCommentsTab',
@@ -25,7 +27,9 @@ export default {
         store,
         params,
     }) {
-        const { id } = params;
+        const {
+            id,
+        } = params;
         await store.dispatch('comments/setCommentObjectId', id);
         await store.dispatch('comments/getComments', {
             limit: DATA_LIMIT,

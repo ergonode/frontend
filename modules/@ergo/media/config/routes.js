@@ -2,7 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { Pages, Icons } from './imports';
+import {
+    Icons,
+    Pages,
+} from './imports';
 import Privileges from './privileges';
 
 export default [

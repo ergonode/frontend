@@ -9,16 +9,24 @@
 </template>
 
 <script>
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import deepmerge from 'deepmerge';
-import { mapState, mapActions, mapGetters } from 'vuex';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
+import {
+    mapActions,
+    mapGetters,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'EditUser',
     components: {
         UserPage: () => import('@Users/components/Pages/UserPage'),
     },
-    validate({ params }) {
+    validate({
+        params,
+    }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
@@ -113,7 +121,10 @@ export default {
             } finally {
                 if (isUpdated !== false) {
                     this.removeValidationErrors();
-                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'User updated' });
+                    this.$addAlert({
+                        type: ALERT_TYPE.SUCCESS,
+                        message: 'User updated',
+                    });
                     this.setLanguagePrivileges(user.languagePrivilegesCollection);
                     this.removeDrafts();
 

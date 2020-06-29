@@ -5,7 +5,7 @@
 <template>
     <button
         type="button"
-        :class="buttonClasses"
+        :class="classes"
         :disabled="disabled">
         <!--
             @slot Icon
@@ -18,10 +18,15 @@
     </button>
 </template>
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
 import {
-    GRAPHITE, GREY_DARK, WHITE,
+    GRAPHITE,
+    GREY_DARK,
+    WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'IconButton',
@@ -72,7 +77,7 @@ export default {
 
             return WHITE;
         },
-        buttonClasses() {
+        classes() {
             return [
                 'icon-button',
                 `icon-button--${this.theme}`,

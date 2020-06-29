@@ -2,8 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { removeFromObjectByKey } from '@Core/models/objectWrapper';
-import { getFlattenedTreeData } from '@Core/models/mappers/treeMapper';
+import {
+    getFlattenedTreeData,
+} from '@Core/models/mappers/treeMapper';
+import {
+    removeFromObjectByKey,
+} from '@Core/models/objectWrapper';
+
 import defaultState from './state';
 
 export const types = {
@@ -18,14 +23,25 @@ export const types = {
 };
 
 export default {
-    [types.SET_LANGUAGES_TREE](state, { treeData, fillingData }) {
+    [types.SET_LANGUAGES_TREE](state, {
+        treeData, fillingData,
+    }) {
         const reducer = (id) => {
-            const { name, code } = fillingData.find(e => e.id === id);
+            const {
+                name, code,
+            } = fillingData.find(e => e.id === id);
 
-            return { name, code };
+            return {
+                name,
+                code,
+            };
         };
 
-        state.languagesTree = getFlattenedTreeData({ treeData, mappedId: 'language_id', reducer });
+        state.languagesTree = getFlattenedTreeData({
+            treeData,
+            mappedId: 'language_id',
+            reducer,
+        });
     },
     [types.SET_LANGUAGES](state, languages) {
         state.languages = languages;
@@ -33,7 +49,9 @@ export default {
     [types.SET_DEFAULT_LANGUAGE](state, code) {
         state.defaultLanguageCodeByPrivileges = code;
     },
-    [types.OPEN_MODAL](state, { key, ...params }) {
+    [types.OPEN_MODAL](state, {
+        key, ...params
+    }) {
         state.modals = {
             [key]: params,
         };
@@ -42,7 +60,9 @@ export default {
         state.modals = removeFromObjectByKey(state.modals, key);
     },
     [types.SET_LOADER](state, key) {
-        state.loaders = { [key]: true };
+        state.loaders = {
+            [key]: true,
+        };
     },
     [types.REMOVE_LOADER](state, key) {
         state.loaders = removeFromObjectByKey(state.loaders, key);

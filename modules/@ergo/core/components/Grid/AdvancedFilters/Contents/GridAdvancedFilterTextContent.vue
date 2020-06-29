@@ -9,18 +9,23 @@
         <div class="container">
             <TextField
                 :value="filterValue"
-                left-alignment
-                small
-                underline
+                :size="smallSize"
+                :type="underlineInputType"
                 @input="onValueChange" />
         </div>
     </GridAdvancedFilterBaseContent>
 </template>
 
 <script>
-import TextField from '@Core/components/Inputs/TextField';
 import GridAdvancedFilterBaseContent from '@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
-import { FILTER_OPERATOR } from '@Core/defaults/operators';
+import TextField from '@Core/components/Inputs/TextField';
+import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
+import {
+    INPUT_TYPE,
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridAdvancedFilterTextContent',
@@ -35,6 +40,12 @@ export default {
         },
     },
     computed: {
+        underlineInputType() {
+            return INPUT_TYPE.UNDERLINE;
+        },
+        smallSize() {
+            return SIZE.SMALL;
+        },
         filterValue() {
             return this.filter.value[FILTER_OPERATOR.EQUAL] || '';
         },
@@ -42,7 +53,10 @@ export default {
     methods: {
         onValueChange(value) {
             if (value !== this.filterValue) {
-                this.$emit('input', { value, key: FILTER_OPERATOR.EQUAL });
+                this.$emit('input', {
+                    value,
+                    key: FILTER_OPERATOR.EQUAL,
+                });
             }
         },
         onEmptyRecordChange(value) {

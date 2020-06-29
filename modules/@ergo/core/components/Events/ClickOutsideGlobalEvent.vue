@@ -32,13 +32,18 @@ export default {
             const {
                 top, left, width, height,
             } = this.$el.getBoundingClientRect();
-            const { pageX, pageY } = event;
+            const {
+                pageX, pageY,
+            } = event;
             const isClickedOutside = !(pageX > left
                 && pageX < left + width
                 && pageY > top
                 && pageY < top + height);
 
-            this.$emit('clickOutside', { event, isClickedOutside });
+            this.$emit('clickOutside', {
+                event,
+                isClickedOutside,
+            });
         },
     },
     render() {

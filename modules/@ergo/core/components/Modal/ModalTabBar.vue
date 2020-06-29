@@ -23,11 +23,13 @@
 </template>
 
 <script>
-import { THEME } from '@Core/defaults/theme';
-import ModalOverlay from '@Core/components/Modal/ModalOverlay';
-import HorizontalTabBar from '@Core/components/TabBar/HorizontalTabBar';
 import Fab from '@Core/components/Buttons/Fab';
 import IconClose from '@Core/components/Icons/Window/IconClose';
+import ModalOverlay from '@Core/components/Modal/ModalOverlay';
+import HorizontalTabBar from '@Core/components/TabBar/HorizontalTabBar';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'ModalTabBar',

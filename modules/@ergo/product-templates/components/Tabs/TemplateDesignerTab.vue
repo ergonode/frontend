@@ -58,17 +58,24 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { SYSTEM_TYPES } from '@Attributes/defaults/attributes';
-import { getObjectWithMaxValueInArrayByObjectKey } from '@Core/models/arrayWrapper';
+import {
+    SYSTEM_TYPES,
+} from '@Attributes/defaults/attributes';
+import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
+import {
+    getObjectWithMaxValueInArrayByObjectKey,
+} from '@Core/models/arrayWrapper';
+import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
+import TemplateGridDraggableLayer from '@Templates/components/Template/Base/TemplateGridDraggableLayer';
+import TemplateGridPlaceholderItem from '@Templates/components/Template/Base/TemplateGridPlaceholderItem';
+import LayoutElement from '@Templates/components/Template/ProductDesigner/LayoutElement';
 import {
     getHighlightingLayoutDropPositions,
 } from '@Templates/models/layout/LayoutCalculations';
-import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
-import TemplateGridDraggableLayer from '@Templates/components/Template/Base/TemplateGridDraggableLayer';
-import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
-import TemplateGridPlaceholderItem from '@Templates/components/Template/Base/TemplateGridPlaceholderItem';
-import LayoutElement from '@Templates/components/Template/ProductDesigner/LayoutElement';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'TemplateDesignerTab',
@@ -112,7 +119,9 @@ export default {
                     component: () => import('@Attributes/components/Tabs/List/AttributesListTab'),
                     props: {
                         isSelectLanguage: false,
-                        disabled: !this.$hasAccess(['TEMPLATE_DESIGNER_UPDATE']),
+                        disabled: !this.$hasAccess([
+                            'TEMPLATE_DESIGNER_UPDATE',
+                        ]),
                     },
                     iconComponent: () => import('@Core/components/Icons/Menu/IconAttributes'),
                 },
@@ -124,10 +133,14 @@ export default {
             ];
         },
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['TEMPLATE_DESIGNER_UPDATE']);
+            return this.$hasAccess([
+                'TEMPLATE_DESIGNER_UPDATE',
+            ]);
         },
         errorMessages() {
-            return this.titleValidationError ? [this.titleValidationError] : null;
+            return this.titleValidationError ? [
+                this.titleValidationError,
+            ] : null;
         },
         sectionType() {
             return SYSTEM_TYPES.SECTION;
@@ -142,7 +155,9 @@ export default {
             const layoutElement = getObjectWithMaxValueInArrayByObjectKey(this.layoutElements, 'row');
 
             if (layoutElement) {
-                const { row, height } = layoutElement;
+                const {
+                    row, height,
+                } = layoutElement;
 
                 return Math.max(this.maxRow, row + height);
             }
@@ -176,7 +191,9 @@ export default {
                 this.maxRow = row;
             }
         },
-        onRowsCountChange({ value }) {
+        onRowsCountChange({
+            value,
+        }) {
             this.maxRow = value;
         },
         onHighlightedPositionsChange(positions) {
@@ -186,12 +203,18 @@ export default {
             this.highlightedPositions = [];
 
             if (typeof this.draggedElement === 'object') {
-                const { row, column } = position;
+                const {
+                    row, column,
+                } = position;
                 const index = this.layoutElements.findIndex(
                     el => el.id === this.draggedElement.id,
                 );
 
-                this.updateLayoutElementPosition({ index, row, column });
+                this.updateLayoutElementPosition({
+                    index,
+                    row,
+                    column,
+                });
             } else if (this.draggedElement === this.sectionType) {
                 this.sectionPosition = position;
                 this.isSectionAdded = true;
@@ -200,7 +223,9 @@ export default {
             }
         },
         onEditSectionTitle(index) {
-            const { [index]: layoutElement } = this.layoutElements;
+            const {
+                [index]: layoutElement,
+            } = this.layoutElements;
             this.sectionTitle = layoutElement.label;
             this.sectionIndex = index;
             this.isSectionAdded = true;
@@ -214,7 +239,9 @@ export default {
         getLayoutElementPosition({
             row, column, width, height,
         }) {
-            return { gridArea: `${row} / ${column} / ${row + height} / ${column + width}` };
+            return {
+                gridArea: `${row} / ${column} / ${row + height} / ${column + width}`,
+            };
         },
     },
 };

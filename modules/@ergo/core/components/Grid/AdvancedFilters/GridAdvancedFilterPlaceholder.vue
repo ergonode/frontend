@@ -10,7 +10,9 @@
 </template>
 
 <script>
-import { GRAPHITE_LIGHT } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    GRAPHITE_LIGHT,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import IconDragDrop from '@Core/components/Icons/Actions/IconDragDrop';
 
 export default {

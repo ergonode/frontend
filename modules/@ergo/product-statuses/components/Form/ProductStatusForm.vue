@@ -10,11 +10,9 @@
             <FormSection>
                 <TextField
                     :value="code"
-                    solid
                     required
                     :error-messages="errorMessages[colorFieldKey]"
                     :disabled="isDisabled || isDisabledByPrivileges"
-                    regular
                     label="System name"
                     hint="Status code must be unique"
                     @input="setCode" />
@@ -28,10 +26,8 @@
                 </CheckBox>
                 <ColorPicker
                     :value="color"
-                    solid
                     required
                     :error-messages="errorMessages[colorFieldKey]"
-                    regular
                     clearable
                     :dismissible="false"
                     :options="colorOptions"
@@ -46,8 +42,13 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { STATUS as COLOR_STATUS } from '@Statuses/defaults/colors';
+import {
+    STATUS as COLOR_STATUS,
+} from '@Statuses/defaults/colors';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductStatusForm',
@@ -67,8 +68,12 @@ export default {
             isDefaultStatus: state => state.isDefaultStatus,
         }),
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess(['WORKFLOW_UPDATE']))
-            || (!this.isDisabled && !this.$hasAccess(['WORKFLOW_CREATE']));
+            return (this.isDisabled && !this.$hasAccess([
+                'WORKFLOW_UPDATE',
+            ]))
+            || (!this.isDisabled && !this.$hasAccess([
+                'WORKFLOW_CREATE',
+            ]));
         },
         isDisabled() {
             return Boolean(this.id);

@@ -34,6 +34,13 @@ module.exports = {
     testURL: 'http://localhost/',
     reporters: [
         'default',
-        ['jest-junit', { suiteName: 'jest tests', outputDirectory: 'build', outputName: './jest-junit.xml' }],
+        [
+            'jest-junit',
+            {
+                suiteName: 'jest tests',
+                outputDirectory: 'build',
+                outputName: './jest-junit.xml',
+            },
+        ],
     ],
 };

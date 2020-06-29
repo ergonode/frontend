@@ -31,7 +31,9 @@ export default {
     },
     methods: {
         initResizingDrag(event) {
-            const { pageY } = event;
+            const {
+                pageY,
+            } = event;
 
             this.isResizing = true;
             this.startY = pageY;
@@ -43,7 +45,9 @@ export default {
             });
         },
         onResize(event) {
-            const { pageY } = event;
+            const {
+                pageY,
+            } = event;
             const height = pageY - this.startY;
             const factor = Math.ceil(height / this.startHeight);
             const fixedHeight = factor * this.startHeight;

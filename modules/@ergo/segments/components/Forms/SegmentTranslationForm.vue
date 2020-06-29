@@ -10,16 +10,13 @@
                     <TextField
                         :data-cy="dataCyGenerator(nameKeyField)"
                         :value="translations.name[languageCode]"
-                        solid
                         label="Condition set name"
-                        regular
                         :error-messages="errorMessages[nameKeyField]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'name')" />
                     <TextArea
                         :data-cy="dataCyGenerator(descriptionKeyField)"
                         :value="translations.description[languageCode]"
-                        solid
                         label="Description"
                         resize="vertical"
                         :style="{height: '150px'}"
@@ -33,12 +30,12 @@
 </template>
 
 <script>
-import translationCardMixin from '@Core/mixins/card/translationCardMixin';
-import TextField from '@Core/components/Inputs/TextField';
-import TextArea from '@Core/components/Inputs/TextArea';
 import Card from '@Core/components/Card/Card';
-import FormSection from '@Core/components/Form/Section/FormSection';
 import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TextArea from '@Core/components/Inputs/TextArea';
+import TextField from '@Core/components/Inputs/TextField';
+import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 
 export default {
     name: 'SegmentTranslationForm',
@@ -49,10 +46,14 @@ export default {
         TextField,
         TextArea,
     },
-    mixins: [translationCardMixin],
+    mixins: [
+        translationCardMixin,
+    ],
     computed: {
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['SEGMENT_UPDATE']);
+            return this.$hasAccess([
+                'SEGMENT_UPDATE',
+            ]);
         },
         descriptionKeyField() {
             return `description_${this.languageCode}`;

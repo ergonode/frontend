@@ -9,7 +9,9 @@ export const types = {
     CLEAR_STATE: 'CLEAR_STATE',
 };
 export default {
-    [types.SET_STATE](state, { key, value }) {
+    [types.SET_STATE](state, {
+        key, value,
+    }) {
         state[key] = value;
     },
     [types.CLEAR_STATE](state) {

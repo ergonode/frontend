@@ -2,9 +2,14 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { insertValueAtIndex, swapItemPosition } from '@Core/models/arrayWrapper';
+import {
+    insertValueAtIndex,
+    swapItemPosition,
+} from '@Core/models/arrayWrapper';
 
-export const removeCookieById = ({ cookies, cookieName, id }) => {
+export const removeCookieById = ({
+    cookies, cookieName, id,
+}) => {
     const cookiesData = cookies.get(cookieName);
     if (!cookiesData) throw new Error('Cookies are not set');
 
@@ -13,7 +18,9 @@ export const removeCookieById = ({ cookies, cookieName, id }) => {
     cookies.set(cookieName, parsedData.filter(value => value !== id).join(','));
 };
 
-export const removeCookieAtIndex = ({ cookies, cookieName, index }) => {
+export const removeCookieAtIndex = ({
+    cookies, cookieName, index,
+}) => {
     const cookiesData = cookies.get(cookieName);
 
     if (!cookiesData) throw new Error('Cookies are not set');

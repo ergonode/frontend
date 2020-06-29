@@ -8,7 +8,6 @@
             v-for="element in objectComponents"
             :key="element.key"
             :is="element.component"
-            :small="true"
             :value="value[element.key]"
             :schema="element.props"
             @input="onValueChange" />
@@ -16,8 +15,13 @@
 </template>
 
 <script>
-import { toCapitalize } from '@Core/models/stringWrapper';
 import FormSection from '@Core/components/Form/Section/FormSection';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
+    toCapitalize,
+} from '@Core/models/stringWrapper';
 
 export default {
     name: 'JSONSchemaFormObject',
@@ -54,7 +58,9 @@ export default {
     },
     methods: {
         initializeComponents() {
-            const { length } = this.fieldsKeys;
+            const {
+                length,
+            } = this.fieldsKeys;
             const components = [];
 
             for (let i = 0; i < length; i += 1) {
@@ -68,6 +74,7 @@ export default {
                     props: {
                         isRequired: this.schema.required.indexOf(key) !== -1,
                         ...rest,
+                        size: SIZE.SMALL,
                     },
                     component: () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),
                 });
@@ -75,9 +82,14 @@ export default {
 
             return components;
         },
-        onValueChange({ key, value }) {
+        onValueChange({
+            key, value,
+        }) {
             this.localValue[key] = value;
-            this.$emit('input', { key: this.$vnode.key, value: this.localValue });
+            this.$emit('input', {
+                key: this.$vnode.key,
+                value: this.localValue,
+            });
         },
     },
 };

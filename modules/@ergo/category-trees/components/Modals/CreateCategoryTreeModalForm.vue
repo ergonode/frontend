@@ -24,10 +24,16 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { THEME } from '@Core/defaults/theme';
-import { MODAL_ACTION } from '@Core/defaults/modals';
+import {
+    MODAL_ACTION,
+} from '@Core/defaults/modals';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
+import {
+    mapActions,
+} from 'vuex';
 
 const createCategoryTree = () => import('@Trees/services/createCategoryTree.service');
 
@@ -38,7 +44,13 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         CategoryTreeForm: () => import('@Trees/components/Forms/CategoryTreeForm'),
     },
-    mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Category tree', request: createCategoryTree })],
+    mixins: [
+        actionModalFormMixin({
+            action: MODAL_ACTION.CREATE,
+            namespace: 'Category tree',
+            request: createCategoryTree,
+        }),
+    ],
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;

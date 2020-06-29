@@ -27,9 +27,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { THEME } from '@Core/defaults/theme';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 import navigationBarUserMenu from '@Core/models/navigation/navigationBarUserMenu';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'NavigationBarUserSelectContent',
@@ -69,7 +73,9 @@ export default {
         ]),
         onLogout() {
             this.setLoggedState(false);
-            this.$router.push({ name: 'index' });
+            this.$router.push({
+                name: 'index',
+            });
         },
     },
 };

@@ -36,12 +36,17 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
-import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
 import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
+import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
 import IconDots from '@Core/components/Icons/Others/IconDots';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
+import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'SectionElementContent',
@@ -68,7 +73,10 @@ export default {
     data() {
         return {
             isContextualMenuActive: false,
-            contextualMenuItems: ['Edit title', 'Remove'],
+            contextualMenuItems: [
+                'Edit title',
+                'Remove',
+            ],
             isHovered: false,
         };
     },
@@ -80,7 +88,9 @@ export default {
             return THEME.SECONDARY;
         },
         contextualMenuHoveStateClasses() {
-            return { 'element-content__contextual-menu--hovered': this.isHovered };
+            return {
+                'element-content__contextual-menu--hovered': this.isHovered,
+            };
         },
     },
     methods: {

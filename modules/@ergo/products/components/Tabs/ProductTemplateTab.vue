@@ -9,8 +9,7 @@
                 <TreeSelect
                     :style="{ flex: '0 0 192px' }"
                     :value="language"
-                    solid
-                    small
+                    :size="smallSize"
                     label="Edit language"
                     :options="languageOptions"
                     @input="onLanguageChange" />
@@ -50,15 +49,22 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
-import getProductTemplate from '@Products/services/getProductTemplate.service';
-import getProductCompleteness from '@Products/services/getProductCompleteness.service';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import ProductTemplateForm from '@Products/components/Form/ProductTemplateForm';
 import Button from '@Core/components/Buttons/Button';
 import IconRestore from '@Core/components/Icons/Actions/IconRestore';
+import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import ProductTemplateForm from '@Products/components/Form/ProductTemplateForm';
+import getProductCompleteness from '@Products/services/getProductCompleteness.service';
+import getProductTemplate from '@Products/services/getProductTemplate.service';
+import {
+    mapActions,
+    mapGetters,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductTemplateTab',
@@ -72,14 +78,35 @@ export default {
         TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
         // Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
     },
-    mixins: [gridModalMixin],
-    asyncData({ app: { $axios }, store, params: { id } }) {
-        const { defaultLanguageCodeByPrivileges } = store.state.core;
+    mixins: [
+        gridModalMixin,
+    ],
+    asyncData({
+        app: {
+            $axios,
+        }, store, params: {
+            id,
+        },
+    }) {
+        const {
+            defaultLanguageCodeByPrivileges,
+        } = store.state.core;
 
         return Promise.all([
-            getProductTemplate({ $axios, languageCode: defaultLanguageCodeByPrivileges, id }),
-            getProductCompleteness({ $axios, languageCode: defaultLanguageCodeByPrivileges, id }),
-        ]).then(([templateResponse, completenessResponse]) => ({
+            getProductTemplate({
+                $axios,
+                languageCode: defaultLanguageCodeByPrivileges,
+                id,
+            }),
+            getProductCompleteness({
+                $axios,
+                languageCode: defaultLanguageCodeByPrivileges,
+                id,
+            }),
+        ]).then(([
+            templateResponse,
+            completenessResponse,
+        ]) => ({
             elements: templateResponse.elements,
             completeness: completenessResponse,
         }));
@@ -110,7 +137,9 @@ export default {
             return THEME.SECONDARY;
         },
         languageOptions() {
-            const { languagePrivileges } = this.user;
+            const {
+                languagePrivileges,
+            } = this.user;
 
             return this.languagesTree.map(language => ({
                 ...language,
@@ -120,10 +149,16 @@ export default {
             }));
         },
         isUserAllowedToRestore() {
-            const { languagePrivileges } = this.user;
-            const { code } = this.language;
+            const {
+                languagePrivileges,
+            } = this.user;
+            const {
+                code,
+            } = this.language;
 
-            return this.$hasAccess(['PRODUCT_UPDATE'])
+            return this.$hasAccess([
+                'PRODUCT_UPDATE',
+            ])
                 && languagePrivileges[code].edit
                 && this.getRootOnLanguagesTree.code !== code;
         },
@@ -154,14 +189,19 @@ export default {
                     languageCode,
                     id: this.id,
                 }),
-            ]).then(([templateResponse, completenessResponse]) => {
+            ]).then(([
+                templateResponse,
+                completenessResponse,
+            ]) => {
                 this.elements = templateResponse.elements;
                 this.completeness = completenessResponse;
                 this.language = value;
             });
         },
         onRestoreDraftValues() {
-            const { code: languageCode } = this.language;
+            const {
+                code: languageCode,
+            } = this.language;
 
             Promise.all([
                 getProductCompleteness({
@@ -173,7 +213,9 @@ export default {
                     languageCode,
                     id: this.id,
                 }),
-            ]).then(([completenessResponse]) => {
+            ]).then(([
+                completenessResponse,
+            ]) => {
                 this.completeness = completenessResponse;
             });
         },

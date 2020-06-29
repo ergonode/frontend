@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import ProductForm from '@Products/components/Form/ProductForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import ProductForm from '@Products/components/Form/ProductForm';
 
 export default {
     name: 'ProductGeneralTab',

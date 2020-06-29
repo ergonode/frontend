@@ -10,16 +10,25 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { MODAL_TYPE } from '@Core/defaults/modals';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'UnitEdit',
     components: {
         UnitPage: () => import('@Core/components/Pages/UnitPage'),
     },
-    validate({ params }) {
+    validate({
+        params,
+    }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
@@ -68,19 +77,34 @@ export default {
 
             this.updateUnit({
                 id: this.id,
-                data: { name: this.name, symbol: this.symbol },
+                data: {
+                    name: this.name,
+                    symbol: this.symbol,
+                },
                 onSuccess: this.onUpdateUnitSuccess,
                 onError: this.onError,
             });
         },
         async onUpdateUnitSuccess() {
-            await this.getCurrentDictionary({ dictionaryName: 'units' });
-            await this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Unit updated' });
+            await this.getCurrentDictionary({
+                dictionaryName: 'units',
+            });
+            await this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Unit updated',
+            });
         },
         async onRemoveUnitSuccess() {
-            await this.getCurrentDictionary({ dictionaryName: 'units' });
-            await this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Unit removed' });
-            await this.$router.push({ name: 'settings-units' });
+            await this.getCurrentDictionary({
+                dictionaryName: 'units',
+            });
+            await this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Unit removed',
+            });
+            await this.$router.push({
+                name: 'settings-units',
+            });
         },
     },
     head() {

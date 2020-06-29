@@ -13,14 +13,20 @@ export default function ({
 }) {
     const path = `${languageCode}/products/${productId}/draft/${elementId}/value`;
 
-    return $axios.$put(path, { value }).then(() => {
+    return $axios.$put(path, {
+        value,
+    }).then(() => {
         $store.dispatch(
             'validations/removeValidationError',
             fieldKey,
-            { root: true },
+            {
+                root: true,
+            },
         );
     }).catch((e) => {
-        const { code: statusCode, errors } = e.data;
+        const {
+            code: statusCode, errors,
+        } = e.data;
 
         if (errors) {
             $store.dispatch(
@@ -30,10 +36,16 @@ export default function ({
                     errors,
                     fieldKey,
                 },
-                { root: true },
+                {
+                    root: true,
+                },
             );
         } else {
-            const internalServerError = { value: [e.statusText] };
+            const internalServerError = {
+                value: [
+                    e.statusText,
+                ],
+            };
 
             $store.dispatch(
                 'validations/onError',
@@ -42,7 +54,9 @@ export default function ({
                     errors: internalServerError,
                     fieldKey,
                 },
-                { root: true },
+                {
+                    root: true,
+                },
             );
         }
     });

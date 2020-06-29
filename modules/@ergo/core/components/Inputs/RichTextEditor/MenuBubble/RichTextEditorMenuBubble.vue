@@ -14,7 +14,7 @@
                 <form
                     v-if="linkMenuIsActive"
                     class="menububble__form"
-                    @submit.prevent="setLinkUrl(commands)">
+                    @submit.prevent="setLinkUrl(commands.link, linkUrl)">
                     <input
                         class="menububble__input"
                         type="text"
@@ -22,14 +22,14 @@
                         placeholder="https://"
                         ref="linkInput"
                         @keydown.esc="onHideLinkMenu">
-                    <IconButton
-                        :size="tinySize"
-                        :theme="secondaryTheme"
-                        @click.native="onHideLinkMenu">
-                        <template #icon>
-                            <IconClose />
-                        </template>
-                    </IconButton>
+                    <Button
+                        class="menububble__remove-button"
+                        type="button"
+                        @click="setLinkUrl(commands.link, null)"
+                        @mouseenter="isHovered = true"
+                        @mouseleave="isHovered = false">
+                        <IconFilledClose :fill-color="removeLinkFillColor" />
+                    </Button>
                 </form>
                 <Button
                     v-else
@@ -45,32 +45,37 @@
 
 <script>
 import {
+    GRAPHITE,
+    WHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
+import IconLink from '@Core/components/Icons/Editor/IconLink';
+import IconFilledClose from '@Core/components/Icons/Window/IconFilledClose';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
+import {
     EditorMenuBubble,
 } from 'tiptap';
-import { WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import IconButton from '@Core/components/Buttons/IconButton';
-import IconLink from '@Core/components/Icons/Editor/IconLink';
-import IconClose from '@Core/components/Icons/Window/IconClose';
 
 export default {
     name: 'RichTextEditorMenuBubble',
     components: {
         EditorMenuBubble,
         IconLink,
-        IconClose,
-        IconButton,
+        IconFilledClose,
     },
     props: {
         editor: {
             type: Object,
-            required: true,
+            default: null,
         },
     },
     data() {
         return {
             linkUrl: null,
             linkMenuIsActive: false,
+            isHovered: false,
         };
     },
     computed: {
@@ -83,6 +88,9 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
+        removeLinkFillColor() {
+            return this.isHovered ? WHITE : GRAPHITE;
+        },
     },
     methods: {
         onShowLinkMenu(getMarkAttrs) {
@@ -91,14 +99,18 @@ export default {
             this.$nextTick(() => {
                 this.$refs.linkInput.focus();
             });
+            this.$emit('active', true);
         },
         onHideLinkMenu() {
             this.linkUrl = null;
             this.linkMenuIsActive = false;
+            this.$emit('active', false);
         },
-        setLinkUrl(commands) {
-            commands.link({ href: this.linkUrl });
-            this.onHideLinkMenu();
+        setLinkUrl(command, url) {
+            this.linkUrl = url;
+            command({
+                href: url,
+            });
         },
     },
 };
@@ -125,6 +137,7 @@ export default {
         &__form {
             display: flex;
             align-items: center;
+            padding: 4px;
             background-color: $GRAPHITE_COAL;
         }
 
@@ -139,17 +152,34 @@ export default {
             color: $WHITE;
             font: $FONT_SEMI_BOLD_10_12;
             cursor: pointer;
+            outline: none;
 
             & > span {
                 margin-left: 4px;
             }
         }
 
+        &__remove-button {
+            display: flex;
+            align-items: center;
+            border: none;
+            padding: 0;
+            outline: none;
+            background-color: $GRAPHITE_COAL;
+            cursor: pointer;
+        }
+
         &__input {
             border: none;
             background-color: transparent;
             color: $WHITE;
-            font: $FONT_MEDIUM_14_20;
+            font: $FONT_MEDIUM_12_16;
+            margin-right: 4px;
+            outline: none;
+
+            &::placeholder {
+                font: $FONT_MEDIUM_12_16;
+            }
         }
     }
 </style>

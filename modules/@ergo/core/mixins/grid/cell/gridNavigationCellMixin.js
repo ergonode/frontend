@@ -3,13 +3,21 @@
  * See LICENSE for license details.
  */
 
-import { getPositionForBrowser } from '@Core/models/drag_and_drop/helpers';
+import {
+    getPositionForBrowser,
+} from '@Core/models/drag_and_drop/helpers';
 
 export default {
     data() {
         return {
-            focusedCellCoordinates: { row: null, column: null },
-            editingCellCoordinates: { row: null, column: null },
+            focusedCellCoordinates: {
+                row: null,
+                column: null,
+            },
+            editingCellCoordinates: {
+                row: null,
+                column: null,
+            },
         };
     },
     methods: {
@@ -17,8 +25,12 @@ export default {
             return this.editingCellCoordinates;
         },
         onNavigateToCell(event) {
-            const { keyCode } = event;
-            const { row, column } = this.focusedCellCoordinates;
+            const {
+                keyCode,
+            } = event;
+            const {
+                row, column,
+            } = this.focusedCellCoordinates;
             let element;
 
             switch (keyCode) {
@@ -94,7 +106,9 @@ export default {
             }
         },
         onFocusCell(event) {
-            const { xPos, yPos } = getPositionForBrowser(event);
+            const {
+                xPos, yPos,
+            } = getPositionForBrowser(event);
             const tableCellElement = document.elementsFromPoint(xPos, yPos).find(element => element.hasAttribute('row'));
 
             if (tableCellElement) {

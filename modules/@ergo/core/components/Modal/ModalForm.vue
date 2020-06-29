@@ -33,10 +33,12 @@
 </template>
 
 <script>
-import { THEME } from '@Core/defaults/theme';
-import ModalOverlay from '@Core/components/Modal/ModalOverlay';
 import Fab from '@Core/components/Buttons/Fab';
 import IconClose from '@Core/components/Icons/Window/IconClose';
+import ModalOverlay from '@Core/components/Modal/ModalOverlay';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'ModalForm',

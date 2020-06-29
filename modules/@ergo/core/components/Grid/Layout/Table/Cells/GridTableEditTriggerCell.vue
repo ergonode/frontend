@@ -18,7 +18,9 @@ export default {
         this.$slots.default[0].context.$el.removeEventListener('keydown', this.onKeyDown);
     },
     methods: {
-        onKeyDown({ keyCode }) {
+        onKeyDown({
+            keyCode,
+        }) {
             if (keyCode === this.triggerKeyCode) {
                 this.$emit('edit');
             }

@@ -41,7 +41,12 @@ export const zeroPad = (value, length) => `${value}`.padStart(length, '0');
 
 // (int) Number days in a month for a given year from 28 - 31
 export const getMonthDays = (month = THIS_MONTH, year = THIS_YEAR) => {
-    const months30 = [4, 6, 9, 11];
+    const months30 = [
+        4,
+        6,
+        9,
+        11,
+    ];
     const leapYear = year % 4 === 0;
 
     if (month === 2) {
@@ -90,14 +95,20 @@ export const getPreviousMonth = (month, year) => {
     const prevMonth = (month > 1) ? month - 1 : 12;
     const prevMonthYear = (month > 1) ? year : year - 1;
 
-    return { month: prevMonth, year: prevMonthYear };
+    return {
+        month: prevMonth,
+        year: prevMonthYear,
+    };
 };
 
 export const getNextMonth = (month, year) => {
     const nextMonth = (month < 12) ? month + 1 : 1;
     const nextMonthYear = (month < 12) ? year : year + 1;
 
-    return { month: nextMonth, year: nextMonthYear };
+    return {
+        month: nextMonth,
+        year: nextMonthYear,
+    };
 };
 
 export const getPreviousYear = year => year - 1;
@@ -107,7 +118,9 @@ export const getNextYear = year => year + 1;
 export const getPreviousYearsRange = (years) => {
     const offset = 20;
     const newYears = [];
-    const [firstYear] = years;
+    const [
+        firstYear,
+    ] = years;
 
     for (let i = firstYear - offset; i < firstYear; i += 1) newYears.push(i);
 
@@ -115,7 +128,9 @@ export const getPreviousYearsRange = (years) => {
 };
 
 export const getNextYearsRange = (years) => {
-    const { length } = years;
+    const {
+        length,
+    } = years;
     const offset = 20;
     const newYears = [];
     const lastYear = years[length - 1];
@@ -142,8 +157,12 @@ export const getHeaderForCalendarDaysType = (month, year) => {
 };
 
 export const getHeaderForCalendarYearsType = (years) => {
-    const { length } = years;
-    const { 0: firstYear, [length - 1]: lastYear } = years;
+    const {
+        length,
+    } = years;
+    const {
+        0: firstYear, [length - 1]: lastYear,
+    } = years;
 
     return `${firstYear} - ${lastYear}`;
 };
@@ -153,25 +172,49 @@ export default (month = THIS_MONTH, year = THIS_YEAR) => {
     const monthFirstDay = getMonthFirstDay(month, year);
     const daysFromPrevMonth = monthFirstDay - 1;
     const daysFromNextMonth = (CALENDAR_WEEKS * 7) - (daysFromPrevMonth + monthDays);
-    const { month: prevMonth, year: prevMonthYear } = getPreviousMonth(month, year);
-    const { month: nextMonth, year: nextMonthYear } = getNextMonth(month, year);
+    const {
+        month: prevMonth, year: prevMonthYear,
+    } = getPreviousMonth(month, year);
+    const {
+        month: nextMonth, year: nextMonthYear,
+    } = getNextMonth(month, year);
     const prevMonthDays = getMonthDays(prevMonth, prevMonthYear);
-    const prevMonthDates = [...new Array(daysFromPrevMonth)].map((n, index) => {
+    const prevMonthDates = [
+        ...new Array(daysFromPrevMonth),
+    ].map((n, index) => {
         const day = index + 1 + (prevMonthDays - daysFromPrevMonth);
         return {
-            year: prevMonthYear, month: prevMonth, day, disabled: true,
+            year: prevMonthYear,
+            month: prevMonth,
+            day,
+            disabled: true,
         };
     });
-    const thisMonthDates = [...new Array(monthDays)].map((n, index) => {
-        const day = index + 1;
-        return { year, month, day };
-    });
-    const nextMonthDates = [...new Array(daysFromNextMonth)].map((n, index) => {
+    const thisMonthDates = [
+        ...new Array(monthDays),
+    ].map((n, index) => {
         const day = index + 1;
         return {
-            year: nextMonthYear, month: nextMonth, day, disabled: true,
+            year,
+            month,
+            day,
+        };
+    });
+    const nextMonthDates = [
+        ...new Array(daysFromNextMonth),
+    ].map((n, index) => {
+        const day = index + 1;
+        return {
+            year: nextMonthYear,
+            month: nextMonth,
+            day,
+            disabled: true,
         };
     });
 
-    return [...prevMonthDates, ...thisMonthDates, ...nextMonthDates];
+    return [
+        ...prevMonthDates,
+        ...thisMonthDates,
+        ...nextMonthDates,
+    ];
 };

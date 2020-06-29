@@ -24,13 +24,29 @@ export default {
     [types.INITIALIZE_LAYOUT_ELEMENTS](state, elements) {
         state.layoutElements = elements;
     },
-    [types.UPDATE_LAYOUT_ELEMENT_BOUNDS](state, { index, width, height }) {
-        state.layoutElements[index] = { ...state.layoutElements[index], width, height };
-        state.layoutElements = [...state.layoutElements];
+    [types.UPDATE_LAYOUT_ELEMENT_BOUNDS](state, {
+        index, width, height,
+    }) {
+        state.layoutElements[index] = {
+            ...state.layoutElements[index],
+            width,
+            height,
+        };
+        state.layoutElements = [
+            ...state.layoutElements,
+        ];
     },
-    [types.UPDATE_LAYOUT_ELEMENT_POSITION](state, { index, row, column }) {
-        state.layoutElements[index] = { ...state.layoutElements[index], row, column };
-        state.layoutElements = [...state.layoutElements];
+    [types.UPDATE_LAYOUT_ELEMENT_POSITION](state, {
+        index, row, column,
+    }) {
+        state.layoutElements[index] = {
+            ...state.layoutElements[index],
+            row,
+            column,
+        };
+        state.layoutElements = [
+            ...state.layoutElements,
+        ];
     },
     [types.ADD_ELEMENT_TO_LAYOUT](state, layoutElement) {
         state.layoutElements.push(layoutElement);
@@ -38,11 +54,18 @@ export default {
     [types.SET_TYPES](state, attrTypes) {
         state.types = attrTypes;
     },
-    [types.SET_LAYOUT_ELEMENT_REQUIREMENT](state, { required, index }) {
+    [types.SET_LAYOUT_ELEMENT_REQUIREMENT](state, {
+        required, index,
+    }) {
         const element = state.layoutElements[index];
 
-        state.layoutElements[index] = { ...element, required };
-        state.layoutElements = [...state.layoutElements];
+        state.layoutElements[index] = {
+            ...element,
+            required,
+        };
+        state.layoutElements = [
+            ...state.layoutElements,
+        ];
     },
     [types.REMOVE_LAYOUT_ELEMENT_AT_INDEX](state, index) {
         state.layoutElements.splice(index, 1);
@@ -59,9 +82,13 @@ export default {
     [types.SET_DEFAULT_IMAGE_ATTRIBUTE](state, defaultImageAttribute) {
         state.defaultImageAttribute = defaultImageAttribute;
     },
-    [types.UPDATE_SECTION_ELEMENT_TITLE](state, { index, title }) {
+    [types.UPDATE_SECTION_ELEMENT_TITLE](state, {
+        index, title,
+    }) {
         state.layoutElements[index].label = title;
-        state.layoutElements = [...state.layoutElements];
+        state.layoutElements = [
+            ...state.layoutElements,
+        ];
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();

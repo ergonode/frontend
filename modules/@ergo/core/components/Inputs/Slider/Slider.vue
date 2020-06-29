@@ -59,7 +59,9 @@ export default {
         },
     },
     mounted() {
-        const { width, x } = this.$refs.tracker.getBoundingClientRect();
+        const {
+            width, x,
+        } = this.$refs.tracker.getBoundingClientRect();
         this.width = width;
         this.xPos = x;
     },

@@ -2,23 +2,37 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { types } from './mutations';
+import {
+    types,
+} from './mutations';
 
 export default {
-    setId({ commit }, value) {
+    setId({
+        commit,
+    }, value) {
         commit(types.SET_UNIT_ID, value);
     },
-    setName({ commit }, value) {
+    setName({
+        commit,
+    }, value) {
         commit(types.SET_UNIT_NAME, value);
     },
-    setSymbol({ commit }, value) {
+    setSymbol({
+        commit,
+    }, value) {
         commit(types.SET_UNIT_SYMBOL, value);
     },
     async getUnitById(
-        { commit, rootState },
-        { unitId },
+        {
+            commit, rootState,
+        },
+        {
+            unitId,
+        },
     ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
 
         await this.app.$axios.$get(`${userLanguageCode}/units/${unitId}`).then(async ({
             id,
@@ -31,7 +45,9 @@ export default {
         });
     },
     async updateUnit(
-        { rootState },
+        {
+            rootState,
+        },
         {
             id,
             data,
@@ -39,22 +55,34 @@ export default {
             onError,
         },
     ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
 
         await this.$setLoader('footerButton');
         await this.app.$axios.$put(`${userLanguageCode}/units/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
-    removeUnit({ state, rootState }, { onSuccess }) {
-        const { id } = state;
-        const { language: userLanguageCode } = rootState.authentication.user;
+    removeUnit({
+        state, rootState,
+    }, {
+        onSuccess,
+    }) {
+        const {
+            id,
+        } = state;
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
 
         return this.app.$axios.$delete(`${userLanguageCode}/units/${id}`)
             .then(() => {
                 onSuccess();
             });
     },
-    clearStorage({ commit }) {
+    clearStorage({
+        commit,
+    }) {
         commit(types.CLEAR_STATE);
     },
 };

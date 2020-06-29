@@ -9,7 +9,10 @@ const dictionaries = Object.values(extendsModules)
         let connectedArray = acc;
 
         if (current.dictionaries) {
-            connectedArray = [...acc, ...current.dictionaries];
+            connectedArray = [
+                ...acc,
+                ...current.dictionaries,
+            ];
         }
         return connectedArray;
     }, []);

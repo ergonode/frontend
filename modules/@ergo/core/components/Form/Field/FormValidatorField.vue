@@ -3,13 +3,20 @@
  * See LICENSE for license details.
  */
 <script>
-import { mapState, mapActions } from 'vuex';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'FormValidatorField',
     props: {
         fieldKey: {
-            type: [Array, String, Number],
+            type: [
+                Array,
+                String,
+                Number,
+            ],
             required: true,
         },
     },

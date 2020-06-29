@@ -24,10 +24,16 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { getImageData } from '@Core/models/multimedia';
 import UploadFile from '@Core/components/Inputs/UploadFile/UploadFile';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    getImageData,
+} from '@Core/models/multimedia';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'UploadImageFile',
@@ -91,16 +97,23 @@ export default {
             this.isRequestPending = true;
 
             if (file) {
-                const { name } = file;
+                const {
+                    name,
+                } = file;
 
                 const formData = new FormData();
                 formData.append('upload', file, name);
 
-                this.$axios.$post('multimedia/upload', formData).then(({ id }) => {
+                this.$axios.$post('multimedia/upload', formData).then(({
+                    id,
+                }) => {
                     this.getImageById(id);
                     this.$emit('upload', id);
 
-                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'File uploaded' });
+                    this.$addAlert({
+                        type: ALERT_TYPE.SUCCESS,
+                        message: 'File uploaded',
+                    });
                     this.removeValidationError('upload');
                     this.isRequestPending = false;
                 }).catch((e) => {

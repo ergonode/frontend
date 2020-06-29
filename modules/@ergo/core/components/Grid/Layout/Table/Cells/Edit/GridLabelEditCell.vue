@@ -8,8 +8,7 @@
             :style="{ width: `${width}px`, height: `${height}px` }"
             :value="localValue"
             :autofocus="true"
-            :solid="true"
-            :small="true"
+            :size="smallSize"
             :clearable="true"
             :options="options"
             :error-messages="errorMessages"
@@ -23,12 +22,12 @@
                 </div>
             </template>
             <template #option="{ option }">
-                <ListElementAction>
+                <ListElementAction :size="smallSize">
                     <PointBadge :color="colors[option.id]" />
                 </ListElementAction>
                 <ListElementDescription>
                     <ListElementTitle
-                        :small="true"
+                        :size="smallSize"
                         :hint="option.hint"
                         :title="option.value || `#${option.key}`" />
                 </ListElementDescription>
@@ -38,16 +37,21 @@
 </template>
 
 <script>
+import PointBadge from '@Core/components/Badges/PointBadge';
 import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
-import ListElementAction from '@Core/components/List/ListElementAction';
-import PointBadge from '@Core/components/Badges/PointBadge';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridLabelEditCell',
-    inject: ['setEditingCellCoordinates'],
+    inject: [
+        'setEditingCellCoordinates',
+    ],
     components: {
         GridActivatorEditCell,
         TranslationSelect,
@@ -74,7 +78,10 @@ export default {
             default: '',
         },
         rowId: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
         width: {
@@ -92,8 +99,15 @@ export default {
             localValue: null,
         };
     },
+    computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
+    },
     created() {
-        this.$axios.$get(`${this.languageCode}/products/${this.rowId}`).then(({ workflow = [] }) => {
+        this.$axios.$get(`${this.languageCode}/products/${this.rowId}`).then(({
+            workflow = [],
+        }) => {
             this.options = workflow.map(e => ({
                 id: e.code,
                 key: e.code,

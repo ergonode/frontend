@@ -3,12 +3,12 @@
  * See LICENSE for license details.
  */
 import {
-    getObstaclePositionsForElement,
+    getColumnBasedOnWidth,
     getHighlightingPositions,
     // getHighlightingLayoutDropPositions,
     getMaxColumnForGivenRow,
     getMaxRowForGivenColumn,
-    getColumnBasedOnWidth,
+    getObstaclePositionsForElement,
     getRowBasedOnHeight,
 } from '../LayoutCalculations';
 
@@ -49,7 +49,10 @@ test('Element has correct values of obstacle points', () => {
         height: 1,
     };
 
-    expect(getObstaclePositionsForElement(elementBounds)[0]).toEqual({ row: 1, column: 1 });
+    expect(getObstaclePositionsForElement(elementBounds)[0]).toEqual({
+        row: 1,
+        column: 1,
+    });
 });
 
 test('Based on theme elements getting number of elements to highlight', () => {

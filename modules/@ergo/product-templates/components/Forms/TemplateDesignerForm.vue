@@ -11,9 +11,7 @@
                 <TextField
                     :data-cy="dataCyGenerator(nameFieldKey)"
                     :value="templateTitle"
-                    solid
                     required
-                    regular
                     :error-messages="errorMessages[nameFieldKey]"
                     label="Template name"
                     :disabled="isDisabledByPrivileges"
@@ -30,8 +28,6 @@
                 <TranslationLazySelect
                     :data-cy="dataCyGenerator('default-label')"
                     :value="defaultTextAttribute"
-                    solid
-                    regular
                     required
                     label="Default label attribute"
                     :fetch-options-request="getDefaultTextAttributeOptionsRequest"
@@ -39,8 +35,6 @@
                 <TranslationLazySelect
                     :data-cy="dataCyGenerator('default-image')"
                     :value="defaultImageAttribute"
-                    solid
-                    regular
                     clearable
                     label="Default image attribute"
                     :fetch-options-request="getDefaultImageAttributeOptionsRequest"
@@ -51,8 +45,13 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { TYPES } from '@Attributes/defaults/attributes';
+import {
+    TYPES,
+} from '@Attributes/defaults/attributes';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 const getAttributesOptionsByType = () => import('@Attributes/services/getAttributesOptionsByType.service');
 
@@ -76,8 +75,12 @@ export default {
             return Boolean(this.templateTitle);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess(['TEMPLATE_DESIGNER_UPDATE']))
-                || (!this.isDisabled && !this.$hasAccess(['TEMPLATE_DESIGNER_CREATE']));
+            return (this.isDisabled && !this.$hasAccess([
+                'TEMPLATE_DESIGNER_UPDATE',
+            ]))
+                || (!this.isDisabled && !this.$hasAccess([
+                    'TEMPLATE_DESIGNER_CREATE',
+                ]));
         },
         nameFieldKey() {
             return 'name';
@@ -92,12 +95,20 @@ export default {
         ]),
         getDefaultTextAttributeOptionsRequest() {
             return getAttributesOptionsByType().then(response => response.default(
-                { $axios: this.$axios, $store: this.$store, type: TYPES.TEXT },
+                {
+                    $axios: this.$axios,
+                    $store: this.$store,
+                    type: TYPES.TEXT,
+                },
             ));
         },
         getDefaultImageAttributeOptionsRequest() {
             return getAttributesOptionsByType().then(response => response.default(
-                { $axios: this.$axios, $store: this.$store, type: TYPES.IMAGE },
+                {
+                    $axios: this.$axios,
+                    $store: this.$store,
+                    type: TYPES.IMAGE,
+                },
             ));
         },
         dataCyGenerator(key) {

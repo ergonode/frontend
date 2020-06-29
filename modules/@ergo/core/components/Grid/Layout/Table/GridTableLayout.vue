@@ -75,18 +75,15 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import GridDropZone from '@Core/components/Grid/GridDropZone';
+import GridTableLayoutColumnsSection from '@Core/components/Grid/Layout/Table/Sections/GridTableLayoutColumnsSection';
 import {
-    PINNED_COLUMN_STATE,
-    COLUMN_WIDTH,
     COLUMN_ACTIONS_ID,
-    ROW_HEIGHT,
+    COLUMN_WIDTH,
     GRID_ACTIONS,
+    PINNED_COLUMN_STATE,
+    ROW_HEIGHT,
 } from '@Core/defaults/grid';
-import {
-    capitalizeAndConcatenationArray,
-    toCapitalize,
-} from '@Core/models/stringWrapper';
 import {
     swapItemPosition,
 } from '@Core/models/arrayWrapper';
@@ -94,8 +91,14 @@ import {
     changeCookiePosition,
     removeCookieAtIndex,
 } from '@Core/models/cookies';
-import GridTableLayoutColumnsSection from '@Core/components/Grid/Layout/Table/Sections/GridTableLayoutColumnsSection';
-import GridDropZone from '@Core/components/Grid/GridDropZone';
+import {
+    capitalizeAndConcatenationArray,
+    toCapitalize,
+} from '@Core/models/stringWrapper';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'GridTableLayout',
@@ -150,8 +153,14 @@ export default {
             hasInitialWidths: true,
             isSelectedAllRows: false,
             selectedRows: {},
-            editingCellCoordinates: { row: null, column: null },
-            focusedCellCoordinates: { row: null, column: null },
+            editingCellCoordinates: {
+                row: null,
+                column: null,
+            },
+            focusedCellCoordinates: {
+                row: null,
+                column: null,
+            },
             orderedColumns: [],
             columnComponents: [],
             columnWidths: [],
@@ -255,19 +264,28 @@ export default {
             this.sortedColumn = sortedColumn;
             this.$emit('sort', sortedColumn);
         },
-        onFilterChange({ index, value, operator }) {
-            const { id } = this.orderedColumns[index];
+        onFilterChange({
+            index, value, operator,
+        }) {
+            const {
+                id,
+            } = this.orderedColumns[index];
 
             if (this.filters[id] && (value === '' || value === null || value.length === 0)) {
                 delete this.filters[id];
             } else {
-                this.filters[id] = { value, operator };
+                this.filters[id] = {
+                    value,
+                    operator,
+                };
             }
             this.$emit('filter', this.filters);
         },
         onRemoveColumn(index) {
             if (this.orderedColumns[index].element_id) {
-                const { language: languageCode, element_id } = this.orderedColumns[index];
+                const {
+                    language: languageCode, element_id,
+                } = this.orderedColumns[index];
 
                 this.setDisabledElement({
                     languageCode,
@@ -285,7 +303,9 @@ export default {
                 index: this.isSelectColumn ? index - 1 : index,
             });
         },
-        onSwapColumns({ from, to }) {
+        onSwapColumns({
+            from, to,
+        }) {
             this.columnComponents = [
                 ...swapItemPosition(
                     this.columnComponents,
@@ -314,19 +334,31 @@ export default {
                 to: this.isSelectColumn ? to - 1 : to,
             });
         },
-        onUpdateWidth({ index, width }) {
+        onUpdateWidth({
+            index, width,
+        }) {
             if (this.hasInitialWidths) {
                 this.initialColumnWidths();
             }
 
             this.columnWidths[index] = width;
-            this.columnWidths = [...this.columnWidths];
+            this.columnWidths = [
+                ...this.columnWidths,
+            ];
         },
-        setEditingCellCoordinates(coordinates = { row: null, column: null }) {
+        setEditingCellCoordinates(coordinates = {
+            row: null,
+            column: null,
+        }) {
             this.editingCellCoordinates = coordinates;
         },
-        setFocusedCellCoordinates(coordinates = { row: null, column: null }) {
-            const { row, column } = coordinates;
+        setFocusedCellCoordinates(coordinates = {
+            row: null,
+            column: null,
+        }) {
+            const {
+                row, column,
+            } = coordinates;
 
             if (row !== null && column !== null) {
                 this.$emit('focusCell', {
@@ -342,8 +374,12 @@ export default {
         getTableLayoutElement() {
             return this.$refs.gridTableLayout;
         },
-        onClickOutside({ pageX, pageY, target }) {
-            const { gridTableLayout } = this.$refs;
+        onClickOutside({
+            pageX, pageY, target,
+        }) {
+            const {
+                gridTableLayout,
+            } = this.$refs;
             const {
                 top, left, width, height,
             } = gridTableLayout.getBoundingClientRect();
@@ -359,7 +395,10 @@ export default {
         onStickyChange({
             isSticky, state,
         }) {
-            this.pinnedSections = { ...this.pinnedSections, [state]: isSticky };
+            this.pinnedSections = {
+                ...this.pinnedSections,
+                [state]: isSticky,
+            };
         },
         onRowSelect(selectedRows) {
             this.selectedRows = selectedRows;
@@ -386,7 +425,9 @@ export default {
             if (from.row < to.row) {
                 for (let i = from.row - offset; i <= to.row - offset; i += 1) {
                     if (this.data[columnId][i] && this.data[columnId][i].value !== value) {
-                        drafts[this.data.id[i]] = { [columnId]: value };
+                        drafts[this.data.id[i]] = {
+                            [columnId]: value,
+                        };
                         editedCells.push({
                             rowId: this.data.id[i],
                             columnId,
@@ -397,7 +438,9 @@ export default {
             } else {
                 for (let i = to.row - offset; i <= from.row - offset; i += 1) {
                     if (this.data[columnId][i] && this.data[columnId][i].value !== value) {
-                        drafts[this.data.id[i]] = { [columnId]: value };
+                        drafts[this.data.id[i]] = {
+                            [columnId]: value,
+                        };
                         editedCells.push({
                             rowId: this.data.id[i],
                             columnId,
@@ -410,7 +453,9 @@ export default {
             this.setDraftsValues(drafts);
             this.$emit('editCells', editedCells);
         },
-        onActionRow({ action, value }) {
+        onActionRow({
+            action, value,
+        }) {
             this.$emit(action, value);
         },
         initializeDataColumns() {
@@ -420,7 +465,9 @@ export default {
                 this.$cookies.set(
                     `GRID_CONFIG:${this.$route.name}`,
                     this.columns
-                        .map(({ id }) => id)
+                        .map(({
+                            id,
+                        }) => id)
                         .join(','),
                 );
             }
@@ -428,7 +475,9 @@ export default {
             const orderedColumns = [];
             const columnComponents = [];
             const columnWidths = [];
-            const { length } = this.columns;
+            const {
+                length,
+            } = this.columns;
             const extendedComponents = this.$getExtendedComponents('GRID');
             const isColumnExtended = typeof extendedComponents !== 'undefined'
                 && typeof extendedComponents.layout !== 'undefined'
@@ -459,11 +508,17 @@ export default {
             this.columnWidths = columnWidths;
         },
         initialColumnWidths() {
-            const { columnsSection } = this.$refs;
-            const { length } = columnsSection.$el.children;
+            const {
+                columnsSection,
+            } = this.$refs;
+            const {
+                length,
+            } = columnsSection.$el.children;
 
             for (let i = 0; i < length; i += 1) {
-                const { width } = columnsSection.$el.children[i].getBoundingClientRect();
+                const {
+                    width,
+                } = columnsSection.$el.children[i].getBoundingClientRect();
 
                 this.columnWidths[i] = `${width}px`;
             }

@@ -11,21 +11,17 @@
                 <TextField
                     :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
-                    solid
                     required
                     :error-messages="errorMessages[codeFieldKey]"
                     :disabled="isDisabled || isDisabledByPrivileges"
-                    regular
                     label="System name"
                     hint="Product collection code must be unique"
                     @input="setCode" />
                 <TranslationLazySelect
                     :data-cy="dataCyGenerator(typeIdFieldKey)"
                     :value="type"
-                    solid
                     required
                     label="Type"
-                    regular
                     :disabled="isDisabledByPrivileges"
                     :error-messages="errorMessages[typeIdFieldKey]"
                     :fetch-options-request="getCollectionTypesOptionsRequest"
@@ -36,7 +32,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 const getCollectionTypesOptions = () => import('@Collections/services/getCollectionTypesOptions.service');
 
@@ -55,8 +54,12 @@ export default {
             type: state => state.type,
         }),
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess(['PRODUCT_COLLECTION_UPDATE']))
-            || (!this.isDisabled && !this.$hasAccess(['PRODUCT_COLLECTION_CREATE']));
+            return (this.isDisabled && !this.$hasAccess([
+                'PRODUCT_COLLECTION_UPDATE',
+            ]))
+            || (!this.isDisabled && !this.$hasAccess([
+                'PRODUCT_COLLECTION_CREATE',
+            ]));
         },
         isDisabled() {
             return Boolean(this.id);
@@ -75,7 +78,10 @@ export default {
         ]),
         getCollectionTypesOptionsRequest() {
             return getCollectionTypesOptions().then(response => response.default(
-                { $axios: this.$axios, $store: this.$store },
+                {
+                    $axios: this.$axios,
+                    $store: this.$store,
+                },
             ));
         },
         dataCyGenerator(key) {

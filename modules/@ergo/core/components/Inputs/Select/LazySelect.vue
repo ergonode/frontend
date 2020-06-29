@@ -6,15 +6,13 @@
     <Select
         :value="value"
         :options="options"
-        :solid="solid"
-        :underline="underline"
+        :type="type"
+        :alignment="alignment"
+        :size="size"
         :fixed-content="fixedContent"
-        :left-alignment="leftAlignment"
-        :center-alignment="centerAlignment"
         :dismissible="dismissible"
         :label="label"
         :placeholder="placeholder"
-        :description="description"
         :error-messages="errorMessages"
         :hint="hint"
         :required="required"
@@ -22,8 +20,6 @@
         :disabled="disabled"
         :clearable="clearable"
         :multiselect="multiselect"
-        :small="small"
-        :regular="regular"
         :searchable="searchable"
         :data-cy="dataCy"
         @focus="onFocus"
@@ -43,8 +39,8 @@
                     :color="graphiteColor" />
             </FadeTransition>
         </template>
-        <template #informationLabel>
-            <slot name="informationLabel" />
+        <template #details>
+            <slot name="details" />
         </template>
         <template #option="{ option, isSelected }">
             <slot
@@ -56,10 +52,17 @@
 </template>
 
 <script>
-import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
-import Select from '@Core/components/Inputs/Select/Select';
+import {
+    GRAPHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import Select from '@Core/components/Inputs/Select/Select';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
+import {
+    ALIGNMENT,
+    INPUT_TYPE,
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'LazySelect',
@@ -70,28 +73,35 @@ export default {
     },
     props: {
         value: {
-            type: [Array, String, Number, Object],
+            type: [
+                Array,
+                String,
+                Number,
+                Object,
+            ],
             default: '',
         },
-        solid: {
-            type: Boolean,
-            default: false,
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
         },
-        underline: {
-            type: Boolean,
-            default: false,
+        alignment: {
+            type: String,
+            default: ALIGNMENT.LEFT,
+            validator: value => Object.values(ALIGNMENT).indexOf(value) !== -1,
+        },
+        type: {
+            type: String,
+            default: INPUT_TYPE.SOLID,
+            validator: value => Object.values(INPUT_TYPE).indexOf(value) !== -1,
         },
         fixedContent: {
             type: Boolean,
             default: true,
-        },
-        leftAlignment: {
-            type: Boolean,
-            default: false,
-        },
-        centerAlignment: {
-            type: Boolean,
-            default: false,
         },
         dismissible: {
             type: Boolean,
@@ -102,10 +112,6 @@ export default {
             default: null,
         },
         placeholder: {
-            type: String,
-            default: null,
-        },
-        description: {
             type: String,
             default: null,
         },
@@ -134,14 +140,6 @@ export default {
             default: false,
         },
         multiselect: {
-            type: Boolean,
-            default: false,
-        },
-        small: {
-            type: Boolean,
-            default: false,
-        },
-        regular: {
             type: Boolean,
             default: false,
         },
@@ -176,7 +174,9 @@ export default {
     created() {
         if (this.fetchOptionsRequest) {
             this.isFetchingOptions = true;
-            this.fetchOptionsRequest().then(({ options }) => {
+            this.fetchOptionsRequest().then(({
+                options,
+            }) => {
                 this.options = options;
                 this.isFetchingOptions = false;
                 this.$emit('fetchedOptions', options);

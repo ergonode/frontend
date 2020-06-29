@@ -2,8 +2,14 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { shallowMount, createLocalVue } from '@vue/test-utils';
-import { Store } from 'vuex-mock-store';
+import {
+    createLocalVue,
+    shallowMount,
+} from '@vue/test-utils';
+import {
+    Store,
+} from 'vuex-mock-store';
+
 import LayoutElement from '../ProductDesigner/LayoutElement';
 
 const localVue = createLocalVue();
@@ -13,12 +19,8 @@ const store = new Store({
             draggedElement: {},
         },
     },
-    mutations: {
-
-    },
-    actions: {
-
-    },
+    mutations: {},
+    actions: {},
 });
 const mocks = {
     $store: store,
@@ -35,7 +37,11 @@ describe('Template/ProductDesigner/LayoutElement', () => {
                 index: 1,
                 disabled: false,
                 element: {
-                    id: 'testId', width: 1, height: 1, row: 1, column: 1,
+                    id: 'testId',
+                    width: 1,
+                    height: 1,
+                    row: 1,
+                    column: 1,
                 },
                 columnsNumber: 4,
                 rowsNumber: 10,

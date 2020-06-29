@@ -9,7 +9,9 @@
 </template>
 
 <script>
-import { debounce } from 'debounce';
+import {
+    debounce,
+} from 'debounce';
 
 export default {
     name: 'TemplateGridDesigner',
@@ -36,10 +38,15 @@ export default {
     },
     methods: {
         emitRowsNumber() {
-            this.$emit('rowsCount', { key: 'rowsCount', value: this.getTotalRowsInTemplate() });
+            this.$emit('rowsCount', {
+                key: 'rowsCount',
+                value: this.getTotalRowsInTemplate(),
+            });
         },
         getTotalRowsInTemplate() {
-            const { clientHeight } = this.$el;
+            const {
+                clientHeight,
+            } = this.$el;
             const visibleRows = Math.ceil(clientHeight / this.rowHeight);
 
             return Math.max(this.maxRow, visibleRows) + 1;

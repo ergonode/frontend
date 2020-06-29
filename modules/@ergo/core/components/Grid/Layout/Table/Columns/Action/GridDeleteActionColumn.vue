@@ -22,7 +22,6 @@
     </GridActionColumn>
 </template>
 
-
 <script>
 import GridRowRemoveEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridRowRemoveEditCell';
 import GridActionColumn from '@Core/components/Grid/Layout/Table/Columns/Action/GridActionColumn';
@@ -65,7 +64,10 @@ export default {
     },
     methods: {
         onRemove(index) {
-            this.$emit('action', { action: 'removeRow', value: index });
+            this.$emit('action', {
+                action: 'removeRow',
+                value: index,
+            });
         },
     },
 };

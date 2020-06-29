@@ -2,10 +2,16 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { SKU_MODEL_ID } from '@Templates/defaults/product';
+import {
+    SKU_MODEL_ID,
+} from '@Templates/defaults/product';
 
-export default function ({ $axios, $store }) {
-    const { language } = $store.state.authentication.user;
+export default function ({
+    $axios, $store,
+}) {
+    const {
+        language,
+    } = $store.state.authentication.user;
     const {
         title, image, defaultTextAttribute, defaultImageAttribute,
     } = $store.state.templateDesigner;

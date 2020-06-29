@@ -2,8 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { shallowMount } from '@vue/test-utils';
 import RadioButton from '@Core/components/Inputs/RadioButton';
+import {
+    shallowMount,
+} from '@vue/test-utils';
 
 describe('Inputs/RadioButton', () => {
     let wrapper;
@@ -25,10 +27,11 @@ describe('Inputs/RadioButton', () => {
             });
 
             expect(wrapper.vm.isSelected).toBeTruthy();
-            expect(wrapper.vm.radioStateClasses).toStrictEqual([
+            expect(wrapper.vm.classes).toStrictEqual([
+                'radio-button',
                 {
-                    'radio--disabled': false,
-                    'radio--selected': true,
+                    'radio-button--disabled': false,
+                    'radio-button--selected': true,
                 },
             ]);
         });
@@ -41,10 +44,11 @@ describe('Inputs/RadioButton', () => {
             });
 
             expect(wrapper.vm.isSelected).toBeFalsy();
-            expect(wrapper.vm.radioStateClasses).toStrictEqual([
+            expect(wrapper.vm.classes).toStrictEqual([
+                'radio-button',
                 {
-                    'radio--disabled': false,
-                    'radio--selected': false,
+                    'radio-button--disabled': false,
+                    'radio-button--selected': false,
                 },
             ]);
         });
@@ -59,10 +63,11 @@ describe('Inputs/RadioButton', () => {
             });
 
             expect(wrapper.vm.isSelected).toBeTruthy();
-            expect(wrapper.vm.radioStateClasses).toStrictEqual([
+            expect(wrapper.vm.classes).toStrictEqual([
+                'radio-button',
                 {
-                    'radio--disabled': true,
-                    'radio--selected': true,
+                    'radio-button--disabled': true,
+                    'radio-button--selected': true,
                 },
             ]);
         });
@@ -75,24 +80,13 @@ describe('Inputs/RadioButton', () => {
             });
 
             expect(wrapper.vm.isSelected).toBeFalsy();
-            expect(wrapper.vm.radioStateClasses).toStrictEqual([
+            expect(wrapper.vm.classes).toStrictEqual([
+                'radio-button',
                 {
-                    'radio--disabled': true,
-                    'radio--selected': false,
+                    'radio-button--disabled': true,
+                    'radio-button--selected': false,
                 },
             ]);
         });
     });
-
-    // FIXME
-    // describe('Selection', () => {
-    //     it('Is selected', () => {
-    //         wrapper.setProps({
-    //             label: 'test',
-    //         });
-    //         wrapper.find('input').trigger('click');
-    //         expect(wrapper.emitted().input).toBeTruthy();
-    //         expect(wrapper.emitted().input[0][0]).toEqual(wrapper.vm.label);
-    //     });
-    // });
 });

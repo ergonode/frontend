@@ -6,6 +6,7 @@
     <ListDraggableElement
         :is-draggable="$hasAccess(['TEMPLATE_DESIGNER_UPDATE'])"
         :draggable-id="item.type"
+        :label="item.label"
         @drag="onDrag">
         <ListElementIcon>
             <Component :is="widgetIconComponent" />
@@ -18,11 +19,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
-import ListElementTitle from '@Core/components/List/ListElementTitle';
 import ListElementHint from '@Core/components/List/ListElementHint';
 import ListElementIcon from '@Core/components/List/ListElementIcon';
+import ListElementTitle from '@Core/components/List/ListElementTitle';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'WidgetsListElement',
@@ -56,7 +59,10 @@ export default {
                 this.setDraggedElement();
             }
 
-            this.setDraggableState({ propName: 'isListElementDragging', value: isDragged });
+            this.setDraggableState({
+                propName: 'isListElementDragging',
+                value: isDragged,
+            });
         },
     },
 };

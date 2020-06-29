@@ -3,9 +3,17 @@
  * See LICENSE for license details.
  */
 
-export default function ({ $axios, $store }) {
-    const { language } = $store.state.authentication.user;
-    const { code } = $store.state.segments;
+export default function ({
+    $axios, $store,
+}) {
+    const {
+        language,
+    } = $store.state.authentication.user;
+    const {
+        code,
+    } = $store.state.segments;
 
-    return $axios.$post(`${language}/segments`, { code });
+    return $axios.$post(`${language}/segments`, {
+        code,
+    });
 }

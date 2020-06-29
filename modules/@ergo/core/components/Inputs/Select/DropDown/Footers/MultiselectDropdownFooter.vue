@@ -4,7 +4,7 @@
  */
 <template>
     <DropDownFooter
-        :small="true"
+        :size="smallSize"
         :space-between="true">
         <Button
             :size="tinySize"
@@ -19,9 +19,12 @@
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
-import DropDownFooter from '@Core/components/Inputs/Select/DropDown/Footers/DropDownFooter';
 import Button from '@Core/components/Buttons/Button';
+import DropDownFooter from '@Core/components/Inputs/Select/DropDown/Footers/DropDownFooter';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'MultiselectDropdownFooter',
@@ -30,6 +33,9 @@ export default {
         Button,
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         tinySize() {
             return SIZE.TINY;
         },

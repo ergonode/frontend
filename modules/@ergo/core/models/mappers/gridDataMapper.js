@@ -6,7 +6,9 @@ import {
     COLUMN_ACTIONS_ID,
     GRID_ACTIONS,
 } from '@Core/defaults/grid';
-import { getUUID } from '@Core/models/stringWrapper';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
 
 export function cellDataCompose(check) {
     return (data, draft, colId) => {
@@ -27,15 +29,22 @@ export function cellDataCompose(check) {
 
 export function getParsedFilters(filters, advancedFilters = []) {
     const entries = Object.entries(filters);
-    const { length: entriesLength } = entries;
+    const {
+        length: entriesLength,
+    } = entries;
 
     let mappedFilter = '';
 
     for (let i = 0; i < entriesLength; i += 1) {
-        const [key, filter] = entries[i];
+        const [
+            key,
+            filter,
+        ] = entries[i];
 
         if (filter) {
-            const { value, operator } = filter;
+            const {
+                value, operator,
+            } = filter;
             const advancedFilter = advancedFilters
                 .find(advFilter => advFilter.id === key
                     && Object.keys(advFilter.value).length > 1);
@@ -70,17 +79,27 @@ export function getParsedAdvancedFilters(filters) {
 }
 
 export function getSortedColumnsByIDs(columns, columnsID) {
-    return [...columns.sort((a, b) => columnsID.indexOf(a.id) - columnsID.indexOf(b.id))];
+    return [
+        ...columns.sort((a, b) => columnsID.indexOf(a.id) - columnsID.indexOf(b.id)),
+    ];
 }
 
-export function getMappedData({ columns, rows, hasLinks }) {
-    const { length: columnsNumber } = columns;
-    const { length: rowsNumber } = rows;
+export function getMappedData({
+    columns, rows, hasLinks,
+}) {
+    const {
+        length: columnsNumber,
+    } = columns;
+    const {
+        length: rowsNumber,
+    } = rows;
     const data = {};
 
     for (let j = 0; j < rowsNumber; j += 1) {
         for (let i = 0; i < columnsNumber; i += 1) {
-            const { id } = columns[i];
+            const {
+                id,
+            } = columns[i];
 
             if (!data[id]) {
                 data[id] = [];

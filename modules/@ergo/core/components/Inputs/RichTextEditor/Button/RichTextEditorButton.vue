@@ -20,9 +20,15 @@
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { GREEN, GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    GRAPHITE,
+    GREEN,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import IconButton from '@Core/components/Buttons/IconButton';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'RichTextEditorButton',

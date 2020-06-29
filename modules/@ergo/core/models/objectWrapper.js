@@ -23,7 +23,10 @@ export function getKeyByValue(object, value) {
  */
 export function objectToArray(object) {
     return Object.keys(object).reduce((previous, current) => {
-        previous.push({ value: current, title: object[current] });
+        previous.push({
+            value: current,
+            title: object[current],
+        });
         return previous;
     }, []);
 }

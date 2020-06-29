@@ -32,9 +32,8 @@
         <TextField
             :value="value"
             style="width: 64px;"
-            solid
-            small
-            center-alignment
+            :size="smallSize"
+            :alignment="centerAlignment"
             :input="inputNumberType"
             @input="onValueChange" />
         <span class="pagination__text">
@@ -71,8 +70,14 @@
 </template>
 
 <script>
-import { THEME } from '@Core/defaults/theme';
-import { ARROW } from '@Core/defaults/icons';
+import {
+    ARROW,
+} from '@Core/defaults/icons';
+import {
+    ALIGNMENT,
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridPagination',
@@ -94,6 +99,12 @@ export default {
         },
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
+        centerAlignment() {
+            return ALIGNMENT.CENTER;
+        },
         arrow() {
             return ARROW;
         },

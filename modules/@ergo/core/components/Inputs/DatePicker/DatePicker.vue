@@ -5,19 +5,16 @@
 <template>
     <Select
         :value="parsedDate"
-        :solid="solid"
-        :underline="underline"
-        :left-alignment="leftAlignment"
-        :center-alignment="centerAlignment"
         :label="label"
+        :type="type"
+        :alignment="alignment"
+        :size="size"
         :placeholder="placeholder"
         :error-messages="errorMessages"
         :hint="hint"
         :required="required"
         :autofocus="autofocus"
         :disabled="disabled"
-        :small="small"
-        :regular="regular"
         :fixed-content="false"
         :dismissible="false"
         clearable
@@ -43,11 +40,20 @@
 </template>
 
 <script>
-import { format as formatDate } from 'date-fns';
-import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
-import Select from '@Core/components/Inputs/Select/Select';
 import DatePickerContent from '@Core/components/Inputs/DatePicker/DatePickerContent';
 import SelectDropdownApplyFooter from '@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownApplyFooter';
+import Select from '@Core/components/Inputs/Select/Select';
+import {
+    ALIGNMENT,
+    INPUT_TYPE,
+    SIZE,
+} from '@Core/defaults/theme';
+import {
+    DEFAULT_FORMAT,
+} from '@Core/models/calendar/calendar';
+import {
+    format as formatDate,
+} from 'date-fns';
 
 export default {
     name: 'DatePicker',
@@ -61,25 +67,27 @@ export default {
             type: Date,
             default: null,
         },
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
+        },
+        alignment: {
+            type: String,
+            default: ALIGNMENT.LEFT,
+            validator: value => Object.values(ALIGNMENT).indexOf(value) !== -1,
+        },
+        type: {
+            type: String,
+            default: INPUT_TYPE.SOLID,
+            validator: value => Object.values(INPUT_TYPE).indexOf(value) !== -1,
+        },
         format: {
             type: String,
             default: DEFAULT_FORMAT,
-        },
-        solid: {
-            type: Boolean,
-            default: false,
-        },
-        underline: {
-            type: Boolean,
-            default: false,
-        },
-        leftAlignment: {
-            type: Boolean,
-            default: false,
-        },
-        centerAlignment: {
-            type: Boolean,
-            default: false,
         },
         label: {
             type: String,
@@ -106,14 +114,6 @@ export default {
             default: false,
         },
         disabled: {
-            type: Boolean,
-            default: false,
-        },
-        small: {
-            type: Boolean,
-            default: false,
-        },
-        regular: {
             type: Boolean,
             default: false,
         },

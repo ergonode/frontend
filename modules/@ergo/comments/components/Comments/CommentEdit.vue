@@ -14,7 +14,6 @@
                 <template #validator="{ errorMessage }">
                     <TextArea
                         :value="content"
-                        solid
                         label="Comment"
                         resize="none"
                         :required="true"
@@ -39,13 +38,20 @@
     </Comment>
 </template>
 <script>
-import { mapActions } from 'vuex';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
 import Comment from '@Comments/components/Comments/Comment';
 import Button from '@Core/components/Buttons/Button';
-import TextArea from '@Core/components/Inputs/TextArea';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import TextArea from '@Core/components/Inputs/TextArea';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'CommentEdit',
@@ -109,7 +115,10 @@ export default {
         },
         onSuccess() {
             this.removeValidationErrors();
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: `Comment ${this.isEdit ? 'edited' : 'created'}` });
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: `Comment ${this.isEdit ? 'edited' : 'created'}`,
+            });
             this.$emit('close');
         },
         closeComment() {

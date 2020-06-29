@@ -4,7 +4,7 @@
  */
 
 <template>
-    <div :class="['radio', radioStateClasses]">
+    <div :class="classes">
         <input
             :id="associatedLabel"
             v-model="radioValue"
@@ -31,7 +31,9 @@ import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'RadioButton',
-    mixins: [associatedLabelMixin],
+    mixins: [
+        associatedLabelMixin,
+    ],
     props: {
         value: {
             type: String,
@@ -62,11 +64,12 @@ export default {
                 this.$emit('input', this.label);
             },
         },
-        radioStateClasses() {
+        classes() {
             return [
+                'radio-button',
                 {
-                    'radio--disabled': this.disabled,
-                    'radio--selected': this.isSelected,
+                    'radio-button--disabled': this.disabled,
+                    'radio-button--selected': this.isSelected,
                 },
             ];
         },
@@ -74,9 +77,8 @@ export default {
 };
 </script>
 
-
 <style lang="scss" scoped>
-    .radio {
+    .radio-button {
         $radio: &;
 
         position: relative;

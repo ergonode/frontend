@@ -24,10 +24,16 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { THEME } from '@Core/defaults/theme';
-import { MODAL_ACTION } from '@Core/defaults/modals';
+import {
+    MODAL_ACTION,
+} from '@Core/defaults/modals';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
+import {
+    mapActions,
+} from 'vuex';
 
 const createUnit = () => import('@Core/services/settings/createUnit.service');
 
@@ -38,7 +44,13 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         UnitForm: () => import('@Core/components/Forms/UnitForm'),
     },
-    mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Unit', request: createUnit })],
+    mixins: [
+        actionModalFormMixin({
+            action: MODAL_ACTION.CREATE,
+            namespace: 'Unit',
+            request: createUnit,
+        }),
+    ],
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
@@ -57,13 +69,17 @@ export default {
         },
         onCreate() {
             this.onActionRequest(async () => {
-                await this.getCurrentDictionary({ dictionaryName: 'units' });
+                await this.getCurrentDictionary({
+                    dictionaryName: 'units',
+                });
                 await this.clearStorage();
             });
         },
         onCreatedAndEdit() {
             this.onActionRequest(async (id) => {
-                await this.getCurrentDictionary({ dictionaryName: 'units' });
+                await this.getCurrentDictionary({
+                    dictionaryName: 'units',
+                });
                 await this.$router.push({
                     name: 'unit-id-general',
                     params: {

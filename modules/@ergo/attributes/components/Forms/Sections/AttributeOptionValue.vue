@@ -8,8 +8,7 @@
             <TextField
                 :value="translationOptionValue"
                 :label="option.key"
-                solid
-                small
+                :size="smallSize"
                 :disabled="disabled"
                 :error-messages="errorMessages"
                 @input="value => setOptionValueForLanguageCode({
@@ -23,8 +22,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'AttributeOptionValue',
@@ -51,6 +55,9 @@ export default {
         },
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         translationOptionValue() {
             if (this.option.value) {
                 return this.option.value[this.languageCode] || '';

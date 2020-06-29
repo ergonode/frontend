@@ -24,10 +24,17 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
-import { SCOPE } from '@Attributes/defaults/attributes';
-import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
+import {
+    SCOPE,
+} from '@Attributes/defaults/attributes';
+import {
+    capitalizeAndConcatenationArray,
+} from '@Core/models/stringWrapper';
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
+import {
+    mapGetters,
+    mapState,
+} from 'vuex';
 
 const updateProductDraft = () => import('@Products/services/updateProductDraft.service');
 
@@ -59,10 +66,12 @@ export default {
             'getRootOnLanguagesTree',
         ]),
         templateRowHeight() {
-            return 48;
+            return 40;
         },
         maxRows() {
-            const heights = this.elements.map(({ position, size }) => position.y + size.height);
+            const heights = this.elements.map(({
+                position, size,
+            }) => position.y + size.height);
 
             if (heights) {
                 return Math.max(...heights);
@@ -77,14 +86,22 @@ export default {
         },
     },
     created() {
-        this.formFieldComponents = this.elements.map(({ type }) => () => import(`@Products/components/Form/Field/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`));
+        this.formFieldComponents = this.elements.map(({
+            type,
+        }) => () => import(`@Products/components/Form/Field/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`));
     },
     methods: {
         isUserDisallowedToUpdate(scope) {
-            const { languagePrivileges } = this.user;
-            const { code } = this.language;
+            const {
+                languagePrivileges,
+            } = this.user;
+            const {
+                code,
+            } = this.language;
 
-            return !this.$hasAccess(['PRODUCT_UPDATE'])
+            return !this.$hasAccess([
+                'PRODUCT_UPDATE',
+            ])
                 || !languagePrivileges[code].edit
                 || (this.getRootOnLanguagesTree.code !== code && scope === SCOPE.GLOBAL);
         },

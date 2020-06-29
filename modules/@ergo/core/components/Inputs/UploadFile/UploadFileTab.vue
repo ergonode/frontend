@@ -50,18 +50,28 @@
 </template>
 
 <script>
-import { GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
-import { SIZE } from '@Core/defaults/theme';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { formatBytes } from '@Core/models/stringWrapper';
-import { getMappedErrors } from '@Core/models/mappers/errorsMapper';
-import IconUploadFile from '@Core/components/Icons/Actions/IconUploadFile';
+import {
+    GREEN,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import Button from '@Core/components/Buttons/Button';
+import IconUploadFile from '@Core/components/Icons/Actions/IconUploadFile';
 import UploadFileList from '@Core/components/Inputs/UploadFile/List/UploadFileList';
 import UploadFileListElement from '@Core/components/Inputs/UploadFile/List/UploadFileListElement';
 import UploadFileListLoadingElement from '@Core/components/Inputs/UploadFile/List/UploadFileListLoadingElement';
 import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
+import {
+    getMappedErrors,
+} from '@Core/models/mappers/errorsMapper';
+import {
+    formatBytes,
+} from '@Core/models/stringWrapper';
 
 export default {
     name: 'UploadFileTab',
@@ -73,7 +83,9 @@ export default {
         UploadFileListLoadingElement,
         ListScrollableContainer,
     },
-    mixins: [associatedLabelMixin],
+    mixins: [
+        associatedLabelMixin,
+    ],
     data() {
         return {
             files: [],
@@ -99,19 +111,27 @@ export default {
             this.$refs.input.click();
         },
         onUpload(event) {
-            const { files } = event.target;
-            const { length } = this.files;
+            const {
+                files,
+            } = event.target;
+            const {
+                length,
+            } = this.files;
 
             this.isDraggedFileOver = false;
 
             Object.keys(files).forEach((key, index) => {
                 const fixedIndex = length + index;
                 const file = files[key];
-                const { name, size } = file;
+                const {
+                    name, size,
+                } = file;
                 const cancelToken = this.$axios.CancelToken.source();
                 const config = {
                     cancelToken: cancelToken.token,
-                    onUploadProgress: ({ loaded, total }) => {
+                    onUploadProgress: ({
+                        loaded, total,
+                    }) => {
                         this.files[fixedIndex].progressValue = Math.floor((loaded * 100) / total);
                         this.files[fixedIndex].progressInfo = formatBytes(loaded, 2);
                     },
@@ -129,17 +149,28 @@ export default {
                 const formData = new FormData();
                 formData.append('upload', file, name);
 
-                this.$axios.$post('multimedia/upload', formData, config).then(({ id }) => {
-                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'File uploaded' });
+                this.$axios.$post('multimedia/upload', formData, config).then(({
+                    id,
+                }) => {
+                    this.$addAlert({
+                        type: ALERT_TYPE.SUCCESS,
+                        message: 'File uploaded',
+                    });
                     this.isRequestPending = false;
                     this.$emit('uploadedFile', id);
                 }).catch((e) => {
                     if (this.$axios.isCancel(e)) {
-                        this.$addAlert({ type: ALERT_TYPE.INFO, message: e.message });
+                        this.$addAlert({
+                            type: ALERT_TYPE.INFO,
+                            message: e.message,
+                        });
                         this.files.splice(fixedIndex, 1);
                     } else {
                         const errorMessages = e.data && e.data.errors
-                            ? getMappedErrors({ errors: e.data.errors, fieldKey: 'uploader' }).uploader
+                            ? getMappedErrors({
+                                errors: e.data.errors,
+                                fieldKey: 'uploader',
+                            }).uploader
                             : 'Internal server error';
 
                         this.isRequestPending = false;

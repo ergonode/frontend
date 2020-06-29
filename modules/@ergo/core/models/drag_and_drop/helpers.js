@@ -47,5 +47,8 @@ export function getPositionForBrowser(event) {
         yPos = event.pageY;
     }
 
-    return { xPos, yPos };
+    return {
+        xPos,
+        yPos,
+    };
 }

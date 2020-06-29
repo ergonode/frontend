@@ -35,12 +35,16 @@
 </template>
 
 <script>
-import { WHITE, BLUE, GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
-import TitleBarHeader from '@Core/components/TitleBar/TitleBarHeader';
-import TitleBarActions from '@Core/components/TitleBar/TitleBarActions';
-import IconLock from '@Core/components/Icons/Feedback/IconLock';
-import Fab from '@Core/components/Buttons/Fab';
+import {
+    BLUE,
+    GREEN,
+    WHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import InformationIconBadge from '@Core/components/Badges/InformationIconBadge';
+import Fab from '@Core/components/Buttons/Fab';
+import IconLock from '@Core/components/Icons/Feedback/IconLock';
+import TitleBarActions from '@Core/components/TitleBar/TitleBarActions';
+import TitleBarHeader from '@Core/components/TitleBar/TitleBarHeader';
 
 export default {
     name: 'TitleBar',
@@ -83,7 +87,9 @@ export default {
     },
     methods: {
         onBack() {
-            const { breadcrumbs } = this.$route.meta;
+            const {
+                breadcrumbs,
+            } = this.$route.meta;
 
             if (!breadcrumbs) {
                 if (process.env.NODE_ENV !== 'production') {
@@ -93,7 +99,9 @@ export default {
                 return false;
             }
 
-            this.$router.push({ name: breadcrumbs[breadcrumbs.length - 1].routeName });
+            this.$router.push({
+                name: breadcrumbs[breadcrumbs.length - 1].routeName,
+            });
 
             return true;
         },

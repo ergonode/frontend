@@ -7,7 +7,7 @@
         :row="rowIndex"
         :column="columnIndex"
         :locked="isLocked"
-        :copyable="isCopyable"
+        :copyable="false"
         :edit-key-code="32"
         :selected="isSelected"
         @edit="onValueChange">
@@ -16,10 +16,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import GridBoolEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridBoolEditCell';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'GridAttachedDataCell',
@@ -37,7 +41,10 @@ export default {
             required: true,
         },
         rowId: {
-            type: [String, Number],
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
         columnIndex: {
@@ -70,21 +77,44 @@ export default {
             id: state => state.id,
         }),
     },
+    watch: {
+        data() {
+            this.localValue = this.data.value;
+        },
+    },
     methods: {
         onValueChange() {
-            this.localValue = !this.localValue;
-
-            if (this.localValue) {
-                this.$axios.$post(`${this.languageCode}/products/${this.id}/children/add-from-skus`, { skus: [this.data.sku] }).then(() => {
-                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Products has been added' });
+            if (!this.localValue) {
+                this.$axios.$post(`${this.languageCode}/products/${this.id}/children/add-from-skus`, {
+                    skus: [
+                        this.data.sku,
+                    ],
+                }).then(() => {
+                    this.$addAlert({
+                        type: ALERT_TYPE.SUCCESS,
+                        message: 'Products has been added',
+                    });
+                    this.localValue = true;
                 }).catch((e) => {
-                    this.$addAlert({ type: ALERT_TYPE.ERROR, message: e.data });
+                    this.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: e.data,
+                    });
                 });
             } else {
-                this.$axios.$delete(`${this.languageCode}/products/${this.id}/children/${this.rowId}`, { skus: this.data.sku }).then(() => {
-                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Products has been removed' });
+                this.$axios.$delete(`${this.languageCode}/products/${this.id}/children/${this.rowId}`, {
+                    skus: this.data.sku,
+                }).then(() => {
+                    this.$addAlert({
+                        type: ALERT_TYPE.SUCCESS,
+                        message: 'Products has been removed',
+                    });
+                    this.localValue = false;
                 }).catch((e) => {
-                    this.$addAlert({ type: ALERT_TYPE.ERROR, message: e.data });
+                    this.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: e.data,
+                    });
                 });
             }
         },

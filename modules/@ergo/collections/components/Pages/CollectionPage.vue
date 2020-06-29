@@ -39,6 +39,8 @@ import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPag
 
 export default {
     name: 'CollectionPage',
-    mixins: [categoryManagementPageMixin],
+    mixins: [
+        categoryManagementPageMixin,
+    ],
 };
 </script>

@@ -9,9 +9,8 @@
         @remove="removeBindingAttribute">
         <TranslationSelect
             :value="attribute"
-            solid
             required
-            small
+            :size="smallSize"
             :disabled="disabled"
             :options="filteredOptions"
             @input="onValueChange" />
@@ -19,9 +18,15 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 import FormListElementField from '@Core/components/Form/Field/FormListElementField';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ProductAttributeBindingField',
@@ -51,6 +56,9 @@ export default {
         ...mapState('product', {
             bindingAttributesIds: state => state.bindingAttributesIds,
         }),
+        smallSize() {
+            return SIZE.SMALL;
+        },
         attribute() {
             return this.attributes.find(attribute => attribute.id === this.attributeId);
         },

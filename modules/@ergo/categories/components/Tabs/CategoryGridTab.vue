@@ -27,12 +27,21 @@ export default {
     components: {
         ResponsiveCenteredViewTemplate,
     },
-    mixins: [fetchGridDataMixin({ path: 'categories' })],
+    mixins: [
+        fetchGridDataMixin({
+            path: 'categories',
+        }),
+    ],
     methods: {
         onEditRow(args) {
             const lastIndex = args.length - 1;
 
-            this.$router.push({ name: 'category-id-general', params: { id: args[lastIndex] } });
+            this.$router.push({
+                name: 'category-id-general',
+                params: {
+                    id: args[lastIndex],
+                },
+            });
         },
     },
 };

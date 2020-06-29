@@ -5,7 +5,7 @@
 <template>
     <button
         :style="floatingStyle"
-        :class="fabClasses"
+        :class="classes"
         :disabled="disabled"
         @mouseenter="onFocus"
         @mouseleave="onBlur"
@@ -23,11 +23,21 @@
     </button>
 </template>
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
 import {
-    GREEN, GRAPHITE, WHITE, GREY_DARK,
+    GRAPHITE,
+    GREEN,
+    GREY_DARK,
+    WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 
+/**
+ * `Fab` is a default component to display action in page.
+ * It may have any icon component inside `icon` slot.
+ */
 export default {
     name: 'Fab',
     props: {
@@ -93,7 +103,7 @@ export default {
                 ...this.floating,
             };
         },
-        fabClasses() {
+        classes() {
             return [
                 'fab',
                 `fab--${this.theme}`,

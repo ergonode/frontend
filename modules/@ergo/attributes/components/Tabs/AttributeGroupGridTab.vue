@@ -27,12 +27,21 @@ export default {
     components: {
         ResponsiveCenteredViewTemplate,
     },
-    mixins: [fetchGridDataMixin({ path: 'attributes/groups' })],
+    mixins: [
+        fetchGridDataMixin({
+            path: 'attributes/groups',
+        }),
+    ],
     methods: {
         onEditRow(args) {
             const lastIndex = args.length - 1;
 
-            this.$router.push({ name: 'attribute-group-id-general', params: { id: args[lastIndex] } });
+            this.$router.push({
+                name: 'attribute-group-id-general',
+                params: {
+                    id: args[lastIndex],
+                },
+            });
         },
     },
 };
