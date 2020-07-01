@@ -219,9 +219,5 @@ export default {
         & > * {
             margin: 8px 0 0 8px;
         }
-
-        &--disabled {
-
-        }
     }
 </style>

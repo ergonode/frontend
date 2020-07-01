@@ -34,9 +34,9 @@ export default {
 <style lang="scss" scoped>
     .grid-preloader {
         display: flex;
+        flex: 1;
         justify-content: center;
         align-items: center;
-        flex: 1;
         padding: 24px;
 
         &__title {
