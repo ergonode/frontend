@@ -32,6 +32,10 @@ import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
 import {
+    getPositionForBrowser,
+    isMouseInsideElement,
+} from '@Core/models/drag_and_drop/helpers';
+import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
@@ -141,7 +145,7 @@ export default {
                 index: this.index,
             });
             this.setDraggableState({
-                propName: 'draggedElementOnGrid',
+                propName: 'isElementDragging',
                 value: DRAGGED_ELEMENT.TEMPLATE,
             });
             window.requestAnimationFrame(() => { this.isDragged = true; });
@@ -162,18 +166,26 @@ export default {
             this.$emit('highlightedPositionChange', this.highlightingPositions);
         },
         onDragEnd(event) {
+            removeElementCopyFromDocumentBody(event);
+
+            const {
+                xPos,
+                yPos,
+            } = getPositionForBrowser(event);
+            const trashElement = document.documentElement.querySelector('.drop-zone');
+            const isDroppedToTrash = isMouseInsideElement(trashElement, xPos, yPos);
+
             this.isDragged = false;
             this.highlightingPositions = [];
             this.setDraggedElement();
             this.setDraggableState({
-                propName: 'draggedElementOnGrid',
+                propName: 'isElementDragging',
                 value: null,
             });
-            removeElementCopyFromDocumentBody(event);
-            this.setDraggableState({
-                propName: 'draggedElementOnGrid',
-                value: null,
-            });
+
+            if (isDroppedToTrash) {
+                this.$emit('remove', this.index);
+            }
 
             this.$emit('highlightedPositionChange', []);
         },

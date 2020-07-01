@@ -11,6 +11,7 @@
                 :data-count="filtered"
                 :data="data"
                 :collection-cell-binding="collectionCellBinding"
+                :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-collection-layout="true"
                 :is-header-visible="true"

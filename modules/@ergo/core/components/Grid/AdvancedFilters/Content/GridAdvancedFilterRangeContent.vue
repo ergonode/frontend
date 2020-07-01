@@ -3,82 +3,101 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridAdvancedFilterBaseContent
-        :is-empty-record="filter.value.isEmptyRecord"
+    <GridAdvancedFilterContent
+        :value="value.isEmptyRecord"
         @input="onEmptyRecordChange">
         <div class="container">
             <TextField
-                :value="filter.value[operators.GREATER_OR_EQUAL]"
-                :input="{ type: 'number', max: filter.value[operators.SMALLER_OR_EQUAL] }"
+                :value="value[operators.GREATER_OR_EQUAL]"
+                :input="{ type: 'number', max: value[operators.SMALLER_OR_EQUAL] }"
                 placeholder="From"
-                underline
-                center-alignment
-                small
+                :type="underlineInputType"
+                :alignment="centerAlignment"
+                :size="smallSize"
                 @input="onFromValueChange" />
             <span class="dash">-</span>
             <TextField
-                :value="filter.value[operators.SMALLER_OR_EQUAL]"
-                :input="{ type: 'number', min: filter.value[operators.GREATER_OR_EQUAL] }"
+                :value="value[operators.SMALLER_OR_EQUAL]"
+                :input="{ type: 'number', min: value[operators.GREATER_OR_EQUAL] }"
                 placeholder="To"
-                underline
-                center-alignment
-                small
+                :type="underlineInputType"
+                :alignment="centerAlignment"
+                :size="smallSize"
                 @input="onToValueChange" />
         </div>
-    </GridAdvancedFilterBaseContent>
+    </GridAdvancedFilterContent>
 </template>
 
 <script>
-import GridAdvancedFilterBaseContent from '@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
+import GridAdvancedFilterContent from '@Core/components/Grid/AdvancedFilters/Content/GridAdvancedFilterContent';
 import TextField from '@Core/components/Inputs/TextField';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
+import {
+    ALIGNMENT,
+    INPUT_TYPE,
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'GridAdvancedFilterRangeContent',
     components: {
         TextField,
-        GridAdvancedFilterBaseContent,
+        GridAdvancedFilterContent,
     },
     props: {
-        filter: {
+        value: {
             type: Object,
-            required: true,
+            default: () => ({
+                isEmptyRecord: false,
+            }),
         },
     },
     computed: {
+        underlineInputType() {
+            return INPUT_TYPE.UNDERLINE;
+        },
+        smallSize() {
+            return SIZE.SMALL;
+        },
+        centerAlignment() {
+            return ALIGNMENT.CENTER;
+        },
         operators() {
             return FILTER_OPERATOR;
         },
     },
     methods: {
         onFromValueChange(value) {
-            const filterValue = this.filter.value[FILTER_OPERATOR.GREATER_OR_EQUAL];
+            const filterValue = this.value[FILTER_OPERATOR.GREATER_OR_EQUAL];
 
-            if (+value <= +this.filter.value[FILTER_OPERATOR.SMALLER_OR_EQUAL]
+            if (+value <= +this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL]
                 || typeof filterValue === 'undefined'
                 || filterValue === '') {
                 this.$emit('input', {
-                    value,
                     key: FILTER_OPERATOR.GREATER_OR_EQUAL,
+                    value,
                 });
             }
         },
         onToValueChange(value) {
-            const filterValue = this.filter.value[FILTER_OPERATOR.SMALLER_OR_EQUAL];
+            const filterValue = this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL];
 
-            if (+value >= +this.filter.value[FILTER_OPERATOR.GREATER_OR_EQUAL]
+            if (+value >= +this.value[FILTER_OPERATOR.GREATER_OR_EQUAL]
                 || typeof filterValue === 'undefined'
                 || filterValue === '') {
                 this.$emit('input', {
-                    value,
                     key: FILTER_OPERATOR.SMALLER_OR_EQUAL,
+                    value,
                 });
             }
         },
         onEmptyRecordChange(value) {
-            this.$emit('emptyRecord', value);
+            this.$emit('input', {
+                key: 'isEmptyRecord',
+                value,
+            });
         },
     },
 };

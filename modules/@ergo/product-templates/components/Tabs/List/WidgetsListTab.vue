@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <VerticalTabBarListWrapper>
+    <VerticalTabBarList>
         <ListHeader header="Widgets" />
         <List>
             <ListScrollableContainer>
@@ -13,7 +13,7 @@
                     :item="widget" />
             </ListScrollableContainer>
         </List>
-    </VerticalTabBarListWrapper>
+    </VerticalTabBarList>
 </template>
 
 <script>
@@ -25,7 +25,7 @@ import {
 export default {
     name: 'WidgetsListTab',
     components: {
-        VerticalTabBarListWrapper: () => import('@Core/components/TabBar/VerticalTabBarListWrapper'),
+        VerticalTabBarList: () => import('@Core/components/TabBar/VerticalTabBarList'),
         List: () => import('@Core/components/List/List'),
         ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
         WidgetsListElement: () => import('@Templates/components/Lists/Widgets/WidgetsListElement'),

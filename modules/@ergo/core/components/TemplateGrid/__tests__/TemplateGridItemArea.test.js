@@ -27,7 +27,7 @@ describe('TemplateGrid/TemplateGridItemArea', () => {
         expect(TemplateGridItemArea.name).toEqual('TemplateGridItemArea');
     });
     it('Component has main class', () => {
-        expect(wrapper.contains('.grid__item-area')).toBeTruthy();
+        expect(wrapper.find('.grid__item-area')).toBeTruthy();
         expect(wrapper).toMatchSnapshot();
     });
     it('Check item data', () => {
@@ -35,7 +35,7 @@ describe('TemplateGrid/TemplateGridItemArea', () => {
             column: 1,
             id: 'test',
         });
-        expect(wrapper.contains('[item-id="test"]')).toBe(true);
+        expect(wrapper.find('[item-id="test"]')).toBeTruthy();
     });
     it('Check item style with default props', () => {
         expect(wrapper.vm.gridItemStyles).toStrictEqual({

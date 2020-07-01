@@ -40,8 +40,8 @@ describe('TemplateGrid/TemplateGridPresentationLayer', () => {
 
     it('Check main classes witch default props', () => {
         const children = wrapper.findAll('.presentation-layer > div');
-        expect(wrapper.contains('.presentation-layer')).toBeTruthy();
-        expect(wrapper.contains('.presentation-layer__border-top')).toBeTruthy();
+        expect(wrapper.find('.presentation-layer')).toBeTruthy();
+        expect(wrapper.find('.presentation-layer__border-top')).toBeTruthy();
         expect(children.length).toEqual(4);
         expect(children.at(0).contains('.shadow-grid-item--last-row')).toBeFalsy();
         expect(children.at(1).contains('.shadow-grid-item--last-row')).toBeFalsy();
@@ -59,7 +59,7 @@ describe('TemplateGrid/TemplateGridPresentationLayer', () => {
     //
     //     const children = wrapper.findAll('.presentation-layer > div');
     //     expect(wrapper.find('.presentation-layer').exists()).toBeTruthy();
-    //     expect(wrapper.contains('.presentation-layer__border-top')).toBeFalsy();
+    //     expect(wrapper.find('.presentation-layer__border-top')).toBeFalsy();
     //     expect(children.length).toEqual(6);
     //     expect(wrapper).toMatchSnapshot();
     // });

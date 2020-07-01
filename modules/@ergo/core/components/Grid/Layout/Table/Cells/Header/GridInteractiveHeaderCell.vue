@@ -45,6 +45,9 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import {
+    isObject,
+} from '@Core/models/objectWrapper';
+import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -90,7 +93,7 @@ export default {
     },
     computed: {
         ...mapState('draggable', {
-            draggedElementOnGrid: state => state.draggedElementOnGrid,
+            isElementDragging: state => state.isElementDragging,
             draggedElement: state => state.draggedElement,
         }),
         contextualMenuItems() {
@@ -108,7 +111,8 @@ export default {
             return GRAPHITE_LIGHT;
         },
         isColumnExists() {
-            return this.draggedElement === this.columnId;
+            return (isObject(this.draggedElement) && this.draggedElement.id === this.columnId)
+                || this.draggedElement === this.columnId;
         },
         isSorted() {
             return this.sortedColumn.index === this.columnId;
@@ -198,11 +202,11 @@ export default {
             return children[index];
         },
         onMouseEnter() {
-            if (this.draggedElementOnGrid || this.isHeaderFocused()) return;
+            if (this.isElementDragging || this.isHeaderFocused()) return;
             this.addColumnHover();
         },
         onMouseLeave() {
-            if (this.draggedElementOnGrid || this.isHeaderFocused()) return;
+            if (this.isElementDragging || this.isHeaderFocused()) return;
             this.removeColumnHover();
         },
         isHeaderFocused() {

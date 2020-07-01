@@ -3,18 +3,18 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridAdvancedFilterBaseContent
-        :is-empty-record="filter.value.isEmptyRecord"
+    <GridAdvancedFilterContent
+        :value="value.isEmptyRecord"
         @input="onEmptyRecordChange">
         <DateRangePickerContent
             :value="parsedDate"
-            :input-header="true"
+            :format="format"
             @input="onValueChange" />
-    </GridAdvancedFilterBaseContent>
+    </GridAdvancedFilterContent>
 </template>
 
 <script>
-import GridAdvancedFilterBaseContent from '@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
+import GridAdvancedFilterContent from '@Core/components/Grid/AdvancedFilters/Content/GridAdvancedFilterContent';
 import DateRangePickerContent from '@Core/components/Inputs/DatePicker/DateRangePickerContent';
 import {
     FILTER_OPERATOR,
@@ -30,13 +30,19 @@ import {
 export default {
     name: 'GridAdvancedFilterDateContent',
     components: {
-        GridAdvancedFilterBaseContent,
+        GridAdvancedFilterContent,
         DateRangePickerContent,
     },
     props: {
-        filter: {
+        value: {
             type: Object,
-            required: true,
+            default: () => ({
+                isEmptyRecord: false,
+            }),
+        },
+        format: {
+            type: String,
+            default: DEFAULT_FORMAT,
         },
     },
     computed: {
@@ -44,16 +50,16 @@ export default {
             return DEFAULT_FORMAT;
         },
         parsedDate() {
-            const dateFrom = this.filter.value[FILTER_OPERATOR.GREATER_OR_EQUAL] ? parseDate(
-                this.filter.value[FILTER_OPERATOR.GREATER_OR_EQUAL], this.dateFormat, new Date(),
-            ) : null;
-            const dateTo = this.filter.value[FILTER_OPERATOR.SMALLER_OR_EQUAL] ? parseDate(
-                this.filter.value[FILTER_OPERATOR.SMALLER_OR_EQUAL], this.dateFormat, new Date(),
-            ) : null;
+            const valueFrom = this.value[FILTER_OPERATOR.GREATER_OR_EQUAL];
+            const valueTo = this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL];
 
             return {
-                from: dateFrom,
-                to: dateTo,
+                from: valueFrom
+                    ? parseDate(valueFrom, this.dateFormat, new Date())
+                    : null,
+                to: valueTo
+                    ? parseDate(valueTo, this.dateFormat, new Date())
+                    : null,
             };
         },
     },
@@ -64,22 +70,25 @@ export default {
             const dateFrom = from ? formatDate(from, this.dateFormat) : null;
             const dateTo = to ? formatDate(to, this.dateFormat) : null;
 
-            if (this.filter.value[FILTER_OPERATOR.GREATER_OR_EQUAL] !== dateFrom
+            if (this.value[FILTER_OPERATOR.GREATER_OR_EQUAL] !== dateFrom
                 && dateFrom) {
                 this.$emit('input', {
-                    value: dateFrom,
                     key: FILTER_OPERATOR.GREATER_OR_EQUAL,
+                    value: dateFrom,
                 });
-            } else if (this.filter.value[FILTER_OPERATOR.SMALLER_OR_EQUAL] !== dateTo
+            } else if (this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL] !== dateTo
                 && dateTo) {
                 this.$emit('input', {
-                    value: dateTo,
                     key: FILTER_OPERATOR.SMALLER_OR_EQUAL,
+                    value: dateTo,
                 });
             }
         },
         onEmptyRecordChange(value) {
-            this.$emit('emptyRecord', value);
+            this.$emit('input', {
+                key: 'isEmptyRecord',
+                value,
+            });
         },
     },
 };

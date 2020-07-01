@@ -5,7 +5,18 @@
 <template>
     <GridViewTemplate>
         <template #sidebar>
-            <VerticalTabBar :items="verticalTabs" />
+            <VerticalTabBar :items="verticalTabs">
+                <FadeTransition>
+                    <DropZone
+                        v-show="isDropZoneVisible"
+                        :hover-background-color="graphiteLightColor"
+                        title="REMOVE ELEMENT">
+                        <template #icon="{ color }">
+                            <IconRemoveFilter :fill-color="color" />
+                        </template>
+                    </DropZone>
+                </FadeTransition>
+            </VerticalTabBar>
         </template>
         <template #grid>
             <TemplateGridDesigner
@@ -29,7 +40,8 @@
                             :rows-number="maxLayoutRow"
                             :disabled="!isUserAllowedToUpdate"
                             @highlightedPositionChange="onHighlightedPositionsChange"
-                            @resizingElMaxRow="onResizingElMaxRow">
+                            @resizingElMaxRow="onResizingElMaxRow"
+                            @remove="onRemoveLayoutElement">
                             <template #content>
                                 <AttributeElementContent
                                     v-if="element.type !== sectionType"
@@ -61,10 +73,22 @@
 import {
     SYSTEM_TYPES,
 } from '@Attributes/defaults/attributes';
+import {
+    GRAPHITE_LIGHT,
+} from '@Core/assets/scss/_js-variables/colors.scss';
+import DropZone from '@Core/components/DropZone/DropZone';
+import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
+import FadeTransition from '@Core/components/Transitions/FadeTransition';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import {
     getObjectWithMaxValueInArrayByObjectKey,
 } from '@Core/models/arrayWrapper';
+import {
+    isObject,
+} from '@Core/models/objectWrapper';
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
 import TemplateGridDraggableLayer from '@Templates/components/Template/Base/TemplateGridDraggableLayer';
 import TemplateGridPlaceholderItem from '@Templates/components/Template/Base/TemplateGridPlaceholderItem';
@@ -80,11 +104,14 @@ import {
 export default {
     name: 'TemplateDesignerTab',
     components: {
+        DropZone,
+        FadeTransition,
         GridViewTemplate,
         TemplateGridDesigner,
         TemplateGridDraggableLayer,
         TemplateGridPlaceholderItem,
         LayoutElement,
+        IconRemoveFilter,
         VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
         SectionTemplateModalForm: () => import('@Templates/components/Modals/SectionTemplateModalForm'),
         AttributeElementContent: () => import('@Templates/components/Template/ProductDesigner/AttributeElementContent'),
@@ -110,8 +137,14 @@ export default {
         }),
         ...mapState('draggable', {
             draggedElement: state => state.draggedElement,
-            isListElementDragging: state => state.isListElementDragging,
+            isElementDragging: state => state.isElementDragging,
         }),
+        isDropZoneVisible() {
+            return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
+        },
+        graphiteLightColor() {
+            return GRAPHITE_LIGHT;
+        },
         verticalTabs() {
             return [
                 {
@@ -166,8 +199,12 @@ export default {
         },
     },
     watch: {
-        isListElementDragging() {
-            if (this.isListElementDragging) {
+        isElementDragging() {
+            if (this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE) {
+                return false;
+            }
+
+            if (this.isElementDragging === DRAGGED_ELEMENT.LIST) {
                 this.highlightedPositions = getHighlightingLayoutDropPositions({
                     draggedElWidth: 1,
                     draggedElHeight: 1,
@@ -178,6 +215,8 @@ export default {
             } else {
                 this.highlightedPositions = [];
             }
+
+            return true;
         },
     },
     methods: {
@@ -185,7 +224,11 @@ export default {
             'setTitle',
             'addListElementToLayout',
             'updateLayoutElementPosition',
+            'removeLayoutElementAtIndex',
         ]),
+        onRemoveLayoutElement(index) {
+            this.removeLayoutElementAtIndex(index);
+        },
         onResizingElMaxRow(row) {
             if (row > this.maxRow) {
                 this.maxRow = row;
@@ -202,7 +245,7 @@ export default {
         updateLayoutElement(position) {
             this.highlightedPositions = [];
 
-            if (typeof this.draggedElement === 'object') {
+            if (isObject(this.draggedElement)) {
                 const {
                     row, column,
                 } = position;

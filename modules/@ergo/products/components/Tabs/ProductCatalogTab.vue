@@ -5,7 +5,20 @@
 <template>
     <GridViewTemplate>
         <template #sidebar>
-            <VerticalTabBar :items="verticalTabs" />
+            <VerticalTabBar :items="verticalTabs">
+                <FadeTransition>
+                    <DropZone
+                        v-show="isDropZoneVisible"
+                        :hover-background-color="graphiteLightColor"
+                        :title="dropZoneTitle">
+                        <template #icon="{ color }">
+                            <Component
+                                :is="dropZoneIconComponent"
+                                :fill-color="color" />
+                        </template>
+                    </DropZone>
+                </FadeTransition>
+            </VerticalTabBar>
         </template>
         <template #grid>
             <Grid
@@ -15,6 +28,7 @@
                 :advanced-filters="advancedFilters"
                 :data-count="filtered"
                 :collection-cell-binding="collectionCellBinding"
+                :is-prefetching-data="isPrefetchingData"
                 :is-advanced-filters="true"
                 :is-header-visible="true"
                 :is-basic-filter="true"
@@ -25,12 +39,7 @@
                 @focusCell="onFocusCell"
                 @removeRow="onRemoveRow"
                 @dropColumn="onDropColumn"
-                @removeFilter="removeFilterAtIndex"
-                @updateFilter="updateFilterValueAtIndex"
-                @clearFilter="clearFilterAtIndex"
-                @swapFilters="swapFiltersPosition"
-                @removeAllFilters="removeAllFilters"
-                @dropFilter="dropFilter"
+                @dropFilter="onDropFilter"
                 @fetchData="getGridData">
                 <template #actions>
                     <!--
@@ -65,11 +74,22 @@
 
 <script>
 // import getProductDraft from '@Products/services/getProductDraft.service';
+import {
+    GRAPHITE_LIGHT,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import Button from '@Core/components/Buttons/Button';
+import DropZone from '@Core/components/DropZone/DropZone';
+import IconRemoveColumn from '@Core/components/Icons/Actions/IconRemoveColumn';
+import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
+import VerticalTabBar from '@Core/components/TabBar/VerticalTabBar';
+import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import {
     SIZE,
     THEME,
@@ -88,7 +108,11 @@ export default {
     components: {
         GridViewTemplate,
         Button,
-        VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
+        DropZone,
+        VerticalTabBar,
+        IconRemoveFilter,
+        IconRemoveColumn,
+        FadeTransition,
         // RestoreAttributeParentModalConfirm: () => import('@Products/components/Modals/RestoreAttributeParentModalConfirm'),
         // IconRestore: () => import('@Core/components/Icons/Actions/IconRestore'),
     },
@@ -104,16 +128,47 @@ export default {
         };
     },
     computed: {
-        ...mapState('draggable', {
-            isListElementDragging: state => state.isListElementDragging,
-            draggedElement: state => state.draggedElement,
-        }),
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
         ...mapState('grid', {
             drafts: state => state.drafts,
         }),
+        ...mapState('draggable', {
+            isElementDragging: state => state.isElementDragging,
+            draggedElement: state => state.draggedElement,
+        }),
+        graphiteLightColor() {
+            return GRAPHITE_LIGHT;
+        },
+        isDropZoneVisible() {
+            if (this.draggedElement
+                && typeof this.draggedElement.deletable !== 'undefined'
+                && !this.draggedElement.deletable) {
+                return false;
+            }
+
+            return this.isElementDragging === DRAGGED_ELEMENT.COLUMN
+                || this.isElementDragging === DRAGGED_ELEMENT.FILTER;
+        },
+        dropZoneTitle() {
+            if (!this.isElementDragging) {
+                return '';
+            }
+
+            return this.isElementDragging === DRAGGED_ELEMENT.COLUMN
+                ? 'REMOVE COLUMN'
+                : 'REMOVE FILTER';
+        },
+        dropZoneIconComponent() {
+            if (!this.isElementDragging) {
+                return null;
+            }
+
+            return this.isElementDragging === DRAGGED_ELEMENT.COLUMN
+                ? IconRemoveColumn
+                : IconRemoveFilter;
+        },
         collectionCellBinding() {
             return {
                 imageColumn: `esa_default_image:${this.userLanguageCode}`,

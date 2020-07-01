@@ -3,12 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        :class="['grid-header', {
-            'grid-header--borders': isCenteredView,
-            'grid-header--disabled': isFilterExists
-        }]">
-        <GridDropZone
+    <div :class="classes">
+        <DropZone
             v-show="isListElementDragging && !isFilterExists"
             :orientation="horizontalOrientation"
             title="ADD FILTER"
@@ -16,9 +12,9 @@
             <template #icon="{ color }">
                 <IconAddFilter :fill-color="color" />
             </template>
-        </GridDropZone>
-        <div class="grid-header__settings">
-            <div class="grid-header__actions">
+        </DropZone>
+        <GridHeaderSettings>
+            <template #actions>
                 <!-- TODO: Uncomment when mass actions are implemented-->
                 <!-- <ActionButton
                     title="ACTIONS"
@@ -32,12 +28,12 @@
                 <ExpandNumericButton
                     v-if="isAdvancedFilters"
                     title="FILTERS"
-                    :number="filtersNumber"
+                    :number="filtersCount"
                     :is-expanded="isFiltersExpanded"
                     @click.native="onFiltersExpand" />
                 <slot name="actions" />
-            </div>
-            <div class="grid-header__layout-configuration">
+            </template>
+            <template #configuration>
                 <GridTableLayoutActivator
                     :is-selected="layout === gridLayouts.TABLE"
                     @active="onLayoutActivate" />
@@ -53,8 +49,8 @@
                     </template>
                 </Fab>
                 <slot name="configuration" />
-            </div>
-        </div>
+            </template>
+        </GridHeaderSettings>
         <GridSettingsModalForm
             v-if="isSettingsModal"
             :table-layout-config="tableLayoutConfig"
@@ -62,30 +58,23 @@
             :is-collection-layout="isCollectionLayout"
             @close="onCloseModal"
             @apply="onApplySettings" />
-        <GridAdvancedFiltersContainer v-show="isFiltersExpanded && isAdvancedFilters">
-            <GridAdvancedFilter
-                v-for="(filter, index) in filters"
-                :key="index"
-                :index="index"
-                :filter="filter"
-                @apply="onApplyFilter"
-                @update="onUpdateFilterAtIndex"
-                @clear="onClearFilterAtIndex"
-                @remove="onRemoveFilterAtIndex"
-                @swap="onSwapFiltersPosition" />
-            <GridAdvancedFilterPlaceholder v-if="!filters.length && !isListElementDragging" />
-            <GridAdvancedFiltersRemoveAllButton
-                v-show="filtersNumber"
-                @click.native="onRemoveAll" />
-        </GridAdvancedFiltersContainer>
+        <GridAdvancedFilters
+            v-show="isFiltersExpanded && isAdvancedFilters"
+            :filters="filters"
+            @filter="onFilter"
+            @count="onFiltersCountChange"
+            @exists="onFilterExists" />
     </div>
 </template>
 
 <script>
-import GridDropZone from '@Core/components/Grid/GridDropZone';
+import DropZone from '@Core/components/DropZone/DropZone';
+import GridAdvancedFilters from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilters';
+import GridHeaderSettings from '@Core/components/Grid/Header/GridHeaderSettings';
 import GridCollectionLayoutActivator from '@Core/components/Grid/Layout/Collection/GridCollectionLayoutActivator';
 import GridTableLayoutActivator from '@Core/components/Grid/Layout/Table/GridTableLayoutActivator';
 import {
+    DRAGGED_ELEMENT,
     GRID_LAYOUT,
 } from '@Core/defaults/grid';
 import {
@@ -98,6 +87,9 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import {
+    insertCookieAtIndex,
+} from '@Core/models/cookies';
+import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -107,7 +99,9 @@ export default {
     components: {
         GridTableLayoutActivator,
         GridCollectionLayoutActivator,
-        GridDropZone,
+        GridHeaderSettings,
+        GridAdvancedFilters,
+        DropZone,
         IconAddFilter: () => import('@Core/components/Icons/Actions/IconAddFilter'),
         GridSettingsModalForm: () => import('@Core/components/Grid/Modals/GridSettingsModalForm'),
         // ActionButton: () => import('@Core/components/Buttons/ActionButton'),
@@ -115,10 +109,6 @@ export default {
         Fab: () => import('@Core/components/Buttons/Fab'),
         IconSettings: () => import('@Core/components/Icons/Actions/IconSettings'),
         // IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
-        GridAdvancedFiltersContainer: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFiltersContainer'),
-        GridAdvancedFilter: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFilter'),
-        GridAdvancedFiltersRemoveAllButton: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFiltersRemoveAllButton'),
-        GridAdvancedFilterPlaceholder: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder'),
     },
     props: {
         tableLayoutConfig: {
@@ -157,26 +147,30 @@ export default {
     data() {
         return {
             isFiltersExpanded: false,
+            isFilterExists: false,
             isSettingsModal: false,
+            filtersCount: 0,
         };
     },
     computed: {
         ...mapState('draggable', {
-            isListElementDragging: state => state.isListElementDragging,
+            isElementDragging: state => state.isElementDragging,
             draggedElement: state => state.draggedElement,
         }),
+        classes() {
+            return [
+                'grid-header',
+                {
+                    'grid-header--borders': this.isCenteredView,
+                    'grid-header--disabled': this.isFilterExists && this.isListElementDragging,
+                },
+            ];
+        },
+        isListElementDragging() {
+            return this.isElementDragging === DRAGGED_ELEMENT.LIST;
+        },
         horizontalOrientation() {
             return LAYOUT_ORIENTATION.HORIZONTAL;
-        },
-        filtersNumber() {
-            return this.filters.length;
-        },
-        isFilterExists() {
-            const draggedElIndex = this.filters.findIndex(
-                filter => filter.id === this.draggedElement,
-            );
-
-            return draggedElIndex !== -1 && this.isAdvancedFilters;
         },
         theme() {
             return THEME;
@@ -195,6 +189,12 @@ export default {
         onLayoutActivate(layout) {
             this.$emit('layoutChange', layout);
         },
+        onFiltersCountChange(count) {
+            this.filtersCount = count;
+        },
+        onFilterExists(isExist) {
+            this.isFilterExists = isExist;
+        },
         onFiltersExpand() {
             this.isFiltersExpanded = !this.isFiltersExpanded;
         },
@@ -209,25 +209,17 @@ export default {
             this.$emit('applySettings', payload);
         },
         onDropFilter(id) {
+            insertCookieAtIndex({
+                cookies: this.$cookies,
+                cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
+                index: 0,
+                data: id,
+            });
+
             this.$emit('dropFilter', id);
         },
-        onUpdateFilterAtIndex(payload) {
-            this.$emit('updateFilter', payload);
-        },
-        onClearFilterAtIndex(payload) {
-            this.$emit('clearFilter', payload);
-        },
-        onRemoveFilterAtIndex(index) {
-            this.$emit('removeFilter', index);
-        },
-        onSwapFiltersPosition(payload) {
-            this.$emit('swapFilters', payload);
-        },
-        onApplyFilter() {
-            this.$emit('applyFilter');
-        },
-        onRemoveAll() {
-            this.$emit('removeAllFilters');
+        onFilter(filters) {
+            this.$emit('filter', filters);
         },
     },
 };
@@ -242,26 +234,6 @@ export default {
         box-sizing: border-box;
         background-color: $WHITE;
         border-left: $BORDER_1_GREY;
-
-        &__settings {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 16px 0;
-            box-sizing: border-box;
-            background-color: $WHITE;
-        }
-
-        &__layout-configuration {
-            display: flex;
-            align-items: center;
-        }
-
-        &__actions {
-            display: grid;
-            grid-auto-flow: column;
-            grid-column-gap: 8px;
-        }
 
         &--borders {
             border-top: $BORDER_1_GREY;

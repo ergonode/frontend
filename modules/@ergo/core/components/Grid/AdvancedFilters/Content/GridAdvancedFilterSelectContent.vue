@@ -3,12 +3,12 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridAdvancedFilterBaseContent
-        :is-empty-record="filter.value.isEmptyRecord"
+    <GridAdvancedFilterContent
+        :value="value.isEmptyRecord"
         @input="onEmptyRecordChange">
         <List>
             <ListElement
-                v-for="(option, index) in filter.options"
+                v-for="(option, index) in options"
                 :key="index"
                 :size="smallSize"
                 :selected="index === selectedOptionIndex"
@@ -16,16 +16,16 @@
                 <ListElementDescription>
                     <ListElementTitle
                         :size="smallSize"
-                        :hint="option.value ? `#${option.key} ${filter.languageCode}` : ''"
+                        :hint="option.value ? `#${option.key} ${languageCode}` : ''"
                         :title="option.value || `#${option.key}`" />
                 </ListElementDescription>
             </ListElement>
         </List>
-    </GridAdvancedFilterBaseContent>
+    </GridAdvancedFilterContent>
 </template>
 
 <script>
-import GridAdvancedFilterBaseContent from '@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
+import GridAdvancedFilterContent from '@Core/components/Grid/AdvancedFilters/Content/GridAdvancedFilterContent';
 import List from '@Core/components/List/List';
 import ListElement from '@Core/components/List/ListElement';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
@@ -40,16 +40,26 @@ import {
 export default {
     name: 'GridAdvancedFilterSelectContent',
     components: {
-        GridAdvancedFilterBaseContent,
+        GridAdvancedFilterContent,
         List,
         ListElement,
         ListElementDescription,
         ListElementTitle,
     },
     props: {
-        filter: {
+        value: {
             type: Object,
+            default: () => ({
+                isEmptyRecord: false,
+            }),
+        },
+        languageCode: {
+            type: String,
             required: true,
+        },
+        options: {
+            type: Array,
+            default: () => [],
         },
     },
     data() {
@@ -62,7 +72,7 @@ export default {
             return SIZE.SMALL;
         },
         filterValue() {
-            return this.filter.value[FILTER_OPERATOR.EQUAL] || '';
+            return this.value[FILTER_OPERATOR.EQUAL] || '';
         },
     },
     watch: {
@@ -75,7 +85,7 @@ export default {
     },
     methods: {
         initSelectedOptions() {
-            this.selectedOptionIndex = this.filter.options
+            this.selectedOptionIndex = this.options
                 .findIndex(option => option.key === this.filterValue);
         },
         onSelectValue(value) {
@@ -85,7 +95,10 @@ export default {
             });
         },
         onEmptyRecordChange(value) {
-            this.$emit('emptyRecord', value);
+            this.$emit('input', {
+                key: 'isEmptyRecord',
+                value,
+            });
         },
     },
 };

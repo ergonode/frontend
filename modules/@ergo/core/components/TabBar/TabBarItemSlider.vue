@@ -32,7 +32,7 @@ export default {
 <style lang="scss" scoped>
     .tab-bar-item-slider {
         position: absolute;
-        top: 38px;
+        top: 39px;
         left: 0;
         z-index: $Z_INDEX_LVL_1;
         width: 176px;

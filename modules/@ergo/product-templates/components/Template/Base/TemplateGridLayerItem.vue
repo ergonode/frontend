@@ -16,6 +16,9 @@
 </template>
 <script>
 import {
+    isObject,
+} from '@Core/models/objectWrapper';
+import {
     mapState,
 } from 'vuex';
 
@@ -79,7 +82,7 @@ export default {
         ghostItemBoundsStyle() {
             let draggedElementWidth = 1;
             let draggedElementHeight = 1;
-            if (typeof this.draggedElement === 'object') {
+            if (isObject(this.draggedElement)) {
                 draggedElementWidth = this.draggedElement.width;
                 draggedElementHeight = this.draggedElement.height;
             }

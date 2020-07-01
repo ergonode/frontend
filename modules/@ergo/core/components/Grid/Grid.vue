@@ -17,16 +17,10 @@
             :is-collection-layout="isCollectionLayout"
             :is-centered-view="isCenteredView"
             :filters="advancedFilters"
+            @filter="onAdvancedFilterChange"
             @layoutChange="onLayoutChange"
             @applySettings="onApplySettings"
-            @dropFilter="onDropFilter"
-            @updateFilter="onUpdateFilterAtIndex"
-            @removeFilter="onRemoveFilterAtIndex"
-            @removeGhostFilter="onRemoveGhostFilterAtIndex"
-            @clearFilter="onClearFilterAtIndex"
-            @swapFilters="onSwapFiltersPosition"
-            @applyFilter="emitFetchData"
-            @removeAllFilters="onRemoveAll">
+            @dropFilter="onDropFilter">
             <template #actions>
                 <slot name="actions" />
             </template>
@@ -34,66 +28,66 @@
                 <slot name="configuration" />
             </template>
         </GridHeader>
-        <div
-            :class="[
-                'grid__body',
-                {
-                    'grid__body--disabled': isListElementDragging && isColumnExists,
-                }
-            ]">
-            <GridDropZone
-                v-show="isListElementDragging && !isColumnExists"
-                @drop="onDropColumn" />
-            <GridTableLayout
-                v-if="isTableLayout"
-                :columns="columns"
-                :data="data"
-                :advanced-filters-values="advancedFiltersValues"
-                :current-page="currentPage"
-                :max-rows="maxRows"
-                :row-height="tableLayoutConfig.rowHeight"
-                :is-editable="isEditable"
-                :is-select-column="isSelectColumn"
-                :is-basic-filter="isBasicFilter"
-                @sort="onSortColumn"
-                @filter="onFilterChange"
-                @editCell="onEditCell"
-                @editCells="onEditCells"
-                @focusCell="onFocusCell"
-                @editRow="onEditRow"
-                @removeRow="onRemoveRow"
-                @removeColumn="onRemoveColumn"
-                @swapColumns="onSwapColumns"
-                @insertColumn="onInsertColumn" />
-            <GridCollectionLayout
-                v-else-if="isCollectionLayout && collectionData.length"
-                :data="collectionData"
-                :columns-number="collectionLayoutConfig.columnsNumber"
-                :object-fit="collectionLayoutConfig.scaling"
-                @editRow="onEditRow" />
-            <GridPlaceholder v-if="dataCount === 0" />
-        </div>
-        <div
-            class="grid__footer"
-            v-if="isFooterVisible">
+        <GridBody :disabled="isListElementDragging && isColumnExists">
+            <GridPreloader v-if="isPrefetchingData" />
+            <template v-else>
+                <DropZone
+                    v-show="isListElementDragging && !isColumnExists"
+                    title="ADD COLUMN"
+                    @drop="onDropColumn">
+                    <template #icon="{ color }">
+                        <IconAddColumn :fill-color="color" />
+                    </template>
+                </DropZone>
+                <GridTableLayout
+                    v-if="isTableLayout"
+                    :columns="columns"
+                    :data="data"
+                    :current-page="currentPage"
+                    :max-rows="maxRows"
+                    :row-height="tableLayoutConfig.rowHeight"
+                    :is-editable="isEditable"
+                    :is-select-column="isSelectColumn"
+                    :is-basic-filter="isBasicFilter"
+                    @sort="onSortColumn"
+                    @filter="onFilterChange"
+                    @editCell="onEditCell"
+                    @editCells="onEditCells"
+                    @focusCell="onFocusCell"
+                    @editRow="onEditRow"
+                    @removeRow="onRemoveRow" />
+                <GridCollectionLayout
+                    v-else-if="isCollectionLayout && collectionData.length"
+                    :data="collectionData"
+                    :columns-number="collectionLayoutConfig.columnsNumber"
+                    :object-fit="collectionLayoutConfig.scaling"
+                    @editRow="onEditRow" />
+                <GridPlaceholder v-if="!dataCount" />
+            </template>
+        </GridBody>
+        <GridFooter v-if="isFooterVisible">
             <GridPageSelector
                 :value="maxRows"
                 :max-rows="dataCount"
-                @input="setMaxRows" />
+                @input="onMaxRowsChange" />
             <GridPagination
                 :value="currentPage"
                 :max-page="maxPage"
-                @input="setCurrentPage" />
+                @input="onCurrentPageChange" />
             <slot name="appendFooter" />
-        </div>
+        </GridFooter>
     </div>
 </template>
 
 <script>
+import GridBody from '@Core/components/Grid/GridBody';
+import GridFooter from '@Core/components/Grid/GridFooter';
+import GridPreloader from '@Core/components/Grid/GridPreloader';
 import {
     COLUMN_ACTIONS_ID,
     COLUMNS_NUMBER,
     DATA_LIMIT,
+    DRAGGED_ELEMENT,
     GRID_LAYOUT,
     IMAGE_SCALING,
     ROW_HEIGHT,
@@ -101,6 +95,9 @@ import {
 import {
     insertCookieAtIndex,
 } from '@Core/models/cookies';
+import {
+    getMergedFilters,
+} from '@Core/models/mappers/gridDataMapper';
 import {
     mapState,
 } from 'vuex';
@@ -114,7 +111,11 @@ export default {
         GridPlaceholder: () => import('@Core/components/Grid/GridPlaceholder'),
         GridPagination: () => import('@Core/components/Grid/Footer/GridPagination'),
         GridPageSelector: () => import('@Core/components/Grid/Footer/GridPageSelector'),
-        GridDropZone: () => import('@Core/components/Grid/GridDropZone'),
+        DropZone: () => import('@Core/components/DropZone/DropZone'),
+        IconAddColumn: () => import('@Core/components/Icons/Actions/IconAddColumn'),
+        GridPreloader,
+        GridBody,
+        GridFooter,
     },
     props: {
         columns: {
@@ -144,6 +145,10 @@ export default {
         dataCount: {
             type: Number,
             required: true,
+        },
+        isPrefetchingData: {
+            type: Boolean,
+            default: false,
         },
         isAdvancedFilters: {
             type: Boolean,
@@ -183,7 +188,8 @@ export default {
             layout: this.defaultLayout,
             maxRows: DATA_LIMIT,
             currentPage: 1,
-            filters: {},
+            filterValues: {},
+            advancedFilterValues: {},
             sortedColumn: {},
             collectionLayoutConfig: {
                 columnsNumber: COLUMNS_NUMBER.FOURTH_COLUMNS.value,
@@ -196,9 +202,12 @@ export default {
     },
     computed: {
         ...mapState('draggable', {
-            isListElementDragging: state => state.isListElementDragging,
+            isElementDragging: state => state.isElementDragging,
             draggedElement: state => state.draggedElement,
         }),
+        isListElementDragging() {
+            return this.isElementDragging === DRAGGED_ELEMENT.LIST;
+        },
         isColumnExists() {
             const draggedElIndex = this.columns.findIndex(
                 column => column.id === this.draggedElement,
@@ -211,20 +220,6 @@ export default {
         },
         maxPage() {
             return Math.ceil(this.dataCount / this.maxRows) || 1;
-        },
-        advancedFiltersValues() {
-            const {
-                length,
-            } = this.advancedFilters;
-            const advancedFiltersValues = {};
-
-            for (let i = 0; i < length; i += 1) {
-                if (Object.keys(this.advancedFilters[i].value).length > 1) {
-                    advancedFiltersValues[this.advancedFilters[i].id] = true;
-                }
-            }
-
-            return advancedFiltersValues;
         },
         collectionData() {
             const {
@@ -275,9 +270,6 @@ export default {
         onLayoutChange(layout) {
             this.layout = layout;
         },
-        onInsertColumn(payload) {
-            this.$emit('insertColumn', payload);
-        },
         onEditCell(payload) {
             this.$emit('editCell', payload);
         },
@@ -302,25 +294,29 @@ export default {
             });
             this.$emit('dropColumn', columnId);
         },
-        onSwapColumns(payload) {
-            this.$emit('swapColumns', payload);
-        },
-        onRemoveColumn(index) {
-            this.$emit('removeColumn', index);
-        },
         onSortColumn(sortedColumn) {
             this.sortedColumn = sortedColumn;
             this.emitFetchData();
         },
         onFilterChange(filters) {
-            this.filters = filters;
+            this.filterValues = {
+                ...filters,
+            };
+
             this.emitFetchData();
         },
-        setCurrentPage(page) {
+        onAdvancedFilterChange(filters) {
+            this.advancedFilterValues = {
+                ...filters,
+            };
+
+            this.emitFetchData();
+        },
+        onCurrentPageChange(page) {
             this.currentPage = page;
             this.emitFetchData();
         },
-        setMaxRows(maxRows) {
+        onMaxRowsChange(maxRows) {
             const number = Math.trunc(maxRows);
 
             if (number !== this.maxRows) {
@@ -330,38 +326,19 @@ export default {
                 this.emitFetchData();
             }
         },
-        emitFetchData() {
-            this.$emit('fetchData', {
-                sortedColumn: this.sortedColumn,
-                filters: this.filters,
-                offset: (this.currentPage - 1) * this.maxRows,
-                limit: this.maxRows,
-            });
-        },
-        onUpdateFilterAtIndex(payload) {
-            this.$emit('updateFilter', payload);
-            this.emitFetchData();
-        },
-        onRemoveFilterAtIndex(index) {
-            this.$emit('removeFilter', index);
-            this.emitFetchData();
-        },
-        onRemoveGhostFilterAtIndex(index) {
-            this.$emit('removeFilter', index);
-        },
-        onRemoveAll() {
-            this.$emit('removeAllFilters');
-            this.emitFetchData();
-        },
         onDropFilter(payload) {
             this.$emit('dropFilter', payload);
         },
-        onClearFilterAtIndex(index) {
-            this.$emit('clearFilter', index);
-            this.emitFetchData();
-        },
-        onSwapFiltersPosition(payload) {
-            this.$emit('swapFilters', payload);
+        emitFetchData() {
+            this.$emit('fetchData', {
+                sortedColumn: this.sortedColumn,
+                filters: getMergedFilters({
+                    basic: this.filterValues,
+                    advanced: this.advancedFilterValues,
+                }),
+                offset: (this.currentPage - 1) * this.maxRows,
+                limit: this.maxRows,
+            });
         },
     },
 };
@@ -369,52 +346,11 @@ export default {
 
 <style lang="scss" scoped>
     .grid {
-        $grid: &;
-
         position: relative;
         display: flex;
         flex: 1 1 auto;
         flex-direction: column;
         min-width: 0;
         overflow: hidden;
-
-        &__body {
-            position: relative;
-            display: flex;
-            flex: 1 1 auto;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 0;
-            border: $BORDER_1_GREY;
-            background-color: $WHITESMOKE;
-
-            &::after {
-                position: absolute;
-                z-index: $Z_INDEX_NEGATIVE;
-                width: 100%;
-                height: 100%;
-                content: "";
-            }
-
-            &--disabled {
-                &::after {
-                    z-index: $Z_INDEX_LVL_4;
-                }
-            }
-        }
-
-        &__footer {
-            z-index: $Z_INDEX_LVL_5;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 56px;
-            border: $BORDER_1_GREY;
-            border-top: unset;
-            padding: 12px 16px;
-            box-sizing: border-box;
-            background-color: $WHITE;
-            box-shadow: $ELEVATOR_6_DP;
-        }
     }
 </style>

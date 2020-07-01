@@ -21,23 +21,14 @@
             v-if="isModalVisible"
             @close="onCloseModal"
             @create="onCreatedData" />
-        <Blur
-            v-show="isBlurVisible"
-            :style="blurZIndex" />
     </Page>
 </template>
 
 <script>
-import {
-    Z_INDEX_LVL_0,
-} from '@Core/assets/scss/_js-variables/indexes.scss';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import {
     getNestedTabRoutes,
 } from '@Core/models/navigation/tabs';
-import {
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'Settings',
@@ -45,7 +36,6 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
-        Blur: () => import('@Core/components/Blur/Blur'),
     },
     mixins: [
         gridModalMixin,
@@ -56,10 +46,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('draggable', {
-            isListElementDragging: state => state.isListElementDragging,
-            draggedElementOnGrid: state => state.draggedElementOnGrid,
-        }),
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },
@@ -70,17 +56,6 @@ export default {
             default:
                 return null;
             }
-        },
-        isBlurVisible() {
-            return this.isListElementDragging || this.draggedElementOnGrid;
-        },
-        blurZIndex() {
-            if (this.isBlurVisible) {
-                return {
-                    zIndex: Z_INDEX_LVL_0,
-                };
-            }
-            return null;
         },
     },
     methods: {

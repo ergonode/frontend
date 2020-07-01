@@ -56,7 +56,6 @@ export default {
     methods: {
         ...mapActions('draggable', [
             'setDraggedElement',
-            'setDraggableState',
         ]),
         onDrag(isDragged) {
             if (isDragged) {
@@ -71,11 +70,6 @@ export default {
             } else {
                 this.setDraggedElement();
             }
-
-            this.setDraggableState({
-                propName: 'isListElementDragging',
-                value: isDragged,
-            });
         },
     },
 };

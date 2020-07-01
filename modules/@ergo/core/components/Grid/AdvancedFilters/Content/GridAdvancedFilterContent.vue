@@ -3,12 +3,12 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="filter-content">
+    <div class="grid-advanced-filter-content">
         <GridAdvancedFilterShowOnly
-            :value="isEmptyRecord"
+            :value="value"
             @input="onValueChange" />
         <Divider />
-        <slot v-if="!isEmptyRecord" />
+        <slot v-if="!value" />
     </div>
 </template>
 
@@ -17,27 +17,27 @@ import Divider from '@Core/components/Dividers/Divider';
 import GridAdvancedFilterShowOnly from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilterShowOnly';
 
 export default {
-    name: 'GridAdvancedFilterBaseContent',
+    name: 'GridAdvancedFilterContent',
     components: {
         GridAdvancedFilterShowOnly,
         Divider,
     },
     props: {
-        isEmptyRecord: {
+        value: {
             type: Boolean,
             default: false,
         },
     },
     methods: {
         onValueChange() {
-            this.$emit('input', !this.isEmptyRecord);
+            this.$emit('input', !this.value);
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .filter-content {
+    .grid-advanced-filter-content {
         display: flex;
         flex-direction: column;
         overflow: auto;

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <VerticalTabBarListWrapper>
+    <VerticalTabBarList>
         <ListSearchSelectHeader
             v-if="isSelectLanguage"
             header="Attributes"
@@ -46,7 +46,7 @@
             v-if="isModalVisible"
             @close="onCloseModal"
             @create="onCreatedAttribute" />
-    </VerticalTabBarListWrapper>
+    </VerticalTabBarList>
 </template>
 
 <script>
@@ -66,7 +66,7 @@ import {
 export default {
     name: 'AttributesListTab',
     components: {
-        VerticalTabBarListWrapper: () => import('@Core/components/TabBar/VerticalTabBarListWrapper'),
+        VerticalTabBarList: () => import('@Core/components/TabBar/VerticalTabBarList'),
         List: () => import('@Core/components/List/List'),
         ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
         AttributesListGroup: () => import('@Attributes/components/Lists/AttributesListGroup'),
@@ -161,9 +161,7 @@ export default {
         ]),
         onCreatedAttribute() {
             this.onCloseModal();
-            this.getGroupsAndExpandedGroupItems({
-                languageCode: this.language.code,
-            });
+            this.fetchListData(this.language.code);
         },
         onSearch(value) {
             this.codeFilter = value;

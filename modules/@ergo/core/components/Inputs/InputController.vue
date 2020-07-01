@@ -39,6 +39,7 @@ export default {
         display: flex;
         flex: 1;
         align-items: center;
+        z-index: $Z_INDEX_LVL_2;
 
         &--small {
             #{$controller}__append {

@@ -81,7 +81,7 @@ export default {
     .month {
         display: grid;
         grid-template-columns: repeat(7, 32px);
-        grid-template-rows: repeat(5, 32px);
+        grid-template-rows: repeat(6, 32px);
         justify-items: center;
         align-items: center;
     }

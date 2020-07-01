@@ -3,8 +3,7 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    isListElementDragging: false,
-    draggedElementOnGrid: null,
+    isElementDragging: null,
     draggedElement: null,
     ghostIndex: -1,
     draggedElIndex: -1,

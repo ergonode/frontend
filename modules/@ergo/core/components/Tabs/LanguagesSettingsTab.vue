@@ -7,7 +7,18 @@
         <template #content>
             <GridViewTemplate class="grid-view-template--no-border">
                 <template #sidebar>
-                    <VerticalTabBar :items="verticalTabs" />
+                    <VerticalTabBar :items="verticalTabs">
+                        <FadeTransition>
+                            <DropZone
+                                v-show="isDropZoneVisible"
+                                :hover-background-color="graphiteLightColor"
+                                title="REMOVE CATEGORY">
+                                <template #icon="{ color }">
+                                    <IconRemoveFilter :fill-color="color" />
+                                </template>
+                            </DropZone>
+                        </FadeTransition>
+                    </VerticalTabBar>
                 </template>
                 <template #grid>
                     <LanguagesTreeWrapper />
@@ -27,13 +38,22 @@
 </template>
 
 <script>
+import {
+    GRAPHITE_LIGHT,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import Button from '@Core/components/Buttons/Button';
+import DropZone from '@Core/components/DropZone/DropZone';
+import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
 import FooterActions from '@Core/components/Layout/Footer/FooterActions';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -55,6 +75,9 @@ export default {
         GridViewTemplate,
         FooterActions,
         Button,
+        IconRemoveFilter,
+        DropZone,
+        FadeTransition,
         LanguagesTreeWrapper: () => import('@Core/components/LanguagesTreeDesigner/LanguagesTreeWrapper'),
         VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
     },
@@ -88,6 +111,9 @@ export default {
         ...mapState('gridDesigner', {
             fullGridData: state => state.fullGridData,
         }),
+        ...mapState('draggable', {
+            isElementDragging: state => state.isElementDragging,
+        }),
         verticalTabs() {
             return [
                 {
@@ -99,6 +125,12 @@ export default {
         },
         smallSize() {
             return SIZE.SMALL;
+        },
+        isDropZoneVisible() {
+            return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
+        },
+        graphiteLightColor() {
+            return GRAPHITE_LIGHT;
         },
     },
     destroyed() {

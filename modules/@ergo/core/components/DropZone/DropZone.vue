@@ -3,30 +3,18 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        :class="[
-            'grid-drop-zone',
-            {
-                'grid-drop-zone--horizontal': isHorizontal,
-            },
-        ]">
+    <div :class="classes">
         <div
-            :class="[
-                'grid-drop-zone__container',
-                {
-                    'grid-drop-zone__container--hovered': isHovered,
-                }
-            ]"
+            :style="containerStyles"
+            class="container"
             @dragenter="onDragEnter"
             @dragleave="onDragLeave"
             @dragover="onDragOver"
             @drop="onDrop">
-            <div class="grid-drop-zone__body">
+            <div class="drop-zone__body">
                 <slot
                     name="icon"
-                    :color="addIconFillColor">
-                    <IconAddColumn :fill-color="addIconFillColor" />
-                </slot>
+                    :color="addIconFillColor" />
                 <span v-text="title" />
             </div>
         </div>
@@ -36,22 +24,25 @@
 <script>
 import {
     GRAPHITE,
+    GREEN,
     WHITE,
+    WHITESMOKE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import IconAddColumn from '@Core/components/Icons/Actions/IconAddColumn';
 import {
     LAYOUT_ORIENTATION,
 } from '@Core/defaults/layout';
 
 export default {
-    name: 'GridDropZone',
-    components: {
-        IconAddColumn,
-    },
+    name: 'DropZone',
     props: {
         title: {
             type: String,
-            default: 'ADD COLUMN',
+            default: 'ADD',
+        },
+        hoverBackgroundColor: {
+            type: String,
+            default: GREEN,
+            validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
         },
         orientation: {
             type: String,
@@ -65,8 +56,27 @@ export default {
         };
     },
     computed: {
+        classes() {
+            return [
+                'drop-zone',
+                {
+                    'drop-zone--horizontal': this.isHorizontal,
+                },
+            ];
+        },
         whiteColor() {
             return WHITE;
+        },
+        containerStyles() {
+            return this.isHovered
+                ? {
+                    backgroundColor: this.hoverBackgroundColor,
+                    color: WHITE,
+                }
+                : {
+                    backgroundColor: WHITESMOKE,
+                    color: GRAPHITE,
+                };
         },
         addIconFillColor() {
             return this.isHovered ? WHITE : GRAPHITE;
@@ -97,7 +107,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.grid-drop-zone {
+.drop-zone {
     $dropzone: &;
 
     position: absolute;
@@ -106,24 +116,6 @@ export default {
     width: 100%;
     height: 100%;
     background-color: $WHITE;
-
-    &__container {
-        display: flex;
-        flex: 1;
-        justify-content: center;
-        align-items: center;
-        margin: 8px;
-        box-sizing: border-box;
-        background-color: $GREY_LIGHT;
-        box-shadow: $ELEVATOR_HOLE;
-        color: $GRAPHITE;
-        font: $FONT_BOLD_12_16;
-
-        &--hovered {
-            background-color: $GREEN;
-            color: $WHITE;
-        }
-    }
 
     &__body {
         display: grid;
@@ -139,5 +131,17 @@ export default {
             grid-auto-flow: column;
         }
     }
+}
+
+.container {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    margin: 8px;
+    box-sizing: border-box;
+    background-color: $GREY_LIGHT;
+    box-shadow: $ELEVATOR_HOLE;
+    font: $FONT_BOLD_12_16;
 }
 </style>
