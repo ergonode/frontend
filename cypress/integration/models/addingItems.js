@@ -49,6 +49,7 @@ export const checkGridRow = ({
         if (parsedColumns[columnIndex] === 'true' || parsedColumns[columnIndex] === 'false') {
             cy.get('@checkingCell').find('input').should('have.value', parsedColumns[columnIndex]);
         } else {
+            console.log(cy.get('@checkingCell'), parsedColumns[columnIndex], columnIndex);
             cy.get('@checkingCell').contains(parsedColumns[columnIndex]);
         }
     });

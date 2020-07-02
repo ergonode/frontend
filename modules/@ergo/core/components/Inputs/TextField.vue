@@ -8,6 +8,7 @@
         ref="activator"
         :focused="isFocused"
         :error="isError"
+        :data-cy="dataCy"
         :disabled="disabled"
         :alignment="alignment"
         :size="size"
@@ -190,6 +191,10 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        dataCy: {
+            type: String,
+            default: '',
         },
     },
     data() {

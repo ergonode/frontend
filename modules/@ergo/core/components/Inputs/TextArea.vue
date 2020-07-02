@@ -9,6 +9,7 @@
         :style="{ height: '100%' }"
         :focused="isFocused"
         :error="isError"
+        :data-cy="dataCy"
         :disabled="disabled"
         :alignment="alignment"
         :size="size"
@@ -140,6 +141,10 @@ export default {
         resize: {
             type: String,
             default: 'auto',
+        },
+        dataCy: {
+            type: String,
+            default: '',
         },
     },
     data() {

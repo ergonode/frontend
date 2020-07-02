@@ -9,6 +9,7 @@
         ref="activator"
         :focused="isFocused"
         :error="isError"
+        :data-cy="dataCy"
         :disabled="disabled"
         :alignment="alignment"
         :size="size"
@@ -168,6 +169,10 @@ export default {
         actionableExtensions: {
             type: Array,
             default: () => [],
+        },
+        dataCy: {
+            type: String,
+            default: '',
         },
     },
     data() {
