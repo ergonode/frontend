@@ -4,30 +4,33 @@
  */
 <template>
     <div class="horizontal-routing-tab-bar">
-        <div
-            data-cy="tab-bar__items"
-            class="horizontal-routing-tab-bar__items"
-            v-if="isTabVisible">
-            <template v-for="(item, index) in items">
-                <slot
-                    name="item"
-                    :index="index"
-                    :item="item">
-                    <HorizontalRoutingTabBarItem
-                        :key="index"
+        <template v-if="isTabVisible">
+            <div
+                data-cy="tab-bar__items"
+                class="horizontal-routing-tab-bar__items">
+                <template v-for="(item, index) in items">
+                    <slot
+                        name="item"
                         :index="index"
-                        :item="item"
-                        @select="onSelectTabBarItem" />
-                </slot>
-            </template>
+                        :item="item">
+                        <HorizontalRoutingTabBarItem
+                            :key="index"
+                            :index="index"
+                            :item="item"
+                            @select="onSelectTabBarItem" />
+                    </slot>
+                </template>
+            </div>
             <TabBarItemSlider :selected-index="selectedTabIndex" />
+        </template>
+        <div class="horizontal-routing-tab-bar__content">
+            <slot
+                name="content"
+                v-if="items.length"
+                :item="items[selectedTabIndex]">
+                <HorizontalRoutingTabBarContent />
+            </slot>
         </div>
-        <slot
-            name="content"
-            v-if="items.length"
-            :item="items[selectedTabIndex]">
-            <HorizontalRoutingTabBarContent />
-        </slot>
     </div>
 </template>
 
@@ -76,8 +79,16 @@ export default {
             position: relative;
             display: flex;
             height: 40px;
+            flex-shrink: 0;
             background-image: linear-gradient($WHITESMOKE, $WHITE);
             overflow: auto;
+        }
+
+        &__content {
+            display: flex;
+            border-top: $BORDER_1_GREY;
+            height: 100%;
+            background-color: $WHITE;
         }
     }
 </style>

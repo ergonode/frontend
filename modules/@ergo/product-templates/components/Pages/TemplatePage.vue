@@ -32,46 +32,16 @@
                 :disabled="$isLoading('footerButton')"
                 @click.native="onSave" />
         </Footer>
-        <Blur
-            v-show="isBlurVisible"
-            :style="blurZIndex" />
     </Page>
 </template>
 
 <script>
-
-import {
-    Z_INDEX_LVL_0,
-} from '@Core/assets/scss/_js-variables/indexes.scss';
 import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
-import {
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'TemplatePage',
-    components: {
-        Blur: () => import('@Core/components/Blur/Blur'),
-    },
     mixins: [
         categoryManagementPageMixin,
     ],
-    computed: {
-        ...mapState('draggable', {
-            isListElementDragging: state => state.isListElementDragging,
-            draggedElementOnGrid: state => state.draggedElementOnGrid,
-        }),
-        isBlurVisible() {
-            return this.isListElementDragging || this.draggedElementOnGrid;
-        },
-        blurZIndex() {
-            if (this.isBlurVisible) {
-                return {
-                    zIndex: Z_INDEX_LVL_0,
-                };
-            }
-            return null;
-        },
-    },
 };
 </script>

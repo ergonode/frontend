@@ -3,21 +3,21 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridAdvancedFilterBaseContent
-        :is-empty-record="filter.value.isEmptyRecord"
+    <GridAdvancedFilterContent
+        :value="value.isEmptyRecord"
         @input="onEmptyRecordChange">
         <div class="container">
             <TextField
-                :value="filterValue"
+                :value="operatorValue"
                 :size="smallSize"
                 :type="underlineInputType"
                 @input="onValueChange" />
         </div>
-    </GridAdvancedFilterBaseContent>
+    </GridAdvancedFilterContent>
 </template>
 
 <script>
-import GridAdvancedFilterBaseContent from '@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
+import GridAdvancedFilterContent from '@Core/components/Grid/AdvancedFilters/Content/GridAdvancedFilterContent';
 import TextField from '@Core/components/Inputs/TextField';
 import {
     FILTER_OPERATOR,
@@ -31,12 +31,14 @@ export default {
     name: 'GridAdvancedFilterTextContent',
     components: {
         TextField,
-        GridAdvancedFilterBaseContent,
+        GridAdvancedFilterContent,
     },
     props: {
-        filter: {
+        value: {
             type: Object,
-            required: true,
+            default: () => ({
+                isEmptyRecord: false,
+            }),
         },
     },
     computed: {
@@ -46,21 +48,24 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-        filterValue() {
-            return this.filter.value[FILTER_OPERATOR.EQUAL] || '';
+        operatorValue() {
+            return this.value[FILTER_OPERATOR.EQUAL] || '';
         },
     },
     methods: {
         onValueChange(value) {
-            if (value !== this.filterValue) {
+            if (value !== this.operatorValue) {
                 this.$emit('input', {
-                    value,
                     key: FILTER_OPERATOR.EQUAL,
+                    value,
                 });
             }
         },
         onEmptyRecordChange(value) {
-            this.$emit('emptyRecord', value);
+            this.$emit('input', {
+                value,
+                key: 'isEmptyRecord',
+            });
         },
     },
 };

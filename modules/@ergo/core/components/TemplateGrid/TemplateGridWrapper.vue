@@ -16,7 +16,8 @@
             @removeDisabledElementsOnList="removeDisabledElementsOnList"
             @toggleItem="toggleItem"
             @afterDrop="id => $emit('afterDrop', id)"
-            @afterRemove="id => $emit('afterRemove', id)">
+            @afterRemove="id => $emit('afterRemove', id)"
+            @remove="removeItemOnDrop">
             <slot
                 name="gridPresentationLayer"
                 :rows="rows">
@@ -253,6 +254,9 @@ export default {
                 height: `${connectionHeight}px`,
                 bottom: `${this.rowHeight / 2}px`,
             };
+        },
+        removeItemOnDrop(item) {
+            this.removeDisabledElementsOnList(item.id);
         },
         removeItem(item) {
             const {

@@ -41,7 +41,6 @@ export default function ({
             auth: /401/,
             access: /403/,
             notFound: /404/,
-            conflict: /409/,
         };
 
         if ($axios.isCancel(errorResponse)) {
@@ -88,11 +87,8 @@ export default function ({
                 message: msg,
             });
             break;
-        case regExp.conflict.test(status):
-            msg = 'Data inconsistency';
-            break;
         default:
-            msg = message || 'Unsupported message, please contact with support with reproduction steps';
+            msg = message || 'Unsupported message, please contact support with reproduction steps';
         }
 
         if (process.client) {

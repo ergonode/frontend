@@ -48,7 +48,10 @@ export const getGridData = ({
     });
 
 export const getAdvancedFiltersData = ({
-    $axios, $store, $addAlert, path, params,
+    $axios,
+    $addAlert,
+    path,
+    params,
 }) => $axios
     .$get(path, {
         params,
@@ -60,36 +63,25 @@ export const getAdvancedFiltersData = ({
             length,
         } = columns;
         const advancedFilters = [];
-        const {
-            units,
-        } = $store.state.dictionaries;
 
         for (let i = 0; i < length; i += 1) {
             const {
-                id, element_id, language, filter, label, parameters,
+                id,
+                element_id,
+                language,
+                filter,
+                label,
+                parameters,
             } = columns[i];
 
             if (filter) {
-                let mappedParameters = '';
-
-                if (parameters) {
-                    if (parameters.unit) {
-                        mappedParameters = units.find(unit => unit.id === parameters.unit).symbol;
-                    } else {
-                        mappedParameters = Object.values(parameters).join(', ');
-                    }
-                }
-
                 const mappedFilter = {
                     id,
                     attributeId: element_id || '',
                     languageCode: language,
                     type: filter.type,
                     label,
-                    parameters: mappedParameters,
-                    value: {
-                        isEmptyRecord: false,
-                    },
+                    parameters,
                 };
 
                 if (filter.options) {

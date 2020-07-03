@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <VerticalTabBarListWrapper>
+    <VerticalTabBarList>
         <ListSearchHeader
             header="System languages"
             is-search
@@ -18,7 +18,7 @@
                     :language-code="userLanguageCode" />
             </ListScrollableContainer>
         </List>
-    </VerticalTabBarListWrapper>
+    </VerticalTabBarList>
 </template>
 
 <script>
@@ -33,7 +33,7 @@ export default {
         List: () => import('@Core/components/List/List'),
         ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
         LanguagesListElement: () => import('@Core/components/Lists/LanguagesListElement'),
-        VerticalTabBarListWrapper: () => import('@Core/components/TabBar/VerticalTabBarListWrapper'),
+        VerticalTabBarList: () => import('@Core/components/TabBar/VerticalTabBarList'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
     },
     data() {

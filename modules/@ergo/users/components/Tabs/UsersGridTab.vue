@@ -10,6 +10,7 @@
                 :columns="columns"
                 :data-count="filtered"
                 :data="data"
+                :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 @editRow="onEditRow"
                 @removeRow="onRemoveRow"

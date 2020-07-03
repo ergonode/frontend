@@ -8,6 +8,7 @@
         ref="activator"
         :focused="isFocused"
         :error="isError"
+        :data-cy="dataCy"
         :disabled="disabled"
         :alignment="alignment"
         :size="size"
@@ -191,6 +192,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        dataCy: {
+            type: String,
+            default: '',
+        },
     },
     data() {
         return {
@@ -219,18 +224,20 @@ export default {
             return this.errorMessages || this.hint;
         },
         placeholderValue() {
-            if (!this.value || (this.label && !this.isFocused)) return null;
+            if (this.value || (this.label && !this.isFocused)) return null;
 
             return this.placeholder;
         },
     },
     mounted() {
         if (this.autofocus) {
-            this.$nextTick(() => {
-                window.requestAnimationFrame(() => {
-                    this.$refs.input.focus();
+            setTimeout(() => {
+                this.$nextTick(() => {
+                    window.requestAnimationFrame(() => {
+                        this.$refs.input.focus();
+                    });
                 });
-            });
+            }, 100);
         }
     },
     methods: {

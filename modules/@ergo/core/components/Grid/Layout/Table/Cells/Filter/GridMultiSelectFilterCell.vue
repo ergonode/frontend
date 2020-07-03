@@ -55,10 +55,6 @@ export default {
             type: String,
             default: 'EN',
         },
-        filter: {
-            type: Object,
-            default: null,
-        },
         isDisabled: {
             type: Boolean,
             default: false,
@@ -67,6 +63,11 @@ export default {
             type: Boolean,
             default: false,
         },
+    },
+    data() {
+        return {
+            value: [],
+        };
     },
     computed: {
         options() {
@@ -82,24 +83,19 @@ export default {
             return {};
         },
         presentationValue() {
-            if (!this.filter) return '';
-
-            return this.filter.value.map(option => this.options[option].label || `#${this.options[option].code}`).join(', ');
-        },
-        value() {
-            if (!this.filter) {
-                return [];
-            }
-
-            return this.filter.value;
+            return this.value
+                .map(option => this.options[option].label || `#${this.options[option].code}`)
+                .join(', ');
         },
     },
     methods: {
         onValueChange(value) {
+            this.value = value;
             this.$emit('filter', {
                 index: this.columnIndex,
-                value,
-                operator: FILTER_OPERATOR.EQUAL,
+                value: {
+                    [FILTER_OPERATOR.EQUAL]: value,
+                },
             });
         },
     },

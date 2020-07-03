@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <VerticalTabBarListWrapper>
+    <VerticalTabBarList>
         <ListSearchHeader
             header="Conditions"
             :is-search="false" />
@@ -16,7 +16,7 @@
                     :language-code="userLanguageCode" />
             </ListScrollableContainer>
         </List>
-    </VerticalTabBarListWrapper>
+    </VerticalTabBarList>
 </template>
 
 <script>
@@ -27,7 +27,7 @@ import {
 export default {
     name: 'ConditionsListTab',
     components: {
-        VerticalTabBarListWrapper: () => import('@Core/components/TabBar/VerticalTabBarListWrapper'),
+        VerticalTabBarList: () => import('@Core/components/TabBar/VerticalTabBarList'),
         List: () => import('@Core/components/List/List'),
         ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
         ConditionsListElement: () => import('@Conditions/components/Lists/ConditionsListElement'),

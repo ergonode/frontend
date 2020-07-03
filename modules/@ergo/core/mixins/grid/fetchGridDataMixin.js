@@ -6,20 +6,6 @@ import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
 import {
-    ADV_FILTERS_IDS,
-} from '@Core/defaults/grid/cookies';
-import {
-    insertValueAtIndex,
-    swapItemPosition,
-} from '@Core/models/arrayWrapper';
-import {
-    insertCookieAtIndex,
-} from '@Core/models/cookies';
-import {
-    getParsedAdvancedFilters,
-    getParsedFilters,
-} from '@Core/models/mappers/gridDataMapper';
-import {
     getAdvancedFiltersData,
     getGridData,
 } from '@Core/services/grid/getGridData.service';
@@ -46,46 +32,29 @@ export default function ({
                 offset: 0,
                 limit: DATA_LIMIT,
                 extended: true,
+                columns: this.getGridColumnParams(),
             };
-
-            const columnsConfig = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
-
-            if (columnsConfig) {
-                gridParams.columns = `${columnsConfig},_links`;
-            } else if (path === 'products') {
-                gridParams.columns = `index,sku,_links,esa_default_image:${this.languageCode},esa_default_label:${this.languageCode}`;
-            }
-
-            let dynamicPath = path;
-
-            Object.keys(this.$route.params).forEach((key) => {
-                if (path.includes(key)) {
-                    dynamicPath = dynamicPath.replace(`_${key}`, this.$route.params[key]);
-                }
-            });
-
+            const mappedPath = this.getPath();
             const requests = [
                 getGridData({
                     $axios: this.$axios,
-                    path: `${this.languageCode}/${dynamicPath}`,
+                    path: `${this.languageCode}/${mappedPath}`,
                     params: gridParams,
                 }),
             ];
+            const advFiltersIds = this.$cookies.get(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
 
-            const advFiltersIds = this.$cookies.get(ADV_FILTERS_IDS);
-
-            if (advFiltersIds && path === 'products') {
+            if (advFiltersIds) {
                 const filtersParams = {
                     offset: 0,
-                    limit: advFiltersIds.split(',').length,
+                    limit: 0,
                     columns: advFiltersIds,
                 };
 
                 requests.push(getAdvancedFiltersData({
                     $axios: this.$axios,
-                    $store: this.$store,
                     $addAlert: this.$addAlert,
-                    path: `${this.languageCode}/${dynamicPath}`,
+                    path: `${this.languageCode}/${mappedPath}`,
                     params: filtersParams,
                 }));
             }
@@ -97,54 +66,21 @@ export default function ({
             const {
                 columns, data, filtered,
             } = gridData;
-            const disabledElements = {};
-            const setDisabledElement = ({
-                languageCode, attributeId,
-            }) => {
-                if (attributeId) {
-                    if (disabledElements[languageCode]
-                        && typeof disabledElements[languageCode][attributeId] !== 'undefined') {
-                        disabledElements[languageCode] = {
-                            ...disabledElements[languageCode],
-                            [attributeId]: true,
-                        };
-                    } else {
-                        disabledElements[languageCode] = {
-                            ...disabledElements[languageCode],
-                            [attributeId]: false,
-                        };
-                    }
-                }
-            };
-            columns.forEach((column) => {
-                const {
-                    element_id: attributeId, language: languageCode,
-                } = column;
-                setDisabledElement({
-                    languageCode,
-                    attributeId,
-                });
-            });
 
-            advancedFilters.forEach((filter) => {
-                const {
-                    attributeId, languageCode,
-                } = filter;
-                setDisabledElement({
-                    languageCode,
-                    attributeId,
-                });
-            });
-
-            this.setDisabledElements(disabledElements);
+            this.setDisabledElements(this.getDisabledElements({
+                columns,
+                filters: advancedFilters,
+            }));
 
             this.columns = columns;
             this.data = data;
             this.filtered = filtered;
             this.advancedFilters = advancedFilters;
+            this.isPrefetchingData = false;
         },
         data() {
             return {
+                isPrefetchingData: true,
                 data: {},
                 columns: [],
                 filtered: 0,
@@ -180,29 +116,19 @@ export default function ({
             getGridData({
                 offset, limit, filters, sortedColumn,
             }) {
-                const parsedFilter = getParsedFilters(filters, this.advancedFilters);
-                const parsedAdvancedFilter = getParsedAdvancedFilters(this.advancedFilters);
-
                 this.localParams = {
                     offset,
                     limit,
                     filters,
                     sortedColumn,
                 };
-                let filter = parsedFilter;
-
-                if (parsedFilter && parsedAdvancedFilter) {
-                    filter = `${parsedFilter};${parsedAdvancedFilter}`;
-                } else if (parsedAdvancedFilter) {
-                    filter = parsedAdvancedFilter;
-                }
 
                 const params = {
                     offset,
                     limit,
                     extended: true,
-                    filter,
-                    columns: `${this.$cookies.get(`GRID_CONFIG:${this.$route.name}`)},_links`,
+                    filter: filters,
+                    columns: this.getGridColumnParams(),
                 };
 
                 if (Object.keys(sortedColumn).length) {
@@ -214,17 +140,9 @@ export default function ({
                     params.order = orderState;
                 }
 
-                let dynamicPath = path;
-
-                Object.keys(this.$route.params).forEach((key) => {
-                    if (path.includes(key)) {
-                        dynamicPath = dynamicPath.replace(`_${key}`, this.$route.params[key]);
-                    }
-                });
-
                 return getGridData({
                     $axios: this.$axios,
-                    path: `${this.languageCode}/${dynamicPath}`,
+                    path: `${this.languageCode}/${this.getPath()}`,
                     params,
                 }).then(({
                     columns,
@@ -248,135 +166,115 @@ export default function ({
                     }) => id === columnId);
 
                     if (column && column.element_id) {
-                        this.disableListElement({
+                        this.setDisabledElement(this.getDisableListElement({
                             languageCode: column.language,
                             attributeId: column.element_id,
-                        });
+                        }));
                     }
                 });
             },
-            dropFilter(data) {
-                const [
-                    code,
-                    languageCode,
-                ] = data.split(':');
-
-                this.getAttributeFilter({
-                    languageCode,
-                    code,
-                });
-            },
-            swapFiltersPosition({
-                from, to,
-            }) {
-                this.advancedFilters = [
-                    ...swapItemPosition(this.advancedFilters, from, to),
-                ];
-            },
-            removeFilterAtIndex(index) {
-                this.advancedFilters.splice(index, 1);
-            },
-            removeAllFilters() {
-                this.advancedFilters.forEach(({
-                    attributeId, languageCode,
-                }) => {
-                    this.setDisabledElement({
-                        languageCode,
-                        elementId: attributeId,
-                        disabled: false,
-                    });
-                });
-
-                this.advancedFilters = [];
-                this.$cookies.remove(ADV_FILTERS_IDS);
-            },
-            updateFilterAtIndex({
-                index, filter,
-            }) {
-                this.advancedFilters[index] = filter;
-                this.advancedFilters = [
-                    ...this.advancedFilters,
-                ];
-            },
-            clearFilterAtIndex(index) {
-                this.advancedFilters[index].value = {
-                    isEmptyRecord: false,
-                };
-            },
-            updateFilterValueAtIndex({
-                index, key, value,
-            }) {
-                this.advancedFilters[index].value = {
-                    ...this.advancedFilters[index].value,
-                    [key]: value,
-                };
-            },
-            async getAttributeFilter({
-                languageCode, code,
-            }) {
-                const index = 0;
-                const attributeCode = `${code}:${languageCode}`;
+            async onDropFilter(filterId) {
                 const params = {
-                    limit: 1,
+                    limit: 0,
                     offset: 0,
-                    columns: attributeCode,
+                    columns: this.$cookies.get(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`),
                 };
-
                 const advancedFilters = await getAdvancedFiltersData({
                     $axios: this.$axios,
-                    $store: this.$store,
                     $addAlert: this.$addAlert,
-                    path: `${languageCode}/${path}`,
+                    path: `${this.languageCode}/${path}`,
                     params,
                 });
+                const filter = advancedFilters.find(({
+                    id,
+                }) => id === filterId);
 
-                const [
-                    advancedFilter,
-                ] = advancedFilters;
-
-                if (advancedFilter) {
-                    this.advancedFilters = insertValueAtIndex(
-                        [
-                            ...this.advancedFilters,
-                        ],
-                        advancedFilter,
-                        index,
-                    );
-
-                    try {
-                        insertCookieAtIndex({
-                            cookies: this.$cookies,
-                            cookieName: ADV_FILTERS_IDS,
-                            index,
-                            data: attributeCode,
-                        });
-                    } catch {
-                        this.$cookies.set(ADV_FILTERS_IDS, attributeCode);
-                    }
-
-                    this.disableListElement({
-                        languageCode,
-                        attributeId: advancedFilter.attributeId,
-                    });
+                if (filter && filter.attributeId) {
+                    this.setDisabledElement(this.getDisableListElement({
+                        languageCode: filter.languageCode,
+                        attributeId: filter.attributeId,
+                    }));
                 }
+
+                this.advancedFilters = advancedFilters;
             },
-            disableListElement({
+            getDisableListElement({
                 languageCode, attributeId,
             }) {
-                if (this.disabledElements[languageCode]
-                    && typeof this.disabledElements[languageCode][attributeId] !== 'undefined') {
-                    this.setDisabledElement({
-                        languageCode,
-                        elementId: attributeId,
-                        disabled: true,
-                    });
-                } else {
-                    this.setDisabledElement({
-                        languageCode,
-                        elementId: attributeId,
-                        disabled: false,
-                    });
+                return {
+                    languageCode,
+                    elementId: attributeId,
+                    disabled: this.disabledElements[languageCode]
+                        && typeof this.disabledElements[languageCode][attributeId] !== 'undefined',
+                };
+            },
+            getPath() {
+                let mappedPath = path;
+
+                Object.keys(this.$route.params).forEach((key) => {
+                    if (path.includes(key)) {
+                        mappedPath = mappedPath.replace(`_${key}`, this.$route.params[key]);
+                    }
+                });
+
+                return mappedPath;
+            },
+            getGridColumnParams() {
+                const columnsConfig = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
+                let columns = '';
+
+                if (columnsConfig) {
+                    columns = `${columnsConfig},_links`;
+                } else if (path === 'products') {
+                    columns = `index,sku,_links,esa_default_image:${this.languageCode},esa_default_label:${this.languageCode}`;
                 }
+
+                return columns;
+            },
+            getDisabledElements({
+                columns, filters,
+            }) {
+                const disabledElements = {};
+
+                columns.forEach((column) => {
+                    const {
+                        element_id: attributeId,
+                        language: languageCode,
+                    } = column;
+                    const {
+                        disabled,
+                    } = this.getDisableListElement({
+                        languageCode,
+                        attributeId,
+                    });
+
+                    if (typeof disabledElements[languageCode] === 'undefined') {
+                        disabledElements[languageCode] = {};
+                    }
+
+                    disabledElements[languageCode][attributeId] = disabled;
+                });
+
+                filters.forEach((filter) => {
+                    const {
+                        attributeId,
+                        languageCode,
+                    } = filter;
+                    const {
+                        disabled,
+                    } = this.getDisableListElement({
+                        languageCode,
+                        attributeId,
+                    });
+
+                    if (typeof disabledElements[languageCode] === 'undefined') {
+                        disabledElements[languageCode] = {};
+                    }
+
+                    disabledElements[languageCode][attributeId] = disabled;
+                });
+
+                return disabledElements;
             },
         },
     };

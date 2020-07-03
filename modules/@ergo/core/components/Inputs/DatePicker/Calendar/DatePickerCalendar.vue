@@ -42,7 +42,7 @@ import calendar, {
     WEEK_DAYS,
 } from '@Core/models/calendar/calendar';
 import {
-    CalendarType,
+    CALENDAR_TYPE,
 } from '@Core/models/calendar/CalendarType';
 
 export default {
@@ -136,13 +136,13 @@ export default {
             return calendar(this.month, this.year);
         },
         isCalendarDayType() {
-            return this.calendarType === CalendarType.DAY;
+            return this.calendarType === CALENDAR_TYPE.DAY;
         },
         isCalendarMonthType() {
-            return this.calendarType === CalendarType.MONTH;
+            return this.calendarType === CALENDAR_TYPE.MONTH;
         },
         isCalendarYearType() {
-            return this.calendarType === CalendarType.YEAR;
+            return this.calendarType === CALENDAR_TYPE.YEAR;
         },
     },
     methods: {
@@ -152,12 +152,12 @@ export default {
         onMonthSelect(month) {
             const monthIndex = getMonthIndex(month) + 1;
             this.$emit('month', monthIndex);
-            this.$emit('calendarType', CalendarType.DAY);
+            this.$emit('calendarType', CALENDAR_TYPE.DAY);
             this.$emit('calendarHeader', getHeaderForCalendarDaysType(monthIndex, this.year));
         },
         onYearSelect(year) {
             this.$emit('year', year);
-            this.$emit('calendarType', CalendarType.MONTH);
+            this.$emit('calendarType', CALENDAR_TYPE.MONTH);
             this.$emit('calendarHeader', year);
         },
     },

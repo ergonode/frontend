@@ -138,7 +138,7 @@ MultiSteps([
     cy.get(`[data-cy=${id}]`).click();
     cy.get(`[data-cy=${id}-drop-down]`)
         .should('be.visible')
-        .find('.list > .element').as('elementList');
+        .find('.list > .list-element').as('elementList');
     cy.get('@elementList').its('length').should('be.gt', 0);
     cy.get('@elementList').eq(optionNr).as('selectedOption');
     cy.get('@selectedOption').click({
@@ -161,7 +161,7 @@ MultiSteps([
     cy.get(`[data-cy=${id}]`).click().should('be.visible');
     cy.get(`[data-cy=${id}-drop-down]`)
         .should('be.visible')
-        .find('.list > .element').as('elementList');
+        .find('.list > .list-element').as('elementList');
     cy.get('@elementList').its('length').should('be.gt', 0);
     cy.wrap(parsedOptions).each((optionNr) => {
         cy.get('@elementList').eq(optionNr).as('selectedOption');

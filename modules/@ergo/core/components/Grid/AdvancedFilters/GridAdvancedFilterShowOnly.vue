@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="show-only-content">
+    <div class="grid-advanced-filter-show-only">
         <Toggler
             :value="value"
             label="Show only empty records"
@@ -34,7 +34,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .show-only-content {
+    .grid-advanced-filter-show-only {
         padding: 8px 12px;
 
         &__title {

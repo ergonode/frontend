@@ -27,6 +27,7 @@
                     :columns="columns"
                     :data-count="filtered"
                     :data="data"
+                    :is-prefetching-data="isPrefetchingData"
                     :default-layout="gridLayout.COLLECTION"
                     :is-collection-layout="true"
                     :is-header-visible="true"

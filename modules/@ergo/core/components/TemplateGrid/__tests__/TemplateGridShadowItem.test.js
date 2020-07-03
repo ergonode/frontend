@@ -24,19 +24,19 @@ describe('TemplateGrid/TemplateGridShadowItem', () => {
         expect(TemplateGridShadowItem.name).toEqual('TemplateGridShadowItem');
     });
     it('Check if not last row', () => {
-        expect(wrapper.contains('.shadow-grid-item--last-row')).toBeFalsy();
+        expect(wrapper.find('.shadow-grid-item--last-row')).toBeTruthy();
     });
     // FIXME
     // it('Check if last row', () => {
     //     wrapper.setProps({
     //         lastRow: true,
     //     });
-    //     expect(wrapper.contains('.shadow-grid-item--last-row')).toBeTruthy();
+    //     expect(wrapper.find('.shadow-grid-item--last-row')).toBeTruthy();
     // });
     it('Check item default id', () => {
         expect(wrapper.vm.lastRow).toBeFalsy();
         expect(wrapper.vm.itemId).toBe(1);
-        expect(wrapper.contains('[shadow-id="0"]')).toBe(true);
+        expect(wrapper.find('[shadow-id="0"]')).toBeTruthy();
     });
     // FIXME
     // it('Check item id', () => {
@@ -45,6 +45,6 @@ describe('TemplateGrid/TemplateGridShadowItem', () => {
     //     });
     //     expect(wrapper.vm.lastRow).toBeFalsy();
     //     expect(wrapper.vm.itemId).toBe(3);
-    //     expect(wrapper.contains('[shadow-id="2"]')).toBe(true);
+    //     expect(wrapper.find('[shadow-id="2"]')).toBeTruthy();
     // });
 });

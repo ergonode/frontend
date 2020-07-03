@@ -34,7 +34,6 @@
             <Component
                 v-if="filterCellComponent"
                 :is-locked="isFilterLocked"
-                :filter="filter"
                 :language-code="column.language"
                 :column-index="columnIndex"
                 :data="column.filter"

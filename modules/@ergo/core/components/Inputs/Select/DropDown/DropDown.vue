@@ -51,9 +51,7 @@ export default {
                         const {
                             innerHeight,
                         } = window;
-                        const position = {
-                            left: `${this.offset.x}px`,
-                        };
+                        const position = {};
                         let maxHeight = 200;
 
                         if (this.fixed) {
@@ -64,6 +62,12 @@ export default {
                         }
 
                         const yPos = innerHeight - this.offset.y;
+
+                        if (this.$el.offsetWidth + this.offset.x > window.innerWidth) {
+                            position.right = 0;
+                        } else {
+                            position.left = `${this.offset.x}px`;
+                        }
 
                         if (yPos < maxHeight
                             && this.offset.y >= maxHeight) {

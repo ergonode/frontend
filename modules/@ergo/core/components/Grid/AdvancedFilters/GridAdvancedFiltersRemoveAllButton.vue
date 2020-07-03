@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <button class="remove-all-advanced-filters-button">
+    <button class="grid-advanced-filters-remove-all-button">
         <IconCancel />
         Remove filters
     </button>
@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .remove-all-advanced-filters-button {
+    .grid-advanced-filters-remove-all-button {
         display: flex;
         align-items: center;
         border: none;
