@@ -121,11 +121,14 @@ export default {
             } = this.filters;
 
             for (let i = 0; i < length; i += 1) {
-                const type = capitalizeAndConcatenationArray(this.filters[i].type.split('_'));
+                const {
+                    type,
+                } = this.filters[i];
+                const capitalisedType = capitalizeAndConcatenationArray(type.split('_'));
 
                 orderedFilters.push(this.filters[i]);
                 filterComponents.push(
-                    () => import(`@Core/components/Grid/AdvancedFilters/Type/Grid${type}TypeAdvancedFilter`),
+                    () => import(`@Core/components/Grid/AdvancedFilters/Type/Grid${capitalisedType}TypeAdvancedFilter`),
                 );
             }
 

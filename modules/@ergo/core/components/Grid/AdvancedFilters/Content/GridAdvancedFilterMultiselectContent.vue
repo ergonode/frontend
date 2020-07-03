@@ -82,7 +82,7 @@ export default {
         },
         filterValue() {
             return this.value[FILTER_OPERATOR.EQUAL]
-                ? this.value[FILTER_OPERATOR.EQUAL].split(', ')
+                ? this.value[FILTER_OPERATOR.EQUAL]
                 : [];
         },
     },
@@ -117,6 +117,10 @@ export default {
             } else {
                 this.selectedOptions[index] = value.id;
             }
+
+            this.selectedOptions = {
+                ...this.selectedOptions,
+            };
 
             this.$emit('input', {
                 key: FILTER_OPERATOR.EQUAL,

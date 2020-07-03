@@ -116,7 +116,7 @@ export default {
         onClear() {
             this.value = {
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.EQUAL]: '',
+                [FILTER_OPERATOR.EQUAL]: [],
             };
         },
         onApplyValue() {
@@ -124,7 +124,7 @@ export default {
                 key: this.filter.id,
                 value: getParsedFilter({
                     id: this.filter.id,
-                    filter: this.value.join(','),
+                    filter: this.value,
                 }),
             });
         },

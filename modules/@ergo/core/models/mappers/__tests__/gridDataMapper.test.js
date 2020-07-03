@@ -41,6 +41,20 @@ describe('gridDataMapper/getParsedFilter', () => {
             })).toStrictEqual(result);
         });
 
+        it('Has primitive non value', () => {
+            const id = 1;
+            const filter = {
+                isEmptyRecord: false,
+                [FILTER_OPERATOR.EQUAL]: '',
+            };
+            const result = '';
+
+            expect(getParsedFilter({
+                id,
+                filter,
+            })).toStrictEqual(result);
+        });
+
         it('Has array value', () => {
             const id = 1;
             const filter = {
@@ -52,6 +66,20 @@ describe('gridDataMapper/getParsedFilter', () => {
                 ],
             };
             const result = `${id}${FILTER_OPERATOR.EQUAL}1,2,3`;
+
+            expect(getParsedFilter({
+                id,
+                filter,
+            })).toStrictEqual(result);
+        });
+
+        it('Has array non value', () => {
+            const id = 1;
+            const filter = {
+                isEmptyRecord: false,
+                [FILTER_OPERATOR.EQUAL]: [],
+            };
+            const result = '';
 
             expect(getParsedFilter({
                 id,
