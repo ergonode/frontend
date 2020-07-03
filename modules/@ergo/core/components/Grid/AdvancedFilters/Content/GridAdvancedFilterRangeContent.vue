@@ -70,11 +70,13 @@ export default {
     },
     methods: {
         onFromValueChange(value) {
-            const filterValue = this.value[FILTER_OPERATOR.GREATER_OR_EQUAL];
+            const toValue = this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL];
 
-            if (+value <= +this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL]
-                || typeof filterValue === 'undefined'
-                || filterValue === '') {
+            if (+value <= +toValue
+                || value === ''
+                || toValue === null
+                || toValue === ''
+                || typeof toValue === 'undefined') {
                 this.$emit('input', {
                     key: FILTER_OPERATOR.GREATER_OR_EQUAL,
                     value,
@@ -82,11 +84,10 @@ export default {
             }
         },
         onToValueChange(value) {
-            const filterValue = this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL];
+            const fromValue = this.value[FILTER_OPERATOR.GREATER_OR_EQUAL];
 
-            if (+value >= +this.value[FILTER_OPERATOR.GREATER_OR_EQUAL]
-                || typeof filterValue === 'undefined'
-                || filterValue === '') {
+            if (+value >= +fromValue
+                || value === '') {
                 this.$emit('input', {
                     key: FILTER_OPERATOR.SMALLER_OR_EQUAL,
                     value,

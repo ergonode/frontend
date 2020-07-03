@@ -3,9 +3,6 @@
  * See LICENSE for license details.
  */
 import {
-    getFlattenedTreeData,
-} from '@Core/models/mappers/treeMapper';
-import {
     removeFromObjectByKey,
 } from '@Core/models/objectWrapper';
 
@@ -23,25 +20,8 @@ export const types = {
 };
 
 export default {
-    [types.SET_LANGUAGES_TREE](state, {
-        treeData, fillingData,
-    }) {
-        const reducer = (id) => {
-            const {
-                name, code,
-            } = fillingData.find(e => e.id === id);
-
-            return {
-                name,
-                code,
-            };
-        };
-
-        state.languagesTree = getFlattenedTreeData({
-            treeData,
-            mappedId: 'language_id',
-            reducer,
-        });
+    [types.SET_LANGUAGES_TREE](state, languagesTree) {
+        state.languagesTree = languagesTree;
     },
     [types.SET_LANGUAGES](state, languages) {
         state.languages = languages;

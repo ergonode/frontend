@@ -39,7 +39,10 @@ export function getParsedFilter({
 
     const values = Object
         .keys(filter)
-        .filter(key => filter[key] || filter[key] === 0);
+        .filter(key => (Array.isArray(filter[key])
+                && filter[key].length > 0)
+            || (!Array.isArray(filter[key])
+                && (filter[key] || filter[key] === 0)));
 
     if (!values.length) return '';
 
