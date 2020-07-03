@@ -121,7 +121,7 @@ export default {
 
                 orderedFilters.push(this.filters[i]);
                 filterComponents.push(
-                    () => import(`@Core/components/Grid/AdvancedFilters/Grid${type}AdvancedFilter`),
+                    () => import(`@Core/components/Grid/AdvancedFilters/Grid${type}TypeAdvancedFilter`),
                 );
             }
 

@@ -40,7 +40,7 @@ import {
 } from '@Core/models/mappers/gridDataMapper';
 
 export default {
-    name: 'GridMultiSelectAdvancedFilter',
+    name: 'GridMultiSelectTypeAdvancedFilter',
     components: {
         GridAdvancedFilter,
         GridAdvancedFilterMultiselectContent,

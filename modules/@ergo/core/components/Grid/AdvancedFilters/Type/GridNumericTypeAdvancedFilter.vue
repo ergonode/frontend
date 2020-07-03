@@ -14,14 +14,12 @@
         @swap="onSwap"
         @apply="onApplyValue">
         <template #body>
-            <GridAdvancedFilterSelectContent
+            <GridAdvancedFilterRangeContent
                 :value="value"
-                :options="filter.options"
-                :language-code="filter.languageCode"
                 @input="onValueChange" />
         </template>
         <template #footer="{ onApply }">
-            <SelectDropdownFooter
+            <MultiselectDropdownFooter
                 @apply="onApply"
                 @clear="onClear" />
         </template>
@@ -29,9 +27,9 @@
 </template>
 
 <script>
-import GridAdvancedFilterSelectContent from '@Core/components/Grid/AdvancedFilters/Content/GridAdvancedFilterTextContent';
+import GridAdvancedFilterRangeContent from '@Core/components/Grid/AdvancedFilters/Content/GridAdvancedFilterRangeContent';
 import GridAdvancedFilter from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilter';
-import SelectDropdownFooter from '@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownFooter';
+import MultiselectDropdownFooter from '@Core/components/Inputs/Select/DropDown/Footers/MultiselectDropdownFooter';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
@@ -40,11 +38,11 @@ import {
 } from '@Core/models/mappers/gridDataMapper';
 
 export default {
-    name: 'GridSelectAdvancedFilter',
+    name: 'GridNumericTypeAdvancedFilter',
     components: {
         GridAdvancedFilter,
-        GridAdvancedFilterSelectContent,
-        SelectDropdownFooter,
+        GridAdvancedFilterRangeContent,
+        MultiselectDropdownFooter,
     },
     props: {
         index: {
@@ -60,7 +58,8 @@ export default {
         return {
             value: {
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.EQUAL]: '',
+                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
             },
         };
     },
@@ -88,12 +87,11 @@ export default {
         filterValue() {
             if (this.value.isEmptyRecord) return 'Empty records';
 
-            const option = this.filter.options
-                .find(opt => opt.id === this.value[FILTER_OPERATOR.EQUAL]);
-
-            if (!option) return '';
-
-            return option.value || `#${option.key}`;
+            return [
+                this.value[FILTER_OPERATOR.GREATER_OR_EQUAL],
+                this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL],
+            ].filter(value => value !== '')
+                .join(' - ');
         },
     },
     methods: {
@@ -111,7 +109,8 @@ export default {
         onClear() {
             this.value = {
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.EQUAL]: '',
+                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
             };
         },
         onApplyValue() {

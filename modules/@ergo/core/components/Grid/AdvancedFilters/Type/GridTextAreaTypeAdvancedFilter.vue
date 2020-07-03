@@ -14,12 +14,12 @@
         @swap="onSwap"
         @apply="onApplyValue">
         <template #body>
-            <GridAdvancedFilterRangeContent
+            <GridAdvancedFilterTextContent
                 :value="value"
                 @input="onValueChange" />
         </template>
         <template #footer="{ onApply }">
-            <MultiselectDropdownFooter
+            <SelectDropdownApplyFooter
                 @apply="onApply"
                 @clear="onClear" />
         </template>
@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import GridAdvancedFilterRangeContent from '@Core/components/Grid/AdvancedFilters/Content/GridAdvancedFilterRangeContent';
+import GridAdvancedFilterTextContent from '@Core/components/Grid/AdvancedFilters/Content/GridAdvancedFilterTextContent';
 import GridAdvancedFilter from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilter';
-import MultiselectDropdownFooter from '@Core/components/Inputs/Select/DropDown/Footers/MultiselectDropdownFooter';
+import SelectDropdownApplyFooter from '@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownApplyFooter';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
@@ -38,11 +38,11 @@ import {
 } from '@Core/models/mappers/gridDataMapper';
 
 export default {
-    name: 'GridNumericAdvancedFilter',
+    name: 'GridTextAreaTypeAdvancedFilter',
     components: {
         GridAdvancedFilter,
-        GridAdvancedFilterRangeContent,
-        MultiselectDropdownFooter,
+        GridAdvancedFilterTextContent,
+        SelectDropdownApplyFooter,
     },
     props: {
         index: {
@@ -58,8 +58,7 @@ export default {
         return {
             value: {
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
-                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.EQUAL]: '',
             },
         };
     },
@@ -87,11 +86,7 @@ export default {
         filterValue() {
             if (this.value.isEmptyRecord) return 'Empty records';
 
-            return [
-                this.value[FILTER_OPERATOR.GREATER_OR_EQUAL],
-                this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL],
-            ].filter(value => value !== '')
-                .join(' - ');
+            return this.value[FILTER_OPERATOR.EQUAL];
         },
     },
     methods: {
@@ -109,8 +104,7 @@ export default {
         onClear() {
             this.value = {
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
-                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.EQUAL]: '',
             };
         },
         onApplyValue() {

@@ -14,12 +14,14 @@
         @swap="onSwap"
         @apply="onApplyValue">
         <template #body>
-            <GridAdvancedFilterTextContent
+            <GridAdvancedFilterSelectContent
                 :value="value"
+                :options="filter.options"
+                :language-code="filter.languageCode"
                 @input="onValueChange" />
         </template>
         <template #footer="{ onApply }">
-            <SelectDropdownApplyFooter
+            <SelectDropdownFooter
                 @apply="onApply"
                 @clear="onClear" />
         </template>
@@ -27,9 +29,9 @@
 </template>
 
 <script>
-import GridAdvancedFilterTextContent from '@Core/components/Grid/AdvancedFilters/Content/GridAdvancedFilterTextContent';
+import GridAdvancedFilterSelectContent from '@Core/components/Grid/AdvancedFilters/Content/GridAdvancedFilterTextContent';
 import GridAdvancedFilter from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilter';
-import SelectDropdownApplyFooter from '@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownApplyFooter';
+import SelectDropdownFooter from '@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownFooter';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
@@ -38,11 +40,11 @@ import {
 } from '@Core/models/mappers/gridDataMapper';
 
 export default {
-    name: 'GridTextAdvancedFilter',
+    name: 'GridSelectTypeAdvancedFilter',
     components: {
         GridAdvancedFilter,
-        GridAdvancedFilterTextContent,
-        SelectDropdownApplyFooter,
+        GridAdvancedFilterSelectContent,
+        SelectDropdownFooter,
     },
     props: {
         index: {
@@ -86,7 +88,12 @@ export default {
         filterValue() {
             if (this.value.isEmptyRecord) return 'Empty records';
 
-            return this.value[FILTER_OPERATOR.EQUAL];
+            const option = this.filter.options
+                .find(opt => opt.id === this.value[FILTER_OPERATOR.EQUAL]);
+
+            if (!option) return '';
+
+            return option.value || `#${option.key}`;
         },
     },
     methods: {

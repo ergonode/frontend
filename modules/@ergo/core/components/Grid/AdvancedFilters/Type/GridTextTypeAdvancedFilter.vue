@@ -14,9 +14,8 @@
         @swap="onSwap"
         @apply="onApplyValue">
         <template #body>
-            <GridAdvancedFilterDateContent
+            <GridAdvancedFilterTextContent
                 :value="value"
-                :format="parameters"
                 @input="onValueChange" />
         </template>
         <template #footer="{ onApply }">
@@ -28,7 +27,7 @@
 </template>
 
 <script>
-import GridAdvancedFilterDateContent from '@Core/components/Grid/AdvancedFilters/Content/GridAdvancedFilterDateContent';
+import GridAdvancedFilterTextContent from '@Core/components/Grid/AdvancedFilters/Content/GridAdvancedFilterTextContent';
 import GridAdvancedFilter from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilter';
 import SelectDropdownApplyFooter from '@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownApplyFooter';
 import {
@@ -39,10 +38,10 @@ import {
 } from '@Core/models/mappers/gridDataMapper';
 
 export default {
-    name: 'GridDateAdvancedFilter',
+    name: 'GridTextTypeAdvancedFilter',
     components: {
         GridAdvancedFilter,
-        GridAdvancedFilterDateContent,
+        GridAdvancedFilterTextContent,
         SelectDropdownApplyFooter,
     },
     props: {
@@ -59,8 +58,7 @@ export default {
         return {
             value: {
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
-                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.EQUAL]: '',
             },
         };
     },
@@ -88,11 +86,7 @@ export default {
         filterValue() {
             if (this.value.isEmptyRecord) return 'Empty records';
 
-            return [
-                this.value[FILTER_OPERATOR.GREATER_OR_EQUAL],
-                this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL],
-            ].filter(value => value !== '')
-                .join(' - ');
+            return this.value[FILTER_OPERATOR.EQUAL];
         },
     },
     methods: {
@@ -110,8 +104,7 @@ export default {
         onClear() {
             this.value = {
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
-                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.EQUAL]: '',
             };
         },
         onApplyValue() {

@@ -41,7 +41,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'GridUnitAdvancedFilter',
+    name: 'GridUnitTypeAdvancedFilter',
     components: {
         GridAdvancedFilter,
         GridAdvancedFilterRangeContent,
