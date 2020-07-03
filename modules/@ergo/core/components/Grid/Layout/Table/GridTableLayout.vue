@@ -168,6 +168,9 @@ export default {
         };
     },
     computed: {
+        ...mapState('list', {
+            disabledElements: state => state.disabledElements,
+        }),
         ...mapState('grid', {
             drafts: state => state.drafts,
         }),
@@ -250,6 +253,7 @@ export default {
     methods: {
         ...mapActions('list', [
             'setDisabledElement',
+            'removeDisabledElement',
         ]),
         ...mapActions('grid', [
             'setDraftValue',
@@ -291,6 +295,11 @@ export default {
                     languageCode,
                     elementId: element_id,
                     disabled: false,
+                });
+
+                this.disableListElement({
+                    languageCode,
+                    attributeId: element_id,
                 });
             }
 
@@ -530,6 +539,22 @@ export default {
             }
 
             this.hasInitialWidths = false;
+        },
+        disableListElement({
+            languageCode, attributeId,
+        }) {
+            if (this.disabledElements[languageCode][attributeId]) {
+                this.setDisabledElement({
+                    languageCode,
+                    elementId: attributeId,
+                    disabled: false,
+                });
+            } else {
+                this.removeDisabledElement({
+                    languageCode,
+                    elementId: attributeId,
+                });
+            }
         },
     },
     provide() {

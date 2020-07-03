@@ -61,6 +61,9 @@ export default {
         };
     },
     computed: {
+        ...mapState('list', {
+            disabledElements: state => state.disabledElements,
+        }),
         ...mapState('draggable', {
             isElementDragging: state => state.isElementDragging,
             draggedElement: state => state.draggedElement,
@@ -95,6 +98,7 @@ export default {
     methods: {
         ...mapActions('list', [
             'setDisabledElement',
+            'removeDisabledElement',
         ]),
         initializeFilters() {
             const config = this.$cookies.get(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
@@ -121,7 +125,7 @@ export default {
 
                 orderedFilters.push(this.filters[i]);
                 filterComponents.push(
-                    () => import(`@Core/components/Grid/AdvancedFilters/Grid${type}TypeAdvancedFilter`),
+                    () => import(`@Core/components/Grid/AdvancedFilters/Type/Grid${type}TypeAdvancedFilter`),
                 );
             }
 
@@ -142,10 +146,9 @@ export default {
                 index,
             });
 
-            this.setDisabledElement({
+            this.disableListElement({
                 languageCode: filter.languageCode,
-                elementId: filter.attributeId,
-                disabled: false,
+                attributeId: filter.attributeId,
             });
 
             delete this.filterValues[filter.id];
@@ -190,10 +193,9 @@ export default {
             this.orderedFilters.forEach(({
                 attributeId, languageCode,
             }) => {
-                this.setDisabledElement({
+                this.disableListElement({
                     languageCode,
-                    elementId: attributeId,
-                    disabled: false,
+                    attributeId,
                 });
             });
 
@@ -205,6 +207,22 @@ export default {
 
             this.$emit('count', this.orderedFilters.length);
             this.$emit('filter', this.filterValues);
+        },
+        disableListElement({
+            languageCode, attributeId,
+        }) {
+            if (this.disabledElements[languageCode][attributeId]) {
+                this.setDisabledElement({
+                    languageCode,
+                    elementId: attributeId,
+                    disabled: false,
+                });
+            } else {
+                this.removeDisabledElement({
+                    languageCode,
+                    elementId: attributeId,
+                });
+            }
         },
     },
 };

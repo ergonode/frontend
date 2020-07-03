@@ -10,11 +10,13 @@
             <Button
                 title="YES, RESTORE"
                 :disabled="isRequestPending"
+                :size="smallSize"
                 @click.native="onRestore" />
             <Button
                 title="CANCEL"
                 :theme="secondaryTheme"
                 :disabled="isRequestPending"
+                :size="smallSize"
                 @click.native="onClose" />
         </template>
     </ModalConfirm>
@@ -25,6 +27,7 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
+    SIZE,
     THEME,
 } from '@Core/defaults/theme';
 
@@ -50,6 +53,9 @@ export default {
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
+        },
+        smallSize() {
+            return SIZE.SMALL;
         },
     },
     methods: {

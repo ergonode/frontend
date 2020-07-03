@@ -10,11 +10,13 @@
             <Button
                 data-cy="modal-confirm"
                 :title="agreeButtonText"
+                :size="smallSize"
                 @click.native="onAgree" />
             <Button
                 data-cy="modal-cancel"
                 title="CANCEL"
                 :theme="secondaryTheme"
+                :size="smallSize"
                 @click.native="onClose" />
         </template>
     </ModalConfirm>
@@ -22,6 +24,7 @@
 
 <script>
 import {
+    SIZE,
     THEME,
 } from '@Core/defaults/theme';
 
@@ -44,6 +47,9 @@ export default {
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
+        },
+        smallSize() {
+            return SIZE.SMALL;
         },
         agreeButtonText() {
             return this.agreeButton.toUpperCase();
