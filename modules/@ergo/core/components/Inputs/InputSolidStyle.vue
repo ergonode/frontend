@@ -110,8 +110,8 @@ export default {
             bottom: 0;
             right: 0;
             border: $BORDER_1_GREY;
-            background-color: $WHITE;
             box-sizing: border-box;
+            background-color: $WHITE;
             transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
 
             &::after {
