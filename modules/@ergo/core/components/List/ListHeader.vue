@@ -27,14 +27,14 @@ export default {
     .list-header {
         position: relative;
         display: grid;
-        grid-template-columns: auto max-content;
+        grid-template-rows: max-content;
         row-gap: 12px;
         column-gap: 16px;
         align-items: center;
         padding: 12px;
 
         &__title {
-            grid-column: 1;
+            grid-column: 1 / 3;
             grid-row: 1;
             margin-left: 4px;
             color: $GRAPHITE_DARK;

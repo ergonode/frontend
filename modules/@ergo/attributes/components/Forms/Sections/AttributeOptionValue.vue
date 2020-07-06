@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormValidatorField :field-key="`option_${languageCode}_${index}`">
+    <FormValidatorField :field-key="fieldKey">
         <template #validator="{ errorMessages }">
             <TextField
                 :value="translationOptionValue"
@@ -11,12 +11,7 @@
                 :size="smallSize"
                 :disabled="disabled"
                 :error-messages="errorMessages"
-                @input="value => setOptionValueForLanguageCode({
-                    index,
-                    languageCode,
-                    value,
-                    id: option.id,
-                })" />
+                @input="onOptionValueChange" />
         </template>
     </FormValidatorField>
 </template>
@@ -55,6 +50,9 @@ export default {
         },
     },
     computed: {
+        fieldKey() {
+            return `option_${this.languageCode}_${this.index}`;
+        },
         smallSize() {
             return SIZE.SMALL;
         },
@@ -70,6 +68,14 @@ export default {
         ...mapActions('attribute', [
             'setOptionValueForLanguageCode',
         ]),
+        onOptionValueChange(value) {
+            this.setOptionValueForLanguageCode({
+                index: this.index,
+                languageCode: this.languageCode,
+                value,
+                id: this.option.id,
+            });
+        },
     },
 };
 </script>

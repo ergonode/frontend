@@ -44,7 +44,7 @@ import {
     zeroPad,
 } from '@Core/models/calendar/calendar';
 import {
-    CalendarType,
+    CALENDAR_TYPE,
 } from '@Core/models/calendar/CalendarType';
 
 export default {
@@ -77,7 +77,7 @@ export default {
             currentMonth: today.getMonth() + 1,
             month,
             year,
-            selectedCalendarType: CalendarType.DAY,
+            selectedCalendarType: CALENDAR_TYPE.DAY,
             calendarHeader: getHeaderForCalendarDaysType(month, year),
         };
     },
@@ -90,13 +90,13 @@ export default {
             const year = this.value.getFullYear();
 
             switch (this.selectedCalendarType) {
-            case CalendarType.DAY:
+            case CALENDAR_TYPE.DAY:
                 return `${day}.${zeroPad(month, 2)}.${year}`;
-            case CalendarType.MONTH: {
+            case CALENDAR_TYPE.MONTH: {
                 const monthDesc = Object.values(CALENDAR_MONTHS)[month];
                 return `${monthDesc} ${year}`;
             }
-            case CalendarType.YEAR:
+            case CALENDAR_TYPE.YEAR:
                 return year;
             default:
                 return '';
@@ -121,7 +121,7 @@ export default {
         },
         onPreviousDate() {
             switch (this.selectedCalendarType) {
-            case CalendarType.DAY: {
+            case CALENDAR_TYPE.DAY: {
                 const {
                     month: previousMonth, year: previousYear,
                 } = getPreviousMonth(this.month, this.year);
@@ -132,12 +132,12 @@ export default {
 
                 break;
             }
-            case CalendarType.MONTH:
+            case CALENDAR_TYPE.MONTH:
                 this.year = getPreviousYear(this.year);
                 this.calendarHeader = this.year;
 
                 break;
-            case CalendarType.YEAR:
+            case CALENDAR_TYPE.YEAR:
                 this.years = getPreviousYearsRange(this.years);
                 this.calendarHeader = getHeaderForCalendarYearsType(this.years);
 
@@ -148,7 +148,7 @@ export default {
         },
         onNextDate() {
             switch (this.selectedCalendarType) {
-            case CalendarType.DAY: {
+            case CALENDAR_TYPE.DAY: {
                 const {
                     month: nextMonth, year: nextYear,
                 } = getNextMonth(this.month, this.year);
@@ -159,13 +159,13 @@ export default {
 
                 break;
             }
-            case CalendarType.MONTH: {
+            case CALENDAR_TYPE.MONTH: {
                 this.year = getNextYear(this.year);
                 this.calendarHeader = this.year;
 
                 break;
             }
-            case CalendarType.YEAR:
+            case CALENDAR_TYPE.YEAR:
                 this.years = getNextYearsRange(this.years);
                 this.calendarHeader = getHeaderForCalendarYearsType(this.years);
 
@@ -176,16 +176,16 @@ export default {
         },
         onChangeCalendarType() {
             switch (this.selectedCalendarType) {
-            case CalendarType.DAY:
-                this.selectedCalendarType = CalendarType.MONTH;
+            case CALENDAR_TYPE.DAY:
+                this.selectedCalendarType = CALENDAR_TYPE.MONTH;
                 this.calendarHeader = this.year;
                 break;
-            case CalendarType.MONTH:
-                this.selectedCalendarType = CalendarType.YEAR;
+            case CALENDAR_TYPE.MONTH:
+                this.selectedCalendarType = CALENDAR_TYPE.YEAR;
                 this.calendarHeader = getHeaderForCalendarYearsType(this.years);
                 break;
-            case CalendarType.YEAR:
-                this.selectedCalendarType = CalendarType.DAY;
+            case CALENDAR_TYPE.YEAR:
+                this.selectedCalendarType = CALENDAR_TYPE.DAY;
                 this.calendarHeader = getHeaderForCalendarDaysType(this.month, this.year);
                 break;
             default: break;

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <VerticalTabBarListWrapper>
+    <VerticalTabBarList>
         <ListSearchSelectHeader
             v-if="isSelectLanguage"
             header="System attributes"
@@ -30,7 +30,7 @@
                     :language-code="language.code" />
             </ListScrollableContainer>
         </List>
-    </VerticalTabBarListWrapper>
+    </VerticalTabBarList>
 </template>
 
 <script>
@@ -45,7 +45,7 @@ import {
 export default {
     name: 'SystemAttributesListTab',
     components: {
-        VerticalTabBarListWrapper: () => import('@Core/components/TabBar/VerticalTabBarListWrapper'),
+        VerticalTabBarList: () => import('@Core/components/TabBar/VerticalTabBarList'),
         ListSearchSelectHeader: () => import('@Core/components/List/ListSearchSelectHeader'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
         List: () => import('@Core/components/List/List'),

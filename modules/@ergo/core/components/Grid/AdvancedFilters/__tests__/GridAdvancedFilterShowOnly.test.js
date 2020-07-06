@@ -7,7 +7,7 @@ import {
     shallowMount,
 } from '@vue/test-utils';
 
-describe('Grid/AdvancedFilters/Contents/GridAdvancedFilterShowOnly', () => {
+describe('Grid/AdvancedFilters/GridAdvancedFilterShowOnly', () => {
     let wrapper;
     beforeEach(() => {
         wrapper = shallowMount(GridAdvancedFilterShowOnly, {

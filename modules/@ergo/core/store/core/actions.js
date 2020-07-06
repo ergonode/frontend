@@ -3,6 +3,10 @@
  * See LICENSE for license details.
  */
 import {
+    getFlattenedTreeData,
+} from '@Core/models/mappers/treeMapper';
+
+import {
     types,
 } from './mutations';
 
@@ -70,10 +74,22 @@ export default {
     setLanguagesTree({
         state, commit,
     }, treeData) {
-        commit(types.SET_LANGUAGES_TREE, {
+        const reducer = (id) => {
+            const {
+                name, code,
+            } = state.languages.find(e => e.id === id);
+
+            return {
+                name,
+                code,
+            };
+        };
+
+        commit(types.SET_LANGUAGES_TREE, getFlattenedTreeData({
             treeData,
-            fillingData: state.languages,
-        });
+            mappedId: 'language_id',
+            reducer,
+        }));
     },
     setDefaultLanguage({
         state, commit, rootState,

@@ -4,21 +4,18 @@
  */
 <template>
     <ListHeader :header="header">
-        <div class="options-select">
-            <slot
-                v-show="!isSearchButtonClicked"
-                name="select">
-                <Select
-                    :value="selectedOption"
-                    :size="smallSize"
-                    :options="options"
-                    @input="onLanguageSelect" />
-            </slot>
-        </div>
+        <slot
+            v-if="!isSearchButtonClicked"
+            name="select">
+            <Select
+                :value="selectedOption"
+                :size="smallSize"
+                :options="options"
+                @input="onLanguageSelect" />
+        </slot>
         <TextField
-            v-if="isSearchButtonClicked"
+            v-else
             :value="searchResult"
-            class="search-text-field"
             autofocus
             :size="smallSize"
             placeholder="Search..."
@@ -136,11 +133,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .options-select, .search-text-field {
-        grid-column: 1;
-        grid-row: 2;
-    }
-
     .search-button {
         grid-column: 2;
         grid-row: 2;

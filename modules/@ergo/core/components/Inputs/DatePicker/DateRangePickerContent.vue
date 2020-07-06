@@ -93,10 +93,14 @@ import {
 } from '@Core/defaults/theme';
 import calendar, {
     CALENDAR_MONTHS,
+    DEFAULT_FORMAT,
     getNextMonth,
     getPreviousMonth,
     WEEK_DAYS,
 } from '@Core/models/calendar/calendar';
+import {
+    format as formatDate,
+} from 'date-fns';
 
 export default {
     name: 'DateRangePickerContent',
@@ -122,6 +126,10 @@ export default {
         inputHeader: {
             type: Boolean,
             default: false,
+        },
+        format: {
+            type: String,
+            default: DEFAULT_FORMAT,
         },
     },
     data() {
@@ -164,14 +172,14 @@ export default {
         },
         fromHeader() {
             if (this.value.from) {
-                return `From ${this.value.from}`;
+                return `From ${formatDate(this.value.from, this.format)}`;
             }
 
             return 'From';
         },
         toHeader() {
             if (this.value.to) {
-                return `To ${this.value.to}`;
+                return `To ${formatDate(this.value.to, this.format)}`;
             }
 
             return 'To';

@@ -20,6 +20,6 @@ describe('TemplateGrid/TemplateGridGhostItem', () => {
     });
 
     it('Component has main class', () => {
-        expect(wrapper.contains('.grid__ghost-item')).toBeTruthy();
+        expect(wrapper.find('.grid__ghost-item')).toBeTruthy();
     });
 });

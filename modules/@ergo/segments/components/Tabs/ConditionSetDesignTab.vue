@@ -5,7 +5,18 @@
 <template>
     <GridViewTemplate>
         <template #sidebar>
-            <VerticalTabBar :items="verticalTabs" />
+            <VerticalTabBar :items="verticalTabs">
+                <FadeTransition>
+                    <DropZone
+                        v-show="isDropZoneVisible"
+                        :hover-background-color="graphiteLightColor"
+                        title="REMOVE CONDITION">
+                        <template #icon="{ color }">
+                            <IconRemoveFilter :fill-color="color" />
+                        </template>
+                    </DropZone>
+                </FadeTransition>
+            </VerticalTabBar>
         </template>
         <template #grid>
             <ConditionSetWrapper />
@@ -14,28 +25,42 @@
 </template>
 
 <script>
+import {
+    GRAPHITE_LIGHT,
+} from '@Core/assets/scss/_js-variables/colors.scss';
+import DropZone from '@Core/components/DropZone/DropZone';
+import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
+import FadeTransition from '@Core/components/Transitions/FadeTransition';
+import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
     name: 'ConditionSetDesignTab',
     components: {
         GridViewTemplate,
+        IconRemoveFilter,
+        DropZone,
+        FadeTransition,
         VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
         ConditionSetWrapper: () => import('@Conditions/components/ConditionSetDesigner/ConditionSetWrapper'),
     },
     fetch({
         store,
     }) {
-        return Promise.all([
-            store.dispatch('conditions/getConditions', {
-                group: 'segment',
-            }),
-        ]);
+        return store.dispatch('conditions/getConditions', {
+            group: 'segment',
+        });
     },
     computed: {
+        ...mapState('draggable', {
+            isElementDragging: state => state.isElementDragging,
+        }),
         verticalTabs() {
             return [
                 {
@@ -44,6 +69,12 @@ export default {
                     iconComponent: () => import('@Core/components/Icons/Menu/IconCategory'),
                 },
             ];
+        },
+        isDropZoneVisible() {
+            return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
+        },
+        graphiteLightColor() {
+            return GRAPHITE_LIGHT;
         },
     },
     destroyed() {

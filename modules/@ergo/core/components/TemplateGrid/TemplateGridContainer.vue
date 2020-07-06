@@ -24,6 +24,7 @@ import {
 } from '@Core/models/arrayWrapper';
 import {
     getPositionForBrowser,
+    isMouseInsideElement,
     isMouseOutOfBoundsElement,
 } from '@Core/models/drag_and_drop/helpers';
 import {
@@ -181,7 +182,7 @@ export default {
                     }
                     this.setDraggedElement(item);
                     this.setDraggableState({
-                        propName: 'draggedElementOnGrid',
+                        propName: 'isElementDragging',
                         value: DRAGGED_ELEMENT.TEMPLATE,
                     });
                     addElementCopyToDocumentBody({
@@ -210,17 +211,26 @@ export default {
             if (row !== null && column !== null) this.insertElementIntoGrid();
         },
         onDragEnd(event) {
+            removeElementCopyFromDocumentBody(event);
+
             const {
                 isOutOfBounds,
             } = this.getElementBelowMouse(event);
+            const {
+                xPos,
+                yPos,
+            } = getPositionForBrowser(event);
+            const trashElement = document.documentElement.querySelector('.drop-zone');
+            const isDroppedToTrash = isMouseInsideElement(trashElement, xPos, yPos);
 
-            if (isOutOfBounds) {
+            if (isDroppedToTrash) {
+                this.$emit('remove', this.draggedElement);
+            } else if (isOutOfBounds) {
                 this.insertElementIntoGrid();
             }
-            removeElementCopyFromDocumentBody(event);
             this.setDraggedElement();
             this.setDraggableState({
-                propName: 'draggedElementOnGrid',
+                propName: 'isElementDragging',
                 value: null,
             });
         },

@@ -19,7 +19,7 @@ describe('TemplateGrid/TemplateGridItemsContainer', () => {
         expect(TemplateGridItemsContainer.name).toEqual('TemplateGridItemsContainer');
     });
     it('Component has main class', () => {
-        expect(wrapper.contains('.grid-items-container')).toBeTruthy();
+        expect(wrapper.find('.grid-items-container')).toBeTruthy();
         expect(wrapper).toMatchSnapshot();
     });
 });

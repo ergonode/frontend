@@ -7,6 +7,9 @@ import {
     GRID_ACTIONS,
 } from '@Core/defaults/grid';
 import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
+import {
     getUUID,
 } from '@Core/models/stringWrapper';
 
@@ -27,55 +30,38 @@ export function cellDataCompose(check) {
     };
 }
 
-export function getParsedFilters(filters, advancedFilters = []) {
-    const entries = Object.entries(filters);
-    const {
-        length: entriesLength,
-    } = entries;
-
-    let mappedFilter = '';
-
-    for (let i = 0; i < entriesLength; i += 1) {
-        const [
-            key,
-            filter,
-        ] = entries[i];
-
-        if (filter) {
-            const {
-                value, operator,
-            } = filter;
-            const advancedFilter = advancedFilters
-                .find(advFilter => advFilter.id === key
-                    && Object.keys(advFilter.value).length > 1);
-
-            if (!advancedFilter) {
-                mappedFilter += i === 0 ? key : `;${key}`;
-                mappedFilter += operator;
-                mappedFilter += Array.isArray(value) ? value.join(',') : value;
-            }
-        }
+export function getParsedFilter({
+    id, filter,
+}) {
+    if (filter.isEmptyRecord) {
+        return `${id}${FILTER_OPERATOR.EQUAL}`;
     }
 
-    return mappedFilter;
+    const values = Object
+        .keys(filter)
+        .filter(key => (Array.isArray(filter[key])
+                && filter[key].length > 0)
+            || (!Array.isArray(filter[key])
+                && (filter[key] || filter[key] === 0)));
+
+    if (!values.length) return '';
+
+    return values
+        .map(key => `${id}${key}${filter[key]}`)
+        .join(';');
 }
 
-export function getParsedAdvancedFilters(filters) {
-    const mappedFilter = [];
+export function getMergedFilters({
+    basic, advanced,
+}) {
+    const merged = {
+        ...basic,
+        ...advanced,
+    };
 
-    filters.forEach((filter) => {
-        if (filter.value.isEmptyRecord) {
-            mappedFilter.push(`${filter.id}=`);
-        } else {
-            Object.keys(filter.value).forEach((key) => {
-                if (key !== 'isEmptyRecord') {
-                    mappedFilter.push(`${filter.id}${key}${filter.value[key]}`);
-                }
-            });
-        }
-    });
-
-    return mappedFilter.join(';');
+    return Object.keys(merged)
+        .map(key => merged[key])
+        .join(';');
 }
 
 export function getSortedColumnsByIDs(columns, columnsID) {

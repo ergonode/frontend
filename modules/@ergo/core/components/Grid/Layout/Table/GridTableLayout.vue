@@ -36,7 +36,6 @@
                 :column-index="index + columnsOffset"
                 :row-ids="data.id"
                 :rows-offset="rowsOffset"
-                :filter="filters[column.id]"
                 :selected-rows="selectedRows"
                 :is-selected-all-rows="isSelectedAllRows"
                 :is-basic-filter="isBasicFilter"
@@ -75,7 +74,7 @@
 </template>
 
 <script>
-import GridDropZone from '@Core/components/Grid/GridDropZone';
+import DropZone from '@Core/components/DropZone/DropZone';
 import GridTableLayoutColumnsSection from '@Core/components/Grid/Layout/Table/Sections/GridTableLayoutColumnsSection';
 import {
     COLUMN_ACTIONS_ID,
@@ -92,6 +91,9 @@ import {
     removeCookieAtIndex,
 } from '@Core/models/cookies';
 import {
+    getParsedFilter,
+} from '@Core/models/mappers/gridDataMapper';
+import {
     capitalizeAndConcatenationArray,
     toCapitalize,
 } from '@Core/models/stringWrapper';
@@ -103,7 +105,7 @@ import {
 export default {
     name: 'GridTableLayout',
     components: {
-        GridDropZone,
+        DropZone,
         GridTableLayoutColumnsSection,
         GridTableLayoutPinnedSection: () => import('@Core/components/Grid/Layout/Table/Sections/GridTableLayoutPinnedSection'),
         GridSentinelColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridSentinelColumn'),
@@ -115,10 +117,6 @@ export default {
             default: () => [],
         },
         data: {
-            type: Object,
-            default: () => ({}),
-        },
-        advancedFiltersValues: {
             type: Object,
             default: () => ({}),
         },
@@ -170,6 +168,9 @@ export default {
         };
     },
     computed: {
+        ...mapState('list', {
+            disabledElements: state => state.disabledElements,
+        }),
         ...mapState('grid', {
             drafts: state => state.drafts,
         }),
@@ -238,7 +239,7 @@ export default {
             handler() {
                 if (this.orderedColumns.length !== this.columns.length) {
                     // Columns might be lazy loaded - we need to handle that
-                    this.initializeDataColumns();
+                    this.initializeColumns();
                 }
             },
         },
@@ -252,6 +253,7 @@ export default {
     methods: {
         ...mapActions('list', [
             'setDisabledElement',
+            'removeDisabledElement',
         ]),
         ...mapActions('grid', [
             'setDraftValue',
@@ -265,23 +267,25 @@ export default {
             this.$emit('sort', sortedColumn);
         },
         onFilterChange({
-            index, value, operator,
+            index,
+            value,
         }) {
             const {
                 id,
             } = this.orderedColumns[index];
 
-            if (this.filters[id] && (value === '' || value === null || value.length === 0)) {
-                delete this.filters[id];
-            } else {
-                this.filters[id] = {
-                    value,
-                    operator,
-                };
-            }
+            this.filters[id] = getParsedFilter({
+                id,
+                filter: value,
+            });
+
             this.$emit('filter', this.filters);
         },
         onRemoveColumn(index) {
+            const {
+                id,
+            } = this.orderedColumns[index];
+
             if (this.orderedColumns[index].element_id) {
                 const {
                     language: languageCode, element_id,
@@ -292,7 +296,14 @@ export default {
                     elementId: element_id,
                     disabled: false,
                 });
+
+                this.disableListElement({
+                    languageCode,
+                    attributeId: element_id,
+                });
             }
+
+            delete this.filters[id];
 
             this.columnComponents.splice(index, 1);
             this.orderedColumns.splice(index, 1);
@@ -302,6 +313,8 @@ export default {
                 cookieName: `GRID_CONFIG:${this.$route.name}`,
                 index: this.isSelectColumn ? index - 1 : index,
             });
+
+            this.$emit('filter', this.filters);
         },
         onSwapColumns({
             from, to,
@@ -458,7 +471,7 @@ export default {
         }) {
             this.$emit(action, value);
         },
-        initializeDataColumns() {
+        initializeColumns() {
             const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
 
             if (!config) {
@@ -496,8 +509,10 @@ export default {
                     columnComponents.push(extendedColumn.component);
                     columnWidths.push(extendedColumn.width);
                 } else {
+                    const type = capitalizeAndConcatenationArray(this.columns[i].type.split('_'));
+
                     columnComponents.push(
-                        () => import(`@Core/components/Grid/Layout/Table/Columns/Grid${capitalizeAndConcatenationArray(this.columns[i].type.split('_'))}Column`),
+                        () => import(`@Core/components/Grid/Layout/Table/Columns/Grid${type}Column`),
                     );
                     columnWidths.push(COLUMN_WIDTH.DEFAULT);
                 }
@@ -524,6 +539,22 @@ export default {
             }
 
             this.hasInitialWidths = false;
+        },
+        disableListElement({
+            languageCode, attributeId,
+        }) {
+            if (this.disabledElements[languageCode][attributeId]) {
+                this.setDisabledElement({
+                    languageCode,
+                    elementId: attributeId,
+                    disabled: false,
+                });
+            } else {
+                this.removeDisabledElement({
+                    languageCode,
+                    elementId: attributeId,
+                });
+            }
         },
     },
     provide() {

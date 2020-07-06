@@ -25,6 +25,8 @@ import {
 } from '@Core/defaults/grid';
 import {
     getDraggedColumnPositionState,
+    getPositionForBrowser,
+    isMouseInsideElement,
 } from '@Core/models/drag_and_drop/helpers';
 import {
     addElementCopyToDocumentBody,
@@ -71,7 +73,7 @@ export default {
             draggedElement: state => state.draggedElement,
             ghostIndex: state => state.ghostIndex,
             draggedElIndex: state => state.draggedElIndex,
-            draggedElementOnGrid: state => state.draggedElementOnGrid,
+            isElementDragging: state => state.isElementDragging,
         }),
         isDraggable() {
             return !this.isHeaderFocused
@@ -118,9 +120,9 @@ export default {
 
             this.setGhostIndex(this.index);
             this.setDraggedElIndex(this.index);
-            this.setDraggedElement(this.column.id);
+            this.setDraggedElement(this.column);
             this.setDraggableState({
-                propName: 'draggedElementOnGrid',
+                propName: 'isElementDragging',
                 value: DRAGGED_ELEMENT.COLUMN,
             });
 
@@ -129,7 +131,16 @@ export default {
         onDragEnd(event) {
             removeElementCopyFromDocumentBody(event);
 
-            if (this.ghostIndex !== this.draggedElIndex) {
+            const {
+                xPos,
+                yPos,
+            } = getPositionForBrowser(event);
+            const trashElement = document.documentElement.querySelector('.drop-zone');
+            const isDroppedToTrash = isMouseInsideElement(trashElement, xPos, yPos);
+
+            if (isDroppedToTrash && this.column.deletable) {
+                this.$emit('remove', this.index);
+            } else if (this.ghostIndex !== this.draggedElIndex) {
                 this.$emit('swapColumns', {
                     from: this.draggedElIndex,
                     to: this.ghostIndex,
@@ -139,7 +150,7 @@ export default {
             this.removeColumnsTransform();
             this.resetDraggedElementCache();
             this.setDraggableState({
-                propName: 'draggedElementOnGrid',
+                propName: 'isElementDragging',
                 value: null,
             });
             this.isDragged = false;
@@ -163,7 +174,7 @@ export default {
             if ((this.index === this.draggedElIndex && this.ghostIndex !== -1)
                 || (isBefore && this.ghostIndex === fixedIndex - 1)
                 || (!isBefore && this.ghostIndex === fixedIndex + 1)
-                || this.draggedElementOnGrid === DRAGGED_ELEMENT.FILTER) {
+                || this.isElementDragging === DRAGGED_ELEMENT.FILTER) {
                 event.preventDefault();
                 event.stopPropagation();
 

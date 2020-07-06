@@ -48,10 +48,6 @@ export default {
             type: Object,
             default: () => ({}),
         },
-        filter: {
-            type: Object,
-            default: null,
-        },
         isDisabled: {
             type: Boolean,
             default: false,
@@ -61,19 +57,20 @@ export default {
             default: false,
         },
     },
-    computed: {
-        value() {
-            if (!this.filter) return '';
-
-            return +this.filter.value;
-        },
+    data() {
+        return {
+            value: '',
+        };
     },
     methods: {
         onValueChange(value) {
+            this.value = value;
+
             this.$emit('filter', {
                 index: this.columnIndex,
-                value,
-                operator: FILTER_OPERATOR.EQUAL,
+                value: {
+                    [FILTER_OPERATOR.EQUAL]: value,
+                },
             });
         },
     },

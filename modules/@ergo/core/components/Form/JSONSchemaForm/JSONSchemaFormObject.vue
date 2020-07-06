@@ -17,9 +17,6 @@
 <script>
 import FormSection from '@Core/components/Form/Section/FormSection';
 import {
-    SIZE,
-} from '@Core/defaults/theme';
-import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
 
@@ -74,7 +71,6 @@ export default {
                     props: {
                         isRequired: this.schema.required.indexOf(key) !== -1,
                         ...rest,
-                        size: SIZE.SMALL,
                     },
                     component: () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),
                 });

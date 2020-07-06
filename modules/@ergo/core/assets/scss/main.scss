@@ -13,3 +13,11 @@
 
 //mixins
 @import "_mixins/fonts";
+
+.page-enter-active, .page-leave-active {
+    transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+}
+
+.page-enter, .page-leave-active {
+    opacity: 0;
+}

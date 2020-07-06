@@ -18,6 +18,10 @@ export function isMouseOutOfBoundsElement(element, xPos, yPos) {
 }
 
 export function isMouseInsideElement(element, xPos, yPos) {
+    if (!element) {
+        return false;
+    }
+
     const {
         top, left, width, height,
     } = element.getBoundingClientRect();

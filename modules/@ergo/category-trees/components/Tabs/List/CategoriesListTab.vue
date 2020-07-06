@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <VerticalTabBarListWrapper>
+    <VerticalTabBarList>
         <ListSearchHeader
             header="Categories"
             @searchResult="onSearch" />
@@ -29,7 +29,7 @@
             v-if="isModalVisible"
             @close="onCloseModal"
             @create="onCreatedCategory" />
-    </VerticalTabBarListWrapper>
+    </VerticalTabBarList>
 </template>
 
 <script>
@@ -46,7 +46,7 @@ export default {
         ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
         CategoriesListElement: () => import('@Trees/components/Lists/CategoriesListElement'),
         CreateCategoryModalForm: () => import('@Categories/components/Modals/CreateCategoryModalForm'),
-        VerticalTabBarListWrapper: () => import('@Core/components/TabBar/VerticalTabBarListWrapper'),
+        VerticalTabBarList: () => import('@Core/components/TabBar/VerticalTabBarList'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
         Fab: () => import('@Core/components/Buttons/Fab'),

@@ -9,6 +9,7 @@
                 :columns="columns"
                 :data-count="filtered"
                 :data="data"
+                :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 @fetchData="getGridData" />
         </template>

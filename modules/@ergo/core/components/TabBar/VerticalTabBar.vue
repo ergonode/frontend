@@ -26,6 +26,7 @@
         <VerticalTabContent
             v-show="isExpanded"
             :item="items[selectedTabIndex]" />
+        <slot />
     </div>
 </template>
 
@@ -80,6 +81,7 @@ export default {
 
 <style lang="scss" scoped>
     .vertical-tab-bar {
+        position: relative;
         display: flex;
         height: 100%;
 

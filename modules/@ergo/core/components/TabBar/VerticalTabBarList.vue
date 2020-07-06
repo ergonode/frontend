@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="list-wrapper">
+    <div class="vertical-tab-bar-list">
         <slot />
     </div>
 </template>
@@ -11,12 +11,12 @@
 <script>
 
 export default {
-    name: 'VerticalTabBarListWrapper',
+    name: 'VerticalTabBarList',
 };
 </script>
 
 <style lang="scss" scoped>
-    .list-wrapper {
+    .vertical-tab-bar-list {
         position: relative;
         display: flex;
         flex: 1;

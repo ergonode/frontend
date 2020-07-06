@@ -8,6 +8,7 @@
         :columns="columns"
         :data-count="filtered"
         :data="data"
+        :is-prefetching-data="isPrefetchingData"
         :is-basic-filter="true"
         :is-header-visible="true"
         :is-collection-layout="true"

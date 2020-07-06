@@ -61,47 +61,49 @@
                 </template>
             </InputController>
         </template>
-        <SelectDropDown
-            v-if="needsToRender"
-            :data-cy="`${dataCy}-drop-down`"
-            ref="menu"
-            :offset="offset"
-            :fixed="fixedContent"
-            :size="size"
-            :multiselect="multiselect"
-            :clearable="clearable"
-            :fixed-content="fixedContent"
-            :searchable="searchable"
-            :sticky-search="stickySearch"
-            :options="options"
-            :selected-options="selectedOptions"
-            :search-result="searchResult"
-            :is-visible="isFocused"
-            @dismiss="onDismiss"
-            @clear="onClear"
-            @search="onSearch"
-            @input="onSelectValue"
-            @clickOutside="onClickOutside">
-            <template #dropdown>
-                <slot
-                    name="dropdown"
-                    :on-select-value-callback="onSelectValue" />
-            </template>
-            <template #option="{ index, option, isSelected, isSmallSize }">
-                <slot
-                    name="option"
-                    :option="option"
-                    :is-selected="isSelected"
-                    :is-small-size="isSmallSize"
-                    :index="index" />
-            </template>
-            <template #footer>
-                <slot
-                    name="footer"
-                    :clear="onClear"
-                    :apply="onDismiss" />
-            </template>
-        </SelectDropDown>
+        <FadeTransition>
+            <SelectDropDown
+                v-if="needsToRender"
+                :data-cy="`${dataCy}-drop-down`"
+                ref="menu"
+                :offset="offset"
+                :fixed="fixedContent"
+                :size="size"
+                :multiselect="multiselect"
+                :clearable="clearable"
+                :fixed-content="fixedContent"
+                :searchable="searchable"
+                :sticky-search="stickySearch"
+                :options="options"
+                :selected-options="selectedOptions"
+                :search-result="searchResult"
+                :is-visible="isFocused"
+                @dismiss="onDismiss"
+                @clear="onClear"
+                @search="onSearch"
+                @input="onSelectValue"
+                @clickOutside="onClickOutside">
+                <template #dropdown>
+                    <slot
+                        name="dropdown"
+                        :on-select-value-callback="onSelectValue" />
+                </template>
+                <template #option="{ index, option, isSelected, isSmallSize }">
+                    <slot
+                        name="option"
+                        :option="option"
+                        :is-selected="isSelected"
+                        :is-small-size="isSmallSize"
+                        :index="index" />
+                </template>
+                <template #footer>
+                    <slot
+                        name="footer"
+                        :clear="onClear"
+                        :apply="onDismiss" />
+                </template>
+            </SelectDropDown>
+        </FadeTransition>
         <template #details>
             <slot name="details" />
         </template>
@@ -114,6 +116,7 @@ import InputController from '@Core/components/Inputs/InputController';
 import InputLabel from '@Core/components/Inputs/InputLabel';
 import InputSelectValue from '@Core/components/Inputs/InputSelectValue';
 import SelectDropDown from '@Core/components/Inputs/Select/DropDown/SelectDropDown';
+import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import {
     ARROW,
 } from '@Core/defaults/icons';
@@ -130,6 +133,7 @@ import {
 export default {
     name: 'Select',
     components: {
+        FadeTransition,
         SelectDropDown,
         IconArrowDropDown,
         InputController,
@@ -294,9 +298,13 @@ export default {
     },
     mounted() {
         if (this.autofocus) {
-            window.requestAnimationFrame(() => {
-                this.$refs.input.focus();
-            });
+            setTimeout(() => {
+                this.$nextTick(() => {
+                    window.requestAnimationFrame(() => {
+                        this.$refs.input.focus();
+                    });
+                });
+            }, 100);
         }
     },
     methods: {

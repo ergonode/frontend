@@ -21,9 +21,15 @@
 <script>
 import IconDragDrop from '@Core/components/Icons/Actions/IconDragDrop';
 import {
+    DRAGGED_ELEMENT,
+} from '@Core/defaults/grid';
+import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'ListDraggableElement',
@@ -69,6 +75,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions('draggable', [
+            'setDraggableState',
+        ]),
         onDragStart(event) {
             addElementCopyToDocumentBody({
                 event,
@@ -77,12 +86,20 @@ export default {
             });
 
             this.isDragged = true;
+            this.setDraggableState({
+                propName: 'isElementDragging',
+                value: DRAGGED_ELEMENT.LIST,
+            });
             this.$emit('drag', true);
         },
         onDragEnd(event) {
             removeElementCopyFromDocumentBody(event);
 
             this.isDragged = false;
+            this.setDraggableState({
+                propName: 'isElementDragging',
+                value: null,
+            });
             this.$emit('drag', false);
         },
     },

@@ -51,6 +51,9 @@ export default {
                 'input-select-value',
                 `input-select-value--${this.size}`,
                 `input-select-value--${this.alignment}`,
+                {
+                    'input-select-value--disabled': this.disabled,
+                },
             ];
         },
     },
@@ -86,6 +89,10 @@ export default {
 
         &--regular {
             font: $FONT_MEDIUM_14_20;
+        }
+
+        &--disabled {
+            color: $GREY_DARK;
         }
     }
 </style>

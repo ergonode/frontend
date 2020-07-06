@@ -27,7 +27,6 @@ export default {
         grid-template-columns: max-content 1fr;
         box-sizing: border-box;
         background-color: $WHITE;
-        border-top: $BORDER_1_GREY;
 
         &__sidebar {
             grid-area: 1 / 1 / 3 / 2;

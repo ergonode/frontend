@@ -65,6 +65,10 @@ module.exports = {
             },
         ],
     },
+    pageTransition: {
+        name: 'page',
+        mode: 'out-in',
+    },
     loading: {
         color: '#00BC87',
         height: '3px',
