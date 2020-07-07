@@ -11,6 +11,7 @@ import {
 
 import modulesConfig from './modules.config';
 import {
+    _requiredModules,
     description,
     keywords,
     version,
@@ -93,11 +94,7 @@ module.exports = {
         'cookie-universal-nuxt',
     ],
     vuems: {
-        required: [
-            '@ergo/core',
-            '@ergo/authentication',
-            '@ergo/users',
-        ],
+        required: _requiredModules,
         modules: modulesConfig,
         isDev: process.env.NODE_ENV !== 'production',
     },
