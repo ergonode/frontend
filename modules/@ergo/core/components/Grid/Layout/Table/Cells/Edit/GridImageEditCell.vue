@@ -5,11 +5,10 @@
 <template>
     <GridActivatorEditCell>
         <GridImageEditContentCell :style="{width: `${width + 8}px`}">
-            <UploadImageFile
+            <UploadImageFileNew
                 :value="value"
-                :height="this.localValue ? 'unset' : '132px'"
-                @upload="updateValue"
-                @remove="updateValue" />
+                height="132px"
+                @input="updateValue" />
         </GridImageEditContentCell>
     </GridActivatorEditCell>
 </template>
@@ -19,9 +18,12 @@ import GridImageEditContentCell from '@Core/components/Grid/Layout/Table/Cells/E
 import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
 
+import UploadImageFileNew from '../../../../../Inputs/UploadFile/UploadImageFileNew';
+
 export default {
     name: 'GridImageEditCell',
     components: {
+        UploadImageFileNew,
         GridActivatorEditCell,
         GridImageEditContentCell,
         UploadImageFile,

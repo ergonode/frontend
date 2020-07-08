@@ -4,6 +4,7 @@
  */
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -68,6 +69,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions('grid', [
+            'setDraftValue',
+        ]),
         onCopyValues(payload) {
             this.$emit('copyCells', {
                 ...payload,
@@ -77,11 +81,15 @@ export default {
             });
         },
         onValueChange(value) {
-            this.$emit('editCell', {
+            const payload = {
                 value,
                 rowId: this.rowId,
                 columnId: this.column.id,
-            });
+            };
+
+            this.setDraftValue(payload);
+
+            this.$emit('editCell', payload);
         },
     },
 };

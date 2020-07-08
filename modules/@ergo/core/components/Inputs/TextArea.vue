@@ -6,7 +6,7 @@
     <Component
         :is="styleComponent"
         ref="activator"
-        :style="{ height: '100%' }"
+        :height="height"
         :focused="isFocused"
         :error="isError"
         :data-cy="dataCy"
@@ -92,6 +92,10 @@ export default {
                 SIZE.SMALL,
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
+        },
+        height: {
+            type: String,
+            default: 'unset',
         },
         alignment: {
             type: String,

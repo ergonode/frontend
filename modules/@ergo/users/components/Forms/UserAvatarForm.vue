@@ -6,10 +6,10 @@
     <Form>
         <template #body>
             <FormSection>
-                <UploadImageFile
+                <UploadImageFileNew
                     :value="avatarId"
                     label="Profile picture"
-                    :fixed-height="true"
+                    height="112px"
                     :disabled="!isUserAllowedToUpdate"
                     @upload="uploadValue"
                     @remove="uploadValue" />
@@ -21,7 +21,7 @@
 <script>
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
+import UploadImageFileNew from '@Core/components/Inputs/UploadFile/UploadImageFileNew';
 import {
     mapActions,
     mapState,
@@ -32,7 +32,7 @@ export default {
     components: {
         Form,
         FormSection,
-        UploadImageFile,
+        UploadImageFileNew,
     },
     computed: {
         ...mapState('users', {

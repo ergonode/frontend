@@ -4,44 +4,34 @@
  */
 <template>
     <ModalOverlay @close="onClose">
-        <div
-            data-cy="modal"
-            class="modal-confirm">
-            <div class="modal-confirm__header">
-                <div class="header-title">
-                    <slot name="headerPrepend" />
-                    <h3 v-text="title" />
-                </div>
-                <Fab
-                    data-cy="modal-close"
-                    :theme="secondaryTheme"
-                    @click.native="onClose">
-                    <template #icon="{ color }">
-                        <IconClose :fill-color="color" />
-                    </template>
-                </Fab>
-            </div>
-            <div class="modal-confirm__footer">
+        <Modal data-cy="modal">
+            <ModalHeader
+                :size="smallSize"
+                :title="title"
+                @close="onClose" />
+            <ModalFooter>
                 <slot name="footer" />
-            </div>
-        </div>
+            </ModalFooter>
+        </Modal>
     </ModalOverlay>
 </template>
 
 <script>
-import Fab from '@Core/components/Buttons/Fab';
-import IconClose from '@Core/components/Icons/Window/IconClose';
+import Modal from '@Core/components/Modal/Modal';
+import ModalFooter from '@Core/components/Modal/ModalFooter';
+import ModalHeader from '@Core/components/Modal/ModalHeader';
 import ModalOverlay from '@Core/components/Modal/ModalOverlay';
 import {
-    THEME,
+    SIZE,
 } from '@Core/defaults/theme';
 
 export default {
     name: 'ModalConfirm',
     components: {
         ModalOverlay,
-        Fab,
-        IconClose,
+        ModalHeader,
+        Modal,
+        ModalFooter,
     },
     props: {
         title: {
@@ -50,8 +40,8 @@ export default {
         },
     },
     computed: {
-        secondaryTheme() {
-            return THEME.SECONDARY;
+        smallSize() {
+            return SIZE.SMALL;
         },
     },
     methods: {
@@ -61,42 +51,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .modal-confirm {
-        display: flex;
-        flex-direction: column;
-        width: 400px;
-        background-color: $WHITE;
-        box-shadow: $ELEVATOR_6_DP;
-        max-height: 100%;
-        overflow: auto;
-
-        &__header {
-            display: flex;
-            flex: 0;
-            justify-content: space-between;
-            padding: 24px 16px 0 24px;
-
-            .header-title {
-                padding-right: 16px;
-                color: $GRAPHITE_DARK;
-                font: $FONT_SEMI_BOLD_16_24;
-            }
-        }
-
-        &__body {
-            flex: 1;
-            padding: 24px 24px 32px;
-            overflow: auto;
-        }
-
-        &__footer {
-            z-index: $Z_INDEX_LVL_1;
-            display: flex;
-            flex: 0;
-            justify-content: space-between;
-            padding: 16px 24px;
-        }
-    }
-</style>

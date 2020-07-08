@@ -11,17 +11,17 @@
         :edit-key-code="32"
         :disabled="isDisabled"
         :copyable="isCopyable"
-        @edit="onCheckValueChange"
-        @copy="onCopyValues">
-        <GridCheckEditCell
+        :selected="isSelected"
+        @edit="onAttachValueChange">
+        <GridBoolEditCell
             :value="cellData.value"
             :suffix="data.suffix"
-            :disabled="isLocked" />
+            :is-disabled="isLocked" />
     </GridTableCell>
 </template>
 
 <script>
-import GridCheckEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell';
+import GridBoolEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridBoolEditCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 import {
     cellDataCompose,
@@ -31,9 +31,9 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'GridCheckDataCell',
+    name: 'GridAttachDataCell',
     components: {
-        GridCheckEditCell,
+        GridBoolEditCell,
     },
     mixins: [
         gridDataCellMixin,
@@ -50,9 +50,30 @@ export default {
         },
     },
     methods: {
-        onCheckValueChange() {
+        onAttachValueChange() {
+            if (!this.column.multiple) {
+                if (typeof this.drafts[this.column.data] === 'undefined') {
+                    this.setDraftValue({
+                        rowId: this.column.data,
+                        columnId: this.column.id,
+                        value: false,
+                    });
+                } else {
+                    const lastSelectedDraftKey = Object.keys(this.drafts)
+                        .find(key => this.drafts[key][this.column.id]);
+
+                    if (lastSelectedDraftKey !== this.rowId) {
+                        this.setDraftValue({
+                            rowId: lastSelectedDraftKey,
+                            columnId: this.column.id,
+                            value: false,
+                        });
+                    }
+                }
+            }
+
             this.onValueChange(!this.cellData.value);
-        }
+        },
     },
 };
 </script>

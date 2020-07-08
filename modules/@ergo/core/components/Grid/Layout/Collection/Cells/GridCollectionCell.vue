@@ -103,7 +103,6 @@ export default {
             display: flex;
             height: 32px;
             padding: 8px;
-            border-top: $BORDER_1_GREY;
             box-sizing: border-box;
         }
 

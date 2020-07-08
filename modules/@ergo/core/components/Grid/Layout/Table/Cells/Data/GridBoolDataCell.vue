@@ -12,7 +12,7 @@
         :disabled="isDisabled"
         :copyable="isCopyable"
         :selected="isSelected"
-        @edit="onValueChange(!cellData.value)"
+        @edit="onBoolValueChange"
         @copy="onCopyValues">
         <GridBoolEditCell
             :value="cellData.value"
@@ -50,5 +50,10 @@ export default {
             return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
         },
     },
+    methods: {
+        onBoolValueChange() {
+            this.onValueChange(!this.cellData.value);
+        }
+    }
 };
 </script>

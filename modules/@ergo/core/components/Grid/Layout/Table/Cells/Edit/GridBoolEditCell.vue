@@ -5,6 +5,7 @@
 <template>
     <div class="bool-presentation-cell">
         <Toggler
+            @click.native.prevent
             :value="Boolean(value)"
             :disabled="isDisabled" />
     </div>

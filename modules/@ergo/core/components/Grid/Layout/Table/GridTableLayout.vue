@@ -256,7 +256,6 @@ export default {
             'removeDisabledElement',
         ]),
         ...mapActions('grid', [
-            'setDraftValue',
             'setDraftsValues',
         ]),
         onHeaderFocus(isFocused) {
@@ -424,7 +423,6 @@ export default {
             this.$emit('rowsSelect', this.isSelectedAllRows);
         },
         onEditCell(payload) {
-            this.setDraftValue(payload);
             this.$emit('editCell', payload);
         },
         onCopyCells({

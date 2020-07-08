@@ -40,7 +40,6 @@
                 <TextField
                     :value="password"
                     required
-                    type="password"
                     label="Password"
                     :input="{ type: 'password' }"
                     :error-messages="errorMessages[passwordFieldKey]"
@@ -49,7 +48,6 @@
                 <TextField
                     :value="passwordRepeat"
                     required
-                    type="password"
                     label="Password repeat"
                     :input="{ type: 'password' }"
                     :error-messages="errorMessages[passwordRepeatFieldKey]"

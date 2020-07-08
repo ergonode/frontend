@@ -12,6 +12,7 @@
         :disabled="disabled"
         :alignment="alignment"
         :size="size"
+        :height="height"
         :details-label="informationLabel"
         @mousedown="onMouseDown"
         @mouseup="onMouseUp">
@@ -204,6 +205,11 @@ export default {
         };
     },
     computed: {
+        height() {
+            return this.size === SIZE.SMALL
+                ? '32px'
+                : '40px';
+        },
         classes() {
             return [
                 'text-field',

@@ -6,6 +6,7 @@
     <div :class="classes">
         <div
             class="input-underline-style__input"
+            :style="inputStyle"
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">
             <slot name="activator" />
@@ -37,6 +38,10 @@ export default {
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
         },
+        height: {
+            type: String,
+            default: 'unset',
+        },
         alignment: {
             type: String,
             default: ALIGNMENT.LEFT,
@@ -60,6 +65,12 @@ export default {
         },
     },
     computed: {
+        inputStyle() {
+            return {
+                height: this.height,
+                flexBasis: this.height,
+            };
+        },
         classes() {
             return [
                 'input-underline-style',
@@ -151,20 +162,6 @@ export default {
                 width: 100%;
                 border: solid $GREEN;
                 border-width: thin 0;
-            }
-        }
-
-        &--small {
-            #{$underline}__input {
-                flex-basis: 32px;
-                height: 32px;
-            }
-        }
-
-        &--regular {
-            #{$underline}__input {
-                flex-basis: 40px;
-                height: 40px;
             }
         }
 

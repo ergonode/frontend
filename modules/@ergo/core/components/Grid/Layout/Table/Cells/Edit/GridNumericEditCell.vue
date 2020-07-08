@@ -11,7 +11,8 @@
                 :alignment="leftAlignment"
                 :error-messages="errorMessages"
                 :input="{ type: 'number' }"
-                :size="smallSize" />
+                :size="smallSize"
+                :type="underlineType" />
         </GridTextEditContentCell>
     </GridActivatorEditCell>
 </template>
@@ -22,6 +23,7 @@ import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit
 import TextField from '@Core/components/Inputs/TextField';
 import {
     ALIGNMENT,
+    INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
 
@@ -55,6 +57,9 @@ export default {
         };
     },
     computed: {
+        underlineType() {
+            return INPUT_TYPE.UNDERLINE;
+        },
         smallSize() {
             return SIZE.SMALL;
         },

@@ -6,19 +6,20 @@
     <ProductTemplateFormField
         :size="size"
         :position="position">
-        <UploadImageFile
+        <UploadImageFileNew
             :style="{ height: '100%' }"
             :value="fieldData"
             :label="label"
             :required="properties.required"
             :disabled="disabled"
             height="100%"
-            @upload="onValueChange"
-            @remove="onValueChange" />
+            @input="onValueChange" />
     </ProductTemplateFormField>
 </template>
 
 <script>
+// import UploadImageFileNew from '@Core/components/Inputs/UploadFile/UploadImageFileNew';
+import UploadFilesNew from '@Core/components/Inputs/UploadFile/UploadFilesNew';
 import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
 import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import {
@@ -26,11 +27,15 @@ import {
     mapState,
 } from 'vuex';
 
+import UploadImageFileNew from '../../../../core/components/Inputs/UploadFile/UploadImageFileNew';
+
 export default {
     name: 'ProductTemplateFormNumericField',
     components: {
+        UploadImageFileNew,
         ProductTemplateFormField,
         UploadImageFile,
+        UploadFilesNew,
     },
     props: {
         size: {

@@ -3,72 +3,92 @@
  * See LICENSE for license details.
  */
 <template>
-    <UploadFileNew
-        :label="label"
-        :required="required"
-        :disabled="disabled"
-        :fixed-height="fixedHeight">
+    <InputSolidStyle
+        :size="size"
+        :height="height"
+        :disabled="disabled">
         <template #activator>
-            <Button
-                v-if="!isValue"
-                :title="title"
-                :size="smallSize"
-                :theme="secondaryTheme"
-                @click.native="onShowModal">
-                <template #prepend="{ color }">
-                    <IconAdd :fill-color="color" />
-                </template>
-            </Button>
-            <ModalTabBar
-                v-if="isModalVisible"
-                :items="tabs"
-                @close="onCloseModal" />
-            <div
-                v-if="isValue"
-                class="image-container">
-                <Picture
-                    v-if="!multiple"
-                    object-fit="none"
-                    :image-id="value" />
-                <PictureCarousel
-                    v-else
-                    :image-ids="value" />
-                <div class="image-settings image-white-theme">
-                    <ActionIconButton
-                        :size="smallSize"
-                        :theme="secondaryPlainTheme"
-                        :options="settingsOptions"
-                        @input="onSelectSetting">
-                        <template #icon="{ color }">
-                            <IconDots :fill-color="color" />
-                        </template>
-                        <template #option="{ option }">
-                            <ListElementDescription>
-                                <ListElementTitle
-                                    :size="smallSize"
-                                    :title="option.text" />
-                            </ListElementDescription>
-                        </template>
-                    </ActionIconButton>
+            <InputController>
+                <div
+                    v-if="isValue"
+                    class="upload-image-file">
+                    <div class="fixed-container">
+                        <Picture
+                            v-if="!multiple"
+                            object-fit="none"
+                            :image-id="value" />
+                        <PictureCarousel
+                            v-else
+                            :image-ids="value" />
+                        <div class="upload-image-file__image-settings">
+                            <ActionIconButton
+                                :size="smallSize"
+                                :theme="secondaryPlainTheme"
+                                :options="settingsOptions"
+                                @input="onSelectSetting">
+                                <template #icon="{ color }">
+                                    <IconDots :fill-color="color" />
+                                </template>
+                                <template #option="{ option }">
+                                    <ListElementDescription>
+                                        <ListElementTitle
+                                            :size="smallSize"
+                                            :title="option.text" />
+                                    </ListElementDescription>
+                                </template>
+                            </ActionIconButton>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <div
+                    class="centering-container"
+                    v-else>
+                    <Button
+                        :title="title"
+                        :size="smallSize"
+                        :theme="secondaryTheme"
+                        @click.native="onShowModal">
+                        <template #prepend="{ color }">
+                            <IconAdd :fill-color="color" />
+                        </template>
+                    </Button>
+                </div>
+                <InputLabel
+                    v-if="label"
+                    :style="{ top: 0 }"
+                    :for="associatedLabel"
+                    :required="required"
+                    :size="size"
+                    :floating="true"
+                    :disabled="disabled"
+                    :label="label" />
+            </InputController>
         </template>
-    </UploadFileNew>
+        <ModalTabBar
+            v-if="isModalVisible"
+            :items="tabs"
+            @close="onCloseModal" />
+    </InputSolidStyle>
 </template>
 
 <script>
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import UploadFileNew from '@Core/components/Inputs/UploadFile/UploadFileNew';
+import InputController from '@Core/components/Inputs/InputController';
+import InputLabel from '@Core/components/Inputs/InputLabel';
+import InputSolidStyle from '@Core/components/Inputs/InputSolidStyle';
 import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'UploadImageFileNew',
     components: {
-        UploadFileNew,
+        InputController,
+        InputSolidStyle,
+        InputLabel,
         Button,
         IconAdd,
         IconDots: () => import('@Core/components/Icons/Others/IconDots'),
@@ -79,6 +99,9 @@ export default {
         ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
         ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
     },
+    mixins: [
+        associatedLabelMixin,
+    ],
     props: {
         value: {
             type: [
@@ -86,6 +109,18 @@ export default {
                 Array,
             ],
             default: '',
+        },
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
+        },
+        height: {
+            type: String,
+            default: 'unset',
         },
         label: {
             type: String,
@@ -101,7 +136,7 @@ export default {
         },
         multiple: {
             type: Boolean,
-            default: true,
+            default: false,
         },
         fixedHeight: {
             type: Boolean,
@@ -135,6 +170,7 @@ export default {
                         component: () => import('@Media/components/Tabs/MediaGridTab'),
                         props: {
                             multiple: this.multiple,
+                            value: this.value,
                         },
                         listeners: {
                             input: (value) => {
@@ -167,7 +203,7 @@ export default {
                         action: this.onShowModal,
                     },
                     {
-                        text: 'Download this  image',
+                        text: 'Download this image',
                         action: this.onDownloadImage,
                     },
                     {
@@ -198,7 +234,23 @@ export default {
             this.isModalVisible = true;
         },
         onDownloadImage() {
-            // TODO: Add downloading endpoint
+            const url = `${process.env.baseURL}multimedia/${this.value}`;
+
+            this.$axios.$get(url, {
+                responseType: 'arraybuffer',
+            })
+                .then((response) => {
+                    const downloadUrl = window.URL.createObjectURL(new Blob([
+                        response,
+                    ]));
+                    const link = document.createElement('a');
+
+                    link.href = downloadUrl;
+                    link.setAttribute('download', `${this.value}`);
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+                });
         },
         onRemoveImage() {
             if (this.multiple) {
@@ -218,16 +270,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .image-container {
-        position: relative;
-        height: 100%;
+    .centering-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
     }
 
-    .image-settings {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        background-color: $WHITE;
-        border-radius: 50%;
+    .fixed-container {
+        position: relative;
+        flex: 1 1 auto;
+        height: 0;
+        margin: 4px 0;
+        overflow: hidden;
+    }
+
+    .upload-image-file {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+
+        &__image-settings {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: $WHITE;
+            border-radius: 50%;
+        }
     }
 </style>

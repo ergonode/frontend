@@ -12,6 +12,7 @@
         :disabled="disabled"
         :alignment="alignment"
         :size="size"
+        :height="height"
         :details-label="informationLabel"
         @keydown.native="onKeyDown"
         @mousedown="onMouseDown"
@@ -246,6 +247,11 @@ export default {
         };
     },
     computed: {
+        height() {
+            return this.size === SIZE.SMALL
+                ? '32px'
+                : '40px';
+        },
         styleComponent() {
             return () => import(`@Core/components/Inputs/Input${toCapitalize(this.type)}Style`);
         },

@@ -11,7 +11,7 @@
                     label="By SKU"
                     hint="Separate multiple SKU’s by using enter or comma, e.g. “SKU1, SKU2, SKU3”"
                     resize="none"
-                    :style="{height: '150px'}"
+                    height="150px"
                     :error-messages="errorMessages[skusFieldKey]"
                     :disabled="isDisabledByPrivileges"
                     @input="onSKUChange" />

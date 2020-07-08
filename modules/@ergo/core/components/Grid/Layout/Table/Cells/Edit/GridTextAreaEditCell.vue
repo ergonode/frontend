@@ -15,7 +15,7 @@
             v-else
             :style="{width: `${width + 8}px`}">
             <TextArea
-                :style="{height: '134px'}"
+                height="134px"
                 v-model="localValue"
                 :autofocus="true"
                 :type="underlineInputType"
