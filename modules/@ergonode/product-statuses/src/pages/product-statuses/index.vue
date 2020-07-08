@@ -46,7 +46,7 @@ import {
 } from '@Core/models/navigation/tabs';
 
 export default {
-    name: 'WorkflowTabs',
+    name: 'Status',
     components: {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),

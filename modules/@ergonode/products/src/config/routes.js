@@ -153,25 +153,6 @@ export default [
                 },
             },
             {
-                name: 'product-id-comments',
-                path: 'comments',
-                component: Tabs.ProductCommentsTab,
-                meta: {
-                    title: 'Comments',
-                    breadcrumbs: [
-                        {
-                            title: 'Products',
-                            icon: Icons.Product,
-                        },
-                        {
-                            title: 'Catalog',
-                            routeName: 'catalog-products',
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-            {
                 name: 'product-id-history',
                 path: 'history',
                 component: Tabs.ProductHistoryTab,

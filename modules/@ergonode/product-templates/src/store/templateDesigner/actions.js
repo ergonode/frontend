@@ -3,11 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    SKU_MODEL_ID,
     SYSTEM_TYPES,
 } from '@Attributes/defaults/attributes';
-import {
-    SKU_MODEL_ID,
-} from '@Templates/defaults/product';
 import {
     getMappedLayoutElement,
     getMappedLayoutElements,

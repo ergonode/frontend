@@ -5,8 +5,10 @@
 export default {
     name: '@ergonode/products',
     relations: [
+        '@ergonode/attributes',
+        '@ergonode/segments',
+        '@ergonode/collections',
         '@ergonode/product-templates',
-        '@ergonode/comments',
     ],
     aliases: {
         '@Products': '/',

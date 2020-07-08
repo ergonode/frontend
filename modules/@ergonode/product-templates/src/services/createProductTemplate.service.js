@@ -4,7 +4,7 @@
  */
 import {
     SKU_MODEL_ID,
-} from '@Templates/defaults/product';
+} from '@Attributes/defaults/attributes';
 
 export default function ({
     $axios, $store,

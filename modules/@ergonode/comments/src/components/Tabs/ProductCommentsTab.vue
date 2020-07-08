@@ -11,11 +11,11 @@
 </template>
 
 <script>
+import ProductCommentsForm from '@Comments/components/Form/ProductCommentsForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
-import ProductCommentsForm from '@Products/components/Form/ProductCommentsForm';
 
 export default {
     name: 'ProductCommentsTab',

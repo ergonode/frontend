@@ -7,4 +7,7 @@ export default {
     aliases: {
         '@Statuses': '/',
     },
+    relations: [
+        '@ergonode/products',
+    ],
 };

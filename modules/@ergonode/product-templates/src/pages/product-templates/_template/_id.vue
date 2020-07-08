@@ -11,14 +11,14 @@
 
 <script>
 import {
+    SKU_MODEL_ID,
+} from '@Attributes/defaults/attributes';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
-import {
-    SKU_MODEL_ID,
-} from '@Templates/defaults/product';
 import {
     mapActions,
     mapState,

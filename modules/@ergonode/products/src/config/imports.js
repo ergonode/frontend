@@ -14,7 +14,6 @@ export const Tabs = {
     ProductCollectionTab: () => import('@Products/components/Tabs/ProductCollectionTab').then(m => m.default || m),
     ProductVariantsTab: () => import('@Products/components/Tabs/ProductVariantsTab').then(m => m.default || m),
     ProductGroupTab: () => import('@Products/components/Tabs/ProductGroupTab').then(m => m.default || m),
-    ProductCommentsTab: () => import('@Products/components/Tabs/ProductCommentsTab').then(m => m.default || m),
     ProductHistoryTab: () => import('@Products/components/Tabs/ProductHistoryTab').then(m => m.default || m),
 };
 

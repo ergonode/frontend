@@ -4,11 +4,9 @@
  */
 
 import {
+    SKU_MODEL,
     TYPES,
 } from '@Attributes/defaults/attributes';
-import {
-    SKU_MODEL,
-} from '@Templates/defaults/product';
 
 export default function ({
     $axios, $store, type,
