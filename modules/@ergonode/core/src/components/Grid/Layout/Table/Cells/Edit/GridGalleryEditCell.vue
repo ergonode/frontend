@@ -17,7 +17,7 @@
 <script>
 import GridImageEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridImageEditContentCell';
 import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
-import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
+import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 
 export default {
     name: 'GridGalleryEditCell',

@@ -62,7 +62,7 @@ export default {
         FormSection: () => import('@Core/components/Form/Section/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
         TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
-        UploadImageFile: () => import('@Core/components/Inputs/UploadFile/UploadImageFile'),
+        UploadImageFile: () => import('@Media/components/Inputs/UploadFile/UploadImageFile'),
     },
     computed: {
         ...mapState('templateDesigner', {

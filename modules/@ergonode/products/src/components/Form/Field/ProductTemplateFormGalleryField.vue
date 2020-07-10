@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
+import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import {
     mapActions,

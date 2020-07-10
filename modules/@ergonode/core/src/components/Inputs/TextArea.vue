@@ -15,7 +15,8 @@
         :size="size"
         :details-label="informationLabel"
         @mousedown="onMouseDown"
-        @mouseup="onMouseUp">
+        @mouseup="onMouseUp"
+        @mounted="onMounted">
         <template #activator>
             <InputController :size="size">
                 <slot name="prepend" />
@@ -188,18 +189,16 @@ export default {
             return this.placeholder;
         },
     },
-    mounted() {
-        if (this.autofocus) {
-            setTimeout(() => {
+    methods: {
+        onMounted() {
+            if (this.autofocus) {
                 this.$nextTick(() => {
                     window.requestAnimationFrame(() => {
                         this.$refs.input.focus();
                     });
                 });
-            }, 100);
-        }
-    },
-    methods: {
+            }
+        },
         onValueChange(event) {
             this.$emit('input', event.target.value);
         },

@@ -20,7 +20,7 @@
             <label
                 class="upload-file-tab__label"
                 :for="associatedLabel">
-                <IconUploadFile
+                <IconUploadCloudFile
                     :fill-color="greenColor"
                     view-box="0 0 48 32"
                     width="48"
@@ -54,10 +54,7 @@ import {
     GREEN,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import Button from '@Core/components/Buttons/Button';
-import IconUploadFile from '@Core/components/Icons/Actions/IconUploadFile';
-import UploadFileList from '@Core/components/Inputs/UploadFile/List/UploadFileList';
-import UploadFileListElement from '@Core/components/Inputs/UploadFile/List/UploadFileListElement';
-import UploadFileListLoadingElement from '@Core/components/Inputs/UploadFile/List/UploadFileListLoadingElement';
+import IconUploadCloudFile from '@Core/components/Icons/Actions/IconUploadCloudFile';
 import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
 import {
     ALERT_TYPE,
@@ -72,11 +69,14 @@ import {
 import {
     formatBytes,
 } from '@Core/models/stringWrapper';
+import UploadFileList from '@Media/components/List/UploadFileList';
+import UploadFileListElement from '@Media/components/List/UploadFileListElement';
+import UploadFileListLoadingElement from '@Media/components/List/UploadFileListLoadingElement';
 
 export default {
     name: 'UploadFileTab',
     components: {
-        IconUploadFile,
+        IconUploadCloudFile,
         Button,
         UploadFileList,
         UploadFileListElement,

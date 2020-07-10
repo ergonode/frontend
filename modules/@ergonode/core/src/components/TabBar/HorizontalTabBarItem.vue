@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
+    <button
         class="tab-bar-item"
         v-text="item.title"
         @click="onSelect" />
@@ -32,12 +32,15 @@ export default {
         flex: 0 0 176px;
         justify-content: center;
         padding-top: 6px;
+        background-color: $WHITE;
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_14_20;
+        border: none;
         text-align: center;
         text-overflow: ellipsis;
         overflow: hidden;
         word-break: break-all;
         text-decoration: none;
+        cursor: pointer;
     }
 </style>

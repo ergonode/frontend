@@ -58,7 +58,6 @@
                 <InputLabel
                     v-if="label"
                     :style="{ top: 0 }"
-                    :for="associatedLabel"
                     :required="required"
                     :size="size"
                     :floating="true"
@@ -66,9 +65,9 @@
                     :label="label" />
             </InputController>
         </template>
-        <ModalTabBar
+        <ModalMediaTabBar
             v-if="isModalVisible"
-            :items="tabs"
+            :tabs="tabs"
             @close="onCloseModal" />
     </InputSolidStyle>
 </template>
@@ -83,7 +82,6 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'UploadImageFile',
@@ -96,14 +94,11 @@ export default {
         IconDots: () => import('@Core/components/Icons/Others/IconDots'),
         Picture: () => import('@Core/components/Multimedia/Picture'),
         PictureCarousel: () => import('@Core/components/Multimedia/PictureCarousel'),
-        ModalTabBar: () => import('@Core/components/Modal/ModalTabBar'),
+        ModalMediaTabBar: () => import('@Media/components/Modal/ModalMediaTabBar'),
         ActionIconButton: () => import('@Core/components/Buttons/ActionIconButton'),
         ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
         ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
     },
-    mixins: [
-        associatedLabelMixin,
-    ],
     props: {
         value: {
             type: [
@@ -165,7 +160,7 @@ export default {
                 {
                     title: 'Media',
                     content: {
-                        component: () => import('@Media/components/Tabs/MediaGridTab'),
+                        component: () => import('@Media/components/Grid/MediaGrid'),
                         props: {
                             multiple: this.multiple,
                             value: this.value,
@@ -180,7 +175,7 @@ export default {
                 {
                     title: 'Upload files',
                     content: {
-                        component: () => import('@Core/components/Inputs/UploadFile/UploadFileTab'),
+                        component: () => import('@Media/components/Tabs/UploadFileTab'),
                         listeners: {},
                     },
                 },

@@ -17,7 +17,7 @@
 <script>
 import GridImageEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridImageEditContentCell';
 import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
-import UploadFiles from '@Core/components/Inputs/UploadFile/UploadFiles';
+import UploadFiles from '@Media/components/Inputs/UploadFile/UploadFiles';
 
 export default {
     name: 'GridFileEditCell',
@@ -52,7 +52,6 @@ export default {
     },
     methods: {
         updateValue(value) {
-            console.log(value);
             this.localValue = value;
         },
     },

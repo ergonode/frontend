@@ -21,7 +21,7 @@
 <script>
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
+import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 import {
     mapActions,
     mapState,

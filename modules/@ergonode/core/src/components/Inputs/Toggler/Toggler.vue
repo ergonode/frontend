@@ -48,7 +48,6 @@ export default {
     },
     methods: {
         onValueChange() {
-            console.log(!this.value);
             this.$emit('input', !this.value);
         },
     },

@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import UploadFiles from '@Core/components/Inputs/UploadFile/UploadFiles';
+import UploadFiles from '@Media/components/Inputs/UploadFile/UploadFiles';
 import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import {
     mapActions,

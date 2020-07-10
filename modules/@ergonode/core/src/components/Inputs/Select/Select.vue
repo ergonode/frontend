@@ -16,7 +16,8 @@
         :details-label="informationLabel"
         @keydown.native="onKeyDown"
         @mousedown="onMouseDown"
-        @mouseup="onMouseUp">
+        @mouseup="onMouseUp"
+        @mounted="onMounted">
         <template #activator>
             <InputController
                 :size="size">
@@ -302,18 +303,16 @@ export default {
             },
         },
     },
-    mounted() {
-        if (this.autofocus) {
-            setTimeout(() => {
+    methods: {
+        onMounted() {
+            if (this.autofocus) {
                 this.$nextTick(() => {
                     window.requestAnimationFrame(() => {
                         this.$refs.input.focus();
                     });
                 });
-            }, 100);
-        }
-    },
-    methods: {
+            }
+        },
         getDropDownOffset() {
             const {
                 x, y, width, height,

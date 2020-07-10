@@ -53,7 +53,7 @@ export default {
     methods: {
         onBoolValueChange() {
             this.onValueChange(!this.cellData.value);
-        }
-    }
+        },
+    },
 };
 </script>

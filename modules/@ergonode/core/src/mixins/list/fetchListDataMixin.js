@@ -16,7 +16,7 @@ export default function ({
                 codeFilter: '',
             };
         },
-        async created() {
+        async fetch() {
             const {
                 language: languageCode,
             } = this.$store.state.authentication.user;

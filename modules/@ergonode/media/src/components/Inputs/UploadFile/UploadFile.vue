@@ -42,7 +42,7 @@
                 <div
                     class="upload-file__placeholder"
                     v-if="!value">
-                    <IconUploadFile
+                    <IconUploadCloudFile
                         :fill-color="greenColor"
                         view-box="0 0 48 32"
                         width="48"
@@ -94,7 +94,7 @@ export default {
         Fab: () => import('@Core/components/Buttons/Fab'),
         IconDelete: () => import('@Core/components/Icons/Actions/IconDelete'),
         IconRefresh: () => import('@Core/components/Icons/Actions/IconRefresh'),
-        IconUploadFile: () => import('@Core/components/Icons/Actions/IconUploadFile'),
+        IconUploadCloudFile: () => import('@Core/components/Icons/Actions/IconUploadCloudFile'),
     },
     mixins: [
         associatedLabelMixin,

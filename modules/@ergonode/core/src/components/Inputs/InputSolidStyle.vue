@@ -84,6 +84,9 @@ export default {
             ];
         },
     },
+    mounted() {
+        this.$emit('mounted');
+    },
     methods: {
         onMouseDown(event) {
             this.$emit('mousedown', event);
