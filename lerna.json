@@ -1,0 +1,17 @@
+{
+  "packages": [
+    "modules/*"
+  ],
+  "command": {
+    "version": {
+      "allowBranch": [
+        "master",
+        "release/*"
+      ],
+      "conventionalCommits": true,
+      "exact": true,
+      "message": "chore(release): %s"
+    }
+  },
+  "version": "0.9.0"
+}
