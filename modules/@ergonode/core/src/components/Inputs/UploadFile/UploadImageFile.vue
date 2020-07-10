@@ -140,10 +140,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        fixedHeight: {
-            type: Boolean,
-            default: false,
-        },
     },
     data() {
         return {

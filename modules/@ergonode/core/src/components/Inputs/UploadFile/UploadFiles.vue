@@ -5,42 +5,47 @@
 <template>
     <InputSolidStyle
         :size="size"
+        :height="height"
         :disabled="disabled">
         <template #activator>
             <InputController>
-                <List v-if="isValue">
-                    <ListElement
-                        v-for="file in value"
-                        :size="size"
-                        :key="file">
-                        <ListElementIcon>
-                            <IconFile :fill-color="greenColor" />
-                        </ListElementIcon>
-                        <ListElementDescription>
-                            <ListElementTitle :title="file" />
-                        </ListElementDescription>
-                        <ListElementAction :size="smallSize">
-                            <IconButton
+                <div class="upload-files">
+                    <VerticalFixedScroll>
+                        <List v-if="isValue">
+                            <ListElement
+                                v-for="file in value"
+                                :size="size"
+                                :key="file">
+                                <ListElementIcon>
+                                    <IconFile :fill-color="greenColor" />
+                                </ListElementIcon>
+                                <ListElementDescription>
+                                    <ListElementTitle :title="file" />
+                                </ListElementDescription>
+                                <ListElementAction :size="smallSize">
+                                    <IconButton
+                                        :size="smallSize"
+                                        :theme="secondaryTheme"
+                                        @click.native="onRemoveFile(file)">
+                                        <template #icon="{ color }">
+                                            <IconFilledClose :fill-color="color" />
+                                        </template>
+                                    </IconButton>
+                                </ListElementAction>
+                            </ListElement>
+                        </List>
+                        <div class="centering-container">
+                            <Button
+                                :title="title"
                                 :size="smallSize"
                                 :theme="secondaryTheme"
-                                @click.native="onRemoveFile(file)">
-                                <template #icon="{ color }">
-                                    <IconFilledClose :fill-color="color" />
+                                @click.native="onShowModal">
+                                <template #prepend="{ color }">
+                                    <IconAdd :fill-color="color" />
                                 </template>
-                            </IconButton>
-                        </ListElementAction>
-                    </ListElement>
-                </List>
-                <div class="centering-container">
-                    <Button
-                        :title="title"
-                        :size="smallSize"
-                        :theme="secondaryTheme"
-                        @click.native="onShowModal">
-                        <template #prepend="{ color }">
-                            <IconAdd :fill-color="color" />
-                        </template>
-                    </Button>
+                            </Button>
+                        </div>
+                    </VerticalFixedScroll>
                 </div>
                 <InputLabel
                     v-if="label"
@@ -69,6 +74,7 @@ import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import InputController from '@Core/components/Inputs/InputController';
 import InputLabel from '@Core/components/Inputs/InputLabel';
 import InputSolidStyle from '@Core/components/Inputs/InputSolidStyle';
+import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 import {
     SIZE,
     THEME,
@@ -83,6 +89,7 @@ export default {
         IconAdd,
         InputLabel,
         InputSolidStyle,
+        VerticalFixedScroll,
         ModalTabBar: () => import('@Core/components/Modal/ModalTabBar'),
         IconFile: () => import('@Core/components/Icons/Others/IconFile'),
         IconFilledClose: () => import('@Core/components/Icons/Window/IconFilledClose'),
@@ -110,6 +117,10 @@ export default {
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
         },
+        height: {
+            type: String,
+            default: 'unset',
+        },
         label: {
             type: String,
             default: '',
@@ -119,10 +130,6 @@ export default {
             default: false,
         },
         disabled: {
-            type: Boolean,
-            default: false,
-        },
-        fixedHeight: {
             type: Boolean,
             default: false,
         },
@@ -155,6 +162,10 @@ export default {
                     title: 'Media',
                     content: {
                         component: () => import('@Media/components/Tabs/MediaGridTab'),
+                        props: {
+                            multiple: true,
+                            value: this.value,
+                        },
                         listeners: {
                             input: (value) => {
                                 this.$emit('input', value);
@@ -193,10 +204,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .upload-files {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+    }
+
     .centering-container {
         display: flex;
         justify-content: center;
         align-items: center;
         width: 100%;
+        margin: 8px 0;
     }
 </style>
