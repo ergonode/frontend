@@ -13,18 +13,12 @@
         :disabled="isDisabled"
         :copyable="isCopyable"
         :selected="isSelected"
+        @edit="onEditCell"
         @copy="onCopyValues">
-        <template #default="{ isEditing }">
-            <GridDateEditCell
-                v-if="isEditing"
-                :value="cellData.value"
-                :format="format"
-                :width="$el.offsetWidth"
-                :height="$el.offsetHeight"
-                @input="onValueChange" />
-            <GridPresentationCell
-                v-else-if="!isEditing && cellData.value"
-                :value="cellData.value"
+        <template v-if="cellData.value">
+            <GridPresentationCell :value="cellData.value" />
+            <GridSuffixPresentationCell
+                v-if="data.suffix"
                 :suffix="data.suffix" />
         </template>
     </GridTableCell>
@@ -40,33 +34,47 @@ import {
     cellDataCompose,
 } from '@Core/models/mappers/gridDataMapper';
 import {
-    mapState,
+    mapActions,
 } from 'vuex';
 
 export default {
     name: 'GridDateDataCell',
     components: {
         GridPresentationCell,
-        GridDateEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridDateEditCell'),
+        GridSuffixPresentationCell: () => import('@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell'),
     },
     mixins: [
         gridDataCellMixin,
     ],
-    props: {
-        format: {
-            type: String,
-            default: DEFAULT_FORMAT,
-        },
-    },
     computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
         cellData() {
             const check = (data, draftValue) => data !== draftValue;
             const getMappedValue = cellDataCompose(check);
 
             return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
+        },
+    },
+    methods: {
+        ...mapActions('grid', [
+            'setEditCell',
+        ]),
+        onEditCell() {
+            this.setEditCell({
+                row: this.rowIndex,
+                column: this.columnIndex,
+                type: this.column.type,
+                props: {
+                    bounds: this.$el.getBoundingClientRect(),
+                    value: this.cellData.value,
+                    row: this.rowIndex,
+                    column: this.columnIndex,
+                    format: this.column.parameters && this.column.parameters.format
+                        ? this.column.parameters.format
+                        : DEFAULT_FORMAT,
+                    errorMessages: this.errorMessages,
+                    onValueChange: this.onValueChange,
+                },
+            });
         },
     },
 };

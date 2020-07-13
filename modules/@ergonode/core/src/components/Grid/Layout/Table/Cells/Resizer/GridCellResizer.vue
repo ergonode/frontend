@@ -86,6 +86,7 @@ export default {
 <style lang="scss" scoped>
     .cell-resizer {
         position: absolute;
+        left: 0;
         bottom: 0;
         display: inline-block;
         width: 100%;

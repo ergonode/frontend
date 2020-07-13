@@ -7,17 +7,9 @@
         :row="rowIndex"
         :column="columnIndex"
         :locked="isLocked"
-        :disabled="isDisabled">
-        <template #default="{ isEditing }">
-            <GridNumericEditCell
-                v-if="isEditing"
-                :value="value"
-                :width="$el.offsetWidth"
-                @input="onValueChange" />
-            <GridFilterPresentationCell
-                v-else
-                :value="value" />
-        </template>
+        :disabled="isDisabled"
+        @edit="onEditCell">
+        <GridFilterPresentationCell :value="value" />
     </GridTableCell>
 </template>
 
@@ -27,13 +19,15 @@ import GridFilterPresentationCell from '@Core/components/Grid/Layout/Table/Cells
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'GridNumericFilterCell',
     components: {
         GridFilterPresentationCell,
         GridTableCell,
-        GridNumericEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridNumericEditCell'),
     },
     props: {
         rowIndex: {
@@ -43,10 +37,6 @@ export default {
         columnIndex: {
             type: Number,
             required: true,
-        },
-        data: {
-            type: Object,
-            default: () => ({}),
         },
         isDisabled: {
             type: Boolean,
@@ -63,6 +53,23 @@ export default {
         };
     },
     methods: {
+        ...mapActions('grid', [
+            'setEditCell',
+        ]),
+        onEditCell() {
+            this.setEditCell({
+                row: this.rowIndex,
+                column: this.columnIndex,
+                type: 'NUMERIC',
+                props: {
+                    bounds: this.$el.getBoundingClientRect(),
+                    value: this.value,
+                    row: this.rowIndex,
+                    column: this.columnIndex,
+                    onValueChange: this.onValueChange,
+                },
+            });
+        },
         onValueChange(value) {
             this.value = value;
 

@@ -148,7 +148,7 @@ export default {
     },
     methods: {
         ...mapActions('grid', [
-            'removeDrafts',
+            'setDrafts',
         ]),
         updateColumnsWithAttachColumn() {
             this.columnsWithAttach = [
@@ -198,7 +198,7 @@ export default {
                 }
             });
 
-            this.removeDrafts();
+            this.setDrafts();
 
             if (this.multiple) {
                 const mappedValue = [

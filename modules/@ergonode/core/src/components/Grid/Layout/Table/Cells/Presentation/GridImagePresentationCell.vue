@@ -3,10 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="image-cell">
-        <Picture
-            v-if="value"
-            :image-id="value" />
+    <div class="grid-image-presentation-cell">
+        <Picture :value="value" />
     </div>
 </template>
 
@@ -26,13 +24,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .image-cell {
+    .grid-image-presentation-cell {
         display: flex;
-        flex: 1;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
         padding: 8px;
+        height: 100%;
         box-sizing: border-box;
     }
 </style>

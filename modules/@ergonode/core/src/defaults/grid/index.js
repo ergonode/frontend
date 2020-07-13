@@ -17,7 +17,7 @@ export const GRID_ACTIONS = [
 ];
 
 export const COLUMN_WIDTH = {
-    SELECT_ROW: '40px',
+    SELECT_ROW: '32px',
     ACTION: 'max-content',
     DEFAULT: 'minmax(150px, 1fr)',
     DYNAMIC: '1fr',

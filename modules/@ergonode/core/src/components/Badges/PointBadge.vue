@@ -4,7 +4,7 @@
  */
 <template>
     <div
-        class="status-badge"
+        class="point-badge"
         :style="{backgroundColor: color}" />
 </template>
 
@@ -22,7 +22,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .status-badge {
+    .point-badge {
+        flex-shrink: 0;
         width: 12px;
         height: 12px;
         border-radius: 6px;

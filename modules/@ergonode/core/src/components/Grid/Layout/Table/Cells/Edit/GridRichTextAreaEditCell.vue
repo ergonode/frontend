@@ -7,21 +7,20 @@
         :key-code="27"
         @edit="onEditCell">
         <GridTextEditContentCell :style="positionStyle">
-            <TextArea
-                height="134px"
-                v-model="localValue"
+            <RichTextEditor
+                :style="{height: '134px'}"
+                :value="localValue"
                 :autofocus="true"
                 :type="underlineInputType"
-                :error-messages="errorMessages"
-                resize="none" />
-        </GridTextEditContentCell>
+                @blur="onRTEValueChange" />
+        </gridtexteditcontentcell>
     </GridEditNavigationCell>
 </template>
 
 <script>
 import GridTextEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
 import GridEditNavigationCell from '@Core/components/Grid/Layout/Table/Cells/Navigation/GridEditNavigationCell';
-import TextArea from '@Core/components/Inputs/TextArea';
+import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
 import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
@@ -33,7 +32,7 @@ export default {
     name: 'GridTextAreaEditCell',
     components: {
         GridTextEditContentCell,
-        TextArea,
+        RichTextEditor,
         GridEditNavigationCell,
     },
     props: {
@@ -80,6 +79,7 @@ export default {
             return {
                 top: `${y}px`,
                 left: `${x}px`,
+                width: '320px',
             };
         },
         underlineInputType() {
@@ -90,6 +90,11 @@ export default {
         ...mapActions('grid', [
             'setEditCell',
         ]),
+        onRTEValueChange(value) {
+            if (this.localValue !== value) {
+                this.localValue = value;
+            }
+        },
         onEditCell() {
             if (this.localValue !== this.value) {
                 this.onValueChange(this.localValue);

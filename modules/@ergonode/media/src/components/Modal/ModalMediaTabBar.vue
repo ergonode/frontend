@@ -23,18 +23,18 @@ export default {
             default: () => [],
         },
     },
-    // mounted() {
-    //     const app = document.documentElement.querySelector('.app');
-    //
-    //     app.appendChild(this.$refs.modal.$el);
-    // },
-    // beforeDestroy() {
-    //     const app = document.documentElement.querySelector('.app');
-    //
-    //     if (app.contains(this.$refs.modal.$el)) {
-    //         app.removeChild(this.$refs.modal.$el);
-    //     }
-    // },
+    mounted() {
+        const app = document.documentElement.querySelector('.app');
+
+        app.appendChild(this.$refs.modal.$el);
+    },
+    beforeDestroy() {
+        const app = document.documentElement.querySelector('.app');
+
+        if (app.contains(this.$refs.modal.$el)) {
+            app.removeChild(this.$refs.modal.$el);
+        }
+    },
     methods: {
         onCloseModal() {
             this.$emit('close');

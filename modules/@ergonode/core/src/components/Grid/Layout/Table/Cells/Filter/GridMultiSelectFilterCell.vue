@@ -7,36 +7,35 @@
         :row="rowIndex"
         :column="columnIndex"
         :locked="isLocked"
-        :disabled="isDisabled">
-        <template #default="{ isEditing }">
-            <GridMultiSelectEditCell
-                v-if="isEditing"
-                :value="value"
-                :options="options"
-                :language-code="languageCode"
-                :width="$el.offsetWidth"
-                :height="$el.offsetHeight"
-                @input="onValueChange" />
-            <GridSelectFilterPresentationCell
-                v-else
-                :value="presentationValue" />
-        </template>
+        :disabled="isDisabled"
+        @edit="onEditCell">
+        <GridFilterPresentationCell
+            placeholder="Select..."
+            :value="presentationValue" />
+        <IconArrowDropDown
+            v-if="!isLocked"
+            view-box="0 0 24 24"
+            :width="32" />
     </GridTableCell>
 </template>
 
 <script>
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
-import GridSelectFilterPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSelectFilterPresentationCell';
+import GridFilterPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridFilterPresentationCell';
+import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'GridMultiSelectFilterCell',
     components: {
-        GridSelectFilterPresentationCell,
+        GridFilterPresentationCell,
+        IconArrowDropDown,
         GridTableCell,
-        GridMultiSelectEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridMultiSelectEditCell'),
     },
     props: {
         rowIndex: {
@@ -71,12 +70,7 @@ export default {
     },
     computed: {
         options() {
-            if (this.data.options) {
-                // TODO: BE has to unify types!
-                if (Array.isArray(this.data.options)) {
-                    return {};
-                }
-
+            if (this.data.options && !Array.isArray(this.data.options)) {
                 return this.data.options;
             }
 
@@ -89,8 +83,28 @@ export default {
         },
     },
     methods: {
+        ...mapActions('grid', [
+            'setEditCell',
+        ]),
+        onEditCell() {
+            this.setEditCell({
+                row: this.rowIndex,
+                column: this.columnIndex,
+                type: 'MULTI_SELECT',
+                props: {
+                    bounds: this.$el.getBoundingClientRect(),
+                    value: this.value,
+                    row: this.rowIndex,
+                    column: this.columnIndex,
+                    options: this.options,
+                    languageCode: this.languageCode,
+                    onValueChange: this.onValueChange,
+                },
+            });
+        },
         onValueChange(value) {
             this.value = value;
+
             this.$emit('filter', {
                 index: this.columnIndex,
                 value: {

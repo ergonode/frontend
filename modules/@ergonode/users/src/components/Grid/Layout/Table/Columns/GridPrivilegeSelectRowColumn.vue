@@ -9,10 +9,9 @@
             :edit-key-code="32"
             :row="rowsOffset"
             :column="0"
-            @edit="onSelectAllRows(!rowsSelectionState)">
-            <GridCheckEditCell
-                :value="rowsSelectionState"
-                @input="onSelectAllRows" />
+            @mousedown="onSelectAllRows"
+            @edit="onSelectAllRows">
+            <GridCheckEditCell :value="rowsSelectionState" />
         </GridTableCell>
         <GridTableCell
             v-for="(id, rowIndex) in rowIds"
@@ -20,12 +19,11 @@
             :column="0"
             :edit-key-code="32"
             :row="rowsOffset + rowIndex + 1"
+            @mousedown="onSelectRow({ rowId: id, value: !selectedRows[id] })"
             @edit="onSelectRow({ rowId: id, value: !selectedRows[id] })">
             <GridCheckEditCell
                 :value="selectedRows[id]"
-                :row-id="id"
-                @input="onSelectRow({ rowId: id, value: !selectedRows[id] })"
-            />
+                :row-id="id" />
         </GridTableCell>
     </div>
 </template>
@@ -39,26 +37,11 @@ export default {
         selectRowMixin,
     ],
     methods: {
-        onSelectAllRows(value) {
+        onSelectAllRows() {
+            const value = !this.rowsSelectionState;
             const draftValues = {};
 
             this.rowIds.forEach((rowId) => {
-                if (!draftValues[rowId]) {
-                    draftValues[rowId] = {};
-                }
-                if (!draftValues[rowId].read) {
-                    draftValues[rowId].read = {};
-                }
-                if (!draftValues[rowId].create) {
-                    draftValues[rowId].create = {};
-                }
-                if (!draftValues[rowId].update) {
-                    draftValues[rowId].update = {};
-                }
-                if (!draftValues[rowId].delete) {
-                    draftValues[rowId].delete = {};
-                }
-
                 draftValues[rowId] = {
                     read: value,
                     create: value,
@@ -69,7 +52,7 @@ export default {
                 this.selectedRows[rowId] = +value;
             });
 
-            this.setDraftsValues(draftValues);
+            this.setDrafts(draftValues);
             this.selectedRows = {
                 ...this.selectedRows,
             };
@@ -82,9 +65,8 @@ export default {
                 ...this.selectedRows,
             };
 
-            this.setDraftRowValues({
-                rowId,
-                value: {
+            this.setDrafts({
+                [rowId]: {
                     read: +value,
                     create: +value,
                     update: +value,

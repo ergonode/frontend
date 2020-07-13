@@ -78,7 +78,7 @@ export default {
             'getUser',
         ]),
         ...mapActions('grid', [
-            'removeDrafts',
+            'setDrafts',
         ]),
         ...mapActions('validations', [
             'onError',
@@ -126,7 +126,7 @@ export default {
                         message: 'User updated',
                     });
                     this.setLanguagePrivileges(user.languagePrivilegesCollection);
-                    this.removeDrafts();
+                    this.setDrafts();
 
                     // TODO: Along Notification introduce - remove it from it - this solution is preventing from relogging to see newly edited data for user if edited user is logged one
                     if (this.user.id === this.id) {

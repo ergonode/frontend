@@ -88,9 +88,7 @@ export default {
     mounted() {
         this.$nextTick(() => {
             window.requestAnimationFrame(() => {
-                const paddingOffset = 24;
-
-                this.editorWidth = this.$el.offsetWidth - paddingOffset;
+                this.editorWidth = this.$el.offsetWidth;
             });
         });
     },

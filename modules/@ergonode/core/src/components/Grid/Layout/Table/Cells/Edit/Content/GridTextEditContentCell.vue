@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="text-edit-content-cell">
+    <div class="grid-text-edit-content-cell">
         <slot />
     </div>
 </template>
@@ -15,11 +15,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .text-edit-content-cell {
+    .grid-text-edit-content-cell {
+        position: fixed;
+        z-index: $Z_INDEX_LVL_5;
         padding: 8px;
         box-sizing: border-box;
         background-color: $WHITE;
-        transform: translate(-2px, -2px);
+        transform: translate(-4px, -4px);
         box-shadow: $ELEVATOR_6_DP;
     }
 </style>

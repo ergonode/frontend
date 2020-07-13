@@ -3,12 +3,10 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="bool-presentation-cell">
-        <Toggler
-            @click.native.prevent
-            :value="Boolean(value)"
-            :disabled="isDisabled" />
-    </div>
+    <Toggler
+        @click.native.prevent
+        :value="Boolean(value)"
+        :disabled="isDisabled" />
 </template>
 
 <script>
@@ -35,11 +33,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .bool-presentation-cell {
-        display: flex;
-        align-items: center;
-        padding: 8px;
-    }
-</style>

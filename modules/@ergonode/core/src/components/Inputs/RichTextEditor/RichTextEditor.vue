@@ -276,11 +276,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .input-underline-style {
-        padding: 8px 12px 12px;
-        box-shadow: $ELEVATOR_6_DP;
-    }
-
     .rich-text-editor {
         $editor: &;
 

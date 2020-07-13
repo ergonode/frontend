@@ -13,28 +13,23 @@
         :disabled="isDisabled"
         :copyable="isCopyable"
         :selected="isSelected"
+        @edit="onEditCell"
         @copy="onCopyValues">
-        <template #default="{ isEditing }">
-            <GridMultiSelectEditCell
-                v-if="isEditing"
-                :value="cellData.value"
-                :language-code="column.language"
-                :options="options"
-                :width="$el.offsetWidth"
-                :height="$el.offsetHeight"
-                @input="onValueChange" />
-            <GridMultiSelectPresentationCell
-                v-else-if="!isEditing && cellData.value && cellData.value.length"
-                :value="cellData.value"
-                :suffix="data.suffix"
-                :options="options"
-                :is-locked="isLocked" />
+        <template v-if="cellData.value && cellData.value.length">
+            <GridPresentationCell :value="presentationValue" />
+            <GridSuffixPresentationCell
+                v-if="data.suffix"
+                :suffix="data.suffix" />
+            <IconArrowDropDown
+                v-if="!isLocked"
+                view-box="0 0 24 24"
+                :width="32" />
         </template>
     </GridTableCell>
 </template>
 
 <script>
-import GridMultiSelectPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridMultiSelectPresentationCell';
+import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 import {
     arraysAreEqual,
@@ -43,22 +38,20 @@ import {
     cellDataCompose,
 } from '@Core/models/mappers/gridDataMapper';
 import {
-    mapState,
+    mapActions,
 } from 'vuex';
 
 export default {
     name: 'GridMultiSelectDataCell',
     components: {
-        GridMultiSelectPresentationCell,
-        GridMultiSelectEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridMultiSelectEditCell'),
+        GridPresentationCell,
+        IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
+        GridSuffixPresentationCell: () => import('@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell'),
     },
     mixins: [
         gridDataCellMixin,
     ],
     computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
         cellData() {
             const check = (data, draftValue) => !arraysAreEqual(data, draftValue);
             const getMappedValue = cellDataCompose(check);
@@ -66,16 +59,48 @@ export default {
             return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
         },
         options() {
-            if (this.column.filter && this.column.filter.options) {
-                // TODO: BE has to unify types!
-                if (Array.isArray(this.column.filter.options)) {
-                    return {};
-                }
-
+            if (this.column.filter
+                && this.column.filter.options
+                && !Array.isArray(this.column.filter.options)) {
                 return this.column.filter.options;
             }
 
             return {};
+        },
+        presentationValue() {
+            const {
+                value,
+            } = this.cellData;
+
+            return value.map((option) => {
+                if (typeof this.options[option] === 'undefined') {
+                    return '';
+                }
+
+                return this.options[option].label || `#${this.options[option].code}`;
+            }).join(', ');
+        },
+    },
+    methods: {
+        ...mapActions('grid', [
+            'setEditCell',
+        ]),
+        onEditCell() {
+            this.setEditCell({
+                row: this.rowIndex,
+                column: this.columnIndex,
+                type: this.column.type,
+                props: {
+                    bounds: this.$el.getBoundingClientRect(),
+                    value: this.cellData.value,
+                    row: this.rowIndex,
+                    column: this.columnIndex,
+                    languageCode: this.languageCode,
+                    options: this.options,
+                    errorMessages: this.errorMessages,
+                    onValueChange: this.onValueChange,
+                },
+            });
         },
     },
 };

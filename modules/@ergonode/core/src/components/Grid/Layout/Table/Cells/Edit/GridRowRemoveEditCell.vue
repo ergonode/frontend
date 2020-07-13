@@ -7,8 +7,9 @@
         :column="column"
         :row="row"
         :selected="isSelected"
+        @mousedown="onRemove"
         @edit="onRemove">
-        <IconDelete :width="32" />
+        <IconDelete />
     </GridTableCell>
 </template>
 

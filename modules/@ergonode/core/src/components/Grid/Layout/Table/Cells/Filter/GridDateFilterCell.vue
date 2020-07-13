@@ -7,37 +7,32 @@
         :row="rowIndex"
         :column="columnIndex"
         :locked="isLocked"
-        :disabled="isDisabled">
-        <template #default="{ isEditing }">
-            <GridDateEditCell
-                v-if="isEditing"
-                :value="value"
-                :width="$el.offsetWidth"
-                :height="$el.offsetHeight"
-                @input="onValueChange" />
-            <GridSelectFilterPresentationCell
-                v-else
-                :value="value" />
-        </template>
+        :disabled="isDisabled"
+        @edit="onEditCell">
+        <GridFilterPresentationCell
+            placeholder="Select..."
+            :value="value" />
     </GridTableCell>
 </template>
 
 <script>
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
-import GridSelectFilterPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSelectFilterPresentationCell';
+import GridFilterPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridFilterPresentationCell';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
 import {
     DEFAULT_FORMAT,
 } from '@Core/models/calendar/calendar';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'GridDateFilterCell',
     components: {
-        GridSelectFilterPresentationCell,
+        GridFilterPresentationCell,
         GridTableCell,
-        GridDateEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridDateEditCell'),
     },
     props: {
         rowIndex: {
@@ -76,6 +71,24 @@ export default {
         },
     },
     methods: {
+        ...mapActions('grid', [
+            'setEditCell',
+        ]),
+        onEditCell() {
+            this.setEditCell({
+                row: this.rowIndex,
+                column: this.columnIndex,
+                type: 'DATE',
+                props: {
+                    bounds: this.$el.getBoundingClientRect(),
+                    value: this.value,
+                    row: this.rowIndex,
+                    column: this.columnIndex,
+                    format: this.dateFormat,
+                    onValueChange: this.onValueChange,
+                },
+            });
+        },
         onValueChange(value) {
             this.value = value;
 

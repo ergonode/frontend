@@ -13,11 +13,14 @@
         :copyable="isCopyable"
         :selected="isSelected"
         @edit="onBoolValueChange"
+        @mousedown="onBoolValueChange"
         @copy="onCopyValues">
         <GridBoolEditCell
             :value="cellData.value"
-            :suffix="data.suffix"
             :is-disabled="isLocked" />
+        <GridSuffixPresentationCell
+            v-if="data.suffix"
+            :suffix="data.suffix" />
     </GridTableCell>
 </template>
 
@@ -27,22 +30,17 @@ import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 import {
     cellDataCompose,
 } from '@Core/models/mappers/gridDataMapper';
-import {
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'GridBoolDataCell',
     components: {
         GridBoolEditCell,
+        GridSuffixPresentationCell: () => import('@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell'),
     },
     mixins: [
         gridDataCellMixin,
     ],
     computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
         cellData() {
             const check = (data, draftValue) => Boolean(data) !== Boolean(draftValue);
             const getMappedValue = cellDataCompose(check);

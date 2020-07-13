@@ -68,13 +68,10 @@ export default {
             deep: true,
             handler(value) {
                 const draftValues = {};
+
                 this.rowIds.forEach((rowId, index) => {
                     this.selectedRows[rowId] = this.data[index].value;
                 });
-
-                this.selectedRows = {
-                    ...this.selectedRows,
-                };
 
                 Object.keys(value).forEach((rowId) => {
                     const checkValues = state => Object.values(value[rowId])
@@ -103,8 +100,7 @@ export default {
     },
     methods: {
         ...mapActions('grid', [
-            'setDraftsValues',
-            'setDraftRowValues',
+            'setDrafts',
         ]),
     },
 };

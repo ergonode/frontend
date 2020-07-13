@@ -13,16 +13,14 @@
         :disabled="isDisabled"
         :copyable="isCopyable"
         :selected="isSelected"
+        @edit="onEditCell"
         @copy="onCopyValues">
-        <template #default="{ isEditing }">
-            <GridGalleryEditCell
-                v-if="isEditing"
-                :value="cellData.value"
-                :width="304"
-                @input="onValueChange" />
+        <template v-if="cellData.value.length">
             <GridImagePresentationCell
-                v-else-if="!isEditing && cellData.value.length"
                 :value="cellData.value[0]"
+                :suffix="data.suffix" />
+            <GridSuffixPresentationCell
+                v-if="data.suffix"
                 :suffix="data.suffix" />
         </template>
     </GridTableCell>
@@ -35,27 +33,44 @@ import {
     cellDataCompose,
 } from '@Core/models/mappers/gridDataMapper';
 import {
-    mapState,
+    mapActions,
 } from 'vuex';
 
 export default {
     name: 'GridGalleryDataCell',
     components: {
         GridImagePresentationCell,
-        GridGalleryEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridGalleryEditCell'),
+        GridSuffixPresentationCell: () => import('@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell'),
     },
     mixins: [
         gridDataCellMixin,
     ],
     computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
         cellData() {
             const check = (data, draftValue) => data !== draftValue;
             const getMappedValue = cellDataCompose(check);
 
             return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
+        },
+    },
+    methods: {
+        ...mapActions('grid', [
+            'setEditCell',
+        ]),
+        onEditCell() {
+            this.setEditCell({
+                row: this.rowIndex,
+                column: this.columnIndex,
+                type: this.column.type,
+                props: {
+                    bounds: this.$el.getBoundingClientRect(),
+                    value: this.cellData.value,
+                    row: this.rowIndex,
+                    column: this.columnIndex,
+                    errorMessages: this.errorMessages,
+                    onValueChange: this.onValueChange,
+                },
+            });
         },
     },
 };

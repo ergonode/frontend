@@ -69,7 +69,7 @@ export default {
             'removeValidationErrors',
         ]),
         ...mapActions('grid', [
-            'removeDrafts',
+            'setDrafts',
         ]),
         onRemoveRoleSuccess() {
             this.$addAlert({
@@ -114,7 +114,7 @@ export default {
                         message: 'Role updated',
                     });
                     this.setPrivileges(privileges);
-                    this.removeDrafts();
+                    this.setDrafts();
                 },
                 onError: this.onError,
             });

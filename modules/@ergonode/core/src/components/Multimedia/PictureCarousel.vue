@@ -7,9 +7,9 @@
         <Picture
             v-for="(id, index) in imageIds"
             :class="currentIndex === index ? 'visible' : 'non-visible'"
+            :value="id"
             :key="id"
-            object-fit="none"
-            :image-id="id" />
+            object-fit="none" />
         <div class="picture-carousel__panel">
             <div
                 class="image-white-theme"

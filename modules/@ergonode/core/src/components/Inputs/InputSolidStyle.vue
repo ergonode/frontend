@@ -151,7 +151,7 @@ export default {
 
         &--small {
             #{$solid}__input {
-                padding: 8px 4px 8px 10px;
+                padding: 8px 4px 8px 8px;
             }
 
             #{$solid}__details-label {

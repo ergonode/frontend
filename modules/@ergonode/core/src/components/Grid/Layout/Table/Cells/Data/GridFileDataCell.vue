@@ -13,16 +13,12 @@
         :disabled="isDisabled"
         :copyable="isCopyable"
         :selected="isSelected"
+        @edit="onEditCell"
         @copy="onCopyValues">
-        <template #default="{ isEditing }">
-            <GridFileEditCell
-                v-if="isEditing"
-                :value="cellData.value"
-                :width="304"
-                @input="onValueChange" />
-            <GridPresentationCell
-                v-else-if="!isEditing && cellData.presentationValue"
-                :value="cellData.presentationValue"
+        <template v-if="!presentationValue">
+            <GridPresentationCell :value="presentationValue" />
+            <GridSuffixPresentationCell
+                v-if="data.suffix"
                 :suffix="data.suffix" />
         </template>
     </GridTableCell>
@@ -35,42 +31,55 @@ import {
     cellDataCompose,
 } from '@Core/models/mappers/gridDataMapper';
 import {
-    mapState,
+    mapActions,
 } from 'vuex';
 
 export default {
     name: 'GridFileDataCell',
     components: {
         GridPresentationCell,
-        GridFileEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridFileEditCell'),
+        GridSuffixPresentationCell: () => import('@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell'),
     },
     mixins: [
         gridDataCellMixin,
     ],
     computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
         cellData() {
             const check = (data, draftValue) => data !== draftValue;
             const getMappedValue = cellDataCompose(check);
-            const {
-                value,
-                isDraft,
-            } = getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
+
+            return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
+        },
+        presentationValue() {
             const {
                 length,
-            } = value;
+            } = this.cellData.value;
 
             if (!length) {
                 return '';
             }
 
-            return {
-                value,
-                presentationValue: `${length} file${length > 1 ? 's' : ''}`,
-                isDraft,
-            };
+            return `${length} file${length > 1 ? 's' : ''}`;
+        },
+    },
+    methods: {
+        ...mapActions('grid', [
+            'setEditCell',
+        ]),
+        onEditCell() {
+            this.setEditCell({
+                row: this.rowIndex,
+                column: this.columnIndex,
+                type: this.column.type,
+                props: {
+                    bounds: this.$el.getBoundingClientRect(),
+                    value: this.cellData.value,
+                    row: this.rowIndex,
+                    column: this.columnIndex,
+                    errorMessages: this.errorMessages,
+                    onValueChange: this.onValueChange,
+                },
+            });
         },
     },
 };

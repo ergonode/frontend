@@ -3,78 +3,87 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        class="grid-table-layout"
-        ref="gridTableLayout">
-        <GridTableLayoutPinnedSection
-            v-if="isSelectColumn"
-            :is-pinned="pinnedSections[pinnedState.LEFT]">
-            <GridSelectRowColumn
-                :style="templateRows"
-                :column-index="0"
-                :data-count="dataCount"
-                :rows-offset="rowsOffset"
-                :is-basic-filter="isBasicFilter"
-                @rowSelect="onRowSelect"
-                @rowsSelect="onRowsSelect" />
-        </GridTableLayoutPinnedSection>
-        <GridTableLayoutColumnsSection
-            :style="templateColumns"
-            ref="columnsSection">
-            <GridSentinelColumn
+    <ClickOutsideGlobalEvent @clickOutside="onClickOutside">
+        <div
+            class="grid-table-layout"
+            ref="gridTableLayout">
+            <GridTableLayoutPinnedSection
                 v-if="isSelectColumn"
-                :pinned-state="pinnedState.LEFT"
-                @sticky="onStickyChange" />
-            <Component
-                v-for="(column, index) in orderedColumns"
-                :style="templateRows"
-                :key="column.id"
-                :is="columnComponents[index]"
-                :data="data[column.id]"
-                :sorted-column="sortedColumn"
-                :column="column"
-                :column-index="index + columnsOffset"
-                :row-ids="data.id"
-                :rows-offset="rowsOffset"
-                :selected-rows="selectedRows"
-                :is-selected-all-rows="isSelectedAllRows"
-                :is-basic-filter="isBasicFilter"
-                :is-editable="isEditable"
-                @sort="onSortColumn"
-                @filter="onFilterChange"
-                @remove="onRemoveColumn"
-                @swapColumns="onSwapColumns"
-                @updateWidth="onUpdateWidth"
-                @editCell="onEditCell"
-                @copyCells="onCopyCells" />
-            <GridSentinelColumn
+                :is-pinned="pinnedSections[pinnedState.LEFT]">
+                <GridSelectRowColumn
+                    :style="templateRows"
+                    :column-index="0"
+                    :data-count="dataCount"
+                    :rows-offset="rowsOffset"
+                    :is-basic-filter="isBasicFilter"
+                    @rowSelect="onRowSelect"
+                    @rowsSelect="onRowsSelect" />
+            </GridTableLayoutPinnedSection>
+            <GridTableLayoutColumnsSection
+                :style="templateColumns"
+                ref="columnsSection">
+                <GridSentinelColumn
+                    v-if="isSelectColumn"
+                    :pinned-state="pinnedState.LEFT"
+                    @sticky="onStickyChange" />
+                <Component
+                    v-for="(column, index) in orderedColumns"
+                    :style="templateRows"
+                    :key="column.id"
+                    :is="columnComponents[index]"
+                    :data="data[column.id]"
+                    :sorted-column="sortedColumn"
+                    :column="column"
+                    :column-index="index + columnsOffset"
+                    :row-ids="data.id"
+                    :rows-offset="rowsOffset"
+                    :selected-rows="selectedRows"
+                    :is-selected-all-rows="isSelectedAllRows"
+                    :is-basic-filter="isBasicFilter"
+                    :is-editable="isEditable"
+                    @sort="onSortColumn"
+                    @filter="onFilterChange"
+                    @remove="onRemoveColumn"
+                    @swapColumns="onSwapColumns"
+                    @updateWidth="onUpdateWidth"
+                    @editCell="onEditCell"
+                    @copyCells="onCopyCells" />
+                <GridSentinelColumn
+                    v-if="typeof data[columnActionId] !== 'undefined'"
+                    :style="{ gridColumn: `${orderedColumns.length}`}"
+                    :pinned-state="pinnedState.RIGHT"
+                    @sticky="onStickyChange" />
+            </GridTableLayoutColumnsSection>
+            <GridTableLayoutPinnedSection
                 v-if="typeof data[columnActionId] !== 'undefined'"
-                :style="{ gridColumn: `${orderedColumns.length}`}"
-                :pinned-state="pinnedState.RIGHT"
-                @sticky="onStickyChange" />
-        </GridTableLayoutColumnsSection>
-        <GridTableLayoutPinnedSection
-            v-if="typeof data[columnActionId] !== 'undefined'"
-            :is-pinned="pinnedSections[pinnedState.RIGHT]">
+                :is-pinned="pinnedSections[pinnedState.RIGHT]">
+                <Component
+                    v-for="(column, index) in actionColumnComponents"
+                    :style="templateRows"
+                    :key="column.key"
+                    :data="data[columnActionId][column.key]"
+                    :column-index="orderedColumns.length + index + columnsOffset"
+                    :column-id="column.key"
+                    :data-count="dataCount"
+                    :rows-offset="rowsOffset"
+                    :index="index"
+                    :is-basic-filter="isBasicFilter"
+                    :is="column.component"
+                    @action="onActionRow" />
+            </GridTableLayoutPinnedSection>
             <Component
-                v-for="(column, index) in actionColumnComponents"
-                :style="templateRows"
-                :key="column.key"
-                :data="data[columnActionId][column.key]"
-                :column-index="orderedColumns.length + index + columnsOffset"
-                :column-id="column.key"
-                :data-count="dataCount"
-                :rows-offset="rowsOffset"
-                :index="index"
-                :is-basic-filter="isBasicFilter"
-                :is="column.component"
-                @action="onActionRow" />
-        </GridTableLayoutPinnedSection>
-    </div>
+                v-if="editCell"
+                ref="editCell"
+                :is="editCellComponent"
+                v-bind="editCell.props"
+                @input="onEditCell" />
+        </div>
+    </ClickOutsideGlobalEvent>
 </template>
 
 <script>
 import DropZone from '@Core/components/DropZone/DropZone';
+import ClickOutsideGlobalEvent from '@Core/components/Events/ClickOutsideGlobalEvent';
 import GridTableLayoutColumnsSection from '@Core/components/Grid/Layout/Table/Sections/GridTableLayoutColumnsSection';
 import {
     COLUMN_ACTIONS_ID,
@@ -107,6 +116,7 @@ export default {
     components: {
         DropZone,
         GridTableLayoutColumnsSection,
+        ClickOutsideGlobalEvent,
         GridTableLayoutPinnedSection: () => import('@Core/components/Grid/Layout/Table/Sections/GridTableLayoutPinnedSection'),
         GridSentinelColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridSentinelColumn'),
         GridSelectRowColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridSelectRowColumn'),
@@ -130,7 +140,7 @@ export default {
         },
         rowHeight: {
             type: Number,
-            default: ROW_HEIGHT.MEDIUM,
+            default: ROW_HEIGHT.SMALL,
         },
         isEditable: {
             type: Boolean,
@@ -147,18 +157,9 @@ export default {
     },
     data() {
         return {
-            isHeaderFocused: false,
             hasInitialWidths: true,
             isSelectedAllRows: false,
             selectedRows: {},
-            editingCellCoordinates: {
-                row: null,
-                column: null,
-            },
-            focusedCellCoordinates: {
-                row: null,
-                column: null,
-            },
             orderedColumns: [],
             columnComponents: [],
             columnWidths: [],
@@ -173,12 +174,18 @@ export default {
         }),
         ...mapState('grid', {
             drafts: state => state.drafts,
+            editCell: state => state.editCell,
         }),
         ...mapState('draggable', {
             ghostIndex: state => state.ghostIndex,
             draggedElIndex: state => state.draggedElIndex,
             draggedElement: state => state.draggedElement,
         }),
+        editCellComponent() {
+            const type = capitalizeAndConcatenationArray(this.editCell.type.split('_'));
+
+            return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Grid${type}EditCell`);
+        },
         columnActionId() {
             return COLUMN_ACTIONS_ID;
         },
@@ -217,7 +224,7 @@ export default {
             };
         },
         templateRows() {
-            const headerRowsTemplate = this.isBasicFilter ? `${ROW_HEIGHT.MEDIUM}px ${ROW_HEIGHT.MEDIUM}px` : `${ROW_HEIGHT.MEDIUM}px`;
+            const headerRowsTemplate = this.isBasicFilter ? `${ROW_HEIGHT.SMALL}px ${ROW_HEIGHT.SMALL}px` : `${ROW_HEIGHT.SMALL}px`;
 
             if (this.dataCount) {
                 return {
@@ -244,23 +251,15 @@ export default {
             },
         },
     },
-    mounted() {
-        window.addEventListener('click', this.onClickOutside);
-    },
-    beforeDestroy() {
-        window.removeEventListener('click', this.onClickOutside);
-    },
     methods: {
         ...mapActions('list', [
             'setDisabledElement',
             'removeDisabledElement',
         ]),
         ...mapActions('grid', [
-            'setDraftsValues',
+            'setDrafts',
+            'setEditCell',
         ]),
-        onHeaderFocus(isFocused) {
-            this.isHeaderFocused = isFocused;
-        },
         onSortColumn(sortedColumn) {
             this.sortedColumn = sortedColumn;
             this.$emit('sort', sortedColumn);
@@ -358,50 +357,11 @@ export default {
                 ...this.columnWidths,
             ];
         },
-        setEditingCellCoordinates(coordinates = {
-            row: null,
-            column: null,
-        }) {
-            this.editingCellCoordinates = coordinates;
-        },
-        setFocusedCellCoordinates(coordinates = {
-            row: null,
-            column: null,
-        }) {
-            const {
-                row, column,
-            } = coordinates;
-
-            if (row !== null && column !== null) {
-                this.$emit('focusCell', {
-                    column: this.orderedColumns[column],
-                    rowId: this.data.id[row - 2],
-                });
-            }
-            this.focusedCellCoordinates = coordinates;
-        },
-        getEditingCellCoordinates() {
-            return this.editingCellCoordinates;
-        },
-        getTableLayoutElement() {
-            return this.$refs.gridTableLayout;
-        },
         onClickOutside({
-            pageX, pageY, target,
+            isClickedOutside,
         }) {
-            const {
-                gridTableLayout,
-            } = this.$refs;
-            const {
-                top, left, width, height,
-            } = gridTableLayout.getBoundingClientRect();
-
-            if (!(pageX > left
-                && pageX < left + width
-                && pageY > top
-                && pageY < top + height)
-                && !gridTableLayout.contains(target)) {
-                this.setEditingCellCoordinates();
+            if (isClickedOutside) {
+                // this.setEditCell();
             }
         },
         onStickyChange({
@@ -461,7 +421,7 @@ export default {
                 }
             }
 
-            this.setDraftsValues(drafts);
+            this.setDrafts(drafts);
             this.$emit('editCells', editedCells);
         },
         onActionRow({
@@ -554,14 +514,6 @@ export default {
                 });
             }
         },
-    },
-    provide() {
-        return {
-            setEditingCellCoordinates: this.setEditingCellCoordinates,
-            setFocusedCellCoordinates: this.setFocusedCellCoordinates,
-            getEditingCellCoordinates: this.getEditingCellCoordinates,
-            getTableLayoutElement: this.getTableLayoutElement,
-        };
     },
 };
 </script>

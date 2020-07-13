@@ -28,47 +28,36 @@ export default {
     inheritAttrs: false,
     methods: {
         ...mapActions('grid', [
-            'setDraftValue',
+            'setDrafts',
         ]),
         onValueChange({
             rowId, columnId, value,
         }) {
+            const drafts = {
+                [rowId]: {},
+            };
+
             if (columnId !== 'read' && value) {
-                this.setDraftValue({
-                    rowId,
-                    columnId,
-                    value: false,
-                });
-                this.setDraftValue({
-                    rowId,
-                    columnId: 'read',
-                    value: true,
-                });
+                drafts[rowId] = {
+                    [columnId]: false,
+                    read: false,
+                };
             }
 
             if (columnId === 'read') {
-                this.setDraftValue({
-                    rowId,
-                    columnId: 'create',
-                    value: false,
-                });
-                this.setDraftValue({
-                    rowId,
-                    columnId: 'update',
-                    value: false,
-                });
-                this.setDraftValue({
-                    rowId,
-                    columnId: 'delete',
-                    value: false,
-                });
+                drafts[rowId] = {
+                    create: false,
+                    update: false,
+                    delete: false,
+                };
             }
 
-            this.setDraftValue({
-                rowId,
-                columnId,
-                value,
-            });
+            drafts[rowId] = {
+                ...drafts[rowId],
+                [columnId]: value,
+            };
+
+            this.setDrafts(drafts);
         },
     },
 };

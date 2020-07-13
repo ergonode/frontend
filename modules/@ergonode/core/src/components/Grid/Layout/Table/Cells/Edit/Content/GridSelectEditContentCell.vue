@@ -2,25 +2,21 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template functional>
-    <div class="activator-edit-cell">
+<template>
+    <div class="grid-select-edit-content-cell">
         <slot />
     </div>
 </template>
 
 <script>
 export default {
-    name: 'GridActivatorEditCell',
+    name: 'ContentGridSelectEditContentCell',
 };
 </script>
 
 <style lang="scss" scoped>
-    .activator-edit-cell {
-        position: absolute;
-        top: 0;
-        left: 0;
+    .grid-select-edit-content-cell {
+        position: fixed;
         z-index: $Z_INDEX_LVL_5;
-        display: flex;
-        justify-content: center;
     }
 </style>

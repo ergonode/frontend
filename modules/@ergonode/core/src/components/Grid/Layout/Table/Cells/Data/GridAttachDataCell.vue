@@ -15,7 +15,6 @@
         @edit="onAttachValueChange">
         <GridBoolEditCell
             :value="cellData.value"
-            :suffix="data.suffix"
             :is-disabled="isLocked" />
     </GridTableCell>
 </template>
@@ -26,22 +25,19 @@ import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 import {
     cellDataCompose,
 } from '@Core/models/mappers/gridDataMapper';
-import {
-    mapState,
-} from 'vuex';
+
+import GridEditNavigationCell from '../Navigation/GridEditNavigationCell';
 
 export default {
     name: 'GridAttachDataCell',
     components: {
         GridBoolEditCell,
+        GridEditNavigationCell,
     },
     mixins: [
         gridDataCellMixin,
     ],
     computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
         cellData() {
             const check = (data, draftValue) => Boolean(data) !== Boolean(draftValue);
             const getMappedValue = cellDataCompose(check);
@@ -53,20 +49,20 @@ export default {
         onAttachValueChange() {
             if (!this.column.multiple) {
                 if (typeof this.drafts[this.column.data] === 'undefined') {
-                    this.setDraftValue({
-                        rowId: this.column.data,
-                        columnId: this.column.id,
-                        value: false,
+                    this.setDrafts({
+                        [this.column.data]: {
+                            [this.column.id]: false,
+                        },
                     });
                 } else {
                     const lastSelectedDraftKey = Object.keys(this.drafts)
                         .find(key => this.drafts[key][this.column.id]);
 
                     if (lastSelectedDraftKey !== this.rowId) {
-                        this.setDraftValue({
-                            rowId: lastSelectedDraftKey,
-                            columnId: this.column.id,
-                            value: false,
+                        this.setDrafts({
+                            [lastSelectedDraftKey]: {
+                                [this.column.id]: false,
+                            },
                         });
                     }
                 }

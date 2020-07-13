@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridActivatorEditCell>
-        <GridTextEditContentCell :style="{width: `${width + 8}px`}">
+    <GridEditNavigationCell @edit="onEditCell">
+        <GridTextEditContentCell :style="positionStyle">
             <TextField
                 v-model="localValue"
                 autofocus
@@ -14,23 +14,26 @@
                 :size="smallSize"
                 :type="underlineType" />
         </GridTextEditContentCell>
-    </GridActivatorEditCell>
+    </GridEditNavigationCell>
 </template>
 
 <script>
 import GridTextEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
-import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
+import GridEditNavigationCell from '@Core/components/Grid/Layout/Table/Cells/Navigation/GridEditNavigationCell';
 import TextField from '@Core/components/Inputs/TextField';
 import {
     ALIGNMENT,
     INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'GridNumericEditCell',
     components: {
-        GridActivatorEditCell,
+        GridEditNavigationCell,
         GridTextEditContentCell,
         TextField,
     },
@@ -46,9 +49,24 @@ export default {
             type: String,
             default: '',
         },
-        width: {
+        bounds: {
+            type: [
+                DOMRect,
+                Object,
+            ],
+            required: true,
+        },
+        row: {
             type: Number,
-            default: 0,
+            required: true,
+        },
+        column: {
+            type: Number,
+            required: true,
+        },
+        onValueChange: {
+            type: Function,
+            required: true,
         },
     },
     data() {
@@ -57,6 +75,21 @@ export default {
         };
     },
     computed: {
+        positionStyle() {
+            const {
+                x,
+                y,
+                width,
+                height,
+            } = this.bounds;
+
+            return {
+                top: `${y}px`,
+                left: `${x}px`,
+                width: `${width + 8}px`,
+                minHeight: `${height + 8}px`,
+            };
+        },
         underlineType() {
             return INPUT_TYPE.UNDERLINE;
         },
@@ -67,10 +100,17 @@ export default {
             return ALIGNMENT.LEFT;
         },
     },
-    beforeDestroy() {
-        if (+this.localValue !== +this.value) {
-            this.$emit('input', this.localValue !== '' ? +this.localValue : '');
-        }
+    methods: {
+        ...mapActions('grid', [
+            'setEditCell',
+        ]),
+        onEditCell() {
+            if (+this.localValue !== +this.value) {
+                this.onValueChange(this.localValue !== '' ? +this.localValue : '');
+            }
+            document.documentElement.querySelector(`.coordinates-${this.column}-${this.row}`).focus();
+            this.setEditCell();
+        },
     },
 };
 </script>

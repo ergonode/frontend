@@ -15,8 +15,8 @@
                     <div class="fixed-container">
                         <Picture
                             v-if="!multiple"
-                            object-fit="none"
-                            :image-id="value" />
+                            :value="value"
+                            object-fit="none" />
                         <PictureCarousel
                             v-else
                             :image-ids="value"

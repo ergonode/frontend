@@ -12,6 +12,7 @@
         :disabled="isDisabled"
         :copyable="isCopyable"
         @edit="onCheckValueChange"
+        @mousedown="onCheckValueChange"
         @copy="onCopyValues">
         <GridCheckEditCell
             :value="cellData.value"
@@ -26,9 +27,6 @@ import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 import {
     cellDataCompose,
 } from '@Core/models/mappers/gridDataMapper';
-import {
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'GridCheckDataCell',
@@ -39,9 +37,6 @@ export default {
         gridDataCellMixin,
     ],
     computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
         cellData() {
             const check = (data, draftValue) => Boolean(data) !== Boolean(draftValue);
             const getMappedValue = cellDataCompose(check);
@@ -52,7 +47,7 @@ export default {
     methods: {
         onCheckValueChange() {
             this.onValueChange(!this.cellData.value);
-        }
+        },
     },
 };
 </script>

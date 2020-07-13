@@ -8,9 +8,9 @@
         @click="onClick">
         <Picture
             v-if="image"
+            :value="image"
             :object-fit="objectFit"
-            :height="157"
-            :image-id="image" />
+            :height="157" />
         <img
             v-else
             class="collection-cell__placeholder"

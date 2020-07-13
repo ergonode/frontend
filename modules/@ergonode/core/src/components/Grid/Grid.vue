@@ -196,7 +196,7 @@ export default {
                 scaling: IMAGE_SCALING.FIT_TO_SIZE.value,
             },
             tableLayoutConfig: {
-                rowHeight: ROW_HEIGHT.MEDIUM,
+                rowHeight: ROW_HEIGHT.SMALL,
             },
         };
     },

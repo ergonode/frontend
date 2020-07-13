@@ -3,21 +3,23 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridActivatorEditCell>
-        <DatePicker
-            :style="{width: `${width}px`, height: `${height}px`}"
-            v-model="localValue"
-            :size="smallSize"
-            autofocus
-            :placeholder="format"
-            :format="format"
-            :error-messages="errorMessages"
-            @focus="onFocus" />
-    </GridActivatorEditCell>
+    <GridEditNavigationCell @edit="onEditCell">
+        <GridSelectEditContentCell :style="positionStyle">
+            <DatePicker
+                v-model="localValue"
+                :size="smallSize"
+                autofocus
+                :placeholder="format"
+                :format="format"
+                :error-messages="errorMessages"
+                @focus="onFocus" />
+        </GridSelectEditContentCell>
+    </GridEditNavigationCell>
 </template>
 
 <script>
-import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
+import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
+import GridEditNavigationCell from '@Core/components/Grid/Layout/Table/Cells/Navigation/GridEditNavigationCell';
 import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 import {
     SIZE,
@@ -29,15 +31,16 @@ import {
     format as formatDate,
     parse as parseDate,
 } from 'date-fns';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'GridDateEditCell',
-    inject: [
-        'setEditingCellCoordinates',
-    ],
     components: {
-        GridActivatorEditCell,
+        GridSelectEditContentCell,
         DatePicker,
+        GridEditNavigationCell,
     },
     props: {
         value: {
@@ -52,13 +55,24 @@ export default {
             type: String,
             default: '',
         },
-        width: {
-            type: Number,
-            default: 0,
+        bounds: {
+            type: [
+                DOMRect,
+                Object,
+            ],
+            required: true,
         },
-        height: {
+        row: {
             type: Number,
-            default: 0,
+            required: true,
+        },
+        column: {
+            type: Number,
+            required: true,
+        },
+        onValueChange: {
+            type: Function,
+            required: true,
         },
     },
     data() {
@@ -73,22 +87,42 @@ export default {
         };
     },
     computed: {
+        positionStyle() {
+            const {
+                x,
+                y,
+                width,
+                height,
+            } = this.bounds;
+
+            return {
+                top: `${y}px`,
+                left: `${x}px`,
+                width: `${width}px`,
+                height: `${height}px`,
+            };
+        },
         smallSize() {
             return SIZE.SMALL;
         },
     },
-    beforeDestroy() {
-        if (this.localValue) {
-            this.$emit('input', formatDate(this.localValue, this.format));
-        } else if (Boolean(this.localValue) !== Boolean(this.value)) {
-            this.$emit('input', '');
-        }
-    },
     methods: {
+        ...mapActions('grid', [
+            'setEditCell',
+        ]),
         onFocus(isFocused) {
             if (!isFocused) {
-                this.setEditingCellCoordinates();
+                this.onEditCell();
             }
+        },
+        onEditCell() {
+            if (this.localValue) {
+                this.onValueChange(formatDate(this.localValue, DEFAULT_FORMAT));
+            } else if (Boolean(this.localValue) !== Boolean(this.value)) {
+                this.onValueChange('');
+            }
+            document.documentElement.querySelector(`.coordinates-${this.column}-${this.row}`).focus();
+            this.setEditCell();
         },
     },
 };

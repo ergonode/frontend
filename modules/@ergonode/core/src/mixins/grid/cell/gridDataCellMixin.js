@@ -70,7 +70,7 @@ export default {
     },
     methods: {
         ...mapActions('grid', [
-            'setDraftValue',
+            'setDrafts',
         ]),
         onCopyValues(payload) {
             this.$emit('copyCells', {
@@ -81,15 +81,17 @@ export default {
             });
         },
         onValueChange(value) {
-            const payload = {
+            this.setDrafts({
+                [this.rowId]: {
+                    [this.column.id]: value,
+                },
+            });
+
+            this.$emit('editCell', {
                 value,
                 rowId: this.rowId,
                 columnId: this.column.id,
-            };
-
-            this.setDraftValue(payload);
-
-            this.$emit('editCell', payload);
+            });
         },
     },
 };

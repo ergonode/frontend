@@ -13,66 +13,86 @@
         :disabled="isDisabled"
         :copyable="isCopyable"
         :selected="isSelected"
+        @edit="onEditCell"
         @copy="onCopyValues">
-        <template #default="{ isEditing }">
-            <GridSelectEditCell
-                v-if="isEditing"
-                :value="cellData.value"
-                :language-code="column.language"
-                :options="options"
-                :width="$el.offsetWidth"
-                :height="$el.offsetHeight"
-                @input="onValueChange" />
-            <GridSelectPresentationCell
-                v-else-if="!isEditing && cellData.value"
-                :value="cellData.value"
-                :suffix="data.suffix"
-                :options="options"
-                :is-locked="isLocked" />
+        <template v-if="cellData.value">
+            <GridPresentationCell :value="presentationValue" />
+            <GridSuffixPresentationCell
+                v-if="data.suffix"
+                :suffix="data.suffix" />
+            <IconArrowDropDown
+                v-if="!isLocked"
+                view-box="0 0 24 24"
+                :width="32" />
         </template>
     </GridTableCell>
 </template>
 
 <script>
-import GridSelectPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSelectPresentationCell';
+import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 import {
     cellDataCompose,
 } from '@Core/models/mappers/gridDataMapper';
 import {
-    mapState,
+    mapActions,
 } from 'vuex';
 
 export default {
     name: 'GridSelectDataCell',
     components: {
-        GridSelectPresentationCell,
-        GridSelectEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridSelectEditCell'),
+        GridPresentationCell,
+        IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
+        GridSuffixPresentationCell: () => import('@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell'),
     },
     mixins: [
         gridDataCellMixin,
     ],
     computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
         cellData() {
             const check = (data, draftValue) => data !== draftValue;
             const getMappedValue = cellDataCompose(check);
 
             return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
         },
-        options() {
-            if (this.column.filter && this.column.filter.options) {
-                // TODO: BE has to unify types!
-                if (Array.isArray(this.column.filter.options)) {
-                    return {};
-                }
+        presentationValue() {
+            const {
+                value,
+            } = this.cellData;
 
+            return this.options[value].label
+            || `#${this.options[value].code}`;
+        },
+        options() {
+            if (this.column.filter
+                && this.column.filter.options
+                && !Array.isArray(this.column.filter.options)) {
                 return this.column.filter.options;
             }
 
             return {};
+        },
+    },
+    methods: {
+        ...mapActions('grid', [
+            'setEditCell',
+        ]),
+        onEditCell() {
+            this.setEditCell({
+                row: this.rowIndex,
+                column: this.columnIndex,
+                type: this.column.type,
+                props: {
+                    bounds: this.$el.getBoundingClientRect(),
+                    value: this.cellData.value,
+                    row: this.rowIndex,
+                    column: this.columnIndex,
+                    languageCode: this.languageCode,
+                    options: this.options,
+                    errorMessages: this.errorMessages,
+                    onValueChange: this.onValueChange,
+                },
+            });
         },
     },
 };

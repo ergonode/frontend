@@ -7,26 +7,21 @@
         :tabindex="-1"
         :class="classes"
         @mousedown="onMouseDown"
-        @keydown="onKeyDown"
-        @focus="onFocus"
-        @blur="onBlur">
+        @keydown="onKeyDown">
         <GridCellResizer
             v-if="copyable"
             @copy="onCopy" />
-        <slot :is-editing="isEditing" />
+        <slot />
     </div>
 </template>
 
 <script>
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'GridTableCell',
-    inject: [
-        'getEditingCellCoordinates',
-        'setEditingCellCoordinates',
-        'setFocusedCellCoordinates',
-        'getTableLayoutElement',
-    ],
     components: {
         GridCellResizer: () => import('@Core/components/Grid/Layout/Table/Cells/Resizer/GridCellResizer'),
     },
@@ -82,46 +77,11 @@ export default {
                 },
             ];
         },
-        isEditing: {
-            get() {
-                const {
-                    row, column,
-                } = this.getEditingCellCoordinates();
-
-                return row === this.row && column === this.column;
-            },
-            set(value) {
-                if (value) {
-                    this.setEditingCellCoordinates({
-                        row: this.row,
-                        column: this.column,
-                    });
-                } else {
-                    this.setEditingCellCoordinates();
-                }
-            },
-        },
-    },
-    mounted() {
-        if (!this.locked && !this.disabled) {
-            this.$el.addEventListener('dblclick', this.onDblcClick);
-        }
-    },
-    beforeDestroy() {
-        if (!this.locked && !this.disabled) {
-            this.$el.removeEventListener('dblclick', this.onDblcClick);
-        }
     },
     methods: {
-        onFocus() {
-            this.setFocusedCellCoordinates({
-                row: this.row,
-                column: this.column,
-            });
-        },
-        onBlur() {
-            this.setFocusedCellCoordinates();
-        },
+        ...mapActions('grid', [
+            'setEditCell',
+        ]),
         onCopy(factor) {
             this.$emit('copy', {
                 from: {
@@ -134,12 +94,14 @@ export default {
                 },
             });
         },
-        onMouseDown() {
-            if ((this.editKeyCode !== 32 && !this.isEditing)
-                || this.editKeyCode === 32) {
-                this.isEditing = false;
+        onMouseDown(event) {
+            this.setEditCell();
+
+            if (event.detail === 2) {
                 this.$emit('edit');
             }
+
+            this.$emit('mousedown');
         },
         onKeyDown(event) {
             const {
@@ -148,26 +110,12 @@ export default {
 
             let element;
 
-            if (this.isEditing && keyCode !== this.editKeyCode) {
-                if (keyCode === 9) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-
-                return false;
-            }
-
-            const tableLayout = this.getTableLayoutElement();
+            const tableLayout = document.documentElement.querySelector('.grid-table-layout');
 
             switch (keyCode) {
             case this.editKeyCode:
                 if (!this.locked && !this.disabled) {
-                    if (this.editKeyCode !== 32) {
-                        element = this.$el;
-                        this.isEditing = !this.isEditing;
-                    } else {
-                        this.$emit('edit');
-                    }
+                    this.$emit('edit');
                 }
                 break;
             case 37:
@@ -182,10 +130,12 @@ export default {
             case 9:
                 // Key: RIGHT || TAB
                 element = tableLayout.querySelector(`.coordinates-${this.column + 1}-${this.row}`);
+
                 if (!element) {
                     // We get out of bounds - go to the next line
                     element = tableLayout.querySelector(`.coordinates-0-${this.row + 1}`);
                 }
+
                 break;
             case 40:
                 // Key: DOWN
@@ -196,19 +146,13 @@ export default {
 
             event.preventDefault();
 
-            if ((keyCode === 13 && !this.isEditing && element) || (keyCode !== 13 && element)) {
+            if (element && keyCode !== this.editKeyCode) {
                 element.focus();
             }
 
             element = null;
 
             return true;
-        },
-        onDblcClick() {
-            if (!this.locked && !this.disabled && this.editKeyCode !== 32) {
-                this.isEditing = true;
-                this.$emit('edit', this.isEditing);
-            }
         },
     },
 };
@@ -219,6 +163,7 @@ export default {
         position: relative;
         display: flex;
         align-items: center;
+        justify-content: space-between;
         outline: none;
         box-sizing: border-box;
         border-bottom: 1px solid $GREY;

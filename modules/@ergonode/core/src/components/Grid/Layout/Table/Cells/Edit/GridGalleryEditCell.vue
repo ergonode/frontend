@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridActivatorEditCell>
+    <GridSelectEditContentCell>
         <GridImageEditContentCell :style="{width: `${width + 8}px`}">
             <UploadImageFile
                 :value="localValue"
@@ -11,19 +11,19 @@
                 :multiple="true"
                 @input="updateValue" />
         </GridImageEditContentCell>
-    </GridActivatorEditCell>
+    </GridSelectEditContentCell>
 </template>
 
 <script>
 import GridImageEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridImageEditContentCell';
-import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
+import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
 import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 
 export default {
     name: 'GridGalleryEditCell',
     components: {
         UploadImageFile,
-        GridActivatorEditCell,
+        GridSelectEditContentCell,
         GridImageEditContentCell,
     },
     props: {
