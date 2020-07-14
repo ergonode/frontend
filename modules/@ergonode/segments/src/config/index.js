@@ -6,6 +6,8 @@ export default {
     name: '@ergonode/segments',
     relations: [
         '@ergonode/conditions',
+        '@ergonode/products',
+        '@ergonode/collections',
     ],
     aliases: {
         '@Segments': '/',

@@ -76,7 +76,8 @@ export default {
     }, treeData) {
         const reducer = (id) => {
             const {
-                name, code,
+                name = '',
+                code,
             } = state.languages.find(e => e.id === id);
 
             return {

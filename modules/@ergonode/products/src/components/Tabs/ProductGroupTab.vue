@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                :is-editable="$hasAccess(['PRODUCT_UPDATE'])"
+                :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :data="data"
@@ -53,8 +53,10 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import PRIVILEGES from '@Products/config/privileges';
 import {
     ADD_PRODUCT,
+    EXTENDS,
     PRODUCT_TYPE,
 } from '@Products/defaults';
 import {
@@ -166,7 +168,7 @@ export default {
         },
         isUserAllowedToUpdate() {
             return this.$hasAccess([
-                'PRODUCT_UPDATE',
+                PRIVILEGES.PRODUCT.update,
             ]);
         },
         smallSize() {
@@ -176,16 +178,26 @@ export default {
             return THEME.SECONDARY;
         },
         addProductOptions() {
-            return Object.values(ADD_PRODUCT);
+            const options = Object.values(ADD_PRODUCT);
+
+            this.extendedComponents.forEach((option) => {
+                options.push(option.name);
+            });
+            return options;
+        },
+        extendedComponents() {
+            return this.$getExtendedComponents(EXTENDS.PRODUCT_GROUP_ADD_PRODUCTS);
         },
         modalComponent() {
-            switch (this.selectedAppModalOption) {
-            case ADD_PRODUCT.FROM_SEGMENT:
-                return () => import('@Products/components/Modals/AddProductsFromSegmentModalForm');
-            case ADD_PRODUCT.BY_SKU:
-                return () => import('@Products/components/Modals/AddProductsBySKUModalForm');
-            default: return null;
-            }
+            const modals = [
+                {
+                    component: () => import('@Products/components/Modals/AddProductsBySKUModalForm'),
+                    name: ADD_PRODUCT.BY_SKU,
+                },
+                ...this.extendedComponents,
+            ];
+
+            return modals.find(modal => modal.name === this.selectedAppModalOption).component;
         },
     },
     methods: {

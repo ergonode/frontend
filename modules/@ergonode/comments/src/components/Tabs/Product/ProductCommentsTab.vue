@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import ProductCommentsForm from '@Comments/components/Form/ProductCommentsForm';
+import ProductCommentsForm from '@Comments/components/Forms/ProductCommentsForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import {
     DATA_LIMIT,

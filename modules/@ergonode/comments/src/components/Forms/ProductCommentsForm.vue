@@ -8,7 +8,7 @@
             <Button
                 v-if="!showForm"
                 title="NEW COMMENT"
-                :disabled="!$hasAccess(['PRODUCT_UPDATE'])"
+                :disabled="!isUserAllowedToUpdate"
                 @click.native="openForm">
                 <template #prepend="{ color }">
                     <IconAdd
@@ -59,6 +59,7 @@ import {
 import {
     LAYOUT_ORIENTATION,
 } from '@Core/defaults/layout';
+import PRIVILEGES from '@Products/config/privileges';
 import {
     mapActions,
     mapState,
@@ -105,6 +106,11 @@ export default {
             return listLength
                 && listLength < this.fullListCount
                 && this.fullListCount > DATA_LIMIT;
+        },
+        isUserAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT.update,
+            ]);
         },
     },
     methods: {

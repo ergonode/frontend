@@ -7,7 +7,7 @@
         <TitleBar
             :title="title"
             :is-navigation-back="true"
-            :is-read-only="$isReadOnly('PRODUCT')">
+            :is-read-only="isReadOnly">
             <template #prependBadge>
                 <ProductStatusBadge
                     v-if="status"
@@ -18,7 +18,7 @@
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE PRODUCT"
-                    :disabled="!$hasAccess(['PRODUCT_DELETE'])"
+                    :disabled="!isUserAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete :fill-color="color" />
@@ -32,7 +32,7 @@
                         title="STATUS CHANGE"
                         :theme="secondaryTheme"
                         :size="smallSize"
-                        :disabled="!isUserAllowedToUpdateProduct"
+                        :disabled="!isUserAllowedToUpdate"
                         :options="workflow"
                         :fixed-content="true"
                         @input="onUpdateStatus">
@@ -80,6 +80,7 @@ import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
 import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
+import PRIVILEGES from '@Products/config/privileges';
 import {
     PRODUCT_TYPE,
 } from '@Products/defaults';
@@ -115,10 +116,18 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-        isUserAllowedToUpdateProduct() {
+        isUserAllowedToUpdate() {
             return this.$hasAccess([
-                'PRODUCT_UPDATE',
+                PRIVILEGES.PRODUCT.update,
             ]);
+        },
+        isUserAllowedToDelete() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT.delete,
+            ]);
+        },
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.PRODUCT.namespace);
         },
         tabs() {
             const tabs = getNestedTabRoutes(

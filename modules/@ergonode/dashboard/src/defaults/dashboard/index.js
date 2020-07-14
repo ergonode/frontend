@@ -2,6 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import CATEGORIES_PRIVILEGES from '@Categories/config/privileges';
+import PRODUCTS_PRIVILEGES from '@Products/config/privileges';
+import TEMPLATE_PRIVILEGES from '@Templates/config/privileges';
 
 export const GRID_ITEMS = [
     {
@@ -10,7 +13,7 @@ export const GRID_ITEMS = [
         icon: 'add_category.svg',
         action: '/categories',
         privileges: [
-            'CATEGORY_READ',
+            CATEGORIES_PRIVILEGES.CATEGORY.read,
         ],
     },
     {
@@ -19,7 +22,7 @@ export const GRID_ITEMS = [
         icon: 'add_template.svg',
         action: '/product-templates',
         privileges: [
-            'TEMPLATE_DESIGNER_READ',
+            TEMPLATE_PRIVILEGES.TEMPLATE_DESIGNER.read,
         ],
     },
     {
@@ -28,7 +31,7 @@ export const GRID_ITEMS = [
         icon: 'add_template.svg',
         action: '/catalog',
         privileges: [
-            'PRODUCT_READ',
+            PRODUCTS_PRIVILEGES.PRODUCT.read,
         ],
     },
 ];

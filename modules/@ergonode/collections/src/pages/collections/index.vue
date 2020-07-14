@@ -6,13 +6,13 @@
     <Page>
         <TitleBar
             title="Collections"
-            :is-read-only="$isReadOnly('PRODUCT_COLLECTION')">
+            :is-read-only="isReadOnly">
             <template #mainAction>
                 <Button
                     data-cy="new-collection"
                     title="NEW PRODUCT COLLECTION"
                     :size="smallSize"
-                    :disabled="!$hasAccess(['PRODUCT_COLLECTION_CREATE'])"
+                    :disabled="!isUserAllowedToCreate"
                     @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Collections/config/privileges';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import {
@@ -64,6 +65,14 @@ export default {
         },
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
+        isUserAllowedToCreate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT_COLLECTION.create,
+            ]);
+        },
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.PRODUCT_COLLECTION.namespace);
         },
     },
     head() {

@@ -51,6 +51,7 @@
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
+import PRIVILEGES from '@Products/config/privileges';
 import {
     PRODUCT_TYPE,
 } from '@Products/defaults';
@@ -100,10 +101,10 @@ export default {
         },
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess([
-                'PRODUCT_UPDATE',
+                PRIVILEGES.PRODUCT.update,
             ]))
             || (!this.isDisabled && !this.$hasAccess([
-                'PRODUCT_CREATE',
+                PRIVILEGES.PRODUCT.create,
             ]));
         },
         templateIdFieldKey() {

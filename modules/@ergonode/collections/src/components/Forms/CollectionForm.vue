@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Collections/config/privileges';
 import {
     mapActions,
     mapState,
@@ -55,10 +56,10 @@ export default {
         }),
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess([
-                'PRODUCT_COLLECTION_UPDATE',
+                PRIVILEGES.PRODUCT_COLLECTION.update,
             ]))
             || (!this.isDisabled && !this.$hasAccess([
-                'PRODUCT_COLLECTION_CREATE',
+                PRIVILEGES.PRODUCT_COLLECTION.create,
             ]));
         },
         isDisabled() {

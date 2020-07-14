@@ -40,7 +40,7 @@ import {
 export default {
     name: 'AddProductsFromSegmentModalForm',
     components: {
-        AddProductsFromSegmentForm: () => import('@Products/components/Form/AddProductsFromSegmentForm'),
+        AddProductsFromSegmentForm: () => import('@Segments/components/Forms/Product/AddProductsFromSegmentForm'),
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
         Button: () => import('@Core/components/Buttons/Button'),
     },

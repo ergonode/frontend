@@ -96,6 +96,7 @@ import {
 } from '@Core/defaults/theme';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import PRIVILEGES from '@Products/config/privileges';
 import {
     mapActions,
     mapState,
@@ -183,7 +184,7 @@ export default {
         },
         verticalTabs() {
             const isUserAllowedToReadProduct = this.$hasAccess([
-                'PRODUCT_READ',
+                PRIVILEGES.PRODUCT.read,
             ]);
             return [
                 {
@@ -206,12 +207,12 @@ export default {
         },
         isUserAllowedToUpdate() {
             return this.$hasAccess([
-                'PRODUCT_UPDATE',
+                PRIVILEGES.PRODUCT.update,
             ]);
         },
         isUserAllowedToRestore() {
             return this.$hasAccess([
-                'PRODUCT_UPDATE',
+                PRIVILEGES.PRODUCT.update,
             ]) && this.focusedCellToRestore;
         },
     },

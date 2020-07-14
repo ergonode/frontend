@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                :is-editable="$hasAccess(['PRODUCT_COLLECTION_UPDATE'])"
+                :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :data="data"
@@ -43,8 +43,10 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Collections/config/privileges';
 import {
     ADD_PRODUCT,
+    EXTENDS,
 } from '@Collections/defaults';
 import ActionButton from '@Core/components/Buttons/ActionButton';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
@@ -81,7 +83,7 @@ export default {
         }),
         isUserAllowedToUpdate() {
             return this.$hasAccess([
-                'PRODUCT_COLLECTION_UPDATE',
+                PRIVILEGES.PRODUCT_COLLECTION.update,
             ]);
         },
         collectionCellBinding() {
@@ -97,19 +99,26 @@ export default {
             return THEME.SECONDARY;
         },
         addProductOptions() {
-            return Object.values(ADD_PRODUCT);
+            const options = Object.values(ADD_PRODUCT);
+
+            this.extendedComponents.forEach((option) => {
+                options.push(option.name);
+            });
+            return options;
+        },
+        extendedComponents() {
+            return this.$getExtendedComponents(EXTENDS.COLLECTIONS_ADD_PRODUCTS);
         },
         modalComponent() {
-            switch (this.selectedAppModalOption) {
-            // TODO: We may delay this functionality - selecting from Grid might product performance issues - need planning
-            // case ADD_PRODUCT.FROM_LIST:
-            //     return () => import('@Collections/components/Modals/AddProductsFromListModalGrid');
-            case ADD_PRODUCT.FROM_SEGMENT:
-                return () => import('@Collections/components/Modals/AddProductsFromSegmentModalForm');
-            case ADD_PRODUCT.BY_SKU:
-                return () => import('@Collections/components/Modals/AddProductsBySKUModalForm');
-            default: return null;
-            }
+            const modals = [
+                {
+                    component: () => import('@Collections/components/Modals/AddProductsBySKUModalForm'),
+                    name: ADD_PRODUCT.BY_SKU,
+                },
+                ...this.extendedComponents,
+            ];
+
+            return modals.find(modal => modal.name === this.selectedAppModalOption).component;
         },
     },
     methods: {

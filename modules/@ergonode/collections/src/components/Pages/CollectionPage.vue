@@ -7,14 +7,14 @@
         <TitleBar
             :title="title"
             :is-navigation-back="true"
-            :is-read-only="$isReadOnly('PRODUCT_COLLECTION')">
+            :is-read-only="isReadOnly">
             <template #mainAction>
                 <Button
                     data-cy="delete-collection"
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE COLLECTION"
-                    :disabled="!$hasAccess(['PRODUCT_COLLECTION_DELETE'])"
+                    :disabled="!isUserAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete :fill-color="color" />
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Collections/config/privileges';
 import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
 
 export default {
@@ -42,5 +43,15 @@ export default {
     mixins: [
         categoryManagementPageMixin,
     ],
+    computed: {
+        isUserAllowedToDelete() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT_COLLECTION.delete,
+            ]);
+        },
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.PRODUCT_COLLECTION.namespace);
+        },
+    },
 };
 </script>

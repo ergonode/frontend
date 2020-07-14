@@ -30,6 +30,7 @@ import {
 import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';
+import PRIVILEGES from '@Products/config/privileges';
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
 import {
     mapGetters,
@@ -100,7 +101,7 @@ export default {
             } = this.language;
 
             return !this.$hasAccess([
-                'PRODUCT_UPDATE',
+                PRIVILEGES.PRODUCT.update,
             ])
                 || !languagePrivileges[code].edit
                 || (this.getRootOnLanguagesTree.code !== code && scope === SCOPE.GLOBAL);

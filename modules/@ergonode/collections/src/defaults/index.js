@@ -4,7 +4,10 @@
  */
 export const ADD_PRODUCT = {
     BY_SKU: 'Add by SKU',
-    FROM_SEGMENT: 'Add from segment',
     // TODO: Uncomment when planned
     // FROM_LIST: 'Select from list',
+};
+
+export const EXTENDS = {
+    COLLECTIONS_ADD_PRODUCTS: 'COLLECTIONS_ADD_PRODUCTS',
 };

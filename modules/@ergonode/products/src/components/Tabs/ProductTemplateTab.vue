@@ -58,6 +58,7 @@ import {
 } from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import ProductTemplateForm from '@Products/components/Form/ProductTemplateForm';
+import PRIVILEGES from '@Products/config/privileges';
 import getProductCompleteness from '@Products/services/getProductCompleteness.service';
 import getProductTemplate from '@Products/services/getProductTemplate.service';
 import {
@@ -157,7 +158,7 @@ export default {
             } = this.language;
 
             return this.$hasAccess([
-                'PRODUCT_UPDATE',
+                PRIVILEGES.PRODUCT.update,
             ])
                 && languagePrivileges[code].edit
                 && this.getRootOnLanguagesTree.code !== code;

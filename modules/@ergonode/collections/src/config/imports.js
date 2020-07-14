@@ -13,6 +13,7 @@ export const Tabs = {
     CollectionGeneralTab: () => import('@Collections/components/Tabs/CollectionGeneralTab').then(m => m.default || m),
     CollectionTranslationsTab: () => import('@Collections/components/Tabs/CollectionTranslationsTab').then(m => m.default || m),
     CollectionProductsTab: () => import('@Collections/components/Tabs/CollectionProductsTab').then(m => m.default || m),
+    ProductCollectionTab: () => import('@Collections/components/Tabs/Product/ProductCollectionTab').then(m => m.default || m),
 };
 
 export const Icons = {
