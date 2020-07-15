@@ -8,7 +8,7 @@
             <GridImageEditContentCell>
                 <UploadImageFile
                     v-model="localValue"
-                    height="132px" />
+                    height="181px" />
             </GridImageEditContentCell>
         </GridSelectEditContentCell>
     </GridEditNavigationCell>
@@ -19,9 +19,6 @@ import GridImageEditContentCell from '@Core/components/Grid/Layout/Table/Cells/E
 import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
 import GridEditNavigationCell from '@Core/components/Grid/Layout/Table/Cells/Navigation/GridEditNavigationCell';
 import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'GridImageEditCell',
@@ -75,21 +72,17 @@ export default {
             return {
                 top: `${y}px`,
                 left: `${x}px`,
-                width: '181px',
-                height: '304px',
+                width: '304px',
             };
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setEditCell',
-        ]),
         onEditCell() {
             if (this.localValue !== this.value) {
                 this.onValueChange(this.localValue);
             }
-            document.documentElement.querySelector(`.coordinates-${this.column}-${this.row}`).focus();
-            this.setEditCell();
+
+            this.$emit('dismiss');
         },
     },
 };

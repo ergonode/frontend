@@ -9,7 +9,7 @@
                 :is-editable="$hasAccess(['PRODUCT_UPDATE'])"
                 :columns="columns"
                 :data-count="filtered"
-                :data="data"
+                :rows="rows"
                 :collection-cell-binding="collectionCellBinding"
                 :is-collection-layout="true"
                 :is-header-visible="true"
@@ -101,11 +101,11 @@ export default {
                 params,
             }).then(({
                 columns,
-                data,
+                rows,
                 filtered,
             }) => {
                 const tmpData = {
-                    ...data,
+                    ...rows,
                     esa_attached: [],
                 };
 

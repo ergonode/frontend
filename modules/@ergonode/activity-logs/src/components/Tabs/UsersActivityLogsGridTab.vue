@@ -8,7 +8,7 @@
             <Grid
                 :columns="columns"
                 :data-count="filtered"
-                :data="data"
+                :rows="rows"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 @fetchData="getGridData" />

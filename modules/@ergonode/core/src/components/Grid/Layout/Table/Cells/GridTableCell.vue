@@ -16,10 +16,6 @@
 </template>
 
 <script>
-import {
-    mapActions,
-} from 'vuex';
-
 export default {
     name: 'GridTableCell',
     components: {
@@ -79,9 +75,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setEditCell',
-        ]),
         onCopy(factor) {
             this.$emit('copy', {
                 from: {
@@ -95,8 +88,6 @@ export default {
             });
         },
         onMouseDown(event) {
-            this.setEditCell();
-
             if (event.detail === 2) {
                 this.$emit('edit');
             }

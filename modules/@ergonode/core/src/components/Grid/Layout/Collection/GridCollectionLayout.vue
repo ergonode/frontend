@@ -48,7 +48,10 @@ export default {
     },
     methods: {
         onEditCell(args) {
-            this.$emit('editRow', args);
+            this.$emit('editRow', {
+                key: 'edit',
+                value: args,
+            });
         },
     },
 };

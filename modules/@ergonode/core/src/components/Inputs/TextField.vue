@@ -32,7 +32,6 @@
                     v-bind="{ ...input }"
                     :value="value"
                     :placeholder="placeholderValue"
-                    :autofocus="autofocus"
                     autocomplete="on"
                     :disabled="disabled"
                     :aria-label="label || 'no description'"

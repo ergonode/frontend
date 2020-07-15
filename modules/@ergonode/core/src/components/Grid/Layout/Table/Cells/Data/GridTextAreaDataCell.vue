@@ -25,37 +25,36 @@
 </template>
 <script>
 import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
+import GridSuffixPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
-import {
-    cellDataCompose,
-} from '@Core/models/mappers/gridDataMapper';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'GridTextDataCell',
     components: {
         GridPresentationCell,
-        GridSuffixPresentationCell: () => import('@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell'),
+        GridSuffixPresentationCell,
     },
     mixins: [
         gridDataCellMixin,
     ],
     computed: {
         cellData() {
-            const check = (data, draftValue) => data !== draftValue;
-            const getMappedValue = cellDataCompose(check);
+            if (this.draft && this.data.value !== this.draft) {
+                return {
+                    value: this.draft,
+                    isDraft: true,
+                };
+            }
 
-            return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
+            return {
+                value: this.data.value,
+                isDraft: false,
+            };
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setEditCell',
-        ]),
         onEditCell() {
-            this.setEditCell({
+            this.$emit('editCell', {
                 row: this.rowIndex,
                 column: this.columnIndex,
                 type: this.column.parameters && this.column.parameters.rich_edit

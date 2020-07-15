@@ -18,7 +18,7 @@ import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCel
 import IconEdit from '@Core/components/Icons/Actions/IconEdit';
 
 export default {
-    name: 'GridRowEditCell',
+    name: 'GridGetActionCell',
     components: {
         GridTableCell,
         IconEdit,
@@ -28,8 +28,8 @@ export default {
             type: Boolean,
             default: false,
         },
-        link: {
-            type: Object,
+        href: {
+            type: String,
             required: true,
         },
         column: {
@@ -43,11 +43,12 @@ export default {
     },
     methods: {
         onEdit() {
-            if (this.link) {
-                const args = this.link.href.split('/');
+            const args = this.href.split('/');
 
-                this.$emit('edit', args);
-            }
+            this.$emit('action', {
+                key: 'edit',
+                value: args,
+            });
         },
     },
 };

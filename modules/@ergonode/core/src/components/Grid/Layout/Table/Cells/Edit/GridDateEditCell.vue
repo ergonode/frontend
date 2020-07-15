@@ -31,9 +31,6 @@ import {
     format as formatDate,
     parse as parseDate,
 } from 'date-fns';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'GridDateEditCell',
@@ -107,9 +104,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setEditCell',
-        ]),
         onFocus(isFocused) {
             if (!isFocused) {
                 this.onEditCell();
@@ -121,8 +115,8 @@ export default {
             } else if (Boolean(this.localValue) !== Boolean(this.value)) {
                 this.onValueChange('');
             }
-            document.documentElement.querySelector(`.coordinates-${this.column}-${this.row}`).focus();
-            this.setEditCell();
+
+            this.$emit('dismiss');
         },
     },
 };

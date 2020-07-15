@@ -39,29 +39,32 @@
                         <IconAddColumn :fill-color="color" />
                     </template>
                 </DropZone>
-                <GridTableLayout
-                    v-if="isTableLayout"
-                    :columns="columns"
-                    :data="data"
-                    :current-page="currentPage"
-                    :max-rows="maxRows"
-                    :row-height="tableLayoutConfig.rowHeight"
-                    :is-editable="isEditable"
-                    :is-select-column="isSelectColumn"
-                    :is-basic-filter="isBasicFilter"
-                    @sort="onSortColumn"
-                    @filter="onFilterChange"
-                    @editCell="onEditCell"
-                    @editCells="onEditCells"
-                    @focusCell="onFocusCell"
-                    @editRow="onEditRow"
-                    @removeRow="onRemoveRow" />
-                <GridCollectionLayout
-                    v-else-if="isCollectionLayout && collectionData.length"
-                    :data="collectionData"
-                    :columns-number="collectionLayoutConfig.columnsNumber"
-                    :object-fit="collectionLayoutConfig.scaling"
-                    @editRow="onEditRow" />
+                <KeepAlive>
+                    <GridTableLayout
+                        v-if="isTableLayout"
+                        :columns="columns"
+                        :action-columns="actionColumns"
+                        :rows="rows"
+                        :drafts="drafts"
+                        :current-page="currentPage"
+                        :max-rows="maxRows"
+                        :row-height="tableLayoutConfig.rowHeight"
+                        :is-editable="isEditable"
+                        :is-select-column="isSelectColumn"
+                        :is-basic-filter="isBasicFilter"
+                        @sort="onSortColumn"
+                        @filter="onFilterChange"
+                        @cellValue="onCellValueChange"
+                        @cellValues="onCellValuesChanges"
+                        @focusCell="onFocusCell"
+                        @rowAction="onRowAction" />
+                    <GridCollectionLayout
+                        v-else-if="isCollectionLayout && collectionData.length"
+                        :data="collectionData"
+                        :columns-number="collectionLayoutConfig.columnsNumber"
+                        :object-fit="collectionLayoutConfig.scaling"
+                        @rowAction="onRowAction" />
+                </KeepAlive>
                 <GridPlaceholder v-if="!dataCount" />
             </template>
         </GridBody>
@@ -84,10 +87,10 @@ import GridBody from '@Core/components/Grid/GridBody';
 import GridFooter from '@Core/components/Grid/GridFooter';
 import GridPreloader from '@Core/components/Grid/GridPreloader';
 import {
-    COLUMN_ACTIONS_ID,
     COLUMNS_NUMBER,
     DATA_LIMIT,
     DRAGGED_ELEMENT,
+    GRID_ACTIONS,
     GRID_LAYOUT,
     IMAGE_SCALING,
     ROW_HEIGHT,
@@ -122,7 +125,11 @@ export default {
             type: Array,
             default: () => [],
         },
-        data: {
+        rows: {
+            type: Array,
+            default: () => [],
+        },
+        drafts: {
             type: Object,
             default: () => ({}),
         },
@@ -205,6 +212,33 @@ export default {
             isElementDragging: state => state.isElementDragging,
             draggedElement: state => state.draggedElement,
         }),
+        actionColumns() {
+            const {
+                length: dataLength,
+            } = this.rows;
+            const {
+                length: actionsLength,
+            } = GRID_ACTIONS;
+            const actionColumns = [];
+            const tmp = {};
+
+            for (let i = 0; i < dataLength; i += 1) {
+                const row = this.rows[i];
+
+                for (let j = 0; j < actionsLength; j += 1) {
+                    const action = GRID_ACTIONS[j];
+
+                    if (!tmp[action] && row._links.value[action]) {
+                        tmp[action] = true;
+                        actionColumns.push({
+                            id: action,
+                        });
+                    }
+                }
+            }
+
+            return actionColumns;
+        },
         isListElementDragging() {
             return this.isElementDragging === DRAGGED_ELEMENT.LIST;
         },
@@ -226,38 +260,12 @@ export default {
                 imageColumn, descriptionColumn,
             } = this.collectionCellBinding;
 
-            if (!(imageColumn && descriptionColumn && this.data[descriptionColumn])) {
-                return [];
-            }
-
-            const collectionData = [];
-            const actionKeys = this.data[COLUMN_ACTIONS_ID]
-                ? Object.keys(this.data[COLUMN_ACTIONS_ID])
-                : [];
-
-            for (let i = 0; i < this.data[descriptionColumn].length; i += 1) {
-                const actions = {};
-
-                if (this.data[COLUMN_ACTIONS_ID]) {
-                    for (let j = 0; j < actionKeys.length; j += 1) {
-                        const actionKey = actionKeys[j];
-
-                        actions[actionKey] = this.data[COLUMN_ACTIONS_ID][actionKey][i];
-                    }
-                }
-
-                collectionData.push({
-                    actions,
-                    image: this.data[imageColumn]
-                        ? this.data[imageColumn][i].value
-                        : '',
-                    description: this.data[descriptionColumn]
-                        ? this.data[descriptionColumn][i].value
-                        : '',
-                });
-            }
-
-            return collectionData;
+            return this.rows
+                .filter(row => row[imageColumn] || row[descriptionColumn])
+                .map(row => ({
+                    image: row[imageColumn] ? row[imageColumn].value : '',
+                    description: row[descriptionColumn] ? row[descriptionColumn].value : '',
+                }));
         },
     },
     methods: {
@@ -270,20 +278,19 @@ export default {
         onLayoutChange(layout) {
             this.layout = layout;
         },
-        onEditCell(payload) {
-            this.$emit('editCell', payload);
+        onCellValueChange(payload) {
+            this.$emit('cellValue', payload);
         },
-        onEditCells(payload) {
-            this.$emit('editCells', payload);
+        onCellValuesChanges(payload) {
+            this.$emit('cellValues', payload);
         },
         onFocusCell(payload) {
             this.$emit('focusCell', payload);
         },
-        onEditRow(args) {
-            this.$emit('editRow', args);
-        },
-        onRemoveRow(index) {
-            this.$emit('removeRow', index);
+        onRowAction({
+            key, value,
+        }) {
+            this.$emit(`${key}Row`, value);
         },
         onDropColumn(columnId) {
             insertCookieAtIndex({

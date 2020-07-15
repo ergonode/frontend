@@ -7,7 +7,7 @@
         <template #content>
             <Grid
                 :columns="columns"
-                :data="data"
+                :rows="rows"
                 :data-count="dataCount"
                 :is-editable="isEditingAllowed"
                 :is-footer-visible="false" />

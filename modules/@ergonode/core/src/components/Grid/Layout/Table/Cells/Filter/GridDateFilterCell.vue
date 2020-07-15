@@ -24,9 +24,6 @@ import {
 import {
     DEFAULT_FORMAT,
 } from '@Core/models/calendar/calendar';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'GridDateFilterCell',
@@ -71,11 +68,8 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setEditCell',
-        ]),
         onEditCell() {
-            this.setEditCell({
+            this.$emit('editCell', {
                 row: this.rowIndex,
                 column: this.columnIndex,
                 type: 'DATE',

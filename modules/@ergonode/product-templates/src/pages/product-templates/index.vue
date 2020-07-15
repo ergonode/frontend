@@ -26,7 +26,7 @@
                     :is-editable="$hasAccess(['TEMPLATE_DESIGNER_UPDATE'])"
                     :columns="columns"
                     :data-count="filtered"
-                    :data="data"
+                    :rows="rows"
                     :is-prefetching-data="isPrefetchingData"
                     :default-layout="gridLayout.COLLECTION"
                     :is-collection-layout="true"
@@ -35,7 +35,7 @@
                     :is-centered-view="true"
                     :collection-cell-binding="collectionCellBinding"
                     @editRow="onEditRow"
-                    @removeRow="onRemoveRow"
+                    @deleteRow="onRemoveRow"
                     @fetchData="getGridData" />
             </template>
         </ResponsiveCenteredViewTemplate>

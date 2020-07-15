@@ -24,7 +24,8 @@
             <Grid
                 :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
-                :data="data"
+                :rows="rows"
+                :drafts="drafts"
                 :advanced-filters="advancedFilters"
                 :data-count="filtered"
                 :collection-cell-binding="collectionCellBinding"
@@ -34,10 +35,10 @@
                 :is-basic-filter="true"
                 :is-collection-layout="true"
                 @editRow="onEditRow"
-                @editCell="onEditCell"
-                @editCells="onEditCells"
+                @cellValue="onCellValueChange"
+                @cellValues="onCellValuesChange"
                 @focusCell="onFocusCell"
-                @removeRow="onRemoveRow"
+                @deleteRow="onRemoveRow"
                 @dropColumn="onDropColumn"
                 @dropFilter="onDropFilter"
                 @fetchData="getGridData">
@@ -94,6 +95,7 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import draftGridMixin from '@Core/mixins/grid/draftGridMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import {
@@ -121,6 +123,7 @@ export default {
         fetchGridDataMixin({
             path: 'products',
         }),
+        draftGridMixin,
     ],
     data() {
         return {
@@ -130,9 +133,6 @@ export default {
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
-        }),
-        ...mapState('grid', {
-            drafts: state => state.drafts,
         }),
         ...mapState('draggable', {
             isElementDragging: state => state.isElementDragging,
@@ -223,12 +223,16 @@ export default {
         ...mapActions('grid', [
             'removeDraftRow',
         ]),
-        onEditCell({
+        onCellValueChange({
             rowId, columnId, value,
         }) {
             const {
                 element_id,
             } = this.columns.find(column => column.id === columnId);
+
+            this.setDrafts({
+                [`${rowId}/${columnId}`]: value,
+            });
 
             updateProductDraft().then(response => response.default({
                 $axios: this.$axios,
@@ -240,8 +244,18 @@ export default {
                 value,
             }));
         },
-        onEditCells(editedCells) {
+        onCellValuesChange(editedCells) {
             const cachedElementIds = {};
+
+            const drafts = editedCells.reduce((prev, {
+                rowId, columnId, value,
+            }) => {
+                const tmp = prev;
+                tmp[`${rowId}/${columnId}`] = value;
+                return tmp;
+            }, {});
+
+            this.setDrafts(drafts);
 
             const requests = editedCells.map(({
                 rowId, columnId, value,

@@ -27,7 +27,6 @@
                     :style="textareaStyle"
                     :value="value"
                     :placeholder="placeholderValue"
-                    :autofocus="autofocus"
                     :disabled="disabled"
                     :aria-label="label || 'no description'"
                     @input="onValueChange"

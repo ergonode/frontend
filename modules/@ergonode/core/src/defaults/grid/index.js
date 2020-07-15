@@ -2,8 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export const COLUMN_ACTIONS_ID = 'COLUMN_ACTIONS';
-
 export const ROW_INTERVALS = [
     25,
     50,
@@ -12,7 +10,7 @@ export const ROW_INTERVALS = [
 ];
 
 export const GRID_ACTIONS = [
-    'edit',
+    'get',
     'delete',
 ];
 
@@ -79,11 +77,6 @@ export const DRAGGED_ELEMENT = {
     FILTER: 'FILTER',
     TEMPLATE: 'TEMPLATE',
     LIST: 'LIST',
-};
-
-export const COLUMN_ACTIONS = {
-    id: COLUMN_ACTIONS_ID,
-    type: 'ACTION',
 };
 
 export const DATA_LIMIT = 25;

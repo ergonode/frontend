@@ -32,9 +32,6 @@ import {
     getMappedMatchedArrayOptions,
     getMappedObjectOptions,
 } from '@Core/models/mappers/translationsMapper';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'GridMultiSelectEditCell',
@@ -116,9 +113,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setEditCell',
-        ]),
         onFocus(isFocused) {
             if (!isFocused) {
                 this.onEditCell();
@@ -130,8 +124,8 @@ export default {
             if (!arraysAreEqual(optionIds, this.value.map(option => option.id))) {
                 this.onValueChange(optionIds);
             }
-            document.documentElement.querySelector(`.coordinates-${this.column}-${this.row}`).focus();
-            this.setEditCell();
+
+            this.$emit('dismiss');
         },
     },
 };

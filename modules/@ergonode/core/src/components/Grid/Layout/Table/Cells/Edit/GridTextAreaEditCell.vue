@@ -25,9 +25,6 @@ import TextArea from '@Core/components/Inputs/TextArea';
 import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'GridTextAreaEditCell',
@@ -87,15 +84,12 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setEditCell',
-        ]),
         onEditCell() {
             if (this.localValue !== this.value) {
                 this.onValueChange(this.localValue);
             }
-            document.documentElement.querySelector(`.coordinates-${this.column}-${this.row}`).focus();
-            this.setEditCell();
+
+            this.$emit('dismiss');
         },
     },
 };

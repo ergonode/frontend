@@ -28,9 +28,6 @@ import {
     getMappedObjectOption,
     getMappedObjectOptions,
 } from '@Core/models/mappers/translationsMapper';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'GridSelectEditCell',
@@ -120,9 +117,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setEditCell',
-        ]),
         onFocus(isFocused) {
             if (!isFocused) {
                 this.onEditCell();
@@ -132,8 +126,8 @@ export default {
             if (this.localValue && this.localValue.id !== this.value) {
                 this.onValueChange(this.localValue.id || this.localValue);
             }
-            document.documentElement.querySelector(`.coordinates-${this.column}-${this.row}`).focus();
-            this.setEditCell();
+
+            this.$emit('dismiss');
         },
     },
 };

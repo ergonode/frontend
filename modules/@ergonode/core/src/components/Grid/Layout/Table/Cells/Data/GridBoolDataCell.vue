@@ -26,26 +26,31 @@
 
 <script>
 import GridBoolEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridBoolEditCell';
+import GridSuffixPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
-import {
-    cellDataCompose,
-} from '@Core/models/mappers/gridDataMapper';
 
 export default {
     name: 'GridBoolDataCell',
     components: {
         GridBoolEditCell,
-        GridSuffixPresentationCell: () => import('@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell'),
+        GridSuffixPresentationCell,
     },
     mixins: [
         gridDataCellMixin,
     ],
     computed: {
         cellData() {
-            const check = (data, draftValue) => Boolean(data) !== Boolean(draftValue);
-            const getMappedValue = cellDataCompose(check);
+            if (this.draft && Boolean(this.data.value) !== Boolean(this.draft)) {
+                return {
+                    value: this.draft,
+                    isDraft: true,
+                };
+            }
 
-            return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
+            return {
+                value: this.data.value,
+                isDraft: false,
+            };
         },
     },
     methods: {

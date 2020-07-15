@@ -14,7 +14,7 @@
         :is-header-visible="true"
         :is-collection-layout="true"
         @editRow="onEditRow"
-        @removeRow="onRemoveRow"
+        @deleteRow="onRemoveRow"
         @fetchData="getGridData">
         <!--  TODO: Uncomment when we have global search      -->
         <!--        <template #actions>-->

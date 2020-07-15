@@ -3,10 +3,6 @@
  * See LICENSE for license details.
  */
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
-import {
-    mapActions,
-    mapState,
-} from 'vuex';
 
 export default {
     components: {
@@ -16,6 +12,10 @@ export default {
         data: {
             type: Object,
             default: () => ({}),
+        },
+        draft: {
+            type: String,
+            default: '',
         },
         column: {
             type: Object,
@@ -40,6 +40,10 @@ export default {
             type: Number,
             default: 13,
         },
+        errorMessages: {
+            type: String,
+            default: '',
+        },
         isDisabled: {
             type: Boolean,
             default: false,
@@ -57,23 +61,9 @@ export default {
             default: false,
         },
     },
-    computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
-        ...mapState('validations', {
-            validationErrors: state => state.validationErrors,
-        }),
-        errorMessages() {
-            return this.validationErrors[`${this.rowId}/${this.column.id}`];
-        },
-    },
     methods: {
-        ...mapActions('grid', [
-            'setDrafts',
-        ]),
         onCopyValues(payload) {
-            this.$emit('copyCells', {
+            this.$emit('cellValues', {
                 ...payload,
                 value: this.cellData.value,
                 rowId: this.rowId,
@@ -81,16 +71,12 @@ export default {
             });
         },
         onValueChange(value) {
-            this.setDrafts({
-                [this.rowId]: {
-                    [this.column.id]: value,
-                },
-            });
-
-            this.$emit('editCell', {
+            this.$emit('cellValue', {
                 value,
                 rowId: this.rowId,
                 columnId: this.column.id,
+                row: this.rowIndex,
+                column: this.columnIndex,
             });
         },
     },

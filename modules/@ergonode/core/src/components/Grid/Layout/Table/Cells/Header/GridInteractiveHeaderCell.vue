@@ -4,10 +4,9 @@
  */
 <template>
     <div
-        :class="[
-            'header-cell',
-            { 'header-cell--exists': isColumnExists }
-        ]">
+        :class="classes"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave">
         <GridHeaderCell
             :title="title"
             :hint="hint" />
@@ -96,6 +95,14 @@ export default {
             isElementDragging: state => state.isElementDragging,
             draggedElement: state => state.draggedElement,
         }),
+        classes() {
+            return [
+                'header-cell',
+                {
+                    'header-cell--exists': this.isColumnExists,
+                },
+            ];
+        },
         contextualMenuItems() {
             return [
                 'Remove',
@@ -146,14 +153,6 @@ export default {
 
             return this.label ? `${code} ${languageCode}` : null;
         },
-    },
-    mounted() {
-        this.$el.addEventListener('mouseenter', this.onMouseEnter);
-        this.$el.addEventListener('mouseleave', this.onMouseLeave);
-    },
-    beforeDestroy() {
-        this.$el.removeEventListener('mouseenter', this.onMouseEnter);
-        this.$el.removeEventListener('mouseleave', this.onMouseLeave);
     },
     methods: {
         ...mapActions('list', [
@@ -220,14 +219,14 @@ export default {
 
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
-            columnElement.classList.add('draggable-column--hovered');
+            // columnElement.classList.add('grid-column--hovered');
         },
         removeColumnHover() {
             this.isColumnHovered = false;
 
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
-            columnElement.classList.remove('draggable-column--hovered');
+            // columnElement.classList.remove('grid-column--hovered');
         },
     },
 };
@@ -235,8 +234,6 @@ export default {
 
 <style lang="scss" scoped>
     .header-cell {
-        $cell: &;
-
         position: relative;
         display: flex;
         flex: 1 1 auto;

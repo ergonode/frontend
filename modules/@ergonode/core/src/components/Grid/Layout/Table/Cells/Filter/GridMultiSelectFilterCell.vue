@@ -26,9 +26,6 @@ import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'GridMultiSelectFilterCell',
@@ -83,11 +80,8 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setEditCell',
-        ]),
         onEditCell() {
-            this.setEditCell({
+            this.$emit('editCell', {
                 row: this.rowIndex,
                 column: this.columnIndex,
                 type: 'MULTI_SELECT',

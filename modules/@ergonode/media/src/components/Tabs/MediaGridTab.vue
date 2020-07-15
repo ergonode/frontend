@@ -9,7 +9,7 @@
                 :is-editable="$hasAccess(['MULTIMEDIA_UPDATE'])"
                 :columns="columns"
                 :data-count="filtered"
-                :data="data"
+                :rows="rows"
                 :collection-cell-binding="collectionCellBinding"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
@@ -17,7 +17,7 @@
                 :is-centered-view="true"
                 :is-collection-layout="true"
                 @editRow="onEditRow"
-                @removeRow="onRemoveRow"
+                @deleteRow="onRemoveRow"
                 @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>

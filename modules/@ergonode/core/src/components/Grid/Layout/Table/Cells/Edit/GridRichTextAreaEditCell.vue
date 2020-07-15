@@ -13,7 +13,7 @@
                 :autofocus="true"
                 :type="underlineInputType"
                 @blur="onRTEValueChange" />
-        </gridtexteditcontentcell>
+        </GridTextEditContentCell>
     </GridEditNavigationCell>
 </template>
 
@@ -24,9 +24,6 @@ import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEdito
 import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'GridTextAreaEditCell',
@@ -87,9 +84,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setEditCell',
-        ]),
         onRTEValueChange(value) {
             if (this.localValue !== value) {
                 this.localValue = value;
@@ -99,8 +93,8 @@ export default {
             if (this.localValue !== this.value) {
                 this.onValueChange(this.localValue);
             }
-            document.documentElement.querySelector(`.coordinates-${this.column}-${this.row}`).focus();
-            this.setEditCell();
+
+            this.$emit('dismiss');
         },
     },
 };

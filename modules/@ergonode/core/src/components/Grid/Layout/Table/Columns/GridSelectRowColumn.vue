@@ -42,7 +42,7 @@
 
 <script>
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
-import GridActionColumn from '@Core/components/Grid/Layout/Table/Columns/Action/GridActionColumn';
+import GridActionColumn from '@Core/components/Grid/Layout/Table/Columns/GridActionColumn';
 
 export default {
     name: 'GridSelectRowColumn',

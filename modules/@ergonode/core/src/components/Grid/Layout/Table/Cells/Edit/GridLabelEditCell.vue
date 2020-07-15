@@ -49,9 +49,6 @@ import ListElementTitle from '@Core/components/List/ListElementTitle';
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'GridLabelEditCell',
@@ -151,9 +148,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setEditCell',
-        ]),
         onFocus(isFocused) {
             if (!isFocused) {
                 this.onEditCell();
@@ -163,8 +157,8 @@ export default {
             if (this.localValue && this.localValue.id !== this.value) {
                 this.onValueChange(this.localValue.id || this.localValue);
             }
-            document.documentElement.querySelector(`.coordinates-${this.column}-${this.row}`).focus();
-            this.setEditCell();
+
+            this.$emit('dismiss');
         },
     },
 };

@@ -21,7 +21,7 @@ import {
 } from '@Core/defaults/operators';
 
 export default {
-    name: 'GridTextFilterCell',
+    name: 'GridDefaultFilterCell',
     components: {
         GridFilterPresentationCell,
         GridTableCell,
@@ -73,6 +73,7 @@ export default {
                     [FILTER_OPERATOR.EQUAL]: value,
                 },
             });
+            this.$emit('editCell', null);
         },
     },
 };

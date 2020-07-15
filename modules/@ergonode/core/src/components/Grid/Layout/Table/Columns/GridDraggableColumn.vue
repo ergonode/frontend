@@ -2,23 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
-    <div
-        :class="[
-            'draggable-column',
-            { 'draggable-column--dragged': isDragged },
-        ]"
-        :draggable="isDraggable"
-        @dragstart="onDragStart"
-        @dragend="onDragEnd"
-        @dragover="onDragOver">
-        <slot />
-        <GridColumnResizer
-            v-if="!isHeaderFocused"
-            @widthChange="onUpdateWidth"
-            @resize="onResize" />
-    </div>
-</template>
 <script>
 import {
     DRAGGED_ELEMENT,
@@ -41,9 +24,6 @@ const updateColumnsTransform = () => import('@Core/models/drag_and_drop/updateCo
 
 export default {
     name: 'GridDraggableColumn',
-    components: {
-        GridColumnResizer: () => import('@Core/components/Grid/Layout/Table/Columns/Resizer/GridColumnResizer'),
-    },
     props: {
         index: {
             type: Number,
@@ -53,32 +33,67 @@ export default {
             type: Object,
             required: true,
         },
-        isHeaderFocused: {
-            type: Boolean,
-            default: false,
-        },
     },
     data() {
         return {
-            columnWidth: 0,
             isDragged: false,
-            isResizing: false,
         };
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
         ...mapState('draggable', {
             draggedElement: state => state.draggedElement,
             ghostIndex: state => state.ghostIndex,
             draggedElIndex: state => state.draggedElIndex,
             isElementDragging: state => state.isElementDragging,
         }),
-        isDraggable() {
-            return !this.isHeaderFocused
-                && !this.isResizing;
-        },
+    },
+    mounted() {
+        if (this.$slots.default[0].elm) {
+            const {
+                elm,
+            } = this.$slots.default[0];
+
+            elm.addEventListener(
+                'dragstart',
+                this.onDragStart,
+                true,
+            );
+            elm.addEventListener(
+                'dragend',
+                this.onDragEnd,
+                true,
+            );
+            elm.addEventListener(
+                'dragover',
+                this.onDragOver,
+                true,
+            );
+
+            elm.setAttribute('draggable', true);
+        }
+    },
+    beforeDestroy() {
+        if (this.$slots.default[0].elm) {
+            const {
+                elm,
+            } = this.$slots.default[0];
+
+            elm.removeEventListener(
+                'dragstart',
+                this.onDragStart,
+                true,
+            );
+            elm.removeEventListener(
+                'dragend',
+                this.onDragEnd,
+                true,
+            );
+            elm.removeEventListener(
+                'dragover',
+                this.onDragOver,
+                true,
+            );
+        }
     },
     methods: {
         ...mapActions('draggable', [
@@ -90,6 +105,7 @@ export default {
         ]),
         onDragStart(event) {
             if (this.isResizing) return false;
+            this.isDragged = true;
 
             const [
                 header,
@@ -102,8 +118,6 @@ export default {
 
                 return false;
             }
-
-            this.isDragged = true;
 
             const [
                 code,
@@ -141,7 +155,7 @@ export default {
             if (isDroppedToTrash && this.column.deletable) {
                 this.$emit('remove', this.index);
             } else if (this.ghostIndex !== this.draggedElIndex) {
-                this.$emit('swapColumns', {
+                this.$emit('swap', {
                     from: this.draggedElIndex,
                     to: this.ghostIndex,
                 });
@@ -156,6 +170,9 @@ export default {
             this.isDragged = false;
         },
         onDragOver(event) {
+            if (this.draggedElIndex === -1) {
+                return false;
+            }
             event.preventDefault();
 
             const {
@@ -172,9 +189,9 @@ export default {
             const fixedIndex = this.getColumnFixedIndex();
 
             if ((this.index === this.draggedElIndex && this.ghostIndex !== -1)
-                || (isBefore && this.ghostIndex === fixedIndex - 1)
-                || (!isBefore && this.ghostIndex === fixedIndex + 1)
-                || this.isElementDragging === DRAGGED_ELEMENT.FILTER) {
+                    || (isBefore && this.ghostIndex === fixedIndex - 1)
+                    || (!isBefore && this.ghostIndex === fixedIndex + 1)
+                    || this.isElementDragging === DRAGGED_ELEMENT.FILTER) {
                 event.preventDefault();
                 event.stopPropagation();
 
@@ -193,15 +210,6 @@ export default {
             });
 
             return true;
-        },
-        onUpdateWidth(width) {
-            this.$emit('updateWidth', {
-                index: this.index,
-                width,
-            });
-        },
-        onResize(isResizing) {
-            this.isResizing = isResizing;
         },
         getColumnFixedIndex() {
             if (this.$el.style.transform) {
@@ -245,51 +253,10 @@ export default {
             this.setDraggedElement();
         },
     },
+    render() {
+        return this.$scopedSlots.default({
+            isDragged: this.isDragged,
+        });
+    },
 };
 </script>
-
-<style lang="scss" scoped>
-    .draggable-column {
-        position: relative;
-        display: grid;
-        box-sizing: border-box;
-        background-color: $WHITE;
-        will-change: width;
-        min-width: 150px;
-
-        & > .grid-table-cell:nth-child(1) {
-            position: sticky;
-            top: 0;
-            z-index: $Z_INDEX_LVL_2;
-            background-color: $WHITESMOKE;
-        }
-
-        &::after {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: $Z_INDEX_LVL_4;
-            width: 100%;
-            height: 100%;
-            box-shadow: $ELEVATOR_2_DP;
-            opacity: 1;
-            visibility: hidden;
-            pointer-events: none;
-            content: "";
-        }
-
-        &--hovered:not(&--dragged) {
-            &::after {
-                visibility: visible;
-            }
-        }
-
-        &--dragged {
-            will-change: transform;
-        }
-    }
-
-    .animation {
-        transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-    }
-</style>
