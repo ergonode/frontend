@@ -12,7 +12,7 @@
             :hint="hint" />
         <div
             v-show="isActionsVisible"
-            class="header-cell__actions">
+            :class="headerActionsClasses">
             <IconArrowSort
                 :order="sortingOrder"
                 :fill-color="graphiteLightColor"
@@ -100,6 +100,14 @@ export default {
                 'header-cell',
                 {
                     'header-cell--exists': this.isColumnExists,
+                },
+            ];
+        },
+        headerActionsClasses() {
+            return [
+                'header-cell-actions',
+                {
+                    'header-cell-actions--focused': this.isMenuSelected,
                 },
             ];
         },
@@ -193,7 +201,7 @@ export default {
             }
         },
         getColumnAtIndex(index) {
-            const gridColumns = document.querySelector('.columns-section');
+            const gridColumns = document.querySelector('.grid-table-layout-columns-section');
             const {
                 children,
             } = gridColumns;
@@ -209,8 +217,8 @@ export default {
             this.removeColumnHover();
         },
         isHeaderFocused() {
-            const gridColumns = document.querySelector('.columns-section');
-            const headerEls = gridColumns.querySelectorAll('.header-cell__actions--focused');
+            const gridColumns = document.querySelector('.grid-table-layout-columns-section');
+            const headerEls = gridColumns.querySelectorAll('.header-cell-actions--focused');
 
             return headerEls.length;
         },
@@ -219,14 +227,14 @@ export default {
 
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
-            // columnElement.classList.add('grid-column--hovered');
+            columnElement.classList.add('grid-column--hovered');
         },
         removeColumnHover() {
             this.isColumnHovered = false;
 
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
-            // columnElement.classList.remove('grid-column--hovered');
+            columnElement.classList.remove('grid-column--hovered');
         },
     },
 };
@@ -252,11 +260,11 @@ export default {
                 color: $WHITE;
             }
         }
+    }
 
-        &__actions {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
+    .header-cell-actions {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
     }
 </style>

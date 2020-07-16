@@ -5,15 +5,17 @@
 <template>
     <Grid
         :is-editable="$hasAccess(['MULTIMEDIA_UPDATE'])"
-        :columns="columnsWithAttach"
+        :columns="columnsWithAttachColumn"
         :data-count="filtered"
-        :data="dataWithAttach"
+        :drafts="drafts"
+        :rows="rowsWithAttachValues"
         :collection-cell-binding="collectionCellBinding"
         :is-prefetching-data="isPrefetchingData"
         :is-basic-filter="true"
         :is-header-visible="true"
         :is-collection-layout="true"
         @editRow="onEditRow"
+        @cellValue="onCellValueChange"
         @deleteRow="onRemoveRow"
         @fetchData="getGridData">
         <!--  TODO: Uncomment when we have global search      -->
@@ -54,13 +56,13 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import draftGridMixin from '@Core/mixins/grid/draftGridMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import {
     debounce,
 } from 'debounce';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -76,6 +78,7 @@ export default {
         fetchGridDataMixin({
             path: 'multimedia',
         }),
+        draftGridMixin,
     ],
     props: {
         multiple: {
@@ -95,26 +98,9 @@ export default {
             searchResult: null,
             isSearchFocused: false,
             observer: null,
-            columnsWithAttach: [],
-            dataWithAttach: {},
         };
     },
-    watch: {
-        value() {
-            this.updateColumnsWithAttachColumn();
-            this.updateDataWithAttachColumn();
-        },
-        columns() {
-            this.updateColumnsWithAttachColumn();
-        },
-        data() {
-            this.updateDataWithAttachColumn();
-        },
-    },
     computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
         smallSize() {
             return SIZE.SMALL;
         },
@@ -128,6 +114,36 @@ export default {
                 imageColumn: 'image',
                 descriptionColumn: 'name',
             };
+        },
+        columnsWithAttachColumn() {
+            return [
+                ...this.columns,
+                {
+                    id: 'esa_attached',
+                    type: 'MEDIA_ATTACH',
+                    label: 'Attached',
+                    visible: true,
+                    editable: true,
+                    deletable: false,
+                    parameters: [],
+                },
+            ];
+        },
+        rowsWithAttachValues() {
+            const rows = [
+                ...this.rows,
+            ];
+
+            for (let i = 0; i < this.rows.length; i += 1) {
+                rows[i].esa_attached = {
+                    value:
+                        Array.isArray(this.value)
+                            ? this.value.some(id => id === this.rows[i].id.value)
+                            : this.value === this.rows[i].id.value,
+                };
+            }
+
+            return rows;
         },
     },
     mounted() {
@@ -147,54 +163,41 @@ export default {
         this.observer.disconnect();
     },
     methods: {
-        ...mapActions('grid', [
-            'setDrafts',
-        ]),
-        updateColumnsWithAttachColumn() {
-            this.columnsWithAttach = [
-                ...this.columns,
-                {
-                    id: 'esa_attached',
-                    type: 'ATTACH',
-                    label: 'Attached',
-                    multiple: this.multiple,
-                    visible: true,
-                    editable: true,
-                    deletable: false,
-                    parameters: [],
-                    data: this.value,
-                },
-            ];
-        },
-        updateDataWithAttachColumn() {
-            if (!this.data.id) {
-                return {};
+        onCellValueChange({
+            rowId, columnId, value,
+        }) {
+            const drafts = {};
+
+            if (!this.multiple && this.value) {
+                if (typeof this.drafts[`${this.value}/${columnId}`] === 'undefined') {
+                    drafts[`${this.value}/${columnId}`] = false;
+                } else {
+                    const lastSelectedDraftKey = Object.keys(this.drafts)
+                        .find(key => this.drafts[key]);
+
+                    if (lastSelectedDraftKey !== `${rowId}/${columnId}`) {
+                        drafts[lastSelectedDraftKey] = false;
+                    }
+                }
             }
 
-            const tmpData = {
-                ...this.data,
-                esa_attached: [],
-            };
+            drafts[`${rowId}/${columnId}`] = value;
 
-            for (let j = 0; j < this.data.id.length; j += 1) {
-                tmpData.esa_attached[j] = {
-                    value: Array.isArray(this.value)
-                        ? this.value.some(id => id === this.data.id[j])
-                        : this.value === this.data.id[j],
-                };
-            }
-
-            this.dataWithAttach = tmpData;
+            this.setDrafts(drafts);
         },
         onSaveMedia() {
             const value = [];
             const toRemove = [];
 
             Object.keys(this.drafts).forEach((key) => {
-                if (this.drafts[key].esa_attached) {
-                    value.push(key);
+                const [
+                    rowId,
+                ] = key.split('/');
+
+                if (this.drafts[key]) {
+                    value.push(rowId);
                 } else {
-                    toRemove.push(key);
+                    toRemove.push(rowId);
                 }
             });
 
@@ -213,8 +216,10 @@ export default {
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Files have been added',
+                message: 'Media have been added',
             });
+
+            this.getGridData(this.localParams);
         },
         onSearchFocus(isFocused) {
             this.isSearchFocused = isFocused;

@@ -21,7 +21,7 @@ import {
 } from '@Core/defaults/operators';
 
 export default {
-    name: 'GridDefaultFilterCell',
+    name: 'GridNumericFilterCell',
     components: {
         GridFilterPresentationCell,
         GridTableCell,
@@ -54,13 +54,12 @@ export default {
             this.$emit('editCell', {
                 row: this.rowIndex,
                 column: this.columnIndex,
-                type: 'TEXT',
+                type: 'NUMERIC',
                 props: {
                     bounds: this.$el.getBoundingClientRect(),
                     value: this.value,
                     row: this.rowIndex,
                     column: this.columnIndex,
-                    onValueChange: this.onValueChange,
                 },
             });
         },
@@ -73,7 +72,6 @@ export default {
                     [FILTER_OPERATOR.EQUAL]: value,
                 },
             });
-            this.$emit('editCell', null);
         },
     },
 };

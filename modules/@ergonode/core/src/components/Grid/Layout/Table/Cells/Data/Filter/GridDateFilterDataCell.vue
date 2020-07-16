@@ -9,7 +9,9 @@
         :locked="isLocked"
         :disabled="isDisabled"
         @edit="onEditCell">
-        <GridFilterPresentationCell :value="value" />
+        <GridFilterPresentationCell
+            placeholder="Select..."
+            :value="value" />
     </GridTableCell>
 </template>
 
@@ -19,9 +21,12 @@ import GridFilterPresentationCell from '@Core/components/Grid/Layout/Table/Cells
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
+import {
+    DEFAULT_FORMAT,
+} from '@Core/models/calendar/calendar';
 
 export default {
-    name: 'GridNumericFilterCell',
+    name: 'GridDateFilterDataCell',
     components: {
         GridFilterPresentationCell,
         GridTableCell,
@@ -34,6 +39,10 @@ export default {
         columnIndex: {
             type: Number,
             required: true,
+        },
+        data: {
+            type: Object,
+            default: () => ({}),
         },
         isDisabled: {
             type: Boolean,
@@ -49,18 +58,27 @@ export default {
             value: '',
         };
     },
+    computed: {
+        dateFormat() {
+            if (!this.data.parameters) {
+                return DEFAULT_FORMAT;
+            }
+
+            return this.data.parameters.format;
+        },
+    },
     methods: {
         onEditCell() {
             this.$emit('editCell', {
                 row: this.rowIndex,
                 column: this.columnIndex,
-                type: 'NUMERIC',
+                type: 'DATE',
                 props: {
                     bounds: this.$el.getBoundingClientRect(),
                     value: this.value,
                     row: this.rowIndex,
                     column: this.columnIndex,
-                    onValueChange: this.onValueChange,
+                    format: this.dateFormat,
                 },
             });
         },
@@ -73,7 +91,6 @@ export default {
                     [FILTER_OPERATOR.EQUAL]: value,
                 },
             });
-            this.$emit('editCell', null);
         },
     },
 };

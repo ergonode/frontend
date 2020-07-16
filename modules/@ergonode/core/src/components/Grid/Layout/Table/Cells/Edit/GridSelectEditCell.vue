@@ -68,8 +68,18 @@ export default {
             type: Number,
             required: true,
         },
-        onValueChange: {
-            type: Function,
+        rowId: {
+            type: [
+                String,
+                Number,
+            ],
+            required: true,
+        },
+        columnId: {
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
     },
@@ -116,6 +126,17 @@ export default {
             });
         },
     },
+    beforeDestroy() {
+        if (this.localValue && this.localValue.id !== this.value) {
+            this.$emit('cellValue', {
+                value: this.localValue.id || this.localValue,
+                rowId: this.rowId,
+                columnId: this.columnId,
+                row: this.row,
+                column: this.column,
+            });
+        }
+    },
     methods: {
         onFocus(isFocused) {
             if (!isFocused) {
@@ -123,10 +144,6 @@ export default {
             }
         },
         onEditCell() {
-            if (this.localValue && this.localValue.id !== this.value) {
-                this.onValueChange(this.localValue.id || this.localValue);
-            }
-
             this.$emit('dismiss');
         },
     },

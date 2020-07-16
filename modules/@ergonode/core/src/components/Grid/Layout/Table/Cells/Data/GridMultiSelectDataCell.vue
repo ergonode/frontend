@@ -48,7 +48,7 @@ export default {
     ],
     computed: {
         cellData() {
-            if (this.draft && !arraysAreEqual(this.data.value, this.draft)) {
+            if (this.draft !== null && !arraysAreEqual(this.data.value, this.draft)) {
                 return {
                     value: this.draft,
                     isDraft: true,
@@ -86,8 +86,6 @@ export default {
     methods: {
         onEditCell() {
             this.$emit('editCell', {
-                row: this.rowIndex,
-                column: this.columnIndex,
                 type: this.column.type,
                 props: {
                     bounds: this.$el.getBoundingClientRect(),
@@ -96,8 +94,9 @@ export default {
                     column: this.columnIndex,
                     languageCode: this.languageCode,
                     options: this.options,
+                    rowId: this.rowId,
+                    columnId: this.column.id,
                     errorMessages: this.errorMessages,
-                    onValueChange: this.onValueChange,
                 },
             });
         },

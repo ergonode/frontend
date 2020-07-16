@@ -88,7 +88,7 @@ export default {
             });
         },
         onMouseDown(event) {
-            if (event.detail === 2) {
+            if (event.detail === 2 && !(this.locked || this.disabled)) {
                 this.$emit('edit');
             }
 
@@ -105,7 +105,7 @@ export default {
 
             switch (keyCode) {
             case this.editKeyCode:
-                if (!this.locked && !this.disabled) {
+                if (!(this.locked && this.disabled)) {
                     this.$emit('edit');
                 }
                 break;

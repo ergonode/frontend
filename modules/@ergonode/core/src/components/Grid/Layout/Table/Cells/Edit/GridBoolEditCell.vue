@@ -33,3 +33,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .toggler {
+        padding: 0 8px;
+    }
+</style>

@@ -42,7 +42,7 @@ export default {
     ],
     computed: {
         cellData() {
-            if (this.draft && this.data.value !== this.draft) {
+            if (this.draft !== null && this.data.value !== this.draft) {
                 return {
                     value: this.draft,
                     isDraft: true,
@@ -58,16 +58,15 @@ export default {
     methods: {
         onEditCell() {
             this.$emit('editCell', {
-                row: this.rowIndex,
-                column: this.columnIndex,
                 type: this.column.type,
                 props: {
                     bounds: this.$el.getBoundingClientRect(),
                     value: this.cellData.value,
                     row: this.rowIndex,
                     column: this.columnIndex,
+                    rowId: this.rowId,
+                    columnId: this.column.id,
                     errorMessages: this.errorMessages,
-                    onValueChange: this.onValueChange,
                 },
             });
         },

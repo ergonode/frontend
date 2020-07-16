@@ -99,11 +99,11 @@ import draftGridMixin from '@Core/mixins/grid/draftGridMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
 const updateProductDraft = () => import('@Products/services/updateProductDraft.service');
+const applyProductDraft = () => import('@Products/services/applyProductDraft.service');
 
 export default {
     name: 'ProductCatalogTab',
@@ -216,13 +216,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('product', [
-            'applyDraft',
-            'getProductDraft',
-        ]),
-        ...mapActions('grid', [
-            'removeDraftRow',
-        ]),
         onCellValueChange({
             rowId, columnId, value,
         }) {
@@ -324,11 +317,18 @@ export default {
         async saveDrafts() {
             const promises = [];
 
-            Object.keys(this.drafts).forEach((rowId) => {
-                promises.push(this.applyDraft({
+            const applyProductDraftModule = await applyProductDraft().then(request => request.default);
+
+            Object.keys(this.drafts).forEach((key) => {
+                const [
+                    rowId,
+                ] = key.split('/');
+
+                promises.push(applyProductDraftModule({
+                    $axios: this.$axios,
+                    $store: this.$store,
                     id: rowId,
-                    onSuccess: () => this.removeDraftRow(rowId),
-                }));
+                }).then(() => this.removeDraftRow(rowId)));
             });
 
             await this.$setLoader('footerDraftButton');

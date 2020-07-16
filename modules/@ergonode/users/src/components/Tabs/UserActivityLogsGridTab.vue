@@ -10,6 +10,7 @@
                 :data-count="filtered"
                 :rows="rows"
                 :is-prefetching-data="isPrefetchingData"
+                :is-border="true"
                 @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>

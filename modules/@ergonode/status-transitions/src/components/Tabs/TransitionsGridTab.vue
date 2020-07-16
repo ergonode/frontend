@@ -12,6 +12,7 @@
                 :rows="rows"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
+                :is-border="true"
                 @editRow="onEditRow"
                 @deleteRow="onRemoveRow"
                 @fetchData="getGridData" />

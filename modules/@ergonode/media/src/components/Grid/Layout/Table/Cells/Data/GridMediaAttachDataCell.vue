@@ -12,28 +12,22 @@
         :disabled="isDisabled"
         :copyable="isCopyable"
         :selected="isSelected"
-        @edit="onBoolValueChange"
-        @mousedown="onBoolValueChange"
-        @copy="onCopyValues">
+        @edit="onAttachValueChange"
+        @mousedown="onAttachValueChange">
         <GridBoolEditCell
             :value="cellData.value"
             :is-disabled="isLocked" />
-        <GridSuffixPresentationCell
-            v-if="data.suffix"
-            :suffix="data.suffix" />
     </GridTableCell>
 </template>
 
 <script>
 import GridBoolEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridBoolEditCell';
-import GridSuffixPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 
 export default {
-    name: 'GridBoolDataCell',
+    name: 'GridMediaAttachDataCell',
     components: {
         GridBoolEditCell,
-        GridSuffixPresentationCell,
     },
     mixins: [
         gridDataCellMixin,
@@ -54,7 +48,7 @@ export default {
         },
     },
     methods: {
-        onBoolValueChange() {
+        onAttachValueChange() {
             this.onValueChange(!this.cellData.value);
         },
     },

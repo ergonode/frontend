@@ -12,23 +12,26 @@
         <GridFilterPresentationCell
             placeholder="Select..."
             :value="value" />
+        <IconArrowDropDown
+            v-if="!isLocked"
+            view-box="0 0 24 24"
+            :width="32" />
     </GridTableCell>
 </template>
 
 <script>
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 import GridFilterPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridFilterPresentationCell';
+import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
-import {
-    DEFAULT_FORMAT,
-} from '@Core/models/calendar/calendar';
 
 export default {
-    name: 'GridDateFilterCell',
+    name: 'GridSelectFilterCell',
     components: {
         GridFilterPresentationCell,
+        IconArrowDropDown,
         GridTableCell,
     },
     props: {
@@ -43,6 +46,10 @@ export default {
         data: {
             type: Object,
             default: () => ({}),
+        },
+        languageCode: {
+            type: String,
+            default: 'EN',
         },
         isDisabled: {
             type: Boolean,
@@ -59,12 +66,12 @@ export default {
         };
     },
     computed: {
-        dateFormat() {
-            if (!this.data.parameters) {
-                return DEFAULT_FORMAT;
+        options() {
+            if (this.data.options && !Array.isArray(this.data.options)) {
+                return this.data.options;
             }
 
-            return this.data.parameters.format;
+            return {};
         },
     },
     methods: {
@@ -72,14 +79,14 @@ export default {
             this.$emit('editCell', {
                 row: this.rowIndex,
                 column: this.columnIndex,
-                type: 'DATE',
+                type: 'SELECT',
                 props: {
                     bounds: this.$el.getBoundingClientRect(),
                     value: this.value,
                     row: this.rowIndex,
                     column: this.columnIndex,
-                    format: this.dateFormat,
-                    onValueChange: this.onValueChange,
+                    options: this.options,
+                    languageCode: this.languageCode,
                 },
             });
         },

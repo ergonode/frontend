@@ -19,26 +19,8 @@ export default {
         },
     ],
     extendComponents: {
-        GRID: {
-            layout: {
-                table: {
-                    cells: {
-                        data: [
-                            {
-                                type: 'ATTACHMENT',
-                                component: Components.GridAttachedDataCell,
-                            },
-                        ],
-                    },
-                    columns: [
-                        {
-                            type: 'ATTACHMENT',
-                            width: COLUMN_WIDTH.DYNAMIC,
-                            component: Components.GridAttachedColumn,
-                        },
-                    ],
-                },
-            },
+        '@Core/Components/Grid/Layout/Table/Cells/Data': {
+            PRODUCT_ATTACH: Components.GridProductAttachDataCell,
         },
     },
 };

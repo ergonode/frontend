@@ -92,7 +92,6 @@ export default {
                     column: this.columnIndex,
                     options: this.options,
                     languageCode: this.languageCode,
-                    onValueChange: this.onValueChange,
                 },
             });
         },

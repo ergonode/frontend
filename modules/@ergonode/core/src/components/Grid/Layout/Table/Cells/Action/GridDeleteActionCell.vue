@@ -70,3 +70,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .icon {
+        padding: 4px;
+    }
+</style>

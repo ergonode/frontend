@@ -67,8 +67,18 @@ export default {
             type: Number,
             required: true,
         },
-        onValueChange: {
-            type: Function,
+        rowId: {
+            type: [
+                String,
+                Number,
+            ],
+            required: true,
+        },
+        columnId: {
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
     },
@@ -103,6 +113,25 @@ export default {
             return SIZE.SMALL;
         },
     },
+    beforeDestroy() {
+        if (this.localValue) {
+            this.$emit('cellValue', {
+                value: formatDate(this.localValue, DEFAULT_FORMAT),
+                rowId: this.rowId,
+                columnId: this.columnId,
+                row: this.row,
+                column: this.column,
+            });
+        } else if (Boolean(this.localValue) !== Boolean(this.value)) {
+            this.$emit('cellValue', {
+                value: '',
+                rowId: this.rowId,
+                columnId: this.columnId,
+                row: this.row,
+                column: this.column,
+            });
+        }
+    },
     methods: {
         onFocus(isFocused) {
             if (!isFocused) {
@@ -110,12 +139,6 @@ export default {
             }
         },
         onEditCell() {
-            if (this.localValue) {
-                this.onValueChange(formatDate(this.localValue, DEFAULT_FORMAT));
-            } else if (Boolean(this.localValue) !== Boolean(this.value)) {
-                this.onValueChange('');
-            }
-
             this.$emit('dismiss');
         },
     },

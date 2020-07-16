@@ -10,7 +10,7 @@
         :copyable="false"
         :edit-key-code="32"
         :selected="isSelected"
-        @edit="onValueChange">
+        @mousedown="onValueChange">
         <GridBoolEditCell :value="localValue" />
     </GridTableCell>
 </template>
@@ -26,7 +26,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'GridAttachedDataCell',
+    name: 'GridProductAttachDataCell',
     components: {
         GridTableCell,
         GridBoolEditCell,

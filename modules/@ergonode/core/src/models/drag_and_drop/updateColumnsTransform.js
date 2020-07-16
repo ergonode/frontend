@@ -102,7 +102,7 @@ function getUpperBoundsTransforms(
 }
 
 export default function (targetGhostIndex, draggedElIndex, ghostIndex) {
-    const columnsSection = document.documentElement.querySelector('.columns-section');
+    const columnsSection = document.documentElement.querySelector('.grid-table-layout-columns-section');
     const {
         width: ghostWidth,
     } = columnsSection.children[draggedElIndex]

@@ -10,6 +10,10 @@ export const Tabs = {
     MediaGridTab: () => import('@Media/components/Tabs/MediaGridTab').then(m => m.default || m),
 };
 
+export const Components = {
+    GridMediaAttachDataCell: () => import('@Media/components/Grid/Layout/Table/Cells/Data/GridMediaAttachDataCell').then(m => m.default || m),
+};
+
 export const Icons = {
     Media: () => import('@Core/components/Icons/Menu/IconMedia'),
 };

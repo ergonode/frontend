@@ -10,6 +10,7 @@
                 :rows="rows"
                 :data-count="dataCount"
                 :is-editable="false"
+                :is-border="true"
                 :is-footer-visible="false" />
         </template>
     </ResponsiveCenteredViewTemplate>

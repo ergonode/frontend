@@ -19,6 +19,7 @@ export default {
     .action-column {
         display: grid;
         background-color: $WHITE;
+        min-width: 32px;
 
         & > .grid-table-cell:nth-child(1) {
             position: sticky;

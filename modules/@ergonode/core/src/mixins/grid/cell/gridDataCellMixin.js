@@ -14,8 +14,7 @@ export default {
             default: () => ({}),
         },
         draft: {
-            type: String,
-            default: '',
+            default: null,
         },
         column: {
             type: Object,

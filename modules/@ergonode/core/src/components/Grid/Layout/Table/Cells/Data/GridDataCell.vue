@@ -69,6 +69,12 @@ export default {
     },
     computed: {
         dataCellComponent() {
+            const extendedComponents = this.$getExtendedComponents('@Core/Components/Grid/Layout/Table/Cells/Data');
+
+            if (extendedComponents && extendedComponents[this.column.type]) {
+                return extendedComponents[this.column.type];
+            }
+
             return () => import(`@Core/components/Grid/Layout/Table/Cells/Data/Grid${capitalizeAndConcatenationArray(this.column.type.split('_'))}DataCell`)
                 .catch(() => import('@Core/components/Grid/Layout/Table/Cells/Data/GridTextDataCell'));
         },

@@ -16,6 +16,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        isBorder: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         classes() {
@@ -23,6 +27,7 @@ export default {
                 'grid-body',
                 {
                     'grid-body--disabled': this.disabled,
+                    'grid-body--border': this.isBorder,
                 },
             ];
         },
@@ -38,11 +43,14 @@ export default {
         flex-direction: column;
         justify-content: space-between;
         height: 0;
-        border: $BORDER_1_GREY;
         background-color: $WHITESMOKE;
 
         &--disabled {
             pointer-events: none;
+        }
+
+        &--border {
+            border-top: $BORDER_1_GREY;
         }
     }
 </style>

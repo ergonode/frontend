@@ -131,10 +131,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        isCenteredView: {
-            type: Boolean,
-            default: false,
-        },
         isAdvancedFilters: {
             type: Boolean,
             default: false,
@@ -161,7 +157,6 @@ export default {
             return [
                 'grid-header',
                 {
-                    'grid-header--borders': this.isCenteredView,
                     'grid-header--disabled': this.isFilterExists && this.isListElementDragging,
                 },
             ];
@@ -233,12 +228,6 @@ export default {
         padding-bottom: 16px;
         box-sizing: border-box;
         background-color: $WHITE;
-        border-left: $BORDER_1_GREY;
-
-        &--borders {
-            border-top: $BORDER_1_GREY;
-            border-right: $BORDER_1_GREY;
-        }
 
         &--disabled {
             pointer-events: none;

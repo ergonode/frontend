@@ -119,6 +119,8 @@ export default {
                 return false;
             }
 
+            this.$el.classList.remove('grid-column--hovered');
+
             const [
                 code,
                 languageCode,
@@ -160,6 +162,8 @@ export default {
                     to: this.ghostIndex,
                 });
             }
+
+            this.$el.classList.add('grid-column--hovered');
 
             this.removeColumnsTransform();
             this.resetDraggedElementCache();
@@ -228,7 +232,7 @@ export default {
             return +this.$el.style.transform.replace(/[^0-9\-.,]/g, '');
         },
         getGridContentElement() {
-            return document.documentElement.querySelector('.columns-section');
+            return document.documentElement.querySelector('.grid-table-layout-columns-section');
         },
         getTargetGhostIndex(isBefore) {
             if (this.index < this.draggedElIndex) {

@@ -3,20 +3,25 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridSelectEditContentCell>
-        <GridImageEditContentCell :style="{width: `${width + 8}px`}">
-            <UploadFiles
-                :value="localValue"
-                height="132px"
-                :multiple="true"
-                @input="updateValue" />
-        </GridImageEditContentCell>
-    </GridSelectEditContentCell>
+    <GridEditNavigationCell @edit="onEditCell">
+        <GridSelectEditContentCell :style="positionStyle">
+            <GridImageEditContentCell>
+                <UploadFiles
+                    v-model="localValue"
+                    height="181px"
+                    :multiple="true" />
+            </GridImageEditContentCell>
+        </GridSelectEditContentCell>
+    </GridEditNavigationCell>
 </template>
 
 <script>
 import GridImageEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridImageEditContentCell';
 import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
+import GridEditNavigationCell from '@Core/components/Grid/Layout/Table/Cells/Navigation/GridEditNavigationCell';
+import {
+    arraysAreEqual,
+} from '@Core/models/arrayWrapper';
 import UploadFiles from '@Media/components/Inputs/UploadFile/UploadFiles';
 
 export default {
@@ -25,6 +30,7 @@ export default {
         UploadFiles,
         GridSelectEditContentCell,
         GridImageEditContentCell,
+        GridEditNavigationCell,
     },
     props: {
         value: {
@@ -35,9 +41,34 @@ export default {
             type: String,
             default: '',
         },
-        width: {
+        bounds: {
+            type: [
+                DOMRect,
+                Object,
+            ],
+            required: true,
+        },
+        row: {
             type: Number,
-            default: 0,
+            required: true,
+        },
+        column: {
+            type: Number,
+            required: true,
+        },
+        rowId: {
+            type: [
+                String,
+                Number,
+            ],
+            required: true,
+        },
+        columnId: {
+            type: [
+                String,
+                Number,
+            ],
+            required: true,
         },
     },
     data() {
@@ -45,14 +76,34 @@ export default {
             localValue: this.value,
         };
     },
+    computed: {
+        positionStyle() {
+            const {
+                x,
+                y,
+            } = this.bounds;
+
+            return {
+                top: `${y}px`,
+                left: `${x}px`,
+                width: '304px',
+            };
+        },
+    },
     beforeDestroy() {
-        if (this.localValue !== this.value) {
-            this.$emit('input', this.localValue);
+        if (!arraysAreEqual(this.localValue, this.value)) {
+            this.$emit('cellValue', {
+                value: this.localValue,
+                rowId: this.rowId,
+                columnId: this.columnId,
+                row: this.row,
+                column: this.column,
+            });
         }
     },
     methods: {
-        updateValue(value) {
-            this.localValue = value;
+        onEditCell() {
+            this.$emit('dismiss');
         },
     },
 };

@@ -14,7 +14,7 @@
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-header-visible="true"
-                :is-centered-view="true"
+                :is-border="true"
                 :is-collection-layout="true"
                 @editRow="onEditRow"
                 @deleteRow="onRemoveRow"

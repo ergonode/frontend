@@ -12,7 +12,7 @@
                 :is-prefetching-data="isPrefetchingData"
                 :is-select-column="true"
                 :is-header-visible="true"
-                :is-centered-view="true"
+                :is-border="true"
                 :is-basic-filter="true"
                 @fetchData="getGridData">
                 <template #actions>

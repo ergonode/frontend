@@ -72,8 +72,18 @@ export default {
             type: Number,
             required: true,
         },
-        onValueChange: {
-            type: Function,
+        rowId: {
+            type: [
+                String,
+                Number,
+            ],
+            required: true,
+        },
+        columnId: {
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
     },
@@ -112,6 +122,19 @@ export default {
             });
         },
     },
+    beforeDestroy() {
+        const optionIds = this.localValue.map(option => option.id);
+
+        if (!arraysAreEqual(optionIds, this.value.map(option => option.id))) {
+            this.$emit('cellValue', {
+                value: optionIds,
+                rowId: this.rowId,
+                columnId: this.columnId,
+                row: this.row,
+                column: this.column,
+            });
+        }
+    },
     methods: {
         onFocus(isFocused) {
             if (!isFocused) {
@@ -119,12 +142,6 @@ export default {
             }
         },
         onEditCell() {
-            const optionIds = this.localValue.map(option => option.id);
-
-            if (!arraysAreEqual(optionIds, this.value.map(option => option.id))) {
-                this.onValueChange(optionIds);
-            }
-
             this.$emit('dismiss');
         },
     },

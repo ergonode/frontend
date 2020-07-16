@@ -55,8 +55,18 @@ export default {
             type: Number,
             required: true,
         },
-        onValueChange: {
-            type: Function,
+        rowId: {
+            type: [
+                String,
+                Number,
+            ],
+            required: true,
+        },
+        columnId: {
+            type: [
+                String,
+                Number,
+            ],
             required: true,
         },
     },
@@ -88,12 +98,19 @@ export default {
             return SIZE.SMALL;
         },
     },
+    beforeDestroy() {
+        if (this.localValue !== this.value) {
+            this.$emit('cellValue', {
+                value: this.localValue,
+                rowId: this.rowId,
+                columnId: this.columnId,
+                row: this.row,
+                column: this.column,
+            });
+        }
+    },
     methods: {
         onEditCell() {
-            if (this.localValue !== this.value) {
-                this.onValueChange(this.localValue);
-            }
-
             this.$emit('dismiss');
         },
     },

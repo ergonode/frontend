@@ -5,8 +5,7 @@
 <template>
     <div
         class="grid-table-layout"
-        ref="gridTableLayout"
-        @mousedown="onMouseDown">
+        ref="gridTableLayout">
         <GridTableLayoutPinnedSection
             v-if="isSelectColumn"
             :is-pinned="pinnedSections[pinnedState.LEFT]">
@@ -52,7 +51,7 @@
                             @remove="onRemoveColumn" />
                     </GridTableCell>
                     <template v-if="isBasicFilter">
-                        <GridFilterCell
+                        <GridFilterDataCell
                             v-if="column.filter"
                             :row-index="rowsOffset + basicFiltersOffset"
                             :column-index="columnIndex"
@@ -126,6 +125,7 @@
             :is="editCellComponent"
             ref="editCell"
             v-bind="editCell.props"
+            @cellValue="onCellValueChange"
             @dismiss="onDismissEditCell" />
     </div>
 </template>
@@ -133,8 +133,8 @@
 <script>
 import DropZone from '@Core/components/DropZone/DropZone';
 import GridActionCell from '@Core/components/Grid/Layout/Table/Cells/Action/GridActionCell';
+import GridFilterDataCell from '@Core/components/Grid/Layout/Table/Cells/Data/Filter/GridFilterDataCell';
 import GridDataCell from '@Core/components/Grid/Layout/Table/Cells/Data/GridDataCell';
-import GridFilterCell from '@Core/components/Grid/Layout/Table/Cells/Filter/GridFilterCell';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 import GridInteractiveHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridInteractiveHeaderCell';
 import GridActionColumn from '@Core/components/Grid/Layout/Table/Columns/GridActionColumn';
@@ -178,7 +178,7 @@ export default {
         GridColumn,
         GridActionColumn,
         GridTableCell,
-        GridFilterCell,
+        GridFilterDataCell,
         GridActionCell,
         GridDataCell,
         GridInteractiveHeaderCell,
@@ -318,7 +318,7 @@ export default {
             'removeDisabledElement',
         ]),
         onMouseDown(event) {
-            if (this.editCell) {
+            if (this.$refs.editCell) {
                 const {
                     xPos, yPos,
                 } = getPositionForBrowser(event);
@@ -331,28 +331,19 @@ export default {
             const {
                 row,
                 column,
-            } = this.editCell;
+            } = this.editCell.props;
 
-            this.$el.querySelector(`.coordinates-${column}-${row}`).focus();
-            this.onEditCell(null);
+            this.$refs.gridTableLayout.querySelector(`.coordinates-${column}-${row}`).focus();
+            this.onEditCell();
         },
-        onEditCell(editCell) {
+        onEditCell(editCell = null) {
             this.editCell = editCell;
-        },
-        onCellValueChange({
-            value,
-            rowId,
-            columnId,
-            row,
-            column,
-        }) {
-            this.$emit('cellValue', {
-                value,
-                rowId,
-                columnId,
-                row,
-                column,
-            });
+
+            if (editCell) {
+                this.$refs.gridTableLayout.addEventListener('mousedown', this.onMouseDown);
+            } else {
+                this.$refs.gridTableLayout.removeEventListener('mousedown', this.onMouseDown);
+            }
         },
         onHeaderFocus(isFocused) {
             this.isHeaderFocused = isFocused;
@@ -457,6 +448,21 @@ export default {
 
             this.$emit('rowsSelect', this.isSelectedAllRows);
         },
+        onCellValueChange({
+            value,
+            rowId,
+            columnId,
+            row,
+            column,
+        }) {
+            this.$emit('cellValue', {
+                value,
+                rowId,
+                columnId,
+                row,
+                column,
+            });
+        },
         onCellValuesChange({
             from, to, rowId, columnId, value,
         }) {
@@ -517,25 +523,10 @@ export default {
             const {
                 length,
             } = this.visibleColumns;
-            const extendedComponents = this.$getExtendedComponents('GRID');
-            const isColumnExtended = typeof extendedComponents !== 'undefined'
-                && typeof extendedComponents.layout !== 'undefined'
-                && typeof extendedComponents.layout.table !== 'undefined'
-                && typeof extendedComponents.layout.table.columns !== 'undefined';
 
             for (let i = 0; i < length; i += 1) {
                 orderedColumns.push(this.visibleColumns[i]);
-                const extendedColumn = isColumnExtended
-                    ? extendedComponents.layout.table.columns.find(
-                        column => column.type === this.visibleColumns[i].type,
-                    )
-                    : null;
-
-                if (extendedColumn) {
-                    columnWidths.push(extendedColumn.width);
-                } else {
-                    columnWidths.push(COLUMN_WIDTH.DEFAULT);
-                }
+                columnWidths.push(COLUMN_WIDTH.DEFAULT);
             }
 
             this.orderedColumns = orderedColumns;

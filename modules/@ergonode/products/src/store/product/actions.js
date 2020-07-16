@@ -148,25 +148,6 @@ export default {
             }),
         );
     },
-    applyDraft(
-        {
-            rootState,
-        },
-        {
-            id,
-            onSuccess,
-        },
-    ) {
-        const {
-            authentication: {
-                user: {
-                    language,
-                },
-            },
-        } = rootState;
-
-        return this.app.$axios.$put(`${language}/products/${id}/draft/persist`, {}).then(() => onSuccess());
-    },
     async updateProduct(
         {
             rootState, dispatch,

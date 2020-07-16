@@ -6,7 +6,7 @@
 <template>
     <div
         data-cy="grid"
-        class="grid">
+        :class="classes">
         <GridHeader
             v-if="isHeaderVisible"
             :row-height="tableLayoutConfig.rowHeight"
@@ -15,7 +15,6 @@
             :collection-layout-config="collectionLayoutConfig"
             :is-advanced-filters="isAdvancedFilters"
             :is-collection-layout="isCollectionLayout"
-            :is-centered-view="isCenteredView"
             :filters="advancedFilters"
             @filter="onAdvancedFilterChange"
             @layoutChange="onLayoutChange"
@@ -28,7 +27,9 @@
                 <slot name="configuration" />
             </template>
         </GridHeader>
-        <GridBody :disabled="isListElementDragging && isColumnExists">
+        <GridBody
+            :disabled="isListElementDragging && isColumnExists"
+            :is-border="isHeaderVisible">
             <GridPreloader v-if="isPrefetchingData" />
             <template v-else>
                 <DropZone
@@ -165,7 +166,7 @@ export default {
             type: Boolean,
             default: false,
         },
-        isCenteredView: {
+        isBorder: {
             type: Boolean,
             default: false,
         },
@@ -212,6 +213,14 @@ export default {
             isElementDragging: state => state.isElementDragging,
             draggedElement: state => state.draggedElement,
         }),
+        classes() {
+            return [
+                'grid',
+                {
+                    'grid--border': this.isBorder,
+                },
+            ];
+        },
         actionColumns() {
             const {
                 length: dataLength,
@@ -359,5 +368,9 @@ export default {
         flex-direction: column;
         min-width: 0;
         overflow: hidden;
+
+        &--border {
+            border: $BORDER_1_GREY;
+        }
     }
 </style>

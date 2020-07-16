@@ -12,8 +12,19 @@ export default {
         };
     },
     methods: {
-        setDrafts(drafts) {
+        setDrafts(drafts = {}) {
             this.drafts = deepmerge(this.drafts, drafts);
+        },
+        removeDraftRow(rowId) {
+            const tmpDrafts = {
+                ...this.drafts,
+            };
+
+            Object.keys(tmpDrafts).forEach((key) => {
+                if (key.includes(rowId)) {
+                    delete this.drafts[key];
+                }
+            });
         },
     },
 };

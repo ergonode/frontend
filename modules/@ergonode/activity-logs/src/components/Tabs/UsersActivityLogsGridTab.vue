@@ -11,6 +11,7 @@
                 :rows="rows"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
+                :is-border="true"
                 @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>

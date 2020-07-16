@@ -31,7 +31,6 @@ export default {
     data() {
         return {
             columnWidth: 0,
-            isResizing: false,
         };
     },
     computed: {
@@ -52,7 +51,7 @@ export default {
             });
         },
         onResize(isResizing) {
-            this.isResizing = isResizing;
+            this.$el.setAttribute('draggable', !isResizing);
         },
     },
 };
@@ -87,7 +86,7 @@ export default {
             content: "";
         }
 
-        &--hovered:not(&--dragged) {
+        &--hovered {
             &::after {
                 visibility: visible;
             }

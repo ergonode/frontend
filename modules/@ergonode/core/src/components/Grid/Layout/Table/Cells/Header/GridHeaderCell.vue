@@ -32,6 +32,7 @@ export default {
         padding: 8px 0 8px 8px;
         color: $GRAPHITE_DARK;
         font: $FONT_BOLD_12_16;
+        box-sizing: border-box;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;

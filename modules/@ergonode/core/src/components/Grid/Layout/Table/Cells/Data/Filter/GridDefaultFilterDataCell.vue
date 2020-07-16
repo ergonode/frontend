@@ -21,7 +21,7 @@ import {
 } from '@Core/defaults/operators';
 
 export default {
-    name: 'GridTextFilterCell',
+    name: 'GridDefaultFilterCell',
     components: {
         GridFilterPresentationCell,
         GridTableCell,
@@ -60,7 +60,6 @@ export default {
                     value: this.value,
                     row: this.rowIndex,
                     column: this.columnIndex,
-                    onValueChange: this.onValueChange,
                 },
             });
         },

@@ -19,7 +19,7 @@ import {
 } from '@Core/models/stringWrapper';
 
 export default {
-    name: 'GridFilterCell',
+    name: 'GridFilterDataCell',
     props: {
         rowIndex: {
             type: Number,
@@ -40,8 +40,8 @@ export default {
     },
     computed: {
         filterCellComponent() {
-            return () => import(`@Core/components/Grid/Layout/Table/Cells/Filter/Grid${capitalizeAndConcatenationArray(this.filter.type.split('_'))}FilterCell`)
-                .catch(() => () => import('@Core/components/Grid/Layout/Table/Cells/Filter/GridDefaultFilterCell'));
+            return () => import(`@Core/components/Grid/Layout/Table/Cells/Data/Filter/Grid${capitalizeAndConcatenationArray(this.filter.type.split('_'))}FilterDataCell`)
+                .catch(() => () => import('@Core/components/Grid/Layout/Table/Cells/Data/Filter/GridDefaultFilterCell'));
         },
     },
     methods: {
