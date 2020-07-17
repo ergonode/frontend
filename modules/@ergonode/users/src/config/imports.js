@@ -28,10 +28,6 @@ export const Icons = {
 
 export const Components = {
     GridPrivilegeRowCheckDataCell: () => import('@Users/components/Grid/Layout/Table/Cells/Data/GridPrivilegeRowCheckDataCell'),
-    GridPrivilegeCheckColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeCheckColumn'),
-    GridLanguageCheckColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridLanguageCheckColumn'),
-    GridPrivilegeSelectRowColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeSelectRowColumn'),
-    GridLanguageSelectRowColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridLanguageSelectRowColumn'),
-    GridRowNameColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridRowNameColumn'),
-    GridRowNameDataCell: () => import('@Users/components/Grid/Layout/Table/Cells/Data/GridRowNameDataCell'),
+    GridPrivilegeNameHintDataCell: () => import('@Users/components/Grid/Layout/Table/Cells/Data/GridPrivilegeNameHintDataCell'),
+    GridPrivilegeRowCheckHeaderCell: () => import('@Users/components/Grid/Layout/Table/Cells/Header/GridPrivilegeRowCheckHeaderCell'),
 };

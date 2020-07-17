@@ -5,15 +5,11 @@
 <template>
     <GridColumn
         v-bind="$attrs"
-        @editCell="onValueChange">
-        <template #header="{ title }">
-            <GridHeaderCell :title="title" />
-        </template>
-    </GridColumn>
+        @editCell="onValueChange" />
 </template>
 
 <script>
-import GridHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridHeaderCell';
+import GridTitleHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridTitleHeaderCell';
 import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
 import {
     mapActions,
@@ -23,7 +19,7 @@ export default {
     name: 'GridLanguageCheckColumn',
     components: {
         GridColumn,
-        GridHeaderCell,
+        GridTitleHeaderCell,
     },
     inheritAttrs: false,
     methods: {

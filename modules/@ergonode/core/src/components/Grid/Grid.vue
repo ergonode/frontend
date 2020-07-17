@@ -30,44 +30,42 @@
         <GridBody
             :disabled="isListElementDragging && isColumnExists"
             :is-border="isHeaderVisible">
-            <GridPreloader v-if="isPrefetchingData" />
-            <template v-else>
-                <DropZone
-                    v-show="isListElementDragging && !isColumnExists"
-                    title="ADD COLUMN"
-                    @drop="onDropColumn">
-                    <template #icon="{ color }">
-                        <IconAddColumn :fill-color="color" />
-                    </template>
-                </DropZone>
-                <KeepAlive>
-                    <GridTableLayout
-                        v-if="isTableLayout"
-                        :columns="columns"
-                        :action-columns="actionColumns"
-                        :rows="rows"
-                        :drafts="drafts"
-                        :current-page="currentPage"
-                        :max-rows="maxRows"
-                        :row-height="tableLayoutConfig.rowHeight"
-                        :is-editable="isEditable"
-                        :is-select-column="isSelectColumn"
-                        :is-basic-filter="isBasicFilter"
-                        @sort="onSortColumn"
-                        @filter="onFilterChange"
-                        @cellValue="onCellValueChange"
-                        @cellValues="onCellValuesChanges"
-                        @focusCell="onFocusCell"
-                        @rowAction="onRowAction" />
-                    <GridCollectionLayout
-                        v-else-if="isCollectionLayout && collectionData.length"
-                        :data="collectionData"
-                        :columns-number="collectionLayoutConfig.columnsNumber"
-                        :object-fit="collectionLayoutConfig.scaling"
-                        @rowAction="onRowAction" />
-                </KeepAlive>
-                <GridPlaceholder v-if="!dataCount" />
-            </template>
+            <GridPreloader v-show="isPrefetchingData" />
+            <GridPlaceholder v-show="dataCount === 0 && !isPrefetchingData" />
+            <DropZone
+                v-show="isListElementDragging && !isColumnExists"
+                title="ADD COLUMN"
+                @drop="onDropColumn">
+                <template #icon="{ color }">
+                    <IconAddColumn :fill-color="color" />
+                </template>
+            </DropZone>
+            <KeepAlive>
+                <GridTableLayout
+                    v-if="isTableLayout"
+                    :columns="columns"
+                    :action-columns="actionColumns"
+                    :rows="rows"
+                    :drafts="drafts"
+                    :current-page="currentPage"
+                    :max-rows="maxRows"
+                    :row-height="tableLayoutConfig.rowHeight"
+                    :is-editable="isEditable"
+                    :is-select-column="isSelectColumn"
+                    :is-basic-filter="isBasicFilter"
+                    @sort="onSortColumn"
+                    @filter="onFilterChange"
+                    @cellValue="onCellValueChange"
+                    @cellValues="onCellValuesChanges"
+                    @focusCell="onFocusCell"
+                    @rowAction="onRowAction" />
+                <GridCollectionLayout
+                    v-else-if="isCollectionLayout && collectionData.length"
+                    :data="collectionData"
+                    :columns-number="collectionLayoutConfig.columnsNumber"
+                    :object-fit="collectionLayoutConfig.scaling"
+                    @rowAction="onRowAction" />
+            </KeepAlive>
         </GridBody>
         <GridFooter v-if="isFooterVisible">
             <GridPageSelector
@@ -87,6 +85,8 @@
 import GridBody from '@Core/components/Grid/GridBody';
 import GridFooter from '@Core/components/Grid/GridFooter';
 import GridPreloader from '@Core/components/Grid/GridPreloader';
+import GridCollectionLayout from '@Core/components/Grid/Layout/Collection/GridCollectionLayout';
+import GridTableLayout from '@Core/components/Grid/Layout/Table/GridTableLayout';
 import {
     COLUMNS_NUMBER,
     DATA_LIMIT,
@@ -110,8 +110,6 @@ export default {
     name: 'Grid',
     components: {
         GridHeader: () => import('@Core/components/Grid/Header/GridHeader'),
-        GridTableLayout: () => import('@Core/components/Grid/Layout/Table/GridTableLayout'),
-        GridCollectionLayout: () => import('@Core/components/Grid/Layout/Collection/GridCollectionLayout'),
         GridPlaceholder: () => import('@Core/components/Grid/GridPlaceholder'),
         GridPagination: () => import('@Core/components/Grid/Footer/GridPagination'),
         GridPageSelector: () => import('@Core/components/Grid/Footer/GridPageSelector'),
@@ -120,6 +118,8 @@ export default {
         GridPreloader,
         GridBody,
         GridFooter,
+        GridTableLayout,
+        GridCollectionLayout,
     },
     props: {
         columns: {

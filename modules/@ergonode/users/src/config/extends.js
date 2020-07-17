@@ -22,6 +22,11 @@ export default {
     extendComponents: {
         '@Core/Components/Grid/Layout/Table/Cells/Data': {
             PRIVILEGE_ROW_CHECK: Components.GridPrivilegeRowCheckDataCell,
+            PRIVILEGE_NAME_HINT: Components.GridPrivilegeNameHintDataCell,
+        },
+        '@Core/Components/Grid/Layout/Table/Cells/Header': {
+            // PRIVILEGE_PLAIN: Components.GridPrivilegeHeaderCell,
+            PRIVILEGE_ROW_CHECK: Components.GridPrivilegeRowCheckHeaderCell,
         },
     },
 };

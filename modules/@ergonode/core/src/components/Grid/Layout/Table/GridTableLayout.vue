@@ -36,14 +36,13 @@
                 <GridColumn
                     :index="columnIndex"
                     @resize="onResizeColumn">
-                    <GridActionHeaderCell
+                    <GridHeaderCell
                         :row-index="rowsOffset"
                         :column-index="columnIndex"
                         :column-id="column.id"
                         :label="column.label"
                         :deletable="column.deletable"
                         :sorted-column="sortedColumn"
-                        @focus="onHeaderFocus"
                         @sort="onSortColumn"
                         @remove="onRemoveColumn" />
                     <template v-if="isBasicFilter">
@@ -136,7 +135,7 @@ import GridActionCell from '@Core/components/Grid/Layout/Table/Cells/Action/Grid
 import GridFilterDataCell from '@Core/components/Grid/Layout/Table/Cells/Data/Filter/GridFilterDataCell';
 import GridDataCell from '@Core/components/Grid/Layout/Table/Cells/Data/GridDataCell';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
-import GridActionHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridActionHeaderCell';
+import GridHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridHeaderCell';
 import GridActionColumn from '@Core/components/Grid/Layout/Table/Columns/GridActionColumn';
 import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
 import GridDraggableColumn from '@Core/components/Grid/Layout/Table/Columns/GridDraggableColumn';
@@ -181,7 +180,7 @@ export default {
         GridFilterDataCell,
         GridActionCell,
         GridDataCell,
-        GridActionHeaderCell,
+        GridHeaderCell,
         GridTableLayoutPinnedSection: () => import('@Core/components/Grid/Layout/Table/Sections/GridTableLayoutPinnedSection'),
         GridSentinelColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridSentinelColumn'),
         GridSelectRowColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridSelectRowColumn'),
@@ -380,9 +379,6 @@ export default {
             } else {
                 this.$refs.gridTableLayout.removeEventListener('mousedown', this.onMouseDown);
             }
-        },
-        onHeaderFocus(isFocused) {
-            this.isHeaderFocused = isFocused;
         },
         onSortColumn(sortedColumn) {
             this.sortedColumn = sortedColumn;

@@ -9,37 +9,23 @@
         :locked="isLocked"
         :draft="cellData.isDraft"
         :error="Boolean(errorMessages)"
-        :disabled="isDisabled"
-        :copyable="isCopyable"
-        @copy="onCopyValues">
+        :disabled="isDisabled">
         <GridHintPresentationCell
             :value="cellData.value"
-            :hint="data.hint"
-            :suffix="data.suffix" />
+            :hint="data.hint" />
     </GridTableCell>
 </template>
 <script>
 import GridHintPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridHintPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
-import {
-    cellDataCompose,
-} from '@Core/models/mappers/gridDataMapper';
 
 export default {
-    name: 'GridRowNameDataCell',
+    name: 'GridPrivilegeNameHintDataCell',
     components: {
         GridHintPresentationCell,
     },
     mixins: [
         gridDataCellMixin,
     ],
-    computed: {
-        cellData() {
-            const check = (data, draftValue) => data !== draftValue;
-            const getMappedValue = cellDataCompose(check);
-
-            return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
-        },
-    },
 };
 </script>

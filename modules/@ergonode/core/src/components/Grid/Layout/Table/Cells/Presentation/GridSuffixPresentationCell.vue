@@ -24,6 +24,6 @@ export default {
     .grid-suffix-presentation-cell {
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_12_16;
-        margin: 0 4px;
+        margin: 0 6px;
     }
 </style>
