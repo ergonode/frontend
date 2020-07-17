@@ -37,21 +37,6 @@ export default {
     mixins: [
         gridDataCellMixin,
     ],
-    computed: {
-        cellData() {
-            if (this.draft !== null && this.data.value !== this.draft) {
-                return {
-                    value: this.draft,
-                    isDraft: true,
-                };
-            }
-
-            return {
-                value: this.data.value,
-                isDraft: false,
-            };
-        },
-    },
     methods: {
         onEditCell() {
             this.$emit('editCell', {

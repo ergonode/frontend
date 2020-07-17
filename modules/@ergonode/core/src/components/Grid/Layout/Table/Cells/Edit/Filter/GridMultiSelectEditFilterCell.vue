@@ -10,8 +10,8 @@
                 :autofocus="true"
                 :size="smallSize"
                 :clearable="true"
+                :multiselect="true"
                 :options="mappedOptions"
-                :error-messages="errorMessages"
                 @focus="onFocus" />
         </GridSelectEditContentCell>
     </GridEditNavigationCell>
@@ -21,22 +21,28 @@
 import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
+import {
     SIZE,
 } from '@Core/defaults/theme';
-import gridEditCellMixin from '@Core/mixins/grid/cell/gridEditCellMixin';
+import gridEditFilterCellMixin from '@Core/mixins/grid/cell/gridEditFilterCellMixin';
 import {
-    getMappedObjectOption,
+    arraysAreEqual,
+} from '@Core/models/arrayWrapper';
+import {
+    getMappedMatchedArrayOptions,
     getMappedObjectOptions,
 } from '@Core/models/mappers/translationsMapper';
 
 export default {
-    name: 'GridSelectEditCell',
+    name: 'GridMultiSelectEditCell',
     components: {
         GridSelectEditContentCell,
         TranslationSelect,
     },
     mixins: [
-        gridEditCellMixin,
+        gridEditFilterCellMixin,
     ],
     props: {
         options: {
@@ -49,20 +55,12 @@ export default {
         },
     },
     data() {
-        let localValue = null;
-
-        if (this.value) {
-            localValue = getMappedObjectOption({
-                option: {
-                    id: this.value,
-                    ...this.options[this.value],
-                },
-                languageCode: this.languageCode,
-            });
-        }
-
         return {
-            localValue,
+            localValue: getMappedMatchedArrayOptions({
+                optionIds: this.value[FILTER_OPERATOR.EQUAL] || [],
+                options: this.options,
+                languageCode: this.languageCode,
+            }),
         };
     },
     computed: {
@@ -77,10 +75,13 @@ export default {
         },
     },
     beforeDestroy() {
-        if (this.localValue && this.localValue.id !== this.value) {
-            this.$emit('cellValue', {
-                value: this.localValue.id || this.localValue,
-                rowId: this.rowId,
+        const optionIds = this.localValue.map(option => option.id);
+
+        if (!arraysAreEqual(optionIds, this.value.map(option => option.id))) {
+            this.$emit('filterValue', {
+                value: {
+                    [FILTER_OPERATOR.EQUAL]: optionIds,
+                },
                 columnId: this.columnId,
                 row: this.row,
                 column: this.column,

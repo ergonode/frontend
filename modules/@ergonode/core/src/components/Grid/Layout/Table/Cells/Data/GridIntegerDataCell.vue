@@ -53,21 +53,5 @@ export default {
             };
         },
     },
-    methods: {
-        onEditCell() {
-            this.$emit('editCell', {
-                type: 'NUMERIC',
-                props: {
-                    bounds: this.$el.getBoundingClientRect(),
-                    value: this.cellData.value,
-                    row: this.rowIndex,
-                    column: this.columnIndex,
-                    rowId: this.rowId,
-                    columnId: this.column.id,
-                    errorMessages: this.errorMessages,
-                },
-            });
-        },
-    },
 };
 </script>

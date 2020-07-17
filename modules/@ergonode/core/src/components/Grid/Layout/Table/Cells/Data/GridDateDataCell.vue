@@ -15,8 +15,8 @@
         :selected="isSelected"
         @edit="onEditCell"
         @copy="onCopyValues">
-        <template v-if="cellData.value">
-            <GridPresentationCell :value="cellData.value" />
+        <template v-if="presentationValue">
+            <GridPresentationCell :value="presentationValue" />
             <GridSuffixPresentationCell
                 v-if="data.suffix"
                 :suffix="data.suffix" />
@@ -31,6 +31,10 @@ import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 import {
     DEFAULT_FORMAT,
 } from '@Core/models/calendar/calendar';
+import {
+    format as formatDate,
+    parse as parseDate,
+} from 'date-fns';
 
 export default {
     name: 'GridDateDataCell',
@@ -42,18 +46,12 @@ export default {
         gridDataCellMixin,
     ],
     computed: {
-        cellData() {
-            if (this.draft !== null && this.data.value !== this.draft) {
-                return {
-                    value: this.draft,
-                    isDraft: true,
-                };
+        presentationValue() {
+            if (!this.cellData.value) {
+                return '';
             }
 
-            return {
-                value: this.data.value,
-                isDraft: false,
-            };
+            return formatDate(new Date(this.cellData.value), this.column.parameters.format);
         },
     },
     methods: {
@@ -62,7 +60,7 @@ export default {
                 type: this.column.type,
                 props: {
                     bounds: this.$el.getBoundingClientRect(),
-                    value: this.cellData.value,
+                    value: this.presentationValue,
                     row: this.rowIndex,
                     column: this.columnIndex,
                     format: this.column.parameters && this.column.parameters.format

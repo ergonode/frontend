@@ -41,7 +41,6 @@
 <script>
 import PointBadge from '@Core/components/Badges/PointBadge';
 import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
-import GridEditNavigationCell from '@Core/components/Grid/Layout/Table/Cells/Navigation/GridEditNavigationCell';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
@@ -49,6 +48,7 @@ import ListElementTitle from '@Core/components/List/ListElementTitle';
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import gridEditCellMixin from '@Core/mixins/grid/cell/gridEditCellMixin';
 
 export default {
     name: 'GridLabelEditCell',
@@ -59,13 +59,11 @@ export default {
         ListElementTitle,
         ListElementAction,
         PointBadge,
-        GridEditNavigationCell,
     },
+    mixins: [
+        gridEditCellMixin,
+    ],
     props: {
-        value: {
-            type: String,
-            default: '',
-        },
         colors: {
             type: Object,
             default: () => ({}),
@@ -73,39 +71,6 @@ export default {
         languageCode: {
             type: String,
             default: 'EN',
-        },
-        errorMessages: {
-            type: String,
-            default: '',
-        },
-        bounds: {
-            type: [
-                DOMRect,
-                Object,
-            ],
-            required: true,
-        },
-        row: {
-            type: Number,
-            required: true,
-        },
-        column: {
-            type: Number,
-            required: true,
-        },
-        rowId: {
-            type: [
-                String,
-                Number,
-            ],
-            required: true,
-        },
-        columnId: {
-            type: [
-                String,
-                Number,
-            ],
-            required: true,
         },
     },
     fetch() {
@@ -131,21 +96,6 @@ export default {
         };
     },
     computed: {
-        positionStyle() {
-            const {
-                x,
-                y,
-                width,
-                height,
-            } = this.bounds;
-
-            return {
-                top: `${y}px`,
-                left: `${x}px`,
-                width: `${width}px`,
-                height: `${height}px`,
-            };
-        },
         smallSize() {
             return SIZE.SMALL;
         },
@@ -166,9 +116,6 @@ export default {
             if (!isFocused) {
                 this.onEditCell();
             }
-        },
-        onEditCell() {
-            this.$emit('dismiss');
         },
     },
 };

@@ -37,36 +37,5 @@ export default {
     mixins: [
         gridDataCellMixin,
     ],
-    computed: {
-        cellData() {
-            if (this.draft !== null && this.data.value !== this.draft) {
-                return {
-                    value: this.draft,
-                    isDraft: true,
-                };
-            }
-
-            return {
-                value: this.data.value,
-                isDraft: false,
-            };
-        },
-    },
-    methods: {
-        onEditCell() {
-            this.$emit('editCell', {
-                type: this.column.type,
-                props: {
-                    bounds: this.$el.getBoundingClientRect(),
-                    value: this.cellData.value,
-                    row: this.rowIndex,
-                    column: this.columnIndex,
-                    rowId: this.rowId,
-                    columnId: this.column.id,
-                    errorMessages: this.errorMessages,
-                },
-            });
-        },
-    },
 };
 </script>

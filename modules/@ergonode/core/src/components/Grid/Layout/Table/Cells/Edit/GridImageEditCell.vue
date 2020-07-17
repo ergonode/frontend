@@ -17,7 +17,7 @@
 <script>
 import GridImageEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridImageEditContentCell';
 import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
-import GridEditNavigationCell from '@Core/components/Grid/Layout/Table/Cells/Navigation/GridEditNavigationCell';
+import gridEditCellMixin from '@Core/mixins/grid/cell/gridEditCellMixin';
 import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 
 export default {
@@ -26,52 +26,10 @@ export default {
         UploadImageFile,
         GridSelectEditContentCell,
         GridImageEditContentCell,
-        GridEditNavigationCell,
     },
-    props: {
-        value: {
-            type: String,
-            default: '',
-        },
-        errorMessages: {
-            type: String,
-            default: '',
-        },
-        bounds: {
-            type: [
-                DOMRect,
-                Object,
-            ],
-            required: true,
-        },
-        row: {
-            type: Number,
-            required: true,
-        },
-        column: {
-            type: Number,
-            required: true,
-        },
-        rowId: {
-            type: [
-                String,
-                Number,
-            ],
-            required: true,
-        },
-        columnId: {
-            type: [
-                String,
-                Number,
-            ],
-            required: true,
-        },
-    },
-    data() {
-        return {
-            localValue: this.value,
-        };
-    },
+    mixins: [
+        gridEditCellMixin,
+    ],
     computed: {
         positionStyle() {
             const {
@@ -96,11 +54,6 @@ export default {
                 column: this.column,
             });
         }
-    },
-    methods: {
-        onEditCell() {
-            this.$emit('dismiss');
-        },
     },
 };
 </script>

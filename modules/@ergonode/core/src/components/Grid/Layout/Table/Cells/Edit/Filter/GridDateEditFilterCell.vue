@@ -11,7 +11,6 @@
                 autofocus
                 :placeholder="format"
                 :format="format"
-                :error-messages="errorMessages"
                 @focus="onFocus" />
         </GridSelectEditContentCell>
     </GridEditNavigationCell>
@@ -21,9 +20,12 @@
 import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
 import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
+import {
     SIZE,
 } from '@Core/defaults/theme';
-import gridEditCellMixin from '@Core/mixins/grid/cell/gridEditCellMixin';
+import gridEditFilterCellMixin from '@Core/mixins/grid/cell/gridEditFilterCellMixin';
 import {
     DEFAULT_FORMAT,
 } from '@Core/models/calendar/calendar';
@@ -33,13 +35,13 @@ import {
 } from 'date-fns';
 
 export default {
-    name: 'GridDateEditCell',
+    name: 'GridDateEditFilterCell',
     components: {
         GridSelectEditContentCell,
         DatePicker,
     },
     mixins: [
-        gridEditCellMixin,
+        gridEditFilterCellMixin,
     ],
     props: {
         format: {
@@ -50,8 +52,8 @@ export default {
     data() {
         let localValue = null;
 
-        if (this.value) {
-            localValue = parseDate(this.value, this.format, new Date());
+        if (this.value[FILTER_OPERATOR.EQUAL]) {
+            localValue = parseDate(this.value[FILTER_OPERATOR.EQUAL], this.format, new Date());
         }
 
         return {
@@ -66,12 +68,9 @@ export default {
     beforeDestroy() {
         const localValue = this.localValue ? formatDate(this.localValue, DEFAULT_FORMAT) : '';
 
-        console.log(localValue, this.value);
-
-        if (localValue !== this.value) {
-            this.$emit('cellValue', {
+        if (localValue !== this.value[FILTER_OPERATOR.EQUAL]) {
+            this.$emit('filterValue', {
                 value: localValue,
-                rowId: this.rowId,
                 columnId: this.columnId,
                 row: this.row,
                 column: this.column,

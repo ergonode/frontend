@@ -252,11 +252,9 @@ export default {
             return this.isElementDragging === DRAGGED_ELEMENT.LIST;
         },
         isColumnExists() {
-            const draggedElIndex = this.columns.findIndex(
+            return this.columns.some(
                 column => column.id === this.draggedElement,
             );
-
-            return draggedElIndex !== -1;
         },
         isTableLayout() {
             return this.layout === GRID_LAYOUT.TABLE;

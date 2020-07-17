@@ -18,7 +18,7 @@
 <script>
 import GridImageEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridImageEditContentCell';
 import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
-import GridEditNavigationCell from '@Core/components/Grid/Layout/Table/Cells/Navigation/GridEditNavigationCell';
+import gridEditCellMixin from '@Core/mixins/grid/cell/gridEditCellMixin';
 import {
     arraysAreEqual,
 } from '@Core/models/arrayWrapper';
@@ -30,51 +30,15 @@ export default {
         UploadImageFile,
         GridSelectEditContentCell,
         GridImageEditContentCell,
-        GridEditNavigationCell,
     },
+    mixins: [
+        gridEditCellMixin,
+    ],
     props: {
         value: {
             type: Array,
             default: () => [],
         },
-        errorMessages: {
-            type: String,
-            default: '',
-        },
-        bounds: {
-            type: [
-                DOMRect,
-                Object,
-            ],
-            required: true,
-        },
-        row: {
-            type: Number,
-            required: true,
-        },
-        column: {
-            type: Number,
-            required: true,
-        },
-        rowId: {
-            type: [
-                String,
-                Number,
-            ],
-            required: true,
-        },
-        columnId: {
-            type: [
-                String,
-                Number,
-            ],
-            required: true,
-        },
-    },
-    data() {
-        return {
-            localValue: this.value,
-        };
     },
     computed: {
         positionStyle() {
@@ -100,11 +64,6 @@ export default {
                 column: this.column,
             });
         }
-    },
-    methods: {
-        onEditCell() {
-            this.$emit('dismiss');
-        },
     },
 };
 </script>

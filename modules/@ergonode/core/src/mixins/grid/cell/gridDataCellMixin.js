@@ -60,6 +60,21 @@ export default {
             default: false,
         },
     },
+    computed: {
+        cellData() {
+            if (this.draft !== null && this.data.value !== this.draft) {
+                return {
+                    value: this.draft,
+                    isDraft: true,
+                };
+            }
+
+            return {
+                value: this.data.value,
+                isDraft: false,
+            };
+        },
+    },
     methods: {
         onCopyValues(payload) {
             this.$emit('cellValues', {
@@ -76,6 +91,20 @@ export default {
                 columnId: this.column.id,
                 row: this.rowIndex,
                 column: this.columnIndex,
+            });
+        },
+        onEditCell() {
+            this.$emit('editCell', {
+                type: this.column.type,
+                props: {
+                    bounds: this.$el.getBoundingClientRect(),
+                    value: this.cellData.value,
+                    row: this.rowIndex,
+                    column: this.columnIndex,
+                    rowId: this.rowId,
+                    columnId: this.column.id,
+                    errorMessages: this.errorMessages,
+                },
             });
         },
     },

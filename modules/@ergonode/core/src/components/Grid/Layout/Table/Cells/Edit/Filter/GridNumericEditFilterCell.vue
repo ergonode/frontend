@@ -8,9 +8,10 @@
             <TextField
                 v-model="localValue"
                 autofocus
+                :alignment="leftAlignment"
+                :input="{ type: 'number' }"
                 :size="smallSize"
-                :type="underlineInputType"
-                :error-messages="errorMessages" />
+                :type="underlineType" />
         </GridTextEditContentCell>
     </GridEditNavigationCell>
 </template>
@@ -19,19 +20,23 @@
 import GridTextEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
 import TextField from '@Core/components/Inputs/TextField';
 import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
+import {
+    ALIGNMENT,
     INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
-import gridEditCellMixin from '@Core/mixins/grid/cell/gridEditCellMixin';
+import gridEditFilterCellMixin from '@Core/mixins/grid/cell/gridEditFilterCellMixin';
 
 export default {
-    name: 'GridTextEditCell',
+    name: 'GridNumericEditFilterCell',
     components: {
         GridTextEditContentCell,
         TextField,
     },
     mixins: [
-        gridEditCellMixin,
+        gridEditFilterCellMixin,
     ],
     computed: {
         positionStyle() {
@@ -49,18 +54,22 @@ export default {
                 minHeight: `${height + 8}px`,
             };
         },
-        underlineInputType() {
+        underlineType() {
             return INPUT_TYPE.UNDERLINE;
         },
         smallSize() {
             return SIZE.SMALL;
         },
+        leftAlignment() {
+            return ALIGNMENT.LEFT;
+        },
     },
     beforeDestroy() {
-        if (this.localValue !== this.value) {
-            this.$emit('cellValue', {
-                value: this.localValue,
-                rowId: this.rowId,
+        if (String(this.localValue) !== String(this.value[FILTER_OPERATOR.EQUAL])) {
+            this.$emit('filterValue', {
+                value: {
+                    [FILTER_OPERATOR.EQUAL]: this.localValue !== '' ? +this.localValue : '',
+                },
                 columnId: this.columnId,
                 row: this.row,
                 column: this.column,

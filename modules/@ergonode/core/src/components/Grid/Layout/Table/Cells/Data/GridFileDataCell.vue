@@ -28,6 +28,9 @@
 import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
 import GridSuffixPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
+import {
+    arraysAreEqual,
+} from '@Core/models/arrayWrapper';
 
 export default {
     name: 'GridFileDataCell',
@@ -40,7 +43,7 @@ export default {
     ],
     computed: {
         cellData() {
-            if (this.draft !== null && this.data.value !== this.draft) {
+            if (this.draft !== null && !arraysAreEqual(this.data.value, this.draft)) {
                 return {
                     value: this.draft,
                     isDraft: true,
@@ -62,22 +65,6 @@ export default {
             }
 
             return `${length} file${length > 1 ? 's' : ''}`;
-        },
-    },
-    methods: {
-        onEditCell() {
-            this.$emit('editCell', {
-                type: this.column.type,
-                props: {
-                    bounds: this.$el.getBoundingClientRect(),
-                    value: this.cellData.value,
-                    row: this.rowIndex,
-                    column: this.columnIndex,
-                    rowId: this.rowId,
-                    columnId: this.column.id,
-                    errorMessages: this.errorMessages,
-                },
-            });
         },
     },
 };

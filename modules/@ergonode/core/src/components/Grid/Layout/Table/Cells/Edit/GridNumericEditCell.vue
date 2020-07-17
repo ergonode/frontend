@@ -19,21 +19,23 @@
 
 <script>
 import GridTextEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
-import GridEditNavigationCell from '@Core/components/Grid/Layout/Table/Cells/Navigation/GridEditNavigationCell';
 import TextField from '@Core/components/Inputs/TextField';
 import {
     ALIGNMENT,
     INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
+import gridEditCellMixin from '@Core/mixins/grid/cell/gridEditCellMixin';
 
 export default {
     name: 'GridNumericEditCell',
     components: {
-        GridEditNavigationCell,
         GridTextEditContentCell,
         TextField,
     },
+    mixins: [
+        gridEditCellMixin,
+    ],
     props: {
         value: {
             type: [
@@ -42,44 +44,6 @@ export default {
             ],
             default: '',
         },
-        errorMessages: {
-            type: String,
-            default: '',
-        },
-        bounds: {
-            type: [
-                DOMRect,
-                Object,
-            ],
-            required: true,
-        },
-        row: {
-            type: Number,
-            required: true,
-        },
-        column: {
-            type: Number,
-            required: true,
-        },
-        rowId: {
-            type: [
-                String,
-                Number,
-            ],
-            required: true,
-        },
-        columnId: {
-            type: [
-                String,
-                Number,
-            ],
-            required: true,
-        },
-    },
-    data() {
-        return {
-            localValue: this.value,
-        };
     },
     computed: {
         positionStyle() {
@@ -108,24 +72,15 @@ export default {
         },
     },
     beforeDestroy() {
-        if (+this.localValue !== +this.value) {
+        if (String(this.localValue) !== String(this.value)) {
             this.$emit('cellValue', {
-                value: this.localValue,
+                value: this.localValue !== '' ? +this.localValue : '',
                 rowId: this.rowId,
                 columnId: this.columnId,
                 row: this.row,
                 column: this.column,
             });
         }
-    },
-    methods: {
-        onEditCell() {
-            if (+this.localValue !== +this.value) {
-                this.onValueChange(this.localValue !== '' ? +this.localValue : '');
-            }
-
-            this.$emit('dismiss');
-        },
     },
 };
 </script>

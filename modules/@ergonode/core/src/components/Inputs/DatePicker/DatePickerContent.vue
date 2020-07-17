@@ -59,17 +59,11 @@ export default {
             type: Date,
             default: null,
         },
-        calendarDate: {
-            type: Date,
-            default() {
-                return new Date();
-            },
-        },
     },
     data() {
-        const today = new Date();
-        const year = this.calendarDate.getFullYear();
-        const month = this.calendarDate.getMonth() + 1;
+        const today = this.value || new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth() + 1;
 
         return {
             years: getYearsWithinRange([], year),

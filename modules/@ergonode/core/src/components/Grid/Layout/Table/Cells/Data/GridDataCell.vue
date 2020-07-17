@@ -9,6 +9,7 @@
         :column="column"
         :draft="draft"
         :row-id="rowId"
+        :error-messages="errorMessages"
         :column-index="columnIndex"
         :row-index="rowIndex"
         :is-locked="isLocked"
@@ -35,6 +36,10 @@ export default {
         column: {
             type: Object,
             required: true,
+        },
+        errorMessages: {
+            type: String,
+            default: '',
         },
         draft: {
             default: null,

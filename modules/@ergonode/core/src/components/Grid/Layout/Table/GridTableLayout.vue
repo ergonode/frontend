@@ -52,18 +52,14 @@
                     </GridTableCell>
                     <template v-if="isBasicFilter">
                         <GridFilterDataCell
-                            v-if="column.filter"
                             :row-index="rowsOffset + basicFiltersOffset"
+                            :value="filterValues[column.id]"
                             :column-index="columnIndex"
                             :language-code="column.language"
+                            :column-id="column.id"
                             :filter="column.filter"
-                            @editCell="onEditCell"
-                            @filter="onFilterChange" />
-                        <GridTableCell
-                            v-else
-                            :locked="true"
-                            :row="rowsOffset + basicFiltersOffset"
-                            :column="columnIndex" />
+                            @editFilterCell="onEditFilterCell"
+                            @filterValue="onFilterValueChange" />
                     </template>
                     <template v-for="(row, rowIndex) in rows">
                         <GridDataCell
@@ -127,6 +123,13 @@
             v-bind="editCell.props"
             @cellValue="onCellValueChange"
             @dismiss="onDismissEditCell" />
+        <Component
+            v-if="editFilterCell"
+            :is="editFilterCellComponent"
+            ref="editCell"
+            v-bind="editFilterCell.props"
+            @filterValue="onFilterValueChange"
+            @dismiss="onDismissEditFilterCell" />
     </div>
 </template>
 
@@ -236,9 +239,11 @@ export default {
             orderedColumns: [],
             columnWidths: [],
             filters: {},
+            filterValues: {},
             sortedColumn: {},
             pinnedSections: {},
             editCell: null,
+            editFilterCell: null,
         };
     },
     computed: {
@@ -266,6 +271,11 @@ export default {
             const type = capitalizeAndConcatenationArray(this.editCell.type.split('_'));
 
             return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Grid${type}EditCell`);
+        },
+        editFilterCellComponent() {
+            const type = capitalizeAndConcatenationArray(this.editFilterCell.type.split('_'));
+
+            return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Filter/Grid${type}EditFilterCell`);
         },
         dataCount() {
             return this.rows.length;
@@ -323,7 +333,11 @@ export default {
                     xPos, yPos,
                 } = getPositionForBrowser(event);
                 if (!isMouseInsideElement(this.$refs.editCell.$el, xPos, yPos)) {
-                    this.onDismissEditCell();
+                    if (this.editCell) {
+                        this.onDismissEditCell();
+                    } else {
+                        this.onDismissEditFilterCell();
+                    }
                 }
             }
         },
@@ -336,10 +350,28 @@ export default {
             this.$refs.gridTableLayout.querySelector(`.coordinates-${column}-${row}`).focus();
             this.onEditCell();
         },
+        onDismissEditFilterCell() {
+            const {
+                row,
+                column,
+            } = this.editFilterCell.props;
+
+            this.$refs.gridTableLayout.querySelector(`.coordinates-${column}-${row}`).focus();
+            this.onEditFilterCell();
+        },
         onEditCell(editCell = null) {
             this.editCell = editCell;
 
             if (editCell) {
+                this.$refs.gridTableLayout.addEventListener('mousedown', this.onMouseDown);
+            } else {
+                this.$refs.gridTableLayout.removeEventListener('mousedown', this.onMouseDown);
+            }
+        },
+        onEditFilterCell(editFilterCell = null) {
+            this.editFilterCell = editFilterCell;
+
+            if (editFilterCell) {
                 this.$refs.gridTableLayout.addEventListener('mousedown', this.onMouseDown);
             } else {
                 this.$refs.gridTableLayout.removeEventListener('mousedown', this.onMouseDown);
@@ -352,18 +384,18 @@ export default {
             this.sortedColumn = sortedColumn;
             this.$emit('sort', sortedColumn);
         },
-        onFilterChange({
-            index,
+        onFilterValueChange({
             value,
+            columnId,
         }) {
-            const {
-                id,
-            } = this.orderedColumns[index];
-
-            this.filters[id] = getParsedFilter({
-                id,
+            this.filters[columnId] = getParsedFilter({
+                id: columnId,
                 filter: value,
             });
+            this.filterValues = {
+                ...this.filterValues,
+                [columnId]: value,
+            };
 
             this.$emit('filter', this.filters);
         },

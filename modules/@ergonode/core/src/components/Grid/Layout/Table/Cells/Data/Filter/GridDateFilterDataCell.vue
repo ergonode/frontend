@@ -6,21 +6,16 @@
     <GridTableCell
         :row="rowIndex"
         :column="columnIndex"
-        :locked="isLocked"
-        :disabled="isDisabled"
         @edit="onEditCell">
         <GridFilterPresentationCell
             placeholder="Select..."
-            :value="value" />
+            :value="presentationValue" />
     </GridTableCell>
 </template>
 
 <script>
-import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 import GridFilterPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridFilterPresentationCell';
-import {
-    FILTER_OPERATOR,
-} from '@Core/defaults/operators';
+import gridDataFilterCellMixin from '@Core/mixins/grid/cell/gridDataFilterCellMixin';
 import {
     DEFAULT_FORMAT,
 } from '@Core/models/calendar/calendar';
@@ -29,35 +24,10 @@ export default {
     name: 'GridDateFilterDataCell',
     components: {
         GridFilterPresentationCell,
-        GridTableCell,
     },
-    props: {
-        rowIndex: {
-            type: Number,
-            required: true,
-        },
-        columnIndex: {
-            type: Number,
-            required: true,
-        },
-        data: {
-            type: Object,
-            default: () => ({}),
-        },
-        isDisabled: {
-            type: Boolean,
-            default: false,
-        },
-        isLocked: {
-            type: Boolean,
-            default: false,
-        },
-    },
-    data() {
-        return {
-            value: '',
-        };
-    },
+    mixins: [
+        gridDataFilterCellMixin,
+    ],
     computed: {
         dateFormat() {
             if (!this.data.parameters) {
@@ -69,26 +39,15 @@ export default {
     },
     methods: {
         onEditCell() {
-            this.$emit('editCell', {
-                row: this.rowIndex,
-                column: this.columnIndex,
-                type: 'DATE',
+            this.$emit('editFilterCell', {
+                type: this.data.type,
                 props: {
                     bounds: this.$el.getBoundingClientRect(),
                     value: this.value,
+                    columnId: this.columnId,
                     row: this.rowIndex,
                     column: this.columnIndex,
                     format: this.dateFormat,
-                },
-            });
-        },
-        onValueChange(value) {
-            this.value = value;
-
-            this.$emit('filter', {
-                index: this.columnIndex,
-                value: {
-                    [FILTER_OPERATOR.EQUAL]: value,
                 },
             });
         },
