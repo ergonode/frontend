@@ -237,7 +237,9 @@ export default {
                 for (let j = 0; j < actionsLength; j += 1) {
                     const action = GRID_ACTIONS[j];
 
-                    if (!tmp[action] && row._links.value[action]) {
+                    if (!tmp[action]
+                        && row._links
+                        && row._links.value[action]) {
                         tmp[action] = true;
                         actionColumns.push({
                             id: action,

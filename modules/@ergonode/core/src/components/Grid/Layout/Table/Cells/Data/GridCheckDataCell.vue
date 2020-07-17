@@ -8,30 +8,31 @@
         :column="columnIndex"
         :locked="isLocked"
         :draft="cellData.isDraft"
-        :error="Boolean(errorMessages)"
+        :edit-key-code="32"
         :disabled="isDisabled"
         :copyable="isCopyable"
         :selected="isSelected"
-        @edit="onEditCell"
+        @edit="onCheckValueChange"
+        @mousedown="onCheckValueChange"
         @copy="onCopyValues">
-        <template v-if="cellData.value || cellData.value === 0">
-            <GridPresentationCell :value="cellData.value" />
-            <GridSuffixPresentationCell
-                v-if="data.suffix"
-                :suffix="data.suffix" />
-        </template>
+        <GridCheckEditCell
+            :value="cellData.value"
+            :disabled="isLocked || isDisabled" />
+        <GridSuffixPresentationCell
+            v-if="data.suffix"
+            :suffix="data.suffix" />
     </GridTableCell>
 </template>
 
 <script>
-import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
+import GridCheckEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell';
 import GridSuffixPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 
 export default {
-    name: 'GridNumericDataCell',
+    name: 'GridCheckDataCell',
     components: {
-        GridPresentationCell,
+        GridCheckEditCell,
         GridSuffixPresentationCell,
     },
     mixins: [
@@ -39,17 +40,22 @@ export default {
     ],
     computed: {
         cellData() {
-            if (this.draft !== null && +this.data.value !== +this.draft) {
+            if (this.draft !== null && Boolean(this.data.value) !== Boolean(this.draft)) {
                 return {
-                    value: +this.draft,
+                    value: this.draft,
                     isDraft: true,
                 };
             }
 
             return {
-                value: +this.data.value,
+                value: this.data.value,
                 isDraft: false,
             };
+        },
+    },
+    methods: {
+        onCheckValueChange() {
+            this.onValueChange(!this.cellData.value);
         },
     },
 };

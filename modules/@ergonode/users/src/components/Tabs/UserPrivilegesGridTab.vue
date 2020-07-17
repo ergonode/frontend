@@ -43,7 +43,7 @@ export default {
             privileges,
         } = store.state.authentication.user;
         const {
-            data, columns,
+            rows, columns,
         } = getMappedGridData({
             fullDataList: privilegesDictionary,
             selectedData: privileges,
@@ -57,7 +57,7 @@ export default {
         return {
             dataCount: privilegesDictionary.length,
             columns: sortedColumns,
-            data,
+            rows,
         };
     },
 };

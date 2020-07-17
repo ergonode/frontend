@@ -39,7 +39,7 @@ export default {
     data() {
         return {
             columns: [],
-            data: {},
+            rows: {},
             dataCount: 0,
         };
     },
@@ -68,7 +68,7 @@ export default {
     methods: {
         updateGridData() {
             const {
-                data, columns,
+                rows, columns,
             } = getMappedGridData({
                 fullDataList: this.privilegesDictionary,
                 selectedData: this.privileges,
@@ -82,7 +82,7 @@ export default {
 
             this.columns = sortedColumns;
             this.dataCount = this.privilegesDictionary.length;
-            this.data = data;
+            this.rows = rows;
         },
     },
 };

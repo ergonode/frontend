@@ -22,10 +22,6 @@
 </template>
 
 <script>
-import {
-    capitalizeAndConcatenationArray,
-} from '@Core/models/stringWrapper';
-
 export default {
     name: 'GridDataCell',
     props: {
@@ -38,6 +34,10 @@ export default {
             required: true,
         },
         errorMessages: {
+            type: String,
+            default: '',
+        },
+        type: {
             type: String,
             default: '',
         },
@@ -80,7 +80,7 @@ export default {
                 return extendedComponents[this.column.type];
             }
 
-            return () => import(`@Core/components/Grid/Layout/Table/Cells/Data/Grid${capitalizeAndConcatenationArray(this.column.type.split('_'))}DataCell`)
+            return () => import(`@Core/components/Grid/Layout/Table/Cells/Data/Grid${this.type}DataCell`)
                 .catch(() => import('@Core/components/Grid/Layout/Table/Cells/Data/GridTextDataCell'));
         },
     },

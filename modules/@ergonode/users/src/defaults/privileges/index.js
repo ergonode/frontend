@@ -9,7 +9,7 @@ import {
 export const getCheckColumn = (optionType, isEditable) => ({
     id: optionType,
     label: toCapitalize(optionType),
-    type: 'PRIVILEGE_CHECK',
+    type: 'CHECK',
     editable: isEditable,
     visible: true,
 });
@@ -25,7 +25,7 @@ export const nameColumn = {
 export const selectRowColumn = {
     id: 'selectRow',
     label: '',
-    type: 'PRIVILEGE_SELECT_ROW',
+    type: 'PRIVILEGE_ROW_CHECK',
     editable: true,
     visible: true,
 };

@@ -21,9 +21,7 @@
             :row="rowsOffset + rowIndex + 1"
             @mousedown="onSelectRow({ rowId: id, value: !selectedRows[id] })"
             @edit="onSelectRow({ rowId: id, value: !selectedRows[id] })">
-            <GridCheckEditCell
-                :value="selectedRows[id]"
-                :row-id="id" />
+            <GridCheckEditCell :value="selectedRows[id]" />
         </GridTableCell>
     </div>
 </template>

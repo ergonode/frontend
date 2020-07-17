@@ -17,7 +17,7 @@
         @copy="onCopyValues">
         <GridBoolEditCell
             :value="cellData.value"
-            :is-disabled="isLocked" />
+            :disabled="isLocked || isDisabled" />
         <GridSuffixPresentationCell
             v-if="data.suffix"
             :suffix="data.suffix" />

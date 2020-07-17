@@ -20,54 +20,8 @@ export default {
         },
     ],
     extendComponents: {
-        GRID: {
-            layout: {
-                table: {
-                    cells: {
-                        data: [
-                            {
-                                type: 'PRIVILEGE_CHECK',
-                                component: Components.GridCheckDataCell,
-                            },
-                            {
-                                type: 'LANGUAGE_CHECK',
-                                component: Components.GridCheckDataCell,
-                            },
-                            {
-                                type: 'ROW_NAME',
-                                component: Components.GridRowNameDataCell,
-                            },
-                        ],
-                    },
-                    columns: [
-                        {
-                            type: 'PRIVILEGE_CHECK',
-                            width: COLUMN_WIDTH.DYNAMIC,
-                            component: Components.GridPrivilegeCheckColumn,
-                        },
-                        {
-                            type: 'LANGUAGE_CHECK',
-                            width: COLUMN_WIDTH.DYNAMIC,
-                            component: Components.GridLanguageCheckColumn,
-                        },
-                        {
-                            type: 'PRIVILEGE_SELECT_ROW',
-                            width: COLUMN_WIDTH.SELECT_ROW,
-                            component: Components.GridPrivilegeSelectRowColumn,
-                        },
-                        {
-                            type: 'LANGUAGE_SELECT_ROW',
-                            width: COLUMN_WIDTH.SELECT_ROW,
-                            component: Components.GridLanguageSelectRowColumn,
-                        },
-                        {
-                            type: 'ROW_NAME',
-                            width: COLUMN_WIDTH.DYNAMIC,
-                            component: Components.GridRowNameColumn,
-                        },
-                    ],
-                },
-            },
+        '@Core/Components/Grid/Layout/Table/Cells/Data': {
+            PRIVILEGE_ROW_CHECK: Components.GridPrivilegeRowCheckDataCell,
         },
     },
 };

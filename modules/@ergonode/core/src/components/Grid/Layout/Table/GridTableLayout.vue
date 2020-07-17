@@ -36,20 +36,16 @@
                 <GridColumn
                     :index="columnIndex"
                     @resize="onResizeColumn">
-                    <GridTableCell
-                        :row="rowsOffset"
-                        :column="columnIndex"
-                        :locked="true">
-                        <GridInteractiveHeaderCell
-                            :column-index="columnIndex"
-                            :column-id="column.id"
-                            :label="column.label"
-                            :deletable="column.deletable"
-                            :sorted-column="sortedColumn"
-                            @focus="onHeaderFocus"
-                            @sort="onSortColumn"
-                            @remove="onRemoveColumn" />
-                    </GridTableCell>
+                    <GridActionHeaderCell
+                        :row-index="rowsOffset"
+                        :column-index="columnIndex"
+                        :column-id="column.id"
+                        :label="column.label"
+                        :deletable="column.deletable"
+                        :sorted-column="sortedColumn"
+                        @focus="onHeaderFocus"
+                        @sort="onSortColumn"
+                        @remove="onRemoveColumn" />
                     <template v-if="isBasicFilter">
                         <GridFilterDataCell
                             :row-index="rowsOffset + basicFiltersOffset"
@@ -67,6 +63,7 @@
                             :data="row[column.id]"
                             :draft="drafts[`${rowIds[rowIndex]}/${column.id}`]"
                             :column="column"
+                            :type="columnTypes[column.type]"
                             :error-messages="validationErrors[`${rowIds[rowIndex]}/${column.id}`]"
                             :row-id="rowIds[rowIndex]"
                             :column-index="columnIndex"
@@ -139,7 +136,7 @@ import GridActionCell from '@Core/components/Grid/Layout/Table/Cells/Action/Grid
 import GridFilterDataCell from '@Core/components/Grid/Layout/Table/Cells/Data/Filter/GridFilterDataCell';
 import GridDataCell from '@Core/components/Grid/Layout/Table/Cells/Data/GridDataCell';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
-import GridInteractiveHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridInteractiveHeaderCell';
+import GridActionHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridActionHeaderCell';
 import GridActionColumn from '@Core/components/Grid/Layout/Table/Columns/GridActionColumn';
 import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
 import GridDraggableColumn from '@Core/components/Grid/Layout/Table/Columns/GridDraggableColumn';
@@ -184,7 +181,7 @@ export default {
         GridFilterDataCell,
         GridActionCell,
         GridDataCell,
-        GridInteractiveHeaderCell,
+        GridActionHeaderCell,
         GridTableLayoutPinnedSection: () => import('@Core/components/Grid/Layout/Table/Sections/GridTableLayoutPinnedSection'),
         GridSentinelColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridSentinelColumn'),
         GridSelectRowColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridSelectRowColumn'),
@@ -255,6 +252,13 @@ export default {
         }),
         visibleColumns() {
             return this.columns.filter(column => column.visible);
+        },
+        columnTypes() {
+            return this.visibleColumns.reduce((acc, current) => {
+                const tmp = acc;
+                tmp[current.type] = capitalizeAndConcatenationArray(current.type.split('_'));
+                return tmp;
+            }, {});
         },
         rowIds() {
             return this.rows.map(({

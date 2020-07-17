@@ -6,7 +6,7 @@
     <Toggler
         @click.native.prevent
         :value="Boolean(value)"
-        :disabled="isDisabled" />
+        :disabled="disabled" />
 </template>
 
 <script>
@@ -26,7 +26,7 @@ export default {
             ],
             default: false,
         },
-        isDisabled: {
+        disabled: {
             type: Boolean,
             default: false,
         },

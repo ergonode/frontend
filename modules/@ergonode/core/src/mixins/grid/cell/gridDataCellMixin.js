@@ -35,10 +35,6 @@ export default {
             ],
             required: true,
         },
-        editKeyCode: {
-            type: Number,
-            default: 13,
-        },
         errorMessages: {
             type: String,
             default: '',

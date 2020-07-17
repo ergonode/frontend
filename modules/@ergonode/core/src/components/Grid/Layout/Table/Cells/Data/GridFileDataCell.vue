@@ -9,7 +9,6 @@
         :locked="isLocked"
         :draft="cellData.isDraft"
         :error="Boolean(errorMessages)"
-        :edit-key-code="editKeyCode"
         :disabled="isDisabled"
         :copyable="isCopyable"
         :selected="isSelected"

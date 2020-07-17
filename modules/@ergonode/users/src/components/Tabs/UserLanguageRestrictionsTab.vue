@@ -41,7 +41,7 @@ export default {
     data() {
         return {
             columns: [],
-            data: {},
+            rows: {},
             dataCount: 0,
         };
     },
@@ -80,7 +80,7 @@ export default {
                 },
             }));
             const {
-                data, columns,
+                rows, columns,
             } = getMappedGridData({
                 fullDataList,
                 selectedData: getMappedRestrictions(this.languagePrivilegesCollection),
@@ -94,7 +94,7 @@ export default {
 
             this.columns = sortedColumns;
             this.dataCount = fullDataList.length;
-            this.data = data;
+            this.rows = rows;
         },
     },
 };

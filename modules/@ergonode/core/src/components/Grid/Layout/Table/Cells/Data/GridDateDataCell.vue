@@ -9,7 +9,6 @@
         :locked="isLocked"
         :draft="cellData.isDraft"
         :error="Boolean(errorMessages)"
-        :edit-key-code="editKeyCode"
         :disabled="isDisabled"
         :copyable="isCopyable"
         :selected="isSelected"
@@ -33,7 +32,6 @@ import {
 } from '@Core/models/calendar/calendar';
 import {
     format as formatDate,
-    parse as parseDate,
 } from 'date-fns';
 
 export default {
@@ -51,7 +49,13 @@ export default {
                 return '';
             }
 
-            return formatDate(new Date(this.cellData.value), this.column.parameters.format);
+            let format = DEFAULT_FORMAT;
+
+            if (this.column.parameters && this.column.parameters.format) {
+                format = this.column.parameters.format;
+            }
+
+            return formatDate(new Date(this.cellData.value), format);
         },
     },
     methods: {

@@ -16,7 +16,7 @@
         @mousedown="onAttachValueChange">
         <GridBoolEditCell
             :value="cellData.value"
-            :is-disabled="isLocked" />
+            :disabled="isLocked || isDisabled" />
     </GridTableCell>
 </template>
 

@@ -3,39 +3,45 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        :class="classes"
-        @mouseenter="onMouseEnter"
-        @mouseleave="onMouseLeave">
-        <GridHeaderCell
-            :title="title"
-            :hint="hint" />
+    <GridTableCell
+        :row="rowIndex"
+        :column="columnIndex"
+        :locked="true">
         <div
-            v-show="isActionsVisible"
-            :class="headerActionsClasses">
-            <IconArrowSort
-                :order="sortingOrder"
-                :fill-color="graphiteLightColor"
-                @click.native="onClickSort" />
-            <ActionIconButton
-                v-if="deletable"
-                :theme="secondaryPlainTheme"
-                :size="tinySize"
-                :options="contextualMenuItems"
-                @focus="onSelectFocus"
-                @input="onSelectOption">
-                <template #icon="{ color }">
-                    <IconDots :fill-color="color" />
-                </template>
-            </ActionIconButton>
+            :class="classes"
+            @mouseenter="onMouseEnter"
+            @mouseleave="onMouseLeave">
+            <GridHeaderCell
+                :title="title"
+                :hint="hint" />
+            <div
+                v-show="isActionsVisible"
+                :class="headerActionsClasses">
+                <IconArrowSort
+                    :order="sortingOrder"
+                    :fill-color="graphiteLightColor"
+                    @click.native="onClickSort" />
+                <ActionIconButton
+                    v-if="deletable"
+                    :theme="secondaryPlainTheme"
+                    :size="tinySize"
+                    :options="contextualMenuItems"
+                    @focus="onSelectFocus"
+                    @input="onSelectOption">
+                    <template #icon="{ color }">
+                        <IconDots :fill-color="color" />
+                    </template>
+                </ActionIconButton>
+            </div>
         </div>
-    </div>
+    </GridTableCell>
 </template>
 
 <script>
 import {
     GRAPHITE_LIGHT,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 import {
     SORTING_ORDER,
 } from '@Core/defaults/icons';
@@ -52,8 +58,9 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'GridInteractiveHeaderCell',
+    name: 'GridActionHeaderCell',
     components: {
+        GridTableCell,
         ActionIconButton: () => import('@Core/components/Buttons/ActionIconButton'),
         IconArrowSort: () => import('@Core/components/Icons/Arrows/IconArrowSort'),
         IconDots: () => import('@Core/components/Icons/Others/IconDots'),
@@ -76,6 +83,10 @@ export default {
             required: true,
         },
         columnIndex: {
+            type: Number,
+            required: true,
+        },
+        rowIndex: {
             type: Number,
             required: true,
         },
