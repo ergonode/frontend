@@ -56,25 +56,24 @@
                             @editFilterCell="onEditFilterCell"
                             @filterValue="onFilterValueChange" />
                     </template>
-                    <template v-for="(row, rowIndex) in rows">
-                        <GridDataCell
-                            :key="`${rowIds[rowIndex]}|${column.id}`"
-                            :data="row[column.id]"
-                            :draft="drafts[`${rowIds[rowIndex]}/${column.id}`]"
-                            :column="column"
-                            :type="columnTypes[column.type]"
-                            :error-messages="validationErrors[`${rowIds[rowIndex]}/${column.id}`]"
-                            :row-id="rowIds[rowIndex]"
-                            :column-index="columnIndex"
-                            :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
-                            :is-locked="!(column.editable && isEditable)"
-                            :is-copyable="column.editable && isEditable"
-                            :is-selected="isSelectedAllRows
-                                || selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
-                            @cellValue="onCellValueChange"
-                            @cellValues="onCellValuesChange"
-                            @editCell="onEditCell" />
-                    </template>
+                    <GridDataCell
+                        v-for="(row, rowIndex) in rows"
+                        :key="`${rowIds[rowIndex]}|${column.id}`"
+                        :data="row[column.id]"
+                        :draft="drafts[`${rowIds[rowIndex]}/${column.id}`]"
+                        :column="column"
+                        :type="columnTypes[column.type]"
+                        :error-messages="validationErrors[`${rowIds[rowIndex]}/${column.id}`]"
+                        :row-id="rowIds[rowIndex]"
+                        :column-index="columnIndex"
+                        :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
+                        :is-locked="!(column.editable && isEditable)"
+                        :is-copyable="column.editable && isEditable"
+                        :is-selected="isSelectedAllRows
+                            || selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
+                        @cellValue="onCellValueChange"
+                        @cellValues="onCellValuesChange"
+                        @editCell="onEditCell" />
                 </GridColumn>
             </GridDraggableColumn>
             <GridSentinelColumn

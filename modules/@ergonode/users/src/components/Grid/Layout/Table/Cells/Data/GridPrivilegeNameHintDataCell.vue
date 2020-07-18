@@ -8,6 +8,7 @@
         :column="columnIndex"
         :locked="isLocked"
         :draft="cellData.isDraft"
+        :selected="isSelected"
         :error="Boolean(errorMessages)"
         :disabled="isDisabled">
         <GridHintPresentationCell

@@ -10,6 +10,7 @@
                 :rows="rows"
                 :data-count="dataCount"
                 :is-editable="isEditingAllowed"
+                :is-select-column="true"
                 :is-border="true"
                 :is-footer-visible="false" />
         </template>
