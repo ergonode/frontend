@@ -9,11 +9,13 @@
         <GridTableLayoutPinnedSection
             v-if="isSelectColumn"
             :is-pinned="pinnedSections[pinnedState.LEFT]">
-            <GridSelectRowColumn
+            <Component
+                :is="selectRowColumnComponent"
                 :style="templateRows"
                 :column-index="0"
                 :data-count="dataCount"
                 :rows-offset="rowsOffset"
+                :drafts="drafts"
                 :is-basic-filter="isBasicFilter"
                 @rowSelect="onRowSelect"
                 @rowsSelect="onRowsSelect" />
@@ -182,7 +184,6 @@ export default {
         GridHeaderCell,
         GridTableLayoutPinnedSection: () => import('@Core/components/Grid/Layout/Table/Sections/GridTableLayoutPinnedSection'),
         GridSentinelColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridSentinelColumn'),
-        GridSelectRowColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridSelectRowColumn'),
     },
     props: {
         columns: {
@@ -268,6 +269,15 @@ export default {
 
                 return getUUID();
             });
+        },
+        selectRowColumnComponent() {
+            const extendedComponents = this.$getExtendedComponents('@Core/Components/Grid/Layout/Table/Columns/GridSelectRowColumn');
+
+            if (extendedComponents) {
+                return extendedComponents;
+            }
+
+            return () => import('@Core/components/Grid/Layout/Table/Columns/GridSelectRowColumn');
         },
         editCellComponent() {
             const type = capitalizeAndConcatenationArray(this.editCell.type.split('_'));
@@ -556,8 +566,10 @@ export default {
             } = this.visibleColumns;
 
             for (let i = 0; i < length; i += 1) {
-                orderedColumns.push(this.visibleColumns[i]);
-                columnWidths.push(COLUMN_WIDTH.DEFAULT);
+                const column = this.visibleColumns[i];
+
+                orderedColumns.push(column);
+                columnWidths.push(column.width || COLUMN_WIDTH.DEFAULT);
             }
 
             this.orderedColumns = orderedColumns;

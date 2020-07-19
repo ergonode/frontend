@@ -82,9 +82,11 @@
 </template>
 
 <script>
+import GridPagination from '@Core/components/Grid/Footer/GridPagination';
 import GridBody from '@Core/components/Grid/GridBody';
 import GridFooter from '@Core/components/Grid/GridFooter';
 import GridPreloader from '@Core/components/Grid/GridPreloader';
+import GridHeader from '@Core/components/Grid/Header/GridHeader';
 import GridCollectionLayout from '@Core/components/Grid/Layout/Collection/GridCollectionLayout';
 import GridTableLayout from '@Core/components/Grid/Layout/Table/GridTableLayout';
 import {
@@ -109,12 +111,12 @@ import {
 export default {
     name: 'Grid',
     components: {
-        GridHeader: () => import('@Core/components/Grid/Header/GridHeader'),
         GridPlaceholder: () => import('@Core/components/Grid/GridPlaceholder'),
-        GridPagination: () => import('@Core/components/Grid/Footer/GridPagination'),
         GridPageSelector: () => import('@Core/components/Grid/Footer/GridPageSelector'),
         DropZone: () => import('@Core/components/DropZone/DropZone'),
         IconAddColumn: () => import('@Core/components/Icons/Actions/IconAddColumn'),
+        GridPagination,
+        GridHeader,
         GridPreloader,
         GridBody,
         GridFooter,

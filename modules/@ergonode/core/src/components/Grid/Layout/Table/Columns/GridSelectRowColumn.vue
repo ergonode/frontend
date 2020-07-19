@@ -57,6 +57,10 @@ export default {
             type: Number,
             default: 0,
         },
+        drafts: {
+            type: Object,
+            default: () => ({}),
+        },
         isBasicFilter: {
             type: Boolean,
             default: false,
