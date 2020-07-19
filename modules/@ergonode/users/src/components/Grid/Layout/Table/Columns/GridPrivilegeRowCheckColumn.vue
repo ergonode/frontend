@@ -14,14 +14,14 @@
             <GridCheckEditCell :value="rowsSelectionState" />
         </GridTableCell>
         <GridTableCell
-            v-for="(id, rowIndex) in rowIds"
-            :key="id"
+            v-for="(rowId, rowIndex) in rowIds"
+            :key="rowIndex"
             :column="0"
             :edit-key-code="32"
             :row="rowsOffset + rowIndex + 1"
-            @mousedown="onSelectRow({ rowId: id, value: !selectedRows[id] })"
-            @edit="onSelectRow({ rowId: id, value: !selectedRows[id] })">
-            <GridCheckEditCell :value="selectedRows[id]" />
+            @mousedown="onSelectRow({ rowId, value: !selectedRows[rowId] })"
+            @edit="onSelectRow({ rowId, value: !selectedRows[rowId] })">
+            <GridCheckEditCell :value="selectedRows[rowId]" />
         </GridTableCell>
     </div>
 </template>
@@ -30,47 +30,50 @@
 import selectRowMixin from '@Users/mixins/grid/columns/selectRowMixin';
 
 export default {
-    name: 'GridPrivilegeSelectRowColumn',
+    name: 'GridPrivilegeRowCheckColumn',
     mixins: [
         selectRowMixin,
     ],
+    props: {
+        index: {
+            type: Number,
+            required: true,
+        },
+    },
     methods: {
         onSelectAllRows() {
             const value = !this.rowsSelectionState;
-            const draftValues = {};
+
+            const cellValues = [];
 
             this.rowIds.forEach((rowId) => {
-                draftValues[rowId] = {
-                    read: value,
-                    create: value,
-                    update: value,
-                    delete: value,
-                };
-
-                this.selectedRows[rowId] = +value;
+                cellValues.push(...[
+                    'read',
+                    'create',
+                    'update',
+                    'delete',
+                ].map(columnId => ({
+                    rowId,
+                    columnId,
+                    value: +value,
+                })));
             });
 
-            this.setDrafts(draftValues);
-            this.selectedRows = {
-                ...this.selectedRows,
-            };
+            this.$emit('cellValue', cellValues);
         },
         onSelectRow({
             rowId, value,
         }) {
-            this.selectedRows[rowId] = +value;
-            this.selectedRows = {
-                ...this.selectedRows,
-            };
-
-            this.setDrafts({
-                [rowId]: {
-                    read: +value,
-                    create: +value,
-                    update: +value,
-                    delete: +value,
-                },
-            });
+            this.$emit('cellValue', [
+                'read',
+                'create',
+                'update',
+                'delete',
+            ].map(columnId => ({
+                rowId,
+                columnId,
+                value: +value,
+            })));
         },
     },
 };

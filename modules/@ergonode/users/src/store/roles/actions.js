@@ -26,6 +26,11 @@ export default {
     }, value) {
         commit(types.SET_ROLE_PRIVILEGES, value);
     },
+    setPrivilegeDrafts({
+        commit,
+    }, value) {
+        commit(types.SET_ROLE_PRIVILEGE_DRAFTS, value);
+    },
     getRoleById(
         {
             commit, rootState,

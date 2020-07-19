@@ -56,7 +56,6 @@
                     @sort="onSortColumn"
                     @filter="onFilterChange"
                     @cellValue="onCellValueChange"
-                    @cellValues="onCellValuesChanges"
                     @focusCell="onFocusCell"
                     @rowAction="onRowAction" />
                 <GridCollectionLayout
@@ -291,9 +290,6 @@ export default {
         },
         onCellValueChange(payload) {
             this.$emit('cellValue', payload);
-        },
-        onCellValuesChanges(payload) {
-            this.$emit('cellValues', payload);
         },
         onFocusCell(payload) {
             this.$emit('focusCell', payload);

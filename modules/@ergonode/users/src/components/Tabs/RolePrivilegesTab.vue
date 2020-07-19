@@ -8,11 +8,12 @@
             <Grid
                 :columns="columns"
                 :rows="rows"
+                :drafts="drafts"
                 :data-count="dataCount"
                 :is-editable="isEditingAllowed"
-                :is-select-column="true"
                 :is-border="true"
-                :is-footer-visible="false" />
+                :is-footer-visible="false"
+                @cellValue="onCellValueChange" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -20,6 +21,7 @@
 <script>
 import Grid from '@Core/components/Grid/Grid';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import draftGridMixin from '@Core/mixins/grid/draftGridMixin';
 import {
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
@@ -28,6 +30,7 @@ import {
     getMappedGridData,
 } from '@Users/models/gridDataMapper';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -37,6 +40,9 @@ export default {
         ResponsiveCenteredViewTemplate,
         Grid,
     },
+    mixins: [
+        draftGridMixin,
+    ],
     data() {
         return {
             columns: [],
@@ -67,6 +73,31 @@ export default {
         },
     },
     methods: {
+        ...mapActions('roles', [
+            'setPrivilegeDrafts',
+        ]),
+        onCellValueChange(value) {
+            const drafts = {};
+
+            value.forEach(({
+                rowId, columnId, value,
+            }) => {
+                if (columnId !== 'read' && value) {
+                    drafts[`${rowId}/read`] = true;
+                }
+
+                if (columnId === 'read') {
+                    drafts[`${rowId}/create`] = false;
+                    drafts[`${rowId}/update`] = false;
+                    drafts[`${rowId}/delete`] = false;
+                }
+
+                drafts[`${rowId}/${columnId}`] = value;
+            });
+
+            this.setDrafts(drafts);
+            this.setPrivilegeDrafts(this.drafts);
+        },
         updateGridData() {
             const {
                 rows, columns,

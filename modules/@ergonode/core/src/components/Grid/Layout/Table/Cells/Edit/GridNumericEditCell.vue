@@ -73,13 +73,15 @@ export default {
     },
     beforeDestroy() {
         if (String(this.localValue) !== String(this.value)) {
-            this.$emit('cellValue', {
-                value: this.localValue !== '' ? +this.localValue : '',
-                rowId: this.rowId,
-                columnId: this.columnId,
-                row: this.row,
-                column: this.column,
-            });
+            this.$emit('cellValue', [
+                {
+                    value: this.localValue !== '' ? +this.localValue : '',
+                    rowId: this.rowId,
+                    columnId: this.columnId,
+                    row: this.row,
+                    column: this.column,
+                },
+            ]);
         }
     },
 };

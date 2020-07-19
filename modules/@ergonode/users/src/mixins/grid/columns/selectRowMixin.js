@@ -8,10 +8,6 @@ import {
     STATE,
 } from '@Core/defaults/inputs/checkbox';
 import deepmerge from 'deepmerge';
-import {
-    mapActions,
-    mapState,
-} from 'vuex';
 
 export default {
     components: {
@@ -19,11 +15,19 @@ export default {
         GridCheckEditCell,
     },
     props: {
-        rowIds: {
+        column: {
+            type: Object,
+            required: true,
+        },
+        drafts: {
+            type: Object,
+            required: true,
+        },
+        rows: {
             type: Array,
             default: () => [],
         },
-        data: {
+        rowIds: {
             type: Array,
             default: () => [],
         },
@@ -39,9 +43,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
         rowsSelectionState() {
             if (this.rowsAreDeselected) {
                 return STATE.UNCHECK;
@@ -69,38 +70,42 @@ export default {
             handler(value) {
                 const draftValues = {};
 
-                this.rowIds.forEach((rowId, index) => {
-                    this.selectedRows[rowId] = this.data[index].value;
+                Object.keys(value).forEach((key) => {
+                    const [
+                        id,
+                    ] = key.split('/');
+
+                    if (typeof draftValues[id] === 'undefined') {
+                        draftValues[id] = [];
+                    }
+
+                    draftValues[id].push(value[key]);
                 });
 
-                Object.keys(value).forEach((rowId) => {
-                    const checkValues = state => Object.values(value[rowId])
+                Object.keys(draftValues).forEach((id) => {
+                    const checkValues = state => draftValues[id]
                         .every(rowState => +rowState === state);
 
                     if (checkValues(STATE.UNCHECK)) {
-                        draftValues[rowId] = STATE.UNCHECK;
+                        draftValues[id] = STATE.UNCHECK;
                     } else if (checkValues(STATE.CHECK)) {
-                        draftValues[rowId] = STATE.CHECK;
+                        draftValues[id] = STATE.CHECK;
                     } else {
-                        draftValues[rowId] = STATE.CHECK_ANY;
+                        draftValues[id] = STATE.CHECK_ANY;
                     }
                 });
+
                 this.selectedRows = deepmerge(this.selectedRows, draftValues);
             },
         },
     },
     mounted() {
         this.rowIds.forEach((rowId, index) => {
-            this.selectedRows[rowId] = this.data[index].value;
+            this.selectedRows[rowId] = this.rows[index].selectRow.value;
         });
 
         this.selectedRows = {
             ...this.selectedRows,
         };
-    },
-    methods: {
-        ...mapActions('grid', [
-            'setDrafts',
-        ]),
     },
 };

@@ -45,9 +45,6 @@ export default {
         ...mapState('authentication', {
             user: state => state.user,
         }),
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
         ...mapState('users', {
             id: state => state.id,
             avatarId: state => state.avatarId,
@@ -76,9 +73,6 @@ export default {
         ]),
         ...mapActions('authentication', [
             'getUser',
-        ]),
-        ...mapActions('grid', [
-            'setDrafts',
         ]),
         ...mapActions('validations', [
             'onError',

@@ -106,15 +106,6 @@ export default {
             isElementDragging: state => state.isElementDragging,
             draggedElement: state => state.draggedElement,
         }),
-        headerCellComponent() {
-            const extendedComponents = this.$getExtendedComponents('@Core/Components/Grid/Layout/Table/Cells/Header');
-
-            if (!(extendedComponents && extendedComponents[this.type])) {
-                return null;
-            }
-
-            return extendedComponents[this.type];
-        },
         classes() {
             return [
                 'grid-header-cell',

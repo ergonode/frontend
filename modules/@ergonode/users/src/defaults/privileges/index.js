@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    COLUMN_WIDTH,
+} from '@Core/defaults/grid';
+import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
 
@@ -28,6 +31,7 @@ export const selectRowColumn = {
     type: 'PRIVILEGE_ROW_CHECK',
     editable: true,
     visible: true,
+    width: COLUMN_WIDTH.SELECT_ROW,
 };
 
 export const dataStructure = {

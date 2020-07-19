@@ -73,7 +73,7 @@ export default {
     },
     methods: {
         onCopyValues(payload) {
-            this.$emit('cellValues', {
+            this.$emit('columnValues', {
                 ...payload,
                 value: this.cellData.value,
                 rowId: this.rowId,
@@ -81,13 +81,15 @@ export default {
             });
         },
         onValueChange(value) {
-            this.$emit('cellValue', {
-                value,
-                rowId: this.rowId,
-                columnId: this.column.id,
-                row: this.rowIndex,
-                column: this.columnIndex,
-            });
+            this.$emit('cellValue', [
+                {
+                    value,
+                    rowId: this.rowId,
+                    columnId: this.column.id,
+                    row: this.rowIndex,
+                    column: this.columnIndex,
+                },
+            ]);
         },
         onEditCell() {
             this.$emit('editCell', {

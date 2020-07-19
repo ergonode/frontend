@@ -8,10 +8,12 @@
             <Grid
                 :columns="columns"
                 :rows="rows"
+                :drafts="drafts"
                 :data-count="dataCount"
                 :is-editable="isEditingAllowed"
                 :is-border="true"
-                :is-footer-visible="false" />
+                :is-footer-visible="false"
+                @cellValue="onCellValueChange" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -19,10 +21,11 @@
 <script>
 import Grid from '@Core/components/Grid/Grid';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import draftGridMixin from '@Core/mixins/grid/draftGridMixin';
 import {
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
-import languagesDefaults from '@Users/defaults/languages';
+import privilegeDefaults from '@Users/defaults/privileges';
 import {
     getMappedGridData,
     getMappedRestrictions,
@@ -38,6 +41,9 @@ export default {
         ResponsiveCenteredViewTemplate,
         Grid,
     },
+    mixins: [
+        draftGridMixin,
+    ],
     data() {
         return {
             columns: [],
@@ -68,6 +74,29 @@ export default {
         },
     },
     methods: {
+        onCellValueChange({
+            rowId, columnId, value,
+        }) {
+            const drafts = {};
+
+            value.forEach(({
+                rowId, columnId, value,
+            }) => {
+                if (columnId !== 'read' && value) {
+                    drafts[`${rowId}/read`] = true;
+                }
+
+                if (columnId === 'read') {
+                    drafts[`${rowId}/create`] = false;
+                    drafts[`${rowId}/update`] = false;
+                    drafts[`${rowId}/delete`] = false;
+                }
+
+                drafts[`${rowId}/${columnId}`] = value;
+            });
+
+            this.setDrafts(drafts);
+        },
         updateGridData() {
             const fullDataList = this.getActiveLanguages.map(({
                 name, code,
@@ -84,7 +113,7 @@ export default {
             } = getMappedGridData({
                 fullDataList,
                 selectedData: getMappedRestrictions(this.languagePrivilegesCollection),
-                defaults: languagesDefaults,
+                defaults: privilegeDefaults,
                 isEditable: true,
             });
             const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);

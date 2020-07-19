@@ -101,30 +101,3 @@ export function getMappedGridData({
         columns,
     };
 }
-
-export function getMappedPrivilegesBasedOnGridData({
-    selectedData,
-    drafts,
-}) {
-    const privilegeNames = Object.keys(drafts);
-    let mappedPrivileges = Object.keys(selectedData);
-
-    for (let i = 0; i < privilegeNames.length; i += 1) {
-        const privilegeName = privilegeNames[i];
-        const privilegeRole = drafts[privilegeName];
-        const privilegeTypes = Object.keys(privilegeRole);
-
-        for (let j = 0; j < privilegeTypes.length; j += 1) {
-            const type = privilegeTypes[j];
-            const mappedPrivilege = `${privilegeName}_${type.toUpperCase()}`;
-
-            if (!selectedData[mappedPrivilege] && drafts[privilegeName][type]) {
-                mappedPrivileges.push(mappedPrivilege);
-            } else if (!drafts[privilegeName][type]) {
-                mappedPrivileges = mappedPrivileges.filter(priv => priv !== mappedPrivilege);
-            }
-        }
-    }
-
-    return mappedPrivileges;
-}

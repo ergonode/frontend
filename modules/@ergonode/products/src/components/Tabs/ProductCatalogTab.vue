@@ -36,7 +36,6 @@
                 :is-collection-layout="true"
                 @editRow="onEditRow"
                 @cellValue="onCellValueChange"
-                @cellValues="onCellValuesChange"
                 @focusCell="onFocusCell"
                 @deleteRow="onRemoveRow"
                 @dropColumn="onDropColumn"
@@ -216,31 +215,10 @@ export default {
         },
     },
     methods: {
-        onCellValueChange({
-            rowId, columnId, value,
-        }) {
-            const {
-                element_id,
-            } = this.columns.find(column => column.id === columnId);
-
-            this.setDrafts({
-                [`${rowId}/${columnId}`]: value,
-            });
-
-            updateProductDraft().then(response => response.default({
-                $axios: this.$axios,
-                $store: this.$store,
-                fieldKey: `${rowId}/${columnId}`,
-                languageCode: columnId.split(':')[1],
-                productId: rowId,
-                elementId: element_id,
-                value,
-            }));
-        },
-        onCellValuesChange(editedCells) {
+        onCellValueChange(value) {
             const cachedElementIds = {};
 
-            const drafts = editedCells.reduce((prev, {
+            const drafts = value.reduce((prev, {
                 rowId, columnId, value,
             }) => {
                 const tmp = prev;
@@ -250,7 +228,7 @@ export default {
 
             this.setDrafts(drafts);
 
-            const requests = editedCells.map(({
+            const requests = value.map(({
                 rowId, columnId, value,
             }) => {
                 if (!cachedElementIds[columnId]) {

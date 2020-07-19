@@ -66,16 +66,16 @@ export default {
     beforeDestroy() {
         const localValue = this.localValue ? formatDate(this.localValue, DEFAULT_FORMAT) : '';
 
-        console.log(localValue, this.value);
-
         if (localValue !== this.value) {
-            this.$emit('cellValue', {
-                value: localValue,
-                rowId: this.rowId,
-                columnId: this.columnId,
-                row: this.row,
-                column: this.column,
-            });
+            this.$emit('cellValue', [
+                {
+                    value: localValue,
+                    rowId: this.rowId,
+                    columnId: this.columnId,
+                    row: this.row,
+                    column: this.column,
+                },
+            ]);
         }
     },
     methods: {
