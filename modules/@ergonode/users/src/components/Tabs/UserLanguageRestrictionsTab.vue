@@ -25,12 +25,13 @@ import draftGridMixin from '@Core/mixins/grid/draftGridMixin';
 import {
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
-import privilegeDefaults from '@Users/defaults/privileges';
+import privilegeDefaults from '@Users/defaults/languages';
 import {
     getMappedGridData,
     getMappedRestrictions,
 } from '@Users/models/gridDataMapper';
 import {
+    mapActions,
     mapGetters,
     mapState,
 } from 'vuex';
@@ -74,9 +75,10 @@ export default {
         },
     },
     methods: {
-        onCellValueChange({
-            rowId, columnId, value,
-        }) {
+        ...mapActions('users', [
+            'setLanguagePrivilegesDrafts',
+        ]),
+        onCellValueChange(value) {
             const drafts = {};
 
             value.forEach(({
@@ -87,15 +89,14 @@ export default {
                 }
 
                 if (columnId === 'read') {
-                    drafts[`${rowId}/create`] = false;
-                    drafts[`${rowId}/update`] = false;
-                    drafts[`${rowId}/delete`] = false;
+                    drafts[`${rowId}/edit`] = false;
                 }
 
                 drafts[`${rowId}/${columnId}`] = value;
             });
 
             this.setDrafts(drafts);
+            this.setLanguagePrivilegesDrafts(this.drafts);
         },
         updateGridData() {
             const fullDataList = this.getActiveLanguages.map(({

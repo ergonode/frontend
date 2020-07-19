@@ -25,6 +25,7 @@ export default {
         },
         '@Core/Components/Grid/Layout/Table/Columns': {
             PRIVILEGE_ROW_CHECK: Components.GridPrivilegeRowCheckColumn,
+            LANGUAGE_ROW_CHECK: Components.GridLanguageRowCheckColumn,
         },
     },
 };

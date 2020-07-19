@@ -28,6 +28,14 @@ export default {
                 : privileges,
         });
     },
+    setLanguagePrivilegesDrafts({
+        commit,
+    }, value) {
+        commit(types.SET_STATE, {
+            key: 'drafts',
+            value,
+        });
+    },
     getUserById(
         {
             commit, rootState, rootGetters,

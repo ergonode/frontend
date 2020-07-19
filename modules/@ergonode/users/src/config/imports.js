@@ -29,4 +29,5 @@ export const Icons = {
 export const Components = {
     GridPrivilegeNameHintDataCell: () => import('@Users/components/Grid/Layout/Table/Cells/Data/GridPrivilegeNameHintDataCell'),
     GridPrivilegeRowCheckColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeRowCheckColumn'),
+    GridLanguageRowCheckColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridLanguageRowCheckColumn'),
 };

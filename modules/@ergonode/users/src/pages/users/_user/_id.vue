@@ -12,7 +12,6 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import deepmerge from 'deepmerge';
 import {
     mapActions,
     mapGetters,
@@ -56,6 +55,7 @@ export default {
             passwordRepeat: state => state.passwordRepeat,
             isActive: state => state.isActive,
             role: state => state.role,
+            drafts: state => state.drafts,
             languagePrivilegesCollection: state => state.languagePrivilegesCollection,
         }),
         title() {
@@ -89,6 +89,20 @@ export default {
                     }
                     return languages;
                 }, {});
+
+            Object.keys(this.drafts).forEach((key) => {
+                const [
+                    languageCode,
+                    privilege,
+                ] = key.split('/');
+
+                if (typeof activeLanguages[languageCode] === 'undefined') {
+                    activeLanguages[languageCode] = {};
+                }
+
+                activeLanguages[languageCode][privilege] = this.drafts[key];
+            });
+
             const user = {
                 firstName: this.firstName,
                 lastName: this.lastName,
@@ -97,10 +111,7 @@ export default {
                 passwordRepeat: this.passwordRepeat,
                 roleId: this.role,
                 isActive: this.isActive,
-                languagePrivilegesCollection: deepmerge(
-                    activeLanguages,
-                    this.drafts,
-                ),
+                languagePrivilegesCollection: activeLanguages,
             };
 
             try {
@@ -120,7 +131,6 @@ export default {
                         message: 'User updated',
                     });
                     this.setLanguagePrivileges(user.languagePrivilegesCollection);
-                    this.setDrafts();
 
                     // TODO: Along Notification introduce - remove it from it - this solution is preventing from relogging to see newly edited data for user if edited user is logged one
                     if (this.user.id === this.id) {
