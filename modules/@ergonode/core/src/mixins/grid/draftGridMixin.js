@@ -3,8 +3,6 @@
  * See LICENSE for license details.
  */
 
-import deepmerge from 'deepmerge';
-
 export default {
     data() {
         return {
@@ -12,12 +10,8 @@ export default {
         };
     },
     methods: {
-        setDrafts(drafts = null) {
-            if (drafts) {
-                this.drafts = deepmerge(this.drafts, drafts);
-            } else {
-                this.drafts = {};
-            }
+        setDrafts(drafts = {}) {
+            this.drafts = drafts;
         },
         removeDraftRow(rowId) {
             const tmpDrafts = {

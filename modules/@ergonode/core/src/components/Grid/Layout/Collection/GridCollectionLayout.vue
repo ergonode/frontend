@@ -9,11 +9,10 @@
         <GridCollectionCell
             v-for="(element, index) in data"
             :key="index"
-            :actions="element.actions"
-            :image="element.image"
-            :description="element.description"
+            :data="element"
             :object-fit="objectFit"
-            @edit="onEditCell" />
+            @edit="onEditCell"
+            @cellValue="onCellValueChange" />
     </div>
 </template>
 
@@ -48,10 +47,13 @@ export default {
     },
     methods: {
         onEditCell(args) {
-            this.$emit('editRow', {
+            this.$emit('rowAction', {
                 key: 'edit',
                 value: args,
             });
+        },
+        onCellValueChange(payload) {
+            this.$emit('cellValue', payload);
         },
     },
 };

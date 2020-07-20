@@ -21,13 +21,14 @@ import {
 export default {
     setStateProperty({
         commit,
-        dispatch,
     }, payload) {
         commit(types.SET_STATE_PROPERTY, payload);
     },
     getTemplateByID(
         {
-            commit, dispatch, state, rootState,
+            commit,
+            dispatch,
+            rootState,
         },
         id,
     ) {

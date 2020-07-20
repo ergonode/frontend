@@ -3,10 +3,6 @@
  * See LICENSE for license details.
  */
 import {
-    COLUMN_WIDTH,
-} from '@Core/defaults/grid';
-
-import {
     Components,
 } from './imports';
 

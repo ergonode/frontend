@@ -12,5 +12,8 @@ export default {
         '@Core/Components/Grid/Layout/Table/Cells/Data': {
             MEDIA_ATTACH: Components.GridMediaAttachDataCell,
         },
+        '@Core/Components/Grid/Layout/Collection/Cells': {
+            MEDIA_ATTACH: Components.GridMediaAttachCollectionCell,
+        },
     },
 };

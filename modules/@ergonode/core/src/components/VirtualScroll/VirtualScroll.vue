@@ -107,9 +107,9 @@ export default {
 
         &__viewport {
             position: relative;
-            overflow: hidden;
             width: 100%;
             will-change: transform;
+            overflow: hidden;
         }
     }
 </style>

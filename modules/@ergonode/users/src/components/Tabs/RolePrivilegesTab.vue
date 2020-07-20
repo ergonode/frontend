@@ -76,10 +76,10 @@ export default {
         ...mapActions('roles', [
             'setPrivilegeDrafts',
         ]),
-        onCellValueChange(value) {
+        onCellValueChange(cellValues) {
             const drafts = {};
 
-            value.forEach(({
+            cellValues.forEach(({
                 rowId, columnId, value,
             }) => {
                 if (columnId !== 'read' && value) {

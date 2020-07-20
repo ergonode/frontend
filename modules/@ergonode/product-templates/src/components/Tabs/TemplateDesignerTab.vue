@@ -248,7 +248,7 @@ export default {
                     element: {
                         ...this.layoutElements[index],
                         ...position,
-                    }
+                    },
                 });
             } else if (this.draggedElement === this.sectionType) {
                 this.sectionPosition = position;
@@ -282,6 +282,5 @@ export default {
 <style lang="scss" scoped>
     .template-grid {
         overflow: auto;
-        border-left: $BORDER_1_GREY;
     }
 </style>

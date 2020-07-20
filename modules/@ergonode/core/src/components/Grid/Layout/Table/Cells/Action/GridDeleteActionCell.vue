@@ -7,6 +7,7 @@
         :column="column"
         :row="row"
         :selected="isSelected"
+        :edit-key-code="32"
         @mousedown="onDelete"
         @edit="onDelete">
         <IconDelete />

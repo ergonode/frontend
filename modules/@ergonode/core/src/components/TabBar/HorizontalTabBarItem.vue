@@ -32,15 +32,15 @@ export default {
         flex: 0 0 176px;
         justify-content: center;
         padding-top: 6px;
+        border: none;
         background-color: $WHITE;
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_14_20;
-        border: none;
         text-align: center;
         text-overflow: ellipsis;
+        cursor: pointer;
         overflow: hidden;
         word-break: break-all;
         text-decoration: none;
-        cursor: pointer;
     }
 </style>

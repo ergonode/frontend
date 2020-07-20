@@ -78,10 +78,10 @@ export default {
         ...mapActions('users', [
             'setLanguagePrivilegesDrafts',
         ]),
-        onCellValueChange(value) {
+        onCellValueChange(cellValues) {
             const drafts = {};
 
-            value.forEach(({
+            cellValues.forEach(({
                 rowId, columnId, value,
             }) => {
                 if (columnId !== 'read' && value) {

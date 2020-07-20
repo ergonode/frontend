@@ -104,9 +104,14 @@ export default {
                 rows,
                 filtered,
             }) => {
-                for (let i = 0; i < rows.length; i += 1) {
-                    rows[i].esa_attached = {
-                        value: productChildren.collection.some(item => item.id === rows[i].id.value),
+                const tmpRows = [
+                    ...rows,
+                ];
+
+                for (let i = 0; i < tmpRows.length; i += 1) {
+                    tmpRows[i].esa_attached = {
+                        value: productChildren.collection
+                            .some(item => item.id === rows[i].id.value),
                         sku: rows[i].sku.value,
                     };
                 }
@@ -130,7 +135,7 @@ export default {
                         },
                     ],
                     filtered,
-                    rows,
+                    rows: tmpRows,
                 };
             });
         });
@@ -242,8 +247,12 @@ export default {
                 }).then(({
                     collection,
                 }) => {
+                    const tmpRows = [
+                        ...rows,
+                    ];
+
                     for (let i = 0; i < rows.length; i += 1) {
-                        rows[i].esa_attached = {
+                        tmpRows[i].esa_attached = {
                             value: collection.some(item => item.id === rows[i].id.value),
                             sku: rows[i].sku.value,
                         };

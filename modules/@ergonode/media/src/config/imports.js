@@ -12,6 +12,7 @@ export const Tabs = {
 
 export const Components = {
     GridMediaAttachDataCell: () => import('@Media/components/Grid/Layout/Table/Cells/Data/GridMediaAttachDataCell').then(m => m.default || m),
+    GridMediaAttachCollectionCell: () => import('@Media/components/Grid/Layout/Collection/Cells/GridMediaAttachCollectionCell').then(m => m.default || m),
 };
 
 export const Icons = {

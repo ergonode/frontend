@@ -36,7 +36,7 @@ import {
 } from '@Core/models/mappers/translationsMapper';
 
 export default {
-    name: 'GridMultiSelectEditCell',
+    name: 'GridMultiSelectEditFilterCell',
     components: {
         GridSelectEditContentCell,
         TranslationSelect,
@@ -77,7 +77,14 @@ export default {
     beforeDestroy() {
         const optionIds = this.localValue.map(option => option.id);
 
-        if (!arraysAreEqual(optionIds, this.value.map(option => option.id))) {
+        const isEqual = arraysAreEqual(
+            optionIds,
+            this.value[FILTER_OPERATOR.EQUAL]
+                ? this.value[FILTER_OPERATOR.EQUAL].map(option => option.id)
+                : [],
+        );
+
+        if (!isEqual) {
             this.$emit('filterValue', {
                 value: {
                     [FILTER_OPERATOR.EQUAL]: optionIds,

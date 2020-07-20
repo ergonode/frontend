@@ -26,8 +26,8 @@ export default {
 <style lang="scss" scoped>
     .grid-image-presentation-cell {
         display: flex;
-        padding: 8px;
         height: 100%;
+        padding: 8px;
         box-sizing: border-box;
     }
 </style>

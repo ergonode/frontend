@@ -13,7 +13,10 @@ export const types = {
 };
 
 export default {
-    [types.SET_STATE_PROPERTY](state, { key, value }) {
+    [types.SET_STATE_PROPERTY](state, {
+        key,
+        value,
+    }) {
         state[key] = value;
     },
     [types.UPDATE_LAYOUT_ELEMENT_AT_INDEX](state, {

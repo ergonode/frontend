@@ -12,6 +12,7 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import deepmerge from 'deepmerge';
 import {
     mapActions,
     mapGetters,
@@ -80,15 +81,7 @@ export default {
         ]),
         async onSave() {
             let isUpdated = false;
-            const activeLanguages = Object.keys(this.languagePrivilegesCollection)
-                .reduce((acc, languageCode) => {
-                    const languages = acc;
-
-                    if (this.getActiveLanguageByCode(languageCode).name) {
-                        languages[languageCode] = this.languagePrivilegesCollection[languageCode];
-                    }
-                    return languages;
-                }, {});
+            const mappedDrafts = {};
 
             Object.keys(this.drafts).forEach((key) => {
                 const [
@@ -96,11 +89,11 @@ export default {
                     privilege,
                 ] = key.split('/');
 
-                if (typeof activeLanguages[languageCode] === 'undefined') {
-                    activeLanguages[languageCode] = {};
+                if (typeof mappedDrafts[languageCode] === 'undefined') {
+                    mappedDrafts[languageCode] = {};
                 }
 
-                activeLanguages[languageCode][privilege] = this.drafts[key];
+                mappedDrafts[languageCode][privilege] = Boolean(this.drafts[key]);
             });
 
             const user = {
@@ -111,7 +104,10 @@ export default {
                 passwordRepeat: this.passwordRepeat,
                 roleId: this.role,
                 isActive: this.isActive,
-                languagePrivilegesCollection: activeLanguages,
+                languagePrivilegesCollection: deepmerge(
+                    this.languagePrivilegesCollection,
+                    mappedDrafts,
+                ),
             };
 
             try {

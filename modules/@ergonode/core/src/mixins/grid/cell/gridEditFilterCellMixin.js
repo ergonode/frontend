@@ -14,7 +14,9 @@ export default {
     props: {
         value: {
             type: Object,
-            default: () => ({}),
+            default: () => ({
+                [FILTER_OPERATOR.EQUAL]: [],
+            }),
         },
         bounds: {
             type: [

@@ -215,10 +215,10 @@ export default {
         },
     },
     methods: {
-        onCellValueChange(value) {
+        onCellValueChange(cellValues) {
             const cachedElementIds = {};
 
-            const drafts = value.reduce((prev, {
+            const drafts = cellValues.reduce((prev, {
                 rowId, columnId, value,
             }) => {
                 const tmp = prev;
@@ -228,7 +228,7 @@ export default {
 
             this.setDrafts(drafts);
 
-            const requests = value.map(({
+            const requests = cellValues.map(({
                 rowId, columnId, value,
             }) => {
                 if (!cachedElementIds[columnId]) {
@@ -295,7 +295,8 @@ export default {
         async saveDrafts() {
             const promises = [];
 
-            const applyProductDraftModule = await applyProductDraft().then(request => request.default);
+            const applyProductDraftModule = await applyProductDraft()
+                .then(request => request.default);
 
             Object.keys(this.drafts).forEach((key) => {
                 const [

@@ -61,9 +61,6 @@ import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import {
     debounce,
 } from 'debounce';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'MediaGrid',
@@ -113,9 +110,17 @@ export default {
             return {
                 imageColumn: 'image',
                 descriptionColumn: 'name',
+                type: 'MEDIA_ATTACH',
+                additionalColumns: [
+                    'esa_attached',
+                ],
             };
         },
         columnsWithAttachColumn() {
+            if (!this.columns.length) {
+                return [];
+            }
+
             return [
                 ...this.columns,
                 {
@@ -163,25 +168,28 @@ export default {
         this.observer.disconnect();
     },
     methods: {
-        onCellValueChange({
-            rowId, columnId, value,
-        }) {
+        onCellValueChange(cellValues) {
             const drafts = {};
 
-            if (!this.multiple && this.value) {
-                if (typeof this.drafts[`${this.value}/${columnId}`] === 'undefined') {
-                    drafts[`${this.value}/${columnId}`] = false;
-                } else {
-                    const lastSelectedDraftKey = Object.keys(this.drafts)
-                        .find(key => this.drafts[key]);
+            cellValues.forEach(({
+                rowId,
+                columnId,
+                value,
+            }) => {
+                if (!this.multiple && this.value) {
+                    if (typeof this.drafts[`${this.value}/${columnId}`] === 'undefined') {
+                        drafts[`${this.value}/${columnId}`] = false;
+                    } else {
+                        const lastSelectedDraftKey = Object.keys(this.drafts)
+                            .find(key => this.drafts[key]);
 
-                    if (lastSelectedDraftKey !== `${rowId}/${columnId}`) {
-                        drafts[lastSelectedDraftKey] = false;
+                        if (lastSelectedDraftKey !== `${rowId}/${columnId}`) {
+                            drafts[lastSelectedDraftKey] = false;
+                        }
                     }
                 }
-            }
-
-            drafts[`${rowId}/${columnId}`] = value;
+                drafts[`${rowId}/${columnId}`] = value;
+            });
 
             this.setDrafts(drafts);
         },

@@ -99,12 +99,12 @@
                             @editCell="onEditCell" />
                     </GridColumn>
                 </GridDraggableColumn>
-                <GridSentinelColumn
-                    v-if="actionColumns.length"
-                    :style="{ gridColumn: `${orderedColumns.length}`}"
-                    :pinned-state="pinnedState.RIGHT"
-                    @sticky="onStickyChange" />
             </template>
+            <GridSentinelColumn
+                v-if="actionColumns.length"
+                :style="{ gridColumn: `${orderedColumns.length}`}"
+                :pinned-state="pinnedState.RIGHT"
+                @sticky="onStickyChange" />
         </GridTableLayoutColumnsSection>
         <GridTableLayoutPinnedSection
             v-if="actionColumns.length"
@@ -124,6 +124,7 @@
                     :locked="true" />
                 <template v-for="(row, rowIndex) in rows">
                     <GridActionCell
+                        :key="`${rowIds[rowIndex]}|${column.id}`"
                         :column-index="orderedColumns.length + columnIndex + columnsOffset"
                         :column="column"
                         :action="row._links.value[column.id]"
@@ -184,7 +185,6 @@ import {
 } from '@Core/models/mappers/gridDataMapper';
 import {
     capitalizeAndConcatenationArray,
-    getUUID,
 } from '@Core/models/stringWrapper';
 import {
     mapActions,
@@ -218,6 +218,10 @@ export default {
             default: () => [],
         },
         rows: {
+            type: Array,
+            default: () => [],
+        },
+        rowIds: {
             type: Array,
             default: () => [],
         },
@@ -282,17 +286,6 @@ export default {
                 tmp[current.type] = capitalizeAndConcatenationArray(current.type.split('_'));
                 return tmp;
             }, {});
-        },
-        rowIds() {
-            return this.rows.map(({
-                id,
-            }) => {
-                if (id && id.value) {
-                    return id.value;
-                }
-
-                return getUUID();
-            });
         },
         editCellComponent() {
             const type = capitalizeAndConcatenationArray(this.editCell.type.split('_'));
@@ -514,11 +507,11 @@ export default {
             const offset = from.row - rowIndex;
 
             const getMappedValues = ({
-                startIndex, to,
+                startIndex, endIndex,
             }) => {
                 const values = [];
 
-                for (let i = startIndex; i <= to; i += 1) {
+                for (let i = startIndex; i <= endIndex; i += 1) {
                     if (this.rows[i]
                         && this.rows[i][columnId]
                         && this.rows[i][columnId].value !== value) {
@@ -536,11 +529,11 @@ export default {
             const values = getMappedValues(from.row < to.row
                 ? {
                     startIndex: from.row - offset,
-                    to: to.row - offset,
+                    endIndex: to.row - offset,
                 }
                 : {
                     startIndex: to.row - offset,
-                    to: from.row - offset,
+                    endIndex: from.row - offset,
                 });
 
             this.$emit('cellValue', values);

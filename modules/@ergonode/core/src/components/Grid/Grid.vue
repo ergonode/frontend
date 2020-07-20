@@ -31,7 +31,6 @@
             :disabled="isListElementDragging && isColumnExists"
             :is-border="isHeaderVisible">
             <GridPreloader v-show="isPrefetchingData" />
-            <GridPlaceholder v-show="dataCount === 0 && !isPrefetchingData" />
             <DropZone
                 v-show="isListElementDragging && !isColumnExists"
                 title="ADD COLUMN"
@@ -46,6 +45,7 @@
                     :columns="columns"
                     :action-columns="actionColumns"
                     :rows="rows"
+                    :row-ids="rowIds"
                     :drafts="drafts"
                     :current-page="currentPage"
                     :max-rows="maxRows"
@@ -63,8 +63,10 @@
                     :data="collectionData"
                     :columns-number="collectionLayoutConfig.columnsNumber"
                     :object-fit="collectionLayoutConfig.scaling"
-                    @rowAction="onRowAction" />
+                    @rowAction="onRowAction"
+                    @cellValue="onCellValueChange" />
             </KeepAlive>
+            <GridPlaceholder v-show="dataCount === 0 && !isPrefetchingData" />
         </GridBody>
         <GridFooter v-if="isFooterVisible">
             <GridPageSelector
@@ -103,6 +105,9 @@ import {
 import {
     getMergedFilters,
 } from '@Core/models/mappers/gridDataMapper';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
 import {
     mapState,
 } from 'vuex';
@@ -144,6 +149,8 @@ export default {
             default: () => ({
                 imageColumn: '',
                 descriptionColumn: '',
+                type: '',
+                additionalColumns: [],
             }),
         },
         defaultLayout: {
@@ -265,17 +272,48 @@ export default {
         maxPage() {
             return Math.ceil(this.dataCount / this.maxRows) || 1;
         },
+        rowIds() {
+            return this.rows.map(({
+                id,
+            }) => {
+                if (id && id.value) {
+                    return id.value;
+                }
+
+                return getUUID();
+            });
+        },
         collectionData() {
             const {
-                imageColumn, descriptionColumn,
+                imageColumn,
+                type,
+                descriptionColumn,
+                additionalColumns,
             } = this.collectionCellBinding;
 
+            if (!(imageColumn && descriptionColumn)) {
+                return [];
+            }
+
             return this.rows
-                .filter(row => row[imageColumn] || row[descriptionColumn])
-                .map(row => ({
-                    image: row[imageColumn] ? row[imageColumn].value : '',
-                    description: row[descriptionColumn] ? row[descriptionColumn].value : '',
-                }));
+                .map((row, index) => {
+                    const additionalData = {};
+
+                    if (additionalColumns) {
+                        additionalColumns.forEach((columnId) => {
+                            additionalData[columnId] = row[columnId] ? row[columnId].value : '';
+                        });
+                    }
+
+                    return {
+                        id: this.rowIds[index],
+                        image: row[imageColumn] ? row[imageColumn].value : '',
+                        description: row[descriptionColumn] ? row[descriptionColumn].value : '',
+                        type,
+                        actions: row._links ? row._links.value : '',
+                        ...additionalData,
+                    };
+                });
         },
     },
     methods: {

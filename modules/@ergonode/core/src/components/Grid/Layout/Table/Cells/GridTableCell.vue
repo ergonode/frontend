@@ -102,7 +102,6 @@ export default {
             let element;
 
             const tableLayout = document.documentElement.querySelector('.grid-table-layout');
-
             switch (keyCode) {
             case this.editKeyCode:
                 if (!(this.locked && this.disabled)) {
@@ -153,8 +152,8 @@ export default {
     .grid-table-cell {
         position: relative;
         display: flex;
-        align-items: center;
         justify-content: space-between;
+        align-items: center;
         outline: none;
         box-sizing: border-box;
         border-bottom: 1px solid $GREY;

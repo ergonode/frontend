@@ -22,8 +22,8 @@ export default {
 
 <style lang="scss" scoped>
     .grid-suffix-presentation-cell {
+        margin: 0 6px;
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_12_16;
-        margin: 0 6px;
     }
 </style>
