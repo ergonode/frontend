@@ -117,8 +117,8 @@ export default {
 
         &__title {
             display: flex;
-            justify-content: space-between;
             flex: 1 1 auto;
+            justify-content: space-between;
             width: 0;
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_12_16;
