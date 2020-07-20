@@ -3,35 +3,39 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridActivatorEditCell>
-        <GridTextEditContentCell :style="{width: `${width + 8}px`}">
+    <GridEditNavigationCell @edit="onEditCell">
+        <GridTextEditContentCell :style="positionStyle">
             <TextField
                 v-model="localValue"
                 autofocus
                 :alignment="leftAlignment"
                 :error-messages="errorMessages"
                 :input="{ type: 'number' }"
-                :size="smallSize" />
+                :size="smallSize"
+                :type="underlineType" />
         </GridTextEditContentCell>
-    </GridActivatorEditCell>
+    </GridEditNavigationCell>
 </template>
 
 <script>
 import GridTextEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
-import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import TextField from '@Core/components/Inputs/TextField';
 import {
     ALIGNMENT,
+    INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
+import gridEditCellMixin from '@Core/mixins/grid/cell/gridEditCellMixin';
 
 export default {
     name: 'GridNumericEditCell',
     components: {
-        GridActivatorEditCell,
         GridTextEditContentCell,
         TextField,
     },
+    mixins: [
+        gridEditCellMixin,
+    ],
     props: {
         value: {
             type: [
@@ -40,21 +44,26 @@ export default {
             ],
             default: '',
         },
-        errorMessages: {
-            type: String,
-            default: '',
-        },
-        width: {
-            type: Number,
-            default: 0,
-        },
-    },
-    data() {
-        return {
-            localValue: this.value,
-        };
     },
     computed: {
+        positionStyle() {
+            const {
+                x,
+                y,
+                width,
+                height,
+            } = this.bounds;
+
+            return {
+                top: `${y}px`,
+                left: `${x}px`,
+                width: `${width + 8}px`,
+                minHeight: `${height + 8}px`,
+            };
+        },
+        underlineType() {
+            return INPUT_TYPE.UNDERLINE;
+        },
         smallSize() {
             return SIZE.SMALL;
         },
@@ -63,8 +72,16 @@ export default {
         },
     },
     beforeDestroy() {
-        if (+this.localValue !== +this.value) {
-            this.$emit('input', this.localValue !== '' ? +this.localValue : '');
+        if (String(this.localValue) !== String(this.value)) {
+            this.$emit('cellValue', [
+                {
+                    value: this.localValue !== '' ? +this.localValue : '',
+                    rowId: this.rowId,
+                    columnId: this.columnId,
+                    row: this.row,
+                    column: this.column,
+                },
+            ]);
         }
     },
 };

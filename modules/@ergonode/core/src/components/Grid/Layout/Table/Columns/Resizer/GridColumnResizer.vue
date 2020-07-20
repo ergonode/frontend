@@ -4,10 +4,7 @@
  */
 <template>
     <div
-        :class="[
-            'column-resizer',
-            { 'column-resizer--resizing': isResizing || isMouseOver }
-        ]"
+        :class="classes"
         @mousedown="onInitResize"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave" />
@@ -32,6 +29,16 @@ export default {
             startWidth: 0,
             startX: 0,
         };
+    },
+    computed: {
+        classes() {
+            return [
+                'column-resizer',
+                {
+                    'column-resizer--resizing': this.isResizing || this.isMouseOver,
+                },
+            ];
+        },
     },
     methods: {
         onMouseEnter() {
@@ -86,7 +93,7 @@ export default {
         position: absolute;
         top: 0;
         right: 1.25px;
-        z-index: $Z_INDEX_LVL_2;
+        z-index: $Z_INDEX_LVL_5;
         width: 2.5px;
         height: 100%;
         cursor: col-resize;

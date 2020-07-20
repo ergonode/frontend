@@ -3,47 +3,37 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridActionColumn
-        :column-index="columnIndex"
-        :rows-offset="rowsOffset"
-        :data-count="dataCount"
-        :is-basic-filter="isBasicFilter">
-        <template #headerCell>
-            <GridTableCell
-                editing-allowed
-                :edit-key-code="32"
-                :row="rowsOffset"
-                :column="0"
-                @edit="onSelectAllRows">
-                <GridCheckEditCell
-                    :value="rowsSelectionState"
-                    @input="onSelectAllRows" />
-            </GridTableCell>
-        </template>
-        <template #filterCell="{ rowIndex }">
-            <GridTableCell
-                v-if="isBasicFilter"
-                :locked="true"
-                :row="rowIndex"
-                :column="0">
-                <GridCheckPlaceholderCell />
-            </GridTableCell>
-        </template>
-        <template #cell="{ index, rowIndex }">
-            <GridSelectRowEditCell
-                :key="index"
-                :column="0"
-                :row="rowIndex"
-                :is-selected="isSelectedAllRows
-                    || selectedRows[rowIndex]"
-                @select="onSelectRow" />
-        </template>
+    <GridActionColumn>
+        <GridTableCell
+            editing-allowed
+            :edit-key-code="32"
+            :row="rowsOffset"
+            :column="0"
+            @mousedown="onSelectAllRows"
+            @edit="onSelectAllRows">
+            <GridCheckEditCell :value="rowsSelectionState" />
+        </GridTableCell>
+        <GridTableCell
+            v-if="isBasicFilter"
+            :locked="true"
+            :row="rowsOffset + 1"
+            :column="0">
+            <GridCheckPlaceholderCell />
+        </GridTableCell>
+        <GridSelectRowEditCell
+            v-for="(key, index) in dataCount"
+            :key="key"
+            :column="0"
+            :row="rowsOffset + index + basicFiltersOffset + 1"
+            :is-selected="isSelectedAllRows
+                || selectedRows[rowsOffset + index + basicFiltersOffset + 1]"
+            @select="onSelectRow" />
     </GridActionColumn>
 </template>
 
 <script>
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
-import GridActionColumn from '@Core/components/Grid/Layout/Table/Columns/Action/GridActionColumn';
+import GridActionColumn from '@Core/components/Grid/Layout/Table/Columns/GridActionColumn';
 
 export default {
     name: 'GridSelectRowColumn',
@@ -66,6 +56,10 @@ export default {
         rowsOffset: {
             type: Number,
             default: 0,
+        },
+        drafts: {
+            type: Object,
+            default: () => ({}),
         },
         isBasicFilter: {
             type: Boolean,

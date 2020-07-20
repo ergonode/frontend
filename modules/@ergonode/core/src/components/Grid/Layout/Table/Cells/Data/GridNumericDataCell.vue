@@ -9,20 +9,15 @@
         :locked="isLocked"
         :draft="cellData.isDraft"
         :error="Boolean(errorMessages)"
-        :edit-key-code="editKeyCode"
         :disabled="isDisabled"
         :copyable="isCopyable"
         :selected="isSelected"
+        @edit="onEditCell"
         @copy="onCopyValues">
-        <template #default="{ isEditing }">
-            <GridNumericEditCell
-                v-if="isEditing"
-                :value="cellData.value"
-                :width="$el.offsetWidth"
-                @input="onValueChange" />
-            <GridPresentationCell
-                v-else-if="!isEditing && (cellData.value || cellData.value === 0)"
-                :value="cellData.value"
+        <template v-if="cellData.value || cellData.value === 0">
+            <GridPresentationCell :value="cellData.value" />
+            <GridSuffixPresentationCell
+                v-if="data.suffix"
                 :suffix="data.suffix" />
         </template>
     </GridTableCell>
@@ -30,32 +25,31 @@
 
 <script>
 import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
+import GridSuffixPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
-import {
-    cellDataCompose,
-} from '@Core/models/mappers/gridDataMapper';
-import {
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'GridNumericDataCell',
     components: {
         GridPresentationCell,
-        GridNumericEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridNumericEditCell'),
+        GridSuffixPresentationCell,
     },
     mixins: [
         gridDataCellMixin,
     ],
     computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
         cellData() {
-            const check = (data, draftValue) => +data !== +draftValue;
-            const getMappedValue = cellDataCompose(check);
+            if (this.draft !== null && +this.data.value !== +this.draft) {
+                return {
+                    value: +this.draft,
+                    isDraft: true,
+                };
+            }
 
-            return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
+            return {
+                value: +this.data.value,
+                isDraft: false,
+            };
         },
     },
 };

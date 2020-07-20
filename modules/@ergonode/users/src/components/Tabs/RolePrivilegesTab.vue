@@ -7,10 +7,13 @@
         <template #content>
             <Grid
                 :columns="columns"
-                :data="data"
+                :rows="rows"
+                :drafts="drafts"
                 :data-count="dataCount"
                 :is-editable="isEditingAllowed"
-                :is-footer-visible="false" />
+                :is-border="true"
+                :is-footer-visible="false"
+                @cellValue="onCellValueChange" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -18,6 +21,7 @@
 <script>
 import Grid from '@Core/components/Grid/Grid';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import draftGridMixin from '@Core/mixins/grid/draftGridMixin';
 import {
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
@@ -26,6 +30,7 @@ import {
     getMappedGridData,
 } from '@Users/models/gridDataMapper';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -35,10 +40,13 @@ export default {
         ResponsiveCenteredViewTemplate,
         Grid,
     },
+    mixins: [
+        draftGridMixin,
+    ],
     data() {
         return {
             columns: [],
-            data: {},
+            rows: {},
             dataCount: 0,
         };
     },
@@ -65,9 +73,34 @@ export default {
         },
     },
     methods: {
+        ...mapActions('roles', [
+            'setPrivilegeDrafts',
+        ]),
+        onCellValueChange(cellValues) {
+            const drafts = {};
+
+            cellValues.forEach(({
+                rowId, columnId, value,
+            }) => {
+                if (columnId !== 'read' && value) {
+                    drafts[`${rowId}/read`] = true;
+                }
+
+                if (columnId === 'read') {
+                    drafts[`${rowId}/create`] = false;
+                    drafts[`${rowId}/update`] = false;
+                    drafts[`${rowId}/delete`] = false;
+                }
+
+                drafts[`${rowId}/${columnId}`] = value;
+            });
+
+            this.setDrafts(drafts);
+            this.setPrivilegeDrafts(this.drafts);
+        },
         updateGridData() {
             const {
-                data, columns,
+                rows, columns,
             } = getMappedGridData({
                 fullDataList: this.privilegesDictionary,
                 selectedData: this.privileges,
@@ -81,7 +114,7 @@ export default {
 
             this.columns = sortedColumns;
             this.dataCount = this.privilegesDictionary.length;
-            this.data = data;
+            this.rows = rows;
         },
     },
 };

@@ -51,41 +51,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.spinner {
-    animation: rotate 2s linear infinite;
+    .spinner {
+        animation: rotate 2s linear infinite;
 
-    & .path {
-        stroke-linecap: round;
-        animation: dash 1.5s ease-in-out infinite;
-    }
-}
-
-@keyframes rotate {
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes dash {
-    0% {
-        stroke-dasharray:
-            1,
-            150;
-        stroke-dashoffset: 0;
+        & .path {
+            stroke-linecap: round;
+            animation: dash 1.5s ease-in-out infinite;
+        }
     }
 
-    50% {
-        stroke-dasharray:
-            90,
-            150;
-        stroke-dashoffset: -35;
+    @keyframes rotate {
+        100% {
+            transform: rotate(360deg);
+        }
     }
 
-    100% {
-        stroke-dasharray:
-            90,
-            150;
-        stroke-dashoffset: -124;
+    @keyframes dash {
+        0% {
+            stroke-dasharray:
+                1,
+                150;
+            stroke-dashoffset: 0;
+        }
+
+        50% {
+            stroke-dasharray:
+                90,
+                150;
+            stroke-dashoffset: -35;
+        }
+
+        100% {
+            stroke-dasharray:
+                90,
+                150;
+            stroke-dashoffset: -124;
+        }
     }
-}
 </style>

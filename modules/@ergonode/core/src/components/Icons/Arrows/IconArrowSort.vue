@@ -6,13 +6,12 @@
     <Icon
         v-bind="$attrs"
         :style="{ transform: arrowStyle.transform }">
-        <polygon
-            :fill="arrowStyle.color"
-            :points="lowerArrow.points" />
-        <polygon
-            :points="upperArrow.points"
-            :fill="upperArrow.fillColor"
-            :transform="upperArrow.transform" />
+        <path
+            :d="lowerArrow.drawingCommands"
+            :fill="arrowStyle.color" />
+        <path
+            :d="upperArrow.drawingCommands"
+            :fill="upperArrow.fillColor" />
     </Icon>
 </template>
 
@@ -35,14 +34,13 @@ export default {
     computed: {
         lowerArrow() {
             return {
-                points: '8 14 12 18 16 14',
+                drawingCommands: 'M8 14L12 18L16 14H8Z',
             };
         },
         upperArrow() {
             return {
-                points: '8 6 12 10 16 6',
+                drawingCommands: 'M16 10L12 6L8 10L16 10Z',
                 fillColor: this.$attrs.order !== null ? GREY : null,
-                transform: 'translate(12, 8) rotate(-180) translate(-12, -8)',
             };
         },
         arrowStyle() {

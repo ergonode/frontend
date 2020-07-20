@@ -45,9 +45,6 @@ export default {
         ...mapState('authentication', {
             user: state => state.user,
         }),
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
         ...mapState('users', {
             id: state => state.id,
             avatarId: state => state.avatarId,
@@ -59,6 +56,7 @@ export default {
             passwordRepeat: state => state.passwordRepeat,
             isActive: state => state.isActive,
             role: state => state.role,
+            drafts: state => state.drafts,
             languagePrivilegesCollection: state => state.languagePrivilegesCollection,
         }),
         title() {
@@ -77,24 +75,27 @@ export default {
         ...mapActions('authentication', [
             'getUser',
         ]),
-        ...mapActions('grid', [
-            'removeDrafts',
-        ]),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
         ]),
         async onSave() {
             let isUpdated = false;
-            const activeLanguages = Object.keys(this.languagePrivilegesCollection)
-                .reduce((acc, languageCode) => {
-                    const languages = acc;
+            const mappedDrafts = {};
 
-                    if (this.getActiveLanguageByCode(languageCode).name) {
-                        languages[languageCode] = this.languagePrivilegesCollection[languageCode];
-                    }
-                    return languages;
-                }, {});
+            Object.keys(this.drafts).forEach((key) => {
+                const [
+                    languageCode,
+                    privilege,
+                ] = key.split('/');
+
+                if (typeof mappedDrafts[languageCode] === 'undefined') {
+                    mappedDrafts[languageCode] = {};
+                }
+
+                mappedDrafts[languageCode][privilege] = Boolean(this.drafts[key]);
+            });
+
             const user = {
                 firstName: this.firstName,
                 lastName: this.lastName,
@@ -104,8 +105,8 @@ export default {
                 roleId: this.role,
                 isActive: this.isActive,
                 languagePrivilegesCollection: deepmerge(
-                    activeLanguages,
-                    this.drafts,
+                    this.languagePrivilegesCollection,
+                    mappedDrafts,
                 ),
             };
 
@@ -126,7 +127,6 @@ export default {
                         message: 'User updated',
                     });
                     this.setLanguagePrivileges(user.languagePrivilegesCollection);
-                    this.removeDrafts();
 
                     // TODO: Along Notification introduce - remove it from it - this solution is preventing from relogging to see newly edited data for user if edited user is logged one
                     if (this.user.id === this.id) {

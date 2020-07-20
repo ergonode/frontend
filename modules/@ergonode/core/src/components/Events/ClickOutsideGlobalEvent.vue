@@ -3,6 +3,11 @@
  * See LICENSE for license details.
  */
 <script>
+import {
+    getPositionForBrowser,
+    isMouseInsideElement,
+} from '@Core/models/drag_and_drop/helpers';
+
 export default {
     name: 'ClickOutsideGlobalEvent',
     data() {
@@ -30,15 +35,9 @@ export default {
     methods: {
         onClickOutside(event) {
             const {
-                top, left, width, height,
-            } = this.$el.getBoundingClientRect();
-            const {
-                pageX, pageY,
-            } = event;
-            const isClickedOutside = !(pageX > left
-                && pageX < left + width
-                && pageY > top
-                && pageY < top + height);
+                xPos, yPos,
+            } = getPositionForBrowser(event);
+            const isClickedOutside = !isMouseInsideElement(this.$el, xPos, yPos);
 
             this.$emit('clickOutside', {
                 event,

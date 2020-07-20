@@ -8,8 +8,8 @@
         :style="avatarStyles">
         <Picture
             v-if="imageId"
-            fab
-            :image-id="imageId" />
+            :value="imageId"
+            fab />
         <span
             v-else
             class="user-avatar__placeholder"

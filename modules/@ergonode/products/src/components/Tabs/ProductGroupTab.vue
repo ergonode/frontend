@@ -9,11 +9,11 @@
                 :is-editable="$hasAccess(['PRODUCT_UPDATE'])"
                 :columns="columns"
                 :data-count="filtered"
-                :data="data"
+                :rows="rows"
                 :collection-cell-binding="collectionCellBinding"
                 :is-collection-layout="true"
                 :is-header-visible="true"
-                :is-centered-view="true"
+                :is-border="true"
                 @fetchData="getGridData">
                 <template #actions>
                     <ActionButton
@@ -101,18 +101,18 @@ export default {
                 params,
             }).then(({
                 columns,
-                data,
+                rows,
                 filtered,
             }) => {
-                const tmpData = {
-                    ...data,
-                    esa_attached: [],
-                };
+                const tmpRows = [
+                    ...rows,
+                ];
 
-                for (let j = 0; j < data.id.length; j += 1) {
-                    tmpData.esa_attached[j] = {
-                        value: productChildren.collection.some(item => item.id === data.id[j]),
-                        sku: data.sku[j].value,
+                for (let i = 0; i < tmpRows.length; i += 1) {
+                    tmpRows[i].esa_attached = {
+                        value: productChildren.collection
+                            .some(item => item.id === rows[i].id.value),
+                        sku: rows[i].sku.value,
                     };
                 }
 
@@ -126,7 +126,7 @@ export default {
                         {
                             language: languageCode,
                             id: 'esa_attached',
-                            type: 'ATTACHMENT',
+                            type: 'PRODUCT_ATTACH',
                             label: 'Attached',
                             visible: true,
                             editable: true,
@@ -135,7 +135,7 @@ export default {
                         },
                     ],
                     filtered,
-                    data: tmpData,
+                    rows: tmpRows,
                 };
             });
         });
@@ -232,7 +232,7 @@ export default {
                 params,
             }).then(({
                 columns,
-                data,
+                rows,
                 filtered,
             }) => {
                 const productsParams = {
@@ -247,15 +247,14 @@ export default {
                 }).then(({
                     collection,
                 }) => {
-                    const tmpData = {
-                        ...data,
-                        esa_attached: [],
-                    };
+                    const tmpRows = [
+                        ...rows,
+                    ];
 
-                    for (let j = 0; j < data.id.length; j += 1) {
-                        tmpData.esa_attached[j] = {
-                            value: collection.some(item => item.id === data.id[j]),
-                            sku: data.sku[j].value,
+                    for (let i = 0; i < rows.length; i += 1) {
+                        tmpRows[i].esa_attached = {
+                            value: collection.some(item => item.id === rows[i].id.value),
+                            sku: rows[i].sku.value,
                         };
                     }
 
@@ -268,7 +267,7 @@ export default {
                         {
                             language: this.languageCode,
                             id: 'esa_attached',
-                            type: 'ATTACHMENT',
+                            type: 'PRODUCT_ATTACH',
                             label: 'Attached',
                             visible: true,
                             editable: true,
@@ -277,7 +276,7 @@ export default {
                         },
                     ];
                     this.filtered = filtered;
-                    this.data = tmpData;
+                    this.rows = rows;
                 });
             });
         },

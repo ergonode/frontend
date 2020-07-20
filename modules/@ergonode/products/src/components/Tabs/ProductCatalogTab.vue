@@ -24,7 +24,8 @@
             <Grid
                 :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
-                :data="data"
+                :rows="rows"
+                :drafts="drafts"
                 :advanced-filters="advancedFilters"
                 :data-count="filtered"
                 :collection-cell-binding="collectionCellBinding"
@@ -34,10 +35,9 @@
                 :is-basic-filter="true"
                 :is-collection-layout="true"
                 @editRow="onEditRow"
-                @editCell="onEditCell"
-                @editCells="onEditCells"
+                @cellValue="onCellValueChange"
                 @focusCell="onFocusCell"
-                @removeRow="onRemoveRow"
+                @deleteRow="onRemoveRow"
                 @dropColumn="onDropColumn"
                 @dropFilter="onDropFilter"
                 @fetchData="getGridData">
@@ -94,14 +94,15 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import draftGridMixin from '@Core/mixins/grid/draftGridMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
 const updateProductDraft = () => import('@Products/services/updateProductDraft.service');
+const applyProductDraft = () => import('@Products/services/applyProductDraft.service');
 
 export default {
     name: 'ProductCatalogTab',
@@ -121,6 +122,7 @@ export default {
         fetchGridDataMixin({
             path: 'products',
         }),
+        draftGridMixin,
     ],
     data() {
         return {
@@ -130,9 +132,6 @@ export default {
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
-        }),
-        ...mapState('grid', {
-            drafts: state => state.drafts,
         }),
         ...mapState('draggable', {
             isElementDragging: state => state.isElementDragging,
@@ -216,34 +215,20 @@ export default {
         },
     },
     methods: {
-        ...mapActions('product', [
-            'applyDraft',
-            'getProductDraft',
-        ]),
-        ...mapActions('grid', [
-            'removeDraftRow',
-        ]),
-        onEditCell({
-            rowId, columnId, value,
-        }) {
-            const {
-                element_id,
-            } = this.columns.find(column => column.id === columnId);
-
-            updateProductDraft().then(response => response.default({
-                $axios: this.$axios,
-                $store: this.$store,
-                fieldKey: `${rowId}/${columnId}`,
-                languageCode: columnId.split(':')[1],
-                productId: rowId,
-                elementId: element_id,
-                value,
-            }));
-        },
-        onEditCells(editedCells) {
+        onCellValueChange(cellValues) {
             const cachedElementIds = {};
 
-            const requests = editedCells.map(({
+            const drafts = cellValues.reduce((prev, {
+                rowId, columnId, value,
+            }) => {
+                const tmp = prev;
+                tmp[`${rowId}/${columnId}`] = value;
+                return tmp;
+            }, {});
+
+            this.setDrafts(drafts);
+
+            const requests = cellValues.map(({
                 rowId, columnId, value,
             }) => {
                 if (!cachedElementIds[columnId]) {
@@ -310,11 +295,19 @@ export default {
         async saveDrafts() {
             const promises = [];
 
-            Object.keys(this.drafts).forEach((rowId) => {
-                promises.push(this.applyDraft({
+            const applyProductDraftModule = await applyProductDraft()
+                .then(request => request.default);
+
+            Object.keys(this.drafts).forEach((key) => {
+                const [
+                    rowId,
+                ] = key.split('/');
+
+                promises.push(applyProductDraftModule({
+                    $axios: this.$axios,
+                    $store: this.$store,
                     id: rowId,
-                    onSuccess: () => this.removeDraftRow(rowId),
-                }));
+                }).then(() => this.removeDraftRow(rowId)));
             });
 
             await this.$setLoader('footerDraftButton');

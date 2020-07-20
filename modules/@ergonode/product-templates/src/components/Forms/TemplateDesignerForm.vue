@@ -15,14 +15,14 @@
                     :error-messages="errorMessages[nameFieldKey]"
                     label="Template name"
                     :disabled="isDisabledByPrivileges"
-                    @input="setTitle" />
+                    @input="onTitleChange" />
                 <UploadImageFile
                     :data-cy="dataCyGenerator('image')"
                     :value="templateImage"
+                    height="132px"
                     label="Template cover image"
                     :disabled="isDisabledByPrivileges"
-                    @upload="setImage"
-                    @remove="setImage" />
+                    @input="onImageChange" />
             </FormSection>
             <FormSection title="Presentation product">
                 <TranslationLazySelect
@@ -31,14 +31,14 @@
                     required
                     label="Default label attribute"
                     :fetch-options-request="getDefaultTextAttributeOptionsRequest"
-                    @input="setDefaultTextAttribute" />
+                    @input="onDefaultTextAttributeChange" />
                 <TranslationLazySelect
                     :data-cy="dataCyGenerator('default-image')"
                     :value="defaultImageAttribute"
                     clearable
                     label="Default image attribute"
                     :fetch-options-request="getDefaultImageAttributeOptionsRequest"
-                    @input="setDefaultImageAttribute" />
+                    @input="onDefaultImageAttributeChange" />
             </FormSection>
         </template>
     </Form>
@@ -62,7 +62,7 @@ export default {
         FormSection: () => import('@Core/components/Form/Section/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
         TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
-        UploadImageFile: () => import('@Core/components/Inputs/UploadFile/UploadImageFile'),
+        UploadImageFile: () => import('@Media/components/Inputs/UploadFile/UploadImageFile'),
     },
     computed: {
         ...mapState('templateDesigner', {
@@ -88,11 +88,32 @@ export default {
     },
     methods: {
         ...mapActions('templateDesigner', [
-            'setTitle',
-            'setImage',
-            'setDefaultImageAttribute',
-            'setDefaultTextAttribute',
+            'setStateProperty',
         ]),
+        onTitleChange(value) {
+            this.setStateProperty({
+                key: 'title',
+                value,
+            });
+        },
+        onImageChange(value) {
+            this.setStateProperty({
+                key: 'image',
+                value,
+            });
+        },
+        onDefaultTextAttributeChange(value) {
+            this.setStateProperty({
+                key: 'defaultTextAttribute',
+                value,
+            });
+        },
+        onDefaultImageAttributeChange(value) {
+            this.setStateProperty({
+                key: 'defaultImageAttribute',
+                value,
+            });
+        },
         getDefaultTextAttributeOptionsRequest() {
             return getAttributesOptionsByType().then(response => response.default(
                 {

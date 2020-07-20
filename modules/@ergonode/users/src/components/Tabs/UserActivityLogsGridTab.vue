@@ -8,8 +8,9 @@
             <Grid
                 :columns="columns"
                 :data-count="filtered"
-                :data="data"
+                :rows="rows"
                 :is-prefetching-data="isPrefetchingData"
+                :is-border="true"
                 @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>

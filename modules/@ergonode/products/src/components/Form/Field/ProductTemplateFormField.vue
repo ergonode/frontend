@@ -4,10 +4,7 @@
  */
 <template>
     <div
-        :class="[
-            'template-form-field',
-            { 'template-form-field--draft': draft },
-        ]"
+        :class="classes"
         :style="formFieldPosition">
         <slot />
     </div>
@@ -31,6 +28,14 @@ export default {
         },
     },
     computed: {
+        classes() {
+            return [
+                'template-form-field',
+                {
+                    'template-form-field--draft': this.draft,
+                },
+            ];
+        },
         formFieldPosition() {
             const {
                 x, y,

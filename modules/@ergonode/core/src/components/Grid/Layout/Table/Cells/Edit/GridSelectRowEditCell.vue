@@ -9,10 +9,9 @@
         editing-allowed
         :edit-key-code="32"
         :selected="isSelected"
+        @mousedown="onSelect"
         @edit="onSelect">
-        <GridCheckEditCell
-            :value="isSelected"
-            @input="onSelect" />
+        <GridCheckEditCell :value="isSelected" />
     </GridTableCell>
 </template>
 

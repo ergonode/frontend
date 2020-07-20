@@ -20,7 +20,7 @@
                     required
                     label="Role description"
                     resize="none"
-                    :style="{height: '150px'}"
+                    height="150px"
                     :error-messages="errorMessages[descriptionFieldKey]"
                     :disabled="isDisabledByPrivileges"
                     @input="setDescription" />

@@ -17,7 +17,7 @@
                         label="Comment"
                         resize="none"
                         :required="true"
-                        :style="{height: '128px'}"
+                        height="128px"
                         :error-messages="errorMessage"
                         @input="setCommentValue" />
                 </template>

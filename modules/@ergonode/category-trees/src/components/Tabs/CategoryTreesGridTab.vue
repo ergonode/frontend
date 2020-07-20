@@ -9,11 +9,12 @@
                 :is-editable="$hasAccess(['CATEGORY_TREE_UPDATE'])"
                 :columns="columns"
                 :data-count="filtered"
-                :data="data"
+                :rows="rows"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
+                :is-border="true"
                 @editRow="onEditRow"
-                @removeRow="onRemoveRow"
+                @deleteRow="onRemoveRow"
                 @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>

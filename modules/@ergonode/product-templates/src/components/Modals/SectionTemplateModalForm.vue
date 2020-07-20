@@ -60,20 +60,16 @@ export default {
         Button,
     },
     props: {
-        value: {
-            type: Boolean,
-            default: true,
+        index: {
+            type: Number,
+            default: null,
         },
-        sectionPosition: {
+        position: {
             type: Object,
             default: null,
         },
-        sectionTitle: {
-            type: String,
-            default: '',
-        },
-        sectionIndex: {
-            type: Number,
+        element: {
+            type: Object,
             default: null,
         },
     },
@@ -88,15 +84,15 @@ export default {
             return THEME.SECONDARY;
         },
     },
-    watch: {
-        sectionTitle() {
-            this.title = this.sectionTitle;
-        },
+    mounted() {
+        if (this.element) {
+            this.title = this.element.label;
+        }
     },
     methods: {
         ...mapActions('templateDesigner', [
             'addSectionElementToLayout',
-            'updateSectionElementTitle',
+            'updateLayoutElementAtIndex',
         ]),
         onTitleChange(value) {
             this.title = value;
@@ -106,24 +102,24 @@ export default {
             else this.error = null;
         },
         onClose() {
-            this.title = '';
-            this.error = null;
             this.$emit('close');
         },
         onSave() {
             if (this.title !== '' && this.title.length <= 255) {
-                if (!this.sectionTitle) {
+                if (this.position) {
                     this.addSectionElementToLayout({
-                        ...this.sectionPosition,
+                        ...this.position,
                         title: this.title,
                     });
                 } else {
-                    this.updateSectionElementTitle({
-                        index: this.sectionIndex,
-                        title: this.title,
+                    this.updateLayoutElementAtIndex({
+                        index: this.index,
+                        element: {
+                            ...this.element,
+                            label: this.title,
+                        },
                     });
                 }
-                this.title = '';
                 this.$emit('close');
             } else if (this.title === '') {
                 this.setTitleError();

@@ -6,7 +6,7 @@
     <Component
         :is="styleComponent"
         ref="activator"
-        :style="{ height: '100%' }"
+        :height="height"
         :focused="isFocused"
         :error="isError"
         :data-cy="dataCy"
@@ -15,7 +15,8 @@
         :size="size"
         :details-label="informationLabel"
         @mousedown="onMouseDown"
-        @mouseup="onMouseUp">
+        @mouseup="onMouseUp"
+        @mounted="onMounted">
         <template #activator>
             <InputController :size="size">
                 <slot name="prepend" />
@@ -26,7 +27,6 @@
                     :style="textareaStyle"
                     :value="value"
                     :placeholder="placeholderValue"
-                    :autofocus="autofocus"
                     :disabled="disabled"
                     :aria-label="label || 'no description'"
                     @input="onValueChange"
@@ -92,6 +92,10 @@ export default {
                 SIZE.SMALL,
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
+        },
+        height: {
+            type: String,
+            default: 'unset',
         },
         alignment: {
             type: String,
@@ -184,18 +188,16 @@ export default {
             return this.placeholder;
         },
     },
-    mounted() {
-        if (this.autofocus) {
-            setTimeout(() => {
+    methods: {
+        onMounted() {
+            if (this.autofocus) {
                 this.$nextTick(() => {
                     window.requestAnimationFrame(() => {
                         this.$refs.input.focus();
                     });
                 });
-            }, 100);
-        }
-    },
-    methods: {
+            }
+        },
         onValueChange(event) {
             this.$emit('input', event.target.value);
         },

@@ -5,19 +5,21 @@
 <template>
     <ModalOverlay @close="onClose">
         <div class="modal-tab-bar">
-            <HorizontalTabBar :items="items">
-                <template #appendItems>
-                    <Fab
-                        data-cy="modalClose"
-                        :floating="{ right: '8px' }"
-                        :theme="secondaryTheme"
-                        @click.native="onClose">
-                        <template #icon="{ color }">
-                            <IconClose :fill-color="color" />
-                        </template>
-                    </Fab>
-                </template>
-            </HorizontalTabBar>
+            <div class="fixed-width-container">
+                <HorizontalTabBar :items="items">
+                    <template #appendItems>
+                        <Fab
+                            data-cy="modalClose"
+                            :floating="{ right: '8px' }"
+                            :theme="secondaryTheme"
+                            @click.native="onClose">
+                            <template #icon="{ color }">
+                                <IconClose :fill-color="color" />
+                            </template>
+                        </Fab>
+                    </template>
+                </HorizontalTabBar>
+            </div>
         </div>
     </ModalOverlay>
 </template>
@@ -71,5 +73,12 @@ export default {
         box-sizing: border-box;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_6_DP;
+    }
+
+    .fixed-width-container {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        width: 0;
     }
 </style>

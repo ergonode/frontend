@@ -64,7 +64,7 @@ export default function ({
                 advancedFilters = [],
             ] = await Promise.all(requests);
             const {
-                columns, data, filtered,
+                columns, rows, filtered,
             } = gridData;
 
             this.setDisabledElements(this.getDisabledElements({
@@ -73,7 +73,7 @@ export default function ({
             }));
 
             this.columns = columns;
-            this.data = data;
+            this.rows = rows;
             this.filtered = filtered;
             this.advancedFilters = advancedFilters;
             this.isPrefetchingData = false;
@@ -81,7 +81,7 @@ export default function ({
         data() {
             return {
                 isPrefetchingData: true,
-                data: {},
+                rows: [],
                 columns: [],
                 filtered: 0,
                 advancedFilters: [],
@@ -146,11 +146,11 @@ export default function ({
                     params,
                 }).then(({
                     columns,
-                    data,
+                    rows,
                     filtered,
                 }) => {
                     this.columns = columns;
-                    this.data = data;
+                    this.rows = rows;
                     this.filtered = filtered;
 
                     this.$emit('fetched');
@@ -166,7 +166,7 @@ export default function ({
                     }) => id === columnId);
 
                     if (column && column.element_id) {
-                        this.setDisabledElement(this.getDisableListElement({
+                        this.setDisabledElement(this.getDisabledListElement({
                             languageCode: column.language,
                             attributeId: column.element_id,
                         }));
@@ -190,7 +190,7 @@ export default function ({
                 }) => id === filterId);
 
                 if (filter && filter.attributeId) {
-                    this.setDisabledElement(this.getDisableListElement({
+                    this.setDisabledElement(this.getDisabledListElement({
                         languageCode: filter.languageCode,
                         attributeId: filter.attributeId,
                     }));
@@ -198,7 +198,7 @@ export default function ({
 
                 this.advancedFilters = advancedFilters;
             },
-            getDisableListElement({
+            getDisabledListElement({
                 languageCode, attributeId,
             }) {
                 return {
@@ -243,7 +243,7 @@ export default function ({
                     } = column;
                     const {
                         disabled,
-                    } = this.getDisableListElement({
+                    } = this.getDisabledListElement({
                         languageCode,
                         attributeId,
                     });
@@ -262,7 +262,7 @@ export default function ({
                     } = filter;
                     const {
                         disabled,
-                    } = this.getDisableListElement({
+                    } = this.getDisabledListElement({
                         languageCode,
                         attributeId,
                     });

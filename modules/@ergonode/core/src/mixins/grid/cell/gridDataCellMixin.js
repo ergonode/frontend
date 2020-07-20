@@ -3,9 +3,6 @@
  * See LICENSE for license details.
  */
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
-import {
-    mapState,
-} from 'vuex';
 
 export default {
     components: {
@@ -15,6 +12,9 @@ export default {
         data: {
             type: Object,
             default: () => ({}),
+        },
+        draft: {
+            default: null,
         },
         column: {
             type: Object,
@@ -35,9 +35,9 @@ export default {
             ],
             required: true,
         },
-        editKeyCode: {
-            type: Number,
-            default: 13,
+        errorMessages: {
+            type: String,
+            default: '',
         },
         isDisabled: {
             type: Boolean,
@@ -57,19 +57,23 @@ export default {
         },
     },
     computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
-        ...mapState('validations', {
-            validationErrors: state => state.validationErrors,
-        }),
-        errorMessages() {
-            return this.validationErrors[`${this.rowId}/${this.column.id}`];
+        cellData() {
+            if (this.draft !== null && this.data.value !== this.draft) {
+                return {
+                    value: this.draft,
+                    isDraft: true,
+                };
+            }
+
+            return {
+                value: this.data.value,
+                isDraft: false,
+            };
         },
     },
     methods: {
         onCopyValues(payload) {
-            this.$emit('copyCells', {
+            this.$emit('columnValues', {
                 ...payload,
                 value: this.cellData.value,
                 rowId: this.rowId,
@@ -77,10 +81,28 @@ export default {
             });
         },
         onValueChange(value) {
+            this.$emit('cellValue', [
+                {
+                    value,
+                    rowId: this.rowId,
+                    columnId: this.column.id,
+                    row: this.rowIndex,
+                    column: this.columnIndex,
+                },
+            ]);
+        },
+        onEditCell() {
             this.$emit('editCell', {
-                value,
-                rowId: this.rowId,
-                columnId: this.column.id,
+                type: this.column.type,
+                props: {
+                    bounds: this.$el.getBoundingClientRect(),
+                    value: this.cellData.value,
+                    row: this.rowIndex,
+                    column: this.columnIndex,
+                    rowId: this.rowId,
+                    columnId: this.column.id,
+                    errorMessages: this.errorMessages,
+                },
             });
         },
     },

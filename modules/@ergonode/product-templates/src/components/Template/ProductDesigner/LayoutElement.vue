@@ -128,7 +128,7 @@ export default {
     },
     methods: {
         ...mapActions('templateDesigner', [
-            'updateLayoutElementBounds',
+            'updateLayoutElementAtIndex',
             'removeLayoutElementAtIndex',
         ]),
         ...mapActions('draggable', [
@@ -231,10 +231,13 @@ export default {
             this.updateElementHeight(height);
         },
         onStopResizing() {
-            this.updateLayoutElementBounds({
+            this.updateLayoutElementAtIndex({
                 index: this.index,
-                width: this.newWidth,
-                height: this.newHeight,
+                element: {
+                    ...this.element,
+                    width: this.newWidth,
+                    height: this.newHeight,
+                },
             });
 
             this.resetElementStyleForEndResizeInteraction();

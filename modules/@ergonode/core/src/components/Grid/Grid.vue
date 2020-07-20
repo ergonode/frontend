@@ -6,7 +6,7 @@
 <template>
     <div
         data-cy="grid"
-        class="grid">
+        :class="classes">
         <GridHeader
             v-if="isHeaderVisible"
             :row-height="tableLayoutConfig.rowHeight"
@@ -15,7 +15,6 @@
             :collection-layout-config="collectionLayoutConfig"
             :is-advanced-filters="isAdvancedFilters"
             :is-collection-layout="isCollectionLayout"
-            :is-centered-view="isCenteredView"
             :filters="advancedFilters"
             @filter="onAdvancedFilterChange"
             @layoutChange="onLayoutChange"
@@ -28,21 +27,26 @@
                 <slot name="configuration" />
             </template>
         </GridHeader>
-        <GridBody :disabled="isListElementDragging && isColumnExists">
-            <GridPreloader v-if="isPrefetchingData" />
-            <template v-else>
-                <DropZone
-                    v-show="isListElementDragging && !isColumnExists"
-                    title="ADD COLUMN"
-                    @drop="onDropColumn">
-                    <template #icon="{ color }">
-                        <IconAddColumn :fill-color="color" />
-                    </template>
-                </DropZone>
+        <GridBody
+            :disabled="isListElementDragging && isColumnExists"
+            :is-border="isHeaderVisible">
+            <GridPreloader v-show="isPrefetchingData" />
+            <DropZone
+                v-show="isListElementDragging && !isColumnExists"
+                title="ADD COLUMN"
+                @drop="onDropColumn">
+                <template #icon="{ color }">
+                    <IconAddColumn :fill-color="color" />
+                </template>
+            </DropZone>
+            <KeepAlive>
                 <GridTableLayout
                     v-if="isTableLayout"
                     :columns="columns"
-                    :data="data"
+                    :action-columns="actionColumns"
+                    :rows="rows"
+                    :row-ids="rowIds"
+                    :drafts="drafts"
                     :current-page="currentPage"
                     :max-rows="maxRows"
                     :row-height="tableLayoutConfig.rowHeight"
@@ -51,19 +55,18 @@
                     :is-basic-filter="isBasicFilter"
                     @sort="onSortColumn"
                     @filter="onFilterChange"
-                    @editCell="onEditCell"
-                    @editCells="onEditCells"
+                    @cellValue="onCellValueChange"
                     @focusCell="onFocusCell"
-                    @editRow="onEditRow"
-                    @removeRow="onRemoveRow" />
+                    @rowAction="onRowAction" />
                 <GridCollectionLayout
                     v-else-if="isCollectionLayout && collectionData.length"
                     :data="collectionData"
                     :columns-number="collectionLayoutConfig.columnsNumber"
                     :object-fit="collectionLayoutConfig.scaling"
-                    @editRow="onEditRow" />
-                <GridPlaceholder v-if="!dataCount" />
-            </template>
+                    @rowAction="onRowAction"
+                    @cellValue="onCellValueChange" />
+            </KeepAlive>
+            <GridPlaceholder v-show="dataCount === 0 && !isPrefetchingData" />
         </GridBody>
         <GridFooter v-if="isFooterVisible">
             <GridPageSelector
@@ -80,14 +83,18 @@
 </template>
 
 <script>
+import GridPagination from '@Core/components/Grid/Footer/GridPagination';
 import GridBody from '@Core/components/Grid/GridBody';
 import GridFooter from '@Core/components/Grid/GridFooter';
 import GridPreloader from '@Core/components/Grid/GridPreloader';
+import GridHeader from '@Core/components/Grid/Header/GridHeader';
+import GridCollectionLayout from '@Core/components/Grid/Layout/Collection/GridCollectionLayout';
+import GridTableLayout from '@Core/components/Grid/Layout/Table/GridTableLayout';
 import {
-    COLUMN_ACTIONS_ID,
     COLUMNS_NUMBER,
     DATA_LIMIT,
     DRAGGED_ELEMENT,
+    GRID_ACTIONS,
     GRID_LAYOUT,
     IMAGE_SCALING,
     ROW_HEIGHT,
@@ -99,30 +106,37 @@ import {
     getMergedFilters,
 } from '@Core/models/mappers/gridDataMapper';
 import {
+    getUUID,
+} from '@Core/models/stringWrapper';
+import {
     mapState,
 } from 'vuex';
 
 export default {
     name: 'Grid',
     components: {
-        GridHeader: () => import('@Core/components/Grid/Header/GridHeader'),
-        GridTableLayout: () => import('@Core/components/Grid/Layout/Table/GridTableLayout'),
-        GridCollectionLayout: () => import('@Core/components/Grid/Layout/Collection/GridCollectionLayout'),
         GridPlaceholder: () => import('@Core/components/Grid/GridPlaceholder'),
-        GridPagination: () => import('@Core/components/Grid/Footer/GridPagination'),
         GridPageSelector: () => import('@Core/components/Grid/Footer/GridPageSelector'),
         DropZone: () => import('@Core/components/DropZone/DropZone'),
         IconAddColumn: () => import('@Core/components/Icons/Actions/IconAddColumn'),
+        GridPagination,
+        GridHeader,
         GridPreloader,
         GridBody,
         GridFooter,
+        GridTableLayout,
+        GridCollectionLayout,
     },
     props: {
         columns: {
             type: Array,
             default: () => [],
         },
-        data: {
+        rows: {
+            type: Array,
+            default: () => [],
+        },
+        drafts: {
             type: Object,
             default: () => ({}),
         },
@@ -135,6 +149,8 @@ export default {
             default: () => ({
                 imageColumn: '',
                 descriptionColumn: '',
+                type: '',
+                additionalColumns: [],
             }),
         },
         defaultLayout: {
@@ -158,7 +174,7 @@ export default {
             type: Boolean,
             default: false,
         },
-        isCenteredView: {
+        isBorder: {
             type: Boolean,
             default: false,
         },
@@ -196,7 +212,7 @@ export default {
                 scaling: IMAGE_SCALING.FIT_TO_SIZE.value,
             },
             tableLayoutConfig: {
-                rowHeight: ROW_HEIGHT.MEDIUM,
+                rowHeight: ROW_HEIGHT.SMALL,
             },
         };
     },
@@ -205,15 +221,50 @@ export default {
             isElementDragging: state => state.isElementDragging,
             draggedElement: state => state.draggedElement,
         }),
+        classes() {
+            return [
+                'grid',
+                {
+                    'grid--border': this.isBorder,
+                },
+            ];
+        },
+        actionColumns() {
+            const {
+                length: dataLength,
+            } = this.rows;
+            const {
+                length: actionsLength,
+            } = GRID_ACTIONS;
+            const actionColumns = [];
+            const tmp = {};
+
+            for (let i = 0; i < dataLength; i += 1) {
+                const row = this.rows[i];
+
+                for (let j = 0; j < actionsLength; j += 1) {
+                    const action = GRID_ACTIONS[j];
+
+                    if (!tmp[action]
+                        && row._links
+                        && row._links.value[action]) {
+                        tmp[action] = true;
+                        actionColumns.push({
+                            id: action,
+                        });
+                    }
+                }
+            }
+
+            return actionColumns;
+        },
         isListElementDragging() {
             return this.isElementDragging === DRAGGED_ELEMENT.LIST;
         },
         isColumnExists() {
-            const draggedElIndex = this.columns.findIndex(
+            return this.columns.some(
                 column => column.id === this.draggedElement,
             );
-
-            return draggedElIndex !== -1;
         },
         isTableLayout() {
             return this.layout === GRID_LAYOUT.TABLE;
@@ -221,43 +272,48 @@ export default {
         maxPage() {
             return Math.ceil(this.dataCount / this.maxRows) || 1;
         },
+        rowIds() {
+            return this.rows.map(({
+                id,
+            }) => {
+                if (id && id.value) {
+                    return id.value;
+                }
+
+                return getUUID();
+            });
+        },
         collectionData() {
             const {
-                imageColumn, descriptionColumn,
+                imageColumn,
+                type,
+                descriptionColumn,
+                additionalColumns,
             } = this.collectionCellBinding;
 
-            if (!(imageColumn && descriptionColumn && this.data[descriptionColumn])) {
+            if (!(imageColumn && descriptionColumn)) {
                 return [];
             }
 
-            const collectionData = [];
-            const actionKeys = this.data[COLUMN_ACTIONS_ID]
-                ? Object.keys(this.data[COLUMN_ACTIONS_ID])
-                : [];
+            return this.rows
+                .map((row, index) => {
+                    const additionalData = {};
 
-            for (let i = 0; i < this.data[descriptionColumn].length; i += 1) {
-                const actions = {};
-
-                if (this.data[COLUMN_ACTIONS_ID]) {
-                    for (let j = 0; j < actionKeys.length; j += 1) {
-                        const actionKey = actionKeys[j];
-
-                        actions[actionKey] = this.data[COLUMN_ACTIONS_ID][actionKey][i];
+                    if (additionalColumns) {
+                        additionalColumns.forEach((columnId) => {
+                            additionalData[columnId] = row[columnId] ? row[columnId].value : '';
+                        });
                     }
-                }
 
-                collectionData.push({
-                    actions,
-                    image: this.data[imageColumn]
-                        ? this.data[imageColumn][i].value
-                        : '',
-                    description: this.data[descriptionColumn]
-                        ? this.data[descriptionColumn][i].value
-                        : '',
+                    return {
+                        id: this.rowIds[index],
+                        image: row[imageColumn] ? row[imageColumn].value : '',
+                        description: row[descriptionColumn] ? row[descriptionColumn].value : '',
+                        type,
+                        actions: row._links ? row._links.value : '',
+                        ...additionalData,
+                    };
                 });
-            }
-
-            return collectionData;
         },
     },
     methods: {
@@ -270,20 +326,16 @@ export default {
         onLayoutChange(layout) {
             this.layout = layout;
         },
-        onEditCell(payload) {
-            this.$emit('editCell', payload);
-        },
-        onEditCells(payload) {
-            this.$emit('editCells', payload);
+        onCellValueChange(payload) {
+            this.$emit('cellValue', payload);
         },
         onFocusCell(payload) {
             this.$emit('focusCell', payload);
         },
-        onEditRow(args) {
-            this.$emit('editRow', args);
-        },
-        onRemoveRow(index) {
-            this.$emit('removeRow', index);
+        onRowAction({
+            key, value,
+        }) {
+            this.$emit(`${key}Row`, value);
         },
         onDropColumn(columnId) {
             insertCookieAtIndex({
@@ -352,5 +404,9 @@ export default {
         flex-direction: column;
         min-width: 0;
         overflow: hidden;
+
+        &--border {
+            border: $BORDER_1_GREY;
+        }
     }
 </style>

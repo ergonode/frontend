@@ -14,4 +14,5 @@ export default () => ({
     languagePrivilegesCollection: null,
     isActive: true,
     role: null,
+    drafts: {},
 });

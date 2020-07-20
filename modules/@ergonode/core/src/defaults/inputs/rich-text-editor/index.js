@@ -71,4 +71,4 @@ export const EXTENSIONS = [
     },
 ];
 
-export const EXTENSION_BUTTON_WIDTH = 30;
+export const EXTENSION_BUTTON_WIDTH = 27;

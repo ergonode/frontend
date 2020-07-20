@@ -9,33 +9,32 @@ import {
     getUUID,
 } from '@Core/models/stringWrapper';
 
-export function getMappedLayoutElement(
-    elementID,
-    elementData,
-    elementLabel,
-    position,
+export function getMappedLayoutElement({
+    id,
+    bounds: {
+        min_width: minWidth,
+        min_height: minHeight,
+        max_width: maxWidth,
+        max_height: maxHeight,
+        type,
+    },
+    label,
+    position: {
+        row,
+        column,
+    },
     required = false,
     size = {
         width: 1,
         height: 1,
     },
-) {
-    const {
-        row, column,
-    } = position;
+}) {
     const {
         width, height,
     } = size;
-    const {
-        min_width: minWidth,
-        min_height: minHeight,
-        max_width: maxWidth,
-        max_height: maxHeight,
-        type,
-    } = elementData;
 
     return {
-        id: elementID,
+        id,
         row,
         column,
         width,
@@ -45,52 +44,13 @@ export function getMappedLayoutElement(
         minHeight,
         maxHeight,
         type,
-        label: elementLabel,
+        label,
         required,
     };
 }
 
-export function getMappedLayoutSectionElement(
-    title,
-    elementData,
-    position,
-    size = {
-        width: 1,
-        height: 1,
-    },
-) {
-    const {
-        row, column,
-    } = position;
-    const {
-        width, height,
-    } = size;
-    const {
-        min_width: minWidth,
-        min_height: minHeight,
-        max_width: maxWidth,
-        max_height: maxHeight,
-    } = elementData;
-
-    return {
-        id: getUUID(),
-        row,
-        column,
-        width,
-        height,
-        minWidth,
-        maxWidth,
-        minHeight,
-        maxHeight,
-        type: SYSTEM_TYPES.SECTION,
-        label: title,
-    };
-}
-
-export function getMappedLayoutElements(elements, elementsDescription, types) {
-    if (!elementsDescription.length) {
-        return [];
-    }
+export function getMappedLayoutElements(elements, elementDescriptions, types) {
+    const cachedTypes = {};
 
     return elements.map((element) => {
         const {
@@ -102,33 +62,22 @@ export function getMappedLayoutElements(elements, elementsDescription, types) {
         const {
             x: column, y: row,
         } = position;
-        if (type !== SYSTEM_TYPES.SECTION) {
-            const {
-                code: descCode, label: descLabel,
-            } = elementsDescription.find(el => el.id === attrID);
 
-            return getMappedLayoutElement(
-                attrID,
-                types.find(attributeType => attributeType.type === type),
-                descLabel || descCode,
-                {
-                    row: row + 1,
-                    column: column + 1,
-                },
-                required,
-                size,
-            );
+        if (typeof cachedTypes[type] === 'undefined') {
+            cachedTypes[type] = types.find(attributeType => attributeType.type === type);
         }
 
-        return getMappedLayoutSectionElement(
-            label,
-            types.find(attributeType => attributeType.type === SYSTEM_TYPES.SECTION),
-            {
+        return getMappedLayoutElement({
+            id: attrID || getUUID(),
+            label: elementDescriptions[attrID] || label,
+            bounds: cachedTypes[type],
+            position: {
                 row: row + 1,
                 column: column + 1,
             },
+            required,
             size,
-        );
+        });
     });
 }
 
@@ -152,21 +101,19 @@ export function getMappedLayoutElementsForAPIUpdate(elements) {
             height,
         };
         const properties = {};
-        let parsedType = type;
 
         if (type !== SYSTEM_TYPES.SECTION) {
             properties.attribute_id = id;
             properties.required = required;
         } else {
             properties.label = label;
-            parsedType = SYSTEM_TYPES.SECTION;
         }
 
         return {
             position,
             size,
             properties,
-            type: parsedType,
+            type,
         };
     });
 }

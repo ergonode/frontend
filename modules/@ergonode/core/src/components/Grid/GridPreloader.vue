@@ -4,11 +4,9 @@
  */
 <template>
     <div class="grid-preloader">
-        <span class="grid-preloader__title">Loading...</span>
-        <IconSpinner
-            :color="graphiteColor"
-            width="16"
-            height="16" />
+        <IconLoader
+            :width="48"
+            :height="48" />
     </div>
 </template>
 
@@ -16,12 +14,12 @@
 import {
     GRAPHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import IconLoader from '@Core/components/Icons/Feedback/IconLoader';
 
 export default {
     name: 'GridPreloader',
     components: {
-        IconSpinner,
+        IconLoader,
     },
     computed: {
         graphiteColor() {
@@ -38,11 +36,5 @@ export default {
         justify-content: center;
         align-items: center;
         padding: 24px;
-
-        &__title {
-            margin-right: 8px;
-            color: $GRAPHITE;
-            font: $FONT_SEMI_BOLD_14_20;
-        }
     }
 </style>

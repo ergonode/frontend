@@ -21,8 +21,6 @@ export default {
         justify-content: space-between;
         align-items: center;
         height: 56px;
-        border: $BORDER_1_GREY;
-        border-top: unset;
         padding: 12px 16px;
         box-sizing: border-box;
         background-color: $WHITE;

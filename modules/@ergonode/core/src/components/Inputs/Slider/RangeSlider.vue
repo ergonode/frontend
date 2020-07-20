@@ -87,10 +87,10 @@ export default {
             });
         },
         onMouseEnter(event) {
-            event.target.classList.add('draggable-column--hovered');
+            event.target.classList.add('grid-column--hovered');
         },
         onMouseLeave(event) {
-            event.target.classList.remove('draggable-column--hovered');
+            event.target.classList.remove('grid-column--hovered');
         },
         onResize(event) {
             if (this.xPos < event.pageX) {

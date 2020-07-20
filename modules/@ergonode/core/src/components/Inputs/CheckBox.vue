@@ -140,7 +140,8 @@ export default {
             margin: 0;
             opacity: 0;
 
-            &:focus + label::after, &:hover + label::after {
+            &:focus + label::after:not(:disabled),
+            &:hover + label::after:not(:disabled) {
                 opacity: 1;
             }
 

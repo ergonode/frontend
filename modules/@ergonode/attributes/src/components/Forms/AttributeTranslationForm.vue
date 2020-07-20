@@ -20,7 +20,7 @@
                         :value="translations.placeholder[languageCode]"
                         label="Placeholder"
                         resize="none"
-                        :style="{height: '150px'}"
+                        height="150px"
                         :error-messages="errorMessages[placeholderFieldKey]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'placeholder')" />
@@ -29,7 +29,7 @@
                         :value="translations.hint[languageCode]"
                         label="Tooltip for writers"
                         resize="none"
-                        :style="{height: '150px'}"
+                        height="150px"
                         :error-messages="errorMessages[hintFieldKey]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'hint')" />

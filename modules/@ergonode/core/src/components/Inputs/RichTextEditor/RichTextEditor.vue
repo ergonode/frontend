@@ -275,7 +275,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .rich-text-editor {
         $editor: &;
 
@@ -376,13 +376,8 @@ export default {
 
         &:focus-within {
             .rich-text-editor-menu {
-                opacity: 1;
+                display: grid;
             }
         }
-    }
-
-    .input-underline-style {
-        padding: 8px 12px 12px;
-        box-shadow: $ELEVATOR_6_DP;
     }
 </style>

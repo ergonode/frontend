@@ -9,13 +9,13 @@
                 :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
-                :data="data"
+                :rows="rows"
                 :is-prefetching-data="isPrefetchingData"
                 :is-header-visible="true"
-                :is-centered-view="true"
+                :is-border="true"
                 :is-basic-filter="true"
                 @editRow="onEditRow"
-                @removeRow="onRemoveUnit"
+                @deleteRow="onRemoveUnit"
                 @fetchData="getGridData">
                 <template #actions>
                     <Button

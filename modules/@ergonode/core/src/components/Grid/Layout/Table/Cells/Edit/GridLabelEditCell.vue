@@ -3,42 +3,44 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridActivatorEditCell>
-        <TranslationSelect
-            :style="{ width: `${width}px`, height: `${height}px` }"
-            :value="localValue"
-            :autofocus="true"
-            :size="smallSize"
-            :clearable="true"
-            :options="options"
-            :error-messages="errorMessages"
-            @focus="onFocus"
-            @input="onValueChange">
-            <template #prepend>
-                <div
-                    v-if="localValue"
-                    class="selected-badge">
-                    <PointBadge :color="colors[localValue.id]" />
-                </div>
-            </template>
-            <template #option="{ option }">
-                <ListElementAction :size="smallSize">
-                    <PointBadge :color="colors[option.id]" />
-                </ListElementAction>
-                <ListElementDescription>
-                    <ListElementTitle
-                        :size="smallSize"
-                        :hint="option.hint"
-                        :title="option.value || `#${option.key}`" />
-                </ListElementDescription>
-            </template>
-        </TranslationSelect>
-    </GridActivatorEditCell>
+    <GridEditNavigationCell @edit="onEditCell">
+        <GridSelectEditContentCell :style="positionStyle">
+            <TranslationSelect
+                v-model="localValue"
+                :autofocus="true"
+                :size="smallSize"
+                :clearable="true"
+                :options="options"
+                :error-messages="errorMessages"
+                @focus="onFocus">
+                <template #prepend>
+                    <div
+                        v-if="localValue"
+                        class="presentation-badge">
+                        <PointBadge :color="colors[localValue.id]" />
+                    </div>
+                </template>
+                <template #option="{ option }">
+                    <ListElementAction :size="smallSize">
+                        <div class="presentation-badge-option">
+                            <PointBadge :color="colors[option.id]" />
+                        </div>
+                    </ListElementAction>
+                    <ListElementDescription>
+                        <ListElementTitle
+                            :size="smallSize"
+                            :hint="option.hint"
+                            :title="option.value || `#${option.key}`" />
+                    </ListElementDescription>
+                </template>
+            </TranslationSelect>
+        </GridSelectEditContentCell>
+    </GridEditNavigationCell>
 </template>
 
 <script>
 import PointBadge from '@Core/components/Badges/PointBadge';
-import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
+import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
@@ -46,25 +48,22 @@ import ListElementTitle from '@Core/components/List/ListElementTitle';
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import gridEditCellMixin from '@Core/mixins/grid/cell/gridEditCellMixin';
 
 export default {
     name: 'GridLabelEditCell',
-    inject: [
-        'setEditingCellCoordinates',
-    ],
     components: {
-        GridActivatorEditCell,
+        GridSelectEditContentCell,
         TranslationSelect,
         ListElementDescription,
         ListElementTitle,
         ListElementAction,
         PointBadge,
     },
+    mixins: [
+        gridEditCellMixin,
+    ],
     props: {
-        value: {
-            type: String,
-            default: '',
-        },
         colors: {
             type: Object,
             default: () => ({}),
@@ -73,39 +72,9 @@ export default {
             type: String,
             default: 'EN',
         },
-        errorMessages: {
-            type: String,
-            default: '',
-        },
-        rowId: {
-            type: [
-                String,
-                Number,
-            ],
-            required: true,
-        },
-        width: {
-            type: Number,
-            default: 0,
-        },
-        height: {
-            type: Number,
-            default: 0,
-        },
     },
-    data() {
-        return {
-            options: [],
-            localValue: null,
-        };
-    },
-    computed: {
-        smallSize() {
-            return SIZE.SMALL;
-        },
-    },
-    created() {
-        this.$axios.$get(`${this.languageCode}/products/${this.rowId}`).then(({
+    fetch() {
+        this.$axios.$get(`${this.languageCode.toLowerCase()}/products/${this.rowId}`).then(({
             workflow = [],
         }) => {
             this.options = workflow.map(e => ({
@@ -120,28 +89,46 @@ export default {
             this.localValue = this.options.find(option => option.id === this.value);
         });
     },
+    data() {
+        return {
+            options: [],
+            localValue: null,
+        };
+    },
+    computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
+    },
+    beforeDestroy() {
+        if (this.localValue && this.localValue.id !== this.value) {
+            this.$emit('cellValue', [
+                {
+                    value: this.localValue.id || this.localValue,
+                    rowId: this.rowId,
+                    columnId: this.columnId,
+                    row: this.row,
+                    column: this.column,
+                },
+            ]);
+        }
+    },
     methods: {
         onFocus(isFocused) {
             if (!isFocused) {
-                if (this.localValue && this.localValue.id !== this.value) {
-                    this.$emit('input', this.localValue.id || this.localValue);
-                }
-                this.setEditingCellCoordinates();
+                this.onEditCell();
             }
-        },
-        onValueChange(value) {
-            this.localValue = value;
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .selected-badge {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding-left: 6px;
-        margin-right: 2px;
+    .presentation-badge {
+        margin-right: 8px;
+    }
+
+    .presentation-badge-option {
+        margin: 0 4px;
     }
 </style>

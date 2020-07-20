@@ -12,42 +12,50 @@
         :disabled="isDisabled"
         :copyable="isCopyable"
         :selected="isSelected"
-        @edit="onValueChange(!cellData.value)"
+        @edit="onBoolValueChange"
+        @mousedown="onBoolValueChange"
         @copy="onCopyValues">
         <GridBoolEditCell
             :value="cellData.value"
-            :suffix="data.suffix"
-            :is-disabled="isLocked" />
+            :disabled="isLocked || isDisabled" />
+        <GridSuffixPresentationCell
+            v-if="data.suffix"
+            :suffix="data.suffix" />
     </GridTableCell>
 </template>
 
 <script>
 import GridBoolEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridBoolEditCell';
+import GridSuffixPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
-import {
-    cellDataCompose,
-} from '@Core/models/mappers/gridDataMapper';
-import {
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'GridBoolDataCell',
     components: {
         GridBoolEditCell,
+        GridSuffixPresentationCell,
     },
     mixins: [
         gridDataCellMixin,
     ],
     computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
         cellData() {
-            const check = (data, draftValue) => Boolean(data) !== Boolean(draftValue);
-            const getMappedValue = cellDataCompose(check);
+            if (this.draft !== null && Boolean(this.data.value) !== Boolean(this.draft)) {
+                return {
+                    value: this.draft,
+                    isDraft: true,
+                };
+            }
 
-            return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
+            return {
+                value: this.data.value,
+                isDraft: false,
+            };
+        },
+    },
+    methods: {
+        onBoolValueChange() {
+            this.onValueChange(!this.cellData.value);
         },
     },
 };
