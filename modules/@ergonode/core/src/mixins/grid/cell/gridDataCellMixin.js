@@ -72,14 +72,6 @@ export default {
         },
     },
     methods: {
-        onCopyValues(payload) {
-            this.$emit('columnValues', {
-                ...payload,
-                value: this.cellData.value,
-                rowId: this.rowId,
-                columnId: this.column.id,
-            });
-        },
         onValueChange(value) {
             this.$emit('cellValue', [
                 {

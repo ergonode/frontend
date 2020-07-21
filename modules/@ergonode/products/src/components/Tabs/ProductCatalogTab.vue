@@ -94,8 +94,8 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import draftGridMixin from '@Core/mixins/grid/draftGridMixin';
-import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
+import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import {
     mapState,
@@ -119,10 +119,10 @@ export default {
     },
     mixins: [
         gridModalMixin,
-        fetchGridDataMixin({
+        gridFetchDataMixin({
             path: 'products',
         }),
-        draftGridMixin,
+        gridDraftMixin,
     ],
     data() {
         return {

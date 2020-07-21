@@ -10,8 +10,9 @@
             v-for="(element, index) in data"
             :key="index"
             :data="element"
+            :drafts="drafts"
             :object-fit="objectFit"
-            @edit="onEditCell"
+            @rowAction="onRowAction"
             @cellValue="onCellValueChange" />
     </div>
 </template>
@@ -28,6 +29,10 @@ export default {
         data: {
             type: Array,
             default: () => [],
+        },
+        drafts: {
+            type: Object,
+            default: () => ({}),
         },
         columnsNumber: {
             type: Number,
@@ -46,11 +51,8 @@ export default {
         },
     },
     methods: {
-        onEditCell(args) {
-            this.$emit('rowAction', {
-                key: 'edit',
-                value: args,
-            });
+        onRowAction(payload) {
+            this.$emit('rowAction', payload);
         },
         onCellValueChange(payload) {
             this.$emit('cellValue', payload);

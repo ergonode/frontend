@@ -12,8 +12,7 @@
         :disabled="isDisabled"
         :copyable="isCopyable"
         :selected="isSelected"
-        @edit="onEditCell"
-        @copy="onCopyValues">
+        @edit="onEditCell">
         <template v-if="cellData.value.length">
             <GridImagePresentationCell
                 :value="cellData.value[0]"

@@ -42,6 +42,7 @@ import {
     GRAPHITE_LIGHT,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
+import GridTitleHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridTitleHeaderCell';
 import {
     SORTING_ORDER,
 } from '@Core/defaults/icons';
@@ -61,10 +62,10 @@ export default {
     name: 'GridHeaderCell',
     components: {
         GridTableCell,
+        GridTitleHeaderCell,
         ActionIconButton: () => import('@Core/components/Buttons/ActionIconButton'),
         IconArrowSort: () => import('@Core/components/Icons/Arrows/IconArrowSort'),
         IconDots: () => import('@Core/components/Icons/Others/IconDots'),
-        GridTitleHeaderCell: () => import('@Core/components/Grid/Layout/Table/Cells/Header/GridTitleHeaderCell'),
     },
     props: {
         label: {
@@ -98,7 +99,7 @@ export default {
     data() {
         return {
             isMenuSelected: false,
-            isColumnHovered: false,
+            isHovered: false,
         };
     },
     computed: {
@@ -150,9 +151,7 @@ export default {
         },
         isActionsVisible() {
             return !this.isColumnExists
-                && (this.isSorted
-                    || this.isMenuSelected
-                    || this.isColumnHovered);
+                && (this.isSorted || this.isMenuSelected || this.isHovered);
         },
         title() {
             const [
@@ -195,7 +194,7 @@ export default {
         },
         onSelectFocus(isFocused) {
             if (!isFocused) {
-                this.removeColumnHover();
+                this.isHovered = false;
             }
 
             this.isMenuSelected = isFocused;
@@ -209,41 +208,11 @@ export default {
             default: break;
             }
         },
-        getColumnAtIndex(index) {
-            const gridColumns = document.querySelector('.grid-table-layout-columns-section');
-            const {
-                children,
-            } = gridColumns;
-
-            return children[index];
-        },
         onMouseEnter() {
-            if (this.isElementDragging || this.isHeaderFocused()) return;
-            this.addColumnHover();
+            this.isHovered = true;
         },
         onMouseLeave() {
-            if (this.isElementDragging || this.isHeaderFocused()) return;
-            this.removeColumnHover();
-        },
-        isHeaderFocused() {
-            const gridColumns = document.querySelector('.grid-table-layout-columns-section');
-            const headerEls = gridColumns.querySelectorAll('.grid-header-cell-actions--focused');
-
-            return headerEls.length;
-        },
-        addColumnHover() {
-            this.isColumnHovered = true;
-
-            const columnElement = this.getColumnAtIndex(this.columnIndex);
-
-            columnElement.classList.add('grid-column--hovered');
-        },
-        removeColumnHover() {
-            this.isColumnHovered = false;
-
-            const columnElement = this.getColumnAtIndex(this.columnIndex);
-
-            columnElement.classList.remove('grid-column--hovered');
+            this.isHovered = false;
         },
     },
 };

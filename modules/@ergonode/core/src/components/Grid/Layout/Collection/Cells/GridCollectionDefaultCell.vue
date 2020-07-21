@@ -42,6 +42,10 @@ export default {
             type: Object,
             required: true,
         },
+        drafts: {
+            type: Object,
+            default: () => ({}),
+        },
         objectFit: {
             type: String,
             default: '',
@@ -63,9 +67,12 @@ export default {
     methods: {
         onClick() {
             if (this.data.actions.edit) {
-                const args = this.actions.data.edit.href.split('/');
+                const args = this.data.actions.edit.href.split('/');
 
-                this.$emit('edit', args);
+                this.$emit('rowAction', {
+                    key: 'edit',
+                    value: args,
+                });
             }
         },
     },
