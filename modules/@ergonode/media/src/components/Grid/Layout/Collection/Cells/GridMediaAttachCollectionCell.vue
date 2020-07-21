@@ -23,7 +23,7 @@
                 class="collection-cell__title"
                 v-text="data.description" />
             <Toggler
-                :value="localValue"
+                :value="cellValue"
                 @input="onCellValueChange" />
         </div>
     </div>
@@ -47,6 +47,10 @@ export default {
             type: Object,
             required: true,
         },
+        drafts: {
+            type: Object,
+            default: () => ({}),
+        },
         objectFit: {
             type: String,
             default: '',
@@ -55,10 +59,19 @@ export default {
     data() {
         return {
             isHovered: false,
-            localValue: this.data.esa_attached,
         };
     },
     computed: {
+        cellValue() {
+            const draft = this.drafts[`${this.data.id}/esa_attached`];
+
+            if (typeof draft !== 'undefined'
+                && Boolean(this.data.esa_attached) !== Boolean(draft)) {
+                return draft;
+            }
+
+            return this.data.esa_attached;
+        },
         placeholderImage() {
             return require('@Core/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
         },
@@ -71,7 +84,10 @@ export default {
             if (this.data.actions.edit) {
                 const args = this.data.actions.edit.href.split('/');
 
-                this.$emit('edit', args);
+                this.$emit('rowAction', {
+                    key: 'edit',
+                    value: args,
+                });
             }
         },
         onCellValueChange(value) {

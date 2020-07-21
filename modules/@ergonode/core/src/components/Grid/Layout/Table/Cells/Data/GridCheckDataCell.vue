@@ -13,8 +13,7 @@
         :copyable="isCopyable"
         :selected="isSelected"
         @edit="onCheckValueChange"
-        @mousedown="onCheckValueChange"
-        @copy="onCopyValues">
+        @mousedown="onCheckValueChange">
         <GridCheckEditCell
             :value="cellData.value"
             :disabled="isLocked || isDisabled" />

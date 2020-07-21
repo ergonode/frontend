@@ -61,6 +61,7 @@
                 <GridCollectionLayout
                     v-else-if="isCollectionLayout && collectionData.length"
                     :data="collectionData"
+                    :drafts="drafts"
                     :columns-number="collectionLayoutConfig.columnsNumber"
                     :object-fit="collectionLayoutConfig.scaling"
                     @rowAction="onRowAction"

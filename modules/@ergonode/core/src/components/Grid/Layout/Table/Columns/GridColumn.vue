@@ -71,25 +71,5 @@ export default {
             z-index: $Z_INDEX_LVL_2;
             background-color: $WHITESMOKE;
         }
-
-        &::after {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: $Z_INDEX_LVL_4;
-            width: 100%;
-            height: 100%;
-            box-shadow: $ELEVATOR_2_DP;
-            opacity: 1;
-            visibility: hidden;
-            pointer-events: none;
-            content: "";
-        }
-
-        &--hovered {
-            &::after {
-                visibility: visible;
-            }
-        }
     }
 </style>

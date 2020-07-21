@@ -54,7 +54,7 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
 
 export default {
     name: 'Templates',
@@ -68,7 +68,7 @@ export default {
         Grid: () => import('@Core/components/Grid/Grid'),
     },
     mixins: [
-        fetchGridDataMixin({
+        gridFetchDataMixin({
             path: 'templates',
         }),
     ],

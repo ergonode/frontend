@@ -56,8 +56,8 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import draftGridMixin from '@Core/mixins/grid/draftGridMixin';
-import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
+import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
 import {
     debounce,
 } from 'debounce';
@@ -72,10 +72,10 @@ export default {
         // IconSearch,
     },
     mixins: [
-        fetchGridDataMixin({
+        gridFetchDataMixin({
             path: 'multimedia',
         }),
-        draftGridMixin,
+        gridDraftMixin,
     ],
     props: {
         multiple: {
@@ -169,7 +169,11 @@ export default {
     },
     methods: {
         onCellValueChange(cellValues) {
-            const drafts = {};
+            const drafts = this.multiple
+                ? {
+                    ...this.drafts,
+                }
+                : {};
 
             cellValues.forEach(({
                 rowId,
@@ -177,17 +181,9 @@ export default {
                 value,
             }) => {
                 if (!this.multiple && this.value) {
-                    if (typeof this.drafts[`${this.value}/${columnId}`] === 'undefined') {
-                        drafts[`${this.value}/${columnId}`] = false;
-                    } else {
-                        const lastSelectedDraftKey = Object.keys(this.drafts)
-                            .find(key => this.drafts[key]);
-
-                        if (lastSelectedDraftKey !== `${rowId}/${columnId}`) {
-                            drafts[lastSelectedDraftKey] = false;
-                        }
-                    }
+                    drafts[`${this.value}/${columnId}`] = false;
                 }
+
                 drafts[`${rowId}/${columnId}`] = value;
             });
 

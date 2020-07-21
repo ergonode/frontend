@@ -6,11 +6,11 @@
     <div
         :tabindex="-1"
         :class="classes"
+        :row="row"
+        :column="column"
+        :copyable="copyable"
         @mousedown="onMouseDown"
         @keydown="onKeyDown">
-        <GridCellResizer
-            v-if="copyable"
-            @copy="onCopy" />
         <slot />
     </div>
 </template>
@@ -18,9 +18,9 @@
 <script>
 export default {
     name: 'GridTableCell',
-    components: {
-        GridCellResizer: () => import('@Core/components/Grid/Layout/Table/Cells/Resizer/GridCellResizer'),
-    },
+    inject: [
+        'getGridTableLayoutReference',
+    ],
     props: {
         column: {
             type: Number,
@@ -75,18 +75,6 @@ export default {
         },
     },
     methods: {
-        onCopy(factor) {
-            this.$emit('copy', {
-                from: {
-                    row: this.row,
-                    column: this.column,
-                },
-                to: {
-                    row: this.row + factor,
-                    column: this.column,
-                },
-            });
-        },
         onMouseDown(event) {
             if (event.detail === 2 && !(this.locked || this.disabled)) {
                 this.$emit('edit');
@@ -101,10 +89,11 @@ export default {
 
             let element;
 
-            const tableLayout = document.documentElement.querySelector('.grid-table-layout');
+            const tableLayout = this.getGridTableLayoutReference();
+
             switch (keyCode) {
             case this.editKeyCode:
-                if (!(this.locked && this.disabled)) {
+                if (!(this.locked || this.disabled)) {
                     this.$emit('edit');
                 }
                 break;
@@ -163,10 +152,6 @@ export default {
             &:focus {
                 position: relative;
                 box-shadow: inset 0 0 0 2px $GREEN;
-
-                & > .cell-resizer {
-                    opacity: 1;
-                }
             }
         }
 

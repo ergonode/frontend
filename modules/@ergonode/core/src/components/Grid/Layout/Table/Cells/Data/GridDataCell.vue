@@ -17,7 +17,6 @@
         :is-selected="isSelected"
         @editCell="onEditCell"
         @cellValue="onCellValueChange"
-        @columnValues="onColumnValuesChange"
     />
 </template>
 
@@ -90,9 +89,6 @@ export default {
         },
         onCellValueChange(payload) {
             this.$emit('cellValue', payload);
-        },
-        onColumnValuesChange(payload) {
-            this.$emit('columnValues', payload);
         },
     },
 };

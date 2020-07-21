@@ -5,7 +5,9 @@
 <template>
     <div
         class="grid-table-layout"
-        ref="gridTableLayout">
+        ref="gridTableLayout"
+        @focusin="onFocusInside"
+        @focusout="onFocusOut">
         <GridTableLayoutPinnedSection
             v-if="isSelectColumn"
             :is-pinned="pinnedSections[pinnedState.LEFT]">
@@ -45,7 +47,6 @@
                     @editFilterCell="onEditFilterCell"
                     @filterValue="onFilterValueChange"
                     @cellValue="onCellValueChange"
-                    @columnValues="onColumnValuesChange"
                     @editCell="onEditCell"
                 />
                 <GridDraggableColumn
@@ -95,7 +96,6 @@
                             :is-selected="isSelectedAllRows
                                 || selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
                             @cellValue="onCellValueChange"
-                            @columnValues="onColumnValuesChange"
                             @editCell="onEditCell" />
                     </GridColumn>
                 </GridDraggableColumn>
@@ -150,6 +150,11 @@
             v-bind="editFilterCell.props"
             @filterValue="onFilterValueChange"
             @dismiss="onDismissEditFilterCell" />
+        <GridCellResizer
+            v-if="cellResizer"
+            v-bind="cellResizer"
+            @resize="onCellResize"
+            @copy="onCopyCellValuesByResizing" />
     </div>
 </template>
 
@@ -169,6 +174,7 @@ import {
     PINNED_COLUMN_STATE,
     ROW_HEIGHT,
 } from '@Core/defaults/grid';
+import gridResizerCellMixin from '@Core/mixins/grid/cell/gridResizerCellMixin';
 import {
     swapItemPosition,
 } from '@Core/models/arrayWrapper';
@@ -208,6 +214,9 @@ export default {
         GridSentinelColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridSentinelColumn'),
         GridSelectRowColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridSelectRowColumn'),
     },
+    mixins: [
+        gridResizerCellMixin,
+    ],
     props: {
         columns: {
             type: Array,
@@ -500,44 +509,6 @@ export default {
         onCellValueChange(value) {
             this.$emit('cellValue', value);
         },
-        onColumnValuesChange({
-            from, to, rowId, columnId, value,
-        }) {
-            const rowIndex = this.rowIds.findIndex(id => id === rowId);
-            const offset = from.row - rowIndex;
-
-            const getMappedValues = ({
-                startIndex, endIndex,
-            }) => {
-                const values = [];
-
-                for (let i = startIndex; i <= endIndex; i += 1) {
-                    if (this.rows[i]
-                        && this.rows[i][columnId]
-                        && this.rows[i][columnId].value !== value) {
-                        values.push({
-                            rowId: this.rowIds[i],
-                            columnId,
-                            value,
-                        });
-                    }
-                }
-
-                return values;
-            };
-
-            const values = getMappedValues(from.row < to.row
-                ? {
-                    startIndex: from.row - offset,
-                    endIndex: to.row - offset,
-                }
-                : {
-                    startIndex: to.row - offset,
-                    endIndex: from.row - offset,
-                });
-
-            this.$emit('cellValue', values);
-        },
         onRowAction(payload) {
             this.$emit('rowAction', payload);
         },
@@ -611,6 +582,14 @@ export default {
                 });
             }
         },
+        getGridTableLayoutReference() {
+            return this.$refs.gridTableLayout;
+        },
+    },
+    provide() {
+        return {
+            getGridTableLayoutReference: this.getGridTableLayoutReference,
+        };
     },
 };
 </script>

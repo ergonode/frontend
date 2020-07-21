@@ -6,6 +6,7 @@
     <Component
         :is="collectionCellComponent"
         :data="data"
+        :drafts="drafts"
         :object-fit="objectFit"
         @rowAction="onRowAction"
         @cellValue="onCellValueChange" />
@@ -19,6 +20,10 @@ export default {
         data: {
             type: Object,
             required: true,
+        },
+        drafts: {
+            type: Object,
+            default: () => ({}),
         },
         objectFit: {
             type: String,

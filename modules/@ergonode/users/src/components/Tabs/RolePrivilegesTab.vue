@@ -21,7 +21,7 @@
 <script>
 import Grid from '@Core/components/Grid/Grid';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import draftGridMixin from '@Core/mixins/grid/draftGridMixin';
+import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
@@ -41,7 +41,7 @@ export default {
         Grid,
     },
     mixins: [
-        draftGridMixin,
+        gridDraftMixin,
     ],
     data() {
         return {
