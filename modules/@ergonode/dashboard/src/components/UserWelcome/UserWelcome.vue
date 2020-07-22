@@ -1,0 +1,69 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+<template>
+    <div class="user-welcome">
+        <UserAvatar
+            :image-id="user.avatarId"
+            :name="user.firstName"
+            :avatar-size="96" />
+        <div class="user-welcome__description">
+            <h1
+                class="user-welcome__title"
+                v-text="welcomeText" />
+            <span
+                class="user-welcome__subtitle"
+                v-text="whatsGoingOnText" />
+        </div>
+    </div>
+</template>
+
+<script>
+import UserAvatar from '@Core/components/Multimedia/UserAvatar';
+import {
+    mapState,
+} from 'vuex';
+
+export default {
+    name: 'UserWelcome',
+    components: {
+        UserAvatar,
+    },
+    computed: {
+        ...mapState('authentication', {
+            user: state => state.user,
+        }),
+        welcomeText() {
+            return `Welcome ${this.user.firstName}!`;
+        },
+        whatsGoingOnText() {
+            return 'How are you today?';
+        },
+    },
+
+};
+</script>
+
+<style lang="scss" scoped>
+    .user-welcome {
+        display: flex;
+
+        &__description {
+            margin-left: 32px;
+        }
+
+        &__title, &__subtitle {
+            color: $WHITE;
+        }
+
+        &__title {
+            font: $FONT_SEMI_BOLD_40_48;
+        }
+
+        &__subtitle {
+            margin-top: 4px;
+            font: $FONT_MEDIUM_16_24;
+        }
+    }
+</style>

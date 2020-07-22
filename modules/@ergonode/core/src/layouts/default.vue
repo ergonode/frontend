@@ -109,14 +109,21 @@ export default {
 
         &__navigation-bar {
             grid-area: 1 / 2 / 1 / 3;
+            z-index: $Z_INDEX_LVL_8;
         }
 
         &__navigation-side-bar {
             grid-row: 1 / 3;
+            z-index: $Z_INDEX_LVL_9;
         }
 
         &__body {
             grid-area: 2 / 2 / 3 / 3;
+            z-index: $Z_INDEX_LVL_1;
+        }
+
+        &__navigation-bar, &__navigation-side-bar {
+            box-shadow: $ELEVATOR_2_DP;
         }
     }
 </style>

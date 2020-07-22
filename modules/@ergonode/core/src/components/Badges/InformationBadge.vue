@@ -65,6 +65,7 @@ export default {
     .badge {
         display: flex;
         align-items: center;
+        box-shadow: $ELEVATOR_2_DP;
 
         &--small {
             height: 16px;

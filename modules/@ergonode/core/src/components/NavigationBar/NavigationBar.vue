@@ -24,6 +24,7 @@ export default {
         display: flex;
         justify-content: space-between;
         height: 48px;
+        box-sizing: border-box;
         background-color: $GRAPHITE_COAL;
 
         &__breadcrumbs {
@@ -40,7 +41,7 @@ export default {
             grid-auto-flow: column;
             grid-column-gap: 1px;
             background-color: $GRAPHITE_DARK;
-            border-left: 1px solid $GRAPHITE_DARK;
+            border-left: $BORDER_1_GRAPHITE_DARK;
         }
     }
 </style>
