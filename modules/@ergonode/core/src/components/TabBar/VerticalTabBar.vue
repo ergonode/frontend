@@ -84,6 +84,7 @@ export default {
         position: relative;
         display: flex;
         height: 100%;
+        border-right: $BORDER_1_GREY;
 
         &__items {
             position: relative;

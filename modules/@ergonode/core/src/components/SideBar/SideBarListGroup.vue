@@ -33,11 +33,22 @@
                 :state="dropDownState"
                 :fill-color="dropdownIconFillColor" />
         </div>
+        <template v-if="isExpanded">
+            <AutoHeightTransition>
+                <ul
+                    v-if="isSelected"
+                    class="side-bar-list-group__items">
+                    <SideBarListGroupElement
+                        v-for="(child, index) in route.routes"
+                        :key="index"
+                        :route="child" />
+                </ul>
+            </AutoHeightTransition>
+        </template>
         <ul
-            v-if="isSelected || (!isExpanded && isHovered)"
+            v-else-if="isHovered"
             class="side-bar-list-group__items">
             <div
-                v-if="!isExpanded && isHovered"
                 class="side-bar-list-group__expanded-title">
                 <span
                     class="side-bar-list-group__title"
@@ -47,10 +58,8 @@
                 v-for="(child, index) in route.routes"
                 :key="index"
                 :route="child"
-                :is-expanded="!isExpanded && isHovered" />
-            <div
-                class="side-bar-list-group__footer"
-                v-if="!isExpanded && isHovered" />
+                :is-expanded="isHovered" />
+            <div class="side-bar-list-group__footer" />
         </ul>
     </li>
 </template>
@@ -67,11 +76,13 @@ import {
     ARROW,
 } from '@Core/defaults/icons';
 
+import AutoHeightTransition from '../Transitions/AutoHeightTransition';
 import SideBarListGroupElement from './SideBarListGroupElement';
 
 export default {
     name: 'SideBarListGroup',
     components: {
+        AutoHeightTransition,
         FadeSideBarTextTransition,
         SideBarListGroupElement,
         IconArrowDropDown,
