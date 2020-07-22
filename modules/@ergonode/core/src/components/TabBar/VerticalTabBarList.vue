@@ -22,7 +22,6 @@ export default {
         flex: 1;
         flex-direction: column;
         width: 275px;
-        border-right: $BORDER_1_GREY;
         box-sizing: border-box;
     }
 </style>
