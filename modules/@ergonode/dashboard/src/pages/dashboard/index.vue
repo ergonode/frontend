@@ -8,14 +8,12 @@
 
 <script>
 
-import DashboardPage from '../../components/Pages/DashboardPage';
-import EmptyDashboardPage from '../../components/Pages/EmptyDashboardPage';
+import DashboardPage from '@Dashboard/components/Pages/DashboardPage';
 
 export default {
     name: 'Dashboard',
     components: {
         DashboardPage,
-        EmptyDashboardPage,
     },
     head() {
         return {
@@ -27,7 +25,7 @@ export default {
 
 <style lang="scss" scoped>
     .dashboard {
-        background-color: $GRAPHITE_COAL;
         height: 100%;
+        background-color: $GRAPHITE_COAL;
     }
 </style>

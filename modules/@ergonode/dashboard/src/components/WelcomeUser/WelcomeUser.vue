@@ -7,7 +7,7 @@
         <UserAvatar
             :image-id="user.avatarId"
             :name="user.firstName"
-            :avatar-size="96" />
+            :size="extraLargeSize" />
         <div class="user-welcome__description">
             <h1
                 class="user-welcome__title"
@@ -22,11 +22,14 @@
 <script>
 import UserAvatar from '@Core/components/Multimedia/UserAvatar';
 import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'UserWelcome',
+    name: 'WelcomeUser',
     components: {
         UserAvatar,
     },
@@ -34,6 +37,9 @@ export default {
         ...mapState('authentication', {
             user: state => state.user,
         }),
+        extraLargeSize() {
+            return SIZE.EXTRA_LARGE;
+        },
         welcomeText() {
             return `Welcome ${this.user.firstName}!`;
         },
@@ -48,6 +54,7 @@ export default {
 <style lang="scss" scoped>
     .user-welcome {
         display: flex;
+        align-items: center;
 
         &__description {
             margin-left: 32px;

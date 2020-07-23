@@ -8,24 +8,22 @@
         class="products-doughnut-chart"
         :style="styles">
         <div class="products-doughnut-chart__description">
-            <span
-                class="products-doughnut-chart__title"
-                v-text="title" />
-            <span
-                class="products-doughnut-chart__subtitle"
-                v-text="subtitle" />
+            <span class="products-doughnut-chart__title">3467</span>
+            <span class="products-doughnut-chart__subtitle">Products total</span>
         </div>
         <DoughnutChart
             class="products-doughnut-chart__doughnut"
-            :chartdata="chartdata"
+            :data="data"
             :options="options" />
     </div>
 </template>
 
 <script>
 import {
+    BLUE,
     GRAPHITE_COAL,
-    GREY,
+    GREEN,
+    YELLOW,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import DoughnutChart from '@Core/components/Chart/DoughnatChart';
 
@@ -35,14 +33,6 @@ export default {
         DoughnutChart,
     },
     props: {
-        title: {
-            type: String,
-            default: '',
-        },
-        subtitle: {
-            type: String,
-            default: '',
-        },
         backgroundColor: {
             type: String,
             default: GRAPHITE_COAL,
@@ -51,17 +41,21 @@ export default {
     },
     data() {
         return {
-            chartdata: {
+            data: {
                 labels: [
                     'Products',
                 ],
                 datasets: [
                     {
                         data: [
-                            100,
+                            854,
+                            1431,
+                            2950,
                         ],
                         backgroundColor: [
-                            GREY,
+                            BLUE,
+                            YELLOW,
+                            GREEN,
                         ],
                         borderWidth: 0,
                     },
@@ -111,7 +105,7 @@ export default {
         &__subtitle {
             margin-top: 4px;
             color: $GREY;
-            font: $FONT_MEDIUM_12_16
+            font: $FONT_MEDIUM_12_16;
         }
 
         &__doughnut {

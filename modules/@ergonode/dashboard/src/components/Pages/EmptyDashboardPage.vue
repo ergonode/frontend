@@ -8,10 +8,7 @@
             <div class="vertical-container">
                 <div class="horizontal-container">
                     <div class="dashboard-stats">
-                        <DoughnutProductsChart
-                            :style="{ height: '174px', width: '174px' }"
-                            title="0"
-                            subtitle="Products total" />
+                        <DoughnutProductsChart :style="{ height: '174px', width: '174px' }" />
                     </div>
                     <div class="dashboard-header">
                         <div class="dashboard-header__description">
@@ -24,8 +21,8 @@
                         </div>
                     </div>
                 </div>
-                <ProgressList>
-                    <ProgressListElement
+                <CreateProductStepList>
+                    <CreateProductStepListElement
                         :title="firstStep.title"
                         :subtitle="firstStep.subtitle"
                         :description="firstStep.description">
@@ -40,8 +37,8 @@
                                 </template>
                             </Button>
                         </template>
-                    </ProgressListElement>
-                    <ProgressListElement
+                    </CreateProductStepListElement>
+                    <CreateProductStepListElement
                         :title="secondStep.title"
                         :subtitle="secondStep.subtitle"
                         :description="secondStep.description">
@@ -56,8 +53,8 @@
                                 </template>
                             </Button>
                         </template>
-                    </ProgressListElement>
-                    <ProgressListElement
+                    </CreateProductStepListElement>
+                    <CreateProductStepListElement
                         :title="thirdStep.title"
                         :subtitle="thirdStep.subtitle"
                         :description="thirdStep.description">
@@ -72,8 +69,8 @@
                                 </template>
                             </Button>
                         </template>
-                    </ProgressListElement>
-                </ProgressList>
+                    </CreateProductStepListElement>
+                </CreateProductStepList>
             </div>
         </VerticalFixedScroll>
         <CreateAttributeModalForm
@@ -98,15 +95,15 @@ import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScr
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import ProgressListElement from '@Dashboard/components/ProgressList/Element/ProgressListElement';
-import ProgressList from '@Dashboard/components/ProgressList/ProgressList';
+import CreateProductStepList from '@Dashboard/components/CreateProductStepList/CreateProductStepList';
+import CreateProductStepListElement from '@Dashboard/components/CreateProductStepList/Element/CreateProductStepListElement';
 import DoughnutProductsChart from '@Products/components/Chart/DoughnutProductsChart';
 
 export default {
     name: 'EmptyDashboardPage',
     components: {
-        ProgressList,
-        ProgressListElement,
+        CreateProductStepList,
+        CreateProductStepListElement,
         Button,
         IconAdd,
         VerticalFixedScroll,
@@ -190,9 +187,10 @@ export default {
     .empty-dashboard-page {
         display: flex;
         flex-direction: column;
-        background-color: $GRAPHITE_COAL;
+        width: 100%;
         height: 100%;
         box-sizing: border-box;
+        background-color: $GRAPHITE_COAL;
     }
 
     .vertical-container {
@@ -202,9 +200,9 @@ export default {
 
     .horizontal-container {
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
         align-items: center;
-        flex-wrap: wrap;
     }
 
     .dashboard-header {
@@ -229,7 +227,11 @@ export default {
         width: 450px;
         height: 300px;
         margin: 40px 120px 40px 0;
-        background: url("~@Core/assets/images/login/login_password_recovery_face.png") no-repeat right bottom;
+        background:
+            url("~@Core/assets/images/login/login_password_recovery_face.png")
+            no-repeat
+            right
+            bottom;
         background-size: contain;
 
         &__image {

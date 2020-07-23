@@ -9,7 +9,7 @@
                 <UserAvatar
                     :image-id="comment.avatar_id"
                     :name="comment.author"
-                    :avatar-size="32" />
+                    :size="smallSize" />
                 <span v-text="comment.author" />
             </div>
             <div class="header__actions">
@@ -67,6 +67,7 @@ import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import {
+    SIZE,
     THEME,
 } from '@Core/defaults/theme';
 import {
@@ -92,6 +93,9 @@ export default {
         },
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         secondaryTheme() {
             return THEME.SECONDARY;
         },

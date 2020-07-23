@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 
-export const STATUS = [
+export const COLORS = [
     '#6A1B9A',
     '#AA00FF',
     '#C2185B',

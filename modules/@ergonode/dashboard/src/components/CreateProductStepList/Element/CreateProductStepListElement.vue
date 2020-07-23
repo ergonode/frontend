@@ -21,7 +21,7 @@
 
 <script>
 export default {
-    name: 'ProgressListElement',
+    name: 'CreateProductStepListElement',
     props: {
         title: {
             type: String,

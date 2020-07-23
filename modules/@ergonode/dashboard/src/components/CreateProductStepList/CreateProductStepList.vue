@@ -10,7 +10,7 @@
 
 <script>
 export default {
-    name: 'ProgressList',
+    name: 'CreateProductStepList',
     props: {},
 };
 </script>
