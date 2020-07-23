@@ -14,11 +14,6 @@ import {
 } from './mutations';
 
 export default {
-    setId({
-        commit,
-    }, value) {
-        commit(types.SET_CONDITION_SET_ID, value);
-    },
     getConditions({
         commit, rootState,
     }, params = {}) {
@@ -61,8 +56,14 @@ export default {
                 conditionsData, conditionsTree,
             } = getParsedConditionSetData(conditions, state.conditions);
 
-            commit(types.SET_CONDITION_SET_ID, id);
-            commit(types.SET_CONDITIONS_DATA, conditionsData);
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'conditionsValues',
+                value: conditionsData,
+            });
             dispatch('gridDesigner/setGridData', conditionsTree, {
                 root: true,
             });
@@ -87,7 +88,10 @@ export default {
         return this.app.$axios.$post(`${userLanguageCode}/conditionsets`, data).then(({
             id,
         }) => {
-            commit(types.SET_CONDITION_SET_ID, id);
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
             onSuccess(id);
         }).catch(e => onError(e.data));
     },
@@ -153,10 +157,5 @@ export default {
         if (state.conditionsValues[conditionId]) {
             commit(types.REMOVE_CONDITION_VALUE_FROM_SET, conditionId);
         }
-    },
-    clearStorage({
-        commit,
-    }) {
-        commit(types.CLEAR_STATE);
     },
 };

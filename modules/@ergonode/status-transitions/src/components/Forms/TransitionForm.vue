@@ -16,7 +16,7 @@
                     :options="sourceOptions"
                     :disabled="isDisabled || isDisabledByPrivileges"
                     :error-messages="errorMessages[sourceFieldKey]"
-                    @input="setSource" />
+                    @input="setSourceValue" />
                 <TranslationSelect
                     :value="destination"
                     :required="true"
@@ -25,7 +25,7 @@
                     :options="destinationOptions"
                     :disabled="isDisabled || isDisabledByPrivileges"
                     :error-messages="errorMessages[destinationFieldKey]"
-                    @input="setDestination" />
+                    @input="setDestinationValue" />
             </FormSection>
             <Divider />
             <FormSection title="Send notification to">
@@ -37,7 +37,7 @@
                     :disabled="isDisabledByPrivileges"
                     :error-messages="errorMessages[roleFieldKey]"
                     :fetch-options-request="getRolesOptionsRequest"
-                    @input="setRoles" />
+                    @input="setRolesValue" />
             </FormSection>
         </template>
     </Form>
@@ -114,10 +114,26 @@ export default {
     },
     methods: {
         ...mapActions('transitions', [
-            'setSource',
-            'setDestination',
-            'setRoles',
+            '__setState',
         ]),
+        setSourceValue(value) {
+            this.__setState({
+                key: 'source',
+                value,
+            });
+        },
+        setDestinationValue(value) {
+            this.__setState({
+                key: 'destination',
+                value,
+            });
+        },
+        setRolesValue(value) {
+            this.__setState({
+                key: 'roles',
+                value,
+            });
+        },
         getRolesOptionsRequest() {
             return getRolesOptions().then(response => response.default(
                 {

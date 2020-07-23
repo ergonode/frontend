@@ -42,8 +42,14 @@ export default {
                 view: 'list',
             };
 
-            commit(types.SET_DEFAULT_TEXT_ATTRIBUTE, defaultLabel || SKU_MODEL_ID);
-            commit(types.SET_DEFAULT_IMAGE_ATTRIBUTE, defaultImage);
+            commit('__SET_STATE', {
+                key: 'defaultTextAttribute',
+                value: defaultLabel || SKU_MODEL_ID,
+            });
+            commit('__SET_STATE', {
+                key: 'defaultImageAttribute',
+                value: defaultImage,
+            });
 
             return Promise.all([
                 this.app.$axios.$get(`${languageCode}/attributes`, {
@@ -79,9 +85,18 @@ export default {
                         });
                     }
 
-                    commit(types.INITIALIZE_LAYOUT_ELEMENTS, layoutElements);
-                    commit(types.SET_TEMPLATE_DESIGNER_TITLE, name);
-                    commit(types.SET_TEMPLATE_DESIGNER_IMAGE, imageID);
+                    commit('__SET_STATE', {
+                        key: 'layoutElements',
+                        value: layoutElements,
+                    });
+                    commit('__SET_STATE', {
+                        key: 'title',
+                        value: name,
+                    });
+                    commit('__SET_STATE', {
+                        key: 'image',
+                        value: imageID,
+                    });
                 }),
             ]);
         });
@@ -113,7 +128,10 @@ export default {
         return this.app.$axios.$get(path).then(({
             collection,
         }) => {
-            commit(types.SET_TYPES, collection);
+            commit('__SET_STATE', {
+                key: 'types',
+                value: collection,
+            });
         });
     },
     addListElementToLayout({
@@ -207,26 +225,6 @@ export default {
         });
         commit(types.REMOVE_LAYOUT_ELEMENT_AT_INDEX, index);
     },
-    setTitle: ({
-        commit,
-    }, title) => {
-        commit(types.SET_TEMPLATE_DESIGNER_TITLE, title);
-    },
-    setImage: ({
-        commit,
-    }, image) => {
-        commit(types.SET_TEMPLATE_DESIGNER_IMAGE, image);
-    },
-    setDefaultTextAttribute: ({
-        commit,
-    }, defaultTextAttribute) => {
-        commit(types.SET_DEFAULT_TEXT_ATTRIBUTE, defaultTextAttribute);
-    },
-    setDefaultImageAttribute: ({
-        commit,
-    }, defaultImageAttribute) => {
-        commit(types.SET_DEFAULT_IMAGE_ATTRIBUTE, defaultImageAttribute);
-    },
     setLayoutElementRequirement: ({
         commit,
     }, payload) => {
@@ -242,7 +240,4 @@ export default {
         } = rootState.authentication.user;
         return this.app.$axios.$delete(`${userLanguageCode}/templates/${id}`).then(() => onSuccess());
     },
-    clearStorage: ({
-        commit,
-    }) => commit(types.CLEAR_STATE),
 };

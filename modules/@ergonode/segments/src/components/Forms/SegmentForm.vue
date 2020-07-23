@@ -16,7 +16,7 @@
                     :disabled="isDisabled || isDisabledByPrivileges"
                     :error-messages="errorMessages[codeFieldKey]"
                     hint="Code must be unique"
-                    @input="setCode" />
+                    @input="setCodeValue" />
             </FormSection>
         </template>
     </Form>
@@ -61,8 +61,14 @@ export default {
     },
     methods: {
         ...mapActions('segments', [
-            'setCode',
+            '__setState',
         ]),
+        setCodeValue(value) {
+            this.__setState({
+                key: 'code',
+                value,
+            });
+        },
         dataCyGenerator(key) {
             return `segment-${key}`;
         },

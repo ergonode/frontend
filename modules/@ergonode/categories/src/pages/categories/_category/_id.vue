@@ -36,8 +36,8 @@ export default {
         params,
     }) {
         await Promise.all([
-            store.dispatch('translations/clearStorage'),
-            store.dispatch('categories/clearStorage'),
+            store.dispatch('translations/__clearStorage'),
+            store.dispatch('categories/__clearStorage'),
         ]);
         await store.dispatch('categories/getCategoryById', {
             categoryId: params.id,

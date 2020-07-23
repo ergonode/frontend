@@ -35,7 +35,7 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('units/clearStorage');
+        await store.dispatch('units/__clearStorage');
         await store.dispatch('units/getUnitById', {
             unitId: params.id,
         });
@@ -54,7 +54,7 @@ export default {
         ...mapActions('units', {
             updateUnit: 'updateUnit',
             removeUnit: 'removeUnit',
-            clearUnitStorage: 'clearStorage',
+            clearUnitStorage: '__clearStorage',
         }),
         ...mapActions('dictionaries', [
             'getCurrentDictionary',

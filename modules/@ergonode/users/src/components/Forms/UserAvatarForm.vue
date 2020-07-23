@@ -46,10 +46,10 @@ export default {
     },
     methods: {
         ...mapActions('users', [
-            'setAction',
+            '__setState',
         ]),
         uploadValue(value = '') {
-            this.setAction({
+            this.__setState({
                 key: 'avatarId',
                 value,
             });

@@ -6,12 +6,9 @@ import {
     removeFromObjectByKey,
 } from '@Core/models/objectWrapper';
 
-import defaultState from './state';
-
 export const types = {
     SET_TAB_TRANSLATIONS: 'SET_TAB_TRANSLATIONS',
     SET_MULTILINGUAL_TRANSLATION_PROPERTY_VALUE: 'SET_MULTILINGUAL_TRANSLATION_PROPERTY_VALUE',
-    CLEAR_STATE: 'CLEAR_STATE',
 };
 export default {
     [types.SET_TAB_TRANSLATIONS](state, translations) {
@@ -33,11 +30,5 @@ export default {
                 [languageCode]: value,
             };
         }
-    },
-    [types.CLEAR_STATE](state) {
-        const states = defaultState();
-        Object.keys(states).forEach((key) => {
-            state[key] = states[key];
-        });
     },
 };

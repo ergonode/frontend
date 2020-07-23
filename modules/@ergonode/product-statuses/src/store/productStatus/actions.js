@@ -2,21 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import {
-    types,
-} from './mutations';
-
 export default {
-    setCode({
-        commit,
-    }, code) {
-        commit(types.SET_CODE, code);
-    },
-    setColor({
-        commit,
-    }, color) {
-        commit(types.SET_COLOR, color);
-    },
     getProductStatuses({
         commit, rootState,
     }, params) {
@@ -28,14 +14,17 @@ export default {
         }).then(({
             collection: statuses,
         }) => {
-            commit(types.SET_STATUSES, statuses.map(status => ({
-                id: status.id,
-                key: status.code,
-                value: status.name,
-                hint: status.name
-                    ? `#${status.code} ${userLanguageCode}`
-                    : '',
-            })));
+            commit('__SET_STATE', {
+                key: 'statuses',
+                value: statuses.map(status => ({
+                    id: status.id,
+                    key: status.code,
+                    value: status.name,
+                    hint: status.name
+                        ? `#${status.code} ${userLanguageCode}`
+                        : '',
+                })),
+            });
         });
     },
     getProductStatus({
@@ -49,9 +38,18 @@ export default {
                 description,
             };
 
-            commit(types.SET_STATUS_ID, id);
-            commit(types.SET_CODE, code);
-            commit(types.SET_COLOR, color);
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'code',
+                value: code,
+            });
+            commit('__SET_STATE', {
+                key: 'color',
+                value: color,
+            });
             dispatch('translations/setTabTranslations', translations, {
                 root: true,
             });
@@ -68,12 +66,15 @@ export default {
             default_status: defaultStatus,
         }) => {
             if (defaultStatus === state.code) {
-                commit(types.SET_AS_DEFAULT_STATUS, true);
+                commit('__SET_STATE', {
+                    key: 'isDefaultStatus',
+                    value: true,
+                });
             }
         });
     },
     updateDefaultStatus({
-        commit, state, rootState,
+        state, rootState,
     }) {
         if (state.isDefaultStatus) {
             const {
@@ -85,7 +86,7 @@ export default {
         return null;
     },
     async updateProductStatus({
-        commit, state, rootState,
+        state, rootState,
     }, {
         onError,
     }) {
@@ -107,11 +108,6 @@ export default {
         await this.app.$axios.$put(`${userLanguageCode}/status/${state.id}`, data).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
-    setStatusAsDefault({
-        commit,
-    }, isDefault) {
-        commit(types.SET_AS_DEFAULT_STATUS, isDefault);
-    },
     removeProductStatus({
         commit, state, rootState,
     }, {
@@ -124,10 +120,5 @@ export default {
             language: userLanguageCode,
         } = rootState.authentication.user;
         return this.app.$axios.$delete(`${userLanguageCode}/status/${id}`).then(() => onSuccess());
-    },
-    clearStorage: ({
-        commit,
-    }) => {
-        commit(types.CLEAR_STATE);
     },
 };

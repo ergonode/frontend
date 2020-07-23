@@ -53,9 +53,4 @@ export default {
             commit(types.REMOVE_ALERT, indexToRemove);
         }
     },
-    clearStorage({
-        commit,
-    }) {
-        commit(types.CLEAR_STATE);
-    },
 };

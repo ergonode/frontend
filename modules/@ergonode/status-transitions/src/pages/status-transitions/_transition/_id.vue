@@ -33,7 +33,7 @@ export default {
         store, params,
     }) {
         await Promise.all([
-            store.dispatch('transitions/clearStorage'),
+            store.dispatch('transitions/__clearStorage'),
             store.dispatch('productStatus/getProductStatuses', {
                 limit: 9999,
                 offset: 0,
@@ -67,12 +67,12 @@ export default {
         ...mapActions('conditions', {
             createConditionSet: 'createConditionSet',
             updateConditionSet: 'updateConditionSet',
-            clearConditionSetStorage: 'clearStorage',
+            clearConditionSetStorage: '__clearStorage',
         }),
         ...mapActions('transitions', {
             updateTransition: 'updateTransition',
             removeTransition: 'removeTransition',
-            clearTransitionStorage: 'clearStorage',
+            clearTransitionStorage: '__clearStorage',
         }),
         ...mapActions('validations', [
             'onError',

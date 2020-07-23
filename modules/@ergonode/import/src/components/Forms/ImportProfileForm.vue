@@ -15,7 +15,7 @@
                     :disabled="isDisabled || isDisabledByPrivileges"
                     label="System name"
                     hint="System name must be unique"
-                    @input="setName" />
+                    @input="setNameValue" />
                 <Select
                     :value="type"
                     required
@@ -23,7 +23,7 @@
                     :disabled="isDisabledByPrivileges"
                     :options="sourcesOptions"
                     :error-messages="errorMessages[typeFieldKey]"
-                    @input="setType" />
+                    @input="setTypeValue" />
             </FormSection>
         </template>
     </Form>
@@ -79,9 +79,20 @@ export default {
     },
     methods: {
         ...mapActions('import', [
-            'setName',
-            'setType',
+            '__setState',
         ]),
+        setNameValue(value) {
+            this.__setState({
+                key: 'name',
+                value,
+            });
+        },
+        setTypeValue(value) {
+            this.__setState({
+                key: 'type',
+                value,
+            });
+        },
     },
 };
 </script>

@@ -17,9 +17,4 @@ export default {
     }, params) {
         commit(types.SET_MULTILINGUAL_TRANSLATION_PROPERTY_VALUE, params);
     },
-    clearStorage({
-        commit,
-    }) {
-        commit(types.CLEAR_STATE);
-    },
 };

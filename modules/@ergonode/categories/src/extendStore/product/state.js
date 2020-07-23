@@ -3,8 +3,5 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    id: null,
-    name: '',
-    description: '',
-    privileges: [],
+    categories: [],
 });

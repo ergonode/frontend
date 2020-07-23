@@ -13,6 +13,14 @@ export const Tabs = {
     CategoryTranslationsTab: () => import('@Categories/components/Tabs/CategoryTranslationsTab').then(m => m.default || m),
 };
 
+export const Components = {
+    ExtendProductForm: () => import('@Categories/components/Forms/Product/ExtendProductForm'),
+};
+
+export const Store = {
+    Product: () => import('@Categories/extendStore/product').then(m => m.default || m),
+};
+
 export const Icons = {
     Templates: () => import('@Core/components/Icons/Menu/IconTemplates'),
 };

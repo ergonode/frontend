@@ -16,7 +16,7 @@
                     :disabled="isDisabled || isDisabledByPrivileges"
                     label="System name"
                     hint="Product collection code must be unique"
-                    @input="setCode" />
+                    @input="setCodeValue" />
                 <TranslationLazySelect
                     :data-cy="dataCyGenerator(typeIdFieldKey)"
                     :value="type"
@@ -25,7 +25,7 @@
                     :disabled="isDisabledByPrivileges"
                     :error-messages="errorMessages[typeIdFieldKey]"
                     :fetch-options-request="getCollectionTypesOptionsRequest"
-                    @input="setType" />
+                    @input="setTypeValue" />
             </FormSection>
         </template>
     </Form>
@@ -74,9 +74,20 @@ export default {
     },
     methods: {
         ...mapActions('collections', [
-            'setCode',
-            'setType',
+            '__setState',
         ]),
+        setCodeValue(value) {
+            this.__setState({
+                key: 'code',
+                value,
+            });
+        },
+        setTypeValue(value) {
+            this.__setState({
+                key: 'type',
+                value,
+            });
+        },
         getCollectionTypesOptionsRequest() {
             return getCollectionTypesOptions().then(response => response.default(
                 {

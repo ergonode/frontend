@@ -11,16 +11,6 @@ import {
 } from './mutations';
 
 export default {
-    setName({
-        commit,
-    }, value) {
-        commit(types.SET_ROLE_NAME, value);
-    },
-    setDescription({
-        commit,
-    }, value) {
-        commit(types.SET_ROLE_DESCRIPTION, value);
-    },
     setPrivileges({
         commit,
     }, value) {
@@ -43,9 +33,18 @@ export default {
             description = '',
             privileges = [],
         }) => {
-            commit(types.SET_ROLE_ID, id);
-            commit(types.SET_ROLE_NAME, name);
-            commit(types.SET_ROLE_DESCRIPTION, description);
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'name',
+                value: name,
+            });
+            commit('__SET_STATE', {
+                key: 'description',
+                value: description,
+            });
             commit(types.SET_ROLE_PRIVILEGES, getMappedPrivileges(privileges));
         });
     },
@@ -81,11 +80,7 @@ export default {
         const {
             language: userLanguageCode,
         } = rootState.authentication.user;
+
         return this.app.$axios.$delete(`${userLanguageCode}/roles/${id}`).then(() => onSuccess()).catch(e => onError(e.data));
-    },
-    clearStorage({
-        commit,
-    }) {
-        commit(types.CLEAR_STATE);
     },
 };

@@ -4,8 +4,6 @@
  */
 import deepmerge from 'deepmerge';
 
-import defaultState from './state';
-
 export const types = {
     INITIALIZE_ROW_DRAFT: 'INITIALIZE_ROW_DRAFT',
     INITIALIZE_COLUMN_DRAFT: 'INITIALIZE_COLUMN_DRAFT',
@@ -15,7 +13,6 @@ export const types = {
     SET_DRAFTS: 'SET_DRAFTS',
     REMOVE_DRAFT_ROW: 'REMOVE_DRAFT_ROW',
     REMOVE_DRAFTS: 'REMOVE_DRAFTS',
-    CLEAR_STATE: 'CLEAR_STATE',
 };
 export default {
     [types.INITIALIZE_ROW_DRAFT](state, rowId) {
@@ -50,11 +47,5 @@ export default {
     },
     [types.REMOVE_DRAFTS](state) {
         state.drafts = {};
-    },
-    [types.CLEAR_STATE](state) {
-        const states = defaultState();
-        Object.keys(states).forEach((key) => {
-            state[key] = states[key];
-        });
     },
 };

@@ -4,10 +4,6 @@
  */
 import extendsModules from '~/.nuxt/extends.modules';
 
-import {
-    types,
-} from './mutations';
-
 const modulesDictionaries = Object.values(extendsModules)
     .reduce((acc, current) => {
         let connectedArray = acc;
@@ -38,8 +34,8 @@ export default {
             }).then((response) => {
                 const value = isGrid ? response.collection : response;
 
-                commit(types.SET_CUSTOM_STATE_PROPERTY, {
-                    stateProp,
+                commit('__SET_STATE', {
+                    key: stateProp,
                     value,
                 });
             });
@@ -69,15 +65,10 @@ export default {
         }).then((response) => {
             const value = isGrid ? response.collection : response;
 
-            commit(types.SET_CUSTOM_STATE_PROPERTY, {
-                stateProp,
+            commit('__SET_STATE', {
+                key: stateProp,
                 value,
             });
         });
-    },
-    clearStorage({
-        commit,
-    }) {
-        commit(types.CLEAR_STATE);
     },
 };

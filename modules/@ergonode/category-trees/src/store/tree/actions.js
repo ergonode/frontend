@@ -9,10 +9,6 @@ import {
     getParsedTreeData,
 } from '@Trees/models/treeMapper';
 
-import {
-    types,
-} from './mutations';
-
 export default {
     async getTreeById(
         {
@@ -70,8 +66,14 @@ export default {
                 name,
             };
 
-            commit(types.SET_TREE_ID, treeId);
-            commit(types.SET_CODE, code);
+            commit('__SET_STATE', {
+                key: 'treeId',
+                value: treeId,
+            });
+            commit('__SET_STATE', {
+                key: 'code',
+                value: code,
+            });
             dispatch('translations/setTabTranslations', translations, {
                 root: true,
             });
@@ -95,11 +97,6 @@ export default {
         });
         await this.$removeLoader('footerButton');
     },
-    setTreeCode({
-        commit,
-    }, code) {
-        commit(types.SET_CODE, code);
-    },
     removeCategoryTree({
         state, rootState,
     }, {
@@ -113,7 +110,4 @@ export default {
         } = rootState.authentication.user;
         return this.app.$axios.$delete(`${userLanguageCode}/trees/${treeId}`).then(() => onSuccess());
     },
-    clearStorage: ({
-        commit,
-    }) => commit(types.CLEAR_STATE),
 };

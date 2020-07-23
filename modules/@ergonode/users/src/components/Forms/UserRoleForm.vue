@@ -14,7 +14,7 @@
                     label="Role name"
                     :error-messages="errorMessages[nameFieldKey]"
                     :disabled="isDisabledByPrivileges"
-                    @input="setName" />
+                    @input="setNameValue" />
                 <TextArea
                     :value="description"
                     required
@@ -23,7 +23,7 @@
                     :style="{height: '150px'}"
                     :error-messages="errorMessages[descriptionFieldKey]"
                     :disabled="isDisabledByPrivileges"
-                    @input="setDescription" />
+                    @input="setDescriptionValue" />
             </FormSection>
         </template>
     </Form>
@@ -69,9 +69,20 @@ export default {
     },
     methods: {
         ...mapActions('roles', [
-            'setName',
-            'setDescription',
+            '__setState',
         ]),
+        setNameValue(value) {
+            this.__setState({
+                key: 'name',
+                value,
+            });
+        },
+        setDescriptionValue(value) {
+            this.__setState({
+                key: 'description',
+                value,
+            });
+        },
     },
 };
 </script>

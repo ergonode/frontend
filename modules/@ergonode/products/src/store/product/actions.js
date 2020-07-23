@@ -16,21 +16,9 @@ import {
 const getAttributesByFilter = () => import('@Attributes/services/getAttributesByFilter.service');
 
 export default {
-    setProductSku: ({
-        commit,
-    }, sku) => commit(types.SET_PRODUCT_SKU, sku),
     setDraftValue: ({
         commit,
     }, payload) => commit(types.SET_DRAFT_VALUE, payload),
-    setProductStatus: ({
-        commit,
-    }, status) => commit(types.SET_PRODUCT_STATUS, status),
-    setProductTemplate: ({
-        commit,
-    }, template) => commit(types.SET_PRODUCT_TEMPLATE, template),
-    setProductType: ({
-        commit,
-    }, type) => commit(types.SET_PRODUCT_TYPE, type),
     setBindingAttributeId: ({
         commit,
     }, payload) => commit(types.SET_BINDING_ATTRIBUTE_ID, payload),
@@ -40,12 +28,6 @@ export default {
     removeBindingAttribute: ({
         commit,
     }, index) => commit(types.REMOVE_BINDING_ATTRIBUTE, index),
-    setProductCategories: (
-        {
-            commit,
-        },
-        categories = [],
-    ) => commit(types.SET_PRODUCT_CATEGORIES, categories),
     getProductDraft({
         commit,
     }, {
@@ -80,23 +62,50 @@ export default {
             workflow = [],
         }) => {
             if (categoryIds) {
-                commit(types.SET_PRODUCT_CATEGORIES, categoryIds);
+                commit('__SET_STATE', {
+                    key: 'categories',
+                    value: categoryIds,
+                });
             }
 
             if (templateId) {
-                commit(types.SET_PRODUCT_TEMPLATE, templateId);
+                commit('__SET_STATE', {
+                    key: 'template',
+                    value: templateId,
+                });
             }
 
-            commit(types.SET_PRODUCT_ID, id);
-            commit(types.SET_PRODUCT_SKU, sku);
-            commit(types.SET_PRODUCT_STATUS, status);
-            commit(types.SET_PRODUCT_WORKFLOW, workflow);
-            commit(types.SET_PRODUCT_DATA, attributes);
-            commit(types.SET_PRODUCT_TYPE, productTypes[type]);
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'sku',
+                value: sku,
+            });
+            commit('__SET_STATE', {
+                key: 'type',
+                value: productTypes[type],
+            });
+            commit('__SET_STATE', {
+                key: 'status',
+                value: status,
+            });
+            commit('__SET_STATE', {
+                key: 'workflow',
+                value: workflow,
+            });
+            commit('__SET_STATE', {
+                key: 'data',
+                value: attributes,
+            });
 
             if (type === PRODUCT_TYPE.WITH_VARIANTS) {
                 const getAttributesBindings = this.app.$axios.$get(`${userLanguageCode}/products/${id}/bindings`).then((bindings) => {
-                    commit(types.SET_BINDING_ATTRIBUTE_IDS, bindings);
+                    commit('__SET_STATE', {
+                        key: 'bindingAttributesIds',
+                        value: bindings,
+                    });
                 });
 
                 return Promise.all([
@@ -144,7 +153,10 @@ export default {
                 $store: this,
                 filter: `type=${TYPES.SELECT}`,
             }).then((selectAttributes) => {
-                commit(types.SET_SELECT_ATTRIBUTES, selectAttributes);
+                commit('__SET_STATE', {
+                    key: 'selectAttributes',
+                    value: selectAttributes,
+                });
             }),
         );
     },
@@ -202,10 +214,5 @@ export default {
         } = rootState.authentication.user;
 
         return this.app.$axios.$delete(`${userLanguageCode}/products/${id}`).then(() => onSuccess());
-    },
-    clearStorage: ({
-        commit,
-    }) => {
-        commit(types.CLEAR_STATE);
     },
 };

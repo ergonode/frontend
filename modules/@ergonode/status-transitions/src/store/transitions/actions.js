@@ -2,31 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import {
-    types,
-} from './mutations';
-
 export default {
-    setSource({
-        commit,
-    }, value) {
-        commit(types.SET_SOURCE, value);
-    },
-    setDestination({
-        commit,
-    }, value) {
-        commit(types.SET_DESTINATION, value);
-    },
-    setConditionSetId({
-        commit,
-    }, value) {
-        commit(types.SET_CONDITION_SET_ID, value);
-    },
-    setRoles({
-        commit,
-    }, value) {
-        commit(types.SET_ROLES, value);
-    },
     async getTransitionById(
         {
             commit, dispatch, rootState,
@@ -57,10 +33,22 @@ export default {
                 status => status.key === destination.replace(/%20/g, ' '),
             );
 
-            commit(types.SET_SOURCE, sourceOption);
-            commit(types.SET_DESTINATION, destinationOption);
-            commit(types.SET_CONDITION_SET_ID, conditionSetId);
-            commit(types.SET_ROLES, rolesIds);
+            commit('__SET_STATE', {
+                key: 'source',
+                value: sourceOption,
+            });
+            commit('__SET_STATE', {
+                key: 'destination',
+                value: destinationOption,
+            });
+            commit('__SET_STATE', {
+                key: 'roles',
+                value: rolesIds,
+            });
+            commit('__SET_STATE', {
+                key: 'conditionSetId',
+                value: conditionSetId,
+            });
 
             if (conditionSetId) {
                 await dispatch('conditions/getConditionSetById', {
@@ -113,10 +101,5 @@ export default {
                     onSuccess();
                 }
             });
-    },
-    clearStorage({
-        commit,
-    }) {
-        commit(types.CLEAR_STATE);
     },
 };

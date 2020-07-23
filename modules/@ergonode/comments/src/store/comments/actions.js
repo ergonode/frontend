@@ -7,11 +7,6 @@ import {
 } from './mutations';
 
 export default {
-    setCommentObjectId({
-        commit,
-    }, value) {
-        commit(types.SET_OBJECT_ID, value);
-    },
     getComments({
         commit, rootState,
     }, params) {
@@ -23,8 +18,14 @@ export default {
         }).then(({
             collection: comments, info,
         }) => {
-            commit(types.SET_COMMENTS, comments);
-            commit(types.SET_COUNT, info.filtered);
+            commit('__SET_STATE', {
+                key: 'comments',
+                value: comments,
+            });
+            commit('__SET_STATE', {
+                key: 'count',
+                value: info.filtered,
+            });
         });
     },
     async getMoreComments(
@@ -48,8 +49,14 @@ export default {
         }).then(({
             collection: comments, info,
         }) => {
-            commit(types.SET_CURRENT_PAGE, currentPage += 1);
-            commit(types.SET_COUNT, info.filtered);
+            commit('__SET_STATE', {
+                key: 'currentPage',
+                value: currentPage += 1,
+            });
+            commit('__SET_STATE', {
+                key: 'count',
+                value: info.filtered,
+            });
             commit(types.INSERT_MORE_COMMENTS, comments);
         });
         await this.$removeLoader('moreComments');
@@ -96,7 +103,10 @@ export default {
                     author: `${firstName} ${lastName}`,
                 };
                 commit(types.ADD_COMMENT, comment);
-                commit(types.SET_COUNT, count += 1);
+                commit('__SET_STATE', {
+                    key: 'count',
+                    value: count += 1,
+                });
                 onSuccess(id);
             });
         }).catch(e => onError(e.data));
@@ -159,13 +169,11 @@ export default {
         } = rootState.authentication.user;
         return this.app.$axios.$delete(`${userLanguageCode}/comments/${id}`).then(() => {
             commit(types.DELETE_COMMENT, id);
-            commit(types.SET_COUNT, count -= 1);
+            commit('__SET_STATE', {
+                key: 'count',
+                value: count -= 1,
+            });
             onSuccess();
         }).catch(e => onError(e.data));
-    },
-    clearStorage({
-        commit,
-    }) {
-        commit(types.CLEAR_STATE);
     },
 };

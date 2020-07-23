@@ -39,8 +39,8 @@ export default {
         params,
     }) {
         await Promise.all([
-            store.dispatch('translations/clearStorage'),
-            store.dispatch('segments/clearStorage'),
+            store.dispatch('translations/__clearStorage'),
+            store.dispatch('segments/__clearStorage'),
         ]);
         await store.dispatch('segments/getSegmentById', {
             segmentId: params.id,
@@ -68,12 +68,12 @@ export default {
         ...mapActions('conditions', {
             createConditionSet: 'createConditionSet',
             updateConditionSet: 'updateConditionSet',
-            clearConditionSetStorage: 'clearStorage',
+            clearConditionSetStorage: '__clearStorage',
         }),
         ...mapActions('segments', {
             updateSegment: 'updateSegment',
             removeSegment: 'removeSegment',
-            clearSegmentStorage: 'clearStorage',
+            clearSegmentStorage: '__clearStorage',
         }),
         ...mapActions('validations', [
             'onError',

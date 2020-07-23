@@ -62,9 +62,4 @@ export default {
     }) {
         commit(types.REMOVE_DRAFTS);
     },
-    clearStorage({
-        commit,
-    }) {
-        commit(types.CLEAR_STATE);
-    },
 };

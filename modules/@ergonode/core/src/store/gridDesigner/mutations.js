@@ -6,8 +6,6 @@ import {
     removeFromObjectByKey,
 } from '@Core/models/objectWrapper';
 
-import defaultState from './state';
-
 export const types = {
     ADD_GRID_ITEM: 'ADD_GRID_ITEM',
     SET_ROWS_COUNT: 'SET_ROWS_COUNT',
@@ -18,7 +16,6 @@ export const types = {
     SET_EXPAND_ITEM: 'SET_EXPAND_ITEM',
     SET_CHILDREN_LENGTH: 'SET_CHILDREN_LENGTH',
     REMOVE_HIDDEN_ITEM: 'REMOVE_HIDDEN_ITEM',
-    CLEAR_STATE: 'CLEAR_STATE',
 };
 
 export default {
@@ -67,11 +64,5 @@ export default {
     },
     [types.REMOVE_HIDDEN_ITEM](state, key) {
         state.hiddenItems = removeFromObjectByKey(state.hiddenItems, key);
-    },
-    [types.CLEAR_STATE](state) {
-        const states = defaultState();
-        Object.keys(states).forEach((key) => {
-            state[key] = states[key];
-        });
     },
 };

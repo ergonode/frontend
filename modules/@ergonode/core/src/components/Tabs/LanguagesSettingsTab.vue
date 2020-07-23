@@ -138,7 +138,7 @@ export default {
     },
     methods: {
         ...mapActions('gridDesigner', {
-            clearGridDesignerStorage: 'clearStorage',
+            clearGridDesignerStorage: '__clearStorage',
         }),
         ...mapActions('core', [
             'setLanguagesTree',

@@ -85,9 +85,4 @@ export default {
         clearTimeout(state.requestTimeout);
         commit(types.SET_REQUEST_TIMEOUT);
     },
-    clearStorage: ({
-        commit,
-    }) => {
-        commit(types.CLEAR_STATE);
-    },
 };

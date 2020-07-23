@@ -48,19 +48,18 @@ export default {
             name: state => state.name,
             privileges: state => state.privileges,
             description: state => state.description,
-            selectedPrivileges: state => state.selectedPrivileges,
         }),
         ...mapState('grid', {
             drafts: state => state.drafts,
         }),
     },
     destroyed() {
-        this.clearStorage();
+        this.__clearStorage();
     },
     methods: {
         ...mapActions('roles', [
             'setPrivileges',
-            'clearStorage',
+            '__clearStorage',
             'updateRole',
             'removeRole',
         ]),
