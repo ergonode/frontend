@@ -7,7 +7,7 @@
         <UserAvatar
             :image-id="avatarId"
             :name="initials"
-            :avatar-size="64" />
+            :size="largeSize" />
         <span
             class="header__initials"
             v-text="initials" />
@@ -21,6 +21,9 @@
 import {
     GRAPHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 
 export default {
     name: 'NavigationBarUserSelectContentHeader',
@@ -42,6 +45,9 @@ export default {
         },
     },
     computed: {
+        largeSize() {
+            return SIZE.LARGE;
+        },
         graphiteColor() {
             return GRAPHITE;
         },

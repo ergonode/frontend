@@ -157,6 +157,8 @@ export default {
         },
         onExpand() {
             this.isExpanded = !this.isExpanded;
+
+            this.$emit('expand', this.isExpanded);
         },
         onGroupSelect(group) {
             this.selectedGroup = group;
@@ -170,15 +172,15 @@ export default {
 
 <style lang="scss" scoped>
     .side-bar {
-        $sidebar: &;
-
         position: relative;
         z-index: $Z_INDEX_NAV;
         display: flex;
+        flex-shrink: 0;
         flex-direction: column;
         justify-content: space-between;
         height: 100vh;
         background-color: $GRAPHITE_DARK;
+        box-shadow: $ELEVATOR_2_DP;
         transition: width 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         overflow-x: hidden;
         overflow-y: auto;
