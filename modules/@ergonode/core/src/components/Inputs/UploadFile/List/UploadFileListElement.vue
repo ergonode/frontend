@@ -56,7 +56,7 @@ import IconButton from '@Core/components/Buttons/IconButton';
 import IconCheck from '@Core/components/Icons/Feedback/IconCheck';
 import IconError from '@Core/components/Icons/Feedback/IconError';
 import IconFilledClose from '@Core/components/Icons/Window/IconFilledClose';
-import ProgressBar from '@Core/components/Inputs/ProgressBar';
+import ProgressBar from '@Core/components/ProgressBar/ProgressBar';
 import {
     SIZE,
     THEME,

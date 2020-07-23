@@ -9,10 +9,11 @@ export const THEME = {
 };
 
 export const SIZE = {
-    REGULAR: 'regular',
-    SMALL: 'small',
     TINY: 'tiny',
+    SMALL: 'small',
+    REGULAR: 'regular',
     LARGE: 'large',
+    EXTRA_LARGE: 'extra-large',
 };
 
 export const ALIGNMENT = {
