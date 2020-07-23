@@ -3,57 +3,59 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridActivatorEditCell>
-        <GridImageEditContentCell :style="{width: `${width + 8}px`}">
-            <UploadImageFile
-                :value="value"
-                :height="this.localValue ? 'unset' : '132px'"
-                @upload="updateValue"
-                @remove="updateValue" />
-        </GridImageEditContentCell>
-    </GridActivatorEditCell>
+    <GridEditNavigationCell @edit="onEditCell">
+        <GridSelectEditContentCell :style="positionStyle">
+            <GridImageEditContentCell>
+                <UploadImageFile
+                    v-model="localValue"
+                    height="181px" />
+            </GridImageEditContentCell>
+        </GridSelectEditContentCell>
+    </GridEditNavigationCell>
 </template>
 
 <script>
 import GridImageEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridImageEditContentCell';
-import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
-import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
+import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
+import gridEditCellMixin from '@Core/mixins/grid/cell/gridEditCellMixin';
+import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 
 export default {
     name: 'GridImageEditCell',
     components: {
-        GridActivatorEditCell,
-        GridImageEditContentCell,
         UploadImageFile,
+        GridSelectEditContentCell,
+        GridImageEditContentCell,
     },
-    props: {
-        value: {
-            type: String,
-            default: '',
+    mixins: [
+        gridEditCellMixin,
+    ],
+    computed: {
+        positionStyle() {
+            const {
+                x,
+                y,
+            } = this.bounds;
+
+            return {
+                top: `${y}px`,
+                left: `${x}px`,
+                width: '304px',
+            };
         },
-        errorMessages: {
-            type: String,
-            default: '',
-        },
-        width: {
-            type: Number,
-            default: 0,
-        },
-    },
-    data() {
-        return {
-            localValue: this.value,
-        };
     },
     beforeDestroy() {
         if (this.localValue !== this.value) {
-            this.$emit('input', this.localValue);
+            this.$emit('cellValue', [
+                {
+                    value: this.localValue,
+                    rowId: this.rowId,
+                    columnId: this.columnId,
+                    row: this.row,
+                    column: this.column,
+                },
+            ]);
         }
-    },
-    methods: {
-        updateValue(value) {
-            this.localValue = value;
-        },
     },
 };
 </script>

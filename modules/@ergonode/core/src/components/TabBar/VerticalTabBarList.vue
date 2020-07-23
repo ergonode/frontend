@@ -22,5 +22,6 @@ export default {
         flex: 1;
         flex-direction: column;
         width: 275px;
+        box-sizing: border-box;
     }
 </style>

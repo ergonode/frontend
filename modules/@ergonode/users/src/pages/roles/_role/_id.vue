@@ -17,9 +17,6 @@ import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import {
-    getMappedPrivilegesBasedOnGridData,
-} from '@Users/models/gridDataMapper';
-import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -47,11 +44,9 @@ export default {
             roleID: state => state.id,
             name: state => state.name,
             privileges: state => state.privileges,
+            drafts: state => state.drafts,
             description: state => state.description,
             selectedPrivileges: state => state.selectedPrivileges,
-        }),
-        ...mapState('grid', {
-            drafts: state => state.drafts,
         }),
     },
     destroyed() {
@@ -59,17 +54,15 @@ export default {
     },
     methods: {
         ...mapActions('roles', [
-            'setPrivileges',
             'clearStorage',
             'updateRole',
             'removeRole',
+            'setPrivileges',
+            'setPrivilegeDrafts',
         ]),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
-        ]),
-        ...mapActions('grid', [
-            'removeDrafts',
         ]),
         onRemoveRoleSuccess() {
             this.$addAlert({
@@ -89,32 +82,41 @@ export default {
             });
         },
         onSave() {
+            const privileges = {
+                ...this.privileges,
+            };
+
+            Object.keys(this.drafts).forEach((key) => {
+                const [
+                    rowId,
+                    columnId,
+                ] = key.split('/');
+
+                if (this.drafts[key]) {
+                    privileges[`${rowId}_${columnId.toUpperCase()}`] = true;
+                } else {
+                    delete privileges[`${rowId}_${columnId.toUpperCase()}`];
+                }
+            });
+
             const role = {
                 name: this.name,
                 description: this.description,
-                privileges: getMappedPrivilegesBasedOnGridData({
-                    selectedData: this.privileges,
-                    drafts: this.drafts,
-                }),
+                privileges: Object.keys(privileges),
             };
 
             this.updateRole({
                 id: this.roleID,
                 data: role,
                 onSuccess: () => {
-                    const privileges = role.privileges
-                        .reduce((acc, ele) => ({
-                            ...acc,
-                            [ele]: true,
-                        }), {});
-
                     this.removeValidationErrors();
                     this.$addAlert({
                         type: ALERT_TYPE.SUCCESS,
                         message: 'Role updated',
                     });
+
                     this.setPrivileges(privileges);
-                    this.removeDrafts();
+                    this.setPrivilegeDrafts();
                 },
                 onError: this.onError,
             });

@@ -9,11 +9,12 @@
                 :is-editable="$hasAccess(['USER_UPDATE'])"
                 :columns="columns"
                 :data-count="filtered"
-                :data="data"
+                :rows="rows"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
+                :is-border="true"
                 @editRow="onEditRow"
-                @removeRow="onRemoveRow"
+                @deleteRow="onRemoveRow"
                 @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>
@@ -21,7 +22,7 @@
 
 <script>
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
 
 export default {
     name: 'UsersGridTab',
@@ -29,7 +30,7 @@ export default {
         ResponsiveCenteredViewTemplate,
     },
     mixins: [
-        fetchGridDataMixin({
+        gridFetchDataMixin({
             path: 'accounts',
         }),
     ],

@@ -8,11 +8,11 @@
             <Grid
                 :columns="columns"
                 :data-count="filtered"
-                :data="data"
+                :rows="rows"
                 :is-prefetching-data="isPrefetchingData"
                 :is-select-column="true"
                 :is-header-visible="true"
-                :is-centered-view="true"
+                :is-border="true"
                 :is-basic-filter="true"
                 @fetchData="getGridData">
                 <template #actions>
@@ -95,7 +95,7 @@ export default {
     data() {
         return {
             columns: [],
-            data: {},
+            rows: {},
             count: 0,
             filtered: 0,
         };
@@ -112,7 +112,7 @@ export default {
         async getGridData(params) {
             const {
                 columns,
-                data,
+                rows,
                 count,
                 filtered,
             } = await getGridData({
@@ -126,7 +126,7 @@ export default {
             });
 
             this.columns = columns;
-            this.data = data;
+            this.rows = rows;
             this.count = count;
             this.filtered = filtered;
         },

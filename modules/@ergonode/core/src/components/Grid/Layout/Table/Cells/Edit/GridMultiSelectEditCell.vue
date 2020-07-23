@@ -3,26 +3,28 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridActivatorEditCell>
-        <TranslationSelect
-            :style="{ width: `${width}px`, height: `${height}px` }"
-            v-model="localValue"
-            :autofocus="true"
-            :size="smallSize"
-            :clearable="true"
-            :multiselect="true"
-            :options="mappedOptions"
-            :error-messages="errorMessages"
-            @focus="onFocus" />
-    </GridActivatorEditCell>
+    <GridEditNavigationCell @edit="onEditCell">
+        <GridSelectEditContentCell :style="positionStyle">
+            <TranslationSelect
+                v-model="localValue"
+                :autofocus="true"
+                :size="smallSize"
+                :clearable="true"
+                :multiselect="true"
+                :options="mappedOptions"
+                :error-messages="errorMessages"
+                @focus="onFocus" />
+        </GridSelectEditContentCell>
+    </GridEditNavigationCell>
 </template>
 
 <script>
-import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
+import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import gridEditCellMixin from '@Core/mixins/grid/cell/gridEditCellMixin';
 import {
     arraysAreEqual,
 } from '@Core/models/arrayWrapper';
@@ -33,13 +35,13 @@ import {
 
 export default {
     name: 'GridMultiSelectEditCell',
-    inject: [
-        'setEditingCellCoordinates',
-    ],
     components: {
-        GridActivatorEditCell,
+        GridSelectEditContentCell,
         TranslationSelect,
     },
+    mixins: [
+        gridEditCellMixin,
+    ],
     props: {
         value: {
             type: Array,
@@ -52,18 +54,6 @@ export default {
         languageCode: {
             type: String,
             default: 'EN',
-        },
-        errorMessages: {
-            type: String,
-            default: '',
-        },
-        width: {
-            type: Number,
-            default: 0,
-        },
-        height: {
-            type: Number,
-            default: 0,
         },
     },
     data() {
@@ -90,13 +80,21 @@ export default {
         const optionIds = this.localValue.map(option => option.id);
 
         if (!arraysAreEqual(optionIds, this.value.map(option => option.id))) {
-            this.$emit('input', optionIds);
+            this.$emit('cellValue', [
+                {
+                    value: optionIds,
+                    rowId: this.rowId,
+                    columnId: this.columnId,
+                    row: this.row,
+                    column: this.column,
+                },
+            ]);
         }
     },
     methods: {
         onFocus(isFocused) {
             if (!isFocused) {
-                this.setEditingCellCoordinates();
+                this.onEditCell();
             }
         },
     },

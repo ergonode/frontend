@@ -9,7 +9,7 @@
                 <UploadImageFile
                     :value="avatarId"
                     label="Profile picture"
-                    :fixed-height="true"
+                    height="112px"
                     :disabled="!isUserAllowedToUpdate"
                     @upload="uploadValue"
                     @remove="uploadValue" />
@@ -21,7 +21,7 @@
 <script>
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
+import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 import {
     mapActions,
     mapState,

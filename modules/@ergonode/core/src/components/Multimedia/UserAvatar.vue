@@ -6,9 +6,11 @@
     <div :class="avatarClasses">
         <Picture
             v-if="imageId"
-            fab
-            :image-id="imageId" />
-        {{ avatarInitial }}
+            :value="imageId"
+            fab />
+        <span
+            v-else
+            v-text="avatarInitial" />
     </div>
 </template>
 

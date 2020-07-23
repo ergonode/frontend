@@ -128,7 +128,8 @@ export default {
             const types = this.element.type.split('_');
             const attributeName = capitalizeAndConcatenationArray(types);
 
-            return () => import(`@Core/components/Icons/Attributes/Icon${attributeName}`);
+            return () => import(`@Core/components/Icons/Attributes/Icon${attributeName}`)
+                .catch(() => import('@Core/components/Icons/Menu/IconAttributes'));
         },
         contextualMenuHoveStateClasses() {
             return {
@@ -138,7 +139,7 @@ export default {
     },
     methods: {
         ...mapActions('templateDesigner', [
-            'setLayoutElementRequirement',
+            'updateLayoutElementAtIndex',
             'removeLayoutElementAtIndex',
         ]),
         onSelectFocus(isFocused) {
@@ -149,9 +150,12 @@ export default {
         onSelectValue(option) {
             switch (option) {
             case 'Required':
-                this.setLayoutElementRequirement({
+                this.updateLayoutElementAtIndex({
                     index: this.index,
-                    required: !this.element.required,
+                    element: {
+                        ...this.element,
+                        required: !this.element.required,
+                    },
                 });
                 break;
             case 'Remove':

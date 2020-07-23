@@ -3,25 +3,27 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridActivatorEditCell>
-        <DatePicker
-            :style="{width: `${width}px`, height: `${height}px`}"
-            v-model="localValue"
-            :size="smallSize"
-            autofocus
-            :placeholder="format"
-            :format="format"
-            :error-messages="errorMessages"
-            @focus="onFocus" />
-    </GridActivatorEditCell>
+    <GridEditNavigationCell @edit="onEditCell">
+        <GridSelectEditContentCell :style="positionStyle">
+            <DatePicker
+                v-model="localValue"
+                :size="smallSize"
+                autofocus
+                :placeholder="format"
+                :format="format"
+                :error-messages="errorMessages"
+                @focus="onFocus" />
+        </GridSelectEditContentCell>
+    </GridEditNavigationCell>
 </template>
 
 <script>
-import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
+import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
 import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import gridEditCellMixin from '@Core/mixins/grid/cell/gridEditCellMixin';
 import {
     DEFAULT_FORMAT,
 } from '@Core/models/calendar/calendar';
@@ -32,33 +34,17 @@ import {
 
 export default {
     name: 'GridDateEditCell',
-    inject: [
-        'setEditingCellCoordinates',
-    ],
     components: {
-        GridActivatorEditCell,
+        GridSelectEditContentCell,
         DatePicker,
     },
+    mixins: [
+        gridEditCellMixin,
+    ],
     props: {
-        value: {
-            type: String,
-            default: '',
-        },
         format: {
             type: String,
             default: DEFAULT_FORMAT,
-        },
-        errorMessages: {
-            type: String,
-            default: '',
-        },
-        width: {
-            type: Number,
-            default: 0,
-        },
-        height: {
-            type: Number,
-            default: 0,
         },
     },
     data() {
@@ -78,16 +64,24 @@ export default {
         },
     },
     beforeDestroy() {
-        if (this.localValue) {
-            this.$emit('input', formatDate(this.localValue, this.format));
-        } else if (Boolean(this.localValue) !== Boolean(this.value)) {
-            this.$emit('input', '');
+        const localValue = this.localValue ? formatDate(this.localValue, DEFAULT_FORMAT) : '';
+
+        if (localValue !== this.value) {
+            this.$emit('cellValue', [
+                {
+                    value: localValue,
+                    rowId: this.rowId,
+                    columnId: this.columnId,
+                    row: this.row,
+                    column: this.column,
+                },
+            ]);
         }
     },
     methods: {
         onFocus(isFocused) {
             if (!isFocused) {
-                this.setEditingCellCoordinates();
+                this.onEditCell();
             }
         },
     },

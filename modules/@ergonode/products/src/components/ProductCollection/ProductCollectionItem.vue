@@ -6,7 +6,7 @@
     <div class="product-collection-item">
         <Picture
             v-if="item.image"
-            :image-id="item.image" />
+            :value="item.image" />
         <img
             v-else
             class="product-collection-item__placeholder"

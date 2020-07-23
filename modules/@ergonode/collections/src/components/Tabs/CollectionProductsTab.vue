@@ -9,14 +9,14 @@
                 :is-editable="$hasAccess(['PRODUCT_COLLECTION_UPDATE'])"
                 :columns="columns"
                 :data-count="filtered"
-                :data="data"
+                :rows="rows"
                 :collection-cell-binding="collectionCellBinding"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-collection-layout="true"
                 :is-header-visible="true"
-                :is-centered-view="true"
-                @removeRow="onRemoveRow"
+                :is-border="true"
+                @deleteRow="onRemoveRow"
                 @fetchData="getGridData">
                 <template #actions>
                     <ActionButton
@@ -53,7 +53,7 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
 import {
     mapState,
 } from 'vuex';
@@ -66,7 +66,7 @@ export default {
         IconAdd,
     },
     mixins: [
-        fetchGridDataMixin({
+        gridFetchDataMixin({
             path: 'collections/_id/elements',
         }),
     ],

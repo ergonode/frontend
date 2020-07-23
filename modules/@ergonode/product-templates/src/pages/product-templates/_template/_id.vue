@@ -38,20 +38,10 @@ export default {
         store, params,
     }) {
         const {
-            user: {
-                language: userLanguageCode,
-            },
-        } = store.state.authentication;
-        const {
             id,
         } = params;
 
-        await store.dispatch('templateDesigner/getTypes', {
-            path: `${userLanguageCode}/templates/types`,
-        });
-        await store.dispatch('templateDesigner/getTemplateByID', {
-            path: `${userLanguageCode}/templates/${id}`,
-        });
+        await store.dispatch('templateDesigner/getTemplateByID', id);
     },
     computed: {
         ...mapState('authentication', {

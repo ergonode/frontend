@@ -7,7 +7,6 @@ export default () => ({
     layoutElements: [],
     title: '',
     image: null,
-    titleValidationError: null,
     types: [],
     defaultTextAttribute: null,
     defaultImageAttribute: null,

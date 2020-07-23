@@ -3,7 +3,16 @@
  * See LICENSE for license details.
  */
 export const Pages = {
-    Placeholder: () => import('@Core/pages/placeholder/index').then(m => m.default || m),
+    Media: () => import('@Media/pages/media/index').then(m => m.default || m),
+};
+
+export const Tabs = {
+    MediaGridTab: () => import('@Media/components/Tabs/MediaGridTab').then(m => m.default || m),
+};
+
+export const Components = {
+    GridMediaAttachDataCell: () => import('@Media/components/Grid/Layout/Table/Cells/Data/GridMediaAttachDataCell').then(m => m.default || m),
+    GridMediaAttachCollectionCell: () => import('@Media/components/Grid/Layout/Collection/Cells/GridMediaAttachCollectionCell').then(m => m.default || m),
 };
 
 export const Icons = {

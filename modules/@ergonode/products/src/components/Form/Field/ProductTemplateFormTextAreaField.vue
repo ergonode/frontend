@@ -27,6 +27,7 @@
                     v-else
                     :value="fieldData"
                     resize="none"
+                    height="100%"
                     :label="label"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"

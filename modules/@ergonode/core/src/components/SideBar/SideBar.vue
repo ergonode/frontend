@@ -46,6 +46,8 @@ import {
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import Fab from '@Core/components/Buttons/Fab';
 import IconArrowDouble from '@Core/components/Icons/Arrows/IconArrowDouble';
+import SideBarListElement from '@Core/components/SideBar/SideBarListElement';
+import SideBarListGroup from '@Core/components/SideBar/SideBarListGroup';
 import SideBarLogo from '@Core/components/SideBar/SideBarLogo';
 import {
     ARROW,
@@ -53,9 +55,6 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-
-import SideBarListElement from './SideBarListElement';
-import SideBarListGroup from './SideBarListGroup';
 
 export default {
     name: 'SideBar',
@@ -186,6 +185,9 @@ export default {
         overflow-x: hidden;
         overflow-y: auto;
         will-change: width;
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        perspective: 1000px;
 
         &--expanded {
             width: 256px;

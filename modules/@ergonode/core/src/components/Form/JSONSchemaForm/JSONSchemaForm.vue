@@ -34,11 +34,10 @@ export default {
     props: {
         schema: {
             type: Object,
-            required: true,
-        },
-        uiSchema: {
-            type: Object,
-            default: () => ({}),
+            default: () => ({
+                properties: {},
+                required: [],
+            }),
         },
         value: {
             type: String,

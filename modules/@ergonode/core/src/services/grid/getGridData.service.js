@@ -6,7 +6,6 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
-    getMappedData,
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
 import {
@@ -14,7 +13,9 @@ import {
 } from '@Core/models/mappers/translationsMapper';
 
 export const getGridData = ({
-    $axios, path, params,
+    $axios,
+    path,
+    params,
 }) => $axios
     .$get(path, {
         params,
@@ -26,23 +27,13 @@ export const getGridData = ({
             filtered,
         },
     }) => {
-        const visibleColumns = columns.filter(({
-            visible,
-        }) => visible);
         const sortedColumns = params.columns
-            ? getSortedColumnsByIDs(visibleColumns, params.columns)
-            : visibleColumns;
-        const mappedData = getMappedData({
-            columns: visibleColumns,
-            rows: collection,
-            hasLinks: columns.findIndex(({
-                id,
-            }) => id === '_links') !== -1,
-        });
+            ? getSortedColumnsByIDs(columns, params.columns)
+            : columns;
 
         return {
             columns: sortedColumns,
-            data: mappedData,
+            rows: collection,
             filtered,
         };
     });

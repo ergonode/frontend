@@ -7,10 +7,13 @@
         <template #content>
             <Grid
                 :columns="columns"
-                :data="data"
+                :rows="rows"
+                :drafts="drafts"
                 :data-count="dataCount"
                 :is-editable="isEditingAllowed"
-                :is-footer-visible="false" />
+                :is-border="true"
+                :is-footer-visible="false"
+                @cellValue="onCellValueChange" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -18,15 +21,17 @@
 <script>
 import Grid from '@Core/components/Grid/Grid';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
-import languagesDefaults from '@Users/defaults/languages';
+import privilegeDefaults from '@Users/defaults/languages';
 import {
     getMappedGridData,
     getMappedRestrictions,
 } from '@Users/models/gridDataMapper';
 import {
+    mapActions,
     mapGetters,
     mapState,
 } from 'vuex';
@@ -37,10 +42,13 @@ export default {
         ResponsiveCenteredViewTemplate,
         Grid,
     },
+    mixins: [
+        gridDraftMixin,
+    ],
     data() {
         return {
             columns: [],
-            data: {},
+            rows: {},
             dataCount: 0,
         };
     },
@@ -67,6 +75,29 @@ export default {
         },
     },
     methods: {
+        ...mapActions('users', [
+            'setLanguagePrivilegesDrafts',
+        ]),
+        onCellValueChange(cellValues) {
+            const drafts = {};
+
+            cellValues.forEach(({
+                rowId, columnId, value,
+            }) => {
+                if (columnId !== 'read' && value) {
+                    drafts[`${rowId}/read`] = true;
+                }
+
+                if (columnId === 'read') {
+                    drafts[`${rowId}/edit`] = false;
+                }
+
+                drafts[`${rowId}/${columnId}`] = value;
+            });
+
+            this.setDrafts(drafts);
+            this.setLanguagePrivilegesDrafts(this.drafts);
+        },
         updateGridData() {
             const fullDataList = this.getActiveLanguages.map(({
                 name, code,
@@ -79,11 +110,11 @@ export default {
                 },
             }));
             const {
-                data, columns,
+                rows, columns,
             } = getMappedGridData({
                 fullDataList,
                 selectedData: getMappedRestrictions(this.languagePrivilegesCollection),
-                defaults: languagesDefaults,
+                defaults: privilegeDefaults,
                 isEditable: true,
             });
             const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
@@ -93,7 +124,7 @@ export default {
 
             this.columns = sortedColumns;
             this.dataCount = fullDataList.length;
-            this.data = data;
+            this.rows = rows;
         },
     },
 };

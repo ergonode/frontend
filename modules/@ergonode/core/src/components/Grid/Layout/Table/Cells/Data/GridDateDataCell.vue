@@ -9,22 +9,14 @@
         :locked="isLocked"
         :draft="cellData.isDraft"
         :error="Boolean(errorMessages)"
-        :edit-key-code="editKeyCode"
         :disabled="isDisabled"
         :copyable="isCopyable"
         :selected="isSelected"
-        @copy="onCopyValues">
-        <template #default="{ isEditing }">
-            <GridDateEditCell
-                v-if="isEditing"
-                :value="cellData.value"
-                :format="format"
-                :width="$el.offsetWidth"
-                :height="$el.offsetHeight"
-                @input="onValueChange" />
-            <GridPresentationCell
-                v-else-if="!isEditing && cellData.value"
-                :value="cellData.value"
+        @edit="onEditCell">
+        <template v-if="presentationValue">
+            <GridPresentationCell :value="presentationValue" />
+            <GridSuffixPresentationCell
+                v-if="data.suffix"
                 :suffix="data.suffix" />
         </template>
     </GridTableCell>
@@ -32,41 +24,56 @@
 
 <script>
 import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
+import GridSuffixPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 import {
     DEFAULT_FORMAT,
 } from '@Core/models/calendar/calendar';
 import {
-    cellDataCompose,
-} from '@Core/models/mappers/gridDataMapper';
-import {
-    mapState,
-} from 'vuex';
+    format as formatDate,
+} from 'date-fns';
 
 export default {
     name: 'GridDateDataCell',
     components: {
         GridPresentationCell,
-        GridDateEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridDateEditCell'),
+        GridSuffixPresentationCell,
     },
     mixins: [
         gridDataCellMixin,
     ],
-    props: {
-        format: {
-            type: String,
-            default: DEFAULT_FORMAT,
+    computed: {
+        presentationValue() {
+            if (!this.cellData.value) {
+                return '';
+            }
+
+            let format = DEFAULT_FORMAT;
+
+            if (this.column.parameters && this.column.parameters.format) {
+                format = this.column.parameters.format;
+            }
+
+            return formatDate(new Date(this.cellData.value), format);
         },
     },
-    computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
-        cellData() {
-            const check = (data, draftValue) => data !== draftValue;
-            const getMappedValue = cellDataCompose(check);
-
-            return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
+    methods: {
+        onEditCell() {
+            this.$emit('editCell', {
+                type: this.column.type,
+                props: {
+                    bounds: this.$el.getBoundingClientRect(),
+                    value: this.presentationValue,
+                    row: this.rowIndex,
+                    column: this.columnIndex,
+                    format: this.column.parameters && this.column.parameters.format
+                        ? this.column.parameters.format
+                        : DEFAULT_FORMAT,
+                    rowId: this.rowId,
+                    columnId: this.column.id,
+                    errorMessages: this.errorMessages,
+                },
+            });
         },
     },
 };

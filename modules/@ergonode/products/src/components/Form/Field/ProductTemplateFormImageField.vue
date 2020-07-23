@@ -13,13 +13,12 @@
             :required="properties.required"
             :disabled="disabled"
             height="100%"
-            @upload="onValueChange"
-            @remove="onValueChange" />
+            @input="onValueChange" />
     </ProductTemplateFormField>
 </template>
 
 <script>
-import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
+import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import {
     mapActions,
@@ -27,10 +26,10 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'ProductTemplateFormNumericField',
+    name: 'ProductTemplateFormImageField',
     components: {
-        ProductTemplateFormField,
         UploadImageFile,
+        ProductTemplateFormField,
     },
     props: {
         size: {
