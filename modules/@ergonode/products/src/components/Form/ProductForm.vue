@@ -85,7 +85,7 @@ export default {
             template: state => state.template,
         }),
         extendedForm() {
-            return this.$getExtendedComponents(EXTENDS.PRODUCT_FORM);
+            return this.$getExtendedComponents(EXTENDS['@Products/components/Form/ProductForm']);
         },
         productTypeKey() {
             return getKeyByValue(this.productTypes, this.type);

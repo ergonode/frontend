@@ -6,6 +6,7 @@ import {
     TYPES,
 } from '@Attributes/defaults/attributes';
 import {
+    EXTENDS,
     PRODUCT_TYPE,
 } from '@Products/defaults';
 
@@ -52,21 +53,15 @@ export default {
             productTypes,
         } = rootState.dictionaries;
 
-        return this.app.$axios.$get(`${userLanguageCode}/products/${id}`).then(({
-            design_template_id: templateId,
-            categories: categoryIds,
-            attributes,
-            sku,
-            type,
-            status,
-            workflow = [],
-        }) => {
-            if (categoryIds) {
-                commit('__SET_STATE', {
-                    key: 'categories',
-                    value: categoryIds,
-                });
-            }
+        return this.app.$axios.$get(`${userLanguageCode}/products/${id}`).then((data) => {
+            const {
+                design_template_id: templateId,
+                attributes,
+                sku,
+                type,
+                status,
+                workflow = [],
+            } = data;
 
             if (templateId) {
                 commit('__SET_STATE', {
@@ -98,6 +93,12 @@ export default {
             commit('__SET_STATE', {
                 key: 'data',
                 value: attributes,
+            });
+
+            this.$extendMethods(EXTENDS['@Products/store/product/action/getProductById'], {
+                data,
+                commit,
+                dispatch,
             });
 
             if (type === PRODUCT_TYPE.WITH_VARIANTS) {

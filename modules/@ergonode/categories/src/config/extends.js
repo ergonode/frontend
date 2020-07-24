@@ -3,6 +3,10 @@
  * See LICENSE for license details.
  */
 import {
+    getProductById,
+} from '@Categories/extends/methods';
+
+import {
     Components,
     Store,
 } from './imports';
@@ -12,12 +16,14 @@ export default {
         product: Store.Product,
     },
     extendComponents: {
-        PRODUCT_FORM: [
+        '@Products/components/Form/ProductForm': [
             {
                 component: Components.ExtendProductForm,
-                storeStateNames: 'categories',
                 props: {},
             },
         ],
+    },
+    extendMethods: {
+        '@Products/store/product/action/getProductById': getProductById,
     },
 };
