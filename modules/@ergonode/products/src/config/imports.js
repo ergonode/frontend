@@ -21,6 +21,5 @@ export const Icons = {
 };
 
 export const Components = {
-    GridAttachedColumn: () => import('@Products/components/Grid/Layout/Table/Columns/GridAttachedColumn'),
-    GridAttachedDataCell: () => import('@Products/components/Grid/Layout/Table/Cells/GridAttachedDataCell'),
+    GridProductAttachDataCell: () => import('@Products/components/Grid/Layout/Table/Cells/GridProductAttachDataCell'),
 };

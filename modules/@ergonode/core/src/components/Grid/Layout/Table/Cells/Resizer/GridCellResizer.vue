@@ -3,13 +3,20 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="cell-resizer">
+    <div
+        class="cell-resizer"
+        :style="styles">
+        <div
+            v-if="isResizing"
+            class="cell-resizer__focus-imitator"
+            :style="focusImitatorStyles" />
         <div
             class="cell-resizer__content"
             @mousedown="initResizingDrag">
             <div
                 v-if="isResizing"
                 class="cell-resizer__border"
+                :style="borderStyles"
                 ref="border" />
         </div>
     </div>
@@ -21,6 +28,24 @@ const unregisterResizeEventListeners = () => import('@Core/models/resize/unregis
 
 export default {
     name: 'GridCellResizer',
+    props: {
+        size: {
+            type: Object,
+            default: () => ({
+                width: 0,
+                height: 0,
+                minHeight: 1,
+                maxHeight: 1,
+            }),
+        },
+        position: {
+            type: Object,
+            default: () => ({
+                top: '0',
+                left: '0',
+            }),
+        },
+    },
     data() {
         return {
             startY: 0,
@@ -28,6 +53,26 @@ export default {
             currentHeight: 0,
             isResizing: false,
         };
+    },
+    computed: {
+        styles() {
+            return {
+                ...this.position,
+                width: `${this.size.width}px`,
+            };
+        },
+        focusImitatorStyles() {
+            return {
+                height: `${this.size.height}px`,
+                width: `${this.size.width}px`,
+                transform: `translateY(-${this.size.height}px)`,
+            };
+        },
+        borderStyles() {
+            return {
+                width: `${this.size.width - 2}px`,
+            };
+        },
     },
     methods: {
         initResizingDrag(event) {
@@ -37,8 +82,10 @@ export default {
 
             this.isResizing = true;
             this.startY = pageY;
-            this.startHeight = parseInt(this.$parent.$el.offsetHeight, 10);
+            this.startHeight = parseInt(this.size.height, 10);
             this.currentHeight = this.startHeight;
+
+            this.$emit('resize', true);
 
             registerResizeEventListeners().then((response) => {
                 response.default(this.onResize, this.onStopResizing);
@@ -52,19 +99,24 @@ export default {
             const factor = Math.ceil(height / this.startHeight);
             const fixedHeight = factor * this.startHeight;
 
-            if (fixedHeight !== this.currentHeight) {
-                if (height < 0) {
-                    this.$refs.border.style.height = `${-1 * fixedHeight + this.startHeight}px`;
-                    this.$refs.border.style.bottom = '0';
-                    this.$refs.border.style.top = null;
-                } else {
-                    this.$refs.border.style.height = `${fixedHeight}px`;
-                    this.$refs.border.style.top = '0';
-                    this.$refs.border.style.bottom = null;
-                }
-
-                this.currentHeight = fixedHeight;
+            if (this.position.row + factor < this.position.minRow
+                || this.position.row + factor > this.position.maxRow) {
+                return false;
             }
+
+            if (height < 0) {
+                this.$refs.border.style.height = `${-1 * fixedHeight + this.startHeight}px`;
+                this.$refs.border.style.bottom = '0';
+                this.$refs.border.style.top = null;
+            } else {
+                this.$refs.border.style.height = `${fixedHeight - 1}px`;
+                this.$refs.border.style.top = '0';
+                this.$refs.border.style.bottom = null;
+            }
+
+            this.currentHeight = fixedHeight;
+
+            return true;
         },
         onStopResizing() {
             if (this.currentHeight !== this.startHeight) {
@@ -74,6 +126,8 @@ export default {
             }
 
             this.isResizing = false;
+
+            this.$emit('resize', false);
 
             unregisterResizeEventListeners().then((response) => {
                 response.default(this.onResize, this.onStopResizing);
@@ -86,14 +140,12 @@ export default {
 <style lang="scss" scoped>
     .cell-resizer {
         position: absolute;
-        bottom: 0;
         display: inline-block;
-        width: 100%;
-        opacity: 0;
 
-        .cell-resizer__content {
+        &__content {
             position: relative;
             z-index: $Z_INDEX_LVL_1;
+            height: 100%;
 
             &::after {
                 position: absolute;
@@ -110,11 +162,15 @@ export default {
             }
         }
 
-        .cell-resizer__border {
+        &__border {
             position: absolute;
             z-index: $Z_INDEX_LVL_1;
-            width: 100%;
             border: $BORDER_DASHED_GREEN;
+        }
+
+        &__focus-imitator {
+            position: absolute;
+            box-shadow: inset 0 0 0 2px $GREEN;
         }
     }
 </style>

@@ -6,6 +6,7 @@
     <div :class="classes">
         <div
             class="input-solid-style__input"
+            :style="inputStyle"
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">
             <fieldset />
@@ -38,6 +39,10 @@ export default {
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
         },
+        height: {
+            type: String,
+            default: 'unset',
+        },
         alignment: {
             type: String,
             default: ALIGNMENT.LEFT,
@@ -61,6 +66,12 @@ export default {
         },
     },
     computed: {
+        inputStyle() {
+            return {
+                height: this.height,
+                flexBasis: this.height,
+            };
+        },
         classes() {
             return [
                 'input-solid-style',
@@ -72,6 +83,9 @@ export default {
                 },
             ];
         },
+    },
+    mounted() {
+        this.$emit('mounted');
     },
     methods: {
         onMouseDown(event) {
@@ -137,9 +151,7 @@ export default {
 
         &--small {
             #{$solid}__input {
-                flex-basis: 32px;
-                height: 32px;
-                padding: 8px 4px 8px 10px;
+                padding: 8px 4px 8px 8px;
             }
 
             #{$solid}__details-label {
@@ -150,8 +162,6 @@ export default {
 
         &--regular {
             #{$solid}__input {
-                flex-basis: 40px;
-                height: 40px;
                 padding: 10px 8px 10px 12px;
             }
 

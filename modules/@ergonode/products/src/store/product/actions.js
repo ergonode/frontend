@@ -15,6 +15,7 @@ import {
 } from './mutations';
 
 const getAttributesByFilter = () => import('@Attributes/services/getAttributesByFilter.service');
+const applyProductDraft = () => import('@Products/services/applyProductDraft.service');
 
 export default {
     setDraftValue: ({
@@ -119,7 +120,7 @@ export default {
         });
     },
     updateProductStatus({
-        state, rootState, dispatch,
+        state, rootState,
     }, {
         attributeId,
         value,
@@ -138,12 +139,14 @@ export default {
 
         return this.app.$axios.$put(`${language}/products/${id}/draft/${attributeId}/value`, {
             value,
-        }).then(() => {
-            dispatch('applyDraft', {
-                id,
-                onSuccess,
-            });
-        });
+        }).then(() => applyProductDraft()
+            .then(request => request
+                .default({
+                    $axios: this.app.$axios,
+                    $store: this,
+                    id,
+                })
+                .then(onSuccess)));
     },
     getSelectAttributes({
         commit,
@@ -160,25 +163,6 @@ export default {
                 });
             }),
         );
-    },
-    applyDraft(
-        {
-            rootState,
-        },
-        {
-            id,
-            onSuccess,
-        },
-    ) {
-        const {
-            authentication: {
-                user: {
-                    language,
-                },
-            },
-        } = rootState;
-
-        return this.app.$axios.$put(`${language}/products/${id}/draft/persist`, {}).then(() => onSuccess());
     },
     async updateProduct(
         {

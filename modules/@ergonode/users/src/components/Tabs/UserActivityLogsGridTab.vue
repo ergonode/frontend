@@ -8,8 +8,9 @@
             <Grid
                 :columns="columns"
                 :data-count="filtered"
-                :data="data"
+                :rows="rows"
                 :is-prefetching-data="isPrefetchingData"
+                :is-border="true"
                 @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>
@@ -17,7 +18,7 @@
 
 <script>
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
 
 export default {
     name: 'UserActivityLogsGridTab',
@@ -25,7 +26,7 @@ export default {
         ResponsiveCenteredViewTemplate,
     },
     mixins: [
-        fetchGridDataMixin({
+        gridFetchDataMixin({
             path: 'profile/log',
         }),
     ],

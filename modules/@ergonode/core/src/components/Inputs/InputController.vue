@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['input-controller', `input-controller--${size}`]">
+    <div :class="classes">
         <slot />
         <div class="input-controller__append">
             <slot name="append" />
@@ -26,6 +26,14 @@ export default {
                 SIZE.SMALL,
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
+        },
+    },
+    computed: {
+        classes() {
+            return [
+                'input-controller',
+                `input-controller--${this.size}`,
+            ];
         },
     },
 };

@@ -43,8 +43,8 @@
 
 <script>
 import {
-    STATUS as COLOR_STATUS,
-} from '@Statuses/defaults/colors';
+    COLORS,
+} from '@Core/defaults/colors';
 import {
     mapActions,
     mapState,
@@ -79,7 +79,7 @@ export default {
             return Boolean(this.id);
         },
         colorOptions() {
-            return COLOR_STATUS;
+            return COLORS;
         },
         codeFieldKey() {
             return 'code';

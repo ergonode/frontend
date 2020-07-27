@@ -49,9 +49,6 @@ export default {
         ...mapState('translations', {
             translations: state => state.translations,
         }),
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
     },
     methods: {
         ...mapActions('collections', [

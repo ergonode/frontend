@@ -19,7 +19,7 @@
                         :value="translations.description[languageCode]"
                         label="Description"
                         resize="vertical"
-                        :style="{height: '150px'}"
+                        height="150px"
                         :error-messages="errorMessages[descriptionKeyField]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'description')" />

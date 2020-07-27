@@ -9,53 +9,48 @@
         :locked="isLocked"
         :draft="cellData.isDraft"
         :error="Boolean(errorMessages)"
-        :edit-key-code="editKeyCode"
         :disabled="isDisabled"
         :copyable="isCopyable"
         :selected="isSelected"
-        @copy="onCopyValues">
-        <template #default="{ isEditing }">
-            <GridTextAreaEditCell
-                v-if="isEditing"
-                :value="cellData.value"
-                :rte="column.parameters && column.parameters.rich_edit"
-                :width="$el.offsetWidth"
-                @input="onValueChange" />
-            <GridPresentationCell
-                v-else-if="!isEditing && cellData.value"
-                :value="cellData.value"
+        @edit="onEditCell">
+        <template v-if="cellData.value">
+            <GridPresentationCell :value="cellData.value" />
+            <GridSuffixPresentationCell
+                v-if="data.suffix"
                 :suffix="data.suffix" />
         </template>
     </GridTableCell>
 </template>
 <script>
 import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
+import GridSuffixPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
-import {
-    cellDataCompose,
-} from '@Core/models/mappers/gridDataMapper';
-import {
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'GridTextDataCell',
     components: {
         GridPresentationCell,
-        GridTextAreaEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridTextAreaEditCell'),
+        GridSuffixPresentationCell,
     },
     mixins: [
         gridDataCellMixin,
     ],
-    computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
-        cellData() {
-            const check = (data, draftValue) => data !== draftValue;
-            const getMappedValue = cellDataCompose(check);
-
-            return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
+    methods: {
+        onEditCell() {
+            this.$emit('editCell', {
+                type: this.column.parameters && this.column.parameters.rich_edit
+                    ? `RICH_${this.column.type}`
+                    : this.column.type,
+                props: {
+                    bounds: this.$el.getBoundingClientRect(),
+                    value: this.cellData.value,
+                    row: this.rowIndex,
+                    column: this.columnIndex,
+                    rowId: this.rowId,
+                    columnId: this.column.id,
+                    errorMessages: this.errorMessages,
+                },
+            });
         },
     },
 };

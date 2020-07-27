@@ -3,84 +3,67 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridActivatorEditCell>
-        <RichTextEditor
-            v-if="rte"
-            :style="{height: '134px'}"
-            :value="localValue"
-            :autofocus="true"
-            :type="underlineInputType"
-            @blur="onRTEValueChange" />
-        <GridTextEditContentCell
-            v-else
-            :style="{width: `${width + 8}px`}">
+    <GridEditNavigationCell
+        :key-code="27"
+        @edit="onEditCell">
+        <GridTextEditContentCell :style="positionStyle">
             <TextArea
-                :style="{height: '134px'}"
+                height="134px"
                 v-model="localValue"
                 :autofocus="true"
                 :type="underlineInputType"
                 :error-messages="errorMessages"
                 resize="none" />
         </GridTextEditContentCell>
-    </GridActivatorEditCell>
+    </GridEditNavigationCell>
 </template>
 
 <script>
 import GridTextEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
-import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
-import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
 import TextArea from '@Core/components/Inputs/TextArea';
 import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
+import gridEditCellMixin from '@Core/mixins/grid/cell/gridEditCellMixin';
 
 export default {
     name: 'GridTextAreaEditCell',
     components: {
-        GridActivatorEditCell,
         GridTextEditContentCell,
         TextArea,
-        RichTextEditor,
     },
-    props: {
-        value: {
-            type: String,
-            default: '',
-        },
-        errorMessages: {
-            type: String,
-            default: '',
-        },
-        width: {
-            type: Number,
-            default: 0,
-        },
-        rte: {
-            type: Boolean,
-            default: false,
-        },
-    },
-    data() {
-        return {
-            localValue: this.value,
-        };
-    },
+    mixins: [
+        gridEditCellMixin,
+    ],
     computed: {
+        positionStyle() {
+            const {
+                x,
+                y,
+            } = this.bounds;
+
+            return {
+                top: `${y}px`,
+                left: `${x}px`,
+                width: '320px',
+            };
+        },
         underlineInputType() {
             return INPUT_TYPE.UNDERLINE;
         },
     },
     beforeDestroy() {
         if (this.localValue !== this.value) {
-            this.$emit('input', this.localValue);
+            this.$emit('cellValue', [
+                {
+                    value: this.localValue,
+                    rowId: this.rowId,
+                    columnId: this.columnId,
+                    row: this.row,
+                    column: this.column,
+                },
+            ]);
         }
-    },
-    methods: {
-        onRTEValueChange(value) {
-            if (this.localValue !== value) {
-                this.$emit('input', value);
-            }
-        },
     },
 };
 </script>

@@ -46,6 +46,8 @@ import {
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import Fab from '@Core/components/Buttons/Fab';
 import IconArrowDouble from '@Core/components/Icons/Arrows/IconArrowDouble';
+import SideBarListElement from '@Core/components/SideBar/SideBarListElement';
+import SideBarListGroup from '@Core/components/SideBar/SideBarListGroup';
 import SideBarLogo from '@Core/components/SideBar/SideBarLogo';
 import {
     ARROW,
@@ -53,9 +55,6 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-
-import SideBarListElement from './SideBarListElement';
-import SideBarListGroup from './SideBarListGroup';
 
 export default {
     name: 'SideBar',
@@ -158,6 +157,8 @@ export default {
         },
         onExpand() {
             this.isExpanded = !this.isExpanded;
+
+            this.$emit('expand', this.isExpanded);
         },
         onGroupSelect(group) {
             this.selectedGroup = group;
@@ -171,19 +172,22 @@ export default {
 
 <style lang="scss" scoped>
     .side-bar {
-        $sidebar: &;
-
         position: relative;
         z-index: $Z_INDEX_NAV;
         display: flex;
+        flex-shrink: 0;
         flex-direction: column;
         justify-content: space-between;
         height: 100vh;
         background-color: $GRAPHITE_DARK;
+        box-shadow: $ELEVATOR_2_DP;
         transition: width 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         overflow-x: hidden;
         overflow-y: auto;
         will-change: width;
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        perspective: 1000px;
 
         &--expanded {
             width: 256px;

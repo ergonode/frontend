@@ -7,9 +7,9 @@
         <Picture
             v-for="(id, index) in imageIds"
             :class="currentIndex === index ? 'visible' : 'non-visible'"
+            :value="id"
             :key="id"
-            object-fit="none"
-            :image-id="id" />
+            object-fit="none" />
         <div class="picture-carousel__panel">
             <div
                 class="image-white-theme"
@@ -64,15 +64,14 @@ export default {
         Fab,
     },
     props: {
+        currentIndex: {
+            type: Number,
+            default: 0,
+        },
         imageIds: {
             type: Array,
             default: () => [],
         },
-    },
-    data() {
-        return {
-            currentIndex: 0,
-        };
     },
     computed: {
         secondaryTheme() {
@@ -96,14 +95,10 @@ export default {
     },
     methods: {
         onPreviousPicture() {
-            this.currentIndex -= 1;
-
-            this.$emit('current', this.currentIndex);
+            this.$emit('current', this.currentIndex - 1);
         },
         onNextPicture() {
-            this.currentIndex += 1;
-
-            this.$emit('current', this.currentIndex);
+            this.$emit('current', this.currentIndex + 1);
         },
     },
 };

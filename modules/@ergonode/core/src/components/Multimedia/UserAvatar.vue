@@ -3,21 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        class="user-avatar"
-        :style="avatarStyles">
+    <div :class="avatarClasses">
         <Picture
             v-if="imageId"
-            fab
-            :image-id="imageId" />
+            :value="imageId"
+            fab />
         <span
             v-else
-            class="user-avatar__placeholder"
             v-text="avatarInitial" />
     </div>
 </template>
 
 <script>
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+
 export default {
     name: 'UserAvatar',
     components: {
@@ -32,20 +33,21 @@ export default {
             type: String,
             default: '',
         },
-        avatarSize: {
-            type: Number,
-            default: 24,
+        size: {
+            type: String,
+            default: SIZE.TINY,
+            validator: value => Object.values(SIZE).indexOf(value) !== -1,
         },
     },
     computed: {
         avatarInitial() {
             return this.name.length ? this.name[0] : '';
         },
-        avatarStyles() {
-            return {
-                width: `${this.avatarSize}px`,
-                height: `${this.avatarSize}px`,
-            };
+        avatarClasses() {
+            return [
+                'user-avatar',
+                `user-avatar--${this.size}`,
+            ];
         },
     },
 };
@@ -54,16 +56,43 @@ export default {
 <style lang="scss" scoped>
     .user-avatar {
         display: flex;
+        flex-shrink: 0;
         justify-content: center;
         align-items: center;
         background-color: $WHITE;
-        border-radius: 50%;
         box-shadow: $ELEVATOR_2_DP;
+        color: $GRAPHITE_DARK;
+        border-radius: 50%;
+        text-transform: uppercase;
 
-        &__placeholder {
-            color: $GRAPHITE_DARK;
+        &--tiny {
+            width: 24px;
+            height: 24px;
+            font: $FONT_MEDIUM_12_16;
+        }
+
+        &--small {
+            width: 32px;
+            height: 32px;
             font: $FONT_MEDIUM_14_20;
-            text-transform: uppercase;
+        }
+
+        &--regular {
+            width: 40px;
+            height: 40px;
+            font: $FONT_MEDIUM_16_24;
+        }
+
+        &--large {
+            width: 64px;
+            height: 64px;
+            font: $FONT_SEMI_BOLD_24_32;
+        }
+
+        &--extra-large {
+            width: 96px;
+            height: 96px;
+            font: $FONT_SEMI_BOLD_40_48;
         }
     }
 </style>

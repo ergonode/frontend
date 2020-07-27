@@ -43,10 +43,10 @@ export default {
             await Promise.all([
                 store.dispatch('dictionaries/getDictionaries'),
                 store.dispatch('core/getLanguages'),
-                store.dispatch('core/getLanguagesTree'),
             ]);
 
-            store.dispatch('core/setDefaultLanguage');
+            await store.dispatch('core/getLanguagesTree');
+            await store.dispatch('core/setDefaultLanguage');
         }
 
         return null;

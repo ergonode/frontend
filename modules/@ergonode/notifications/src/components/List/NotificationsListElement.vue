@@ -11,7 +11,7 @@
         <UserAvatar
             :image-id="notification.avatar_id"
             :name="notification.author"
-            :avatar-size="40" />
+            :size="regularSize" />
         <span class="notification-element__message">
             <strong>{{ notification.author }}</strong>
             {{ notification.message }}
@@ -26,6 +26,9 @@
 import {
     GRAPHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import {
     mapActions,
 } from 'vuex';
@@ -42,6 +45,9 @@ export default {
         },
     },
     computed: {
+        regularSize() {
+            return SIZE.REGULAR;
+        },
         graphiteColor() {
             return GRAPHITE;
         },

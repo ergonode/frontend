@@ -36,11 +36,11 @@ import Button from '@Core/components/Buttons/Button';
 import Form from '@Core/components/Form/Form';
 import FormParagraph from '@Core/components/Form/FormParagraph';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import UploadCSVFile from '@Core/components/Inputs/UploadFile/UploadCSVFile';
 import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     THEME,
 } from '@Core/defaults/theme';
+import UploadCSVFile from '@Media/components/Inputs/UploadFile/UploadCSVFile';
 import {
     mapActions,
 } from 'vuex';

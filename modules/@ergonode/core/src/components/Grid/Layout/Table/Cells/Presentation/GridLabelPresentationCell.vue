@@ -3,43 +3,32 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="label-presentation-cell">
+    <div class="grid-label-presentation-cell">
         <PointBadge
             v-if="color"
             :color="color" />
-        <GridSelectPresentationCell
-            :value="value"
-            :options="options"
-            :is-locked="isLocked" />
+        <GridPresentationCell :value="value" />
     </div>
 </template>
 
 <script>
 import PointBadge from '@Core/components/Badges/PointBadge';
-import GridSelectPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSelectPresentationCell';
+import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
 
 export default {
     name: 'GridLabelPresentationCell',
     components: {
         PointBadge,
-        GridSelectPresentationCell,
+        GridPresentationCell,
     },
     props: {
         value: {
             type: String,
             required: true,
         },
-        options: {
-            type: Object,
-            default: () => ({}),
-        },
         colors: {
             type: Object,
             default: () => ({}),
-        },
-        isLocked: {
-            type: Boolean,
-            default: false,
         },
     },
     computed: {
@@ -51,10 +40,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .label-presentation-cell {
+    .grid-label-presentation-cell {
         display: flex;
         flex: 1;
         align-items: center;
-        padding-left: 8px;
+
+        & > .point-badge {
+            margin-left: 8px;
+        }
     }
 </style>

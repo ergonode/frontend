@@ -27,20 +27,24 @@ export default {
         ResponsiveCenteredViewTemplate,
         JSONSchemaForm,
     },
-    asyncData({
-        app, store,
-    }) {
-        const {
-            language: userLanguageCode,
-        } = store.state.authentication.user;
-
-        return app.$axios.$get(`${userLanguageCode}/sources/magento-1-csv/configuration`).then(response => ({
-            schema: response,
-        }));
+    fetch() {
+        return this.$axios
+            .$get(`${this.userLanguageCode}/sources/magento-1-csv/configuration`)
+            .then((response) => {
+                this.schema = response;
+            });
+    },
+    data() {
+        return {
+            schema: {},
+        };
     },
     computed: {
         ...mapState('import', {
             configuration: state => state.configuration,
+        }),
+        ...mapState('authentication', {
+            userLanguageCode: state => state.user,
         }),
     },
     methods: {

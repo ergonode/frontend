@@ -6,5 +6,6 @@ export default () => ({
     id: null,
     name: '',
     description: '',
+    drafts: {},
     privileges: [],
 });

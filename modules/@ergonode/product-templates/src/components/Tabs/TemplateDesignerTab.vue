@@ -60,9 +60,9 @@
                 </TemplateGridDraggableLayer>
                 <SectionTemplateModalForm
                     v-if="isSectionAdded"
-                    :section-position="sectionPosition"
-                    :section-title="sectionTitle"
-                    :section-index="sectionIndex"
+                    :index="sectionIndex"
+                    :position="sectionPosition"
+                    :element="sectionElement"
                     @close="onCloseSectionModal" />
             </TemplateGridDesigner>
         </template>
@@ -123,7 +123,7 @@ export default {
             isSectionAdded: false,
             sectionPosition: null,
             sectionIndex: null,
-            sectionTitle: '',
+            sectionElement: null,
             columnsNumber: 4,
             maxRow: 0,
         };
@@ -132,7 +132,6 @@ export default {
         ...mapState('templateDesigner', {
             templateGroups: state => state.templateGroups,
             layoutElements: state => state.layoutElements,
-            titleValidationError: state => state.titleValidationError,
             title: state => state.title,
         }),
         ...mapState('draggable', {
@@ -169,11 +168,6 @@ export default {
             return this.$hasAccess([
                 'TEMPLATE_DESIGNER_UPDATE',
             ]);
-        },
-        errorMessages() {
-            return this.titleValidationError ? [
-                this.titleValidationError,
-            ] : null;
         },
         sectionType() {
             return SYSTEM_TYPES.SECTION;
@@ -222,7 +216,7 @@ export default {
     methods: {
         ...mapActions('templateDesigner', [
             'addListElementToLayout',
-            'updateLayoutElementPosition',
+            'updateLayoutElementAtIndex',
             'removeLayoutElementAtIndex',
         ]),
         onRemoveLayoutElement(index) {
@@ -245,17 +239,16 @@ export default {
             this.highlightedPositions = [];
 
             if (isObject(this.draggedElement)) {
-                const {
-                    row, column,
-                } = position;
                 const index = this.layoutElements.findIndex(
                     el => el.id === this.draggedElement.id,
                 );
 
-                this.updateLayoutElementPosition({
+                this.updateLayoutElementAtIndex({
                     index,
-                    row,
-                    column,
+                    element: {
+                        ...this.layoutElements[index],
+                        ...position,
+                    },
                 });
             } else if (this.draggedElement === this.sectionType) {
                 this.sectionPosition = position;
@@ -265,17 +258,14 @@ export default {
             }
         },
         onEditSectionTitle(index) {
-            const {
-                [index]: layoutElement,
-            } = this.layoutElements;
-            this.sectionTitle = layoutElement.label;
+            this.sectionElement = this.layoutElements[index];
             this.sectionIndex = index;
             this.isSectionAdded = true;
         },
         onCloseSectionModal() {
             this.sectionPosition = null;
+            this.sectionElement = null;
             this.isSectionAdded = false;
-            this.sectionTitle = '';
             this.sectionIndex = null;
         },
         getLayoutElementPosition({
@@ -292,6 +282,5 @@ export default {
 <style lang="scss" scoped>
     .template-grid {
         overflow: auto;
-        border-left: $BORDER_1_GREY;
     }
 </style>

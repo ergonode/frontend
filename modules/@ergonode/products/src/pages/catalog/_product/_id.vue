@@ -27,6 +27,8 @@ import {
     mapState,
 } from 'vuex';
 
+const applyProductDraft = () => import('@Products/services/applyProductDraft.service');
+
 export default {
     name: 'ProductEdit',
     components: {
@@ -76,7 +78,6 @@ export default {
         ...mapActions('product', [
             'updateProduct',
             'removeProduct',
-            'applyDraft',
             '__clearStorage',
         ]),
         onDraftAppliedSuccess() {
@@ -123,10 +124,14 @@ export default {
                 id,
                 data,
             });
-            await this.applyDraft({
-                id: this.id,
-                onSuccess: this.onDraftAppliedSuccess,
-            });
+            await applyProductDraft()
+                .then(request => request
+                    .default({
+                        $axios: this.$axios,
+                        $store: this.$store,
+                        id,
+                    })
+                    .then(this.onDraftAppliedSuccess));
             await this.$removeLoader('footerButton');
         },
     },

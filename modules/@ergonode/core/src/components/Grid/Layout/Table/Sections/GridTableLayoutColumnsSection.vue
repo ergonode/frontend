@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="columns-section">
+    <div class="grid-table-layout-columns-section">
         <slot />
     </div>
 </template>
@@ -15,7 +15,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .columns-section {
+    .grid-table-layout-columns-section {
         position: relative;
         display: grid;
         flex: 1 1 auto;

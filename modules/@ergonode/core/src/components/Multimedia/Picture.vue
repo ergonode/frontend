@@ -5,13 +5,8 @@
 <template>
     <img
         ref="img"
-        :style="imageStyle"
-        :class="[
-            'image',
-            {
-                'image--fab': fab,
-            }
-        ]"
+        :style="styles"
+        :class="classes"
         :src="require('@Core/assets/images/placeholders/no_image.svg')"
         alt="picture">
 </template>
@@ -20,14 +15,11 @@
 import {
     getImageData,
 } from '@Core/models/multimedia';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'Picture',
     props: {
-        imageId: {
+        value: {
             type: String,
             required: true,
         },
@@ -48,14 +40,22 @@ export default {
         };
     },
     computed: {
-        imageStyle() {
+        classes() {
+            return [
+                'picture',
+                {
+                    'picture--fab': this.fab,
+                },
+            ];
+        },
+        styles() {
             return {
                 objectFit: this.isLoading ? 'unset' : this.objectFit,
             };
         },
     },
     watch: {
-        imageId() {
+        value() {
             this.getImageById();
         },
     },
@@ -77,13 +77,10 @@ export default {
         this.observer.disconnect();
     },
     methods: {
-        ...mapActions('validations', [
-            'onError',
-        ]),
         getImageById() {
             this.cancelToken = this.$axios.CancelToken.source();
 
-            this.$axios.$get(`multimedia/${this.imageId}`, {
+            this.$axios.$get(`multimedia/${this.value}`, {
                 useCache: true,
                 cancelToken: this.cancelToken.token,
                 responseType: 'arraybuffer',
@@ -110,7 +107,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .image {
+    .picture {
         max-height: 100%;
 
         &:not(&--fab) {

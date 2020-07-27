@@ -7,9 +7,10 @@
         <template #content>
             <Grid
                 :columns="columns"
-                :data="data"
+                :rows="rows"
                 :data-count="dataCount"
                 :is-editable="false"
+                :is-border="true"
                 :is-footer-visible="false" />
         </template>
     </ResponsiveCenteredViewTemplate>
@@ -42,7 +43,7 @@ export default {
             privileges,
         } = store.state.authentication.user;
         const {
-            data, columns,
+            rows, columns,
         } = getMappedGridData({
             fullDataList: privilegesDictionary,
             selectedData: privileges,
@@ -56,7 +57,7 @@ export default {
         return {
             dataCount: privilegesDictionary.length,
             columns: sortedColumns,
-            data,
+            rows,
         };
     },
 };

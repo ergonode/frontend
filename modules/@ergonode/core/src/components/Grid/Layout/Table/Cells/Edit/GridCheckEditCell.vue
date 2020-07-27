@@ -4,7 +4,7 @@
  */
 <template>
     <CheckBox
-        class="check-cell"
+        @click.native.prevent
         :value="value"
         :disabled="disabled" />
 </template>
@@ -35,7 +35,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .check-cell {
-        margin: 12px;
+    .checkbox {
+        padding: 4px;
     }
 </style>

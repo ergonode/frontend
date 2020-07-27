@@ -4,37 +4,31 @@
  */
 <template>
     <App>
-        <div class="app-content">
-            <div class="app-content__navigation-bar">
-                <NavigationBar>
-                    <template #breadcrumbs>
-                        <NavigationBarBreadcrumb
-                            v-for="(breadcrumb, index) in breadcrumbs"
-                            :key="index"
-                            :breadcrumb="breadcrumb" />
-                    </template>
-                    <template #actions>
-                        <NavigationBarUserButton />
-                        <template v-for="(component, index) in extendedComponents">
-                            <Component
-                                :is="component.component"
-                                :key="index"
-                                v-bind="component.props" />
-                        </template>
-                    </template>
-                </NavigationBar>
-            </div>
-            <div class="app-content__navigation-side-bar">
-                <SideBar />
-            </div>
-            <div class="app-content__body">
-                <slot />
-                <FlashMessage />
-                <ConfirmModal
-                    v-if="$getModal(modalConfirmType)"
-                    :type="modalConfirmType" />
-            </div>
-        </div>
+        <NavigationBar :style="navigationBarPosition">
+            <template #breadcrumbs>
+                <NavigationBarBreadcrumb
+                    v-for="(breadcrumb, index) in breadcrumbs"
+                    :key="index"
+                    :breadcrumb="breadcrumb" />
+            </template>
+            <template #actions>
+                <NavigationBarUserButton />
+                <template v-for="(component, index) in extendedComponents">
+                    <Component
+                        :is="component.component"
+                        :key="index"
+                        v-bind="component.props" />
+                </template>
+            </template>
+        </NavigationBar>
+        <SideBar @expand="onExpandSideBar" />
+        <main class="app-main">
+            <slot />
+            <FlashMessage />
+            <ConfirmModal
+                v-if="$getModal(modalConfirmType)"
+                :type="modalConfirmType" />
+        </main>
     </App>
 </template>
 
@@ -64,12 +58,20 @@ export default {
     data() {
         return {
             breadcrumbs: [],
+            isExpandedSideBar: true,
         };
     },
     computed: {
         ...mapState('authentication', {
             user: state => state.user,
         }),
+        navigationBarPosition() {
+            return {
+                top: 0,
+                left: this.isExpandedSideBar ? '256px' : '80px',
+                right: 0,
+            };
+        },
         extendedComponents() {
             return this.$getExtendedComponents(COMPONENTS.NAVIGATION_BAR);
         },
@@ -96,27 +98,19 @@ export default {
             'setRequestTimeout',
             'invalidateRequestTimeout',
         ]),
+        onExpandSideBar(isExpanded) {
+            this.isExpandedSideBar = isExpanded;
+        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .app-content {
-        display: grid;
-        grid-template-columns: max-content auto;
-        grid-template-rows: 48px auto;
+    .app-main {
+        display: flex;
         flex: 1;
-
-        &__navigation-bar {
-            grid-area: 1 / 2 / 1 / 3;
-        }
-
-        &__navigation-side-bar {
-            grid-row: 1 / 3;
-        }
-
-        &__body {
-            grid-area: 2 / 2 / 3 / 3;
-        }
+        width: 100%;
+        padding: 48px 0 0;
+        box-sizing: border-box;
     }
 </style>

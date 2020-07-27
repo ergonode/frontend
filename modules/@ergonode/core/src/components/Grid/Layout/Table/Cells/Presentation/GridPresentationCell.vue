@@ -3,15 +3,9 @@
  * See LICENSE for license details.
  */
 <template functional>
-    <div class="presentation-cell">
-        <span
-            :title="props.value"
-            v-text="props.value" />
-        <span
-            v-if="props.value && props.suffix"
-            :title="props.suffix"
-            v-text="props.suffix" />
-    </div>
+    <span
+        class="grid-presentation-cell"
+        v-text="props.value" />
 </template>
 
 <script>
@@ -26,22 +20,15 @@ export default {
             ],
             required: true,
         },
-        suffix: {
-            type: String,
-            default: '',
-        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .presentation-cell {
-        display: flex;
+    .grid-presentation-cell {
         flex: 1;
-        justify-content: space-between;
-        align-items: center;
         width: 0;
-        padding: 8px;
+        padding: 8px 0 8px 8px;
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_12_16;
         text-overflow: ellipsis;

@@ -9,13 +9,13 @@
                 :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
-                :data="data"
+                :rows="rows"
                 :is-prefetching-data="isPrefetchingData"
                 :is-header-visible="true"
-                :is-centered-view="true"
+                :is-border="true"
                 :is-basic-filter="true"
                 @editRow="onEditRow"
-                @removeRow="onRemoveUnit"
+                @deleteRow="onRemoveUnit"
                 @fetchData="getGridData">
                 <template #actions>
                     <Button
@@ -42,7 +42,7 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
 import {
     mapActions,
 } from 'vuex';
@@ -55,7 +55,7 @@ export default {
         IconAdd,
     },
     mixins: [
-        fetchGridDataMixin({
+        gridFetchDataMixin({
             path: 'units',
         }),
     ],

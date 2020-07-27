@@ -12,9 +12,11 @@
         :disabled="disabled"
         :alignment="alignment"
         :size="size"
+        :height="height"
         :details-label="informationLabel"
         @mousedown="onMouseDown"
-        @mouseup="onMouseUp">
+        @mouseup="onMouseUp"
+        @mounted="onMounted">
         <template #activator>
             <InputController
                 ref="activator"
@@ -30,7 +32,6 @@
                     v-bind="{ ...input }"
                     :value="value"
                     :placeholder="placeholderValue"
-                    :autofocus="autofocus"
                     autocomplete="on"
                     :disabled="disabled"
                     :aria-label="label || 'no description'"
@@ -204,6 +205,11 @@ export default {
         };
     },
     computed: {
+        height() {
+            return this.size === SIZE.SMALL
+                ? '32px'
+                : '40px';
+        },
         classes() {
             return [
                 'text-field',
@@ -229,18 +235,16 @@ export default {
             return this.placeholder;
         },
     },
-    mounted() {
-        if (this.autofocus) {
-            setTimeout(() => {
+    methods: {
+        onMounted() {
+            if (this.autofocus) {
                 this.$nextTick(() => {
                     window.requestAnimationFrame(() => {
                         this.$refs.input.focus();
                     });
                 });
-            }, 100);
-        }
-    },
-    methods: {
+            }
+        },
         onValueChange(event) {
             this.$emit('input', event.target.value);
         },

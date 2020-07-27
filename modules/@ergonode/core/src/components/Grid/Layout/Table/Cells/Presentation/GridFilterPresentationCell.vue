@@ -4,11 +4,8 @@
  */
 <template>
     <span
-        :class="[
-            'presentation-cell',
-            { 'presentation-cell--placeholder': !isValue },
-        ]"
-        v-text="isValue ? value : placeholder" />
+        :class="classes"
+        v-text="isPlaceholder ? placeholder : value" />
 </template>
 
 <script>
@@ -29,18 +26,26 @@ export default {
         },
     },
     computed: {
-        isValue() {
-            return this.value !== '';
+        classes() {
+            return [
+                'grid-filter-presentation-cell',
+                {
+                    'grid-filter-presentation-cell--placeholder': this.isPlaceholder,
+                },
+            ];
+        },
+        isPlaceholder() {
+            return this.value === '';
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .presentation-cell {
+    .grid-filter-presentation-cell {
         flex: 1;
         width: 0;
-        padding: 8px;
+        padding: 8px 0 8px 8px;
         font: $FONT_MEDIUM_12_16;
         user-select: none;
         text-overflow: ellipsis;
