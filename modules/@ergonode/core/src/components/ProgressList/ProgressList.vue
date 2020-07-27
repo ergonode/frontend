@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import ComplexProgressBar from '@Core/Components/ProgressBar/Complex/ComplexProgressBar';
+import ComplexProgressBar from '@Core/components/ProgressBar/Complex/ComplexProgressBar';
 
 export default {
     name: 'ProgressList',

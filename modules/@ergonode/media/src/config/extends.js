@@ -9,10 +9,10 @@ import {
 
 export default {
     extendComponents: {
-        '@Core/Components/Grid/Layout/Table/Cells/Data': {
+        '@Core/components/Grid/Layout/Table/Cells/Data': {
             MEDIA_ATTACH: Components.GridMediaAttachDataCell,
         },
-        '@Core/Components/Grid/Layout/Collection/Cells': {
+        '@Core/components/Grid/Layout/Collection/Cells': {
             MEDIA_ATTACH: Components.GridMediaAttachCollectionCell,
         },
     },

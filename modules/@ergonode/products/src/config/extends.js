@@ -15,7 +15,7 @@ export default {
         },
     ],
     extendComponents: {
-        '@Core/Components/Grid/Layout/Table/Cells/Data': {
+        '@Core/components/Grid/Layout/Table/Cells/Data': {
             PRODUCT_ATTACH: Components.GridProductAttachDataCell,
         },
     },
