@@ -538,7 +538,7 @@ export default {
                 orderedColumns.push(column);
                 columnWidths.push(column.width || COLUMN_WIDTH.DEFAULT);
 
-                const extendedComponents = this.$getExtendedComponents('@Core/Components/Grid/Layout/Table/Columns');
+                const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Table/Columns');
 
                 if (extendedComponents && extendedComponents[column.type]) {
                     this.extendedColumns[column.id] = extendedComponents[column.type];

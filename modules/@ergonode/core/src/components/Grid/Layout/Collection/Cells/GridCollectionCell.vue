@@ -32,7 +32,7 @@ export default {
     },
     computed: {
         collectionCellComponent() {
-            const extendedComponents = this.$getExtendedComponents('@Core/Components/Grid/Layout/Collection/Cells');
+            const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Collection/Cells');
 
             if (extendedComponents && extendedComponents[this.data.type]) {
                 return extendedComponents[this.data.type];

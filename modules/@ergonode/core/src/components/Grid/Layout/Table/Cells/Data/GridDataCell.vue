@@ -73,7 +73,7 @@ export default {
     },
     computed: {
         dataCellComponent() {
-            const extendedComponents = this.$getExtendedComponents('@Core/Components/Grid/Layout/Table/Cells/Data');
+            const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Table/Cells/Data');
 
             if (extendedComponents && extendedComponents[this.column.type]) {
                 return extendedComponents[this.column.type];
