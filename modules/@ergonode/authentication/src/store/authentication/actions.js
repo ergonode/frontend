@@ -10,16 +10,7 @@ import {
 } from '@Authentication/models/userMapper';
 import camelcaseKeys from 'camelcase-keys';
 
-import {
-    types,
-} from './mutations';
-
 export default {
-    setAuth({
-        commit,
-    }, token) {
-        commit(types.SET_JWT_TOKEN, token);
-    },
     authenticateUser({
         commit, dispatch,
     }, {
@@ -29,7 +20,10 @@ export default {
             token,
         }) => {
             this.$cookies.set(JWT_KEY, token);
-            commit(types.SET_JWT_TOKEN, token);
+            commit('__SET_STATE', {
+                key: 'jwt',
+                value: token,
+            });
 
             return dispatch('getUser');
         });
@@ -41,21 +35,16 @@ export default {
             const transformedUserData = camelcaseKeys(user);
 
             transformedUserData.privileges = getMappedPrivileges(transformedUserData.privileges);
-            commit(types.SET_USER, transformedUserData);
-            commit(types.SET_LOGGED_STATE, true);
+            commit('__SET_STATE', {
+                key: 'user',
+                value: transformedUserData,
+            });
+            commit('__SET_STATE', {
+                key: 'isLogged',
+                value: true,
+            });
         }).catch((e) => {
             console.error(e);
         });
-    },
-    setLoggedState({
-        commit,
-    }, isLogged) {
-        commit(types.SET_LOGGED_STATE, isLogged);
-    },
-    clearStorage({
-        commit,
-    }) {
-        this.$cookies.removeAll();
-        commit(types.CLEAR_STATE);
     },
 };

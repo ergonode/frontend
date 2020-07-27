@@ -2,26 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import {
-    types,
-} from './mutations';
-
 export default {
-    setId({
-        commit,
-    }, value) {
-        commit(types.SET_SEGMENT_ID, value);
-    },
-    setCode({
-        commit,
-    }, value) {
-        commit(types.SET_SEGMENT_CODE, value);
-    },
-    setConditionSetId({
-        commit,
-    }, value) {
-        commit(types.SET_CONDITION_SET_ID, value);
-    },
     async getSegmentById(
         {
             commit, dispatch, rootState,
@@ -44,9 +25,18 @@ export default {
                 name,
                 description,
             };
-            commit(types.SET_SEGMENT_ID, id);
-            commit(types.SET_SEGMENT_CODE, code);
-            commit(types.SET_CONDITION_SET_ID, conditionSetId);
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'code',
+                value: code,
+            });
+            commit('__SET_STATE', {
+                key: 'conditionSetId',
+                value: conditionSetId,
+            });
             dispatch('translations/setTabTranslations', translations, {
                 root: true,
             });
@@ -99,10 +89,5 @@ export default {
                     onSuccess();
                 }
             });
-    },
-    clearStorage({
-        commit,
-    }) {
-        commit(types.CLEAR_STATE);
     },
 };

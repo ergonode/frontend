@@ -46,19 +46,18 @@ export default {
             privileges: state => state.privileges,
             drafts: state => state.drafts,
             description: state => state.description,
-            selectedPrivileges: state => state.selectedPrivileges,
         }),
     },
     destroyed() {
-        this.clearStorage();
+        this.__clearStorage();
     },
     methods: {
         ...mapActions('roles', [
-            'clearStorage',
+            '__clearStorage',
+            '__setState',
             'updateRole',
             'removeRole',
             'setPrivileges',
-            'setPrivilegeDrafts',
         ]),
         ...mapActions('validations', [
             'onError',
@@ -116,7 +115,10 @@ export default {
                     });
 
                     this.setPrivileges(privileges);
-                    this.setPrivilegeDrafts();
+                    this.__setState({
+                        key: 'drafts',
+                        value: {},
+                    });
                 },
                 onError: this.onError,
             });

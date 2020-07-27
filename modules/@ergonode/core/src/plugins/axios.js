@@ -65,7 +65,10 @@ export default function ({
         case regExp.auth.test(status):
             msg = 'Authentication needed';
             if (store.state.authentication.isLogged) {
-                store.dispatch('authentication/setLoggedState', false);
+                store.dispatch('authentication/__setState', {
+                    key: 'isLogged',
+                    value: false,
+                });
                 redirect('/');
             }
             break;

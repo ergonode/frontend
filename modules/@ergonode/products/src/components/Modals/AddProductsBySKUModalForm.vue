@@ -9,6 +9,7 @@
         <template #body>
             <AddProductsBySKUForm
                 :product-skus="productSkus"
+                :is-user-allowed-to-update="isUserAllowedToUpdate"
                 @input="onFormValueChange" />
         </template>
         <template #footer>
@@ -31,6 +32,7 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
+import PRIVILEGES from '@Products/config/privileges';
 import {
     mapActions,
     mapState,
@@ -58,6 +60,11 @@ export default {
         }),
         secondaryTheme() {
             return THEME.SECONDARY;
+        },
+        isUserAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT.update,
+            ]);
         },
     },
     methods: {

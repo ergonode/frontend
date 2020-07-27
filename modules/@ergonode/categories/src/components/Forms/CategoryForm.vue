@@ -16,7 +16,7 @@
                     :disabled="isDisabled || isDisabledByPrivileges"
                     label="System name"
                     hint="Category code must be unique"
-                    @input="setCategoryCode" />
+                    @input="setCodeValue" />
             </FormSection>
         </template>
     </Form>
@@ -57,8 +57,14 @@ export default {
     },
     methods: {
         ...mapActions('categories', [
-            'setCategoryCode',
+            '__setState',
         ]),
+        setCodeValue(value) {
+            this.__setState({
+                key: 'code',
+                value,
+            });
+        },
         dataCyGenerator(key) {
             return `category-${key}`;
         },

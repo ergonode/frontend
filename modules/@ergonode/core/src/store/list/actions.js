@@ -22,7 +22,4 @@ export default {
     }, payload) => {
         commit(types.REMOVE_DISABLED_ELEMENT, payload);
     },
-    clearStorage: ({
-        commit,
-    }) => commit(types.CLEAR_STATE),
 };

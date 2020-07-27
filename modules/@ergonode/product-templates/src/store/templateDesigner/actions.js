@@ -19,11 +19,6 @@ import {
 } from './mutations';
 
 export default {
-    setStateProperty({
-        commit,
-    }, payload) {
-        commit(types.SET_STATE_PROPERTY, payload);
-    },
     getTemplateByID(
         {
             commit,
@@ -64,23 +59,23 @@ export default {
                 view: 'list',
             };
 
-            commit(types.SET_STATE_PROPERTY, {
+            commit('__SET_STATE', {
                 key: 'defaultTextAttribute',
                 value: defaultLabel || SKU_MODEL_ID,
             });
-            commit(types.SET_STATE_PROPERTY, {
+            commit('__SET_STATE', {
                 key: 'defaultImageAttribute',
                 value: defaultImage,
             });
-            commit(types.SET_STATE_PROPERTY, {
+            commit('__SET_STATE', {
                 key: 'types',
                 value: templateTypes.collection,
             });
-            commit(types.SET_STATE_PROPERTY, {
+            commit('__SET_STATE', {
                 key: 'title',
                 value: name,
             });
-            commit(types.SET_STATE_PROPERTY, {
+            commit('__SET_STATE', {
                 key: 'image',
                 value: imageID,
             });
@@ -114,7 +109,7 @@ export default {
                     });
                 }
 
-                commit(types.SET_STATE_PROPERTY, {
+                commit('__SET_STATE', {
                     key: 'layoutElements',
                     value: layoutElements,
                 });
@@ -233,7 +228,4 @@ export default {
         } = rootState.authentication.user;
         return this.app.$axios.$delete(`${userLanguageCode}/templates/${id}`).then(() => onSuccess());
     },
-    clearStorage: ({
-        commit,
-    }) => commit(types.CLEAR_STATE),
 };

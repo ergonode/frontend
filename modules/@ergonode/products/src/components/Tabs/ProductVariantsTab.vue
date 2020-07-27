@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                :is-editable="$hasAccess(['PRODUCT_UPDATE'])"
+                :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
@@ -30,6 +30,7 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import PRIVILEGES from '@Products/config/privileges';
 import {
     PRODUCT_TYPE,
 } from '@Products/defaults';
@@ -168,7 +169,7 @@ export default {
         },
         isUserAllowedToUpdate() {
             return this.$hasAccess([
-                'PRODUCT_UPDATE',
+                PRIVILEGES.PRODUCT.update,
             ]);
         },
         attributeCodes() {

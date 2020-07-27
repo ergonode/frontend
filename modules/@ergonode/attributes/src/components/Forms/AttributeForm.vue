@@ -23,7 +23,7 @@
                     :disabled="isDisabled || isDisabledByPrivileges"
                     label="System name"
                     hint="Attribute code must be unique"
-                    @input="setAttributeCode" />
+                    @input="setCodeValue" />
                 <TranslationLazySelect
                     :data-cy="dataCyGenerator(groupsFieldKey)"
                     :value="groups"
@@ -33,7 +33,7 @@
                     :disabled="isDisabledByPrivileges"
                     :error-messages="errorMessages[groupsFieldKey]"
                     :fetch-options-request="getAttributeGroupOptionsRequest"
-                    @input="setAttributeGroups" />
+                    @input="setGroupsValue" />
                 <Select
                     :data-cy="dataCyGenerator(typeFieldKey)"
                     :value="type"
@@ -54,7 +54,7 @@
                     :disabled="isDisabledByPrivileges"
                     :options="attributeScopeOptions"
                     :error-messages="errorMessages[scopeFieldKey]"
-                    @input="setAttributeScope">
+                    @input="setScopeValue">
                     <template #append>
                         <InfoHint :hint="scopeHint" />
                     </template>
@@ -69,7 +69,7 @@
                     :options="attributeParametersOptions"
                     :error-messages="errorMessages[paramsFieldKey]"
                     :disabled="isDisabledByPrivileges"
-                    @input="setAttributeParameter" />
+                    @input="setParameterValue" />
                 <AttributeOptionKeyValues
                     v-show="hasOptions"
                     key="attrHasOptions"
@@ -78,7 +78,7 @@
                     v-if="isTextArea"
                     :value="parameter"
                     label="Rich text content enabled"
-                    @input="setAttributeParameter" />
+                    @input="setParameterValue" />
             </FormSection>
         </template>
     </Form>
@@ -212,14 +212,39 @@ export default {
     },
     methods: {
         ...mapActions('attribute', [
-            'setAttributeCode',
-            'setAttributeGroups',
-            'setAttributeType',
-            'setAttributeParameter',
-            'setAttributeScope',
+            '__setState',
             'removeAttributeOptions',
-            'clearStorage',
         ]),
+        setCodeValue(value) {
+            this.__setState({
+                key: 'code',
+                value,
+            });
+        },
+        setScopeValue(value) {
+            this.__setState({
+                key: 'scope',
+                value,
+            });
+        },
+        setGroupsValue(value) {
+            this.__setState({
+                key: 'groups',
+                value,
+            });
+        },
+        setTypeValue(value) {
+            this.__setState({
+                key: 'type',
+                value,
+            });
+        },
+        setParameterValue(value = null) {
+            this.__setState({
+                key: 'parameter',
+                value,
+            });
+        },
         dataCyGenerator(key) {
             return `attribute-${key}`;
         },
@@ -232,8 +257,8 @@ export default {
             ));
         },
         onTypeChange(type) {
-            this.setAttributeType(type);
-            this.setAttributeParameter();
+            this.setTypeValue(type);
+            this.setParameterValue();
 
             if (!this.hasOptions) {
                 this.removeAttributeOptions();

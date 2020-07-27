@@ -58,13 +58,13 @@ export default {
     },
     methods: {
         ...mapActions('units', [
-            'clearStorage',
+            '__clearStorage',
         ]),
         ...mapActions('dictionaries', [
             'getCurrentDictionary',
         ]),
         onClose() {
-            this.clearStorage();
+            this.__clearStorage();
             this.$emit('close');
         },
         onCreate() {
@@ -72,7 +72,7 @@ export default {
                 await this.getCurrentDictionary({
                     dictionaryName: 'units',
                 });
-                await this.clearStorage();
+                await this.__clearStorage();
             });
         },
         onCreatedAndEdit() {

@@ -69,10 +69,13 @@ export default {
     },
     methods: {
         ...mapActions('authentication', [
-            'setLoggedState',
+            '__setState',
         ]),
         onLogout() {
-            this.setLoggedState(false);
+            this.__setState({
+                key: 'isLogged',
+                value: false,
+            });
             this.$router.push({
                 name: 'index',
             });

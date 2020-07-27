@@ -33,9 +33,4 @@ export default {
     }) {
         commit(types.REMOVE_VALIDATION_ERRORS);
     },
-    clearStorage({
-        commit,
-    }) {
-        commit(types.CLEAR_STATE);
-    },
 };

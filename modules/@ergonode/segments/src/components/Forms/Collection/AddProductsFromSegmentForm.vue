@@ -10,7 +10,7 @@
                     :value="segments"
                     :multiselect="true"
                     label="From segmentation rules"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isUserAllowedToUpdate"
                     :error-messages="errorMessages[segmentsFieldKey]"
                     :options="segmentOptions"
                     @input="onSegmentChange" />
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Collections/config/privileges';
 
 export default {
     name: 'AddProductsFromSegmentForm',
@@ -39,13 +40,10 @@ export default {
         },
     },
     computed: {
-        isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess([
-                'PRODUCT_COLLECTION_UPDATE',
-            ]))
-                || (!this.isDisabled && !this.$hasAccess([
-                    'PRODUCT_COLLECTION_CREATE',
-                ]));
+        isUserAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT_COLLECTION.update,
+            ]);
         },
         segmentsFieldKey() {
             return 'segments';

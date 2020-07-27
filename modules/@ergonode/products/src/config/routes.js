@@ -7,7 +7,7 @@ import {
     Pages,
     Tabs,
 } from './imports';
-import Privileges from './privileges';
+import PRIVILEGES from './privileges';
 
 export default [
     {
@@ -25,8 +25,8 @@ export default [
             isMenu: true,
             menuPosition: 1,
             privileges: {
-                namespace: Privileges.PRODUCT.namespace,
-                read: Privileges.PRODUCT.read,
+                namespace: PRIVILEGES.PRODUCT.namespace,
+                read: PRIVILEGES.PRODUCT.read,
             },
             redirectTo: 'catalog-products',
         },
@@ -82,25 +82,6 @@ export default [
                 component: Tabs.ProductTemplateTab,
                 meta: {
                     title: 'Template',
-                    breadcrumbs: [
-                        {
-                            title: 'Products',
-                            icon: Icons.Product,
-                        },
-                        {
-                            title: 'Catalog',
-                            routeName: 'catalog-products',
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-            {
-                name: 'product-id-collections',
-                path: 'collections',
-                component: Tabs.ProductCollectionTab,
-                meta: {
-                    title: 'Collections',
                     breadcrumbs: [
                         {
                             title: 'Products',

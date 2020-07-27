@@ -58,19 +58,19 @@ export default {
     },
     methods: {
         ...mapActions('tree', [
-            'clearStorage',
+            '__clearStorage',
         ]),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
         ]),
         onClose() {
-            this.clearStorage();
+            this.__clearStorage();
             this.$emit('close');
         },
         onCreate() {
             this.onActionRequest(() => {
-                this.clearStorage();
+                this.__clearStorage();
             });
         },
         onCreatedAndEdit() {

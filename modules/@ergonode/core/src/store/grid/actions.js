@@ -22,9 +22,4 @@ export default {
     }, rowId) {
         commit(types.REMOVE_DRAFT_ROW, rowId);
     },
-    clearStorage({
-        commit,
-    }) {
-        commit(types.CLEAR_STATE);
-    },
 };

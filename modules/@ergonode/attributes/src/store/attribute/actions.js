@@ -15,31 +15,6 @@ import {
 } from './mutations';
 
 export default {
-    setAttributeCode({
-        commit,
-    }, code) {
-        commit(types.SET_ATTRIBUTE_CODE, code);
-    },
-    setAttributeParameter({
-        commit,
-    }, parameter = null) {
-        commit(types.SET_ATTRIBUTE_PARAMETER, parameter);
-    },
-    setAttributeGroups({
-        commit,
-    }, groups) {
-        commit(types.SET_ATTRIBUTE_GROUPS, groups);
-    },
-    setAttributeType({
-        commit,
-    }, type) {
-        commit(types.SET_ATTRIBUTE_TYPE, type);
-    },
-    setAttributeScope({
-        commit,
-    }, scope) {
-        commit(types.SET_ATTRIBUTE_SCOPE, scope);
-    },
     addAttributeOptionKey({
         commit,
     }, index) {
@@ -137,11 +112,26 @@ export default {
             placeholder = '',
             scope,
         }) => {
-            commit(types.SET_ATTRIBUTE_ID, id);
-            commit(types.SET_ATTRIBUTE_CODE, code);
-            commit(types.SET_ATTRIBUTE_TYPE, attrTypes[type]);
-            commit(types.SET_ATTRIBUTE_SCOPE, scope);
-            commit(types.SET_ATTRIBUTE_GROUPS, groupIds);
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'code',
+                value: code,
+            });
+            commit('__SET_STATE', {
+                key: 'scope',
+                value: scope,
+            });
+            commit('__SET_STATE', {
+                key: 'groups',
+                value: groupIds,
+            });
+            commit('__SET_STATE', {
+                key: 'type',
+                value: attrTypes[type],
+            });
 
             dispatch(
                 'translations/setTabTranslations',
@@ -156,17 +146,17 @@ export default {
             );
 
             if (parameters && type !== TYPES.TEXT_AREA) {
-                commit(
-                    types.SET_ATTRIBUTE_PARAMETER,
-                    getMappedParameterValues(type, parameters, rootState.dictionaries),
-                );
+                commit('__SET_STATE', {
+                    key: 'parameter',
+                    value: getMappedParameterValues(type, parameters, rootState.dictionaries),
+                });
             }
 
             if (type === TYPES.TEXT_AREA) {
-                commit(
-                    types.SET_ATTRIBUTE_PARAMETER,
-                    parameters.rich_edit,
-                );
+                commit('__SET_STATE', {
+                    key: 'parameter',
+                    value: parameters.rich_edit,
+                });
             }
         });
     },
@@ -239,10 +229,5 @@ export default {
         } = rootState.authentication.user;
 
         return this.app.$axios.$delete(`${userLanguageCode}/attributes/${id}`).then(() => onSuccess());
-    },
-    clearStorage({
-        commit,
-    }) {
-        commit(types.CLEAR_STATE);
     },
 };

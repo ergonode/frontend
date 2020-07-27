@@ -57,18 +57,18 @@ export default {
         }),
     },
     destroyed() {
-        this.listClearStorage();
-        this.clearStorage();
+        this.list__clearStorage();
+        this.__clearStorage();
     },
     methods: {
         ...mapActions('templateDesigner', [
             'updateTemplateDesigner',
             'removeTemplate',
             'getTemplateByID',
-            'clearStorage',
+            '__clearStorage',
         ]),
         ...mapActions('list', {
-            listClearStorage: 'clearStorage',
+            list__clearStorage: '__clearStorage',
         }),
         ...mapActions('validations', [
             'onError',

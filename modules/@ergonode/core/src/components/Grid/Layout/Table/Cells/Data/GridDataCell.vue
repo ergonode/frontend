@@ -40,6 +40,7 @@ export default {
             type: String,
             default: '',
         },
+        // eslint-disable-next-line vue/require-prop-types
         draft: {
             default: null,
         },

@@ -13,7 +13,10 @@ export const actions = {
         try {
             const token = this.$cookies.get(JWT_KEY) || null;
 
-            await dispatch('authentication/setAuth', token);
+            await dispatch('authentication/__setState', {
+                key: 'jwt',
+                value: token,
+            });
             if (token) {
                 await dispatch('authentication/getUser');
             }

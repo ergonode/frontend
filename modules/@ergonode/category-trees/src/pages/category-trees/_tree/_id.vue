@@ -38,8 +38,8 @@ export default {
         store, params,
     }) {
         await Promise.all([
-            store.dispatch('tree/clearStorage'),
-            store.dispatch('translations/clearStorage'),
+            store.dispatch('tree/__clearStorage'),
+            store.dispatch('translations/__clearStorage'),
         ]);
         await store.dispatch('tree/getTreeById', {
             treeId: params.id,
@@ -66,7 +66,7 @@ export default {
             'removeCategoryTree',
         ]),
         ...mapActions('gridDesigner', {
-            clearGridDesignerStorage: 'clearStorage',
+            clearGridDesignerStorage: '__clearStorage',
         }),
         ...mapActions('validations', [
             'onError',

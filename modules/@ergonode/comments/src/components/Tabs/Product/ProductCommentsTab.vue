@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import ProductCommentsForm from '@Comments/components/Form/ProductCommentsForm';
+import ProductCommentsForm from '@Comments/components/Forms/ProductCommentsForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import {
     DATA_LIMIT,
@@ -30,7 +30,10 @@ export default {
         const {
             id,
         } = params;
-        await store.dispatch('comments/setCommentObjectId', id);
+        await store.dispatch('comments/__setState', {
+            key: 'objectId',
+            value: id,
+        });
         await store.dispatch('comments/getComments', {
             limit: DATA_LIMIT,
             offset: 0,

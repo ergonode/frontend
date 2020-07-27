@@ -15,11 +15,11 @@
                     :disabled="isDisabled || isDisabledByPrivileges"
                     label="System name"
                     hint="Status code must be unique"
-                    @input="setCode" />
+                    @input="setCodeValue" />
                 <CheckBox
                     :value="isDefaultStatus"
                     label="Default status of new products"
-                    @input="setStatusAsDefault">
+                    @input="setStatusAsDefaultValue">
                     <template #append>
                         <InfoHint hint="You may set only one status as a default" />
                     </template>
@@ -35,7 +35,7 @@
                     label="Badge color"
                     hint="Badge color is needed for presentation purpose"
                     :disabled="isDisabledByPrivileges"
-                    @input="setColor" />
+                    @input="setColorValue" />
             </FormSection>
         </template>
     </Form>
@@ -90,10 +90,26 @@ export default {
     },
     methods: {
         ...mapActions('productStatus', [
-            'setCode',
-            'setColor',
-            'setStatusAsDefault',
+            '__setState',
         ]),
+        setCodeValue(value) {
+            this.__setState({
+                key: 'code',
+                value,
+            });
+        },
+        setColorValue(value) {
+            this.__setState({
+                key: 'color',
+                value,
+            });
+        },
+        setStatusAsDefaultValue(value) {
+            this.__setState({
+                key: 'isDefaultStatus',
+                value,
+            });
+        },
     },
 };
 </script>

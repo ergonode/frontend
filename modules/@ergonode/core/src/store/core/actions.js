@@ -12,7 +12,7 @@ import {
 
 export default {
     async getLanguages({
-        dispatch, rootState,
+        commit, rootState,
     }) {
         const {
             language: userLanguageCode,
@@ -30,7 +30,10 @@ export default {
             params,
         });
 
-        dispatch('setLanguages', collection);
+        commit('__SET_STATE', {
+            key: 'languages',
+            value: collection,
+        });
     },
     async getLanguagesTree({
         dispatch, rootState,
@@ -66,17 +69,13 @@ export default {
             languages,
         });
     },
-    setLanguages({
-        commit,
-    }, languages) {
-        commit(types.SET_LANGUAGES, languages);
-    },
     setLanguagesTree({
         state, commit,
     }, treeData) {
         const reducer = (id) => {
             const {
-                name, code,
+                name = '',
+                code,
             } = state.languages.find(e => e.id === id);
 
             return {
@@ -85,11 +84,14 @@ export default {
             };
         };
 
-        commit(types.SET_LANGUAGES_TREE, getFlattenedTreeData({
-            treeData,
-            mappedId: 'language_id',
-            reducer,
-        }));
+        commit('__SET_STATE', {
+            key: 'languagesTree',
+            value: getFlattenedTreeData({
+                treeData,
+                mappedId: 'language_id',
+                reducer,
+            }),
+        });
     },
     setDefaultLanguage({
         state, commit, rootState,
@@ -102,7 +104,10 @@ export default {
                 code,
             }) => languagePrivileges[code].read === true);
 
-        commit(types.SET_DEFAULT_LANGUAGE, defaultLanguage.code);
+        commit('__SET_STATE', {
+            key: 'defaultLanguageCodeByPrivileges',
+            value: defaultLanguage.code,
+        });
     },
     setLoader({
         commit,
@@ -123,10 +128,5 @@ export default {
         commit,
     }, key) {
         commit(types.CLOSE_MODAL, key);
-    },
-    clearStorage({
-        commit,
-    }) {
-        commit(types.CLEAR_STATE);
     },
 };

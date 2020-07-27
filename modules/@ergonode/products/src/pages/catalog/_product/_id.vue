@@ -72,13 +72,13 @@ export default {
         }),
     },
     destroyed() {
-        this.clearStorage();
+        this.__clearStorage();
     },
     methods: {
         ...mapActions('product', [
             'updateProduct',
             'removeProduct',
-            'clearStorage',
+            '__clearStorage',
         ]),
         onDraftAppliedSuccess() {
             this.$addAlert({

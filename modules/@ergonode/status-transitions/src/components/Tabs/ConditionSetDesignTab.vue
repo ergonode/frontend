@@ -83,10 +83,10 @@ export default {
     },
     methods: {
         ...mapActions('gridDesigner', {
-            clearGridDesignerStorage: 'clearStorage',
+            clearGridDesignerStorage: '__clearStorage',
         }),
         ...mapActions('conditions', {
-            clearConditionsStorage: 'clearStorage',
+            clearConditionsStorage: '__clearStorage',
         }),
     },
 };

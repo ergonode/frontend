@@ -7,5 +7,9 @@ export default {
     aliases: {
         '@Dashboard': '/',
     },
-
+    relations: [
+        '@ergonode/categories',
+        '@ergonode/products',
+        '@ergonode/product-templates',
+    ],
 };

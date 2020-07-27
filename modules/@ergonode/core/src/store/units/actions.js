@@ -2,26 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import {
-    types,
-} from './mutations';
-
 export default {
-    setId({
-        commit,
-    }, value) {
-        commit(types.SET_UNIT_ID, value);
-    },
-    setName({
-        commit,
-    }, value) {
-        commit(types.SET_UNIT_NAME, value);
-    },
-    setSymbol({
-        commit,
-    }, value) {
-        commit(types.SET_UNIT_SYMBOL, value);
-    },
     async getUnitById(
         {
             commit, rootState,
@@ -39,9 +20,18 @@ export default {
             name = '',
             symbol = '',
         }) => {
-            commit(types.SET_UNIT_ID, id);
-            commit(types.SET_UNIT_NAME, name);
-            commit(types.SET_UNIT_SYMBOL, symbol);
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'name',
+                value: name,
+            });
+            commit('__SET_STATE', {
+                key: 'symbol',
+                value: symbol,
+            });
         });
     },
     async updateUnit(
@@ -79,10 +69,5 @@ export default {
             .then(() => {
                 onSuccess();
             });
-    },
-    clearStorage({
-        commit,
-    }) {
-        commit(types.CLEAR_STATE);
     },
 };

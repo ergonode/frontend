@@ -6,12 +6,12 @@
     <Page>
         <TitleBar
             title="Catalog"
-            :is-read-only="$isReadOnly('PRODUCT')">
+            :is-read-only="isReadOnly">
             <template #mainAction>
                 <Button
                     title="NEW PRODUCT"
                     :size="smallSize"
-                    :disabled="!$hasAccess(['PRODUCT_CREATE'])"
+                    :disabled="!isUserAllowedToCreate"
                     @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
@@ -43,6 +43,7 @@ import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import {
     getNestedTabRoutes,
 } from '@Core/models/navigation/tabs';
+import PRIVILEGES from '@Products/config/privileges';
 
 export default {
     name: 'Products',
@@ -63,6 +64,14 @@ export default {
         },
         smallSize() {
             return SIZE.SMALL;
+        },
+        isUserAllowedToCreate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT.create,
+            ]);
+        },
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.PRODUCT.namespace);
         },
     },
     head() {

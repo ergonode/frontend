@@ -9,6 +9,7 @@
         <template #body>
             <AddProductsBySKUForm
                 :product-skus="productSkus"
+                :is-user-allowed-to-update="isUserAllowedToUpdate"
                 @input="onFormValueChange" />
         </template>
         <template #footer>
@@ -25,6 +26,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Collections/config/privileges';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -39,7 +41,7 @@ import {
 export default {
     name: 'AddProductsBySKUModalForm',
     components: {
-        AddProductsBySKUForm: () => import('@Collections/components/Forms/AddProductsBySKUForm'),
+        AddProductsBySKUForm: () => import('@Products/components/Form/AddProductsBySKUForm'),
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
         Button: () => import('@Core/components/Buttons/Button'),
     },
@@ -58,6 +60,11 @@ export default {
         }),
         secondaryTheme() {
             return THEME.SECONDARY;
+        },
+        isUserAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT_COLLECTION.update,
+            ]);
         },
     },
     methods: {

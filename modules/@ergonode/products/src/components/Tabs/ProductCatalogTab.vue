@@ -97,6 +97,7 @@ import {
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import PRIVILEGES from '@Products/config/privileges';
 import {
     mapState,
 } from 'vuex';
@@ -182,7 +183,7 @@ export default {
         },
         verticalTabs() {
             const isUserAllowedToReadProduct = this.$hasAccess([
-                'PRODUCT_READ',
+                PRIVILEGES.PRODUCT.read,
             ]);
             return [
                 {
@@ -205,12 +206,12 @@ export default {
         },
         isUserAllowedToUpdate() {
             return this.$hasAccess([
-                'PRODUCT_UPDATE',
+                PRIVILEGES.PRODUCT.update,
             ]);
         },
         isUserAllowedToRestore() {
             return this.$hasAccess([
-                'PRODUCT_UPDATE',
+                PRIVILEGES.PRODUCT.update,
             ]) && this.focusedCellToRestore;
         },
     },

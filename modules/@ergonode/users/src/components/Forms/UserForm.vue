@@ -22,21 +22,21 @@
                     label="Email"
                     :error-messages="errorMessages[emailFieldKey]"
                     :disabled="isDisabled || isDisabledByPrivileges"
-                    @input="(value) => setAction({ key: 'email', value })" />
+                    @input="setEmailValue" />
                 <TextField
                     :value="firstName"
                     required
                     label="First name"
                     :error-messages="errorMessages[firstNameFieldKey]"
                     :disabled="isDisabledByPrivileges"
-                    @input="(value) => setAction({ key: 'firstName', value })" />
+                    @input="setFirstNameValue" />
                 <TextField
                     :value="lastName"
                     required
                     label="Last name"
                     :error-messages="errorMessages[lastNameFieldKey]"
                     :disabled="isDisabledByPrivileges"
-                    @input="(value) => setAction({ key: 'lastName', value })" />
+                    @input="setLastNameValue" />
                 <TextField
                     :value="password"
                     required
@@ -44,7 +44,7 @@
                     :input="{ type: 'password' }"
                     :error-messages="errorMessages[passwordFieldKey]"
                     :disabled="isDisabledByPrivileges"
-                    @input="(value) => setAction({ key: 'password', value })" />
+                    @input="setPasswordValue" />
                 <TextField
                     :value="passwordRepeat"
                     required
@@ -52,15 +52,12 @@
                     :input="{ type: 'password' }"
                     :error-messages="errorMessages[passwordRepeatFieldKey]"
                     :disabled="isDisabledByPrivileges"
-                    @input="(value) => setAction({
-                        key: 'passwordRepeat',
-                        value
-                    })" />
+                    @input="setPasswordRepeatValue" />
                 <Toggler
                     :value="isActive"
                     :disabled="isDisabledByPrivileges"
                     label="The active status"
-                    @input="onStatusChange" />
+                    @input="setStatusValue" />
                 <Select
                     :value="language"
                     required
@@ -68,7 +65,7 @@
                     :options="languageOptions"
                     :disabled="isDisabledByPrivileges"
                     :error-messages="errorMessages[languageFieldKey]"
-                    @input="onLanguageChange" />
+                    @input="setLanguageValue" />
                 <TranslationLazySelect
                     :value="role"
                     :required="true"
@@ -76,7 +73,7 @@
                     :disabled="isDisabledByPrivileges"
                     :error-messages="errorMessages[roleIdFieldKey]"
                     :fetch-options-request="getRolesOptionsRequest"
-                    @input="onRoleChange" />
+                    @input="setRoleValue" />
             </FormSection>
         </template>
     </Form>
@@ -175,7 +172,7 @@ export default {
     },
     methods: {
         ...mapActions('users', [
-            'setAction',
+            '__setState',
         ]),
         getRolesOptionsRequest() {
             return getRolesOptions().then(response => response.default(
@@ -185,22 +182,52 @@ export default {
                 },
             ));
         },
-        onLanguageChange(language) {
-            this.setAction({
+        setEmailValue(value) {
+            this.__setState({
+                key: 'email',
+                value,
+            });
+        },
+        setFirstNameValue(value) {
+            this.__setState({
+                key: 'firstName',
+                value,
+            });
+        },
+        setLastNameValue(value) {
+            this.__setState({
+                key: 'lastName',
+                value,
+            });
+        },
+        setPasswordValue(value) {
+            this.__setState({
+                key: 'password',
+                value,
+            });
+        },
+        setPasswordRepeatValue(value) {
+            this.__setState({
+                key: 'passwordRepeat',
+                value,
+            });
+        },
+        setLanguageValue(value) {
+            this.__setState({
                 key: 'language',
-                value: language,
+                value,
             });
         },
-        onRoleChange(role) {
-            this.setAction({
+        setRoleValue(value) {
+            this.__setState({
                 key: 'role',
-                value: role,
+                value,
             });
         },
-        onStatusChange(isActive) {
-            this.setAction({
+        setStatusValue(value) {
+            this.__setState({
                 key: 'isActive',
-                value: isActive,
+                value,
             });
         },
     },

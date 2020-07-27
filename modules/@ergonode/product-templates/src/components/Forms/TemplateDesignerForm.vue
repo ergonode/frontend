@@ -15,14 +15,14 @@
                     :error-messages="errorMessages[nameFieldKey]"
                     label="Template name"
                     :disabled="isDisabledByPrivileges"
-                    @input="onTitleChange" />
+                    @input="setTitleValue" />
                 <UploadImageFile
                     :data-cy="dataCyGenerator('image')"
                     :value="templateImage"
                     height="132px"
                     label="Template cover image"
                     :disabled="isDisabledByPrivileges"
-                    @input="onImageChange" />
+                    @input="setImageValue" />
             </FormSection>
             <FormSection title="Presentation product">
                 <TranslationLazySelect
@@ -31,14 +31,14 @@
                     required
                     label="Default label attribute"
                     :fetch-options-request="getDefaultTextAttributeOptionsRequest"
-                    @input="onDefaultTextAttributeChange" />
+                    @input="setDefaultTextAttributeValue" />
                 <TranslationLazySelect
                     :data-cy="dataCyGenerator('default-image')"
                     :value="defaultImageAttribute"
                     clearable
                     label="Default image attribute"
                     :fetch-options-request="getDefaultImageAttributeOptionsRequest"
-                    @input="onDefaultImageAttributeChange" />
+                    @input="setDefaultImageAttributeValue" />
             </FormSection>
         </template>
     </Form>
@@ -88,28 +88,28 @@ export default {
     },
     methods: {
         ...mapActions('templateDesigner', [
-            'setStateProperty',
+            '__setState',
         ]),
-        onTitleChange(value) {
-            this.setStateProperty({
+        setTitleValue(value) {
+            this.__setState({
                 key: 'title',
                 value,
             });
         },
-        onImageChange(value) {
-            this.setStateProperty({
+        setImageValue(value) {
+            this.__setState({
                 key: 'image',
                 value,
             });
         },
-        onDefaultTextAttributeChange(value) {
-            this.setStateProperty({
+        setDefaultTextAttributeValue(value) {
+            this.__setState({
                 key: 'defaultTextAttribute',
                 value,
             });
         },
-        onDefaultImageAttributeChange(value) {
-            this.setStateProperty({
+        setDefaultImageAttributeValue(value) {
+            this.__setState({
                 key: 'defaultImageAttribute',
                 value,
             });

@@ -15,7 +15,7 @@
                     :disabled="isDisabledByPrivileges"
                     label="Unit name"
                     hint="Unit name must be unique"
-                    @input="setName" />
+                    @input="setNameValue" />
                 <TextField
                     :value="symbol"
                     required
@@ -23,7 +23,7 @@
                     :disabled="isDisabledByPrivileges"
                     label="Unit symbol"
                     hint="Unit symbol must be unique"
-                    @input="setSymbol" />
+                    @input="setSymbolValue" />
             </FormSection>
         </template>
     </Form>
@@ -64,9 +64,20 @@ export default {
     },
     methods: {
         ...mapActions('units', [
-            'setName',
-            'setSymbol',
+            '__setState',
         ]),
+        setNameValue(value) {
+            this.__setState({
+                key: 'name',
+                value,
+            });
+        },
+        setSymbolValue(value) {
+            this.__setState({
+                key: 'symbol',
+                value,
+            });
+        },
     },
 };
 </script>

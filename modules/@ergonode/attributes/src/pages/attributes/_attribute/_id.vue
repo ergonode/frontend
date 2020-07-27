@@ -77,7 +77,7 @@ export default {
         }),
     },
     destroyed() {
-        this.clearStorage();
+        this.__clearStorage();
         this.clearTranslationsStorage();
         this.removeValidationErrors();
     },
@@ -85,14 +85,14 @@ export default {
         ...mapActions('attribute', [
             'updateAttribute',
             'removeAttribute',
-            'clearStorage',
+            '__clearStorage',
         ]),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
         ]),
         ...mapActions('translations', {
-            clearTranslationsStorage: 'clearStorage',
+            clearTranslationsStorage: '__clearStorage',
         }),
         onUpdateAttributeSuccess() {
             this.$addAlert({

@@ -8,7 +8,7 @@
             <JSONSchemaForm
                 :value="configuration"
                 :schema="schema"
-                @input="setConfiguration" />
+                @input="setConfigurationValue" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -49,8 +49,14 @@ export default {
     },
     methods: {
         ...mapActions('import', [
-            'setConfiguration',
+            '__setState',
         ]),
+        setConfigurationValue(value) {
+            this.__setState({
+                key: 'configuration',
+                value,
+            });
+        },
     },
 };
 </script>

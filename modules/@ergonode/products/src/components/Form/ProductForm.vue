@@ -14,7 +14,7 @@
                     :disabled="isDisabled"
                     label="Product type"
                     :options="productTypesValues"
-                    @input="setProductType" />
+                    @input="setTypeValue" />
                 <ProductAttributesBindingFormSection
                     v-show="isProductWithVariants"
                     :disabled="isDisabledByPrivileges" />
@@ -25,7 +25,7 @@
                     required
                     :error-messages="errorMessages[skuFieldKey]"
                     :disabled="isDisabled || isDisabledByPrivileges"
-                    @input="setProductSku" />
+                    @input="setSkuValue" />
                 <TranslationLazySelect
                     :value="template"
                     :required="true"
@@ -33,15 +33,13 @@
                     :error-messages="errorMessages[templateIdFieldKey]"
                     :disabled="isDisabled || isDisabledByPrivileges"
                     :fetch-options-request="getTemplatesOptionsRequest"
-                    @input="setProductTemplate" />
-                <TranslationLazySelect
-                    :value="categories"
-                    :multiselect="true"
-                    :clearable="true"
-                    label="Category"
-                    :disabled="isDisabledByPrivileges"
-                    :fetch-options-request="getCategoriesOptionsRequest"
-                    @input="setProductCategories" />
+                    @input="setTemplateValue" />
+                <template v-for="(field, index) in extendedForm">
+                    <Component
+                        :is="field.component"
+                        :key="index"
+                        v-bind="bindingProps(field)" />
+                </template>
             </FormSection>
         </template>
     </Form>
@@ -51,7 +49,9 @@
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
+import PRIVILEGES from '@Products/config/privileges';
 import {
+    EXTENDS,
     PRODUCT_TYPE,
 } from '@Products/defaults';
 import {
@@ -59,7 +59,6 @@ import {
     mapState,
 } from 'vuex';
 
-const getCategoriesOptions = () => import('@Categories/services/getCategoriesOptions.service');
 const getTemplatesOptions = () => import('@Templates/services/getTemplatesOptions.service');
 
 export default {
@@ -84,8 +83,10 @@ export default {
             sku: state => state.sku,
             type: state => state.type,
             template: state => state.template,
-            categories: state => state.categories,
         }),
+        extendedForm() {
+            return this.$getExtendedComponents(EXTENDS['@Products/components/Form/ProductForm']);
+        },
         productTypeKey() {
             return getKeyByValue(this.productTypes, this.type);
         },
@@ -100,10 +101,10 @@ export default {
         },
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess([
-                'PRODUCT_UPDATE',
+                PRIVILEGES.PRODUCT.update,
             ]))
             || (!this.isDisabled && !this.$hasAccess([
-                'PRODUCT_CREATE',
+                PRIVILEGES.PRODUCT.create,
             ]));
         },
         templateIdFieldKey() {
@@ -115,18 +116,25 @@ export default {
     },
     methods: {
         ...mapActions('product', [
-            'setProductSku',
-            'setProductTemplate',
-            'setProductCategories',
-            'setProductType',
+            '__setState',
         ]),
-        getCategoriesOptionsRequest() {
-            return getCategoriesOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
+        setTypeValue(value) {
+            this.__setState({
+                key: 'type',
+                value,
+            });
+        },
+        setSkuValue(value) {
+            this.__setState({
+                key: 'sku',
+                value,
+            });
+        },
+        setTemplateValue(value) {
+            this.__setState({
+                key: 'template',
+                value,
+            });
         },
         getTemplatesOptionsRequest() {
             return getTemplatesOptions().then(response => response.default(
@@ -135,6 +143,14 @@ export default {
                     $store: this.$store,
                 },
             ));
+        },
+        bindingProps({
+            props,
+        }) {
+            return {
+                disabled: this.isDisabledByPrivileges,
+                ...props,
+            };
         },
     },
 };

@@ -64,11 +64,11 @@ export default {
         },
     },
     destroyed() {
-        this.clearStorage();
+        this.__clearStorage();
     },
     methods: {
         ...mapActions('users', [
-            'clearStorage',
+            '__clearStorage',
             'setLanguagePrivileges',
             'updateUser',
         ]),

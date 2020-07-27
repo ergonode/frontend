@@ -16,7 +16,7 @@
                     :disabled="isDisabled || isDisabledByPrivileges"
                     label="System name"
                     hint="Tree code must be unique"
-                    @input="setTreeCode" />
+                    @input="setCodeValue" />
             </FormSection>
         </template>
     </Form>
@@ -57,8 +57,14 @@ export default {
     },
     methods: {
         ...mapActions('tree', [
-            'setTreeCode',
+            '__setState',
         ]),
+        setCodeValue(value) {
+            this.__setState({
+                key: 'code',
+                value,
+            });
+        },
         dataCyGenerator(key) {
             return `category-tree-${key}`;
         },

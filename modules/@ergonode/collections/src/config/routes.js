@@ -7,7 +7,7 @@ import {
     Pages,
     Tabs,
 } from './imports';
-import Privileges from './privileges';
+import PRIVILEGES from './privileges';
 
 export default [
     {
@@ -24,8 +24,8 @@ export default [
             isMenu: true,
             menuPosition: 3,
             privileges: {
-                namespace: Privileges.PRODUCT_COLLECTION.namespace,
-                read: Privileges.PRODUCT_COLLECTION.read,
+                namespace: PRIVILEGES.PRODUCT_COLLECTION.namespace,
+                read: PRIVILEGES.PRODUCT_COLLECTION.read,
             },
             redirectTo: 'collections-grid',
         },

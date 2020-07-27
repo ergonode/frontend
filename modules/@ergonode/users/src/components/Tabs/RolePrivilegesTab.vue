@@ -74,7 +74,7 @@ export default {
     },
     methods: {
         ...mapActions('roles', [
-            'setPrivilegeDrafts',
+            '__setState',
         ]),
         onCellValueChange(cellValues) {
             const drafts = {};
@@ -96,7 +96,10 @@ export default {
             });
 
             this.setDrafts(drafts);
-            this.setPrivilegeDrafts(this.drafts);
+            this.__setState({
+                key: 'drafts',
+                value: this.drafts,
+            });
         },
         updateGridData() {
             const {

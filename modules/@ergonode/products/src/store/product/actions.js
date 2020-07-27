@@ -6,6 +6,7 @@ import {
     TYPES,
 } from '@Attributes/defaults/attributes';
 import {
+    EXTENDS,
     PRODUCT_TYPE,
 } from '@Products/defaults';
 
@@ -17,21 +18,9 @@ const getAttributesByFilter = () => import('@Attributes/services/getAttributesBy
 const applyProductDraft = () => import('@Products/services/applyProductDraft.service');
 
 export default {
-    setProductSku: ({
-        commit,
-    }, sku) => commit(types.SET_PRODUCT_SKU, sku),
     setDraftValue: ({
         commit,
     }, payload) => commit(types.SET_DRAFT_VALUE, payload),
-    setProductStatus: ({
-        commit,
-    }, status) => commit(types.SET_PRODUCT_STATUS, status),
-    setProductTemplate: ({
-        commit,
-    }, template) => commit(types.SET_PRODUCT_TEMPLATE, template),
-    setProductType: ({
-        commit,
-    }, type) => commit(types.SET_PRODUCT_TYPE, type),
     setBindingAttributeId: ({
         commit,
     }, payload) => commit(types.SET_BINDING_ATTRIBUTE_ID, payload),
@@ -41,12 +30,6 @@ export default {
     removeBindingAttribute: ({
         commit,
     }, index) => commit(types.REMOVE_BINDING_ATTRIBUTE, index),
-    setProductCategories: (
-        {
-            commit,
-        },
-        categories = [],
-    ) => commit(types.SET_PRODUCT_CATEGORIES, categories),
     getProductDraft({
         commit,
     }, {
@@ -71,33 +54,60 @@ export default {
             productTypes,
         } = rootState.dictionaries;
 
-        return this.app.$axios.$get(`${userLanguageCode}/products/${id}`).then(({
-            design_template_id: templateId,
-            categories: categoryIds,
-            attributes,
-            sku,
-            type,
-            status,
-            workflow = [],
-        }) => {
-            if (categoryIds) {
-                commit(types.SET_PRODUCT_CATEGORIES, categoryIds);
-            }
+        return this.app.$axios.$get(`${userLanguageCode}/products/${id}`).then((data) => {
+            const {
+                design_template_id: templateId,
+                attributes,
+                sku,
+                type,
+                status,
+                workflow = [],
+            } = data;
 
             if (templateId) {
-                commit(types.SET_PRODUCT_TEMPLATE, templateId);
+                commit('__SET_STATE', {
+                    key: 'template',
+                    value: templateId,
+                });
             }
 
-            commit(types.SET_PRODUCT_ID, id);
-            commit(types.SET_PRODUCT_SKU, sku);
-            commit(types.SET_PRODUCT_STATUS, status);
-            commit(types.SET_PRODUCT_WORKFLOW, workflow);
-            commit(types.SET_PRODUCT_DATA, attributes);
-            commit(types.SET_PRODUCT_TYPE, productTypes[type]);
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'sku',
+                value: sku,
+            });
+            commit('__SET_STATE', {
+                key: 'type',
+                value: productTypes[type],
+            });
+            commit('__SET_STATE', {
+                key: 'status',
+                value: status,
+            });
+            commit('__SET_STATE', {
+                key: 'workflow',
+                value: workflow,
+            });
+            commit('__SET_STATE', {
+                key: 'data',
+                value: attributes,
+            });
+
+            this.$extendMethods(EXTENDS['@Products/store/product/action/getProductById'], {
+                data,
+                commit,
+                dispatch,
+            });
 
             if (type === PRODUCT_TYPE.WITH_VARIANTS) {
                 const getAttributesBindings = this.app.$axios.$get(`${userLanguageCode}/products/${id}/bindings`).then((bindings) => {
-                    commit(types.SET_BINDING_ATTRIBUTE_IDS, bindings);
+                    commit('__SET_STATE', {
+                        key: 'bindingAttributesIds',
+                        value: bindings,
+                    });
                 });
 
                 return Promise.all([
@@ -147,7 +157,10 @@ export default {
                 $store: this,
                 filter: `type=${TYPES.SELECT}`,
             }).then((selectAttributes) => {
-                commit(types.SET_SELECT_ATTRIBUTES, selectAttributes);
+                commit('__SET_STATE', {
+                    key: 'selectAttributes',
+                    value: selectAttributes,
+                });
             }),
         );
     },
@@ -186,10 +199,5 @@ export default {
         } = rootState.authentication.user;
 
         return this.app.$axios.$delete(`${userLanguageCode}/products/${id}`).then(() => onSuccess());
-    },
-    clearStorage: ({
-        commit,
-    }) => {
-        commit(types.CLEAR_STATE);
     },
 };

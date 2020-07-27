@@ -128,7 +128,4 @@ export default {
     }, key) => {
         commit(types.REMOVE_HIDDEN_ITEM, key);
     },
-    clearStorage: ({
-        commit,
-    }) => commit(types.CLEAR_STATE),
 };

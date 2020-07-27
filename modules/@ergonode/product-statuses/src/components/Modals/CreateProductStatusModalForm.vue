@@ -58,15 +58,15 @@ export default {
     },
     methods: {
         ...mapActions('productStatus', [
-            'clearStorage',
+            '__clearStorage',
         ]),
         onClose() {
-            this.clearStorage();
+            this.__clearStorage();
             this.$emit('close');
         },
         onCreate() {
             this.onActionRequest(() => {
-                this.clearStorage();
+                this.__clearStorage();
             });
         },
         onCreatedAndEdit() {

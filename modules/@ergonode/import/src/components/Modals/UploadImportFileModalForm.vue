@@ -70,10 +70,10 @@ export default {
     },
     methods: {
         ...mapActions('import', [
-            'clearStorage',
+            '__clearStorage',
         ]),
         onClose() {
-            this.clearStorage();
+            this.__clearStorage();
             this.$emit('close');
         },
         onUploadingCSVFile(progress) {

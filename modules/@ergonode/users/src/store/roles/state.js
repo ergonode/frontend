@@ -7,6 +7,5 @@ export default () => ({
     name: '',
     description: '',
     drafts: {},
-    selectedPrivileges: {},
     privileges: [],
 });

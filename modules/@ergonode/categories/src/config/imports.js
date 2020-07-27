@@ -16,3 +16,11 @@ export const Tabs = {
 export const Icons = {
     Templates: () => import('@Core/components/Icons/Menu/IconTemplates'),
 };
+
+export const Components = {
+    ExtendProductForm: () => import('@Categories/extends/components/Forms/ExtendProductForm'),
+};
+
+export const Store = {
+    Product: () => import('@Categories/extends/store/product').then(m => m.default || m),
+};

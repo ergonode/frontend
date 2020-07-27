@@ -2,10 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import {
-    types,
-} from './mutations';
-
 export default {
     getCategoryById(
         {
@@ -27,9 +23,18 @@ export default {
                 name,
             };
 
-            commit(types.SET_ID, id);
-            commit(types.SET_CODE, code);
-            commit(types.SET_NAME, name);
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'code',
+                value: code,
+            });
+            commit('__SET_STATE', {
+                key: 'name',
+                value: name,
+            });
 
             dispatch('translations/setTabTranslations', translations, {
                 root: true,
@@ -67,15 +72,5 @@ export default {
             language: userLanguageCode,
         } = rootState.authentication.user;
         return this.app.$axios.$delete(`${userLanguageCode}/categories/${id}`).then(() => onSuccess());
-    },
-    setCategoryCode({
-        commit,
-    }, code) {
-        commit(types.SET_CODE, code);
-    },
-    clearStorage({
-        commit,
-    }) {
-        commit(types.CLEAR_STATE);
     },
 };

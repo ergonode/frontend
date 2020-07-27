@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import ProductCollection from '@Collections/components/ProductCollection/ProductCollection';
+import ProductCollectionItem from '@Collections/components/ProductCollection/ProductCollectionItem';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import {
     LAYOUT_ORIENTATION,
@@ -45,8 +47,6 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import ProductCollection from '@Products/components/ProductCollection/ProductCollection';
-import ProductCollectionItem from '@Products/components/ProductCollection/ProductCollectionItem';
 import {
     mapState,
 } from 'vuex';

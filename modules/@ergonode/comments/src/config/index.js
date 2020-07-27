@@ -4,6 +4,9 @@
  */
 export default {
     name: '@ergonode/comments',
+    relations: [
+        '@ergonode/products',
+    ],
     aliases: {
         '@Comments': '/',
     },

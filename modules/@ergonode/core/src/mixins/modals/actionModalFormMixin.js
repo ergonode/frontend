@@ -20,7 +20,7 @@ export default function ({
             };
         },
         mounted() {
-            this.clearStorage();
+            this.__clearStorage();
         },
         methods: {
             ...mapActions('validations', [

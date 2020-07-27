@@ -2,21 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import {
-    types,
-} from './mutations';
-
 export default {
-    setCode({
-        commit,
-    }, code) {
-        commit(types.SET_CODE, code);
-    },
-    setType({
-        commit,
-    }, type) {
-        commit(types.SET_TYPE, type);
-    },
     getCollectionById(
         {
             commit, dispatch, rootState,
@@ -41,9 +27,18 @@ export default {
                 description,
             };
 
-            commit(types.SET_ID, id);
-            commit(types.SET_CODE, code);
-            commit(types.SET_TYPE, type_id);
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'code',
+                value: code,
+            });
+            commit('__SET_STATE', {
+                key: 'type',
+                value: type_id,
+            });
 
             dispatch('translations/setTabTranslations', translations, {
                 root: true,
@@ -78,10 +73,5 @@ export default {
             language: userLanguageCode,
         } = rootState.authentication.user;
         return this.app.$axios.$delete(`${userLanguageCode}/collections/${id}`).then(() => onSuccess());
-    },
-    clearStorage({
-        commit,
-    }) {
-        commit(types.CLEAR_STATE);
     },
 };

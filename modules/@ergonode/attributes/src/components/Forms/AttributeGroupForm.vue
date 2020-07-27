@@ -16,7 +16,7 @@
                     :disabled="isDisabled || isDisabledByPrivileges"
                     label="System name"
                     hint="Attribute group code must be unique"
-                    @input="setAttributeGroupCode" />
+                    @input="setCodeValue" />
             </FormSection>
         </template>
     </Form>
@@ -57,8 +57,14 @@ export default {
     },
     methods: {
         ...mapActions('attributeGroup', [
-            'setAttributeGroupCode',
+            '__setState',
         ]),
+        setCodeValue(value) {
+            this.__setState({
+                key: 'code',
+                value,
+            });
+        },
         dataCyGenerator(key) {
             return `attribute-group-${key}`;
         },

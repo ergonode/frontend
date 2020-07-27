@@ -37,7 +37,7 @@ export default {
     }) {
         const path = `${store.state.authentication.user.language}/status/${params.id}`;
 
-        await store.dispatch('productStatus/clearStorage');
+        await store.dispatch('productStatus/__clearStorage');
         await store.dispatch('productStatus/getProductStatus', path);
         await store.dispatch('productStatus/getDefaultStatus');
     },

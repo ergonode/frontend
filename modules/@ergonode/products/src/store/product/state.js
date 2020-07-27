@@ -11,7 +11,6 @@ export default () => ({
     type: '',
     workflow: [],
     template: null,
-    categories: [],
     templates: [],
     selectAttributes: [],
     bindingAttributesIds: [],

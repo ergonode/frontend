@@ -155,14 +155,5 @@ describe('Notifications', () => {
                 expect(store.state.notifications[0]).toStrictEqual(mockedNotification);
             }, store.state.requestTimeInterval);
         });
-
-        it('Clearing state', () => {
-            action = 'clearStorage';
-
-            testedAction({
-                commit,
-            });
-            expect(store.state).toStrictEqual(defaultState());
-        });
     });
 });

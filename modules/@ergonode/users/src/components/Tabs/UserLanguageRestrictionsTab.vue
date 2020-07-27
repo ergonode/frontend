@@ -76,7 +76,7 @@ export default {
     },
     methods: {
         ...mapActions('users', [
-            'setLanguagePrivilegesDrafts',
+            '__setState',
         ]),
         onCellValueChange(cellValues) {
             const drafts = {};
@@ -96,7 +96,10 @@ export default {
             });
 
             this.setDrafts(drafts);
-            this.setLanguagePrivilegesDrafts(this.drafts);
+            this.__setState({
+                key: 'drafts',
+                value: this.drafts,
+            });
         },
         updateGridData() {
             const fullDataList = this.getActiveLanguages.map(({
