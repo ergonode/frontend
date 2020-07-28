@@ -24,6 +24,6 @@ describe('ToolBar/ToolBarButton', () => {
 
     it('Check if button is selected', () => {
         expect(wrapper.vm.isSelected).toBeTruthy();
-        expect(wrapper.vm.$el.classList.contains('bar-button--selected')).toBeTruthy();
+        expect(wrapper.vm.$el.classList.contains('tool-bar-button--selected')).toBeTruthy();
     });
 });
