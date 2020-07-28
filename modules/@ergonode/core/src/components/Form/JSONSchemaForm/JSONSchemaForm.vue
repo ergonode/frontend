@@ -52,16 +52,26 @@ export default {
     },
     computed: {
         fieldsKeys() {
+            if (typeof this.schema.properties === 'undefined') {
+                return [];
+            }
+
             return Object.keys(this.schema.properties);
+        },
+    },
+    watch: {
+        schema: {
+            immediate: true,
+            handler() {
+                this.schemaComponents = this.getComponents();
+            },
         },
     },
     created() {
         this.model = JSON.parse(this.value);
-
-        this.schemaComponents = this.initializeComponents();
     },
     methods: {
-        initializeComponents() {
+        getComponents() {
             const {
                 length,
             } = this.fieldsKeys;
