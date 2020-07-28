@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import NavigationBarSelectButton from '@Core/components/NavigationBar/NavigationBarSelectButton';
+import ToolBarSelectButton from '@Core/components/ToolBar/ToolBarSelectButton';
 import {
     createLocalVue,
     shallowMount,
@@ -10,18 +10,18 @@ import {
 
 const localVue = createLocalVue();
 
-describe('/NavigationBar/NavigationBarSelectButton', () => {
+describe('/ToolBar/ToolBarSelectButton', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(NavigationBarSelectButton, {
+        wrapper = shallowMount(ToolBarSelectButton, {
             localVue,
         });
     });
 
     it('Component is named well', () => {
-        expect(typeof NavigationBarSelectButton.name).toBe('string');
-        expect(NavigationBarSelectButton.name).toEqual('NavigationBarSelectButton');
+        expect(typeof ToolBarSelectButton.name).toBe('string');
+        expect(ToolBarSelectButton.name).toEqual('ToolBarSelectButton');
     });
 
     it('Check no title exception', () => {

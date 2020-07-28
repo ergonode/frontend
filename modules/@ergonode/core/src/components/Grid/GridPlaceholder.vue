@@ -3,51 +3,55 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="grid-placeholder">
-        <div class="grid-placeholder__description">
-            <span class="grid-placeholder__title">
-                Nothing to see here
-            </span>
-            <span class="grid-placeholder__subtitle">
-                You have used too many filters or there are no records in the system
-            </span>
-        </div>
-    </div>
+    <Placeholder
+        :layout-orientation="layoutOrientation"
+        :title="title"
+        :subtitle="subtitle"
+        :bg-url="bgUrl"
+        :color="color">
+        <template #action>
+            <slot name="action" />
+        </template>
+    </Placeholder>
 </template>
 
 <script>
+import {
+    WHITESMOKE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
+import Placeholder from '@Core/components/Placeholder/Placeholder';
+import {
+    LAYOUT_ORIENTATION,
+} from '@Core/defaults/layout';
+
 export default {
     name: 'GridPlaceholder',
+    components: {
+        Placeholder,
+    },
+    props: {
+        layoutOrientation: {
+            type: String,
+            default: LAYOUT_ORIENTATION.HORIZONTAL,
+            validator: value => Object.values(LAYOUT_ORIENTATION).indexOf(value) !== -1,
+        },
+        title: {
+            type: String,
+            default: 'Nothing to see here',
+        },
+        subtitle: {
+            type: String,
+            default: 'There are no records in the system.',
+        },
+        bgUrl: {
+            type: String,
+            default: require('@Core/assets/images/placeholders/comments.svg'),
+        },
+        color: {
+            type: String,
+            default: WHITESMOKE,
+            validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
+        },
+    },
 };
 </script>
-
-<style lang="scss" scoped>
-    .grid-placeholder {
-        display: flex;
-        flex: 1 1 auto;
-        flex-direction: column;
-        align-items: center;
-        background: $WHITESMOKE url("~@Core/assets/images/placeholders/noresults.svg") no-repeat;
-        overflow: auto;
-
-        &__description {
-            display: flex;
-            flex-direction: column;
-            padding: 16px;
-            max-width: 280px;
-        }
-
-        &__title, &__subtitle {
-            color: $GRAPHITE_DARK;
-            text-align: center;
-        }
-
-        &__title {
-            font: $FONT_MEDIUM_24_32;
-        }
-
-        &__subtitle {
-            font: $FONT_MEDIUM_12_16;
-        }
-    }
-</style>

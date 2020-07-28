@@ -18,8 +18,8 @@ Cypress.Commands.add('login', (email, pass) => {
 });
 
 Cypress.Commands.add('logout', () => {
-    cy.get('[data-cy=nav-bar-dropdown]').click();
-    cy.get('[data-cy=nav-bar-content]').should('be.visible');
+    cy.get('[data-cy=tool-bar-dropdown]').click();
+    cy.get('[data-cy=tool-bar-content]').should('be.visible');
     cy.get('[data-cy=logout-button]').click();
     cy.url().should('include', '');
 });

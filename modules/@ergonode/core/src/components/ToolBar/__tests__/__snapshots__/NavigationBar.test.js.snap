@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ToolBar Has no items 1`] = `
+<nav class="tool-bar">
+  <section class="tool-bar__breadcrumbs"></section>
+  <section class="tool-bar__actions"></section>
+</nav>
+`;

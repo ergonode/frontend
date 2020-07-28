@@ -17,7 +17,7 @@
                 @editRow="onEditRow"
                 @deleteRow="onRemoveUnit"
                 @fetchData="getGridData">
-                <template #actions>
+                <template #headerActions>
                     <Button
                         title="NEW UNIT"
                         :theme="secondaryTheme"

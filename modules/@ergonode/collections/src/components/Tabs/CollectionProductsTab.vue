@@ -18,7 +18,7 @@
                 :is-border="true"
                 @deleteRow="onRemoveRow"
                 @fetchData="getGridData">
-                <template #actions>
+                <template #headerActions>
                     <ActionButton
                         title="ADD PRODUCTS"
                         :theme="secondaryTheme"

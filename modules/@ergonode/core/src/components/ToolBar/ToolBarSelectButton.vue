@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <NavigationBarButton
+    <ToolBarButton
         :is-selected="isFocused"
         @click.native="onClick">
         <slot name="input" />
@@ -15,7 +15,7 @@
                 <slot name="dropdown" />
             </div>
         </FadeTransition>
-    </NavigationBarButton>
+    </ToolBarButton>
 </template>
 
 <script>
@@ -24,9 +24,9 @@ import {
 } from '@Core/models/drag_and_drop/helpers';
 
 export default {
-    name: 'NavigationBarSelectButton',
+    name: 'ToolBarSelectButton',
     components: {
-        NavigationBarButton: () => import('@Core/components/NavigationBar/NavigationBarButton'),
+        ToolBarButton: () => import('@Core/components/ToolBar/ToolBarButton'),
         FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),
     },
     data() {

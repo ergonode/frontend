@@ -17,7 +17,7 @@
 
 <script>
 import {
-    WHITESMOKE,
+    WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import Placeholder from '@Core/components/Placeholder/Placeholder';
 import {
@@ -25,7 +25,7 @@ import {
 } from '@Core/defaults/layout';
 
 export default {
-    name: 'ListPlaceholder',
+    name: 'NotificationsListPlaceholder',
     components: {
         Placeholder,
     },
@@ -49,17 +49,9 @@ export default {
         },
         color: {
             type: String,
-            default: WHITESMOKE,
+            default: WHITE,
             validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
         },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .placeholder {
-        width: 580px;
-        height: 280px;
-        box-shadow: $ELEVATOR_2_DP;
-    }
-</style>

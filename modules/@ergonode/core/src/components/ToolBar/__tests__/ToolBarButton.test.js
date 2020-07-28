@@ -2,15 +2,15 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import NavigationBarButton from '@Core/components/NavigationBar/NavigationBarButton';
+import ToolBarButton from '@Core/components/ToolBar/ToolBarButton';
 import {
     shallowMount,
 } from '@vue/test-utils';
 
-describe('NavigationBar/NavigationBarButton', () => {
+describe('ToolBar/ToolBarButton', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(NavigationBarButton, {
+        wrapper = shallowMount(ToolBarButton, {
             propsData: {
                 isSelected: true,
             },
@@ -18,8 +18,8 @@ describe('NavigationBar/NavigationBarButton', () => {
     });
 
     it('Component is named well', () => {
-        expect(typeof NavigationBarButton.name).toBe('string');
-        expect(NavigationBarButton.name).toEqual('NavigationBarButton');
+        expect(typeof ToolBarButton.name).toBe('string');
+        expect(ToolBarButton.name).toEqual('ToolBarButton');
     });
 
     it('Check if button is selected', () => {
