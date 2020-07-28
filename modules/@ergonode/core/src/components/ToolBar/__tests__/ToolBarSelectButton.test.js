@@ -33,7 +33,7 @@ describe('/ToolBar/ToolBarSelectButton', () => {
         wrapper.setMethods({
             onClick: onClickStub,
         });
-        wrapper.find('.bar-button').trigger('click');
+        wrapper.find('.tool-bar-button').trigger('click');
         expect(onClickStub).toHaveBeenCalled();
     });
 });
