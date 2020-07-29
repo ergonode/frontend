@@ -85,9 +85,9 @@ export default {
             width: 100%;
             height: 100%;
             box-shadow: $ELEVATOR_HOVER_FOCUS;
+            transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             opacity: 0;
             content: "";
-            transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         }
 
         &--within-range {

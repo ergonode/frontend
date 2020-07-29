@@ -7,13 +7,13 @@
         <DatePickerContentHeader :headers="['Months']" />
         <div class="date-picker-months__nodes">
             <DatePickerNode
-                v-for="(month, index) in months"
-                :key="month"
-                :selected="isSelectedMonth(month)"
-                :current="isCurrentDate(month)"
-                :within-range="isWithinRange(month, index)"
-                :title="month"
-                @click.native="onClick(month)" />
+                v-for="(node, index) in months"
+                :key="node"
+                :selected="isSelectedMonth(node)"
+                :current="isCurrentDate(node)"
+                :within-range="isWithinRange(node, index)"
+                :title="node"
+                @click.native="onClick(node)" />
         </div>
     </div>
 </template>
@@ -111,9 +111,11 @@ export default {
             }
 
             return (this.year < this.parsedRangeValue.year
-                || (this.year === this.parsedRangeValue.year && this.parsedRangeValue.month >= index + 1))
+                || (this.year === this.parsedRangeValue.year
+                    && this.parsedRangeValue.month >= index + 1))
                 && (this.year > this.parsedValue.year
-                || (this.year === this.parsedValue.year && this.parsedValue.month <= index + 1));
+                    || (this.year === this.parsedValue.year
+                        && this.parsedValue.month <= index + 1));
         },
     },
 };

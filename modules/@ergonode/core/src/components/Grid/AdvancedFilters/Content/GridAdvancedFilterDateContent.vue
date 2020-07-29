@@ -22,9 +22,6 @@ import {
 import {
     DEFAULT_FORMAT,
 } from '@Core/models/calendar/calendar';
-import {
-    parse as parseDate,
-} from 'date-fns';
 
 export default {
     name: 'GridAdvancedFilterDateContent',

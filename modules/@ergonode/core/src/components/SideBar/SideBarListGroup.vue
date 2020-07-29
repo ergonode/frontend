@@ -41,6 +41,7 @@
                     <SideBarListGroupElement
                         v-for="(child, index) in route.routes"
                         :key="index"
+                        :is-expanded="!isExpanded && isHovered"
                         :route="child" />
                 </ul>
             </AutoHeightTransition>

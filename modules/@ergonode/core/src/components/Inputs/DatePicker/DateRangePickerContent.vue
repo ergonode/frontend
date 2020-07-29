@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="date-range-picker">
+    <div class="date-range-picker-content">
         <DatePickerContent
             :value="value.from"
             :range-value="value.to"
@@ -25,15 +25,9 @@
 </template>
 
 <script>
-import Fab from '@Core/components/Buttons/Fab';
 import Divider from '@Core/components/Dividers/Divider';
-import IconArrowSingle from '@Core/components/Icons/Arrows/IconArrowSingle';
 import DatePickerContent from '@Core/components/Inputs/DatePicker/DatePickerContent';
-import DatePickerContentHeader from '@Core/components/Inputs/DatePicker/DatePickerContentHeader';
 import DatePickerHeader from '@Core/components/Inputs/DatePicker/DatePickerHeader';
-import DatePickerInputHeader from '@Core/components/Inputs/DatePicker/DatePickerInputHeader';
-import DatePickerMonth from '@Core/components/Inputs/DatePicker/DatePickerMonth';
-import DatePickerNavigationHeader from '@Core/components/Inputs/DatePicker/DatePickerNavigationHeader';
 import {
     ARROW,
 } from '@Core/defaults/icons';
@@ -52,14 +46,8 @@ export default {
     name: 'DateRangePickerContent',
     components: {
         DatePickerContent,
-        Fab,
-        DatePickerMonth,
-        DatePickerContentHeader,
-        DatePickerNavigationHeader,
-        IconArrowSingle,
         Divider,
         DatePickerHeader,
-        DatePickerInputHeader,
     },
     props: {
         value: {
@@ -103,7 +91,6 @@ export default {
             return Object.values(WEEK_DAYS);
         },
         fromHeader() {
-            console.log(this.value.from);
             if (this.value.from) {
                 return `From ${formatDate(this.value.from, this.format)}`;
             }
@@ -151,16 +138,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .date-range-picker {
-        display: grid;
-        grid-auto-flow: column;
-
-        .interactive-header {
-            margin-bottom: 8px;
-        }
-    }
-
-    .expander {
-        flex-basis: 32px;
+    .date-range-picker-content {
+        display: flex;
     }
 </style>

@@ -142,12 +142,20 @@ export default {
             };
 
             if (filterValue[FILTER_OPERATOR.GREATER_OR_EQUAL]) {
-                const fromValue = formatDate(filterValue[FILTER_OPERATOR.GREATER_OR_EQUAL], DEFAULT_FORMAT);
+                const fromValue = formatDate(
+                    filterValue[FILTER_OPERATOR.GREATER_OR_EQUAL],
+                    DEFAULT_FORMAT,
+                );
+
                 filterValue[FILTER_OPERATOR.GREATER_OR_EQUAL] = fromValue;
             }
 
             if (filterValue[FILTER_OPERATOR.SMALLER_OR_EQUAL]) {
-                const toValue = formatDate(filterValue[FILTER_OPERATOR.SMALLER_OR_EQUAL], DEFAULT_FORMAT);
+                const toValue = formatDate(
+                    filterValue[FILTER_OPERATOR.SMALLER_OR_EQUAL],
+                    DEFAULT_FORMAT,
+                );
+
                 filterValue[FILTER_OPERATOR.SMALLER_OR_EQUAL] = toValue;
             }
 

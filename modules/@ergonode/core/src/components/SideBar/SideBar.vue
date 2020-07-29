@@ -182,8 +182,6 @@ export default {
         background-color: $GRAPHITE_DARK;
         box-shadow: $ELEVATOR_2_DP;
         transition: width 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-        overflow-x: hidden;
-        overflow-y: auto;
         will-change: width;
         transform: translateZ(0);
         backface-visibility: hidden;

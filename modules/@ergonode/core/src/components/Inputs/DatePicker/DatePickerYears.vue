@@ -7,13 +7,13 @@
         <DatePickerContentHeader :headers="['Years']" />
         <div class="date-picker-years__nodes">
             <DatePickerNode
-                v-for="year in nodes"
-                :key="year"
-                :selected="isSelectedYear(year)"
-                :current="isCurrentDate(year)"
-                :within-range="isWithinRange(year)"
-                :title="year"
-                @click.native="onClick(year)" />
+                v-for="node in nodes"
+                :key="node"
+                :selected="isSelectedYear(node)"
+                :current="isCurrentDate(node)"
+                :within-range="isWithinRange(node)"
+                :title="node"
+                @click.native="onClick(node)" />
         </div>
     </div>
 </template>

@@ -7,14 +7,14 @@
         <DatePickerContentHeader :headers="weekDays" />
         <div class="date-picker-month__nodes">
             <DatePickerNode
-                v-for="date in nodes"
-                :key="`${date.year}|${date.month}|${date.day}`"
-                :selected="isSelectedDate(date)"
-                :disabled="date.disabled"
-                :within-range="isWithinRange(date)"
-                :current="isCurrentDate(date)"
-                :title="date.day"
-                @click.native="onSelectDate(date)" />
+                v-for="node in nodes"
+                :key="`${node.year}|${node.month}|${node.day}`"
+                :selected="isSelectedDate(node)"
+                :disabled="node.disabled"
+                :within-range="isWithinRange(node)"
+                :current="isCurrentDate(node)"
+                :title="node.day"
+                @click.native="onSelectDate(node)" />
         </div>
     </div>
 </template>
