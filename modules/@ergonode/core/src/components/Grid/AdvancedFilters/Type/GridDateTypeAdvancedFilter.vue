@@ -8,7 +8,6 @@
         :value="filterValue"
         :hint="hint"
         :title="title"
-        :parameters="parameters"
         :filter-id="filter.id"
         @remove="onRemove"
         @swap="onSwap"
@@ -35,8 +34,14 @@ import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
 import {
+    DEFAULT_FORMAT,
+} from '@Core/models/calendar/calendar';
+import {
     getParsedFilter,
 } from '@Core/models/mappers/gridDataMapper';
+import {
+    format as formatDate,
+} from 'date-fns';
 
 export default {
     name: 'GridDateTypeAdvancedFilter',
@@ -59,8 +64,8 @@ export default {
         return {
             value: {
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
-                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.GREATER_OR_EQUAL]: null,
+                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: null,
             },
         };
     },
@@ -91,15 +96,32 @@ export default {
             return [
                 this.value[FILTER_OPERATOR.GREATER_OR_EQUAL],
                 this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL],
-            ].filter(value => value !== '')
+            ].filter(value => value)
+                .map(value => formatDate(value, this.parameters))
                 .join(' - ');
         },
     },
     methods: {
         onValueChange({
-            key, value,
+            from, to,
         }) {
-            this.value[key] = value;
+            const value = {
+                [FILTER_OPERATOR.GREATER_OR_EQUAL]: null,
+                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: null,
+            };
+
+            if (from) {
+                value[FILTER_OPERATOR.GREATER_OR_EQUAL] = from;
+            }
+
+            if (to) {
+                value[FILTER_OPERATOR.SMALLER_OR_EQUAL] = to;
+            }
+
+            this.value = {
+                ...this.value,
+                ...value,
+            };
         },
         onRemove(index) {
             this.$emit('remove', index);
@@ -110,16 +132,30 @@ export default {
         onClear() {
             this.value = {
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
-                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.GREATER_OR_EQUAL]: null,
+                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: null,
             };
         },
         onApplyValue() {
+            const filterValue = {
+                ...this.value,
+            };
+
+            if (filterValue[FILTER_OPERATOR.GREATER_OR_EQUAL]) {
+                const fromValue = formatDate(filterValue[FILTER_OPERATOR.GREATER_OR_EQUAL], DEFAULT_FORMAT);
+                filterValue[FILTER_OPERATOR.GREATER_OR_EQUAL] = fromValue;
+            }
+
+            if (filterValue[FILTER_OPERATOR.SMALLER_OR_EQUAL]) {
+                const toValue = formatDate(filterValue[FILTER_OPERATOR.SMALLER_OR_EQUAL], DEFAULT_FORMAT);
+                filterValue[FILTER_OPERATOR.SMALLER_OR_EQUAL] = toValue;
+            }
+
             this.$emit('apply', {
                 key: this.filter.id,
                 value: getParsedFilter({
                     id: this.filter.id,
-                    filter: this.value,
+                    filter: filterValue,
                 }),
             });
         },

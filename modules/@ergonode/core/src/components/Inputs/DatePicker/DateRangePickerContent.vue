@@ -40,11 +40,8 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-import calendar, {
-    CALENDAR_MONTHS,
+import {
     DEFAULT_FORMAT,
-    getNextMonth,
-    getPreviousMonth,
     WEEK_DAYS,
 } from '@Core/models/calendar/calendar';
 import {
@@ -106,6 +103,7 @@ export default {
             return Object.values(WEEK_DAYS);
         },
         fromHeader() {
+            console.log(this.value.from);
             if (this.value.from) {
                 return `From ${formatDate(this.value.from, this.format)}`;
             }

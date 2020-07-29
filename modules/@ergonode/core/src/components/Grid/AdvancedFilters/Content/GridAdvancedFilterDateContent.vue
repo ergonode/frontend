@@ -23,7 +23,6 @@ import {
     DEFAULT_FORMAT,
 } from '@Core/models/calendar/calendar';
 import {
-    format as formatDate,
     parse as parseDate,
 } from 'date-fns';
 
@@ -54,35 +53,14 @@ export default {
             const valueTo = this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL];
 
             return {
-                from: valueFrom
-                    ? parseDate(valueFrom, this.dateFormat, new Date())
-                    : null,
-                to: valueTo
-                    ? parseDate(valueTo, this.dateFormat, new Date())
-                    : null,
+                from: valueFrom,
+                to: valueTo,
             };
         },
     },
     methods: {
-        onValueChange({
-            from, to,
-        }) {
-            const dateFrom = from ? formatDate(from, this.dateFormat) : null;
-            const dateTo = to ? formatDate(to, this.dateFormat) : null;
-
-            if (this.value[FILTER_OPERATOR.GREATER_OR_EQUAL] !== dateFrom
-                && dateFrom) {
-                this.$emit('input', {
-                    key: FILTER_OPERATOR.GREATER_OR_EQUAL,
-                    value: dateFrom,
-                });
-            } else if (this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL] !== dateTo
-                && dateTo) {
-                this.$emit('input', {
-                    key: FILTER_OPERATOR.SMALLER_OR_EQUAL,
-                    value: dateTo,
-                });
-            }
+        onValueChange(payload) {
+            this.$emit('input', payload);
         },
         onEmptyRecordChange(value) {
             this.$emit('input', {
