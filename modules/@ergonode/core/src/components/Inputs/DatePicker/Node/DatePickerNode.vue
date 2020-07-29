@@ -5,7 +5,9 @@
 <template>
     <span
         :class="classes"
-        v-text="title" />
+        v-text="title"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave" />
 </template>
 
 <script>
@@ -17,6 +19,10 @@ export default {
             default: false,
         },
         disabled: {
+            type: Boolean,
+            default: false,
+        },
+        withinRange: {
             type: Boolean,
             default: false,
         },
@@ -32,23 +38,38 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            isHovered: false,
+        };
+    },
     computed: {
         classes() {
             return [
-                'node',
+                'date-picker-node',
                 {
-                    'node--selected': this.selected,
-                    'node--disabled': this.disabled,
-                    'node--current': this.current,
+                    'date-picker-node--selected': this.selected,
+                    'date-picker-node--within-range': this.withinRange && !this.selected,
+                    'date-picker-node--disabled': this.disabled,
+                    'date-picker-node--current': this.current,
+                    'date-picker-node--hovered': this.isHovered,
                 },
             ];
+        },
+    },
+    methods: {
+        onMouseEnter() {
+            this.isHovered = true;
+        },
+        onMouseLeave() {
+            this.isHovered = false;
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .node {
+    .date-picker-node {
         position: relative;
         display: flex;
         justify-content: center;
@@ -57,6 +78,21 @@ export default {
         height: 100%;
         font: $FONT_MEDIUM_12_16;
         cursor: pointer;
+
+        &::before {
+            position: absolute;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            box-shadow: $ELEVATOR_HOVER_FOCUS;
+            opacity: 0;
+            content: "";
+            transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+        }
+
+        &--within-range {
+            background-color: $GREEN_LIGHT;
+        }
 
         &:not(&--selected):not(&--disabled) {
             color: $GRAPHITE_DARK;
@@ -86,8 +122,14 @@ export default {
             }
         }
 
+        &--hovered::before {
+            opacity: 1;
+        }
+
         &--disabled {
             color: $GRAPHITE_LIGHT;
+            pointer-events: none;
+            cursor: not-allowed;
         }
     }
 </style>
