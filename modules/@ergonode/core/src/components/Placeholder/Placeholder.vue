@@ -80,8 +80,8 @@ export default {
     .placeholder {
         flex: 1;
         box-sizing: border-box;
-        color: $GRAPHITE_DARK;
         background-color: $WHITESMOKE;
+        color: $GRAPHITE_DARK;
 
         &--vertical-layout {
             display: flex;
