@@ -4,19 +4,20 @@
  */
 <template>
     <div class="date-picker">
-        <DatePickerHeader :header="header" />
+        <slot name="header">
+            <DatePickerHeader :header="header" />
+        </slot>
         <DatePickerNavigationHeader
             :header="calendarHeader"
             @changeCalendarType="onChangeCalendarType"
             @previousDate="onPreviousDate"
             @nextDate="onNextDate" />
         <DatePickerCalendar
-            :date="value"
+            :value="value"
+            :range-value="rangeValue"
             :month="month"
-            :current-month="currentMonth"
             :year="year"
             :years="years"
-            :current-year="currentYear"
             :calendar-type="selectedCalendarType"
             @input="onDateChange"
             @month="onMonthChange"
@@ -59,16 +60,19 @@ export default {
             type: Date,
             default: null,
         },
+        rangeValue: {
+            type: Date,
+            default: null,
+        },
     },
     data() {
-        const today = this.value || new Date();
+        const now = new Date();
+        const today = this.value || now;
         const year = today.getFullYear();
         const month = today.getMonth() + 1;
 
         return {
             years: getYearsWithinRange([], year),
-            currentYear: today.getFullYear(),
-            currentMonth: today.getMonth() + 1,
             month,
             year,
             selectedCalendarType: CALENDAR_TYPE.DAY,

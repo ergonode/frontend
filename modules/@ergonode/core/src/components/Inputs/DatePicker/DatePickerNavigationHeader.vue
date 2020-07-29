@@ -94,12 +94,13 @@ export default {
             justify-content: center;
             align-items: center;
             height: 32px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_14_20;
             cursor: pointer;
 
             &:hover {
-                box-shadow: $ELEVATOR_2_DP;
+                box-shadow: $ELEVATOR_HOVER_FOCUS;
             }
         }
     }

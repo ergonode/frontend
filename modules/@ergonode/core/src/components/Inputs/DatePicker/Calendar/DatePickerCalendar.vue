@@ -3,43 +3,20 @@
  * See LICENSE for license details.
  */
 <template>
-    <div>
-        <template v-if="isCalendarDayType">
-            <DatePickerContentHeader :headers="weekDays" />
-            <DatePickerDays
-                :dates="calendarDates"
-                :selected-dates="parsedDate"
-                @select="onDaySelect" />
-        </template>
-        <template v-if="isCalendarMonthType">
-            <DatePickerContentHeader :headers="['Months']" />
-            <DatePickerMonths
-                :months="months"
-                :selected-month="parsedSelectedMonth"
-                :current-month="parsedCurrentMonth"
-                @select="onMonthSelect" />
-        </template>
-        <template v-if="isCalendarYearType">
-            <DatePickerContentHeader :headers="['Years']" />
-            <DatePickerYears
-                :years="years"
-                :selected-year="parsedSelectedYear"
-                :current-year="currentYear"
-                @select="onYearSelect" />
-        </template>
-    </div>
+    <Component
+        :is="nodesComponent.component"
+        v-bind="nodesComponent.props"
+        v-on="nodesComponent.listeners" />
 </template>
 
 <script>
 import DatePickerContentHeader from '@Core/components/Inputs/DatePicker/DatePickerContentHeader';
-import DatePickerDays from '@Core/components/Inputs/DatePicker/DatePickerDays';
+import DatePickerMonth from '@Core/components/Inputs/DatePicker/DatePickerMonth';
 import DatePickerMonths from '@Core/components/Inputs/DatePicker/DatePickerMonths';
 import DatePickerYears from '@Core/components/Inputs/DatePicker/DatePickerYears';
-import calendar, {
-    CALENDAR_MONTHS,
+import {
     getHeaderForCalendarDaysType,
     getMonthIndex,
-    WEEK_DAYS,
 } from '@Core/models/calendar/calendar';
 import {
     CALENDAR_TYPE,
@@ -48,13 +25,17 @@ import {
 export default {
     name: 'DatePickerCalendar',
     components: {
-        DatePickerDays,
+        DatePickerMonth,
         DatePickerContentHeader,
         DatePickerMonths,
         DatePickerYears,
     },
     props: {
-        date: {
+        value: {
+            type: Date,
+            default: null,
+        },
+        rangeValue: {
             type: Date,
             default: null,
         },
@@ -66,15 +47,7 @@ export default {
             type: Array,
             required: true,
         },
-        currentYear: {
-            type: Number,
-            required: true,
-        },
         month: {
-            type: Number,
-            required: true,
-        },
-        currentMonth: {
             type: Number,
             required: true,
         },
@@ -83,66 +56,47 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            months: Object.values(CALENDAR_MONTHS),
-        };
-    },
     computed: {
-        parsedDate() {
-            if (this.date) {
-                return [
-                    new Date(this.date),
-                ];
+        nodesComponent() {
+            switch (this.calendarType) {
+            case CALENDAR_TYPE.DAY:
+                return {
+                    component: DatePickerMonth,
+                    props: {
+                        value: this.value,
+                        rangeValue: this.rangeValue,
+                        month: this.month,
+                        year: this.year,
+                    },
+                    listeners: {
+                        select: this.onDaySelect,
+                    },
+                };
+            case CALENDAR_TYPE.MONTH:
+                return {
+                    component: DatePickerMonths,
+                    props: {
+                        value: this.value,
+                        rangeValue: this.rangeValue,
+                        year: this.year,
+                    },
+                    listeners: {
+                        select: this.onMonthSelect,
+                    },
+                };
+            default: return {
+                component: DatePickerYears,
+                props: {
+                    value: this.value,
+                    rangeValue: this.rangeValue,
+                    nodes: this.years,
+                    year: this.year,
+                },
+                listeners: {
+                    select: this.onYearSelect,
+                },
+            };
             }
-
-            return [];
-        },
-        parsedCurrentMonth() {
-            if (this.year === this.currentYear) {
-                return Object.values(CALENDAR_MONTHS)[this.currentMonth];
-            }
-
-            return '';
-        },
-        parsedSelectedMonth() {
-            if (this.parsedDate.length) {
-                const [
-                    date,
-                ] = this.parsedDate;
-
-                if (date.getFullYear() === this.year) {
-                    return this.months[date.getMonth()];
-                }
-            }
-
-            return '';
-        },
-        parsedSelectedYear() {
-            if (this.parsedDate.length) {
-                const [
-                    date,
-                ] = this.parsedDate;
-
-                return date.getFullYear();
-            }
-
-            return null;
-        },
-        weekDays() {
-            return Object.values(WEEK_DAYS);
-        },
-        calendarDates() {
-            return calendar(this.month, this.year);
-        },
-        isCalendarDayType() {
-            return this.calendarType === CALENDAR_TYPE.DAY;
-        },
-        isCalendarMonthType() {
-            return this.calendarType === CALENDAR_TYPE.MONTH;
-        },
-        isCalendarYearType() {
-            return this.calendarType === CALENDAR_TYPE.YEAR;
         },
     },
     methods: {
