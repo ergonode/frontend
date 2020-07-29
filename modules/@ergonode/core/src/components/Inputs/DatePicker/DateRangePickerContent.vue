@@ -111,12 +111,7 @@ export default {
                 from, to,
             } = this.value;
 
-            if (from && to) {
-                this.$emit('input', {
-                    from: date,
-                    to: null,
-                });
-            } else if (from && date < from) {
+            if (from && to || from && date < from) {
                 this.$emit('input', {
                     from: date,
                     to: null,
