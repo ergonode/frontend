@@ -21,8 +21,4 @@ describe('ToolBar', () => {
         expect(typeof ToolBar.name).toBe('string');
         expect(ToolBar.name).toEqual('ToolBar');
     });
-
-    it('Has no items', () => {
-        expect(wrapper).toMatchSnapshot();
-    });
 });
