@@ -31,6 +31,7 @@ export default {
         color: {
             type: String,
             default: WHITE,
+            validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
         },
         width: {
             type: [

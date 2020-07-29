@@ -3,9 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <NavigationBarButton>
+    <ToolBarButton>
         <IconProcessing :fill-color="whiteColor" />
-    </NavigationBarButton>
+    </ToolBarButton>
 </template>
 
 <script>
@@ -14,9 +14,9 @@ import {
 } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
-    name: 'NavigationBarSynchronizationButton',
+    name: 'ToolBarSynchronizationButton',
     components: {
-        NavigationBarButton: () => import('@Core/components/NavigationBar/NavigationBarButton'),
+        ToolBarButton: () => import('@Core/components/ToolBar/ToolBarButton'),
         IconProcessing: () => import('@Core/components/Icons/Others/IconProcessing'),
     },
     computed: {

@@ -10,7 +10,7 @@ export default {
     extendComponents: {
         NAVIGATION_BAR: [
             {
-                component: Components.NavigationBarNotificationButton,
+                component: Components.ToolBarNotificationButton,
                 props: {},
             },
         ],

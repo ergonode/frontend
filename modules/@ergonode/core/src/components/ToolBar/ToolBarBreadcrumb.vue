@@ -3,21 +3,21 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="navigation-bar-breadcrumb">
+    <div class="tool-bar-breadcrumb">
         <Component
             :is="breadcrumbIcon"
             v-if="breadcrumb.icon"
             :fill-color="breadcrumbIconFillColor" />
         <NuxtLink
             v-if="breadcrumb.routeName"
-            class="navigation-bar-breadcrumb__link"
+            class="tool-bar-breadcrumb__link"
             :to="{ name: breadcrumb.routeName }"
             v-text="breadcrumb.title" />
         <span
             v-else
-            class="navigation-bar-breadcrumb__title"
+            class="tool-bar-breadcrumb__title"
             v-text="breadcrumb.title" />
-        <span class="navigation-bar-breadcrumb__divider">/</span>
+        <span class="tool-bar-breadcrumb__divider">/</span>
     </div>
 </template>
 
@@ -27,7 +27,7 @@ import {
 } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
-    name: 'NavigationBarBreadcrumb',
+    name: 'ToolBarBreadcrumb',
     props: {
         breadcrumb: {
             type: Object,
@@ -46,7 +46,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .navigation-bar-breadcrumb {
+    .tool-bar-breadcrumb {
         display: grid;
         grid-auto-flow: column;
         grid-column-gap: 8px;

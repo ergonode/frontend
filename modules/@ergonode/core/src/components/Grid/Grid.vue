@@ -21,10 +21,10 @@
             @applySettings="onApplySettings"
             @dropFilter="onDropFilter">
             <template #actions>
-                <slot name="actions" />
+                <slot name="headerActions" />
             </template>
             <template #configuration>
-                <slot name="configuration" />
+                <slot name="headerConfiguration" />
             </template>
         </GridHeader>
         <GridBody
@@ -67,7 +67,13 @@
                     @rowAction="onRowAction"
                     @cellValue="onCellValueChange" />
             </KeepAlive>
-            <GridPlaceholder v-show="dataCount === 0 && !isPrefetchingData" />
+            <GridPlaceholder
+                v-if="dataCount === 0 && !isPrefetchingData"
+                v-bind="{ ...placeholder }">
+                <template #action>
+                    <slot name="placeholderAction" />
+                </template>
+            </GridPlaceholder>
         </GridBody>
         <GridFooter v-if="isFooterVisible">
             <GridPageSelector
@@ -84,6 +90,9 @@
 </template>
 
 <script>
+import {
+    WHITESMOKE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import GridPagination from '@Core/components/Grid/Footer/GridPagination';
 import GridBody from '@Core/components/Grid/GridBody';
 import GridFooter from '@Core/components/Grid/GridFooter';
@@ -152,6 +161,15 @@ export default {
                 descriptionColumn: '',
                 type: '',
                 additionalColumns: [],
+            }),
+        },
+        placeholder: {
+            type: Object,
+            default: () => ({
+                title: 'No results',
+                subtitle: 'There are no results that meet the conditions for the selected filters.',
+                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                color: WHITESMOKE,
             }),
         },
         defaultLayout: {

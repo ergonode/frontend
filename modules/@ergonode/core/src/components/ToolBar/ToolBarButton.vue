@@ -3,14 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <button :class="['bar-button', {'bar-button--selected': isSelected}]">
+    <button :class="['tool-bar-button', {'tool-bar-button--selected': isSelected}]">
         <slot />
     </button>
 </template>
 
 <script>
 export default {
-    name: 'NavigationBarButton',
+    name: 'ToolBarButton',
     props: {
         isSelected: {
             type: Boolean,
@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .bar-button {
+    .tool-bar-button {
         position: relative;
         display: flex;
         justify-content: center;

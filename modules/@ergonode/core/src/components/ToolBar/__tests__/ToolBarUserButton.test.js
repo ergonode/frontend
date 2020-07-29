@@ -10,7 +10,7 @@ import {
     Store,
 } from 'vuex-mock-store';
 
-import NavigationBarUserButton from '../NavigationBarUserButton';
+import ToolBarUserButton from '../ToolBarUserButton';
 
 const localVue = createLocalVue();
 const store = new Store({
@@ -28,11 +28,11 @@ const mocks = {
     $store: store,
 };
 afterEach(() => store.reset());
-describe('NavigationBar/NavigationBarUserButton', () => {
+describe('ToolBar/ToolBarUserButton', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(NavigationBarUserButton, {
+        wrapper = shallowMount(ToolBarUserButton, {
             localVue,
             mocks,
             stubs: {
@@ -42,8 +42,8 @@ describe('NavigationBar/NavigationBarUserButton', () => {
     });
 
     it('Component is named well', () => {
-        expect(typeof NavigationBarUserButton.name).toBe('string');
-        expect(NavigationBarUserButton.name).toEqual('NavigationBarUserButton');
+        expect(typeof ToolBarUserButton.name).toBe('string');
+        expect(ToolBarUserButton.name).toEqual('ToolBarUserButton');
     });
 
     it('Check if user is logged it', () => {

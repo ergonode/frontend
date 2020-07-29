@@ -3,8 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <NavigationBarSelectButton
-        @focus="onFocus">
+    <ToolBarSelectButton @focus="onFocus">
         <template #input>
             <IconBell :fill-color="whiteColor" />
             <NotificationBadge
@@ -24,14 +23,14 @@
                             @click.native="navigateToAllNotifications" />
                     </NotificationsListFooter>
                 </List>
-                <ListPlaceholder
+                <NotificationsListPlaceholder
                     v-else
                     title="Nothing to see here"
                     subtitle="Here you can see important notifications of product update"
                     :bg-url="require('@Core/assets/images/placeholders/notify.svg')" />
             </div>
         </template>
-    </NavigationBarSelectButton>
+    </ToolBarSelectButton>
 </template>
 
 <script>
@@ -44,16 +43,16 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'NavigationBarNotificationButton',
+    name: 'ToolBarNotificationButton',
     components: {
-        NavigationBarSelectButton: () => import('@Core/components/NavigationBar/NavigationBarSelectButton'),
+        ToolBarSelectButton: () => import('@Core/components/ToolBar/ToolBarSelectButton'),
         IconBell: () => import('@Core/components/Icons/Menu/IconBell'),
         NotificationBadge: () => import('@Core/components/Badges/NotificationBadge'),
         Button: () => import('@Core/components/Buttons/Button'),
         List: () => import('@Core/components/List/List'),
         NotificationsListElement: () => import('@Notifications/components/List/NotificationsListElement'),
         NotificationsListFooter: () => import('@Notifications/components/List/NotificationsListFooter'),
-        ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
+        NotificationsListPlaceholder: () => import('@Notifications/components/List/NotificationsListPlaceholder'),
     },
     computed: {
         ...mapState('notifications', {

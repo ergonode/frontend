@@ -51,10 +51,10 @@ export default {
         },
     },
     created() {
-        this.objectComponents = this.initializeComponents();
+        this.objectComponents = this.getComponents();
     },
     methods: {
-        initializeComponents() {
+        getComponents() {
             const {
                 length,
             } = this.fieldsKeys;

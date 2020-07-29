@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <NavigationBarSelectButton
-        data-cy="nav-bar-dropdown"
+    <ToolBarSelectButton
+        data-cy="tool-bar-dropdown"
         @focus="onFocus">
         <template #input>
             <UserAvatar
@@ -20,12 +20,12 @@
             </div>
         </template>
         <template #dropdown>
-            <NavigationBarUserSelectContent
+            <ToolBarUserSelectContent
                 :avatar-id="user.avatarId"
                 :initials="userInitials"
                 :email="user.email" />
         </template>
-    </NavigationBarSelectButton>
+    </ToolBarSelectButton>
 </template>
 
 <script>
@@ -43,10 +43,10 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'NavigationBarUserButton',
+    name: 'ToolBarUserButton',
     components: {
-        NavigationBarSelectButton: () => import('@Core/components/NavigationBar/NavigationBarSelectButton'),
-        NavigationBarUserSelectContent: () => import('@Core/components/NavigationBar/NavigationBarUserSelectContent'),
+        ToolBarSelectButton: () => import('@Core/components/ToolBar/ToolBarSelectButton'),
+        ToolBarUserSelectContent: () => import('@Core/components/ToolBar/ToolBarUserSelectContent'),
         IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
         UserAvatar: () => import('@Core/components/Multimedia/UserAvatar'),
     },

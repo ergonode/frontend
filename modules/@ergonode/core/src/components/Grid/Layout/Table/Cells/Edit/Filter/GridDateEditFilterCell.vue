@@ -70,7 +70,9 @@ export default {
 
         if (localValue !== this.value[FILTER_OPERATOR.EQUAL]) {
             this.$emit('filterValue', {
-                value: localValue,
+                value: {
+                    [FILTER_OPERATOR.EQUAL]: localValue,
+                },
                 columnId: this.columnId,
                 row: this.row,
                 column: this.column,

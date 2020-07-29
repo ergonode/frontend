@@ -4,9 +4,9 @@
  */
 <template>
     <div
-        data-cy="nav-bar-content"
+        data-cy="tool-bar-content"
         class="user-content">
-        <NavigationBarUserSelectContentHeader
+        <ToolBarUserSelectContentHeader
             :initials="initials"
             :avatar-id="avatarId"
             :email="email" />
@@ -36,10 +36,10 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'NavigationBarUserSelectContent',
+    name: 'ToolBarUserSelectContent',
     components: {
         Divider: () => import('@Core/components/Dividers/Divider'),
-        NavigationBarUserSelectContentHeader: () => import('@Core/components/NavigationBar/NavigationBarUserSelectContentHeader'),
+        ToolBarUserSelectContentHeader: () => import('@Core/components/ToolBar/ToolBarUserSelectContentHeader'),
         MenuList: () => import('@Core/components/MenuList/MenuList'),
         Button: () => import('@Core/components/Buttons/Button'),
     },

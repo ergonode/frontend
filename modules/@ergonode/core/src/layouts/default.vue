@@ -4,15 +4,15 @@
  */
 <template>
     <App>
-        <NavigationBar :style="navigationBarPosition">
+        <ToolBar :style="navigationBarPosition">
             <template #breadcrumbs>
-                <NavigationBarBreadcrumb
+                <ToolBarBreadcrumb
                     v-for="(breadcrumb, index) in breadcrumbs"
                     :key="index"
                     :breadcrumb="breadcrumb" />
             </template>
             <template #actions>
-                <NavigationBarUserButton />
+                <ToolBarUserButton />
                 <template v-for="(component, index) in extendedComponents">
                     <Component
                         :is="component.component"
@@ -20,7 +20,7 @@
                         v-bind="component.props" />
                 </template>
             </template>
-        </NavigationBar>
+        </ToolBar>
         <SideBar @expand="onExpandSideBar" />
         <main class="app-main">
             <slot />
@@ -49,9 +49,9 @@ export default {
     components: {
         App: () => import('@Core/components/Layout/App'),
         SideBar: () => import('@Core/components/SideBar/SideBar'),
-        NavigationBar: () => import('@Core/components/NavigationBar/NavigationBar'),
-        NavigationBarBreadcrumb: () => import('@Core/components/NavigationBar/NavigationBarBreadcrumb'),
-        NavigationBarUserButton: () => import('@Core/components/NavigationBar/NavigationBarUserButton'),
+        ToolBar: () => import('@Core/components/ToolBar/ToolBar'),
+        ToolBarBreadcrumb: () => import('@Core/components/ToolBar/ToolBarBreadcrumb'),
+        ToolBarUserButton: () => import('@Core/components/ToolBar/ToolBarUserButton'),
         FlashMessage: () => import('@Core/components/Alerts/FlashMessage'),
         ConfirmModal: () => import('@Core/components/Modals/ConfirmModal'),
     },
@@ -107,9 +107,8 @@ export default {
 
 <style lang="scss" scoped>
     .app-main {
-        display: flex;
-        flex: 1;
         width: 100%;
+        height: 100%;
         padding: 48px 0 0;
         box-sizing: border-box;
     }

@@ -26,7 +26,7 @@ import {
 } from '@Core/defaults/theme';
 
 export default {
-    name: 'NavigationBarUserSelectContentHeader',
+    name: 'ToolBarUserSelectContentHeader',
     components: {
         UserAvatar: () => import('@Core/components/Multimedia/UserAvatar'),
     },

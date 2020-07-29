@@ -79,10 +79,10 @@ export default {
         },
     },
     created() {
-        this.rowComponents = this.initializeComponents();
+        this.rowComponents = this.getComponents();
     },
     methods: {
-        initializeComponents() {
+        getComponents() {
             const {
                 length,
             } = this.fieldsKeys;

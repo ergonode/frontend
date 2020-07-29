@@ -15,12 +15,12 @@
                 :is-border="true"
                 :is-basic-filter="true"
                 @fetchData="getGridData">
-                <template #actions>
+                <template #headerActions>
                     <h2
                         class="modal-grid__header"
                         v-text="title" />
                 </template>
-                <template #configuration>
+                <template #headerConfiguration>
                     <Fab
                         :theme="secondaryTheme"
                         @click.native="onClose">

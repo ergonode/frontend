@@ -3,11 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <nav class="navigation-bar">
-        <section class="navigation-bar__breadcrumbs">
+    <nav class="tool-bar">
+        <section class="tool-bar__breadcrumbs">
             <slot name="breadcrumbs" />
         </section>
-        <section class="navigation-bar__actions">
+        <section class="tool-bar__actions">
             <slot name="actions" />
         </section>
     </nav>
@@ -15,13 +15,14 @@
 
 <script>
 export default {
-    name: 'NavigationBar',
+    name: 'ToolBar',
 };
 </script>
 
 <style lang="scss" scoped>
-    .navigation-bar {
+    .tool-bar {
         position: fixed;
+        z-index: $Z_INDEX_LVL_9;
         display: flex;
         justify-content: space-between;
         height: 48px;
