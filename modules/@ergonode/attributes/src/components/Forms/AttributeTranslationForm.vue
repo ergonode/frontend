@@ -48,8 +48,7 @@
 <script>
 import AttributeOptionValues from '@Attributes/components/Forms/Sections/AttributeOptionValues';
 import {
-    hasOptions,
-    hasPlaceholder,
+    typesConfiguration,
 } from '@Attributes/models/attributeTypes';
 import Card from '@Core/components/Card/Card';
 import Divider from '@Core/components/Dividers/Divider';
@@ -79,6 +78,11 @@ export default {
     mixins: [
         translationCardMixin,
     ],
+    data() {
+        return {
+            typesConfig: typesConfiguration.call(this),
+        };
+    },
     computed: {
         ...mapState('dictionaries', {
             attrTypes: state => state.attrTypes,
@@ -87,10 +91,10 @@ export default {
             type: state => state.type,
         }),
         hasPlaceholder() {
-            return hasPlaceholder(this.typeKey);
+            return this.typesConfig.hasPlaceholder(this.typeKey);
         },
         hasOptions() {
-            return hasOptions(this.typeKey);
+            return this.typesConfig.hasOptions(this.typeKey);
         },
         typeKey() {
             return getKeyByValue(this.attrTypes, this.type);

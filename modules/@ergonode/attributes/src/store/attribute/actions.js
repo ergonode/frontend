@@ -7,8 +7,10 @@ import {
 } from '@Attributes/defaults/attributes';
 import {
     getMappedArrayOptions,
-    getMappedParameterValues,
 } from '@Attributes/models/attributeMapper';
+import {
+    typesConfiguration,
+} from '@Attributes/models/attributeTypes';
 
 import {
     types,
@@ -146,9 +148,13 @@ export default {
             );
 
             if (parameters && type !== TYPES.TEXT_AREA) {
+                const typesConfig = typesConfiguration.call(this, {
+                    state: rootState,
+                });
+
                 commit('__SET_STATE', {
                     key: 'parameter',
-                    value: getMappedParameterValues(type, parameters, rootState.dictionaries),
+                    value: typesConfig.getMappedParameterValues(type, parameters),
                 });
             }
 

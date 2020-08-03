@@ -10,8 +10,8 @@
             typeFieldKey,
             groupsFieldKey,
             scopeFieldKey,
-            paramsFieldKey,
             ...optionsFieldKeys,
+            ...extendedFieldKeys,
         ]">
         <template #body="{ errorMessages }">
             <FormSection>
@@ -59,26 +59,16 @@
                         <InfoHint :hint="scopeHint" />
                     </template>
                 </Select>
-                <Select
-                    v-if="hasParams"
-                    :data-cy="dataCyGenerator('params')"
-                    key="attrHasParams"
-                    :value="parameter"
-                    required
-                    :label="paramsLabel"
-                    :options="attributeParametersOptions"
-                    :error-messages="errorMessages[paramsFieldKey]"
-                    :disabled="isDisabledByPrivileges"
-                    @input="setParameterValue" />
+                <Component
+                    :is="formComponent.component"
+                    :type-key="typeKey"
+                    :error-messages="errorMessages"
+                    v-bind="formComponent.props"
+                    @fieldKeys="onFieldKeys" />
                 <AttributeOptionKeyValues
                     v-show="hasOptions"
                     key="attrHasOptions"
                     :disabled="isDisabledByPrivileges" />
-                <Toggler
-                    v-if="isTextArea"
-                    :value="parameter"
-                    label="Rich text content enabled"
-                    @input="setParameterValue" />
             </FormSection>
         </template>
     </Form>
@@ -87,20 +77,13 @@
 <script>
 import {
     SCOPE,
-    TYPES,
 } from '@Attributes/defaults/attributes';
 import {
-    getParamsKeyForType,
-    getParamsOptionsForType,
-    hasOptions,
-    hasParams,
+    typesConfiguration,
 } from '@Attributes/models/attributeTypes';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
-import {
-    toCapitalize,
-} from '@Core/models/stringWrapper';
 import {
     mapActions,
     mapGetters,
@@ -118,9 +101,14 @@ export default {
         InfoHint: () => import('@Core/components/Hints/InfoHint'),
         TextField: () => import('@Core/components/Inputs/TextField'),
         Select: () => import('@Core/components/Inputs/Select/Select'),
-        Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
         TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
         Divider: () => import('@Core/components/Dividers/Divider'),
+    },
+    data() {
+        return {
+            typesConfig: typesConfiguration.call(this),
+            extendedFieldKeys: [],
+        };
     },
     computed: {
         ...mapState('authentication', {
@@ -132,7 +120,6 @@ export default {
             options: state => state.options,
             groups: state => state.groups,
             type: state => state.type,
-            parameter: state => state.parameter,
             scope: state => state.scope,
         }),
         ...mapState('dictionaries', {
@@ -141,13 +128,20 @@ export default {
         ...mapGetters('core', [
             'getRootOnLanguagesTree',
         ]),
+        formComponent() {
+            const extendedComponents = this.$getExtendedComponents('@Attributes/components/Forms/AttributeForm');
+
+            if (extendedComponents && extendedComponents[this.typeKey]) {
+                return extendedComponents[this.typeKey];
+            }
+
+            return {};
+        },
         scopeHint() {
             return `Global means the same attribute values for each language, inherited from the root language (${this.getRootOnLanguagesTree.name}). Option values can be translated, but cannot be changed in the product template.`;
         },
-        paramsLabel() {
-            const paramsKey = getParamsKeyForType(this.typeKey);
-
-            return toCapitalize(paramsKey);
+        typeKey() {
+            return getKeyByValue(this.attrTypes, this.type);
         },
         isDisabled() {
             return Boolean(this.attrID);
@@ -160,36 +154,14 @@ export default {
                 'ATTRIBUTE_CREATE',
             ]));
         },
-        isTextArea() {
-            return this.typeKey === TYPES.TEXT_AREA;
-        },
-        hasParams() {
-            return hasParams(this.typeKey);
-        },
-        typeKey() {
-            return getKeyByValue(this.attrTypes, this.type);
-        },
-        params() {
-            return getParamsOptionsForType(
-                this.typeKey,
-                this.$store.state.dictionaries,
-            );
-        },
         hasOptions() {
-            return hasOptions(this.typeKey);
+            return this.typesConfig.hasOptions(this.typeKey);
         },
         attributeTypeOptions() {
             return Object.values(this.attrTypes).sort();
         },
         attributeScopeOptions() {
             return Object.values(SCOPE);
-        },
-        attributeParametersOptions() {
-            // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
-            if (Array.isArray(this.params)) {
-                return this.params.map(data => data.name);
-            }
-            return Object.values(this.params);
         },
         optionsFieldKeys() {
             return Object.keys(this.options).map(key => `code_${key}`);
@@ -205,9 +177,6 @@ export default {
         },
         scopeFieldKey() {
             return 'scope';
-        },
-        paramsFieldKey() {
-            return `parameters_${this.paramsLabel.toLowerCase()}`;
         },
     },
     methods: {
@@ -239,12 +208,6 @@ export default {
                 value,
             });
         },
-        setParameterValue(value = null) {
-            this.__setState({
-                key: 'parameter',
-                value,
-            });
-        },
         dataCyGenerator(key) {
             return `attribute-${key}`;
         },
@@ -258,11 +221,13 @@ export default {
         },
         onTypeChange(type) {
             this.setTypeValue(type);
-            this.setParameterValue();
 
             if (!this.hasOptions) {
                 this.removeAttributeOptions();
             }
+        },
+        onFieldKeys(fields) {
+            this.extendedFieldKeys = fields;
         },
     },
 };

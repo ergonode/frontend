@@ -25,5 +25,16 @@ export default {
     },
     extendMethods: {
         '@Products/store/product/action/getProductById': getProductById,
+        '@Attributes/typeConfig': ({
+            state,
+        }) => ({
+            DATE2: {
+                params: {
+                    key: 'format',
+                    value: state.dictionaries.dateFormats,
+                },
+                icon: null,
+            },
+        }),
     },
 };

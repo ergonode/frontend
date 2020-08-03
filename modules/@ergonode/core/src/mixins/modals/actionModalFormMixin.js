@@ -32,8 +32,10 @@ export default function ({
                 this.removeValidationErrors();
 
                 request().then(response => response.default({
+                    $this: this,
                     $axios: this.$axios,
                     $store: this.$store,
+                    $addAlert: this.$addAlert,
                 }).then(({
                     id,
                 }) => {
@@ -49,7 +51,9 @@ export default function ({
                     this.$emit(action.toLowerCase());
                 }).catch((e) => {
                     this.isRequestPending = false;
-                    this.onError(e.data);
+                    if (e.data) {
+                        this.onError(e.data);
+                    }
                 }));
             },
         },

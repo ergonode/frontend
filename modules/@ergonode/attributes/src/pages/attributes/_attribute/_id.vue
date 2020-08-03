@@ -14,10 +14,7 @@ import {
     TYPES,
 } from '@Attributes/defaults/attributes';
 import {
-    getParsedParameterKeys,
-} from '@Attributes/models/attributeMapper';
-import {
-    getParamsOptionsForType,
+    typesConfiguration,
 } from '@Attributes/models/attributeTypes';
 import {
     ALERT_TYPE,
@@ -164,10 +161,8 @@ export default {
 
             if (this.parameter && typeKey !== TYPES.TEXT_AREA) {
                 let paramKey = null;
-                const paramsOptions = getParamsOptionsForType(
-                    typeKey,
-                    this.$store.state.dictionaries,
-                );
+                const typesConfig = typesConfiguration.call(this);
+                const paramsOptions = typesConfig.getParamsOptionsForType(typeKey);
 
                 // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
                 if (Array.isArray(paramsOptions)) {
@@ -176,10 +171,7 @@ export default {
                     paramKey = getKeyByValue(paramsOptions, this.parameter);
                 }
 
-                data.parameters = getParsedParameterKeys({
-                    selectedType: typeKey,
-                    selectedParam: paramKey,
-                });
+                data.parameters = typesConfig.getParsedParameterKeys(typeKey, paramKey);
             }
 
             if (typeKey === TYPES.TEXT_AREA) {
