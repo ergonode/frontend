@@ -16,5 +16,5 @@ export const Tabs = {
 };
 
 export const Icons = {
-    Export: () => import('@Core/components/Icons/Menu/IconExport'),
+    Channels: () => import('@Core/components/Icons/Menu/IconChannels'),
 };

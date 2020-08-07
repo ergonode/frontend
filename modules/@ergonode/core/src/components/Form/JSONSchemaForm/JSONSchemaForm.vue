@@ -64,11 +64,9 @@ export default {
             immediate: true,
             handler() {
                 this.schemaComponents = this.getComponents();
+                this.model = JSON.parse(this.value);
             },
         },
-    },
-    created() {
-        this.model = JSON.parse(this.value);
     },
     methods: {
         getComponents() {

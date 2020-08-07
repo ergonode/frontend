@@ -18,9 +18,9 @@ export default [
             access: true,
             title: 'Imports',
             group: {
-                title: 'Sources',
+                title: 'Data exchange',
                 menuPosition: 4,
-                icon: Icons.Export,
+                icon: Icons.Channels,
             },
             isMenu: true,
             menuPosition: 1,
@@ -39,8 +39,8 @@ export default [
                     title: '',
                     breadcrumbs: [
                         {
-                            title: 'Sources',
-                            icon: Icons.Export,
+                            title: 'Data exchange',
+                            icon: Icons.Channels,
                         },
                     ],
                     privileges: [],
