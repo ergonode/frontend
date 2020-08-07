@@ -9,7 +9,15 @@
             v-if="breadcrumb.icon"
             :fill-color="breadcrumbIconFillColor" />
         <NuxtLink
-            v-if="breadcrumb.routeName"
+            v-if="breadcrumb.id"
+            class="tool-bar-breadcrumb__link"
+            :to="{
+                name: breadcrumb.routeName,
+                params: { id: $route.params[breadcrumb.id]}
+            }"
+            v-text="breadcrumb.title" />
+        <NuxtLink
+            v-else-if="breadcrumb.routeName"
             class="tool-bar-breadcrumb__link"
             :to="{ name: breadcrumb.routeName }"
             v-text="breadcrumb.title" />

@@ -98,10 +98,17 @@ export default {
 
                 return false;
             }
-
-            this.$router.push({
+            const routerPush = {
                 name: breadcrumbs[breadcrumbs.length - 1].routeName,
-            });
+            };
+
+            if (breadcrumbs[breadcrumbs.length - 1].id) {
+                routerPush.params = {
+                    id: this.$route.params[breadcrumbs[breadcrumbs.length - 1].id],
+                };
+            }
+
+            this.$router.push(routerPush);
 
             return true;
         },

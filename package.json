@@ -130,7 +130,7 @@
         "@ergonode/conditions": "local",
         "@ergonode/core": "local",
         "@ergonode/dashboard": "local",
-        "@ergonode/export": "local",
+        "@ergonode/channels": "local",
         "@ergonode/media": "local",
         "@ergonode/notifications": "local",
         "@ergonode/collections": "local",
