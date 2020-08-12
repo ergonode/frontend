@@ -80,7 +80,7 @@ export default {
         getImageById() {
             this.cancelToken = this.$axios.CancelToken.source();
 
-            this.$axios.$get(`multimedia/${this.value}`, {
+            this.$axios.$get(`multimedia/${this.value}/download/default`, {
                 useCache: true,
                 cancelToken: this.cancelToken.token,
                 responseType: 'arraybuffer',
