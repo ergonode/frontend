@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import Fab from '@Core/components/Buttons/Fab';
+import Fab from '@Core/components/Fab/Fab';
 import IconArrowSingle from '@Core/components/Icons/Arrows/IconArrowSingle';
 import {
     ARROW,

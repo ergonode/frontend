@@ -62,7 +62,7 @@ export default [
                 path: 'general',
                 component: Tabs.ChannelBaseTab,
                 meta: {
-                    title: 'General',
+                    title: 'Options',
                     breadcrumbs: [
                         {
                             title: 'Data exchange',

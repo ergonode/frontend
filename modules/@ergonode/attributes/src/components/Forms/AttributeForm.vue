@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="General"
+        title="Options"
         :fields-keys="[
             codeFieldKey,
             typeFieldKey,
@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Attributes/config/privileges';
 import {
     SCOPE,
     TYPES,
@@ -153,12 +154,9 @@ export default {
             return Boolean(this.attrID);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess([
-                'ATTRIBUTE_UPDATE',
-            ]))
-            || (!this.isDisabled && !this.$hasAccess([
-                'ATTRIBUTE_CREATE',
-            ]));
+            return !this.$hasAccess([
+                PRIVILEGES.ATTRIBUTE.update,
+            ]);
         },
         isTextArea() {
             return this.typeKey === TYPES.TEXT_AREA;

@@ -6,8 +6,10 @@
     <Page>
         <TitleBar
             :title="title"
-            :is-navigation-back="true"
             :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigationBackFab />
+            </template>
             <template #mainAction>
                 <Button
                     v-if="isDownloadFile"
@@ -24,7 +26,7 @@
 
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
-import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
+import editPageMixin from '@Core/mixins/page/editPageMixin';
 import {
     mapState,
 } from 'vuex';
@@ -32,7 +34,7 @@ import {
 export default {
     name: 'ExportPage',
     mixins: [
-        categoryManagementPageMixin,
+        editPageMixin,
     ],
     computed: {
         ...mapState('channels', {

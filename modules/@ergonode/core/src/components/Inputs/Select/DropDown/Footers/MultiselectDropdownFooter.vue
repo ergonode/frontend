@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import DropDownFooter from '@Core/components/Inputs/Select/DropDown/Footers/DropDownFooter';
 import {
     SIZE,

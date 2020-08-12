@@ -41,7 +41,7 @@ export default {
     name: 'CreateProductTemplateModalForm',
     components: {
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
         TemplateDesignerForm: () => import('@Templates/components/Forms/TemplateDesignerForm'),
     },
     mixins: [

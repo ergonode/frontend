@@ -43,7 +43,7 @@ export default {
     name: 'RestoreAttributeParentModalForm',
     components: {
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
         RestoreForm: () => import('@Products/components/Form/RestoreForm'),
     },
     props: {

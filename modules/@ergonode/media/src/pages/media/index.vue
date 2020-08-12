@@ -6,13 +6,13 @@
     <Page>
         <TitleBar
             title="Media"
-            :is-read-only="$isReadOnly('MULTIMEDIA')">
+            :is-read-only="isReadOnly">
             <template #mainAction>
                 <Button
                     title="UPLOAD FILES"
                     :size="smallSize"
                     :theme="secondaryTheme"
-                    :disabled="!$hasAccess(['MULTIMEDIA_CREATE'])"
+                    :disabled="!isAllowedToCreate"
                     @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconUploadFile :fill-color="color" />
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import IconUploadFile from '@Core/components/Icons/Actions/IconUploadFile';
 import {
     SIZE,
@@ -45,6 +45,7 @@ import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import {
     getNestedTabRoutes,
 } from '@Core/models/navigation/tabs';
+import PRIVILEGES from '@Media/config/privileges';
 
 export default {
     name: 'Media',
@@ -60,6 +61,14 @@ export default {
         gridModalMixin,
     ],
     computed: {
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.MULTIMEDIA.namespace);
+        },
+        isAllowedToCreate() {
+            return this.$hasAccess([
+                PRIVILEGES.MULTIMEDIA.create,
+            ]);
+        },
         smallSize() {
             return SIZE.SMALL;
         },

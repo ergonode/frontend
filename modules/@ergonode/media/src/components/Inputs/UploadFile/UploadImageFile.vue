@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import InputController from '@Core/components/Inputs/InputController';
 import InputLabel from '@Core/components/Inputs/InputLabel';
@@ -95,7 +95,7 @@ export default {
         Picture: () => import('@Core/components/Multimedia/Picture'),
         PictureCarousel: () => import('@Core/components/Multimedia/PictureCarousel'),
         ModalMediaTabBar: () => import('@Media/components/Modal/ModalMediaTabBar'),
-        ActionIconButton: () => import('@Core/components/Buttons/ActionIconButton'),
+        ActionIconButton: () => import('@Core/components/ActionIconButton/ActionIconButton'),
         ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
         ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
     },

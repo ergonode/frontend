@@ -53,7 +53,7 @@
 import {
     GREEN,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import IconUploadCloudFile from '@Core/components/Icons/Actions/IconUploadCloudFile';
 import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
 import {

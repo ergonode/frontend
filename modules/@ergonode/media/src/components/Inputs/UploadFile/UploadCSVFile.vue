@@ -25,7 +25,7 @@
 import {
     GREEN,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import LinkButton from '@Core/components/Buttons/LinkButton';
+import LinkButton from '@Core/components/LinkButton/LinkButton';
 import IconFile from '@Core/components/Icons/Others/IconFile';
 import {
     ALERT_TYPE,

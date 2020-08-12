@@ -4,7 +4,7 @@
  */
 <template>
     <Grid
-        :is-editable="$hasAccess(['MULTIMEDIA_UPDATE'])"
+        :is-editable="isAllowedToUpdate"
         :columns="columnsWithAttachColumn"
         :data-count="filtered"
         :drafts="drafts"
@@ -45,7 +45,7 @@ import {
     GRAPHITE,
     GREEN,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import Grid from '@Core/components/Grid/Grid';
 import {
     ALERT_TYPE,
@@ -58,6 +58,7 @@ import {
 } from '@Core/defaults/theme';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
+import PRIVILEGES from '@Media/config/privileges';
 import {
     debounce,
 } from 'debounce';
@@ -98,6 +99,11 @@ export default {
         };
     },
     computed: {
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.MULTIMEDIA.update,
+            ]);
+        },
         smallSize() {
             return SIZE.SMALL;
         },

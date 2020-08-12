@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                :is-editable="$hasAccess(['CATEGORY_UPDATE'])"
+                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Categories/config/privileges';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
 
@@ -34,6 +35,13 @@ export default {
             path: 'categories',
         }),
     ],
+    computed: {
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.CATEGORY.update,
+            ]);
+        },
+    },
     methods: {
         onEditRow(args) {
             const lastIndex = args.length - 1;

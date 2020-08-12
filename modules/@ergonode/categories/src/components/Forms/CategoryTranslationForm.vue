@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Categories/config/privileges';
 import Card from '@Core/components/Card/Card';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
@@ -41,7 +42,7 @@ export default {
     computed: {
         isUserAllowedToUpdate() {
             return this.$hasAccess([
-                'CATEGORY_UPDATE',
+                PRIVILEGES.CATEGORY.UPDATE,
             ]);
         },
         nameFieldKey() {

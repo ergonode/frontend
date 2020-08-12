@@ -44,7 +44,7 @@ import {
     GREEN,
     WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import Fab from '@Core/components/Buttons/Fab';
+import Fab from '@Core/components/Fab/Fab';
 import IconArrowDouble from '@Core/components/Icons/Arrows/IconArrowDouble';
 import SideBarListElement from '@Core/components/SideBar/SideBarListElement';
 import SideBarListGroup from '@Core/components/SideBar/SideBarListGroup';

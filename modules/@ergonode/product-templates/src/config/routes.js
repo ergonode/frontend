@@ -50,7 +50,7 @@ export default [
                 path: 'general',
                 component: Tabs.TemplateDesignerBaseTab,
                 meta: {
-                    title: 'General',
+                    title: 'Options',
                     breadcrumbs: [
                         {
                             title: 'Product design',

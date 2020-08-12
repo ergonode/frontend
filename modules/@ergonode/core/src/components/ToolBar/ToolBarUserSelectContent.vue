@@ -41,7 +41,7 @@ export default {
         Divider: () => import('@Core/components/Dividers/Divider'),
         ToolBarUserSelectContentHeader: () => import('@Core/components/ToolBar/ToolBarUserSelectContentHeader'),
         MenuList: () => import('@Core/components/MenuList/MenuList'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
     },
     props: {
         avatarId: {

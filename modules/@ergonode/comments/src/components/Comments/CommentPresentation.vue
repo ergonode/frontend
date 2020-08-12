@@ -54,7 +54,7 @@ import {
     RED,
     WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import Fab from '@Core/components/Buttons/Fab';
+import Fab from '@Core/components/Fab/Fab';
 import IconDelete from '@Core/components/Icons/Actions/IconDelete';
 import IconEdit from '@Core/components/Icons/Actions/IconEdit';
 import {

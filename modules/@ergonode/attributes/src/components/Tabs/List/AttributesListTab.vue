@@ -30,13 +30,13 @@
                     :items="items[language.code][group.id]"
                     :language-code="language.code"
                     :is-expanded="expandedGroupId === group.id"
-                    :is-draggable="isUserAllowedToDragAttributes"
+                    :is-draggable="isAllowedToUpdate"
                     @expand="onGroupExpand" />
             </ListScrollableContainer>
         </List>
         <Fab
             :floating="{ bottom: '16px', right: '16px' }"
-            :disabled="!isUserAllowedToCreateAttribute"
+            :disabled="!isAllowedToCreate"
             @click.native="onShowModal">
             <template #icon="{ color }">
                 <IconAdd :fill-color="color" />
@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Attributes/config/privileges';
 import {
     UNASSIGNED_GROUP_ID,
 } from '@Core/defaults/list';
@@ -72,7 +73,7 @@ export default {
         AttributesListGroup: () => import('@Attributes/components/Lists/AttributesListGroup'),
         ListSearchSelectHeader: () => import('@Core/components/List/ListSearchSelectHeader'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
-        Fab: () => import('@Core/components/Buttons/Fab'),
+        Fab: () => import('@Core/components/Fab/Fab'),
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
         CreateAttributeModalForm: () => import('@Attributes/components/Modals/CreateAttributeModalForm'),
         TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
@@ -118,12 +119,12 @@ export default {
                 id,
             }) => this.groupItemsCount[id]);
         },
-        isUserAllowedToCreateAttribute() {
+        isAllowedToCreate() {
             return this.$hasAccess([
-                'ATTRIBUTE_CREATE',
+                PRIVILEGES.ATTRIBUTE.create,
             ]);
         },
-        isUserAllowedToDragAttributes() {
+        isAllowedToUpdate() {
             const {
                 languagePrivileges,
             } = this.user;
@@ -132,7 +133,7 @@ export default {
             } = this.language;
 
             return this.$hasAccess([
-                'ATTRIBUTE_UPDATE',
+                PRIVILEGES.ATTRIBUTE.update,
             ]) && languagePrivileges[code].read;
         },
         languageOptions() {

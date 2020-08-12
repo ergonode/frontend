@@ -6,13 +6,13 @@
     <Page>
         <TitleBar
             title="Attributes"
-            :is-read-only="$isReadOnly('ATTRIBUTE')">
+            :is-read-only="isReadOnly">
             <template #mainAction>
                 <Button
                     data-cy="new-attribute"
                     title="NEW ATTRIBUTE"
                     :size="smallSize"
-                    :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
+                    :disabled="!isAllowedToCreate"
                     @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
@@ -35,7 +35,8 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
+import PRIVILEGES from '@Attributes/config/privileges';
+import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import {
     SIZE,
@@ -59,6 +60,16 @@ export default {
         gridModalMixin,
     ],
     computed: {
+        isAllowedToCreate() {
+            return this.$hasAccess([
+                PRIVILEGES.ATTRIBUTE.create,
+            ]);
+        },
+        isReadOnly() {
+            return this.$isReadOnly(
+                PRIVILEGES.ATTRIBUTE.namespace,
+            );
+        },
         smallSize() {
             return SIZE.SMALL;
         },

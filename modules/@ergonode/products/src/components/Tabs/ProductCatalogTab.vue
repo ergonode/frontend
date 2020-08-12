@@ -77,7 +77,7 @@
 import {
     GRAPHITE_LIGHT,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import DropZone from '@Core/components/DropZone/DropZone';
 import IconRemoveColumn from '@Core/components/Icons/Actions/IconRemoveColumn';
 import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';

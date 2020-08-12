@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                :is-editable="$hasAccess(['IMPORT_UPDATE'])"
+                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
@@ -23,6 +23,7 @@
 <script>
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
+import PRIVILEGES from '@Import/config/privileges';
 
 export default {
     name: 'ImportProfileGridTab',
@@ -34,6 +35,13 @@ export default {
             path: 'sources',
         }),
     ],
+    computed: {
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.IMPORT.update,
+            ]);
+        },
+    },
     methods: {
         onEditRow(args) {
             const lastIndex = args.length - 1;

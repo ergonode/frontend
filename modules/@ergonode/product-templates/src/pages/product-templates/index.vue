@@ -6,13 +6,13 @@
     <Page>
         <TitleBar
             title="Templates"
-            :is-read-only="$isReadOnly('TEMPLATE_DESIGNER')">
+            :is-read-only="isReadOnly">
             <template #mainAction>
                 <Button
                     data-cy="new-template"
                     title="NEW TEMPLATE"
                     :size="smallSize"
-                    :disabled="!$hasAccess(['TEMPLATE_DESIGNER_CREATE'])"
+                    :disabled="!isAllowedToCreate"
                     @click.native="onCreate">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
@@ -23,7 +23,7 @@
         <ResponsiveCenteredViewTemplate>
             <template #content>
                 <Grid
-                    :is-editable="$hasAccess(['TEMPLATE_DESIGNER_UPDATE'])"
+                    :is-editable="isAllowedToUpdate"
                     :columns="columns"
                     :data-count="filtered"
                     :rows="rows"
@@ -55,6 +55,7 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
+import PRIVILEGES from '@Templates/config/privileges';
 
 export default {
     name: 'Templates',
@@ -63,7 +64,7 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
         CreateProductTemplateModalForm: () => import('@Templates/components/Modals/CreateProductTemplateModalForm'),
         Grid: () => import('@Core/components/Grid/Grid'),
     },
@@ -78,6 +79,19 @@ export default {
         };
     },
     computed: {
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.TEMPLATE_DESIGNER.update,
+            ]);
+        },
+        isAllowedToCreate() {
+            return this.$hasAccess([
+                PRIVILEGES.TEMPLATE_DESIGNER.create,
+            ]);
+        },
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.TEMPLATE_DESIGNER.namespace);
+        },
         collectionCellBinding() {
             return {
                 imageColumn: 'image_id',

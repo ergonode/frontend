@@ -6,12 +6,12 @@
     <Page>
         <TitleBar
             title="Import profiles"
-            :is-read-only="$isReadOnly('IMPORT')">
+            :is-read-only="isReadOnly">
             <template #mainAction>
                 <Button
                     title="NEW IMPORT PROFILE"
                     :size="smallSize"
-                    :disabled="!$hasAccess(['IMPORT_CREATE'])"
+                    :disabled="!isAllowedToCreate"
                     @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import {
     SIZE,
@@ -43,6 +43,7 @@ import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import {
     getNestedTabRoutes,
 } from '@Core/models/navigation/tabs';
+import PRIVILEGES from '@Import/config/privileges';
 
 export default {
     name: 'Imports',
@@ -58,6 +59,14 @@ export default {
         gridModalMixin,
     ],
     computed: {
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.IMPORT.namespace);
+        },
+        isAllowedToCreate() {
+            return this.$hasAccess([
+                PRIVILEGES.IMPORT.create,
+            ]);
+        },
         smallSize() {
             return SIZE.SMALL;
         },

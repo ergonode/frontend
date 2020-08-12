@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import Fab from '@Core/components/Buttons/Fab';
+import Fab from '@Core/components/Fab/Fab';
 import IconClose from '@Core/components/Icons/Window/IconClose';
 import {
     SIZE,

@@ -41,7 +41,7 @@ export default {
     name: 'CreateProductStatusModalForm',
     components: {
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
         ProductStatusForm: () => import('@Statuses/components/Form/ProductStatusForm'),
     },
     mixins: [

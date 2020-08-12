@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="General"
+        title="Options"
         :fields-keys="[typeFieldKey, nameFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
@@ -79,12 +79,9 @@ export default {
             channels: state => state.channels,
         }),
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess([
+            return !this.$hasAccess([
                 PRIVILEGES.CHANNEL.update,
-            ]))
-            || (!this.isDisabled && !this.$hasAccess([
-                PRIVILEGES.CHANNEL.create,
-            ]));
+            ]);
         },
         isDisabled() {
             return Boolean(this.id);

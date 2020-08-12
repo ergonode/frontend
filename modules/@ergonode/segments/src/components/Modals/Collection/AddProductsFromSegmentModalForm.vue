@@ -42,7 +42,7 @@ export default {
     components: {
         AddProductsFromSegmentForm: () => import('@Segments/components/Forms/Collection/AddProductsFromSegmentForm'),
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
     },
     data() {
         return {

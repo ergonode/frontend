@@ -41,7 +41,7 @@ export default {
     name: 'CreateCollectionModalForm',
     components: {
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
         CollectionForm: () => import('@Collections/components/Forms/CollectionForm'),
     },
     mixins: [

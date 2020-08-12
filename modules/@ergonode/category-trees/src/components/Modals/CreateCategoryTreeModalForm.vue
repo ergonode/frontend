@@ -41,7 +41,7 @@ export default {
     name: 'CreateCategoryTreeModalForm',
     components: {
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
         CategoryTreeForm: () => import('@Trees/components/Forms/CategoryTreeForm'),
     },
     mixins: [

@@ -48,7 +48,7 @@ export default {
         ToolBarSelectButton: () => import('@Core/components/ToolBar/ToolBarSelectButton'),
         IconBell: () => import('@Core/components/Icons/Menu/IconBell'),
         NotificationBadge: () => import('@Core/components/Badges/NotificationBadge'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
         List: () => import('@Core/components/List/List'),
         NotificationsListElement: () => import('@Notifications/components/List/NotificationsListElement'),
         NotificationsListFooter: () => import('@Notifications/components/List/NotificationsListFooter'),

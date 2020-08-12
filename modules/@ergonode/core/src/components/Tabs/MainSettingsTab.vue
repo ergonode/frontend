@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import MainSettingsForm from '@Core/components/Forms/MainSettingsForm';
 import FooterActions from '@Core/components/Layout/Footer/FooterActions';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';

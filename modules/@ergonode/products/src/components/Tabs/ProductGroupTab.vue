@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import ActionButton from '@Core/components/Buttons/ActionButton';
+import ActionButton from '@Core/components/ActionButton/ActionButton';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import {

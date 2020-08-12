@@ -13,13 +13,13 @@
                     v-for="item in items[userLanguageCode]"
                     :key="item.id"
                     :item="item"
-                    :is-draggable="isUserAllowedToUpdateTree"
+                    :is-draggable="isAllowedToUpdate"
                     :language-code="userLanguageCode" />
             </ListScrollableContainer>
         </List>
         <Fab
             :floating="{ bottom: '16px', right: '16px' }"
-            :disabled="!$hasAccess(['CATEGORY_CREATE'])"
+            :disabled="!isAllowedToCreate"
             @click.native="onShowModal">
             <template #icon="{ color }">
                 <IconAdd :fill-color="color" />
@@ -35,6 +35,7 @@
 <script>
 import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import PRIVILEGES from '@Trees/config/privileges';
 import {
     mapState,
 } from 'vuex';
@@ -49,7 +50,7 @@ export default {
         VerticalTabBarList: () => import('@Core/components/TabBar/VerticalTabBarList'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
-        Fab: () => import('@Core/components/Buttons/Fab'),
+        Fab: () => import('@Core/components/Fab/Fab'),
     },
     mixins: [
         gridModalMixin,
@@ -61,9 +62,14 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        isUserAllowedToUpdateTree() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
-                'CATEGORY_TREE_UPDATE',
+                PRIVILEGES.CATEGORY_TREE.update,
+            ]);
+        },
+        isAllowedToCreate() {
+            return this.$hasAccess([
+                PRIVILEGES.CATEGORY_TREE.create,
             ]);
         },
     },

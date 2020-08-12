@@ -31,7 +31,7 @@ import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
 import FluidBlob from '@Core/components/Blob/FluidBlob';
-import LinkButton from '@Core/components/Buttons/LinkButton';
+import LinkButton from '@Core/components/LinkButton/LinkButton';
 import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
 import Footer from '@Core/components/Layout/Footer/Footer';
 import {

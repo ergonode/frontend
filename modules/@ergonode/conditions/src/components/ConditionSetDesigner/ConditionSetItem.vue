@@ -47,7 +47,7 @@ import ConditionSetParameters from '@Conditions/components/ConditionSetDesigner/
 import {
     hasOptions,
 } from '@Conditions/models/conditionTypes';
-import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
+import ActionIconButton from '@Core/components/ActionIconButton/ActionIconButton';
 import IconDots from '@Core/components/Icons/Others/IconDots';
 import {
     SIZE,

@@ -6,12 +6,12 @@
     <Page>
         <TitleBar
             title="User roles"
-            :is-read-only="$isReadOnly('USER')">
+            :is-read-only="isReadOnly">
             <template #mainAction>
                 <Button
                     title="NEW ROLE"
                     :size="smallSize"
-                    :disabled="!$hasAccess(['USER_CREATE'])"
+                    :disabled="!isAllowedToCreate"
                     @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import {
     SIZE,
@@ -43,6 +43,7 @@ import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import {
     getNestedTabRoutes,
 } from '@Core/models/navigation/tabs';
+import PRIVILEGES from '@Users/config/privileges';
 
 export default {
     name: 'UsersTabs',
@@ -58,6 +59,14 @@ export default {
         gridModalMixin,
     ],
     computed: {
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.USER_ROLE.namespace);
+        },
+        isAllowedToCreate() {
+            return this.$hasAccess([
+                PRIVILEGES.USER_ROLE.create,
+            ]);
+        },
         smallSize() {
             return SIZE.SMALL;
         },

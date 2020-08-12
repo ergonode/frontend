@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                :is-editable="$hasAccess(['WORKFLOW_UPDATE'])"
+                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
@@ -23,6 +23,7 @@
 <script>
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
+import PRIVILEGES from '@Transitions/config/privileges';
 
 export default {
     name: 'TransitionsGridTab',
@@ -34,6 +35,13 @@ export default {
             path: 'workflow/default/transitions',
         }),
     ],
+    computed: {
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.WORKFLOW.update,
+            ]);
+        },
+    },
     methods: {
         onEditRow(args) {
             const lastIndex = args.length - 1;

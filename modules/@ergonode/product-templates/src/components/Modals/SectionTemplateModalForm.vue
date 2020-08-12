@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';

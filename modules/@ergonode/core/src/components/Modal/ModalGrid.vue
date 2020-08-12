@@ -45,8 +45,8 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
-import Fab from '@Core/components/Buttons/Fab';
+import Button from '@Core/components/Button/Button';
+import Fab from '@Core/components/Fab/Fab';
 import Grid from '@Core/components/Grid/Grid';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import IconClose from '@Core/components/Icons/Window/IconClose';

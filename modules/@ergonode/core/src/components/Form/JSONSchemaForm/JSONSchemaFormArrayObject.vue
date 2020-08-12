@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import JSONSchemaFormTableRowWidget from '@Core/components/Form/JSONSchemaForm/JSONSchemaFormTableRowWidget';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import FormSubsection from '@Core/components/Form/Subsection/FormSubsection';

@@ -24,7 +24,7 @@ import {
     GRAPHITE,
     GREEN,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import IconButton from '@Core/components/Buttons/IconButton';
+import IconButton from '@Core/components/IconButton/IconButton';
 import {
     SIZE,
     THEME,

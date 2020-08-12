@@ -7,11 +7,12 @@
         :columns="columns"
         :row-height="rowHeight"
         :context-name="contextName"
-        :is-dragging-enabled="$hasAccess(['CATEGORY_TREE_UPDATE'])" />
+        :is-dragging-enabled="isAllowedToUpdate" />
 </template>
 
 <script>
 import TemplateGridWrapper from '@Core/components/TemplateGrid/TemplateGridWrapper';
+import PRIVILEGES from '@Trees/config/privileges';
 import {
     COLUMNS,
     CONTEXT_NAME,
@@ -24,6 +25,11 @@ export default {
         TemplateGridWrapper,
     },
     computed: {
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.CATEGORY_TREE.update,
+            ]);
+        },
         contextName() {
             return CONTEXT_NAME;
         },

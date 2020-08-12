@@ -4,10 +4,12 @@
  */
 export const Pages = {
     Media: () => import('@Media/pages/media/index').then(m => m.default || m),
+    ResourceEdit: () => import('@Media/pages/media/_resource/_id').then(m => m.default || m),
 };
 
 export const Tabs = {
     MediaGridTab: () => import('@Media/components/Tabs/MediaGridTab').then(m => m.default || m),
+    ResourceBaseTab: () => import('@Media/components/Tabs/ResourceBaseTab').then(m => m.default || m),
 };
 
 export const Components = {

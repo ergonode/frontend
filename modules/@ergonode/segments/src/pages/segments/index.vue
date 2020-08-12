@@ -6,13 +6,13 @@
     <Page>
         <TitleBar
             title="Segments"
-            :is-read-only="$isReadOnly('SEGMENT')">
+            :is-read-only="isReadOnly">
             <template #mainAction>
                 <Button
                     data-cy="new-segment"
                     title="NEW SEGMENT"
                     :size="smallSize"
-                    :disabled="!$hasAccess(['SEGMENT_CREATE'])"
+                    :disabled="!isAllowedToCreate"
                     @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import {
     SIZE,
@@ -44,6 +44,7 @@ import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import {
     getNestedTabRoutes,
 } from '@Core/models/navigation/tabs';
+import PRIVILEGES from '@Segments/config/privileges';
 
 export default {
     name: 'SegmentsPage',
@@ -59,6 +60,14 @@ export default {
         gridModalMixin,
     ],
     computed: {
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.SEGMENT.namespace);
+        },
+        isAllowedToCreate() {
+            return this.$hasAccess([
+                PRIVILEGES.SEGMENT.create,
+            ]);
+        },
         smallSize() {
             return SIZE.SMALL;
         },

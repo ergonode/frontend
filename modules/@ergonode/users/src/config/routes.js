@@ -62,7 +62,7 @@ export default [
                 path: 'general',
                 component: Tabs.UserBaseTab,
                 meta: {
-                    title: 'General',
+                    title: 'Options',
                     breadcrumbs: [
                         {
                             title: 'System',
@@ -168,7 +168,7 @@ export default [
                 path: 'general',
                 component: Tabs.RoleBaseTab,
                 meta: {
-                    title: 'General',
+                    title: 'Options',
                     breadcrumbs: [
                         {
                             title: 'System',
