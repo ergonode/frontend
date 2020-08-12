@@ -4,18 +4,33 @@
  */
 <template>
     <ResourcePage
-        :title="'RESOURCE'"
+        :title="`${name}${extension}`"
         @remove="onRemove"
         @save="onSave" />
 </template>
 
 <script>
 import ResourcePage from '@Media/components/Pages/ResourcePage';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ResourceEdit',
     components: {
         ResourcePage,
+    },
+    asyncData({
+        store, params,
+    }) {
+        return store.dispatch('media/getResourceById', params.id);
+    },
+    computed: {
+        ...mapState('media', {
+            name: state => state.name,
+            extension: state => state.extension,
+        }),
     },
     methods: {
         onRemove() {

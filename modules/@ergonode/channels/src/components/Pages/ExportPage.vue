@@ -50,7 +50,7 @@ export default {
             return this.$isReadOnly(PRIVILEGES.CHANNEL.namespace);
         },
         isDownloadFile() {
-            return this.export_details._links.attachment;
+            return this.export_details._links && this.export_details._links.attachment;
         },
     },
     methods: {

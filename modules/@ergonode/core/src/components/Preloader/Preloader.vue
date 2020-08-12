@@ -17,7 +17,7 @@ import {
 import IconLoader from '@Core/components/Icons/Feedback/IconLoader';
 
 export default {
-    name: 'GridPreloader',
+    name: 'Preloader',
     components: {
         IconLoader,
     },

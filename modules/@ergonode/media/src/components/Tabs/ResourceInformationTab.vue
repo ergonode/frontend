@@ -5,20 +5,20 @@
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #centeredContent>
-            <ResourceForm />
+            <ResourceInformationForm />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import ResourceForm from '@Media/components/Forms/ResourceForm';
+import ResourceInformationForm from '@Media/components/Forms/ResourceInformationForm';
 
 export default {
-    name: 'ResourceBaseTab',
+    name: 'ResourceInformationTab',
     components: {
-        ResourceForm,
         ResponsiveCenteredViewTemplate,
+        ResourceInformationForm,
     },
 };
 </script>

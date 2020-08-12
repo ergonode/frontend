@@ -40,9 +40,9 @@ import {
 } from '@Authentication/defaults/login-state';
 import Button from '@Core/components/Button/Button';
 import Fab from '@Core/components/Fab/Fab';
-import LinkButton from '@Core/components/LinkButton/LinkButton';
 import IconArrowPointer from '@Core/components/Icons/Arrows/IconArrowPointer';
 import IconEmail from '@Core/components/Icons/Others/IconEmail';
+import LinkButton from '@Core/components/LinkButton/LinkButton';
 
 export default {
     name: 'LoginHelpForm',

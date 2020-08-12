@@ -5,16 +5,16 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[fileNameFieldKey]">
+        :fields-keys="[nameFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
-                    :value="fileName"
+                    :value="name"
                     required
-                    :error-messages="errorMessages[fileNameFieldKey]"
+                    :error-messages="errorMessages[nameFieldKey]"
                     :disabled="isDisabledByPrivileges"
                     label="File name"
-                    @input="setFileNameValue" />
+                    @input="setNameValue" />
             </FormSection>
         </template>
     </Form>
@@ -23,7 +23,6 @@
 <script>
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import Select from '@Core/components/Inputs/Select/Select';
 import TextField from '@Core/components/Inputs/TextField';
 import PRIVILEGES from '@Media/config/privileges';
 import {
@@ -37,15 +36,17 @@ export default {
         Form,
         FormSection,
         TextField,
-        Select,
     },
     computed: {
+        ...mapState('media', {
+            name: state => state.name,
+        }),
         isDisabledByPrivileges() {
             return !this.$hasAccess([
                 PRIVILEGES.MULTIMEDIA.update,
             ]);
         },
-        fileNameFieldKey() {
+        nameFieldKey() {
             return 'name';
         },
     },
@@ -53,9 +54,9 @@ export default {
         ...mapActions('media', [
             '__setState',
         ]),
-        setFileNameValue(value) {
+        setNameValue(value) {
             this.__setState({
-                key: 'fileName',
+                key: 'name',
                 value,
             });
         },

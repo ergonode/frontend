@@ -56,7 +56,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'multimedia-id-general',
+                name: 'media-id-general',
                 params: {
                     id: args[lastIndex],
                 },

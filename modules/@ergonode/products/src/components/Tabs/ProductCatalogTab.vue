@@ -227,7 +227,10 @@ export default {
                 return tmp;
             }, {});
 
-            this.setDrafts(drafts);
+            this.setDrafts({
+                ...this.drafts,
+                ...drafts,
+            });
 
             const requests = cellValues.map(({
                 rowId, columnId, value,

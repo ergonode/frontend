@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    fileName: '',
-    preview: null,
+    id: '',
+    name: '',
+    extension: '',
 });
