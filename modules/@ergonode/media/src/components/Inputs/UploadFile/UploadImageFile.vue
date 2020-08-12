@@ -233,7 +233,7 @@ export default {
             const value = this.multiple
                 ? this.value[this.currentIndex]
                 : this.value;
-            const url = `${process.env.baseURL}multimedia/${value}`;
+            const url = `${process.env.baseURL}multimedia/${value}/download/800`;
 
             this.$axios.$get(url, {
                 responseType: 'arraybuffer',
