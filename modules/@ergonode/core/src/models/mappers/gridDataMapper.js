@@ -47,14 +47,18 @@ export function getParsedFilter({
 export function getMergedFilters({
     basic, advanced,
 }) {
-    const merged = {
-        ...basic,
-        ...advanced,
-    };
+    // TODO: Unify!
+    const test = [
+        ...Object.keys(basic)
+            .map(key => getParsedFilter({
+                id: key,
+                filter: basic[key],
+            })),
+        ...Object.keys(advanced)
+            .map(key => advanced[key]),
+    ];
 
-    return Object.keys(merged)
-        .map(key => merged[key])
-        .join(';');
+    return test.join(';');
 }
 
 export function getSortedColumnsByIDs(columns, columnsID) {

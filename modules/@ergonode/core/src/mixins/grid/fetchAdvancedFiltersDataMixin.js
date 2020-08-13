@@ -14,9 +14,6 @@ export default function ({
     path,
 }) {
     return {
-        components: {
-            // TODO: Advanced filter components
-        },
         data() {
             return {
                 advancedFilters: [],

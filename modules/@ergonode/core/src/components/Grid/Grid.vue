@@ -47,6 +47,7 @@
                     :rows="rows"
                     :row-ids="rowIds"
                     :drafts="drafts"
+                    :filters="filterValues"
                     :current-page="currentPage"
                     :max-rows="maxRows"
                     :row-height="tableLayoutConfig.rowHeight"
@@ -370,16 +371,12 @@ export default {
             this.emitFetchData();
         },
         onFilterChange(filters) {
-            this.filterValues = {
-                ...filters,
-            };
+            this.filterValues = filters;
 
             this.emitFetchData();
         },
         onAdvancedFilterChange(filters) {
-            this.advancedFilterValues = {
-                ...filters,
-            };
+            this.advancedFilterValues = filters;
 
             this.emitFetchData();
         },
