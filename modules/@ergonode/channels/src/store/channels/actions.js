@@ -82,13 +82,14 @@ export default {
             language: userLanguageCode,
         } = rootState.authentication.user;
 
-        return this.app.$axios.$get(`${userLanguageCode}/channels/${channel_id}/exports/${export_id}`).then((data) => {
-            console.log(data);
-            commit('__SET_STATE', {
-                key: 'export_details',
-                value: data,
-            });
-        }).catch(onError);
+        return this.app.$axios
+            .$get(`${userLanguageCode}/channels/${channel_id}/exports/${export_id}`)
+            .then((data) => {
+                commit('__SET_STATE', {
+                    key: 'export_details',
+                    value: data,
+                });
+            }).catch(onError);
     },
     createExport({
         state, rootState,
