@@ -10,6 +10,7 @@ export const Pages = {
 export const Tabs = {
     MediaGridTab: () => import('@Media/components/Tabs/MediaGridTab').then(m => m.default || m),
     ResourceBaseTab: () => import('@Media/components/Tabs/ResourceBaseTab').then(m => m.default || m),
+    ResourceTranslationsTab: () => import('@Media/components/Tabs/ResourceTranslationsTab').then(m => m.default || m),
     ResourceInformationTab: () => import('@Media/components/Tabs/ResourceInformationTab').then(m => m.default || m),
     ResourceRelationsTab: () => import('@Media/components/Tabs/ResourceRelationsTab').then(m => m.default || m),
 };

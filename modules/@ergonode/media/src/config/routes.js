@@ -77,6 +77,25 @@ export default [
                 },
             },
             {
+                name: 'media-id-translations',
+                path: 'translations',
+                component: Tabs.ResourceTranslationsTab,
+                meta: {
+                    title: 'Translations',
+                    breadcrumbs: [
+                        {
+                            title: 'Resources',
+                            icon: Icons.Media,
+                        },
+                        {
+                            title: 'Media',
+                            routeName: 'media-grid',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+            {
                 name: 'import-id-information',
                 path: 'information',
                 component: Tabs.ResourceInformationTab,

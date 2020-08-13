@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import {
-    getProductById,
+    getProduct,
 } from '@Categories/extends/methods';
 
 import {
@@ -24,6 +24,6 @@ export default {
         ],
     },
     extendMethods: {
-        '@Products/store/product/action/getProductById': getProductById,
+        '@Products/store/product/action/getProduct': getProduct,
     },
 };

@@ -34,7 +34,7 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('channels/getChannelById', {
+        await store.dispatch('channels/getChannel', {
             id: params.id,
         });
     },

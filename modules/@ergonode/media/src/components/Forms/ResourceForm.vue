@@ -15,6 +15,11 @@
                     :disabled="isDisabledByPrivileges"
                     label="File name"
                     @input="setNameValue" />
+                <UploadImageFile
+                    :value="id"
+                    disabled
+                    label="Preview"
+                    height="246px" />
             </FormSection>
         </template>
     </Form>
@@ -24,6 +29,7 @@
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import TextField from '@Core/components/Inputs/TextField';
+import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 import PRIVILEGES from '@Media/config/privileges';
 import {
     mapActions,
@@ -36,9 +42,11 @@ export default {
         Form,
         FormSection,
         TextField,
+        UploadImageFile,
     },
     computed: {
         ...mapState('media', {
+            id: state => state.id,
             name: state => state.name,
         }),
         isDisabledByPrivileges() {

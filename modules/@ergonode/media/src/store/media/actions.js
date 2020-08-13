@@ -4,7 +4,8 @@
  */
 
 export default {
-    getResourceById({
+    getResource({
+        dispatch,
         commit,
         rootState,
     }, id) {
@@ -12,24 +13,15 @@ export default {
             language: userLanguageCode,
         } = rootState.authentication.user;
 
-        // {
-        //     "id": "1118ac03-103d-4ab1-b1b5-1e98dd1ac1f8",
-        //     "name": "product-1.jpg",
-        //     "extension": "jpg",
-        //     "mime": "image/jpeg",
-        //     "size": 157278,
-        //     "hash": "4ab4804b53ec418cc1b1db7e5dbf18aab3f46f17",
-        //     "alt": []
-        // }
-
         return this.app.$axios.$get(`${userLanguageCode}/multimedia/${id}`).then(({
             name,
             extension,
-            mime,
-            size,
-            hash,
             alt,
         }) => {
+            const translations = {
+                alt: Array.isArray(alt) ? {} : alt,
+            };
+
             commit('__SET_STATE', {
                 key: 'id',
                 value: id,
@@ -42,6 +34,54 @@ export default {
                 key: 'extension',
                 value: extension,
             });
+            dispatch('translations/setTabTranslations', translations, {
+                root: true,
+            });
         });
+    },
+    updateResource({
+        commit,
+        state,
+        rootState,
+    }, {
+        onSuccess,
+        onError,
+    }) {
+        const {
+            id,
+            name,
+            extension,
+        } = state;
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
+        const {
+            translations: {
+                alt,
+            },
+        } = rootState.translations;
+
+        this.app.$axios
+            .$put(`${userLanguageCode}/multimedia/${id}`, {
+                name: `${name}${extension}`,
+                alt,
+            })
+            .then(() => onSuccess())
+            .catch(e => onError(e.data));
+    },
+    removeResource({
+        commit,
+        rootState,
+    }, {
+        id,
+        onSuccess,
+    }) {
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
+
+        this.app.$axios
+            .$delete(`${userLanguageCode}/multimedia/${id}`)
+            .then(() => onSuccess());
     },
 };

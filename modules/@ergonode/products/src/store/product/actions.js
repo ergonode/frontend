@@ -44,7 +44,7 @@ export default {
             });
         });
     },
-    getProductById({
+    getProduct({
         commit, dispatch, rootState,
     }, id) {
         const {
@@ -96,7 +96,7 @@ export default {
                 value: attributes,
             });
 
-            this.$extendMethods(EXTENDS['@Products/store/product/action/getProductById'], {
+            this.$extendMethods(EXTENDS['@Products/store/product/action/getProduct'], {
                 data,
                 commit,
                 dispatch,

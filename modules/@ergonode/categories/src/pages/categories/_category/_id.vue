@@ -39,7 +39,7 @@ export default {
             store.dispatch('translations/__clearStorage'),
             store.dispatch('categories/__clearStorage'),
         ]);
-        await store.dispatch('categories/getCategoryById', {
+        await store.dispatch('categories/getCategory', {
             categoryId: params.id,
         });
     },

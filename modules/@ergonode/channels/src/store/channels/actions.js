@@ -31,7 +31,7 @@ export default {
 
         return configuration;
     },
-    getChannelById(
+    getChannel(
         {
             commit, rootState,
         },
@@ -70,7 +70,7 @@ export default {
             });
         }).catch(onError);
     },
-    getExportById(
+    getExport(
         {
             commit, rootState,
         },

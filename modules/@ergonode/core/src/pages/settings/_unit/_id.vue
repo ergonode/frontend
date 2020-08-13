@@ -36,7 +36,7 @@ export default {
         params,
     }) {
         await store.dispatch('units/__clearStorage');
-        await store.dispatch('units/getUnitById', {
+        await store.dispatch('units/getUnit', {
             unitId: params.id,
         });
     },

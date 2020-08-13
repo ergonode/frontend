@@ -75,7 +75,7 @@ export default {
     methods: {
         ...mapActions('product', [
             'updateProductStatus',
-            'getProductById',
+            'getProduct',
         ]),
         onUpdateStatus({
             code,
@@ -93,7 +93,7 @@ export default {
                             },
                         } = this.$route;
 
-                        this.getProductById(id);
+                        this.getProduct(id);
                         this.$addAlert({
                             type: ALERT_TYPE.SUCCESS,
                             message: 'Status updated',

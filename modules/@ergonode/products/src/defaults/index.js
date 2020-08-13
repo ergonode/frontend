@@ -15,5 +15,5 @@ export const PRODUCT_TYPE = {
 export const EXTENDS = {
     PRODUCT_GROUP_ADD_PRODUCTS: 'PRODUCT_GROUP_ADD_PRODUCTS',
     '@Products/components/Form/ProductForm': '@Products/components/Form/ProductForm',
-    '@Products/store/product/action/getProductById': '@Products/store/product/action/getProductById',
+    '@Products/store/product/action/getProduct': '@Products/store/product/action/getProduct',
 };

@@ -19,7 +19,7 @@ export default {
                 : privileges,
         });
     },
-    getUserById(
+    getUser(
         {
             commit, rootState, rootGetters,
         },

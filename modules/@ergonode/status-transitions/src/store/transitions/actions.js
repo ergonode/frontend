@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export default {
-    async getTransitionById(
+    async getTransition(
         {
             commit, dispatch, rootState,
         },
@@ -51,7 +51,7 @@ export default {
             });
 
             if (conditionSetId) {
-                await dispatch('conditions/getConditionSetById', {
+                await dispatch('conditions/getConditionSet', {
                     conditionSetId,
                 }, {
                     root: true,

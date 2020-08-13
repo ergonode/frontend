@@ -41,7 +41,7 @@ export default {
             store.dispatch('tree/__clearStorage'),
             store.dispatch('translations/__clearStorage'),
         ]);
-        await store.dispatch('tree/getTreeById', {
+        await store.dispatch('tree/getTree', {
             treeId: params.id,
         });
     },

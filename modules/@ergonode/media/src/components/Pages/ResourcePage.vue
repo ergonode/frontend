@@ -5,17 +5,21 @@
 <template>
     <Page>
         <TitleBar :title="title">
+            <template #prependHeader>
+                <NavigationBackFab />
+            </template>
             <template #mainAction>
-                <Button
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    title="REMOVE RESOURCE"
-                    :disabled="!isUserAllowedToDelete"
-                    @click.native="onRemove">
-                    <template #prepend="{ color }">
-                        <IconDelete :fill-color="color" />
-                    </template>
-                </Button>
+                <!-- TODO: Uncomment when API endpoint is ready -->
+                <!--                <Button-->
+                <!--                    :theme="secondaryTheme"-->
+                <!--                    :size="smallSize"-->
+                <!--                    title="REMOVE RESOURCE"-->
+                <!--                    :disabled="!isUserAllowedToDelete"-->
+                <!--                    @click.native="onRemove">-->
+                <!--                    <template #prepend="{ color }">-->
+                <!--                        <IconDelete :fill-color="color" />-->
+                <!--                    </template>-->
+                <!--                </Button>-->
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar :items="tabs" />

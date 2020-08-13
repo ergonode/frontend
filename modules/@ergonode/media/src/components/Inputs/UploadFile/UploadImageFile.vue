@@ -22,7 +22,9 @@
                             :image-ids="value"
                             :current-index="currentIndex"
                             @current="onCurrentIndexChange" />
-                        <div class="upload-image-file__image-settings">
+                        <div
+                            v-if="!disabled"
+                            class="upload-image-file__image-settings">
                             <ActionIconButton
                                 :size="smallSize"
                                 :theme="secondaryPlainTheme"

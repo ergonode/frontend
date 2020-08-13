@@ -42,7 +42,7 @@ export default {
             store.dispatch('translations/__clearStorage'),
             store.dispatch('segments/__clearStorage'),
         ]);
-        await store.dispatch('segments/getSegmentById', {
+        await store.dispatch('segments/getSegment', {
             segmentId: params.id,
         });
     },
