@@ -14,7 +14,7 @@
                 :is-header-visible="true"
                 :is-border="true"
                 :is-basic-filter="true"
-                @fetchData="getGridData">
+                @fetchData="onFetchData">
                 <template #headerActions>
                     <h2
                         class="modal-grid__header"
@@ -87,7 +87,7 @@ export default {
         },
     },
     fetch() {
-        this.getGridData({
+        this.onFetchData({
             offset: 0,
             limit: DATA_LIMIT,
         });
@@ -109,7 +109,7 @@ export default {
         },
     },
     methods: {
-        async getGridData(params) {
+        async onFetchData(params) {
             const {
                 columns,
                 rows,

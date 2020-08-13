@@ -9,7 +9,7 @@
         :row="row"
         :column="column"
         :copyable="copyable"
-        @mousedown="onMouseDown"
+        @dblclick="onDoubleClick"
         @keydown="onKeyDown">
         <slot />
     </div>
@@ -75,12 +75,10 @@ export default {
         },
     },
     methods: {
-        onMouseDown(event) {
-            if (event.detail === 2 && !(this.locked || this.disabled)) {
+        onDoubleClick() {
+            if (this.editKeyCode === 13 && !(this.locked || this.disabled)) {
                 this.$emit('edit');
             }
-
-            this.$emit('mousedown');
         },
         onKeyDown(event) {
             const {

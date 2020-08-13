@@ -17,7 +17,7 @@
                 :is-header-visible="true"
                 :is-border="true"
                 @deleteRow="onRemoveRow"
-                @fetchData="getGridData">
+                @fetchData="onFetchData">
                 <template #headerActions>
                     <ActionButton
                         title="ADD PRODUCTS"
@@ -129,7 +129,7 @@ export default {
             this.selectedAppModalOption = null;
         },
         onCreatedData() {
-            this.getGridData(this.localParams);
+            this.onFetchData(this.localParams);
             this.selectedAppModalOption = null;
         },
     },

@@ -16,7 +16,7 @@
                 :is-basic-filter="true"
                 @editRow="onEditRow"
                 @deleteRow="onRemoveUnit"
-                @fetchData="getGridData">
+                @fetchData="onFetchData">
                 <template #headerActions>
                     <Button
                         title="NEW UNIT"

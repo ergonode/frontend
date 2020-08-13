@@ -15,7 +15,7 @@
                 :is-border="true"
                 @editRow="onEditRow"
                 @deleteRow="onRemoveRow"
-                @fetchData="getGridData" />
+                @fetchData="onFetchData" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>

@@ -13,7 +13,7 @@
                 :is-basic-filter="true"
                 :is-border="true"
                 @editRow="onEditRow"
-                @fetchData="getGridData" />
+                @fetchData="onFetchData" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>

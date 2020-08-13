@@ -84,6 +84,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import {
+    MEDIA_TYPE,
+} from '@Media/defaults';
 
 export default {
     name: 'UploadImageFile',
@@ -166,6 +169,7 @@ export default {
                         props: {
                             multiple: this.multiple,
                             value: this.value,
+                            type: MEDIA_TYPE.IMAGE,
                         },
                         listeners: {
                             input: (value) => {

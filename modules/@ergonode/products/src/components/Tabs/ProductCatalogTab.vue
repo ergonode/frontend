@@ -40,7 +40,7 @@
                 @deleteRow="onRemoveRow"
                 @dropColumn="onDropColumn"
                 @dropFilter="onDropFilter"
-                @fetchData="getGridData">
+                @fetchData="onFetchData">
                 <template #actions>
                     <!--
                       Uncomment when product draft will be change on grid
@@ -316,7 +316,7 @@ export default {
 
             await this.$setLoader('footerDraftButton');
             await Promise.all(promises).then(() => {
-                this.getGridData(this.localParams);
+                this.onFetchData(this.localParams);
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
                     message: 'Product changes saved',

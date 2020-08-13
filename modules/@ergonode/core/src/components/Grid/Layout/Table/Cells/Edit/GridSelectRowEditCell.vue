@@ -9,7 +9,7 @@
         editing-allowed
         :edit-key-code="32"
         :selected="isSelected"
-        @mousedown="onSelect"
+        @mousedown.native="onSelect"
         @edit="onSelect">
         <GridCheckEditCell :value="isSelected" />
     </GridTableCell>

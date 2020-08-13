@@ -36,7 +36,7 @@
                     :collection-cell-binding="collectionCellBinding"
                     @editRow="onEditRow"
                     @deleteRow="onRemoveRow"
-                    @fetchData="getGridData" />
+                    @fetchData="onFetchData" />
             </template>
         </ResponsiveCenteredViewTemplate>
         <CreateProductTemplateModalForm
@@ -114,7 +114,7 @@ export default {
         },
         onCreatedProductTemplate() {
             this.isCreateProductTemplateVisible = false;
-            this.getGridData(this.localParams);
+            this.onFetchData(this.localParams);
         },
         onEditRow(args) {
             const lastIndex = args.length - 1;

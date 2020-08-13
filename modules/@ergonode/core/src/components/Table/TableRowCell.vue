@@ -17,8 +17,8 @@ export default {
 <style lang="scss" scoped>
     .table-row-cell {
         padding: 12px;
+        box-sizing: border-box;
         background-color: $WHITE;
         border-left: $BORDER_1_GREY;
-        box-sizing: border-box;
     }
 </style>

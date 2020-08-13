@@ -22,8 +22,8 @@ export default {
 
 <style lang="scss" scoped>
     .table-row-info-cell {
-        font: $FONT_MEDIUM_12_16;
         color: $GRAPHITE_DARK;
+        font: $FONT_MEDIUM_12_16;
         text-align: left;
     }
 </style>

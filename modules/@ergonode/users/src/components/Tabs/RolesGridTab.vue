@@ -15,7 +15,7 @@
                 :is-border="true"
                 @editRow="onEditRow"
                 @deleteRow="onRemoveRow"
-                @fetchData="getGridData" />
+                @fetchData="onFetchData" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -38,7 +38,7 @@ export default {
     computed: {
         isAllowedToUpdate() {
             return this.$hasAccess([
-                PRIVILEGES.SEGMENT.update,
+                PRIVILEGES.USER_ROLE.update,
             ]);
         },
     },
