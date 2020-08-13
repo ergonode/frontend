@@ -28,54 +28,29 @@ export default function ({
             },
         },
         async fetch() {
-            const gridParams = {
-                offset: 0,
-                limit: DATA_LIMIT,
-                extended: true,
-                columns: this.getGridColumnParams(),
-            };
-            const mappedPath = this.getPath();
             const requests = [
-                getGridData({
-                    $axios: this.$axios,
-                    path: `${this.languageCode}/${mappedPath}`,
-                    params: gridParams,
+                this.onFetchData({
+                    offset: 0,
+                    limit: DATA_LIMIT,
+                    filters: '',
+                    sortedColumn: {},
                 }),
             ];
             const advFiltersIds = this.$cookies.get(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
 
             if (advFiltersIds) {
-                const filtersParams = {
-                    offset: 0,
-                    limit: 0,
-                    columns: advFiltersIds,
-                };
-
-                requests.push(getAdvancedFiltersData({
-                    $axios: this.$axios,
-                    $addAlert: this.$addAlert,
-                    path: `${this.languageCode}/${mappedPath}`,
-                    params: filtersParams,
-                }));
+                requests.push(this.onFetchAdvancedFilters(advFiltersIds));
             }
 
-            const [
-                gridData,
-                advancedFilters = [],
-            ] = await Promise.all(requests);
-            const {
-                columns, rows, filtered,
-            } = gridData;
+            await Promise.all(requests);
+
+            console.log(this.columns, this.advancedFilters);
 
             this.setDisabledElements(this.getDisabledElements({
-                columns,
-                filters: advancedFilters,
+                columns: this.columns,
+                filters: this.advancedFilters,
             }));
 
-            this.columns = columns;
-            this.rows = rows;
-            this.filtered = filtered;
-            this.advancedFilters = advancedFilters;
             this.isPrefetchingData = false;
         },
         data() {
@@ -113,6 +88,22 @@ export default function ({
                 'setDisabledElement',
                 'setDisabledElements',
             ]),
+            onFetchAdvancedFilters(ids) {
+                const filtersParams = {
+                    offset: 0,
+                    limit: 0,
+                    columns: ids,
+                };
+
+                return getAdvancedFiltersData({
+                    $axios: this.$axios,
+                    $addAlert: this.$addAlert,
+                    path: `${this.languageCode}/${this.getPath()}`,
+                    params: filtersParams,
+                }).then((advancedFilters) => {
+                    this.advancedFilters = advancedFilters;
+                });
+            },
             onFetchData({
                 offset, limit, filters, sortedColumn,
             }) {
@@ -169,6 +160,7 @@ export default function ({
                         this.setDisabledElement(this.getDisabledListElement({
                             languageCode: column.language,
                             attributeId: column.element_id,
+                            disabledElements: this.disabledElements,
                         }));
                     }
                 });
@@ -193,19 +185,22 @@ export default function ({
                     this.setDisabledElement(this.getDisabledListElement({
                         languageCode: filter.languageCode,
                         attributeId: filter.attributeId,
+                        disabledElements: this.disabledElements,
                     }));
                 }
 
                 this.advancedFilters = advancedFilters;
             },
             getDisabledListElement({
-                languageCode, attributeId,
+                languageCode,
+                attributeId,
+                disabledElements,
             }) {
                 return {
                     languageCode,
                     elementId: attributeId,
-                    disabled: this.disabledElements[languageCode]
-                        && typeof this.disabledElements[languageCode][attributeId] !== 'undefined',
+                    disabled: Boolean(disabledElements[languageCode]
+                        && typeof disabledElements[languageCode][attributeId] !== 'undefined'),
                 };
             },
             getPath() {
@@ -236,42 +231,38 @@ export default function ({
             }) {
                 const disabledElements = {};
 
-                columns.forEach((column) => {
-                    const {
-                        element_id: attributeId,
-                        language: languageCode,
-                    } = column;
-                    const {
-                        disabled,
-                    } = this.getDisabledListElement({
-                        languageCode,
-                        attributeId,
-                    });
+                const elements = [
+                    ...columns.map(column => ({
+                        languageCode: column.language,
+                        attributeId: column.element_id,
+                    })),
+                    ...filters.map(filter => ({
+                        languageCode: filter.languageCode,
+                        attributeId: filter.attributeId,
+                    })),
+                ];
 
-                    if (typeof disabledElements[languageCode] === 'undefined') {
-                        disabledElements[languageCode] = {};
+                elements.forEach((element) => {
+                    const {
+                        attributeId,
+                        languageCode,
+                    } = element;
+
+                    if (attributeId && languageCode) {
+                        const {
+                            disabled,
+                        } = this.getDisabledListElement({
+                            languageCode,
+                            attributeId,
+                            disabledElements,
+                        });
+
+                        if (typeof disabledElements[languageCode] === 'undefined') {
+                            disabledElements[languageCode] = {};
+                        }
+
+                        disabledElements[languageCode][attributeId] = disabled;
                     }
-
-                    disabledElements[languageCode][attributeId] = disabled;
-                });
-
-                filters.forEach((filter) => {
-                    const {
-                        attributeId,
-                        languageCode,
-                    } = filter;
-                    const {
-                        disabled,
-                    } = this.getDisabledListElement({
-                        languageCode,
-                        attributeId,
-                    });
-
-                    if (typeof disabledElements[languageCode] === 'undefined') {
-                        disabledElements[languageCode] = {};
-                    }
-
-                    disabledElements[languageCode][attributeId] = disabled;
                 });
 
                 return disabledElements;
