@@ -42,6 +42,11 @@
                 @dropFilter="onDropFilter"
                 @fetchData="onFetchData">
                 <template #actions>
+                    <ExpandNumericButton
+                        title="FILTERS"
+                        :number="filtersCount"
+                        :is-expanded="isFiltersExpanded"
+                        @click.native="onFiltersExpand" />
                     <!--
                       Uncomment when product draft will be change on grid
                       <Button

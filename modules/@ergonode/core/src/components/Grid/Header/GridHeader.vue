@@ -25,12 +25,6 @@
                         <IconArrowDropDown :fill-color="color" />
                     </template>
                 </ActionButton> -->
-                <ExpandNumericButton
-                    v-if="isAdvancedFilters"
-                    title="FILTERS"
-                    :number="filtersCount"
-                    :is-expanded="isFiltersExpanded"
-                    @click.native="onFiltersExpand" />
                 <slot name="actions" />
             </template>
             <template #configuration>
