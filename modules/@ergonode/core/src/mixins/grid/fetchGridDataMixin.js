@@ -6,7 +6,6 @@ import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
 import {
-    getAdvancedFiltersData,
     getGridData,
 } from '@Core/services/grid/getGridData.service';
 import {
@@ -28,37 +27,11 @@ export default function ({
                 default: false,
             },
         },
-        async fetch() {
-            const requests = [
-                this.onFetchData({
-                    offset: 0,
-                    limit: DATA_LIMIT,
-                    filters: '',
-                    sortedColumn: {},
-                }),
-            ];
-            const advFiltersIds = this.$cookies.get(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
-
-            if (advFiltersIds) {
-                requests.push(this.onFetchAdvancedFilters(advFiltersIds));
-            }
-
-            await Promise.all(requests).then(() => {
-                this.isPrefetchingData = false;
-            });
-
-            this.setDisabledElements(this.getDisabledElements({
-                columns: this.columns,
-                filters: this.advancedFilters,
-            }));
-        },
         data() {
             return {
-                isPrefetchingData: true,
                 rows: [],
                 columns: [],
                 filtered: 0,
-                advancedFilters: [],
                 localParams: {
                     offset: 0,
                     limit: DATA_LIMIT,
@@ -85,24 +58,7 @@ export default function ({
         methods: {
             ...mapActions('list', [
                 'setDisabledElement',
-                'setDisabledElements',
             ]),
-            onFetchAdvancedFilters(ids) {
-                const filtersParams = {
-                    offset: 0,
-                    limit: 0,
-                    columns: ids,
-                };
-
-                return getAdvancedFiltersData({
-                    $axios: this.$axios,
-                    $addAlert: this.$addAlert,
-                    path: `${this.languageCode}/${this.getPath()}`,
-                    params: filtersParams,
-                }).then((advancedFilters) => {
-                    this.advancedFilters = advancedFilters;
-                });
-            },
             onFetchData({
                 offset, limit, filters, sortedColumn,
             }) {
@@ -164,32 +120,6 @@ export default function ({
                     }
                 });
             },
-            async onDropFilter(filterId) {
-                const params = {
-                    limit: 0,
-                    offset: 0,
-                    columns: this.$cookies.get(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`),
-                };
-                const advancedFilters = await getAdvancedFiltersData({
-                    $axios: this.$axios,
-                    $addAlert: this.$addAlert,
-                    path: `${this.languageCode}/${path}`,
-                    params,
-                });
-                const filter = advancedFilters.find(({
-                    id,
-                }) => id === filterId);
-
-                if (filter && filter.attributeId) {
-                    this.setDisabledElement(this.getDisabledListElement({
-                        languageCode: filter.languageCode,
-                        attributeId: filter.attributeId,
-                        disabledElements: this.disabledElements,
-                    }));
-                }
-
-                this.advancedFilters = advancedFilters;
-            },
             getDisabledListElement({
                 languageCode,
                 attributeId,
@@ -215,56 +145,8 @@ export default function ({
             },
             getGridColumnParams() {
                 const columnsConfig = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
-                let columns = '';
 
-                if (columnsConfig) {
-                    columns = columnsConfig;
-                } else {
-                    columns = defaultColumns;
-                }
-
-                return columns;
-            },
-            getDisabledElements({
-                columns, filters,
-            }) {
-                const disabledElements = {};
-
-                const elements = [
-                    ...columns.map(column => ({
-                        languageCode: column.language,
-                        attributeId: column.element_id,
-                    })),
-                    ...filters.map(filter => ({
-                        languageCode: filter.languageCode,
-                        attributeId: filter.attributeId,
-                    })),
-                ];
-
-                elements.forEach((element) => {
-                    const {
-                        attributeId,
-                        languageCode,
-                    } = element;
-
-                    if (attributeId && languageCode) {
-                        const {
-                            disabled,
-                        } = this.getDisabledListElement({
-                            languageCode,
-                            attributeId,
-                            disabledElements,
-                        });
-
-                        if (typeof disabledElements[languageCode] === 'undefined') {
-                            disabledElements[languageCode] = {};
-                        }
-
-                        disabledElements[languageCode][attributeId] = disabled;
-                    }
-                });
-
-                return disabledElements;
+                return columnsConfig || defaultColumns;
             },
         },
     };

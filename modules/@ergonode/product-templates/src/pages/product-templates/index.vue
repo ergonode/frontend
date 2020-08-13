@@ -49,12 +49,13 @@
 <script>
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import {
+    DATA_LIMIT,
     GRID_LAYOUT,
 } from '@Core/defaults/grid';
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import PRIVILEGES from '@Templates/config/privileges';
 
 export default {
@@ -68,12 +69,23 @@ export default {
         CreateProductTemplateModalForm: () => import('@Templates/components/Modals/CreateProductTemplateModalForm'),
     },
     mixins: [
-        gridFetchDataMixin({
+        fetchGridDataMixin({
             path: 'templates',
         }),
     ],
+    fetch() {
+        return this.onFetchData({
+            offset: 0,
+            limit: DATA_LIMIT,
+            filters: '',
+            sortedColumn: {},
+        }).then(() => {
+            this.isPrefetchingData = false;
+        });
+    },
     data() {
         return {
+            isPrefetchingData: true,
             isCreateProductTemplateVisible: false,
         };
     },

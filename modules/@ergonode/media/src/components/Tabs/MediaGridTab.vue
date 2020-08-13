@@ -25,7 +25,10 @@
 
 <script>
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
+import {
+    DATA_LIMIT,
+} from '@Core/defaults/grid';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import PRIVILEGES from '@Media/config/privileges';
 
 export default {
@@ -34,10 +37,25 @@ export default {
         ResponsiveCenteredViewTemplate,
     },
     mixins: [
-        gridFetchDataMixin({
+        fetchGridDataMixin({
             path: 'multimedia',
         }),
     ],
+    fetch() {
+        return this.onFetchData({
+            offset: 0,
+            limit: DATA_LIMIT,
+            filters: '',
+            sortedColumn: {},
+        }).then(() => {
+            this.isPrefetchingData = false;
+        });
+    },
+    data() {
+        return {
+            isPrefetchingData: true,
+        };
+    },
     computed: {
         isAllowedToUpdate() {
             return this.$hasAccess([

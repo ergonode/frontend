@@ -65,7 +65,7 @@
                         title="SAVE CHANGES"
                         :size="smallSize"
                         :disabled="!isUserAllowedToUpdate || $isLoading('footerDraftButton')"
-                        @click.native="saveDrafts" />
+                        @click.native="onSaveDrafts" />
                 </template>
             </Grid>
         </template>
@@ -88,17 +88,20 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
+    DATA_LIMIT,
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
 import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import fetchAdvancedFiltersDataMixin from '@Core/mixins/grid/fetchAdvancedFiltersDataMixin';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
-import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import PRIVILEGES from '@Products/config/privileges';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -120,14 +123,41 @@ export default {
     },
     mixins: [
         gridModalMixin,
-        gridFetchDataMixin({
+        fetchGridDataMixin({
             path: 'products',
             defaultColumns: 'index,sku,_links,esa_default_image,esa_default_label',
         }),
+        fetchAdvancedFiltersDataMixin({
+            path: 'products',
+        }),
         gridDraftMixin,
     ],
+    fetch() {
+        const requests = [
+            this.onFetchData({
+                offset: 0,
+                limit: DATA_LIMIT,
+                filters: '',
+                sortedColumn: {},
+            }),
+        ];
+        const advFiltersIds = this.$cookies.get(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
+
+        if (advFiltersIds) {
+            requests.push(this.onFetchAdvancedFilters(advFiltersIds));
+        }
+
+        return Promise.all(requests).then(() => {
+            this.isPrefetchingData = false;
+            this.setDisabledElements(this.getDisabledElements({
+                columns: this.columns,
+                filters: this.advancedFilters,
+            }));
+        });
+    },
     data() {
         return {
+            isPrefetchingData: true,
             focusedCellToRestore: null,
         };
     },
@@ -217,6 +247,10 @@ export default {
         },
     },
     methods: {
+        ...mapActions('list', [
+            'setDisabledElement',
+            'setDisabledElements',
+        ]),
         onCellValueChange(cellValues) {
             const cachedElementIds = {};
 
@@ -297,7 +331,7 @@ export default {
                 },
             });
         },
-        async saveDrafts() {
+        async onSaveDrafts() {
             const promises = [];
 
             const applyProductDraftModule = await applyProductDraft()
@@ -324,6 +358,42 @@ export default {
                 });
             });
             await this.$removeLoader('footerDraftButton');
+        },
+        getDisabledElements({
+            columns, filters,
+        }) {
+            const disabledElements = {};
+
+            const elements = [
+                ...columns.map(column => ({
+                    languageCode: column.language,
+                    attributeId: column.element_id,
+                })),
+                ...filters.map(filter => ({
+                    languageCode: filter.languageCode,
+                    attributeId: filter.attributeId,
+                })),
+            ];
+
+            elements.forEach((element) => {
+                const {
+                    attributeId,
+                    languageCode,
+                } = element;
+
+                if (attributeId && languageCode) {
+                    if (typeof disabledElements[languageCode] === 'undefined') {
+                        disabledElements[languageCode] = {};
+                    }
+
+                    disabledElements[languageCode][attributeId] = Boolean(
+                        disabledElements[languageCode]
+                        && typeof disabledElements[languageCode][attributeId] !== 'undefined',
+                    );
+                }
+            });
+
+            return disabledElements;
         },
     },
 };
