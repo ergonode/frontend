@@ -33,7 +33,7 @@
 export default {
     name: 'Error404',
     components: {
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
     },
 };
 </script>

@@ -55,7 +55,7 @@ export default {
                 languageCode: defaultLanguageCodeByPrivileges,
                 id,
             }),
-            store.dispatch('product/getProductById', id),
+            store.dispatch('product/getProduct', id),
         ]);
     },
     computed: {

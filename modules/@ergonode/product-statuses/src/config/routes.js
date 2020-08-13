@@ -61,7 +61,7 @@ export default [
                 path: 'general',
                 component: Tabs.ProductStatusBaseTab,
                 meta: {
-                    title: 'General',
+                    title: 'Options',
                     breadcrumbs: [
                         {
                             title: 'Workflow',

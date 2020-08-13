@@ -4,7 +4,7 @@
  */
 <template>
     <ListDraggableElement
-        :is-draggable="$hasAccess(['TEMPLATE_DESIGNER_UPDATE'])"
+        :is-draggable="isAllowedToUpdate"
         :draggable-id="item.type"
         :label="item.label"
         @drag="onDrag">
@@ -19,10 +19,12 @@
 </template>
 
 <script>
+import ListDraggableElement from '@Core/components/List/ListDraggableElement';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementHint from '@Core/components/List/ListElementHint';
 import ListElementIcon from '@Core/components/List/ListElementIcon';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
+import PRIVILEGES from '@Templates/config/privileges';
 import {
     mapActions,
 } from 'vuex';
@@ -32,7 +34,7 @@ export default {
     components: {
         ListElementDescription,
         ListElementTitle,
-        ListDraggableElement: () => import('@Core/components/List/ListDraggableElement'),
+        ListDraggableElement,
         ListElementIcon,
         ListElementHint,
     },
@@ -45,6 +47,11 @@ export default {
     computed: {
         widgetIconComponent() {
             return () => import('@Core/components/Icons/Editor/IconFontSize');
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.TEMPLATE_DESIGNER.update,
+            ]);
         },
     },
     methods: {

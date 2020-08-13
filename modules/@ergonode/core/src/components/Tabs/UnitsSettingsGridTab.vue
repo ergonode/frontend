@@ -16,7 +16,7 @@
                 :is-basic-filter="true"
                 @editRow="onEditRow"
                 @deleteRow="onRemoveUnit"
-                @fetchData="getGridData">
+                @fetchData="onFetchData">
                 <template #headerActions>
                     <Button
                         title="NEW UNIT"
@@ -35,9 +35,10 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import PRIVILEGES from '@Core/config/privileges';
 import {
     SIZE,
     THEME,
@@ -68,12 +69,12 @@ export default {
         },
         isUserAllowedToCreate() {
             return this.$hasAccess([
-                'SETTINGS_CREATE',
+                PRIVILEGES.SETTINGS.create,
             ]);
         },
         isUserAllowedToUpdate() {
             return this.$hasAccess([
-                'SETTINGS_UPDATE',
+                PRIVILEGES.SETTINGS.update,
             ]);
         },
     },

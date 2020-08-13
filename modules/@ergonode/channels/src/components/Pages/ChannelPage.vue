@@ -6,8 +6,10 @@
     <Page>
         <TitleBar
             :title="title"
-            :is-navigation-back="true"
             :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigationBackFab />
+            </template>
             <template #mainAction>
                 <Button
                     :theme="secondaryTheme"
@@ -46,7 +48,7 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
-import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
+import editPageMixin from '@Core/mixins/page/editPageMixin';
 import {
     mapActions,
     mapState,
@@ -55,7 +57,7 @@ import {
 export default {
     name: 'ChannelPage',
     mixins: [
-        categoryManagementPageMixin,
+        editPageMixin,
     ],
     computed: {
         ...mapState('channels', {

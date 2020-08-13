@@ -50,7 +50,7 @@
 import CommentEdit from '@Comments/components/Comments/CommentEdit';
 import CommentStateChanger from '@Comments/components/Comments/CommentStateChanger';
 import CommentsList from '@Comments/components/List/CommentsList';
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import Loader from '@Core/components/Loader/Loader';
 import {

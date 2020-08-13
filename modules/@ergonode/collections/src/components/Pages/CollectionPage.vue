@@ -6,8 +6,10 @@
     <Page>
         <TitleBar
             :title="title"
-            :is-navigation-back="true"
             :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigationBackFab />
+            </template>
             <template #mainAction>
                 <Button
                     data-cy="delete-collection"
@@ -36,12 +38,12 @@
 
 <script>
 import PRIVILEGES from '@Collections/config/privileges';
-import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
+import editPageMixin from '@Core/mixins/page/editPageMixin';
 
 export default {
     name: 'CollectionPage',
     mixins: [
-        categoryManagementPageMixin,
+        editPageMixin,
     ],
     computed: {
         isUserAllowedToDelete() {

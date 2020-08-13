@@ -10,7 +10,7 @@
                 :rows="rows"
                 :drafts="drafts"
                 :data-count="dataCount"
-                :is-editable="isEditingAllowed"
+                :is-editable="isAllowedToUpdate"
                 :is-border="true"
                 :is-footer-visible="false"
                 @cellValue="onCellValueChange" />
@@ -25,6 +25,7 @@ import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
+import PRIVILEGES from '@Users/config/privileges';
 import privilegesDefaults from '@Users/defaults/privileges';
 import {
     getMappedGridData,
@@ -57,9 +58,9 @@ export default {
         ...mapState('roles', {
             privileges: state => state.privileges,
         }),
-        isEditingAllowed() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
-                'USER_ROLE_UPDATE',
+                PRIVILEGES.USER_ROLE.update,
             ]);
         },
     },

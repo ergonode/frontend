@@ -93,6 +93,7 @@ import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGr
 import TemplateGridDraggableLayer from '@Templates/components/Template/Base/TemplateGridDraggableLayer';
 import TemplateGridPlaceholderItem from '@Templates/components/Template/Base/TemplateGridPlaceholderItem';
 import LayoutElement from '@Templates/components/Template/ProductDesigner/LayoutElement';
+import PRIVILEGES from '@Templates/config/privileges';
 import {
     getHighlightingLayoutDropPositions,
 } from '@Templates/models/layout/LayoutCalculations';
@@ -152,7 +153,7 @@ export default {
                     props: {
                         isSelectLanguage: false,
                         disabled: !this.$hasAccess([
-                            'TEMPLATE_DESIGNER_UPDATE',
+                            PRIVILEGES.TEMPLATE_DESIGNER.update,
                         ]),
                     },
                     iconComponent: () => import('@Core/components/Icons/Menu/IconAttributes'),
@@ -166,7 +167,7 @@ export default {
         },
         isUserAllowedToUpdate() {
             return this.$hasAccess([
-                'TEMPLATE_DESIGNER_UPDATE',
+                PRIVILEGES.TEMPLATE_DESIGNER.update,
             ]);
         },
         sectionType() {

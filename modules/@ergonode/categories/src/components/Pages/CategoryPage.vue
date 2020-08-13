@@ -6,15 +6,17 @@
     <Page>
         <TitleBar
             :title="title"
-            :is-navigation-back="true"
-            :is-read-only="$isReadOnly('CATEGORY')">
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigationBackFab />
+            </template>
             <template #mainAction>
                 <Button
                     data-cy="delete-category"
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE CATEGORY"
-                    :disabled="!$hasAccess(['CATEGORY_DELETE'])"
+                    :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete :fill-color="color" />
@@ -35,12 +37,23 @@
 </template>
 
 <script>
-import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
+import PRIVILEGES from '@Categories/config/privileges';
+import editPageMixin from '@Core/mixins/page/editPageMixin';
 
 export default {
     name: 'CategoryPage',
     mixins: [
-        categoryManagementPageMixin,
+        editPageMixin,
     ],
+    computed: {
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.CATEGORY.namespace);
+        },
+        isAllowedToDelete() {
+            return this.$hasAccess([
+                PRIVILEGES.CATEGORY.delete,
+            ]);
+        },
+    },
 };
 </script>

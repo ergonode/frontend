@@ -6,13 +6,13 @@
     <Page>
         <TitleBar
             title="Categories"
-            :is-read-only="$isReadOnly('CATEGORY')">
+            :is-read-only="isReadOnly">
             <template #mainAction>
                 <Button
                     data-cy="new-category"
                     title="NEW CATEGORY"
                     :size="smallSize"
-                    :disabled="!$hasAccess(['CATEGORY_CREATE'])"
+                    :disabled="!isAllowedToCreate"
                     @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
@@ -34,7 +34,8 @@
     </Page>
 </template>
 <script>
-import Button from '@Core/components/Buttons/Button';
+import PRIVILEGES from '@Categories/config/privileges';
+import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import {
     SIZE,
@@ -58,6 +59,14 @@ export default {
         gridModalMixin,
     ],
     computed: {
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.CATEGORY.namespace);
+        },
+        isAllowedToCreate() {
+            return this.$hasAccess([
+                PRIVILEGES.CATEGORY.create,
+            ]);
+        },
         smallSize() {
             return SIZE.SMALL;
         },

@@ -47,6 +47,7 @@
 import {
     isEmpty,
 } from '@Core/models/objectWrapper';
+import PRIVILEGES from '@Transitions/config/privileges';
 import {
     mapActions,
     mapState,
@@ -95,12 +96,9 @@ export default {
                 || status.id !== this.source.id);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess([
-                'WORKFLOW_UPDATE',
-            ]))
-            || (!this.isDisabled && !this.$hasAccess([
-                'WORKFLOW_CREATE',
-            ]));
+            return !this.$hasAccess([
+                PRIVILEGES.WORKFLOW.update,
+            ]);
         },
         roleFieldKey() {
             return 'roleId';

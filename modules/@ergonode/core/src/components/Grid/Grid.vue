@@ -30,7 +30,7 @@
         <GridBody
             :disabled="isListElementDragging && isColumnExists"
             :is-border="isHeaderVisible">
-            <GridPreloader v-show="isPrefetchingData" />
+            <Preloader v-show="isPrefetchingData" />
             <DropZone
                 v-show="isListElementDragging && !isColumnExists"
                 title="ADD COLUMN"
@@ -96,10 +96,10 @@ import {
 import GridPagination from '@Core/components/Grid/Footer/GridPagination';
 import GridBody from '@Core/components/Grid/GridBody';
 import GridFooter from '@Core/components/Grid/GridFooter';
-import GridPreloader from '@Core/components/Grid/GridPreloader';
 import GridHeader from '@Core/components/Grid/Header/GridHeader';
 import GridCollectionLayout from '@Core/components/Grid/Layout/Collection/GridCollectionLayout';
 import GridTableLayout from '@Core/components/Grid/Layout/Table/GridTableLayout';
+import Preloader from '@Core/components/Preloader/Preloader';
 import {
     COLUMNS_NUMBER,
     DATA_LIMIT,
@@ -131,7 +131,7 @@ export default {
         IconAddColumn: () => import('@Core/components/Icons/Actions/IconAddColumn'),
         GridPagination,
         GridHeader,
-        GridPreloader,
+        Preloader,
         GridBody,
         GridFooter,
         GridTableLayout,

@@ -91,7 +91,7 @@ import {
 export default {
     name: 'UploadFile',
     components: {
-        Fab: () => import('@Core/components/Buttons/Fab'),
+        Fab: () => import('@Core/components/Fab/Fab'),
         IconDelete: () => import('@Core/components/Icons/Actions/IconDelete'),
         IconRefresh: () => import('@Core/components/Icons/Actions/IconRefresh'),
         IconUploadCloudFile: () => import('@Core/components/Icons/Actions/IconUploadCloudFile'),

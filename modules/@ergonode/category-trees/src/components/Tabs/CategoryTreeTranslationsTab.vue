@@ -6,19 +6,22 @@
     <TranslationsTab>
         <template #default="{ languageCodes }">
             <CategoryTreeTranslationForm
-                v-for="(languageCode, index) in languageCodes"
-                :key="index"
+                v-for="languageCode in languageCodes"
+                :key="languageCode"
                 :language-code="languageCode" />
         </template>
     </TranslationsTab>
 </template>
 
 <script>
+import TranslationsTab from '@Core/components/Card/Tabs/TranslationsTab';
+import CategoryTreeTranslationForm from '@Trees/components/Forms/CategoryTreeTranslationForm';
+
 export default {
     name: 'CategoryTreeTranslationsTab',
     components: {
-        TranslationsTab: () => import('@Core/components/Card/Tabs/TranslationsTab'),
-        CategoryTreeTranslationForm: () => import('@Trees/components/Forms/CategoryTreeTranslationForm'),
+        TranslationsTab,
+        CategoryTreeTranslationForm,
     },
 };
 </script>

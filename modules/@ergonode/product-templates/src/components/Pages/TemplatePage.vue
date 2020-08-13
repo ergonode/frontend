@@ -6,15 +6,17 @@
     <Page>
         <TitleBar
             :title="title"
-            :is-navigation-back="true"
-            :is-read-only="$isReadOnly('TEMPLATE_DESIGNER')">
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigationBackFab />
+            </template>
             <template #mainAction>
                 <Button
                     data-cy="delete-segment"
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE TEMPLATE"
-                    :disabled="!$hasAccess(['TEMPLATE_DESIGNER_DELETE'])"
+                    :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete
@@ -36,12 +38,23 @@
 </template>
 
 <script>
-import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
+import editPageMixin from '@Core/mixins/page/editPageMixin';
+import PRIVILEGES from '@Templates/config/privileges';
 
 export default {
     name: 'TemplatePage',
     mixins: [
-        categoryManagementPageMixin,
+        editPageMixin,
     ],
+    computed: {
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.TEMPLATE_DESIGNER.namespace);
+        },
+        isAllowedToDelete() {
+            return this.$hasAccess([
+                PRIVILEGES.TEMPLATE_DESIGNER.delete,
+            ]);
+        },
+    },
 };
 </script>

@@ -34,6 +34,7 @@ import FormSection from '@Core/components/Form/Section/FormSection';
 import TextArea from '@Core/components/Inputs/TextArea';
 import TextField from '@Core/components/Inputs/TextField';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
+import PRIVILEGES from '@Transitions/config/privileges';
 
 export default {
     name: 'ProductStatusTranslationForm',
@@ -50,7 +51,7 @@ export default {
     computed: {
         isUserAllowedToUpdate() {
             return this.$hasAccess([
-                'WORKFLOW_UPDATE',
+                PRIVILEGES.WORKFLOW.update,
             ]);
         },
         descriptionKeyField() {

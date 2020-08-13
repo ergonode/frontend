@@ -37,7 +37,7 @@ export default {
     name: 'RestoreAttributeParentModalConfirm',
     components: {
         ModalConfirm: () => import('@Core/components/Modal/ModalConfirm'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
     },
     props: {
         element: {

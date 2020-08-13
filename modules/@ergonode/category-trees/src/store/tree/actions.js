@@ -10,7 +10,7 @@ import {
 } from '@Trees/models/treeMapper';
 
 export default {
-    async getTreeById(
+    async getTree(
         {
             commit, dispatch, rootState,
         },

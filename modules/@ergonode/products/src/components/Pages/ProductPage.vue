@@ -6,8 +6,10 @@
     <Page>
         <TitleBar
             :title="title"
-            :is-navigation-back="true"
             :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigationBackFab />
+            </template>
             <template #prependBadge>
                 <ProductStatusBadge
                     v-if="status"
@@ -27,26 +29,7 @@
             </template>
             <template #subActions>
                 <TitleBarSubActions>
-                    <ActionButton
-                        v-if="workflow.length"
-                        title="STATUS CHANGE"
-                        :theme="secondaryTheme"
-                        :size="smallSize"
-                        :disabled="!isUserAllowedToUpdate"
-                        :options="workflow"
-                        :fixed-content="true"
-                        @input="onUpdateStatus">
-                        <template #option="{ option }">
-                            <ListElementAction :size="smallSize">
-                                <PointBadge :color="option.color" />
-                            </ListElementAction>
-                            <ListElementDescription>
-                                <ListElementTitle
-                                    :title="option.name || `#${option.code}`"
-                                    :size="smallSize" />
-                            </ListElementDescription>
-                        </template>
-                    </ActionButton>
+                    <ProductWorkflowActionButton v-if="workflow.length" />
                 </TitleBarSubActions>
             </template>
         </TitleBar>
@@ -61,18 +44,11 @@
     </Page>
 </template>
 <script>
-import Button from '@Core/components/Buttons/Button';
 import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
-import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import {
-    MODAL_TYPE,
-} from '@Core/defaults/modals';
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
+import editPageMixin from '@Core/mixins/page/editPageMixin';
 import {
     getNestedTabRoutes,
 } from '@Core/models/navigation/tabs';
@@ -80,29 +56,24 @@ import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
 import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
+import ProductWorkflowActionButton from '@Products/components/Buttons/ProductWorkflowActionButton';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     PRODUCT_TYPE,
 } from '@Products/defaults';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
 export default {
     name: 'ProductPage',
     components: {
-        Button,
         TitleBarSubActions,
         ProductStatusBadge,
-        ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
-        ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
-        ListElementAction: () => import('@Core/components/List/ListElementAction'),
-        ActionButton: () => import('@Core/components/Buttons/ActionButton'),
-        PointBadge: () => import('@Core/components/Badges/PointBadge'),
+        ProductWorkflowActionButton,
     },
     mixins: [
-        categoryManagementPageMixin,
+        editPageMixin,
     ],
     computed: {
         ...mapState('product', {
@@ -115,11 +86,6 @@ export default {
         }),
         smallSize() {
             return SIZE.SMALL;
-        },
-        isUserAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.PRODUCT.update,
-            ]);
         },
         isUserAllowedToDelete() {
             return this.$hasAccess([
@@ -143,37 +109,6 @@ export default {
                 return tabs.filter(tab => tab.title !== 'Variants');
             default: return tabs.filter(tab => tab.title !== 'Variants' && tab.title !== 'Group');
             }
-        },
-    },
-    methods: {
-        ...mapActions('product', [
-            'updateProductStatus',
-            'getProductById',
-        ]),
-        onUpdateStatus({
-            code,
-        }) {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: `Are you sure you want to change status to ${code}?`,
-                confirmCallback: () => this.updateProductStatus({
-                    value: code,
-                    attributeId: this.status.attribute_id,
-                    onSuccess: () => {
-                        const {
-                            params: {
-                                id,
-                            },
-                        } = this.$route;
-
-                        this.getProductById(id);
-                        this.$addAlert({
-                            type: ALERT_TYPE.SUCCESS,
-                            message: 'Status updated',
-                        });
-                    },
-                }),
-            });
         },
     },
 };

@@ -47,6 +47,7 @@
 
 <script>
 import AttributeOptionValues from '@Attributes/components/Forms/Sections/AttributeOptionValues';
+import PRIVILEGES from '@Attributes/config/privileges';
 import {
     hasOptions,
     hasPlaceholder,
@@ -97,7 +98,7 @@ export default {
         },
         isUserAllowedToUpdate() {
             return this.$hasAccess([
-                'ATTRIBUTE_UPDATE',
+                PRIVILEGES.ATTRIBUTE.update,
             ]);
         },
         hintFieldKey() {

@@ -14,7 +14,7 @@
                 :is-collection-layout="true"
                 :is-header-visible="true"
                 :is-border="true"
-                @fetchData="getGridData">
+                @fetchData="onFetchData">
                 <template #actions>
                     <ActionButton
                         title="ADD PRODUCTS"
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import ActionButton from '@Core/components/Buttons/ActionButton';
+import ActionButton from '@Core/components/ActionButton/ActionButton';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import {
@@ -208,10 +208,10 @@ export default {
             this.selectedAppModalOption = null;
         },
         onCreatedData() {
-            this.getGridData(this.localParams);
+            this.onFetchData(this.localParams);
             this.selectedAppModalOption = null;
         },
-        getGridData({
+        onFetchData({
             offset, limit, filters, sortedColumn,
         }) {
             this.localParams = {

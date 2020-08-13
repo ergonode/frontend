@@ -17,7 +17,7 @@
                 :is-header-visible="true"
                 :is-border="true"
                 @deleteRow="onRemoveRow"
-                @fetchData="getGridData">
+                @fetchData="onFetchData">
                 <template #headerActions>
                     <ActionButton
                         title="ADD PRODUCTS"
@@ -48,7 +48,7 @@ import {
     ADD_PRODUCT,
     EXTENDS,
 } from '@Collections/defaults';
-import ActionButton from '@Core/components/Buttons/ActionButton';
+import ActionButton from '@Core/components/ActionButton/ActionButton';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import {
@@ -129,7 +129,7 @@ export default {
             this.selectedAppModalOption = null;
         },
         onCreatedData() {
-            this.getGridData(this.localParams);
+            this.onFetchData(this.localParams);
             this.selectedAppModalOption = null;
         },
     },

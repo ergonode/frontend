@@ -41,7 +41,7 @@ export default {
     name: 'CreateUnitModalForm',
     components: {
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
         UnitForm: () => import('@Core/components/Forms/UnitForm'),
     },
     mixins: [

@@ -39,7 +39,7 @@
 </template>
 <script>
 import Comment from '@Comments/components/Comments/Comment';
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import TextArea from '@Core/components/Inputs/TextArea';
 import {

@@ -52,7 +52,7 @@ export default {
     },
     computed: {
         ...mapGetters('core', [
-            'getLanguageById',
+            'getLanguage',
         ]),
         elementsToRestore() {
             return this.elements.filter(element => element.type !== SYSTEM_TYPES.SECTION);
@@ -61,7 +61,7 @@ export default {
             const {
                 name, parent,
             } = this.language;
-            const parentName = this.getLanguageById(parent).name;
+            const parentName = this.getLanguage(parent).name;
 
             return `Select attributes which values you want to restore from ${name} to parent translation (${parentName})`;
         },

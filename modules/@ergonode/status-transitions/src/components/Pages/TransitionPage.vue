@@ -7,13 +7,13 @@
         <TitleBar
             :title="title"
             :is-navigation-back="true"
-            :is-read-only="$isReadOnly('WORKFLOW')">
+            :is-read-only="isReadOnly">
             <template #mainAction>
                 <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE TRANSITION"
-                    :disabled="!$hasAccess(['WORKFLOW_DELETE'])"
+                    :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete :fill-color="color" />
@@ -33,12 +33,23 @@
 </template>
 
 <script>
-import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
+import editPageMixin from '@Core/mixins/page/editPageMixin';
+import PRIVILEGES from '@Transitions/config/privileges';
 
 export default {
     name: 'TransitionPage',
     mixins: [
-        categoryManagementPageMixin,
+        editPageMixin,
     ],
+    computed: {
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.WORKFLOW.namespace);
+        },
+        isAllowedToDelete() {
+            return this.$hasAccess([
+                PRIVILEGES.WORKFLOW.delete,
+            ]);
+        },
+    },
 };
 </script>

@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import Fab from '@Core/components/Buttons/Fab';
+import Fab from '@Core/components/Fab/Fab';
 import IconClose from '@Core/components/Icons/Window/IconClose';
 import ModalOverlay from '@Core/components/Modal/ModalOverlay';
 import HorizontalTabBar from '@Core/components/TabBar/HorizontalTabBar';

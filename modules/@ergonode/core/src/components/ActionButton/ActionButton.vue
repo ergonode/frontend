@@ -12,26 +12,40 @@
         @hover="onHover"
         @input="onSelect">
         <template #button>
-            <IconButton
+            <Button
                 :theme="theme"
                 :size="size"
+                :title="title"
                 :disabled="disabled">
-                <template #icon>
+                <template #prepend="{ color }">
                     <!--
-                        @slot Icon element
-                        @binding {string} color color of an element
-                    -->
+                        @slot Prepend element - icon recommended
+                          @binding {string} color color of an element
+                      -->
                     <slot
-                        name="icon"
-                        :color="iconFillColor" />
+                        name="prepend"
+                        :color="color" />
                 </template>
-            </IconButton>
+                <template #append="{ color }">
+                    <!--
+                        @slot Append element - icon recommended
+                          @binding {string} color color of an element
+                      -->
+                    <slot
+                        name="append"
+                        :color="color">
+                        <IconArrowDropDown
+                            :fill-color="color"
+                            :state="iconArrowState" />
+                    </slot>
+                </template>
+            </Button>
         </template>
         <template #option="{ option }">
             <!--
                 @slot List option
-                @binding {object} option
-            -->
+                  @binding {object} option
+              -->
             <slot
                 name="option"
                 :option="option" />
@@ -40,28 +54,27 @@
 </template>
 
 <script>
+import ActionBaseButton from '@Core/components/ActionButton/ActionBaseButton';
+import Button from '@Core/components/Button/Button';
+import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 import {
-    GRAPHITE,
-    GREEN,
-    GREY_DARK,
-    WHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import ActionBaseButton from '@Core/components/Buttons/ActionBaseButton';
-import IconButton from '@Core/components/Buttons/IconButton';
+    ARROW,
+} from '@Core/defaults/icons';
 import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
 
 /**
- * `ActionIconButton` is an `ActionBaseButton` with a `IconButton` inside named slot `button`.
- * It's implementing `IconButton` props.
+ * `ActionButton` is an `ActionBaseButton` with a `Button` inside named slot `button`.
+ * It's implementing `Button` props.
  */
 export default {
     name: 'ActionButton',
     components: {
         ActionBaseButton,
-        IconButton,
+        Button,
+        IconArrowDropDown,
     },
     props: {
         /**
@@ -81,6 +94,14 @@ export default {
             type: String,
             default: SIZE.REGULAR,
             validator: value => Object.values(SIZE).indexOf(value) !== -1,
+        },
+        /**
+         * The title of the button
+         * @values primary, secondary
+         */
+        title: {
+            type: String,
+            default: '',
         },
         /**
          * The disabled state of the button
@@ -120,18 +141,8 @@ export default {
         };
     },
     computed: {
-        iconFillColor() {
-            if (this.theme !== THEME.PRIMARY) {
-                if (this.disabled) {
-                    return GREY_DARK;
-                }
-                if (this.isHovered || this.isFocused) {
-                    return GREEN;
-                }
-                return GRAPHITE;
-            }
-
-            return WHITE;
+        iconArrowState() {
+            return this.isFocused ? ARROW.UP : ARROW.DOWN;
         },
     },
     methods: {

@@ -48,4 +48,91 @@ export default [
             },
         ],
     },
+    {
+        name: 'media-id',
+        path: '/media/resource/:id',
+        component: Pages.ResourceEdit,
+        meta: {
+            isMenu: false,
+            redirectTo: 'media-id-general',
+        },
+        children: [
+            {
+                name: 'media-id-general',
+                path: 'general',
+                component: Tabs.ResourceBaseTab,
+                meta: {
+                    title: 'Options',
+                    breadcrumbs: [
+                        {
+                            title: 'Resources',
+                            icon: Icons.Media,
+                        },
+                        {
+                            title: 'Media',
+                            routeName: 'media-grid',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+            {
+                name: 'media-id-translations',
+                path: 'translations',
+                component: Tabs.ResourceTranslationsTab,
+                meta: {
+                    title: 'Translations',
+                    breadcrumbs: [
+                        {
+                            title: 'Resources',
+                            icon: Icons.Media,
+                        },
+                        {
+                            title: 'Media',
+                            routeName: 'media-grid',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+            {
+                name: 'import-id-information',
+                path: 'information',
+                component: Tabs.ResourceInformationTab,
+                meta: {
+                    title: 'Information',
+                    breadcrumbs: [
+                        {
+                            title: 'Resources',
+                            icon: Icons.Media,
+                        },
+                        {
+                            title: 'Media',
+                            routeName: 'media-grid',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+            {
+                name: 'import-id-Relations',
+                path: 'relations',
+                component: Tabs.ResourceRelationsTab,
+                meta: {
+                    title: 'Relations',
+                    breadcrumbs: [
+                        {
+                            title: 'Resources',
+                            icon: Icons.Media,
+                        },
+                        {
+                            title: 'Media',
+                            routeName: 'media-grid',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+        ],
+    },
 ];

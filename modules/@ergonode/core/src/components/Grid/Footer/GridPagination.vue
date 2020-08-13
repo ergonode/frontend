@@ -83,7 +83,7 @@ export default {
     name: 'GridPagination',
     components: {
         TextField: () => import('@Core/components/Inputs/TextField'),
-        Fab: () => import('@Core/components/Buttons/Fab'),
+        Fab: () => import('@Core/components/Fab/Fab'),
         IconArrowSingle: () => import('@Core/components/Icons/Arrows/IconArrowSingle'),
         IconArrowPointerBlock: () => import('@Core/components/Icons/Arrows/IconArrowPointerBlock'),
         FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),

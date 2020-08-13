@@ -6,14 +6,16 @@
     <Page>
         <TitleBar
             :title="title"
-            :is-navigation-back="true"
-            :is-read-only="$isReadOnly('IMPORT')">
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigationBackFab />
+            </template>
             <template #mainAction>
                 <Button
                     title="IMPORT NOW"
                     :size="smallSize"
                     :theme="secondaryTheme"
-                    :disabled="!$hasAccess(['IMPORT_UPDATE'])"
+                    :disabled="!isAllowedToUpdate"
                     @click.native="onShowModal" />
             </template>
         </TitleBar>
@@ -34,7 +36,8 @@
 
 <script>
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
-import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
+import editPageMixin from '@Core/mixins/page/editPageMixin';
+import PRIVILEGES from '@Import/config/privileges';
 
 export default {
     name: 'ImportProfilePage',
@@ -42,8 +45,18 @@ export default {
         UploadImportFileModalForm: () => import('@Import/components/Modals/UploadImportFileModalForm'),
     },
     mixins: [
-        categoryManagementPageMixin,
+        editPageMixin,
         gridModalMixin,
     ],
+    computed: {
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.IMPORT.namespace);
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.IMPORT.update,
+            ]);
+        },
+    },
 };
 </script>

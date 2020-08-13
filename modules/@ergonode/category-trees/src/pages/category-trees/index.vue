@@ -6,13 +6,13 @@
     <Page>
         <TitleBar
             title="Category trees"
-            :is-read-only="$isReadOnly('CATEGORY_TREE')">
+            :is-read-only="isReadOnly">
             <template #mainAction>
                 <Button
                     data-cy="new-category-tree"
                     title="NEW TREE"
                     :size="smallSize"
-                    :disabled="!$hasAccess(['CATEGORY_TREE_CREATE'])"
+                    :disabled="!isAllowedToCreate"
                     @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import {
     SIZE,
@@ -44,6 +44,7 @@ import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import {
     getNestedTabRoutes,
 } from '@Core/models/navigation/tabs';
+import PRIVILEGES from '@Trees/config/privileges';
 
 export default {
     name: 'CategoryTrees',
@@ -60,6 +61,14 @@ export default {
         gridModalMixin,
     ],
     computed: {
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.CATEGORY_TREE.namespace);
+        },
+        isAllowedToCreate() {
+            return this.$hasAccess([
+                PRIVILEGES.CATEGORY_TREE.create,
+            ]);
+        },
         smallSize() {
             return SIZE.SMALL;
         },

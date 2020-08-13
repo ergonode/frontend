@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="General"
+        title="Options"
         :fields-keys="[codeFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Segments/config/privileges';
 import {
     mapActions,
     mapState,
@@ -48,12 +49,9 @@ export default {
             return Boolean(this.segmentId);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess([
-                'SEGMENT_UPDATE',
-            ]))
-            || (!this.isDisabled && !this.$hasAccess([
-                'SEGMENT_CREATE',
-            ]));
+            return !this.$hasAccess([
+                PRIVILEGES.SEGMENT.update,
+            ]);
         },
         codeFieldKey() {
             return 'code';

@@ -58,7 +58,7 @@ export default {
         ProductCollectionItem,
         ExpandingCollection: () => import('@Core/components/ExpandingCollection/ExpandingCollection'),
         ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
     },
     data() {
         return {

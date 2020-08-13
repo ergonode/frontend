@@ -63,7 +63,7 @@ export default {
     components: {
         GridTableCell,
         GridTitleHeaderCell,
-        ActionIconButton: () => import('@Core/components/Buttons/ActionIconButton'),
+        ActionIconButton: () => import('@Core/components/ActionIconButton/ActionIconButton'),
         IconArrowSort: () => import('@Core/components/Icons/Arrows/IconArrowSort'),
         IconDots: () => import('@Core/components/Icons/Others/IconDots'),
     },

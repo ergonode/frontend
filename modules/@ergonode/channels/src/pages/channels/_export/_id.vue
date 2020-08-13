@@ -22,7 +22,7 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('channels/getExportById', {
+        await store.dispatch('channels/getExport', {
             channel_id: params.channel_id,
             export_id: params.export_id,
         });

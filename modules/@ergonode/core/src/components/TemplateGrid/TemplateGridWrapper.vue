@@ -51,8 +51,8 @@
                         :remove-item="removeItem">
                         <TemplateGridItem
                             :style="gridItemStyles"
-                            :number-of-children="getChildrenLengthById(item.id)"
-                            :is-expanded="getExpandStateById(item.id)"
+                            :number-of-children="getChildrenLength(item.id)"
+                            :is-expanded="getExpandState(item.id)"
                             :is-dragging-enabled="isDraggingEnabled"
                             :item="item"
                             :context-name="contextName"
@@ -142,8 +142,8 @@ export default {
             hiddenItems: state => state.hiddenItems,
         }),
         ...mapGetters('gridDesigner', [
-            'getChildrenLengthById',
-            'getExpandStateById',
+            'getChildrenLength',
+            'getExpandState',
         ]),
         filteredGridData() {
             return this.gridData.filter(

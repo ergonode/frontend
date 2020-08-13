@@ -49,7 +49,7 @@ export default {
         Select,
         ColorPickerContent: () => import('@Core/components/Inputs/ColorPicker/ColorPickerContent'),
         DropDownFooter: () => import('@Core/components/Inputs/Select/DropDown/Footers/DropDownFooter'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
     },
     computed: {
         tinySize() {

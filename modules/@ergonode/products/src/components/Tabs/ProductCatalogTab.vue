@@ -40,7 +40,7 @@
                 @deleteRow="onRemoveRow"
                 @dropColumn="onDropColumn"
                 @dropFilter="onDropFilter"
-                @fetchData="getGridData">
+                @fetchData="onFetchData">
                 <template #actions>
                     <!--
                       Uncomment when product draft will be change on grid
@@ -77,7 +77,7 @@
 import {
     GRAPHITE_LIGHT,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import DropZone from '@Core/components/DropZone/DropZone';
 import IconRemoveColumn from '@Core/components/Icons/Actions/IconRemoveColumn';
 import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
@@ -227,7 +227,10 @@ export default {
                 return tmp;
             }, {});
 
-            this.setDrafts(drafts);
+            this.setDrafts({
+                ...this.drafts,
+                ...drafts,
+            });
 
             const requests = cellValues.map(({
                 rowId, columnId, value,
@@ -313,7 +316,7 @@ export default {
 
             await this.$setLoader('footerDraftButton');
             await Promise.all(promises).then(() => {
-                this.getGridData(this.localParams);
+                this.onFetchData(this.localParams);
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
                     message: 'Product changes saved',

@@ -57,7 +57,7 @@ import {
 } from '@Core/models/objectWrapper';
 
 export default {
-    name: 'ActionButton',
+    name: 'ActionBaseButton',
     components: {
         DropDown,
         List,

@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="General"
+        title="Options"
         :fields-keys="[codeFieldKey, colorFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
@@ -45,6 +45,7 @@
 import {
     COLORS,
 } from '@Core/defaults/colors';
+import PRIVILEGES from '@Statuses/config/privileges';
 import {
     mapActions,
     mapState,
@@ -68,12 +69,9 @@ export default {
             isDefaultStatus: state => state.isDefaultStatus,
         }),
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess([
-                'WORKFLOW_UPDATE',
-            ]))
-            || (!this.isDisabled && !this.$hasAccess([
-                'WORKFLOW_CREATE',
-            ]));
+            return !this.$hasAccess([
+                PRIVILEGES.WORKFLOW.update,
+            ]);
         },
         isDisabled() {
             return Boolean(this.id);

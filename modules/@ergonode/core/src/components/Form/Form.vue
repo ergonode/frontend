@@ -50,7 +50,7 @@ import {
 export default {
     name: 'Form',
     components: {
-        LinkButton: () => import('@Core/components/Buttons/LinkButton'),
+        LinkButton: () => import('@Core/components/LinkButton/LinkButton'),
         IconError: () => import('@Core/components/Icons/Feedback/IconError'),
         Divider: () => import('@Core/components/Dividers/Divider'),
     },

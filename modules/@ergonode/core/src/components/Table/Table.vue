@@ -3,39 +3,38 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="table">
-        <slot name="title">
-            <h2
-                v-if="title"
-                class="table__title"
-                v-text="title" />
-        </slot>
-        <table
-            v-if="isBodySlot || isHeadSlot"
-            class="table__content">
-            <thead v-if="isHeadSlot">
-                <slot name="head" />
-            </thead>
-            <tbody v-if="isBodySlot">
-                <slot name="body" />
-            </tbody>
-        </table>
-    </div>
+    <table class="table">
+        <thead v-if="isHeadSlot">
+            <slot name="head" />
+        </thead>
+        <tbody class="table__body">
+            <Preloader v-if="isPrefetchingData" />
+            <slot
+                v-else
+                name="body" />
+        </tbody>
+    </table>
 </template>
 
 <script>
+import Preloader from '@Core/components/Preloader/Preloader';
+
 export default {
     name: 'Table',
+    components: {
+        Preloader,
+    },
     props: {
         title: {
             type: String,
             default: '',
         },
+        isPrefetchingData: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
-        isBodySlot() {
-            return !!this.$slots.body;
-        },
         isHeadSlot() {
             return !!this.$slots.head;
         },
@@ -45,19 +44,10 @@ export default {
 
 <style lang="scss" scoped>
     .table {
-        display: grid;
-        grid-template-columns: 352px;
-        grid-auto-flow: row;
-        grid-row-gap: 24px;
-        margin-top: 24px;
+        border: 1px solid $GREY;
 
-        &__title {
-            color: $GRAPHITE_DARK;
-            font: $FONT_SEMI_BOLD_16_24;
-        }
-
-        &__content {
-            border: 1px solid $GREY;
+        &__body {
+            background-color: $WHITESMOKE;
         }
     }
 </style>

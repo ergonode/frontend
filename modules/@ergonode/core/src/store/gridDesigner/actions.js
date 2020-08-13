@@ -66,7 +66,7 @@ export default {
         id, value,
     }) => {
         if (id !== 'root') {
-            const index = getters.getIndexById(id);
+            const index = getters.getIndex(id);
             const {
                 children,
             } = state.gridData[index];
@@ -90,7 +90,7 @@ export default {
     addGridItem: ({
         commit, getters,
     }, item) => {
-        const findIndex = getters.getIndexById(item.id);
+        const findIndex = getters.getIndex(item.id);
 
         if (findIndex >= 0) {
             commit(types.SET_GRID_ITEM, {
@@ -101,10 +101,10 @@ export default {
             commit(types.ADD_GRID_ITEM, item);
         }
     },
-    rebuildGridById: ({
+    rebuildGrid: ({
         state, getters, dispatch,
     }, id) => {
-        const index = getters.getIndexById(id);
+        const index = getters.getIndex(id);
         const newGrid = getTreeWhenGhostElementRemoved(state.gridData, index);
 
         dispatch('setGridData', newGrid);

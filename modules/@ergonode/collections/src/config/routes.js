@@ -61,7 +61,7 @@ export default [
                 path: 'general',
                 component: Tabs.CollectionGeneralTab,
                 meta: {
-                    title: 'General',
+                    title: 'Options',
                     breadcrumbs: [
                         {
                             title: 'Products',

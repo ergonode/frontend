@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
+import ActionIconButton from '@Core/components/ActionIconButton/ActionIconButton';
 import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
 import IconDots from '@Core/components/Icons/Others/IconDots';
 import {

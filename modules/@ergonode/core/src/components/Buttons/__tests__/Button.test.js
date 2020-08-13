@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import {
     createLocalVue,
     shallowMount,

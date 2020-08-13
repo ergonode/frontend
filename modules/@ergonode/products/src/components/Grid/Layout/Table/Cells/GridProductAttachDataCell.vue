@@ -10,7 +10,7 @@
         :copyable="false"
         :edit-key-code="32"
         :selected="isSelected"
-        @mousedown="onValueChange">
+        @mousedown.native="onValueChange">
         <GridBoolEditCell :value="localValue" />
     </GridTableCell>
 </template>

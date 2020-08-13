@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import Form from '@Core/components/Form/Form';
 import FormParagraph from '@Core/components/Form/FormParagraph';
 import FormSection from '@Core/components/Form/Section/FormSection';

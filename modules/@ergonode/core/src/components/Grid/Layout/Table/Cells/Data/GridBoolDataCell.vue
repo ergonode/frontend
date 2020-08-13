@@ -13,7 +13,7 @@
         :copyable="isCopyable"
         :selected="isSelected"
         @edit="onBoolValueChange"
-        @mousedown="onBoolValueChange">
+        @mousedown.native="onBoolValueChange">
         <GridBoolEditCell
             :value="cellData.value"
             :disabled="isLocked || isDisabled" />

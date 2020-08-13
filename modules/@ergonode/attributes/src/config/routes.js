@@ -62,7 +62,7 @@ export default [
                 path: 'general',
                 component: Tabs.AttributeBaseTab,
                 meta: {
-                    title: 'General',
+                    title: 'Options',
                     breadcrumbs: [
                         {
                             title: 'Product design',
@@ -149,7 +149,7 @@ export default [
                 path: 'general',
                 component: Tabs.AttributeGroupBaseTab,
                 meta: {
-                    title: 'General',
+                    title: 'Options',
                     breadcrumbs: [
                         {
                             title: 'Product design',

@@ -7,13 +7,13 @@
         <TitleBar
             :title="title"
             :is-navigation-back="true"
-            :is-read-only="$isReadOnly('USER_ROLE')">
+            :is-read-only="isReadOnly">
             <template #mainAction>
                 <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE ROLE"
-                    :disabled="!$hasAccess(['USER_ROLE_DELETE'])"
+                    :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete :fill-color="color" />
@@ -33,12 +33,23 @@
 </template>
 
 <script>
-import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
+import editPageMixin from '@Core/mixins/page/editPageMixin';
+import PRIVILEGES from '@Users/config/privileges';
 
 export default {
     name: 'UserRolesPage',
     mixins: [
-        categoryManagementPageMixin,
+        editPageMixin,
     ],
+    computed: {
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.USER_ROLE.namespace);
+        },
+        isAllowedToDelete() {
+            return this.$hasAccess([
+                PRIVILEGES.USER_ROLE.delete,
+            ]);
+        },
+    },
 };
 </script>

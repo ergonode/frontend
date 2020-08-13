@@ -6,12 +6,12 @@
     <Page>
         <TitleBar
             title="Product statuses"
-            :is-read-only="$isReadOnly('WORKFLOW')">
+            :is-read-only="isReadOnly">
             <template #mainAction>
                 <Button
                     title="NEW STATUS"
                     :size="smallSize"
-                    :disabled="!$hasAccess(['WORKFLOW_CREATE'])"
+                    :disabled="!isAllowedToCreate"
                     @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import {
     SIZE,
@@ -44,6 +44,7 @@ import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import {
     getNestedTabRoutes,
 } from '@Core/models/navigation/tabs';
+import PRIVILEGES from '@Transitions/config/privileges';
 
 export default {
     name: 'Status',
@@ -59,6 +60,14 @@ export default {
         gridModalMixin,
     ],
     computed: {
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.WORKFLOW.namespace);
+        },
+        isAllowedToCreate() {
+            return this.$hasAccess([
+                PRIVILEGES.WORKFLOW.create,
+            ]);
+        },
         smallSize() {
             return SIZE.SMALL;
         },

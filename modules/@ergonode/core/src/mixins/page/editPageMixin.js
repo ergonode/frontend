@@ -2,8 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import Button from '@Core/components/Buttons/Button';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import Button from '@Core/components/Button/Button';
+import NavigationBackFab from '@Core/components/Buttons/NavigationBackFab';
 import IconDelete from '@Core/components/Icons/Actions/IconDelete';
 import Footer from '@Core/components/Layout/Footer/Footer';
 import Page from '@Core/components/Layout/Page';
@@ -25,7 +25,7 @@ export default {
         Footer,
         Button,
         IconDelete,
-        IconAdd,
+        NavigationBackFab,
     },
     props: {
         title: {

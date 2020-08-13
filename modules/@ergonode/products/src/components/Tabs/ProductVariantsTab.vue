@@ -14,7 +14,7 @@
                 :is-collection-layout="true"
                 :is-header-visible="true"
                 :is-border="true"
-                @fetchData="getGridData" />
+                @fetchData="onFetchData" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -186,7 +186,7 @@ export default {
         },
     },
     methods: {
-        getGridData({
+        onFetchData({
             offset, limit, filters, sortedColumn,
         }) {
             this.localParams = {

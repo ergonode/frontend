@@ -6,19 +6,22 @@
     <TranslationsTab>
         <template #default="{ languageCodes }">
             <CollectionTranslationForm
-                v-for="(languageCode, index) in languageCodes"
-                :key="index"
+                v-for="languageCode in languageCodes"
+                :key="languageCode"
                 :language-code="languageCode" />
         </template>
     </TranslationsTab>
 </template>
 
 <script>
+import CollectionTranslationForm from '@Collections/components/Forms/CollectionTranslationForm';
+import TranslationsTab from '@Core/components/Card/Tabs/TranslationsTab';
+
 export default {
     name: 'AttributeGroupTranslationsTab',
     components: {
-        TranslationsTab: () => import('@Core/components/Card/Tabs/TranslationsTab'),
-        CollectionTranslationForm: () => import('@Collections/components/Forms/CollectionTranslationForm'),
+        TranslationsTab,
+        CollectionTranslationForm,
     },
 };
 </script>

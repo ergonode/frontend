@@ -33,7 +33,7 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('users/getUserById', {
+        await store.dispatch('users/getUser', {
             userId: params.id,
         });
     },

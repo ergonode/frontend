@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export default {
-    async getUnitById(
+    async getUnit(
         {
             commit, rootState,
         },

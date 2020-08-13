@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form title="General">
+    <Form title="Options">
         <template #body>
             <FormSection>
                 <TranslationSelect

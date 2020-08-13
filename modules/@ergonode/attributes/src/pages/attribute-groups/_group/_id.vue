@@ -34,7 +34,7 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('attributeGroup/getAttributeGroupById', {
+        await store.dispatch('attributeGroup/getAttributeGroup', {
             groupId: params.id,
         });
     },

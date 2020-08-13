@@ -22,7 +22,9 @@
                             :image-ids="value"
                             :current-index="currentIndex"
                             @current="onCurrentIndexChange" />
-                        <div class="upload-image-file__image-settings">
+                        <div
+                            v-if="!disabled"
+                            class="upload-image-file__image-settings">
                             <ActionIconButton
                                 :size="smallSize"
                                 :theme="secondaryPlainTheme"
@@ -73,7 +75,7 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import InputController from '@Core/components/Inputs/InputController';
 import InputLabel from '@Core/components/Inputs/InputLabel';
@@ -82,6 +84,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import {
+    MEDIA_TYPE,
+} from '@Media/defaults';
 
 export default {
     name: 'UploadImageFile',
@@ -95,7 +100,7 @@ export default {
         Picture: () => import('@Core/components/Multimedia/Picture'),
         PictureCarousel: () => import('@Core/components/Multimedia/PictureCarousel'),
         ModalMediaTabBar: () => import('@Media/components/Modal/ModalMediaTabBar'),
-        ActionIconButton: () => import('@Core/components/Buttons/ActionIconButton'),
+        ActionIconButton: () => import('@Core/components/ActionIconButton/ActionIconButton'),
         ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
         ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
     },
@@ -164,6 +169,7 @@ export default {
                         props: {
                             multiple: this.multiple,
                             value: this.value,
+                            type: MEDIA_TYPE.IMAGE,
                         },
                         listeners: {
                             input: (value) => {

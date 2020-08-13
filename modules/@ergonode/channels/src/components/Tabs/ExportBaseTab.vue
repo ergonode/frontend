@@ -5,20 +5,20 @@
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #centeredContent>
-            <ExportDetails />
+            <ExportDetailsForm />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
-import ExportDetails from '@Channels/components/Tables/ExportDetails';
+import ExportDetailsForm from '@Channels/components/Forms/ExportDetailsForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
 export default {
     name: 'ExportBaseTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        ExportDetails,
+        ExportDetailsForm,
     },
 };
 </script>

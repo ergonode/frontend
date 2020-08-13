@@ -11,7 +11,7 @@
         :is-dragging-enabled="true"
         :is-multi-draggable="true"
         :context-name="contextName"
-        @afterDrop="onGetConditionConfigurationById"
+        @afterDrop="onGetConditionConfiguration"
         @afterRemove="removeConditionValue">
         <template #gridItem="{item, gridItemStyles}">
             <ConditionSetItem
@@ -58,7 +58,7 @@ export default {
     },
     methods: {
         ...mapActions('conditions', [
-            'getConditionConfigurationById',
+            'getConditionConfiguration',
             'removeConditionValue',
             'setConditionValue',
         ]),
@@ -71,13 +71,13 @@ export default {
             ] = id.split('--');
             return this.conditions[correctId] || {};
         },
-        onGetConditionConfigurationById(id) {
+        onGetConditionConfiguration(id) {
             const [
                 correctId,
             ] = id.split('--');
 
             if (!this.conditions[correctId]) {
-                this.getConditionConfigurationById({
+                this.getConditionConfiguration({
                     conditionId: correctId,
                 });
             }

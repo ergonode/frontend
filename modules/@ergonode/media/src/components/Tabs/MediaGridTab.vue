@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                :is-editable="$hasAccess(['MULTIMEDIA_UPDATE'])"
+                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
@@ -18,7 +18,7 @@
                 :is-collection-layout="true"
                 @editRow="onEditRow"
                 @deleteRow="onRemoveRow"
-                @fetchData="getGridData" />
+                @fetchData="onFetchData" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -26,6 +26,7 @@
 <script>
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
+import PRIVILEGES from '@Media/config/privileges';
 
 export default {
     name: 'MediaGridTab',
@@ -38,6 +39,11 @@ export default {
         }),
     ],
     computed: {
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.MULTIMEDIA.update,
+            ]);
+        },
         collectionCellBinding() {
             return {
                 imageColumn: 'image',
@@ -50,7 +56,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'multimedia-id-general',
+                name: 'media-id-general',
                 params: {
                     id: args[lastIndex],
                 },

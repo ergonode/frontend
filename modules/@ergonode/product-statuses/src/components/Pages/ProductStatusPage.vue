@@ -6,14 +6,16 @@
     <Page>
         <TitleBar
             :title="title"
-            :is-navigation-back="true"
-            :is-read-only="$isReadOnly('WORKFLOW')">
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigationBackFab />
+            </template>
             <template #mainAction>
                 <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE STATUS"
-                    :disabled="!$hasAccess(['WORKFLOW_DELETE'])"
+                    :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete
@@ -34,12 +36,23 @@
 </template>
 
 <script>
-import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
+import editPageMixin from '@Core/mixins/page/editPageMixin';
+import PRIVILEGES from '@Transitions/config/privileges';
 
 export default {
     name: 'ProductStatusPage',
     mixins: [
-        categoryManagementPageMixin,
+        editPageMixin,
     ],
+    computed: {
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.WORKFLOW.namespace);
+        },
+        isAllowedToDelete() {
+            return this.$hasAccess([
+                PRIVILEGES.WORKFLOW.delete,
+            ]);
+        },
+    },
 };
 </script>

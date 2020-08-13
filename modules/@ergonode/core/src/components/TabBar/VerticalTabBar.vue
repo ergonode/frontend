@@ -44,7 +44,7 @@ export default {
     components: {
         VerticalTabContent: () => import('@Core/components/TabBar/VerticalTabContent'),
         VerticalTabBarItem: () => import('@Core/components/TabBar/VerticalTabBarItem'),
-        Fab: () => import('@Core/components/Buttons/Fab'),
+        Fab: () => import('@Core/components/Fab/Fab'),
         IconArrowDouble: () => import('@Core/components/Icons/Arrows/IconArrowDouble'),
     },
     props: {

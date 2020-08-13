@@ -41,7 +41,7 @@ export default {
     name: 'CreateAttributeModalForm',
     components: {
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
         AttributeForm: () => import('@Attributes/components/Forms/AttributeForm'),
     },
     mixins: [

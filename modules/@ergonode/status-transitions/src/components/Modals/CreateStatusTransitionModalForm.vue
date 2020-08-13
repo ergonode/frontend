@@ -42,7 +42,7 @@ export default {
     name: 'CreateStatusTransitionModalForm',
     components: {
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
         TransitionForm: () => import('@Transitions/components/Forms/TransitionForm'),
     },
     mixins: [

@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Collections/config/privileges';
 
 export default {
     name: 'AddProductsBySKUForm',
@@ -37,12 +38,9 @@ export default {
     },
     computed: {
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess([
-                'PRODUCT_COLLECTION_UPDATE',
-            ]))
-                || (!this.isDisabled && !this.$hasAccess([
-                    'PRODUCT_COLLECTION_CREATE',
-                ]));
+            return !this.$hasAccess([
+                PRIVILEGES.PRODUCT_COLLECTION.update,
+            ]);
         },
         skusFieldKey() {
             return 'skus';

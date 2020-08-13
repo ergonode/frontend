@@ -6,14 +6,16 @@
     <Page>
         <TitleBar
             :title="title"
-            :is-navigation-back="true"
-            :is-read-only="$isReadOnly('ATTRIBUTE')">
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigationBackFab />
+            </template>
             <template #mainAction>
                 <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE ATTRIBUTE"
-                    :disabled="!$hasAccess(['ATTRIBUTE_DELETE'])"
+                    :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete :fill-color="color" />
@@ -34,12 +36,23 @@
 </template>
 
 <script>
-import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
+import PRIVILEGES from '@Attributes/config/privileges';
+import editPageMixin from '@Core/mixins/page/editPageMixin';
 
 export default {
     name: 'AttributePage',
     mixins: [
-        categoryManagementPageMixin,
+        editPageMixin,
     ],
+    computed: {
+        isAllowedToDelete() {
+            return this.$hasAccess([
+                PRIVILEGES.ATTRIBUTE.delete,
+            ]);
+        },
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.ATTRIBUTE.namespace);
+        },
+    },
 };
 </script>

@@ -41,7 +41,7 @@ export default {
     name: 'CreateImportProfileModalForm',
     components: {
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
         ImportProfileForm: () => import('@Import/components/Forms/ImportProfileForm'),
     },
     mixins: [

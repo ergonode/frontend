@@ -105,7 +105,7 @@ export default {
             draggedElement: state => state.draggedElement,
         }),
         ...mapGetters('gridDesigner', [
-            'getItemById',
+            'getItem',
         ]),
         dataWithoutGhostElement() {
             return this.gridData.filter(element => element.id !== this.ghostElement.id);
@@ -137,7 +137,7 @@ export default {
             'setChildrenLength',
             'addGridItem',
             'removeGridItem',
-            'rebuildGridById',
+            'rebuildGrid',
             'removeHiddenItem',
         ]),
         calculateRowsCount() {
@@ -172,7 +172,7 @@ export default {
             }) => {
                 if (element) {
                     const itemId = element.getAttribute('item-id');
-                    const item = this.getItemById(itemId);
+                    const item = this.getItem(itemId);
                     const {
                         children, parent, expanded,
                     } = item;
@@ -319,7 +319,7 @@ export default {
                 id: parentId,
                 value: 1,
             });
-            this.rebuildGridById(id);
+            this.rebuildGrid(id);
             if (childrenLength > 0) {
                 this.$emit('toggleItem', {
                     ...droppedItem,

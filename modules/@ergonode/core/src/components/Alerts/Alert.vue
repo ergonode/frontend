@@ -27,7 +27,7 @@ import {
     RED,
     YELLOW,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import Fab from '@Core/components/Buttons/Fab';
+import Fab from '@Core/components/Fab/Fab';
 import IconClose from '@Core/components/Icons/Window/IconClose';
 import {
     ALERT_TYPE,

@@ -104,7 +104,7 @@ export default function ({
         watch: {
             isFetchingNeeded() {
                 if (this.isFetchingNeeded) {
-                    this.getGridData(this.localParams);
+                    this.onFetchData(this.localParams);
                 }
             },
         },
@@ -113,7 +113,7 @@ export default function ({
                 'setDisabledElement',
                 'setDisabledElements',
             ]),
-            getGridData({
+            onFetchData({
                 offset, limit, filters, sortedColumn,
             }) {
                 this.localParams = {
@@ -157,10 +157,10 @@ export default function ({
                 });
             },
             onRemoveRow() {
-                this.getGridData(this.localParams);
+                this.onFetchData(this.localParams);
             },
             onDropColumn(columnId) {
-                this.getGridData(this.localParams).then(() => {
+                this.onFetchData(this.localParams).then(() => {
                     const column = this.columns.find(({
                         id,
                     }) => id === columnId);
