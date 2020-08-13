@@ -66,7 +66,6 @@ export default {
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
         Button: () => import('@Core/components/Button/Button'),
         CreateProductTemplateModalForm: () => import('@Templates/components/Modals/CreateProductTemplateModalForm'),
-        Grid: () => import('@Core/components/Grid/Grid'),
     },
     mixins: [
         gridFetchDataMixin({

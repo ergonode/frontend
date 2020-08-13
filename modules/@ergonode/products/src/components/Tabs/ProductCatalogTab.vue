@@ -122,6 +122,7 @@ export default {
         gridModalMixin,
         gridFetchDataMixin({
             path: 'products',
+            defaultColumns: 'index,sku,_links,esa_default_image,esa_default_label',
         }),
         gridDraftMixin,
     ],

@@ -16,6 +16,7 @@ import {
 
 export default function ({
     path,
+    defaultColumns = '',
 }) {
     return {
         components: {
@@ -42,16 +43,14 @@ export default function ({
                 requests.push(this.onFetchAdvancedFilters(advFiltersIds));
             }
 
-            await Promise.all(requests);
-
-            console.log(this.columns, this.advancedFilters);
+            await Promise.all(requests).then(() => {
+                this.isPrefetchingData = false;
+            });
 
             this.setDisabledElements(this.getDisabledElements({
                 columns: this.columns,
                 filters: this.advancedFilters,
             }));
-
-            this.isPrefetchingData = false;
         },
         data() {
             return {
@@ -219,9 +218,9 @@ export default function ({
                 let columns = '';
 
                 if (columnsConfig) {
-                    columns = `${columnsConfig},_links`;
-                } else if (path === 'products') {
-                    columns = `index,sku,_links,esa_default_image:${this.languageCode},esa_default_label:${this.languageCode}`;
+                    columns = columnsConfig;
+                } else {
+                    columns = defaultColumns;
                 }
 
                 return columns;
