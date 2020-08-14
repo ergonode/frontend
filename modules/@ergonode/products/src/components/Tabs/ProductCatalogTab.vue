@@ -25,6 +25,7 @@
                 :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
                 :rows="rows"
+                :placeholder="noRecordsPlaceholder"
                 :drafts="drafts"
                 :advanced-filters="advancedFilters"
                 :data-count="filtered"
@@ -81,6 +82,7 @@
 // import getProductDraft from '@Products/services/getProductDraft.service';
 import {
     GRAPHITE_LIGHT,
+    WHITESMOKE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import Button from '@Core/components/Button/Button';
 import DropZone from '@Core/components/DropZone/DropZone';
@@ -174,6 +176,14 @@ export default {
             isElementDragging: state => state.isElementDragging,
             draggedElement: state => state.draggedElement,
         }),
+        noRecordsPlaceholder() {
+            return {
+                title: 'No products',
+                subtitle: 'There are no products in the system, you can create the first one.',
+                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                color: WHITESMOKE,
+            };
+        },
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
         },

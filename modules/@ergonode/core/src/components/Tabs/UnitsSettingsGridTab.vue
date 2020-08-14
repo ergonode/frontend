@@ -10,6 +10,7 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :placeholder="noRecordsPlaceholder"
                 :is-prefetching-data="isPrefetchingData"
                 :is-header-visible="true"
                 :is-border="true"
@@ -35,6 +36,9 @@
 </template>
 
 <script>
+import {
+    WHITESMOKE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
@@ -79,6 +83,14 @@ export default {
         };
     },
     computed: {
+        noRecordsPlaceholder() {
+            return {
+                title: 'No units',
+                subtitle: 'There are no units in the system, you can create the first one.',
+                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                color: WHITESMOKE,
+            };
+        },
         smallSize() {
             return SIZE.SMALL;
         },

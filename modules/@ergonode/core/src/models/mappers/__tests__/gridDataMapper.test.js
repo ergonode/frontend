@@ -109,7 +109,9 @@ describe('gridDataMapper/getMergedFilters', () => {
         it('Only basic filters', () => {
             const filterId = 123;
             const basic = {
-                [filterId]: `${filterId}${FILTER_OPERATOR.EQUAL}Test`,
+                [filterId]: {
+                    [FILTER_OPERATOR.EQUAL]: 'Test',
+                },
             };
             const advanced = {};
             const result = `${filterId}${FILTER_OPERATOR.EQUAL}Test`;
@@ -123,7 +125,9 @@ describe('gridDataMapper/getMergedFilters', () => {
         it('Only advanced filters', () => {
             const filterId = 123;
             const advanced = {
-                [filterId]: `${filterId}${FILTER_OPERATOR.EQUAL}Test`,
+                [filterId]: {
+                    [FILTER_OPERATOR.EQUAL]: 'Test',
+                },
             };
             const basic = {};
             const result = `${filterId}${FILTER_OPERATOR.EQUAL}Test`;
@@ -138,10 +142,15 @@ describe('gridDataMapper/getMergedFilters', () => {
             const filterId = 123;
             const advFilterId = 456;
             const advanced = {
-                [advFilterId]: `${advFilterId}${FILTER_OPERATOR.EQUAL}Test`,
+                [advFilterId]: {
+                    [FILTER_OPERATOR.EQUAL]: 'Test',
+                },
             };
             const basic = {
-                [filterId]: `${filterId}${FILTER_OPERATOR.GREATER_OR_EQUAL}1;${filterId}${FILTER_OPERATOR.SMALLER_OR_EQUAL}3`,
+                [filterId]: {
+                    [FILTER_OPERATOR.GREATER_OR_EQUAL]: 1,
+                    [FILTER_OPERATOR.SMALLER_OR_EQUAL]: 3,
+                },
             };
             const result = `${filterId}${FILTER_OPERATOR.GREATER_OR_EQUAL}1;${filterId}${FILTER_OPERATOR.SMALLER_OR_EQUAL}3;${advFilterId}${FILTER_OPERATOR.EQUAL}Test`;
 
@@ -152,13 +161,17 @@ describe('gridDataMapper/getMergedFilters', () => {
         });
 
         it('Basic are overwritten by advanced filters', () => {
-            const filterId = 123;
             const advFilterId = 456;
             const advanced = {
-                [advFilterId]: `${advFilterId}${FILTER_OPERATOR.EQUAL}Test`,
+                [advFilterId]: {
+                    [FILTER_OPERATOR.EQUAL]: 'Test',
+                },
             };
             const basic = {
-                [advFilterId]: `${filterId}${FILTER_OPERATOR.GREATER_OR_EQUAL}1;${filterId}${FILTER_OPERATOR.SMALLER_OR_EQUAL}3`,
+                [advFilterId]: {
+                    [FILTER_OPERATOR.GREATER_OR_EQUAL]: 1,
+                    [FILTER_OPERATOR.SMALLER_OR_EQUAL]: 3,
+                },
             };
             const result = `${advFilterId}${FILTER_OPERATOR.EQUAL}Test`;
 

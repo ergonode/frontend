@@ -10,6 +10,7 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :placeholder="noRecordsPlaceholder"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
@@ -22,6 +23,9 @@
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
+import {
+    WHITESMOKE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import {
     DATA_LIMIT,
@@ -54,6 +58,14 @@ export default {
         };
     },
     computed: {
+        noRecordsPlaceholder() {
+            return {
+                title: 'No attributes',
+                subtitle: 'There are no attributes in the system, you can create the first one.',
+                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                color: WHITESMOKE,
+            };
+        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,

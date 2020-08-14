@@ -27,6 +27,7 @@
                     :columns="columns"
                     :data-count="filtered"
                     :rows="rows"
+                    :placeholder="noRecordsPlaceholder"
                     :is-prefetching-data="isPrefetchingData"
                     :default-layout="gridLayout.COLLECTION"
                     :is-collection-layout="true"
@@ -47,6 +48,9 @@
 </template>
 
 <script>
+import {
+    WHITESMOKE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import {
     DATA_LIMIT,
@@ -90,6 +94,14 @@ export default {
         };
     },
     computed: {
+        noRecordsPlaceholder() {
+            return {
+                title: 'No product templates',
+                subtitle: 'There are no product templates in the system, you can create the first one.',
+                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                color: WHITESMOKE,
+            };
+        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.TEMPLATE_DESIGNER.update,

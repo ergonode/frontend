@@ -47,20 +47,18 @@ export function getParsedFilter({
 export function getMergedFilters({
     basic, advanced,
 }) {
-    return [
-        ...Object
-            .keys(basic)
-            .map(key => getParsedFilter({
-                id: key,
-                filter: basic[key],
-            })),
-        ...Object
-            .keys(advanced)
-            .map(key => getParsedFilter({
-                id: key,
-                filter: advanced[key],
-            })),
-    ].join(';');
+    const merged = {
+        ...basic,
+        ...advanced,
+    };
+
+    return Object
+        .keys(merged)
+        .map(key => getParsedFilter({
+            id: key,
+            filter: merged[key],
+        }))
+        .join(';');
 }
 
 export function getSortedColumnsByIDs(columns, columnsID) {

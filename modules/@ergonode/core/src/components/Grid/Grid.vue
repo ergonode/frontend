@@ -69,13 +69,30 @@
                     @rowAction="onRowAction"
                     @cellValue="onCellValueChange" />
             </KeepAlive>
-            <GridPlaceholder
-                v-if="dataCount === 0 && !isPrefetchingData"
-                v-bind="{ ...placeholder }">
-                <template #action>
-                    <slot name="placeholderAction" />
-                </template>
-            </GridPlaceholder>
+            <template v-if="dataCount === 0 && !isPrefetchingData">
+                <GridPlaceholder
+                    v-if="noRecordsFilterPlaceholder"
+                    v-bind="{ ...noRecordsFilterPlaceholder }">
+                    <template #action>
+                        <Button
+                            title="REMOVE FILTERS"
+                            :size="smallSize"
+                            :theme="secondaryTheme"
+                            @click.native="onRemoveAllFilters">
+                            <template #prepend="{ color }">
+                                <IconFilledClose :fill-color="color" />
+                            </template>
+                        </Button>
+                    </template>
+                </GridPlaceholder>
+                <GridPlaceholder
+                    v-else
+                    v-bind="{ ...placeholder }">
+                    <template #action>
+                        <slot name="placeholderNoRecordsAction" />
+                    </template>
+                </GridPlaceholder>
+            </template>
         </GridBody>
         <GridFooter v-if="isFooterVisible">
             <GridPageSelector
@@ -95,12 +112,14 @@
 import {
     WHITESMOKE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import Button from '@Core/components/Button/Button';
 import GridPagination from '@Core/components/Grid/Footer/GridPagination';
 import GridBody from '@Core/components/Grid/GridBody';
 import GridFooter from '@Core/components/Grid/GridFooter';
 import GridHeader from '@Core/components/Grid/Header/GridHeader';
 import GridCollectionLayout from '@Core/components/Grid/Layout/Collection/GridCollectionLayout';
 import GridTableLayout from '@Core/components/Grid/Layout/Table/GridTableLayout';
+import IconFilledClose from '@Core/components/Icons/Window/IconFilledClose';
 import Preloader from '@Core/components/Preloader/Preloader';
 import {
     COLUMNS_NUMBER,
@@ -111,6 +130,10 @@ import {
     IMAGE_SCALING,
     ROW_HEIGHT,
 } from '@Core/defaults/grid';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 import {
     getMergedFilters,
 } from '@Core/models/mappers/gridDataMapper';
@@ -128,6 +151,8 @@ export default {
         GridPageSelector: () => import('@Core/components/Grid/Footer/GridPageSelector'),
         DropZone: () => import('@Core/components/DropZone/DropZone'),
         IconAddColumn: () => import('@Core/components/Icons/Actions/IconAddColumn'),
+        Button,
+        IconFilledClose,
         GridPagination,
         GridHeader,
         Preloader,
@@ -165,8 +190,8 @@ export default {
         placeholder: {
             type: Object,
             default: () => ({
-                title: 'No results',
-                subtitle: 'There are no results that meet the conditions for the selected filters.',
+                title: 'Nothing to see here',
+                subtitle: 'There are no records in the system.',
                 bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
                 color: WHITESMOKE,
             }),
@@ -239,6 +264,26 @@ export default {
             isElementDragging: state => state.isElementDragging,
             draggedElement: state => state.draggedElement,
         }),
+        noRecordsFilterPlaceholder() {
+            if (!this.dataCount
+                && (!Object.keys(this.filterValues).length
+                    && !Object.keys(this.advancedFilterValues).length)) {
+                return null;
+            }
+
+            return {
+                title: 'No results',
+                subtitle: 'There are no results that meet the conditions for the selected filters.',
+                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                color: WHITESMOKE,
+            };
+        },
+        smallSize() {
+            return SIZE.SMALL;
+        },
+        secondaryTheme() {
+            return THEME.SECONDARY;
+        },
         classes() {
             return [
                 'grid',
@@ -335,6 +380,12 @@ export default {
         },
     },
     methods: {
+        onRemoveAllFilters() {
+            this.advancedFilterValues = {};
+            this.filterValues = {};
+
+            this.emitFetchData();
+        },
         onApplySettings({
             tableConfig, collectionConfig,
         }) {
