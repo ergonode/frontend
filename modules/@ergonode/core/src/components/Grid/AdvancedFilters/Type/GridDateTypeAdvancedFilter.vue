@@ -14,7 +14,7 @@
         @apply="onApplyValue">
         <template #body>
             <GridAdvancedFilterDateContent
-                :value="value"
+                :value="localValue"
                 :format="parameters"
                 @input="onValueChange" />
         </template>
@@ -37,10 +37,8 @@ import {
     DEFAULT_FORMAT,
 } from '@Core/models/calendar/calendar';
 import {
-    getParsedFilter,
-} from '@Core/models/mappers/gridDataMapper';
-import {
     format as formatDate,
+    parse as parseDate,
 } from 'date-fns';
 
 export default {
@@ -59,14 +57,18 @@ export default {
             type: Object,
             required: true,
         },
-    },
-    data() {
-        return {
-            value: {
+        value: {
+            type: Object,
+            default: () => ({
                 isEmptyRecord: false,
                 [FILTER_OPERATOR.GREATER_OR_EQUAL]: null,
                 [FILTER_OPERATOR.SMALLER_OR_EQUAL]: null,
-            },
+            }),
+        },
+    },
+    data() {
+        return {
+            localValue: {},
         };
     },
     computed: {
@@ -91,14 +93,41 @@ export default {
             return this.filter.label ? `${code} ${languageCode}` : null;
         },
         filterValue() {
-            if (this.value.isEmptyRecord) return 'Empty records';
+            if (this.localValue.isEmptyRecord) return 'Empty records';
 
             return [
-                this.value[FILTER_OPERATOR.GREATER_OR_EQUAL],
-                this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL],
+                this.localValue[FILTER_OPERATOR.GREATER_OR_EQUAL],
+                this.localValue[FILTER_OPERATOR.SMALLER_OR_EQUAL],
             ].filter(value => value)
                 .map(value => formatDate(value, this.parameters))
                 .join(' - ');
+        },
+    },
+    watch: {
+        value: {
+            immediate: true,
+            handler() {
+                const fromDate = this.value[FILTER_OPERATOR.GREATER_OR_EQUAL]
+                    ? parseDate(
+                        this.value[FILTER_OPERATOR.GREATER_OR_EQUAL],
+                        DEFAULT_FORMAT,
+                        new Date(),
+                    )
+                    : null;
+                const toDate = this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL]
+                    ? parseDate(
+                        this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL],
+                        DEFAULT_FORMAT,
+                        new Date(),
+                    )
+                    : null;
+
+                this.localValue = {
+                    ...this.value,
+                    [FILTER_OPERATOR.GREATER_OR_EQUAL]: fromDate,
+                    [FILTER_OPERATOR.SMALLER_OR_EQUAL]: toDate,
+                };
+            },
         },
     },
     methods: {
@@ -118,8 +147,8 @@ export default {
                 value[FILTER_OPERATOR.SMALLER_OR_EQUAL] = to;
             }
 
-            this.value = {
-                ...this.value,
+            this.localValue = {
+                ...this.localValue,
                 ...value,
             };
         },
@@ -130,7 +159,7 @@ export default {
             this.$emit('swap', payload);
         },
         onClear() {
-            this.value = {
+            this.localValue = {
                 isEmptyRecord: false,
                 [FILTER_OPERATOR.GREATER_OR_EQUAL]: null,
                 [FILTER_OPERATOR.SMALLER_OR_EQUAL]: null,
@@ -138,7 +167,7 @@ export default {
         },
         onApplyValue() {
             const filterValue = {
-                ...this.value,
+                ...this.localValue,
             };
 
             if (filterValue[FILTER_OPERATOR.GREATER_OR_EQUAL]) {
@@ -159,13 +188,12 @@ export default {
                 filterValue[FILTER_OPERATOR.SMALLER_OR_EQUAL] = toValue;
             }
 
-            this.$emit('apply', {
-                key: this.filter.id,
-                value: getParsedFilter({
-                    id: this.filter.id,
-                    filter: filterValue,
-                }),
-            });
+            if (JSON.stringify(this.value) !== JSON.stringify(this.localValue)) {
+                this.$emit('apply', {
+                    key: this.filter.id,
+                    value: filterValue,
+                });
+            }
         },
     },
 };

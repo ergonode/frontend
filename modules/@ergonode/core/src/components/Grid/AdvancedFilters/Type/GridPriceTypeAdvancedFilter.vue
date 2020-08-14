@@ -15,7 +15,7 @@
         @apply="onApplyValue">
         <template #body>
             <GridAdvancedFilterTextContent
-                :value="value"
+                :value="localValue"
                 @input="onValueChange" />
         </template>
         <template #footer="{ onApply }">
@@ -33,9 +33,6 @@ import SelectDropdownApplyFooter from '@Core/components/Inputs/Select/DropDown/F
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
-import {
-    getParsedFilter,
-} from '@Core/models/mappers/gridDataMapper';
 
 export default {
     name: 'GridPriceTypeAdvancedFilter',
@@ -53,14 +50,18 @@ export default {
             type: Object,
             required: true,
         },
-    },
-    data() {
-        return {
-            value: {
+        value: {
+            type: Object,
+            default: () => ({
                 isEmptyRecord: false,
                 [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
                 [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
-            },
+            }),
+        },
+    },
+    data() {
+        return {
+            localValue: {},
         };
     },
     computed: {
@@ -85,20 +86,30 @@ export default {
             return this.filter.label ? `${code} ${languageCode}` : null;
         },
         filterValue() {
-            if (this.value.isEmptyRecord) return 'Empty records';
+            if (this.localValue.isEmptyRecord) return 'Empty records';
 
             return [
-                this.value[FILTER_OPERATOR.GREATER_OR_EQUAL],
-                this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL],
+                this.localValue[FILTER_OPERATOR.GREATER_OR_EQUAL],
+                this.localValue[FILTER_OPERATOR.SMALLER_OR_EQUAL],
             ].filter(value => value !== '')
                 .join(' - ');
+        },
+    },
+    watch: {
+        value: {
+            immediate: true,
+            handler() {
+                this.localValue = {
+                    ...this.value,
+                };
+            },
         },
     },
     methods: {
         onValueChange({
             key, value,
         }) {
-            this.value[key] = value;
+            this.localValue[key] = value;
         },
         onRemove(index) {
             this.$emit('remove', index);
@@ -107,20 +118,19 @@ export default {
             this.$emit('swap', payload);
         },
         onClear() {
-            this.value = {
+            this.localValue = {
                 isEmptyRecord: false,
                 [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
                 [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
             };
         },
         onApplyValue() {
-            this.$emit('apply', {
-                key: this.filter.id,
-                value: getParsedFilter({
-                    id: this.filter.id,
-                    filter: this.value,
-                }),
-            });
+            if (JSON.stringify(this.value) !== JSON.stringify(this.localValue)) {
+                this.$emit('apply', {
+                    key: this.filter.id,
+                    value: this.localValue,
+                });
+            }
         },
     },
 };

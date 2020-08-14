@@ -52,7 +52,7 @@
         "clear": "^0.1.0",
         "commander": "^6.0.0",
         "cookie-universal-nuxt": "^2.1.4",
-        "date-fns": "^2.14.0",
+        "date-fns": "^2.15.0",
         "debounce": "^1.2.0",
         "deepmerge": "^4.2.2",
         "dotenv": "^8.2.0",

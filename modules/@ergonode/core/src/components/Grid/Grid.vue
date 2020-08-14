@@ -16,6 +16,7 @@
             :is-advanced-filters="isAdvancedFilters"
             :is-collection-layout="isCollectionLayout"
             :filters="advancedFilters"
+            :filter-values="advancedFilterValues"
             @filter="onAdvancedFilterChange"
             @layoutChange="onLayoutChange"
             @applySettings="onApplySettings"
@@ -30,7 +31,6 @@
         <GridBody
             :disabled="isListElementDragging && isColumnExists"
             :is-border="isHeaderVisible">
-            <Preloader v-show="isPrefetchingData" />
             <DropZone
                 v-show="isListElementDragging && !isColumnExists"
                 title="ADD COLUMN"
@@ -39,7 +39,8 @@
                     <IconAddColumn :fill-color="color" />
                 </template>
             </DropZone>
-            <KeepAlive>
+            <Preloader v-if="isPrefetchingData" />
+            <KeepAlive v-else>
                 <GridTableLayout
                     v-if="isTableLayout"
                     :columns="columns"
@@ -110,9 +111,6 @@ import {
     IMAGE_SCALING,
     ROW_HEIGHT,
 } from '@Core/defaults/grid';
-import {
-    insertCookieAtIndex,
-} from '@Core/models/cookies';
 import {
     getMergedFilters,
 } from '@Core/models/mappers/gridDataMapper';
@@ -358,12 +356,6 @@ export default {
             this.$emit(`${key}Row`, value);
         },
         onDropColumn(columnId) {
-            insertCookieAtIndex({
-                cookies: this.$cookies,
-                cookieName: `GRID_CONFIG:${this.$route.name}`,
-                index: this.isSelectColumn ? 1 : 0,
-                data: columnId,
-            });
             this.$emit('dropColumn', columnId);
         },
         onSortColumn(sortedColumn) {

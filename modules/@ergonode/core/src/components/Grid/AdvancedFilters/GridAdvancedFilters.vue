@@ -9,6 +9,7 @@
             :is="filterComponents[index]"
             :key="filter.id"
             :index="index"
+            :value="filterValues[filter.id]"
             :filter="filter"
             @remove="onRemove"
             @swap="onSwap"
@@ -52,12 +53,15 @@ export default {
             type: Array,
             default: () => [],
         },
+        filterValues: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     data() {
         return {
             orderedFilters: [],
             filterComponents: [],
-            filterValues: {},
         };
     },
     computed: {
@@ -154,10 +158,13 @@ export default {
                 attributeId: filter.attributeId,
             });
 
-            delete this.filterValues[filter.id];
+            const filterValues = {
+                ...this.filterValues,
+            };
+            delete filterValues[filter.id];
 
             this.$emit('count', this.orderedFilters.length);
-            this.$emit('filter', this.filterValues);
+            this.$emit('filter', filterValues);
         },
         onSwap({
             from, to,
@@ -186,11 +193,10 @@ export default {
         onApply({
             key, value,
         }) {
-            if (this.filterValues[key] !== value || value === 0) {
-                this.filterValues[key] = value;
-
-                this.$emit('filter', this.filterValues);
-            }
+            this.$emit('filter', {
+                ...this.filterValues,
+                [key]: value,
+            });
         },
         onRemoveAll() {
             this.orderedFilters.forEach(({
@@ -204,12 +210,11 @@ export default {
 
             this.orderedFilters = [];
             this.filterComponents = [];
-            this.filterValues = {};
 
             this.$cookies.remove(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
 
             this.$emit('count', this.orderedFilters.length);
-            this.$emit('filter', this.filterValues);
+            this.$emit('filter', {});
         },
         disableListElement({
             languageCode, attributeId,

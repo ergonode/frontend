@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    insertCookieAtIndex,
+} from '@Core/models/cookies';
+import {
     getAdvancedFiltersData,
 } from '@Core/services/grid/getGridData.service';
 import {
@@ -67,6 +70,13 @@ export default function ({
                         disabledElements: this.disabledElements,
                     }));
                 }
+
+                insertCookieAtIndex({
+                    cookies: this.$cookies,
+                    cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
+                    index: 0,
+                    data: filterId,
+                });
 
                 this.advancedFilters = advancedFilters;
             },

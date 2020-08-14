@@ -59,8 +59,9 @@
             @close="onCloseModal"
             @apply="onApplySettings" />
         <GridAdvancedFilters
-            v-if="isFiltersExpanded && isAdvancedFilters"
+            v-show="isFiltersExpanded && isAdvancedFilters"
             :filters="filters"
+            :filter-values="filterValues"
             @filter="onFilter"
             @count="onFiltersCountChange"
             @exists="onFilterExists" />
@@ -87,10 +88,6 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import {
-    insertCookieAtIndex,
-} from '@Core/models/cookies';
-import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -127,6 +124,10 @@ export default {
             type: Array,
             default: () => [],
         },
+        filterValues: {
+            type: Object,
+            default: () => ({}),
+        },
         isActionsSelected: {
             type: Boolean,
             default: false,
@@ -145,7 +146,7 @@ export default {
             isFiltersExpanded: false,
             isFilterExists: false,
             isSettingsModal: false,
-            filtersCount: 0,
+            filtersCount: this.filters.length,
         };
     },
     computed: {
@@ -178,9 +179,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('draggable', [
-            'setGhostIndex',
-        ]),
         onLayoutActivate(layout) {
             this.$emit('layoutChange', layout);
         },
@@ -204,13 +202,6 @@ export default {
             this.$emit('applySettings', payload);
         },
         onDropFilter(id) {
-            insertCookieAtIndex({
-                cookies: this.$cookies,
-                cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
-                index: 0,
-                data: id,
-            });
-
             this.$emit('dropFilter', id);
         },
         onFilter(filters) {

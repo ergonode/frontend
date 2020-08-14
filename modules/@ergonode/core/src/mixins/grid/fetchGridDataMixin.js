@@ -6,6 +6,9 @@ import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
 import {
+    insertCookieAtIndex,
+} from '@Core/models/cookies';
+import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
 import {
@@ -118,6 +121,13 @@ export default function ({
                             disabledElements: this.disabledElements,
                         }));
                     }
+
+                    insertCookieAtIndex({
+                        cookies: this.$cookies,
+                        cookieName: `GRID_CONFIG:${this.$route.name}`,
+                        index: 0,
+                        data: columnId,
+                    });
                 });
             },
             getDisabledListElement({
