@@ -53,7 +53,6 @@ import {
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import {
-    DATA_LIMIT,
     GRID_LAYOUT,
 } from '@Core/defaults/grid';
 import {

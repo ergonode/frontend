@@ -95,7 +95,6 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
-    DATA_LIMIT,
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
 import {
