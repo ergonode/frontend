@@ -26,6 +26,7 @@ import {
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import {
     DATA_LIMIT,
+    DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 import {
     getGridData,
@@ -187,8 +188,11 @@ export default {
     },
     methods: {
         onFetchData({
-            offset, limit, filters, sortedColumn,
-        }) {
+            offset,
+            limit,
+            filters,
+            sortedColumn,
+        } = DEFAULT_GRID_FETCH_PARAMS) {
             this.localParams = {
                 offset,
                 limit,

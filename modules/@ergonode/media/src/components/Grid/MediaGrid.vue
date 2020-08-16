@@ -52,6 +52,7 @@ import {
 } from '@Core/defaults/alerts';
 import {
     DATA_LIMIT,
+    DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 // TODO: Uncomment when we have global search
 // import IconSearch from '@Core/components/Icons/Actions/IconSearch';
@@ -204,8 +205,11 @@ export default {
     },
     methods: {
         onFetchData({
-            offset, limit, filters, sortedColumn,
-        }) {
+            offset,
+            limit,
+            filters,
+            sortedColumn,
+        } = DEFAULT_GRID_FETCH_PARAMS) {
             this.localParams = {
                 offset,
                 limit,

@@ -52,9 +52,6 @@ import ActionButton from '@Core/components/ActionButton/ActionButton';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import {
-    DATA_LIMIT,
-} from '@Core/defaults/grid';
-import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
@@ -76,12 +73,7 @@ export default {
         }),
     ],
     fetch() {
-        return this.onFetchData({
-            offset: 0,
-            limit: DATA_LIMIT,
-            filters: '',
-            sortedColumn: {},
-        }).then(() => {
+        return this.onFetchData().then(() => {
             this.isPrefetchingData = false;
         });
     },

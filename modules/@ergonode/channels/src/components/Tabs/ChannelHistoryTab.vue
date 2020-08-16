@@ -20,9 +20,6 @@
 
 <script>
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import {
-    DATA_LIMIT,
-} from '@Core/defaults/grid';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
 export default {
@@ -36,12 +33,7 @@ export default {
         }),
     ],
     fetch() {
-        return this.onFetchData({
-            offset: 0,
-            limit: DATA_LIMIT,
-            filters: '',
-            sortedColumn: {},
-        }).then(() => {
+        return this.onFetchData().then(() => {
             this.isPrefetchingData = false;
         });
     },

@@ -4,6 +4,7 @@
  */
 import {
     DATA_LIMIT,
+    DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 import {
     insertCookieAtIndex,
@@ -63,8 +64,11 @@ export default function ({
                 'setDisabledElement',
             ]),
             onFetchData({
-                offset, limit, filters, sortedColumn,
-            }) {
+                offset,
+                limit,
+                filters,
+                sortedColumn,
+            } = DEFAULT_GRID_FETCH_PARAMS) {
                 this.localParams = {
                     offset,
                     limit,

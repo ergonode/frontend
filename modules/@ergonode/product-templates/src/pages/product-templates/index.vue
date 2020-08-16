@@ -78,12 +78,7 @@ export default {
         }),
     ],
     fetch() {
-        return this.onFetchData({
-            offset: 0,
-            limit: DATA_LIMIT,
-            filters: '',
-            sortedColumn: {},
-        }).then(() => {
+        return this.onFetchData().then(() => {
             this.isPrefetchingData = false;
         });
     },

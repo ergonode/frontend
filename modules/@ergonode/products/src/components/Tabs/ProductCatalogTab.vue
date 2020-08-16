@@ -141,12 +141,7 @@ export default {
     ],
     fetch() {
         const requests = [
-            this.onFetchData({
-                offset: 0,
-                limit: DATA_LIMIT,
-                filters: '',
-                sortedColumn: {},
-            }),
+            this.onFetchData(),
         ];
         const advFiltersIds = this.$cookies.get(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
 
