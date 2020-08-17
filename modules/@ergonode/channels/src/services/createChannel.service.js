@@ -20,9 +20,17 @@ export default async function ({
     } = $store.state.dictionaries;
     const typeId = getKeyByValue(channels, type);
 
-    return $axios.$post(`${language}/channels`, {
-        ...JSON.parse(configuration),
+    let data = {
         type: typeId,
         name,
-    });
+    };
+
+    if (configuration) {
+        data = {
+            ...data,
+            ...JSON.parse(configuration),
+        };
+    }
+
+    return $axios.$post(`${language}/channels`, data);
 }

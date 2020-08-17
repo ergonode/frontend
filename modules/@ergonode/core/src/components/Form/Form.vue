@@ -17,7 +17,7 @@
                 <IconError :fill-color="redColor" />
                 <div class="errors-list">
                     <h3 class="errors-list__header">
-                        Please review errors bellow
+                        Please review errors below
                     </h3>
                     <div class="errors-list__links">
                         <LinkButton
@@ -135,7 +135,6 @@ export default {
             display: grid;
             grid-auto-flow: row;
             grid-row-gap: 8px;
-            overflow: auto;
 
             &__header {
                 color: $GRAPHITE_DARK;

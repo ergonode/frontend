@@ -5,7 +5,7 @@
 <template>
     <Form
         title="Options"
-        :fields-key="[codeFieldKey]">
+        :fields-keys="[codeFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
