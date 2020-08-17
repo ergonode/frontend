@@ -4,10 +4,10 @@
  */
 export default {
     dictionaries: [
-        // {
-        //     stateProp: 'channels',
-        //     dataFormat: {},
-        //     requestPath: '/dictionary/channels',
-        // },
+        {
+            stateProp: 'channels',
+            dataFormat: {},
+            requestPath: '/dictionary/channels',
+        },
     ],
 };
