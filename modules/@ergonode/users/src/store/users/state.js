@@ -9,6 +9,7 @@ export default () => ({
     firstName: '',
     lastName: '',
     language: '',
+    languageCode: '',
     password: '',
     passwordRepeat: '',
     languagePrivilegesCollection: null,

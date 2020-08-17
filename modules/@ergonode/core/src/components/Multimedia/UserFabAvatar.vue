@@ -5,8 +5,9 @@
 <template>
     <div :class="avatarClasses">
         <Picture
-            v-if="imageId"
-            :value="imageId"
+            v-if="avatarId"
+            :value="avatarId"
+            :api-path="avatarPath"
             fab />
         <span
             v-else
@@ -20,12 +21,20 @@ import {
 } from '@Core/defaults/theme';
 
 export default {
-    name: 'UserAvatar',
+    name: 'UserFabAvatar',
     components: {
         Picture: () => import('@Core/components/Multimedia/Picture'),
     },
     props: {
-        imageId: {
+        avatarId: {
+            type: String,
+            default: '',
+        },
+        userId: {
+            type: String,
+            default: '',
+        },
+        languageCode: {
             type: String,
             default: '',
         },
@@ -40,6 +49,9 @@ export default {
         },
     },
     computed: {
+        avatarPath() {
+            return `${this.languageCode}/accounts/${this.userId}/avatar`;
+        },
         avatarInitial() {
             return this.name.length ? this.name[0] : '';
         },

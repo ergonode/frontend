@@ -23,6 +23,10 @@ export default {
             type: String,
             required: true,
         },
+        apiPath: {
+            type: String,
+            required: true,
+        },
         fab: {
             type: Boolean,
             default: false,
@@ -63,7 +67,7 @@ export default {
         this.observer = new IntersectionObserver((entries) => {
             const image = entries[0];
             if (image.isIntersecting) {
-                this.getImage();
+                this.getImageById();
                 this.observer.disconnect();
             }
         });
@@ -77,10 +81,10 @@ export default {
         this.observer.disconnect();
     },
     methods: {
-        getImage() {
+        getImageById() {
             this.cancelToken = this.$axios.CancelToken.source();
 
-            this.$axios.$get(`multimedia/${this.value}/download/default`, {
+            this.$axios.$get(`multimedia/${this.value}`, {
                 useCache: true,
                 cancelToken: this.cancelToken.token,
                 responseType: 'arraybuffer',

@@ -6,8 +6,8 @@
     <Comment>
         <template #header>
             <div class="header__user">
-                <UserAvatar
-                    :image-id="comment.avatar_id"
+                <UserFabAvatar
+                    :avatar-id="comment.avatar_id"
                     :name="comment.author"
                     :size="smallSize" />
                 <span v-text="comment.author" />
@@ -84,7 +84,7 @@ export default {
         Fab,
         IconEdit,
         IconDelete,
-        UserAvatar: () => import('@Core/components/Multimedia/UserAvatar'),
+        UserFabAvatar: () => import('@Core/components/Multimedia/UserFabAvatar'),
     },
     props: {
         comment: {

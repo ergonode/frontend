@@ -72,10 +72,8 @@ export default {
                 name: 'notifications-grid',
             });
         },
-        onFocus({
-            focus, isClickedInsideMenu,
-        }) {
-            if (focus && !isClickedInsideMenu) {
+        onFocus(isFocused) {
+            if (isFocused) {
                 this.requestForNotifications();
             }
         },

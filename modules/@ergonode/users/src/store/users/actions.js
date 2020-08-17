@@ -70,6 +70,10 @@ export default {
                 value: getActiveLanguageByCode(language).name,
             });
             commit('__SET_STATE', {
+                key: 'languageCode',
+                value: language,
+            });
+            commit('__SET_STATE', {
                 key: 'password',
                 value: password,
             });
