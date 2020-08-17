@@ -13,25 +13,25 @@ module.exports = {
         '@storybook/addon-knobs',
     ],
     webpack: async config => {
-      config.resolve.alias = {
-          ...config.resolve.alias,
-          ['@Core']: path.resolve(__dirname, '../modules/@ergo/core'),
-      };
+        config.resolve.alias = {
+            ...config.resolve.alias,
+            ['@Core']: path.resolve(__dirname, '../modules/@ergonode/core/src'),
+        };
 
-      config.module.rules.push({
-          test: /\.scss$/,
-          loaders: [
-              'style-loader',
-              'css-loader',
-              'sass-loader',
-              {
-                  loader: 'sass-resources-loader',
-                  options: {
-                      resources: path.resolve(__dirname, '../modules/@ergo/core/assets/scss/main.scss')
-                  }
-              }],
-          include: path.resolve(__dirname, '../'),
-      });
+        config.module.rules.push({
+            test: /\.scss$/,
+            loaders: [
+                'style-loader',
+                'css-loader',
+                'sass-loader',
+                {
+                    loader: 'sass-resources-loader',
+                    options: {
+                        resources: path.resolve(__dirname, '../modules/@ergonode/core/src/assets/scss/main.scss')
+                    }
+                }],
+            include: path.resolve(__dirname, '../'),
+        });
 
         const mdxRules = config.module.rules.filter(({ test }) => {
             return String(test) === String(/\.mdx$/) || String(test) === String(/\.(stories|story).mdx$/)
@@ -54,6 +54,6 @@ module.exports = {
             exclude: [path.resolve(__dirname, '../node_modules')]
         });
 
-      return config
-  },
+        return config
+    },
 };
