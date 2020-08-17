@@ -45,6 +45,7 @@ import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import {
     DATA_LIMIT,
+    DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 import {
     SIZE,
@@ -212,8 +213,11 @@ export default {
             this.selectedAppModalOption = null;
         },
         onFetchData({
-            offset, limit, filters, sortedColumn,
-        }) {
+            offset,
+            limit,
+            filters,
+            sortedColumn,
+        } = DEFAULT_GRID_FETCH_PARAMS) {
             this.localParams = {
                 offset,
                 limit,

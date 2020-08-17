@@ -55,7 +55,7 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import {
     mapState,
 } from 'vuex';
@@ -68,12 +68,18 @@ export default {
         IconAdd,
     },
     mixins: [
-        gridFetchDataMixin({
+        fetchGridDataMixin({
             path: 'collections/_id/elements',
         }),
     ],
+    fetch() {
+        return this.onFetchData().then(() => {
+            this.isPrefetchingData = false;
+        });
+    },
     data() {
         return {
+            isPrefetchingData: true,
             selectedAppModalOption: null,
         };
     },

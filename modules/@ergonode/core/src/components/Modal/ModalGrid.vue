@@ -87,10 +87,7 @@ export default {
         },
     },
     fetch() {
-        this.onFetchData({
-            offset: 0,
-            limit: DATA_LIMIT,
-        });
+        this.onFetchData();
     },
     data() {
         return {
@@ -109,7 +106,12 @@ export default {
         },
     },
     methods: {
-        async onFetchData(params) {
+        async onFetchData(params = {
+            offset: 0,
+            limit: DATA_LIMIT,
+            filters: '',
+            sortedColumn: {},
+        }) {
             const {
                 columns,
                 rows,

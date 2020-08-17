@@ -5,7 +5,7 @@
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
-            <GridViewTemplate class="grid-view-template--no-border">
+            <GridViewTemplate>
                 <template #sidebar>
                     <VerticalTabBar :items="verticalTabs">
                         <FadeTransition>

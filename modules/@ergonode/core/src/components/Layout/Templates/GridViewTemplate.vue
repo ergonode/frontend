@@ -39,9 +39,5 @@ export default {
             grid-area: 1 / 2 / 3 / 3;
             min-width: 0;
         }
-
-        &--no-border {
-            border-top: none;
-        }
     }
 </style>

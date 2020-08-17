@@ -27,6 +27,7 @@
                     :columns="columns"
                     :data-count="filtered"
                     :rows="rows"
+                    :placeholder="noRecordsPlaceholder"
                     :is-prefetching-data="isPrefetchingData"
                     :default-layout="gridLayout.COLLECTION"
                     :is-collection-layout="true"
@@ -47,6 +48,9 @@
 </template>
 
 <script>
+import {
+    WHITESMOKE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import {
     GRID_LAYOUT,
@@ -54,7 +58,7 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import PRIVILEGES from '@Templates/config/privileges';
 
 export default {
@@ -66,19 +70,32 @@ export default {
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
         Button: () => import('@Core/components/Button/Button'),
         CreateProductTemplateModalForm: () => import('@Templates/components/Modals/CreateProductTemplateModalForm'),
-        Grid: () => import('@Core/components/Grid/Grid'),
     },
     mixins: [
-        gridFetchDataMixin({
+        fetchGridDataMixin({
             path: 'templates',
         }),
     ],
+    fetch() {
+        return this.onFetchData().then(() => {
+            this.isPrefetchingData = false;
+        });
+    },
     data() {
         return {
+            isPrefetchingData: true,
             isCreateProductTemplateVisible: false,
         };
     },
     computed: {
+        noRecordsPlaceholder() {
+            return {
+                title: 'No product templates',
+                subtitle: 'There are no product templates in the system, you can create the first one.',
+                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                color: WHITESMOKE,
+            };
+        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.TEMPLATE_DESIGNER.update,
