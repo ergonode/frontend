@@ -47,7 +47,6 @@ export default {
         } = rootState.dictionaries;
 
         return this.app.$axios.$get(`${userLanguageCode}/channels/${id}`).then(({
-            name,
             id: channelId,
             type,
             ...rest
@@ -55,10 +54,6 @@ export default {
             commit('__SET_STATE', {
                 key: 'id',
                 value: channelId,
-            });
-            commit('__SET_STATE', {
-                key: 'name',
-                value: name,
             });
             commit('__SET_STATE', {
                 key: 'type',

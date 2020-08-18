@@ -5,17 +5,9 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[typeFieldKey, nameFieldKey]">
+        :fields-keys="[typeFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
-                <TextField
-                    :value="name"
-                    required
-                    :error-messages="errorMessages[nameFieldKey]"
-                    :disabled="isDisabledByPrivileges"
-                    label="Channel name"
-                    hint="Channel name must be unique"
-                    @input="setNameValue" />
                 <Select
                     :value="type"
                     required
@@ -42,11 +34,9 @@ import Form from '@Core/components/Form/Form';
 import JSONSchemaForm from '@Core/components/Form/JSONSchemaForm/JSONSchemaForm';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import Select from '@Core/components/Inputs/Select/Select';
-import TextField from '@Core/components/Inputs/TextField';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import {
     getKeyByValue,
-    removeFromObjectByKey,
 } from '@Core/models/objectWrapper';
 import {
     mapActions,
@@ -59,7 +49,6 @@ export default {
         Form,
         JSONSchemaForm,
         FormSection,
-        TextField,
         FadeTransition,
         Select,
     },
@@ -71,7 +60,6 @@ export default {
     computed: {
         ...mapState('channels', {
             id: state => state.id,
-            name: state => state.name,
             type: state => state.type,
             configuration: state => state.configuration,
         }),
@@ -92,9 +80,6 @@ export default {
         typeFieldKey() {
             return 'type';
         },
-        nameFieldKey() {
-            return 'name';
-        },
     },
     watch: {
         type: {
@@ -102,14 +87,10 @@ export default {
             async handler(value) {
                 if (value) {
                     const typeId = getKeyByValue(this.channels, value);
-                    const tmpSchema = await this.getConfigurationByType({
+
+                    this.schema = await this.getConfigurationByType({
                         typeId,
                     });
-
-                    this.schema = {
-                        ...tmpSchema,
-                        properties: removeFromObjectByKey(tmpSchema.properties, 'name'),
-                    };
                 }
             },
         },
@@ -119,12 +100,6 @@ export default {
             '__setState',
             'getConfigurationByType',
         ]),
-        setNameValue(value) {
-            this.__setState({
-                key: 'name',
-                value,
-            });
-        },
         setConfigurationValue(value) {
             this.__setState({
                 key: 'configuration',

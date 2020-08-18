@@ -32,10 +32,6 @@ export default {
             type: Array,
             default: () => [],
         },
-        errorMessages: {
-            type: Object,
-            default: () => ({}),
-        },
     },
     data() {
         return {
