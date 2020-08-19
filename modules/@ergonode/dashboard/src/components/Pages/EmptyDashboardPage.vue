@@ -30,7 +30,7 @@
                             <Button
                                 title="NEW ATTRIBUTE"
                                 :size="smallSize"
-                                :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
+                                :disabled="!isAllowedToCreateAttribute"
                                 @click.native="onShowNewAttributeModal">
                                 <template #prepend="{ color }">
                                     <IconAdd :fill-color="color" />
@@ -46,7 +46,7 @@
                             <Button
                                 title="NEW TEMPLATE"
                                 :size="smallSize"
-                                :disabled="!$hasAccess(['TEMPLATE_DESIGNER_CREATE'])"
+                                :disabled="!isAllowedToCreateTemplate"
                                 @click.native="onShowNewTemplateModal">
                                 <template #prepend="{ color }">
                                     <IconAdd :fill-color="color" />
@@ -62,7 +62,7 @@
                             <Button
                                 title="NEW PRODUCT"
                                 :size="smallSize"
-                                :disabled="!$hasAccess(['PRODUCT_CREATE'])"
+                                :disabled="!isAllowedToCreateProduct"
                                 @click.native="onShowNewProductModal">
                                 <template #prepend="{ color }">
                                     <IconAdd :fill-color="color" />
@@ -89,7 +89,8 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
+import ATTRIBUTE_PRIVILEGES from '@Attributes/config/privileges';
+import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 import {
@@ -98,6 +99,8 @@ import {
 import CreateProductStepList from '@Dashboard/components/CreateProductStepList/CreateProductStepList';
 import CreateProductStepListElement from '@Dashboard/components/CreateProductStepList/Element/CreateProductStepListElement';
 import DoughnutProductsChart from '@Products/components/Chart/DoughnutProductsChart';
+import PRODUCT_PRIVILEGES from '@Products/config/privileges';
+import TEMPLATE_PRIVILEGES from '@Templates/config/privileges';
 
 export default {
     name: 'EmptyDashboardPage',
@@ -120,6 +123,21 @@ export default {
         };
     },
     computed: {
+        isAllowedToCreateAttribute() {
+            return this.$hasAccess([
+                ATTRIBUTE_PRIVILEGES.ATTRIBUTE.create,
+            ]);
+        },
+        isAllowedToCreateProduct() {
+            return this.$hasAccess([
+                PRODUCT_PRIVILEGES.PRODUCT.create,
+            ]);
+        },
+        isAllowedToCreateTemplate() {
+            return this.$hasAccess([
+                TEMPLATE_PRIVILEGES.TEMPLATE_DESIGNER.create,
+            ]);
+        },
         smallSize() {
             return SIZE.SMALL;
         },

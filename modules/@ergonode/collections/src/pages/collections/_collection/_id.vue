@@ -36,7 +36,7 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('collections/getCollectionById', {
+        await store.dispatch('collections/getCollection', {
             collectionId: params.id,
         });
     },

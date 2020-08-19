@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="General"
+        title="Options"
         :fields-keys="[typeFieldKey, nameFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
@@ -34,6 +34,7 @@ import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import Select from '@Core/components/Inputs/Select/Select';
 import TextField from '@Core/components/Inputs/TextField';
+import PRIVILEGES from '@Import/config/privileges';
 import {
     mapActions,
     mapState,
@@ -57,12 +58,9 @@ export default {
             sources: state => state.sources,
         }),
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess([
-                'IMPORT_UPDATE',
-            ]))
-            || (!this.isDisabled && !this.$hasAccess([
-                'IMPORT_CREATE',
-            ]));
+            return !this.$hasAccess([
+                PRIVILEGES.IMPORT.update,
+            ]);
         },
         isDisabled() {
             return Boolean(this.id);

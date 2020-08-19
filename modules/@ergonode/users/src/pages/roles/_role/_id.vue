@@ -35,7 +35,7 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('roles/getRoleById', {
+        await store.dispatch('roles/getRole', {
             roleId: params.id,
         });
     },

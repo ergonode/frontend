@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Core/config/privileges';
 import {
     mapActions,
     mapState,
@@ -48,12 +49,9 @@ export default {
             symbol: state => state.symbol,
         }),
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess([
-                'SETTINGS_UPDATE',
-            ]))
-            || (!this.isDisabled && !this.$hasAccess([
-                'SETTINGS_CREATE',
-            ]));
+            return !this.$hasAccess([
+                PRIVILEGES.SETTINGS.update,
+            ]);
         },
         nameFieldKey() {
             return 'name';

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export default {
-    async getSegmentById(
+    async getSegment(
         {
             commit, dispatch, rootState,
         },
@@ -41,7 +41,7 @@ export default {
                 root: true,
             });
             if (conditionSetId) {
-                await dispatch('conditions/getConditionSetById', {
+                await dispatch('conditions/getConditionSet', {
                     conditionSetId,
                 }, {
                     root: true,

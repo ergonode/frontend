@@ -17,7 +17,7 @@
                 <IconError :fill-color="redColor" />
                 <div class="errors-list">
                     <h3 class="errors-list__header">
-                        Please review errors bellow
+                        Please review errors below
                     </h3>
                     <div class="errors-list__links">
                         <LinkButton
@@ -50,7 +50,7 @@ import {
 export default {
     name: 'Form',
     components: {
-        LinkButton: () => import('@Core/components/Buttons/LinkButton'),
+        LinkButton: () => import('@Core/components/LinkButton/LinkButton'),
         IconError: () => import('@Core/components/Icons/Feedback/IconError'),
         Divider: () => import('@Core/components/Dividers/Divider'),
     },
@@ -135,7 +135,6 @@ export default {
             display: grid;
             grid-auto-flow: row;
             grid-row-gap: 8px;
-            overflow: auto;
 
             &__header {
                 color: $GRAPHITE_DARK;

@@ -28,7 +28,7 @@ export default {
         id, index,
     }) {
         if (id) {
-            dispatch('removeOptionById', {
+            dispatch('removeOption', {
                 id,
                 index,
             });
@@ -41,7 +41,7 @@ export default {
     }) {
         commit(types.INITIALIZE_OPTIONS);
     },
-    removeOptionById({
+    removeOption({
         commit, state, rootState,
     }, {
         id, index,
@@ -79,7 +79,7 @@ export default {
             commit(types.SET_UPDATED_OPTION, id);
         }
     },
-    getAttributeOptionsById({
+    getAttributeOptions({
         commit, rootState,
     }, {
         id,
@@ -92,7 +92,7 @@ export default {
             params,
         }).then(options => commit(types.INITIALIZE_OPTIONS, getMappedArrayOptions(options)));
     },
-    getAttributeById({
+    getAttribute({
         dispatch, commit, rootState,
     }, {
         id,

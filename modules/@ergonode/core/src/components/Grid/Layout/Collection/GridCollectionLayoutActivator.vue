@@ -17,7 +17,7 @@ import {
     GRAPHITE,
     GREEN,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import Fab from '@Core/components/Buttons/Fab';
+import Fab from '@Core/components/Fab/Fab';
 import IconGrid from '@Core/components/Icons/Others/IconGrid';
 import {
     GRID_LAYOUT,

@@ -25,6 +25,7 @@
                 :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
                 :rows="rows"
+                :placeholder="noRecordsPlaceholder"
                 :drafts="drafts"
                 :advanced-filters="advancedFilters"
                 :data-count="filtered"
@@ -40,8 +41,13 @@
                 @deleteRow="onRemoveRow"
                 @dropColumn="onDropColumn"
                 @dropFilter="onDropFilter"
-                @fetchData="getGridData">
+                @fetchData="onFetchData">
                 <template #actions>
+                    <ExpandNumericButton
+                        title="FILTERS"
+                        :number="filtersCount"
+                        :is-expanded="isFiltersExpanded"
+                        @click.native="onFiltersExpand" />
                     <!--
                       Uncomment when product draft will be change on grid
                       <Button
@@ -65,7 +71,7 @@
                         title="SAVE CHANGES"
                         :size="smallSize"
                         :disabled="!isUserAllowedToUpdate || $isLoading('footerDraftButton')"
-                        @click.native="saveDrafts" />
+                        @click.native="onSaveDrafts" />
                 </template>
             </Grid>
         </template>
@@ -76,8 +82,9 @@
 // import getProductDraft from '@Products/services/getProductDraft.service';
 import {
     GRAPHITE_LIGHT,
+    WHITESMOKE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import DropZone from '@Core/components/DropZone/DropZone';
 import IconRemoveColumn from '@Core/components/Icons/Actions/IconRemoveColumn';
 import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
@@ -94,11 +101,13 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import fetchAdvancedFiltersDataMixin from '@Core/mixins/grid/fetchAdvancedFiltersDataMixin';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
-import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import PRIVILEGES from '@Products/config/privileges';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -120,13 +129,36 @@ export default {
     },
     mixins: [
         gridModalMixin,
-        gridFetchDataMixin({
+        fetchGridDataMixin({
+            path: 'products',
+            defaultColumns: 'index,sku,_links,esa_default_image,esa_default_label',
+        }),
+        fetchAdvancedFiltersDataMixin({
             path: 'products',
         }),
         gridDraftMixin,
     ],
+    fetch() {
+        const requests = [
+            this.onFetchData(),
+        ];
+        const advFiltersIds = this.$cookies.get(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
+
+        if (advFiltersIds) {
+            requests.push(this.onFetchAdvancedFilters(advFiltersIds));
+        }
+
+        return Promise.all(requests).then(() => {
+            this.isPrefetchingData = false;
+            this.setDisabledElements(this.getDisabledElements({
+                columns: this.columns,
+                filters: this.advancedFilters,
+            }));
+        });
+    },
     data() {
         return {
+            isPrefetchingData: true,
             focusedCellToRestore: null,
         };
     },
@@ -138,6 +170,14 @@ export default {
             isElementDragging: state => state.isElementDragging,
             draggedElement: state => state.draggedElement,
         }),
+        noRecordsPlaceholder() {
+            return {
+                title: 'No products',
+                subtitle: 'There are no products in the system, you can create the first one.',
+                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                color: WHITESMOKE,
+            };
+        },
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
         },
@@ -216,6 +256,10 @@ export default {
         },
     },
     methods: {
+        ...mapActions('list', [
+            'setDisabledElement',
+            'setDisabledElements',
+        ]),
         onCellValueChange(cellValues) {
             const cachedElementIds = {};
 
@@ -227,7 +271,10 @@ export default {
                 return tmp;
             }, {});
 
-            this.setDrafts(drafts);
+            this.setDrafts({
+                ...this.drafts,
+                ...drafts,
+            });
 
             const requests = cellValues.map(({
                 rowId, columnId, value,
@@ -293,7 +340,7 @@ export default {
                 },
             });
         },
-        async saveDrafts() {
+        async onSaveDrafts() {
             const promises = [];
 
             const applyProductDraftModule = await applyProductDraft()
@@ -313,13 +360,49 @@ export default {
 
             await this.$setLoader('footerDraftButton');
             await Promise.all(promises).then(() => {
-                this.getGridData(this.localParams);
+                this.onFetchData(this.localParams);
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
                     message: 'Product changes saved',
                 });
             });
             await this.$removeLoader('footerDraftButton');
+        },
+        getDisabledElements({
+            columns, filters,
+        }) {
+            const disabledElements = {};
+
+            const elements = [
+                ...columns.map(column => ({
+                    languageCode: column.language,
+                    attributeId: column.element_id,
+                })),
+                ...filters.map(filter => ({
+                    languageCode: filter.languageCode,
+                    attributeId: filter.attributeId,
+                })),
+            ];
+
+            elements.forEach((element) => {
+                const {
+                    attributeId,
+                    languageCode,
+                } = element;
+
+                if (attributeId && languageCode) {
+                    if (typeof disabledElements[languageCode] === 'undefined') {
+                        disabledElements[languageCode] = {};
+                    }
+
+                    disabledElements[languageCode][attributeId] = Boolean(
+                        disabledElements[languageCode]
+                        && typeof disabledElements[languageCode][attributeId] !== 'undefined',
+                    );
+                }
+            });
+
+            return disabledElements;
         },
     },
 };

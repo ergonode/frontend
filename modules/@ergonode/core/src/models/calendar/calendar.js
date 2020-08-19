@@ -69,6 +69,24 @@ export const isDate = (date) => {
     return isDateObject && isValidDate;
 };
 
+export const getParsedDate = (date) => {
+    if (!date) return null;
+
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    return {
+        day,
+        month,
+        year,
+    };
+};
+
+export const isEqual = (date, withDate) => date.day === withDate.day
+        && date.month === withDate.month
+        && date.year === withDate.year;
+
 export const getMonthIndex = (monthDesc) => {
     const monthDescriptions = Object.values(CALENDAR_MONTHS);
 

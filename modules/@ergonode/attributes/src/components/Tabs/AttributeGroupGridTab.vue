@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                :is-editable="$hasAccess(['ATTRIBUTE_GROUP_UPDATE'])"
+                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
@@ -15,14 +15,15 @@
                 :is-border="true"
                 @editRow="onEditRow"
                 @deleteRow="onRemoveRow"
-                @fetchData="getGridData" />
+                @fetchData="onFetchData" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
+import PRIVILEGES from '@Attributes/config/privileges';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
 export default {
     name: 'AttributeGroupGridTab',
@@ -30,10 +31,27 @@ export default {
         ResponsiveCenteredViewTemplate,
     },
     mixins: [
-        gridFetchDataMixin({
+        fetchGridDataMixin({
             path: 'attributes/groups',
         }),
     ],
+    fetch() {
+        return this.onFetchData().then(() => {
+            this.isPrefetchingData = false;
+        });
+    },
+    data() {
+        return {
+            isPrefetchingData: true,
+        };
+    },
+    computed: {
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.ATTRIBUTE_GROUP.update,
+            ]);
+        },
+    },
     methods: {
         onEditRow(args) {
             const lastIndex = args.length - 1;

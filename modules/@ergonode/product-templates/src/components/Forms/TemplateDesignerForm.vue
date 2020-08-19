@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="General"
+        title="Options"
         :fields-keys="[nameFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
@@ -48,6 +48,7 @@
 import {
     TYPES,
 } from '@Attributes/defaults/attributes';
+import PRIVILEGES from '@Templates/config/privileges';
 import {
     mapActions,
     mapState,
@@ -75,12 +76,9 @@ export default {
             return Boolean(this.templateTitle);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess([
-                'TEMPLATE_DESIGNER_UPDATE',
-            ]))
-                || (!this.isDisabled && !this.$hasAccess([
-                    'TEMPLATE_DESIGNER_CREATE',
-                ]));
+            return !this.$hasAccess([
+                PRIVILEGES.TEMPLATE_DESIGNER.update,
+            ]);
         },
         nameFieldKey() {
             return 'name';

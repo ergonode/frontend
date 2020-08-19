@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="General"
+        title="Options"
         :fields-keys="[descriptionFieldKey, nameFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
     mapState,
@@ -53,12 +54,9 @@ export default {
             return Boolean(this.roleID);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess([
-                'USER_ROLE_UPDATE',
-            ]))
-            || (!this.isDisabled && !this.$hasAccess([
-                'USER_ROLE_CREATE',
-            ]));
+            return !this.$hasAccess([
+                PRIVILEGES.USER_ROLE.update,
+            ]);
         },
         descriptionFieldKey() {
             return 'description';

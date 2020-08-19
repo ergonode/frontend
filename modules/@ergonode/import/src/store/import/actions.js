@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export default {
-    getImportProfileById(
+    getImportProfile(
         {
             commit, rootState,
         },

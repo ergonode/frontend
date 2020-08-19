@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="General"
+        title="Options"
         :fields-keys="[codeFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Categories/config/privileges';
 import {
     mapActions,
     mapState,
@@ -44,12 +45,9 @@ export default {
             return Boolean(this.categoryID);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess([
-                'CATEGORY_UPDATE',
-            ]))
-            || (!this.isDisabled && !this.$hasAccess([
-                'CATEGORY_CREATE',
-            ]));
+            return !this.$hasAccess([
+                PRIVILEGES.CATEGORY.update,
+            ]);
         },
         codeFieldKey() {
             return 'code';

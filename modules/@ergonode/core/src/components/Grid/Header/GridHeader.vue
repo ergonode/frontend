@@ -61,6 +61,7 @@
         <GridAdvancedFilters
             v-show="isFiltersExpanded && isAdvancedFilters"
             :filters="filters"
+            :filter-values="filterValues"
             @filter="onFilter"
             @count="onFiltersCountChange"
             @exists="onFilterExists" />
@@ -87,10 +88,6 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import {
-    insertCookieAtIndex,
-} from '@Core/models/cookies';
-import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -104,9 +101,9 @@ export default {
         DropZone,
         IconAddFilter: () => import('@Core/components/Icons/Actions/IconAddFilter'),
         GridSettingsModalForm: () => import('@Core/components/Grid/Modals/GridSettingsModalForm'),
-        // ActionButton: () => import('@Core/components/Buttons/ActionButton'),
+        // ActionButton: () => import('@Core/components/ActionButton/ActionButton'),
         ExpandNumericButton: () => import('@Core/components/Buttons/ExpandNumericButton'),
-        Fab: () => import('@Core/components/Buttons/Fab'),
+        Fab: () => import('@Core/components/Fab/Fab'),
         IconSettings: () => import('@Core/components/Icons/Actions/IconSettings'),
         // IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
     },
@@ -127,6 +124,10 @@ export default {
             type: Array,
             default: () => [],
         },
+        filterValues: {
+            type: Object,
+            default: () => ({}),
+        },
         isActionsSelected: {
             type: Boolean,
             default: false,
@@ -145,7 +146,7 @@ export default {
             isFiltersExpanded: false,
             isFilterExists: false,
             isSettingsModal: false,
-            filtersCount: 0,
+            filtersCount: this.filters.length,
         };
     },
     computed: {
@@ -178,9 +179,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('draggable', [
-            'setGhostIndex',
-        ]),
         onLayoutActivate(layout) {
             this.$emit('layoutChange', layout);
         },
@@ -204,13 +202,6 @@ export default {
             this.$emit('applySettings', payload);
         },
         onDropFilter(id) {
-            insertCookieAtIndex({
-                cookies: this.$cookies,
-                cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
-                index: 0,
-                data: id,
-            });
-
             this.$emit('dropFilter', id);
         },
         onFilter(filters) {

@@ -11,5 +11,5 @@ export const Tabs = {
 };
 
 export const Components = {
-    NavigationBarNotificationButton: () => import('@Notifications/components/NavigationBar/NavigationBarNotificationButton'),
+    ToolBarNotificationButton: () => import('@Notifications/components/ToolBar/ToolBarNotificationButton'),
 };

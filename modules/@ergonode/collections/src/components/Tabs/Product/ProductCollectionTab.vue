@@ -24,9 +24,8 @@
                     subtitle="This product has not been added to any collection"
                     :layout-orientation="horizontalOrientation"
                     :bg-url="require('@Core/assets/images/placeholders/comments.svg')">
-                    <template #append>
+                    <template #action>
                         <Button
-                            class="navigate-to-collections-button"
                             title="GO TO COLLECTIONS"
                             :size="smallSize"
                             @click.native="onNavigateToCollections" />
@@ -59,7 +58,7 @@ export default {
         ProductCollectionItem,
         ExpandingCollection: () => import('@Core/components/ExpandingCollection/ExpandingCollection'),
         ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
     },
     data() {
         return {
@@ -130,9 +129,5 @@ export default {
         display: flex;
         align-items: center;
         padding: 24px;
-    }
-
-    .navigate-to-collections-button {
-        margin-top: 16px;
     }
 </style>

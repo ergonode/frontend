@@ -39,7 +39,7 @@ export default {
                 offset: 0,
             }),
         ]);
-        await store.dispatch('transitions/getTransitionById', params);
+        await store.dispatch('transitions/getTransition', params);
     },
     computed: {
         ...mapState('transitions', {

@@ -6,19 +6,22 @@
     <TranslationsTab>
         <template #default="{ languageCodes }">
             <AttributeTranslationForm
-                v-for="(languageCode, index) in languageCodes"
-                :key="index"
+                v-for="languageCode in languageCodes"
+                :key="languageCode"
                 :language-code="languageCode" />
         </template>
     </TranslationsTab>
 </template>
 
 <script>
+import AttributeTranslationForm from '@Attributes/components/Forms/AttributeTranslationForm';
+import TranslationsTab from '@Core/components/Card/Tabs/TranslationsTab';
+
 export default {
     name: 'AttributeTranslationsTab',
     components: {
-        TranslationsTab: () => import('@Core/components/Card/Tabs/TranslationsTab'),
-        AttributeTranslationForm: () => import('@Attributes/components/Forms/AttributeTranslationForm'),
+        TranslationsTab,
+        AttributeTranslationForm,
     },
 };
 </script>

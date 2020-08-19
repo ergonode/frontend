@@ -14,7 +14,7 @@
                     v-for="item in activeLanguages"
                     :key="item.id"
                     :item="item"
-                    :is-draggable="isUserAllowedToUpdateTree"
+                    :is-draggable="isAllowedToUpdate"
                     :language-code="userLanguageCode" />
             </ListScrollableContainer>
         </List>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Core/config/privileges';
 import {
     mapGetters,
     mapState,
@@ -63,9 +64,9 @@ export default {
             }
             return this.getActiveLanguages;
         },
-        isUserAllowedToUpdateTree() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
-                'SETTINGS_UPDATE',
+                PRIVILEGES.SETTINGS.update,
             ]);
         },
     },

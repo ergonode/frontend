@@ -6,23 +6,28 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                :is-editable="$hasAccess(['CATEGORY_TREE_UPDATE'])"
+                :is-editable="isAllowedToDelete"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :placeholder="noRecordsPlaceholder"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
                 @editRow="onEditRow"
                 @deleteRow="onRemoveRow"
-                @fetchData="getGridData" />
+                @fetchData="onFetchData" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
+import {
+    WHITESMOKE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import PRIVILEGES from '@Trees/config/privileges';
 
 export default {
     name: 'CategoryTreesGridTab',
@@ -30,10 +35,35 @@ export default {
         ResponsiveCenteredViewTemplate,
     },
     mixins: [
-        gridFetchDataMixin({
+        fetchGridDataMixin({
             path: 'trees',
         }),
     ],
+    fetch() {
+        return this.onFetchData().then(() => {
+            this.isPrefetchingData = false;
+        });
+    },
+    data() {
+        return {
+            isPrefetchingData: true,
+        };
+    },
+    computed: {
+        noRecordsPlaceholder() {
+            return {
+                title: 'No category trees',
+                subtitle: 'There are no category trees in the system, you can create the first one.',
+                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                color: WHITESMOKE,
+            };
+        },
+        isAllowedToDelete() {
+            return this.$hasAccess([
+                PRIVILEGES.CATEGORY_TREE.update,
+            ]);
+        },
+    },
     methods: {
         onEditRow(args) {
             const lastIndex = args.length - 1;

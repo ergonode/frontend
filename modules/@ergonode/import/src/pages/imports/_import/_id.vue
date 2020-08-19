@@ -30,7 +30,7 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('import/getImportProfileById', {
+        await store.dispatch('import/getImportProfile', {
             id: params.id,
         });
     },

@@ -62,7 +62,7 @@ export default [
                 path: 'general',
                 component: Tabs.CategoryTreeBaseTab,
                 meta: {
-                    title: 'General',
+                    title: 'Options',
                     breadcrumbs: [
                         {
                             title: 'Product design',

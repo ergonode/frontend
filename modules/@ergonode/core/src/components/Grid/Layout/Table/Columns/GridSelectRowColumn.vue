@@ -9,7 +9,7 @@
             :edit-key-code="32"
             :row="rowsOffset"
             :column="0"
-            @mousedown="onSelectAllRows"
+            @mousedown.native="onSelectAllRows"
             @edit="onSelectAllRows">
             <GridCheckEditCell :value="rowsSelectionState" />
         </GridTableCell>

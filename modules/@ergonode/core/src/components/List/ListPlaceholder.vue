@@ -3,28 +3,32 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        :class="['placeholder', layoutOrientation]"
-        :style="placeholderStyles">
-        <div class="placeholder__description">
-            <span
-                class="placeholder__title"
-                v-text="title" />
-            <span
-                class="placeholder__subtitle"
-                v-text="subtitle" />
-        </div>
-        <slot name="append" />
-    </div>
+    <Placeholder
+        :layout-orientation="layoutOrientation"
+        :title="title"
+        :subtitle="subtitle"
+        :bg-url="bgUrl"
+        :color="color">
+        <template #action>
+            <slot name="action" />
+        </template>
+    </Placeholder>
 </template>
 
 <script>
+import {
+    WHITESMOKE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
+import Placeholder from '@Core/components/Placeholder/Placeholder';
 import {
     LAYOUT_ORIENTATION,
 } from '@Core/defaults/layout';
 
 export default {
     name: 'ListPlaceholder',
+    components: {
+        Placeholder,
+    },
     props: {
         layoutOrientation: {
             type: String,
@@ -43,14 +47,10 @@ export default {
             type: String,
             required: true,
         },
-    },
-    computed: {
-        placeholderStyles() {
-            if (!this.bgUrl) return null;
-
-            return {
-                background: `url(${this.bgUrl}) no-repeat right bottom`,
-            };
+        color: {
+            type: String,
+            default: WHITESMOKE,
+            validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
         },
     },
 };
@@ -58,38 +58,8 @@ export default {
 
 <style lang="scss" scoped>
     .placeholder {
-        flex: 1;
-        box-sizing: border-box;
-        color: $GRAPHITE_DARK;
-
-        &.vertical-layout {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 64px 0 0;
-        }
-
-        &.horizontal-layout {
-            width: 560px;
-            height: 280px;
-            padding: 40px 40px 0;
-            box-sizing: border-box;
-            box-shadow: $ELEVATOR_2_DP;
-        }
-
-        &__title {
-            font: $FONT_MEDIUM_24_32;
-        }
-
-        &__subtitle {
-            font: $FONT_MEDIUM_12_16;
-        }
-
-        &__description {
-            display: grid;
-            grid-template-columns: 240px;
-            grid-auto-flow: row;
-            row-gap: 8px;
-        }
+        width: 580px;
+        height: 280px;
+        box-shadow: $ELEVATOR_2_DP;
     }
 </style>

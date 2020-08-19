@@ -14,13 +14,13 @@
                 :is-header-visible="true"
                 :is-border="true"
                 :is-basic-filter="true"
-                @fetchData="getGridData">
-                <template #actions>
+                @fetchData="onFetchData">
+                <template #headerActions>
                     <h2
                         class="modal-grid__header"
                         v-text="title" />
                 </template>
-                <template #configuration>
+                <template #headerConfiguration>
                     <Fab
                         :theme="secondaryTheme"
                         @click.native="onClose">
@@ -45,8 +45,8 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
-import Fab from '@Core/components/Buttons/Fab';
+import Button from '@Core/components/Button/Button';
+import Fab from '@Core/components/Fab/Fab';
 import Grid from '@Core/components/Grid/Grid';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import IconClose from '@Core/components/Icons/Window/IconClose';
@@ -87,10 +87,7 @@ export default {
         },
     },
     fetch() {
-        this.getGridData({
-            offset: 0,
-            limit: DATA_LIMIT,
-        });
+        this.onFetchData();
     },
     data() {
         return {
@@ -109,7 +106,12 @@ export default {
         },
     },
     methods: {
-        async getGridData(params) {
+        async onFetchData(params = {
+            offset: 0,
+            limit: DATA_LIMIT,
+            filters: '',
+            sortedColumn: {},
+        }) {
             const {
                 columns,
                 rows,

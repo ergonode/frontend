@@ -17,8 +17,8 @@
                 :is-header-visible="true"
                 :is-border="true"
                 @deleteRow="onRemoveRow"
-                @fetchData="getGridData">
-                <template #actions>
+                @fetchData="onFetchData">
+                <template #headerActions>
                     <ActionButton
                         title="ADD PRODUCTS"
                         :theme="secondaryTheme"
@@ -48,14 +48,14 @@ import {
     ADD_PRODUCT,
     EXTENDS,
 } from '@Collections/defaults';
-import ActionButton from '@Core/components/Buttons/ActionButton';
+import ActionButton from '@Core/components/ActionButton/ActionButton';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import {
     mapState,
 } from 'vuex';
@@ -68,12 +68,18 @@ export default {
         IconAdd,
     },
     mixins: [
-        gridFetchDataMixin({
+        fetchGridDataMixin({
             path: 'collections/_id/elements',
         }),
     ],
+    fetch() {
+        return this.onFetchData().then(() => {
+            this.isPrefetchingData = false;
+        });
+    },
     data() {
         return {
+            isPrefetchingData: true,
             selectedAppModalOption: null,
         };
     },
@@ -129,7 +135,7 @@ export default {
             this.selectedAppModalOption = null;
         },
         onCreatedData() {
-            this.getGridData(this.localParams);
+            this.onFetchData(this.localParams);
             this.selectedAppModalOption = null;
         },
     },

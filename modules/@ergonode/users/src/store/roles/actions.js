@@ -16,7 +16,7 @@ export default {
     }, value) {
         commit(types.SET_ROLE_PRIVILEGES, value);
     },
-    getRoleById(
+    getRole(
         {
             commit, rootState,
         },

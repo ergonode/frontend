@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="General"
+        title="Options"
         :fields-keys="[typeIdFieldKey, codeFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
@@ -55,12 +55,9 @@ export default {
             type: state => state.type,
         }),
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess([
+            return !this.$hasAccess([
                 PRIVILEGES.PRODUCT_COLLECTION.update,
-            ]))
-            || (!this.isDisabled && !this.$hasAccess([
-                PRIVILEGES.PRODUCT_COLLECTION.create,
-            ]));
+            ]);
         },
         isDisabled() {
             return Boolean(this.id);

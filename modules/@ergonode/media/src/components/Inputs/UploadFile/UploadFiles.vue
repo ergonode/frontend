@@ -68,7 +68,7 @@
 import {
     GREEN,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import InputController from '@Core/components/Inputs/InputController';
 import InputLabel from '@Core/components/Inputs/InputLabel';
@@ -78,6 +78,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import {
+    MEDIA_TYPE,
+} from '@Media/defaults';
 
 export default {
     name: 'UploadFiles',
@@ -91,7 +94,7 @@ export default {
         ModalMediaTabBar: () => import('@Media/components/Modal/ModalMediaTabBar'),
         IconFile: () => import('@Core/components/Icons/Others/IconFile'),
         IconFilledClose: () => import('@Core/components/Icons/Window/IconFilledClose'),
-        IconButton: () => import('@Core/components/Buttons/IconButton'),
+        IconButton: () => import('@Core/components/IconButton/IconButton'),
         ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
         ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
         ListElementIcon: () => import('@Core/components/List/ListElementIcon'),
@@ -160,6 +163,7 @@ export default {
                         props: {
                             multiple: true,
                             value: this.value,
+                            type: MEDIA_TYPE.APPLICATION,
                         },
                         listeners: {
                             input: (value) => {

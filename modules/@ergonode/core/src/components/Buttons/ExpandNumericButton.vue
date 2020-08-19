@@ -5,9 +5,9 @@
 <template>
     <Button
         :size="smallSize"
-        :theme="isExpanded ? theme.PRIMARY : theme.SECONDARY"
+        :theme="theme"
         :title="title"
-        @click.native="$emit('expand', !isExpanded)">
+        @click.native="onExpand">
         <template #prepend="{ color }">
             <IconArrowDouble
                 :fill-color="color"
@@ -37,7 +37,7 @@ import {
 export default {
     name: 'ExpandNumericButton',
     components: {
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
         NumericBadge: () => import('@Core/components/Badges/NumericBadge'),
         IconArrowDouble: () => import('@Core/components/Icons/Arrows/IconArrowDouble'),
     },
@@ -57,13 +57,18 @@ export default {
     },
     computed: {
         theme() {
-            return THEME;
+            return this.isExpanded ? THEME.PRIMARY : THEME.SECONDARY;
         },
         smallSize() {
             return SIZE.SMALL;
         },
         iconExpandedState() {
             return this.isExpanded ? ARROW.UP : ARROW.DOWN;
+        },
+    },
+    methods: {
+        onExpand() {
+            this.$emit('expand', !this.isExpanded);
         },
     },
 };

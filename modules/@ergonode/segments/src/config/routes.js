@@ -62,7 +62,7 @@ export default [
                 path: 'general',
                 component: Tabs.SegmentBaseTab,
                 meta: {
-                    title: 'General',
+                    title: 'Options',
                     breadcrumbs: [
                         {
                             title: 'Products',

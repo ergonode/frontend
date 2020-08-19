@@ -52,7 +52,7 @@ import {
     GREEN,
     RED,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import IconButton from '@Core/components/Buttons/IconButton';
+import IconButton from '@Core/components/IconButton/IconButton';
 import IconCheck from '@Core/components/Icons/Feedback/IconCheck';
 import IconError from '@Core/components/Icons/Feedback/IconError';
 import IconFilledClose from '@Core/components/Icons/Window/IconFilledClose';

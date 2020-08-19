@@ -41,7 +41,7 @@ export default {
     name: 'CreateRoleModalForm',
     components: {
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
         UserRoleForm: () => import('@Users/components/Forms/UserRoleForm'),
     },
     mixins: [

@@ -72,7 +72,7 @@
                         <template v-if="isBasicFilter">
                             <GridFilterDataCell
                                 :row-index="rowsOffset + basicFiltersOffset"
-                                :value="filterValues[column.id]"
+                                :value="filters[column.id]"
                                 :column-index="columnIndex + columnsOffset"
                                 :language-code="column.language"
                                 :column-id="column.id"
@@ -187,9 +187,6 @@ import {
     isMouseInsideElement,
 } from '@Core/models/drag_and_drop/helpers';
 import {
-    getParsedFilter,
-} from '@Core/models/mappers/gridDataMapper';
-import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';
 import {
@@ -238,6 +235,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        filters: {
+            type: Object,
+            default: () => ({}),
+        },
         currentPage: {
             type: Number,
             default: 1,
@@ -271,8 +272,6 @@ export default {
             orderedColumns: [],
             extendedColumns: {},
             columnWidths: [],
-            filters: {},
-            filterValues: {},
             sortedColumn: {},
             pinnedSections: {},
             editCell: null,
@@ -414,16 +413,10 @@ export default {
             value,
             columnId,
         }) {
-            this.filters[columnId] = getParsedFilter({
-                id: columnId,
-                filter: value,
-            });
-            this.filterValues = {
-                ...this.filterValues,
+            this.$emit('filter', {
+                ...this.filters,
                 [columnId]: value,
-            };
-
-            this.$emit('filter', this.filters);
+            });
         },
         onRemoveColumn(index) {
             const {
@@ -441,7 +434,11 @@ export default {
                 });
             }
 
-            delete this.filters[id];
+            const filters = {
+                ...this.filters,
+            };
+
+            delete filters[id];
 
             this.orderedColumns.splice(index, 1);
             this.columnWidths.splice(index, 1);
@@ -450,7 +447,7 @@ export default {
                 cookieName: `GRID_CONFIG:${this.$route.name}`,
                 index: this.isSelectColumn ? index - 1 : index,
             });
-            this.$emit('filter', this.filters);
+            this.$emit('filter', filters);
         },
         onResizeColumn({
             index, width,

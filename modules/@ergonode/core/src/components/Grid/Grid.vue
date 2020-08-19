@@ -16,21 +16,21 @@
             :is-advanced-filters="isAdvancedFilters"
             :is-collection-layout="isCollectionLayout"
             :filters="advancedFilters"
+            :filter-values="advancedFilterValues"
             @filter="onAdvancedFilterChange"
             @layoutChange="onLayoutChange"
             @applySettings="onApplySettings"
             @dropFilter="onDropFilter">
             <template #actions>
-                <slot name="actions" />
+                <slot name="headerActions" />
             </template>
             <template #configuration>
-                <slot name="configuration" />
+                <slot name="headerConfiguration" />
             </template>
         </GridHeader>
         <GridBody
             :disabled="isListElementDragging && isColumnExists"
             :is-border="isHeaderVisible">
-            <GridPreloader v-show="isPrefetchingData" />
             <DropZone
                 v-show="isListElementDragging && !isColumnExists"
                 title="ADD COLUMN"
@@ -39,7 +39,8 @@
                     <IconAddColumn :fill-color="color" />
                 </template>
             </DropZone>
-            <KeepAlive>
+            <Preloader v-if="isPrefetchingData" />
+            <KeepAlive v-else>
                 <GridTableLayout
                     v-if="isTableLayout"
                     :columns="columns"
@@ -47,6 +48,7 @@
                     :rows="rows"
                     :row-ids="rowIds"
                     :drafts="drafts"
+                    :filters="filterValues"
                     :current-page="currentPage"
                     :max-rows="maxRows"
                     :row-height="tableLayoutConfig.rowHeight"
@@ -67,7 +69,30 @@
                     @rowAction="onRowAction"
                     @cellValue="onCellValueChange" />
             </KeepAlive>
-            <GridPlaceholder v-show="dataCount === 0 && !isPrefetchingData" />
+            <template v-if="dataCount === 0 && !isPrefetchingData">
+                <GridPlaceholder
+                    v-if="noRecordsFilterPlaceholder"
+                    v-bind="{ ...noRecordsFilterPlaceholder }">
+                    <template #action>
+                        <Button
+                            title="REMOVE FILTERS"
+                            :size="smallSize"
+                            :theme="secondaryTheme"
+                            @click.native="onRemoveAllFilters">
+                            <template #prepend="{ color }">
+                                <IconFilledClose :fill-color="color" />
+                            </template>
+                        </Button>
+                    </template>
+                </GridPlaceholder>
+                <GridPlaceholder
+                    v-else
+                    v-bind="{ ...placeholder }">
+                    <template #action>
+                        <slot name="placeholderNoRecordsAction" />
+                    </template>
+                </GridPlaceholder>
+            </template>
         </GridBody>
         <GridFooter v-if="isFooterVisible">
             <GridPageSelector
@@ -84,13 +109,18 @@
 </template>
 
 <script>
+import {
+    WHITESMOKE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
+import Button from '@Core/components/Button/Button';
 import GridPagination from '@Core/components/Grid/Footer/GridPagination';
 import GridBody from '@Core/components/Grid/GridBody';
 import GridFooter from '@Core/components/Grid/GridFooter';
-import GridPreloader from '@Core/components/Grid/GridPreloader';
 import GridHeader from '@Core/components/Grid/Header/GridHeader';
 import GridCollectionLayout from '@Core/components/Grid/Layout/Collection/GridCollectionLayout';
 import GridTableLayout from '@Core/components/Grid/Layout/Table/GridTableLayout';
+import IconFilledClose from '@Core/components/Icons/Window/IconFilledClose';
+import Preloader from '@Core/components/Preloader/Preloader';
 import {
     COLUMNS_NUMBER,
     DATA_LIMIT,
@@ -101,8 +131,9 @@ import {
     ROW_HEIGHT,
 } from '@Core/defaults/grid';
 import {
-    insertCookieAtIndex,
-} from '@Core/models/cookies';
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 import {
     getMergedFilters,
 } from '@Core/models/mappers/gridDataMapper';
@@ -120,9 +151,11 @@ export default {
         GridPageSelector: () => import('@Core/components/Grid/Footer/GridPageSelector'),
         DropZone: () => import('@Core/components/DropZone/DropZone'),
         IconAddColumn: () => import('@Core/components/Icons/Actions/IconAddColumn'),
+        Button,
+        IconFilledClose,
         GridPagination,
         GridHeader,
-        GridPreloader,
+        Preloader,
         GridBody,
         GridFooter,
         GridTableLayout,
@@ -152,6 +185,15 @@ export default {
                 descriptionColumn: '',
                 type: '',
                 additionalColumns: [],
+            }),
+        },
+        placeholder: {
+            type: Object,
+            default: () => ({
+                title: 'Nothing to see here',
+                subtitle: 'There are no records in the system.',
+                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                color: WHITESMOKE,
             }),
         },
         defaultLayout: {
@@ -222,6 +264,26 @@ export default {
             isElementDragging: state => state.isElementDragging,
             draggedElement: state => state.draggedElement,
         }),
+        noRecordsFilterPlaceholder() {
+            if (!this.dataCount
+                && (!Object.keys(this.filterValues).length
+                    && !Object.keys(this.advancedFilterValues).length)) {
+                return null;
+            }
+
+            return {
+                title: 'No results',
+                subtitle: 'There are no results that meet the conditions for the selected filters.',
+                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                color: WHITESMOKE,
+            };
+        },
+        smallSize() {
+            return SIZE.SMALL;
+        },
+        secondaryTheme() {
+            return THEME.SECONDARY;
+        },
         classes() {
             return [
                 'grid',
@@ -318,6 +380,12 @@ export default {
         },
     },
     methods: {
+        onRemoveAllFilters() {
+            this.advancedFilterValues = {};
+            this.filterValues = {};
+
+            this.emitFetchData();
+        },
         onApplySettings({
             tableConfig, collectionConfig,
         }) {
@@ -339,12 +407,6 @@ export default {
             this.$emit(`${key}Row`, value);
         },
         onDropColumn(columnId) {
-            insertCookieAtIndex({
-                cookies: this.$cookies,
-                cookieName: `GRID_CONFIG:${this.$route.name}`,
-                index: this.isSelectColumn ? 1 : 0,
-                data: columnId,
-            });
             this.$emit('dropColumn', columnId);
         },
         onSortColumn(sortedColumn) {
@@ -352,16 +414,12 @@ export default {
             this.emitFetchData();
         },
         onFilterChange(filters) {
-            this.filterValues = {
-                ...filters,
-            };
+            this.filterValues = filters;
 
             this.emitFetchData();
         },
         onAdvancedFilterChange(filters) {
-            this.advancedFilterValues = {
-                ...filters,
-            };
+            this.advancedFilterValues = filters;
 
             this.emitFetchData();
         },

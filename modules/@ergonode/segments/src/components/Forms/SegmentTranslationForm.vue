@@ -36,6 +36,7 @@ import FormSection from '@Core/components/Form/Section/FormSection';
 import TextArea from '@Core/components/Inputs/TextArea';
 import TextField from '@Core/components/Inputs/TextField';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
+import PRIVILEGES from '@Segments/config/privileges';
 
 export default {
     name: 'SegmentTranslationForm',
@@ -52,7 +53,7 @@ export default {
     computed: {
         isUserAllowedToUpdate() {
             return this.$hasAccess([
-                'SEGMENT_UPDATE',
+                PRIVILEGES.SEGMENT.update,
             ]);
         },
         descriptionKeyField() {

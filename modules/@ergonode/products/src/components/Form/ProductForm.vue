@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="General"
+        title="Options"
         :fields-keys="[skuFieldKey, templateIdFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
@@ -100,12 +100,9 @@ export default {
             return this.productTypeKey === PRODUCT_TYPE.WITH_VARIANTS;
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess([
+            return !this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
-            ]))
-            || (!this.isDisabled && !this.$hasAccess([
-                PRIVILEGES.PRODUCT.create,
-            ]));
+            ]);
         },
         templateIdFieldKey() {
             return 'templateId';

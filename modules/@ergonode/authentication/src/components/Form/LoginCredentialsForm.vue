@@ -36,7 +36,7 @@
 
 <script>
 import LoginForm from '@Authentication/components/Form/LoginForm';
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
 import TextField from '@Core/components/Inputs/TextField';
 import Toggler from '@Core/components/Inputs/Toggler/Toggler';

@@ -26,7 +26,7 @@ export default {
             commit(types.SET_CONDITIONS_DICTIONARY, objectToArrayWithPropsName(data));
         });
     },
-    async getConditionSetById(
+    async getConditionSet(
         {
             state, commit, dispatch, rootState,
         },
@@ -46,7 +46,7 @@ export default {
                     type,
                 } = condition;
                 if (!state.conditions[type]) {
-                    await dispatch('getConditionConfigurationById', {
+                    await dispatch('getConditionConfiguration', {
                         conditionId: type,
                     });
                 }
@@ -113,7 +113,7 @@ export default {
             .then(() => onSuccess(id))
             .catch(e => onError(e.data));
     },
-    async getConditionConfigurationById(
+    async getConditionConfiguration(
         {
             commit, rootState,
         },

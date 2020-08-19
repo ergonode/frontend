@@ -40,7 +40,7 @@
     </div>
 </template>
 <script>
-import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
+import ActionIconButton from '@Core/components/ActionIconButton/ActionIconButton';
 import IconArrowDouble from '@Core/components/Icons/Arrows/IconArrowDouble';
 import IconDots from '@Core/components/Icons/Others/IconDots';
 import {

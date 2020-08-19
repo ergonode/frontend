@@ -56,14 +56,14 @@ export default {
     },
     watch: {
         value() {
-            this.getImageById();
+            this.getImage();
         },
     },
     mounted() {
         this.observer = new IntersectionObserver((entries) => {
             const image = entries[0];
             if (image.isIntersecting) {
-                this.getImageById();
+                this.getImage();
                 this.observer.disconnect();
             }
         });
@@ -77,10 +77,10 @@ export default {
         this.observer.disconnect();
     },
     methods: {
-        getImageById() {
+        getImage() {
             this.cancelToken = this.$axios.CancelToken.source();
 
-            this.$axios.$get(`multimedia/${this.value}`, {
+            this.$axios.$get(`multimedia/${this.value}/download/default`, {
                 useCache: true,
                 cancelToken: this.cancelToken.token,
                 responseType: 'arraybuffer',

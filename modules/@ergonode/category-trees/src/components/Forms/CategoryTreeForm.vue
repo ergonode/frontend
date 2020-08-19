@@ -4,8 +4,8 @@
  */
 <template>
     <Form
-        title="General"
-        :fields-key="[codeFieldKey]">
+        title="Options"
+        :fields-keys="[codeFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Trees/config/privileges';
 import {
     mapActions,
     mapState,
@@ -44,12 +45,9 @@ export default {
             return Boolean(this.treeID);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess([
-                'CATEGORY_TREE_UPDATE',
-            ]))
-            || (!this.isDisabled && !this.$hasAccess([
-                'CATEGORY_TREE_CREATE',
-            ]));
+            return !this.$hasAccess([
+                PRIVILEGES.CATEGORY_TREE.update,
+            ]);
         },
         codeFieldKey() {
             return 'code';

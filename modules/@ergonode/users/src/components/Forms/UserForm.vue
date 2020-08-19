@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="General"
+        title="Options"
         :fields-keys="[
             emailFieldKey,
             firstNameFieldKey,
@@ -80,6 +80,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
     mapGetters,
@@ -129,19 +130,16 @@ export default {
         }),
         isUserAllowedToUpdate() {
             return this.$hasAccess([
-                'USER_UPDATE',
+                PRIVILEGES.USER.update,
             ]);
         },
         isDisabled() {
             return Boolean(this.userID);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess([
-                'USER_UPDATE',
-            ]))
-            || (!this.isDisabled && !this.$hasAccess([
-                'USER_CREATE',
-            ]));
+            return !this.$hasAccess([
+                PRIVILEGES.USER.update,
+            ]);
         },
         languageOptions() {
             return this.getActiveLanguages.map(({

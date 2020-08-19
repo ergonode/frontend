@@ -6,14 +6,16 @@
     <Page>
         <TitleBar
             :title="title"
-            :is-navigation-back="true"
-            :is-read-only="$isReadOnly('SETTINGS')">
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigationBackFab />
+            </template>
             <template #mainAction>
                 <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE UNIT"
-                    :disabled="!$hasAccess(['SETTINGS_DELETE'])"
+                    :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete
@@ -34,12 +36,23 @@
 </template>
 
 <script>
-import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
+import PRIVILEGES from '@Core/config/privileges';
+import editPageMixin from '@Core/mixins/page/editPageMixin';
 
 export default {
     name: 'UnitPage',
     mixins: [
-        categoryManagementPageMixin,
+        editPageMixin,
     ],
+    computed: {
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.SETTINGS.namespace);
+        },
+        isAllowedToDelete() {
+            return this.$hasAccess([
+                PRIVILEGES.SETTINGS.delete,
+            ]);
+        },
+    },
 };
 </script>

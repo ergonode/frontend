@@ -45,10 +45,10 @@ export default {
         store, params,
     }) {
         await Promise.all([
-            store.dispatch('attribute/getAttributeById', {
+            store.dispatch('attribute/getAttribute', {
                 id: params.id,
             }),
-            store.dispatch('attribute/getAttributeOptionsById', {
+            store.dispatch('attribute/getAttributeOptions', {
                 id: params.id,
             }),
         ]);

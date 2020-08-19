@@ -4,7 +4,7 @@
  */
 <template>
     <Grid
-        :is-editable="$hasAccess(['MULTIMEDIA_UPDATE'])"
+        :is-editable="isAllowedToUpdate"
         :columns="columnsWithAttachColumn"
         :data-count="filtered"
         :drafts="drafts"
@@ -17,7 +17,7 @@
         @editRow="onEditRow"
         @cellValue="onCellValueChange"
         @deleteRow="onRemoveRow"
-        @fetchData="getGridData">
+        @fetchData="onFetchData">
         <!--  TODO: Uncomment when we have global search      -->
         <!--        <template #actions>-->
         <!--            <TextField-->
@@ -45,11 +45,15 @@ import {
     GRAPHITE,
     GREEN,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import Grid from '@Core/components/Grid/Grid';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    DATA_LIMIT,
+    DEFAULT_GRID_FETCH_PARAMS,
+} from '@Core/defaults/grid';
 // TODO: Uncomment when we have global search
 // import IconSearch from '@Core/components/Icons/Actions/IconSearch';
 // import TextField from '@Core/components/Inputs/TextField';
@@ -57,10 +61,19 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
-import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
+import {
+    getGridData,
+} from '@Core/services/grid/getGridData.service';
+import PRIVILEGES from '@Media/config/privileges';
+import {
+    MEDIA_TYPE,
+} from '@Media/defaults';
 import {
     debounce,
 } from 'debounce';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'MediaGrid',
@@ -72,15 +85,16 @@ export default {
         // IconSearch,
     },
     mixins: [
-        gridFetchDataMixin({
-            path: 'multimedia',
-        }),
         gridDraftMixin,
     ],
     props: {
         multiple: {
             type: Boolean,
             default: false,
+        },
+        type: {
+            type: String,
+            default: MEDIA_TYPE.IMAGE,
         },
         value: {
             type: [
@@ -95,9 +109,27 @@ export default {
             searchResult: null,
             isSearchFocused: false,
             observer: null,
+            isPrefetchingData: true,
+            rows: [],
+            columns: [],
+            filtered: 0,
+            localParams: {
+                offset: 0,
+                limit: DATA_LIMIT,
+                filters: '',
+                sortedColumn: {},
+            },
         };
     },
     computed: {
+        ...mapState('authentication', {
+            languageCode: state => state.user.language,
+        }),
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.MULTIMEDIA.update,
+            ]);
+        },
         smallSize() {
             return SIZE.SMALL;
         },
@@ -122,7 +154,7 @@ export default {
             }
 
             return [
-                ...this.columns,
+                ...this.columns.filter(column => column.id !== 'type'),
                 {
                     id: 'esa_attached',
                     type: 'MEDIA_ATTACH',
@@ -152,9 +184,13 @@ export default {
         },
     },
     mounted() {
-        this.observer = new IntersectionObserver((entries) => {
+        this.observer = new IntersectionObserver(async (entries) => {
             if (entries[0].isIntersecting) {
-                this.getGridData(this.localParams);
+                this.isPrefetchingData = true;
+
+                await this.onFetchData(this.localParams);
+
+                this.isPrefetchingData = false;
             }
         });
 
@@ -168,6 +204,52 @@ export default {
         this.observer.disconnect();
     },
     methods: {
+        onFetchData({
+            offset,
+            limit,
+            filters,
+            sortedColumn,
+        } = DEFAULT_GRID_FETCH_PARAMS) {
+            this.localParams = {
+                offset,
+                limit,
+                filters: `type=${this.type}${filters ? `;${filters}` : ''}`,
+                sortedColumn,
+            };
+
+            const params = {
+                offset,
+                limit,
+                extended: true,
+                filter: this.localParams.filters,
+            };
+
+            if (Object.keys(sortedColumn).length) {
+                const {
+                    index: colSortID, orderState,
+                } = sortedColumn;
+
+                params.field = colSortID;
+                params.order = orderState;
+            }
+
+            return getGridData({
+                $axios: this.$axios,
+                path: `${this.languageCode}/multimedia`,
+                params,
+            }).then(({
+                columns,
+                rows,
+                filtered,
+            }) => {
+                this.columns = columns;
+                this.rows = rows;
+                this.filtered = filtered;
+            });
+        },
+        onRemoveRow() {
+            this.onFetchData(this.localParams);
+        },
         onCellValueChange(cellValues) {
             const drafts = this.multiple
                 ? {
@@ -223,7 +305,7 @@ export default {
                 message: 'Media have been added',
             });
 
-            this.getGridData(this.localParams);
+            this.onFetchData(this.localParams);
         },
         onSearchFocus(isFocused) {
             this.isSearchFocused = isFocused;
@@ -235,7 +317,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'multimedia-id-general',
+                name: 'media-id-general',
                 params: {
                     id: args[lastIndex],
                 },

@@ -26,7 +26,7 @@
                     v-for="item in items[language.code]"
                     :key="item.id"
                     :item="item"
-                    :is-draggable="isUserAllowedToDragAttributes"
+                    :is-draggable="isAllowedToUpdate"
                     :language-code="language.code" />
             </ListScrollableContainer>
         </List>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Attributes/config/privileges';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -80,7 +81,7 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-        isUserAllowedToDragAttributes() {
+        isAllowedToUpdate() {
             const {
                 languagePrivileges,
             } = this.user;
@@ -89,7 +90,7 @@ export default {
             } = this.language;
 
             return this.$hasAccess([
-                'ATTRIBUTE_UPDATE',
+                PRIVILEGES.ATTRIBUTE.update,
             ]) && languagePrivileges[code].read;
         },
         languageOptions() {

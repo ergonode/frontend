@@ -22,6 +22,7 @@
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
+import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
     mapState,
@@ -40,7 +41,7 @@ export default {
         }),
         isUserAllowedToUpdate() {
             return this.$hasAccess([
-                'USER_UPDATE',
+                PRIVILEGES.USER.update,
             ]);
         },
     },

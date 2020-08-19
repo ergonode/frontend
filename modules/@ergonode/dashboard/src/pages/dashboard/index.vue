@@ -3,17 +3,33 @@
  * See LICENSE for license details.
  */
 <template>
-    <DashboardPage />
+    <div class="grid-wrapper">
+        <SimpleGrid
+            class="grid"
+            :title="title"
+            :items="filteredItems()" />
+    </div>
 </template>
 
 <script>
-
-import DashboardPage from '@Dashboard/components/Pages/DashboardPage';
+import {
+    GRID_ITEMS,
+} from '@Dashboard/defaults/dashboard';
 
 export default {
     name: 'Dashboard',
     components: {
-        DashboardPage,
+        SimpleGrid: () => import('@Dashboard/components/SimpleGrid/SimpleGrid'),
+    },
+    data() {
+        return {
+            title: 'Take an action',
+        };
+    },
+    methods: {
+        filteredItems() {
+            return GRID_ITEMS.filter(e => this.$hasAccess(e.privileges));
+        },
     },
     head() {
         return {
@@ -24,8 +40,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .dashboard {
+    .grid-wrapper {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         height: 100%;
-        background-color: $GRAPHITE_COAL;
+        background-color: $WHITESMOKE;
     }
 </style>

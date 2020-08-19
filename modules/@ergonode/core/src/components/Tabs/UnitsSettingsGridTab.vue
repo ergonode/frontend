@@ -10,14 +10,15 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :placeholder="noRecordsPlaceholder"
                 :is-prefetching-data="isPrefetchingData"
                 :is-header-visible="true"
                 :is-border="true"
                 :is-basic-filter="true"
                 @editRow="onEditRow"
                 @deleteRow="onRemoveUnit"
-                @fetchData="getGridData">
-                <template #actions>
+                @fetchData="onFetchData">
+                <template #headerActions>
                     <Button
                         title="NEW UNIT"
                         :theme="secondaryTheme"
@@ -35,14 +36,18 @@
 </template>
 
 <script>
-import Button from '@Core/components/Buttons/Button';
+import {
+    WHITESMOKE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
+import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import PRIVILEGES from '@Core/config/privileges';
 import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import {
     mapActions,
 } from 'vuex';
@@ -55,11 +60,29 @@ export default {
         IconAdd,
     },
     mixins: [
-        gridFetchDataMixin({
+        fetchGridDataMixin({
             path: 'units',
         }),
     ],
+    fetch() {
+        return this.onFetchData().then(() => {
+            this.isPrefetchingData = false;
+        });
+    },
+    data() {
+        return {
+            isPrefetchingData: true,
+        };
+    },
     computed: {
+        noRecordsPlaceholder() {
+            return {
+                title: 'No units',
+                subtitle: 'There are no units in the system, you can create the first one.',
+                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                color: WHITESMOKE,
+            };
+        },
         smallSize() {
             return SIZE.SMALL;
         },
@@ -68,12 +91,12 @@ export default {
         },
         isUserAllowedToCreate() {
             return this.$hasAccess([
-                'SETTINGS_CREATE',
+                PRIVILEGES.SETTINGS.create,
             ]);
         },
         isUserAllowedToUpdate() {
             return this.$hasAccess([
-                'SETTINGS_UPDATE',
+                PRIVILEGES.SETTINGS.update,
             ]);
         },
     },

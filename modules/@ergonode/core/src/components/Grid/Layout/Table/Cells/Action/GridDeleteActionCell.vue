@@ -8,7 +8,7 @@
         :row="row"
         :selected="isSelected"
         :edit-key-code="32"
-        @mousedown="onDelete"
+        @mousedown.native="onDelete"
         @edit="onDelete">
         <IconDelete />
     </GridTableCell>

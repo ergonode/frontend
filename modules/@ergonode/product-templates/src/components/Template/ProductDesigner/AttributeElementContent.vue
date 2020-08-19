@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
+import ActionIconButton from '@Core/components/ActionIconButton/ActionIconButton';
 import IconDots from '@Core/components/Icons/Others/IconDots';
 import CheckBox from '@Core/components/Inputs/CheckBox';
 import ListElement from '@Core/components/List/ListElement';

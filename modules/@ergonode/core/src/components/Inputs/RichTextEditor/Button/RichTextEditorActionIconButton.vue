@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
+import ActionIconButton from '@Core/components/ActionIconButton/ActionIconButton';
 import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 import RichTextEditorButton from '@Core/components/Inputs/RichTextEditor/Button/RichTextEditorButton';
 import {

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export default {
-    getCollectionById(
+    getCollection(
         {
             commit, dispatch, rootState,
         },

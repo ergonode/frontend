@@ -43,7 +43,7 @@ import {
     GREEN,
     WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import Fab from '@Core/components/Buttons/Fab';
+import Fab from '@Core/components/Fab/Fab';
 import IconSearch from '@Core/components/Icons/Actions/IconSearch';
 import Select from '@Core/components/Inputs/Select/Select';
 import TextField from '@Core/components/Inputs/TextField';

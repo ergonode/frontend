@@ -114,7 +114,7 @@ export default [
                 path: 'general',
                 component: Tabs.UnitBaseTab,
                 meta: {
-                    title: 'General',
+                    title: 'Options',
                     breadcrumbs: [
                         {
                             title: 'System',

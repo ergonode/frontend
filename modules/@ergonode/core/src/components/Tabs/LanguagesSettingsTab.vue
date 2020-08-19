@@ -5,7 +5,7 @@
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
-            <GridViewTemplate class="grid-view-template--no-border">
+            <GridViewTemplate>
                 <template #sidebar>
                     <VerticalTabBar :items="verticalTabs">
                         <FadeTransition>
@@ -41,7 +41,7 @@
 import {
     GRAPHITE_LIGHT,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Buttons/Button';
+import Button from '@Core/components/Button/Button';
 import DropZone from '@Core/components/DropZone/DropZone';
 import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
 import FooterActions from '@Core/components/Layout/Footer/FooterActions';

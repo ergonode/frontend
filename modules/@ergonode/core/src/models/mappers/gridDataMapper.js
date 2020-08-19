@@ -52,8 +52,12 @@ export function getMergedFilters({
         ...advanced,
     };
 
-    return Object.keys(merged)
-        .map(key => merged[key])
+    return Object
+        .keys(merged)
+        .map(key => getParsedFilter({
+            id: key,
+            filter: merged[key],
+        }))
         .join(';');
 }
 

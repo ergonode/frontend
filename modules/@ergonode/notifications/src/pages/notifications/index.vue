@@ -5,8 +5,7 @@
 <template>
     <Page>
         <TitleBar title="Notifications" />
-        <HorizontalRoutingTabBar
-            :items="tabs" />
+        <HorizontalRoutingTabBar :items="tabs" />
     </Page>
 </template>
 

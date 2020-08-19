@@ -6,23 +6,28 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                :is-editable="$hasAccess(['ATTRIBUTE_UPDATE'])"
+                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :placeholder="noRecordsPlaceholder"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
                 @editRow="onEditRow"
                 @deleteRow="onRemoveRow"
-                @fetchData="getGridData" />
+                @fetchData="onFetchData" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
+import PRIVILEGES from '@Attributes/config/privileges';
+import {
+    WHITESMOKE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import gridFetchDataMixin from '@Core/mixins/grid/gridFetchDataMixin';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
 export default {
     name: 'AttributeGridTab',
@@ -30,10 +35,35 @@ export default {
         ResponsiveCenteredViewTemplate,
     },
     mixins: [
-        gridFetchDataMixin({
+        fetchGridDataMixin({
             path: 'attributes',
         }),
     ],
+    fetch() {
+        return this.onFetchData().then(() => {
+            this.isPrefetchingData = false;
+        });
+    },
+    data() {
+        return {
+            isPrefetchingData: true,
+        };
+    },
+    computed: {
+        noRecordsPlaceholder() {
+            return {
+                title: 'No attributes',
+                subtitle: 'There are no attributes in the system, you can create the first one.',
+                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                color: WHITESMOKE,
+            };
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.ATTRIBUTE.update,
+            ]);
+        },
+    },
     methods: {
         onEditRow(args) {
             const lastIndex = args.length - 1;

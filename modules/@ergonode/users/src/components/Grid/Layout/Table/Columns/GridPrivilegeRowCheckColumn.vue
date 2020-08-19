@@ -9,7 +9,7 @@
             :edit-key-code="32"
             :row="rowsOffset"
             :column="0"
-            @mousedown="onSelectAllRows"
+            @mousedown.native="onSelectAllRows"
             @edit="onSelectAllRows">
             <GridCheckEditCell :value="rowsSelectionState" />
         </GridTableCell>
@@ -19,7 +19,7 @@
             :column="0"
             :edit-key-code="32"
             :row="rowsOffset + rowIndex + 1"
-            @mousedown="onSelectRow({ rowId, value: !selectedRows[rowId] })"
+            @mousedown.native="onSelectRow({ rowId, value: !selectedRows[rowId] })"
             @edit="onSelectRow({ rowId, value: !selectedRows[rowId] })">
             <GridCheckEditCell :value="selectedRows[rowId]" />
         </GridTableCell>

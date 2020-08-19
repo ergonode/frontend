@@ -47,7 +47,7 @@ export default {
     components: {
         ResponsiveCenteredViewTemplate,
         Loader: () => import('@Core/components/Loader/Loader'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Button/Button'),
         List: () => import('@Core/components/List/List'),
         ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
         NotificationsListElement: () => import('@Notifications/components/List/NotificationsListElement'),

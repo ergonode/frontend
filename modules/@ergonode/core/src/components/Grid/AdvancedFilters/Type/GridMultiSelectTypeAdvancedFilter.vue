@@ -15,7 +15,7 @@
         @apply="onApplyValue">
         <template #body>
             <GridAdvancedFilterMultiselectContent
-                :value="value"
+                :value="localValue"
                 :options="filter.options"
                 :language-code="filter.languageCode"
                 @input="onValueChange" />
@@ -35,9 +35,6 @@ import MultiselectDropdownFooter from '@Core/components/Inputs/Select/DropDown/F
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
-import {
-    getParsedFilter,
-} from '@Core/models/mappers/gridDataMapper';
 
 export default {
     name: 'GridMultiSelectTypeAdvancedFilter',
@@ -55,13 +52,17 @@ export default {
             type: Object,
             required: true,
         },
+        value: {
+            type: Object,
+            default: () => ({
+                isEmptyRecord: false,
+                [FILTER_OPERATOR.EQUAL]: [],
+            }),
+        },
     },
     data() {
         return {
-            value: {
-                isEmptyRecord: false,
-                [FILTER_OPERATOR.EQUAL]: [],
-            },
+            localValue: {},
         };
     },
     computed: {
@@ -86,11 +87,11 @@ export default {
             return this.filter.label ? `${code} ${languageCode}` : null;
         },
         filterValue() {
-            if (this.value.isEmptyRecord) return 'Empty records';
+            if (this.localValue.isEmptyRecord) return 'Empty records';
 
             const value = [];
 
-            this.value[FILTER_OPERATOR.EQUAL].forEach((id) => {
+            this.localValue[FILTER_OPERATOR.EQUAL].forEach((id) => {
                 const option = this.filter.options.find(opt => opt.id === id);
 
                 if (option) {
@@ -101,11 +102,21 @@ export default {
             return value.join(', ');
         },
     },
+    watch: {
+        value: {
+            immediate: true,
+            handler() {
+                this.localValue = {
+                    ...this.value,
+                };
+            },
+        },
+    },
     methods: {
         onValueChange({
             key, value,
         }) {
-            this.value[key] = value;
+            this.localValue[key] = value;
         },
         onRemove(index) {
             this.$emit('remove', index);
@@ -114,19 +125,18 @@ export default {
             this.$emit('swap', payload);
         },
         onClear() {
-            this.value = {
+            this.localValue = {
                 isEmptyRecord: false,
                 [FILTER_OPERATOR.EQUAL]: [],
             };
         },
         onApplyValue() {
-            this.$emit('apply', {
-                key: this.filter.id,
-                value: getParsedFilter({
-                    id: this.filter.id,
-                    filter: this.value,
-                }),
-            });
+            if (JSON.stringify(this.value) !== JSON.stringify(this.localValue)) {
+                this.$emit('apply', {
+                    key: this.filter.id,
+                    value: this.localValue,
+                });
+            }
         },
     },
 };
