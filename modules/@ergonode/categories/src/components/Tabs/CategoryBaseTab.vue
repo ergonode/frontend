@@ -3,22 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <CategoryForm />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import CategoryForm from '@Categories/components/Forms/CategoryForm';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'CategoryBaseTab',
     components: {
         CategoryForm,
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
     },
 };
 </script>

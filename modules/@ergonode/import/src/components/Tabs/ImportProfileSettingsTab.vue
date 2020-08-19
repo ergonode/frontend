@@ -3,19 +3,19 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <JSONSchemaForm
                 :value="configuration"
                 :schema="schema"
                 @input="setConfigurationValue" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import JSONSchemaForm from '@Core/components/Form/JSONSchemaForm/JSONSchemaForm';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
     mapState,
@@ -24,7 +24,7 @@ import {
 export default {
     name: 'CollectionGeneralTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         JSONSchemaForm,
     },
     fetch() {

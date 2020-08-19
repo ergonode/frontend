@@ -3,22 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <SegmentForm />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import SegmentForm from '@Segments/components/Forms/SegmentForm';
 
 export default {
     name: 'SegmentBaseTab',
     components: {
         SegmentForm,
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
     },
 };
 </script>

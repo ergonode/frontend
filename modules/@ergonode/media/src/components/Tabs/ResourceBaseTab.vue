@@ -3,22 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <ResourceForm />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import ResourceForm from '@Media/components/Forms/ResourceForm';
 
 export default {
     name: 'ResourceBaseTab',
     components: {
         ResourceForm,
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
     },
 };
 </script>

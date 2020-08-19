@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <TemplateDesignerForm @submit="onSubmit">
                 <template #submitForm>
@@ -19,13 +19,13 @@
                 </template>
             </TemplateDesignerForm>
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import Button from '@Core/components/Button/Button';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import TemplateDesignerForm from '@Templates/components/Forms/TemplateDesignerForm';
 import {
     mapActions,
@@ -37,7 +37,7 @@ export default {
         Button,
         IconSpinner,
         TemplateDesignerForm,
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
     },
     data() {
         return {

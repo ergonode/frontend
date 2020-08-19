@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <div class="notifications-list">
                 <List v-if="notifications.length">
@@ -26,11 +26,11 @@
                     :bg-url="require('@Core/assets/images/placeholders/notify.svg')" />
             </div>
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
@@ -45,7 +45,7 @@ import {
 export default {
     name: 'NotificationGridTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         Loader: () => import('@Core/components/Loader/Loader'),
         Button: () => import('@Core/components/Button/Button'),
         List: () => import('@Core/components/List/List'),

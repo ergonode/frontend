@@ -4,6 +4,29 @@
  */
 
 export default {
+    async getDraft({
+        $axios,
+        languageCode,
+        id,
+        data,
+    }) {
+        const {
+            attributes,
+        } = await $axios.$get(`${languageCode}/products/${id}/draft`, data);
+
+        return attributes;
+    },
+    async applyDraft({
+        $axios,
+        languageCode,
+        id,
+    }) {
+        const {
+            attributes,
+        } = await $axios.$put(`${languageCode}/products/${id}/draft/persist`, {});
+
+        return attributes;
+    },
     async update({
         $axios,
         languageCode,

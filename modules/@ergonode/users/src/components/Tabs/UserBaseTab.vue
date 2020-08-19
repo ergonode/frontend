@@ -3,21 +3,21 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <UserForm />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import UserForm from '@Users/components/Forms/UserForm';
 
 export default {
     name: 'UserBaseTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         UserForm,
     },
 };

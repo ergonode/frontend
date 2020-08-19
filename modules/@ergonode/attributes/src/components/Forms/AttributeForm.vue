@@ -140,10 +140,10 @@ export default {
             attrTypes: state => state.attrTypes,
         }),
         ...mapGetters('core', [
-            'getRootOnLanguagesTree',
+            'languageTreeRoot',
         ]),
         scopeHint() {
-            return `Global means the same attribute values for each language, inherited from the root language (${this.getRootOnLanguagesTree.name}). Option values can be translated, but cannot be changed in the product template.`;
+            return `Global means the same attribute values for each language, inherited from the root language (${this.languageTreeRoot.name}). Option values can be translated, but cannot be changed in the product template.`;
         },
         paramsLabel() {
             const paramsKey = getParamsKeyForType(this.typeKey);

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate>
+    <CenterViewTemplate>
         <template #content>
             <Grid
                 :is-editable="isUserAllowedToUpdate"
@@ -36,13 +36,13 @@
                 @close="onCloseModal"
                 @added="onCreatedData" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import ActionButton from '@Core/components/ActionButton/ActionButton';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     DATA_LIMIT,
     DEFAULT_GRID_FETCH_PARAMS,
@@ -67,7 +67,7 @@ import {
 export default {
     name: 'ProductGroupTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         ActionButton,
         IconAdd,
         Grid: () => import('@Core/components/Grid/Grid'),

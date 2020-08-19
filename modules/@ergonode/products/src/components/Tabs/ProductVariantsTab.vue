@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate>
+    <CenterViewTemplate>
         <template #content>
             <Grid
                 :is-editable="isUserAllowedToUpdate"
@@ -16,14 +16,14 @@
                 :is-border="true"
                 @fetchData="onFetchData" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import {
     TYPES,
 } from '@Attributes/defaults/attributes';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     DATA_LIMIT,
     DEFAULT_GRID_FETCH_PARAMS,
@@ -44,7 +44,7 @@ const getAttributesByFilter = () => import('@Attributes/services/getAttributesBy
 export default {
     name: 'ProductVariantsTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         Grid: () => import('@Core/components/Grid/Grid'),
     },
     asyncData({

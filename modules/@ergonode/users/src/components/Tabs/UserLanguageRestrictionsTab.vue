@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate>
+    <CenterViewTemplate>
         <template #content>
             <Grid
                 :columns="columns"
@@ -15,12 +15,12 @@
                 :is-footer-visible="false"
                 @cellValue="onCellValueChange" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import Grid from '@Core/components/Grid/Grid';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
     getSortedColumnsByIDs,
@@ -40,7 +40,7 @@ import {
 export default {
     name: 'UserLanguageRestrictionsTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         Grid,
     },
     mixins: [

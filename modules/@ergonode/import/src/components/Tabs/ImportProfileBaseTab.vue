@@ -3,21 +3,21 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <ImportProfileForm />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import ImportProfileForm from '@Import/components/Forms/ImportProfileForm';
 
 export default {
     name: 'ImportProfileBaseTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         ImportProfileForm,
     },
 };

@@ -3,22 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <ProductStatusForm />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import ProductStatusForm from '@Statuses/components/Form/ProductStatusForm';
 
 export default {
     name: 'ProductStatusBaseTab',
     components: {
         ProductStatusForm,
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
     },
 };
 </script>

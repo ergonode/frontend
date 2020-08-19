@@ -5,14 +5,10 @@
 <template>
     <TemplatePage
         :title="templateTitle"
-        @remove="onRemove"
-        @save="onCreate" />
+        @remove="onRemove" />
 </template>
 
 <script>
-import {
-    SKU_MODEL_ID,
-} from '@Attributes/defaults/attributes';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -104,29 +100,6 @@ export default {
                         onSuccess: this.onRemoveSuccess,
                     });
                 },
-            });
-        },
-        onCreate() {
-            import('@Templates/models/templateMapper').then(({
-                getMappedLayoutElementsForAPIUpdate,
-            }) => {
-                const {
-                    id,
-                } = this.$route.params;
-                this.updateProductTemplate({
-                    id,
-                    data: {
-                        name: this.templateTitle,
-                        image: this.templateImage,
-                        defaultLabel: this.defaultTextAttribute !== SKU_MODEL_ID
-                            ? this.defaultTextAttribute
-                            : null,
-                        defaultImage: this.defaultImageAttribute,
-                        elements: getMappedLayoutElementsForAPIUpdate(this.layoutElements),
-                    },
-                    onSuccess: this.onupdateProductTemplateSuccess,
-                    onError: this.onError,
-                });
             });
         },
     },

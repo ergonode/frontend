@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate>
+    <CenterViewTemplate>
         <template #content>
             <Grid
                 :is-editable="isUserAllowedToUpdate"
@@ -39,7 +39,7 @@
                 @close="onCloseModal"
                 @added="onCreatedData" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
@@ -50,7 +50,7 @@ import {
 } from '@Collections/defaults';
 import ActionButton from '@Core/components/ActionButton/ActionButton';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     SIZE,
     THEME,
@@ -63,7 +63,7 @@ import {
 export default {
     name: 'CollectionProductsTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         ActionButton,
         IconAdd,
     },

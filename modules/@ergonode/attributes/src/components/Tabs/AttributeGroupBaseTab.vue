@@ -3,21 +3,21 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <AttributeGroupForm />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import AttributeGroupForm from '@Attributes/components/Forms/AttributeGroupForm';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'AttributeGroupBaseTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         AttributeGroupForm,
     },
 };

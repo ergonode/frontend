@@ -64,7 +64,7 @@ export default {
             user: state => state.user,
         }),
         ...mapGetters('core', [
-            'getRootOnLanguagesTree',
+            'languageTreeRoot',
         ]),
         templateRowHeight() {
             return 40;
@@ -104,7 +104,7 @@ export default {
                 PRIVILEGES.PRODUCT.update,
             ])
                 || !languagePrivileges[code].edit
-                || (this.getRootOnLanguagesTree.code !== code && scope === SCOPE.GLOBAL);
+                || (this.languageTreeRoot.code !== code && scope === SCOPE.GLOBAL);
         },
         onValueChange(payload) {
             updateProductDraft().then(async (response) => {

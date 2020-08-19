@@ -3,21 +3,21 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <ChannelForm />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import ChannelForm from '@Channels/components/Forms/ChannelForm';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'ChannelBaseTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         ChannelForm,
     },
 };

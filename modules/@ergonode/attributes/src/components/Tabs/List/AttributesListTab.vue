@@ -151,7 +151,7 @@ export default {
     },
     created() {
         this.language = this.languageOptions
-            .find(languegeCode => languegeCode.code === this.defaultLanguageCodeByPrivileges);
+            .find(languageCode => languageCode.code === this.defaultLanguageCodeByPrivileges);
     },
     beforeDestroy() {
         this.setDisabledElements({});

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate>
+    <CenterViewTemplate>
         <template #content>
             <Grid
                 :is-editable="isAllowedToUpdate"
@@ -17,18 +17,18 @@
                 @deleteRow="onRemoveRow"
                 @fetchData="onFetchData" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import PRIVILEGES from '@Categories/config/privileges';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
 export default {
     name: 'CategoryGridTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
     },
     mixins: [
         fetchGridDataMixin({

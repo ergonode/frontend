@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <MainSettingsForm @submit="onSubmit">
                 <template #submitForm>
@@ -19,14 +19,14 @@
                 </template>
             </MainSettingsForm>
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import Button from '@Core/components/Button/Button';
 import MainSettingsForm from '@Core/components/Forms/MainSettingsForm';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -42,7 +42,7 @@ export default {
     name: 'MainSettingsTab',
     components: {
         MainSettingsForm,
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         IconSpinner,
         Button,
     },

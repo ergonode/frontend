@@ -5,8 +5,7 @@
 <template>
     <ProductPage
         :title="sku"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -20,8 +19,6 @@ import {
     mapActions,
     mapState,
 } from 'vuex';
-
-const applyProductDraft = () => import('@Products/services/applyProductDraft.service');
 
 export default {
     name: 'ProductEdit',
@@ -38,17 +35,10 @@ export default {
         params,
     }) {
         const {
-            defaultLanguageCodeByPrivileges,
-        } = store.state.core;
-        const {
             id,
         } = params;
 
         await Promise.all([
-            store.dispatch('product/getProductDraft', {
-                languageCode: defaultLanguageCodeByPrivileges,
-                id,
-            }),
             store.dispatch('product/getProduct', id),
         ]);
     },
@@ -67,12 +57,6 @@ export default {
             'removeProduct',
             '__clearStorage',
         ]),
-        onDraftAppliedSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Product updated',
-            });
-        },
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
@@ -90,24 +74,6 @@ export default {
                     onSuccess: this.onRemoveSuccess,
                 }),
             });
-        },
-        async onSave() {
-            const {
-                params: {
-                    id,
-                },
-            } = this.$route;
-
-            await this.$setLoader('footerButton');
-            await applyProductDraft()
-                .then(request => request
-                    .default({
-                        $axios: this.$axios,
-                        $store: this.$store,
-                        id,
-                    })
-                    .then(this.onDraftAppliedSuccess));
-            await this.$removeLoader('footerButton');
         },
     },
     head() {

@@ -37,18 +37,25 @@ export default {
     removeBindingAttribute: ({
         commit,
     }, index) => commit(types.REMOVE_BINDING_ATTRIBUTE, index),
-    getProductDraft({
+    async getProductDraft({
+        state,
         commit,
     }, {
-        languageCode, id,
+        id,
+        languageCode,
     }) {
-        return this.app.$axios.$get(`${languageCode}/products/${id}/draft`).then(({
-            attributes,
-        }) => {
-            commit(types.SET_PRODUCT_DRAFT, {
-                languageCode,
-                draft: attributes,
-            });
+        const attributes = await productService.getDraft(({
+            $axios: this.app.$axios,
+            id,
+            languageCode,
+        }));
+
+        commit('__SET_STATE', {
+            key: 'draft',
+            value: {
+                ...state.draft,
+                [languageCode]: attributes,
+            },
         });
     },
     getProduct({
@@ -154,6 +161,27 @@ export default {
                     id,
                 })
                 .then(onSuccess)));
+    },
+    async applyProductDraft({
+        state,
+        rootState,
+    }) {
+        const {
+            authentication: {
+                user: {
+                    language,
+                },
+            },
+        } = rootState;
+        const {
+            id,
+        } = state;
+
+        await productService.applyDraft({
+            $axios: this.app.$axios,
+            languageCode: language,
+            id,
+        });
     },
     getSelectAttributes({
         commit,

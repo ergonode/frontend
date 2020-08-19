@@ -3,13 +3,13 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['responsive-view-template', {'responsive-view-template--fixed': fixed}]">
+    <div :class="['center-view-template', {'center-view-template--fixed': fixed}]">
         <div
             v-if="isHeaderSlotVisible"
-            class="responsive-view-template__header">
+            class="center-view-template__header">
             <slot name="header" />
         </div>
-        <div class="responsive-view-template__responsive-container">
+        <div class="center-view-template__body">
             <slot name="content">
                 <VerticalFixedScroll>
                     <div class="container">
@@ -28,7 +28,7 @@ import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScr
 import VerticalCenteredView from '@Core/components/Layout/VerticalCenteredView';
 
 export default {
-    name: 'ResponsiveCenteredViewTemplate',
+    name: 'CenterViewTemplate',
     components: {
         VerticalFixedScroll,
         VerticalCenteredView,
@@ -43,44 +43,29 @@ export default {
         isHeaderSlotVisible() {
             return !!this.$slots.header;
         },
-        isFooterSlotVisible() {
-            return !!this.$slots.footer;
-        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .responsive-view-template {
+    .center-view-template {
         $parent: &;
 
         display: grid;
         flex: 1;
         grid-template-columns: auto minmax(auto, 1008px) auto;
-        grid-template-rows: max-content auto max-content;
+        grid-template-rows: max-content auto;
         box-sizing: border-box;
         background-color: $WHITE;
 
         &--fixed {
-            grid-template-columns: auto;
-
-            #{$parent}__responsive-container {
+            #{$parent}__body {
                 grid-area: 2 / 1 / 3 / 4;
             }
         }
 
         &:not(&--fixed) {
-            &::before {
-                content: "";
-                grid-area: 1 / 1 / 2 / 2;
-            }
-
-            &::after {
-                content: "";
-                grid-area: 1 / 3 / 2 / 4;
-            }
-
-            #{$parent}__responsive-container {
+            #{$parent}__body {
                 grid-area: 2 / 2 / 3 / 3;
                 padding: 24px;
             }
@@ -98,7 +83,7 @@ export default {
             background-color: $WHITE;
         }
 
-        &__responsive-container {
+        &__body {
             display: flex;
             flex-direction: column;
             min-width: 0;

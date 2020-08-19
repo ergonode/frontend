@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #header>
             <div class="view-template-header__section">
                 <TreeSelect
@@ -13,11 +13,6 @@
                     label="Edit language"
                     :options="languageOptions"
                     @input="onLanguageChange" />
-                <!-- Uncomment when needed
-                <Toggler
-                    :value="missingValues"
-                    label="Show only the missing values"
-                    @input="setOnlyMissingValues" /> -->
             </div>
             <div class="view-template-header__section">
                 <ProductCompleteness :completeness="completeness" />
@@ -44,14 +39,25 @@
                 :language="language"
                 :elements="elements"
                 @valueUpdated="onValueUpdated" />
+            <Button
+                title="SAVE CHANGES"
+                :floating="{ bottom: '24px', right: '24px' }"
+                @click.native="onSave">
+                <template
+                    v-if="isSavingProductTemplate"
+                    #prepend="{ color }">
+                    <IconSpinner :fill-color="color" />
+                </template>
+            </Button>
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import Button from '@Core/components/Button/Button';
 import IconRestore from '@Core/components/Icons/Actions/IconRestore';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     SIZE,
     THEME,
@@ -70,14 +76,14 @@ import {
 export default {
     name: 'ProductTemplateTab',
     components: {
+        IconSpinner,
         Button,
         IconRestore,
         ProductTemplateForm,
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         RestoreAttributeParentModalForm: () => import('@Products/components/Modals/RestoreAttributeParentModalForm'),
         ProductCompleteness: () => import('@Products/components/Progress/ProductCompleteness'),
         TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
-        // Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
     },
     mixins: [
         gridModalMixin,
@@ -104,6 +110,10 @@ export default {
                 languageCode: defaultLanguageCodeByPrivileges,
                 id,
             }),
+            store.dispatch('product/getProductDraft', {
+                languageCode: defaultLanguageCodeByPrivileges,
+                id,
+            }),
         ]).then(([
             templateResponse,
             completenessResponse,
@@ -115,6 +125,7 @@ export default {
     data() {
         return {
             language: {},
+            isSavingProductTemplate: false,
         };
     },
     computed: {
@@ -129,7 +140,7 @@ export default {
             id: state => state.id,
         }),
         ...mapGetters('core', [
-            'getRootOnLanguagesTree',
+            'languageTreeRoot',
         ]),
         smallSize() {
             return SIZE.SMALL;
@@ -161,17 +172,39 @@ export default {
                 PRIVILEGES.PRODUCT.update,
             ])
                 && languagePrivileges[code].edit
-                && this.getRootOnLanguagesTree.code !== code;
+                && this.languageTreeRoot.code !== code;
         },
     },
     created() {
         this.language = this.languageOptions
-            .find(languegeCode => languegeCode.code === this.defaultLanguageCodeByPrivileges);
+            .find(languageCode => languageCode.code === this.defaultLanguageCodeByPrivileges);
     },
     methods: {
         ...mapActions('product', [
             'getProductDraft',
+            'applyProductDraft',
         ]),
+        ...mapActions('validations', [
+            'onError',
+            'removeValidationErrors',
+        ]),
+        async onSave() {
+            if (this.isSavingProductTemplate) {
+                return;
+            }
+            this.isSavingProductTemplate = true;
+
+            try {
+                this.removeValidationErrors();
+                await this.applyProductDraft();
+            } catch (e) {
+                if (e.data) {
+                    this.onError(e.data);
+                }
+            } finally {
+                this.isSavingProductTemplate = false;
+            }
+        },
         onLanguageChange(value) {
             const languageCode = value.code;
 
