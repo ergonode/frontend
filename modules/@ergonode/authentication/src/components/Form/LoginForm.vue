@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form>
+    <Form @submit="onSubmit">
         <template #header>
             <header class="login-header">
                 <slot name="header" />
@@ -13,9 +13,12 @@
             <FormSection>
                 <slot name="body" />
             </FormSection>
-            <footer>
-                <slot name="footer" />
-            </footer>
+        </template>
+        <template #submit>
+            <slot name="submitForm" />
+        </template>
+        <template #cancel>
+            <slot name="cancelForm" />
         </template>
     </Form>
 </template>
@@ -29,6 +32,11 @@ export default {
     components: {
         Form,
         FormSection,
+    },
+    methods: {
+        onSubmit() {
+            this.$emit('submit');
+        },
     },
 };
 </script>

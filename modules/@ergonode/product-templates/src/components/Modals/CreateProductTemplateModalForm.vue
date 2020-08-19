@@ -7,77 +7,117 @@
         title="Create product template"
         @close="onClose">
         <template #body>
-            <TemplateDesignerForm />
-        </template>
-        <template #footer>
-            <Button
-                title="CREATE"
-                :disabled="isRequestPending"
-                @click.native="onCreate" />
-            <Button
-                title="CREATE & EDIT"
-                :theme="secondaryTheme"
-                :disabled="isRequestPending"
-                @click.native="onCreatedAndEdit" />
+            <TemplateDesignerForm @submit="onSubmit">
+                <template #submitForm>
+                    <Button
+                        title="CREATE"
+                        type="submit">
+                        <template
+                            v-if="isSubmitting"
+                            #append="{ color }">
+                            <IconSpinner :fill-color="color" />
+                        </template>
+                    </Button>
+                </template>
+                <template #cancelForm>
+                    <Button
+                        title="CREATE & EDIT"
+                        :theme="secondaryTheme"
+                        @click.native="onCreateAndEdit">
+                        <template
+                            v-if="isCreatingAndEdit"
+                            #prepend="{ color }">
+                            <IconSpinner :fill-color="color" />
+                        </template>
+                    </Button>
+                </template>
+            </TemplateDesignerForm>
         </template>
     </ModalForm>
 </template>
 
 <script>
-import {
-    MODAL_ACTION,
-} from '@Core/defaults/modals';
+import Button from '@Core/components/Button/Button';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     THEME,
 } from '@Core/defaults/theme';
-import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
+import TemplateDesignerForm from '@Templates/components/Forms/TemplateDesignerForm';
 import {
     mapActions,
 } from 'vuex';
 
-const createProductTemplate = () => import('@Templates/services/createProductTemplate.service');
-
 export default {
     name: 'CreateProductTemplateModalForm',
     components: {
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
-        TemplateDesignerForm: () => import('@Templates/components/Forms/TemplateDesignerForm'),
+        ModalForm,
+        Button,
+        TemplateDesignerForm,
+        IconSpinner,
     },
-    mixins: [
-        actionModalFormMixin({
-            action: MODAL_ACTION.CREATE,
-            namespace: 'Product template',
-            request: createProductTemplate,
-        }),
-    ],
+    data() {
+        return {
+            isSubmitting: false,
+            isCreatingAndEdit: false,
+        };
+    },
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
     },
     methods: {
-        ...mapActions('templateDesigner', [
+        ...mapActions('productTemplate', [
+            'createProductTemplate',
             '__clearStorage',
         ]),
+        ...mapActions('validations', [
+            'onError',
+            'removeValidationErrors',
+        ]),
+        async onSubmit() {
+            if (this.isSubmitting || this.isCreatingAndEdit) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            try {
+                this.removeValidationErrors();
+                await this.createProductTemplate();
+                this.$emit('created');
+                this.onClose();
+            } catch (e) {
+                if (e.data) {
+                    this.onError(e.data);
+                }
+            } finally {
+                this.isSubmitting = false;
+            }
+        },
         onClose() {
             this.__clearStorage();
             this.$emit('close');
         },
-        onCreate() {
-            this.onActionRequest(() => {
-                this.__clearStorage();
-            });
-        },
-        onCreatedAndEdit() {
-            this.onActionRequest((id) => {
-                this.$router.push({
+        async onCreateAndEdit() {
+            this.isCreatingAndEdit = true;
+
+            try {
+                this.removeValidationErrors();
+                const id = await this.createProductTemplate();
+                await this.$router.push({
                     name: 'product-template-id-general',
                     params: {
                         id,
                     },
                 });
-            });
+            } catch (e) {
+                if (e.data) {
+                    this.onError(e.data);
+                }
+            } finally {
+                this.isCreatingAndEdit = false;
+            }
         },
     },
 };

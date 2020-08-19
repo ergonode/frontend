@@ -7,52 +7,63 @@
         title="Create product"
         @close="onClose">
         <template #body>
-            <ProductForm />
-        </template>
-        <template #footer>
-            <Button
-                title="CREATE"
-                :disabled="isRequestPending"
-                @click.native="onCreate" />
-            <Button
-                title="CREATE & EDIT"
-                :theme="secondaryTheme"
-                :disabled="isRequestPending"
-                @click.native="onCreatedAndEdit" />
+            <ProductForm @submit="onSubmit">
+                <template #submitForm>
+                    <Button
+                        title="CREATE"
+                        type="submit">
+                        <template
+                            v-if="isSubmitting"
+                            #append="{ color }">
+                            <IconSpinner :fill-color="color" />
+                        </template>
+                    </Button>
+                </template>
+                <template #cancelForm>
+                    <Button
+                        title="CREATE & EDIT"
+                        :theme="secondaryTheme"
+                        @click.native="onCreateAndEdit">
+                        <template
+                            v-if="isCreatingAndEdit"
+                            #prepend="{ color }">
+                            <IconSpinner :fill-color="color" />
+                        </template>
+                    </Button>
+                </template>
+            </ProductForm>
         </template>
     </ModalForm>
 </template>
 
 <script>
-import {
-    MODAL_ACTION,
-} from '@Core/defaults/modals';
+import Button from '@Core/components/Button/Button';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     THEME,
 } from '@Core/defaults/theme';
-import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
+import ProductForm from '@Products/components/Form/ProductForm';
 import {
     mapActions,
 } from 'vuex';
 
-const createProduct = () => import('@Products/services/createProduct.service');
-
 export default {
     name: 'CreateProductModalForm',
     components: {
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
-        ProductForm: () => import('@Products/components/Form/ProductForm'),
+        Button,
+        IconSpinner,
+        ModalForm,
+        ProductForm,
     },
-    mixins: [
-        actionModalFormMixin({
-            action: MODAL_ACTION.CREATE,
-            namespace: 'Product',
-            request: createProduct,
-        }),
-    ],
     fetch() {
         this.getSelectAttributes();
+    },
+    data() {
+        return {
+            isSubmitting: false,
+            isCreatingAndEdit: false,
+        };
     },
     computed: {
         secondaryTheme() {
@@ -62,26 +73,55 @@ export default {
     methods: {
         ...mapActions('product', [
             'getSelectAttributes',
+            'createProduct',
             '__clearStorage',
         ]),
+        ...mapActions('validations', [
+            'onError',
+            'removeValidationErrors',
+        ]),
+        async onSubmit() {
+            if (this.isSubmitting || this.isCreatingAndEdit) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            try {
+                this.removeValidationErrors();
+                await this.createProduct();
+                this.$emit('created');
+                this.onClose();
+            } catch (e) {
+                if (e.data) {
+                    this.onError(e.data);
+                }
+            } finally {
+                this.isSubmitting = false;
+            }
+        },
         onClose() {
             this.__clearStorage();
             this.$emit('close');
         },
-        onCreate() {
-            this.onActionRequest(() => {
-                this.__clearStorage();
-            });
-        },
-        onCreatedAndEdit() {
-            this.onActionRequest((id) => {
-                this.$router.push({
+        async onCreateAndEdit() {
+            this.isCreatingAndEdit = true;
+
+            try {
+                this.removeValidationErrors();
+                const id = await this.createProduct();
+                await this.$router.push({
                     name: 'product-id-general',
                     params: {
                         id,
                     },
                 });
-            });
+            } catch (e) {
+                if (e.data) {
+                    this.onError(e.data);
+                }
+            } finally {
+                this.isCreatingAndEdit = false;
+            }
         },
     },
 };

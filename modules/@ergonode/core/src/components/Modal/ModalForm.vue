@@ -15,9 +15,6 @@
             <ModalBody>
                 <slot name="body" />
             </ModalBody>
-            <ModalFooter>
-                <slot name="footer" />
-            </ModalFooter>
         </Modal>
     </ModalOverlay>
 </template>
@@ -25,7 +22,6 @@
 <script>
 import Modal from '@Core/components/Modal/Modal';
 import ModalBody from '@Core/components/Modal/ModalBody';
-import ModalFooter from '@Core/components/Modal/ModalFooter';
 import ModalHeader from '@Core/components/Modal/ModalHeader';
 import ModalOverlay from '@Core/components/Modal/ModalOverlay';
 
@@ -33,7 +29,6 @@ export default {
     name: 'ModalForm',
     components: {
         Modal,
-        ModalFooter,
         ModalBody,
         ModalHeader,
         ModalOverlay,

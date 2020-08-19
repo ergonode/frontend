@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <LoginForm>
+    <LoginForm @submit="onSubmit">
         <template #header>
             <div class="logo-header">
                 <IconLogoName />
@@ -18,18 +18,16 @@
                 data-cy="login-pass"
                 v-model="password"
                 :input="passwordInputType"
-                label="Password"
-                @keyup.13="onSubmit" />
+                label="Password" />
             <Toggler
                 v-model="isPasswordVisible"
                 label="Show password" />
         </template>
-        <template #footer>
+        <template #submitForm>
             <Button
                 data-cy="login-button"
                 title="LOG IN"
-                type="submit"
-                @click.stop.prevent.native="onSubmit" />
+                type="submit" />
         </template>
     </LoginForm>
 </template>

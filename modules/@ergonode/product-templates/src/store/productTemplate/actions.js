@@ -7,19 +7,67 @@ import {
     SYSTEM_TYPES,
 } from '@Attributes/defaults/attributes';
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     getUUID,
 } from '@Core/models/stringWrapper';
 import {
     getMappedLayoutElement,
     getMappedLayoutElements,
+    getMappedLayoutElementsForAPIUpdate,
 } from '@Templates/models/templateMapper';
+import productTemplateService from '@Templates/services/index';
 
 import {
     types,
 } from './mutations';
 
 export default {
-    getTemplateByID(
+    async createProductTemplate(
+        {
+            state,
+            rootState,
+        },
+    ) {
+        const {
+            authentication: {
+                user: {
+                    language,
+                },
+            },
+        } = rootState;
+
+        const {
+            title,
+            image,
+            defaultTextAttribute,
+            defaultImageAttribute,
+        } = state;
+
+        const data = {
+            name: title,
+            image,
+            defaultLabel: defaultTextAttribute !== SKU_MODEL_ID
+                ? defaultTextAttribute
+                : null,
+            defaultImage: defaultImageAttribute,
+        };
+
+        const id = await productTemplateService.create({
+            $axios: this.app.$axios,
+            languageCode: language,
+            data,
+        });
+
+        this.app.$addAlert({
+            type: ALERT_TYPE.SUCCESS,
+            message: 'Product template created',
+        });
+
+        return id;
+    },
+    getTemplate(
         {
             commit,
             dispatch,
@@ -59,6 +107,10 @@ export default {
                 view: 'list',
             };
 
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
             commit('__SET_STATE', {
                 key: 'defaultTextAttribute',
                 value: defaultLabel || SKU_MODEL_ID,
@@ -116,24 +168,43 @@ export default {
             });
         });
     },
-    async updateTemplateDesigner(
+    async updateProductTemplate(
         {
+            state,
             rootState,
-        },
-        {
-            id,
-            data,
-            onSuccess,
-            onError,
         },
     ) {
         const {
-            language: userLanguageCode,
+            id,
+            title,
+            image,
+            layoutElements,
+            defaultTextAttribute,
+            defaultImageAttribute,
+        } = state;
+        const {
+            language,
         } = rootState.authentication.user;
+        const data = {
+            name: title,
+            image,
+            defaultLabel: defaultTextAttribute !== SKU_MODEL_ID
+                ? defaultTextAttribute
+                : null,
+            defaultImage: defaultImageAttribute,
+            elements: getMappedLayoutElementsForAPIUpdate(layoutElements),
+        };
 
-        await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`${userLanguageCode}/templates/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
-        await this.$removeLoader('footerButton');
+        await productTemplateService.update({
+            $axios: this.app.$axios,
+            id,
+            languageCode: language,
+            data,
+        });
+        this.app.$addAlert({
+            type: ALERT_TYPE.SUCCESS,
+            message: 'Product template updated',
+        });
     },
     addListElementToLayout({
         commit, dispatch, rootState, state,

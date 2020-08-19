@@ -3,18 +3,19 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form title="Options">
+    <Form
+        title="Options"
+        @submit="onSubmit">
         <template #body>
             <FormSection>
                 <TranslationSelect
-                    :value="activeLanguages"
+                    v-model="activeLanguages"
                     :options="languageOptions"
                     label="Languages"
                     :multiselect="true"
                     :clearable="true"
                     :searchable="true"
                     :sticky-search="true"
-                    @input="setSelectedLanguages"
                     @search="onSearch">
                     <template #append>
                         <InfoHint
@@ -23,6 +24,9 @@
                     </template>
                 </TranslationSelect>
             </FormSection>
+        </template>
+        <template #submit>
+            <slot name="submitForm" />
         </template>
     </Form>
 </template>
@@ -94,9 +98,8 @@ export default {
         },
     },
     methods: {
-        setSelectedLanguages(selectedLanguages) {
-            this.activeLanguages = selectedLanguages;
-            this.$emit('selectedLanguages', selectedLanguages);
+        onSubmit() {
+            this.$emit('submit', this.activeLanguages);
         },
         onSearch(value) {
             this.filteredValue = value;

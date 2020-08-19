@@ -5,7 +5,7 @@
 <template>
     <form
         class="form"
-        @submit.prevent>
+        @submit.prevent="onSubmit">
         <slot name="header">
             <h2
                 v-if="title"
@@ -35,6 +35,14 @@
         <slot
             name="body"
             :error-messages="errorMessages" />
+        <div class="form__footer">
+            <slot name="submit">
+                <Button
+                    title="SUBMIT"
+                    type="submit" />
+            </slot>
+            <slot name="cancel" />
+        </div>
     </form>
 </template>
 
@@ -42,6 +50,10 @@
 import {
     RED,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import Button from '@Core/components/Button/Button';
+import Divider from '@Core/components/Dividers/Divider';
+import IconError from '@Core/components/Icons/Feedback/IconError';
+import LinkButton from '@Core/components/LinkButton/LinkButton';
 import {
     mapActions,
     mapState,
@@ -50,14 +62,19 @@ import {
 export default {
     name: 'Form',
     components: {
-        LinkButton: () => import('@Core/components/LinkButton/LinkButton'),
-        IconError: () => import('@Core/components/Icons/Feedback/IconError'),
-        Divider: () => import('@Core/components/Dividers/Divider'),
+        Button,
+        LinkButton,
+        IconError,
+        Divider,
     },
     props: {
         title: {
             type: String,
             default: '',
+        },
+        submitTitle: {
+            type: String,
+            default: 'SUBMIT',
         },
         fieldsKeys: {
             type: Array,
@@ -100,6 +117,9 @@ export default {
         getValidationErrorForKey(key) {
             return this.validationErrors[key] || null;
         },
+        onSubmit() {
+            this.$emit('submit');
+        },
     },
 };
 </script>
@@ -129,6 +149,11 @@ export default {
             border: $BORDER_2_RED;
             padding: 16px;
             box-sizing: border-box;
+        }
+
+        &__footer {
+            display: flex;
+            justify-content: space-between;
         }
 
         .errors-list {

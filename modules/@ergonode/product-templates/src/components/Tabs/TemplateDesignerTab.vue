@@ -65,6 +65,16 @@
                     :element="sectionElement"
                     @close="onCloseSectionModal" />
             </TemplateGridDesigner>
+            <Button
+                title="SAVE CHANGES"
+                :floating="{ bottom: '24px', right: '24px' }"
+                @click.native="onSave">
+                <template
+                    v-if="isSavingDesigner"
+                    #prepend="{ color }">
+                    <IconSpinner :fill-color="color" />
+                </template>
+            </Button>
         </template>
     </GridViewTemplate>
 </template>
@@ -76,8 +86,10 @@ import {
 import {
     GRAPHITE_LIGHT,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import Button from '@Core/components/Button/Button';
 import DropZone from '@Core/components/DropZone/DropZone';
 import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import {
@@ -105,6 +117,8 @@ import {
 export default {
     name: 'TemplateDesignerTab',
     components: {
+        Button,
+        IconSpinner,
         DropZone,
         FadeTransition,
         GridViewTemplate,
@@ -121,6 +135,7 @@ export default {
     data() {
         return {
             highlightedPositions: [],
+            isSavingDesigner: false,
             isSectionAdded: false,
             sectionPosition: null,
             sectionIndex: null,
@@ -130,7 +145,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('templateDesigner', {
+        ...mapState('productTemplate', {
             templateGroups: state => state.templateGroups,
             layoutElements: state => state.layoutElements,
             title: state => state.title,
@@ -215,11 +230,33 @@ export default {
         },
     },
     methods: {
-        ...mapActions('templateDesigner', [
+        ...mapActions('productTemplate', [
+            'updateProductTemplate',
             'addListElementToLayout',
             'updateLayoutElementAtIndex',
             'removeLayoutElementAtIndex',
         ]),
+        ...mapActions('validations', [
+            'onError',
+            'removeValidationErrors',
+        ]),
+        async onSave() {
+            if (this.isSavingDesigner) {
+                return;
+            }
+            this.isSavingDesigner = true;
+
+            try {
+                this.removeValidationErrors();
+                await this.updateProductTemplate();
+            } catch (e) {
+                if (e.data) {
+                    this.onError(e.data);
+                }
+            } finally {
+                this.isSavingDesigner = false;
+            }
+        },
         onRemoveLayoutElement(index) {
             this.removeLayoutElementAtIndex(index);
         },

@@ -6,9 +6,16 @@ import {
     TYPES,
 } from '@Attributes/defaults/attributes';
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    getKeyByValue,
+} from '@Core/models/objectWrapper';
+import {
     EXTENDS,
     PRODUCT_TYPE,
 } from '@Products/defaults';
+import productService from '@Products/services';
 
 import {
     types,
@@ -166,12 +173,8 @@ export default {
     },
     async updateProduct(
         {
-            rootState, dispatch,
-        },
-        {
-            id,
-            data,
-            onSuccess = () => {},
+            state,
+            rootState,
         },
     ) {
         const {
@@ -180,11 +183,86 @@ export default {
                     language,
                 },
             },
+            dictionaries: {
+                productTypes,
+            },
+        } = rootState;
+        const {
+            id,
+            template,
+            categories,
+            bindingAttributesIds,
+            type,
+        } = state;
+
+        const data = {
+            templateId: template,
+            categoryIds: categories,
+        };
+
+        if (getKeyByValue(productTypes, type) === PRODUCT_TYPE.WITH_VARIANTS) {
+            data.bindings = bindingAttributesIds;
+        }
+
+        await productService.update({
+            $axios: this.app.$axios,
+            id,
+            languageCode: language,
+            data,
+        });
+        this.app.$addAlert({
+            type: ALERT_TYPE.SUCCESS,
+            message: 'Product updated',
+        });
+    },
+    async createProduct(
+        {
+            state,
+            rootState,
+        },
+    ) {
+        const {
+            authentication: {
+                user: {
+                    language,
+                },
+            },
+            dictionaries: {
+                productTypes,
+            },
         } = rootState;
 
-        await this.app.$axios.$put(`${language}/products/${id}`, data).then(onSuccess).catch(e => dispatch('validations/onError', e.data, {
-            root: true,
-        }));
+        const {
+            sku,
+            type,
+            template,
+            categories,
+            bindingAttributesIds,
+        } = state;
+
+        const data = {
+            sku,
+            type: getKeyByValue(productTypes, type),
+            templateId: template,
+            categoryIds: categories,
+        };
+
+        if (bindingAttributesIds.length) {
+            data.bindings = bindingAttributesIds;
+        }
+
+        const id = await productService.create({
+            $axios: this.app.$axios,
+            languageCode: language,
+            data,
+        });
+
+        this.app.$addAlert({
+            type: ALERT_TYPE.SUCCESS,
+            message: 'Product created',
+        });
+
+        return id;
     },
     removeProduct({
         state, rootState,

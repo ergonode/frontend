@@ -90,7 +90,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions('templateDesigner', [
+        ...mapActions('productTemplate', [
             'addSectionElementToLayout',
             'updateLayoutElementAtIndex',
         ]),

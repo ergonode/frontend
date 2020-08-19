@@ -19,38 +19,37 @@ export default function ({
                 isRequestPending: false,
             };
         },
-        mounted() {
-            this.__clearStorage();
-        },
         methods: {
             ...mapActions('validations', [
                 'onError',
                 'removeValidationErrors',
             ]),
             onActionRequest(onSuccess) {
-                this.isRequestPending = true;
-                this.removeValidationErrors();
+                if (!this.isRequestPending) {
+                    this.isRequestPending = true;
 
-                request().then(response => response.default({
-                    $axios: this.$axios,
-                    $store: this.$store,
-                }).then(({
-                    id,
-                }) => {
-                    this.isRequestPending = false;
-                    this.removeValidationErrors();
-                    this.$addAlert({
-                        type: ALERT_TYPE.SUCCESS,
-                        message: `${namespace} has been ${action.toLowerCase()}d`,
-                    });
+                    request().then(response => response.default({
+                        $axios: this.$axios,
+                        $store: this.$store,
+                    }).then(({
+                        id,
+                    }) => {
+                        this.isRequestPending = false;
+                        this.removeValidationErrors();
+                        this.$addAlert({
+                            type: ALERT_TYPE.SUCCESS,
+                            message: `${namespace} has been ${action.toLowerCase()}d`,
+                        });
 
-                    onSuccess(id);
+                        onSuccess(id);
 
-                    this.$emit(action.toLowerCase());
-                }).catch((e) => {
-                    this.isRequestPending = false;
-                    this.onError(e.data);
-                }));
+                        this.$emit(action.toLowerCase());
+                    }).catch((e) => {
+                        this.isRequestPending = false;
+                        this.removeValidationErrors();
+                        this.onError(e.data);
+                    }));
+                }
             },
         },
     };

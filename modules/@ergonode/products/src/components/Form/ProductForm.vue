@@ -5,7 +5,8 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[skuFieldKey, templateIdFieldKey]">
+        :fields-keys="[skuFieldKey, templateIdFieldKey]"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <Select
@@ -31,7 +32,7 @@
                     :required="true"
                     label="Product template"
                     :error-messages="errorMessages[templateIdFieldKey]"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabledByPrivileges"
                     :fetch-options-request="getTemplatesOptionsRequest"
                     @input="setTemplateValue" />
                 <template v-for="(field, index) in extendedForm">
@@ -42,10 +43,21 @@
                 </template>
             </FormSection>
         </template>
+        <template #submit>
+            <slot name="submitForm" />
+        </template>
+        <template #cancel>
+            <slot name="cancelForm" />
+        </template>
     </Form>
 </template>
 
 <script>
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import Select from '@Core/components/Inputs/Select/Select';
+import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import TextField from '@Core/components/Inputs/TextField';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
@@ -64,22 +76,19 @@ const getTemplatesOptions = () => import('@Templates/services/getTemplatesOption
 export default {
     name: 'ProductForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        Select: () => import('@Core/components/Inputs/Select/Select'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
-        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
+        Form,
+        FormSection,
+        Select,
+        TextField,
+        TranslationLazySelect,
         ProductAttributesBindingFormSection: () => import('@Products/components/Form/Section/ProductAttributesBindingFormSection'),
     },
     computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
         ...mapState('dictionaries', {
             productTypes: state => state.productTypes,
         }),
         ...mapState('product', {
-            productID: state => state.id,
+            id: state => state.id,
             sku: state => state.sku,
             type: state => state.type,
             template: state => state.template,
@@ -94,7 +103,7 @@ export default {
             return Object.values(this.productTypes);
         },
         isDisabled() {
-            return Boolean(this.productID);
+            return Boolean(this.id);
         },
         isProductWithVariants() {
             return this.productTypeKey === PRODUCT_TYPE.WITH_VARIANTS;
@@ -115,6 +124,9 @@ export default {
         ...mapActions('product', [
             '__setState',
         ]),
+        onSubmit() {
+            this.$emit('submit');
+        },
         setTypeValue(value) {
             this.__setState({
                 key: 'type',

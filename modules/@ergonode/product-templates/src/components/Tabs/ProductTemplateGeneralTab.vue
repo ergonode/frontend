@@ -5,7 +5,7 @@
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #centeredContent>
-            <ProductForm @submit="onSubmit">
+            <TemplateDesignerForm @submit="onSubmit">
                 <template #submitForm>
                     <Button
                         title="SAVE CHANGES"
@@ -17,7 +17,7 @@
                         </template>
                     </Button>
                 </template>
-            </ProductForm>
+            </TemplateDesignerForm>
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -26,18 +26,18 @@
 import Button from '@Core/components/Button/Button';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import ProductForm from '@Products/components/Form/ProductForm';
+import TemplateDesignerForm from '@Templates/components/Forms/TemplateDesignerForm';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
-    name: 'ProductGeneralTab',
+    name: 'ProductTemplateGeneralTab',
     components: {
         Button,
-        ProductForm,
-        ResponsiveCenteredViewTemplate,
         IconSpinner,
+        TemplateDesignerForm,
+        ResponsiveCenteredViewTemplate,
     },
     data() {
         return {
@@ -45,8 +45,8 @@ export default {
         };
     },
     methods: {
-        ...mapActions('product', [
-            'updateProduct',
+        ...mapActions('productTemplate', [
+            'updateProductTemplate',
         ]),
         ...mapActions('validations', [
             'onError',
@@ -60,7 +60,7 @@ export default {
 
             try {
                 this.removeValidationErrors();
-                await this.updateProduct();
+                await this.updateProductTemplate();
             } catch (e) {
                 if (e.data) {
                     this.onError(e.data);

@@ -5,7 +5,8 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[nameFieldKey]">
+        :fields-keys="[nameFieldKey]"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
@@ -41,6 +42,12 @@
                     @input="setDefaultImageAttributeValue" />
             </FormSection>
         </template>
+        <template #submit>
+            <slot name="submitForm" />
+        </template>
+        <template #cancel>
+            <slot name="cancelForm" />
+        </template>
     </Form>
 </template>
 
@@ -48,6 +55,11 @@
 import {
     TYPES,
 } from '@Attributes/defaults/attributes';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import TextField from '@Core/components/Inputs/TextField';
+import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 import PRIVILEGES from '@Templates/config/privileges';
 import {
     mapActions,
@@ -59,14 +71,14 @@ const getAttributesOptionsByType = () => import('@Attributes/services/getAttribu
 export default {
     name: 'TemplateDesignerForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
-        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
-        UploadImageFile: () => import('@Media/components/Inputs/UploadFile/UploadImageFile'),
+        Form,
+        FormSection,
+        TextField,
+        TranslationLazySelect,
+        UploadImageFile,
     },
     computed: {
-        ...mapState('templateDesigner', {
+        ...mapState('productTemplate', {
             templateTitle: state => state.title,
             templateImage: state => state.image,
             defaultTextAttribute: state => state.defaultTextAttribute,
@@ -85,9 +97,12 @@ export default {
         },
     },
     methods: {
-        ...mapActions('templateDesigner', [
+        ...mapActions('productTemplate', [
             '__setState',
         ]),
+        onSubmit() {
+            this.$emit('submit');
+        },
         setTitleValue(value) {
             this.__setState({
                 key: 'title',

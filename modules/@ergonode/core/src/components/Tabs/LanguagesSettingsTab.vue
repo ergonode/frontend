@@ -3,38 +3,35 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
-        <template #content>
-            <GridViewTemplate>
-                <template #sidebar>
-                    <VerticalTabBar :items="verticalTabs">
-                        <FadeTransition>
-                            <DropZone
-                                v-show="isDropZoneVisible"
-                                :hover-background-color="graphiteLightColor"
-                                title="REMOVE CATEGORY">
-                                <template #icon="{ color }">
-                                    <IconRemoveFilter :fill-color="color" />
-                                </template>
-                            </DropZone>
-                        </FadeTransition>
-                    </VerticalTabBar>
-                </template>
-                <template #grid>
-                    <LanguagesTreeWrapper />
-                </template>
-            </GridViewTemplate>
+    <GridViewTemplate>
+        <template #sidebar>
+            <VerticalTabBar :items="verticalTabs">
+                <FadeTransition>
+                    <DropZone
+                        v-show="isDropZoneVisible"
+                        :hover-background-color="graphiteLightColor"
+                        title="REMOVE CATEGORY">
+                        <template #icon="{ color }">
+                            <IconRemoveFilter :fill-color="color" />
+                        </template>
+                    </DropZone>
+                </FadeTransition>
+            </VerticalTabBar>
         </template>
-        <template #footer>
-            <FooterActions>
-                <Button
-                    title="SAVE TREE"
-                    :size="smallSize"
-                    :disabled="$isLoading('saveSettings')"
-                    @click.native="onSave" />
-            </FooterActions>
+        <template #grid>
+            <LanguagesTreeWrapper />
+            <Button
+                title="SAVE CHANGES"
+                :floating="{ bottom: '24px', right: '24px' }"
+                @click.native="onSave">
+                <template
+                    v-if="isSavingTree"
+                    #prepend="{ color }">
+                    <IconSpinner :fill-color="color" />
+                </template>
+            </Button>
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </GridViewTemplate>
 </template>
 
 <script>
@@ -44,9 +41,8 @@ import {
 import Button from '@Core/components/Button/Button';
 import DropZone from '@Core/components/DropZone/DropZone';
 import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
-import FooterActions from '@Core/components/Layout/Footer/FooterActions';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import {
     ALERT_TYPE,
@@ -54,9 +50,6 @@ import {
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import {
     getMappedTreeData,
 } from '@Core/models/mappers/languageTreeMapper';
@@ -71,13 +64,12 @@ import {
 export default {
     name: 'LanguagesSettingsTab',
     components: {
-        ResponsiveCenteredViewTemplate,
         GridViewTemplate,
-        FooterActions,
         Button,
         IconRemoveFilter,
         DropZone,
         FadeTransition,
+        IconSpinner,
         LanguagesTreeWrapper: () => import('@Core/components/LanguagesTreeDesigner/LanguagesTreeWrapper'),
         VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
     },
@@ -107,6 +99,11 @@ export default {
         store.dispatch('gridDesigner/setGridData', treeToSet);
         store.dispatch('gridDesigner/setFullGridData', treeToSet);
     },
+    data() {
+        return {
+            isSavingTree: false,
+        };
+    },
     computed: {
         ...mapState('gridDesigner', {
             fullGridData: state => state.fullGridData,
@@ -122,9 +119,6 @@ export default {
                     iconComponent: () => import('@Core/components/Icons/Others/IconTranslate'),
                 },
             ];
-        },
-        smallSize() {
-            return SIZE.SMALL;
         },
         isDropZoneVisible() {
             return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
@@ -146,38 +140,38 @@ export default {
             'updateLanguageTree',
         ]),
         async onSave() {
-            let isUpdated = false;
-            let languages = null;
+            if (this.isSavingTree) {
+                return;
+            }
+            this.isSavingTree = true;
 
-            try {
-                await this.$setLoader('saveSettings');
-
-                if (isEmpty(this.fullGridData)) {
-                    this.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: 'Tree must have a root branch',
-                    });
-                    throw new Error();
-                }
-                [
-                    languages,
-                ] = getMappedTreeData(this.fullGridData);
-                isUpdated = await this.updateLanguageTree(languages);
-            } catch {
-                return false;
-            } finally {
-                if (isUpdated !== false) {
+            if (!isEmpty(this.fullGridData)) {
+                try {
+                    const [
+                        languages,
+                    ] = getMappedTreeData(this.fullGridData);
+                    await this.updateLanguageTree(languages);
                     await this.setLanguagesTree(languages);
                     await this.setDefaultLanguage();
+
                     this.$addAlert({
                         type: ALERT_TYPE.SUCCESS,
                         message: 'Languages updated',
                     });
+                } catch (e) {
+                    this.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: e.data,
+                    });
+                } finally {
+                    this.isSavingTree = false;
                 }
-                await this.$removeLoader('saveSettings');
+            } else {
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Tree must have a root branch',
+                });
             }
-
-            return true;
         },
     },
 };

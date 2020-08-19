@@ -45,7 +45,7 @@
         <CreateAttributeModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @create="onCreatedAttribute" />
+            @created="onCreatedAttribute" />
     </VerticalTabBarList>
 </template>
 

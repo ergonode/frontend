@@ -20,11 +20,6 @@
                 </VerticalFixedScroll>
             </slot>
         </div>
-        <div
-            v-if="isFooterSlotVisible"
-            class="responsive-view-template__footer">
-            <slot name="footer" />
-        </div>
     </div>
 </template>
 
@@ -92,31 +87,21 @@ export default {
         }
 
         &__header {
-            grid-area: 1 / 1 / 2 / 4;
+            display: flex;
             justify-content: space-between;
-            border-bottom: $BORDER_1_GREY;
+            align-items: center;
+            grid-area: 1 / 1 / 2 / 4;
             height: 64px;
+            padding: 12px 24px;
+            border-bottom: $BORDER_1_GREY;
             box-sizing: border-box;
+            background-color: $WHITE;
         }
 
         &__responsive-container {
             display: flex;
             flex-direction: column;
             min-width: 0;
-        }
-
-        &__footer {
-            grid-area: 3 / 1 / 4 / 4;
-            z-index: $Z_INDEX_LVL_3;
-            box-shadow: $ELEVATOR_6_DP;
-            min-height: 40px;
-        }
-
-        &__header, &__footer {
-            display: flex;
-            align-items: center;
-            padding: 12px 24px;
-            background-color: $WHITE;
         }
     }
 

@@ -5,17 +5,19 @@
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #centeredContent>
-            <MainSettingsForm
-                @selectedLanguages="setSelectedLanguages" />
-        </template>
-        <template #footer>
-            <FooterActions>
-                <Button
-                    title="SAVE SETTINGS"
-                    :size="smallSize"
-                    :disabled="$isLoading('saveSettings')"
-                    @click.native="onSave" />
-            </FooterActions>
+            <MainSettingsForm @submit="onSubmit">
+                <template #submitForm>
+                    <Button
+                        title="SAVE CHANGES"
+                        type="SUBMIT">
+                        <template
+                            v-if="isSubmittingForm"
+                            #append="{ color }">
+                            <IconSpinner :fill-color="color" />
+                        </template>
+                    </Button>
+                </template>
+            </MainSettingsForm>
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -23,7 +25,7 @@
 <script>
 import Button from '@Core/components/Button/Button';
 import MainSettingsForm from '@Core/components/Forms/MainSettingsForm';
-import FooterActions from '@Core/components/Layout/Footer/FooterActions';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import {
     ALERT_TYPE,
@@ -31,9 +33,6 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import {
     mapActions,
     mapState,
@@ -44,32 +43,30 @@ export default {
     components: {
         MainSettingsForm,
         ResponsiveCenteredViewTemplate,
-        FooterActions,
+        IconSpinner,
         Button,
     },
     data() {
         return {
-            selectedLanguages: [],
+            isSubmittingForm: false,
         };
     },
     computed: {
         ...mapState('core', {
             languagesTree: state => state.languagesTree,
         }),
-        smallSize() {
-            return SIZE.SMALL;
-        },
     },
     methods: {
         ...mapActions('core', [
             'getLanguages',
             'updateLanguages',
         ]),
-        setSelectedLanguages(selectedLanguages) {
-            this.selectedLanguages = selectedLanguages;
-        },
-        onSave() {
-            const languageKeys = this.selectedLanguages.map(language => language.key);
+        onSubmit(selectedLanguages) {
+            if (this.isSubmittingForm) {
+                return;
+            }
+
+            const languageKeys = selectedLanguages.map(language => language.key);
             const isUsedOnTree = this.languagesTree.find(
                 ({
                     code,
@@ -81,43 +78,43 @@ export default {
                     type: ALERT_TYPE.ERROR,
                     message: 'At least one language needed',
                 });
-                return false;
+                return;
             }
             if (isUsedOnTree) {
                 this.$addAlert({
                     type: ALERT_TYPE.ERROR,
                     message: 'Language you want to deactivate is used on the language tree',
                 });
-                return false;
+                return;
             }
 
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Changes in language settings will affect the entire application.',
-                confirmCallback: () => this.onAgree(),
+                confirmCallback: () => this.onAgree(selectedLanguages),
             });
-            return true;
         },
-        async onAgree() {
-            let isUpdated = false;
-            const languageKeys = this.selectedLanguages.map(language => language.key);
+        async onAgree(selectedLanguages) {
+            this.isSubmittingForm = true;
+
+            const languageKeys = selectedLanguages.map(language => language.key);
 
             try {
-                await this.$setLoader('saveSettings');
-                isUpdated = await this.updateLanguages(languageKeys);
-            } catch {
-                return false;
+                await this.updateLanguages(languageKeys);
+                await this.getLanguages();
+
+                this.$addAlert({
+                    type: ALERT_TYPE.SUCCESS,
+                    message: 'Languages updated',
+                });
+            } catch (e) {
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: e.data,
+                });
             } finally {
-                if (isUpdated !== false) {
-                    this.$addAlert({
-                        type: ALERT_TYPE.SUCCESS,
-                        message: 'Languages updated',
-                    });
-                    await this.getLanguages();
-                }
-                await this.$removeLoader('saveSettings');
+                this.isSubmittingForm = false;
             }
-            return true;
         },
     },
 };

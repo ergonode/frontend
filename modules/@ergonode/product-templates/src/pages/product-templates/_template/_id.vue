@@ -41,13 +41,13 @@ export default {
             id,
         } = params;
 
-        await store.dispatch('templateDesigner/getTemplateByID', id);
+        await store.dispatch('productTemplate/getTemplate', id);
     },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapState('templateDesigner', {
+        ...mapState('productTemplate', {
             groups: state => state.templateGroups,
             templateTitle: state => state.title,
             templateImage: state => state.image,
@@ -61,10 +61,10 @@ export default {
         this.__clearStorage();
     },
     methods: {
-        ...mapActions('templateDesigner', [
-            'updateTemplateDesigner',
+        ...mapActions('productTemplate', [
+            'updateProductTemplate',
             'removeTemplate',
-            'getTemplateByID',
+            'getTemplate',
             '__clearStorage',
         ]),
         ...mapActions('list', {
@@ -74,7 +74,7 @@ export default {
             'onError',
             'removeValidationErrors',
         ]),
-        onUpdateTemplateDesignerSuccess() {
+        onupdateProductTemplateSuccess() {
             this.removeValidationErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
@@ -113,7 +113,7 @@ export default {
                 const {
                     id,
                 } = this.$route.params;
-                this.updateTemplateDesigner({
+                this.updateProductTemplate({
                     id,
                     data: {
                         name: this.templateTitle,
@@ -124,7 +124,7 @@ export default {
                         defaultImage: this.defaultImageAttribute,
                         elements: getMappedLayoutElementsForAPIUpdate(this.layoutElements),
                     },
-                    onSuccess: this.onUpdateTemplateDesignerSuccess,
+                    onSuccess: this.onupdateProductTemplateSuccess,
                     onError: this.onError,
                 });
             });
