@@ -11,7 +11,7 @@
                         title="SAVE CHANGES"
                         type="submit">
                         <template
-                            v-if="isSubmittingForm"
+                            v-if="isSubmitting"
                             #append="{ color }">
                             <IconSpinner :fill-color="color" />
                         </template>
@@ -41,7 +41,7 @@ export default {
     },
     data() {
         return {
-            isSubmittingForm: false,
+            isSubmitting: false,
         };
     },
     methods: {
@@ -53,10 +53,10 @@ export default {
             'removeValidationErrors',
         ]),
         async onSubmit() {
-            if (this.isSubmittingForm) {
+            if (this.isSubmitting) {
                 return;
             }
-            this.isSubmittingForm = true;
+            this.isSubmitting = true;
 
             try {
                 this.removeValidationErrors();
@@ -66,7 +66,7 @@ export default {
                     this.onError(e.data);
                 }
             } finally {
-                this.isSubmittingForm = false;
+                this.isSubmitting = false;
             }
         },
     },

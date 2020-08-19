@@ -5,7 +5,7 @@
 <template>
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
-            <ProductForm @submit="onSubmit">
+            <UserRoleForm @submit="onSubmit">
                 <template #submitForm>
                     <Button
                         title="SAVE CHANGES"
@@ -17,7 +17,7 @@
                         </template>
                     </Button>
                 </template>
-            </ProductForm>
+            </UserRoleForm>
         </template>
     </CenterViewTemplate>
 </template>
@@ -26,18 +26,18 @@
 import Button from '@Core/components/Button/Button';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
-import ProductForm from '@Products/components/Form/ProductForm';
+import UserRoleForm from '@Users/components/Forms/UserRoleForm';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
-    name: 'ProductGeneralTab',
+    name: 'RoleGeneralTab',
     components: {
         Button,
         IconSpinner,
-        ProductForm,
         CenterViewTemplate,
+        UserRoleForm,
     },
     data() {
         return {
@@ -45,8 +45,8 @@ export default {
         };
     },
     methods: {
-        ...mapActions('product', [
-            'updateProduct',
+        ...mapActions('role', [
+            'updateRole',
         ]),
         ...mapActions('validations', [
             'onError',
@@ -60,7 +60,7 @@ export default {
 
             try {
                 this.removeValidationErrors();
-                await this.updateProduct();
+                await this.updateRole();
             } catch (e) {
                 if (e.data) {
                     this.onError(e.data);

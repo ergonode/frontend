@@ -15,7 +15,7 @@ export const Tabs = {
     UserBaseTab: () => import('@Users/components/Tabs/UserBaseTab').then(m => m.default || m),
     UserAvatarTab: () => import('@Users/components/Tabs/UserAvatarTab').then(m => m.default || m),
     RolesGridTab: () => import('@Users/components/Tabs/RolesGridTab').then(m => m.default || m),
-    RoleBaseTab: () => import('@Users/components/Tabs/RoleBaseTab').then(m => m.default || m),
+    RoleGeneralTab: () => import('@Users/components/Tabs/RoleGeneralTab').then(m => m.default || m),
     RolePrivilegesTab: () => import('@Users/components/Tabs/RolePrivilegesTab').then(m => m.default || m),
     UserLanguageRestrictionsTab: () => import('@Users/components/Tabs/UserLanguageRestrictionsTab').then(m => m.default || m),
     UserActivityLogsGridTab: () => import('@Users/components/Tabs/UserActivityLogsGridTab').then(m => m.default || m),

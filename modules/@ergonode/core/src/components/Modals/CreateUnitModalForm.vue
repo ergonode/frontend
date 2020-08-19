@@ -7,77 +7,111 @@
         title="New unit"
         @close="onClose">
         <template #body>
-            <UnitForm />
-        </template>
-        <template #footer>
-            <Button
-                title="CREATE"
-                :disabled="isRequestPending"
-                @click.native="onCreate" />
-            <Button
-                title="CREATE & EDIT"
-                :theme="secondaryTheme"
-                :disabled="isRequestPending"
-                @click.native="onCreatedAndEdit" />
+            <UnitForm @submit="onSubmit">
+                <template #submitForm>
+                    <Button
+                        title="CREATE"
+                        type="submit">
+                        <template
+                            v-if="isSubmitting"
+                            #append="{ color }">
+                            <IconSpinner :fill-color="color" />
+                        </template>
+                    </Button>
+                </template>
+                <template #cancelForm>
+                    <Button
+                        title="CREATE & EDIT"
+                        :theme="secondaryTheme"
+                        @click.native="onCreateAndEdit">
+                        <template
+                            v-if="isCreatingAndEdit"
+                            #prepend="{ color }">
+                            <IconSpinner :fill-color="color" />
+                        </template>
+                    </Button>
+                </template>
+            </UnitForm>
         </template>
     </ModalForm>
 </template>
 
 <script>
-import {
-    MODAL_ACTION,
-} from '@Core/defaults/modals';
+import Button from '@Core/components/Button/Button';
+import UnitForm from '@Core/components/Forms/UnitForm';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     THEME,
 } from '@Core/defaults/theme';
-import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
 import {
     mapActions,
 } from 'vuex';
 
-const createUnit = () => import('@Core/services/settings/createUnit.service');
-
 export default {
     name: 'CreateUnitModalForm',
     components: {
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
-        UnitForm: () => import('@Core/components/Forms/UnitForm'),
+        ModalForm,
+        IconSpinner,
+        Button,
+        UnitForm,
     },
-    mixins: [
-        actionModalFormMixin({
-            action: MODAL_ACTION.CREATE,
-            namespace: 'Unit',
-            request: createUnit,
-        }),
-    ],
+    data() {
+        return {
+            isSubmitting: false,
+            isCreatingAndEdit: false,
+        };
+    },
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
     },
     methods: {
-        ...mapActions('units', [
+        ...mapActions('unit', [
+            'createUnit',
             '__clearStorage',
         ]),
         ...mapActions('dictionaries', [
-            'getCurrentDictionary',
+            'getDictionary',
         ]),
+        ...mapActions('validations', [
+            'onError',
+            'removeValidationErrors',
+        ]),
+        async onSubmit() {
+            if (this.isSubmitting || this.isCreatingAndEdit) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            try {
+                this.removeValidationErrors();
+                await this.createUnit();
+                await this.getDictionary({
+                    dictionaryName: 'units',
+                });
+                this.$emit('created');
+                this.onClose();
+            } catch (e) {
+                if (e.data) {
+                    this.onError(e.data);
+                }
+            } finally {
+                this.isSubmitting = false;
+            }
+        },
         onClose() {
             this.__clearStorage();
             this.$emit('close');
         },
-        onCreate() {
-            this.onActionRequest(async () => {
-                await this.getCurrentDictionary({
-                    dictionaryName: 'units',
-                });
-                await this.__clearStorage();
-            });
-        },
-        onCreatedAndEdit() {
-            this.onActionRequest(async (id) => {
-                await this.getCurrentDictionary({
+        async onCreateAndEdit() {
+            this.isCreatingAndEdit = true;
+
+            try {
+                this.removeValidationErrors();
+                const id = await this.createUnit();
+                await this.getDictionary({
                     dictionaryName: 'units',
                 });
                 await this.$router.push({
@@ -86,7 +120,13 @@ export default {
                         id,
                     },
                 });
-            });
+            } catch (e) {
+                if (e.data) {
+                    this.onError(e.data);
+                }
+            } finally {
+                this.isCreatingAndEdit = false;
+            }
         },
     },
 };

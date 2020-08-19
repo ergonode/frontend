@@ -102,12 +102,12 @@ export default {
     },
     methods: {
         ...mapActions('dictionaries', [
-            'getCurrentDictionary',
+            'getDictionary',
         ]),
         onRemoveUnit() {
             Promise.all([
                 this.onRemoveRow(),
-                this.getCurrentDictionary({
+                this.getDictionary({
                     dictionaryName: 'units',
                 }),
             ]);

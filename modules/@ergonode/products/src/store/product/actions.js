@@ -144,14 +144,10 @@ export default {
             id,
         } = state;
         const {
-            authentication: {
-                user: {
-                    language,
-                },
-            },
-        } = rootState;
+            language: userLanguageCode,
+        } = rootState.authentication.user;
 
-        return this.app.$axios.$put(`${language}/products/${id}/draft/${attributeId}/value`, {
+        return this.app.$axios.$put(`${userLanguageCode}/products/${id}/draft/${attributeId}/value`, {
             value,
         }).then(() => applyProductDraft()
             .then(request => request
@@ -167,19 +163,15 @@ export default {
         rootState,
     }) {
         const {
-            authentication: {
-                user: {
-                    language,
-                },
-            },
-        } = rootState;
+            language: userLanguageCode,
+        } = rootState.authentication.user;
         const {
             id,
         } = state;
 
         await productService.applyDraft({
             $axios: this.app.$axios,
-            languageCode: language,
+            languageCode: userLanguageCode,
             id,
         });
     },

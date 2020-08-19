@@ -43,7 +43,7 @@ export default {
 
         return Promise.all(promises);
     },
-    getCurrentDictionary({
+    getDictionary({
         commit, rootState,
     }, {
         dictionaryName,
@@ -60,9 +60,7 @@ export default {
         }) => name === dictionaryName);
         const path = `${userLanguageCode}${requestPath}${isGrid ? '?view=list' : ''}`;
 
-        return this.app.$axios.$get(path, {
-            useCache: isGrid,
-        }).then((response) => {
+        return this.app.$axios.$get(path).then((response) => {
             const value = isGrid ? response.collection : response;
 
             commit('__SET_STATE', {

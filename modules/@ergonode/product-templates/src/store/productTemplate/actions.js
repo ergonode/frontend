@@ -31,12 +31,8 @@ export default {
         },
     ) {
         const {
-            authentication: {
-                user: {
-                    language,
-                },
-            },
-        } = rootState;
+            language: userLanguageCode,
+        } = rootState.authentication.user;
 
         const {
             title,
@@ -56,7 +52,7 @@ export default {
 
         const id = await productTemplateService.create({
             $axios: this.app.$axios,
-            languageCode: language,
+            languageCode: userLanguageCode,
             data,
         });
 

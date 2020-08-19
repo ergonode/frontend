@@ -5,7 +5,8 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[nameFieldKey, symbolFieldKey]">
+        :fields-keys="[nameFieldKey, symbolFieldKey]"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
@@ -26,10 +27,19 @@
                     @input="setSymbolValue" />
             </FormSection>
         </template>
+        <template #submit>
+            <slot name="submitForm" />
+        </template>
+        <template #cancel>
+            <slot name="cancelForm" />
+        </template>
     </Form>
 </template>
 
 <script>
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TextField from '@Core/components/Inputs/TextField';
 import PRIVILEGES from '@Core/config/privileges';
 import {
     mapActions,
@@ -39,12 +49,12 @@ import {
 export default {
     name: 'UnitForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
+        Form,
+        FormSection,
+        TextField,
     },
     computed: {
-        ...mapState('units', {
+        ...mapState('unit', {
             name: state => state.name,
             symbol: state => state.symbol,
         }),
@@ -61,9 +71,12 @@ export default {
         },
     },
     methods: {
-        ...mapActions('units', [
+        ...mapActions('unit', [
             '__setState',
         ]),
+        onSubmit() {
+            this.$emit('submit');
+        },
         setNameValue(value) {
             this.__setState({
                 key: 'name',

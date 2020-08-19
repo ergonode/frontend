@@ -5,7 +5,8 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[descriptionFieldKey, nameFieldKey]">
+        :fields-keys="[descriptionFieldKey, nameFieldKey]"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
@@ -26,6 +27,12 @@
                     @input="setDescriptionValue" />
             </FormSection>
         </template>
+        <template #submit>
+            <slot name="submitForm" />
+        </template>
+        <template #cancel>
+            <slot name="cancelForm" />
+        </template>
     </Form>
 </template>
 
@@ -45,7 +52,7 @@ export default {
         TextArea: () => import('@Core/components/Inputs/TextArea'),
     },
     computed: {
-        ...mapState('roles', {
+        ...mapState('role', {
             roleID: state => state.id,
             name: state => state.name,
             description: state => state.description,
@@ -66,9 +73,12 @@ export default {
         },
     },
     methods: {
-        ...mapActions('roles', [
+        ...mapActions('role', [
             '__setState',
         ]),
+        onSubmit() {
+            this.$emit('submit');
+        },
         setNameValue(value) {
             this.__setState({
                 key: 'name',

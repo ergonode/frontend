@@ -7,77 +7,113 @@
         title="Create role"
         @close="onClose">
         <template #body>
-            <UserRoleForm />
-        </template>
-        <template #footer>
-            <Button
-                title="CREATE"
-                :disabled="isRequestPending"
-                @click.native="onCreate" />
-            <Button
-                title="CREATE & EDIT"
-                :theme="secondaryTheme"
-                :disabled="isRequestPending"
-                @click.native="onCreatedAndEdit" />
+            <UserRoleForm @submit="onSubmit">
+                <template #submitForm>
+                    <Button
+                        title="CREATE"
+                        type="submit">
+                        <template
+                            v-if="isSubmitting"
+                            #append="{ color }">
+                            <IconSpinner :fill-color="color" />
+                        </template>
+                    </Button>
+                </template>
+                <template #cancelForm>
+                    <Button
+                        title="CREATE & EDIT"
+                        :theme="secondaryTheme"
+                        @click.native="onCreateAndEdit">
+                        <template
+                            v-if="isCreatingAndEdit"
+                            #prepend="{ color }">
+                            <IconSpinner :fill-color="color" />
+                        </template>
+                    </Button>
+                </template>
+            </UserRoleForm>
         </template>
     </ModalForm>
 </template>
 
 <script>
-import {
-    MODAL_ACTION,
-} from '@Core/defaults/modals';
+import Button from '@Core/components/Button/Button';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     THEME,
 } from '@Core/defaults/theme';
-import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
+import UserRoleForm from '@Users/components/Forms/UserRoleForm';
 import {
     mapActions,
 } from 'vuex';
 
-const createRole = () => import('@Users/services/createRole.service');
-
 export default {
     name: 'CreateRoleModalForm',
     components: {
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
-        UserRoleForm: () => import('@Users/components/Forms/UserRoleForm'),
+        ModalForm,
+        Button,
+        IconSpinner,
+        UserRoleForm,
     },
-    mixins: [
-        actionModalFormMixin({
-            action: MODAL_ACTION.CREATE,
-            namespace: 'Role',
-            request: createRole,
-        }),
-    ],
+    data() {
+        return {
+            isSubmitting: false,
+            isCreatingAndEdit: false,
+        };
+    },
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
     },
     methods: {
-        ...mapActions('roles', [
+        ...mapActions('role', [
+            'createRole',
             '__clearStorage',
         ]),
+        async onSubmit() {
+            if (this.isSubmitting || this.isCreatingAndEdit) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            try {
+                this.removeValidationErrors();
+                await this.createRole();
+                this.$emit('created');
+                this.onClose();
+            } catch (e) {
+                if (e.data) {
+                    this.onError(e.data);
+                }
+            } finally {
+                this.isSubmitting = false;
+            }
+        },
         onClose() {
             this.__clearStorage();
             this.$emit('close');
         },
-        onCreate() {
-            this.onActionRequest(() => {
-                this.__clearStorage();
-            });
-        },
-        onCreatedAndEdit() {
-            this.onActionRequest((id) => {
-                this.$router.push({
+        async onCreateAndEdit() {
+            this.isCreatingAndEdit = true;
+
+            try {
+                this.removeValidationErrors();
+                const id = await this.createRole();
+                await this.$router.push({
                     name: 'user-role-id-general',
                     params: {
                         id,
                     },
                 });
-            });
+            } catch (e) {
+                if (e.data) {
+                    this.onError(e.data);
+                }
+            } finally {
+                this.isCreatingAndEdit = false;
+            }
         },
     },
 };

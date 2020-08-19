@@ -11,7 +11,7 @@
                         title="SAVE CHANGES"
                         type="SUBMIT">
                         <template
-                            v-if="isSubmittingForm"
+                            v-if="isSubmitting"
                             #append="{ color }">
                             <IconSpinner :fill-color="color" />
                         </template>
@@ -48,7 +48,7 @@ export default {
     },
     data() {
         return {
-            isSubmittingForm: false,
+            isSubmitting: false,
         };
     },
     computed: {
@@ -62,7 +62,7 @@ export default {
             'updateLanguages',
         ]),
         onSubmit(selectedLanguages) {
-            if (this.isSubmittingForm) {
+            if (this.isSubmitting) {
                 return;
             }
 
@@ -95,7 +95,7 @@ export default {
             });
         },
         async onAgree(selectedLanguages) {
-            this.isSubmittingForm = true;
+            this.isSubmitting = true;
 
             const languageKeys = selectedLanguages.map(language => language.key);
 
@@ -113,7 +113,7 @@ export default {
                     message: e.data,
                 });
             } finally {
-                this.isSubmittingForm = false;
+                this.isSubmitting = false;
             }
         },
     },

@@ -2,7 +2,39 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import unitService from '@Core/services/units';
+
 export default {
+    async createUnit({
+        state, rootState,
+    }) {
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
+        const {
+            name,
+            symbol,
+        } = state;
+        const data = {
+            name,
+            symbol,
+        };
+        const id = await unitService.create({
+            $axios: this.app.$axios,
+            languageCode: userLanguageCode,
+            data,
+        });
+
+        this.app.$addAlert({
+            type: ALERT_TYPE.SUCCESS,
+            message: 'Unit created',
+        });
+
+        return id;
+    },
     async getUnit(
         {
             commit, rootState,
@@ -36,22 +68,32 @@ export default {
     },
     async updateUnit(
         {
+            state,
             rootState,
-        },
-        {
-            id,
-            data,
-            onSuccess,
-            onError,
         },
     ) {
         const {
             language: userLanguageCode,
         } = rootState.authentication.user;
-
-        await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`${userLanguageCode}/units/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
-        await this.$removeLoader('footerButton');
+        const {
+            id,
+            name,
+            symbol,
+        } = state;
+        const data = {
+            name,
+            symbol,
+        };
+        await unitService.update(({
+            $axios: this.app.$axios,
+            languageCode: userLanguageCode,
+            id,
+            data,
+        }));
+        await this.$addAlert({
+            type: ALERT_TYPE.SUCCESS,
+            message: 'Unit updated',
+        });
     },
     removeUnit({
         state, rootState,

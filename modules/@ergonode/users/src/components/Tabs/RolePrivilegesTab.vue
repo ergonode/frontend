@@ -55,7 +55,7 @@ export default {
         ...mapState('dictionaries', {
             privilegesDictionary: state => state.privileges,
         }),
-        ...mapState('roles', {
+        ...mapState('role', {
             privileges: state => state.privileges,
         }),
         isAllowedToUpdate() {
@@ -74,7 +74,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('roles', [
+        ...mapActions('role', [
             '__setState',
         ]),
         onCellValueChange(cellValues) {

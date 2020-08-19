@@ -5,7 +5,7 @@
 <template>
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
-            <ProductForm @submit="onSubmit">
+            <UnitForm @submit="onSubmit">
                 <template #submitForm>
                     <Button
                         title="SAVE CHANGES"
@@ -17,26 +17,26 @@
                         </template>
                     </Button>
                 </template>
-            </ProductForm>
+            </UnitForm>
         </template>
     </CenterViewTemplate>
 </template>
 
 <script>
 import Button from '@Core/components/Button/Button';
+import UnitForm from '@Core/components/Forms/UnitForm';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
-import ProductForm from '@Products/components/Form/ProductForm';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
-    name: 'ProductGeneralTab',
+    name: 'UnitGeneralTab',
     components: {
         Button,
         IconSpinner,
-        ProductForm,
+        UnitForm,
         CenterViewTemplate,
     },
     data() {
@@ -45,8 +45,11 @@ export default {
         };
     },
     methods: {
-        ...mapActions('product', [
-            'updateProduct',
+        ...mapActions('unit', [
+            'updateUnit',
+        ]),
+        ...mapActions('dictionaries', [
+            'getDictionary',
         ]),
         ...mapActions('validations', [
             'onError',
@@ -60,7 +63,10 @@ export default {
 
             try {
                 this.removeValidationErrors();
-                await this.updateProduct();
+                await this.updateUnit();
+                await this.getDictionary({
+                    dictionaryName: 'units',
+                });
             } catch (e) {
                 if (e.data) {
                     this.onError(e.data);
