@@ -13,7 +13,7 @@ export default async function ({
         language,
     } = $store.state.authentication.user;
     const {
-        name, type, configuration,
+        type, configuration,
     } = $store.state.channels;
     const {
         channels,
@@ -22,7 +22,6 @@ export default async function ({
 
     let data = {
         type: typeId,
-        name,
     };
 
     if (configuration) {
