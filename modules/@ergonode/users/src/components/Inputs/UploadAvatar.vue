@@ -5,7 +5,7 @@
 <template>
     <UploadFile
         :value="Boolean(value)"
-        accept-files="*"
+        accept-files="image/*"
         :request-pending="isRequestPending"
         :label="label"
         :required="required"
