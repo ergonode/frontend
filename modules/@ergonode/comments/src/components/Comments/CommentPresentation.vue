@@ -8,7 +8,7 @@
             <div class="header__user">
                 <UserFabAvatar
                     :language-code="languageCode"
-                    :avatar-id="comment.user_id"
+                    :avatar-id="avatarId"
                     :user-id="comment.user_id"
                     :name="comment.author"
                     :size="smallSize" />
@@ -100,6 +100,11 @@ export default {
         ...mapState('authentication', {
             languageCode: state => state.user.language,
         }),
+        avatarId() {
+            return this.comment.avatar_filename
+                ? this.comment.avatar_filename.split('.')[0]
+                : '';
+        },
         smallSize() {
             return SIZE.SMALL;
         },
