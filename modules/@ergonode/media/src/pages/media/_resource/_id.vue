@@ -4,7 +4,7 @@
  */
 <template>
     <ResourcePage
-        :title="`${name}${extension}`"
+        :title="`${name}.${extension}`"
         @remove="onRemove"
         @save="onSave" />
 </template>
