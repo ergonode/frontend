@@ -90,19 +90,10 @@ export default {
                 }),
             });
         },
-        onExportSuccess({
-            id,
-        }) {
+        onExportSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Start exporting',
-            });
-            this.$router.push({
-                name: 'export-id-details',
-                params: {
-                    channel_id: this.id,
-                    export_id: id,
-                },
+                message: 'Completed generating export file',
             });
         },
     },

@@ -97,39 +97,4 @@ export default [
             },
         ],
     },
-    {
-        name: 'export-id',
-        path: '/channels/channel/:channel_id/export/:export_id',
-        component: Pages.ExportEdit,
-        meta: {
-            isMenu: false,
-            redirectTo: 'export-id-details',
-        },
-        children: [
-            {
-                name: 'export-id-details',
-                path: 'details',
-                component: Tabs.ExportBaseTab,
-                meta: {
-                    title: 'Details',
-                    breadcrumbs: [
-                        {
-                            title: 'Data exchange',
-                            icon: Icons.Channels,
-                        },
-                        {
-                            title: 'Channels',
-                            routeName: 'channel-grid',
-                        },
-                        {
-                            title: 'Channel',
-                            routeName: 'channel-id-history',
-                            id: 'channel_id',
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-        ],
-    },
 ];

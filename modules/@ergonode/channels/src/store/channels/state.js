@@ -6,5 +6,4 @@ export default () => ({
     id: null,
     type: null,
     configuration: '',
-    export_details: {},
 });

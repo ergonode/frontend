@@ -7,6 +7,7 @@
         title="Add products"
         :api-path="`${languageCode}/products`"
         :column-params="columnParams"
+        :is-select-column="true"
         @close="onClose" />
 </template>
 

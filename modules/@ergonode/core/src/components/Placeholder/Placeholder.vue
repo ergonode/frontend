@@ -82,6 +82,7 @@ export default {
         box-sizing: border-box;
         background-color: $WHITESMOKE;
         color: $GRAPHITE_DARK;
+        overflow: auto;
 
         &--vertical-layout {
             display: flex;
