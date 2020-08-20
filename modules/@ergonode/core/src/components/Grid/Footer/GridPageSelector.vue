@@ -67,6 +67,7 @@ export default {
         align-items: center;
         grid-auto-flow: column;
         column-gap: 8px;
+        margin-left: 8px;
 
         &__text {
             flex: 0 0 auto;

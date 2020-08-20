@@ -69,7 +69,6 @@
                 <template #appendFooter>
                     <Button
                         title="SAVE CHANGES"
-                        :size="smallSize"
                         :disabled="!isUserAllowedToUpdate || $isLoading('footerDraftButton')"
                         @click.native="onSaveDrafts" />
                 </template>

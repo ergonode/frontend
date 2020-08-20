@@ -95,15 +95,17 @@
             </template>
         </GridBody>
         <GridFooter v-if="isFooterVisible">
-            <GridPageSelector
-                :value="maxRows"
-                :max-rows="dataCount"
-                @input="onMaxRowsChange" />
-            <GridPagination
-                :value="currentPage"
-                :max-page="maxPage"
-                @input="onCurrentPageChange" />
-            <slot name="appendFooter" />
+            <slot name="footer">
+                <GridPageSelector
+                    :value="maxRows"
+                    :max-rows="dataCount"
+                    @input="onMaxRowsChange" />
+                <GridPagination
+                    :value="currentPage"
+                    :max-page="maxPage"
+                    @input="onCurrentPageChange" />
+                <slot name="appendFooter" />
+            </slot>
         </GridFooter>
     </div>
 </template>

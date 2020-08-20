@@ -12,14 +12,29 @@
                 :data-count="dataCount"
                 :is-editable="isAllowedToUpdate"
                 :is-border="true"
-                :is-footer-visible="false"
-                @cellValue="onCellValueChange" />
+                @cellValue="onCellValueChange">
+                <template #footer>
+                    <div class="role-privileges-footer">
+                        <Button
+                            title="SAVE CHANGES"
+                            @click.native="onSavePrivileges">
+                            <template
+                                v-if="isSubmitting"
+                                #prepend="{ color }">
+                                <IconSpinner :fill-color="color" />
+                            </template>
+                        </Button>
+                    </div>
+                </template>
+            </Grid>
         </template>
     </CenterViewTemplate>
 </template>
 
 <script>
+import Button from '@Core/components/Button/Button';
 import Grid from '@Core/components/Grid/Grid';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
@@ -38,6 +53,8 @@ import {
 export default {
     name: 'RolePrivilegesTab',
     components: {
+        Button,
+        IconSpinner,
         CenterViewTemplate,
         Grid,
     },
@@ -49,6 +66,7 @@ export default {
             columns: [],
             rows: {},
             dataCount: 0,
+            isSubmitting: false,
         };
     },
     computed: {
@@ -76,7 +94,29 @@ export default {
     methods: {
         ...mapActions('role', [
             '__setState',
+            'updateRole',
         ]),
+        ...mapActions('validations', [
+            'onError',
+            'removeValidationErrors',
+        ]),
+        async onSavePrivileges() {
+            if (this.isSubmitting) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            try {
+                this.removeValidationErrors();
+                await this.updateRole();
+            } catch (e) {
+                if (e.data) {
+                    this.onError(e.data);
+                }
+            } finally {
+                this.isSubmitting = false;
+            }
+        },
         onCellValueChange(cellValues) {
             const drafts = {};
 
@@ -103,6 +143,7 @@ export default {
             });
         },
         updateGridData() {
+            console.log(this.privileges, this.privilegesDictionary);
             const {
                 rows, columns,
             } = getMappedGridData({
@@ -123,3 +164,11 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .role-privileges-footer {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+</style>

@@ -21,7 +21,7 @@ export default {
         justify-content: space-between;
         align-items: center;
         height: 56px;
-        padding: 12px 16px;
+        padding: 8px;
         box-sizing: border-box;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_6_DP;
