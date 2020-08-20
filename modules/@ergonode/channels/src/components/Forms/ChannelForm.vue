@@ -14,7 +14,7 @@
                     :error-messages="errorMessages[nameFieldKey]"
                     :disabled="isDisabledByPrivileges"
                     label="Channel name"
-                    hint="Channel name must be unique"
+                    hint="System name must be unique"
                     @input="setNameValue" />
                 <Select
                     :value="type"

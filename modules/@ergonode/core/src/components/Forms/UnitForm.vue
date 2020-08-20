@@ -14,7 +14,7 @@
                     :error-messages="errorMessages[nameFieldKey]"
                     :disabled="isDisabledByPrivileges"
                     label="Unit name"
-                    hint="Unit name must be unique"
+                    hint="System name must be unique"
                     @input="setNameValue" />
                 <TextField
                     :value="symbol"
@@ -22,7 +22,7 @@
                     :error-messages="errorMessages[symbolFieldKey]"
                     :disabled="isDisabledByPrivileges"
                     label="Unit symbol"
-                    hint="Unit symbol must be unique"
+                    hint="System name must be unique"
                     @input="setSymbolValue" />
             </FormSection>
         </template>

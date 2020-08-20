@@ -14,7 +14,7 @@
                     :error-messages="errorMessages[colorFieldKey]"
                     :disabled="isDisabled || isDisabledByPrivileges"
                     label="System name"
-                    hint="Status code must be unique"
+                    hint="System name must be unique"
                     @input="setCodeValue" />
                 <CheckBox
                     :value="isDefaultStatus"
