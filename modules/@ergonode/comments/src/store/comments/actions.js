@@ -72,10 +72,10 @@ export default {
         },
     ) {
         const {
+            id: userId,
             language: userLanguageCode,
             firstName,
             lastName,
-            avatarId,
         } = rootState.authentication.user;
         const {
             objectId,
@@ -99,9 +99,10 @@ export default {
                         delete: true,
                         edit: true,
                     },
-                    avatar_id: avatarId,
+                    user_id: userId,
                     author: `${firstName} ${lastName}`,
                 };
+                console.log(comment);
                 commit(types.ADD_COMMENT, comment);
                 commit('__SET_STATE', {
                     key: 'count',
@@ -127,10 +128,10 @@ export default {
             content,
         };
         const {
+            id: userId,
             language: userLanguageCode,
             firstName,
             lastName,
-            avatarId,
         } = rootState.authentication.user;
 
         await this.$setLoader('commentButton');
@@ -142,7 +143,7 @@ export default {
                         delete: true,
                         edit: true,
                     },
-                    avatar_id: avatarId,
+                    user_id: userId,
                     author: `${firstName} ${lastName}`,
                 };
                 commit(types.EDIT_COMMENT, comment);
