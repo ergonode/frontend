@@ -4,8 +4,10 @@
  */
 <template>
     <div class="user-welcome">
-        <UserAvatar
-            :image-id="user.avatarId"
+        <UserFabAvatar
+            :avatar-id="user.avatarId"
+            :user-id="user.id"
+            :language-code="user.language"
             :name="user.firstName"
             :size="extraLargeSize" />
         <div class="user-welcome__description">
@@ -20,7 +22,7 @@
 </template>
 
 <script>
-import UserAvatar from '@Core/components/Multimedia/UserAvatar';
+import UserFabAvatar from '@Core/components/Multimedia/UserFabAvatar';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -31,7 +33,7 @@ import {
 export default {
     name: 'WelcomeUser',
     components: {
-        UserAvatar,
+        UserFabAvatar,
     },
     computed: {
         ...mapState('authentication', {

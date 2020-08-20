@@ -35,7 +35,7 @@ export default {
         return this.app.$axios.$get(`${userLanguageCode}/accounts/${userId}`).then(({
             id,
             email = '',
-            avatar_id = '',
+            avatar_filename = '',
             first_name = '',
             last_name = '',
             language = '',
@@ -51,7 +51,7 @@ export default {
             });
             commit('__SET_STATE', {
                 key: 'avatarId',
-                value: avatar_id,
+                value: avatar_filename ? avatar_filename.split('.')[0] : '',
             });
             commit('__SET_STATE', {
                 key: 'email',
@@ -68,6 +68,10 @@ export default {
             commit('__SET_STATE', {
                 key: 'language',
                 value: getActiveLanguageByCode(language).name,
+            });
+            commit('__SET_STATE', {
+                key: 'languageCode',
+                value: language,
             });
             commit('__SET_STATE', {
                 key: 'password',
@@ -100,18 +104,13 @@ export default {
             rootState,
         },
         {
-            id, data, avatarId,
+            id, data,
         },
     ) {
         const {
             language: userLanguageCode,
         } = rootState.authentication.user;
 
-        await Promise.all([
-            this.app.$axios.$put(`${userLanguageCode}/accounts/${id}`, data),
-            this.app.$axios.$put(`${userLanguageCode}/accounts/${id}/avatar`, {
-                multimedia: avatarId,
-            }),
-        ]);
+        await this.app.$axios.$put(`${userLanguageCode}/accounts/${id}`, data);
     },
 };

@@ -6,8 +6,10 @@
     <Comment>
         <template #header>
             <div class="header__user">
-                <UserAvatar
-                    :image-id="comment.avatar_id"
+                <UserFabAvatar
+                    :language-code="languageCode"
+                    :avatar-id="avatarId"
+                    :user-id="comment.user_id"
                     :name="comment.author"
                     :size="smallSize" />
                 <span v-text="comment.author" />
@@ -57,6 +59,7 @@ import {
 import Fab from '@Core/components/Fab/Fab';
 import IconDelete from '@Core/components/Icons/Actions/IconDelete';
 import IconEdit from '@Core/components/Icons/Actions/IconEdit';
+import UserFabAvatar from '@Core/components/Multimedia/UserFabAvatar';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -75,6 +78,7 @@ import {
 } from 'date-fns';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -84,7 +88,7 @@ export default {
         Fab,
         IconEdit,
         IconDelete,
-        UserAvatar: () => import('@Core/components/Multimedia/UserAvatar'),
+        UserFabAvatar,
     },
     props: {
         comment: {
@@ -93,6 +97,14 @@ export default {
         },
     },
     computed: {
+        ...mapState('authentication', {
+            languageCode: state => state.user.language,
+        }),
+        avatarId() {
+            return this.comment.avatar_filename
+                ? this.comment.avatar_filename.split('.')[0]
+                : '';
+        },
         smallSize() {
             return SIZE.SMALL;
         },

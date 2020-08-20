@@ -20,6 +20,7 @@
                 </ProductCollection>
                 <ListPlaceholder
                     v-else
+                    style="width: 560px;"
                     title="Nothing to see here"
                     subtitle="This product has not been added to any collection"
                     :layout-orientation="horizontalOrientation"

@@ -75,7 +75,7 @@ export default {
             language: userLanguageCode,
             firstName,
             lastName,
-            avatarId,
+            avatarFilename,
         } = rootState.authentication.user;
         const {
             objectId,
@@ -99,7 +99,7 @@ export default {
                         delete: true,
                         edit: true,
                     },
-                    avatar_id: avatarId,
+                    avatar_filename: avatarFilename,
                     author: `${firstName} ${lastName}`,
                 };
                 commit(types.ADD_COMMENT, comment);
@@ -130,7 +130,7 @@ export default {
             language: userLanguageCode,
             firstName,
             lastName,
-            avatarId,
+            avatarFilename,
         } = rootState.authentication.user;
 
         await this.$setLoader('commentButton');
@@ -142,7 +142,7 @@ export default {
                         delete: true,
                         edit: true,
                     },
-                    avatar_id: avatarId,
+                    avatar_filename: avatarFilename,
                     author: `${firstName} ${lastName}`,
                 };
                 commit(types.EDIT_COMMENT, comment);

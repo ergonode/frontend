@@ -15,6 +15,7 @@
                     <div class="fixed-container">
                         <Picture
                             v-if="!multiple"
+                            :api-path="`multimedia/${value}/download/default`"
                             :value="value"
                             object-fit="none" />
                         <PictureCarousel

@@ -51,8 +51,9 @@ export default function ({
                 const params = {
                     limit: 0,
                     offset: 0,
-                    columns: this.$cookies.get(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`),
+                    columns: filterId,
                 };
+
                 const advancedFilters = await getAdvancedFiltersData({
                     $axios: this.$axios,
                     $addAlert: this.$addAlert,
@@ -78,7 +79,7 @@ export default function ({
                     data: filterId,
                 });
 
-                this.advancedFilters = advancedFilters;
+                this.advancedFilters.unshift(filter);
             },
             getDisabledListElement({
                 languageCode,

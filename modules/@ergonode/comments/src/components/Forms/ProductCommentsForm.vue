@@ -9,14 +9,14 @@
                 v-if="!showForm"
                 title="NEW COMMENT"
                 :disabled="!isUserAllowedToUpdate"
+                :size="smallSize"
                 @click.native="openForm">
                 <template #prepend="{ color }">
-                    <IconAdd
-                        :fill-color="color" />
+                    <IconAdd :fill-color="color" />
                 </template>
             </Button>
             <CommentEdit
-                v-if="showForm"
+                v-else
                 :is-edit="false"
                 @close="closeForm" />
         </template>
@@ -31,8 +31,8 @@
         <template #placeholder>
             <ListPlaceholder
                 :layout-orientation="horizontalOrientation"
-                title="Nothing to see here"
-                subtitle="Here you can share information about the product with other people"
+                title="No results"
+                subtitle="Here you can share information about the product with other people."
                 :bg-url="require('@Core/assets/images/placeholders/comments.svg')" />
         </template>
         <template
@@ -59,6 +59,9 @@ import {
 import {
     LAYOUT_ORIENTATION,
 } from '@Core/defaults/layout';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     mapActions,
@@ -88,6 +91,9 @@ export default {
             commentList: state => state.comments,
             currentPage: state => state.currentPage,
         }),
+        smallSize() {
+            return SIZE.SMALL;
+        },
         horizontalOrientation() {
             return LAYOUT_ORIENTATION.HORIZONTAL;
         },

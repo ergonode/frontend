@@ -8,6 +8,7 @@ import {
 } from '@Core/defaults/grid';
 import {
     insertCookieAtIndex,
+    removeCookieAtIndex,
 } from '@Core/models/cookies';
 import {
     getGridData,
@@ -113,6 +114,13 @@ export default function ({
                 this.onFetchData(this.localParams);
             },
             onDropColumn(columnId) {
+                insertCookieAtIndex({
+                    cookies: this.$cookies,
+                    cookieName: `GRID_CONFIG:${this.$route.name}`,
+                    index: 0,
+                    data: columnId,
+                });
+
                 this.onFetchData(this.localParams).then(() => {
                     const column = this.columns.find(({
                         id,
@@ -125,12 +133,11 @@ export default function ({
                             disabledElements: this.disabledElements,
                         }));
                     }
-
-                    insertCookieAtIndex({
+                }).catch(() => {
+                    removeCookieAtIndex({
                         cookies: this.$cookies,
-                        cookieName: `GRID_CONFIG:${this.$route.name}`,
+                        cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
                         index: 0,
-                        data: columnId,
                     });
                 });
             },

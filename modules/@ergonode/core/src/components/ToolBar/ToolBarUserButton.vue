@@ -7,8 +7,10 @@
         data-cy="tool-bar-dropdown"
         @focus="onFocus">
         <template #input>
-            <UserAvatar
-                :image-id="user.avatarId"
+            <UserFabAvatar
+                :avatar-id="avatarId"
+                :user-id="user.id"
+                :language-code="user.language"
                 :name="user.firstName" />
             <span
                 class="title"
@@ -20,10 +22,7 @@
             </div>
         </template>
         <template #dropdown>
-            <ToolBarUserSelectContent
-                :avatar-id="user.avatarId"
-                :initials="userInitials"
-                :email="user.email" />
+            <ToolBarUserSelectContent />
         </template>
     </ToolBarSelectButton>
 </template>
@@ -48,7 +47,7 @@ export default {
         ToolBarSelectButton: () => import('@Core/components/ToolBar/ToolBarSelectButton'),
         ToolBarUserSelectContent: () => import('@Core/components/ToolBar/ToolBarUserSelectContent'),
         IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
-        UserAvatar: () => import('@Core/components/Multimedia/UserAvatar'),
+        UserFabAvatar: () => import('@Core/components/Multimedia/UserFabAvatar'),
     },
     data() {
         return {
@@ -59,6 +58,11 @@ export default {
         ...mapState('authentication', {
             user: state => state.user,
         }),
+        avatarId() {
+            return this.user.avatarFilename
+                ? this.user.avatarFilename.split('.')[0]
+                : '';
+        },
         whiteColor() {
             return WHITE;
         },
@@ -78,9 +82,6 @@ export default {
             } = this.user;
 
             return toCapitalize(lastName);
-        },
-        userInitials() {
-            return `${this.capitalizedUserFirstName} ${this.capitalizedUserLastName}`;
         },
     },
     methods: {

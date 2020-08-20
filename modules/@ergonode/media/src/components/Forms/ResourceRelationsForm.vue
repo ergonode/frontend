@@ -92,6 +92,8 @@ export default {
 
 <style lang="scss" scoped>
     .products-relations-placeholder {
+        width: 560px;
         padding: 24px;
+        box-sizing: border-box;
     }
 </style>

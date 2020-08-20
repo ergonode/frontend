@@ -4,7 +4,9 @@
  */
 <template>
     <div class="grid-image-presentation-cell">
-        <Picture :value="value" />
+        <Picture
+            :api-path="`multimedia/${value}/download/default`"
+            :value="value" />
     </div>
 </template>
 

@@ -8,8 +8,10 @@
             'notification-element--unread': notification.read_at === null,
         }]"
         @click="markAsRead">
-        <UserAvatar
-            :image-id="notification.avatar_id"
+        <UserFabAvatar
+            :language-code="languageCode"
+            :avatar-id="notification.user_id"
+            :user-id="notification.user_id"
             :name="notification.author"
             :size="regularSize" />
         <span class="notification-element__message">
@@ -31,12 +33,13 @@ import {
 } from '@Core/defaults/theme';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
     name: 'NotificationsListElement',
     components: {
-        UserAvatar: () => import('@Core/components/Multimedia/UserAvatar'),
+        UserFabAvatar: () => import('@Core/components/Multimedia/UserFabAvatar'),
     },
     props: {
         notification: {
@@ -45,6 +48,9 @@ export default {
         },
     },
     computed: {
+        ...mapState('authentication', {
+            languageCode: state => state.user.language,
+        }),
         regularSize() {
             return SIZE.REGULAR;
         },
@@ -117,7 +123,6 @@ export default {
             justify-content: center;
             align-items: center;
             grid-row: 1 / 3;
-            height: 100%;
         }
     }
 </style>

@@ -47,7 +47,6 @@ export default {
         }),
         ...mapState('users', {
             id: state => state.id,
-            avatarId: state => state.avatarId,
             email: state => state.email,
             firstName: state => state.firstName,
             lastName: state => state.lastName,
@@ -81,6 +80,16 @@ export default {
         ]),
         async onSave() {
             let isUpdated = false;
+            const activeLanguages = Object.keys(this.languagePrivilegesCollection)
+                .reduce((acc, languageCode) => {
+                    const languages = acc;
+
+                    if (this.getActiveLanguageByCode(languageCode).name) {
+                        languages[languageCode] = this.languagePrivilegesCollection[languageCode];
+                    }
+                    return languages;
+                }, {});
+
             const mappedDrafts = {};
 
             Object.keys(this.drafts).forEach((key) => {
@@ -105,7 +114,7 @@ export default {
                 roleId: this.role,
                 isActive: this.isActive,
                 languagePrivilegesCollection: deepmerge(
-                    this.languagePrivilegesCollection,
+                    activeLanguages,
                     mappedDrafts,
                 ),
             };
@@ -115,7 +124,6 @@ export default {
                 isUpdated = await this.updateUser({
                     id: this.id,
                     data: user,
-                    avatarId: this.avatarId,
                 });
             } catch (e) {
                 this.onError(e.data);
