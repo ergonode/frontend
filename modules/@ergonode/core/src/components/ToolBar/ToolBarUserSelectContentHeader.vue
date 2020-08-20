@@ -5,7 +5,7 @@
 <template>
     <div class="tool-bar-user-select-content-header">
         <UserFabAvatar
-            :avatar-id="user.avatar_id"
+            :avatar-id="avatarId"
             :user-id="user.id"
             :language-code="user.language"
             :name="initials"
@@ -42,6 +42,11 @@ export default {
         ...mapState('authentication', {
             user: state => state.user,
         }),
+        avatarId() {
+            return this.user.avatarFilename
+                ? this.user.avatarFilename.split('.')[0]
+                : '';
+        },
         largeSize() {
             return SIZE.LARGE;
         },

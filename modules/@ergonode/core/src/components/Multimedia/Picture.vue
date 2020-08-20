@@ -84,7 +84,7 @@ export default {
         getImageById() {
             this.cancelToken = this.$axios.CancelToken.source();
 
-            this.$axios.$get(`multimedia/${this.value}`, {
+            this.$axios.$get(this.apiPath, {
                 useCache: true,
                 cancelToken: this.cancelToken.token,
                 responseType: 'arraybuffer',
@@ -112,13 +112,11 @@ export default {
 
 <style lang="scss" scoped>
     .picture {
+        width: 100%;
         max-height: 100%;
 
-        &:not(&--fab) {
-            width: 100%;
-        }
-
         &--fab {
+            height: 100%;
             border-radius: 50%;
         }
     }

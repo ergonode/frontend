@@ -11,16 +11,18 @@
         :required="required"
         :disabled="disabled"
         :height="height"
-        :border="border"
         @remove="onRemoveFile"
         @upload="onAvatarUpload">
         <template #file>
-            <Picture />
+            <Picture
+                :value="value"
+                :api-path="`${languageCode}/accounts/${value}/avatar`" />
         </template>
     </UploadFile>
 </template>
 
 <script>
+import Picture from '@Core/components/Multimedia/Picture';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -33,6 +35,7 @@ export default {
     name: 'UploadAvatar',
     components: {
         UploadFile,
+        Picture,
     },
     props: {
         label: {
@@ -63,10 +66,6 @@ export default {
             type: String,
             default: '136px',
         },
-        border: {
-            type: Boolean,
-            default: false,
-        },
     },
     data() {
         return {
@@ -79,7 +78,13 @@ export default {
             'removeValidationError',
         ]),
         onRemoveFile() {
-            this.$emit('remove');
+            this.$axios.$delete(`${this.languageCode}/accounts/${this.userId}/avatar`).then(() => {
+                this.$addAlert({
+                    type: ALERT_TYPE.SUCCESS,
+                    message: 'Avatar removed',
+                });
+                this.$emit('remove');
+            });
         },
         onAvatarUpload(file) {
             this.isRequestPending = true;
@@ -93,7 +98,7 @@ export default {
                 const formData = new FormData();
                 formData.append('upload', file, name);
 
-                this.$axios.$put(`${this.languageCode}/accounts/${this.userId}/avatar`, formData).then((id) => {
+                this.$axios.$post(`${this.languageCode}/accounts/${this.userId}/avatar`, formData).then(() => {
                     this.$addAlert({
                         type: ALERT_TYPE.SUCCESS,
                         message: 'Avatar uploaded',
@@ -101,7 +106,7 @@ export default {
                     this.removeValidationError('upload');
                     this.isRequestPending = false;
                     this.$emit('progress', false);
-                    this.$emit('upload', id);
+                    this.$emit('upload', this.userId);
                 }).catch((e) => {
                     this.isRequestPending = false;
                     this.onError(e.data);

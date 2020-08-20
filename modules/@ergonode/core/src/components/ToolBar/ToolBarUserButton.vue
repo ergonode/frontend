@@ -8,7 +8,7 @@
         @focus="onFocus">
         <template #input>
             <UserFabAvatar
-                :avatar-id="user.avatarId"
+                :avatar-id="avatarId"
                 :user-id="user.id"
                 :language-code="user.language"
                 :name="user.firstName" />
@@ -58,6 +58,11 @@ export default {
         ...mapState('authentication', {
             user: state => state.user,
         }),
+        avatarId() {
+            return this.user.avatarFilename
+                ? this.user.avatarFilename.split('.')[0]
+                : '';
+        },
         whiteColor() {
             return WHITE;
         },

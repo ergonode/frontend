@@ -7,7 +7,9 @@
         <template #header>
             <div class="header__user">
                 <UserFabAvatar
-                    :avatar-id="comment.avatar_id"
+                    :language-code="languageCode"
+                    :avatar-id="comment.user_id"
+                    :user-id="comment.user_id"
                     :name="comment.author"
                     :size="smallSize" />
                 <span v-text="comment.author" />
@@ -57,6 +59,7 @@ import {
 import Fab from '@Core/components/Fab/Fab';
 import IconDelete from '@Core/components/Icons/Actions/IconDelete';
 import IconEdit from '@Core/components/Icons/Actions/IconEdit';
+import UserFabAvatar from '@Core/components/Multimedia/UserFabAvatar';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -75,6 +78,7 @@ import {
 } from 'date-fns';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -84,7 +88,7 @@ export default {
         Fab,
         IconEdit,
         IconDelete,
-        UserFabAvatar: () => import('@Core/components/Multimedia/UserFabAvatar'),
+        UserFabAvatar,
     },
     props: {
         comment: {
@@ -93,6 +97,9 @@ export default {
         },
     },
     computed: {
+        ...mapState('authentication', {
+            languageCode: state => state.user.language,
+        }),
         smallSize() {
             return SIZE.SMALL;
         },
