@@ -28,7 +28,7 @@ export default {
             });
             commit('__SET_STATE', {
                 key: 'name',
-                value: name.replace(extension, ''),
+                value: name.replace(`.${extension}`, ''),
             });
             commit('__SET_STATE', {
                 key: 'extension',
