@@ -5,7 +5,7 @@
 <template>
     <Form
         title="Options"
-        :fields-key="[codeFieldKey]">
+        :fields-keys="[codeFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
@@ -15,7 +15,7 @@
                     :error-messages="errorMessages[codeFieldKey]"
                     :disabled="isDisabled || isDisabledByPrivileges"
                     label="System name"
-                    hint="Tree code must be unique"
+                    hint="System name must be unique"
                     @input="setCodeValue" />
             </FormSection>
         </template>

@@ -15,7 +15,7 @@
                     label="System name"
                     :disabled="isDisabled || isDisabledByPrivileges"
                     :error-messages="errorMessages[codeFieldKey]"
-                    hint="Code must be unique"
+                    hint="System name must be unique"
                     @input="setCodeValue" />
             </FormSection>
         </template>

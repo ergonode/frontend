@@ -13,16 +13,23 @@ export default async function ({
         language,
     } = $store.state.authentication.user;
     const {
-        name, type, configuration,
+        type, configuration,
     } = $store.state.channels;
     const {
         channels,
     } = $store.state.dictionaries;
     const typeId = getKeyByValue(channels, type);
 
-    return $axios.$post(`${language}/channels`, {
-        ...JSON.parse(configuration),
+    let data = {
         type: typeId,
-        name,
-    });
+    };
+
+    if (configuration) {
+        data = {
+            ...data,
+            ...JSON.parse(configuration),
+        };
+    }
+
+    return $axios.$post(`${language}/channels`, data);
 }

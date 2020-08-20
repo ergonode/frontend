@@ -28,7 +28,7 @@ export default {
             });
             commit('__SET_STATE', {
                 key: 'name',
-                value: name.replace(extension, ''),
+                value: name.replace(`.${extension}`, ''),
             });
             commit('__SET_STATE', {
                 key: 'extension',
@@ -63,7 +63,7 @@ export default {
 
         this.app.$axios
             .$put(`${userLanguageCode}/multimedia/${id}`, {
-                name: `${name}${extension}`,
+                name: `${name}.${extension}`,
                 alt,
             })
             .then(() => onSuccess())

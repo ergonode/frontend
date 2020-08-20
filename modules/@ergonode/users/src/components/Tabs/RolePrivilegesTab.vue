@@ -96,7 +96,10 @@ export default {
                 drafts[`${rowId}/${columnId}`] = value;
             });
 
-            this.setDrafts(drafts);
+            this.setDrafts({
+                ...this.drafts,
+                ...drafts,
+            });
             this.__setState({
                 key: 'drafts',
                 value: this.drafts,

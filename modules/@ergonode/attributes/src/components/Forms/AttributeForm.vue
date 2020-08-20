@@ -22,7 +22,7 @@
                     :error-messages="errorMessages[codeFieldKey]"
                     :disabled="isDisabled || isDisabledByPrivileges"
                     label="System name"
-                    hint="Attribute code must be unique"
+                    hint="System name must be unique"
                     @input="setCodeValue" />
                 <TranslationLazySelect
                     :data-cy="dataCyGenerator(groupsFieldKey)"

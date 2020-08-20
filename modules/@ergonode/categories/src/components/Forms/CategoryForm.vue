@@ -15,7 +15,7 @@
                     :error-messages="errorMessages[codeFieldKey]"
                     :disabled="isDisabled || isDisabledByPrivileges"
                     label="System name"
-                    hint="Category code must be unique"
+                    hint="System name must be unique"
                     @input="setCodeValue" />
             </FormSection>
         </template>

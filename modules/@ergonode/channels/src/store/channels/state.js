@@ -4,7 +4,6 @@
  */
 export default () => ({
     id: null,
-    name: '',
     type: null,
     configuration: '',
     export_details: {},
