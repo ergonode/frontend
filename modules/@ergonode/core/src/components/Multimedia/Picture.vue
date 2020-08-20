@@ -31,6 +31,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        useCache: {
+            type: Boolean,
+            default: true,
+        },
         objectFit: {
             type: String,
             default: 'cover',
@@ -85,7 +89,7 @@ export default {
             this.cancelToken = this.$axios.CancelToken.source();
 
             this.$axios.$get(this.apiPath, {
-                useCache: true,
+                useCache: this.useCache,
                 cancelToken: this.cancelToken.token,
                 responseType: 'arraybuffer',
             })

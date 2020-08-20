@@ -54,6 +54,7 @@ export default {
             '__setState',
         ]),
         uploadValue(value = '') {
+            console.log(value);
             this.__setState({
                 key: 'avatarId',
                 value,

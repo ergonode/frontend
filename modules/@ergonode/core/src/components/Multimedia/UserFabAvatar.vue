@@ -8,6 +8,7 @@
             v-if="avatarId"
             :value="avatarId"
             :api-path="avatarPath"
+            :use-cache="false"
             fab />
         <span
             v-else

@@ -15,6 +15,7 @@
         @upload="onAvatarUpload">
         <template #file>
             <Picture
+                :use-cache="false"
                 :value="value"
                 :api-path="`${languageCode}/accounts/${value}/avatar`" />
         </template>
