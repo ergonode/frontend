@@ -10,6 +10,7 @@
             :is="element.component"
             :value="value[element.key]"
             :schema="element.props"
+            :error-messages="errorMessages"
             @input="onValueChange" />
     </FormSection>
 </template>
@@ -35,8 +36,8 @@ export default {
             required: true,
         },
         errorMessages: {
-            type: Object,
-            default: () => ({}),
+            type: String,
+            default: '',
         },
     },
     data() {

@@ -8,8 +8,10 @@
             :is="arrayComponent"
             :value="value"
             :schema="schema"
-            :error-messages="errorMessages"
             @input="onValueChange" />
+        <FormErrorLabel
+            v-if="errorMessages"
+            :error-messages="errorMessages" />
     </FormSection>
 </template>
 
@@ -23,6 +25,7 @@ export default {
     name: 'JSONSchemaFormArray',
     components: {
         FormSection,
+        FormErrorLabel: () => import('@Core/components/Form/FormErrorLabel'),
     },
     props: {
         schema: {
@@ -34,8 +37,8 @@ export default {
             default: () => [],
         },
         errorMessages: {
-            type: Object,
-            default: () => ({}),
+            type: String,
+            default: '',
         },
     },
     data() {

@@ -52,10 +52,6 @@ export default {
             type: Object,
             required: true,
         },
-        errorMessages: {
-            type: Object,
-            default: () => ({}),
-        },
         value: {
             type: Array,
             default: () => [],
