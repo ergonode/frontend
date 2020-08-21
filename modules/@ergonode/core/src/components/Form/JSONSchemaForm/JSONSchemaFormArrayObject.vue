@@ -75,6 +75,7 @@ export default {
         },
         onRemoveRowAtIndex(index) {
             this.rowValues.splice(index, 1);
+            this.$emit('input', this.rowValues);
         },
         onValueChangeAtIndex({
             index, value,
