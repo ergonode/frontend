@@ -17,7 +17,7 @@ export default {
 <style lang="scss" scoped>
     .modal-body {
         flex: 1;
-        padding: 24px 24px 32px;
+        padding: 24px;
         overflow: auto;
     }
 </style>

@@ -43,7 +43,9 @@ export default {
     },
     computed: {
         actionCellComponent() {
-            return () => import(`@Core/components/Grid/Layout/Table/Cells/Action/Grid${capitalizeAndConcatenationArray(this.column.id.split('_'))}ActionCell`)
+            const type = capitalizeAndConcatenationArray(this.column.id.split('_'));
+
+            return () => import(`@Core/components/Grid/Layout/Table/Cells/Action/Grid${type}ActionCell`)
                 .catch(() => import('@Core/components/Grid/Layout/Table/Cells/GridTableCell'));
         },
     },

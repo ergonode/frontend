@@ -33,6 +33,10 @@
 </template>
 
 <script>
+import App from '@Core/components/Layout/App';
+import SideBar from '@Core/components/SideBar/SideBar';
+import ToolBar from '@Core/components/ToolBar/ToolBar';
+import ToolBarUserButton from '@Core/components/ToolBar/ToolBarUserButton';
 import {
     COMPONENTS,
 } from '@Core/defaults/extends';
@@ -47,11 +51,11 @@ import {
 export default {
     name: 'DefaultLayout',
     components: {
-        App: () => import('@Core/components/Layout/App'),
-        SideBar: () => import('@Core/components/SideBar/SideBar'),
-        ToolBar: () => import('@Core/components/ToolBar/ToolBar'),
+        App,
+        SideBar,
+        ToolBar,
+        ToolBarUserButton,
         ToolBarBreadcrumb: () => import('@Core/components/ToolBar/ToolBarBreadcrumb'),
-        ToolBarUserButton: () => import('@Core/components/ToolBar/ToolBarUserButton'),
         FlashMessage: () => import('@Core/components/Alerts/FlashMessage'),
         ConfirmModal: () => import('@Core/components/Modals/ConfirmModal'),
     },

@@ -147,10 +147,6 @@ import {
 export default {
     name: 'Grid',
     components: {
-        GridPlaceholder: () => import('@Core/components/Grid/GridPlaceholder'),
-        GridPageSelector: () => import('@Core/components/Grid/Footer/GridPageSelector'),
-        DropZone: () => import('@Core/components/DropZone/DropZone'),
-        IconAddColumn: () => import('@Core/components/Icons/Actions/IconAddColumn'),
         Button,
         IconFilledClose,
         GridPagination,
@@ -160,6 +156,10 @@ export default {
         GridFooter,
         GridTableLayout,
         GridCollectionLayout,
+        GridPlaceholder: () => import('@Core/components/Grid/GridPlaceholder'),
+        GridPageSelector: () => import('@Core/components/Grid/Footer/GridPageSelector'),
+        DropZone: () => import('@Core/components/DropZone/DropZone'),
+        IconAddColumn: () => import('@Core/components/Icons/Actions/IconAddColumn'),
     },
     props: {
         columns: {

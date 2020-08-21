@@ -12,7 +12,6 @@
         </div>
         <Fab
             data-cy="modal-close"
-            :floating="{ top: '12px', right: '12px' }"
             :theme="secondaryTheme"
             @click.native="onClose">
             <template #icon="{ color }">
@@ -74,9 +73,14 @@ export default {
         $header: &;
 
         position: relative;
-        min-height: 48px;
-        padding: 24px 24px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 64px;
+        padding: 16px 24px;
         box-sizing: border-box;
+        background-color: $WHITESMOKE;
+        border-bottom: $BORDER_1_GREY;
 
         &__title {
             color: $GRAPHITE_DARK;

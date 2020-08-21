@@ -9,7 +9,6 @@
         </span>
         <Select
             :value="value"
-            style="width: 72px;"
             :options="rowIntervalOptions"
             :size="smallSize"
             @input="onValueChange" />
@@ -20,6 +19,7 @@
 </template>
 
 <script>
+import Select from '@Core/components/Inputs/Select/Select';
 import {
     ROW_INTERVALS,
 } from '@Core/defaults/grid';
@@ -30,7 +30,7 @@ import {
 export default {
     name: 'GridPageSelector',
     components: {
-        Select: () => import('@Core/components/Inputs/Select/Select'),
+        Select,
     },
     props: {
         maxRows: {
@@ -65,11 +65,11 @@ export default {
     .page-selector {
         display: grid;
         align-items: center;
+        grid-template-columns: max-content 72px max-content;
         grid-auto-flow: column;
         column-gap: 8px;
 
         &__text {
-            flex: 0 0 auto;
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_12_16;
         }
