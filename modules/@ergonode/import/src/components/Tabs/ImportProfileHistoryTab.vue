@@ -12,7 +12,7 @@
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
-                @editRow="onEditRow"
+                @previewRow="onPreviewRow"
                 @fetchData="onFetchData" />
             <ImportDetailsModalGrid
                 v-if="isImportDetailsModalVisible"
@@ -53,7 +53,7 @@ export default {
         };
     },
     methods: {
-        onEditRow(args) {
+        onPreviewRow(args) {
             const lastIndex = args.length - 1;
             const importId = args[lastIndex];
             const sourceId = args[lastIndex - 2];
