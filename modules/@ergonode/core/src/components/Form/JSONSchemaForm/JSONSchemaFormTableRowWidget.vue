@@ -27,9 +27,6 @@
 import Fab from '@Core/components/Fab/Fab';
 import IconDelete from '@Core/components/Icons/Actions/IconDelete';
 import {
-    ARROW,
-} from '@Core/defaults/icons';
-import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
