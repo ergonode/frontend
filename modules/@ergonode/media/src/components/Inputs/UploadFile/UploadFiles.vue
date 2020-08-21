@@ -193,7 +193,6 @@ export default {
             this.$emit('input', this.value.filter(id => id !== file));
         },
         onCloseModal() {
-            console.log('close');
             this.isModalVisible = false;
         },
         onSelectSetting(option) {
