@@ -8,8 +8,8 @@
         :row="row"
         :selected="isSelected"
         :edit-key-code="32"
-        @mousedown.native="onEdit"
-        @edit="onEdit">
+        @mousedown.native="onPreview"
+        @edit="onPreview">
         <IconPreview />
     </GridTableCell>
 </template>
@@ -43,7 +43,7 @@ export default {
         },
     },
     methods: {
-        onEdit() {
+        onPreview() {
             const args = this.href.split('/');
 
             this.$emit('action', {
