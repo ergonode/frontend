@@ -90,14 +90,6 @@ export default {
                     },
                     component: () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),
                 });
-
-                if (i + 1 !== length) {
-                    components.push({
-                        key: `[${i}]-divider`,
-                        props: {},
-                        component: () => import('@Core/components/Dividers/Divider'),
-                    });
-                }
             }
             return components;
         },
