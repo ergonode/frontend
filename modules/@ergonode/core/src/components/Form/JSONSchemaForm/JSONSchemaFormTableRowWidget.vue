@@ -104,13 +104,11 @@ export default {
                     component: () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),
                 });
 
-                if (i % 2 === 0) {
+                if (length > 1 && i % 2 === 0) {
                     components.push({
                         key: `[${i}]-arrow`,
-                        props: {
-                            state: ARROW.RIGHT,
-                        },
-                        component: () => import('@Core/components/Icons/Arrows/IconArrowSingle'),
+                        props: {},
+                        component: () => import('@Core/components/Form/JSONSchemaForm/JSONSchemaFormTableRowArrowWidget'),
                     });
                 }
             }
