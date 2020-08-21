@@ -12,7 +12,7 @@
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
-                @editRow="onEditRow"
+                @previewRow="onPreviewRow"
                 @fetchData="onFetchData" />
             <ExportDetailsModalGrid
                 v-if="isExportDetailsModalVisible"
@@ -53,7 +53,7 @@ export default {
         };
     },
     methods: {
-        onEditRow(args) {
+        onPreviewRow(args) {
             const lastIndex = args.length - 1;
             const exportId = args[lastIndex];
             const channelId = args[lastIndex - 2];

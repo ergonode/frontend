@@ -10,19 +10,19 @@
         :edit-key-code="32"
         @mousedown.native="onEdit"
         @edit="onEdit">
-        <IconPreview />
+        <IconEdit />
     </GridTableCell>
 </template>
 
 <script>
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
-import IconPreview from '@Core/components/Icons/Actions/IconPreview';
+import IconEdit from '@Core/components/Icons/Actions/IconEdit';
 
 export default {
-    name: 'GridGetActionCell',
+    name: 'GridEditActionCell',
     components: {
         GridTableCell,
-        IconPreview,
+        IconEdit,
     },
     props: {
         isSelected: {
@@ -47,7 +47,7 @@ export default {
             const args = this.href.split('/');
 
             this.$emit('action', {
-                key: 'preview',
+                key: 'edit',
                 value: args,
             });
         },
