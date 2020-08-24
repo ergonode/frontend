@@ -11,16 +11,17 @@
                 <NavigationBackFab />
             </template>
             <template #mainAction>
-                <Button
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    title="REMOVE IMPORT"
-                    :disabled="!isUserAllowedToDelete"
-                    @click.native="onRemove">
-                    <template #prepend="{ color }">
-                        <IconDelete :fill-color="color" />
-                    </template>
-                </Button>
+                <!--                TODO uncomment when it's implemented at BE-->
+                <!--                <Button-->
+                <!--                    :theme="secondaryTheme"-->
+                <!--                    :size="smallSize"-->
+                <!--                    title="REMOVE IMPORT"-->
+                <!--                    :disabled="!isUserAllowedToDelete"-->
+                <!--                    @click.native="onRemove">-->
+                <!--                    <template #prepend="{ color }">-->
+                <!--                        <IconDelete :fill-color="color" />-->
+                <!--                    </template>-->
+                <!--                </Button>-->
                 <Button
                     title="IMPORT NOW"
                     :size="smallSize"
