@@ -31,6 +31,26 @@ export default {
 
         return configuration;
     },
+    async getSchedulerConfiguration(
+        {
+            commit, state, rootState,
+        },
+    ) {
+        const {
+            id,
+        } = state;
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
+        const scheduler = await this.app.$axios.$get(`${userLanguageCode}/channels/${id}/scheduler`);
+
+        if (scheduler) {
+            commit('__SET_STATE', {
+                key: 'scheduler',
+                value: JSON.stringify(scheduler),
+            });
+        }
+    },
     getChannel(
         {
             commit, rootState,
@@ -92,6 +112,21 @@ export default {
         },
     ) {
         return this.app.$axios.$put(`${rootState.authentication.user.language}/channels/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+    },
+    updateScheduler(
+        {
+            state, rootState,
+        },
+        {
+            data,
+            onSuccess,
+            onError,
+        },
+    ) {
+        const {
+            id,
+        } = state;
+        return this.app.$axios.$put(`${rootState.authentication.user.language}/channels/${id}/scheduler`, data).then(() => onSuccess()).catch(e => onError(e.data));
     },
     removeChannel({
         state, rootState,

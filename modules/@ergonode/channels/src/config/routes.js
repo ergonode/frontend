@@ -95,6 +95,25 @@ export default [
                     privileges: [],
                 },
             },
+            {
+                name: 'channel-id-scheduler',
+                path: 'scheduler',
+                component: Tabs.ChannelSchedulerTab,
+                meta: {
+                    title: 'Scheduler',
+                    breadcrumbs: [
+                        {
+                            title: 'Data exchange',
+                            icon: Icons.Channels,
+                        },
+                        {
+                            title: 'Channels',
+                            routeName: 'channel-grid',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
         ],
     },
 ];

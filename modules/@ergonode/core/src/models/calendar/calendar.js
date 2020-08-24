@@ -8,6 +8,8 @@ export const THIS_MONTH = +(new Date().getMonth()) + 1;
 
 export const DEFAULT_FORMAT = 'yyyy-MM-dd';
 
+export const DEFAULT_HOUR_FORMAT = 'HH:mm';
+
 export const WEEK_DAYS = {
     Sunday: 'Sun',
     Monday: 'Mon',
