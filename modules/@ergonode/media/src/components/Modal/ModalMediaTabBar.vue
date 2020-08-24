@@ -4,7 +4,7 @@
  */
 <template>
     <ModalTabBar
-        ref="modal"
+        class="modal-media-tab-bar"
         :items="tabs"
         @close="onCloseModal" />
 </template>
@@ -26,13 +26,14 @@ export default {
     mounted() {
         const app = document.documentElement.querySelector('.app');
 
-        app.appendChild(this.$refs.modal.$el);
+        app.appendChild(this.$el);
     },
     beforeDestroy() {
         const app = document.documentElement.querySelector('.app');
+        const element = document.documentElement.querySelector('.modal-media-tab-bar');
 
-        if (app.contains(this.$refs.modal.$el)) {
-            app.removeChild(this.$refs.modal.$el);
+        if (element && app.contains(element)) {
+            app.removeChild(element);
         }
     },
     methods: {
