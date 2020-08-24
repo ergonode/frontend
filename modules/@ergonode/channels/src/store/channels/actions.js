@@ -5,22 +5,31 @@
 import {
     getDefaultJsonSchemaTypes,
 } from '@Core/models/jsonSchema';
+import {
+    getKeyByValue,
+} from '@Core/models/objectWrapper';
 
 export default {
-    async getConfigurationByType(
+    async getConfiguration(
         {
-            commit, state, rootState,
-        },
-        {
-            typeId,
+            commit,
+            state,
+            rootState,
         },
     ) {
         const {
+            id,
+            type,
+        } = state;
+        const {
+            channels,
+        } = rootState.dictionaries;
+        const {
             language: userLanguageCode,
         } = rootState.authentication.user;
-        const configuration = await this.app.$axios.$get(`${userLanguageCode}/channels/${typeId}/configuration`);
+        const configuration = await this.app.$axios.$get(`${userLanguageCode}/channels/${getKeyByValue(channels, type)}/configuration`);
 
-        if (!state.id) {
+        if (!id) {
             const defaultConfiguration = getDefaultJsonSchemaTypes(configuration.properties);
 
             commit('__SET_STATE', {

@@ -66,26 +66,7 @@ export default [
                     breadcrumbs: [
                         {
                             title: 'Sources',
-                            icon: Icons.Export,
-                        },
-                        {
-                            title: 'Import profiles',
-                            routeName: 'import-grid',
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-            {
-                name: 'import-id-settings',
-                path: 'settings',
-                component: Tabs.ImportProfileSettingsTab,
-                meta: {
-                    title: 'Settings',
-                    breadcrumbs: [
-                        {
-                            title: 'Sources',
-                            icon: Icons.Export,
+                            icon: Icons.Channels,
                         },
                         {
                             title: 'Import profiles',
@@ -104,7 +85,7 @@ export default [
                     breadcrumbs: [
                         {
                             title: 'Sources',
-                            icon: Icons.Export,
+                            icon: Icons.Channels,
                         },
                         {
                             title: 'Import profiles',
