@@ -5,8 +5,7 @@
 <template>
     <ModalOverlay @close="onClose">
         <Modal data-cy="modal">
-            <ModalHeader
-                :size="smallSize"
+            <ModalConfirmHeader
                 :title="title"
                 @close="onClose" />
             <ModalFooter>
@@ -18,8 +17,8 @@
 
 <script>
 import Modal from '@Core/components/Modal/Modal';
+import ModalConfirmHeader from '@Core/components/Modal/ModalConfirmHeader';
 import ModalFooter from '@Core/components/Modal/ModalFooter';
-import ModalHeader from '@Core/components/Modal/ModalHeader';
 import ModalOverlay from '@Core/components/Modal/ModalOverlay';
 import {
     SIZE,
@@ -29,7 +28,7 @@ export default {
     name: 'ModalConfirm',
     components: {
         ModalOverlay,
-        ModalHeader,
+        ModalConfirmHeader,
         Modal,
         ModalFooter,
     },

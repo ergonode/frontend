@@ -5,6 +5,7 @@
 <template>
     <ImportProfilePage
         :title="name"
+        @remove="onRemove"
         @save="onSave" />
 </template>
 
@@ -12,6 +13,9 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
 import {
     mapActions,
     mapState,
@@ -36,19 +40,39 @@ export default {
     },
     computed: {
         ...mapState('import', {
-            name: state => state.name,
             type: state => state.type,
             configuration: state => state.configuration,
         }),
+        name() {
+            const {
+                name,
+            } = JSON.parse(this.configuration);
+
+            return name;
+        },
+    },
+    destroyed() {
+        this.__clearStorage();
     },
     methods: {
         ...mapActions('import', [
+            '__clearStorage',
             'updateImportProfile',
+            'removeImport',
         ]),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
         ]),
+        onRemove() {
+            this.$openModal({
+                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
+                message: 'Are you sure you want to delete this import?',
+                confirmCallback: () => this.removeImport({
+                    onSuccess: this.onRemoveSuccess,
+                }),
+            });
+        },
         onSave() {
             this.removeValidationErrors();
             this.updateImportProfile({

@@ -4,7 +4,7 @@
  */
 <template>
     <ChannelPage
-        :title="getChannelName"
+        :title="name"
         @remove="onRemove"
         @save="onSave" />
 </template>
@@ -43,7 +43,7 @@ export default {
             type: state => state.type,
             configuration: state => state.configuration,
         }),
-        getChannelName() {
+        name() {
             const {
                 name,
             } = JSON.parse(this.configuration);
@@ -51,8 +51,12 @@ export default {
             return name;
         },
     },
+    destroyed() {
+        this.__clearStorage();
+    },
     methods: {
         ...mapActions('channels', [
+            '__clearStorage',
             'updateChannel',
             'removeChannel',
         ]),
@@ -100,7 +104,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.getChannelName} - Channel - Ergonode`,
+            title: `${this.name} - Channel - Ergonode`,
         };
     },
 };

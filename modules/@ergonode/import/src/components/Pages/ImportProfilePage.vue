@@ -11,6 +11,17 @@
                 <NavigationBackFab />
             </template>
             <template #mainAction>
+                <!--                TODO uncomment when it's implemented at BE-->
+                <!--                <Button-->
+                <!--                    :theme="secondaryTheme"-->
+                <!--                    :size="smallSize"-->
+                <!--                    title="REMOVE IMPORT"-->
+                <!--                    :disabled="!isUserAllowedToDelete"-->
+                <!--                    @click.native="onRemove">-->
+                <!--                    <template #prepend="{ color }">-->
+                <!--                        <IconDelete :fill-color="color" />-->
+                <!--                    </template>-->
+                <!--                </Button>-->
                 <Button
                     title="IMPORT NOW"
                     :size="smallSize"
@@ -55,6 +66,11 @@ export default {
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.IMPORT.update,
+            ]);
+        },
+        isUserAllowedToDelete() {
+            return this.$hasAccess([
+                PRIVILEGES.IMPORT.delete,
             ]);
         },
     },

@@ -13,7 +13,8 @@ export default async function ({
         language,
     } = $store.state.authentication.user;
     const {
-        type, configuration,
+        type,
+        configuration,
     } = $store.state.channels;
     const {
         channels,

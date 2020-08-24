@@ -5,13 +5,18 @@
 <template>
     <div :class="classes">
         <div class="header-container">
-            <slot name="prepend" />
             <h2
-                class="modal-header__title"
+                v-if="title"
+                class="modal-confirm-header__title"
                 v-text="title" />
+            <span
+                v-if="subtitle"
+                class="modal-confirm-header__subtitle"
+                v-text="subtitle" />
         </div>
         <Fab
             data-cy="modal-close"
+            :floating="{ top: '16px', right: '16px' }"
             :theme="secondaryTheme"
             @click.native="onClose">
             <template #icon="{ color }">
@@ -29,7 +34,7 @@ import {
 } from '@Core/defaults/theme';
 
 export default {
-    name: 'ModalHeader',
+    name: 'ModalConfirmHeader',
     components: {
         Fab,
         IconClose,
@@ -39,11 +44,15 @@ export default {
             type: String,
             default: '',
         },
+        subtitle: {
+            type: String,
+            default: '',
+        },
     },
     computed: {
         classes() {
             return [
-                'modal-header',
+                'modal-confirm-header',
             ];
         },
         secondaryTheme() {
@@ -59,27 +68,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .modal-header {
+    .modal-confirm-header {
         position: relative;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        min-height: 64px;
-        padding: 16px 24px;
+        padding: 24px 48px 24px 24px;
         box-sizing: border-box;
-        background-color: $WHITESMOKE;
-        border-bottom: $BORDER_1_GREY;
 
         &__title {
             color: $GRAPHITE_DARK;
-            font: $FONT_SEMI_BOLD_20_24;
+            font: $FONT_SEMI_BOLD_16_24;
+        }
+
+        &__subtitle {
+            color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_14_20;
         }
     }
 
     .header-container {
         display: grid;
-        grid-auto-flow: column;
-        grid-column-gap: 4px;
+        grid-auto-flow: row;
+        grid-row-gap: 8px;
         align-items: center;
     }
 </style>

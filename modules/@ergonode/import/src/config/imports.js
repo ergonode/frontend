@@ -11,7 +11,6 @@ export const Pages = {
 export const Tabs = {
     ImportProfileGridTab: () => import('@Import/components/Tabs/ImportProfileGridTab').then(m => m.default || m),
     ImportProfileBaseTab: () => import('@Import/components/Tabs/ImportProfileBaseTab').then(m => m.default || m),
-    ImportProfileSettingsTab: () => import('@Import/components/Tabs/ImportProfileSettingsTab').then(m => m.default || m),
     ImportProfileHistoryTab: () => import('@Import/components/Tabs/ImportProfileHistoryTab').then(m => m.default || m),
 };
 
