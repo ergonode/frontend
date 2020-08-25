@@ -30,7 +30,6 @@
                     :value="defaultTextAttribute"
                     required
                     label="Default label attribute"
-                    :disabled="isDisabledByPrivileges"
                     :fetch-options-request="getDefaultTextAttributeOptionsRequest"
                     :disabled="isDisabledByPrivileges"
                     @input="setDefaultTextAttributeValue" />
@@ -39,7 +38,6 @@
                     :value="defaultImageAttribute"
                     clearable
                     label="Default image attribute"
-                    :disabled="isDisabledByPrivileges"
                     :fetch-options-request="getDefaultImageAttributeOptionsRequest"
                     :disabled="isDisabledByPrivileges"
                     @input="setDefaultImageAttributeValue" />
