@@ -99,8 +99,6 @@ export default {
                     date,
                 ] = start.split(' ');
 
-                console.log(date);
-
                 return parseDate(date, DEFAULT_FORMAT, new Date());
             }
 
