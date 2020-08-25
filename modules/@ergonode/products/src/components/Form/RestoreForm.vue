@@ -55,6 +55,7 @@ export default {
             'getLanguage',
         ]),
         elementsToRestore() {
+            console.log(this.elements);
             return this.elements.filter(element => element.type !== SYSTEM_TYPES.SECTION);
         },
         modalTitle() {

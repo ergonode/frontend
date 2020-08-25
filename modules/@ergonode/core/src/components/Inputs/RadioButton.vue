@@ -12,14 +12,14 @@
             :value="label"
             :name="name">
         <label :for="associatedLabel">
-            <div class="radio__content">
+            <div class="radio-button__content">
                 <div
                     v-show="isSelected"
-                    class="radio__mark" />
+                    class="radio-button__mark" />
             </div>
             <span
                 v-if="label"
-                class="radio__label"
+                class="radio-button__label"
                 v-text="label" />
         </label>
         <slot name="append" />
