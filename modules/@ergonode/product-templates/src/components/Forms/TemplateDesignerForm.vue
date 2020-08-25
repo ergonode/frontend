@@ -30,6 +30,7 @@
                     :value="defaultTextAttribute"
                     required
                     label="Default label attribute"
+                    :disabled="isDisabledByPrivileges"
                     :fetch-options-request="getDefaultTextAttributeOptionsRequest"
                     :disabled="isDisabledByPrivileges"
                     @input="setDefaultTextAttributeValue" />
@@ -38,6 +39,7 @@
                     :value="defaultImageAttribute"
                     clearable
                     label="Default image attribute"
+                    :disabled="isDisabledByPrivileges"
                     :fetch-options-request="getDefaultImageAttributeOptionsRequest"
                     :disabled="isDisabledByPrivileges"
                     @input="setDefaultImageAttributeValue" />
@@ -78,7 +80,7 @@ export default {
             return Boolean(this.templateTitle);
         },
         isDisabledByPrivileges() {
-            return !this.$hasAccess([
+            return this.isDisabled && !this.$hasAccess([
                 PRIVILEGES.TEMPLATE_DESIGNER.update,
             ]);
         },

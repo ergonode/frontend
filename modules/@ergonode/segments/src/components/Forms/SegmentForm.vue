@@ -49,7 +49,7 @@ export default {
             return Boolean(this.segmentId);
         },
         isDisabledByPrivileges() {
-            return !this.$hasAccess([
+            return this.isDisabled && !this.$hasAccess([
                 PRIVILEGES.SEGMENT.update,
             ]);
         },

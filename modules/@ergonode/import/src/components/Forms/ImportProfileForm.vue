@@ -88,7 +88,7 @@ export default {
             return this.schemas[this.type];
         },
         isDisabledByPrivileges() {
-            return !this.$hasAccess([
+            return this.isDisabled && !this.$hasAccess([
                 PRIVILEGES.IMPORT.update,
             ]);
         },

@@ -13,6 +13,7 @@
                     v-for="item in items"
                     :key="item.id"
                     :item="item"
+                    :disabled="disabled"
                     :language-code="userLanguageCode" />
             </ListScrollableContainer>
         </List>
@@ -32,6 +33,12 @@ export default {
         ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
         ConditionsListElement: () => import('@Conditions/components/Lists/ConditionsListElement'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
+    },
+    props: {
+        disabled: {
+            type: Boolean,
+            deafulr: false,
+        },
     },
     computed: {
         ...mapState('authentication', {

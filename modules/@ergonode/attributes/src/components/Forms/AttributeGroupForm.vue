@@ -45,7 +45,7 @@ export default {
             return Boolean(this.id);
         },
         isDisabledByPrivileges() {
-            return !this.$hasAccess([
+            return this.isDisabled && !this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE_GROUP.update,
             ]);
         },
