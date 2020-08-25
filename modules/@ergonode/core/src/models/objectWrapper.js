@@ -134,7 +134,7 @@ export function isEmpty(obj) {
  * @param {string} keyToRemove
  * @returns {Object} Transformed object
  */
-export function removeFromObjectByKey(object, keyToRemove) {
+export function removeObjectProperty(object, keyToRemove) {
     return Object.keys(object).reduce((item, key) => {
         const itemCopy = item;
         if (key !== keyToRemove) {

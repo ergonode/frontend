@@ -19,7 +19,7 @@
             </VerticalTabBar>
         </template>
         <template #grid>
-            <ConditionSetWrapper />
+            <ConditionSetWrapper :disabled="!isAllowedToUpdate" />
         </template>
     </GridViewTemplate>
 </template>
@@ -35,13 +35,14 @@ import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
+import PRIVILEGES from '@Segments/config/privileges';
 import {
     mapActions,
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'ConditionSetDesignTab',
+    name: 'ConditionDesignerTab',
     components: {
         GridViewTemplate,
         IconRemoveFilter,
@@ -61,6 +62,11 @@ export default {
         ...mapState('draggable', {
             isElementDragging: state => state.isElementDragging,
         }),
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.SEGMENT.update,
+            ]);
+        },
         verticalTabs() {
             return [
                 {

@@ -84,6 +84,10 @@ export default {
     },
     methods: {
         onValueChange() {
+            if (this.isLocked) {
+                return;
+            }
+
             if (!this.localValue) {
                 this.$axios.$post(`${this.languageCode}/products/${this.id}/children/add-from-skus`, {
                     skus: [

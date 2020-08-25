@@ -7,5 +7,5 @@ export default () => ({
     modals: {},
     languagesTree: [],
     languages: [],
-    defaultLanguageCodeByPrivileges: null,
+    defaultLanguageCode: null,
 });

@@ -11,6 +11,7 @@
                 <RichTextEditor
                     v-if="isRTEEditor"
                     :disabled="disabled"
+                    height="100%"
                     :required="properties.required"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"

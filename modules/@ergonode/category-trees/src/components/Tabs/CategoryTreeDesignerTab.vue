@@ -10,7 +10,7 @@
                     <DropZone
                         v-show="isDropZoneVisible"
                         :hover-background-color="graphiteLightColor"
-                        title="REMOVE CONDITION">
+                        title="REMOVE CATEGORY">
                         <template #icon="{ color }">
                             <IconRemoveFilter :fill-color="color" />
                         </template>
@@ -19,7 +19,7 @@
             </VerticalTabBar>
         </template>
         <template #grid>
-            <ConditionSetWrapper />
+            <CategoryTreeWrapper />
         </template>
     </GridViewTemplate>
 </template>
@@ -36,26 +36,18 @@ import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'ConditionSetDesignTab',
+    name: 'CategoryTreeDesignerTab',
     components: {
+        VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
+        CategoryTreeWrapper: () => import('@Trees/components/CategoryTreeDesigner/CategoryTreeWrapper'),
         GridViewTemplate,
         IconRemoveFilter,
         DropZone,
         FadeTransition,
-        VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
-        ConditionSetWrapper: () => import('@Conditions/components/ConditionSetDesigner/ConditionSetWrapper'),
-    },
-    fetch({
-        store,
-    }) {
-        return store.dispatch('conditions/getConditions', {
-            group: 'workflow',
-        });
     },
     computed: {
         ...mapState('draggable', {
@@ -64,8 +56,8 @@ export default {
         verticalTabs() {
             return [
                 {
-                    title: 'Conditions',
-                    component: () => import('@Conditions/components/Tabs/Lists/ConditionsListTab'),
+                    title: 'Categories',
+                    component: () => import('@Trees/components/Tabs/List/CategoriesListTab'),
                     iconComponent: () => import('@Core/components/Icons/Menu/IconCategory'),
                 },
             ];
@@ -76,18 +68,6 @@ export default {
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
         },
-    },
-    destroyed() {
-        this.clearGridDesignerStorage();
-        this.clearConditionsStorage();
-    },
-    methods: {
-        ...mapActions('gridDesigner', {
-            clearGridDesignerStorage: '__clearStorage',
-        }),
-        ...mapActions('conditions', {
-            clearConditionsStorage: '__clearStorage',
-        }),
     },
 };
 </script>

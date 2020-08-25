@@ -31,10 +31,10 @@ export default function ({
         },
         async fetch() {
             const {
-                defaultLanguageCodeByPrivileges,
+                defaultLanguageCode,
             } = this.$store.state.core;
 
-            await this.fetchListData(defaultLanguageCodeByPrivileges);
+            await this.fetchListData(defaultLanguageCode);
 
             this.expandedGroupId = UNASSIGNED_GROUP_ID;
         },

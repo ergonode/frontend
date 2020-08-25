@@ -105,7 +105,7 @@ export default {
             }) => languagePrivileges[code].read === true);
 
         commit('__SET_STATE', {
-            key: 'defaultLanguageCodeByPrivileges',
+            key: 'defaultLanguageCode',
             value: defaultLanguage.code,
         });
     },

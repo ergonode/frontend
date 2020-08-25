@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import {
-    removeFromObjectByKey,
+    removeObjectProperty,
 } from '@Core/models/objectWrapper';
 
 export const types = {
@@ -51,6 +51,6 @@ export default {
         };
     },
     [types.REMOVE_CONDITION_VALUE_FROM_SET](state, key) {
-        state.conditionsValues = removeFromObjectByKey(state.conditionsValues, key);
+        state.conditionsValues = removeObjectProperty(state.conditionsValues, key);
     },
 };

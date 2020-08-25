@@ -6,12 +6,14 @@
     <ListDraggableElement
         :draggable-id="`${item.code}:${languageCode}`"
         :is-draggable="isDraggable"
-        :is-disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
+        :is-disabled="isDisabled"
         :hint="hint"
         :label="title"
         @drag="onDrag">
         <ListElementIcon>
-            <Component :is="typeIconComponent" />
+            <Component
+                :is="typeIconComponent"
+                :fill-color="iconFillColor" />
         </ListElementIcon>
         <ListElementDescription>
             <ListElementTitle
@@ -28,6 +30,10 @@
 import {
     TYPES,
 } from '@Attributes/defaults/attributes';
+import {
+    GRAPHITE,
+    GREY,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import ListDraggableElement from '@Core/components/List/ListDraggableElement';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementHint from '@Core/components/List/ListElementHint';
@@ -68,12 +74,19 @@ export default {
         ...mapState('list', {
             disabledElements: state => state.disabledElements,
         }),
+        isDisabled() {
+            return this.disabledElements[this.languageCode]
+                && this.disabledElements[this.languageCode][this.item.id];
+        },
+        iconFillColor() {
+            return this.isDisabled ? GREY : GRAPHITE;
+        },
         title() {
             return this.item.label || `#${this.item.code}`;
         },
         typeIconComponent() {
             if (typeof TYPES[this.item.type] === 'undefined') {
-                return () => import('@Core/components/Icons/Attributes/IconText');
+                return () => import('@Core/components/Icons/Menu/IconAttributes');
             }
             return () => import(`@Core/components/Icons/Attributes/Icon${this.formattedAttributeType}`);
         },

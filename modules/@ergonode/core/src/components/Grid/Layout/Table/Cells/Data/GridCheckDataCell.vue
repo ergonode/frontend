@@ -54,7 +54,9 @@ export default {
     },
     methods: {
         onCheckValueChange() {
-            this.onValueChange(!this.cellData.value);
+            if (!this.isLocked) {
+                this.onValueChange(!this.cellData.value);
+            }
         },
     },
 };

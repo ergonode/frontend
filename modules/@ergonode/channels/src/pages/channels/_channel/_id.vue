@@ -17,7 +17,7 @@ import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import {
-    removeFromObjectByKey,
+    removeObjectProperty,
 } from '@Core/models/objectWrapper';
 import {
     mapActions,
@@ -79,8 +79,6 @@ export default {
             });
         },
         onSave() {
-            const tmp = JSON.parse(this.scheduler);
-
             this.removeValidationErrors();
             this.updateChannel({
                 id: this.$route.params.id,
@@ -91,11 +89,15 @@ export default {
                 onSuccess: this.onUpdateChannelSuccess,
                 onError: this.onError,
             });
-            this.updateScheduler({
-                data: removeFromObjectByKey(tmp, 'id'),
-                onSuccess: this.onUpdateSchedulerSuccess,
-                onError: this.onError,
-            });
+            if (this.scheduler) {
+                const tmp = JSON.parse(this.scheduler);
+
+                this.updateScheduler({
+                    data: removeObjectProperty(tmp, 'id'),
+                    onSuccess: this.onUpdateSchedulerSuccess,
+                    onError: this.onError,
+                });
+            }
         },
         onUpdateSchedulerSuccess() {
             this.removeValidationErrors();

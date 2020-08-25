@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import {
-    removeFromObjectByKey,
+    removeObjectProperty,
 } from '@Core/models/objectWrapper';
 
 export const types = {
@@ -39,7 +39,7 @@ export default {
         };
     },
     [types.REMOVE_ATTRIBUTE_OPTION_KEY](state, key) {
-        state.options = removeFromObjectByKey(state.options, key);
+        state.options = removeObjectProperty(state.options, key);
     },
     [types.SET_ATTRIBUTE_OPTION_KEY](state, {
         id, index, key,
@@ -65,7 +65,7 @@ export default {
         index, languageCode, value,
     }) {
         if (!value) {
-            state.options[index].value = removeFromObjectByKey(
+            state.options[index].value = removeObjectProperty(
                 state.options[index].value,
                 languageCode,
             );

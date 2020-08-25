@@ -5,8 +5,9 @@
 <template>
     <Component
         :is="styleComponent"
-        :style="{ height: '100%' }"
         ref="activator"
+        :style="{height, flexBasis: height }"
+        :height="height"
         :focused="isFocused"
         :error="isError"
         :data-cy="dataCy"
@@ -127,6 +128,10 @@ export default {
                 SIZE.SMALL,
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
+        },
+        height: {
+            type: String,
+            default: 'unset',
         },
         alignment: {
             type: String,
