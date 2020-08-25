@@ -6,4 +6,5 @@ export default () => ({
     id: null,
     type: null,
     configuration: '',
+    scheduler: '',
 });

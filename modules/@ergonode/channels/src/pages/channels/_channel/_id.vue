@@ -17,6 +17,9 @@ import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import {
+    removeFromObjectByKey,
+} from '@Core/models/objectWrapper';
+import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -42,6 +45,7 @@ export default {
         ...mapState('channels', {
             type: state => state.type,
             configuration: state => state.configuration,
+            scheduler: state => state.scheduler,
         }),
         name() {
             const {
@@ -58,6 +62,7 @@ export default {
         ...mapActions('channels', [
             '__clearStorage',
             'updateChannel',
+            'updateScheduler',
             'removeChannel',
         ]),
         ...mapActions('validations', [
@@ -74,6 +79,8 @@ export default {
             });
         },
         onSave() {
+            const tmp = JSON.parse(this.scheduler);
+
             this.removeValidationErrors();
             this.updateChannel({
                 id: this.$route.params.id,
@@ -83,6 +90,18 @@ export default {
                 },
                 onSuccess: this.onUpdateChannelSuccess,
                 onError: this.onError,
+            });
+            this.updateScheduler({
+                data: removeFromObjectByKey(tmp, 'id'),
+                onSuccess: this.onUpdateSchedulerSuccess,
+                onError: this.onError,
+            });
+        },
+        onUpdateSchedulerSuccess() {
+            this.removeValidationErrors();
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Scheduler updated',
             });
         },
         onUpdateChannelSuccess() {

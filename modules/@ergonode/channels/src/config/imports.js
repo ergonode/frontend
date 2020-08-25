@@ -10,6 +10,7 @@ export const Pages = {
 export const Tabs = {
     ChannelGridTab: () => import('@Channels/components/Tabs/ChannelGridTab').then(m => m.default || m),
     ChannelBaseTab: () => import('@Channels/components/Tabs/ChannelBaseTab').then(m => m.default || m),
+    ChannelSchedulerTab: () => import('@Channels/components/Tabs/ChannelSchedulerTab').then(m => m.default || m),
     ChannelHistoryTab: () => import('@Channels/components/Tabs/ChannelHistoryTab').then(m => m.default || m),
 };
 
