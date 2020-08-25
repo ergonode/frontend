@@ -99,6 +99,8 @@ export default {
                     date,
                 ] = start.split(' ');
 
+                console.log(date);
+
                 return parseDate(date, DEFAULT_FORMAT, new Date());
             }
 
@@ -116,11 +118,16 @@ export default {
                 hour,
                 minute,
             } = this.schedulerConfiguration;
-            const parseTime = parseDate(`${hour}:${minute}`, DEFAULT_HOUR_FORMAT, new Date());
 
-            return hour !== null && minute !== null
-                ? formatDate(parseTime, DEFAULT_HOUR_FORMAT)
-                : null;
+            if (typeof hour !== 'undefined' && typeof minute !== 'undefined') {
+                const parseTime = parseDate(`${hour}:${minute}`, DEFAULT_HOUR_FORMAT, new Date());
+
+                return hour !== null && minute !== null
+                    ? formatDate(parseTime, DEFAULT_HOUR_FORMAT)
+                    : null;
+            }
+
+            return null;
         },
         format() {
             return DEFAULT_FORMAT;
