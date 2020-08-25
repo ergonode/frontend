@@ -58,7 +58,7 @@ export default {
                 break;
             case this.namespaces.TEMPLATE:
                 this.$router.push({
-                    name: 'template-id-general',
+                    name: 'product-template-id-general',
                     params: {
                         id,
                     },

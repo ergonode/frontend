@@ -14,6 +14,7 @@
                     :clearable="true"
                     :searchable="true"
                     :sticky-search="true"
+                    :disabled="isDisabledByPrivileges"
                     @input="setSelectedLanguages"
                     @search="onSearch">
                     <template #append>
@@ -29,6 +30,7 @@
 
 <script>
 import InfoHint from '@Core/components/Hints/InfoHint';
+import PRIVILEGES from '@Core/config/privileges';
 import {
     mapState,
 } from 'vuex';
@@ -68,6 +70,11 @@ export default {
             return this.activeLanguages.map(({
                 value,
             }) => value).join(', ');
+        },
+        isDisabledByPrivileges() {
+            return !this.$hasAccess([
+                PRIVILEGES.SETTINGS.update,
+            ]);
         },
     },
     watch: {

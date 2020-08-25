@@ -35,6 +35,7 @@ import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
+import PRIVILEGES from '@Statuses/config/privileges';
 import {
     mapActions,
     mapState,
@@ -67,8 +68,16 @@ export default {
                     title: 'Conditions',
                     component: () => import('@Conditions/components/Tabs/Lists/ConditionsListTab'),
                     iconComponent: () => import('@Core/components/Icons/Menu/IconCategory'),
+                    props: {
+                        disabled: this.isDisabledByPrivileges,
+                    },
                 },
             ];
+        },
+        isDisabledByPrivileges() {
+            return !this.$hasAccess([
+                PRIVILEGES.WORKFLOW.update,
+            ]);
         },
         isDropZoneVisible() {
             return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;

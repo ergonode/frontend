@@ -28,6 +28,9 @@
 
 <script>
 import {
+    JWT_KEY,
+} from '@Authentication/defaults/cookies';
+import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
 import FluidBlob from '@Core/components/Blob/FluidBlob';
@@ -100,6 +103,7 @@ export default {
     },
     created() {
         if (!this.isLogged) {
+            this.$cookies.remove(JWT_KEY);
             this.resetState();
         }
     },

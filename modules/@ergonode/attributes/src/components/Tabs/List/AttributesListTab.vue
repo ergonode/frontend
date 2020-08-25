@@ -145,7 +145,9 @@ export default {
                 ...language,
                 key: language.code,
                 value: language.name,
-                disabled: !languagePrivileges[language.code].read,
+                disabled: languagePrivileges[language.code]
+                    ? !languagePrivileges[language.code].read
+                    : true,
             }));
         },
     },

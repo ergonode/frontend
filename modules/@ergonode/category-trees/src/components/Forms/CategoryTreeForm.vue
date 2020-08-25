@@ -45,7 +45,7 @@ export default {
             return Boolean(this.treeID);
         },
         isDisabledByPrivileges() {
-            return !this.$hasAccess([
+            return this.isDisabled && !this.$hasAccess([
                 PRIVILEGES.CATEGORY_TREE.update,
             ]);
         },

@@ -11,7 +11,7 @@
                 <Select
                     :value="type"
                     required
-                    :disabled="isDisabled"
+                    :disabled="isDisabled || isDisabledByPrivileges"
                     label="Product type"
                     :options="productTypesValues"
                     @input="setTypeValue" />
@@ -100,7 +100,7 @@ export default {
             return this.productTypeKey === PRODUCT_TYPE.WITH_VARIANTS;
         },
         isDisabledByPrivileges() {
-            return !this.$hasAccess([
+            return this.isDisabled && !this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ]);
         },

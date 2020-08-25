@@ -118,7 +118,9 @@ export default {
             } = this.schedulerConfiguration;
             const parseTime = parseDate(`${hour}:${minute}`, DEFAULT_HOUR_FORMAT, new Date());
 
-            return hour && minute ? formatDate(parseTime, DEFAULT_HOUR_FORMAT) : null;
+            return hour !== null && minute !== null
+                ? formatDate(parseTime, DEFAULT_HOUR_FORMAT)
+                : null;
         },
         format() {
             return DEFAULT_FORMAT;

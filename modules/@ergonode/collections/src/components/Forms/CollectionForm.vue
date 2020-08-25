@@ -55,7 +55,7 @@ export default {
             type: state => state.type,
         }),
         isDisabledByPrivileges() {
-            return !this.$hasAccess([
+            return this.isDisabled && !this.$hasAccess([
                 PRIVILEGES.PRODUCT_COLLECTION.update,
             ]);
         },

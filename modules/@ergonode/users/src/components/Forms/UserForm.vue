@@ -137,7 +137,7 @@ export default {
             return Boolean(this.userID);
         },
         isDisabledByPrivileges() {
-            return !this.$hasAccess([
+            return this.isDisabled && !this.$hasAccess([
                 PRIVILEGES.USER.update,
             ]);
         },

@@ -19,6 +19,7 @@
                 <CheckBox
                     :value="isDefaultStatus"
                     label="Default status of new products"
+                    :disabled="isDisabledByPrivileges"
                     @input="setStatusAsDefaultValue">
                     <template #append>
                         <InfoHint hint="You may set only one status as a default" />
@@ -69,7 +70,7 @@ export default {
             isDefaultStatus: state => state.isDefaultStatus,
         }),
         isDisabledByPrivileges() {
-            return !this.$hasAccess([
+            return !this.isDisabled && this.$hasAccess([
                 PRIVILEGES.WORKFLOW.update,
             ]);
         },
