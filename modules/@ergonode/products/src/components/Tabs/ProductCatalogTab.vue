@@ -222,25 +222,18 @@ export default {
             return THEME.SECONDARY;
         },
         verticalTabs() {
-            const isUserAllowedToReadProduct = this.$hasAccess([
-                PRIVILEGES.PRODUCT.read,
-            ]);
             return [
                 {
                     title: 'Product attributes',
                     component: () => import('@Attributes/components/Tabs/List/AttributesListTab'),
                     iconComponent: () => import('@Core/components/Icons/Menu/IconAttributes'),
-                    props: {
-                        disabled: !isUserAllowedToReadProduct,
-                    },
+                    props: {},
                 },
                 {
                     title: 'System attributes',
                     component: () => import('@Attributes/components/Tabs/List/SystemAttributesListTab'),
                     iconComponent: () => import('@Core/components/Icons/Menu/IconSettings'),
-                    props: {
-                        disabled: !isUserAllowedToReadProduct,
-                    },
+                    props: {},
                 },
             ];
         },

@@ -44,7 +44,7 @@ export default {
         params,
     }) {
         const {
-            defaultLanguageCodeByPrivileges,
+            defaultLanguageCode,
         } = store.state.core;
         const {
             id,
@@ -52,7 +52,7 @@ export default {
 
         await Promise.all([
             store.dispatch('product/getProductDraft', {
-                languageCode: defaultLanguageCodeByPrivileges,
+                languageCode: defaultLanguageCode,
                 id,
             }),
             store.dispatch('product/getProduct', id),

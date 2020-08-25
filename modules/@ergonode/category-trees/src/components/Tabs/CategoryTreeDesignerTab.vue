@@ -40,7 +40,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'CategoryTreeDesignTab',
+    name: 'CategoryTreeDesignerTab',
     components: {
         VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
         CategoryTreeWrapper: () => import('@Trees/components/CategoryTreeDesigner/CategoryTreeWrapper'),

@@ -90,18 +90,18 @@ export default {
         },
     }) {
         const {
-            defaultLanguageCodeByPrivileges,
+            defaultLanguageCode,
         } = store.state.core;
 
         return Promise.all([
             getProductTemplate({
                 $axios,
-                languageCode: defaultLanguageCodeByPrivileges,
+                languageCode: defaultLanguageCode,
                 id,
             }),
             getProductCompleteness({
                 $axios,
-                languageCode: defaultLanguageCodeByPrivileges,
+                languageCode: defaultLanguageCode,
                 id,
             }),
         ]).then(([
@@ -122,7 +122,7 @@ export default {
             user: state => state.user,
         }),
         ...mapState('core', {
-            defaultLanguageCodeByPrivileges: state => state.defaultLanguageCodeByPrivileges,
+            defaultLanguageCode: state => state.defaultLanguageCode,
             languagesTree: state => state.languagesTree,
         }),
         ...mapState('product', {
@@ -168,7 +168,7 @@ export default {
     },
     created() {
         this.language = this.languageOptions
-            .find(languegeCode => languegeCode.code === this.defaultLanguageCodeByPrivileges);
+            .find(languageCode => languageCode.code === this.defaultLanguageCode);
     },
     methods: {
         ...mapActions('product', [

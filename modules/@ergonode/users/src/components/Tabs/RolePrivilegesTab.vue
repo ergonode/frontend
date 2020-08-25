@@ -112,7 +112,7 @@ export default {
                 fullDataList: this.privilegesDictionary,
                 selectedData: this.privileges,
                 defaults: privilegesDefaults,
-                isEditable: true,
+                isEditable: this.isAllowedToUpdate,
             });
             const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
             const sortedColumns = config

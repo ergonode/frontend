@@ -98,7 +98,7 @@ export default [
             {
                 name: 'category-tree-id-designer',
                 path: 'designer',
-                component: Tabs.CategoryTreeDesignTab,
+                component: Tabs.CategoryTreeDesignerTab,
                 meta: {
                     title: 'Designer',
                     breadcrumbs: [

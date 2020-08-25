@@ -19,7 +19,7 @@
             </VerticalTabBar>
         </template>
         <template #grid>
-            <ConditionSetWrapper />
+            <ConditionSetWrapper :disabled="!isAllowedToUpdate" />
         </template>
     </GridViewTemplate>
 </template>
@@ -42,7 +42,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'ConditionSetDesignTab',
+    name: 'ConditionDesignerTab',
     components: {
         GridViewTemplate,
         IconRemoveFilter,
@@ -62,6 +62,11 @@ export default {
         ...mapState('draggable', {
             isElementDragging: state => state.isElementDragging,
         }),
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.WORKFLOW.update,
+            ]);
+        },
         verticalTabs() {
             return [
                 {

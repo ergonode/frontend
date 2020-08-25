@@ -30,16 +30,16 @@
                     :value="defaultTextAttribute"
                     required
                     label="Default label attribute"
-                    :disabled="isDisabledByPrivileges"
                     :fetch-options-request="getDefaultTextAttributeOptionsRequest"
+                    :disabled="isDisabledByPrivileges"
                     @input="setDefaultTextAttributeValue" />
                 <TranslationLazySelect
                     :data-cy="dataCyGenerator('default-image')"
                     :value="defaultImageAttribute"
                     clearable
                     label="Default image attribute"
-                    :disabled="isDisabledByPrivileges"
                     :fetch-options-request="getDefaultImageAttributeOptionsRequest"
+                    :disabled="isDisabledByPrivileges"
                     @input="setDefaultImageAttributeValue" />
             </FormSection>
         </template>

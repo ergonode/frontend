@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import {
-    removeFromObjectByKey,
+    removeObjectProperty,
 } from '@Core/models/objectWrapper';
 
 export const types = {
@@ -20,7 +20,7 @@ export default {
         languageCode, propertyName, value,
     }) {
         if (!value) {
-            state.translations[propertyName] = removeFromObjectByKey(
+            state.translations[propertyName] = removeObjectProperty(
                 state.translations[propertyName],
                 languageCode,
             );

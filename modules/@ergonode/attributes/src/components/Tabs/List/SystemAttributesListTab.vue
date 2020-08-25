@@ -75,7 +75,7 @@ export default {
             user: state => state.user,
         }),
         ...mapState('core', {
-            defaultLanguageCodeByPrivileges: state => state.defaultLanguageCodeByPrivileges,
+            defaultLanguageCode: state => state.defaultLanguageCode,
             languagesTree: state => state.languagesTree,
         }),
         smallSize() {
@@ -108,7 +108,7 @@ export default {
     },
     created() {
         this.language = this.languageOptions
-            .find(languegeCode => languegeCode.code === this.defaultLanguageCodeByPrivileges);
+            .find(languageCode => languageCode.code === this.defaultLanguageCode);
     },
     methods: {
         onSearch(value) {

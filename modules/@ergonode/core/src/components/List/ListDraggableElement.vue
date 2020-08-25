@@ -11,9 +11,7 @@
         @dragend="onDragEnd">
         <template v-if="!isDragged">
             <slot />
-            <IconDragDrop
-                class="list-draggable-element__icon"
-                v-if="isDragged" />
+            <IconDragDrop class="list-draggable-element__icon" />
         </template>
     </li>
 </template>
@@ -149,7 +147,6 @@ export default {
 
         &:not(&--dragged):not(&--disabled):hover {
             background-color: $WHITESMOKE;
-            box-shadow: $ELEVATOR_2_DP;
 
             #{$element}__icon {
                 opacity: 1;

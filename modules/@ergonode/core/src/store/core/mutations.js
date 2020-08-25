@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import {
-    removeFromObjectByKey,
+    removeObjectProperty,
 } from '@Core/models/objectWrapper';
 
 export const types = {
@@ -22,7 +22,7 @@ export default {
         };
     },
     [types.CLOSE_MODAL](state, key) {
-        state.modals = removeFromObjectByKey(state.modals, key);
+        state.modals = removeObjectProperty(state.modals, key);
     },
     [types.SET_LOADER](state, key) {
         state.loaders = {
@@ -30,6 +30,6 @@ export default {
         };
     },
     [types.REMOVE_LOADER](state, key) {
-        state.loaders = removeFromObjectByKey(state.loaders, key);
+        state.loaders = removeObjectProperty(state.loaders, key);
     },
 };

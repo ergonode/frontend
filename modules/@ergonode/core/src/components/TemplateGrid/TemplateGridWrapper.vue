@@ -136,6 +136,9 @@ export default {
         ...mapState('authentication', {
             language: state => state.user.language,
         }),
+        ...mapState('list', {
+            disabledElements: state => state.disabledElements,
+        }),
         ...mapState('gridDesigner', {
             rows: state => state.rows,
             gridData: state => state.gridData,
@@ -277,16 +280,23 @@ export default {
                 const childrenForHiddenItem = this.hiddenItems[id];
 
                 for (let i = 0; i < childrenForHiddenItem.length; i += 1) {
-                    this.removeDisabledElement({
-                        languageCode: this.language,
-                        elementId: childrenForHiddenItem[i].id,
-                    });
+                    if (typeof this.disabledElements[this.language] !== 'undefined'
+                        && typeof this.disabledElements[this.language][childrenForHiddenItem[i].id] !== 'undefined') {
+                        this.removeDisabledElement({
+                            languageCode: this.language,
+                            elementId: childrenForHiddenItem[i].id,
+                        });
+                    }
                 }
             }
-            this.removeDisabledElement({
-                languageCode: this.language,
-                elementId: id,
-            });
+
+            if (typeof this.disabledElements[this.language] !== 'undefined'
+                && typeof this.disabledElements[this.language][id] !== 'undefined') {
+                this.removeDisabledElement({
+                    languageCode: this.language,
+                    elementId: id,
+                });
+            }
         },
     },
 };
@@ -301,27 +311,5 @@ export default {
         justify-content: space-between;
         height: 0;
         padding: 24px 24px 0;
-    }
-
-    .bounce-enter-active, .bounce-leave-active {
-        transform-origin: top left;
-    }
-
-    .bounce-enter-active {
-        animation: bounce-in 0.4s;
-    }
-
-    .bounce-leave-active {
-        animation: bounce-in 0.4s reverse;
-    }
-
-    @keyframes bounce-in {
-        0% {
-            transform: scale(1, 0);
-        }
-
-        100% {
-            transform: scale(1);
-        }
     }
 </style>
