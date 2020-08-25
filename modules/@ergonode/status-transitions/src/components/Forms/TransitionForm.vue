@@ -96,7 +96,7 @@ export default {
                 || status.id !== this.source.id);
         },
         isDisabledByPrivileges() {
-            return !this.$hasAccess([
+            return this.isDisabled && !this.$hasAccess([
                 PRIVILEGES.WORKFLOW.update,
             ]);
         },

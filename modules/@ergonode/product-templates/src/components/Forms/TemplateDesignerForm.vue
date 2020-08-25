@@ -30,6 +30,7 @@
                     :value="defaultTextAttribute"
                     required
                     label="Default label attribute"
+                    :disabled="isDisabledByPrivileges"
                     :fetch-options-request="getDefaultTextAttributeOptionsRequest"
                     @input="setDefaultTextAttributeValue" />
                 <TranslationLazySelect
@@ -37,6 +38,7 @@
                     :value="defaultImageAttribute"
                     clearable
                     label="Default image attribute"
+                    :disabled="isDisabledByPrivileges"
                     :fetch-options-request="getDefaultImageAttributeOptionsRequest"
                     @input="setDefaultImageAttributeValue" />
             </FormSection>
@@ -76,7 +78,7 @@ export default {
             return Boolean(this.templateTitle);
         },
         isDisabledByPrivileges() {
-            return !this.$hasAccess([
+            return this.isDisabled && !this.$hasAccess([
                 PRIVILEGES.TEMPLATE_DESIGNER.update,
             ]);
         },

@@ -70,7 +70,7 @@ export default {
             isDefaultStatus: state => state.isDefaultStatus,
         }),
         isDisabledByPrivileges() {
-            return !this.$hasAccess([
+            return !this.isDisabled && this.$hasAccess([
                 PRIVILEGES.WORKFLOW.update,
             ]);
         },
