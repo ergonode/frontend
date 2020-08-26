@@ -68,10 +68,6 @@ export default {
             type: Object,
             default: () => ({}),
         },
-        languageCode: {
-            type: String,
-            default: 'EN',
-        },
     },
     fetch() {
         this.$axios.$get(`${this.languageCode.toLowerCase()}/products/${this.rowId}`).then(({
@@ -96,6 +92,15 @@ export default {
         };
     },
     computed: {
+        languageCode() {
+            const columnIdParts = this.columnId.split(':');
+
+            if (columnIdParts.length < 1) {
+                return '';
+            }
+
+            return columnIdParts[1];
+        },
         smallSize() {
             return SIZE.SMALL;
         },

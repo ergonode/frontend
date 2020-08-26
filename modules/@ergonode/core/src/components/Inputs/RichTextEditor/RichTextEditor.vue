@@ -280,10 +280,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .rich-text-editor {
-        $editor: &;
-
         position: relative;
         z-index: $Z_INDEX_LVL_2;
         display: flex;
@@ -328,6 +326,10 @@ export default {
                 }
             }
 
+            & > h1 {
+                background-color: #00A979;
+            }
+
             blockquote {
                 border-left: 3px solid rgba($GRAPHITE_COAL, 0.1);
                 color: rgba($GRAPHITE_COAL, 0.8);
@@ -362,6 +364,31 @@ export default {
             ul,
             ol {
                 padding-left: 1rem;
+            }
+
+            h1,
+            h2,
+            h3,
+            p,
+            ul,
+            ol,
+            pre,
+            blockquote {
+                margin: 1rem 0;
+
+                &:first-child {
+                    margin-top: 0;
+                }
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+
+            h1,
+            h2,
+            h3 {
+                line-height: 1.3;
             }
 
             li > p,

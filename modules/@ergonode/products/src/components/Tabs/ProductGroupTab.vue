@@ -163,8 +163,8 @@ export default {
         }),
         collectionCellBinding() {
             return {
-                imageColumn: `esa_default_image:${this.languageCode}`,
-                descriptionColumn: `esa_default_label:${this.languageCode}`,
+                imageColumn: 'esa_default_image',
+                descriptionColumn: 'esa_default_label',
             };
         },
         isUserAllowedToUpdate() {

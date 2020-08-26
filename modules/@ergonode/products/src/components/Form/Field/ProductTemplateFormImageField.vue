@@ -12,6 +12,7 @@
             :label="label"
             :required="properties.required"
             :disabled="disabled"
+            object-fit="contain"
             height="100%"
             @input="onValueChange" />
     </ProductTemplateFormField>

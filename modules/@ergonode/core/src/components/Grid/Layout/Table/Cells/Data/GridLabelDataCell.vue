@@ -66,7 +66,6 @@ export default {
                     value: this.cellData.value,
                     row: this.rowIndex,
                     column: this.columnIndex,
-                    languageCode: this.languageCode,
                     colors: this.column.colors,
                     rowId: this.rowId,
                     columnId: this.column.id,

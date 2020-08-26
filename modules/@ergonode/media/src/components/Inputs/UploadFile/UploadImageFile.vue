@@ -17,7 +17,7 @@
                             v-if="!multiple"
                             :api-path="`multimedia/${value}/download/default`"
                             :value="value"
-                            object-fit="none" />
+                            :object-fit="objectFit" />
                         <PictureCarousel
                             v-else
                             :image-ids="value"
@@ -120,6 +120,10 @@ export default {
                 SIZE.SMALL,
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
+        },
+        objectFit: {
+            type: String,
+            default: 'none',
         },
         height: {
             type: String,
