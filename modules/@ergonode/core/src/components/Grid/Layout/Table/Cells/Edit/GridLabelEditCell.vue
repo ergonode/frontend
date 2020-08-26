@@ -70,7 +70,7 @@ export default {
         },
     },
     fetch() {
-        this.$axios.$get(`${this.languageCode.toLowerCase()}/products/${this.rowId}`).then(({
+        this.$axios.$get(`${this.languageCode}/products/${this.rowId}`).then(({
             workflow = [],
         }) => {
             this.options = workflow.map(e => ({
