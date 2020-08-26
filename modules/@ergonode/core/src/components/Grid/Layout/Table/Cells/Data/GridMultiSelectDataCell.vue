@@ -90,7 +90,6 @@ export default {
                     value: this.cellData.value,
                     row: this.rowIndex,
                     column: this.columnIndex,
-                    languageCode: this.languageCode,
                     options: this.options,
                     rowId: this.rowId,
                     columnId: this.column.id,

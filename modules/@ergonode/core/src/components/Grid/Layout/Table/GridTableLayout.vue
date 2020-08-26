@@ -4,7 +4,7 @@
  */
 <template>
     <div
-        class="grid-table-layout"
+        :class="classes"
         ref="gridTableLayout"
         @focusin="onFocusInside"
         @focusout="onFocusOut">
@@ -285,6 +285,14 @@ export default {
         ...mapState('list', {
             disabledElements: state => state.disabledElements,
         }),
+        classes() {
+            return [
+                'grid-table-layout',
+                {
+                    'grid-table-layout--placeholder': this.dataCount === 0,
+                },
+            ];
+        },
         visibleColumns() {
             return this.columns.filter(column => column.visible);
         },
@@ -596,5 +604,9 @@ export default {
         position: relative;
         display: flex;
         overflow: auto;
+
+        &--placeholder {
+            flex-shrink: 0;
+        }
     }
 </style>

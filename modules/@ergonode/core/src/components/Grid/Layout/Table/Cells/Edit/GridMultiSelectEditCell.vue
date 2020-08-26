@@ -51,10 +51,6 @@ export default {
             type: Object,
             default: () => ({}),
         },
-        languageCode: {
-            type: String,
-            default: 'EN',
-        },
     },
     data() {
         return {
@@ -66,6 +62,15 @@ export default {
         };
     },
     computed: {
+        languageCode() {
+            const columnIdParts = this.columnId.split(':');
+
+            if (columnIdParts.length < 1) {
+                return '';
+            }
+
+            return columnIdParts[1];
+        },
         smallSize() {
             return SIZE.SMALL;
         },
