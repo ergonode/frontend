@@ -38,7 +38,7 @@ export default {
     },
     computed: {
         ...mapGetters('core', [
-            'getActiveLanguages',
+            'activeLanguages',
         ]),
     },
     mounted() {
@@ -46,7 +46,7 @@ export default {
             return min + Math.floor((max - min) * Math.random());
         }
 
-        this.getActiveLanguages.forEach((language) => {
+        this.activeLanguages.forEach((language) => {
             const value = randomInt(0, 100);
 
             this.datasets.push({

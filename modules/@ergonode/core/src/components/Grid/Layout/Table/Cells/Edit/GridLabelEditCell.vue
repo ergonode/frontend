@@ -9,6 +9,7 @@
                 v-model="localValue"
                 :autofocus="true"
                 :size="smallSize"
+                :disabled="disabled"
                 :clearable="true"
                 :options="options"
                 :error-messages="errorMessages"

@@ -10,6 +10,7 @@
                 :autofocus="true"
                 :size="smallSize"
                 :clearable="true"
+                :disabled="disabled"
                 :options="mappedOptions"
                 :error-messages="errorMessages"
                 @focus="onFocus" />

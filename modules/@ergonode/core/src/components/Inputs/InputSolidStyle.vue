@@ -194,8 +194,7 @@ export default {
         }
 
         &--disabled {
-            pointer-events: none;
-            cursor: not-allowed;
+            cursor: default;
 
             fieldset {
                 background-color: $WHITESMOKE;

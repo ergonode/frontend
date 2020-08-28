@@ -34,7 +34,9 @@
                                 </ListElementAction>
                             </ListElement>
                         </List>
-                        <div class="centering-container">
+                        <div
+                            v-if="!disabled"
+                            class="centering-container">
                             <Button
                                 :title="title"
                                 :size="smallSize"

@@ -107,7 +107,6 @@ export default {
         transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
 
         &--solid {
-            display: none;
             margin: 8px 0 4px;
         }
 

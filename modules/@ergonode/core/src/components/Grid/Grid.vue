@@ -39,8 +39,8 @@
                     <IconAddColumn :fill-color="color" />
                 </template>
             </DropZone>
-            <Preloader v-if="isPrefetchingData" />
-            <KeepAlive v-else>
+            <Preloader v-show="isPrefetchingData" />
+            <KeepAlive>
                 <GridTableLayout
                     v-if="isTableLayout"
                     :columns="columns"

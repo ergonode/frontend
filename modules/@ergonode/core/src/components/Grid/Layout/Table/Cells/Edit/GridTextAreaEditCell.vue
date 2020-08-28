@@ -11,6 +11,7 @@
                 height="134px"
                 v-model="localValue"
                 :autofocus="true"
+                :disabled="disabled"
                 :type="underlineInputType"
                 :error-messages="errorMessages"
                 resize="none" />

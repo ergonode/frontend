@@ -47,7 +47,7 @@
                 </div>
                 <div
                     class="centering-container"
-                    v-else>
+                    v-else-if="!disabled">
                     <Button
                         :title="title"
                         :size="smallSize"

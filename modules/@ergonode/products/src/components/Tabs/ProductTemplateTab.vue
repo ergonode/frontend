@@ -129,7 +129,7 @@ export default {
             id: state => state.id,
         }),
         ...mapGetters('core', [
-            'getRootOnLanguagesTree',
+            'rootLanguage',
         ]),
         smallSize() {
             return SIZE.SMALL;
@@ -163,7 +163,7 @@ export default {
                 PRIVILEGES.PRODUCT.update,
             ])
                 && languagePrivileges[code].edit
-                && this.getRootOnLanguagesTree.code !== code;
+                && this.rootLanguage.code !== code;
         },
     },
     created() {

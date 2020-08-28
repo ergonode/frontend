@@ -85,6 +85,5 @@ export default {
         box-shadow: $ELEVATOR_2_DP;
         transition: all 0.4s ease;
         color: $GRAPHITE;
-        cursor: default;
     }
 </style>
