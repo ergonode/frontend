@@ -11,7 +11,7 @@
         <List>
             <ListScrollableContainer>
                 <LanguagesListElement
-                    v-for="item in activeLanguages"
+                    v-for="item in filteredLanguages"
                     :key="item.id"
                     :item="item"
                     :is-draggable="isAllowedToUpdate"
@@ -52,7 +52,7 @@ export default {
         ...mapGetters('core', [
             'activeLanguages',
         ]),
-        activeLanguages() {
+        filteredLanguages() {
             if (this.filteredValue) {
                 const rgx = new RegExp(this.filteredValue, 'i');
 
@@ -62,6 +62,7 @@ export default {
                     }) => code.match(rgx) || name.match(rgx),
                 );
             }
+
             return this.activeLanguages;
         },
         isAllowedToUpdate() {

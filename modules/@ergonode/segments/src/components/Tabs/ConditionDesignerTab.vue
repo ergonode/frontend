@@ -74,15 +74,10 @@ export default {
                     component: () => import('@Conditions/components/Tabs/Lists/ConditionsListTab'),
                     iconComponent: () => import('@Core/components/Icons/Menu/IconCategory'),
                     props: {
-                        disabled: this.isDisabledByPrivileges,
+                        disabled: !this.isAllowedToUpdate,
                     },
                 },
             ];
-        },
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
-                PRIVILEGES.SEGMENT.update,
-            ]);
         },
         isDropZoneVisible() {
             return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;

@@ -20,7 +20,7 @@
                     :value="code"
                     required
                     :error-messages="errorMessages[codeFieldKey]"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     label="System name"
                     hint="System name must be unique"
                     @input="setCodeValue" />
@@ -30,7 +30,7 @@
                     label="Groups"
                     :multiselect="true"
                     :clearable="true"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     :error-messages="errorMessages[groupsFieldKey]"
                     :fetch-options-request="getAttributeGroupOptionsRequest"
                     @input="setGroupsValue" />
@@ -39,7 +39,7 @@
                     :value="type"
                     required
                     label="Type"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     :options="attributeTypeOptions"
                     :error-messages="errorMessages[typeFieldKey]"
                     @input="onTypeChange" />
@@ -51,7 +51,7 @@
                     :value="scope"
                     required
                     label="Scope"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     :options="attributeScopeOptions"
                     :error-messages="errorMessages[scopeFieldKey]"
                     @input="setScopeValue">
@@ -68,12 +68,12 @@
                     :label="paramsLabel"
                     :options="attributeParametersOptions"
                     :error-messages="errorMessages[paramsFieldKey]"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     @input="setParameterValue" />
                 <AttributeOptionKeyValues
                     v-show="hasOptions"
                     key="attrHasOptions"
-                    :disabled="isDisabledByPrivileges" />
+                    :disabled="!isAllowedToUpdate" />
                 <Toggler
                     v-if="isTextArea"
                     :value="parameter"
@@ -153,8 +153,8 @@ export default {
         isDisabled() {
             return Boolean(this.attrID);
         },
-        isDisabledByPrivileges() {
-            return this.isDisabled && !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,
             ]);
         },

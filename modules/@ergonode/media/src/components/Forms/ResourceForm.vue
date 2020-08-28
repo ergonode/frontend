@@ -12,7 +12,7 @@
                     :value="name"
                     required
                     :error-messages="errorMessages[nameFieldKey]"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     label="File name"
                     @input="setNameValue" />
                 <UploadImageFile
@@ -49,8 +49,8 @@ export default {
             id: state => state.id,
             name: state => state.name,
         }),
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.MULTIMEDIA.update,
             ]);
         },

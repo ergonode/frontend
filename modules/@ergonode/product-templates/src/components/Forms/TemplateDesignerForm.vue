@@ -14,14 +14,14 @@
                     required
                     :error-messages="errorMessages[nameFieldKey]"
                     label="Template name"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setTitleValue" />
                 <UploadImageFile
                     :data-cy="dataCyGenerator('image')"
                     :value="templateImage"
                     height="132px"
                     label="Template cover image"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     @input="setImageValue" />
             </FormSection>
             <FormSection title="Presentation product">
@@ -31,7 +31,7 @@
                     required
                     label="Default label attribute"
                     :fetch-options-request="getDefaultTextAttributeOptionsRequest"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     @input="setDefaultTextAttributeValue" />
                 <TranslationLazySelect
                     :data-cy="dataCyGenerator('default-image')"
@@ -39,7 +39,7 @@
                     clearable
                     label="Default image attribute"
                     :fetch-options-request="getDefaultImageAttributeOptionsRequest"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     @input="setDefaultImageAttributeValue" />
             </FormSection>
         </template>
@@ -77,8 +77,8 @@ export default {
         isDisabled() {
             return Boolean(this.templateTitle);
         },
-        isDisabledByPrivileges() {
-            return this.isDisabled && !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.TEMPLATE_DESIGNER.update,
             ]);
         },

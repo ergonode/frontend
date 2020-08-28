@@ -29,7 +29,13 @@
                     @click.native="onCreateExport" />
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs" />
+        <HorizontalRoutingTabBar :items="tabs">
+            <template #content>
+                <HorizontalRoutingTabBarContent
+                    :is-fetching-needed="fetchGridData"
+                    @fetched="onFetchedGridData" />
+            </template>
+        </HorizontalRoutingTabBar>
         <Footer flex-end>
             <Button
                 title="SAVE CHANNEL"
@@ -42,6 +48,7 @@
 
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
+import HorizontalRoutingTabBarContent from '@Core/components/TabBar/Routing/HorizontalRoutingTabBarContent';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -56,9 +63,17 @@ import {
 
 export default {
     name: 'ChannelPage',
+    components: {
+        HorizontalRoutingTabBarContent,
+    },
     mixins: [
         editPageMixin,
     ],
+    data() {
+        return {
+            fetchGridData: false,
+        };
+    },
     computed: {
         ...mapState('channels', {
             id: state => state.id,
@@ -81,6 +96,9 @@ export default {
         ...mapActions('channels', [
             'createExport',
         ]),
+        onFetchedGridData() {
+            this.fetchGridData = false;
+        },
         onCreateExport() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
@@ -91,6 +109,7 @@ export default {
             });
         },
         onExportSuccess() {
+            this.fetchGridData = true;
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Completed generating export file',
