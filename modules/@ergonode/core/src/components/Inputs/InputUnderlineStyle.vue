@@ -186,8 +186,6 @@ export default {
         }
 
         &--disabled {
-            cursor: default;
-
             #{$underline}__details-label {
                 color: $GRAPHITE_LIGHT;
             }
