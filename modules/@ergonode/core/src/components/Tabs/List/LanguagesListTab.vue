@@ -50,19 +50,19 @@ export default {
             languages: state => state.languages,
         }),
         ...mapGetters('core', [
-            'getActiveLanguages',
+            'activeLanguages',
         ]),
         activeLanguages() {
             if (this.filteredValue) {
                 const rgx = new RegExp(this.filteredValue, 'i');
 
-                return this.getActiveLanguages.filter(
+                return this.activeLanguages.filter(
                     ({
                         code, name,
                     }) => code.match(rgx) || name.match(rgx),
                 );
             }
-            return this.getActiveLanguages;
+            return this.activeLanguages;
         },
         isAllowedToUpdate() {
             return this.$hasAccess([

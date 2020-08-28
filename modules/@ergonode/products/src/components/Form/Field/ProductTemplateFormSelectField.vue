@@ -66,10 +66,6 @@ export default {
             type: Object,
             default: () => ({}),
         },
-        parameters: {
-            type: Object,
-            default: () => ({}),
-        },
         properties: {
             type: Object,
             default: () => ({}),

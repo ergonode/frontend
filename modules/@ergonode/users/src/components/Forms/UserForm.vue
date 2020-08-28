@@ -115,7 +115,7 @@ export default {
     },
     computed: {
         ...mapGetters('core', [
-            'getActiveLanguages',
+            'activeLanguages',
         ]),
         ...mapState('users', {
             userID: state => state.id,
@@ -142,7 +142,7 @@ export default {
             ]);
         },
         languageOptions() {
-            return this.getActiveLanguages.map(({
+            return this.activeLanguages.map(({
                 name,
             }) => name);
         },

@@ -7,7 +7,7 @@
         :row-height="templateRowHeight"
         :max-row="maxRows">
         <div
-            class="products-template-grid"
+            class="product-template-grid"
             :style="gridTemplateRows">
             <Component
                 v-for="(formField, index) in formFieldComponents"
@@ -15,7 +15,7 @@
                 :key="index"
                 v-bind="{
                     ...elements[index],
-                    disabled: isUserDisallowedToUpdate(elements[index].properties.scope),
+                    disabled: !isUserAllowedToUpdate(elements[index].properties.scope),
                     languageCode: language.code,
                 }"
                 @input="onValueChange" />
@@ -64,7 +64,7 @@ export default {
             user: state => state.user,
         }),
         ...mapGetters('core', [
-            'getRootOnLanguagesTree',
+            'rootLanguage',
         ]),
         templateRowHeight() {
             return 40;
@@ -92,7 +92,7 @@ export default {
         }) => () => import(`@Products/components/Form/Field/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`));
     },
     methods: {
-        isUserDisallowedToUpdate(scope) {
+        isUserAllowedToUpdate(scope) {
             const {
                 languagePrivileges,
             } = this.user;
@@ -100,11 +100,11 @@ export default {
                 code,
             } = this.language;
 
-            return !this.$hasAccess([
+            return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ])
-                || !languagePrivileges[code].edit
-                || (this.getRootOnLanguagesTree.code !== code && scope === SCOPE.GLOBAL);
+                && languagePrivileges[code].edit
+                && (this.rootLanguage.code === code || scope === SCOPE.LOCAL);
         },
         onValueChange(payload) {
             updateProductDraft().then(async (response) => {
@@ -122,7 +122,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .products-template-grid {
+    .product-template-grid {
         display: grid;
         grid-gap: 24px;
         grid-template-columns: repeat(4, 1fr);

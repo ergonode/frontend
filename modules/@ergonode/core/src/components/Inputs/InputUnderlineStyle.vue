@@ -186,8 +186,7 @@ export default {
         }
 
         &--disabled {
-            pointer-events: none;
-            cursor: not-allowed;
+            cursor: default;
 
             #{$underline}__details-label {
                 color: $GRAPHITE_LIGHT;
