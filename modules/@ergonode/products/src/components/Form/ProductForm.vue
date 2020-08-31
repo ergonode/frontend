@@ -11,27 +11,27 @@
                 <Select
                     :value="type"
                     required
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     label="Product type"
                     :options="productTypesValues"
                     @input="setTypeValue" />
                 <ProductAttributesBindingFormSection
                     v-show="isProductWithVariants"
-                    :disabled="isDisabledByPrivileges" />
+                    :disabled="!isAllowedToUpdate" />
                 <TextField
                     :value="sku"
                     hint="Products SKU must be unique"
                     label="SKU"
                     required
                     :error-messages="errorMessages[skuFieldKey]"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setSkuValue" />
                 <TranslationLazySelect
                     :value="template"
                     :required="true"
                     label="Product template"
                     :error-messages="errorMessages[templateIdFieldKey]"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     :fetch-options-request="getTemplatesOptionsRequest"
                     @input="setTemplateValue" />
                 <template v-for="(field, index) in extendedForm">
@@ -99,8 +99,8 @@ export default {
         isProductWithVariants() {
             return this.productTypeKey === PRODUCT_TYPE.WITH_VARIANTS;
         },
-        isDisabledByPrivileges() {
-            return this.isDisabled && !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ]);
         },
@@ -145,7 +145,7 @@ export default {
             props,
         }) {
             return {
-                disabled: this.isDisabledByPrivileges,
+                disabled: !this.isAllowedToUpdate,
                 ...props,
             };
         },

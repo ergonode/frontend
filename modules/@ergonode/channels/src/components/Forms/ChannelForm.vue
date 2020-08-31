@@ -12,7 +12,7 @@
                     :value="type"
                     required
                     label="Channel type"
-                    :disabled="isFetchingConfiguration || isDisabled || isDisabledByPrivileges"
+                    :disabled="isFetchingConfiguration || isDisabled || !isAllowedToUpdate"
                     :options="channelsOptions"
                     :error-messages="errorMessages[typeFieldKey]"
                     @input="setTypeValue">
@@ -87,8 +87,8 @@ export default {
 
             return this.schemas[this.type];
         },
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.CHANNEL.update,
             ]);
         },

@@ -25,7 +25,7 @@
                 <Button
                     title="IMPORT NOW"
                     :disabled="isCSVUploading"
-                    @click.native="onClose" />
+                    @click.native="onImportNow" />
             </div>
         </template>
     </ModalForm>
@@ -41,9 +41,6 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import UploadCSVFile from '@Media/components/Inputs/UploadFile/UploadCSVFile';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'UploadImportFileModalForm',
@@ -69,12 +66,11 @@ export default {
         },
     },
     methods: {
-        ...mapActions('import', [
-            '__clearStorage',
-        ]),
         onClose() {
-            this.__clearStorage();
             this.$emit('close');
+        },
+        onImportNow() {
+            this.$emit('create');
         },
         onUploadingCSVFile(progress) {
             this.isCSVUploading = progress;

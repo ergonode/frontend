@@ -13,7 +13,7 @@
                     :value="code"
                     required
                     :error-messages="errorMessages[codeFieldKey]"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     label="System name"
                     hint="System name must be unique"
                     @input="setCodeValue" />
@@ -44,8 +44,8 @@ export default {
         isDisabled() {
             return Boolean(this.categoryID);
         },
-        isDisabledByPrivileges() {
-            return this.isDisabled && !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.CATEGORY.update,
             ]);
         },
