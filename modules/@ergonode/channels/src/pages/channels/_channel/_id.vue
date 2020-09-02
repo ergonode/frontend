@@ -93,7 +93,7 @@ export default {
                 const tmp = JSON.parse(this.scheduler);
 
                 this.updateScheduler({
-                    data: removeObjectProperty(tmp, 'id'),
+                    data: tmp,
                     onSuccess: this.onUpdateSchedulerSuccess,
                     onError: this.onError,
                 });

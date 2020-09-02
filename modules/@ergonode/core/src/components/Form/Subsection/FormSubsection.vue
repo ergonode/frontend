@@ -2,12 +2,18 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
-    <div :class="classes">
+<template functional>
+    <div
+        :class=" [
+            'form-subsection',
+            {
+                'form-subsection--required': props.required,
+            },
+        ]">
         <span
-            v-if="title"
+            v-if="props.title"
             class="form-subsection__title"
-            v-text="title" />
+            v-text="props.title" />
         <slot />
     </div>
 </template>
@@ -23,16 +29,6 @@ export default {
         required: {
             type: Boolean,
             default: false,
-        },
-    },
-    computed: {
-        classes() {
-            return [
-                'form-subsection',
-                {
-                    'form-subsection--required': this.required,
-                },
-            ];
         },
     },
 };

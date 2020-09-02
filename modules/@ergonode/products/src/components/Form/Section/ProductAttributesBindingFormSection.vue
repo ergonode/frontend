@@ -7,7 +7,7 @@
         :disabled="isDisabled"
         add-list-title="ADD BINDING ATTRIBUTE"
         @add="addBindingAttribute">
-        <FormListSubsection v-if="selectAttributes.length">
+        <FormListSubsection v-if="bindingAttributesIds.length && selectAttributes.length">
             <ProductAttributeBindingField
                 v-for="(attribute, index) in bindingAttributesIds"
                 :key="index"

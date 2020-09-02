@@ -264,7 +264,12 @@ export default {
         },
         onRemoveImage() {
             if (this.multiple) {
-                this.$emit('input', this.value.filter(id => id !== this.value[this.currentIndex]));
+                const value = this.value.filter(id => id !== this.value[this.currentIndex]);
+
+                if (this.currentIndex > 0) {
+                    this.currentIndex -= 1;
+                }
+                this.$emit('input', value);
             } else {
                 this.$emit('input', '');
             }

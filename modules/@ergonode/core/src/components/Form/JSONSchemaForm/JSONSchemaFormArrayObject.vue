@@ -55,9 +55,7 @@ export default {
     },
     data() {
         return {
-            rowValues: this.value.length ? this.value : [
-                {},
-            ],
+            rowValues: this.value,
         };
     },
     computed: {
