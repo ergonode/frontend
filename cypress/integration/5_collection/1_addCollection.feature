@@ -2,7 +2,6 @@ Feature: Collection adding
   This feature allows adding collection
 
   Background:
-    Given I am authenticated as "admin"
     Given I open "collections/grid" page
     When I click on "new-collection" button
     Then Element "modal" is "visible"
@@ -12,6 +11,7 @@ Feature: Collection adding
     And I choose 0 option from "collection-typeId" select field
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
+    And I open "collections/grid" page
     Then On "grid" I can see row 0 with columns data: "{'0': 'collection_1', '4': '0'}"
     And On "grid" I click on "delete" button for row 0
     Then I close modal by button
@@ -22,6 +22,7 @@ Feature: Collection adding
     And I choose 0 option from "collection-typeId" select field
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
+    And I open "collections/grid" page
     Then On "grid" I can see row 0 with columns data: "{'0': 'collection_2', '4': '0'}"
     And On "grid" I click on "delete" button for row 0
     Then I confirm modal
@@ -48,8 +49,8 @@ Feature: Collection adding
     And I see "collections/collection/%UUID%/general" page
     Then I click tab with "Translations" text
     And I choose "[1]" options from "translation-language-select" multi select field
-    Then I fill the "collection-name" input with the "collection-name_1_EN" term for "en" translation
-    Then I fill the "collection-description" textarea with the "collection-description_1_EN" term for "en" translation
-    And I fill the "collection-name" input with the "collection-name_1_PL" term for "pl" translation
-    Then I fill the "collection-description" textarea with the "collection-description_1_PL" term for "pl" translation
+    Then I fill the "collection-name" input with the "collection-name_1_EN" term for "en_GB" translation
+    Then I fill the "collection-description" textarea with the "collection-description_1_EN" term for "en_GB" translation
+    And I fill the "collection-name" input with the "collection-name_1_PL" term for "pl_PL" translation
+    Then I fill the "collection-description" textarea with the "collection-description_1_PL" term for "pl_PL" translation
     And I click on "save-collection" button

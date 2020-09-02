@@ -8,16 +8,26 @@ import {
 } from 'cypress-cucumber-preprocessor/steps';
 
 import {
+    LANGUAGE,
+} from '../../../defaults';
+import {
     checkGridRow,
-    getToken,
     noGridRow,
     removeOnGrid,
+} from '../../../models/navigation';
+import {
+    getToken,
     removeRequest,
     sendPostRequest,
-} from '../../models/addingItems';
+} from '../../../models/requests';
+
+before(() => {
+    cy.login(Cypress.env('adminEmail'), Cypress.env('adminPass'));
+});
 
 beforeEach(() => {
-    cy.apiRequest('POST', 'en/categories').as('POST-REQUEST');
+    Cypress.Cookies.preserveOnce('jwt');
+    cy.apiRequest('POST', `${LANGUAGE}/categories`).as('POST-REQUEST');
 });
 
 Then('I send a {string} request and status code should be {int}', (reqType, status) => {
@@ -25,7 +35,7 @@ Then('I send a {string} request and status code should be {int}', (reqType, stat
     sendPostRequest({
         reqType,
         status,
-        urlRegExp: /\/en\/categories$/,
+        urlRegExp: /\/categories$/,
     });
 });
 
@@ -49,7 +59,7 @@ Then('I remove {string} element by {string} request', (element, reqType) => {
     removeRequest({
         element,
         reqType,
-        path: 'en/categories',
+        path: `${LANGUAGE}/categories`,
     });
 });
 

@@ -37,45 +37,6 @@ export const sendPostRequest = ({
     });
 };
 
-export const checkGridRow = ({
-    gridId, rowNr, columns,
-}) => {
-    const parsedColumns = JSON.parse(columns.replace(/'/g, '"'));
-
-    cy.get(`[data-cy=${gridId}]`).should('be.visible').as('grid');
-    cy.wrap(Object.keys(parsedColumns)).each((columnIndex) => {
-        cy.get('@grid').find(`.coordinates-${columnIndex}-${rowNr + 2}`).should('be.visible')
-            .as('checkingCell');
-        if (parsedColumns[columnIndex] === 'true' || parsedColumns[columnIndex] === 'false') {
-            cy.get('@checkingCell').find('input').should('have.value', parsedColumns[columnIndex]);
-        } else {
-            cy.get('@checkingCell').contains(parsedColumns[columnIndex]);
-        }
-    });
-};
-
-export const noGridRow = ({
-    gridId, rowNr, columns,
-}) => {
-    const parsedColumns = JSON.parse(columns.replace(/'/g, '"'));
-
-    cy.get(`[data-cy=${gridId}]`).should('be.visible').as('grid');
-    cy.wrap(Object.keys(parsedColumns)).each((columnIndex) => {
-        cy.get('@grid').find(`.coordinates-${columnIndex}-${rowNr + 2}`).should('not.exist');
-    });
-};
-
-export const removeOnGrid = ({
-    gridId, action, rowNr,
-}) => {
-    cy.get(`[data-cy=${gridId}]`).should('be.visible').as('grid');
-    cy.get('[data-cy=pinned-section]').as('pinned');
-    cy.get('@pinned').find(`[column-id=${action}] .grid-table-cell`).eq(rowNr + 2).as('delete');
-    cy.get('@delete').click({
-        force: true,
-    });
-};
-
 export const removeRequest = ({
     element, reqType, path,
 }) => {

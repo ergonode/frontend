@@ -42,7 +42,7 @@ export default {
     computed: {
         isUserAllowedToUpdate() {
             return this.$hasAccess([
-                PRIVILEGES.CATEGORY.UPDATE,
+                PRIVILEGES.CATEGORY.update,
             ]);
         },
         nameFieldKey() {
