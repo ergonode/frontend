@@ -10,7 +10,8 @@
         <template #activator>
             <InputController>
                 <div class="upload-files">
-                    <VerticalFixedScroll>
+                    <Preloader v-show="isPrefetchingData" />
+                    <VerticalFixedScroll v-if="!isPrefetchingData">
                         <List v-if="isValue">
                             <ListElement
                                 v-for="file in value"
@@ -20,9 +21,11 @@
                                     <IconFile :fill-color="greenColor" />
                                 </ListElementIcon>
                                 <ListElementDescription>
-                                    <ListElementTitle :title="file" />
+                                    <ListElementTitle :title="localValue[file]" />
                                 </ListElementDescription>
-                                <ListElementAction :size="smallSize">
+                                <ListElementAction
+                                    v-if="!disabled"
+                                    :size="smallSize">
                                     <IconButton
                                         :size="smallSize"
                                         :theme="secondaryTheme"
@@ -34,7 +37,9 @@
                                 </ListElementAction>
                             </ListElement>
                         </List>
-                        <div class="centering-container">
+                        <div
+                            v-if="!disabled"
+                            class="centering-container">
                             <Button
                                 :title="title"
                                 :size="smallSize"
@@ -74,6 +79,7 @@ import InputController from '@Core/components/Inputs/InputController';
 import InputLabel from '@Core/components/Inputs/InputLabel';
 import InputSolidStyle from '@Core/components/Inputs/InputSolidStyle';
 import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
+import Preloader from '@Core/components/Preloader/Preloader';
 import {
     SIZE,
     THEME,
@@ -81,10 +87,14 @@ import {
 import {
     MEDIA_TYPE,
 } from '@Media/defaults';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'UploadFiles',
     components: {
+        Preloader,
         InputController,
         Button,
         IconAdd,
@@ -134,11 +144,16 @@ export default {
     },
     data() {
         return {
+            isPrefetchingData: false,
             isModalVisible: false,
             currentIndex: 0,
+            localValue: {},
         };
     },
     computed: {
+        ...mapState('authentication', {
+            languageCode: state => state.user.language,
+        }),
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -183,6 +198,32 @@ export default {
         },
         isValue() {
             return this.value.length > 0;
+        },
+    },
+    watch: {
+        value: {
+            immediate: true,
+            async handler() {
+                const requests = [];
+
+                this.value.forEach((id) => {
+                    if (typeof this.localValue[id] === 'undefined') {
+                        requests.push(this.$axios.$get(`${this.languageCode}/multimedia/${id}`).then(({
+                            name,
+                        }) => {
+                            this.localValue[id] = name;
+                        }));
+                    }
+                });
+
+                if (requests.length) {
+                    this.isPrefetchingData = true;
+
+                    await Promise.all(requests);
+
+                    this.isPrefetchingData = false;
+                }
+            },
         },
     },
     methods: {

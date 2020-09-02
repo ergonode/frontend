@@ -91,6 +91,7 @@ export default {
                     row: this.rowIndex,
                     column: this.columnIndex,
                     options: this.options,
+                    disabled: this.isLocked,
                     rowId: this.rowId,
                     columnId: this.column.id,
                     errorMessages: this.errorMessages,

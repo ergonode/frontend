@@ -51,14 +51,14 @@ export default {
             userLanguageCode: state => state.user.language,
         }),
         ...mapGetters('core', [
-            'getActiveLanguages',
+            'activeLanguages',
             'getActiveLanguageByCode',
         ]),
         smallSize() {
             return SIZE.SMALL;
         },
         languageOptions() {
-            return this.getActiveLanguages.map(({
+            return this.activeLanguages.map(({
                 code, name,
             }) => ({
                 id: code,

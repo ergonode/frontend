@@ -55,7 +55,7 @@ export default {
     },
     computed: {
         ...mapGetters('core', [
-            'getActiveLanguages',
+            'activeLanguages',
         ]),
         ...mapState('users', {
             languagePrivilegesCollection: state => state.languagePrivilegesCollection,
@@ -106,7 +106,7 @@ export default {
             });
         },
         updateGridData() {
-            const fullDataList = this.getActiveLanguages.map(({
+            const fullDataList = this.activeLanguages.map(({
                 name, code,
             }) => ({
                 name,

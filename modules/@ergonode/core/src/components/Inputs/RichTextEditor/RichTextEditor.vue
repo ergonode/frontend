@@ -19,6 +19,7 @@
         @mouseup="onMouseUp">
         <template #activator>
             <RichTextEditorMenuBubble
+                v-if="!disabled"
                 :editor="editor"
                 ref="menuBubble"
                 @active="onMenuBubbleActive" />
@@ -32,8 +33,7 @@
                             :editor="editor" />
                     </VerticalFixedScroll>
                     <RichTextEditorMenu
-                        v-if="isSolidType"
-                        ref="menu"
+                        v-if="isSolidType && isFocused"
                         :type="type"
                         :editor="editor" />
                 </div>
@@ -183,7 +183,6 @@ export default {
     data() {
         return {
             isFocused: false,
-            isMouseMoving: false,
             editor: null,
         };
     },
@@ -199,6 +198,13 @@ export default {
         },
         informationLabel() {
             return this.errorMessages || this.hint;
+        },
+    },
+    watch: {
+        disabled() {
+            this.editor.setOptions({
+                editable: !this.disabled,
+            });
         },
     },
     mounted() {
@@ -230,6 +236,7 @@ export default {
                     showOnlyCurrent: true,
                 }),
             ],
+            editable: !this.disabled,
             autofocus: this.autofocus,
             content: this.value,
             onFocus: this.onFocus,
@@ -241,40 +248,48 @@ export default {
     },
     methods: {
         onMenuBubbleActive(isActive) {
-            this.isFocused = isActive;
+            if (!this.isFocused) {
+                this.isFocused = isActive;
+            }
         },
-        onFocus() {
+        onFocus({
+            event,
+        }) {
+            if (this.disabled) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                return;
+            }
+
             this.isFocused = true;
         },
         onBlur() {
             this.isFocused = false;
-            this.isMouseMoving = false;
 
-            this.$emit('blur', this.editor.getHTML());
+            if (!this.disabled) {
+                this.$emit('blur', this.editor.getHTML());
+            }
         },
         onMouseDown(event) {
-            this.$refs.activator.$el.addEventListener('mousemove', this.onMouseMove);
+            if (this.disabled) {
+                return;
+            }
 
-            const isClickedInsideMenu = this.$refs.menu.$el.contains(event.target);
             const isClickedInsideEditor = this.$refs.editorContent.$el.contains(event.target);
 
-            if (isClickedInsideMenu || !isClickedInsideEditor) {
+            if (!isClickedInsideEditor) {
                 event.preventDefault();
                 event.stopPropagation();
             }
         },
         onMouseUp() {
-            this.$refs.activator.$el.removeEventListener('mousemove', this.onMouseMove);
-
-            if (!this.isMouseMoving) {
-                this.editor.focus();
-                this.isFocused = true;
+            if (this.disabled) {
+                return;
             }
 
-            this.isMouseMoving = false;
-        },
-        onMouseMove() {
-            this.isMouseMoving = true;
+            this.editor.focus();
+            this.isFocused = true;
         },
     },
 };
@@ -289,7 +304,6 @@ export default {
         flex-direction: column;
         height: 100%;
         box-sizing: border-box;
-        background-color: $WHITE;
 
         &__content {
             position: relative;
@@ -324,10 +338,6 @@ export default {
                 code {
                     display: block;
                 }
-            }
-
-            & > h1 {
-                background-color: #00A979;
             }
 
             blockquote {
@@ -403,12 +413,6 @@ export default {
 
             .ProseMirror:focus {
                 outline: none;
-            }
-        }
-
-        &:focus-within {
-            .rich-text-editor-menu {
-                display: grid;
             }
         }
     }

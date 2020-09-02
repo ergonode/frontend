@@ -2,12 +2,12 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
+<template functional>
     <section class="form-section">
         <legend
-            v-if="title"
+            v-if="props.title"
             class="form-section__title"
-            v-text="title" />
+            v-text="props.title" />
         <fieldset class="form-section__fields">
             <slot />
         </fieldset>

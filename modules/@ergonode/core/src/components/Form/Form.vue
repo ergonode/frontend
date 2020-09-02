@@ -42,6 +42,9 @@
 import {
     RED,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import Divider from '@Core/components/Dividers/Divider';
+import IconError from '@Core/components/Icons/Feedback/IconError';
+import LinkButton from '@Core/components/LinkButton/LinkButton';
 import {
     mapActions,
     mapState,
@@ -50,9 +53,9 @@ import {
 export default {
     name: 'Form',
     components: {
-        LinkButton: () => import('@Core/components/LinkButton/LinkButton'),
-        IconError: () => import('@Core/components/Icons/Feedback/IconError'),
-        Divider: () => import('@Core/components/Dividers/Divider'),
+        LinkButton,
+        IconError,
+        Divider,
     },
     props: {
         title: {

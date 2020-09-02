@@ -310,12 +310,14 @@ export default {
         editCellComponent() {
             const type = capitalizeAndConcatenationArray(this.editCell.type.split('_'));
 
-            return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Grid${type}EditCell`);
+            return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Grid${type}EditCell`)
+                .catch(() => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridTextEditCell'));
         },
         editFilterCellComponent() {
             const type = capitalizeAndConcatenationArray(this.editFilterCell.type.split('_'));
 
-            return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Filter/Grid${type}EditFilterCell`);
+            return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Filter/Grid${type}EditFilterCell`)
+                .catch(() => import('@Core/components/Grid/Layout/Table/Cells/Edit/Filter/GridTextEditFilterCell'));
         },
         dataCount() {
             return this.rows.length;

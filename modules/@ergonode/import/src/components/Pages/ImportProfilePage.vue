@@ -11,17 +11,16 @@
                 <NavigationBackFab />
             </template>
             <template #mainAction>
-                <!--                TODO uncomment when it's implemented at BE-->
-                <!--                <Button-->
-                <!--                    :theme="secondaryTheme"-->
-                <!--                    :size="smallSize"-->
-                <!--                    title="REMOVE IMPORT"-->
-                <!--                    :disabled="!isUserAllowedToDelete"-->
-                <!--                    @click.native="onRemove">-->
-                <!--                    <template #prepend="{ color }">-->
-                <!--                        <IconDelete :fill-color="color" />-->
-                <!--                    </template>-->
-                <!--                </Button>-->
+                <Button
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    title="REMOVE IMPORT"
+                    :disabled="!isUserAllowedToDelete"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete :fill-color="color" />
+                    </template>
+                </Button>
                 <Button
                     title="IMPORT NOW"
                     :size="smallSize"
@@ -30,7 +29,13 @@
                     @click.native="onShowModal" />
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs" />
+        <HorizontalRoutingTabBar :items="tabs">
+            <template #content>
+                <HorizontalRoutingTabBarContent
+                    :is-fetching-needed="fetchGridData"
+                    @fetched="onFetchedGridData" />
+            </template>
+        </HorizontalRoutingTabBar>
         <Footer flex-end>
             <Button
                 title="SAVE IMPORT PROFILE"

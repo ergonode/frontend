@@ -13,7 +13,7 @@
                     :value="code"
                     required
                     :error-messages="errorMessages[codeFieldKey]"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     label="System name"
                     hint="System name must be unique"
                     @input="setCodeValue" />
@@ -22,7 +22,7 @@
                     :value="type"
                     required
                     label="Type"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errorMessages[typeIdFieldKey]"
                     :fetch-options-request="getCollectionTypesOptionsRequest"
                     @input="setTypeValue" />
@@ -54,8 +54,8 @@ export default {
             code: state => state.code,
             type: state => state.type,
         }),
-        isDisabledByPrivileges() {
-            return this.isDisabled && !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.PRODUCT_COLLECTION.update,
             ]);
         },

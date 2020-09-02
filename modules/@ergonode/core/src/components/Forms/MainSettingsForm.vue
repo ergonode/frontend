@@ -14,7 +14,7 @@
                     :clearable="true"
                     :searchable="true"
                     :sticky-search="true"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     @input="setSelectedLanguages"
                     @search="onSearch">
                     <template #append>
@@ -71,8 +71,8 @@ export default {
                 value,
             }) => value).join(', ');
         },
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.SETTINGS.update,
             ]);
         },

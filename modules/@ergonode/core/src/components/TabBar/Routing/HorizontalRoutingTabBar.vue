@@ -35,12 +35,16 @@
 </template>
 
 <script>
+import HorizontalRoutingTabBarContent from '@Core/components/TabBar/Routing/HorizontalRoutingTabBarContent';
+import HorizontalRoutingTabBarItem from '@Core/components/TabBar/Routing/HorizontalRoutingTabBarItem';
+import TabBarItemSlider from '@Core/components/TabBar/TabBarItemSlider';
+
 export default {
     name: 'HorizontalRoutingTabBar',
     components: {
-        TabBarItemSlider: () => import('@Core/components/TabBar/TabBarItemSlider'),
-        HorizontalRoutingTabBarContent: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBarContent'),
-        HorizontalRoutingTabBarItem: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBarItem'),
+        TabBarItemSlider,
+        HorizontalRoutingTabBarContent,
+        HorizontalRoutingTabBarItem,
     },
     props: {
         items: {

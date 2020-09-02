@@ -66,6 +66,7 @@ export default {
                     value: this.cellData.value,
                     row: this.rowIndex,
                     column: this.columnIndex,
+                    disabled: this.isLocked,
                     colors: this.column.colors,
                     rowId: this.rowId,
                     columnId: this.column.id,

@@ -19,7 +19,7 @@
                     :required="properties.required"
                     :disabled="disabled"
                     @focus="onFocus"
-                    @input="debounceValueChange">
+                    @input="onValueChange">
                     <template #append>
                         <InfoHint
                             v-if="properties.hint"
@@ -44,9 +44,6 @@ import {
 } from '@Core/models/mappers/translationsMapper';
 import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import {
-    debounce,
-} from 'debounce';
-import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -68,10 +65,6 @@ export default {
             type: Object,
             default: () => ({}),
         },
-        parameters: {
-            type: Object,
-            default: () => ({}),
-        },
         properties: {
             type: Object,
             default: () => ({}),
@@ -88,11 +81,6 @@ export default {
             type: String,
             required: true,
         },
-    },
-    data() {
-        return {
-            debounceValueChange: null,
-        };
     },
     computed: {
         ...mapState('product', {
@@ -128,9 +116,6 @@ export default {
                 languageCode: this.languageCode,
             });
         },
-    },
-    created() {
-        this.debounceValueChange = debounce(this.onValueChange, 500);
     },
     methods: {
         ...mapActions('product', [

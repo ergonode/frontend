@@ -14,7 +14,7 @@
                     label="From"
                     :clearable="true"
                     :options="sourceOptions"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errorMessages[sourceFieldKey]"
                     @input="setSourceValue" />
                 <TranslationSelect
@@ -23,7 +23,7 @@
                     label="To"
                     :clearable="true"
                     :options="destinationOptions"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errorMessages[destinationFieldKey]"
                     @input="setDestinationValue" />
             </FormSection>
@@ -34,7 +34,7 @@
                     :clearable="true"
                     :multiselect="true"
                     label="Role"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     :error-messages="errorMessages[roleFieldKey]"
                     :fetch-options-request="getRolesOptionsRequest"
                     @input="setRolesValue" />
@@ -95,8 +95,8 @@ export default {
             return this.statuses.filter(status => !this.source
                 || status.id !== this.source.id);
         },
-        isDisabledByPrivileges() {
-            return this.isDisabled && !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.WORKFLOW.update,
             ]);
         },

@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormSubsection :title="schema.title">
+    <FormSubsection
+        :title="schema.title"
+        :required="schema.isRequired">
         <Component
             :is="arrayComponent"
             :value="value"

@@ -12,7 +12,7 @@
                     :value="type"
                     required
                     label="Profile type"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     :options="sourcesOptions"
                     :error-messages="errorMessages[typeFieldKey]"
                     @input="setTypeValue">
@@ -87,8 +87,8 @@ export default {
 
             return this.schemas[this.type];
         },
-        isDisabledByPrivileges() {
-            return this.isDisabled && !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.IMPORT.update,
             ]);
         },

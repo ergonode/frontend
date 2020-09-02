@@ -13,7 +13,7 @@
                     resize="none"
                     height="150px"
                     :error-messages="errorMessages[skusFieldKey]"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     @input="onSKUChange" />
             </FormSection>
         </template>
@@ -37,8 +37,8 @@ export default {
         },
     },
     computed: {
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.PRODUCT_COLLECTION.update,
             ]);
         },

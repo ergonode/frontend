@@ -12,14 +12,14 @@
                     :value="code"
                     required
                     :error-messages="errorMessages[colorFieldKey]"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     label="System name"
                     hint="System name must be unique"
                     @input="setCodeValue" />
                 <CheckBox
                     :value="isDefaultStatus"
                     label="Default status of new products"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     @input="setStatusAsDefaultValue">
                     <template #append>
                         <InfoHint hint="You may set only one status as a default" />
@@ -35,7 +35,7 @@
                     :fixed-content="false"
                     label="Badge color"
                     hint="Badge color is needed for presentation purpose"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     @input="setColorValue" />
             </FormSection>
         </template>
@@ -69,8 +69,8 @@ export default {
             color: state => state.color,
             isDefaultStatus: state => state.isDefaultStatus,
         }),
-        isDisabledByPrivileges() {
-            return !this.isDisabled && this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.WORKFLOW.update,
             ]);
         },

@@ -12,7 +12,7 @@
                     :value="name"
                     required
                     :error-messages="errorMessages[nameFieldKey]"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     label="Unit name"
                     hint="System name must be unique"
                     @input="setNameValue" />
@@ -20,7 +20,7 @@
                     :value="symbol"
                     required
                     :error-messages="errorMessages[symbolFieldKey]"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     label="Unit symbol"
                     hint="System name must be unique"
                     @input="setSymbolValue" />
@@ -48,8 +48,8 @@ export default {
             name: state => state.name,
             symbol: state => state.symbol,
         }),
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.SETTINGS.update,
             ]);
         },

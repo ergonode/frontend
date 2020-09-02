@@ -13,7 +13,7 @@
                     required
                     label="Role name"
                     :error-messages="errorMessages[nameFieldKey]"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setNameValue" />
                 <TextArea
                     :value="description"
@@ -22,7 +22,7 @@
                     resize="none"
                     height="150px"
                     :error-messages="errorMessages[descriptionFieldKey]"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     @input="setDescriptionValue" />
             </FormSection>
         </template>
@@ -53,8 +53,8 @@ export default {
         isDisabled() {
             return Boolean(this.roleID);
         },
-        isDisabledByPrivileges() {
-            return this.isDisabled && !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.USER_ROLE.update,
             ]);
         },

@@ -13,7 +13,7 @@
                     :value="code"
                     required
                     label="System name"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errorMessages[codeFieldKey]"
                     hint="System name must be unique"
                     @input="setCodeValue" />
@@ -48,8 +48,8 @@ export default {
         isDisabled() {
             return Boolean(this.segmentId);
         },
-        isDisabledByPrivileges() {
-            return this.isDisabled && !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.SEGMENT.update,
             ]);
         },

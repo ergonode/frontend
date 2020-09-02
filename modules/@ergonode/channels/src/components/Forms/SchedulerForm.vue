@@ -11,20 +11,20 @@
                 <Toggler
                     :value="isActive"
                     label="Is active"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     :error-messages="errorMessages[activeFieldKey]"
                     @input="setIsActiveValue" />
                 <DatePicker
                     :value="date"
                     :placeholder="format"
                     :format="format"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     :error-messages="errorMessages[startFieldKey]"
                     label="Date"
                     @input="setDateChange" />
                 <TextField
                     :value="time"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     :input="timeInputType"
                     :error-messages="errorMessages[startFieldKey]"
                     label="Started on"
@@ -32,7 +32,7 @@
                 <Divider />
                 <TextField
                     :value="recurrency"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     :input="timeInputType"
                     :error-messages="errorMessages[hourFieldKey]"
                     label="Recurrency"
@@ -77,8 +77,8 @@ export default {
         ...mapState('channels', [
             'scheduler',
         ]),
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.CHANNEL.update,
             ]);
         },

@@ -31,9 +31,6 @@ export default {
         classes() {
             return [
                 'template-form-field',
-                {
-                    'template-form-field--draft': this.draft,
-                },
             ];
         },
         formFieldPosition() {
@@ -54,11 +51,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .template-form-field {
-        &--draft {
-            background-color: $GREEN_LIGHT;
-        }
-    }
-</style>

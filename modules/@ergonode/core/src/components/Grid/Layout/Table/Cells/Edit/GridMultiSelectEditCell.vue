@@ -10,6 +10,7 @@
                 :autofocus="true"
                 :size="smallSize"
                 :clearable="true"
+                :disabled="disabled"
                 :multiselect="true"
                 :options="mappedOptions"
                 :error-messages="errorMessages"

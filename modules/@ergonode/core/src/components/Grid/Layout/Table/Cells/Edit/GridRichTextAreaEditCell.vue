@@ -10,6 +10,7 @@
             <RichTextEditor
                 :style="{height: '134px'}"
                 :value="localValue"
+                :disabled="disabled"
                 :autofocus="true"
                 :type="underlineInputType"
                 @blur="onRTEValueChange" />
