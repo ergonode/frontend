@@ -8,7 +8,7 @@
         :disabled="disabled"
         add-list-title="ADD OPTION KEY"
         @add="addOptionKey">
-        <FormListSubsection>
+        <FormListSubsection v-if="optionIndexes.length">
             <FormListElementField
                 v-for="(fieldKey, i) in optionIndexes"
                 :key="fieldKey"

@@ -76,6 +76,10 @@ export default {
                 value: name,
             });
             commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
                 key: 'image',
                 value: imageID,
             });
