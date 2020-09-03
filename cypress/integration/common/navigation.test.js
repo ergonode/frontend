@@ -12,6 +12,11 @@ import {
 import {
     MultiSteps,
 } from '../../models';
+import {
+    actionOnGrid,
+    checkGridRow,
+    noGridRow,
+} from '../../models/navigation';
 
 MultiSteps([
     Given,
@@ -192,4 +197,36 @@ MultiSteps([
     });
     cy.get(`[data-cy=${id}-drop-down]`).find('button').contains('OK').click();
     cy.get(`[data-cy=${id}-drop-down]`).should('be.not.visible');
+});
+
+MultiSteps([
+    And,
+    Then,
+], 'On {string} I can see row with {string} value and columns data: {string}', (gridId, searchValue, columns) => {
+    checkGridRow({
+        gridId,
+        searchValue,
+        columns,
+    });
+});
+
+MultiSteps([
+    And,
+    Then,
+], 'On {string} I can not see row with {string} value', (gridId, searchValue) => {
+    noGridRow({
+        gridId,
+        searchValue,
+    });
+});
+
+MultiSteps([
+    And,
+    Then,
+], 'On {string} I click on {string} button for row with {string} value', (gridId, action, searchValue) => {
+    actionOnGrid({
+        gridId,
+        action,
+        searchValue,
+    });
 });

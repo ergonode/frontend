@@ -13,8 +13,8 @@ Feature: Template adding
     Then I send a "POST" request and status code should be 201
     And I open "product-templates" page
     Then I set "table" view on the grid
-    Then On "grid" I can see row 0 with columns data: "{'0': 'template_1'}"
-    And On "grid" I click on "delete" button for row 0
+    Then On "grid" I can see row with "template_1" value and columns data: "{'0': 'template_1'}"
+    And On "grid" I click on "delete" button for row with "template_1" value
     Then I close modal by button
     And I remove "this" element by "DELETE" request
 
@@ -25,10 +25,10 @@ Feature: Template adding
     Then I send a "POST" request and status code should be 201
     And I open "product-templates" page
     Then I set "table" view on the grid
-    Then On "grid" I can see row 0 with columns data: "{'0': 'template_2'}"
-    And On "grid" I click on "delete" button for row 0
+    Then On "grid" I can see row with "template_2" value and columns data: "{'0': 'template_2'}"
+    And On "grid" I click on "delete" button for row with "template_2" value
     Then I confirm modal
-    And On "grid" I can not see row 0 with columns data: "{'0': 'template_2'}"
+    And On "grid" I can not see row with "template_2" value
 
   Scenario: Add template and delete from edit
     When I fill the "template-name" input with the "template_3" term
@@ -49,5 +49,3 @@ Feature: Template adding
     And On "modal" element I click button with "CREATE & EDIT" text
     Then I send a "POST" request and status code should be 201
     And I see "product-templates/template/%UUID%/general" page
-    And I fill the "template-name" input with the "template_test" term
-    And I click on "save-template" button

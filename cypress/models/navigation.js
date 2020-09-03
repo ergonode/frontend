@@ -38,41 +38,50 @@ export const sendPostRequest = ({
 };
 
 export const checkGridRow = ({
-    gridId, rowNr, columns,
+    gridId, searchValue, columns,
 }) => {
     const parsedColumns = JSON.parse(columns.replace(/'/g, '"'));
 
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(100);
     cy.get(`[data-cy=${gridId}]`).should('be.visible').as('grid');
-    cy.wrap(Object.keys(parsedColumns)).each((columnIndex) => {
-        cy.get('@grid').find(`.coordinates-${columnIndex}-${rowNr + 2}`).should('be.visible')
-            .as(`checkingCell${columnIndex}`);
-        if (parsedColumns[columnIndex] === 'true' || parsedColumns[columnIndex] === 'false') {
-            cy.get(`@checkingCell${columnIndex}`).find('input').should('have.value', parsedColumns[columnIndex]);
-        } else {
-            cy.get(`@checkingCell${columnIndex}`).contains(parsedColumns[columnIndex]);
-        }
+    cy.get('@grid').find('.grid-table-cell').contains(searchValue).parent()
+        .as('row');
+    cy.get('@row').then((c) => {
+        const rowNr = c.attr('row');
+
+        cy.wrap(Object.keys(parsedColumns)).each((columnIndex) => {
+            cy.get('@grid').find(`.coordinates-${columnIndex}-${rowNr}`).should('be.visible')
+                .as(`checkingCell${columnIndex}`);
+            if (parsedColumns[columnIndex] === 'true' || parsedColumns[columnIndex] === 'false') {
+                cy.get(`@checkingCell${columnIndex}`).find('input').should('have.value', parsedColumns[columnIndex]);
+            } else {
+                cy.get(`@checkingCell${columnIndex}`).contains(parsedColumns[columnIndex]);
+            }
+        });
     });
 };
 
 export const noGridRow = ({
-    gridId, rowNr, columns,
+    gridId, searchValue,
 }) => {
-    const parsedColumns = JSON.parse(columns.replace(/'/g, '"'));
-
     cy.get(`[data-cy=${gridId}]`).should('be.visible').as('grid');
-    cy.wrap(Object.keys(parsedColumns)).each((columnIndex) => {
-        cy.get('@grid').find(`.coordinates-${columnIndex}-${rowNr + 2}`).should('not.exist');
-    });
+    cy.get('@grid').find('.grid-table-cell').should('not.have.value', searchValue);
 };
 
-export const removeOnGrid = ({
-    gridId, action, rowNr,
+export const actionOnGrid = ({
+    gridId, action, searchValue,
 }) => {
     cy.get(`[data-cy=${gridId}]`).should('be.visible').as('grid');
-    cy.get(`[data-cy=action-${action}-${rowNr + 2}]`).as('delete');
-    // cy.get('@pinned').find(`[column-id=${action}] .grid-table-cell`).eq(rowNr + 2).as('delete');
-    cy.get('@delete').click({
-        force: true,
+    cy.get('@grid').find('.grid-table-cell').contains(searchValue).parent()
+        .as('row');
+    cy.get('@row').then((c) => {
+        const rowNr = c.attr('row');
+
+        cy.get(`[data-cy=action-${action}-${rowNr}]`).as('action');
+        cy.get('@action').click({
+            force: true,
+        });
     });
 };
 

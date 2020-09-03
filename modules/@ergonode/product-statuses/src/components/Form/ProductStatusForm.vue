@@ -9,9 +9,10 @@
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
+                    :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
                     required
-                    :error-messages="errorMessages[colorFieldKey]"
+                    :error-messages="errorMessages[codeFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     label="System name"
                     hint="System name must be unique"
@@ -26,6 +27,7 @@
                     </template>
                 </CheckBox>
                 <ColorPicker
+                    :data-cy="dataCyGenerator(colorFieldKey)"
                     :value="color"
                     required
                     :error-messages="errorMessages[colorFieldKey]"
@@ -108,6 +110,9 @@ export default {
                 key: 'isDefaultStatus',
                 value,
             });
+        },
+        dataCyGenerator(key) {
+            return `status-${key}`;
         },
     },
 };

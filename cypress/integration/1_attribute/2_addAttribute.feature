@@ -15,7 +15,7 @@ Feature: Attribute adding
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     And I open "attributes/grid" page
-    Then On "grid" I can see row 0 with columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_txt>'}"
+    Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_txt>'}"
     And I remove "this" element by "DELETE" request
 
     Examples:
@@ -44,10 +44,10 @@ Feature: Attribute adding
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     And I open "attributes/grid" page
-    Then On "grid" I can see row 0 with columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_txt>'}"
-    And On "grid" I click on "delete" button for row 0
+    Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_txt>'}"
+    And On "grid" I click on "delete" button for row with "<name>" value
     Then I confirm modal
-    And On "grid" I can not see row 0 with columns data: "{'1': '<name>'}"
+    And On "grid" I can not see row with "<name>" value
 
     Examples:
       | name             | type | type_txt | scope | scope_txt |
@@ -71,8 +71,8 @@ Feature: Attribute adding
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     And I open "attributes/grid" page
-    Then On "grid" I can see row 0 with columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_txt>'}"
-    And On "grid" I click on "edit" button for row 0
+    Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_txt>'}"
+    And On "grid" I click on "edit" button for row with "<name>" value
     And I see "attributes/attribute/%UUID%/general" page
     Then Element "attribute-code" is "visible"
     Then Element "title-bar-header" is "visible"

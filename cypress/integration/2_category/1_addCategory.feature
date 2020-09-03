@@ -11,8 +11,8 @@ Feature: Category adding
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     And I open "categories/grid" page
-    Then On "grid" I can see row 0 with columns data: "{'1': 'category_1', '3': '0'}"
-    And On "grid" I click on "delete" button for row 0
+    Then On "grid" I can see row with "category_1" value and columns data: "{'1': 'category_1', '3': '0'}"
+    And On "grid" I click on "delete" button for row with "category_1" value
     Then I close modal by button
     And I remove "this" element by "DELETE" request
 
@@ -21,10 +21,10 @@ Feature: Category adding
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     And I open "categories/grid" page
-    Then On "grid" I can see row 0 with columns data: "{'1': 'category_2', '3': '0'}"
-    And On "grid" I click on "delete" button for row 0
+    Then On "grid" I can see row with "category_2" value and columns data: "{'1': 'category_2', '3': '0'}"
+    And On "grid" I click on "delete" button for row with "category_2" value
     Then I confirm modal
-    And On "grid" I can not see row 0 with columns data: "{'1': 'category_2'}"
+    And On "grid" I can not see row with "category_2" value
 
   Scenario: Add category and delete from edit
     When I fill the "category-code" input with the "category_3" term

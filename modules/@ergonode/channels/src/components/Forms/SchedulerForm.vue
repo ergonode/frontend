@@ -26,7 +26,6 @@
                     :value="time"
                     :disabled="!isAllowedToUpdate"
                     :input="timeInputType"
-                    :error-messages="errorMessages[startFieldKey]"
                     label="Started on"
                     @input="setTimeChange" />
                 <Divider />
@@ -171,7 +170,7 @@ export default {
         setDateChange(value) {
             let date = value ? formatDate(value, DEFAULT_FORMAT) : null;
 
-            if (this.time) {
+            if (this.time && date) {
                 date = `${date} ${this.time}`;
             }
 

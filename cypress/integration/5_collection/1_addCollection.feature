@@ -12,8 +12,8 @@ Feature: Collection adding
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     And I open "collections/grid" page
-    Then On "grid" I can see row 0 with columns data: "{'0': 'collection_1', '4': '0'}"
-    And On "grid" I click on "delete" button for row 0
+    Then On "grid" I can see row with "collection_1" value and columns data: "{'0': 'collection_1', '4': '0'}"
+    And On "grid" I click on "delete" button for row with "collection_1" value
     Then I close modal by button
     And I remove "this" element by "DELETE" request
 
@@ -23,10 +23,10 @@ Feature: Collection adding
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     And I open "collections/grid" page
-    Then On "grid" I can see row 0 with columns data: "{'0': 'collection_2', '4': '0'}"
-    And On "grid" I click on "delete" button for row 0
+    Then On "grid" I can see row with "collection_2" value and columns data: "{'0': 'collection_2', '4': '0'}"
+    And On "grid" I click on "delete" button for row with "collection_2" value
     Then I confirm modal
-    And On "grid" I can not see row 0 with columns data: "{'0': 'collection_2'}"
+    And On "grid" I can not see row with "collection_2" value
 
   Scenario: Add collection and delete from edit
     When I fill the "collection-code" input with the "collection_3" term
