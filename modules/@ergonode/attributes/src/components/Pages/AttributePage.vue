@@ -12,6 +12,7 @@
             </template>
             <template #mainAction>
                 <Button
+                    data-cy="delete-attribute"
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE ATTRIBUTE"
