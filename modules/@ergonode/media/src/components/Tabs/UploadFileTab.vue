@@ -25,7 +25,7 @@
                     view-box="0 0 48 32"
                     width="48"
                     height="32" />
-                <span class="information-label">Drag an drop files</span>
+                <span class="information-label">Drag and drop files</span>
                 <span class="information-label-logic-operator">or</span>
                 <Button
                     :size="smallSize"

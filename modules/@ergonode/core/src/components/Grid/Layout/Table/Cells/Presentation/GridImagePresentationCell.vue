@@ -5,6 +5,7 @@
 <template>
     <div class="grid-image-presentation-cell">
         <Picture
+            v-if="value"
             :api-path="`multimedia/${value}/download/default`"
             :value="value" />
     </div>

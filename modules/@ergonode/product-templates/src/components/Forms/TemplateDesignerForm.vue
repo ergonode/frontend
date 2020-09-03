@@ -10,7 +10,7 @@
             <FormSection>
                 <TextField
                     :data-cy="dataCyGenerator(nameFieldKey)"
-                    :value="templateTitle"
+                    :value="title"
                     required
                     :error-messages="errorMessages[nameFieldKey]"
                     label="Template name"
@@ -18,7 +18,7 @@
                     @input="setTitleValue" />
                 <UploadImageFile
                     :data-cy="dataCyGenerator('image')"
-                    :value="templateImage"
+                    :value="image"
                     height="132px"
                     label="Template cover image"
                     :disabled="!isAllowedToUpdate"
@@ -69,13 +69,14 @@ export default {
     },
     computed: {
         ...mapState('productTemplate', {
-            templateTitle: state => state.title,
-            templateImage: state => state.image,
+            id: state => state.id,
+            title: state => state.title,
+            image: state => state.image,
             defaultTextAttribute: state => state.defaultTextAttribute,
             defaultImageAttribute: state => state.defaultImageAttribute,
         }),
         isDisabled() {
-            return Boolean(this.templateTitle);
+            return Boolean(this.id);
         },
         isAllowedToUpdate() {
             return this.$hasAccess([

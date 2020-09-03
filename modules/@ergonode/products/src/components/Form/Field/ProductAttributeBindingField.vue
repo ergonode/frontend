@@ -10,6 +10,7 @@
         <TranslationSelect
             :value="attribute"
             required
+            label="Binding attribute"
             :size="smallSize"
             :disabled="disabled"
             :options="filteredOptions"

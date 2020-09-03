@@ -3,16 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        class="row-widget"
-        :style="gridTemplateColumns">
-        <Component
-            v-for="element in rowComponents"
-            :key="element.key"
-            :is="element.component"
-            :value="value[element.key]"
-            :schema="element.props"
-            @input="onValueChange" />
+    <div class="row-widget">
         <Fab
             :theme="secondaryTheme"
             @click.native="onRemoveRow">
@@ -20,11 +11,23 @@
                 <IconDelete :fill-color="color" />
             </template>
         </Fab>
+        <div
+            class="row-widget__item"
+            :style="gridTemplateColumns">
+            <Component
+                v-for="element in rowComponents"
+                :key="element.key"
+                :is="element.component"
+                :value="value[element.key]"
+                :schema="element.props"
+                @input="onValueChange" />
+        </div>
     </div>
 </template>
 
 <script>
 import Fab from '@Core/components/Fab/Fab';
+import JSONSchemaFormTableRowArrowWidget from '@Core/components/Form/JSONSchemaForm/JSONSchemaFormTableRowArrowWidget';
 import IconDelete from '@Core/components/Icons/Actions/IconDelete';
 import {
     SIZE,
@@ -39,6 +42,7 @@ export default {
     components: {
         Fab,
         IconDelete,
+        JSONSchemaFormTableRowArrowWidget,
     },
     props: {
         schema: {
@@ -56,7 +60,6 @@ export default {
     },
     data() {
         return {
-            localValue: {},
             rowComponents: [],
         };
     },
@@ -105,7 +108,7 @@ export default {
                     components.push({
                         key: `[${i}]-arrow`,
                         props: {},
-                        component: () => import('@Core/components/Form/JSONSchemaForm/JSONSchemaFormTableRowArrowWidget'),
+                        component: JSONSchemaFormTableRowArrowWidget,
                     });
                 }
             }
@@ -115,10 +118,12 @@ export default {
         onValueChange({
             key, value,
         }) {
-            this.localValue[key] = value;
             this.$emit('input', {
                 index: this.index,
-                value: this.localValue,
+                value: {
+                    ...this.value,
+                    [key]: value,
+                },
             });
         },
         onRemoveRow() {
@@ -130,14 +135,18 @@ export default {
 
 <style lang="scss" scoped>
     .row-widget {
-        display: grid;
-        align-items: center;
-        grid-auto-flow: column;
-        grid-template-columns: max-content;
-        grid-column-gap: 4px;
+        display: flex;
 
         & > .fab {
-            margin-left: 4px;
+            margin-right: 4px;
+        }
+
+        &__item {
+            display: grid;
+            align-items: center;
+            grid-auto-flow: column;
+            grid-template-columns: max-content;
+            grid-column-gap: 4px;
         }
     }
 </style>
