@@ -125,10 +125,6 @@
                 <template v-for="(row, rowIndex) in rows">
                     <GridActionCell
                         :key="`${rowIds[rowIndex]}|${column.id}`"
-                        :data-cy="dataCyGenerator({
-                            action: column.id,
-                            row: rowsOffset + rowIndex + basicFiltersOffset + 1,
-                        })"
                         :column-index="orderedColumns.length + columnIndex + columnsOffset"
                         :column="column"
                         :action="row._links.value[column.id]"
@@ -369,11 +365,6 @@ export default {
             'setDisabledElement',
             'removeDisabledElement',
         ]),
-        dataCyGenerator({
-            action, row,
-        }) {
-            return `action-${action}-${row}`;
-        },
         onMouseDown(event) {
             if (this.$refs.editCell) {
                 const {
