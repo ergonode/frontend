@@ -23,7 +23,7 @@ export default function ({
         columns: 'id,code,name',
     };
 
-    return $axios.$get(`${language}/attributes`, {
+    return $axios.$get('attributes', {
         params,
     }).then(({
         collection,

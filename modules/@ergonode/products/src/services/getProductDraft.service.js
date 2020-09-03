@@ -5,5 +5,7 @@
 export default function ({
     $axios, languageCode, id,
 }) {
-    return $axios.$get(`${languageCode}/products/${id}/draft`);
+    return $axios.$get(`${languageCode}/products/${id}/draft`, {
+        withLanguage: false,
+    });
 }

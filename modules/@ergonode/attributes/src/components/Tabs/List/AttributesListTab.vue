@@ -101,7 +101,7 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            user: state => state.user,
+            languagePrivileges: state => state.user.languagePrivileges,
         }),
         ...mapState('core', {
             defaultLanguageCode: state => state.defaultLanguageCode,
@@ -129,16 +129,12 @@ export default {
             ]);
         },
         languageOptions() {
-            const {
-                languagePrivileges,
-            } = this.user;
-
             return this.languagesTree.map(language => ({
                 ...language,
                 key: language.code,
                 value: language.name,
-                disabled: languagePrivileges[language.code]
-                    ? !languagePrivileges[language.code].read
+                disabled: this.languagePrivileges[language.code]
+                    ? !this.languagePrivileges[language.code].read
                     : true,
             }));
         },

@@ -119,7 +119,7 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            user: state => state.user,
+            languagePrivileges: state => state.user.languagePrivileges,
         }),
         ...mapState('core', {
             defaultLanguageCode: state => state.defaultLanguageCode,
@@ -138,23 +138,16 @@ export default {
             return THEME.SECONDARY;
         },
         languageOptions() {
-            const {
-                languagePrivileges,
-            } = this.user;
-
             return this.languagesTree.map(language => ({
                 ...language,
                 key: language.code,
                 value: language.name,
-                disabled: languagePrivileges[language.code]
-                    ? !languagePrivileges[language.code].read
+                disabled: this.languagePrivileges[language.code]
+                    ? !this.languagePrivileges[language.code].read
                     : true,
             }));
         },
         isUserAllowedToRestore() {
-            const {
-                languagePrivileges,
-            } = this.user;
             const {
                 code,
             } = this.language;
@@ -162,7 +155,7 @@ export default {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ])
-                && languagePrivileges[code].edit
+                && this.languagePrivileges[code].edit
                 && this.rootLanguage.code !== code;
         },
     },

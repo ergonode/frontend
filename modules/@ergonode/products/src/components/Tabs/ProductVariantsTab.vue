@@ -70,8 +70,8 @@ export default {
                     filter: `type=${TYPES.SELECT}`,
                 }),
             ),
-            app.$axios.$get(`${languageCode}/products/${id}/bindings`),
-            app.$axios.$get(`${languageCode}/products/${id}/children`, {
+            app.$axios.$get(`products/${id}/bindings`),
+            app.$axios.$get(`products/${id}/children`, {
                 params: productsParams,
             }),
         ]).then(([
@@ -94,13 +94,13 @@ export default {
                 offset: 0,
                 limit: DATA_LIMIT,
                 extended: true,
-                filter: `${attributeCodes.map(attr => `${attr}!=`).join(';')},esa_product_type:${languageCode}=${PRODUCT_TYPE.SIMPLE_PRODUCT}`,
-                columns: `esa_default_image,esa_default_label,${attributeCodes.join(',')},sku,esa_template:${languageCode}`,
+                filter: `${attributeCodes.map(attr => `${attr}!=`).join(';')},esa_product_type=${PRODUCT_TYPE.SIMPLE_PRODUCT}`,
+                columns: `esa_default_image,esa_default_label,${attributeCodes.join(',')},sku,esa_template`,
             };
 
             return getGridData({
                 $axios: app.$axios,
-                path: `${languageCode}/products`,
+                path: 'products',
                 params,
             }).then(({
                 columns,
@@ -204,8 +204,8 @@ export default {
                 offset,
                 limit,
                 extended: true,
-                filter: `esa_product_type:${this.languageCode}=${PRODUCT_TYPE.SIMPLE_PRODUCT}`,
-                columns: `esa_default_image,esa_default_label,${this.attributeCodes},sku,esa_template:${this.languageCode}`,
+                filter: `esa_product_type=${PRODUCT_TYPE.SIMPLE_PRODUCT}`,
+                columns: `esa_default_image,esa_default_label,${this.attributeCodes},sku,esa_template`,
             };
 
             if (Object.keys(sortedColumn).length) {
@@ -219,7 +219,7 @@ export default {
 
             return getGridData({
                 $axios: this.$axios,
-                path: `${this.languageCode}/products`,
+                path: 'products',
                 params,
             }).then(({
                 columns,
@@ -233,7 +233,7 @@ export default {
                     order: 'ASC',
                 };
 
-                return this.$axios.$get(`${this.languageCode}/products/${this.id}/children`, {
+                return this.$axios.$get(`products/${this.id}/children`, {
                     params: productsParams,
                 }).then(({
                     collection,

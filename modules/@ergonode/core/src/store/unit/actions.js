@@ -5,17 +5,13 @@
 export default {
     async getUnit(
         {
-            commit, rootState,
+            commit,
         },
         {
             unitId,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
-        await this.app.$axios.$get(`${userLanguageCode}/units/${unitId}`).then(async ({
+        await this.app.$axios.$get(`units/${unitId}`).then(async ({
             id,
             name = '',
             symbol = '',
@@ -35,9 +31,7 @@ export default {
         });
     },
     async updateUnit(
-        {
-            rootState,
-        },
+        {},
         {
             id,
             data,
@@ -45,27 +39,20 @@ export default {
             onError,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
         await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`${userLanguageCode}/units/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        await this.app.$axios.$put(`units/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     removeUnit({
-        state, rootState,
+        state,
     }, {
         onSuccess,
     }) {
         const {
             id,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
 
-        return this.app.$axios.$delete(`${userLanguageCode}/units/${id}`)
+        return this.app.$axios.$delete(`units/${id}`)
             .then(() => {
                 onSuccess();
             });

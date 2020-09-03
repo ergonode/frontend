@@ -10,9 +10,6 @@ export default function ({
     $axios, $store,
 }) {
     const {
-        language,
-    } = $store.state.authentication.user;
-    const {
         type,
         configuration,
     } = $store.state.import;
@@ -32,5 +29,5 @@ export default function ({
         };
     }
 
-    return $axios.$post(`${language}/sources`, data);
+    return $axios.$post('sources', data);
 }

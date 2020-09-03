@@ -34,8 +34,8 @@ export default {
         } = rootState.authentication;
 
         return Promise.all([
-            this.app.$axios.$get(`${languageCode}/templates/${id}`),
-            this.app.$axios.$get(`${languageCode}/templates/types`, {
+            this.app.$axios.$get(`templates/${id}`),
+            this.app.$axios.$get('templates/types', {
                 params: {
                     view: 'list',
                 },
@@ -84,7 +84,7 @@ export default {
                 value: imageID,
             });
 
-            return this.app.$axios.$get(`${languageCode}/attributes`, {
+            return this.app.$axios.$get('attributes', {
                 params,
             }).then(({
                 collection,
@@ -121,9 +121,7 @@ export default {
         });
     },
     async updateTemplateDesigner(
-        {
-            rootState,
-        },
+        {},
         {
             id,
             data,
@@ -131,12 +129,8 @@ export default {
             onError,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
         await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`${userLanguageCode}/templates/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        await this.app.$axios.$put(`templates/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     addListElementToLayout({
@@ -157,7 +151,7 @@ export default {
             view: 'list',
             order: 'ASC',
         };
-        this.app.$axios.$get(`${languageCode}/attributes`, {
+        this.app.$axios.$get('attributes', {
             params,
         }).then(({
             collection,
@@ -222,14 +216,9 @@ export default {
         });
         commit(types.REMOVE_LAYOUT_ELEMENT_AT_INDEX, index);
     },
-    removeTemplate({
-        rootState,
-    }, {
+    removeTemplate({}, {
         id, onSuccess,
     }) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$delete(`${userLanguageCode}/templates/${id}`).then(() => onSuccess());
+        return this.app.$axios.$delete(`templates/${id}`).then(() => onSuccess());
     },
 };

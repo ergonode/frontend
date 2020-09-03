@@ -16,7 +16,9 @@ export default {
     }, {
         data,
     }) {
-        return this.app.$axios.$post('login', data).then(({
+        return this.app.$axios.$post('login', data, {
+            withLanguage: false,
+        }).then(({
             token,
         }) => {
             this.$cookies.set(JWT_KEY, token);
@@ -31,7 +33,9 @@ export default {
     getUser({
         commit,
     }) {
-        return this.app.$axios.$get('profile').then((user) => {
+        return this.app.$axios.$get('profile', {
+            withLanguage: false,
+        }).then((user) => {
             const transformedUserData = camelcaseKeys(user);
 
             transformedUserData.privileges = getMappedPrivileges(transformedUserData.privileges);

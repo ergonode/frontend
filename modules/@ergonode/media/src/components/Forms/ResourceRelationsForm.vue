@@ -76,12 +76,8 @@ export default {
         },
     },
     created() {
-        const {
-            language: userLanguageCode,
-        } = this.$store.state.authentication.user;
-
         this.$axios
-            .$get(`${userLanguageCode}/multimedia/${this.$route.params.id}/relation`)
+            .$get(`multimedia/${this.$route.params.id}/relation`)
             .then((relations) => {
                 this.rows = relations.filter(row => row.relations.length > 0);
                 this.isPrefetchingData = false;

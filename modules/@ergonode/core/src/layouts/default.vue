@@ -45,7 +45,6 @@ import {
 } from '@Core/defaults/modals';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -66,9 +65,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            user: state => state.user,
-        }),
         navigationBarPosition() {
             return {
                 top: 0,

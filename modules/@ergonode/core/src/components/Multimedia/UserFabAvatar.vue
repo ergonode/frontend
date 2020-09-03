@@ -35,10 +35,6 @@ export default {
             type: String,
             default: '',
         },
-        languageCode: {
-            type: String,
-            default: '',
-        },
         name: {
             type: String,
             default: '',
@@ -51,7 +47,7 @@ export default {
     },
     computed: {
         avatarPath() {
-            return `${this.languageCode}/accounts/${this.userId}/avatar`;
+            return `accounts/${this.userId}/avatar`;
         },
         avatarInitial() {
             return this.name.length ? this.name[0] : '';

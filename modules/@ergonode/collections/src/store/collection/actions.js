@@ -5,17 +5,13 @@
 export default {
     getCollection(
         {
-            commit, dispatch, rootState,
+            commit, dispatch,
         },
         {
             collectionId, onError = () => {},
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
-        return this.app.$axios.$get(`${userLanguageCode}/collections/${collectionId}`).then(({
+        return this.app.$axios.$get(`collections/${collectionId}`).then(({
             id,
             code,
             type_id,
@@ -46,9 +42,7 @@ export default {
         }).catch(onError);
     },
     updateCollection(
-        {
-            rootState,
-        },
+        {},
         {
             id,
             data,
@@ -56,22 +50,16 @@ export default {
             onError,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/collections/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$put(`collections/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
     },
     removeCollection({
-        state, rootState,
+        state,
     }, {
         onSuccess,
     }) {
         const {
             id,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$delete(`${userLanguageCode}/collections/${id}`).then(() => onSuccess());
+        return this.app.$axios.$delete(`collections/${id}`).then(() => onSuccess());
     },
 };

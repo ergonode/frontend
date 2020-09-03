@@ -40,11 +40,12 @@ export default {
         commit(types.INITIALIZE_OPTIONS);
     },
     removeOption({
-        commit, state, rootState,
+        commit,
+        state,
     }, {
         id, index,
     }) {
-        return this.app.$axios.$delete(`${rootState.authentication.user.language}/attributes/${state.id}/options/${id}`)
+        return this.app.$axios.$delete(`attributes/${state.id}/options/${id}`)
             .then(() => commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index));
     },
     updateAttributeOptionKey({
@@ -78,7 +79,7 @@ export default {
         }
     },
     getAttributeOptions({
-        commit, rootState,
+        commit,
     }, {
         id,
     }) {
@@ -86,7 +87,7 @@ export default {
             order: 'ASC',
             field: 'code',
         };
-        return this.app.$axios.$get(`${rootState.authentication.user.language}/attributes/${id}/options`, {
+        return this.app.$axios.$get(`attributes/${id}/options`, {
             params,
         }).then(options => commit(types.INITIALIZE_OPTIONS, getMappedArrayOptions(options)));
     },
@@ -96,13 +97,10 @@ export default {
         id,
     }) {
         const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const {
             attrTypes,
         } = rootState.dictionaries;
 
-        return this.app.$axios.$get(`${userLanguageCode}/attributes/${id}`).then(({
+        return this.app.$axios.$get(`attributes/${id}`).then(({
             code,
             type,
             hint = '',
@@ -162,7 +160,9 @@ export default {
     },
     async updateAttribute(
         {
-            state, commit, dispatch, rootState,
+            state,
+            commit,
+            dispatch,
         },
         {
             id,
@@ -171,9 +171,6 @@ export default {
             onError,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
         const optionsToAddRequests = [];
         const optionsToUpdateRequests = [];
 
@@ -183,7 +180,7 @@ export default {
 
             if (!option.id) {
                 optionsToAddRequests.push(
-                    this.app.$axios.$post(`${userLanguageCode}/attributes/${id}/options`, {
+                    this.app.$axios.$post(`attributes/${id}/options`, {
                         code: option.key,
                         label: optionValue,
                     }).then(({
@@ -197,7 +194,7 @@ export default {
                 );
             } else if (state.updatedOptions[option.id]) {
                 optionsToUpdateRequests.push(
-                    this.app.$axios.$put(`${userLanguageCode}/attributes/${id}/options/${option.id}`, {
+                    this.app.$axios.$put(`attributes/${id}/options/${option.id}`, {
                         code: option.key,
                         label: optionValue,
                     }),
@@ -209,7 +206,7 @@ export default {
         await Promise.all([
             ...optionsToAddRequests,
             ...optionsToUpdateRequests,
-            this.app.$axios.$put(`${userLanguageCode}/attributes/${id}`, data).catch(e => onError(e.data)),
+            this.app.$axios.$put(`attributes/${id}`, data).catch(e => onError(e.data)),
         ]).then(() => {
             commit(types.REMOVE_UPDATED_OPTION);
             onSuccess();
@@ -217,17 +214,13 @@ export default {
         await this.$removeLoader('footerButton');
     },
     removeAttribute({
-        state, rootState,
+        state,
     }, {
         onSuccess,
     }) {
         const {
             id,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
-        return this.app.$axios.$delete(`${userLanguageCode}/attributes/${id}`).then(() => onSuccess());
+        return this.app.$axios.$delete(`attributes/${id}`).then(() => onSuccess());
     },
 };

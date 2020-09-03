@@ -9,7 +9,9 @@ export default async function ({
     const elementsRequests = [];
 
     elements.forEach((attributeId) => {
-        elementsRequests.push($axios.$delete(`${languageCode}/products/${id}/draft/${attributeId}/value`));
+        elementsRequests.push($axios.$delete(`${languageCode}/products/${id}/draft/${attributeId}/value`), {
+            withLanguage: false,
+        });
     });
     await Promise.all([
         ...elementsRequests,

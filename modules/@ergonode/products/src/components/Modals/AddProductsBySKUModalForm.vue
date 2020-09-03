@@ -52,9 +52,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            language: state => state.user.language,
-        }),
         ...mapState('product', {
             id: state => state.id,
         }),
@@ -85,7 +82,7 @@ export default {
             };
 
             this.isRequestPending = true;
-            this.$axios.$post(`${this.language}/products/${this.id}/children/add-from-skus`, data).then(() => {
+            this.$axios.$post(`products/${this.id}/children/add-from-skus`, data).then(() => {
                 this.isRequestPending = false;
                 this.removeErrors();
                 this.$addAlert({

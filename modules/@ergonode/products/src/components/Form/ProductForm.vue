@@ -72,9 +72,6 @@ export default {
         ProductAttributesBindingFormSection: () => import('@Products/components/Form/Section/ProductAttributesBindingFormSection'),
     },
     computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
         ...mapState('dictionaries', {
             productTypes: state => state.productTypes,
         }),

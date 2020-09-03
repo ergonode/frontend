@@ -22,9 +22,6 @@
 <script>
 import ModalGrid from '@Core/components/Modal/ModalGrid';
 import Tile from '@Core/components/Tile/Tile';
-import {
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'ImportDetailsModalGrid',
@@ -51,16 +48,13 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
         importGridPath() {
-            return `${this.languageCode}/sources/${this.sourceId}/imports/${this.importId}/errors`;
+            return `sources/${this.sourceId}/imports/${this.importId}/errors`;
         },
     },
     methods: {
         async getImportDetails() {
-            const details = await this.$axios.$get(`${this.languageCode}/sources/${this.sourceId}/imports/${this.importId}`);
+            const details = await this.$axios.$get(`sources/${this.sourceId}/imports/${this.importId}`);
 
             this.details = [
                 {

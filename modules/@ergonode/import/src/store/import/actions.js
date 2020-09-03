@@ -19,13 +19,10 @@ export default {
         },
     ) {
         const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const {
             sources,
         } = rootState.dictionaries;
 
-        return this.app.$axios.$get(`${userLanguageCode}/sources/${id}`).then(({
+        return this.app.$axios.$get(`sources/${id}`).then(({
             type,
             ...rest
         }) => {
@@ -55,10 +52,7 @@ export default {
         const {
             sources,
         } = rootState.dictionaries;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const configuration = await this.app.$axios.$get(`${userLanguageCode}/sources/${getKeyByValue(sources, type)}/configuration`);
+        const configuration = await this.app.$axios.$get(`sources/${getKeyByValue(sources, type)}/configuration`);
 
         if (!id) {
             const defaultConfiguration = getDefaultJsonSchemaTypes(configuration.properties);
@@ -72,9 +66,7 @@ export default {
         return configuration;
     },
     updateImportProfile(
-        {
-            rootState,
-        },
+        {},
         {
             id,
             data,
@@ -82,21 +74,17 @@ export default {
             onError,
         },
     ) {
-        return this.app.$axios.$put(`${rootState.authentication.user.language}/sources/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$put(`sources/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
     },
     removeImport({
         state,
-        rootState,
     }, {
         onSuccess,
     }) {
         const {
             id,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
 
-        return this.app.$axios.$delete(`${userLanguageCode}/sources/${id}`).then(() => onSuccess());
+        return this.app.$axios.$delete(`sources/${id}`).then(() => onSuccess());
     },
 };

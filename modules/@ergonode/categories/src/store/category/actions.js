@@ -5,16 +5,13 @@
 export default {
     getCategory(
         {
-            commit, dispatch, rootState,
+            commit, dispatch,
         },
         {
             categoryId, onError = () => {},
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$get(`${userLanguageCode}/categories/${categoryId}`).then(({
+        return this.app.$axios.$get(`categories/${categoryId}`).then(({
             id,
             code,
             name = '',
@@ -42,9 +39,7 @@ export default {
         }).catch(onError);
     },
     async updateCategory(
-        {
-            rootState,
-        },
+        {},
         {
             id,
             data,
@@ -52,25 +47,18 @@ export default {
             onError,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
         await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`${userLanguageCode}/categories/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        await this.app.$axios.$put(`categories/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     removeCategory({
-        state, rootState,
+        state,
     }, {
         onSuccess,
     }) {
         const {
             id,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$delete(`${userLanguageCode}/categories/${id}`).then(() => onSuccess());
+        return this.app.$axios.$delete(`categories/${id}`).then(() => onSuccess());
     },
 };

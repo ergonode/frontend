@@ -244,10 +244,11 @@ export default {
             const value = this.multiple
                 ? this.value[this.currentIndex]
                 : this.value;
-            const url = `${process.env.baseURL}multimedia/${value}/download/default`;
+            const url = `multimedia/${value}/download/default`;
 
             this.$axios.$get(url, {
                 responseType: 'arraybuffer',
+                withLanguage: false,
             })
                 .then((response) => {
                     const downloadUrl = window.URL.createObjectURL(new Blob([

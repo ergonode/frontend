@@ -22,7 +22,7 @@ export default {
             language: userLanguageCode,
         } = rootState.authentication.user;
 
-        await this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(async ({
+        await this.app.$axios.$get(`trees/${treeId}`).then(async ({
             code,
             name = '',
             categories,
@@ -30,7 +30,7 @@ export default {
             if (categories.length) {
                 await getListItems({
                     $axios: this.app.$axios,
-                    path: `${userLanguageCode}/categories`,
+                    path: 'categories',
                     params: {
                         // limit: categories.length,
                         limit: 99999,
@@ -80,34 +80,25 @@ export default {
         });
     },
     async updateTree(
-        {
-            rootState,
-        },
+        {},
         {
             id, data, onSuccess,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
         await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`${userLanguageCode}/trees/${id}`, data).then(() => {
+        await this.app.$axios.$put(`trees/${id}`, data).then(() => {
             onSuccess();
         });
         await this.$removeLoader('footerButton');
     },
     removeCategoryTree({
-        state, rootState,
+        state,
     }, {
         onSuccess,
     }) {
         const {
             treeId,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$delete(`${userLanguageCode}/trees/${treeId}`).then(() => onSuccess());
+        return this.app.$axios.$delete(`trees/${treeId}`).then(() => onSuccess());
     },
 };

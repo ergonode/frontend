@@ -7,13 +7,10 @@ export default function ({
     $axios, $store,
 }) {
     const {
-        language,
-    } = $store.state.authentication.user;
-    const {
         code, color,
     } = $store.state.productStatus;
 
-    return $axios.$post(`${language}/status`, {
+    return $axios.$post('status', {
         code,
         color,
     });

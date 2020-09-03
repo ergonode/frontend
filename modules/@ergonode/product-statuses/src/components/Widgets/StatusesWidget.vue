@@ -25,9 +25,6 @@
 <script>
 import Widget from '@Core/components/Widget/Widget';
 import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
-import {
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'StatusesWidget',
@@ -41,9 +38,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
         productsInStatus() {
             return '0 products';
         },
@@ -57,7 +51,7 @@ export default {
         };
 
         this.$axios
-            .get(`${this.languageCode}/status`, {
+            .get('status', {
                 params,
             })
             .then(({

@@ -50,12 +50,8 @@ export default {
         };
     },
     created() {
-        const {
-            language: userLanguageCode,
-        } = this.$store.state.authentication.user;
-
         this.$axios
-            .$get(`${userLanguageCode}/multimedia/${this.$route.params.id}/metadata`)
+            .$get(`multimedia/${this.$route.params.id}/metadata`)
             .then((metadata) => {
                 this.rows = Object.keys(metadata).reduce((acc, current) => {
                     const tmpArray = acc;

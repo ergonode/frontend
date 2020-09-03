@@ -71,9 +71,6 @@ import {
 import {
     debounce,
 } from 'debounce';
-import {
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'MediaGrid',
@@ -122,9 +119,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.MULTIMEDIA.update,
@@ -235,7 +229,7 @@ export default {
 
             return getGridData({
                 $axios: this.$axios,
-                path: `${this.languageCode}/multimedia`,
+                path: 'multimedia',
                 params,
             }).then(({
                 columns,

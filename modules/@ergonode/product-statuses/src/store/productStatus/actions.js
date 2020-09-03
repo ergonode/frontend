@@ -9,7 +9,7 @@ export default {
         const {
             language: userLanguageCode,
         } = rootState.authentication.user;
-        return this.app.$axios.$get(`${userLanguageCode}/status`, {
+        return this.app.$axios.$get('status', {
             params,
         }).then(({
             collection: statuses,
@@ -56,13 +56,9 @@ export default {
         });
     },
     getDefaultStatus({
-        commit, state, rootState,
+        commit, state,
     }) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
-        return this.app.$axios.$get(`${userLanguageCode}/workflow/default`).then(({
+        return this.app.$axios.$get('workflow/default').then(({
             default_status: defaultStatus,
         }) => {
             if (defaultStatus === state.code) {
@@ -74,14 +70,10 @@ export default {
         });
     },
     updateDefaultStatus({
-        state, rootState,
+        state,
     }) {
         if (state.isDefaultStatus) {
-            const {
-                language: userLanguageCode,
-            } = rootState.authentication.user;
-
-            return this.app.$axios.$put(`${userLanguageCode}/workflow/default/status/${state.id}/default`);
+            return this.app.$axios.$put(`workflow/default/status/${state.id}/default`);
         }
         return null;
     },
@@ -90,9 +82,6 @@ export default {
     }, {
         onError,
     }) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
         const {
             translations: {
                 name, description,
@@ -105,20 +94,17 @@ export default {
         };
 
         await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`${userLanguageCode}/status/${state.id}`, data).catch(e => onError(e.data));
+        await this.app.$axios.$put(`status/${state.id}`, data).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     removeProductStatus({
-        commit, state, rootState,
+        commit, state,
     }, {
         onSuccess,
     }) {
         const {
             id,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$delete(`${userLanguageCode}/status/${id}`).then(() => onSuccess());
+        return this.app.$axios.$delete(`status/${id}`).then(() => onSuccess());
     },
 };

@@ -47,9 +47,6 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import {
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'ProductCollectionTab',
@@ -67,9 +64,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
         horizontalOrientation() {
             return LAYOUT_ORIENTATION.HORIZONTAL;
         },
@@ -80,10 +74,10 @@ export default {
     async created() {
         const {
             collection: types,
-        } = await this.$axios.$get(`${this.languageCode}/collections/type`);
+        } = await this.$axios.$get('collections/type');
         const {
             collection: collections,
-        } = await this.$axios.$get(`${this.languageCode}/products/${this.$route.params.id}/collections`);
+        } = await this.$axios.$get(`products/${this.$route.params.id}/collections`);
 
         this.collections = collections.map(({
             id, code, name, description, elements_count, type_id,

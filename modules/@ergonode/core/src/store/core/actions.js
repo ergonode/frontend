@@ -12,11 +12,8 @@ import {
 
 export default {
     async getLanguages({
-        commit, rootState,
+        commit,
     }) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
         const params = {
             limit: 9999,
             offset: 0,
@@ -26,7 +23,7 @@ export default {
         };
         const {
             collection,
-        } = await this.app.$axios.$get(`${userLanguageCode}/languages`, {
+        } = await this.app.$axios.$get('languages', {
             params,
         });
 
@@ -36,36 +33,21 @@ export default {
         });
     },
     async getLanguagesTree({
-        dispatch, rootState,
+        dispatch,
     }) {
         const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const {
             languages,
-        } = await this.app.$axios.$get(`${userLanguageCode}/language/tree`);
+        } = await this.app.$axios.$get('language/tree');
 
         dispatch('setLanguagesTree', languages);
     },
-    async updateLanguages({
-        rootState,
-    }, collection) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
-        await this.app.$axios.$put(`${userLanguageCode}/languages`, {
+    async updateLanguages({}, collection) {
+        await this.app.$axios.$put('languages', {
             collection,
         });
     },
-    async updateLanguageTree({
-        rootState,
-    }, languages) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
-        await this.app.$axios.$put(`${userLanguageCode}/language/tree`, {
+    async updateLanguageTree({}, languages) {
+        await this.app.$axios.$put('language/tree', {
             languages,
         });
     },

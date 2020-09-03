@@ -22,7 +22,7 @@ export default async function ({
         order: 'ASC',
     };
 
-    return $axios.$get(`${language}/attributes`, {
+    return $axios.$get('attributes', {
         params,
     }).then(({
         collection,

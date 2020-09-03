@@ -18,16 +18,13 @@ export default {
     },
     getRole(
         {
-            commit, rootState,
+            commit,
         },
         {
             roleId,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$get(`${userLanguageCode}/roles/${roleId}`).then(({
+        return this.app.$axios.$get(`roles/${roleId}`).then(({
             id,
             name = '',
             description = '',
@@ -49,9 +46,7 @@ export default {
         });
     },
     async updateRole(
-        {
-            rootState,
-        },
+        {},
         {
             id,
             data,
@@ -59,28 +54,18 @@ export default {
             onError,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
         await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`${userLanguageCode}/roles/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        await this.app.$axios.$put(`roles/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     removeRole(
-        {
-            rootState,
-        },
+        {},
         {
             id,
             onSuccess,
             onError,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
-        return this.app.$axios.$delete(`${userLanguageCode}/roles/${id}`).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$delete(`roles/${id}`).then(() => onSuccess()).catch(e => onError(e.data));
     },
 };

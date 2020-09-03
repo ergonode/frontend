@@ -69,9 +69,6 @@ export default {
         ...mapState('channel', {
             type: state => state.type,
         }),
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
         isUserAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.CHANNEL.update,
@@ -84,7 +81,7 @@ export default {
             return SIZE.SMALL;
         },
         channelGridPath() {
-            return `${this.languageCode}/channels/${this.channelId}/exports/${this.exportId}/errors`;
+            return `channels/${this.channelId}/exports/${this.exportId}/errors`;
         },
     },
     methods: {
@@ -109,7 +106,7 @@ export default {
             this.$emit('close');
         },
         async getExportDetails() {
-            const details = await this.$axios.$get(`${this.languageCode}/channels/${this.channelId}/exports/${this.exportId}`);
+            const details = await this.$axios.$get(`channels/${this.channelId}/exports/${this.exportId}`);
 
             this.details = [
                 {

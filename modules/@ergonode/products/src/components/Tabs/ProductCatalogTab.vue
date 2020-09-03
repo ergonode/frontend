@@ -163,9 +163,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
         ...mapState('draggable', {
             isElementDragging: state => state.isElementDragging,
             draggedElement: state => state.draggedElement,

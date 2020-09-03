@@ -5,16 +5,13 @@
 export default {
     async getSegment(
         {
-            commit, dispatch, rootState,
+            commit, dispatch,
         },
         {
             segmentId,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        await this.app.$axios.$get(`${userLanguageCode}/segments/${segmentId}`).then(async ({
+        await this.app.$axios.$get(`segments/${segmentId}`).then(async ({
             id,
             code,
             condition_set_id: conditionSetId,
@@ -50,9 +47,7 @@ export default {
         });
     },
     async updateSegment(
-        {
-            rootState,
-        },
+        {},
         {
             id,
             data,
@@ -60,30 +55,23 @@ export default {
             onError,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
         await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`${userLanguageCode}/segments/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        await this.app.$axios.$put(`segments/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     removeSegment({
-        state, rootState,
+        state,
     }, {
         onSuccess,
     }) {
         const {
             id, conditionSetId,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
 
-        return this.app.$axios.$delete(`${userLanguageCode}/segments/${id}`)
+        return this.app.$axios.$delete(`segments/${id}`)
             .then(() => {
                 if (conditionSetId) {
-                    this.app.$axios.$delete(`${userLanguageCode}/conditionsets/${conditionSetId}`)
+                    this.app.$axios.$delete(`conditionsets/${conditionSetId}`)
                         .then(() => onSuccess());
                 } else {
                     onSuccess();

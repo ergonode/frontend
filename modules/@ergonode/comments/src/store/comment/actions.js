@@ -8,12 +8,9 @@ import {
 
 export default {
     getComments({
-        commit, rootState,
+        commit,
     }, params) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$get(`${userLanguageCode}/comments`, {
+        return this.app.$axios.$get('comments', {
             params,
         }).then(({
             collection: comments, info,
@@ -30,7 +27,7 @@ export default {
     },
     async getMoreComments(
         {
-            commit, rootState, state,
+            commit, state,
         },
         {
             params,
@@ -39,12 +36,9 @@ export default {
         let {
             currentPage,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
 
         await this.$setLoader('moreComments');
-        await this.app.$axios.$get(`${userLanguageCode}/comments`, {
+        await this.app.$axios.$get('comments', {
             params,
         }).then(({
             collection: comments, info,
@@ -72,7 +66,6 @@ export default {
         },
     ) {
         const {
-            language: userLanguageCode,
             firstName,
             lastName,
             avatarFilename,
@@ -89,10 +82,10 @@ export default {
         };
 
         await this.$setLoader('commentButton');
-        await this.app.$axios.$post(`${userLanguageCode}/comments`, data).then(({
+        await this.app.$axios.$post('comments', data).then(({
             id,
         }) => {
-            this.app.$axios.$get(`${userLanguageCode}/comments/${id}`).then((addedComment) => {
+            this.app.$axios.$get(`comments/${id}`).then((addedComment) => {
                 const comment = {
                     ...addedComment,
                     _links: {
@@ -127,15 +120,14 @@ export default {
             content,
         };
         const {
-            language: userLanguageCode,
             firstName,
             lastName,
             avatarFilename,
         } = rootState.authentication.user;
 
         await this.$setLoader('commentButton');
-        await this.app.$axios.$put(`${userLanguageCode}/comments/${id}`, data).then(() => {
-            this.app.$axios.$get(`${userLanguageCode}/comments/${id}`).then((editedComment) => {
+        await this.app.$axios.$put(`comments/${id}`, data).then(() => {
+            this.app.$axios.$get(`comments/${id}`).then((editedComment) => {
                 const comment = {
                     ...editedComment,
                     _links: {
@@ -153,7 +145,7 @@ export default {
     },
     removeComment(
         {
-            commit, rootState, state,
+            commit, state,
         },
         {
             id,
@@ -164,10 +156,7 @@ export default {
         let {
             count,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$delete(`${userLanguageCode}/comments/${id}`).then(() => {
+        return this.app.$axios.$delete(`comments/${id}`).then(() => {
             commit(types.DELETE_COMMENT, id);
             commit('__SET_STATE', {
                 key: 'count',

@@ -6,13 +6,10 @@ export default function ({
     $axios, $store,
 }) {
     const {
-        language,
-    } = $store.state.authentication.user;
-    const {
         name, symbol,
     } = $store.state.unit;
 
-    return $axios.$post(`${language}/units`, {
+    return $axios.$post('units', {
         name,
         symbol,
     });

@@ -61,7 +61,7 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            user: state => state.user,
+            languagePrivileges: state => state.user.languagePrivileges,
         }),
         ...mapGetters('core', [
             'rootLanguage',
@@ -94,16 +94,13 @@ export default {
     methods: {
         isUserAllowedToUpdate(scope) {
             const {
-                languagePrivileges,
-            } = this.user;
-            const {
                 code,
             } = this.language;
 
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ])
-                && languagePrivileges[code].edit
+                && this.languagePrivileges[code].edit
                 && (this.rootLanguage.code === code || scope === SCOPE.LOCAL);
         },
         onValueChange(payload) {

@@ -7,13 +7,8 @@ export default {
     getResource({
         dispatch,
         commit,
-        rootState,
     }, id) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
-        return this.app.$axios.$get(`${userLanguageCode}/multimedia/${id}`).then(({
+        return this.app.$axios.$get(`multimedia/${id}`).then(({
             name,
             extension,
             alt,
@@ -53,16 +48,13 @@ export default {
             extension,
         } = state;
         const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const {
             translations: {
                 alt,
             },
         } = rootState.tab;
 
         this.app.$axios
-            .$put(`${userLanguageCode}/multimedia/${id}`, {
+            .$put(`multimedia/${id}`, {
                 name: `${name}.${extension}`,
                 alt,
             })
@@ -71,17 +63,12 @@ export default {
     },
     removeResource({
         commit,
-        rootState,
     }, {
         id,
         onSuccess,
     }) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
         this.app.$axios
-            .$delete(`${userLanguageCode}/multimedia/${id}`)
+            .$delete(`multimedia/${id}`)
             .then(() => onSuccess());
     },
 };

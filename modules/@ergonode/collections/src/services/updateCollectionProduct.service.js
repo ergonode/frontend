@@ -6,9 +6,6 @@ export default function ({
     $axios, $store,
 }) {
     const {
-        language,
-    } = $store.state.authentication.user;
-    const {
         id,
     } = $store.state.collection;
     const {
@@ -21,7 +18,7 @@ export default function ({
             ] = key.split('/');
 
             return $axios.$put(
-                `${language}/collections/${id}/elements/${productId}`,
+                `collections/${id}/elements/${productId}`,
                 {
                     visible: drafts[key],
                 },
