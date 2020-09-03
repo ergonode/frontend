@@ -14,7 +14,22 @@ export default {
     },
     setTranslationValue({
         commit,
-    }, params) {
-        commit(types.SET_TRANSLATION_VALUE, params);
+    }, {
+        languageCode,
+        propertyName,
+        value,
+    }) {
+        if (value) {
+            commit(types.SET_TRANSLATION_VALUE, {
+                value,
+                propertyName,
+                languageCode,
+            });
+        } else {
+            commit(types.REMOVE_TRANSLATION_VALUE, {
+                propertyName,
+                languageCode,
+            });
+        }
     },
 };

@@ -9,6 +9,7 @@ import {
 export const types = {
     SET_TRANSLATIONS: 'SET_TRANSLATIONS',
     SET_TRANSLATION_VALUE: 'SET_TRANSLATION_VALUE',
+    REMOVE_TRANSLATION_VALUE: 'REMOVE_TRANSLATION_VALUE',
 };
 export default {
     [types.SET_TRANSLATIONS](state, translations) {
@@ -19,16 +20,18 @@ export default {
     [types.SET_TRANSLATION_VALUE](state, {
         languageCode, propertyName, value,
     }) {
-        if (!value) {
-            state.translations[propertyName] = removeObjectProperty(
-                state.translations[propertyName],
-                languageCode,
-            );
-        } else {
-            state.translations[propertyName] = {
-                ...state.translations[propertyName],
-                [languageCode]: value,
-            };
-        }
+        state.translations[propertyName] = {
+            ...state.translations[propertyName],
+            [languageCode]: value,
+        };
     },
+    [types.REMOVE_TRANSLATION_VALUE](state, {
+        languageCode, propertyName,
+    }) {
+        state.translations[propertyName] = removeObjectProperty(
+            state.translations[propertyName],
+            languageCode,
+        );
+    },
+
 };
