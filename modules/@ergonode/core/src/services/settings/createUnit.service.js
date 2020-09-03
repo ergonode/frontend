@@ -10,7 +10,7 @@ export default function ({
     } = $store.state.authentication.user;
     const {
         name, symbol,
-    } = $store.state.units;
+    } = $store.state.unit;
 
     return $axios.$post(`${language}/units`, {
         name,

@@ -7,16 +7,16 @@ import {
 } from '@Core/models/objectWrapper';
 
 export const types = {
-    SET_TAB_TRANSLATIONS: 'SET_TAB_TRANSLATIONS',
-    SET_MULTILINGUAL_TRANSLATION_PROPERTY_VALUE: 'SET_MULTILINGUAL_TRANSLATION_PROPERTY_VALUE',
+    SET_TRANSLATIONS: 'SET_TRANSLATIONS',
+    SET_TRANSLATION_VALUE: 'SET_TRANSLATION_VALUE',
 };
 export default {
-    [types.SET_TAB_TRANSLATIONS](state, translations) {
+    [types.SET_TRANSLATIONS](state, translations) {
         state.translations = {
             ...translations,
         };
     },
-    [types.SET_MULTILINGUAL_TRANSLATION_PROPERTY_VALUE](state, {
+    [types.SET_TRANSLATION_VALUE](state, {
         languageCode, propertyName, value,
     }) {
         if (!value) {

@@ -33,7 +33,7 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('users/getUser', {
+        await store.dispatch('user/getUser', {
             userId: params.id,
         });
     },
@@ -45,7 +45,7 @@ export default {
         ...mapState('authentication', {
             user: state => state.user,
         }),
-        ...mapState('users', {
+        ...mapState('user', {
             id: state => state.id,
             email: state => state.email,
             firstName: state => state.firstName,
@@ -66,7 +66,7 @@ export default {
         this.__clearStorage();
     },
     methods: {
-        ...mapActions('users', [
+        ...mapActions('user', [
             '__clearStorage',
             'setLanguagePrivileges',
             'updateUser',
@@ -76,7 +76,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         async onSave() {
             let isUpdated = false;
@@ -129,7 +129,7 @@ export default {
                 this.onError(e.data);
             } finally {
                 if (isUpdated !== false) {
-                    this.removeValidationErrors();
+                    this.removeErrors();
                     this.$addAlert({
                         type: ALERT_TYPE.SUCCESS,
                         message: 'User updated',

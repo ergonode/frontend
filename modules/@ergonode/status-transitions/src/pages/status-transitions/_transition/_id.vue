@@ -33,22 +33,22 @@ export default {
         store, params,
     }) {
         await Promise.all([
-            store.dispatch('transitions/__clearStorage'),
+            store.dispatch('statusTransition/__clearStorage'),
             store.dispatch('productStatus/getProductStatuses', {
                 limit: 9999,
                 offset: 0,
             }),
         ]);
-        await store.dispatch('transitions/getTransition', params);
+        await store.dispatch('statusTransition/getTransition', params);
     },
     computed: {
-        ...mapState('transitions', {
+        ...mapState('statusTransition', {
             source: state => state.source,
             destination: state => state.destination,
             roles: state => state.roles,
             conditionSetId: state => state.conditionSetId,
         }),
-        ...mapState('conditions', {
+        ...mapState('condition', {
             conditionsValues: state => state.conditionsValues,
             conditions: state => state.conditions,
         }),
@@ -64,26 +64,26 @@ export default {
         this.clearConditionSetStorage();
     },
     methods: {
-        ...mapActions('conditions', {
+        ...mapActions('condition', {
             createConditionSet: 'createConditionSet',
             updateConditionSet: 'updateConditionSet',
             clearConditionSetStorage: '__clearStorage',
         }),
-        ...mapActions('transitions', {
+        ...mapActions('statusTransition', {
             updateTransition: 'updateTransition',
             removeTransition: 'removeTransition',
             clearTransitionStorage: '__clearStorage',
         }),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onSave() {
             const propertiesToUpdate = {
                 conditions: getMappedConditionSetData(this.conditionsValues, this.conditions),
             };
 
-            this.removeValidationErrors();
+            this.removeErrors();
             if (!this.conditionSetId) {
                 this.createConditionSet({
                     data: propertiesToUpdate,

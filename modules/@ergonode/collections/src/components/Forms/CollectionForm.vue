@@ -49,7 +49,7 @@ export default {
         TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
     },
     computed: {
-        ...mapState('collections', {
+        ...mapState('collection', {
             id: state => state.id,
             code: state => state.code,
             type: state => state.type,
@@ -70,7 +70,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('collections', [
+        ...mapActions('collection', [
             '__setState',
         ]),
         setCodeValue(value) {

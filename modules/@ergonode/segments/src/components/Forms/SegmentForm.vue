@@ -37,12 +37,12 @@ export default {
         TextField: () => import('@Core/components/Inputs/TextField'),
     },
     computed: {
-        ...mapState('segments', {
+        ...mapState('segment', {
             segmentId: state => state.id,
             code: state => state.code,
             conditionSetId: state => state.conditionSetId,
         }),
-        ...mapState('conditions', {
+        ...mapState('condition', {
             conditionSets: state => state.conditionSets,
         }),
         isDisabled() {
@@ -58,7 +58,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('segments', [
+        ...mapActions('segment', [
             '__setState',
         ]),
         setCodeValue(value) {

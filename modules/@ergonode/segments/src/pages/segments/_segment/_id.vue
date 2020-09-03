@@ -39,23 +39,23 @@ export default {
         params,
     }) {
         await Promise.all([
-            store.dispatch('translations/__clearStorage'),
-            store.dispatch('segments/__clearStorage'),
+            store.dispatch('tab/__clearStorage'),
+            store.dispatch('segment/__clearStorage'),
         ]);
-        await store.dispatch('segments/getSegment', {
+        await store.dispatch('segment/getSegment', {
             segmentId: params.id,
         });
     },
     computed: {
-        ...mapState('segments', {
+        ...mapState('segment', {
             id: state => state.id,
             code: state => state.code,
             conditionSetId: state => state.conditionSetId,
         }),
-        ...mapState('translations', {
+        ...mapState('tab', {
             translations: state => state.translations,
         }),
-        ...mapState('conditions', {
+        ...mapState('condition', {
             conditionsValues: state => state.conditionsValues,
             conditions: state => state.conditions,
         }),
@@ -65,19 +65,19 @@ export default {
         this.clearConditionSetStorage();
     },
     methods: {
-        ...mapActions('conditions', {
+        ...mapActions('condition', {
             createConditionSet: 'createConditionSet',
             updateConditionSet: 'updateConditionSet',
             clearConditionSetStorage: '__clearStorage',
         }),
-        ...mapActions('segments', {
+        ...mapActions('segment', {
             updateSegment: 'updateSegment',
             removeSegment: 'removeSegment',
             clearSegmentStorage: '__clearStorage',
         }),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({
@@ -93,7 +93,7 @@ export default {
                 conditions: getMappedConditionSetData(this.conditionsValues, this.conditions),
             };
 
-            this.removeValidationErrors();
+            this.removeErrors();
             if (!this.conditionSetId) {
                 this.createConditionSet({
                     data: propertiesToUpdate,

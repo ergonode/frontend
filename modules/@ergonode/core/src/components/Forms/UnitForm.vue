@@ -44,7 +44,7 @@ export default {
         TextField: () => import('@Core/components/Inputs/TextField'),
     },
     computed: {
-        ...mapState('units', {
+        ...mapState('unit', {
             name: state => state.name,
             symbol: state => state.symbol,
         }),
@@ -61,7 +61,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('units', [
+        ...mapActions('unit', [
             '__setState',
         ]),
         setNameValue(value) {

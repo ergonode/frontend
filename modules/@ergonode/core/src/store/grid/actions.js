@@ -12,11 +12,6 @@ export default {
     }, drafts = {}) {
         commit(types.SET_DRAFTS, drafts);
     },
-    setEditCell({
-        commit,
-    }, editCell = null) {
-        commit(types.SET_EDIT_CELL, editCell);
-    },
     removeDraftRow({
         commit,
     }, rowId) {

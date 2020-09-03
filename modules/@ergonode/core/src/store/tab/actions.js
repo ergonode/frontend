@@ -7,14 +7,14 @@ import {
 } from './mutations';
 
 export default {
-    setTabTranslations({
+    setTranslations({
         commit,
     }, translation) {
-        commit(types.SET_TAB_TRANSLATIONS, translation);
+        commit(types.SET_TRANSLATIONS, translation);
     },
-    setMultilingualTranslationPropertyValue({
+    setTranslationValue({
         commit,
     }, params) {
-        commit(types.SET_MULTILINGUAL_TRANSLATION_PROPERTY_VALUE, params);
+        commit(types.SET_TRANSLATION_VALUE, params);
     },
 };

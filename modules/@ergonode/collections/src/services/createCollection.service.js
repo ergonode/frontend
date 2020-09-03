@@ -11,7 +11,7 @@ export default function ({
     } = $store.state.authentication.user;
     const {
         code, type,
-    } = $store.state.collections;
+    } = $store.state.collection;
 
     return $axios.$post(`${language}/collections`, {
         code,

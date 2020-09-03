@@ -95,7 +95,7 @@ export default function ({
         }
 
         if (process.client) {
-            store.dispatch('alerts/addAlert', {
+            store.dispatch('alert/addAlert', {
                 type: 'error',
                 message: msg,
             });

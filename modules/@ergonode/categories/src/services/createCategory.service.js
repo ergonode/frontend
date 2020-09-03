@@ -11,7 +11,7 @@ export default function ({
     } = $store.state.authentication.user;
     const {
         code,
-    } = $store.state.categories;
+    } = $store.state.category;
 
     return $axios.$post(`${language}/categories`, {
         code,

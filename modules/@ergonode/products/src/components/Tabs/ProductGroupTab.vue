@@ -230,7 +230,7 @@ export default {
                 limit,
                 extended: true,
                 filter: `esa_product_type:${this.languageCode}=${PRODUCT_TYPE.SIMPLE_PRODUCT},${PRODUCT_TYPE.WITH_VARIANTS}`,
-                columns: `esa_default_image:${this.languageCode},esa_default_label:${this.languageCode},esa_product_type:${this.languageCode},sku,esa_template:${this.languageCode}`,
+                columns: `esa_default_image,esa_default_label,esa_product_type:${this.languageCode},sku,esa_template:${this.languageCode}`,
             };
 
             if (Object.keys(sortedColumn).length) {

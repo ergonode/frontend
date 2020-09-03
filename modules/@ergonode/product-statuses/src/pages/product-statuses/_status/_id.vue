@@ -55,7 +55,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onSave() {
             const requests = [
@@ -88,7 +88,7 @@ export default {
             });
         },
         onProductStatusUpdated() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Product status updated',

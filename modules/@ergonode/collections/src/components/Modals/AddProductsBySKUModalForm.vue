@@ -55,7 +55,7 @@ export default {
         ...mapState('authentication', {
             language: state => state.user.language,
         }),
-        ...mapState('collections', {
+        ...mapState('collection', {
             id: state => state.id,
         }),
         secondaryTheme() {
@@ -70,7 +70,7 @@ export default {
     methods: {
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onFormValueChange(value) {
             this.productSkus = value;
@@ -79,7 +79,7 @@ export default {
             this.$emit('close');
         },
         onAdd() {
-            this.removeValidationErrors();
+            this.removeErrors();
             const data = {
                 skus: this.productSkus.replace(/\n/g, ',').split(','),
             };
@@ -87,7 +87,7 @@ export default {
             this.isRequestPending = true;
             this.$axios.$post(`${this.language}/collections/${this.id}/elements/add-from-skus`, data).then(() => {
                 this.isRequestPending = false;
-                this.removeValidationErrors();
+                this.removeErrors();
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
                     message: 'Products has been added to collection',

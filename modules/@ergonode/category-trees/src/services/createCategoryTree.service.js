@@ -11,7 +11,7 @@ export default function ({
     } = $store.state.authentication.user;
     const {
         code,
-    } = $store.state.tree;
+    } = $store.state.categoryTree;
 
     return $axios.$post(`${language}/trees`, {
         code,

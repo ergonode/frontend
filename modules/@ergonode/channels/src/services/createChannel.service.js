@@ -15,7 +15,7 @@ export default async function ({
     const {
         type,
         configuration,
-    } = $store.state.channels;
+    } = $store.state.channel;
     const {
         channels,
     } = $store.state.dictionaries;

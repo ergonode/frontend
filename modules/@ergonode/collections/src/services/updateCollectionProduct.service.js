@@ -10,17 +10,23 @@ export default function ({
     } = $store.state.authentication.user;
     const {
         id,
-    } = $store.state.collections;
+    } = $store.state.collection;
     const {
         drafts,
     } = $store.state.grid;
     const requests = Object.keys(drafts).map(
-        productId => $axios.$put(
-            `${language}/collections/${id}/elements/${productId}`,
-            {
-                visible: drafts[productId].visible,
-            },
-        ),
+        (key) => {
+            const [
+                productId,
+            ] = key.split('/');
+
+            return $axios.$put(
+                `${language}/collections/${id}/elements/${productId}`,
+                {
+                    visible: drafts[key],
+                },
+            );
+        },
     );
 
     return Promise.all(requests);

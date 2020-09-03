@@ -40,7 +40,7 @@ export default {
                 value: type_id,
             });
 
-            dispatch('translations/setTabTranslations', translations, {
+            dispatch('tab/setTranslations', translations, {
                 root: true,
             });
         }).catch(onError);

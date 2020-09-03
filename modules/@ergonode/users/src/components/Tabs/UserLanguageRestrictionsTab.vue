@@ -57,7 +57,7 @@ export default {
         ...mapGetters('core', [
             'activeLanguages',
         ]),
-        ...mapState('users', {
+        ...mapState('user', {
             languagePrivilegesCollection: state => state.languagePrivilegesCollection,
         }),
         isAllowedToUpdate() {
@@ -76,7 +76,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('users', [
+        ...mapActions('user', [
             '__setState',
         ]),
         onCellValueChange(cellValues) {

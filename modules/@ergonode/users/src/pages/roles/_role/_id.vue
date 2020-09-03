@@ -35,12 +35,12 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('roles/getRole', {
+        await store.dispatch('role/getRole', {
             roleId: params.id,
         });
     },
     computed: {
-        ...mapState('roles', {
+        ...mapState('role', {
             roleID: state => state.id,
             name: state => state.name,
             privileges: state => state.privileges,
@@ -52,7 +52,7 @@ export default {
         this.__clearStorage();
     },
     methods: {
-        ...mapActions('roles', [
+        ...mapActions('role', [
             '__clearStorage',
             '__setState',
             'updateRole',
@@ -61,7 +61,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onRemoveRoleSuccess() {
             this.$addAlert({
@@ -108,7 +108,7 @@ export default {
                 id: this.roleID,
                 data: role,
                 onSuccess: () => {
-                    this.removeValidationErrors();
+                    this.removeErrors();
                     this.$addAlert({
                         type: ALERT_TYPE.SUCCESS,
                         message: 'Role updated',

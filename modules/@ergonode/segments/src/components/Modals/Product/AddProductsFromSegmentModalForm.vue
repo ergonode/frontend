@@ -79,7 +79,7 @@ export default {
     methods: {
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onFormValueChange(value) {
             this.segments = value;
@@ -88,7 +88,7 @@ export default {
             this.$emit('close');
         },
         onAdd() {
-            this.removeValidationErrors();
+            this.removeErrors();
             const data = {
                 segments: this.segments.map(segment => segment.id),
             };
@@ -97,7 +97,7 @@ export default {
 
             this.$axios.$post(`${this.language}/products/${this.id}/children/add-from-segments`, data).then(() => {
                 this.isRequestPending = false;
-                this.removeValidationErrors();
+                this.removeErrors();
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
                     message: 'Products has been added',

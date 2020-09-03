@@ -57,7 +57,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('conditions', {
+        ...mapState('condition', {
             conditionsValues: state => state.conditionsValues,
         }),
         smallSize() {
@@ -136,7 +136,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('conditions', [
+        ...mapActions('condition', [
             'setConditionValue',
         ]),
         setConditionValueByType(value) {

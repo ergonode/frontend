@@ -59,7 +59,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('notifications', [
+        ...mapActions('notification', [
             'markNotificationAsRead',
         ]),
         markAsRead() {

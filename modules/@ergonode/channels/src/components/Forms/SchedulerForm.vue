@@ -74,7 +74,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('channels', [
+        ...mapState('channel', [
             'scheduler',
         ]),
         isAllowedToUpdate() {
@@ -154,7 +154,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('channels', [
+        ...mapActions('channel', [
             '__setState',
         ]),
         setIsActiveValue(value) {

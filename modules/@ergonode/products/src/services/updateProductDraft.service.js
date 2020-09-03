@@ -17,7 +17,7 @@ export default function ({
         value,
     }).then(() => {
         $store.dispatch(
-            'validations/removeValidationError',
+            'validations/removeError',
             fieldKey,
             {
                 root: true,

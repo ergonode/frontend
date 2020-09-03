@@ -14,7 +14,7 @@ export default function ({
     } = $store.state.authentication.user;
     const {
         title, image, defaultTextAttribute, defaultImageAttribute,
-    } = $store.state.templateDesigner;
+    } = $store.state.productTemplate;
 
     return $axios.$post(`${language}/templates`, {
         name: title,

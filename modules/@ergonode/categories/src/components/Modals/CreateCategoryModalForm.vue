@@ -57,7 +57,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('categories', [
+        ...mapActions('category', [
             '__clearStorage',
         ]),
         onClose() {

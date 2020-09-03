@@ -98,7 +98,7 @@ export default {
         this.invalidateRequestTimeout();
     },
     methods: {
-        ...mapActions('notifications', [
+        ...mapActions('notification', [
             'setRequestTimeout',
             'invalidateRequestTimeout',
         ]),

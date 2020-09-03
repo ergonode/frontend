@@ -32,7 +32,7 @@ export default {
         ListHeader: () => import('@Core/components/List/ListHeader'),
     },
     computed: {
-        ...mapState('templateDesigner', {
+        ...mapState('productTemplate', {
             types: state => state.types,
         }),
         widgets() {

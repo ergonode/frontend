@@ -69,7 +69,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('channels', {
+        ...mapState('channel', {
             id: state => state.id,
             type: state => state.type,
             configuration: state => state.configuration,
@@ -108,7 +108,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions('channels', [
+        ...mapActions('channel', [
             '__setState',
             'getConfiguration',
         ]),

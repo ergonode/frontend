@@ -95,7 +95,7 @@ export default {
                 limit: DATA_LIMIT,
                 extended: true,
                 filter: `${attributeCodes.map(attr => `${attr}!=`).join(';')},esa_product_type:${languageCode}=${PRODUCT_TYPE.SIMPLE_PRODUCT}`,
-                columns: `esa_default_image:${languageCode},esa_default_label:${languageCode},${attributeCodes.join(',')},sku,esa_template:${languageCode}`,
+                columns: `esa_default_image,esa_default_label,${attributeCodes.join(',')},sku,esa_template:${languageCode}`,
             };
 
             return getGridData({
@@ -205,7 +205,7 @@ export default {
                 limit,
                 extended: true,
                 filter: `esa_product_type:${this.languageCode}=${PRODUCT_TYPE.SIMPLE_PRODUCT}`,
-                columns: `esa_default_image:${this.languageCode},esa_default_label:${this.languageCode},${this.attributeCodes},sku,esa_template:${this.languageCode}`,
+                columns: `esa_default_image,esa_default_label,${this.attributeCodes},sku,esa_template:${this.languageCode}`,
             };
 
             if (Object.keys(sortedColumn).length) {

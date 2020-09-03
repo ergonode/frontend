@@ -25,11 +25,11 @@ export default function ({
         methods: {
             ...mapActions('validations', [
                 'onError',
-                'removeValidationErrors',
+                'removeErrors',
             ]),
             onActionRequest(onSuccess) {
                 this.isRequestPending = true;
-                this.removeValidationErrors();
+                this.removeErrors();
 
                 request().then(response => response.default({
                     $axios: this.$axios,
@@ -38,7 +38,7 @@ export default function ({
                     id,
                 }) => {
                     this.isRequestPending = false;
-                    this.removeValidationErrors();
+                    this.removeErrors();
                     this.$addAlert({
                         type: ALERT_TYPE.SUCCESS,
                         message: `${namespace} has been ${action.toLowerCase()}d`,

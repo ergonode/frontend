@@ -45,7 +45,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({
@@ -72,7 +72,7 @@ export default {
             });
         },
         onResourceUpdated() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Resource updated',

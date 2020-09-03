@@ -50,7 +50,7 @@ export default {
         },
     },
     computed: {
-        ...mapState('conditions', {
+        ...mapState('condition', {
             conditions: state => state.conditions,
         }),
         contextName() {
@@ -64,7 +64,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('conditions', [
+        ...mapActions('condition', [
             'getConditionConfiguration',
             'removeConditionValue',
             'setConditionValue',

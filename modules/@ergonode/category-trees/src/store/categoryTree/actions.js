@@ -74,7 +74,7 @@ export default {
                 key: 'code',
                 value: code,
             });
-            dispatch('translations/setTabTranslations', translations, {
+            dispatch('tab/setTranslations', translations, {
                 root: true,
             });
         });

@@ -88,7 +88,7 @@ export default {
             'removeAttributeOptionKey',
             'updateAttributeOptionKey',
         ]),
-        ...mapActions('translations', [
+        ...mapActions('tab', [
             'addMultilingualOptionTranslation',
         ]),
         removeAttribute(fieldKey) {

@@ -27,7 +27,7 @@ export default {
         await this.getSchedulerConfiguration();
     },
     methods: {
-        ...mapActions('channels', [
+        ...mapActions('channel', [
             'getSchedulerConfiguration',
         ]),
     },

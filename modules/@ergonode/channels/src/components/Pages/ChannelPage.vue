@@ -75,7 +75,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('channels', {
+        ...mapState('channel', {
             id: state => state.id,
         }),
         isUserAllowedToUpdate() {
@@ -93,7 +93,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('channels', [
+        ...mapActions('channel', [
             'createExport',
         ]),
         onFetchedGridData() {
