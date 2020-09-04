@@ -56,8 +56,6 @@ import {
     mapState,
 } from 'vuex';
 
-const getAttributesOptionsByType = () => import('@Attributes/services/getAttributesOptionsByType.service');
-
 export default {
     name: 'TemplateDesignerForm',
     components: {
@@ -91,6 +89,9 @@ export default {
         ...mapActions('productTemplate', [
             '__setState',
         ]),
+        ...mapActions('attribute', [
+            'getAttributesOptionsByType',
+        ]),
         setTitleValue(value) {
             this.__setState({
                 key: 'title',
@@ -116,22 +117,14 @@ export default {
             });
         },
         getDefaultTextAttributeOptionsRequest() {
-            return getAttributesOptionsByType().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                    type: TYPES.TEXT,
-                },
-            ));
+            return this.getAttributesOptionsByType({
+                type: TYPES.TEXT,
+            });
         },
         getDefaultImageAttributeOptionsRequest() {
-            return getAttributesOptionsByType().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                    type: TYPES.IMAGE,
-                },
-            ));
+            return this.getAttributesOptionsByType({
+                type: TYPES.IMAGE,
+            });
         },
         dataCyGenerator(key) {
             return `template-${key}`;
