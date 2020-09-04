@@ -8,37 +8,46 @@ import {
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
+import {
+    get,
+    getConfiguration,
+    remove,
+    update,
+} from '@Import/services';
 
 export default {
-    getImportProfile(
+    async getImportProfile(
         {
             commit, rootState,
         },
         {
-            id, onError = () => {},
+            id,
         },
     ) {
         const {
             sources,
         } = rootState.dictionaries;
 
-        return this.app.$axios.$get(`sources/${id}`).then(({
+        const {
             type,
             ...rest
-        }) => {
-            commit('__SET_STATE', {
-                key: 'id',
-                value: id,
-            });
-            commit('__SET_STATE', {
-                key: 'type',
-                value: sources[type],
-            });
-            commit('__SET_STATE', {
-                key: 'configuration',
-                value: JSON.stringify(rest),
-            });
-        }).catch(onError);
+        } = await get({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        commit('__SET_STATE', {
+            key: 'id',
+            value: id,
+        });
+        commit('__SET_STATE', {
+            key: 'type',
+            value: sources[type],
+        });
+        commit('__SET_STATE', {
+            key: 'configuration',
+            value: JSON.stringify(rest),
+        });
     },
     async getConfiguration({
         commit,
@@ -52,7 +61,10 @@ export default {
         const {
             sources,
         } = rootState.dictionaries;
-        const configuration = await this.app.$axios.$get(`sources/${getKeyByValue(sources, type)}/configuration`);
+        const configuration = await getConfiguration({
+            $axios: this.app.$axios,
+            id: getKeyByValue(sources, type),
+        });
 
         if (!id) {
             const defaultConfiguration = getDefaultJsonSchemaTypes(configuration.properties);
@@ -66,17 +78,37 @@ export default {
         return configuration;
     },
     updateImportProfile(
-        {},
         {
-            id,
-            data,
+            state,
+        },
+        {
             onSuccess,
             onError,
         },
     ) {
-        return this.app.$axios.$put(`sources/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        try {
+            const {
+                id,
+                type,
+                configuration,
+            } = state;
+            const data = {
+                type,
+                ...JSON.parse(configuration),
+            };
+
+            update({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
-    removeImport({
+    async removeImport({
         state,
     }, {
         onSuccess,
@@ -85,6 +117,10 @@ export default {
             id,
         } = state;
 
-        return this.app.$axios.$delete(`sources/${id}`).then(() => onSuccess());
+        await remove({
+            $axios: this.app.$axios,
+            id,
+        });
+        onSuccess();
     },
 };

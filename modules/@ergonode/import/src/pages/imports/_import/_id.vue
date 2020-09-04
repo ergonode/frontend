@@ -38,7 +38,6 @@ export default {
     },
     computed: {
         ...mapState('import', {
-            type: state => state.type,
             configuration: state => state.configuration,
         }),
         name() {
@@ -74,12 +73,6 @@ export default {
         onSave() {
             this.removeErrors();
             this.updateImportProfile({
-                id: this.$route.params.id,
-                data: {
-                    type: this.type,
-                    name: this.name,
-                    ...JSON.parse(this.configuration),
-                },
                 onSuccess: this.onUpdateImportProfileSuccess,
                 onError: this.onError,
             });
