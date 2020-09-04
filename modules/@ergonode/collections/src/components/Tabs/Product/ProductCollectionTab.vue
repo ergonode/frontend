@@ -47,6 +47,9 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'ProductCollectionTab',
@@ -77,7 +80,7 @@ export default {
         } = await this.$axios.$get('collections/type');
         const {
             collection: collections,
-        } = await this.$axios.$get(`products/${this.$route.params.id}/collections`);
+        } = await this.getProductCollections();
 
         this.collections = collections.map(({
             id, code, name, description, elements_count, type_id,
@@ -94,6 +97,9 @@ export default {
         });
     },
     methods: {
+        ...mapActions('product', [
+            'getProductCollections',
+        ]),
         onNavigateToCollections() {
             this.$router.push({
                 name: 'collections-grid',

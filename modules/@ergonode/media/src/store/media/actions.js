@@ -4,6 +4,8 @@
  */
 import {
     get,
+    getMetadata,
+    getRelation,
     remove,
     update,
 } from '@Media/services/index';
@@ -39,6 +41,30 @@ export default {
         });
         dispatch('tab/setTranslations', translations, {
             root: true,
+        });
+    },
+    getResourceMetadata({
+        state,
+    }) {
+        const {
+            id,
+        } = state;
+
+        return getMetadata({
+            $axios: this.app.$axios,
+            id,
+        });
+    },
+    getResourceRelation({
+        state,
+    }) {
+        const {
+            id,
+        } = state;
+
+        return getRelation({
+            $axios: this.app.$axios,
+            id,
         });
     },
     updateResource({

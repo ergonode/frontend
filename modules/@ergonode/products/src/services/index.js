@@ -21,6 +21,11 @@ export const getBindings = ({
     id,
 }) => $axios.$get(`products/${id}/bindings`);
 
+export const getCollections = ({
+    $axios,
+    id,
+}) => $axios.$get(`products/${id}/collections`);
+
 export const getChildren = ({
     $axios,
     id,

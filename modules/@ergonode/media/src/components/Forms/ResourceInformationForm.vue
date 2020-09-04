@@ -31,6 +31,9 @@ import TableRow from '@Core/components/Table/TableRow';
 import TableRowCell from '@Core/components/Table/TableRowCell';
 import TableRowHeader from '@Core/components/Table/TableRowHeader';
 import TableRowInfoCell from '@Core/components/Table/TableRowInfoCell';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'ResourceInformationForm',
@@ -49,22 +52,25 @@ export default {
             isPrefetchingData: true,
         };
     },
-    created() {
-        this.$axios
-            .$get(`multimedia/${this.$route.params.id}/metadata`)
-            .then((metadata) => {
-                this.rows = Object.keys(metadata).reduce((acc, current) => {
-                    const tmpArray = acc;
+    async created() {
+        const metadata = await this.getResourceMetadata();
 
-                    tmpArray.push({
-                        name: current,
-                        value: metadata[current].toString(),
-                    });
+        this.rows = Object.keys(metadata).reduce((acc, current) => {
+            const tmpArray = acc;
 
-                    return tmpArray;
-                }, []);
-                this.isPrefetchingData = false;
+            tmpArray.push({
+                name: current,
+                value: metadata[current].toString(),
             });
+
+            return tmpArray;
+        }, []);
+        this.isPrefetchingData = false;
+    },
+    methods: {
+        ...mapActions('media', [
+            'getResourceMetadata',
+        ]),
     },
 };
 </script>

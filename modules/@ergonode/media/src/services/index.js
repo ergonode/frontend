@@ -8,6 +8,16 @@ export const get = ({
     id,
 }) => $axios.$get(`multimedia/${id}`);
 
+export const getMetadata = ({
+    $axios,
+    id,
+}) => $axios.$get(`multimedia/${id}/metadata`);
+
+export const getRelation = ({
+    $axios,
+    id,
+}) => $axios.$get(`multimedia/${id}/relation`);
+
 export const update = ({
     $axios,
     id,

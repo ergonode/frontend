@@ -18,6 +18,7 @@ import {
     get,
     getBindings,
     getChildren,
+    getCollections,
     getCompleteness,
     getDraft,
     getTemplate,
@@ -140,6 +141,24 @@ export default {
             });
         }
     },
+    getProductWorkflowOptions({}, {
+        id,
+        languageCode,
+    }) {
+        return get({
+            $axios: this.app.$axios,
+            id,
+        }).then(({
+            workflow = [],
+        }) => workflow.map(e => ({
+            id: e.code,
+            key: e.code,
+            value: e.name,
+            hint: e.name
+                ? `#${e.code} ${languageCode}`
+                : '',
+        })));
+    },
     async getProductTemplate({}, {
         languageCode,
         id,
@@ -162,6 +181,18 @@ export default {
     },
     async getProductBindings({}, id) {
         await getBindings({
+            $axios: this.app.$axios,
+            id,
+        });
+    },
+    async getProductCollections({
+        state,
+    }) {
+        const {
+            id,
+        } = state;
+
+        await getCollections({
             $axios: this.app.$axios,
             id,
         });
