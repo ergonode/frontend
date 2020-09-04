@@ -26,7 +26,7 @@ export default {
         ...mapState('authentication', {
             languageCode: state => state.user.language,
         }),
-        ...mapState('collections', {
+        ...mapState('collection', {
             id: state => state.id,
         }),
         columnParams() {

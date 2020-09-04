@@ -70,7 +70,7 @@ export default {
     methods: {
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         updateRestoredElement(element) {
             this.restoredElement = element;
@@ -99,7 +99,7 @@ export default {
                 ).properties.attribute_id,
             }).then(() => {
                 this.isRequestPending = false;
-                this.removeValidationErrors();
+                this.removeErrors();
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
                     message: `${this.restoredElement} value restored`,

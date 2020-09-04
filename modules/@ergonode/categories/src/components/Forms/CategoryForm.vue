@@ -37,7 +37,7 @@ export default {
         TextField: () => import('@Core/components/Inputs/TextField'),
     },
     computed: {
-        ...mapState('categories', {
+        ...mapState('category', {
             categoryID: state => state.id,
             code: state => state.code,
         }),
@@ -54,7 +54,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('categories', [
+        ...mapActions('category', [
             '__setState',
         ]),
         setCodeValue(value) {

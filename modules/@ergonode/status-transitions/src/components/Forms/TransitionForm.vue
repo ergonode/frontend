@@ -65,7 +65,7 @@ export default {
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
     },
     computed: {
-        ...mapState('transitions', {
+        ...mapState('statusTransition', {
             source: state => state.source,
             destination: state => state.destination,
             roles: state => state.roles,
@@ -111,7 +111,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('transitions', [
+        ...mapActions('statusTransition', [
             '__setState',
         ]),
         setSourceValue(value) {

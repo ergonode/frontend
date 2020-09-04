@@ -37,12 +37,12 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('channels/getChannel', {
+        await store.dispatch('channel/getChannel', {
             id: params.id,
         });
     },
     computed: {
-        ...mapState('channels', {
+        ...mapState('channel', {
             type: state => state.type,
             configuration: state => state.configuration,
             scheduler: state => state.scheduler,
@@ -59,7 +59,7 @@ export default {
         this.__clearStorage();
     },
     methods: {
-        ...mapActions('channels', [
+        ...mapActions('channel', [
             '__clearStorage',
             'updateChannel',
             'updateScheduler',
@@ -67,7 +67,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({
@@ -79,7 +79,7 @@ export default {
             });
         },
         onSave() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.updateChannel({
                 id: this.$route.params.id,
                 data: {
@@ -100,14 +100,14 @@ export default {
             }
         },
         onUpdateSchedulerSuccess() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Scheduler updated',
             });
         },
         onUpdateChannelSuccess() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Channel updated',

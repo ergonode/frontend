@@ -34,7 +34,7 @@ export default {
                 key: 'extension',
                 value: extension,
             });
-            dispatch('translations/setTabTranslations', translations, {
+            dispatch('tab/setTranslations', translations, {
                 root: true,
             });
         });
@@ -59,7 +59,7 @@ export default {
             translations: {
                 alt,
             },
-        } = rootState.translations;
+        } = rootState.tab;
 
         this.app.$axios
             .$put(`${userLanguageCode}/multimedia/${id}`, {

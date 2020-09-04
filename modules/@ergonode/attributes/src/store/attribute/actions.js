@@ -134,7 +134,7 @@ export default {
             });
 
             dispatch(
-                'translations/setTabTranslations',
+                'tab/setTranslations',
                 {
                     hint,
                     label,

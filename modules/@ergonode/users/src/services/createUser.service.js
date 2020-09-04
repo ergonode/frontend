@@ -10,7 +10,7 @@ export default function ({
     } = $store.state.authentication.user;
     const {
         email, firstName, lastName, password, passwordRepeat, role, isActive, language,
-    } = $store.state.users;
+    } = $store.state.user;
     const getActiveLanguageByName = $store.getters['core/getActiveLanguageByName'];
     const data = {
         email,

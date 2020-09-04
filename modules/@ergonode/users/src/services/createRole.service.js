@@ -11,7 +11,7 @@ export default function ({
     } = $store.state.authentication.user;
     const {
         name, description,
-    } = $store.state.roles;
+    } = $store.state.role;
 
     return $axios.$post(`${language}/roles`, {
         name,

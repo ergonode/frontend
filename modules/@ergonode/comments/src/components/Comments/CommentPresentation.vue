@@ -128,7 +128,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('comments', [
+        ...mapActions('comment', [
             'removeComment',
         ]),
         editComment() {

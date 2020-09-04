@@ -117,7 +117,7 @@ export default {
         ...mapGetters('core', [
             'activeLanguages',
         ]),
-        ...mapState('users', {
+        ...mapState('user', {
             userID: state => state.id,
             email: state => state.email,
             firstName: state => state.firstName,
@@ -169,7 +169,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('users', [
+        ...mapActions('user', [
             '__setState',
         ]),
         getRolesOptionsRequest() {

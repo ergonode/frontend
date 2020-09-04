@@ -41,13 +41,13 @@ export default {
             id,
         } = params;
 
-        await store.dispatch('templateDesigner/getTemplateByID', id);
+        await store.dispatch('productTemplate/getTemplateByID', id);
     },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapState('templateDesigner', {
+        ...mapState('productTemplate', {
             groups: state => state.templateGroups,
             templateTitle: state => state.title,
             templateImage: state => state.image,
@@ -61,7 +61,7 @@ export default {
         this.__clearStorage();
     },
     methods: {
-        ...mapActions('templateDesigner', [
+        ...mapActions('productTemplate', [
             'updateTemplateDesigner',
             'removeTemplate',
             'getTemplateByID',
@@ -72,10 +72,10 @@ export default {
         }),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onUpdateTemplateDesignerSuccess() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Template updated',

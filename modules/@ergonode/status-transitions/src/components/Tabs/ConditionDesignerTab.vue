@@ -54,7 +54,7 @@ export default {
     fetch({
         store,
     }) {
-        return store.dispatch('conditions/getConditions', {
+        return store.dispatch('condition/getConditions', {
             group: 'workflow',
         });
     },
@@ -94,7 +94,7 @@ export default {
         ...mapActions('gridDesigner', {
             clearGridDesignerStorage: '__clearStorage',
         }),
-        ...mapActions('conditions', {
+        ...mapActions('condition', {
             clearConditionsStorage: '__clearStorage',
         }),
     },

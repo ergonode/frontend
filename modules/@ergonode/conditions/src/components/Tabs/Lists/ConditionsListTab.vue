@@ -44,7 +44,7 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapState('conditions', {
+        ...mapState('condition', {
             items: state => state.conditionsDictionary,
         }),
     },

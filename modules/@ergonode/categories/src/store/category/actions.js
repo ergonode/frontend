@@ -36,7 +36,7 @@ export default {
                 value: name,
             });
 
-            dispatch('translations/setTabTranslations', translations, {
+            dispatch('tab/setTranslations', translations, {
                 root: true,
             });
         }).catch(onError);

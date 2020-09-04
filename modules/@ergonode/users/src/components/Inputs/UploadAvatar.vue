@@ -76,7 +76,7 @@ export default {
     methods: {
         ...mapActions('validations', [
             'onError',
-            'removeValidationError',
+            'removeError',
         ]),
         onRemoveFile() {
             this.$axios.$delete(`${this.languageCode}/accounts/${this.userId}/avatar`).then(() => {
@@ -104,7 +104,7 @@ export default {
                         type: ALERT_TYPE.SUCCESS,
                         message: 'Avatar uploaded',
                     });
-                    this.removeValidationError('upload');
+                    this.removeError('upload');
                     this.isRequestPending = false;
                     this.$emit('progress', false);
                     this.$emit('upload', this.userId);

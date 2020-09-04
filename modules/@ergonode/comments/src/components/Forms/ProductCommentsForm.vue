@@ -85,7 +85,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('comments', {
+        ...mapState('comment', {
             objectId: state => state.objectId,
             fullListCount: state => state.count,
             commentList: state => state.comments,
@@ -120,7 +120,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('comments', [
+        ...mapActions('comment', [
             'getMoreComments',
         ]),
         closeForm() {

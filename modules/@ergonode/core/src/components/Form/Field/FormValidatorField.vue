@@ -22,34 +22,34 @@ export default {
     },
     computed: {
         ...mapState('validations', {
-            validationErrors: state => state.validationErrors,
+            errors: state => state.errors,
         }),
         errorMessages() {
             if (Array.isArray(this.fieldKey)) {
-                let validationError = null;
+                let errors = null;
 
                 this.fieldKey.forEach((key) => {
-                    if (!validationError && this.validationErrors[key]) {
-                        validationError = this.validationErrors[key];
-                    } else if (validationError && validationError[key]) {
-                        validationError = validationError[key];
+                    if (!errors && this.errors[key]) {
+                        errors = this.errors[key];
+                    } else if (errors && errors[key]) {
+                        errors = errors[key];
                     } else {
-                        validationError = null;
+                        errors = null;
                     }
                 });
 
-                return validationError;
+                return errors;
             }
 
-            return this.validationErrors[this.fieldKey];
+            return this.errors[this.fieldKey];
         },
     },
     beforeDestroy() {
-        this.removeValidationError(this.fieldKey);
+        this.removeError(this.fieldKey);
     },
     methods: {
         ...mapActions('validations', [
-            'removeValidationError',
+            'removeError',
         ]),
     },
     render() {

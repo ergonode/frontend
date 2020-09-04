@@ -68,7 +68,7 @@ export default {
         UploadImageFile: () => import('@Media/components/Inputs/UploadFile/UploadImageFile'),
     },
     computed: {
-        ...mapState('templateDesigner', {
+        ...mapState('productTemplate', {
             id: state => state.id,
             title: state => state.title,
             image: state => state.image,
@@ -88,7 +88,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('templateDesigner', [
+        ...mapActions('productTemplate', [
             '__setState',
         ]),
         setTitleValue(value) {

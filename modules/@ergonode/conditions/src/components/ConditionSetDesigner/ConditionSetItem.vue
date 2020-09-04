@@ -97,7 +97,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('conditions', {
+        ...mapState('condition', {
             conditionsValues: state => state.conditionsValues,
         }),
         tinySize() {

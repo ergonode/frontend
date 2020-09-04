@@ -57,7 +57,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('segments', [
+        ...mapActions('segment', [
             '__clearStorage',
         ]),
         onClose() {

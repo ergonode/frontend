@@ -53,7 +53,7 @@ export default {
         }),
     ],
     computed: {
-        ...mapState('transitions', {
+        ...mapState('statusTransition', {
             source: state => state.source,
             destination: state => state.destination,
         }),
@@ -68,7 +68,7 @@ export default {
         });
     },
     methods: {
-        ...mapActions('transitions', [
+        ...mapActions('statusTransition', [
             '__clearStorage',
         ]),
         ...mapActions('productStatus', [

@@ -109,7 +109,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('templateDesigner', {
+        ...mapState('productTemplate', {
             layoutElements: state => state.layoutElements,
         }),
         ...mapState('draggable', {
@@ -127,7 +127,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('templateDesigner', [
+        ...mapActions('productTemplate', [
             'updateLayoutElementAtIndex',
             'removeLayoutElementAtIndex',
         ]),

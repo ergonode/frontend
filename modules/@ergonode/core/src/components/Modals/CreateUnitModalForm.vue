@@ -57,7 +57,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('units', [
+        ...mapActions('unit', [
             '__clearStorage',
         ]),
         ...mapActions('dictionaries', [

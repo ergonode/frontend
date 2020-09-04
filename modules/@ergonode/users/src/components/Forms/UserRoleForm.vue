@@ -45,7 +45,7 @@ export default {
         TextArea: () => import('@Core/components/Inputs/TextArea'),
     },
     computed: {
-        ...mapState('roles', {
+        ...mapState('role', {
             roleID: state => state.id,
             name: state => state.name,
             description: state => state.description,
@@ -66,7 +66,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('roles', [
+        ...mapActions('role', [
             '__setState',
         ]),
         setNameValue(value) {

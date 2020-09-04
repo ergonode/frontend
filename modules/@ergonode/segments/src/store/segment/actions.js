@@ -3,55 +3,45 @@
  * See LICENSE for license details.
  */
 export default {
-    async getTransition(
+    async getSegment(
         {
             commit, dispatch, rootState,
         },
         {
-            id,
+            segmentId,
         },
     ) {
         const {
             language: userLanguageCode,
         } = rootState.authentication.user;
-        const {
-            statuses: statusOptions,
-        } = rootState.productStatus;
-        const [
-            source,
-            destination,
-        ] = id.split('--');
-
-        await this.app.$axios.$get(`${userLanguageCode}/workflow/default/transitions/${source}/${destination}`).then(async ({
+        await this.app.$axios.$get(`${userLanguageCode}/segments/${segmentId}`).then(async ({
+            id,
+            code,
             condition_set_id: conditionSetId,
-            role_ids: rolesIds,
+            name = '',
+            description = '',
         }) => {
-            const sourceOption = statusOptions.find(
-                status => status.key === source.replace(/%20/g, ' '),
-            );
-            const destinationOption = statusOptions.find(
-                status => status.key === destination.replace(/%20/g, ' '),
-            );
-
+            const translations = {
+                name,
+                description,
+            };
             commit('__SET_STATE', {
-                key: 'source',
-                value: sourceOption,
+                key: 'id',
+                value: id,
             });
             commit('__SET_STATE', {
-                key: 'destination',
-                value: destinationOption,
-            });
-            commit('__SET_STATE', {
-                key: 'roles',
-                value: rolesIds,
+                key: 'code',
+                value: code,
             });
             commit('__SET_STATE', {
                 key: 'conditionSetId',
                 value: conditionSetId,
             });
-
+            dispatch('tab/setTranslations', translations, {
+                root: true,
+            });
             if (conditionSetId) {
-                await dispatch('conditions/getConditionSet', {
+                await dispatch('condition/getConditionSet', {
                     conditionSetId,
                 }, {
                     root: true,
@@ -59,11 +49,12 @@ export default {
             }
         });
     },
-    async updateTransition(
+    async updateSegment(
         {
-            state, rootState,
+            rootState,
         },
         {
+            id,
             data,
             onSuccess,
             onError,
@@ -72,27 +63,24 @@ export default {
         const {
             language: userLanguageCode,
         } = rootState.authentication.user;
-        const {
-            source, destination,
-        } = state;
 
         await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`${userLanguageCode}/workflow/default/transitions/${source.id}/${destination.id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        await this.app.$axios.$put(`${userLanguageCode}/segments/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
-    removeTransition({
+    removeSegment({
         state, rootState,
     }, {
         onSuccess,
     }) {
         const {
-            source, destination, conditionSetId,
+            id, conditionSetId,
         } = state;
         const {
             language: userLanguageCode,
         } = rootState.authentication.user;
 
-        return this.app.$axios.$delete(`${userLanguageCode}/workflow/default/transitions/${source.key}/${destination.key}`)
+        return this.app.$axios.$delete(`${userLanguageCode}/segments/${id}`)
             .then(() => {
                 if (conditionSetId) {
                     this.app.$axios.$delete(`${userLanguageCode}/conditionsets/${conditionSetId}`)

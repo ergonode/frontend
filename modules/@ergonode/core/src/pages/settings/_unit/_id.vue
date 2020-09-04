@@ -35,13 +35,13 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('units/__clearStorage');
-        await store.dispatch('units/getUnit', {
+        await store.dispatch('unit/__clearStorage');
+        await store.dispatch('unit/getUnit', {
             unitId: params.id,
         });
     },
     computed: {
-        ...mapState('units', {
+        ...mapState('unit', {
             id: state => state.id,
             name: state => state.name,
             symbol: state => state.symbol,
@@ -51,7 +51,7 @@ export default {
         this.clearUnitStorage();
     },
     methods: {
-        ...mapActions('units', {
+        ...mapActions('unit', {
             updateUnit: 'updateUnit',
             removeUnit: 'removeUnit',
             clearUnitStorage: '__clearStorage',
@@ -61,7 +61,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({
@@ -73,7 +73,7 @@ export default {
             });
         },
         onSave() {
-            this.removeValidationErrors();
+            this.removeErrors();
 
             this.updateUnit({
                 id: this.id,

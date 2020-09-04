@@ -36,28 +36,31 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('collections/getCollection', {
+        await store.dispatch('collection/getCollection', {
             collectionId: params.id,
         });
     },
     computed: {
-        ...mapState('collections', {
+        ...mapState('collection', {
             id: state => state.id,
             code: state => state.code,
             type: state => state.type,
         }),
-        ...mapState('translations', {
+        ...mapState('tab', {
             translations: state => state.translations,
         }),
     },
     methods: {
-        ...mapActions('collections', [
+        ...mapActions('collection', [
             'updateCollection',
             'removeCollection',
         ]),
+        ...mapActions('grid', [
+            'setDrafts',
+        ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({
@@ -68,8 +71,8 @@ export default {
                 }),
             });
         },
-        onSave() {
-            this.removeValidationErrors();
+        async onSave() {
+            this.removeErrors();
             const {
                 name, description,
             } = this.translations;
@@ -79,12 +82,14 @@ export default {
                 description,
             };
 
-            updateCollectionProduct().then(response => response.default({
+            await updateCollectionProduct().then(response => response.default({
                 $axios: this.$axios,
                 $store: this.$store,
             }));
 
-            this.updateCollection({
+            this.setDrafts();
+
+            await this.updateCollection({
                 id: this.id,
                 data,
                 onSuccess: this.onUpdateCollectionSuccess,
@@ -92,7 +97,7 @@ export default {
             });
         },
         onUpdateCollectionSuccess() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Product collection updated',

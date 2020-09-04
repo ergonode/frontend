@@ -11,7 +11,7 @@ export default function ({
     } = $store.state.authentication.user;
     const {
         code,
-    } = $store.state.segments;
+    } = $store.state.segment;
 
     return $axios.$post(`${language}/segments`, {
         code,

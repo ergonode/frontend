@@ -14,7 +14,7 @@ export default function ({
     } = $store.state.authentication.user;
     const {
         source, destination, roles,
-    } = $store.state.transitions;
+    } = $store.state.statusTransition;
     const data = {
         source: isObject(source) ? source.key : null,
         destination: isObject(destination) ? destination.key : null,

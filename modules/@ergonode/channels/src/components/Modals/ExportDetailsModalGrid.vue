@@ -66,7 +66,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('channels', {
+        ...mapState('channel', {
             type: state => state.type,
         }),
         ...mapState('authentication', {

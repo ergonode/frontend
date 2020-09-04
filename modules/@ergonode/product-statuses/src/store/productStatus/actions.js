@@ -50,7 +50,7 @@ export default {
                 key: 'color',
                 value: color,
             });
-            dispatch('translations/setTabTranslations', translations, {
+            dispatch('tab/setTranslations', translations, {
                 root: true,
             });
         });
@@ -97,7 +97,7 @@ export default {
             translations: {
                 name, description,
             },
-        } = rootState.translations;
+        } = rootState.tab;
         const data = {
             color: state.color,
             name,

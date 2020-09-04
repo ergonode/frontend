@@ -87,7 +87,7 @@
                             :draft="drafts[`${rowIds[rowIndex]}/${column.id}`]"
                             :column="column"
                             :type="columnTypes[column.type]"
-                            :error-messages="validationErrors[`${rowIds[rowIndex]}/${column.id}`]"
+                            :error-messages="errors[`${rowIds[rowIndex]}/${column.id}`]"
                             :row-id="rowIds[rowIndex]"
                             :column-index="columnIndex + columnsOffset"
                             :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
@@ -280,7 +280,7 @@ export default {
     },
     computed: {
         ...mapState('validations', {
-            validationErrors: state => state.validationErrors,
+            errors: state => state.errors,
         }),
         ...mapState('list', {
             disabledElements: state => state.disabledElements,

@@ -62,7 +62,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({
@@ -74,7 +74,7 @@ export default {
             });
         },
         onSave() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.updateImportProfile({
                 id: this.$route.params.id,
                 data: {
@@ -87,7 +87,7 @@ export default {
             });
         },
         onUpdateImportProfileSuccess() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Import profiles updated',
