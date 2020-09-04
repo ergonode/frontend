@@ -98,9 +98,7 @@ export default {
         return this.app.$axios.$post(`channels/${id}/exports`).then(data => onSuccess(data)).catch(e => onError(e.data));
     },
     updateChannel(
-        {
-            rootState,
-        },
+        {},
         {
             id,
             data,
