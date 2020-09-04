@@ -30,7 +30,7 @@ export default {
     asyncData({
         store, params,
     }) {
-        return store.dispatch('media/getResource', params.id);
+        return store.dispatch('media/getResource', params);
     },
     computed: {
         ...mapState('media', {
