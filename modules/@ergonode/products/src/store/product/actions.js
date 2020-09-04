@@ -143,21 +143,27 @@ export default {
         languageCode,
         id,
     }) {
-        await getTemplate({
+        const {
+            elements,
+        } = await getTemplate({
             $axios: this.app.$axios,
             languageCode,
             id,
         });
+
+        return elements;
     },
     async getProductCompleteness({}, {
         languageCode,
         id,
     }) {
-        await getCompleteness({
+        const completeness = await getCompleteness({
             $axios: this.app.$axios,
             languageCode,
             id,
         });
+
+        return completeness;
     },
     async updateProductStatus({
         state,

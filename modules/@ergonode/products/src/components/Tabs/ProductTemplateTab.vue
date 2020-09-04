@@ -103,7 +103,7 @@ export default {
             templateResponse,
             completenessResponse,
         ]) => ({
-            elements: templateResponse.elements,
+            elements: templateResponse,
             completeness: completenessResponse,
         }));
     },
@@ -184,7 +184,7 @@ export default {
                 templateResponse,
                 completenessResponse,
             ]) => {
-                this.elements = templateResponse.elements;
+                this.elements = templateResponse;
                 this.completeness = completenessResponse;
                 this.language = value;
             });
