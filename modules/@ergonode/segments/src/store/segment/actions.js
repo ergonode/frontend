@@ -105,7 +105,6 @@ export default {
     async createTransition(
         {
             state,
-            commit,
         },
         {
             onSuccess,

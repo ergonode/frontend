@@ -189,7 +189,6 @@ export default {
     async createUser(
         {
             state,
-            commit,
             rootGetters,
         },
         {

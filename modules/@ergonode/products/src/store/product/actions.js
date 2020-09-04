@@ -6,6 +6,9 @@ import {
     TYPES,
 } from '@Attributes/defaults/attributes';
 import {
+    getKeyByValue,
+} from '@Core/models/objectWrapper';
+import {
     EXTENDS,
     PRODUCT_TYPE,
 } from '@Products/defaults';
@@ -181,19 +184,97 @@ export default {
     },
     async updateProduct(
         {
-            dispatch,
+            state,
+            rootState,
         },
         {
-            id,
-            data,
             onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        await this.app.$axios.$put(`products/${id}`, data).then(onSuccess).catch(e => dispatch('validations/onError', e.data, {
-            root: true,
-        }));
+        this.$setLoader('footerButton');
+
+        try {
+            const {
+                productTypes,
+            } = rootState.dictionaries;
+            const {
+                id,
+                template,
+                categories,
+                type,
+                bindingAttributesIds,
+            } = state;
+
+            const data = {
+                templateId: template,
+                categoryIds: categories,
+            };
+
+            if (getKeyByValue(productTypes, type) === PRODUCT_TYPE.WITH_VARIANTS) {
+                data.bindings = bindingAttributesIds;
+            }
+
+            await update({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            await applyDraft({
+                $axios: this.app.$axios,
+                id,
+            });
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
+
+        this.$removeLoader('footerButton');
     },
-    removeProduct({
+    async createProduct(
+        {
+            state,
+            rootState,
+        },
+        {
+            onSuccess,
+            onError,
+        },
+    ) {
+        try {
+            const {
+                productTypes,
+            } = rootState.dictionaries;
+            const {
+                sku,
+                type,
+                template,
+                categories,
+                bindingAttributesIds,
+            } = state;
+
+            const data = {
+                sku,
+                type: getKeyByValue(productTypes, type),
+                templateId: template,
+                categoryIds: categories,
+            };
+
+            if (bindingAttributesIds.length) {
+                data.bindings = bindingAttributesIds;
+            }
+
+            await create({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
+    },
+    async removeProduct({
         state,
     }, {
         onSuccess,
@@ -202,6 +283,11 @@ export default {
             id,
         } = state;
 
-        return this.app.$axios.$delete(`products/${id}`).then(() => onSuccess());
+        await remove({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        onSuccess();
     },
 };
