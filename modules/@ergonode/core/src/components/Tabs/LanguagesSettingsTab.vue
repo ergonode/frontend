@@ -141,7 +141,7 @@ export default {
             clearGridDesignerStorage: '__clearStorage',
         }),
         ...mapActions('core', [
-            'setLanguagesTree',
+            'setLanguageTree',
             'setDefaultLanguage',
             'updateLanguageTree',
         ]),
@@ -167,7 +167,7 @@ export default {
                 return false;
             } finally {
                 if (isUpdated !== false) {
-                    await this.setLanguagesTree(languages);
+                    await this.setLanguageTree(languages);
                     await this.setDefaultLanguage();
                     this.$addAlert({
                         type: ALERT_TYPE.SUCCESS,

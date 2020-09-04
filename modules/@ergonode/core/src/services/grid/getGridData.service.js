@@ -12,84 +12,84 @@ import {
     getMappedObjectOptions,
 } from '@Core/models/mappers/translationsMapper';
 
-export const getGridData = ({
+export const getGridData = async ({
     $axios,
     path,
     params,
-}) => $axios
-    .$get(path, {
-        params,
-    })
-    .then(({
+}) => {
+    const {
         collection,
         columns,
         info: {
             filtered,
         },
-    }) => {
-        const sortedColumns = params.columns
-            ? getSortedColumnsByIDs(columns, params.columns)
-            : columns;
-
-        return {
-            columns: sortedColumns,
-            rows: collection,
-            filtered,
-        };
+    } = await $axios.$get(path, {
+        params,
     });
 
-export const getAdvancedFiltersData = ({
+    const sortedColumns = params.columns
+        ? getSortedColumnsByIDs(columns, params.columns)
+        : columns;
+
+    return {
+        columns: sortedColumns,
+        rows: collection,
+        filtered,
+    };
+};
+
+export const getAdvancedFiltersData = async ({
     $axios,
     $addAlert,
     path,
     params,
-}) => $axios
-    .$get(path, {
-        params,
-    })
-    .then(({
+}) => {
+    const {
         columns,
-    }) => {
-        const {
-            length,
-        } = columns;
-        const advancedFilters = [];
+    } = await $axios.$get(path, {
+        params,
+    });
 
-        for (let i = 0; i < length; i += 1) {
-            const {
+    const {
+        length,
+    } = columns;
+    const advancedFilters = [];
+
+    for (let i = 0; i < length; i += 1) {
+        const {
+            id,
+            element_id,
+            language,
+            filter,
+            label,
+            parameters,
+        } = columns[i];
+
+        if (filter) {
+            const mappedFilter = {
                 id,
-                element_id,
-                language,
-                filter,
+                attributeId: element_id || '',
+                languageCode: language,
+                type: filter.type,
                 label,
                 parameters,
-            } = columns[i];
+            };
 
-            if (filter) {
-                const mappedFilter = {
-                    id,
-                    attributeId: element_id || '',
+            if (filter.options) {
+                mappedFilter.options = getMappedObjectOptions({
+                    options: filter.options,
                     languageCode: language,
-                    type: filter.type,
-                    label,
-                    parameters,
-                };
-
-                if (filter.options) {
-                    mappedFilter.options = getMappedObjectOptions({
-                        options: filter.options,
-                        languageCode: language,
-                    });
-                }
-
-                advancedFilters.push(mappedFilter);
-            } else {
-                $addAlert({
-                    type: ALERT_TYPE.ERROR,
-                    message: 'Attribute has no filter',
                 });
             }
-        }
 
-        return advancedFilters;
-    });
+            advancedFilters.push(mappedFilter);
+        } else {
+            $addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Attribute has no filter',
+            });
+        }
+    }
+
+    return advancedFilters;
+};

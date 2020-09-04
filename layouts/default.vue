@@ -45,7 +45,7 @@ export default {
                 store.dispatch('core/getLanguages'),
             ]);
 
-            await store.dispatch('core/getLanguagesTree');
+            await store.dispatch('core/getLanguageTree');
             await store.dispatch('core/setDefaultLanguage');
         }
 

@@ -18,29 +18,29 @@ const modulesDictionaries = Object.values(extendsModules)
     }, []);
 
 export default {
-    getDictionaries({
+    async getDictionaries({
         commit,
     }) {
-        const promises = modulesDictionaries.map(({
+        const promises = modulesDictionaries.map(async ({
             stateProp, requestPath, isGrid = false,
         }) => {
             const path = `${requestPath}${isGrid ? '?view=list' : ''}`;
 
-            return this.app.$axios.$get(path, {
+            const response = await this.app.$axios.$get(path, {
                 useCache: isGrid,
-            }).then((response) => {
-                const value = isGrid ? response.collection : response;
+            });
 
-                commit('__SET_STATE', {
-                    key: stateProp,
-                    value,
-                });
+            const value = isGrid ? response.collection : response;
+
+            commit('__SET_STATE', {
+                key: stateProp,
+                value,
             });
         });
 
-        return Promise.all(promises);
+        await Promise.all(promises);
     },
-    getCurrentDictionary({
+    async getCurrentDictionary({
         commit,
     }, {
         dictionaryName,
@@ -54,15 +54,14 @@ export default {
         }) => name === dictionaryName);
         const path = `${requestPath}${isGrid ? '?view=list' : ''}`;
 
-        return this.app.$axios.$get(path, {
+        const response = await this.app.$axios.$get(path, {
             useCache: isGrid,
-        }).then((response) => {
-            const value = isGrid ? response.collection : response;
+        });
+        const value = isGrid ? response.collection : response;
 
-            commit('__SET_STATE', {
-                key: stateProp,
-                value,
-            });
+        commit('__SET_STATE', {
+            key: stateProp,
+            value,
         });
     },
 };

@@ -102,7 +102,7 @@ export default {
         fetchCollectionItems({
             id, index,
         }) {
-            this.$axios.$get(`${this.$store.state.authentication.user.language}/collections/${id}/elements`).then(({
+            this.$axios.$get(`collections/${id}/elements`).then(({
                 collection,
             }) => {
                 this.collections[index].items = collection.map(({

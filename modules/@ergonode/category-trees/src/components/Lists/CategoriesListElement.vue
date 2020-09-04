@@ -72,21 +72,19 @@ export default {
     },
     methods: {
         ...mapActions('draggable', [
-            'setDraggedElement',
+            '__setState',
         ]),
         onDrag(isDragged) {
-            if (isDragged) {
-                const {
-                    id, code, name,
-                } = this.item;
-                this.setDraggedElement({
-                    id,
-                    code,
-                    name,
-                });
-            } else {
-                this.setDraggedElement();
-            }
+            this.__setState({
+                key: 'draggedElement',
+                value: isDragged
+                    ? {
+                        id: this.item.id,
+                        code: this.item.code,
+                        name: this.item.name,
+                    }
+                    : null,
+            });
         },
     },
 };

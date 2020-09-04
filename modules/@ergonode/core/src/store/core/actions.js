@@ -5,6 +5,8 @@
 import {
     getFlattenedTreeData,
 } from '@Core/models/mappers/treeMapper';
+import languageService from '@Core/services/language/index';
+import languageTreeService from '@Core/services/languageTree/index';
 
 import {
     types,
@@ -14,17 +16,10 @@ export default {
     async getLanguages({
         commit,
     }) {
-        const params = {
-            limit: 9999,
-            offset: 0,
-            view: 'list',
-            field: 'name',
-            order: 'ASC',
-        };
         const {
             collection,
-        } = await this.app.$axios.$get('languages', {
-            params,
+        } = await languageService.getAll({
+            $axios: this.app.$axios,
         });
 
         commit('__SET_STATE', {
@@ -32,26 +27,36 @@ export default {
             value: collection,
         });
     },
-    async getLanguagesTree({
+    async getLanguageTree({
         dispatch,
     }) {
         const {
             languages,
-        } = await this.app.$axios.$get('language/tree');
+        } = await languageTreeService.get({
+            $axios: this.app.$axios,
+        });
 
-        dispatch('setLanguagesTree', languages);
+        dispatch('setLanguageTree', languages);
     },
     async updateLanguages({}, collection) {
-        await this.app.$axios.$put('languages', {
+        const data = {
             collection,
+        };
+        await languageService.update({
+            $axios: this.app.$axios,
+            data,
         });
     },
     async updateLanguageTree({}, languages) {
-        await this.app.$axios.$put('language/tree', {
+        const data = {
             languages,
+        };
+        await languageTreeService.update({
+            $axios: this.app.$axios,
+            data,
         });
     },
-    setLanguagesTree({
+    setLanguageTree({
         state, commit,
     }, treeData) {
         const reducer = (id) => {

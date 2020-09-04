@@ -74,7 +74,7 @@ export default {
     },
     methods: {
         ...mapActions('draggable', [
-            'setDraggableState',
+            '__setState',
         ]),
         onDragStart(event) {
             addElementCopyToDocumentBody({
@@ -84,8 +84,9 @@ export default {
             });
 
             this.isDragged = true;
-            this.setDraggableState({
-                propName: 'isElementDragging',
+
+            this.__setState({
+                key: 'isElementDragging',
                 value: DRAGGED_ELEMENT.LIST,
             });
             this.$emit('drag', true);
@@ -94,8 +95,8 @@ export default {
             removeElementCopyFromDocumentBody(event);
 
             this.isDragged = false;
-            this.setDraggableState({
-                propName: 'isElementDragging',
+            this.__setState({
+                key: 'isElementDragging',
                 value: null,
             });
             this.$emit('drag', false);

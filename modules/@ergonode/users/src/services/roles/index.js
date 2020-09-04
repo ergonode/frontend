@@ -10,7 +10,7 @@ export default {
         id,
         data,
     }) {
-        await $axios.$put(`${languageCode}/roles/${id}`, data);
+        return $axios.$put(`${languageCode}/roles/${id}`, data);
     },
     async create({
         $axios,
