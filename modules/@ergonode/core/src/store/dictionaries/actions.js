@@ -19,15 +19,12 @@ const modulesDictionaries = Object.values(extendsModules)
 
 export default {
     getDictionaries({
-        commit, rootState,
+        commit,
     }) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
         const promises = modulesDictionaries.map(({
             stateProp, requestPath, isGrid = false,
         }) => {
-            const path = `${userLanguageCode}${requestPath}${isGrid ? '?view=list' : ''}`;
+            const path = `${requestPath}${isGrid ? '?view=list' : ''}`;
 
             return this.app.$axios.$get(path, {
                 useCache: isGrid,
@@ -44,13 +41,10 @@ export default {
         return Promise.all(promises);
     },
     getCurrentDictionary({
-        commit, rootState,
+        commit,
     }, {
         dictionaryName,
     }) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
         const {
             stateProp,
             requestPath,
@@ -58,7 +52,7 @@ export default {
         } = modulesDictionaries.find(({
             stateProp: name,
         }) => name === dictionaryName);
-        const path = `${userLanguageCode}${requestPath}${isGrid ? '?view=list' : ''}`;
+        const path = `${requestPath}${isGrid ? '?view=list' : ''}`;
 
         return this.app.$axios.$get(path, {
             useCache: isGrid,

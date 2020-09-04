@@ -6,9 +6,6 @@ export default function ({
     $axios, $store,
 }) {
     const {
-        language: loggedUserLanguage,
-    } = $store.state.authentication.user;
-    const {
         email, firstName, lastName, password, passwordRepeat, role, isActive, language,
     } = $store.state.user;
     const getActiveLanguageByName = $store.getters['core/getActiveLanguageByName'];
@@ -23,5 +20,5 @@ export default function ({
         isActive,
     };
 
-    return $axios.$post(`${loggedUserLanguage}/accounts`, data);
+    return $axios.$post('accounts', data);
 }

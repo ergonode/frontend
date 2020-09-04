@@ -72,9 +72,6 @@ export default {
         ...mapState('attribute', {
             options: state => state.options,
         }),
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
         smallSize() {
             return SIZE.SMALL;
         },

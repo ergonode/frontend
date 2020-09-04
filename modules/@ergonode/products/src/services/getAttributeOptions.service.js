@@ -4,11 +4,7 @@
  */
 
 export default function ({
-    $axios, $store, id,
+    $axios, id,
 }) {
-    const {
-        language,
-    } = $store.state.authentication.user;
-
-    return $axios.$get(`${language}/attributes/${id}/options`);
+    return $axios.$get(`attributes/${id}/options`);
 }

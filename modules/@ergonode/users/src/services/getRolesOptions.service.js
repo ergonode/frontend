@@ -4,11 +4,8 @@
  */
 
 export default function ({
-    $axios, $store,
+    $axios,
 }) {
-    const {
-        language,
-    } = $store.state.authentication.user;
     const params = {
         limit: 9999,
         offset: 0,
@@ -17,7 +14,7 @@ export default function ({
         columns: 'id,description,name',
     };
 
-    return $axios.$get(`${language}/roles`, {
+    return $axios.$get('roles', {
         params,
     }).then(({
         collection,

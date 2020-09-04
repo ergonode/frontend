@@ -17,7 +17,7 @@ export default function ({
         columns: 'id,code,name',
     };
 
-    return $axios.$get(`${language}/categories`, {
+    return $axios.$get('categories', {
         params,
     }).then(({
         collection,

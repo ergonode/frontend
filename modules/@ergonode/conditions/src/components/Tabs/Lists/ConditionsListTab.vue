@@ -13,8 +13,7 @@
                     v-for="item in items"
                     :key="item.id"
                     :item="item"
-                    :disabled="disabled"
-                    :language-code="userLanguageCode" />
+                    :disabled="disabled" />
             </ListScrollableContainer>
         </List>
     </VerticalTabBarList>
@@ -41,9 +40,6 @@ export default {
         },
     },
     computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
         ...mapState('condition', {
             items: state => state.conditionsDictionary,
         }),

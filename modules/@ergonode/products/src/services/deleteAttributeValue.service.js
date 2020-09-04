@@ -7,5 +7,7 @@ export default async function ({
 }) {
     const id = productId || $store.state.product.id;
 
-    return $axios.$delete(`${languageCode}/products/${id}/draft/${attributeId}/value`);
+    return $axios.$delete(`${languageCode}/products/${id}/draft/${attributeId}/value`, {
+        withLanguage: false,
+    });
 }

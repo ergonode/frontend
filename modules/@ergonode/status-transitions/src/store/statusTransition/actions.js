@@ -12,9 +12,6 @@ export default {
         },
     ) {
         const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const {
             statuses: statusOptions,
         } = rootState.productStatus;
         const [
@@ -22,7 +19,7 @@ export default {
             destination,
         ] = id.split('--');
 
-        await this.app.$axios.$get(`${userLanguageCode}/workflow/default/transitions/${source}/${destination}`).then(async ({
+        await this.app.$axios.$get(`workflow/default/transitions/${source}/${destination}`).then(async ({
             condition_set_id: conditionSetId,
             role_ids: rolesIds,
         }) => {
@@ -61,7 +58,7 @@ export default {
     },
     async updateTransition(
         {
-            state, rootState,
+            state,
         },
         {
             data,
@@ -70,32 +67,26 @@ export default {
         },
     ) {
         const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const {
             source, destination,
         } = state;
 
         await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`${userLanguageCode}/workflow/default/transitions/${source.id}/${destination.id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        await this.app.$axios.$put(`workflow/default/transitions/${source.id}/${destination.id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     removeTransition({
-        state, rootState,
+        state,
     }, {
         onSuccess,
     }) {
         const {
             source, destination, conditionSetId,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
 
-        return this.app.$axios.$delete(`${userLanguageCode}/workflow/default/transitions/${source.key}/${destination.key}`)
+        return this.app.$axios.$delete(`workflow/default/transitions/${source.key}/${destination.key}`)
             .then(() => {
                 if (conditionSetId) {
-                    this.app.$axios.$delete(`${userLanguageCode}/conditionsets/${conditionSetId}`)
+                    this.app.$axios.$delete(`conditionsets/${conditionSetId}`)
                         .then(() => onSuccess());
                 } else {
                     onSuccess();

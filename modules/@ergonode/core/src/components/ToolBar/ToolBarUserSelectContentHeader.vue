@@ -7,7 +7,6 @@
         <UserFabAvatar
             :avatar-id="avatarId"
             :user-id="user.id"
-            :language-code="user.language"
             :name="initials"
             :size="largeSize" />
         <span

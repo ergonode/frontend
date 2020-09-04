@@ -69,9 +69,6 @@ export default {
         ...mapState('tab', {
             translations: state => state.translations,
         }),
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
         ...mapState('dictionaries', {
             attrTypes: state => state.attrTypes,
         }),

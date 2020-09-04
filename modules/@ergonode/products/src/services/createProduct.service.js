@@ -10,9 +10,6 @@ export default async function ({
     $axios, $store,
 }) {
     const {
-        language,
-    } = $store.state.authentication.user;
-    const {
         productTypes,
     } = $store.state.dictionaries;
     const {
@@ -35,7 +32,7 @@ export default async function ({
 
     const {
         id,
-    } = await $axios.$post(`${language}/products`, data);
+    } = await $axios.$post('products', data);
 
     return {
         id,

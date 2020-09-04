@@ -15,7 +15,9 @@ export default {
     checkNotificationCount({
         commit, dispatch,
     }) {
-        return this.app.$axios.$get('profile/notifications/check').then(({
+        return this.app.$axios.$get('profile/notifications/check', {
+            withLanguage: false,
+        }).then(({
             unread,
         }) => {
             dispatch('increaseRequestTimeInterval');
@@ -36,6 +38,7 @@ export default {
         await this.$setLoader('moreNotifications');
         await this.app.$axios.$get('profile/notifications', {
             params,
+            withLanguage: false,
         }).then(({
             collection,
         }) => {
@@ -48,7 +51,9 @@ export default {
     }, {
         id,
     }) {
-        return this.app.$axios.$post(`profile/notifications/${id}/mark`).then(() => {
+        return this.app.$axios.$post(`profile/notifications/${id}/mark`, {
+            withLanguage: false,
+        }).then(() => {
             dispatch('checkNotificationCount');
             dispatch('requestForNotifications');
         });

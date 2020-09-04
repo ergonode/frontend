@@ -10,9 +10,6 @@ export default async function ({
     $axios, $store,
 }) {
     const {
-        language,
-    } = $store.state.authentication.user;
-    const {
         type,
         configuration,
     } = $store.state.channel;
@@ -32,5 +29,5 @@ export default async function ({
         };
     }
 
-    return $axios.$post(`${language}/channels`, data);
+    return $axios.$post('channels', data);
 }

@@ -15,6 +15,7 @@ export const getListGroups = ({
 
     return $axios.$get(path, {
         params,
+        withLanguage: false,
     }).then(({
         collection,
     }) => {
@@ -59,6 +60,7 @@ export const getListItems = ({
     params,
 }) => $axios.$get(path, {
     params,
+    withLanguage: false,
 }).then(({
     collection,
 }) => ({

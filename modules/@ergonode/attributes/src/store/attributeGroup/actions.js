@@ -5,16 +5,13 @@
 export default {
     getAttributeGroup(
         {
-            commit, dispatch, rootState,
+            commit, dispatch,
         },
         {
             groupId, onError = () => {},
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$get(`${userLanguageCode}/attributes/groups/${groupId}`).then(({
+        return this.app.$axios.$get(`attributes/groups/${groupId}`).then(({
             id,
             code,
             name = '',
@@ -42,9 +39,7 @@ export default {
         }).catch(onError);
     },
     updateAttributeGroup(
-        {
-            rootState,
-        },
+        {},
         {
             id,
             data,
@@ -52,22 +47,16 @@ export default {
             onError,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/attributes/groups/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$put(`attributes/groups/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
     },
     removeAttributeGroup({
-        state, rootState,
+        state,
     }, {
         onSuccess,
     }) {
         const {
             id,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$delete(`${userLanguageCode}/attributes/groups/${id}`).then(() => onSuccess());
+        return this.app.$axios.$delete(`attributes/groups/${id}`).then(() => onSuccess());
     },
 };

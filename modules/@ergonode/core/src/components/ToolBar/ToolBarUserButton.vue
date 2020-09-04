@@ -10,7 +10,6 @@
             <UserFabAvatar
                 :avatar-id="avatarId"
                 :user-id="user.id"
-                :language-code="user.language"
                 :name="user.firstName" />
             <span
                 class="title"

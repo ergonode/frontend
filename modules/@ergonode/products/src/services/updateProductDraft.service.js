@@ -15,6 +15,8 @@ export default function ({
 
     return $axios.$put(path, {
         value,
+    }, {
+        withLanguage: false,
     }).then(() => {
         $store.dispatch(
             'validations/removeError',

@@ -124,9 +124,6 @@ export default {
         Divider: () => import('@Core/components/Dividers/Divider'),
     },
     computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
         ...mapState('attribute', {
             attrID: state => state.id,
             code: state => state.code,

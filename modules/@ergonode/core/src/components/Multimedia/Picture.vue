@@ -92,6 +92,7 @@ export default {
                 useCache: this.useCache,
                 cancelToken: this.cancelToken.token,
                 responseType: 'arraybuffer',
+                withLanguage: false,
             })
                 .then(response => this.onSuccess(response))
                 .catch(this.imageLoadOnError);

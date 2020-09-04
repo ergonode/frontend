@@ -46,9 +46,6 @@ export default function ({
             };
         },
         computed: {
-            ...mapState('authentication', {
-                languageCode: state => state.user.language,
-            }),
             ...mapState('list', {
                 disabledElements: state => state.disabledElements,
             }),
@@ -96,7 +93,7 @@ export default function ({
 
                 return getGridData({
                     $axios: this.$axios,
-                    path: `${this.languageCode}/${this.getPath()}`,
+                    path: this.getPath(),
                     params,
                 }).then(({
                     columns,

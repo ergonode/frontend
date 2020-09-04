@@ -21,18 +21,15 @@ export default {
     },
     getUser(
         {
-            commit, rootState, rootGetters,
+            commit, rootGetters,
         },
         {
             userId, onError = () => {},
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
         const getActiveLanguageByCode = rootGetters['core/getActiveLanguageByCode'];
 
-        return this.app.$axios.$get(`${userLanguageCode}/accounts/${userId}`).then(({
+        return this.app.$axios.$get(`accounts/${userId}`).then(({
             id,
             email = '',
             avatar_filename = '',
@@ -100,17 +97,11 @@ export default {
         }).catch(onError);
     },
     async updateUser(
-        {
-            rootState,
-        },
+        {},
         {
             id, data,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
-        await this.app.$axios.$put(`${userLanguageCode}/accounts/${id}`, data);
+        await this.app.$axios.$put(`accounts/${id}`, data);
     },
 };

@@ -86,9 +86,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
         ...mapState('grid', {
             drafts: state => state.drafts,
         }),

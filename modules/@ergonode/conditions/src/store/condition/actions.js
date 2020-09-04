@@ -15,12 +15,9 @@ import {
 
 export default {
     getConditions({
-        commit, rootState,
+        commit,
     }, params = {}) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$get(`${userLanguageCode}/dictionary/conditions`, {
+        return this.app.$axios.$get('dictionary/conditions', {
             params,
         }).then((data) => {
             commit(types.SET_CONDITIONS_DICTIONARY, objectToArrayWithPropsName(data));
@@ -28,16 +25,13 @@ export default {
     },
     async getConditionSet(
         {
-            state, commit, dispatch, rootState,
+            state, commit, dispatch,
         },
         {
             conditionSetId,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        await this.app.$axios.$get(`${userLanguageCode}/conditionsets/${conditionSetId}`).then(async ({
+        await this.app.$axios.$get(`conditionsets/${conditionSetId}`).then(async ({
             id,
             conditions = [],
         }) => {
@@ -74,7 +68,7 @@ export default {
     },
     createConditionSet(
         {
-            commit, rootState,
+            commit,
         },
         {
             data,
@@ -82,10 +76,7 @@ export default {
             onError,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$post(`${userLanguageCode}/conditionsets`, data).then(({
+        return this.app.$axios.$post('conditionsets', data).then(({
             id,
         }) => {
             commit('__SET_STATE', {
@@ -96,9 +87,7 @@ export default {
         }).catch(e => onError(e.data));
     },
     updateConditionSet(
-        {
-            rootState,
-        },
+        {},
         {
             id,
             data,
@@ -106,25 +95,19 @@ export default {
             onError,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/conditionsets/${id}`, data)
+        return this.app.$axios.$put(`conditionsets/${id}`, data)
             .then(() => onSuccess(id))
             .catch(e => onError(e.data));
     },
     async getConditionConfiguration(
         {
-            commit, rootState,
+            commit,
         },
         {
             conditionId,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        await this.app.$axios.$get(`${userLanguageCode}/conditions/${conditionId}`).then((data) => {
+        await this.app.$axios.$get(`conditions/${conditionId}`).then((data) => {
             commit(types.SET_CONDITIONS, {
                 key: conditionId,
                 value: data,

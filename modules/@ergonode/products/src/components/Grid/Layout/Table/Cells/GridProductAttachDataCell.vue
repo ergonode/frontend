@@ -70,9 +70,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
         ...mapState('product', {
             id: state => state.id,
         }),
@@ -89,7 +86,7 @@ export default {
             }
 
             if (!this.localValue) {
-                this.$axios.$post(`${this.languageCode}/products/${this.id}/children/add-from-skus`, {
+                this.$axios.$post(`products/${this.id}/children/add-from-skus`, {
                     skus: [
                         this.data.sku,
                     ],
@@ -106,7 +103,7 @@ export default {
                     });
                 });
             } else {
-                this.$axios.$delete(`${this.languageCode}/products/${this.id}/children/${this.rowId}`, {
+                this.$axios.$delete(`products/${this.id}/children/${this.rowId}`, {
                     skus: this.data.sku,
                 }).then(() => {
                     this.$addAlert({

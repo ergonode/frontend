@@ -5,13 +5,9 @@
 
 export default function ({
     $axios,
-    $store,
     id,
 }) {
-    const {
-        language,
-    } = $store.state.authentication.user;
-    const path = `${language}/products/${id}/draft/persist`;
+    const path = `products/${id}/draft/persist`;
 
     return $axios.$put(path, {});
 }

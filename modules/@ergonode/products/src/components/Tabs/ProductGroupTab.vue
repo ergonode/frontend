@@ -87,20 +87,20 @@ export default {
             order: 'ASC',
         };
 
-        return app.$axios.$get(`${languageCode}/products/${id}/children`, {
+        return app.$axios.$get(`products/${id}/children`, {
             params: productsParams,
         }).then((productChildren) => {
             const params = {
                 offset: 0,
                 limit: DATA_LIMIT,
                 extended: true,
-                filter: `esa_product_type:${languageCode}=${PRODUCT_TYPE.SIMPLE_PRODUCT},${PRODUCT_TYPE.WITH_VARIANTS}`,
-                columns: `esa_default_image:${languageCode},esa_default_label:${languageCode},esa_product_type:${languageCode},sku,esa_template:${languageCode}`,
+                filter: `esa_product_type=${PRODUCT_TYPE.SIMPLE_PRODUCT},${PRODUCT_TYPE.WITH_VARIANTS}`,
+                columns: 'esa_default_image,esa_default_label,esa_product_type,sku,esa_template',
             };
 
             return getGridData({
                 $axios: app.$axios,
-                path: `${languageCode}/products`,
+                path: 'products',
                 params,
             }).then(({
                 columns,
@@ -229,8 +229,8 @@ export default {
                 offset,
                 limit,
                 extended: true,
-                filter: `esa_product_type:${this.languageCode}=${PRODUCT_TYPE.SIMPLE_PRODUCT},${PRODUCT_TYPE.WITH_VARIANTS}`,
-                columns: `esa_default_image,esa_default_label,esa_product_type:${this.languageCode},sku,esa_template:${this.languageCode}`,
+                filter: `esa_product_type=${PRODUCT_TYPE.SIMPLE_PRODUCT},${PRODUCT_TYPE.WITH_VARIANTS}`,
+                columns: 'esa_default_image,esa_default_label,esa_product_type,sku,esa_template',
             };
 
             if (Object.keys(sortedColumn).length) {
@@ -244,7 +244,7 @@ export default {
 
             return getGridData({
                 $axios: this.$axios,
-                path: `${this.languageCode}/products`,
+                path: 'products',
                 params,
             }).then(({
                 columns,
@@ -258,7 +258,7 @@ export default {
                     order: 'ASC',
                 };
 
-                return this.$axios.$get(`${this.languageCode}/products/${this.id}/children`, {
+                return this.$axios.$get(`products/${this.id}/children`, {
                     params: productsParams,
                 }).then(({
                     collection,

@@ -24,10 +24,7 @@ export default {
         const {
             channels,
         } = rootState.dictionaries;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const configuration = await this.app.$axios.$get(`${userLanguageCode}/channels/${getKeyByValue(channels, type)}/configuration`);
+        const configuration = await this.app.$axios.$get(`channels/${getKeyByValue(channels, type)}/configuration`);
 
         if (!id) {
             const defaultConfiguration = getDefaultJsonSchemaTypes(configuration.properties);
@@ -42,16 +39,13 @@ export default {
     },
     async getSchedulerConfiguration(
         {
-            commit, state, rootState,
+            commit, state,
         },
     ) {
         const {
             id,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const scheduler = await this.app.$axios.$get(`${userLanguageCode}/channels/${id}/scheduler`);
+        const scheduler = await this.app.$axios.$get(`channels/${id}/scheduler`);
 
         if (scheduler) {
             commit('__SET_STATE', {
@@ -69,13 +63,10 @@ export default {
         },
     ) {
         const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const {
             channels,
         } = rootState.dictionaries;
 
-        return this.app.$axios.$get(`${userLanguageCode}/channels/${id}`).then(({
+        return this.app.$axios.$get(`channels/${id}`).then(({
             id: channelId,
             type,
             ...rest
@@ -95,7 +86,7 @@ export default {
         }).catch(onError);
     },
     createExport({
-        state, rootState,
+        state,
     }, {
         onSuccess,
         onError,
@@ -103,11 +94,8 @@ export default {
         const {
             id,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
 
-        return this.app.$axios.$post(`${userLanguageCode}/channels/${id}/exports`).then(data => onSuccess(data)).catch(e => onError(e.data));
+        return this.app.$axios.$post(`channels/${id}/exports`).then(data => onSuccess(data)).catch(e => onError(e.data));
     },
     updateChannel(
         {
@@ -124,7 +112,7 @@ export default {
     },
     updateScheduler(
         {
-            state, rootState,
+            state,
         },
         {
             data,
@@ -135,20 +123,17 @@ export default {
         const {
             id,
         } = state;
-        return this.app.$axios.$put(`${rootState.authentication.user.language}/channels/${id}/scheduler`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$put(`channels/${id}/scheduler`, data).then(() => onSuccess()).catch(e => onError(e.data));
     },
     removeChannel({
-        state, rootState,
+        state,
     }, {
         onSuccess,
     }) {
         const {
             id,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
 
-        return this.app.$axios.$delete(`${userLanguageCode}/channels/${id}`).then(() => onSuccess());
+        return this.app.$axios.$delete(`channels/${id}`).then(() => onSuccess());
     },
 };

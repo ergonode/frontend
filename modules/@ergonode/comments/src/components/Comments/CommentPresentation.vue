@@ -7,7 +7,6 @@
         <template #header>
             <div class="header__user">
                 <UserFabAvatar
-                    :language-code="languageCode"
                     :avatar-id="avatarId"
                     :user-id="comment.user_id"
                     :name="comment.author"
@@ -78,7 +77,6 @@ import {
 } from 'date-fns';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -97,9 +95,6 @@ export default {
         },
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
         avatarId() {
             return this.comment.avatar_filename
                 ? this.comment.avatar_filename.split('.')[0]

@@ -44,9 +44,6 @@ export default {
         await store.dispatch('productTemplate/getTemplateByID', id);
     },
     computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
         ...mapState('productTemplate', {
             groups: state => state.templateGroups,
             templateTitle: state => state.title,

@@ -35,7 +35,9 @@ export default {
     }, {
         languageCode, id,
     }) {
-        return this.app.$axios.$get(`${languageCode}/products/${id}/draft`).then(({
+        return this.app.$axios.$get(`${languageCode}/products/${id}/draft`, {
+            withLanguage: false,
+        }).then(({
             attributes,
         }) => {
             commit(types.SET_PRODUCT_DRAFT, {
@@ -48,13 +50,10 @@ export default {
         commit, dispatch, rootState,
     }, id) {
         const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const {
             productTypes,
         } = rootState.dictionaries;
 
-        return this.app.$axios.$get(`${userLanguageCode}/products/${id}`).then((data) => {
+        return this.app.$axios.$get(`products/${id}`).then((data) => {
             const {
                 design_template_id: templateId,
                 attributes,
@@ -103,7 +102,7 @@ export default {
             });
 
             if (type === PRODUCT_TYPE.WITH_VARIANTS) {
-                const getAttributesBindings = this.app.$axios.$get(`${userLanguageCode}/products/${id}/bindings`).then((bindings) => {
+                const getAttributesBindings = this.app.$axios.$get(`products/${id}/bindings`).then((bindings) => {
                     commit('__SET_STATE', {
                         key: 'bindingAttributesIds',
                         value: bindings,
@@ -120,7 +119,7 @@ export default {
         });
     },
     updateProductStatus({
-        state, rootState,
+        state,
     }, {
         attributeId,
         value,
@@ -129,15 +128,8 @@ export default {
         const {
             id,
         } = state;
-        const {
-            authentication: {
-                user: {
-                    language,
-                },
-            },
-        } = rootState;
 
-        return this.app.$axios.$put(`${language}/products/${id}/draft/${attributeId}/value`, {
+        return this.app.$axios.$put(`products/${id}/draft/${attributeId}/value`, {
             value,
         }).then(() => applyProductDraft()
             .then(request => request
@@ -166,7 +158,7 @@ export default {
     },
     async updateProduct(
         {
-            rootState, dispatch,
+            dispatch,
         },
         {
             id,
@@ -174,30 +166,19 @@ export default {
             onSuccess = () => {},
         },
     ) {
-        const {
-            authentication: {
-                user: {
-                    language,
-                },
-            },
-        } = rootState;
-
-        await this.app.$axios.$put(`${language}/products/${id}`, data).then(onSuccess).catch(e => dispatch('validations/onError', e.data, {
+        await this.app.$axios.$put(`products/${id}`, data).then(onSuccess).catch(e => dispatch('validations/onError', e.data, {
             root: true,
         }));
     },
     removeProduct({
-        state, rootState,
+        state,
     }, {
         onSuccess,
     }) {
         const {
             id,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
 
-        return this.app.$axios.$delete(`${userLanguageCode}/products/${id}`).then(() => onSuccess());
+        return this.app.$axios.$delete(`products/${id}`).then(() => onSuccess());
     },
 };
