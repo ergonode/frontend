@@ -108,7 +108,7 @@ export default {
             }).catch((e) => {
                 this.isRequestPending = false;
                 this.onError(e.data);
-            }));
+            });
         },
     },
 };
