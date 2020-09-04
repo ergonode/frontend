@@ -17,6 +17,7 @@ import {
     create,
     get,
     getBindings,
+    getChildren,
     getCompleteness,
     getDraft,
     getTemplate,
@@ -152,6 +153,18 @@ export default {
         });
 
         return elements;
+    },
+    async getProductChildren({}, id) {
+        await getChildren({
+            $axios: this.app.$axios,
+            id,
+        });
+    },
+    async getProductBindings({}, id) {
+        await getBindings({
+            $axios: this.app.$axios,
+            id,
+        });
     },
     async getProductCompleteness({}, {
         languageCode,

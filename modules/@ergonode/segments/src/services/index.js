@@ -8,6 +8,17 @@ export const get = ({
     id,
 }) => $axios.$get(`segments/${id}`);
 
+export const getAll = ({
+    $axios,
+    params = {
+        limit: 9999,
+        offset: 0,
+        view: 'list',
+        field: 'name',
+        order: 'ASC',
+    },
+}) => $axios.$get('segments', params);
+
 export const update = ({
     $axios,
     id,

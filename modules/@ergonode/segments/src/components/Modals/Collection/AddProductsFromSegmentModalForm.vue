@@ -59,24 +59,16 @@ export default {
             return THEME.SECONDARY;
         },
     },
-    created() {
-        this.$axios.$get('segments?limit=5000&offset=0').then(({
-            collection,
-        }) => {
-            this.segmentOptions = collection.map(({
-                id, code, name,
-            }) => ({
-                id,
-                key: code,
-                value: name,
-                hint: name ? `#${code}` : '',
-            }));
-        });
+    async created() {
+        this.segmentOptions = await this.getSegmentOptions();
     },
     methods: {
         ...mapActions('validations', [
             'onError',
             'removeErrors',
+        ]),
+        ...mapActions('segment', [
+            'getSegmentOptions',
         ]),
         onFormValueChange(value) {
             this.segments = value;

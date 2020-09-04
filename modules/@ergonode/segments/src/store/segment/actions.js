@@ -5,6 +5,7 @@
 import {
     create,
     get,
+    getAll,
     remove,
     update,
 } from '@Segments/services/index';
@@ -58,6 +59,20 @@ export default {
             });
         }
     },
+    getSegmentOptions() {
+        return getAll({
+            $axios: this.app.$axios,
+        }).then(({
+            collection,
+        }) => collection.map(({
+            id, code, name,
+        }) => ({
+            id,
+            key: code,
+            value: name,
+            hint: name ? `#${code}` : '',
+        })));
+    },
     async updateSegment(
         {
             state,
@@ -102,6 +117,7 @@ export default {
 
         this.$removeLoader('footerButton');
     },
+
     async createTransition(
         {
             state,

@@ -11,6 +11,7 @@ import {
 import {
     get,
     getConfiguration,
+    getDetails,
     remove,
     update,
 } from '@Import/services';
@@ -48,6 +49,34 @@ export default {
             key: 'configuration',
             value: JSON.stringify(rest),
         });
+    },
+    async getImportDetails({}, {
+        sourceId, importId,
+    }) {
+        const details = await getDetails({
+            $axios: this.app.$axios,
+            sourceId,
+            importId,
+        });
+
+        return [
+            {
+                label: 'Date of start',
+                value: details.started_at,
+            },
+            {
+                label: 'Status',
+                value: details.status,
+            },
+            {
+                label: 'Records',
+                value: details.records || '0',
+            },
+            {
+                label: 'Errors',
+                value: details.errors || '0',
+            },
+        ];
     },
     async getConfiguration({
         commit,

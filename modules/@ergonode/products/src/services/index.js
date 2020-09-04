@@ -21,6 +21,20 @@ export const getBindings = ({
     id,
 }) => $axios.$get(`products/${id}/bindings`);
 
+export const getChildren = ({
+    $axios,
+    id,
+    params = {
+        limit: 9999,
+        offset: 0,
+        view: 'list',
+        field: 'name',
+        order: 'ASC',
+    },
+}) => $axios.$get(`products/${id}/children`, {
+    params,
+});
+
 export const getTemplate = ({
     $axios,
     id,
