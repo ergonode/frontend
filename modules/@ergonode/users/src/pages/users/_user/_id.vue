@@ -31,9 +31,7 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('user/getUser', {
-            id: params.id,
-        });
+        await store.dispatch('user/getUser', params);
     },
     computed: {
         ...mapState('user', {

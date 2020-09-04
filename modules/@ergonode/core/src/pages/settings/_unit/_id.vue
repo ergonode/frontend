@@ -35,9 +35,7 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('unit/getUnit', {
-            id: params.id,
-        });
+        await store.dispatch('unit/getUnit', params);
     },
     computed: {
         ...mapState('unit', {

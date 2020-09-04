@@ -42,9 +42,7 @@ export default {
             store.dispatch('tab/__clearStorage'),
             store.dispatch('segment/__clearStorage'),
         ]);
-        await store.dispatch('segment/getSegment', {
-            segmentId: params.id,
-        });
+        await store.dispatch('segment/getSegment', params);
     },
     computed: {
         ...mapState('segment', {
@@ -110,18 +108,8 @@ export default {
             }
         },
         onUpdateSegment(conditionSetId) {
-            const {
-                name, description,
-            } = this.translations;
-            const data = {
-                condition_set_id: conditionSetId,
-                name,
-                description,
-            };
-
             this.updateSegment({
-                id: this.id,
-                data,
+                conditionSetId,
                 onSuccess: this.onUpdateSegmentsSuccess,
                 onError: this.onError,
             });

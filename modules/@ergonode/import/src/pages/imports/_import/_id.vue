@@ -34,9 +34,7 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('import/getImportProfile', {
-            id: params.id,
-        });
+        await store.dispatch('import/getImportProfile', params);
     },
     computed: {
         ...mapState('import', {

@@ -35,9 +35,7 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('role/getRole', {
-            id: params.id,
-        });
+        await store.dispatch('role/getRole', params);
     },
     computed: {
         ...mapState('role', {

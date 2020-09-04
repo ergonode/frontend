@@ -37,9 +37,7 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('channel/getChannel', {
-            id: params.id,
-        });
+        await store.dispatch('channel/getChannel', params);
     },
     computed: {
         ...mapState('channel', {

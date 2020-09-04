@@ -48,12 +48,8 @@ export default {
         store, params,
     }) {
         await Promise.all([
-            store.dispatch('attribute/getAttribute', {
-                id: params.id,
-            }),
-            store.dispatch('attribute/getAttributeOptions', {
-                id: params.id,
-            }),
+            store.dispatch('attribute/getAttribute', params),
+            store.dispatch('attribute/getAttributeOptions', params),
         ]);
     },
     computed: {
