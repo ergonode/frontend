@@ -9,9 +9,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import actions from '../actions';
-import mutations, {
-    types,
-} from '../mutations';
 import defaultState from '../state';
 
 let store;
@@ -35,6 +32,14 @@ const testedAction = (context = {}, payload = {}) => actions[action]
         $setLoader,
         $removeLoader,
     })(context, payload);
+
+const mutations = {
+    __SET_STATE(state, {
+        key, value,
+    }) {
+        state[key] = value;
+    },
+};
 
 describe('Notifications', () => {
     beforeEach(() => {
@@ -109,7 +114,10 @@ describe('Notifications', () => {
 
             const fiveMinutesInMs = 300000;
 
-            commit(types.SET_REQUEST_TIME_INTERVAL, fiveMinutesInMs);
+            commit('__SET_STATE', {
+                key: 'requestTimeInterval',
+                value: fiveMinutesInMs,
+            });
 
             testedAction({
                 commit,
@@ -117,7 +125,10 @@ describe('Notifications', () => {
             });
             expect(store.state.requestTimeInterval).toBe(fiveMinutesInMs);
 
-            commit(types.SET_REQUEST_TIME_INTERVAL, fiveMinutesInMs - 1);
+            commit('__SET_STATE', {
+                key: 'requestTimeInterval',
+                value: fiveMinutesInMs - 1,
+            });
 
             testedAction({
                 commit,

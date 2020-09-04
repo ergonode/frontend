@@ -82,10 +82,13 @@ export default {
     },
     methods: {
         ...mapActions('notification', [
-            'setNotificationsLimit',
+            '__setState',
         ]),
         onLoadMoreNotifications() {
-            this.setNotificationsLimit(this.limit + DATA_LIMIT);
+            this.__setState({
+                key: 'limit',
+                value: this.limit + DATA_LIMIT,
+            });
         },
     },
 };

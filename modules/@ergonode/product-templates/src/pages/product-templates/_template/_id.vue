@@ -11,9 +11,6 @@
 
 <script>
 import {
-    SKU_MODEL_ID,
-} from '@Attributes/defaults/attributes';
-import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
@@ -37,20 +34,11 @@ export default {
     async fetch({
         store, params,
     }) {
-        const {
-            id,
-        } = params;
-
-        await store.dispatch('productTemplate/getTemplateByID', id);
+        await store.dispatch('productTemplate/getTemplate', params);
     },
     computed: {
         ...mapState('productTemplate', {
-            groups: state => state.templateGroups,
             templateTitle: state => state.title,
-            templateImage: state => state.image,
-            layoutElements: state => state.layoutElements,
-            defaultTextAttribute: state => state.defaultTextAttribute,
-            defaultImageAttribute: state => state.defaultImageAttribute,
         }),
     },
     destroyed() {
@@ -103,26 +91,9 @@ export default {
             });
         },
         onCreate() {
-            import('@Templates/models/templateMapper').then(({
-                getMappedLayoutElementsForAPIUpdate,
-            }) => {
-                const {
-                    id,
-                } = this.$route.params;
-                this.updateTemplateDesigner({
-                    id,
-                    data: {
-                        name: this.templateTitle,
-                        image: this.templateImage,
-                        defaultLabel: this.defaultTextAttribute !== SKU_MODEL_ID
-                            ? this.defaultTextAttribute
-                            : null,
-                        defaultImage: this.defaultImageAttribute,
-                        elements: getMappedLayoutElementsForAPIUpdate(this.layoutElements),
-                    },
-                    onSuccess: this.onUpdateTemplateDesignerSuccess,
-                    onError: this.onError,
-                });
+            this.updateTemplateDesigner({
+                onSuccess: this.onUpdateTemplateDesignerSuccess,
+                onError: this.onError,
             });
         },
     },

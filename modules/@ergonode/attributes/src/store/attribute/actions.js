@@ -137,7 +137,14 @@ export default {
 
         return getAll({
             $axios: this.app.$axios,
-            filter,
+            params: {
+                limit: 9999,
+                offset: 0,
+                filter,
+                view: 'list',
+                field: 'name',
+                order: 'ASC',
+            },
         }).then(({
             collection,
         }) => getMappedTranslationArrayOptions({
@@ -157,7 +164,14 @@ export default {
 
         return getAll({
             $axios: this.app.$axios,
-            filter,
+            params: {
+                limit: 9999,
+                offset: 0,
+                filter,
+                view: 'list',
+                field: 'name',
+                order: 'ASC',
+            },
         }).then(({
             collection,
         }) => {

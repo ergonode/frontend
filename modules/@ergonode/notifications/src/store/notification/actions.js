@@ -2,16 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import {
-    types,
-} from './mutations';
-
 export default {
-    setNotificationsLimit({
-        commit,
-    }, limit) {
-        commit(types.SET_NOTIFICATIONS_LIMIT, limit);
-    },
     checkNotificationCount({
         commit, dispatch,
     }) {
@@ -22,7 +13,11 @@ export default {
         }) => {
             dispatch('increaseRequestTimeInterval');
             dispatch('setRequestTimeout');
-            commit(types.SET_NOTIFICATIONS_COUNT, unread);
+
+            commit('__SET_STATE', {
+                key: 'count',
+                value: unread,
+            });
         });
     },
     async requestForNotifications({
@@ -42,7 +37,10 @@ export default {
         }).then(({
             collection,
         }) => {
-            commit(types.SET_NOTIFICATIONS, collection);
+            commit('__SET_STATE', {
+                key: 'notifications',
+                value: collection,
+            });
         });
         await this.$removeLoader('moreNotifications');
     },
@@ -71,7 +69,10 @@ export default {
             ? fiveMinutesInMs
             : requestTimeInterval * 2;
 
-        commit(types.SET_REQUEST_TIME_INTERVAL, updatedInterval);
+        commit('__SET_STATE', {
+            key: 'requestTimeInterval',
+            value: updatedInterval,
+        });
     },
     setRequestTimeout({
         commit, dispatch, state,
@@ -82,12 +83,18 @@ export default {
             dispatch('checkNotificationCount');
         }, state.requestTimeInterval);
 
-        commit(types.SET_REQUEST_TIMEOUT, timeout);
+        commit('__SET_STATE', {
+            key: 'requestTimeout',
+            value: timeout,
+        });
     },
     invalidateRequestTimeout({
         commit, state,
     }) {
         clearTimeout(state.requestTimeout);
-        commit(types.SET_REQUEST_TIMEOUT);
+        commit('__SET_STATE', {
+            key: 'requestTimeout',
+            value: null,
+        });
     },
 };

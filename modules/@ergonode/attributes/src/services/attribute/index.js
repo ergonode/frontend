@@ -20,15 +20,15 @@ export const get = ({
 
 export const getAll = ({
     $axios,
-    filter = '',
-}) => $axios.$get('attributes', {
-    params: {
-        filter,
+    params = {
         limit: 9999,
         offset: 0,
         view: 'list',
+        field: 'name',
         order: 'ASC',
     },
+}) => $axios.$get('attributes', {
+    params,
 });
 
 export const getOption = ({
