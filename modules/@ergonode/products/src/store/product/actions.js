@@ -17,10 +17,13 @@ import {
     create,
     get,
     getBindings,
+    getCompleteness,
     getDraft,
+    getTemplate,
     remove,
+    removeDraftValue,
     update,
-    updateDraft,
+    updateDraftValue,
 } from '@Products/services/index';
 
 import {
@@ -136,6 +139,26 @@ export default {
             });
         }
     },
+    async getProductTemplate({}, {
+        languageCode,
+        id,
+    }) {
+        await getTemplate({
+            $axios: this.app.$axios,
+            languageCode,
+            id,
+        });
+    },
+    async getProductCompleteness({}, {
+        languageCode,
+        id,
+    }) {
+        await getCompleteness({
+            $axios: this.app.$axios,
+            languageCode,
+            id,
+        });
+    },
     async updateProductStatus({
         state,
     }, {
@@ -151,7 +174,7 @@ export default {
             value,
         };
 
-        await updateDraft({
+        await updateDraftValue({
             $axios: this.app.$axios,
             id,
             attributeId,
@@ -163,6 +186,12 @@ export default {
         });
 
         onSuccess();
+    },
+    async applyProductDraft({}, id) {
+        await applyDraft({
+            $axios: this.app.$axios,
+            id,
+        });
     },
     async updateProductDraft({
         dispatch,
@@ -177,7 +206,7 @@ export default {
                 value,
             };
 
-            await updateDraft({
+            await updateDraftValue({
                 $axios: this.app.$axios,
                 id: productId,
                 attributeId: elementId,
@@ -347,6 +376,26 @@ export default {
         await remove({
             $axios: this.app.$axios,
             id,
+        });
+
+        onSuccess();
+    },
+    async removeProductDraft({
+        state,
+    }, {
+        languageCode,
+        attributeId,
+        onSuccess,
+    }) {
+        const {
+            id,
+        } = state;
+
+        await removeDraftValue({
+            $axios: this.app.$axios,
+            id,
+            languageCode,
+            attributeId,
         });
 
         onSuccess();

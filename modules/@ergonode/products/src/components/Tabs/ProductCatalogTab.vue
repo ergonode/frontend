@@ -79,7 +79,6 @@
 </template>
 
 <script>
-// import getProductDraft from '@Products/services/getProductDraft.service';
 import {
     GRAPHITE_LIGHT,
     WHITESMOKE,
@@ -110,8 +109,6 @@ import {
     mapActions,
     mapState,
 } from 'vuex';
-
-const applyProductDraft = () => import('@Products/services/applyProductDraft.service');
 
 export default {
     name: 'ProductCatalogTab',
@@ -251,6 +248,7 @@ export default {
         ]),
         ...mapActions('product', [
             'updateProductDraft',
+            'applyProductDraft',
         ]),
         onCellValueChange(cellValues) {
             const cachedElementIds = {};
@@ -333,30 +331,27 @@ export default {
         async onSaveDrafts() {
             const promises = [];
 
-            const applyProductDraftModule = await applyProductDraft()
-                .then(request => request.default);
-
             Object.keys(this.drafts).forEach((key) => {
                 const [
                     rowId,
                 ] = key.split('/');
 
-                promises.push(applyProductDraftModule({
-                    $axios: this.$axios,
-                    $store: this.$store,
+                promises.push(this.applyProductDraft({
                     id: rowId,
                 }).then(() => this.removeDraftRow(rowId)));
             });
 
-            await this.$setLoader('footerDraftButton');
-            await Promise.all(promises).then(() => {
-                this.onFetchData(this.localParams);
-                this.$addAlert({
-                    type: ALERT_TYPE.SUCCESS,
-                    message: 'Product changes saved',
-                });
+            this.$setLoader('footerDraftButton');
+
+            await Promise.all(promises);
+
+            this.onFetchData(this.localParams);
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product changes saved',
             });
-            await this.$removeLoader('footerDraftButton');
+
+            this.$removeLoader('footerDraftButton');
         },
         getDisabledElements({
             columns, filters,

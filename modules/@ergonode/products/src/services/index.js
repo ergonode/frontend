@@ -21,13 +21,29 @@ export const getBindings = ({
     id,
 }) => $axios.$get(`products/${id}/bindings`);
 
+export const getTemplate = ({
+    $axios,
+    id,
+    languageCode,
+}) => $axios.$get(`${languageCode}/products/${id}/template`, {
+    withLanguage: false,
+});
+
+export const getCompleteness = ({
+    $axios,
+    id,
+    languageCode,
+}) => $axios.$get(`${languageCode}/products/${id}/draft/completeness`, {
+    withLanguage: false,
+});
+
 export const update = ({
     $axios,
     id,
     data,
 }) => $axios.$put(`products/${id}`, data);
 
-export const updateDraft = ({
+export const updateDraftValue = ({
     $axios,
     id,
     attributeId,
@@ -48,3 +64,12 @@ export const remove = ({
     $axios,
     id,
 }) => $axios.$delete(`products/${id}`);
+
+export const removeDraftValue = ({
+    $axios,
+    id,
+    languageCode,
+    attributeId,
+}) => $axios.$delete(`${languageCode}products/${id}/draft/${attributeId}/value`, {
+    withLanguage: false,
+});

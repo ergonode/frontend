@@ -59,8 +59,6 @@ import {
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import ProductTemplateForm from '@Products/components/Form/ProductTemplateForm';
 import PRIVILEGES from '@Products/config/privileges';
-import getProductCompleteness from '@Products/services/getProductCompleteness.service';
-import getProductTemplate from '@Products/services/getProductTemplate.service';
 import {
     mapActions,
     mapGetters,
@@ -83,9 +81,8 @@ export default {
         gridModalMixin,
     ],
     asyncData({
-        app: {
-            $axios,
-        }, store, params: {
+        store,
+        params: {
             id,
         },
     }) {
@@ -94,13 +91,11 @@ export default {
         } = store.state.core;
 
         return Promise.all([
-            getProductTemplate({
-                $axios,
+            store.dispatch('product/getProductTemplate', {
                 languageCode: defaultLanguageCode,
                 id,
             }),
-            getProductCompleteness({
-                $axios,
+            store.dispatch('product/getProductCompleteness', {
                 languageCode: defaultLanguageCode,
                 id,
             }),
@@ -166,18 +161,18 @@ export default {
     methods: {
         ...mapActions('product', [
             'getProductDraft',
+            'getProductTemplate',
+            'getProductCompleteness',
         ]),
         onLanguageChange(value) {
             const languageCode = value.code;
 
             Promise.all([
-                getProductTemplate({
-                    $axios: this.$axios,
+                this.getProductTemplate({
                     languageCode,
                     id: this.id,
                 }),
-                getProductCompleteness({
-                    $axios: this.$axios,
+                this.getProductCompleteness({
                     languageCode,
                     id: this.id,
                 }),
@@ -194,14 +189,15 @@ export default {
                 this.language = value;
             });
         },
-        onRestoreDraftValues() {
+        async onRestoreDraftValues() {
             const {
                 code: languageCode,
             } = this.language;
 
-            Promise.all([
-                getProductCompleteness({
-                    $axios: this.$axios,
+            const [
+                completeness,
+            ] = await Promise.all([
+                this.getProductCompleteness({
                     languageCode,
                     id: this.id,
                 }),
@@ -209,19 +205,14 @@ export default {
                     languageCode,
                     id: this.id,
                 }),
-            ]).then(([
-                completenessResponse,
-            ]) => {
-                this.completeness = completenessResponse;
-            });
+            ]);
+
+            this.completeness = completeness;
         },
-        onValueUpdated() {
-            getProductCompleteness({
-                $axios: this.$axios,
+        async onValueUpdated() {
+            this.completeness = await this.getProductCompleteness({
                 languageCode: this.language.code,
                 id: this.id,
-            }).then((response) => {
-                this.completeness = response;
             });
         },
     },

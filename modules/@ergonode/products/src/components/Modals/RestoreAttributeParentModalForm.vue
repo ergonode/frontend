@@ -37,8 +37,6 @@ import {
     mapActions,
 } from 'vuex';
 
-const deleteAttributeValue = () => import('@Products/services/deleteAttributeValue.service');
-
 export default {
     name: 'RestoreAttributeParentModalForm',
     components: {
@@ -72,13 +70,16 @@ export default {
             'onError',
             'removeErrors',
         ]),
+        ...mapActions('product', [
+            'removeProductDraft',
+        ]),
         updateRestoredElement(element) {
             this.restoredElement = element;
         },
         onClose() {
             this.$emit('close');
         },
-        onRestore() {
+        async onRestore() {
             if (!this.restoredElement) {
                 this.onError({
                     errors: {
@@ -90,9 +91,7 @@ export default {
                 return;
             }
 
-            deleteAttributeValue().then(response => response.default({
-                $axios: this.$axios,
-                $store: this.$store,
+            this.removeProductDraft({
                 languageCode: this.language.code,
                 attributeId: this.elements.find(
                     element => element.label === this.restoredElement,
