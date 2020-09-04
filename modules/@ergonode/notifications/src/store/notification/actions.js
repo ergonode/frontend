@@ -2,27 +2,37 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export default {
-    checkNotificationCount({
-        commit, dispatch,
-    }) {
-        return this.app.$axios.$get('profile/notifications/check', {
-            withLanguage: false,
-        }).then(({
-            unread,
-        }) => {
-            dispatch('increaseRequestTimeInterval');
-            dispatch('setRequestTimeout');
 
-            commit('__SET_STATE', {
-                key: 'count',
-                value: unread,
-            });
+import {
+    check,
+    getAll,
+    update,
+} from '@Notifications/services';
+
+export default {
+    async checkNotificationCount({
+        commit,
+        dispatch,
+    }) {
+        const {
+            unread,
+        } = await check({
+            $axios: this.app.$axios,
+        });
+
+        dispatch('increaseRequestTimeInterval');
+        dispatch('setRequestTimeout');
+
+        commit('__SET_STATE', {
+            key: 'count',
+            value: unread,
         });
     },
     async requestForNotifications({
         commit, state,
     }) {
+        this.$setLoader('moreNotifications');
+
         const params = {
             limit: state.limit,
             offset: 0,
@@ -30,31 +40,32 @@ export default {
             field: 'created_at',
         };
 
-        await this.$setLoader('moreNotifications');
-        await this.app.$axios.$get('profile/notifications', {
-            params,
-            withLanguage: false,
-        }).then(({
+        const {
             collection,
-        }) => {
-            commit('__SET_STATE', {
-                key: 'notifications',
-                value: collection,
-            });
+        } = await getAll({
+            $axios: this.app.$axios,
+            params,
         });
-        await this.$removeLoader('moreNotifications');
+
+        commit('__SET_STATE', {
+            key: 'notifications',
+            value: collection,
+        });
+
+        this.$removeLoader('moreNotifications');
     },
-    markNotificationAsRead({
+    async markNotificationAsRead({
         dispatch,
     }, {
         id,
     }) {
-        return this.app.$axios.$post(`profile/notifications/${id}/mark`, {
-            withLanguage: false,
-        }).then(() => {
-            dispatch('checkNotificationCount');
-            dispatch('requestForNotifications');
+        await update({
+            $axios: this.app.$axios,
+            id,
         });
+
+        dispatch('checkNotificationCount');
+        dispatch('requestForNotifications');
     },
     increaseRequestTimeInterval({
         commit, state,
