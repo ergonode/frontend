@@ -2,102 +2,181 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+
+import {
+    create,
+    get,
+    getAll,
+    getDefault,
+    remove,
+    update,
+    updateDefault,
+} from '@Statuses/services/index';
+
 export default {
-    getProductStatuses({
+    async getProductStatuses({
         commit, rootState,
-    }, params) {
+    }) {
         const {
             language: userLanguageCode,
         } = rootState.authentication.user;
-        return this.app.$axios.$get('status', {
-            params,
-        }).then(({
-            collection: statuses,
-        }) => {
-            commit('__SET_STATE', {
-                key: 'statuses',
-                value: statuses.map(status => ({
-                    id: status.id,
-                    key: status.code,
-                    value: status.name,
-                    hint: status.name
-                        ? `#${status.code} ${userLanguageCode}`
-                        : '',
-                })),
-            });
-        });
-    },
-    getProductStatus({
-        commit, dispatch,
-    }, path) {
-        return this.app.$axios.$get(path).then(({
-            id, code, color, name, description,
-        }) => {
-            const translations = {
-                name,
-                description,
-            };
 
-            commit('__SET_STATE', {
-                key: 'id',
-                value: id,
-            });
-            commit('__SET_STATE', {
-                key: 'code',
-                value: code,
-            });
-            commit('__SET_STATE', {
-                key: 'color',
-                value: color,
-            });
-            dispatch('tab/setTranslations', translations, {
-                root: true,
-            });
+        const {
+            collection,
+        } = await getAll({
+            $axios: this.app.$axios,
+        });
+
+        commit('__SET_STATE', {
+            key: 'statuses',
+            value: collection.map(status => ({
+                id: status.id,
+                key: status.code,
+                value: status.name,
+                hint: status.name
+                    ? `#${status.code} ${userLanguageCode}`
+                    : '',
+            })),
         });
     },
-    getDefaultStatus({
-        commit, state,
+    async getProductStatus({
+        commit, dispatch,
+    }, {
+        id,
     }) {
-        return this.app.$axios.$get('workflow/default').then(({
-            default_status: defaultStatus,
-        }) => {
-            if (defaultStatus === state.code) {
-                commit('__SET_STATE', {
-                    key: 'isDefaultStatus',
-                    value: true,
-                });
-            }
+        const {
+            code,
+            color,
+            name,
+            description,
+        } = await get({
+            $axios: this.app.$axios,
+            id,
         });
+
+        const translations = {
+            name,
+            description,
+        };
+
+        commit('__SET_STATE', {
+            key: 'id',
+            value: id,
+        });
+        commit('__SET_STATE', {
+            key: 'code',
+            value: code,
+        });
+        commit('__SET_STATE', {
+            key: 'color',
+            value: color,
+        });
+        dispatch('tab/setTranslations', translations, {
+            root: true,
+        });
+    },
+    async getDefaultStatus({
+        commit,
+        state,
+    }) {
+        const {
+            code,
+        } = state;
+
+        const {
+            default_status: defaultStatus,
+        } = await getDefault({
+            $axios: this.app.$axios,
+        });
+
+        if (defaultStatus === code) {
+            commit('__SET_STATE', {
+                key: 'isDefaultStatus',
+                value: true,
+            });
+        }
     },
     updateDefaultStatus({
         state,
     }) {
         if (state.isDefaultStatus) {
-            return this.app.$axios.$put(`workflow/default/status/${state.id}/default`);
+            const {
+                id,
+            } = state;
+
+            return updateDefault({
+                $axios: this.app.$axios,
+                id,
+            });
         }
         return null;
     },
     async updateProductStatus({
-        state, rootState,
+        state,
+        rootState,
     }, {
         onError,
     }) {
-        const {
-            translations: {
-                name, description,
-            },
-        } = rootState.tab;
-        const data = {
-            color: state.color,
-            name,
-            description,
-        };
+        this.$setLoader('footerButton');
 
-        await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`status/${state.id}`, data).catch(e => onError(e.data));
-        await this.$removeLoader('footerButton');
+        try {
+            const {
+                translations: {
+                    name, description,
+                },
+            } = rootState.tab;
+            const {
+                id,
+                color,
+            } = state;
+            const data = {
+                color,
+                name,
+                description,
+            };
+
+            update({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+        } catch (e) {
+            onError(e);
+        }
+
+        this.$removeLoader('footerButton');
     },
-    removeProductStatus({
+    async createStatus(
+        {
+            state,
+        },
+        {
+            onSuccess,
+            onError,
+        },
+    ) {
+        try {
+            const {
+                code,
+                color,
+            } = state;
+
+            const data = {
+                code,
+                color,
+            };
+
+            await create({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
+    },
+    async removeProductStatus({
         commit, state,
     }, {
         onSuccess,
@@ -105,6 +184,12 @@ export default {
         const {
             id,
         } = state;
-        return this.app.$axios.$delete(`status/${id}`).then(() => onSuccess());
+
+        await remove({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        onSuccess();
     },
 };

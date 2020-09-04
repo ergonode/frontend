@@ -35,10 +35,8 @@ export default {
     async fetch({
         store, params,
     }) {
-        const path = `status/${params.id}`;
-
         await store.dispatch('productStatus/__clearStorage');
-        await store.dispatch('productStatus/getProductStatus', path);
+        await store.dispatch('productStatus/getProductStatus', params);
         await store.dispatch('productStatus/getDefaultStatus');
     },
     computed: {
