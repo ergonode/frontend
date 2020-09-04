@@ -9,13 +9,22 @@ import {
     EXTENDS,
     PRODUCT_TYPE,
 } from '@Products/defaults';
+import {
+    applyDraft,
+    create,
+    get,
+    getBindings,
+    getDraft,
+    remove,
+    update,
+    updateDraft,
+} from '@Products/services/index';
 
 import {
     types,
 } from './mutations';
 
 const getAttributesByFilter = () => import('@Attributes/services/getAttributesByFilter.service');
-const applyProductDraft = () => import('@Products/services/applyProductDraft.service');
 
 export default {
     setDraftValue: ({
@@ -30,95 +39,103 @@ export default {
     removeBindingAttribute: ({
         commit,
     }, index) => commit(types.REMOVE_BINDING_ATTRIBUTE, index),
-    getProductDraft({
+    async getProductDraft({
         commit,
     }, {
         languageCode, id,
     }) {
-        return this.app.$axios.$get(`${languageCode}/products/${id}/draft`, {
-            withLanguage: false,
-        }).then(({
+        const {
             attributes,
-        }) => {
-            commit(types.SET_PRODUCT_DRAFT, {
-                languageCode,
-                draft: attributes,
-            });
+        } = await getDraft({
+            $axios: this.app.$axios,
+            id,
+            languageCode,
+        });
+
+        commit(types.SET_PRODUCT_DRAFT, {
+            languageCode,
+            draft: attributes,
         });
     },
-    getProduct({
-        commit, dispatch, rootState,
+    async getProduct({
+        commit,
+        dispatch,
+        rootState,
     }, id) {
         const {
             productTypes,
         } = rootState.dictionaries;
 
-        return this.app.$axios.$get(`products/${id}`).then((data) => {
-            const {
-                design_template_id: templateId,
-                attributes,
-                sku,
-                type,
-                status,
-                workflow = [],
-            } = data;
-
-            if (templateId) {
-                commit('__SET_STATE', {
-                    key: 'template',
-                    value: templateId,
-                });
-            }
-
-            commit('__SET_STATE', {
-                key: 'id',
-                value: id,
-            });
-            commit('__SET_STATE', {
-                key: 'sku',
-                value: sku,
-            });
-            commit('__SET_STATE', {
-                key: 'type',
-                value: productTypes[type],
-            });
-            commit('__SET_STATE', {
-                key: 'status',
-                value: status,
-            });
-            commit('__SET_STATE', {
-                key: 'workflow',
-                value: workflow,
-            });
-            commit('__SET_STATE', {
-                key: 'data',
-                value: attributes,
-            });
-
-            this.$extendMethods(EXTENDS['@Products/store/product/action/getProduct'], {
-                data,
-                commit,
-                dispatch,
-            });
-
-            if (type === PRODUCT_TYPE.WITH_VARIANTS) {
-                const getAttributesBindings = this.app.$axios.$get(`products/${id}/bindings`).then((bindings) => {
-                    commit('__SET_STATE', {
-                        key: 'bindingAttributesIds',
-                        value: bindings,
-                    });
-                });
-
-                return Promise.all([
-                    getAttributesBindings,
-                    dispatch('getSelectAttributes'),
-                ]);
-            }
-
-            return true;
+        const data = await get({
+            $axios: this.app.$axios,
+            id,
         });
+
+        const {
+            design_template_id: templateId,
+            attributes,
+            sku,
+            type,
+            status,
+            workflow = [],
+        } = data;
+
+        if (templateId) {
+            commit('__SET_STATE', {
+                key: 'template',
+                value: templateId,
+            });
+        }
+
+        commit('__SET_STATE', {
+            key: 'id',
+            value: id,
+        });
+        commit('__SET_STATE', {
+            key: 'sku',
+            value: sku,
+        });
+        commit('__SET_STATE', {
+            key: 'type',
+            value: productTypes[type],
+        });
+        commit('__SET_STATE', {
+            key: 'status',
+            value: status,
+        });
+        commit('__SET_STATE', {
+            key: 'workflow',
+            value: workflow,
+        });
+        commit('__SET_STATE', {
+            key: 'data',
+            value: attributes,
+        });
+
+        this.$extendMethods(EXTENDS['@Products/store/product/action/getProduct'], {
+            data,
+            commit,
+            dispatch,
+        });
+
+        if (type === PRODUCT_TYPE.WITH_VARIANTS) {
+            const [
+                bindings,
+            ] = await Promise.all([
+                getBindings({
+                    $axios: this.app.$axios,
+                    id,
+                }),
+                dispatch('getSelectAttributes'),
+            ]);
+
+            commit('__SET_STATE', {
+                key: 'bindingAttributesIds',
+                value: bindings,
+            });
+        }
     },
-    updateProductStatus({
+    async updateProductStatus({
         state,
     }, {
         attributeId,
@@ -129,16 +146,22 @@ export default {
             id,
         } = state;
 
-        return this.app.$axios.$put(`products/${id}/draft/${attributeId}/value`, {
+        const data = {
             value,
-        }).then(() => applyProductDraft()
-            .then(request => request
-                .default({
-                    $axios: this.app.$axios,
-                    $store: this,
-                    id,
-                })
-                .then(onSuccess)));
+        };
+
+        await updateDraft({
+            $axios: this.app.$axios,
+            id,
+            attributeId,
+            data,
+        });
+        await applyDraft({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        onSuccess();
     },
     getSelectAttributes({
         commit,
