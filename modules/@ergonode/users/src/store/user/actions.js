@@ -174,7 +174,9 @@ export default {
             });
 
             if (rootState.authentication.user.id === id) {
-                dispatch('authentication/getUser');
+                dispatch('authentication/getUser', {
+                    root: true,
+                });
             }
 
             onSuccess();

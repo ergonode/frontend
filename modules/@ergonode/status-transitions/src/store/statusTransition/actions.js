@@ -2,10 +2,22 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    isObject,
+} from '@Core/models/objectWrapper';
+import {
+    create,
+    get,
+    remove,
+    update,
+} from '@Transitions/services/index';
+
 export default {
     async getTransition(
         {
-            commit, dispatch, rootState,
+            commit,
+            dispatch,
+            rootState,
         },
         {
             id,
@@ -19,42 +31,48 @@ export default {
             destination,
         ] = id.split('--');
 
-        await this.app.$axios.$get(`workflow/default/transitions/${source}/${destination}`).then(async ({
+        const {
             condition_set_id: conditionSetId,
             role_ids: rolesIds,
-        }) => {
-            const sourceOption = statusOptions.find(
-                status => status.key === source.replace(/%20/g, ' '),
-            );
-            const destinationOption = statusOptions.find(
-                status => status.key === destination.replace(/%20/g, ' '),
-            );
-
-            commit('__SET_STATE', {
-                key: 'source',
-                value: sourceOption,
-            });
-            commit('__SET_STATE', {
-                key: 'destination',
-                value: destinationOption,
-            });
-            commit('__SET_STATE', {
-                key: 'roles',
-                value: rolesIds,
-            });
-            commit('__SET_STATE', {
-                key: 'conditionSetId',
-                value: conditionSetId,
-            });
-
-            if (conditionSetId) {
-                await dispatch('condition/getConditionSet', {
-                    conditionSetId,
-                }, {
-                    root: true,
-                });
-            }
+        } = await get({
+            $axios: this.app.$axios,
+            source,
+            destination,
         });
+
+        const regex = /%20/g;
+
+        const sourceOption = statusOptions.find(
+            status => status.key === source.replace(regex, ' '),
+        );
+        const destinationOption = statusOptions.find(
+            status => status.key === destination.replace(regex, ' '),
+        );
+
+        commit('__SET_STATE', {
+            key: 'source',
+            value: sourceOption,
+        });
+        commit('__SET_STATE', {
+            key: 'destination',
+            value: destinationOption,
+        });
+        commit('__SET_STATE', {
+            key: 'roles',
+            value: rolesIds,
+        });
+        commit('__SET_STATE', {
+            key: 'conditionSetId',
+            value: conditionSetId,
+        });
+
+        if (conditionSetId) {
+            await dispatch('condition/getConditionSet', {
+                conditionSetId,
+            }, {
+                root: true,
+            });
+        }
     },
     async updateTransition(
         {
@@ -66,31 +84,81 @@ export default {
             onError,
         },
     ) {
+        this.$setLoader('footerButton');
+
         const {
-            source, destination,
+            source,
+            destination,
         } = state;
 
-        await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`workflow/default/transitions/${source.id}/${destination.id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
-        await this.$removeLoader('footerButton');
+        try {
+            await update({
+                $axios: this.app.$axios,
+                source: source.id,
+                destination: destination.id,
+                data,
+            });
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
+
+        this.$removeLoader('footerButton');
     },
-    removeTransition({
+    async createTransition(
+        {
+            state,
+            commit,
+        },
+        {
+            onSuccess,
+            onError,
+        },
+    ) {
+        try {
+            const {
+                source,
+                destination,
+                roles,
+            } = state;
+
+            const data = {
+                source: isObject(source) ? source.key : null,
+                destination: isObject(destination) ? destination.key : null,
+                roles,
+            };
+
+            await create({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
+    },
+    async removeTransition({
         state,
     }, {
         onSuccess,
     }) {
         const {
-            source, destination, conditionSetId,
+            source,
+            destination,
+            conditionSetId,
         } = state;
 
-        return this.app.$axios.$delete(`workflow/default/transitions/${source.key}/${destination.key}`)
-            .then(() => {
-                if (conditionSetId) {
-                    this.app.$axios.$delete(`conditionsets/${conditionSetId}`)
-                        .then(() => onSuccess());
-                } else {
-                    onSuccess();
-                }
-            });
+        await remove({
+            $axios: this.app.$axios,
+            source: source.id,
+            destination: destination.id,
+        });
+
+        if (conditionSetId) {
+            await this.app.$axios.$delete(`conditionsets/${conditionSetId}`);
+        }
+
+        onSuccess();
     },
 };
