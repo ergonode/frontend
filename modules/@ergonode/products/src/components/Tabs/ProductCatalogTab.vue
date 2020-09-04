@@ -111,7 +111,6 @@ import {
     mapState,
 } from 'vuex';
 
-const updateProductDraft = () => import('@Products/services/updateProductDraft.service');
 const applyProductDraft = () => import('@Products/services/applyProductDraft.service');
 
 export default {
@@ -250,6 +249,9 @@ export default {
             'setDisabledElement',
             'setDisabledElements',
         ]),
+        ...mapActions('product', [
+            'updateProductDraft',
+        ]),
         onCellValueChange(cellValues) {
             const cachedElementIds = {};
 
@@ -266,7 +268,7 @@ export default {
                 ...drafts,
             });
 
-            const requests = cellValues.map(({
+            const requests = cellValues.map(async ({
                 rowId, columnId, value,
             }) => {
                 if (!cachedElementIds[columnId]) {
@@ -277,15 +279,13 @@ export default {
                     cachedElementIds[columnId] = element_id;
                 }
 
-                return updateProductDraft().then(response => response.default({
-                    $axios: this.$axios,
-                    $store: this.$store,
+                await this.updateProductDraft({
                     fieldKey: `${rowId}/${columnId}`,
                     languageCode: columnId.split(':')[1],
                     productId: rowId,
                     elementId: cachedElementIds[columnId],
                     value,
-                }));
+                });
             });
 
             Promise.all(requests);

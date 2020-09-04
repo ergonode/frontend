@@ -33,11 +33,10 @@ import {
 import PRIVILEGES from '@Products/config/privileges';
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
 import {
+    mapActions,
     mapGetters,
     mapState,
 } from 'vuex';
-
-const updateProductDraft = () => import('@Products/services/updateProductDraft.service');
 
 export default {
     name: 'ProductTemplateForm',
@@ -92,6 +91,9 @@ export default {
         }) => () => import(`@Products/components/Form/Field/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`));
     },
     methods: {
+        ...mapActions('product', [
+            'updateProductDraft',
+        ]),
         isUserAllowedToUpdate(scope) {
             const {
                 code,
@@ -103,16 +105,10 @@ export default {
                 && this.languagePrivileges[code].edit
                 && (this.rootLanguage.code === code || scope === SCOPE.LOCAL);
         },
-        onValueChange(payload) {
-            updateProductDraft().then(async (response) => {
-                await response.default({
-                    $axios: this.$axios,
-                    $store: this.$store,
-                    ...payload,
-                });
+        async onValueChange(payload) {
+            await this.updateProductDraft(payload);
 
-                this.$emit('valueUpdated');
-            });
+            this.$emit('valueUpdated');
         },
     },
 };

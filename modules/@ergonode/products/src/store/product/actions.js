@@ -164,18 +164,84 @@ export default {
 
         onSuccess();
     },
-    getSelectAttributes({
+    async updateProductDraft({
+        dispatch,
+    }, {
+        fieldKey,
+        productId,
+        elementId,
+        value,
+    }) {
+        try {
+            const data = {
+                value,
+            };
+
+            await updateDraft({
+                $axios: this.app.$axios,
+                id: productId,
+                attributeId: elementId,
+                data,
+            });
+            dispatch(
+                'validations/removeError',
+                fieldKey,
+                {
+                    root: true,
+                },
+            );
+        } catch (e) {
+            const {
+                code: statusCode, errors,
+            } = e.data;
+
+            if (errors) {
+                dispatch(
+                    'validations/onError',
+                    {
+                        code: statusCode,
+                        errors,
+                        fieldKey,
+                    },
+                    {
+                        root: true,
+                    },
+                );
+            } else {
+                const internalServerError = {
+                    value: [
+                        e.statusText,
+                    ],
+                };
+
+                dispatch(
+                    'validations/onError',
+                    {
+                        code: statusCode,
+                        errors: internalServerError,
+                        fieldKey,
+                    },
+                    {
+                        root: true,
+                    },
+                );
+            }
+        }
+    },
+    async getSelectAttributes({
         commit,
         dispatch,
     }) {
-        dispatch('attribute/getAttributesByFilter', {
+        const selectAttributes = await dispatch('attribute/getAttributesByFilter', {
             filter: `type=${TYPES.SELECT}`,
         }, {
             root: true,
-        }).then(selectAttributes => commit('__SET_STATE', {
+        });
+
+        commit('__SET_STATE', {
             key: 'selectAttributes',
             value: selectAttributes,
-        }));
+        });
     },
     async updateProduct(
         {
