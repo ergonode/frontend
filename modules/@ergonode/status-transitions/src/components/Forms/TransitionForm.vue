@@ -36,7 +36,7 @@
                     label="Role"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errorMessages[roleFieldKey]"
-                    :fetch-options-request="getRolesOptionsRequest"
+                    :fetch-options-request="getRoleOptions"
                     @input="setRolesValue" />
             </FormSection>
         </template>
@@ -52,8 +52,6 @@ import {
     mapActions,
     mapState,
 } from 'vuex';
-
-const getRolesOptions = () => import('@Users/services/getRolesOptions.service');
 
 export default {
     name: 'TransitionForm',
@@ -114,6 +112,9 @@ export default {
         ...mapActions('statusTransition', [
             '__setState',
         ]),
+        ...mapActions('role', [
+            'getRoleOptions',
+        ]),
         setSourceValue(value) {
             this.__setState({
                 key: 'source',
@@ -131,14 +132,6 @@ export default {
                 key: 'roles',
                 value,
             });
-        },
-        getRolesOptionsRequest() {
-            return getRolesOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
         },
     },
 };

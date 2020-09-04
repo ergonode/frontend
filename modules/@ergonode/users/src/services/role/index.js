@@ -8,6 +8,19 @@ export const get = ({
     id,
 }) => $axios.$get(`roles/${id}`);
 
+export const getAll = ({
+    $axios,
+    params = {
+        limit: 9999,
+        offset: 0,
+        view: 'list',
+        order: 'ASC',
+        columns: 'id,description,name',
+    },
+}) => $axios.$get('roles', {
+    params,
+});
+
 export const update = ({
     $axios,
     id,

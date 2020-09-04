@@ -11,6 +11,7 @@ import {
 import {
     create,
     get,
+    getAll,
     remove,
     update,
 } from '@Users/services/role/index';
@@ -49,6 +50,20 @@ export default {
             key: 'privileges',
             value: getMappedPrivileges(privileges),
         });
+    },
+    getRoleOptions() {
+        return getAll({
+            $axios: this.app.$axios,
+        }).then(({
+            collection,
+        }) => ({
+            options: collection.map(element => ({
+                id: element.id,
+                key: element.id,
+                value: element.name,
+                hint: element.description,
+            })),
+        }));
     },
     async updateRole(
         {

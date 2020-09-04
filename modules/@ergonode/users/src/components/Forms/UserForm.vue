@@ -72,7 +72,7 @@
                     label="Role"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errorMessages[roleIdFieldKey]"
-                    :fetch-options-request="getRolesOptionsRequest"
+                    :fetch-options-request="getRoleOptions"
                     @input="setRoleValue" />
             </FormSection>
         </template>
@@ -86,8 +86,6 @@ import {
     mapGetters,
     mapState,
 } from 'vuex';
-
-const getRolesOptions = () => import('@Users/services/getRolesOptions.service');
 
 export default {
     name: 'UserForm',
@@ -172,14 +170,9 @@ export default {
         ...mapActions('user', [
             '__setState',
         ]),
-        getRolesOptionsRequest() {
-            return getRolesOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
-        },
+        ...mapActions('role', [
+            'getRoleOptions',
+        ]),
         setEmailValue(value) {
             this.__setState({
                 key: 'email',
