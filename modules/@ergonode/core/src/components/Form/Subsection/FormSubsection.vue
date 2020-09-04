@@ -2,18 +2,18 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template functional>
+<template>
     <div
         :class=" [
             'form-subsection',
             {
-                'form-subsection--required': props.required,
+                'form-subsection--required': required,
             },
         ]">
         <span
-            v-if="props.title"
+            v-if="title"
             class="form-subsection__title"
-            v-text="props.title" />
+            v-text="title" />
         <slot />
     </div>
 </template>
