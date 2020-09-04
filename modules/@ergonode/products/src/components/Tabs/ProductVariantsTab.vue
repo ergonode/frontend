@@ -39,8 +39,6 @@ import {
     mapState,
 } from 'vuex';
 
-const getAttributesByFilter = () => import('@Attributes/services/getAttributesByFilter.service');
-
 export default {
     name: 'ProductVariantsTab',
     components: {
@@ -63,13 +61,9 @@ export default {
         };
 
         return Promise.all([
-            getAttributesByFilter().then(
-                response => response.default({
-                    $axios: app.$axios,
-                    $store: store,
-                    filter: `type=${TYPES.SELECT}`,
-                }),
-            ),
+            store.dispatch('attribute/getAttributesByFilter', {
+                filter: `type=${TYPES.SELECT}`,
+            }),
             app.$axios.$get(`products/${id}/bindings`),
             app.$axios.$get(`products/${id}/children`, {
                 params: productsParams,

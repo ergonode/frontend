@@ -2,7 +2,29 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    create,
+    get,
+    getAll,
+    remove,
+    update,
+} from '@Categories/services';
+
 export default {
+    createCategory({
+        state,
+    }) {
+        const {
+            code,
+        } = state;
+
+        return create({
+            $axios: this.app.$axios,
+            data: {
+                code,
+            },
+        });
+    },
     getCategory(
         {
             commit, dispatch,
@@ -11,7 +33,10 @@ export default {
             categoryId, onError = () => {},
         },
     ) {
-        return this.app.$axios.$get(`categories/${categoryId}`).then(({
+        return get({
+            $axios: this.app.$axios,
+            id: categoryId,
+        }).then(({
             id,
             code,
             name = '',
@@ -38,6 +63,26 @@ export default {
             });
         }).catch(onError);
     },
+    getCategoriesOptions({
+        rootState,
+    }) {
+        const {
+            language,
+        } = rootState.authentication.user;
+
+        return getAll({
+            $axios: this.app.$axios,
+        }).then(({
+            collection,
+        }) => ({
+            options: collection.map(element => ({
+                id: element.id,
+                key: element.code,
+                value: element.name,
+                hint: element.name ? `#${element.code} ${language}` : '',
+            })),
+        }));
+    },
     async updateCategory(
         {},
         {
@@ -48,7 +93,11 @@ export default {
         },
     ) {
         await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`categories/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        await update({
+            $axios: this.app.$axios,
+            id,
+            data,
+        }).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     removeCategory({
@@ -59,6 +108,10 @@ export default {
         const {
             id,
         } = state;
-        return this.app.$axios.$delete(`categories/${id}`).then(() => onSuccess());
+
+        return remove({
+            $axios: this.app.$axios,
+            id,
+        }).then(() => onSuccess());
     },
 };

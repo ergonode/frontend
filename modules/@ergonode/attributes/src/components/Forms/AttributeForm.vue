@@ -32,7 +32,7 @@
                     :clearable="true"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errorMessages[groupsFieldKey]"
-                    :fetch-options-request="getAttributeGroupOptionsRequest"
+                    :fetch-options-request="getAttributeGroupsOptions"
                     @input="setGroupsValue" />
                 <Select
                     :data-cy="dataCyGenerator(typeFieldKey)"
@@ -107,8 +107,6 @@ import {
     mapGetters,
     mapState,
 } from 'vuex';
-
-const getAttributeGroupsOptions = () => import('@Attributes/services/getAttributeGroupsOptions.service');
 
 export default {
     name: 'AttributeForm',
@@ -210,6 +208,9 @@ export default {
             '__setState',
             'removeAttributeOptions',
         ]),
+        ...mapActions('attributeGroup', [
+            'getAttributeGroupsOptions',
+        ]),
         setCodeValue(value) {
             this.__setState({
                 key: 'code',
@@ -242,14 +243,6 @@ export default {
         },
         dataCyGenerator(key) {
             return `attribute-${key}`;
-        },
-        getAttributeGroupOptionsRequest() {
-            return getAttributeGroupsOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
         },
         onTypeChange(type) {
             this.setTypeValue(type);

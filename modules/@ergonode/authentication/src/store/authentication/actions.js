@@ -8,6 +8,10 @@ import {
 import {
     getMappedPrivileges,
 } from '@Authentication/models/userMapper';
+import {
+    create,
+    get,
+} from '@Authentication/services';
 import camelcaseKeys from 'camelcase-keys';
 
 export default {
@@ -16,8 +20,9 @@ export default {
     }, {
         data,
     }) {
-        return this.app.$axios.$post('login', data, {
-            withLanguage: false,
+        return create({
+            $axios: this.app.$axios,
+            data,
         }).then(({
             token,
         }) => {
@@ -33,8 +38,8 @@ export default {
     getUser({
         commit,
     }) {
-        return this.app.$axios.$get('profile', {
-            withLanguage: false,
+        return get({
+            $axios: this.app.$axios,
         }).then((user) => {
             const transformedUserData = camelcaseKeys(user);
 

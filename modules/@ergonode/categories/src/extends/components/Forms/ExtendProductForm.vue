@@ -9,7 +9,7 @@
         :clearable="true"
         label="Category"
         :disabled="disabled"
-        :fetch-options-request="getCategoriesOptionsRequest"
+        :fetch-options-request="getCategoriesOptions"
         @input="setCategoriesValue" />
 </template>
 
@@ -18,8 +18,6 @@ import {
     mapActions,
     mapState,
 } from 'vuex';
-
-const getCategoriesOptions = () => import('@Categories/services/getCategoriesOptions.service');
 
 export default {
     name: 'ExtendProductForm',
@@ -41,19 +39,14 @@ export default {
         ...mapActions('product', [
             '__setState',
         ]),
+        ...mapActions('category', [
+            'getCategoriesOptions',
+        ]),
         setCategoriesValue(value) {
             this.__setState({
                 key: 'categories',
                 value,
             });
-        },
-        getCategoriesOptionsRequest() {
-            return getCategoriesOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
         },
     },
 };
