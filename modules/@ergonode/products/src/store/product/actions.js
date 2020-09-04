@@ -27,8 +27,6 @@ import {
     types,
 } from './mutations';
 
-const getAttributesByFilter = () => import('@Attributes/services/getAttributesByFilter.service');
-
 export default {
     setDraftValue: ({
         commit,
@@ -168,19 +166,16 @@ export default {
     },
     getSelectAttributes({
         commit,
+        dispatch,
     }) {
-        return getAttributesByFilter().then(
-            response => response.default({
-                $axios: this.app.$axios,
-                $store: this,
-                filter: `type=${TYPES.SELECT}`,
-            }).then((selectAttributes) => {
-                commit('__SET_STATE', {
-                    key: 'selectAttributes',
-                    value: selectAttributes,
-                });
-            }),
-        );
+        dispatch('attribute/getAttributesByFilter', {
+            filter: `type=${TYPES.SELECT}`,
+        }, {
+            root: true,
+        }).then(selectAttributes => commit('__SET_STATE', {
+            key: 'selectAttributes',
+            value: selectAttributes,
+        }));
     },
     async updateProduct(
         {

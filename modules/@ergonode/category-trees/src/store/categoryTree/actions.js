@@ -8,8 +8,28 @@ import {
 import {
     getParsedTreeData,
 } from '@Trees/models/treeMapper';
+import {
+    create,
+    get,
+    remove,
+    update,
+} from '@Trees/services';
 
 export default {
+    createCategoryTree({
+        state,
+    }) {
+        const {
+            code,
+        } = state;
+
+        return create({
+            $axios: this.app.$axios,
+            data: {
+                code,
+            },
+        });
+    },
     async getTree(
         {
             commit, dispatch, rootState,
@@ -22,7 +42,10 @@ export default {
             language: userLanguageCode,
         } = rootState.authentication.user;
 
-        await this.app.$axios.$get(`trees/${treeId}`).then(async ({
+        await get({
+            $axios: this.app.$axios,
+            id: treeId,
+        }).then(async ({
             code,
             name = '',
             categories,
@@ -86,7 +109,11 @@ export default {
         },
     ) {
         await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`trees/${id}`, data).then(() => {
+        await update({
+            $axios: this.app.$axios,
+            id,
+            data,
+        }).then(() => {
             onSuccess();
         });
         await this.$removeLoader('footerButton');
@@ -99,6 +126,10 @@ export default {
         const {
             treeId,
         } = state;
-        return this.app.$axios.$delete(`trees/${treeId}`).then(() => onSuccess());
+
+        return remove({
+            $axios: this.app.$axios,
+            id: treeId,
+        }).then(() => onSuccess());
     },
 };

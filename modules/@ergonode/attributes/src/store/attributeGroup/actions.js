@@ -2,7 +2,29 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    create,
+    get,
+    getAll,
+    remove,
+    update,
+} from '@Attributes/services/attributeGroup';
+
 export default {
+    createAttributeGroup({
+        state,
+    }) {
+        const {
+            code,
+        } = state;
+
+        return create({
+            $axios: this.app.$axios,
+            data: {
+                code,
+            },
+        });
+    },
     getAttributeGroup(
         {
             commit, dispatch,
@@ -11,7 +33,10 @@ export default {
             groupId, onError = () => {},
         },
     ) {
-        return this.app.$axios.$get(`attributes/groups/${groupId}`).then(({
+        return get({
+            $axios: this.app.$axios,
+            id: groupId,
+        }).then(({
             id,
             code,
             name = '',
@@ -38,6 +63,26 @@ export default {
             });
         }).catch(onError);
     },
+    getAttributeGroupsOptions({
+        rootState,
+    }) {
+        const {
+            language,
+        } = rootState.authentication.user;
+
+        return getAll({
+            $axios: this.app.$axios,
+        }).then(({
+            collection,
+        }) => ({
+            options: collection.map(element => ({
+                id: element.id,
+                key: element.code,
+                value: element.name,
+                hint: element.name ? `#${element.code} ${language}` : '',
+            })),
+        }));
+    },
     updateAttributeGroup(
         {},
         {
@@ -47,7 +92,11 @@ export default {
             onError,
         },
     ) {
-        return this.app.$axios.$put(`attributes/groups/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        return update({
+            $axios: this.app.$axios,
+            id,
+            data,
+        }).then(() => onSuccess()).catch(e => onError(e.data));
     },
     removeAttributeGroup({
         state,
@@ -57,6 +106,10 @@ export default {
         const {
             id,
         } = state;
-        return this.app.$axios.$delete(`attributes/groups/${id}`).then(() => onSuccess());
+
+        return remove({
+            $axios: this.app.$axios,
+            id,
+        }).then(() => onSuccess());
     },
 };

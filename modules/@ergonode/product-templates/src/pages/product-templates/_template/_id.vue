@@ -61,7 +61,6 @@ export default {
         ...mapActions('productTemplate', [
             'updateTemplateDesigner',
             'removeTemplate',
-            'getTemplateByID',
             '__clearStorage',
         ]),
         ...mapActions('list', {
