@@ -35,7 +35,7 @@ export default {
     async fetch({
         store, params,
     }) {
-        const path = `${store.state.authentication.user.language}/status/${params.id}`;
+        const path = `status/${params.id}`;
 
         await store.dispatch('productStatus/__clearStorage');
         await store.dispatch('productStatus/getProductStatus', path);

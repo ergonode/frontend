@@ -98,9 +98,7 @@ export default {
         return this.app.$axios.$post(`channels/${id}/exports`).then(data => onSuccess(data)).catch(e => onError(e.data));
     },
     updateChannel(
-        {
-            rootState,
-        },
+        {},
         {
             id,
             data,
@@ -108,7 +106,7 @@ export default {
             onError,
         },
     ) {
-        return this.app.$axios.$put(`${rootState.authentication.user.language}/channels/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$put(`channels/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
     },
     updateScheduler(
         {
