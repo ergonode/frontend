@@ -2,7 +2,12 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import unitService from '@Core/services/unit/index';
+import {
+    create,
+    get,
+    remove,
+    update,
+} from '@Core/services/unit/index';
 
 export default {
     async getUnit(
@@ -16,7 +21,7 @@ export default {
         const {
             name,
             symbol,
-        } = await unitService.get({
+        } = await get({
             $axios: this.app.$axios,
             id,
         });
@@ -52,7 +57,7 @@ export default {
         };
         await this.$setLoader('footerButton');
         try {
-            await unitService.update({
+            await update({
                 $axios: this.app.$axios,
                 id,
                 data,
@@ -63,6 +68,34 @@ export default {
         }
         await this.$removeLoader('footerButton');
     },
+    async createUnit({
+        state,
+    }, {
+        onSuccess,
+        onError,
+    }) {
+        try {
+            const {
+                id,
+                name,
+                symbol,
+            } = state;
+
+            const data = {
+                name,
+                symbol,
+            };
+
+            await create({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
+    },
     async removeUnit({
         state,
     }, {
@@ -72,7 +105,7 @@ export default {
             id,
         } = state;
 
-        await unitService.remove({
+        await remove({
             $axios: this.app.$axios,
             id,
         });

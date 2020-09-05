@@ -3,30 +3,23 @@
  * See LICENSE for license details.
  */
 
-export default {
-    get({
-        $axios,
-        id,
-    }) {
-        return $axios.$get(`units/${id}`);
-    },
-    update({
-        $axios,
-        id,
-        data,
-    }) {
-        return $axios.$put(`units/${id}`, data);
-    },
-    create({
-        $axios,
-        data,
-    }) {
-        return $axios.$post('units', data);
-    },
-    remove({
-        $axios,
-        id,
-    }) {
-        return $axios.$delete(`units/${id}`);
-    },
-};
+export const get = ({
+    $axios,
+    id,
+}) => $axios.$get(`units/${id}`);
+
+export const update = ({
+    $axios,
+    id,
+    data,
+}) => $axios.$put(`units/${id}`, data);
+
+export const create = ({
+    $axios,
+    data,
+}) => $axios.$post('units', data);
+
+export const remove = ({
+    $axios,
+    id,
+}) => $axios.$delete(`units/${id}`);
