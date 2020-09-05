@@ -51,7 +51,8 @@ export default {
         });
     },
     async getImportDetails({}, {
-        sourceId, importId,
+        sourceId,
+        importId,
     }) {
         const details = await getDetails({
             $axios: this.app.$axios,

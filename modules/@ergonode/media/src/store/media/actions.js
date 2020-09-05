@@ -18,9 +18,12 @@ export default {
         id,
     }) {
         const {
-            name, extension, alt,
+            name,
+            extension,
+            alt,
         } = await get({
             $axios: this.app.$axios,
+            id,
         });
 
         const translations = {
@@ -43,29 +46,42 @@ export default {
             root: true,
         });
     },
-    getResourceMetadata({
+    async getResourceMetadata({
         state,
     }) {
         const {
             id,
         } = state;
 
-        return getMetadata({
+        const metadata = await getMetadata({
             $axios: this.app.$axios,
             id,
         });
+
+        return Object.keys(metadata).reduce((acc, current) => {
+            const tmpArray = acc;
+
+            tmpArray.push({
+                name: current,
+                value: metadata[current].toString(),
+            });
+
+            return tmpArray;
+        }, []);
     },
-    getResourceRelation({
+    async getResourceRelation({
         state,
     }) {
         const {
             id,
         } = state;
 
-        return getRelation({
+        const relations = await getRelation({
             $axios: this.app.$axios,
             id,
         });
+
+        return relations.filter(row => row.relations.length > 0);
     },
     updateResource({
         commit,

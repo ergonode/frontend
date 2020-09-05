@@ -79,9 +79,8 @@ export default {
         },
     },
     async created() {
-        const relations = await this.getResourceRelation();
+        this.rows = await this.getResourceRelation();
 
-        this.rows = relations.filter(row => row.relations.length > 0);
         this.isPrefetchingData = false;
     },
     methods: {

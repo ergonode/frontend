@@ -3,10 +3,21 @@
  * See LICENSE for license details.
  */
 import {
+    create,
+    get,
+    getConfiguration,
+    getDetails,
+    getSchedulerConfiguration,
+    remove,
+    update,
+    updateScheduler,
+} from '@Channels/services';
+import {
     getDefaultJsonSchemaTypes,
 } from '@Core/models/jsonSchema';
 import {
     getKeyByValue,
+    removeObjectProperty,
 } from '@Core/models/objectWrapper';
 
 export default {
@@ -24,7 +35,10 @@ export default {
         const {
             channels,
         } = rootState.dictionaries;
-        const configuration = await this.app.$axios.$get(`channels/${getKeyByValue(channels, type)}/configuration`);
+        const configuration = await getConfiguration({
+            $axios: this.app.$axios,
+            id: getKeyByValue(channels, type),
+        });
 
         if (!id) {
             const defaultConfiguration = getDefaultJsonSchemaTypes(configuration.properties);
@@ -45,7 +59,10 @@ export default {
         const {
             id,
         } = state;
-        const scheduler = await this.app.$axios.$get(`channels/${id}/scheduler`);
+        const scheduler = await getSchedulerConfiguration({
+            $axios: this.app.$axios,
+            id,
+        });
 
         if (scheduler) {
             commit('__SET_STATE', {
@@ -54,76 +71,153 @@ export default {
             });
         }
     },
-    getChannel(
+    async getExportDetails({}, {
+        channelId,
+        exportId,
+    }) {
+        const details = await getDetails({
+            $axios: this.app.$axios,
+            channelId,
+            exportId,
+        });
+
+        return {
+            details: [
+                {
+                    label: 'Date of start',
+                    value: details.started_at,
+                },
+                {
+                    label: 'Date of finish',
+                    value: details.ended_at,
+                },
+                {
+                    label: 'Status',
+                    value: details.status,
+                },
+                {
+                    label: 'Processed',
+                    value: details.processed || '0',
+                },
+                {
+                    label: 'Errors',
+                    value: details.errors || '0',
+                },
+            ],
+            links: details._links,
+        };
+    },
+    async getChannel(
         {
-            commit, rootState,
+            commit,
+            rootState,
         },
         {
-            id, onError = () => {},
+            id,
         },
     ) {
         const {
             channels,
         } = rootState.dictionaries;
 
-        return this.app.$axios.$get(`channels/${id}`).then(({
+        const {
             id: channelId,
             type,
             ...rest
-        }) => {
-            commit('__SET_STATE', {
-                key: 'id',
-                value: channelId,
-            });
-            commit('__SET_STATE', {
-                key: 'type',
-                value: channels[type],
-            });
-            commit('__SET_STATE', {
-                key: 'configuration',
-                value: JSON.stringify(rest),
-            });
-        }).catch(onError);
+        } = await get({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        commit('__SET_STATE', {
+            key: 'id',
+            value: channelId,
+        });
+        commit('__SET_STATE', {
+            key: 'type',
+            value: channels[type],
+        });
+        commit('__SET_STATE', {
+            key: 'configuration',
+            value: JSON.stringify(rest),
+        });
     },
-    createExport({
+    async createExport({
         state,
     }, {
         onSuccess,
-        onError,
     }) {
         const {
             id,
         } = state;
 
-        return this.app.$axios.$post(`channels/${id}/exports`).then(data => onSuccess(data)).catch(e => onError(e.data));
-    },
-    updateChannel(
-        {},
-        {
+        await create({
+            $axios: this.app.$axios,
             id,
-            data,
-            onSuccess,
-            onError,
-        },
-    ) {
-        return this.app.$axios.$put(`channels/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        });
+        onSuccess();
     },
-    updateScheduler(
+    async updateChannel(
         {
             state,
         },
         {
-            data,
             onSuccess,
             onError,
         },
     ) {
-        const {
-            id,
-        } = state;
-        return this.app.$axios.$put(`channels/${id}/scheduler`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        try {
+            const {
+                id,
+                type,
+                configuration,
+            } = state;
+
+            const data = {
+                type,
+                ...JSON.parse(configuration),
+            };
+
+            await update({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
-    removeChannel({
+    async updateScheduler(
+        {
+            state,
+        },
+        {
+            onSuccess,
+            onError,
+        },
+    ) {
+        try {
+            const {
+                id,
+                scheduler,
+            } = state;
+
+            const tmp = JSON.parse(scheduler);
+
+            const data = removeObjectProperty(tmp, 'id');
+
+            await updateScheduler({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
+    },
+    async removeChannel({
         state,
     }, {
         onSuccess,
@@ -132,6 +226,10 @@ export default {
             id,
         } = state;
 
-        return this.app.$axios.$delete(`channels/${id}`).then(() => onSuccess());
+        await remove({
+            $axios: this.app.$axios,
+            id,
+        });
+        onSuccess();
     },
 };

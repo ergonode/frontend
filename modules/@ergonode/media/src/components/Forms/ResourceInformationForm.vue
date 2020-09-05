@@ -53,18 +53,8 @@ export default {
         };
     },
     async created() {
-        const metadata = await this.getResourceMetadata();
+        this.rows = await this.getResourceMetadata();
 
-        this.rows = Object.keys(metadata).reduce((acc, current) => {
-            const tmpArray = acc;
-
-            tmpArray.push({
-                name: current,
-                value: metadata[current].toString(),
-            });
-
-            return tmpArray;
-        }, []);
         this.isPrefetchingData = false;
     },
     methods: {

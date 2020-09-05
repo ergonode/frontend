@@ -17,9 +17,6 @@ import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import {
-    removeObjectProperty,
-} from '@Core/models/objectWrapper';
-import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -41,7 +38,6 @@ export default {
     },
     computed: {
         ...mapState('channel', {
-            type: state => state.type,
             configuration: state => state.configuration,
             scheduler: state => state.scheduler,
         }),
@@ -79,19 +75,11 @@ export default {
         onSave() {
             this.removeErrors();
             this.updateChannel({
-                id: this.$route.params.id,
-                data: {
-                    type: this.type,
-                    ...JSON.parse(this.configuration),
-                },
                 onSuccess: this.onUpdateChannelSuccess,
                 onError: this.onError,
             });
             if (this.scheduler) {
-                const tmp = JSON.parse(this.scheduler);
-
                 this.updateScheduler({
-                    data: removeObjectProperty(tmp, 'id'),
                     onSuccess: this.onUpdateSchedulerSuccess,
                     onError: this.onError,
                 });
