@@ -77,13 +77,13 @@ export default {
     async created() {
         const [
             options,
-            productCollectionsResponse,
+            collection,
         ] = await Promise.all([
             this.getCollectionTypeOptions(),
             this.getProductCollections(),
         ]);
 
-        this.collections = productCollectionsResponse.collection
+        this.collections = collection
             .map(({
                 id,
                 code,

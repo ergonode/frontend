@@ -231,10 +231,14 @@ export default {
             id,
         } = state;
 
-        await getCollections({
+        const {
+            collection,
+        } = await getCollections({
             $axios: this.app.$axios,
             id,
         });
+
+        return collection;
     },
     async getProductCompleteness({}, {
         languageCode,

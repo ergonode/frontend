@@ -53,10 +53,6 @@ export default {
         ...mapState('tab', {
             translations: state => state.translations,
         }),
-        ...mapState('condition', {
-            conditionsValues: state => state.conditionsValues,
-            conditions: state => state.conditions,
-        }),
     },
     destroyed() {
         this.clearSegmentStorage();

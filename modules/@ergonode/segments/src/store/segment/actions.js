@@ -53,7 +53,7 @@ export default {
 
         if (conditionSetId) {
             await dispatch('condition/getConditionSet', {
-                conditionSetId,
+                id: conditionSetId,
             }, {
                 root: true,
             });

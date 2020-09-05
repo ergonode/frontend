@@ -85,7 +85,7 @@ export default {
 
             if (!this.conditions[correctId]) {
                 this.getConditionConfiguration({
-                    conditionId: correctId,
+                    id: correctId,
                 });
             }
             this.setConditionValue({
