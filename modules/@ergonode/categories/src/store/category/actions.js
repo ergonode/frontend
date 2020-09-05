@@ -92,13 +92,13 @@ export default {
             onError,
         },
     ) {
-        await this.$setLoader('footerButton');
+        this.$setLoader('footerButton');
         await update({
             $axios: this.app.$axios,
             id,
             data,
         }).then(() => onSuccess()).catch(e => onError(e.data));
-        await this.$removeLoader('footerButton');
+        this.$removeLoader('footerButton');
     },
     removeCategory({
         state,

@@ -150,7 +150,7 @@ export default {
             let languages = null;
 
             try {
-                await this.$setLoader('saveSettings');
+                this.$setLoader('saveSettings');
 
                 if (isEmpty(this.fullGridData)) {
                     this.$addAlert({
@@ -174,7 +174,7 @@ export default {
                         message: 'Languages updated',
                     });
                 }
-                await this.$removeLoader('saveSettings');
+                this.$removeLoader('saveSettings');
             }
 
             return true;

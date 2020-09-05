@@ -391,7 +391,7 @@ export default {
             }
         });
 
-        await this.$setLoader('footerButton');
+        this.$setLoader('footerButton');
         await Promise.all([
             ...optionsToAddRequests,
             ...optionsToUpdateRequests,
@@ -404,7 +404,7 @@ export default {
             commit(types.REMOVE_UPDATED_OPTION);
             onSuccess();
         });
-        await this.$removeLoader('footerButton');
+        this.$removeLoader('footerButton');
     },
     removeAttribute({
         state,
