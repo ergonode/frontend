@@ -70,6 +70,9 @@ export default {
         ...mapActions('segment', [
             'getSegmentOptions',
         ]),
+        ...mapActions('collection', [
+            'addBySegment',
+        ]),
         onFormValueChange(value) {
             this.segments = value;
         },
@@ -78,12 +81,11 @@ export default {
         },
         onAdd() {
             this.removeErrors();
-            const data = {
-                segments: this.segments.map(segment => segment.id),
-            };
 
             this.isRequestPending = true;
-            this.$axios.$post(`collections/${this.id}/elements/add-from-segments`, data).then(() => {
+            this.addBySegment({
+                segment: this.segments,
+            }).then(() => {
                 this.isRequestPending = false;
                 this.removeErrors();
                 this.$addAlert({
