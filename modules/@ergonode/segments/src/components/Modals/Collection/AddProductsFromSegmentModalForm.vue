@@ -34,7 +34,6 @@ import {
 } from '@Core/defaults/theme';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -52,9 +51,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('collection', {
-            id: state => state.id,
-        }),
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -84,7 +80,7 @@ export default {
 
             this.isRequestPending = true;
             this.addBySegment({
-                segment: this.segments,
+                segments: this.segments,
             }).then(() => {
                 this.isRequestPending = false;
                 this.removeErrors();

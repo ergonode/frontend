@@ -13,6 +13,8 @@ import {
     PRODUCT_TYPE,
 } from '@Products/defaults';
 import {
+    addBySegment,
+    addBySku,
     applyDraft,
     create,
     get,
@@ -23,6 +25,7 @@ import {
     getDraft,
     getTemplate,
     remove,
+    removeChildren,
     removeDraftValue,
     update,
     updateDraftValue,
@@ -158,6 +161,42 @@ export default {
                 ? `#${e.code} ${languageCode}`
                 : '',
         })));
+    },
+    addBySku({
+        state,
+    }, {
+        skus,
+    }) {
+        const {
+            id,
+        } = state;
+        const data = {
+            skus: skus.replace(/\n/g, ',').split(','),
+        };
+
+        return addBySku({
+            $axios: this.app.$axios,
+            id,
+            data,
+        });
+    },
+    addBySegment({
+        state,
+    }, {
+        segments,
+    }) {
+        const {
+            id,
+        } = state;
+        const data = {
+            segments: segments.map(segment => segment.id),
+        };
+
+        return addBySegment({
+            $axios: this.app.$axios,
+            id,
+            data,
+        });
     },
     async getProductTemplate({}, {
         languageCode,
@@ -429,6 +468,26 @@ export default {
         });
 
         onSuccess();
+    },
+    removeProductChildren({
+        state,
+    }, {
+        childrenId,
+        skus,
+    }) {
+        const {
+            id,
+        } = state;
+        const data = {
+            skus: skus.replace(/\n/g, ',').split(','),
+        };
+
+        return removeChildren({
+            $axios: this.app.$axios,
+            id,
+            childrenId,
+            data,
+        });
     },
     async removeProductDraft({
         state,

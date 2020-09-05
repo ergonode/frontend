@@ -84,6 +84,13 @@ export const remove = ({
     id,
 }) => $axios.$delete(`products/${id}`);
 
+export const removeChildren = ({
+    $axios,
+    id,
+    childrenId,
+    data,
+}) => $axios.$delete(`products/${id}/children/${childrenId}`, data);
+
 export const removeDraftValue = ({
     $axios,
     id,
@@ -92,3 +99,15 @@ export const removeDraftValue = ({
 }) => $axios.$delete(`${languageCode}products/${id}/draft/${attributeId}/value`, {
     withLanguage: false,
 });
+
+export const addBySku = ({
+    $axios,
+    id,
+    data,
+}) => $axios.$post(`products/${id}/children/add-from-skus`, data);
+
+export const addBySegment = ({
+    $axios,
+    id,
+    data,
+}) => $axios.$post(`products/${id}/children/add-from-segments`, data);
