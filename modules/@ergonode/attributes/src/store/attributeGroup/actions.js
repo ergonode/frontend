@@ -88,8 +88,8 @@ export default {
         {
             id,
             data,
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         return update({

@@ -44,8 +44,8 @@ export default {
             state,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         const {

@@ -113,8 +113,8 @@ export default {
             rooState,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {

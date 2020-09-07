@@ -104,8 +104,8 @@ export default {
             commit,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {
@@ -140,8 +140,8 @@ export default {
         },
         {
             id,
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {

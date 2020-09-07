@@ -417,8 +417,8 @@ export default {
             rootState,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {

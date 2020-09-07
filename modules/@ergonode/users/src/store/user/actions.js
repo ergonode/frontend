@@ -102,8 +102,8 @@ export default {
             rootGetters,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {
@@ -188,8 +188,8 @@ export default {
             rootGetters,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {
@@ -230,8 +230,8 @@ export default {
             state,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         const {

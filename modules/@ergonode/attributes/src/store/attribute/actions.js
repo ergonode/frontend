@@ -347,8 +347,8 @@ export default {
         {
             id,
             data,
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         const optionsToAddRequests = [];

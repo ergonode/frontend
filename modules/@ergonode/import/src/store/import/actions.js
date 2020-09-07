@@ -112,8 +112,8 @@ export default {
             state,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {

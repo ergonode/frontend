@@ -80,8 +80,8 @@ export default {
         },
         {
             conditionSetId,
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         const {
@@ -119,8 +119,8 @@ export default {
             state,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {
