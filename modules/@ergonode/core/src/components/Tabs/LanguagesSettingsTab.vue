@@ -143,33 +143,37 @@ export default {
             if (this.isSavingTree) {
                 return;
             }
-            this.isSavingTree = true;
 
             if (!isEmpty(this.fullGridData)) {
-                try {
-                    this.$setLoader('saveSettings');
+                this.isSavingTree = true;
 
-                    const [
-                        languages,
-                    ] = getMappedTreeData(this.fullGridData);
-                    await this.updateLanguageTree(languages);
-                    await this.setLanguageTree(languages);
-                    await this.setDefaultLanguage();
+                const [
+                    languages,
+                ] = getMappedTreeData(this.fullGridData);
 
-                    this.$addAlert({
-                        type: ALERT_TYPE.SUCCESS,
-                        message: 'Languages updated',
-                    });
-                } catch (e) {
-                    this.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: e.data,
-                    });
-                } finally {
-                    this.isSavingTree = false;
-                    this.$removeLoader('saveSettings');
-                }
+                await this.updateLanguageTree({
+                    languages,
+                    onSuccess: () => this.onUpdateLanguagesTreeSuccess(languages),
+                    onError: this.onUpdateLanguagesTreeError,
+                });
             }
+        },
+        onUpdateLanguagesTreeSuccess(languages) {
+            this.setLanguageTree(languages);
+            this.setDefaultLanguage();
+
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Languages tree updated',
+            });
+            this.isSavingTree = false;
+        },
+        onUpdateLanguagesTreeError(message) {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message,
+            });
+            this.isSavingTree = false;
         },
     },
 };
