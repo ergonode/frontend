@@ -127,16 +127,6 @@ export default {
             this.isSubmitting = false;
             this.isProceeding = false;
         },
-        onCreatedAndEdit() {
-            this.onActionRequest(() => {
-                this.$router.push({
-                    name: 'transition-id-general',
-                    params: {
-                        id: `${this.source.key}--${this.destination.key}`,
-                    },
-                });
-            });
-        },
     },
 };
 </script>
