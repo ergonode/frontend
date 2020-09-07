@@ -106,6 +106,10 @@ export default {
         },
     },
     methods: {
+        setSelectedLanguages(selectedLanguages) {
+            this.activeLanguages = selectedLanguages;
+            this.$emit('selectedLanguages', selectedLanguages);
+        },
         onSubmit() {
             this.$emit('submit', this.activeLanguages);
         },

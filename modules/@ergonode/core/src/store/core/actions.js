@@ -44,23 +44,45 @@ export default {
 
         dispatch('setLanguageTree', languages);
     },
-    async updateLanguages({}, collection) {
-        const data = {
-            collection,
-        };
-        await updateLanguage({
-            $axios: this.app.$axios,
-            data,
-        });
+    async updateLanguages({}, {
+        languages = [],
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const data = {
+                collection: languages,
+            };
+
+            await updateLanguage({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
-    async updateLanguageTree({}, languages) {
-        const data = {
-            languages,
-        };
-        await updateLanguageTree({
-            $axios: this.app.$axios,
-            data,
-        });
+    async updateLanguageTree({}, {
+        languages,
+        onSuccess,
+        onError,
+    }) {
+        try {
+            const data = {
+                languages,
+            };
+
+            await updateLanguageTree({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
     setLanguageTree({
         state, commit,

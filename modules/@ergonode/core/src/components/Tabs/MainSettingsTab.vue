@@ -66,57 +66,61 @@ export default {
                 return;
             }
 
-            const languageKeys = selectedLanguages.map(language => language.key);
-            const isUsedOnTree = this.languagesTree.find(
-                ({
-                    code,
-                }) => !languageKeys.includes(code),
-            );
-
-            if (languageKeys.length <= 0) {
+            if (selectedLanguages.length < 1) {
                 this.$addAlert({
                     type: ALERT_TYPE.ERROR,
                     message: 'At least one language needed',
                 });
+
                 return;
             }
+
+            const languageKeys = selectedLanguages.map(language => language.key);
+            const isUsedOnTree = this.languagesTree.find(
+                ({
+                    code,
+                }) => languageKeys.indexOf(code) === -1,
+            );
+
             if (isUsedOnTree) {
                 this.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Language you want to deactivate is used on the language tree',
+                    message: 'You cannot deactivate languages used on the language tree',
                 });
+
                 return;
             }
 
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Changes in language settings will affect the entire application.',
-                confirmCallback: () => this.onAgree(selectedLanguages),
+                confirmCallback: () => this.onAgree(languageKeys),
             });
         },
         async onAgree(selectedLanguages) {
             this.isSubmitting = true;
 
-            const languageKeys = selectedLanguages.map(language => language.key);
+            await this.updateLanguages({
+                languages: selectedLanguages,
+                onError: this.onUpdateLanguagesError,
+                onSuccess: this.onUpdateLanguagesSuccess,
+            });
+        },
+        async onUpdateLanguagesSuccess() {
+            await this.getLanguages();
 
-            try {
-                this.$setLoader('saveSettings');
-                await this.updateLanguages(languageKeys);
-                await this.getLanguages();
-
-                this.$addAlert({
-                    type: ALERT_TYPE.SUCCESS,
-                    message: 'Languages updated',
-                });
-            } catch (e) {
-                this.$addAlert({
-                    type: ALERT_TYPE.ERROR,
-                    message: e.data,
-                });
-            } finally {
-                this.isSubmitting = false;
-                this.$removeLoader('saveSettings');
-            }
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Languages updated',
+            });
+            this.isSubmitting = false;
+        },
+        onUpdateLanguagesError(message) {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message,
+            });
+            this.isSubmitting = false;
         },
     },
 };
