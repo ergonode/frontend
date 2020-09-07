@@ -55,7 +55,7 @@ export default {
             name,
             symbol,
         };
-        this.$setLoader('footerButton');
+
         try {
             await update({
                 $axios: this.app.$axios,
@@ -66,7 +66,6 @@ export default {
         } catch (e) {
             onError(e.data);
         }
-        this.$removeLoader('footerButton');
     },
     async createUnit({
         state,

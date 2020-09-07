@@ -108,7 +108,6 @@ export default {
             id, data, onSuccess,
         },
     ) {
-        this.$setLoader('footerButton');
         await update({
             $axios: this.app.$axios,
             id,
@@ -116,7 +115,6 @@ export default {
         }).then(() => {
             onSuccess();
         });
-        this.$removeLoader('footerButton');
     },
     removeCategoryTree({
         state,

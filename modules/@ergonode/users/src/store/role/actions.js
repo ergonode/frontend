@@ -75,8 +75,6 @@ export default {
             onError,
         },
     ) {
-        this.$setLoader('footerButton');
-
         try {
             const {
                 id,
@@ -132,8 +130,6 @@ export default {
         } catch (e) {
             onError(e.data);
         }
-
-        this.$removeLoader('footerButton');
     },
     async createRole(
         {

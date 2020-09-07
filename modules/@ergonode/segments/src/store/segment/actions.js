@@ -84,8 +84,6 @@ export default {
             onError,
         },
     ) {
-        this.$setLoader('footerButton');
-
         const {
             translations: {
                 name,
@@ -114,8 +112,6 @@ export default {
         } catch (e) {
             onError(e.data);
         }
-
-        this.$removeLoader('footerButton');
     },
 
     async createTransition(

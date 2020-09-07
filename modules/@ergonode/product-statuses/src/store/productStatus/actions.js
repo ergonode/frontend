@@ -117,8 +117,6 @@ export default {
     }, {
         onError,
     }) {
-        this.$setLoader('footerButton');
-
         try {
             const {
                 translations: {
@@ -143,8 +141,6 @@ export default {
         } catch (e) {
             onError(e);
         }
-
-        this.$removeLoader('footerButton');
     },
     async createStatus(
         {

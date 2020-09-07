@@ -376,8 +376,6 @@ export default {
             onError = () => {},
         },
     ) {
-        this.$setLoader('footerButton');
-
         try {
             const {
                 productTypes,
@@ -412,8 +410,6 @@ export default {
         } catch (e) {
             onError(e.data);
         }
-
-        this.$removeLoader('footerButton');
     },
     async createProduct(
         {
