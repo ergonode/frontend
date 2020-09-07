@@ -77,6 +77,7 @@ import LinkButton from '@Core/components/LinkButton/LinkButton';
 import {
     THEME,
 } from '@Core/defaults/theme';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     mapActions,
     mapState,
@@ -91,26 +92,13 @@ export default {
         Divider,
         IconSpinner,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     props: {
         title: {
             type: String,
             default: '',
-        },
-        submitTitle: {
-            type: String,
-            default: '',
-        },
-        proceedTitle: {
-            type: String,
-            default: '',
-        },
-        isSubmitting: {
-            type: Boolean,
-            default: false,
-        },
-        isProceeding: {
-            type: Boolean,
-            default: false,
         },
         fieldsKeys: {
             type: Array,
@@ -155,12 +143,6 @@ export default {
         ]),
         getErrorForKey(key) {
             return this.errors[key] || null;
-        },
-        async onSubmit() {
-            this.$emit('submit');
-        },
-        onProceed() {
-            this.$emit('proceed');
         },
     },
 };

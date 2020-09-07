@@ -76,7 +76,6 @@ export default {
     }) {
         try {
             const {
-                id,
                 name,
                 symbol,
             } = state;
@@ -86,12 +85,13 @@ export default {
                 symbol,
             };
 
-            await create({
-                $axios: this.app.$axios,
+            const {
                 id,
+            } = await create({
+                $axios: this.app.$axios,
                 data,
             });
-            onSuccess();
+            onSuccess(id);
         } catch (e) {
             onError(e.data);
         }

@@ -6,6 +6,11 @@
     <Form
         title="Options"
         :fields-keys="[nameFieldKey, symbolFieldKey]"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
         @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
@@ -27,12 +32,6 @@
                     @input="setSymbolValue" />
             </FormSection>
         </template>
-        <template #submit>
-            <slot name="submitForm" />
-        </template>
-        <template #procced>
-            <slot name="proceedForm" />
-        </template>
     </Form>
 </template>
 
@@ -41,6 +40,7 @@ import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import TextField from '@Core/components/Inputs/TextField';
 import PRIVILEGES from '@Core/config/privileges';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     mapActions,
     mapState,
@@ -53,6 +53,9 @@ export default {
         FormSection,
         TextField,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     computed: {
         ...mapState('unit', {
             name: state => state.name,
@@ -76,6 +79,9 @@ export default {
         ]),
         onSubmit() {
             this.$emit('submit');
+        },
+        onProceed() {
+            this.$emit('proceed');
         },
         setNameValue(value) {
             this.__setState({

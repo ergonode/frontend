@@ -9,7 +9,8 @@
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
-        @submit="onSubmit">
+        @proceed="onProceed"
+        @submit="onSubmitForm">
         <template #body>
             <FormSection>
                 <TranslationSelect
@@ -40,6 +41,7 @@ import FormSection from '@Core/components/Form/Section/FormSection';
 import InfoHint from '@Core/components/Hints/InfoHint';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import PRIVILEGES from '@Core/config/privileges';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     mapState,
 } from 'vuex';
@@ -52,24 +54,9 @@ export default {
         FormSection,
         TranslationSelect,
     },
-    props: {
-        submitTitle: {
-            type: String,
-            default: '',
-        },
-        proceedTitle: {
-            type: String,
-            default: '',
-        },
-        isSubmitting: {
-            type: Boolean,
-            default: false,
-        },
-        isProceeding: {
-            type: Boolean,
-            default: false,
-        },
-    },
+    mixins: [
+        formActionsMixin,
+    ],
     data() {
         return {
             filteredValue: '',
@@ -130,7 +117,7 @@ export default {
             this.activeLanguages = selectedLanguages;
             this.$emit('selectedLanguages', selectedLanguages);
         },
-        onSubmit() {
+        onSubmitForm() {
             this.$emit('submit', this.activeLanguages);
         },
         onSearch(value) {

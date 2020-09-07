@@ -5,27 +5,16 @@
 <template>
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
-            <UnitForm @submit="onSubmit">
-                <template #submitForm>
-                    <Button
-                        title="SAVE CHANGES"
-                        type="submit">
-                        <template
-                            v-if="isSubmitting"
-                            #append="{ color }">
-                            <IconSpinner :fill-color="color" />
-                        </template>
-                    </Button>
-                </template>
-            </UnitForm>
+            <UnitForm
+                submit-title="SAVE CHANGES"
+                :is-submitting="isSubmitting"
+                @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
 import UnitForm from '@Core/components/Forms/UnitForm';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
@@ -34,8 +23,6 @@ import {
 export default {
     name: 'UnitGeneralTab',
     components: {
-        Button,
-        IconSpinner,
         UnitForm,
         CenterViewTemplate,
     },
@@ -61,19 +48,23 @@ export default {
             }
             this.isSubmitting = true;
 
-            try {
-                this.removeErrors();
-                await this.updateUnit();
-                await this.getDictionary({
-                    dictionaryName: 'units',
-                });
-            } catch (e) {
-                if (e.data) {
-                    this.onError(e.data);
-                }
-            } finally {
-                this.isSubmitting = false;
-            }
+            this.removeErrors();
+            await this.updateUnit({
+                onSuccess: this.onCreateUnitSuccess,
+                onError: this.onCreateUnitError,
+            });
+        },
+        async onCreateUnitSuccess() {
+            await this.getDictionary({
+                dictionaryName: 'units',
+            });
+
+            this.isSubmitting = false;
+        },
+        onCreateUnitError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
         },
     },
 };

@@ -51,7 +51,7 @@ export default {
             clearUnitStorage: '__clearStorage',
         }),
         ...mapActions('dictionaries', [
-            'getCurrentDictionary',
+            'getDictionary',
         ]),
         ...mapActions('validations', [
             'onError',
@@ -75,7 +75,7 @@ export default {
             });
         },
         async onUpdateUnitSuccess() {
-            await this.getCurrentDictionary({
+            await this.getDictionary({
                 dictionaryName: 'units',
             });
             await this.$addAlert({

@@ -7,39 +7,19 @@
         title="New unit"
         @close="onClose">
         <template #body>
-            <UnitForm @submit="onSubmit">
-                <template #submitForm>
-                    <Button
-                        title="CREATE"
-                        type="submit">
-                        <template
-                            v-if="isSubmitting"
-                            #append="{ color }">
-                            <IconSpinner :fill-color="color" />
-                        </template>
-                    </Button>
-                </template>
-                <template #proceedForm>
-                    <Button
-                        title="CREATE & EDIT"
-                        :theme="secondaryTheme"
-                        @click.native="onCreateAndEdit">
-                        <template
-                            v-if="isCreatingAndEdit"
-                            #prepend="{ color }">
-                            <IconSpinner :fill-color="color" />
-                        </template>
-                    </Button>
-                </template>
-            </UnitForm>
+            <UnitForm
+                submit-title="CREATE"
+                proceed-title="CREATE AND EDIT"
+                :is-submitting="isSubmitting"
+                :is-proceeding="isProceeding"
+                @submit="onSubmit"
+                @proceed="onProceed" />
         </template>
     </ModalForm>
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
 import UnitForm from '@Core/components/Forms/UnitForm';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     THEME,
@@ -52,14 +32,12 @@ export default {
     name: 'CreateUnitModalForm',
     components: {
         ModalForm,
-        IconSpinner,
-        Button,
         UnitForm,
     },
     data() {
         return {
             isSubmitting: false,
-            isCreatingAndEdit: false,
+            isProceeding: false,
         };
     },
     computed: {
@@ -80,53 +58,63 @@ export default {
             'removeErrors',
         ]),
         async onSubmit() {
-            if (this.isSubmitting || this.isCreatingAndEdit) {
+            if (this.isSubmitting || this.isProceeding) {
                 return;
             }
             this.isSubmitting = true;
 
-            try {
-                this.removeErrors();
-                await this.createUnit();
-                await this.getDictionary({
-                    dictionaryName: 'units',
-                });
-                this.$emit('created');
-                this.onClose();
-            } catch (e) {
-                if (e.data) {
-                    this.onError(e.data);
-                }
-            } finally {
-                this.isSubmitting = false;
+            this.removeErrors();
+            await this.createUnit({
+                onSuccess: this.onCreateUnitSuccess,
+                onError: this.onCreateUnitError,
+            });
+        },
+        async onProceed() {
+            if (this.isSubmitting || this.isProceeding) {
+                return;
             }
+
+            this.isProceeding = true;
+
+            this.removeErrors();
+            await this.createUnit({
+                onSuccess: this.onCreateAndEditUnitSuccess,
+                onError: this.onCreateUnitError,
+            });
         },
         onClose() {
             this.__clearStorage();
             this.$emit('close');
         },
-        async onCreateAndEdit() {
-            this.isCreatingAndEdit = true;
+        async onCreateUnitSuccess() {
+            await this.getDictionary({
+                dictionaryName: 'units',
+            });
 
-            try {
-                this.removeErrors();
-                const id = await this.createUnit();
-                await this.getDictionary({
-                    dictionaryName: 'units',
-                });
-                await this.$router.push({
-                    name: 'unit-id-general',
-                    params: {
-                        id,
-                    },
-                });
-            } catch (e) {
-                if (e.data) {
-                    this.onError(e.data);
-                }
-            } finally {
-                this.isCreatingAndEdit = false;
-            }
+            this.isSubmitting = false;
+
+            this.$emit('created');
+            this.onClose();
+        },
+        async onCreateAndEditUnitSuccess(id) {
+            await this.getDictionary({
+                dictionaryName: 'units',
+            });
+
+            this.isProceeding = false;
+
+            await this.$router.push({
+                name: 'unit-id-general',
+                params: {
+                    id,
+                },
+            });
+        },
+        onCreateUnitError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+            this.isProceeding = false;
         },
     },
 };
