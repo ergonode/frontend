@@ -13,9 +13,9 @@
                     :value="code"
                     required
                     :error-messages="errorMessages[codeFieldKey]"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     label="System name"
-                    hint="Category code must be unique"
+                    hint="System name must be unique"
                     @input="setCodeValue" />
             </FormSection>
         </template>
@@ -37,15 +37,15 @@ export default {
         TextField: () => import('@Core/components/Inputs/TextField'),
     },
     computed: {
-        ...mapState('categories', {
+        ...mapState('category', {
             categoryID: state => state.id,
             code: state => state.code,
         }),
         isDisabled() {
             return Boolean(this.categoryID);
         },
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.CATEGORY.update,
             ]);
         },
@@ -54,7 +54,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('categories', [
+        ...mapActions('category', [
             '__setState',
         ]),
         setCodeValue(value) {

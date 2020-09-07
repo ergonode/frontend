@@ -57,7 +57,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('channels', [
+        ...mapActions('channel', [
             '__clearStorage',
         ]),
         onClose() {

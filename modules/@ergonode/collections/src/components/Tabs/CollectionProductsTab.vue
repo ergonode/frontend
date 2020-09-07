@@ -10,12 +10,14 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :drafts="drafts"
                 :collection-cell-binding="collectionCellBinding"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-collection-layout="true"
                 :is-header-visible="true"
                 :is-border="true"
+                @cellValue="onCellValueChange"
                 @deleteRow="onRemoveRow"
                 @fetchData="onFetchData">
                 <template #headerActions>
@@ -57,6 +59,7 @@ import {
 } from '@Core/defaults/theme';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -72,10 +75,9 @@ export default {
             path: 'collections/_id/elements',
         }),
     ],
-    fetch() {
-        return this.onFetchData().then(() => {
-            this.isPrefetchingData = false;
-        });
+    async fetch() {
+        await this.onFetchData();
+        this.isPrefetchingData = false;
     },
     data() {
         return {
@@ -84,8 +86,8 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
+        ...mapState('grid', {
+            drafts: state => state.drafts,
         }),
         isUserAllowedToUpdate() {
             return this.$hasAccess([
@@ -94,8 +96,8 @@ export default {
         },
         collectionCellBinding() {
             return {
-                imageColumn: `esa_default_image:${this.languageCode}`,
-                descriptionColumn: `esa_default_label:${this.languageCode}`,
+                imageColumn: 'default_image',
+                descriptionColumn: 'default_label',
             };
         },
         smallSize() {
@@ -128,6 +130,23 @@ export default {
         },
     },
     methods: {
+        ...mapActions('grid', [
+            'setDrafts',
+        ]),
+        onCellValueChange(cellValues) {
+            const drafts = cellValues.reduce((prev, {
+                rowId, columnId, value,
+            }) => {
+                const tmp = prev;
+                tmp[`${rowId}/${columnId}`] = value;
+                return tmp;
+            }, {});
+
+            this.setDrafts({
+                ...this.drafts,
+                ...drafts,
+            });
+        },
         onSelectAddProductOption(option) {
             this.selectedAppModalOption = option;
         },

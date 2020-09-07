@@ -21,8 +21,6 @@ import {
     mapState,
 } from 'vuex';
 
-const updateCollectionProduct = () => import('@Collections/services/updateCollectionProduct.service');
-
 export default {
     name: 'EditCollection',
     components: {
@@ -36,28 +34,26 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('collections/getCollection', {
-            collectionId: params.id,
-        });
+        await store.dispatch('collection/getCollection', params);
     },
     computed: {
-        ...mapState('collections', {
+        ...mapState('collection', {
             id: state => state.id,
             code: state => state.code,
-            type: state => state.type,
-        }),
-        ...mapState('translations', {
-            translations: state => state.translations,
         }),
     },
     methods: {
-        ...mapActions('collections', [
+        ...mapActions('collection', [
             'updateCollection',
+            'updateCollectionProductsVisibility',
             'removeCollection',
+        ]),
+        ...mapActions('grid', [
+            'setDrafts',
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({
@@ -68,31 +64,20 @@ export default {
                 }),
             });
         },
-        onSave() {
-            this.removeValidationErrors();
-            const {
-                name, description,
-            } = this.translations;
-            const data = {
-                typeId: this.type,
-                name,
-                description,
-            };
+        async onSave() {
+            this.removeErrors();
 
-            updateCollectionProduct().then(response => response.default({
-                $axios: this.$axios,
-                $store: this.$store,
-            }));
+            await this.updateCollectionProductsVisibility();
 
-            this.updateCollection({
-                id: this.id,
-                data,
+            this.setDrafts();
+
+            await this.updateCollection({
                 onSuccess: this.onUpdateCollectionSuccess,
                 onError: this.onError,
             });
         },
         onUpdateCollectionSuccess() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Product collection updated',

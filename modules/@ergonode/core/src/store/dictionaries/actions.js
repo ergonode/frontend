@@ -2,6 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    get,
+} from '@Core/services/dictionary/index';
+
 import extendsModules from '~/.nuxt/extends.modules';
 
 const modulesDictionaries = Object.values(extendsModules)
@@ -18,39 +22,35 @@ const modulesDictionaries = Object.values(extendsModules)
     }, []);
 
 export default {
-    getDictionaries({
-        commit, rootState,
+    async getDictionaries({
+        commit,
     }) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const promises = modulesDictionaries.map(({
+        const promises = modulesDictionaries.map(async ({
             stateProp, requestPath, isGrid = false,
         }) => {
-            const path = `${userLanguageCode}${requestPath}${isGrid ? '?view=list' : ''}`;
+            const path = `${requestPath}${isGrid ? '?view=list' : ''}`;
 
-            return this.app.$axios.$get(path, {
+            const response = await get({
+                $axios: this.app.$axios,
+                path,
                 useCache: isGrid,
-            }).then((response) => {
-                const value = isGrid ? response.collection : response;
+            });
 
-                commit('__SET_STATE', {
-                    key: stateProp,
-                    value,
-                });
+            const value = isGrid ? response.collection : response;
+
+            commit('__SET_STATE', {
+                key: stateProp,
+                value,
             });
         });
 
-        return Promise.all(promises);
+        await Promise.all(promises);
     },
-    getDictionary({
-        commit, rootState,
+    async getCurrentDictionary({
+        commit,
     }, {
         dictionaryName,
     }) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
         const {
             stateProp,
             requestPath,
@@ -58,15 +58,19 @@ export default {
         } = modulesDictionaries.find(({
             stateProp: name,
         }) => name === dictionaryName);
-        const path = `${userLanguageCode}${requestPath}${isGrid ? '?view=list' : ''}`;
+        const path = `${requestPath}${isGrid ? '?view=list' : ''}`;
 
-        return this.app.$axios.$get(path).then((response) => {
-            const value = isGrid ? response.collection : response;
+        const response = await get({
+            $axios: this.app.$axios,
+            path,
+            useCache: isGrid,
+        });
 
-            commit('__SET_STATE', {
-                key: stateProp,
-                value,
-            });
+        const value = isGrid ? response.collection : response;
+
+        commit('__SET_STATE', {
+            key: stateProp,
+            value,
         });
     },
 };

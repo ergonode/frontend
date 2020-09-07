@@ -46,9 +46,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .modal-footer {
-        box-shadow: $ELEVATOR_6_DP;
-    }
-</style>

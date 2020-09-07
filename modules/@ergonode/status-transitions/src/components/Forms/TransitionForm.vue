@@ -14,7 +14,7 @@
                     label="From"
                     :clearable="true"
                     :options="sourceOptions"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errorMessages[sourceFieldKey]"
                     @input="setSourceValue" />
                 <TranslationSelect
@@ -23,7 +23,7 @@
                     label="To"
                     :clearable="true"
                     :options="destinationOptions"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errorMessages[destinationFieldKey]"
                     @input="setDestinationValue" />
             </FormSection>
@@ -34,9 +34,9 @@
                     :clearable="true"
                     :multiselect="true"
                     label="Role"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     :error-messages="errorMessages[roleFieldKey]"
-                    :fetch-options-request="getRolesOptionsRequest"
+                    :fetch-options-request="getRoleOptions"
                     @input="setRolesValue" />
             </FormSection>
         </template>
@@ -53,8 +53,6 @@ import {
     mapState,
 } from 'vuex';
 
-const getRolesOptions = () => import('@Users/services/getRolesOptions.service');
-
 export default {
     name: 'TransitionForm',
     components: {
@@ -65,7 +63,7 @@ export default {
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
     },
     computed: {
-        ...mapState('transitions', {
+        ...mapState('statusTransition', {
             source: state => state.source,
             destination: state => state.destination,
             roles: state => state.roles,
@@ -95,8 +93,8 @@ export default {
             return this.statuses.filter(status => !this.source
                 || status.id !== this.source.id);
         },
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.WORKFLOW.update,
             ]);
         },
@@ -111,8 +109,11 @@ export default {
         },
     },
     methods: {
-        ...mapActions('transitions', [
+        ...mapActions('statusTransition', [
             '__setState',
+        ]),
+        ...mapActions('role', [
+            'getRoleOptions',
         ]),
         setSourceValue(value) {
             this.__setState({
@@ -131,14 +132,6 @@ export default {
                 key: 'roles',
                 value,
             });
-        },
-        getRolesOptionsRequest() {
-            return getRolesOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
         },
     },
 };

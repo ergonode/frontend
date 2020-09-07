@@ -10,18 +10,24 @@ export default function ({
     $axios, $store,
 }) {
     const {
-        language,
-    } = $store.state.authentication.user;
-    const {
-        name, type,
+        type,
+        configuration,
     } = $store.state.import;
     const {
         sources,
     } = $store.state.dictionaries;
     const typeId = getKeyByValue(sources, type);
 
-    return $axios.$post(`${language}/sources`, {
+    let data = {
         type: typeId,
-        name,
-    });
+    };
+
+    if (configuration) {
+        data = {
+            ...data,
+            ...JSON.parse(configuration),
+        };
+    }
+
+    return $axios.$post('sources', data);
 }

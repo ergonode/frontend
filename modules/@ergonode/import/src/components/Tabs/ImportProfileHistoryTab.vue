@@ -12,7 +12,13 @@
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
+                @previewRow="onPreviewRow"
                 @fetchData="onFetchData" />
+            <ImportDetailsModalGrid
+                v-if="isImportDetailsModalVisible"
+                :import-id="selectedRow.importId"
+                :source-id="selectedRow.sourceId"
+                @close="onCloseModalGrid" />
         </template>
     </CenterViewTemplate>
 </template>
@@ -25,21 +31,42 @@ export default {
     name: 'CollectionProductsTab',
     components: {
         CenterViewTemplate,
+        ImportDetailsModalGrid: () => import('@Import/components/Modals/ImportDetailsModalGrid'),
     },
     mixins: [
         fetchGridDataMixin({
             path: 'sources/_id/imports',
         }),
     ],
-    fetch() {
-        return this.onFetchData().then(() => {
-            this.isPrefetchingData = false;
-        });
+    async fetch() {
+        await this.onFetchData();
+        this.isPrefetchingData = false;
     },
     data() {
         return {
             isPrefetchingData: true,
+            isImportDetailsModalVisible: false,
+            selectedRow: {
+                importId: '',
+                sourceId: '',
+            },
         };
+    },
+    methods: {
+        onPreviewRow(args) {
+            const lastIndex = args.length - 1;
+            const importId = args[lastIndex];
+            const sourceId = args[lastIndex - 2];
+
+            this.selectedRow = {
+                importId,
+                sourceId,
+            };
+            this.isImportDetailsModalVisible = true;
+        },
+        onCloseModalGrid() {
+            this.isImportDetailsModalVisible = false;
+        },
     },
 };
 </script>

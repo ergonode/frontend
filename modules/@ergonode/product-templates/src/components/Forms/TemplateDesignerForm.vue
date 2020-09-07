@@ -11,18 +11,18 @@
             <FormSection>
                 <TextField
                     :data-cy="dataCyGenerator(nameFieldKey)"
-                    :value="templateTitle"
+                    :value="title"
                     required
                     :error-messages="errorMessages[nameFieldKey]"
                     label="Template name"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setTitleValue" />
                 <UploadImageFile
                     :data-cy="dataCyGenerator('image')"
-                    :value="templateImage"
+                    :value="image"
                     height="132px"
                     label="Template cover image"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     @input="setImageValue" />
             </FormSection>
             <FormSection title="Presentation product">
@@ -32,6 +32,7 @@
                     required
                     label="Default label attribute"
                     :fetch-options-request="getDefaultTextAttributeOptionsRequest"
+                    :disabled="!isAllowedToUpdate"
                     @input="setDefaultTextAttributeValue" />
                 <TranslationLazySelect
                     :data-cy="dataCyGenerator('default-image')"
@@ -39,6 +40,7 @@
                     clearable
                     label="Default image attribute"
                     :fetch-options-request="getDefaultImageAttributeOptionsRequest"
+                    :disabled="!isAllowedToUpdate"
                     @input="setDefaultImageAttributeValue" />
             </FormSection>
         </template>
@@ -66,8 +68,6 @@ import {
     mapState,
 } from 'vuex';
 
-const getAttributesOptionsByType = () => import('@Attributes/services/getAttributesOptionsByType.service');
-
 export default {
     name: 'TemplateDesignerForm',
     components: {
@@ -79,16 +79,17 @@ export default {
     },
     computed: {
         ...mapState('productTemplate', {
-            templateTitle: state => state.title,
-            templateImage: state => state.image,
+            id: state => state.id,
+            title: state => state.title,
+            image: state => state.image,
             defaultTextAttribute: state => state.defaultTextAttribute,
             defaultImageAttribute: state => state.defaultImageAttribute,
         }),
         isDisabled() {
-            return Boolean(this.templateTitle);
+            return Boolean(this.id);
         },
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.TEMPLATE_DESIGNER.update,
             ]);
         },
@@ -99,6 +100,9 @@ export default {
     methods: {
         ...mapActions('productTemplate', [
             '__setState',
+        ]),
+        ...mapActions('attribute', [
+            'getAttributesOptionsByType',
         ]),
         onSubmit() {
             this.$emit('submit');
@@ -128,22 +132,14 @@ export default {
             });
         },
         getDefaultTextAttributeOptionsRequest() {
-            return getAttributesOptionsByType().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                    type: TYPES.TEXT,
-                },
-            ));
+            return this.getAttributesOptionsByType({
+                type: TYPES.TEXT,
+            });
         },
         getDefaultImageAttributeOptionsRequest() {
-            return getAttributesOptionsByType().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                    type: TYPES.IMAGE,
-                },
-            ));
+            return this.getAttributesOptionsByType({
+                type: TYPES.IMAGE,
+            });
         },
         dataCyGenerator(key) {
             return `template-${key}`;

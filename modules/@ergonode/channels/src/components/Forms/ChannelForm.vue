@@ -5,25 +5,25 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[typeFieldKey, nameFieldKey]">
+        :fields-keys="[typeFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
-                <TextField
-                    :value="name"
-                    required
-                    :error-messages="errorMessages[nameFieldKey]"
-                    :disabled="isDisabledByPrivileges"
-                    label="Channel name"
-                    hint="Channel name must be unique"
-                    @input="setNameValue" />
                 <Select
                     :value="type"
                     required
                     label="Channel type"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isFetchingConfiguration || isDisabled || !isAllowedToUpdate"
                     :options="channelsOptions"
                     :error-messages="errorMessages[typeFieldKey]"
-                    @input="setTypeValue" />
+                    @input="setTypeValue">
+                    <template #append>
+                        <FadeTransition>
+                            <IconSpinner
+                                v-if="isFetchingConfiguration"
+                                :color="graphiteColor" />
+                        </FadeTransition>
+                    </template>
+                </Select>
                 <FadeTransition>
                     <JSONSchemaForm
                         v-if="schema"
@@ -38,16 +38,15 @@
 
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
+import {
+    GRAPHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import Form from '@Core/components/Form/Form';
 import JSONSchemaForm from '@Core/components/Form/JSONSchemaForm/JSONSchemaForm';
 import FormSection from '@Core/components/Form/Section/FormSection';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import Select from '@Core/components/Inputs/Select/Select';
-import TextField from '@Core/components/Inputs/TextField';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
-import {
-    getKeyByValue,
-    removeFromObjectByKey,
-} from '@Core/models/objectWrapper';
 import {
     mapActions,
     mapState,
@@ -56,30 +55,40 @@ import {
 export default {
     name: 'ChannelForm',
     components: {
+        IconSpinner,
         Form,
         JSONSchemaForm,
         FormSection,
-        TextField,
         FadeTransition,
         Select,
     },
     data() {
         return {
-            schema: null,
+            schemas: {},
+            isFetchingConfiguration: false,
         };
     },
     computed: {
-        ...mapState('channels', {
+        ...mapState('channel', {
             id: state => state.id,
-            name: state => state.name,
             type: state => state.type,
             configuration: state => state.configuration,
         }),
         ...mapState('dictionaries', {
             channels: state => state.channels,
         }),
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
+        graphiteColor() {
+            return GRAPHITE;
+        },
+        schema() {
+            if (!this.type) {
+                return null;
+            }
+
+            return this.schemas[this.type];
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.CHANNEL.update,
             ]);
         },
@@ -92,38 +101,26 @@ export default {
         typeFieldKey() {
             return 'type';
         },
-        nameFieldKey() {
-            return 'name';
-        },
     },
-    watch: {
-        type: {
-            immediate: true,
-            async handler(value) {
-                if (value) {
-                    const typeId = getKeyByValue(this.channels, value);
-                    const tmpSchema = await this.getConfigurationByType({
-                        typeId,
-                    });
-
-                    this.schema = {
-                        ...tmpSchema,
-                        properties: removeFromObjectByKey(tmpSchema.properties, 'name'),
-                    };
-                }
-            },
-        },
+    created() {
+        if (this.type) {
+            this.setSchema(this.type);
+        }
     },
     methods: {
-        ...mapActions('channels', [
+        ...mapActions('channel', [
             '__setState',
-            'getConfigurationByType',
+            'getConfiguration',
         ]),
-        setNameValue(value) {
-            this.__setState({
-                key: 'name',
-                value,
-            });
+        async setSchema(type) {
+            this.isFetchingConfiguration = true;
+
+            this.schemas = {
+                ...this.schemas,
+                [type]: await this.getConfiguration(),
+            };
+
+            this.isFetchingConfiguration = false;
         },
         setConfigurationValue(value) {
             this.__setState({
@@ -136,6 +133,10 @@ export default {
                 key: 'type',
                 value,
             });
+
+            if (!this.schemas[value]) {
+                this.setSchema(value);
+            }
         },
     },
 };

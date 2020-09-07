@@ -15,13 +15,15 @@ const localVue = createLocalVue();
 
 const store = new Store({
     state: {
-        alerts: [
-            {
-                id: 1,
-                type: 'warning',
-                message: 'You better watch out!!!',
-            },
-        ],
+        alert: {
+            alerts: [
+                {
+                    id: 1,
+                    type: 'warning',
+                    message: 'You better watch out!!!',
+                },
+            ],
+        },
     },
 });
 const mocks = {

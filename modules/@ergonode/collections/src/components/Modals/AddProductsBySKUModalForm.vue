@@ -35,7 +35,6 @@ import {
 } from '@Core/defaults/theme';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -52,12 +51,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            language: state => state.user.language,
-        }),
-        ...mapState('collections', {
-            id: state => state.id,
-        }),
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -70,7 +63,10 @@ export default {
     methods: {
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
+        ]),
+        ...mapActions('collection', [
+            'addBySku',
         ]),
         onFormValueChange(value) {
             this.productSkus = value;
@@ -79,15 +75,14 @@ export default {
             this.$emit('close');
         },
         onAdd() {
-            this.removeValidationErrors();
-            const data = {
-                skus: this.productSkus.replace(/\n/g, ',').split(','),
-            };
+            this.removeErrors();
 
             this.isRequestPending = true;
-            this.$axios.$post(`${this.language}/collections/${this.id}/elements/add-from-skus`, data).then(() => {
+            this.addBySku({
+                skus: this.productSkus,
+            }).then(() => {
                 this.isRequestPending = false;
-                this.removeValidationErrors();
+                this.removeErrors();
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
                     message: 'Products has been added to collection',

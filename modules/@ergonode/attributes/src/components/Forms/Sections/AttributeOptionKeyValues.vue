@@ -8,7 +8,7 @@
         :disabled="disabled"
         add-list-title="ADD OPTION KEY"
         @add="addOptionKey">
-        <FormListSubsection>
+        <FormListSubsection v-if="optionIndexes.length">
             <FormListElementField
                 v-for="(fieldKey, i) in optionIndexes"
                 :key="fieldKey"
@@ -72,9 +72,6 @@ export default {
         ...mapState('attribute', {
             options: state => state.options,
         }),
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
         smallSize() {
             return SIZE.SMALL;
         },
@@ -88,7 +85,7 @@ export default {
             'removeAttributeOptionKey',
             'updateAttributeOptionKey',
         ]),
-        ...mapActions('translations', [
+        ...mapActions('tab', [
             'addMultilingualOptionTranslation',
         ]),
         removeAttribute(fieldKey) {

@@ -83,12 +83,12 @@ export default {
     },
     computed: {
         ...mapState('validations', {
-            validationErrors: state => state.validationErrors,
+            errors: state => state.errors,
         }),
         errorMessages() {
             return this.fieldsKeys.reduce((acc, current) => {
                 const errors = acc;
-                const error = this.getValidationErrorForKey(current);
+                const error = this.getErrorForKey(current);
 
                 if (error) {
                     errors[current] = error;
@@ -98,7 +98,7 @@ export default {
             }, {});
         },
         formGlobalError() {
-            return this.getValidationErrorForKey('form');
+            return this.getErrorForKey('form');
         },
         hasAnyError() {
             return Object.values(this.errorMessages).length > 0 || this.formGlobalError;
@@ -108,14 +108,14 @@ export default {
         },
     },
     beforeDestroy() {
-        this.removeValidationErrors();
+        this.removeErrors();
     },
     methods: {
         ...mapActions('validations', [
-            'removeValidationErrors',
+            'removeErrors',
         ]),
-        getValidationErrorForKey(key) {
-            return this.validationErrors[key] || null;
+        getErrorForKey(key) {
+            return this.errors[key] || null;
         },
         onSubmit() {
             this.$emit('submit');

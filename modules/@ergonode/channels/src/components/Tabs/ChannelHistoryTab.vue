@@ -12,8 +12,13 @@
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
-                @editRow="onEditRow"
+                @previewRow="onPreviewRow"
                 @fetchData="onFetchData" />
+            <ExportDetailsModalGrid
+                v-if="isExportDetailsModalVisible"
+                :export-id="selectedRow.exportId"
+                :channel-id="selectedRow.channelId"
+                @close="onCloseModalGrid" />
         </template>
     </CenterViewTemplate>
 </template>
@@ -26,34 +31,41 @@ export default {
     name: 'ChannelHistoryTab',
     components: {
         CenterViewTemplate,
+        ExportDetailsModalGrid: () => import('@Channels/components/Modals/ExportDetailsModalGrid'),
     },
     mixins: [
         fetchGridDataMixin({
             path: 'channels/_id/exports',
         }),
     ],
-    fetch() {
-        return this.onFetchData().then(() => {
-            this.isPrefetchingData = false;
-        });
+    async fetch() {
+        await this.onFetchData();
+        this.isPrefetchingData = false;
     },
     data() {
         return {
             isPrefetchingData: true,
+            isExportDetailsModalVisible: false,
+            selectedRow: {
+                importId: '',
+                sourceId: '',
+            },
         };
     },
     methods: {
-        onEditRow(args) {
-            const exportIndex = args.length - 1;
-            const channelIndex = args.length - 3;
+        onPreviewRow(args) {
+            const lastIndex = args.length - 1;
+            const exportId = args[lastIndex];
+            const channelId = args[lastIndex - 2];
 
-            this.$router.push({
-                name: 'export-id-details',
-                params: {
-                    channel_id: args[channelIndex],
-                    export_id: args[exportIndex],
-                },
-            });
+            this.selectedRow = {
+                exportId,
+                channelId,
+            };
+            this.isExportDetailsModalVisible = true;
+        },
+        onCloseModalGrid() {
+            this.isExportDetailsModalVisible = false;
         },
     },
 };

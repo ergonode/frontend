@@ -34,13 +34,10 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('unit/getUnit', {
-            unitId: params.id,
-        });
+        await store.dispatch('unit/getUnit', params);
     },
     computed: {
         ...mapState('unit', {
-            id: state => state.id,
             name: state => state.name,
         }),
     },
@@ -49,11 +46,16 @@ export default {
     },
     methods: {
         ...mapActions('unit', {
+            updateUnit: 'updateUnit',
             removeUnit: 'removeUnit',
             clearUnitStorage: '__clearStorage',
         }),
         ...mapActions('dictionaries', [
-            'getDictionary',
+            'getCurrentDictionary',
+        ]),
+        ...mapActions('validations', [
+            'onError',
+            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({
@@ -62,6 +64,23 @@ export default {
                 confirmCallback: () => this.removeUnit({
                     onSuccess: this.onRemoveUnitSuccess,
                 }),
+            });
+        },
+        onSave() {
+            this.removeErrors();
+
+            this.updateUnit({
+                onSuccess: this.onUpdateUnitSuccess,
+                onError: this.onError,
+            });
+        },
+        async onUpdateUnitSuccess() {
+            await this.getCurrentDictionary({
+                dictionaryName: 'units',
+            });
+            await this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Unit updated',
             });
         },
         async onRemoveUnitSuccess() {

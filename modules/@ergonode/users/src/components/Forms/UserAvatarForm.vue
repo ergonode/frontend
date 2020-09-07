@@ -6,10 +6,12 @@
     <Form>
         <template #body>
             <FormSection>
-                <UploadImageFile
+                <UploadAvatar
                     :value="avatarId"
+                    :user-id="userId"
+                    :language-code="languageCode"
                     label="Profile picture"
-                    height="112px"
+                    height="152px"
                     :disabled="!isUserAllowedToUpdate"
                     @upload="uploadValue"
                     @remove="uploadValue" />
@@ -21,7 +23,7 @@
 <script>
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
+import UploadAvatar from '@Users/components/Inputs/UploadAvatar';
 import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
@@ -31,13 +33,15 @@ import {
 export default {
     name: 'UserAvatarForm',
     components: {
+        UploadAvatar,
         Form,
         FormSection,
-        UploadImageFile,
     },
     computed: {
-        ...mapState('users', {
+        ...mapState('user', {
             avatarId: state => state.avatarId,
+            userId: state => state.id,
+            languageCode: state => state.languageCode,
         }),
         isUserAllowedToUpdate() {
             return this.$hasAccess([
@@ -46,7 +50,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('users', [
+        ...mapActions('user', [
             '__setState',
         ]),
         uploadValue(value = '') {
@@ -58,22 +62,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .user-avatar-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin: 21px;
-
-        .container__card {
-            width: 500px;
-
-            .content__image {
-                width: 80%;
-                margin: 10px auto;
-            }
-        }
-    }
-</style>

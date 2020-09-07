@@ -8,8 +8,9 @@
             'notification-element--unread': notification.read_at === null,
         }]"
         @click="markAsRead">
-        <UserAvatar
-            :image-id="notification.avatar_id"
+        <UserFabAvatar
+            :avatar-id="notification.user_id"
+            :user-id="notification.user_id"
             :name="notification.author"
             :size="regularSize" />
         <span class="notification-element__message">
@@ -36,7 +37,7 @@ import {
 export default {
     name: 'NotificationsListElement',
     components: {
-        UserAvatar: () => import('@Core/components/Multimedia/UserAvatar'),
+        UserFabAvatar: () => import('@Core/components/Multimedia/UserFabAvatar'),
     },
     props: {
         notification: {
@@ -53,7 +54,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('notifications', [
+        ...mapActions('notification', [
             'markNotificationAsRead',
         ]),
         markAsRead() {
@@ -117,7 +118,6 @@ export default {
             justify-content: center;
             align-items: center;
             grid-row: 1 / 3;
-            height: 100%;
         }
     }
 </style>

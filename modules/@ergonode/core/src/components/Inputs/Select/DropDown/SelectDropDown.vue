@@ -22,7 +22,7 @@
                             v-for="(option, index) in options"
                             :key="index"
                             :size="size"
-                            :disabled="option.disabled || false"
+                            :disabled="option.disabled"
                             :selected="isOptionSelected(index)"
                             @click.native.prevent="onSelectValue(option, index)">
                             <template #default="{ isSelected }">

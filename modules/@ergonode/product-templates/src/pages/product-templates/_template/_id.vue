@@ -33,23 +33,11 @@ export default {
     async fetch({
         store, params,
     }) {
-        const {
-            id,
-        } = params;
-
-        await store.dispatch('productTemplate/getTemplate', id);
+        await store.dispatch('productTemplate/getTemplate', params);
     },
     computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
         ...mapState('productTemplate', {
-            groups: state => state.templateGroups,
             templateTitle: state => state.title,
-            templateImage: state => state.image,
-            layoutElements: state => state.layoutElements,
-            defaultTextAttribute: state => state.defaultTextAttribute,
-            defaultImageAttribute: state => state.defaultImageAttribute,
         }),
     },
     destroyed() {
@@ -58,9 +46,8 @@ export default {
     },
     methods: {
         ...mapActions('productTemplate', [
-            'updateProductTemplate',
+            'updateTemplateDesigner',
             'removeTemplate',
-            'getTemplate',
             '__clearStorage',
         ]),
         ...mapActions('list', {
@@ -68,10 +55,10 @@ export default {
         }),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
-        onupdateProductTemplateSuccess() {
-            this.removeValidationErrors();
+        onUpdateTemplateDesignerSuccess() {
+            this.removeErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Template updated',
@@ -100,6 +87,12 @@ export default {
                         onSuccess: this.onRemoveSuccess,
                     });
                 },
+            });
+        },
+        onCreate() {
+            this.updateTemplateDesigner({
+                onSuccess: this.onUpdateTemplateDesignerSuccess,
+                onError: this.onError,
             });
         },
     },

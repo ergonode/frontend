@@ -8,6 +8,7 @@ import {
 } from '@Core/defaults/grid';
 import {
     insertCookieAtIndex,
+    removeCookieAtIndex,
 } from '@Core/models/cookies';
 import {
     getGridData,
@@ -45,9 +46,6 @@ export default function ({
             };
         },
         computed: {
-            ...mapState('authentication', {
-                languageCode: state => state.user.language,
-            }),
             ...mapState('list', {
                 disabledElements: state => state.disabledElements,
             }),
@@ -95,7 +93,7 @@ export default function ({
 
                 return getGridData({
                     $axios: this.$axios,
-                    path: `${this.languageCode}/${this.getPath()}`,
+                    path: this.getPath(),
                     params,
                 }).then(({
                     columns,
@@ -113,6 +111,13 @@ export default function ({
                 this.onFetchData(this.localParams);
             },
             onDropColumn(columnId) {
+                insertCookieAtIndex({
+                    cookies: this.$cookies,
+                    cookieName: `GRID_CONFIG:${this.$route.name}`,
+                    index: 0,
+                    data: columnId,
+                });
+
                 this.onFetchData(this.localParams).then(() => {
                     const column = this.columns.find(({
                         id,
@@ -125,12 +130,11 @@ export default function ({
                             disabledElements: this.disabledElements,
                         }));
                     }
-
-                    insertCookieAtIndex({
+                }).catch(() => {
+                    removeCookieAtIndex({
                         cookies: this.$cookies,
-                        cookieName: `GRID_CONFIG:${this.$route.name}`,
+                        cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
                         index: 0,
-                        data: columnId,
                     });
                 });
             },

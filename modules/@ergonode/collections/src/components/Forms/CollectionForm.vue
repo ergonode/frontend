@@ -13,18 +13,18 @@
                     :value="code"
                     required
                     :error-messages="errorMessages[codeFieldKey]"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     label="System name"
-                    hint="Product collection code must be unique"
+                    hint="System name must be unique"
                     @input="setCodeValue" />
                 <TranslationLazySelect
                     :data-cy="dataCyGenerator(typeIdFieldKey)"
                     :value="type"
                     required
                     label="Type"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errorMessages[typeIdFieldKey]"
-                    :fetch-options-request="getCollectionTypesOptionsRequest"
+                    :fetch-options-request="getCollectionTypeOptions"
                     @input="setTypeValue" />
             </FormSection>
         </template>
@@ -38,8 +38,6 @@ import {
     mapState,
 } from 'vuex';
 
-const getCollectionTypesOptions = () => import('@Collections/services/getCollectionTypesOptions.service');
-
 export default {
     name: 'CollectionForm',
     components: {
@@ -49,13 +47,13 @@ export default {
         TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
     },
     computed: {
-        ...mapState('collections', {
+        ...mapState('collection', {
             id: state => state.id,
             code: state => state.code,
             type: state => state.type,
         }),
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.PRODUCT_COLLECTION.update,
             ]);
         },
@@ -70,8 +68,9 @@ export default {
         },
     },
     methods: {
-        ...mapActions('collections', [
+        ...mapActions('collection', [
             '__setState',
+            'getCollectionTypeOptions',
         ]),
         setCodeValue(value) {
             this.__setState({
@@ -84,14 +83,6 @@ export default {
                 key: 'type',
                 value,
             });
-        },
-        getCollectionTypesOptionsRequest() {
-            return getCollectionTypesOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
         },
         dataCyGenerator(key) {
             return `collection-${key}`;

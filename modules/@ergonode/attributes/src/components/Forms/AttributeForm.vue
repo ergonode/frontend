@@ -20,9 +20,9 @@
                     :value="code"
                     required
                     :error-messages="errorMessages[codeFieldKey]"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     label="System name"
-                    hint="Attribute code must be unique"
+                    hint="System name must be unique"
                     @input="setCodeValue" />
                 <TranslationLazySelect
                     :data-cy="dataCyGenerator(groupsFieldKey)"
@@ -30,16 +30,16 @@
                     label="Groups"
                     :multiselect="true"
                     :clearable="true"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     :error-messages="errorMessages[groupsFieldKey]"
-                    :fetch-options-request="getAttributeGroupOptionsRequest"
+                    :fetch-options-request="getAttributeGroupsOptions"
                     @input="setGroupsValue" />
                 <Select
                     :data-cy="dataCyGenerator(typeFieldKey)"
                     :value="type"
                     required
                     label="Type"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     :options="attributeTypeOptions"
                     :error-messages="errorMessages[typeFieldKey]"
                     @input="onTypeChange" />
@@ -51,7 +51,7 @@
                     :value="scope"
                     required
                     label="Scope"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     :options="attributeScopeOptions"
                     :error-messages="errorMessages[scopeFieldKey]"
                     @input="setScopeValue">
@@ -68,12 +68,12 @@
                     :label="paramsLabel"
                     :options="attributeParametersOptions"
                     :error-messages="errorMessages[paramsFieldKey]"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     @input="setParameterValue" />
                 <AttributeOptionKeyValues
                     v-show="hasOptions"
                     key="attrHasOptions"
-                    :disabled="isDisabledByPrivileges" />
+                    :disabled="!isAllowedToUpdate" />
                 <Toggler
                     v-if="isTextArea"
                     :value="parameter"
@@ -108,8 +108,6 @@ import {
     mapState,
 } from 'vuex';
 
-const getAttributeGroupsOptions = () => import('@Attributes/services/getAttributeGroupsOptions.service');
-
 export default {
     name: 'AttributeForm',
     components: {
@@ -124,9 +122,6 @@ export default {
         Divider: () => import('@Core/components/Dividers/Divider'),
     },
     computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
         ...mapState('attribute', {
             attrID: state => state.id,
             code: state => state.code,
@@ -140,10 +135,10 @@ export default {
             attrTypes: state => state.attrTypes,
         }),
         ...mapGetters('core', [
-            'languageTreeRoot',
+            'rootLanguage',
         ]),
         scopeHint() {
-            return `Global means the same attribute values for each language, inherited from the root language (${this.languageTreeRoot.name}). Option values can be translated, but cannot be changed in the product template.`;
+            return `Global means the same attribute values for each language, inherited from the root language (${this.rootLanguage.name}). Option values can be translated, but cannot be changed in the product template.`;
         },
         paramsLabel() {
             const paramsKey = getParamsKeyForType(this.typeKey);
@@ -153,8 +148,8 @@ export default {
         isDisabled() {
             return Boolean(this.attrID);
         },
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,
             ]);
         },
@@ -213,6 +208,9 @@ export default {
             '__setState',
             'removeAttributeOptions',
         ]),
+        ...mapActions('attributeGroup', [
+            'getAttributeGroupsOptions',
+        ]),
         setCodeValue(value) {
             this.__setState({
                 key: 'code',
@@ -245,14 +243,6 @@ export default {
         },
         dataCyGenerator(key) {
             return `attribute-${key}`;
-        },
-        getAttributeGroupOptionsRequest() {
-            return getAttributeGroupsOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
         },
         onTypeChange(type) {
             this.setTypeValue(type);

@@ -9,10 +9,11 @@ export const ROW_INTERVALS = [
     200,
 ];
 
-export const GRID_ACTIONS = [
-    'get',
-    'delete',
-];
+export const GRID_ACTION = {
+    EDIT: 'edit',
+    GET: 'get',
+    DELETE: 'delete',
+};
 
 export const COLUMN_WIDTH = {
     SELECT_ROW: '32px',

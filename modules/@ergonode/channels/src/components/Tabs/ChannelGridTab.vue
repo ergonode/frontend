@@ -35,10 +35,9 @@ export default {
             path: 'channels',
         }),
     ],
-    fetch() {
-        return this.onFetchData().then(() => {
-            this.isPrefetchingData = false;
-        });
+    async fetch() {
+        await this.onFetchData();
+        this.isPrefetchingData = false;
     },
     data() {
         return {

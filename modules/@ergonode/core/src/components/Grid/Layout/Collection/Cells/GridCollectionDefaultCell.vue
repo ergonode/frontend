@@ -8,6 +8,7 @@
         @click="onClick">
         <Picture
             v-if="data.image"
+            :api-path="`multimedia/${data.image}/download/default`"
             :value="data.image"
             :object-fit="objectFit"
             :height="157" />

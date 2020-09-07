@@ -9,22 +9,25 @@
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
+                    :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
                     required
-                    :error-messages="errorMessages[colorFieldKey]"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :error-messages="errorMessages[codeFieldKey]"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     label="System name"
-                    hint="Status code must be unique"
+                    hint="System name must be unique"
                     @input="setCodeValue" />
                 <CheckBox
                     :value="isDefaultStatus"
                     label="Default status of new products"
+                    :disabled="!isAllowedToUpdate"
                     @input="setStatusAsDefaultValue">
                     <template #append>
                         <InfoHint hint="You may set only one status as a default" />
                     </template>
                 </CheckBox>
                 <ColorPicker
+                    :data-cy="dataCyGenerator(colorFieldKey)"
                     :value="color"
                     required
                     :error-messages="errorMessages[colorFieldKey]"
@@ -34,7 +37,7 @@
                     :fixed-content="false"
                     label="Badge color"
                     hint="Badge color is needed for presentation purpose"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     @input="setColorValue" />
             </FormSection>
         </template>
@@ -68,8 +71,8 @@ export default {
             color: state => state.color,
             isDefaultStatus: state => state.isDefaultStatus,
         }),
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.WORKFLOW.update,
             ]);
         },
@@ -107,6 +110,9 @@ export default {
                 key: 'isDefaultStatus',
                 value,
             });
+        },
+        dataCyGenerator(key) {
+            return `status-${key}`;
         },
     },
 };

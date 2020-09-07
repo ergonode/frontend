@@ -69,6 +69,7 @@ export default {
                     format: this.column.parameters && this.column.parameters.format
                         ? this.column.parameters.format
                         : DEFAULT_FORMAT,
+                    disabled: this.isLocked,
                     rowId: this.rowId,
                     columnId: this.column.id,
                     errorMessages: this.errorMessages,

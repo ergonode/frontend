@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import {
-    removeFromObjectByKey,
+    removeObjectProperty,
 } from '@Core/models/objectWrapper';
 
 export const types = {
@@ -63,6 +63,6 @@ export default {
         };
     },
     [types.REMOVE_HIDDEN_ITEM](state, key) {
-        state.hiddenItems = removeFromObjectByKey(state.hiddenItems, key);
+        state.hiddenItems = removeObjectProperty(state.hiddenItems, key);
     },
 };

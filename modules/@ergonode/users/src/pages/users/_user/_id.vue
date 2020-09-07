@@ -12,10 +12,8 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import deepmerge from 'deepmerge';
 import {
     mapActions,
-    mapGetters,
     mapState,
 } from 'vuex';
 
@@ -33,31 +31,12 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('users/getUser', {
-            userId: params.id,
-        });
+        await store.dispatch('user/getUser', params);
     },
     computed: {
-        ...mapGetters('core', [
-            'getActiveLanguageByCode',
-            'getActiveLanguageByName',
-        ]),
-        ...mapState('authentication', {
-            user: state => state.user,
-        }),
-        ...mapState('users', {
-            id: state => state.id,
-            avatarId: state => state.avatarId,
-            email: state => state.email,
+        ...mapState('user', {
             firstName: state => state.firstName,
             lastName: state => state.lastName,
-            language: state => state.language,
-            password: state => state.password,
-            passwordRepeat: state => state.passwordRepeat,
-            isActive: state => state.isActive,
-            role: state => state.role,
-            drafts: state => state.drafts,
-            languagePrivilegesCollection: state => state.languagePrivilegesCollection,
         }),
         title() {
             return `${this.firstName} ${this.lastName}`;
@@ -67,74 +46,25 @@ export default {
         this.__clearStorage();
     },
     methods: {
-        ...mapActions('users', [
+        ...mapActions('user', [
             '__clearStorage',
-            'setLanguagePrivileges',
             'updateUser',
-        ]),
-        ...mapActions('authentication', [
-            'getUser',
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
-        async onSave() {
-            let isUpdated = false;
-            const mappedDrafts = {};
-
-            Object.keys(this.drafts).forEach((key) => {
-                const [
-                    languageCode,
-                    privilege,
-                ] = key.split('/');
-
-                if (typeof mappedDrafts[languageCode] === 'undefined') {
-                    mappedDrafts[languageCode] = {};
-                }
-
-                mappedDrafts[languageCode][privilege] = Boolean(this.drafts[key]);
-            });
-
-            const user = {
-                firstName: this.firstName,
-                lastName: this.lastName,
-                language: this.getActiveLanguageByName(this.language).code,
-                password: this.password,
-                passwordRepeat: this.passwordRepeat,
-                roleId: this.role,
-                isActive: this.isActive,
-                languagePrivilegesCollection: deepmerge(
-                    this.languagePrivilegesCollection,
-                    mappedDrafts,
-                ),
-            };
-
-            try {
-                await this.$setLoader('footerButton');
-                isUpdated = await this.updateUser({
-                    id: this.id,
-                    data: user,
-                    avatarId: this.avatarId,
-                });
-            } catch (e) {
-                this.onError(e.data);
-            } finally {
-                if (isUpdated !== false) {
-                    this.removeValidationErrors();
+        onSave() {
+            this.updateUser({
+                onError: this.onError,
+                onSuccess: () => {
+                    this.removeErrors();
                     this.$addAlert({
                         type: ALERT_TYPE.SUCCESS,
                         message: 'User updated',
                     });
-                    this.setLanguagePrivileges(user.languagePrivilegesCollection);
-
-                    // TODO: Along Notification introduce - remove it from it - this solution is preventing from relogging to see newly edited data for user if edited user is logged one
-                    if (this.user.id === this.id) {
-                        this.getUser();
-                    }
-                }
-                await this.$removeLoader('footerButton');
-            }
+                },
+            });
         },
     },
 };

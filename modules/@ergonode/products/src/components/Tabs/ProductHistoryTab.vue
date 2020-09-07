@@ -31,10 +31,9 @@ export default {
             path: 'products/_id/history',
         }),
     ],
-    fetch() {
-        return this.onFetchData().then(() => {
-            this.isPrefetchingData = false;
-        });
+    async fetch() {
+        await this.onFetchData();
+        this.isPrefetchingData = false;
     },
     data() {
         return {

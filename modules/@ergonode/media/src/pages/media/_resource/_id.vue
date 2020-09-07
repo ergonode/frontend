@@ -4,7 +4,7 @@
  */
 <template>
     <ResourcePage
-        :title="`${name}${extension}`"
+        :title="`${name}.${extension}`"
         @remove="onRemove"
         @save="onSave" />
 </template>
@@ -30,7 +30,7 @@ export default {
     asyncData({
         store, params,
     }) {
-        return store.dispatch('media/getResource', params.id);
+        return store.dispatch('media/getResource', params);
     },
     computed: {
         ...mapState('media', {
@@ -45,7 +45,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({
@@ -72,7 +72,7 @@ export default {
             });
         },
         onResourceUpdated() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Resource updated',

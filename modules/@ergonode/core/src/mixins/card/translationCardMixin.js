@@ -16,7 +16,7 @@ export default {
         },
     },
     computed: {
-        ...mapState('translations', {
+        ...mapState('tab', {
             translations: state => state.translations,
         }),
         ...mapGetters('core', [
@@ -27,11 +27,11 @@ export default {
         },
     },
     methods: {
-        ...mapActions('translations', [
-            'setMultilingualTranslationPropertyValue',
+        ...mapActions('tab', [
+            'setTranslationValue',
         ]),
         setTranslationPropertyValue(value, propertyName) {
-            this.setMultilingualTranslationPropertyValue({
+            this.setTranslationValue({
                 languageCode: this.languageCode,
                 propertyName,
                 value,

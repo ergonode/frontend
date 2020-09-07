@@ -135,7 +135,7 @@ export default {
             clearGridDesignerStorage: '__clearStorage',
         }),
         ...mapActions('core', [
-            'setLanguagesTree',
+            'setLanguageTree',
             'setDefaultLanguage',
             'updateLanguageTree',
         ]),
@@ -147,11 +147,13 @@ export default {
 
             if (!isEmpty(this.fullGridData)) {
                 try {
+                    this.$setLoader('saveSettings');
+
                     const [
                         languages,
                     ] = getMappedTreeData(this.fullGridData);
                     await this.updateLanguageTree(languages);
-                    await this.setLanguagesTree(languages);
+                    await this.setLanguageTree(languages);
                     await this.setDefaultLanguage();
 
                     this.$addAlert({
@@ -165,12 +167,8 @@ export default {
                     });
                 } finally {
                     this.isSavingTree = false;
+                    this.$removeLoader('saveSettings');
                 }
-            } else {
-                this.$addAlert({
-                    type: ALERT_TYPE.ERROR,
-                    message: 'Tree must have a root branch',
-                });
             }
         },
     },

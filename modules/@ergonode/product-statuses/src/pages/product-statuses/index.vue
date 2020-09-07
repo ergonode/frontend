@@ -9,6 +9,7 @@
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <Button
+                    data-cy="new-status"
                     title="NEW STATUS"
                     :size="smallSize"
                     :disabled="!isAllowedToCreate"

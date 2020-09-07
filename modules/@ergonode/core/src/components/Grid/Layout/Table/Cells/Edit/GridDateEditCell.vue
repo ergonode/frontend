@@ -10,6 +10,7 @@
                 :size="smallSize"
                 autofocus
                 :placeholder="format"
+                :disabled="disabled"
                 :format="format"
                 :error-messages="errorMessages"
                 @focus="onFocus" />

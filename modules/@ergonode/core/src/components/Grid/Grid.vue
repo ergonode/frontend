@@ -39,8 +39,8 @@
                     <IconAddColumn :fill-color="color" />
                 </template>
             </DropZone>
-            <Preloader v-if="isPrefetchingData" />
-            <KeepAlive v-else>
+            <Preloader v-show="isPrefetchingData" />
+            <KeepAlive>
                 <GridTableLayout
                     v-if="isTableLayout"
                     :columns="columns"
@@ -127,7 +127,7 @@ import {
     COLUMNS_NUMBER,
     DATA_LIMIT,
     DRAGGED_ELEMENT,
-    GRID_ACTIONS,
+    GRID_ACTION,
     GRID_LAYOUT,
     IMAGE_SCALING,
     ROW_HEIGHT,
@@ -149,10 +149,6 @@ import {
 export default {
     name: 'Grid',
     components: {
-        GridPlaceholder: () => import('@Core/components/Grid/GridPlaceholder'),
-        GridPageSelector: () => import('@Core/components/Grid/Footer/GridPageSelector'),
-        DropZone: () => import('@Core/components/DropZone/DropZone'),
-        IconAddColumn: () => import('@Core/components/Icons/Actions/IconAddColumn'),
         Button,
         IconFilledClose,
         GridPagination,
@@ -162,6 +158,10 @@ export default {
         GridFooter,
         GridTableLayout,
         GridCollectionLayout,
+        GridPlaceholder: () => import('@Core/components/Grid/GridPlaceholder'),
+        GridPageSelector: () => import('@Core/components/Grid/Footer/GridPageSelector'),
+        DropZone: () => import('@Core/components/DropZone/DropZone'),
+        IconAddColumn: () => import('@Core/components/Icons/Actions/IconAddColumn'),
     },
     props: {
         columns: {
@@ -298,9 +298,10 @@ export default {
             const {
                 length: dataLength,
             } = this.rows;
+            const gridActions = Object.values(GRID_ACTION);
             const {
                 length: actionsLength,
-            } = GRID_ACTIONS;
+            } = gridActions;
             const actionColumns = [];
             const tmp = {};
 
@@ -308,15 +309,19 @@ export default {
                 const row = this.rows[i];
 
                 for (let j = 0; j < actionsLength; j += 1) {
-                    const action = GRID_ACTIONS[j];
+                    const action = gridActions[j];
 
                     if (!tmp[action]
                         && row._links
                         && row._links.value[action]) {
                         tmp[action] = true;
-                        actionColumns.push({
-                            id: action,
-                        });
+
+                        if ((action === GRID_ACTION.GET && !tmp[GRID_ACTION.EDIT])
+                            || action !== GRID_ACTION.GET) {
+                            actionColumns.push({
+                                id: action,
+                            });
+                        }
                     }
                 }
             }

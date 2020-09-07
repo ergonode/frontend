@@ -13,9 +13,9 @@
                     :value="code"
                     required
                     :error-messages="errorMessages[codeFieldKey]"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     label="System name"
-                    hint="Attribute group code must be unique"
+                    hint="System name must be unique"
                     @input="setCodeValue" />
             </FormSection>
         </template>
@@ -44,8 +44,8 @@ export default {
         isDisabled() {
             return Boolean(this.id);
         },
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE_GROUP.update,
             ]);
         },

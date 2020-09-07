@@ -34,7 +34,6 @@ import {
 } from '@Core/defaults/theme';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -52,34 +51,23 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            language: state => state.user.language,
-        }),
-        ...mapState('collections', {
-            id: state => state.id,
-        }),
         secondaryTheme() {
             return THEME.SECONDARY;
         },
     },
-    created() {
-        this.$axios.$get(`${this.language}/segments?limit=5000&offset=0`).then(({
-            collection,
-        }) => {
-            this.segmentOptions = collection.map(({
-                id, code, name,
-            }) => ({
-                id,
-                key: code,
-                value: name,
-                hint: name ? `#${code}` : '',
-            }));
-        });
+    async created() {
+        this.segmentOptions = await this.getSegmentOptions();
     },
     methods: {
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
+        ]),
+        ...mapActions('segment', [
+            'getSegmentOptions',
+        ]),
+        ...mapActions('collection', [
+            'addBySegment',
         ]),
         onFormValueChange(value) {
             this.segments = value;
@@ -88,15 +76,14 @@ export default {
             this.$emit('close');
         },
         onAdd() {
-            this.removeValidationErrors();
-            const data = {
-                segments: this.segments.map(segment => segment.id),
-            };
+            this.removeErrors();
 
             this.isRequestPending = true;
-            this.$axios.$post(`${this.language}/collections/${this.id}/elements/add-from-segments`, data).then(() => {
+            this.addBySegment({
+                segments: this.segments,
+            }).then(() => {
                 this.isRequestPending = false;
-                this.removeValidationErrors();
+                this.removeErrors();
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
                     message: 'Products has been added to collection',

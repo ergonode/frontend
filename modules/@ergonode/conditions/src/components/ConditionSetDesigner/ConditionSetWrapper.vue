@@ -8,7 +8,7 @@
         :row-height="rowHeight"
         :is-connections-visible="false"
         :grid-gap="16"
-        :is-dragging-enabled="true"
+        :is-dragging-enabled="!disabled"
         :is-multi-draggable="true"
         :context-name="contextName"
         @afterDrop="onGetConditionConfiguration"
@@ -19,6 +19,7 @@
                 :condition="getCondition(item.id)"
                 :item-id="item.id"
                 :item-row="item.row"
+                :disabled="disabled"
                 @remove="removeCondition" />
         </template>
     </TemplateGridWrapper>
@@ -42,8 +43,14 @@ export default {
         TemplateGridWrapper,
         ConditionSetItem: () => import('@Conditions/components/ConditionSetDesigner/ConditionSetItem'),
     },
+    props: {
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
+    },
     computed: {
-        ...mapState('conditions', {
+        ...mapState('condition', {
             conditions: state => state.conditions,
         }),
         contextName() {
@@ -57,7 +64,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('conditions', [
+        ...mapActions('condition', [
             'getConditionConfiguration',
             'removeConditionValue',
             'setConditionValue',
@@ -78,7 +85,7 @@ export default {
 
             if (!this.conditions[correctId]) {
                 this.getConditionConfiguration({
-                    conditionId: correctId,
+                    id: correctId,
                 });
             }
             this.setConditionValue({

@@ -48,12 +48,8 @@ export default {
         store, params,
     }) {
         await Promise.all([
-            store.dispatch('attribute/getAttribute', {
-                id: params.id,
-            }),
-            store.dispatch('attribute/getAttributeOptions', {
-                id: params.id,
-            }),
+            store.dispatch('attribute/getAttribute', params),
+            store.dispatch('attribute/getAttributeOptions', params),
         ]);
     },
     computed: {
@@ -66,11 +62,8 @@ export default {
             parameter: state => state.parameter,
             options: state => state.options,
         }),
-        ...mapState('translations', {
+        ...mapState('tab', {
             translations: state => state.translations,
-        }),
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
         }),
         ...mapState('dictionaries', {
             attrTypes: state => state.attrTypes,
@@ -79,7 +72,7 @@ export default {
     destroyed() {
         this.__clearStorage();
         this.clearTranslationsStorage();
-        this.removeValidationErrors();
+        this.removeErrors();
     },
     methods: {
         ...mapActions('attribute', [
@@ -89,9 +82,9 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
-        ...mapActions('translations', {
+        ...mapActions('tab', {
             clearTranslationsStorage: '__clearStorage',
         }),
         onUpdateAttributeSuccess() {
@@ -119,7 +112,7 @@ export default {
             });
         },
         onSave() {
-            this.removeValidationErrors();
+            this.removeErrors();
             const typeKey = getKeyByValue(this.attrTypes, this.type);
             const {
                 label, placeholder, hint,
@@ -133,30 +126,30 @@ export default {
             };
 
             if (!isEmpty(this.options)) {
-                const preValidationErrors = {};
+                const errors = {};
 
                 Object.keys(this.options).forEach((optionKey) => {
                     const fieldKey = `option_${optionKey}`;
-                    const dupications = Object.values(this.options)
+                    const duplications = Object.values(this.options)
                         .filter(({
                             key,
                         }) => key === this.options[optionKey].key);
 
-                    if (dupications.length > 1) {
-                        preValidationErrors[fieldKey] = [
+                    if (duplications.length > 1) {
+                        errors[fieldKey] = [
                             'Option code must be unique',
                         ];
                     }
                     if (!this.options[optionKey].key) {
-                        preValidationErrors[fieldKey] = [
+                        errors[fieldKey] = [
                             'Option cannot be empty',
                         ];
                     }
                 });
 
-                if (!isEmpty(preValidationErrors)) {
+                if (!isEmpty(errors)) {
                     this.onError({
-                        errors: preValidationErrors,
+                        errors,
                     });
                     return;
                 }

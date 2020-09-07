@@ -6,145 +6,187 @@ import {
     getMappedPrivileges,
 } from '@Authentication/models/userMapper';
 import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import userRoleService from '@Users/services/roles';
+    isObject,
+} from '@Core/models/objectWrapper';
+import {
+    create,
+    get,
+    getAll,
+    remove,
+    update,
+} from '@Users/services/role/index';
 
 export default {
-    async createUnit({
-        state, rootState,
-    }) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const {
-            name,
-            description,
-        } = state;
-        const data = {
-            name,
-            description,
-        };
-        const id = await userRoleService.create({
-            $axios: this.app.$axios,
-            languageCode: userLanguageCode,
-            data,
-        });
-
-        this.app.$addAlert({
-            type: ALERT_TYPE.SUCCESS,
-            message: 'User role created',
-        });
-
-        return id;
-    },
-    getRole(
+    async getRole(
         {
-            commit, rootState,
+            commit,
         },
         {
-            roleId,
+            id,
         },
     ) {
         const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$get(`${userLanguageCode}/roles/${roleId}`).then(({
+            name,
+            description,
+            privileges,
+        } = await get({
+            $axios: this.app.$axios,
             id,
-            name = '',
-            description = '',
-            privileges = [],
-        }) => {
-            commit('__SET_STATE', {
-                key: 'id',
-                value: id,
-            });
-            commit('__SET_STATE', {
-                key: 'name',
-                value: name,
-            });
-            commit('__SET_STATE', {
-                key: 'description',
-                value: description,
-            });
-            commit('__SET_STATE', {
-                key: 'privileges',
-                value: getMappedPrivileges(privileges),
-            });
         });
+
+        commit('__SET_STATE', {
+            key: 'id',
+            value: id,
+        });
+        commit('__SET_STATE', {
+            key: 'name',
+            value: name,
+        });
+        commit('__SET_STATE', {
+            key: 'description',
+            value: description,
+        });
+        commit('__SET_STATE', {
+            key: 'privileges',
+            value: getMappedPrivileges(privileges),
+        });
+    },
+    getRoleOptions() {
+        return getAll({
+            $axios: this.app.$axios,
+        }).then(({
+            collection,
+        }) => ({
+            options: collection.map(element => ({
+                id: element.id,
+                key: element.id,
+                value: element.name,
+                hint: element.description,
+            })),
+        }));
     },
     async updateRole(
         {
             state,
-            rootState,
             commit,
         },
-    ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const {
-            id,
-            name,
-            description,
-            drafts,
-            privileges,
-        } = state;
-        const privilegesToUpdate = {
-            ...privileges,
-        };
-
-        Object.keys(drafts).forEach((key) => {
-            const [
-                rowId,
-                columnId,
-            ] = key.split('/');
-
-            if (drafts[key]) {
-                privilegesToUpdate[`${rowId}_${columnId.toUpperCase()}`] = true;
-            } else {
-                delete privilegesToUpdate[`${rowId}_${columnId.toUpperCase()}`];
-            }
-        });
-        const data = {
-            name,
-            description,
-            privileges: Object.keys(privilegesToUpdate),
-        };
-
-        await userRoleService.update(({
-            $axios: this.app.$axios,
-            languageCode: userLanguageCode,
-            id,
-            data,
-        }));
-        await this.$addAlert({
-            type: ALERT_TYPE.SUCCESS,
-            message: 'User role updated',
-        });
-        commit('__SET_STATE', {
-            key: 'drafts',
-            value: {},
-        });
-        commit('__SET_STATE', {
-            key: 'privileges',
-            value: privilegesToUpdate,
-        });
-    },
-    removeRole(
         {
-            rootState,
+            onSuccess,
+            onError,
+        },
+    ) {
+        this.$setLoader('footerButton');
+
+        try {
+            const {
+                id,
+                privileges,
+                name,
+                description,
+                drafts,
+            } = state;
+
+            const tmpPrivileges = {
+                ...privileges,
+            };
+
+            Object.keys(drafts).forEach((key) => {
+                const [
+                    rowId,
+                    columnId,
+                ] = key.split('/');
+
+                if (drafts[key]) {
+                    tmpPrivileges[`${rowId}_${columnId.toUpperCase()}`] = true;
+                } else {
+                    delete tmpPrivileges[`${rowId}_${columnId.toUpperCase()}`];
+                }
+            });
+
+            const data = {
+                name,
+                description,
+                privileges: Object.keys(tmpPrivileges),
+            };
+
+            await update({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+
+            commit('__SET_STATE', {
+                key: 'privileges',
+                value: isObject(tmpPrivileges)
+                    ? {
+                        ...tmpPrivileges,
+                    }
+                    : tmpPrivileges,
+            });
+            commit('__SET_STATE', {
+                key: 'drafts',
+                value: {},
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
+
+        this.$removeLoader('footerButton');
+    },
+    async createRole(
+        {
+            state,
         },
         {
-            id,
+            onSuccess,
+            onError,
+        },
+    ) {
+        try {
+            const {
+                name,
+                description,
+            } = state;
+
+            const data = {
+                name,
+                description,
+            };
+
+            await create({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
+    },
+    async removeRole(
+        {
+            state,
+        },
+        {
             onSuccess,
             onError,
         },
     ) {
         const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
+            id,
+        } = state;
 
-        return this.app.$axios.$delete(`${userLanguageCode}/roles/${id}`).then(() => onSuccess()).catch(e => onError(e.data));
+        try {
+            await remove({
+                $axios: this.app.$axios,
+                id,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
 };

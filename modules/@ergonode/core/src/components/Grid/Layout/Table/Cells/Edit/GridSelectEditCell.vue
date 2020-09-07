@@ -10,6 +10,7 @@
                 :autofocus="true"
                 :size="smallSize"
                 :clearable="true"
+                :disabled="disabled"
                 :options="mappedOptions"
                 :error-messages="errorMessages"
                 @focus="onFocus" />
@@ -43,10 +44,6 @@ export default {
             type: Object,
             default: () => ({}),
         },
-        languageCode: {
-            type: String,
-            default: 'EN',
-        },
     },
     data() {
         let localValue = null;
@@ -66,6 +63,15 @@ export default {
         };
     },
     computed: {
+        languageCode() {
+            const columnIdParts = this.columnId.split(':');
+
+            if (columnIdParts.length < 1) {
+                return '';
+            }
+
+            return columnIdParts[1];
+        },
         smallSize() {
             return SIZE.SMALL;
         },

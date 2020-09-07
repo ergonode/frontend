@@ -34,25 +34,34 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('channels/getChannel', {
-            id: params.id,
-        });
+        await store.dispatch('channel/getChannel', params);
     },
     computed: {
-        ...mapState('channels', {
-            name: state => state.name,
-            type: state => state.type,
+        ...mapState('channel', {
             configuration: state => state.configuration,
+            scheduler: state => state.scheduler,
         }),
+        name() {
+            const {
+                name,
+            } = JSON.parse(this.configuration);
+
+            return name;
+        },
+    },
+    destroyed() {
+        this.__clearStorage();
     },
     methods: {
-        ...mapActions('channels', [
+        ...mapActions('channel', [
+            '__clearStorage',
             'updateChannel',
+            'updateScheduler',
             'removeChannel',
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({
@@ -64,20 +73,27 @@ export default {
             });
         },
         onSave() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.updateChannel({
-                id: this.$route.params.id,
-                data: {
-                    type: this.type,
-                    name: this.name,
-                    ...JSON.parse(this.configuration),
-                },
                 onSuccess: this.onUpdateChannelSuccess,
                 onError: this.onError,
             });
+            if (this.scheduler) {
+                this.updateScheduler({
+                    onSuccess: this.onUpdateSchedulerSuccess,
+                    onError: this.onError,
+                });
+            }
+        },
+        onUpdateSchedulerSuccess() {
+            this.removeErrors();
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Scheduler updated',
+            });
         },
         onUpdateChannelSuccess() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Channel updated',

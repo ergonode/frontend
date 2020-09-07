@@ -35,16 +35,22 @@ export default {
         params,
     }) {
         const {
+            defaultLanguageCode,
+        } = store.state.core;
+        const {
             id,
         } = params;
 
         await Promise.all([
+            store.dispatch('product/getProductDraft', {
+                languageCode: defaultLanguageCode,
+                id,
+            }),
             store.dispatch('product/getProduct', id),
         ]);
     },
     computed: {
         ...mapState('product', {
-            id: state => state.id,
             sku: state => state.sku,
         }),
     },
@@ -57,6 +63,17 @@ export default {
             'removeProduct',
             '__clearStorage',
         ]),
+        ...mapActions('validations', [
+            'onError',
+            'removeErrors',
+        ]),
+        onUpdateProductSuccess() {
+            this.removeErrors();
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product updated',
+            });
+        },
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
@@ -73,6 +90,12 @@ export default {
                 confirmCallback: () => this.removeProduct({
                     onSuccess: this.onRemoveSuccess,
                 }),
+            });
+        },
+        onSave() {
+            this.updateProduct({
+                onSuccess: this.onUpdateProductSuccess,
+                onError: this.onError,
             });
         },
     },

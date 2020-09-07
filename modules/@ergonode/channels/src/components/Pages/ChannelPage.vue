@@ -29,7 +29,13 @@
                     @click.native="onCreateExport" />
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs" />
+        <HorizontalRoutingTabBar :items="tabs">
+            <template #content>
+                <HorizontalRoutingTabBarContent
+                    :is-fetching-needed="fetchGridData"
+                    @fetched="onFetchedGridData" />
+            </template>
+        </HorizontalRoutingTabBar>
         <Footer flex-end>
             <Button
                 title="SAVE CHANNEL"
@@ -42,6 +48,7 @@
 
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
+import HorizontalRoutingTabBarContent from '@Core/components/TabBar/Routing/HorizontalRoutingTabBarContent';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -56,11 +63,19 @@ import {
 
 export default {
     name: 'ChannelPage',
+    components: {
+        HorizontalRoutingTabBarContent,
+    },
     mixins: [
         editPageMixin,
     ],
+    data() {
+        return {
+            fetchGridData: false,
+        };
+    },
     computed: {
-        ...mapState('channels', {
+        ...mapState('channel', {
             id: state => state.id,
         }),
         isUserAllowedToUpdate() {
@@ -78,9 +93,12 @@ export default {
         },
     },
     methods: {
-        ...mapActions('channels', [
+        ...mapActions('channel', [
             'createExport',
         ]),
+        onFetchedGridData() {
+            this.fetchGridData = false;
+        },
         onCreateExport() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
@@ -90,19 +108,11 @@ export default {
                 }),
             });
         },
-        onExportSuccess({
-            id,
-        }) {
+        onExportSuccess() {
+            this.fetchGridData = true;
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Start exporting',
-            });
-            this.$router.push({
-                name: 'export-id-details',
-                params: {
-                    channel_id: this.id,
-                    export_id: id,
-                },
+                message: 'Completed generating export file',
             });
         },
     },

@@ -25,7 +25,6 @@
 import Fab from '@Core/components/Fab/Fab';
 import IconClose from '@Core/components/Icons/Window/IconClose';
 import {
-    SIZE,
     THEME,
 } from '@Core/defaults/theme';
 
@@ -40,20 +39,11 @@ export default {
             type: String,
             default: '',
         },
-        size: {
-            type: String,
-            default: SIZE.REGULAR,
-            validator: value => [
-                SIZE.SMALL,
-                SIZE.REGULAR,
-            ].indexOf(value) !== -1,
-        },
     },
     computed: {
         classes() {
             return [
                 'modal-header',
-                `modal-header--${this.size}`,
             ];
         },
         secondaryTheme() {
@@ -70,8 +60,6 @@ export default {
 
 <style lang="scss" scoped>
     .modal-header {
-        $header: &;
-
         position: relative;
         display: flex;
         justify-content: space-between;
@@ -84,18 +72,7 @@ export default {
 
         &__title {
             color: $GRAPHITE_DARK;
-        }
-
-        &--small {
-            #{$header}__title {
-                font: $FONT_SEMI_BOLD_16_24;
-            }
-        }
-
-        &--regular {
-            #{$header}__title {
-                font: $FONT_SEMI_BOLD_20_24;
-            }
+            font: $FONT_SEMI_BOLD_20_24;
         }
     }
 
@@ -104,6 +81,5 @@ export default {
         grid-auto-flow: column;
         grid-column-gap: 4px;
         align-items: center;
-        padding-right: 24px;
     }
 </style>

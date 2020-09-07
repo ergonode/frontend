@@ -4,7 +4,7 @@
  */
 <template>
     <div
-        class="grid-table-layout"
+        :class="classes"
         ref="gridTableLayout"
         @focusin="onFocusInside"
         @focusout="onFocusOut">
@@ -87,7 +87,7 @@
                             :draft="drafts[`${rowIds[rowIndex]}/${column.id}`]"
                             :column="column"
                             :type="columnTypes[column.type]"
-                            :error-messages="validationErrors[`${rowIds[rowIndex]}/${column.id}`]"
+                            :error-messages="errors[`${rowIds[rowIndex]}/${column.id}`]"
                             :row-id="rowIds[rowIndex]"
                             :column-index="columnIndex + columnsOffset"
                             :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
@@ -280,11 +280,19 @@ export default {
     },
     computed: {
         ...mapState('validations', {
-            validationErrors: state => state.validationErrors,
+            errors: state => state.errors,
         }),
         ...mapState('list', {
             disabledElements: state => state.disabledElements,
         }),
+        classes() {
+            return [
+                'grid-table-layout',
+                {
+                    'grid-table-layout--placeholder': this.dataCount === 0,
+                },
+            ];
+        },
         visibleColumns() {
             return this.columns.filter(column => column.visible);
         },
@@ -298,12 +306,14 @@ export default {
         editCellComponent() {
             const type = capitalizeAndConcatenationArray(this.editCell.type.split('_'));
 
-            return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Grid${type}EditCell`);
+            return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Grid${type}EditCell`)
+                .catch(() => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridTextEditCell'));
         },
         editFilterCellComponent() {
             const type = capitalizeAndConcatenationArray(this.editFilterCell.type.split('_'));
 
-            return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Filter/Grid${type}EditFilterCell`);
+            return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Filter/Grid${type}EditFilterCell`)
+                .catch(() => import('@Core/components/Grid/Layout/Table/Cells/Edit/Filter/GridTextEditFilterCell'));
         },
         dataCount() {
             return this.rows.length;
@@ -596,5 +606,9 @@ export default {
         position: relative;
         display: flex;
         overflow: auto;
+
+        &--placeholder {
+            flex-shrink: 0;
+        }
     }
 </style>

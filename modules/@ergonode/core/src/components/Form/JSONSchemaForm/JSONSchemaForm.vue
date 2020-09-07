@@ -11,8 +11,8 @@
             <Component
                 v-for="element in schemaComponents"
                 :key="element.key"
-                :is="element.component"
                 :value="model[element.key]"
+                :is="element.component"
                 :schema="element.props"
                 :error-messages="errorMessages[element.key]"
                 @input="onValueChange" />
@@ -59,14 +59,9 @@ export default {
             return Object.keys(this.schema.properties);
         },
     },
-    watch: {
-        schema: {
-            immediate: true,
-            handler() {
-                this.schemaComponents = this.getComponents();
-                this.model = JSON.parse(this.value);
-            },
-        },
+    created() {
+        this.model = JSON.parse(this.value);
+        this.schemaComponents = this.getComponents();
     },
     methods: {
         getComponents() {
@@ -90,14 +85,6 @@ export default {
                     },
                     component: () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),
                 });
-
-                if (i + 1 !== length) {
-                    components.push({
-                        key: `[${i}]-divider`,
-                        props: {},
-                        component: () => import('@Core/components/Dividers/Divider'),
-                    });
-                }
             }
             return components;
         },

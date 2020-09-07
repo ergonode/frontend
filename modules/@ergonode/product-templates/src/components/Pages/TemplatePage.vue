@@ -12,7 +12,7 @@
             </template>
             <template #mainAction>
                 <Button
-                    data-cy="delete-segment"
+                    data-cy="delete-template"
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE TEMPLATE"

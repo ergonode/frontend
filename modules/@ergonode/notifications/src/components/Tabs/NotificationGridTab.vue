@@ -54,7 +54,7 @@ export default {
         NotificationsListFooter: () => import('@Notifications/components/List/NotificationsListFooter'),
     },
     computed: {
-        ...mapState('notifications', {
+        ...mapState('notification', {
             notifications: state => state.notifications,
             limit: state => state.limit,
             count: state => state.count,
@@ -81,11 +81,14 @@ export default {
         },
     },
     methods: {
-        ...mapActions('notifications', [
-            'setNotificationsLimit',
+        ...mapActions('notification', [
+            '__setState',
         ]),
         onLoadMoreNotifications() {
-            this.setNotificationsLimit(this.limit + DATA_LIMIT);
+            this.__setState({
+                key: 'limit',
+                value: this.limit + DATA_LIMIT,
+            });
         },
     },
 };

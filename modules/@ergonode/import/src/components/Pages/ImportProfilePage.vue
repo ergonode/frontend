@@ -12,6 +12,16 @@
             </template>
             <template #mainAction>
                 <Button
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    title="REMOVE IMPORT"
+                    :disabled="!isUserAllowedToDelete"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete :fill-color="color" />
+                    </template>
+                </Button>
+                <Button
                     title="IMPORT NOW"
                     :size="smallSize"
                     :theme="secondaryTheme"
@@ -19,7 +29,13 @@
                     @click.native="onShowModal" />
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs" />
+        <HorizontalRoutingTabBar :items="tabs">
+            <template #content>
+                <HorizontalRoutingTabBarContent
+                    :is-fetching-needed="fetchGridData"
+                    @fetched="onFetchedGridData" />
+            </template>
+        </HorizontalRoutingTabBar>
         <Footer flex-end>
             <Button
                 title="SAVE IMPORT PROFILE"
@@ -55,6 +71,11 @@ export default {
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.IMPORT.update,
+            ]);
+        },
+        isUserAllowedToDelete() {
+            return this.$hasAccess([
+                PRIVILEGES.IMPORT.delete,
             ]);
         },
     },

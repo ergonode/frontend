@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    name: '',
+    id: null,
     type: null,
     configuration: '',
 });

@@ -5,39 +5,27 @@
 <template>
     <ModalOverlay @close="onClose">
         <div class="modal-grid">
+            <ModalHeader
+                :title="title"
+                @close="onClose">
+                <template #prepend>
+                    <slot name="prependHeader" />
+                </template>
+            </ModalHeader>
             <Grid
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
                 :is-prefetching-data="isPrefetchingData"
-                :is-select-column="true"
+                :is-select-column="isSelectColumn"
                 :is-header-visible="true"
-                :is-border="true"
                 :is-basic-filter="true"
                 @fetchData="onFetchData">
                 <template #headerActions>
-                    <h2
-                        class="modal-grid__header"
-                        v-text="title" />
-                </template>
-                <template #headerConfiguration>
-                    <Fab
-                        :theme="secondaryTheme"
-                        @click.native="onClose">
-                        <template #icon="{ color }">
-                            <IconClose :fill-color="color" />
-                        </template>
-                    </Fab>
+                    <slot name="headerActions" />
                 </template>
                 <template #appendFooter>
-                    <Button
-                        :theme="secondaryTheme"
-                        :size="smallSize"
-                        title="ADD SELECTED">
-                        <template #prepend="{ color }">
-                            <IconAdd :fill-color="color" />
-                        </template>
-                    </Button>
+                    <slot name="appendFooter" />
                 </template>
             </Grid>
         </div>
@@ -45,11 +33,8 @@
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
-import Fab from '@Core/components/Fab/Fab';
 import Grid from '@Core/components/Grid/Grid';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import IconClose from '@Core/components/Icons/Window/IconClose';
+import ModalHeader from '@Core/components/Modal/ModalHeader';
 import ModalOverlay from '@Core/components/Modal/ModalOverlay';
 import {
     DATA_LIMIT,
@@ -66,11 +51,8 @@ export default {
     name: 'ModalGrid',
     components: {
         ModalOverlay,
-        Fab,
-        IconClose,
-        IconAdd,
+        ModalHeader,
         Grid,
-        Button,
     },
     props: {
         title: {
@@ -85,16 +67,22 @@ export default {
             type: String,
             default: '',
         },
+        isSelectColumn: {
+            type: Boolean,
+            default: false,
+        },
     },
-    fetch() {
-        this.onFetchData();
+    async fetch() {
+        await this.onFetchData();
+        this.isPrefetchingData = false;
     },
     data() {
         return {
             columns: [],
-            rows: {},
+            rows: [],
             count: 0,
             filtered: 0,
+            isPrefetchingData: true,
         };
     },
     computed: {
@@ -142,6 +130,7 @@ export default {
 <style lang="scss" scoped>
     .modal-grid {
         display: flex;
+        flex-direction: column;
         width: 960px;
         height: 80%;
         background-color: $WHITE;

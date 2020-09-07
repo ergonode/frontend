@@ -34,13 +34,10 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('role/getRole', {
-            roleId: params.id,
-        });
+        await store.dispatch('role/getRole', params);
     },
     computed: {
         ...mapState('role', {
-            roleID: state => state.id,
             name: state => state.name,
         }),
     },
@@ -50,13 +47,12 @@ export default {
     methods: {
         ...mapActions('role', [
             '__clearStorage',
-            '__setState',
             'updateRole',
             'removeRole',
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onRemoveRoleSuccess() {
             this.$addAlert({
@@ -75,12 +71,23 @@ export default {
                 message,
             });
         },
+        onSave() {
+            this.updateRole({
+                onSuccess: () => {
+                    this.removeErrors();
+                    this.$addAlert({
+                        type: ALERT_TYPE.SUCCESS,
+                        message: 'Role updated',
+                    });
+                },
+                onError: this.onError,
+            });
+        },
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Are you sure you want to delete this role?',
                 confirmCallback: () => this.removeRole({
-                    id: this.roleID,
                     onSuccess: this.onRemoveRoleSuccess,
                     onError: this.onRemoveRoleError,
                 }),

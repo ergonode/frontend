@@ -7,13 +7,10 @@ export default function ({
     $store,
 }) {
     const {
-        language,
-    } = $store.state.authentication.user;
-    const {
         code,
     } = $store.state.attributeGroup;
 
-    return $axios.$post(`${language}/attributes/groups`, {
+    return $axios.$post('attributes/groups', {
         code,
     });
 }

@@ -13,17 +13,17 @@
                     :value="name"
                     required
                     :error-messages="errorMessages[nameFieldKey]"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     label="Unit name"
-                    hint="Unit name must be unique"
+                    hint="System name must be unique"
                     @input="setNameValue" />
                 <TextField
                     :value="symbol"
                     required
                     :error-messages="errorMessages[symbolFieldKey]"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     label="Unit symbol"
-                    hint="Unit symbol must be unique"
+                    hint="System name must be unique"
                     @input="setSymbolValue" />
             </FormSection>
         </template>
@@ -58,8 +58,8 @@ export default {
             name: state => state.name,
             symbol: state => state.symbol,
         }),
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.SETTINGS.update,
             ]);
         },

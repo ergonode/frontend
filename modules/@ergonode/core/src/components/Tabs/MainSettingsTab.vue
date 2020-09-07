@@ -100,6 +100,7 @@ export default {
             const languageKeys = selectedLanguages.map(language => language.key);
 
             try {
+                this.$setLoader('saveSettings');
                 await this.updateLanguages(languageKeys);
                 await this.getLanguages();
 
@@ -114,6 +115,7 @@ export default {
                 });
             } finally {
                 this.isSubmitting = false;
+                this.$removeLoader('saveSettings');
             }
         },
     },

@@ -22,6 +22,7 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -70,9 +71,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
         ...mapState('product', {
             id: state => state.id,
         }),
@@ -83,12 +81,18 @@ export default {
         },
     },
     methods: {
+        ...mapActions('product', [
+            'addBySku',
+            'removeProductChildren',
+        ]),
         onValueChange() {
+            if (this.isLocked) {
+                return;
+            }
+
             if (!this.localValue) {
-                this.$axios.$post(`${this.languageCode}/products/${this.id}/children/add-from-skus`, {
-                    skus: [
-                        this.data.sku,
-                    ],
+                this.addBySku({
+                    skus: this.data.sku,
                 }).then(() => {
                     this.$addAlert({
                         type: ALERT_TYPE.SUCCESS,
@@ -102,7 +106,8 @@ export default {
                     });
                 });
             } else {
-                this.$axios.$delete(`${this.languageCode}/products/${this.id}/children/${this.rowId}`, {
+                this.removeProductChildren({
+                    childrenId: this.rowId,
                     skus: this.data.sku,
                 }).then(() => {
                     this.$addAlert({

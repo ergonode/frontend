@@ -22,34 +22,32 @@ export default function ({
         methods: {
             ...mapActions('validations', [
                 'onError',
-                'removeValidationErrors',
+                'removeErrors',
             ]),
             onActionRequest(onSuccess) {
-                if (!this.isRequestPending) {
-                    this.isRequestPending = true;
+                this.isRequestPending = true;
+                this.removeErrors();
 
-                    request().then(response => response.default({
-                        $axios: this.$axios,
-                        $store: this.$store,
-                    }).then(({
-                        id,
-                    }) => {
-                        this.isRequestPending = false;
-                        this.removeValidationErrors();
-                        this.$addAlert({
-                            type: ALERT_TYPE.SUCCESS,
-                            message: `${namespace} has been ${action.toLowerCase()}d`,
-                        });
+                request().then(response => response.default({
+                    $axios: this.$axios,
+                    $store: this.$store,
+                }).then(({
+                    id,
+                }) => {
+                    this.isRequestPending = false;
+                    this.removeErrors();
+                    this.$addAlert({
+                        type: ALERT_TYPE.SUCCESS,
+                        message: `${namespace} has been ${action.toLowerCase()}d`,
+                    });
 
-                        onSuccess(id);
+                    onSuccess(id);
 
-                        this.$emit(action.toLowerCase());
-                    }).catch((e) => {
-                        this.isRequestPending = false;
-                        this.removeValidationErrors();
-                        this.onError(e.data);
-                    }));
-                }
+                    this.$emit(action.toLowerCase());
+                }).catch((e) => {
+                    this.isRequestPending = false;
+                    this.onError(e.data);
+                }));
             },
         },
     };

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="grid-list">
+    <div class="comments-list">
         <FadeTransition>
             <slot name="header" />
         </FadeTransition>
@@ -14,10 +14,10 @@
         </FadeTransition>
         <div
             v-else
-            class="grid-list__placeholder">
+            class="comments-list__placeholder">
             <slot name="placeholder" />
         </div>
-        <div class="grid-list__footer">
+        <div class="comments-list__footer">
             <slot name="footer" />
         </div>
     </div>
@@ -39,12 +39,12 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-    .grid-list {
+    .comments-list {
         width: 560px;
         padding: 24px;
 
         &__placeholder {
-            margin: 25px 0;
+            margin: 24px 0;
         }
 
         &__footer {

@@ -9,6 +9,7 @@
                 v-model="localValue"
                 autofocus
                 :alignment="leftAlignment"
+                :disabled="disabled"
                 :error-messages="errorMessages"
                 :input="{ type: 'number' }"
                 :size="smallSize"

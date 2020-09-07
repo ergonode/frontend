@@ -16,10 +16,9 @@ export default {
 
 <style lang="scss" scoped>
     .modal-footer {
-        z-index: $Z_INDEX_LVL_1;
         display: flex;
         flex: 0;
         justify-content: space-between;
-        padding: 16px 24px;
+        padding: 0 24px 24px;
     }
 </style>

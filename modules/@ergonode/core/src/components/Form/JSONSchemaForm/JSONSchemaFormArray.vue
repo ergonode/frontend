@@ -3,18 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormSection :title="schema.title">
+    <FormSubsection
+        :title="schema.title"
+        :required="schema.isRequired">
         <Component
             :is="arrayComponent"
             :value="value"
             :schema="schema"
-            :error-messages="errorMessages"
             @input="onValueChange" />
-    </FormSection>
+        <FormErrorLabel
+            v-if="errorMessages"
+            :error-messages="errorMessages" />
+    </FormSubsection>
 </template>
 
 <script>
-import FormSection from '@Core/components/Form/Section/FormSection';
+import FormSubsection from '@Core/components/Form/Subsection/FormSubsection';
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
@@ -22,7 +26,8 @@ import {
 export default {
     name: 'JSONSchemaFormArray',
     components: {
-        FormSection,
+        FormSubsection,
+        FormErrorLabel: () => import('@Core/components/Form/FormErrorLabel'),
     },
     props: {
         schema: {
@@ -34,8 +39,8 @@ export default {
             default: () => [],
         },
         errorMessages: {
-            type: Object,
-            default: () => ({}),
+            type: String,
+            default: '',
         },
     },
     data() {

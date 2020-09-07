@@ -98,7 +98,7 @@ export default [
             {
                 name: 'segment-id-designer',
                 path: 'designer',
-                component: Tabs.ConditionSetDesignTab,
+                component: Tabs.ConditionDesignerTab,
                 meta: {
                     title: 'Designer',
                     breadcrumbs: [

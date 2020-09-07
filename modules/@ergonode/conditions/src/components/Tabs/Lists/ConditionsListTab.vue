@@ -13,7 +13,7 @@
                     v-for="item in items"
                     :key="item.id"
                     :item="item"
-                    :language-code="userLanguageCode" />
+                    :disabled="disabled" />
             </ListScrollableContainer>
         </List>
     </VerticalTabBarList>
@@ -33,11 +33,14 @@ export default {
         ConditionsListElement: () => import('@Conditions/components/Lists/ConditionsListElement'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
     },
+    props: {
+        disabled: {
+            type: Boolean,
+            deafulr: false,
+        },
+    },
     computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
-        ...mapState('conditions', {
+        ...mapState('condition', {
             items: state => state.conditionsDictionary,
         }),
     },

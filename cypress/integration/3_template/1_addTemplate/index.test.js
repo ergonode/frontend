@@ -3,21 +3,25 @@
  * See LICENSE for license details.
  */
 import {
-    And,
     Then,
 } from 'cypress-cucumber-preprocessor/steps';
 
 import {
-    checkGridRow,
+    LANGUAGE,
+} from '../../../defaults';
+import {
     getToken,
-    noGridRow,
-    removeOnGrid,
     removeRequest,
     sendPostRequest,
-} from '../../models/addingItems';
+} from '../../../models/requests';
+
+before(() => {
+    cy.login(Cypress.env('adminEmail'), Cypress.env('adminPass'));
+});
 
 beforeEach(() => {
-    cy.apiRequest('POST', 'en/templates').as('POST-REQUEST');
+    Cypress.Cookies.preserveOnce('jwt');
+    cy.apiRequest('POST', `${LANGUAGE}/templates`).as('POST-REQUEST');
 });
 
 Then('I send a {string} request and status code should be {int}', (reqType, status) => {
@@ -25,23 +29,7 @@ Then('I send a {string} request and status code should be {int}', (reqType, stat
     sendPostRequest({
         reqType,
         status,
-        urlRegExp: /\/en\/templates$/,
-    });
-});
-
-And('On {string} I can not see row {int} with columns data: {string}', (gridId, rowNr, columns) => {
-    noGridRow({
-        gridId,
-        rowNr,
-        columns,
-    });
-});
-
-Then('On {string} I can see row {int} with columns data: {string}', (gridId, rowNr, columns) => {
-    checkGridRow({
-        gridId,
-        rowNr,
-        columns,
+        urlRegExp: /\/templates$/,
     });
 });
 
@@ -49,14 +37,6 @@ Then('I remove {string} element by {string} request', (element, reqType) => {
     removeRequest({
         element,
         reqType,
-        path: 'en/templates',
-    });
-});
-
-And('On {string} I click on {string} button for row {int}', (gridId, action, rowNr) => {
-    removeOnGrid({
-        gridId,
-        action,
-        rowNr,
+        path: `${LANGUAGE}/templates`,
     });
 });

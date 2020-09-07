@@ -3,113 +3,112 @@
  * See LICENSE for license details.
  */
 import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import unitService from '@Core/services/units';
+    create,
+    get,
+    remove,
+    update,
+} from '@Core/services/unit/index';
 
 export default {
-    async createUnit({
-        state, rootState,
-    }) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const {
-            name,
-            symbol,
-        } = state;
-        const data = {
-            name,
-            symbol,
-        };
-        const id = await unitService.create({
-            $axios: this.app.$axios,
-            languageCode: userLanguageCode,
-            data,
-        });
-
-        this.app.$addAlert({
-            type: ALERT_TYPE.SUCCESS,
-            message: 'Unit created',
-        });
-
-        return id;
-    },
     async getUnit(
         {
-            commit, rootState,
+            commit,
         },
         {
-            unitId,
+            id,
         },
     ) {
         const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
-        await this.app.$axios.$get(`${userLanguageCode}/units/${unitId}`).then(async ({
+            name,
+            symbol,
+        } = await get({
+            $axios: this.app.$axios,
             id,
-            name = '',
-            symbol = '',
-        }) => {
-            commit('__SET_STATE', {
-                key: 'id',
-                value: id,
-            });
-            commit('__SET_STATE', {
-                key: 'name',
-                value: name,
-            });
-            commit('__SET_STATE', {
-                key: 'symbol',
-                value: symbol,
-            });
+        });
+
+        commit('__SET_STATE', {
+            key: 'id',
+            value: id,
+        });
+        commit('__SET_STATE', {
+            key: 'name',
+            value: name,
+        });
+        commit('__SET_STATE', {
+            key: 'symbol',
+            value: symbol,
         });
     },
     async updateUnit(
         {
             state,
-            rootState,
+        },
+        {
+            onSuccess,
+            onError,
         },
     ) {
         const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const {
-            id,
-            name,
-            symbol,
+            id, name, symbol,
         } = state;
         const data = {
             name,
             symbol,
         };
-        await unitService.update(({
-            $axios: this.app.$axios,
-            languageCode: userLanguageCode,
-            id,
-            data,
-        }));
-        await this.$addAlert({
-            type: ALERT_TYPE.SUCCESS,
-            message: 'Unit updated',
-        });
+        this.$setLoader('footerButton');
+        try {
+            await update({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
+        this.$removeLoader('footerButton');
     },
-    removeUnit({
-        state, rootState,
+    async createUnit({
+        state,
+    }, {
+        onSuccess,
+        onError,
+    }) {
+        try {
+            const {
+                id,
+                name,
+                symbol,
+            } = state;
+
+            const data = {
+                name,
+                symbol,
+            };
+
+            await create({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
+    },
+    async removeUnit({
+        state,
     }, {
         onSuccess,
     }) {
         const {
             id,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
 
-        return this.app.$axios.$delete(`${userLanguageCode}/units/${id}`)
-            .then(() => {
-                onSuccess();
-            });
+        await remove({
+            $axios: this.app.$axios,
+            id,
+        });
+        onSuccess();
     },
 };

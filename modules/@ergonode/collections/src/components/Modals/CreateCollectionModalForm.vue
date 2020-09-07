@@ -57,7 +57,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('collections', [
+        ...mapActions('collection', [
             '__clearStorage',
         ]),
         onClose() {

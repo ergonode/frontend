@@ -5,14 +5,11 @@
 <template>
     <div
         data-cy="tool-bar-content"
-        class="user-content">
-        <ToolBarUserSelectContentHeader
-            :initials="initials"
-            :avatar-id="avatarId"
-            :email="email" />
+        class="tool-bar-user-select-content">
+        <ToolBarUserSelectContentHeader />
         <Divider />
         <MenuList
-            v-for="(item, index) in userMenuElements"
+            v-for="(item, index) in navigationBarUserMenu"
             :key="index"
             :section-title="item.title"
             :section-menu="item.menu" />
@@ -43,26 +40,10 @@ export default {
         MenuList: () => import('@Core/components/MenuList/MenuList'),
         Button: () => import('@Core/components/Button/Button'),
     },
-    props: {
-        avatarId: {
-            type: String,
-            default: '',
-        },
-        initials: {
-            type: String,
-            required: true,
-        },
-        email: {
-            type: String,
-            required: true,
-        },
-    },
-    data() {
-        return {
-            userMenuElements: navigationBarUserMenu,
-        };
-    },
     computed: {
+        navigationBarUserMenu() {
+            return navigationBarUserMenu;
+        },
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -85,7 +66,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .user-content {
+    .tool-bar-user-select-content {
         display: flex;
         flex-direction: column;
         width: 320px;
