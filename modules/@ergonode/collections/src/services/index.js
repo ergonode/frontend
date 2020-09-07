@@ -15,6 +15,7 @@ export const getTypes = ({
         offset: 0,
         view: 'list',
         order: 'ASC',
+        field: 'name',
         columns: 'id,code,name',
     },
 }) => $axios.$get('collections/type', {

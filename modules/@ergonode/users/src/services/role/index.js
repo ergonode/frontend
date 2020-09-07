@@ -15,6 +15,7 @@ export const getAll = ({
         offset: 0,
         view: 'list',
         order: 'ASC',
+        field: 'name',
         columns: 'id,description,name',
     },
 }) => $axios.$get('roles', {

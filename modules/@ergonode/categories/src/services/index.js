@@ -21,6 +21,7 @@ export const getAll = ({
         limit: 9999,
         offset: 0,
         view: 'list',
+        field: 'name',
         order: 'ASC',
     },
 });

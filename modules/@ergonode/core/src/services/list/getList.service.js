@@ -12,6 +12,7 @@ export const getListGroups = async ({
         offset: 0,
         view: 'list',
         order: 'ASC',
+        field: 'name',
         columns: 'id,code,name,elements_count',
     };
     const {
