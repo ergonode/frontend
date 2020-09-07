@@ -112,7 +112,7 @@ export default {
         async getExportDetails() {
             const {
                 details, links,
-            } = this.getExportDetails({
+            } = await this.getExportDetails({
                 channelId: this.channelId,
                 exportId: this.exportId,
             });

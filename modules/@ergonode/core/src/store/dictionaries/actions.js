@@ -2,6 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    get,
+} from '@Core/services/dictionary/index';
+
 import extendsModules from '~/.nuxt/extends.modules';
 
 const modulesDictionaries = Object.values(extendsModules)
@@ -26,7 +30,9 @@ export default {
         }) => {
             const path = `${requestPath}${isGrid ? '?view=list' : ''}`;
 
-            const response = await this.app.$axios.$get(path, {
+            const response = await get({
+                $axios: this.app.$axios,
+                path,
                 useCache: isGrid,
             });
 
@@ -54,9 +60,12 @@ export default {
         }) => name === dictionaryName);
         const path = `${requestPath}${isGrid ? '?view=list' : ''}`;
 
-        const response = await this.app.$axios.$get(path, {
+        const response = await get({
+            $axios: this.app.$axios,
+            path,
             useCache: isGrid,
         });
+
         const value = isGrid ? response.collection : response;
 
         commit('__SET_STATE', {
