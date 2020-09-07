@@ -35,7 +35,10 @@
 </template>
 
 <script>
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
 import InfoHint from '@Core/components/Hints/InfoHint';
+import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import PRIVILEGES from '@Core/config/privileges';
 import {
     mapState,
@@ -45,9 +48,9 @@ export default {
     name: 'MainSettingsForm',
     components: {
         InfoHint,
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
+        Form,
+        FormSection,
+        TranslationSelect,
     },
     props: {
         submitTitle: {

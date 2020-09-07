@@ -98,7 +98,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         async onSavePrivileges() {
             if (this.isSubmitting) {
@@ -107,7 +107,7 @@ export default {
             this.isSubmitting = true;
 
             try {
-                this.removeValidationErrors();
+                this.removeErrors();
                 await this.updateRole();
             } catch (e) {
                 if (e.data) {

@@ -50,7 +50,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         async onSubmit() {
             if (this.isSubmitting) {
@@ -59,7 +59,7 @@ export default {
             this.isSubmitting = true;
 
             try {
-                this.removeValidationErrors();
+                this.removeErrors();
                 await this.updateProduct();
             } catch (e) {
                 if (e.data) {

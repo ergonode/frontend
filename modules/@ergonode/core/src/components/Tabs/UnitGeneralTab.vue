@@ -53,7 +53,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         async onSubmit() {
             if (this.isSubmitting) {
@@ -62,7 +62,7 @@ export default {
             this.isSubmitting = true;
 
             try {
-                this.removeValidationErrors();
+                this.removeErrors();
                 await this.updateUnit();
                 await this.getDictionary({
                     dictionaryName: 'units',

@@ -238,7 +238,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         async onSave() {
             if (this.isSavingDesigner) {
@@ -247,7 +247,7 @@ export default {
             this.isSavingDesigner = true;
 
             try {
-                this.removeValidationErrors();
+                this.removeErrors();
                 await this.updateProductTemplate();
             } catch (e) {
                 if (e.data) {
