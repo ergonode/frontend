@@ -5,7 +5,7 @@
 <template>
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
-            <UnitForm
+            <UserForm
                 submit-title="SAVE CHANGES"
                 :is-submitting="isSubmitting"
                 @submit="onSubmit" />
@@ -14,20 +14,20 @@
 </template>
 
 <script>
-import UnitForm from '@Core/components/Forms/UnitForm';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import UserForm from '@Users/components/Forms/UserForm';
 import {
     mapActions,
 } from 'vuex';
 
 export default {
-    name: 'UnitGeneralTab',
+    name: 'UserGeneralTab',
     components: {
-        UnitForm,
         CenterViewTemplate,
+        UserForm,
     },
     data() {
         return {
@@ -35,11 +35,8 @@ export default {
         };
     },
     methods: {
-        ...mapActions('unit', [
-            'updateUnit',
-        ]),
-        ...mapActions('dictionaries', [
-            'getDictionary',
+        ...mapActions('user', [
+            'updateUser',
         ]),
         ...mapActions('validations', [
             'onError',
@@ -52,24 +49,20 @@ export default {
             this.isSubmitting = true;
 
             this.removeErrors();
-            await this.updateUnit({
-                onSuccess: this.onUpdateUnitSuccess,
-                onError: this.onUpdateUnitError,
+            await this.updateUser({
+                onSuccess: this.onCreateUnitSuccess,
+                onError: this.onCreateUnitError,
             });
         },
-        async onUpdateUnitSuccess() {
-            await this.getDictionary({
-                dictionaryName: 'units',
-            });
-
+        async onCreateRoleSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Unit updated',
+                message: 'User updated',
             });
 
             this.isSubmitting = false;
         },
-        onUpdateUnitError(errors) {
+        onCreateRoleError(errors) {
             this.onError(errors);
 
             this.isSubmitting = false;

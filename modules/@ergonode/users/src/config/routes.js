@@ -60,7 +60,7 @@ export default [
             {
                 name: 'user-id-general',
                 path: 'general',
-                component: Tabs.UserBaseTab,
+                component: Tabs.UserGeneralTab,
                 meta: {
                     title: 'Options',
                     breadcrumbs: [

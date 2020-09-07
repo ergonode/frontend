@@ -21,6 +21,9 @@
 <script>
 import ModalForm from '@Core/components/Modal/ModalForm';
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     THEME,
 } from '@Core/defaults/theme';
 import UserRoleForm from '@Users/components/Forms/UserRoleForm';
@@ -80,6 +83,11 @@ export default {
             this.$emit('close');
         },
         async onCreateRoleSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Role created',
+            });
+
             this.isSubmitting = false;
 
             this.$emit('created');

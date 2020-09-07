@@ -12,7 +12,7 @@ export const Pages = {
 
 export const Tabs = {
     UsersGridTab: () => import('@Users/components/Tabs/UsersGridTab').then(m => m.default || m),
-    UserBaseTab: () => import('@Users/components/Tabs/UserBaseTab').then(m => m.default || m),
+    UserGeneralTab: () => import('@Users/components/Tabs/UserGeneralTab').then(m => m.default || m),
     UserAvatarTab: () => import('@Users/components/Tabs/UserAvatarTab').then(m => m.default || m),
     RolesGridTab: () => import('@Users/components/Tabs/RolesGridTab').then(m => m.default || m),
     RoleGeneralTab: () => import('@Users/components/Tabs/RoleGeneralTab').then(m => m.default || m),

@@ -46,7 +46,6 @@ export default {
     },
     methods: {
         ...mapActions('unit', {
-            updateUnit: 'updateUnit',
             removeUnit: 'removeUnit',
             clearUnitStorage: '__clearStorage',
         }),
@@ -64,23 +63,6 @@ export default {
                 confirmCallback: () => this.removeUnit({
                     onSuccess: this.onRemoveUnitSuccess,
                 }),
-            });
-        },
-        onSave() {
-            this.removeErrors();
-
-            this.updateUnit({
-                onSuccess: this.onUpdateUnitSuccess,
-                onError: this.onError,
-            });
-        },
-        async onUpdateUnitSuccess() {
-            await this.getDictionary({
-                dictionaryName: 'units',
-            });
-            await this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Unit updated',
             });
         },
         async onRemoveUnitSuccess() {

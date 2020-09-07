@@ -6,7 +6,6 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <UserRoleForm
-                @submit="onSubmit"
                 submit-title="SAVE CHANGES"
                 :is-submitting="isSubmitting"
                 @submit="onSubmit" />
@@ -16,6 +15,9 @@
 
 <script>
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import UserRoleForm from '@Users/components/Forms/UserRoleForm';
 import {
     mapActions,
@@ -48,18 +50,19 @@ export default {
 
             this.removeErrors();
             await this.updateRole({
-                onSuccess: this.onCreateUnitSuccess,
-                onError: this.onCreateUnitError,
+                onSuccess: this.onUpdateRoleSuccess,
+                onError: this.onUpdateRoleError,
             });
         },
-        async onCreateRoleSuccess() {
-            await this.getDictionary({
-                dictionaryName: 'units',
+        async onUpdateRoleSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Role updated',
             });
 
             this.isSubmitting = false;
         },
-        onCreateRoleError(errors) {
+        onUpdateRoleError(errors) {
             this.onError(errors);
 
             this.isSubmitting = false;

@@ -22,6 +22,9 @@
 import UnitForm from '@Core/components/Forms/UnitForm';
 import ModalForm from '@Core/components/Modal/ModalForm';
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     THEME,
 } from '@Core/defaults/theme';
 import {
@@ -91,6 +94,11 @@ export default {
                 dictionaryName: 'units',
             });
 
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Unit created',
+            });
+
             this.isSubmitting = false;
 
             this.$emit('created');
@@ -99,6 +107,11 @@ export default {
         async onCreateAndEditUnitSuccess(id) {
             await this.getDictionary({
                 dictionaryName: 'units',
+            });
+
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Unit created',
             });
 
             this.isProceeding = false;
