@@ -5,26 +5,16 @@
 <template>
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
-            <UserRoleForm @submit="onSubmit">
-                <template #submitForm>
-                    <Button
-                        title="SAVE CHANGES"
-                        type="submit">
-                        <template
-                            v-if="isSubmitting"
-                            #append="{ color }">
-                            <IconSpinner :fill-color="color" />
-                        </template>
-                    </Button>
-                </template>
-            </UserRoleForm>
+            <UserRoleForm
+                @submit="onSubmit"
+                submit-title="SAVE CHANGES"
+                :is-submitting="isSubmitting"
+                @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import UserRoleForm from '@Users/components/Forms/UserRoleForm';
 import {
@@ -34,8 +24,6 @@ import {
 export default {
     name: 'RoleGeneralTab',
     components: {
-        Button,
-        IconSpinner,
         CenterViewTemplate,
         UserRoleForm,
     },
@@ -58,16 +46,23 @@ export default {
             }
             this.isSubmitting = true;
 
-            try {
-                this.removeErrors();
-                await this.updateRole();
-            } catch (e) {
-                if (e.data) {
-                    this.onError(e.data);
-                }
-            } finally {
-                this.isSubmitting = false;
-            }
+            this.removeErrors();
+            await this.updateRole({
+                onSuccess: this.onCreateUnitSuccess,
+                onError: this.onCreateUnitError,
+            });
+        },
+        async onCreateRoleSuccess() {
+            await this.getDictionary({
+                dictionaryName: 'units',
+            });
+
+            this.isSubmitting = false;
+        },
+        onCreateRoleError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
         },
     },
 };

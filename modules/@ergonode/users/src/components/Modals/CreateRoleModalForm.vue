@@ -7,38 +7,18 @@
         title="Create role"
         @close="onClose">
         <template #body>
-            <UserRoleForm @submit="onSubmit">
-                <template #submitForm>
-                    <Button
-                        title="CREATE"
-                        type="submit">
-                        <template
-                            v-if="isSubmitting"
-                            #append="{ color }">
-                            <IconSpinner :fill-color="color" />
-                        </template>
-                    </Button>
-                </template>
-                <template #proceedForm>
-                    <Button
-                        title="CREATE & EDIT"
-                        :theme="secondaryTheme"
-                        @click.native="onCreateAndEdit">
-                        <template
-                            v-if="isCreatingAndEdit"
-                            #prepend="{ color }">
-                            <IconSpinner :fill-color="color" />
-                        </template>
-                    </Button>
-                </template>
-            </UserRoleForm>
+            <UserRoleForm
+                submit-title="CREATE"
+                proceed-title="CREATE AND EDIT"
+                :is-submitting="isSubmitting"
+                :is-proceeding="isProceeding"
+                @submit="onSubmit"
+                @proceed="onProceed" />
         </template>
     </ModalForm>
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     THEME,
@@ -52,14 +32,12 @@ export default {
     name: 'CreateRoleModalForm',
     components: {
         ModalForm,
-        Button,
-        IconSpinner,
         UserRoleForm,
     },
     data() {
         return {
             isSubmitting: false,
-            isCreatingAndEdit: false,
+            isProceeding: false,
         };
     },
     computed: {
@@ -73,47 +51,55 @@ export default {
             '__clearStorage',
         ]),
         async onSubmit() {
-            if (this.isSubmitting || this.isCreatingAndEdit) {
+            if (this.isSubmitting || this.isProceeding) {
                 return;
             }
             this.isSubmitting = true;
 
-            try {
-                this.removeErrors();
-                await this.createRole();
-                this.$emit('created');
-                this.onClose();
-            } catch (e) {
-                if (e.data) {
-                    this.onError(e.data);
-                }
-            } finally {
-                this.isSubmitting = false;
+            this.removeErrors();
+            await this.createRole({
+                onSuccess: this.onCreateRoleSuccess,
+                onError: this.onCreateRoleError,
+            });
+        },
+        async onProceed() {
+            if (this.isSubmitting || this.isProceeding) {
+                return;
             }
+
+            this.isProceeding = true;
+
+            this.removeErrors();
+            await this.createRole({
+                onSuccess: this.onCreateAndEditRoleSuccess,
+                onError: this.onCreateRoleError,
+            });
         },
         onClose() {
             this.__clearStorage();
             this.$emit('close');
         },
-        async onCreateAndEdit() {
-            this.isCreatingAndEdit = true;
+        async onCreateRoleSuccess() {
+            this.isSubmitting = false;
 
-            try {
-                this.removeErrors();
-                const id = await this.createRole();
-                await this.$router.push({
-                    name: 'user-role-id-general',
-                    params: {
-                        id,
-                    },
-                });
-            } catch (e) {
-                if (e.data) {
-                    this.onError(e.data);
-                }
-            } finally {
-                this.isCreatingAndEdit = false;
-            }
+            this.$emit('created');
+            this.onClose();
+        },
+        async onCreateAndEditRoleSuccess(id) {
+            this.isProceeding = false;
+
+            await this.$router.push({
+                name: 'user-role-id-general',
+                params: {
+                    id,
+                },
+            });
+        },
+        onCreateRoleError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+            this.isProceeding = false;
         },
     },
 };

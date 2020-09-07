@@ -140,8 +140,8 @@ export default {
             state,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {
@@ -155,12 +155,14 @@ export default {
                 description,
             };
 
-            await create({
+            const {
+                id,
+            } = await create({
                 $axios: this.app.$axios,
                 data,
             });
 
-            onSuccess();
+            onSuccess(id);
         } catch (e) {
             onError(e.data);
         }
