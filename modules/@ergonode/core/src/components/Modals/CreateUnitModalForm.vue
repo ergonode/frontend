@@ -60,19 +60,19 @@ export default {
             'onError',
             'removeErrors',
         ]),
-        async onSubmit() {
+        onSubmit() {
             if (this.isSubmitting || this.isProceeding) {
                 return;
             }
             this.isSubmitting = true;
 
             this.removeErrors();
-            await this.createUnit({
-                onSuccess: this.onCreateUnitSuccess,
-                onError: this.onCreateUnitError,
+            this.createUnit({
+                onSuccess: this.onCreateSuccess,
+                onError: this.onCreateError,
             });
         },
-        async onProceed() {
+        onProceed() {
             if (this.isSubmitting || this.isProceeding) {
                 return;
             }
@@ -80,16 +80,16 @@ export default {
             this.isProceeding = true;
 
             this.removeErrors();
-            await this.createUnit({
-                onSuccess: this.onCreateAndEditUnitSuccess,
-                onError: this.onCreateUnitError,
+            this.createUnit({
+                onSuccess: this.onProceedSuccess,
+                onError: this.onCreateError,
             });
         },
         onClose() {
             this.__clearStorage();
             this.$emit('close');
         },
-        async onCreateUnitSuccess() {
+        async onCreateSuccess() {
             await this.getDictionary({
                 dictionaryName: 'units',
             });
@@ -104,7 +104,7 @@ export default {
             this.$emit('created');
             this.onClose();
         },
-        async onCreateAndEditUnitSuccess(id) {
+        async onProceedSuccess(id) {
             await this.getDictionary({
                 dictionaryName: 'units',
             });
@@ -123,7 +123,7 @@ export default {
                 },
             });
         },
-        onCreateUnitError(errors) {
+        onCreateError(errors) {
             this.onError(errors);
 
             this.isSubmitting = false;

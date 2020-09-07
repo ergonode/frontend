@@ -42,19 +42,19 @@ export default {
             'onError',
             'removeErrors',
         ]),
-        async onSubmit() {
+        onSubmit() {
             if (this.isSubmitting) {
                 return;
             }
             this.isSubmitting = true;
 
             this.removeErrors();
-            await this.updateUser({
-                onSuccess: this.onCreateUnitSuccess,
-                onError: this.onCreateUnitError,
+            this.updateUser({
+                onSuccess: this.onCreateSuccess,
+                onError: this.onCreateError,
             });
         },
-        async onCreateRoleSuccess() {
+        async onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'User updated',
@@ -62,7 +62,7 @@ export default {
 
             this.isSubmitting = false;
         },
-        onCreateRoleError(errors) {
+        onCreateError(errors) {
             this.onError(errors);
 
             this.isSubmitting = false;

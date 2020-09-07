@@ -42,14 +42,14 @@ export default {
             'onError',
             'removeErrors',
         ]),
-        async onSubmit() {
+        onSubmit() {
             if (this.isSubmitting) {
                 return;
             }
             this.isSubmitting = true;
 
             this.removeErrors();
-            await this.updateRole({
+            this.updateRole({
                 onSuccess: this.onUpdateRoleSuccess,
                 onError: this.onUpdateRoleError,
             });

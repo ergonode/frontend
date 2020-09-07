@@ -53,19 +53,19 @@ export default {
             'createRole',
             '__clearStorage',
         ]),
-        async onSubmit() {
+        onSubmit() {
             if (this.isSubmitting || this.isProceeding) {
                 return;
             }
             this.isSubmitting = true;
 
             this.removeErrors();
-            await this.createRole({
-                onSuccess: this.onCreateRoleSuccess,
-                onError: this.onCreateRoleError,
+            this.createRole({
+                onSuccess: this.onCreateSuccess,
+                onError: this.onCreateError,
             });
         },
-        async onProceed() {
+        onProceed() {
             if (this.isSubmitting || this.isProceeding) {
                 return;
             }
@@ -73,16 +73,16 @@ export default {
             this.isProceeding = true;
 
             this.removeErrors();
-            await this.createRole({
-                onSuccess: this.onCreateAndEditRoleSuccess,
-                onError: this.onCreateRoleError,
+            this.createRole({
+                onSuccess: this.onProceedSuccess,
+                onError: this.onCreateError,
             });
         },
         onClose() {
             this.__clearStorage();
             this.$emit('close');
         },
-        async onCreateRoleSuccess() {
+        async onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Role created',
@@ -93,7 +93,7 @@ export default {
             this.$emit('created');
             this.onClose();
         },
-        async onCreateAndEditRoleSuccess(id) {
+        async onProceedSuccess(id) {
             this.isProceeding = false;
 
             await this.$router.push({
@@ -103,7 +103,7 @@ export default {
                 },
             });
         },
-        onCreateRoleError(errors) {
+        onCreateError(errors) {
             this.onError(errors);
 
             this.isSubmitting = false;

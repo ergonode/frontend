@@ -45,14 +45,14 @@ export default {
             'onError',
             'removeErrors',
         ]),
-        async onSubmit() {
+        onSubmit() {
             if (this.isSubmitting) {
                 return;
             }
             this.isSubmitting = true;
 
             this.removeErrors();
-            await this.updateUnit({
+            this.updateUnit({
                 onSuccess: this.onUpdateUnitSuccess,
                 onError: this.onUpdateUnitError,
             });
