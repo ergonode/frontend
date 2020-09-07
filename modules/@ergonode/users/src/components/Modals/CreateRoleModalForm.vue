@@ -53,6 +53,10 @@ export default {
             'createRole',
             '__clearStorage',
         ]),
+        ...mapActions('validations', [
+            'onError',
+            'removeErrors',
+        ]),
         onSubmit() {
             if (this.isSubmitting || this.isProceeding) {
                 return;
