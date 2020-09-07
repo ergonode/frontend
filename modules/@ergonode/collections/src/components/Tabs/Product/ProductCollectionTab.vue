@@ -47,6 +47,9 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'ProductCollectionTab',
@@ -72,28 +75,43 @@ export default {
         },
     },
     async created() {
-        const {
-            collection: types,
-        } = await this.$axios.$get('collections/type');
-        const {
-            collection: collections,
-        } = await this.$axios.$get(`products/${this.$route.params.id}/collections`);
+        const [
+            options,
+            collection,
+        ] = await Promise.all([
+            this.getCollectionTypeOptions(),
+            this.getProductCollections(),
+        ]);
 
-        this.collections = collections.map(({
-            id, code, name, description, elements_count, type_id,
-        }) => {
-            const collectionType = types.find(type => type.id === type_id);
-            return {
+        this.collections = collection
+            .map(({
                 id,
-                title: name || `#${code}`,
-                subtitle: collectionType ? collectionType.name : '',
+                code,
+                name,
                 description,
-                itemsCount: elements_count,
-                items: [],
-            };
-        });
+                elements_count,
+                type_id,
+            }) => {
+                const collectionType = options
+                    .find(type => type.id === type_id);
+
+                return {
+                    id,
+                    title: name || `#${code}`,
+                    subtitle: collectionType ? collectionType.name : '',
+                    description,
+                    itemsCount: elements_count,
+                    items: [],
+                };
+            });
     },
     methods: {
+        ...mapActions('product', [
+            'getProductCollections',
+        ]),
+        ...mapActions('collection', [
+            'getCollectionTypeOptions',
+        ]),
         onNavigateToCollections() {
             this.$router.push({
                 name: 'collections-grid',

@@ -32,7 +32,7 @@
                     label="Product template"
                     :error-messages="errorMessages[templateIdFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :fetch-options-request="getTemplatesOptionsRequest"
+                    :fetch-options-request="getTemplateOptions"
                     @input="setTemplateValue" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
@@ -58,8 +58,6 @@ import {
     mapActions,
     mapState,
 } from 'vuex';
-
-const getTemplatesOptions = () => import('@Templates/services/getTemplatesOptions.service');
 
 export default {
     name: 'ProductForm',
@@ -112,6 +110,9 @@ export default {
         ...mapActions('product', [
             '__setState',
         ]),
+        ...mapActions('productTemplate', [
+            'getTemplateOptions',
+        ]),
         setTypeValue(value) {
             this.__setState({
                 key: 'type',
@@ -129,14 +130,6 @@ export default {
                 key: 'template',
                 value,
             });
-        },
-        getTemplatesOptionsRequest() {
-            return getTemplatesOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
         },
         bindingProps({
             props,

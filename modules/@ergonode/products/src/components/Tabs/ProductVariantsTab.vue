@@ -36,6 +36,7 @@ import {
     PRODUCT_TYPE,
 } from '@Products/defaults';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -45,7 +46,7 @@ export default {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('@Core/components/Grid/Grid'),
     },
-    asyncData({
+    async asyncData({
         app, store, params: {
             id,
         },
@@ -53,89 +54,80 @@ export default {
         const {
             language: languageCode,
         } = store.state.authentication.user;
-        const productsParams = {
-            limit: 9999,
-            offset: 0,
-            view: 'list',
-            order: 'ASC',
-        };
-
-        return Promise.all([
-            store.dispatch('attribute/getAttributesByFilter', {
-                filter: `type=${TYPES.SELECT}`,
-            }),
-            app.$axios.$get(`products/${id}/bindings`),
-            app.$axios.$get(`products/${id}/children`, {
-                params: productsParams,
-            }),
-        ]).then(([
+        const [
             selectAttributes,
             productBindings,
             productChildren,
-        ]) => {
-            const attributeCodes = selectAttributes
-                .filter(
-                    attribute => productBindings
-                        .some(
-                            attrId => attribute.id === attrId,
-                        ),
-                )
-                .map(({
-                    key,
-                }) => key);
+        ] = await Promise.all([
+            store.dispatch('attribute/getAttributesByFilter', {
+                filter: `type=${TYPES.SELECT}`,
+            }),
+            store.dispatch('product/getProductBindings', id),
+            store.dispatch('product/getProductChildren', id),
+        ]);
 
-            const params = {
-                offset: 0,
-                limit: DATA_LIMIT,
-                extended: true,
-                filter: `${attributeCodes.map(attr => `${attr}!=`).join(';')},esa_product_type=${PRODUCT_TYPE.SIMPLE_PRODUCT}`,
-                columns: `esa_default_image,esa_default_label,${attributeCodes.join(',')},sku,esa_template`,
-            };
+        const attributeCodes = selectAttributes
+            .filter(
+                attribute => productBindings
+                    .some(
+                        attrId => attribute.id === attrId,
+                    ),
+            )
+            .map(({
+                key,
+            }) => key);
 
-            return getGridData({
-                $axios: app.$axios,
-                path: 'products',
-                params,
-            }).then(({
-                columns,
-                rows,
-                filtered,
-            }) => {
-                const tmpRows = [
-                    ...rows,
-                ];
+        const params = {
+            offset: 0,
+            limit: DATA_LIMIT,
+            extended: true,
+            filter: `${attributeCodes.map(attr => `${attr}!=`).join(';')},esa_product_type=${PRODUCT_TYPE.SIMPLE_PRODUCT}`,
+            columns: `esa_default_image,esa_default_label,${attributeCodes.join(',')},sku,esa_template`,
+        };
 
-                for (let i = 0; i < rows.length; i += 1) {
-                    tmpRows[i].esa_attached = {
-                        value: productChildren.collection
-                            .some(item => item.id === rows[i].id.value),
-                        sku: rows[i].sku.value,
-                    };
-                }
-
-                return {
-                    columns: [
-                        ...columns.map(column => ({
-                            ...column,
-                            editable: false,
-                            deletable: false,
-                        })),
-                        {
-                            language: languageCode,
-                            id: 'esa_attached',
-                            type: 'PRODUCT_ATTACH',
-                            label: 'Attached',
-                            visible: true,
-                            editable: true,
-                            deletable: false,
-                            parameters: [],
-                        },
-                    ],
-                    filtered,
-                    rows: tmpRows,
-                };
-            });
+        const {
+            columns,
+            rows,
+            filtered,
+        } = await getGridData({
+            $axios: app.$axios,
+            path: 'products',
+            params,
         });
+
+        const tmpRows = [
+            ...rows,
+        ];
+
+        for (let i = 0; i < rows.length; i += 1) {
+            tmpRows[i].esa_attached = {
+                value: productChildren.collection
+                    .some(item => item.id === rows[i].id.value),
+                sku: rows[i].sku.value,
+            };
+        }
+
+        return {
+            columns: [
+                ...columns.map(column => ({
+                    ...column,
+                    editable: false,
+                    deletable: false,
+                })),
+                {
+                    language: languageCode,
+                    id: 'esa_attached',
+                    type: 'PRODUCT_ATTACH',
+                    label: 'Attached',
+                    visible: true,
+                    editable: true,
+                    deletable: false,
+                    parameters: [],
+                },
+            ],
+            filtered,
+            rows: tmpRows,
+        };
     },
     data() {
         return {
@@ -181,7 +173,10 @@ export default {
         },
     },
     methods: {
-        onFetchData({
+        ...mapActions('product', [
+            'getProductChildren',
+        ]),
+        async onFetchData({
             offset,
             limit,
             filters,
@@ -211,59 +206,50 @@ export default {
                 params.order = orderState;
             }
 
-            return getGridData({
-                $axios: this.$axios,
-                path: 'products',
-                params,
-            }).then(({
+            const {
                 columns,
                 rows,
                 filtered,
-            }) => {
-                const productsParams = {
-                    limit: 9999,
-                    offset: 0,
-                    view: 'list',
-                    order: 'ASC',
-                };
-
-                return this.$axios.$get(`products/${this.id}/children`, {
-                    params: productsParams,
-                }).then(({
-                    collection,
-                }) => {
-                    const tmpRows = [
-                        ...rows,
-                    ];
-
-                    for (let i = 0; i < rows.length; i += 1) {
-                        tmpRows[i].esa_attached = {
-                            value: collection.some(item => item.id === rows[i].id.value),
-                            sku: rows[i].sku.value,
-                        };
-                    }
-
-                    this.columns = [
-                        ...columns.map(column => ({
-                            ...column,
-                            editable: false,
-                            deletable: false,
-                        })),
-                        {
-                            language: this.languageCode,
-                            id: 'esa_attached',
-                            type: 'PRODUCT_ATTACH',
-                            label: 'Attached',
-                            visible: true,
-                            editable: true,
-                            deletable: false,
-                            parameters: [],
-                        },
-                    ];
-                    this.filtered = filtered;
-                    this.rows = tmpRows;
-                });
+            } = await getGridData({
+                $axios: this.$axios,
+                path: 'products',
+                params,
             });
+
+            const {
+                collection,
+            } = this.getProductChildren(this.id);
+
+            const tmpRows = [
+                ...rows,
+            ];
+
+            for (let i = 0; i < rows.length; i += 1) {
+                tmpRows[i].esa_attached = {
+                    value: collection.some(item => item.id === rows[i].id.value),
+                    sku: rows[i].sku.value,
+                };
+            }
+
+            this.columns = [
+                ...columns.map(column => ({
+                    ...column,
+                    editable: false,
+                    deletable: false,
+                })),
+                {
+                    language: this.languageCode,
+                    id: 'esa_attached',
+                    type: 'PRODUCT_ATTACH',
+                    label: 'Attached',
+                    visible: true,
+                    editable: true,
+                    deletable: false,
+                    parameters: [],
+                },
+            ];
+            this.filtered = filtered;
+            this.rows = tmpRows;
         },
     },
 };

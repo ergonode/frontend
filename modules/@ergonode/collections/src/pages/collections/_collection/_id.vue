@@ -21,8 +21,6 @@ import {
     mapState,
 } from 'vuex';
 
-const updateCollectionProduct = () => import('@Collections/services/updateCollectionProduct.service');
-
 export default {
     name: 'EditCollection',
     components: {
@@ -36,23 +34,18 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('collection/getCollection', {
-            collectionId: params.id,
-        });
+        await store.dispatch('collection/getCollection', params);
     },
     computed: {
         ...mapState('collection', {
             id: state => state.id,
             code: state => state.code,
-            type: state => state.type,
-        }),
-        ...mapState('tab', {
-            translations: state => state.translations,
         }),
     },
     methods: {
         ...mapActions('collection', [
             'updateCollection',
+            'updateCollectionProductsVisibility',
             'removeCollection',
         ]),
         ...mapActions('grid', [
@@ -73,25 +66,12 @@ export default {
         },
         async onSave() {
             this.removeErrors();
-            const {
-                name, description,
-            } = this.translations;
-            const data = {
-                typeId: this.type,
-                name,
-                description,
-            };
 
-            await updateCollectionProduct().then(response => response.default({
-                $axios: this.$axios,
-                $store: this.$store,
-            }));
+            await this.updateCollectionProductsVisibility();
 
             this.setDrafts();
 
             await this.updateCollection({
-                id: this.id,
-                data,
                 onSuccess: this.onUpdateCollectionSuccess,
                 onError: this.onError,
             });

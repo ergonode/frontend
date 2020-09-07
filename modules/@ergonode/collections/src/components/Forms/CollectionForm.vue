@@ -24,7 +24,7 @@
                     label="Type"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errorMessages[typeIdFieldKey]"
-                    :fetch-options-request="getCollectionTypesOptionsRequest"
+                    :fetch-options-request="getCollectionTypeOptions"
                     @input="setTypeValue" />
             </FormSection>
         </template>
@@ -37,8 +37,6 @@ import {
     mapActions,
     mapState,
 } from 'vuex';
-
-const getCollectionTypesOptions = () => import('@Collections/services/getCollectionTypesOptions.service');
 
 export default {
     name: 'CollectionForm',
@@ -72,6 +70,7 @@ export default {
     methods: {
         ...mapActions('collection', [
             '__setState',
+            'getCollectionTypeOptions',
         ]),
         setCodeValue(value) {
             this.__setState({
@@ -84,14 +83,6 @@ export default {
                 key: 'type',
                 value,
             });
-        },
-        getCollectionTypesOptionsRequest() {
-            return getCollectionTypesOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
         },
         dataCyGenerator(key) {
             return `collection-${key}`;

@@ -103,7 +103,7 @@ export default {
             const languageKeys = this.selectedLanguages.map(language => language.key);
 
             try {
-                await this.$setLoader('saveSettings');
+                this.$setLoader('saveSettings');
                 isUpdated = await this.updateLanguages(languageKeys);
             } catch {
                 return false;
@@ -115,7 +115,7 @@ export default {
                     });
                     await this.getLanguages();
                 }
-                await this.$removeLoader('saveSettings');
+                this.$removeLoader('saveSettings');
             }
             return true;
         },

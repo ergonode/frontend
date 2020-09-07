@@ -22,6 +22,9 @@
 <script>
 import ModalGrid from '@Core/components/Modal/ModalGrid';
 import Tile from '@Core/components/Tile/Tile';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'ImportDetailsModalGrid',
@@ -53,27 +56,14 @@ export default {
         },
     },
     methods: {
-        async getImportDetails() {
-            const details = await this.$axios.$get(`sources/${this.sourceId}/imports/${this.importId}`);
-
-            this.details = [
-                {
-                    label: 'Date of start',
-                    value: details.started_at,
-                },
-                {
-                    label: 'Status',
-                    value: details.status,
-                },
-                {
-                    label: 'Records',
-                    value: details.records || '0',
-                },
-                {
-                    label: 'Errors',
-                    value: details.errors || '0',
-                },
-            ];
+        ...mapActions('import', [
+            'getImportDetails',
+        ]),
+        getImportDetails() {
+            this.details = this.getImportDetails({
+                sourceId: this.sourceId,
+                importId: this.importId,
+            });
         },
         onClose() {
             this.$emit('close');

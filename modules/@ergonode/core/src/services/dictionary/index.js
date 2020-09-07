@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 
-export default function ({
-    $axios, id,
-}) {
-    return $axios.$get(`attributes/${id}/options`);
-}
+export const get = ({
+    $axios, path, useCache,
+}) => $axios.$get(path, {
+    useCache,
+});

@@ -35,16 +35,11 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('unit/__clearStorage');
-        await store.dispatch('unit/getUnit', {
-            unitId: params.id,
-        });
+        await store.dispatch('unit/getUnit', params);
     },
     computed: {
         ...mapState('unit', {
-            id: state => state.id,
             name: state => state.name,
-            symbol: state => state.symbol,
         }),
     },
     destroyed() {
@@ -76,11 +71,6 @@ export default {
             this.removeErrors();
 
             this.updateUnit({
-                id: this.id,
-                data: {
-                    name: this.name,
-                    symbol: this.symbol,
-                },
                 onSuccess: this.onUpdateUnitSuccess,
                 onError: this.onError,
             });

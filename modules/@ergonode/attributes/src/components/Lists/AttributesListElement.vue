@@ -99,14 +99,13 @@ export default {
     },
     methods: {
         ...mapActions('draggable', [
-            'setDraggedElement',
+            '__setState',
         ]),
         onDrag(isDragged) {
-            if (isDragged) {
-                this.setDraggedElement(`${this.item.code}:${this.languageCode}`);
-            } else {
-                this.setDraggedElement();
-            }
+            this.__setState({
+                key: 'draggedElement',
+                value: isDragged ? `${this.item.code}:${this.languageCode}` : null,
+            });
         },
     },
 };

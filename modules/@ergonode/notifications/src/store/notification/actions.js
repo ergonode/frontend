@@ -2,32 +2,37 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+
 import {
-    types,
-} from './mutations';
+    check,
+    getAll,
+    update,
+} from '@Notifications/services/index';
 
 export default {
-    setNotificationsLimit({
+    async checkNotificationCount({
         commit,
-    }, limit) {
-        commit(types.SET_NOTIFICATIONS_LIMIT, limit);
-    },
-    checkNotificationCount({
-        commit, dispatch,
+        dispatch,
     }) {
-        return this.app.$axios.$get('profile/notifications/check', {
-            withLanguage: false,
-        }).then(({
+        const {
             unread,
-        }) => {
-            dispatch('increaseRequestTimeInterval');
-            dispatch('setRequestTimeout');
-            commit(types.SET_NOTIFICATIONS_COUNT, unread);
+        } = await check({
+            $axios: this.app.$axios,
+        });
+
+        dispatch('increaseRequestTimeInterval');
+        dispatch('setRequestTimeout');
+
+        commit('__SET_STATE', {
+            key: 'count',
+            value: unread,
         });
     },
     async requestForNotifications({
         commit, state,
     }) {
+        this.$setLoader('moreNotifications');
+
         const params = {
             limit: state.limit,
             offset: 0,
@@ -35,28 +40,32 @@ export default {
             field: 'created_at',
         };
 
-        await this.$setLoader('moreNotifications');
-        await this.app.$axios.$get('profile/notifications', {
-            params,
-            withLanguage: false,
-        }).then(({
+        const {
             collection,
-        }) => {
-            commit(types.SET_NOTIFICATIONS, collection);
+        } = await getAll({
+            $axios: this.app.$axios,
+            params,
         });
-        await this.$removeLoader('moreNotifications');
+
+        commit('__SET_STATE', {
+            key: 'notifications',
+            value: collection,
+        });
+
+        this.$removeLoader('moreNotifications');
     },
-    markNotificationAsRead({
+    async markNotificationAsRead({
         dispatch,
     }, {
         id,
     }) {
-        return this.app.$axios.$post(`profile/notifications/${id}/mark`, {
-            withLanguage: false,
-        }).then(() => {
-            dispatch('checkNotificationCount');
-            dispatch('requestForNotifications');
+        await update({
+            $axios: this.app.$axios,
+            id,
         });
+
+        dispatch('checkNotificationCount');
+        dispatch('requestForNotifications');
     },
     increaseRequestTimeInterval({
         commit, state,
@@ -71,7 +80,10 @@ export default {
             ? fiveMinutesInMs
             : requestTimeInterval * 2;
 
-        commit(types.SET_REQUEST_TIME_INTERVAL, updatedInterval);
+        commit('__SET_STATE', {
+            key: 'requestTimeInterval',
+            value: updatedInterval,
+        });
     },
     setRequestTimeout({
         commit, dispatch, state,
@@ -82,12 +94,18 @@ export default {
             dispatch('checkNotificationCount');
         }, state.requestTimeInterval);
 
-        commit(types.SET_REQUEST_TIMEOUT, timeout);
+        commit('__SET_STATE', {
+            key: 'requestTimeout',
+            value: timeout,
+        });
     },
     invalidateRequestTimeout({
         commit, state,
     }) {
         clearTimeout(state.requestTimeout);
-        commit(types.SET_REQUEST_TIMEOUT);
+        commit('__SET_STATE', {
+            key: 'requestTimeout',
+            value: null,
+        });
     },
 };

@@ -34,10 +34,7 @@ export default {
     }) {
         await Promise.all([
             store.dispatch('statusTransition/__clearStorage'),
-            store.dispatch('productStatus/getProductStatuses', {
-                limit: 9999,
-                offset: 0,
-            }),
+            store.dispatch('productStatus/getProductStatuses'),
         ]);
         await store.dispatch('statusTransition/getTransition', params);
     },

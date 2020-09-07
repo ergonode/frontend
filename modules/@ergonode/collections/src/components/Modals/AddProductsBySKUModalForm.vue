@@ -35,7 +35,6 @@ import {
 } from '@Core/defaults/theme';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -52,9 +51,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('collection', {
-            id: state => state.id,
-        }),
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -69,6 +65,9 @@ export default {
             'onError',
             'removeErrors',
         ]),
+        ...mapActions('collection', [
+            'addBySku',
+        ]),
         onFormValueChange(value) {
             this.productSkus = value;
         },
@@ -77,12 +76,11 @@ export default {
         },
         onAdd() {
             this.removeErrors();
-            const data = {
-                skus: this.productSkus.replace(/\n/g, ',').split(','),
-            };
 
             this.isRequestPending = true;
-            this.$axios.$post(`collections/${this.id}/elements/add-from-skus`, data).then(() => {
+            this.addBySku({
+                skus: this.productSkus,
+            }).then(() => {
                 this.isRequestPending = false;
                 this.removeErrors();
                 this.$addAlert({

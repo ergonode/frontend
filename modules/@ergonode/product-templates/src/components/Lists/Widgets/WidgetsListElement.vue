@@ -56,14 +56,15 @@ export default {
     },
     methods: {
         ...mapActions('draggable', [
-            'setDraggedElement',
+            '__setState',
         ]),
         onDrag(isDragged) {
-            if (isDragged) {
-                this.setDraggedElement(this.item.type);
-            } else {
-                this.setDraggedElement();
-            }
+            this.__setState({
+                key: 'draggedElement',
+                value: isDragged
+                    ? this.item.type
+                    : null,
+            });
         },
     },
 };

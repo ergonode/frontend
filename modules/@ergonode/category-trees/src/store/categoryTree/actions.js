@@ -13,7 +13,7 @@ import {
     get,
     remove,
     update,
-} from '@Trees/services';
+} from '@Trees/services/index';
 
 export default {
     createCategoryTree({
@@ -108,7 +108,7 @@ export default {
             id, data, onSuccess,
         },
     ) {
-        await this.$setLoader('footerButton');
+        this.$setLoader('footerButton');
         await update({
             $axios: this.app.$axios,
             id,
@@ -116,7 +116,7 @@ export default {
         }).then(() => {
             onSuccess();
         });
-        await this.$removeLoader('footerButton');
+        this.$removeLoader('footerButton');
     },
     removeCategoryTree({
         state,

@@ -3,8 +3,16 @@
  * See LICENSE for license details.
  */
 import {
+    getMappedConditionSetData,
     getParsedConditionSetData,
 } from '@Conditions/models/conditionSetMapper';
+import {
+    createSet,
+    getConfiguration,
+    getDictionary,
+    getSets,
+    updateSet,
+} from '@Conditions/services/index';
 import {
     objectToArrayWithPropsName,
 } from '@Core/models/objectWrapper';
@@ -14,105 +22,147 @@ import {
 } from './mutations';
 
 export default {
-    getConditions({
+    async getConditions({
         commit,
     }, params = {}) {
-        return this.app.$axios.$get('dictionary/conditions', {
+        const dictionary = await getDictionary({
+            $axios: this.app.$axios,
             params,
-        }).then((data) => {
-            commit(types.SET_CONDITIONS_DICTIONARY, objectToArrayWithPropsName(data));
         });
-    },
-    async getConditionSet(
-        {
-            state, commit, dispatch,
-        },
-        {
-            conditionSetId,
-        },
-    ) {
-        await this.app.$axios.$get(`conditionsets/${conditionSetId}`).then(async ({
-            id,
-            conditions = [],
-        }) => {
-            await Promise.all(conditions.map(async (condition) => {
-                const {
-                    type,
-                } = condition;
-                if (!state.conditions[type]) {
-                    await dispatch('getConditionConfiguration', {
-                        conditionId: type,
-                    });
-                }
-            }));
 
-            const {
-                conditionsData, conditionsTree,
-            } = getParsedConditionSetData(conditions, state.conditions);
-
-            commit('__SET_STATE', {
-                key: 'id',
-                value: id,
-            });
-            commit('__SET_STATE', {
-                key: 'conditionsValues',
-                value: conditionsData,
-            });
-            dispatch('gridDesigner/setGridData', conditionsTree, {
-                root: true,
-            });
-            dispatch('gridDesigner/setFullGridData', conditionsTree, {
-                root: true,
-            });
-        });
-    },
-    createConditionSet(
-        {
-            commit,
-        },
-        {
-            data,
-            onSuccess,
-            onError,
-        },
-    ) {
-        return this.app.$axios.$post('conditionsets', data).then(({
-            id,
-        }) => {
-            commit('__SET_STATE', {
-                key: 'id',
-                value: id,
-            });
-            onSuccess(id);
-        }).catch(e => onError(e.data));
-    },
-    updateConditionSet(
-        {},
-        {
-            id,
-            data,
-            onSuccess,
-            onError,
-        },
-    ) {
-        return this.app.$axios.$put(`conditionsets/${id}`, data)
-            .then(() => onSuccess(id))
-            .catch(e => onError(e.data));
+        commit(types.SET_CONDITIONS_DICTIONARY, objectToArrayWithPropsName(dictionary));
     },
     async getConditionConfiguration(
         {
             commit,
         },
         {
-            conditionId,
+            id,
         },
     ) {
-        await this.app.$axios.$get(`conditions/${conditionId}`).then((data) => {
-            commit(types.SET_CONDITIONS, {
-                key: conditionId,
-                value: data,
-            });
+        const configuration = await getConfiguration({
+            $axios: this.app.$axios,
+            id,
         });
+
+        commit(types.SET_CONDITIONS, {
+            key: id,
+            value: configuration,
+        });
+    },
+    async getConditionSet(
+        {
+            state,
+            commit,
+            dispatch,
+        },
+        {
+            id,
+        },
+    ) {
+        const {
+            conditions = [],
+        } = await getSets({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        await Promise.all(conditions.map(async (condition) => {
+            const {
+                type,
+            } = condition;
+            if (!state.conditions[type]) {
+                await dispatch('getConditionConfiguration', {
+                    id: type,
+                });
+            }
+        }));
+
+        const {
+            conditionsData,
+            conditionsTree,
+        } = getParsedConditionSetData(conditions, state.conditions);
+
+        commit('__SET_STATE', {
+            key: 'id',
+            value: id,
+        });
+        commit('__SET_STATE', {
+            key: 'conditionsValues',
+            value: conditionsData,
+        });
+        dispatch('gridDesigner/setGridData', conditionsTree, {
+            root: true,
+        });
+        dispatch('gridDesigner/setFullGridData', conditionsTree, {
+            root: true,
+        });
+    },
+    async createConditionSet(
+        {
+            state,
+            commit,
+        },
+        {
+            onSuccess,
+            onError,
+        },
+    ) {
+        try {
+            const {
+                conditions,
+                conditionsValues,
+            } = state;
+
+            const data = {
+                conditions: getMappedConditionSetData(conditionsValues, conditions),
+            };
+
+            const {
+                id,
+            } = await createSet({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            onSuccess(id);
+        } catch (e) {
+            onError(e.data);
+        }
+    },
+    async updateConditionSet(
+        {
+            state,
+        },
+        {
+            id,
+            onSuccess,
+            onError,
+        },
+    ) {
+        try {
+            const {
+                conditions,
+                conditionsValues,
+            } = state;
+
+            const data = {
+                conditions: getMappedConditionSetData(conditionsValues, conditions),
+            };
+
+            await updateSet({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess(id);
+        } catch (e) {
+            onError(e.data);
+        }
     },
     setConditionValue({
         commit, state,

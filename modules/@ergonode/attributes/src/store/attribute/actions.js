@@ -137,7 +137,14 @@ export default {
 
         return getAll({
             $axios: this.app.$axios,
-            filter,
+            params: {
+                limit: 9999,
+                offset: 0,
+                filter,
+                view: 'list',
+                field: 'name',
+                order: 'ASC',
+            },
         }).then(({
             collection,
         }) => getMappedTranslationArrayOptions({
@@ -157,7 +164,14 @@ export default {
 
         return getAll({
             $axios: this.app.$axios,
-            filter,
+            params: {
+                limit: 9999,
+                offset: 0,
+                filter,
+                view: 'list',
+                field: 'name',
+                order: 'ASC',
+            },
         }).then(({
             collection,
         }) => {
@@ -377,7 +391,7 @@ export default {
             }
         });
 
-        await this.$setLoader('footerButton');
+        this.$setLoader('footerButton');
         await Promise.all([
             ...optionsToAddRequests,
             ...optionsToUpdateRequests,
@@ -390,7 +404,7 @@ export default {
             commit(types.REMOVE_UPDATED_OPTION);
             onSuccess();
         });
-        await this.$removeLoader('footerButton');
+        this.$removeLoader('footerButton');
     },
     removeAttribute({
         state,
