@@ -7,7 +7,7 @@ import {
     check,
     getAll,
     update,
-} from '@Notifications/services';
+} from '@Notifications/services/index';
 
 export default {
     async checkNotificationCount({

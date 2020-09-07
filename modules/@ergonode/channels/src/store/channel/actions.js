@@ -11,7 +11,7 @@ import {
     remove,
     update,
     updateScheduler,
-} from '@Channels/services';
+} from '@Channels/services/index';
 import {
     getDefaultJsonSchemaTypes,
 } from '@Core/models/jsonSchema';

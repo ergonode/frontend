@@ -13,7 +13,7 @@ import {
     get,
     remove,
     update,
-} from '@Trees/services';
+} from '@Trees/services/index';
 
 export default {
     createCategoryTree({

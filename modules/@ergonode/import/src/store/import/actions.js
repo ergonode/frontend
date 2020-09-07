@@ -14,7 +14,7 @@ import {
     getDetails,
     remove,
     update,
-} from '@Import/services';
+} from '@Import/services/index';
 
 export default {
     async getImportProfile(

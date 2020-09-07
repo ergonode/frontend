@@ -11,7 +11,7 @@ import {
 import {
     create,
     get,
-} from '@Authentication/services';
+} from '@Authentication/services/index';
 import camelcaseKeys from 'camelcase-keys';
 
 export default {

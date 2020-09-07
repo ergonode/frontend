@@ -8,7 +8,7 @@ import {
     getAll,
     remove,
     update,
-} from '@Categories/services';
+} from '@Categories/services/index';
 
 export default {
     createCategory({

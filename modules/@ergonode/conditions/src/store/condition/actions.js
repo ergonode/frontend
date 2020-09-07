@@ -12,7 +12,7 @@ import {
     getDictionary,
     getSets,
     updateSet,
-} from '@Conditions/services';
+} from '@Conditions/services/index';
 import {
     objectToArrayWithPropsName,
 } from '@Core/models/objectWrapper';
