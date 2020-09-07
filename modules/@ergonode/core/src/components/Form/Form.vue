@@ -38,10 +38,29 @@
         <div class="form__footer">
             <slot name="submit">
                 <Button
-                    title="SUBMIT"
-                    type="submit" />
+                    v-if="submitTitle !== ''"
+                    :title="submitTitle"
+                    type="submit">
+                    <template
+                        v-if="isSubmitting"
+                        #append="{ color }">
+                        <IconSpinner :fill-color="color" />
+                    </template>
+                </Button>
             </slot>
-            <slot name="cancel" />
+            <slot name="proceed">
+                <Button
+                    v-if="proceedTitle !== ''"
+                    :title="proceedTitle"
+                    :theme="secondaryTheme"
+                    @click.native="onProceed">
+                    <template
+                        v-if="isProceeding"
+                        #prepend="{ color }">
+                        <IconSpinner :fill-color="color" />
+                    </template>
+                </Button>
+            </slot>
         </div>
     </form>
 </template>
@@ -53,7 +72,11 @@ import {
 import Button from '@Core/components/Button/Button';
 import Divider from '@Core/components/Dividers/Divider';
 import IconError from '@Core/components/Icons/Feedback/IconError';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import LinkButton from '@Core/components/LinkButton/LinkButton';
+import {
+    THEME,
+} from '@Core/defaults/theme';
 import {
     mapActions,
     mapState,
@@ -66,6 +89,7 @@ export default {
         LinkButton,
         IconError,
         Divider,
+        IconSpinner,
     },
     props: {
         title: {
@@ -74,7 +98,19 @@ export default {
         },
         submitTitle: {
             type: String,
-            default: 'SUBMIT',
+            default: '',
+        },
+        proceedTitle: {
+            type: String,
+            default: '',
+        },
+        isSubmitting: {
+            type: Boolean,
+            default: false,
+        },
+        isProceeding: {
+            type: Boolean,
+            default: false,
         },
         fieldsKeys: {
             type: Array,
@@ -85,6 +121,9 @@ export default {
         ...mapState('validations', {
             errors: state => state.errors,
         }),
+        secondaryTheme() {
+            return THEME.SECONDARY;
+        },
         errorMessages() {
             return this.fieldsKeys.reduce((acc, current) => {
                 const errors = acc;
@@ -117,8 +156,11 @@ export default {
         getErrorForKey(key) {
             return this.errors[key] || null;
         },
-        onSubmit() {
+        async onSubmit() {
             this.$emit('submit');
+        },
+        onProceed() {
+            this.$emit('proceed');
         },
     },
 };

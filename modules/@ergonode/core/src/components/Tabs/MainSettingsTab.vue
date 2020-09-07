@@ -5,27 +5,16 @@
 <template>
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
-            <MainSettingsForm @submit="onSubmit">
-                <template #submitForm>
-                    <Button
-                        title="SAVE CHANGES"
-                        type="SUBMIT">
-                        <template
-                            v-if="isSubmitting"
-                            #append="{ color }">
-                            <IconSpinner :fill-color="color" />
-                        </template>
-                    </Button>
-                </template>
-            </MainSettingsForm>
+            <MainSettingsForm
+                submit-title="SAVE CHANGES"
+                :is-submitting="isSubmitting"
+                @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
 import MainSettingsForm from '@Core/components/Forms/MainSettingsForm';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     ALERT_TYPE,
@@ -43,8 +32,6 @@ export default {
     components: {
         MainSettingsForm,
         CenterViewTemplate,
-        IconSpinner,
-        Button,
     },
     data() {
         return {
@@ -69,7 +56,7 @@ export default {
             if (selectedLanguages.length < 1) {
                 this.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'At least one language needed',
+                    message: 'At least one language is required',
                 });
 
                 return;
@@ -94,10 +81,10 @@ export default {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Changes in language settings will affect the entire application.',
-                confirmCallback: () => this.onAgree(languageKeys),
+                confirmCallback: () => this.onConfirm(languageKeys),
             });
         },
-        async onAgree(selectedLanguages) {
+        async onConfirm(selectedLanguages) {
             this.isSubmitting = true;
 
             await this.updateLanguages({

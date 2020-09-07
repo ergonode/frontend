@@ -30,8 +30,8 @@
         <template #submit>
             <slot name="submitForm" />
         </template>
-        <template #cancel>
-            <slot name="cancelForm" />
+        <template #procced>
+            <slot name="proceedForm" />
         </template>
     </Form>
 </template>

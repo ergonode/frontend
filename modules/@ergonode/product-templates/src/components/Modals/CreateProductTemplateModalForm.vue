@@ -19,7 +19,7 @@
                         </template>
                     </Button>
                 </template>
-                <template #cancelForm>
+                <template #proceedForm>
                     <Button
                         title="CREATE & EDIT"
                         :theme="secondaryTheme"
@@ -74,7 +74,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         async onSubmit() {
             if (this.isSubmitting || this.isCreatingAndEdit) {
@@ -83,7 +83,7 @@ export default {
             this.isSubmitting = true;
 
             try {
-                this.removeValidationErrors();
+                this.removeErrors();
                 await this.createProductTemplate();
                 this.$emit('created');
                 this.onClose();
@@ -103,7 +103,7 @@ export default {
             this.isCreatingAndEdit = true;
 
             try {
-                this.removeValidationErrors();
+                this.removeErrors();
                 const id = await this.createProductTemplate();
                 await this.$router.push({
                     name: 'product-template-id-general',

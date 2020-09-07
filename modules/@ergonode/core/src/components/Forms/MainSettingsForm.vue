@@ -5,6 +5,10 @@
 <template>
     <Form
         title="Options"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
         @submit="onSubmit">
         <template #body>
             <FormSection>
@@ -27,9 +31,6 @@
                 </TranslationSelect>
             </FormSection>
         </template>
-        <template #submit>
-            <slot name="submitForm" />
-        </template>
     </Form>
 </template>
 
@@ -48,10 +49,27 @@ export default {
         FormSection: () => import('@Core/components/Form/Section/FormSection'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
     },
+    props: {
+        submitTitle: {
+            type: String,
+            default: '',
+        },
+        proceedTitle: {
+            type: String,
+            default: '',
+        },
+        isSubmitting: {
+            type: Boolean,
+            default: false,
+        },
+        isProceeding: {
+            type: Boolean,
+            default: false,
+        },
+    },
     data() {
         return {
             filteredValue: '',
-            tmpLanguages: [],
             activeLanguages: [],
         };
     },
@@ -59,17 +77,26 @@ export default {
         ...mapState('core', {
             languages: state => state.languages,
         }),
+        mappedLanguages() {
+            return this.languages.map(({
+                id, name, code,
+            }) => ({
+                id,
+                key: code,
+                value: name,
+            }));
+        },
         languageOptions() {
             if (this.filteredValue) {
                 const rgx = new RegExp(this.filteredValue, 'i');
 
-                return this.tmpLanguages.filter(
+                return this.mappedLanguages.filter(
                     ({
                         key, value,
                     }) => key.match(rgx) || value.match(rgx),
                 );
             }
-            return this.tmpLanguages;
+            return this.mappedLanguages;
         },
         hint() {
             return this.activeLanguages.map(({
@@ -82,28 +109,18 @@ export default {
             ]);
         },
     },
-    watch: {
-        languages: {
-            deep: true,
-            immediate: true,
-            handler(value) {
-                const mappedLanguage = ({
-                    id, name, code,
-                }) => ({
-                    id,
-                    key: code,
-                    value: name,
-                });
-
-                this.tmpLanguages = value.map(mappedLanguage);
-                this.activeLanguages = value
-                    .filter(({
-                        active,
-                    }) => active === true)
-                    .map(mappedLanguage);
-                this.$emit('selectedLanguages', this.activeLanguages);
-            },
-        },
+    created() {
+        this.activeLanguages = this.languages
+            .filter(({
+                active,
+            }) => active)
+            .map(({
+                id, name, code,
+            }) => ({
+                id,
+                key: code,
+                value: name,
+            }));
     },
     methods: {
         setSelectedLanguages(selectedLanguages) {

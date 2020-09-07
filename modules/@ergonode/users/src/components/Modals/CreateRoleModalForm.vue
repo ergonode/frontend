@@ -19,7 +19,7 @@
                         </template>
                     </Button>
                 </template>
-                <template #cancelForm>
+                <template #proceedForm>
                     <Button
                         title="CREATE & EDIT"
                         :theme="secondaryTheme"
@@ -79,7 +79,7 @@ export default {
             this.isSubmitting = true;
 
             try {
-                this.removeValidationErrors();
+                this.removeErrors();
                 await this.createRole();
                 this.$emit('created');
                 this.onClose();
@@ -99,7 +99,7 @@ export default {
             this.isCreatingAndEdit = true;
 
             try {
-                this.removeValidationErrors();
+                this.removeErrors();
                 const id = await this.createRole();
                 await this.$router.push({
                     name: 'user-role-id-general',
