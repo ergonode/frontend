@@ -50,11 +50,11 @@ export default {
 
             this.removeErrors();
             this.updateUser({
-                onSuccess: this.onCreateSuccess,
-                onError: this.onCreateError,
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
             });
         },
-        async onCreateSuccess() {
+        async onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'User updated',
@@ -62,7 +62,7 @@ export default {
 
             this.isSubmitting = false;
         },
-        onCreateError(errors) {
+        onUpdateError(errors) {
             this.onError(errors);
 
             this.isSubmitting = false;

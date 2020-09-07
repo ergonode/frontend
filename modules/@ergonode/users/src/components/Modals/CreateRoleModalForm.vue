@@ -86,7 +86,7 @@ export default {
             this.__clearStorage();
             this.$emit('close');
         },
-        async onCreateSuccess() {
+        onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Role created',

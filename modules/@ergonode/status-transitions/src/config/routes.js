@@ -60,7 +60,7 @@ export default [
             {
                 name: 'transition-id-general',
                 path: 'general',
-                component: Tabs.StatusTransitionBaseTab,
+                component: Tabs.StatusTransitionGeneralTab,
                 meta: {
                     title: 'Options',
                     breadcrumbs: [

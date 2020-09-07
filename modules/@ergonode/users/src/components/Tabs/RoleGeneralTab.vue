@@ -50,11 +50,11 @@ export default {
 
             this.removeErrors();
             this.updateRole({
-                onSuccess: this.onUpdateRoleSuccess,
-                onError: this.onUpdateRoleError,
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
             });
         },
-        async onUpdateRoleSuccess() {
+        async onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Role updated',
@@ -62,7 +62,7 @@ export default {
 
             this.isSubmitting = false;
         },
-        onUpdateRoleError(errors) {
+        onUpdateError(errors) {
             this.onError(errors);
 
             this.isSubmitting = false;

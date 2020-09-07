@@ -89,11 +89,11 @@ export default {
 
             await this.updateLanguages({
                 languages: selectedLanguages,
-                onError: this.onUpdateLanguagesError,
-                onSuccess: this.onUpdateLanguagesSuccess,
+                onError: this.onUpdateError,
+                onSuccess: this.onUpdateSuccess,
             });
         },
-        async onUpdateLanguagesSuccess() {
+        async onUpdateSuccess() {
             await this.getLanguages();
 
             this.$addAlert({
@@ -102,7 +102,7 @@ export default {
             });
             this.isSubmitting = false;
         },
-        onUpdateLanguagesError(message) {
+        onUpdateError(message) {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
                 message,

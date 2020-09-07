@@ -15,7 +15,8 @@ import {
 
 export default {
     async getProductStatuses({
-        commit, rootState,
+        commit,
+        rootState,
     }) {
         const {
             language: userLanguageCode,

@@ -86,10 +86,10 @@ export default {
                 onError: this.onCreateError,
             });
         },
-        async onCreateSuccess() {
+        onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Role created',
+                message: 'User created',
             });
 
             this.isSubmitting = false;

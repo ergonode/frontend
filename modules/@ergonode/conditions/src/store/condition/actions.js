@@ -135,27 +135,18 @@ export default {
         }
     },
     async updateConditionSet(
-        {
-            state,
-        },
+        {},
         {
             id,
+            data,
             onSuccess = () => {},
             onError = () => {},
         },
     ) {
         try {
-            const {
-                conditions,
-                conditionsValues,
-            } = state;
-
-            const data = {
-                conditions: getMappedConditionSetData(conditionsValues, conditions),
-            };
-
             await updateSet({
                 $axios: this.app.$axios,
+                id,
                 data,
             });
 
