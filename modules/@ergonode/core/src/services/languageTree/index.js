@@ -3,16 +3,10 @@
  * See LICENSE for license details.
  */
 
-export default {
-    get({
-        $axios,
-    }) {
-        return $axios.$get('language/tree');
-    },
-    update({
-        $axios,
-        data,
-    }) {
-        return $axios.$put('language/tree', data);
-    },
-};
+export const get = ({
+    $axios,
+}) => $axios.$get('language/tree');
+
+export const update = ({
+    $axios, data,
+}) => $axios.$put('language/tree', data);

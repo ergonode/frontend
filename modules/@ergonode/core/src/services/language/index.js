@@ -3,25 +3,20 @@
  * See LICENSE for license details.
  */
 
-export default {
-    getAll({
-        $axios,
-        params = {
-            limit: 9999,
-            offset: 0,
-            view: 'list',
-            field: 'name',
-            order: 'ASC',
-        },
-    }) {
-        return $axios.$get('languages', {
-            params,
-        });
+export const getAll = ({
+    $axios,
+    params = {
+        limit: 9999,
+        offset: 0,
+        view: 'list',
+        field: 'name',
+        order: 'ASC',
     },
-    update({
-        $axios,
-        data,
-    }) {
-        return $axios.$put('languages', data);
-    },
-};
+}) => $axios.$get('languages', {
+    params,
+});
+
+export const update = ({
+    $axios,
+    data,
+}) => $axios.$put('languages', data);

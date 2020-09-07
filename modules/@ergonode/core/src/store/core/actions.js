@@ -5,8 +5,14 @@
 import {
     getFlattenedTreeData,
 } from '@Core/models/mappers/treeMapper';
-import languageService from '@Core/services/language/index';
-import languageTreeService from '@Core/services/languageTree/index';
+import {
+    getAll as getAllLanguages,
+    update as updateLanguage,
+} from '@Core/services/language/index';
+import {
+    get as getLanguageTree,
+    update as updateLanguageTree,
+} from '@Core/services/languageTree/index';
 
 import {
     types,
@@ -18,7 +24,7 @@ export default {
     }) {
         const {
             collection,
-        } = await languageService.getAll({
+        } = await getAllLanguages({
             $axios: this.app.$axios,
         });
 
@@ -32,7 +38,7 @@ export default {
     }) {
         const {
             languages,
-        } = await languageTreeService.get({
+        } = await getLanguageTree({
             $axios: this.app.$axios,
         });
 
@@ -42,7 +48,7 @@ export default {
         const data = {
             collection,
         };
-        await languageService.update({
+        await updateLanguage({
             $axios: this.app.$axios,
             data,
         });
@@ -51,7 +57,7 @@ export default {
         const data = {
             languages,
         };
-        await languageTreeService.update({
+        await updateLanguageTree({
             $axios: this.app.$axios,
             data,
         });
