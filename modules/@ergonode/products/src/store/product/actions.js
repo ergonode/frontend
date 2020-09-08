@@ -228,16 +228,22 @@ export default {
         return elements;
     },
     async getProductChildren({}, id) {
-        await getChildren({
+        const {
+            collection,
+        } = await getChildren({
             $axios: this.app.$axios,
             id,
         });
+
+        return collection;
     },
     async getProductBindings({}, id) {
-        await getBindings({
+        const bindings = await getBindings({
             $axios: this.app.$axios,
             id,
         });
+
+        return bindings;
     },
     async getProductCollections({
         state,

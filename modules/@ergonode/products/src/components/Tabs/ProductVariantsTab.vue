@@ -101,7 +101,7 @@ export default {
 
         for (let i = 0; i < rows.length; i += 1) {
             tmpRows[i].esa_attached = {
-                value: productChildren.collection
+                value: productChildren
                     .some(item => item.id === rows[i].id.value),
                 sku: rows[i].sku.value,
             };

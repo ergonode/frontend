@@ -76,14 +76,14 @@ export default {
     },
     async created() {
         const [
-            options,
-            collection,
+            collectionTypeOptionsResponse,
+            productCollections,
         ] = await Promise.all([
             this.getCollectionTypeOptions(),
             this.getProductCollections(),
         ]);
 
-        this.collections = collection
+        this.collections = productCollections
             .map(({
                 id,
                 code,
@@ -92,7 +92,7 @@ export default {
                 elements_count,
                 type_id,
             }) => {
-                const collectionType = options
+                const collectionType = collectionTypeOptionsResponse.options
                     .find(type => type.id === type_id);
 
                 return {
