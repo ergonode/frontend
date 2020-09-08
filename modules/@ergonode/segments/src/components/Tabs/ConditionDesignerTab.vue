@@ -51,10 +51,10 @@ export default {
         VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
         ConditionSetWrapper: () => import('@Conditions/components/ConditionSetDesigner/ConditionSetWrapper'),
     },
-    fetch({
+    async fetch({
         store,
     }) {
-        return store.dispatch('condition/getConditions', {
+        await store.dispatch('condition/getConditions', {
             group: 'segment',
         });
     },

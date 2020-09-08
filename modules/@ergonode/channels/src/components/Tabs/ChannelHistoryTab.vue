@@ -62,6 +62,8 @@ export default {
                 exportId,
                 channelId,
             };
+
+            console.log(this.selectedRow);
             this.isExportDetailsModalVisible = true;
         },
         onCloseModalGrid() {

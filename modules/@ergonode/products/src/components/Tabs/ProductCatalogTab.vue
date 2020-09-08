@@ -133,7 +133,7 @@ export default {
         }),
         gridDraftMixin,
     ],
-    fetch() {
+    async fetch() {
         const requests = [
             this.onFetchData(),
         ];
@@ -143,7 +143,7 @@ export default {
             requests.push(this.onFetchAdvancedFilters(advFiltersIds));
         }
 
-        return Promise.all(requests).then(() => {
+        await Promise.all(requests).then(() => {
             this.isPrefetchingData = false;
             this.setDisabledElements(this.getDisabledElements({
                 columns: this.columns,

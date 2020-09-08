@@ -29,8 +29,8 @@ export default {
         CenterViewTemplate,
         SchedulerForm,
     },
-    fetch() {
-        this.getSchedulerConfiguration();
+    async fetch() {
+        await this.getSchedulerConfiguration();
     },
     data() {
         return {
@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Channel updated',
+                message: 'Channel scheduler updated',
             });
 
             this.isSubmitting = false;

@@ -70,10 +70,10 @@ export default {
         VerticalTabBar,
         ConditionSetWrapper,
     },
-    fetch({
+    async fetch({
         store,
     }) {
-        store.dispatch('condition/getConditions', {
+        await store.dispatch('condition/getConditions', {
             group: 'workflow',
         });
     },

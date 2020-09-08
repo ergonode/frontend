@@ -37,8 +37,8 @@ export default {
         ModalForm,
         ProductForm,
     },
-    fetch() {
-        this.getSelectAttributes();
+    async fetch() {
+        await this.getSelectAttributes();
     },
     data() {
         return {
