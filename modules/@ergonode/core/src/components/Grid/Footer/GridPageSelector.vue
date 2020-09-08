@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="page-selector">
-        <span class="page-selector__text">
+    <div class="grid-page-selector">
+        <span class="grid-page-selector__text">
             Show
         </span>
         <Select
@@ -13,7 +13,7 @@
             :size="smallSize"
             @input="onValueChange" />
         <span
-            class="page-selector__text"
+            class="grid-page-selector__text"
             v-text="infoText" />
     </div>
 </template>
@@ -62,7 +62,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .page-selector {
+    .grid-page-selector {
         display: grid;
         align-items: center;
         grid-template-columns: max-content 72px max-content;

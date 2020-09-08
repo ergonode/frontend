@@ -50,16 +50,15 @@ export default {
             type: Object,
             default: null,
         },
+        editorWidth: {
+            type: Number,
+            default: 0,
+        },
         type: {
             type: String,
             default: INPUT_TYPE.UNDERLINE,
             validator: value => Object.values(INPUT_TYPE).indexOf(value) !== -1,
         },
-    },
-    data() {
-        return {
-            editorWidth: 0,
-        };
     },
     computed: {
         classes() {
@@ -84,13 +83,6 @@ export default {
         hiddenExtensions() {
             return EXTENSIONS.slice(this.maxVisibleExtensions, EXTENSIONS.length);
         },
-    },
-    mounted() {
-        this.$nextTick(() => {
-            window.requestAnimationFrame(() => {
-                this.editorWidth = this.$el.offsetWidth;
-            });
-        });
     },
 };
 </script>
