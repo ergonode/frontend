@@ -40,12 +40,6 @@ export default {
             id: state => state.id,
             code: state => state.code,
         }),
-        ...mapState('gridDesigner', {
-            fullGridData: state => state.fullGridData,
-        }),
-        ...mapState('tab', {
-            translations: state => state.translations,
-        }),
     },
     destroyed() {
         this.clearGridDesignerStorage();

@@ -5,8 +5,7 @@
 <template>
     <CategoryPage
         :title="code"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -35,26 +34,16 @@ export default {
         store,
         params,
     }) {
-        await Promise.all([
-            store.dispatch('tab/__clearStorage'),
-            store.dispatch('category/__clearStorage'),
-        ]);
-        await store.dispatch('category/getCategory', {
-            categoryId: params.id,
-        });
+        await store.dispatch('category/getCategory', params);
     },
     computed: {
         ...mapState('category', {
             id: state => state.id,
             code: state => state.code,
         }),
-        ...mapState('tab', {
-            translations: state => state.translations,
-        }),
     },
     methods: {
         ...mapActions('category', [
-            'updateCategory',
             'removeCategory',
         ]),
         ...mapActions('validations', [
@@ -68,29 +57,6 @@ export default {
                 confirmCallback: () => this.removeCategory({
                     onSuccess: this.onRemoveSuccess,
                 }),
-            });
-        },
-        onSave() {
-            this.removeErrors();
-            const {
-                name,
-            } = this.translations;
-            const data = {
-                name,
-            };
-
-            this.updateCategory({
-                id: this.id,
-                data,
-                onSuccess: this.onUpdateCategorySuccess,
-                onError: this.onError,
-            });
-        },
-        onUpdateCategorySuccess() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Category updated',
             });
         },
         onRemoveSuccess() {
