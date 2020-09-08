@@ -15,8 +15,9 @@
                     <div class="fixed-container">
                         <Picture
                             v-if="!multiple"
+                            :api-path="`multimedia/${value}/download/default`"
                             :value="value"
-                            object-fit="none" />
+                            :object-fit="objectFit" />
                         <PictureCarousel
                             v-else
                             :image-ids="value"
@@ -46,7 +47,7 @@
                 </div>
                 <div
                     class="centering-container"
-                    v-else>
+                    v-else-if="!disabled">
                     <Button
                         :title="title"
                         :size="smallSize"
@@ -119,6 +120,10 @@ export default {
                 SIZE.SMALL,
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
+        },
+        objectFit: {
+            type: String,
+            default: 'none',
         },
         height: {
             type: String,
@@ -239,10 +244,11 @@ export default {
             const value = this.multiple
                 ? this.value[this.currentIndex]
                 : this.value;
-            const url = `${process.env.baseURL}multimedia/${value}/download/default`;
+            const url = `multimedia/${value}/download/default`;
 
             this.$axios.$get(url, {
                 responseType: 'arraybuffer',
+                withLanguage: false,
             })
                 .then((response) => {
                     const downloadUrl = window.URL.createObjectURL(new Blob([
@@ -259,7 +265,12 @@ export default {
         },
         onRemoveImage() {
             if (this.multiple) {
-                this.$emit('input', this.value.filter(id => id !== this.value[this.currentIndex]));
+                const value = this.value.filter(id => id !== this.value[this.currentIndex]);
+
+                if (this.currentIndex > 0) {
+                    this.currentIndex -= 1;
+                }
+                this.$emit('input', value);
             } else {
                 this.$emit('input', '');
             }

@@ -30,7 +30,7 @@
                     :items="items[language.code][group.id]"
                     :language-code="language.code"
                     :is-expanded="expandedGroupId === group.id"
-                    :is-draggable="isAllowedToUpdate"
+                    :is-draggable="!disabled"
                     @expand="onGroupExpand" />
             </ListScrollableContainer>
         </List>
@@ -89,6 +89,10 @@ export default {
             type: Boolean,
             default: true,
         },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
@@ -97,10 +101,10 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            user: state => state.user,
+            languagePrivileges: state => state.user.languagePrivileges,
         }),
         ...mapState('core', {
-            defaultLanguageCodeByPrivileges: state => state.defaultLanguageCodeByPrivileges,
+            defaultLanguageCode: state => state.defaultLanguageCode,
             languagesTree: state => state.languagesTree,
         }),
         smallSize() {
@@ -124,34 +128,20 @@ export default {
                 PRIVILEGES.ATTRIBUTE.create,
             ]);
         },
-        isAllowedToUpdate() {
-            const {
-                languagePrivileges,
-            } = this.user;
-            const {
-                code,
-            } = this.language;
-
-            return this.$hasAccess([
-                PRIVILEGES.ATTRIBUTE.update,
-            ]) && languagePrivileges[code].read;
-        },
         languageOptions() {
-            const {
-                languagePrivileges,
-            } = this.user;
-
             return this.languagesTree.map(language => ({
                 ...language,
                 key: language.code,
                 value: language.name,
-                disabled: !languagePrivileges[language.code].read,
+                disabled: this.languagePrivileges[language.code]
+                    ? !this.languagePrivileges[language.code].read
+                    : true,
             }));
         },
     },
     created() {
         this.language = this.languageOptions
-            .find(languegeCode => languegeCode.code === this.defaultLanguageCodeByPrivileges);
+            .find(languageCode => languageCode.code === this.defaultLanguageCode);
     },
     beforeDestroy() {
         this.setDisabledElements({});

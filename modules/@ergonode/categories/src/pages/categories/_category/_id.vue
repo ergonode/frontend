@@ -36,30 +36,30 @@ export default {
         params,
     }) {
         await Promise.all([
-            store.dispatch('translations/__clearStorage'),
-            store.dispatch('categories/__clearStorage'),
+            store.dispatch('tab/__clearStorage'),
+            store.dispatch('category/__clearStorage'),
         ]);
-        await store.dispatch('categories/getCategory', {
+        await store.dispatch('category/getCategory', {
             categoryId: params.id,
         });
     },
     computed: {
-        ...mapState('categories', {
+        ...mapState('category', {
             id: state => state.id,
             code: state => state.code,
         }),
-        ...mapState('translations', {
+        ...mapState('tab', {
             translations: state => state.translations,
         }),
     },
     methods: {
-        ...mapActions('categories', [
+        ...mapActions('category', [
             'updateCategory',
             'removeCategory',
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({
@@ -71,7 +71,7 @@ export default {
             });
         },
         onSave() {
-            this.removeValidationErrors();
+            this.removeErrors();
             const {
                 name,
             } = this.translations;
@@ -87,7 +87,7 @@ export default {
             });
         },
         onUpdateCategorySuccess() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Category updated',

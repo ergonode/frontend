@@ -2,19 +2,41 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    create,
+    get,
+    getAll,
+    remove,
+    update,
+} from '@Attributes/services/attributeGroup';
+
 export default {
+    createAttributeGroup({
+        state,
+    }) {
+        const {
+            code,
+        } = state;
+
+        return create({
+            $axios: this.app.$axios,
+            data: {
+                code,
+            },
+        });
+    },
     getAttributeGroup(
         {
-            commit, dispatch, rootState,
+            commit, dispatch,
         },
         {
             groupId, onError = () => {},
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$get(`${userLanguageCode}/attributes/groups/${groupId}`).then(({
+        return get({
+            $axios: this.app.$axios,
+            id: groupId,
+        }).then(({
             id,
             code,
             name = '',
@@ -36,15 +58,33 @@ export default {
                 value: name,
             });
 
-            dispatch('translations/setTabTranslations', translations, {
+            dispatch('tab/setTranslations', translations, {
                 root: true,
             });
         }).catch(onError);
     },
+    getAttributeGroupsOptions({
+        rootState,
+    }) {
+        const {
+            language,
+        } = rootState.authentication.user;
+
+        return getAll({
+            $axios: this.app.$axios,
+        }).then(({
+            collection,
+        }) => ({
+            options: collection.map(element => ({
+                id: element.id,
+                key: element.code,
+                value: element.name,
+                hint: element.name ? `#${element.code} ${language}` : '',
+            })),
+        }));
+    },
     updateAttributeGroup(
-        {
-            rootState,
-        },
+        {},
         {
             id,
             data,
@@ -52,22 +92,24 @@ export default {
             onError,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/attributes/groups/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        return update({
+            $axios: this.app.$axios,
+            id,
+            data,
+        }).then(() => onSuccess()).catch(e => onError(e.data));
     },
     removeAttributeGroup({
-        state, rootState,
+        state,
     }, {
         onSuccess,
     }) {
         const {
             id,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        return this.app.$axios.$delete(`${userLanguageCode}/attributes/groups/${id}`).then(() => onSuccess());
+
+        return remove({
+            $axios: this.app.$axios,
+            id,
+        }).then(() => onSuccess());
     },
 };

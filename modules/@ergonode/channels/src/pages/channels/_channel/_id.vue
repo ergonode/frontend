@@ -4,7 +4,7 @@
  */
 <template>
     <ChannelPage
-        :title="getChannelName"
+        :title="name"
         @remove="onRemove"
         @save="onSave" />
 </template>
@@ -34,16 +34,14 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('channels/getChannel', {
-            id: params.id,
-        });
+        await store.dispatch('channel/getChannel', params);
     },
     computed: {
-        ...mapState('channels', {
-            type: state => state.type,
+        ...mapState('channel', {
             configuration: state => state.configuration,
+            scheduler: state => state.scheduler,
         }),
-        getChannelName() {
+        name() {
             const {
                 name,
             } = JSON.parse(this.configuration);
@@ -51,14 +49,19 @@ export default {
             return name;
         },
     },
+    destroyed() {
+        this.__clearStorage();
+    },
     methods: {
-        ...mapActions('channels', [
+        ...mapActions('channel', [
+            '__clearStorage',
             'updateChannel',
+            'updateScheduler',
             'removeChannel',
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({
@@ -70,19 +73,27 @@ export default {
             });
         },
         onSave() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.updateChannel({
-                id: this.$route.params.id,
-                data: {
-                    type: this.type,
-                    ...JSON.parse(this.configuration),
-                },
                 onSuccess: this.onUpdateChannelSuccess,
                 onError: this.onError,
             });
+            if (this.scheduler) {
+                this.updateScheduler({
+                    onSuccess: this.onUpdateSchedulerSuccess,
+                    onError: this.onError,
+                });
+            }
+        },
+        onUpdateSchedulerSuccess() {
+            this.removeErrors();
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Scheduler updated',
+            });
         },
         onUpdateChannelSuccess() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Channel updated',
@@ -100,7 +111,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.getChannelName} - Channel - Ergonode`,
+            title: `${this.name} - Channel - Ergonode`,
         };
     },
 };

@@ -76,7 +76,7 @@ export default {
     },
     methods: {
         onDoubleClick() {
-            if (this.editKeyCode === 13 && !(this.locked || this.disabled)) {
+            if (this.editKeyCode === 13 && !this.disabled) {
                 this.$emit('edit');
             }
         },
@@ -91,7 +91,7 @@ export default {
 
             switch (keyCode) {
             case this.editKeyCode:
-                if (!(this.locked || this.disabled)) {
+                if (!this.disabled) {
                     this.$emit('edit');
                 }
                 break;

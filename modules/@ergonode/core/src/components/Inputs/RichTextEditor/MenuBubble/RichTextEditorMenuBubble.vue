@@ -107,10 +107,10 @@ export default {
             this.$emit('active', false);
         },
         setLinkUrl(command, url) {
-            this.linkUrl = url;
             command({
                 href: url,
             });
+            this.onHideLinkMenu();
         },
     },
 };

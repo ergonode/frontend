@@ -3,17 +3,18 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="header">
-        <UserAvatar
-            :image-id="avatarId"
+    <div class="tool-bar-user-select-content-header">
+        <UserFabAvatar
+            :avatar-id="avatarId"
+            :user-id="user.id"
             :name="initials"
             :size="largeSize" />
         <span
-            class="header__initials"
+            class="tool-bar-user-select-content-header__initials"
             v-text="initials" />
         <span
-            class="header__email"
-            v-text="email" />
+            class="tool-bar-user-select-content-header__email"
+            v-text="user.email" />
     </div>
 </template>
 
@@ -24,41 +25,58 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import {
+    toCapitalize,
+} from '@Core/models/stringWrapper';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'ToolBarUserSelectContentHeader',
     components: {
-        UserAvatar: () => import('@Core/components/Multimedia/UserAvatar'),
-    },
-    props: {
-        initials: {
-            type: String,
-            required: true,
-        },
-        email: {
-            type: String,
-            required: true,
-        },
-        avatarId: {
-            type: String,
-            default: '',
-        },
+        UserFabAvatar: () => import('@Core/components/Multimedia/UserFabAvatar'),
     },
     computed: {
+        ...mapState('authentication', {
+            user: state => state.user,
+        }),
+        avatarId() {
+            return this.user.avatarFilename
+                ? this.user.avatarFilename.split('.')[0]
+                : '';
+        },
         largeSize() {
             return SIZE.LARGE;
         },
         graphiteColor() {
             return GRAPHITE;
         },
+        capitalizedUserFirstName() {
+            const {
+                firstName,
+            } = this.user;
+
+            return toCapitalize(firstName);
+        },
+        capitalizedUserLastName() {
+            const {
+                lastName,
+            } = this.user;
+
+            return toCapitalize(lastName);
+        },
+        initials() {
+            return `${this.capitalizedUserFirstName} ${this.capitalizedUserLastName}`;
+        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .header {
+    .tool-bar-user-select-content-header {
         display: grid;
-        grid-template-columns: 72px auto;
+        grid-template-columns: 64px auto;
         grid-column-gap: 24px;
         align-items: center;
         margin: 24px;

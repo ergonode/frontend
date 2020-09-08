@@ -72,10 +72,10 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            user: state => state.user,
+            languagePrivileges: state => state.user.languagePrivileges,
         }),
         ...mapState('core', {
-            defaultLanguageCodeByPrivileges: state => state.defaultLanguageCodeByPrivileges,
+            defaultLanguageCode: state => state.defaultLanguageCode,
             languagesTree: state => state.languagesTree,
         }),
         smallSize() {
@@ -83,32 +83,25 @@ export default {
         },
         isAllowedToUpdate() {
             const {
-                languagePrivileges,
-            } = this.user;
-            const {
                 code,
             } = this.language;
 
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,
-            ]) && languagePrivileges[code].read;
+            ]) && this.languagePrivileges[code].read;
         },
         languageOptions() {
-            const {
-                languagePrivileges,
-            } = this.user;
-
             return this.languagesTree.map(language => ({
                 ...language,
                 key: language.code,
                 value: language.name,
-                disabled: !languagePrivileges[language.code].read,
+                disabled: !this.languagePrivileges[language.code].read,
             }));
         },
     },
     created() {
         this.language = this.languageOptions
-            .find(languegeCode => languegeCode.code === this.defaultLanguageCodeByPrivileges);
+            .find(languageCode => languageCode.code === this.defaultLanguageCode);
     },
     methods: {
         onSearch(value) {

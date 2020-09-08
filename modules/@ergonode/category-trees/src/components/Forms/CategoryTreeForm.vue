@@ -13,9 +13,9 @@
                     :value="code"
                     required
                     :error-messages="errorMessages[codeFieldKey]"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     label="System name"
-                    hint="Tree code must be unique"
+                    hint="System name must be unique"
                     @input="setCodeValue" />
             </FormSection>
         </template>
@@ -37,15 +37,15 @@ export default {
         TextField: () => import('@Core/components/Inputs/TextField'),
     },
     computed: {
-        ...mapState('tree', {
+        ...mapState('categoryTree', {
             treeID: state => state.treeId,
             code: state => state.code,
         }),
         isDisabled() {
             return Boolean(this.treeID);
         },
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.CATEGORY_TREE.update,
             ]);
         },
@@ -54,7 +54,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('tree', [
+        ...mapActions('categoryTree', [
             '__setState',
         ]),
         setCodeValue(value) {

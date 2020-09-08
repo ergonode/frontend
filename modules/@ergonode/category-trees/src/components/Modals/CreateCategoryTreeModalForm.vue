@@ -57,12 +57,12 @@ export default {
         },
     },
     methods: {
-        ...mapActions('tree', [
+        ...mapActions('categoryTree', [
             '__clearStorage',
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onClose() {
             this.__clearStorage();

@@ -31,9 +31,6 @@ export default async function ({
         options,
     } = $store.state.attribute;
     const {
-        language,
-    } = $store.state.authentication.user;
-    const {
         attrTypes,
     } = $store.state.dictionaries;
     const typeKey = type ? getKeyByValue(attrTypes, type) : null;
@@ -92,11 +89,11 @@ export default async function ({
 
     const {
         id,
-    } = await $axios.$post(`${language}/attributes`, data);
+    } = await $axios.$post('attributes', data);
 
     await Promise.all(
         Object.keys(options).map(key => $axios.$post(
-            `${language}/attributes/${id}/options`,
+            `attributes/${id}/options`,
             {
                 code: options[key].key,
             },

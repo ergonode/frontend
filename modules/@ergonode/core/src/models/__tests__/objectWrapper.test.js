@@ -11,7 +11,7 @@ import {
     isEmpty,
     objectToArray,
     objectToArrayWithPropsName,
-    removeFromObjectByKey,
+    removeObjectProperty,
 } from '@Core/models/objectWrapper';
 
 const obj = {
@@ -165,16 +165,16 @@ describe('objectWrapper/isEmpty', () => {
     });
 });
 
-describe('objectWrapper/removeFromObjectByKey', () => {
+describe('objectWrapper/removeObjectProperty', () => {
     it('Remove element from obect by key', () => {
-        const fun = removeFromObjectByKey(obj, 'jest');
+        const fun = removeObjectProperty(obj, 'jest');
         expect(fun).toEqual({
             test: 1,
         });
     });
 
     it('Return object when key is invalid', () => {
-        const fun = removeFromObjectByKey(obj, 'jest2');
+        const fun = removeObjectProperty(obj, 'jest2');
         expect(fun).toEqual({
             test: 1,
             jest: 2,

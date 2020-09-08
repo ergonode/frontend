@@ -10,13 +10,10 @@ export default function ({
     $axios, $store,
 }) {
     const {
-        language,
-    } = $store.state.authentication.user;
-    const {
         title, image, defaultTextAttribute, defaultImageAttribute,
-    } = $store.state.templateDesigner;
+    } = $store.state.productTemplate;
 
-    return $axios.$post(`${language}/templates`, {
+    return $axios.$post('templates', {
         name: title,
         image,
         defaultLabel: defaultTextAttribute !== SKU_MODEL_ID

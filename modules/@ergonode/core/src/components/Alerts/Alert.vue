@@ -110,7 +110,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('alerts', [
+        ...mapActions('alert', [
             'removeAlert',
         ]),
     },

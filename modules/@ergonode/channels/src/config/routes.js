@@ -95,23 +95,12 @@ export default [
                     privileges: [],
                 },
             },
-        ],
-    },
-    {
-        name: 'export-id',
-        path: '/channels/channel/:channel_id/export/:export_id',
-        component: Pages.ExportEdit,
-        meta: {
-            isMenu: false,
-            redirectTo: 'export-id-details',
-        },
-        children: [
             {
-                name: 'export-id-details',
-                path: 'details',
-                component: Tabs.ExportBaseTab,
+                name: 'channel-id-scheduler',
+                path: 'scheduler',
+                component: Tabs.ChannelSchedulerTab,
                 meta: {
-                    title: 'Details',
+                    title: 'Scheduler',
                     breadcrumbs: [
                         {
                             title: 'Data exchange',
@@ -120,11 +109,6 @@ export default [
                         {
                             title: 'Channels',
                             routeName: 'channel-grid',
-                        },
-                        {
-                            title: 'Channel',
-                            routeName: 'channel-id-history',
-                            id: 'channel_id',
                         },
                     ],
                     privileges: [],

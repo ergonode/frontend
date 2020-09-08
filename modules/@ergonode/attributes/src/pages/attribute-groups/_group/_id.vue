@@ -43,7 +43,7 @@ export default {
             id: state => state.id,
             code: state => state.code,
         }),
-        ...mapState('translations', {
+        ...mapState('tab', {
             translations: state => state.translations,
         }),
     },
@@ -54,7 +54,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({
@@ -66,7 +66,7 @@ export default {
             });
         },
         onSave() {
-            this.removeValidationErrors();
+            this.removeErrors();
             const {
                 name,
             } = this.translations;
@@ -82,7 +82,7 @@ export default {
             });
         },
         onUpdateAttributeGroupSuccess() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Attribute Group updated',

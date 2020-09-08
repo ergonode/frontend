@@ -7,13 +7,10 @@ export default function ({
     $axios, $store,
 }) {
     const {
-        language,
-    } = $store.state.authentication.user;
-    const {
         code, type,
-    } = $store.state.collections;
+    } = $store.state.collection;
 
-    return $axios.$post(`${language}/collections`, {
+    return $axios.$post('collections', {
         code,
         typeId: type,
     });

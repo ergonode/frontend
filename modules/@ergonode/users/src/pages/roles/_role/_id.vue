@@ -35,33 +35,25 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('roles/getRole', {
-            roleId: params.id,
-        });
+        await store.dispatch('role/getRole', params);
     },
     computed: {
-        ...mapState('roles', {
-            roleID: state => state.id,
+        ...mapState('role', {
             name: state => state.name,
-            privileges: state => state.privileges,
-            drafts: state => state.drafts,
-            description: state => state.description,
         }),
     },
     destroyed() {
         this.__clearStorage();
     },
     methods: {
-        ...mapActions('roles', [
+        ...mapActions('role', [
             '__clearStorage',
-            '__setState',
             'updateRole',
             'removeRole',
-            'setPrivileges',
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onRemoveRoleSuccess() {
             this.$addAlert({
@@ -81,43 +73,12 @@ export default {
             });
         },
         onSave() {
-            const privileges = {
-                ...this.privileges,
-            };
-
-            Object.keys(this.drafts).forEach((key) => {
-                const [
-                    rowId,
-                    columnId,
-                ] = key.split('/');
-
-                if (this.drafts[key]) {
-                    privileges[`${rowId}_${columnId.toUpperCase()}`] = true;
-                } else {
-                    delete privileges[`${rowId}_${columnId.toUpperCase()}`];
-                }
-            });
-
-            const role = {
-                name: this.name,
-                description: this.description,
-                privileges: Object.keys(privileges),
-            };
-
             this.updateRole({
-                id: this.roleID,
-                data: role,
                 onSuccess: () => {
-                    this.removeValidationErrors();
+                    this.removeErrors();
                     this.$addAlert({
                         type: ALERT_TYPE.SUCCESS,
                         message: 'Role updated',
-                    });
-
-                    this.setPrivileges(privileges);
-                    this.__setState({
-                        key: 'drafts',
-                        value: {},
                     });
                 },
                 onError: this.onError,
@@ -128,7 +89,6 @@ export default {
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Are you sure you want to delete this role?',
                 confirmCallback: () => this.removeRole({
-                    id: this.roleID,
                     onSuccess: this.onRemoveRoleSuccess,
                     onError: this.onRemoveRoleError,
                 }),

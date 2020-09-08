@@ -5,8 +5,9 @@
 <template>
     <ModalGrid
         title="Add products"
-        :api-path="`${languageCode}/products`"
+        api-path="products"
         :column-params="columnParams"
+        :is-select-column="true"
         @close="onClose" />
 </template>
 
@@ -22,9 +23,6 @@ export default {
         ModalGrid,
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
         ...mapState('product', {
             id: state => state.id,
         }),

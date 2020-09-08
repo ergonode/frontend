@@ -5,6 +5,7 @@
 <template>
     <Component
         :is="actionCellComponent"
+        :data-cy="dataCyGenerator"
         :column="columnIndex"
         :row="rowIndex"
         :href="action.href"
@@ -43,8 +44,13 @@ export default {
     },
     computed: {
         actionCellComponent() {
-            return () => import(`@Core/components/Grid/Layout/Table/Cells/Action/Grid${capitalizeAndConcatenationArray(this.column.id.split('_'))}ActionCell`)
+            const type = capitalizeAndConcatenationArray(this.column.id.split('_'));
+
+            return () => import(`@Core/components/Grid/Layout/Table/Cells/Action/Grid${type}ActionCell`)
                 .catch(() => import('@Core/components/Grid/Layout/Table/Cells/GridTableCell'));
+        },
+        dataCyGenerator() {
+            return `action-${this.column.id}-${this.rowIndex}`;
         },
     },
     methods: {

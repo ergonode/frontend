@@ -55,7 +55,7 @@ export default {
         ...mapState('dictionaries', {
             privilegesDictionary: state => state.privileges,
         }),
-        ...mapState('roles', {
+        ...mapState('role', {
             privileges: state => state.privileges,
         }),
         isAllowedToUpdate() {
@@ -74,7 +74,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('roles', [
+        ...mapActions('role', [
             '__setState',
         ]),
         onCellValueChange(cellValues) {
@@ -96,7 +96,10 @@ export default {
                 drafts[`${rowId}/${columnId}`] = value;
             });
 
-            this.setDrafts(drafts);
+            this.setDrafts({
+                ...this.drafts,
+                ...drafts,
+            });
             this.__setState({
                 key: 'drafts',
                 value: this.drafts,
@@ -109,7 +112,7 @@ export default {
                 fullDataList: this.privilegesDictionary,
                 selectedData: this.privileges,
                 defaults: privilegesDefaults,
-                isEditable: true,
+                isEditable: this.isAllowedToUpdate,
             });
             const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
             const sortedColumns = config

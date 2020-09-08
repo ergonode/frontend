@@ -17,20 +17,20 @@ export default {
         errors = null, fieldKey = null,
     }) {
         if (errors) {
-            commit(types.SET_VALIDATION_ERRORS, getMappedErrors({
+            commit(types.SET_ERRORS, getMappedErrors({
                 errors,
                 fieldKey,
             }));
         }
     },
-    removeValidationError({
+    removeError({
         commit,
     }, key) {
-        commit(types.REMOVE_VALIDATION_ERROR, key);
+        commit(types.REMOVE_ERROR, key);
     },
-    removeValidationErrors({
+    removeErrors({
         commit,
     }) {
-        commit(types.REMOVE_VALIDATION_ERRORS);
+        commit(types.REMOVE_ERRORS);
     },
 };

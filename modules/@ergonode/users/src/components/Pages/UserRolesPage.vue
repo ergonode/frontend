@@ -8,6 +8,9 @@
             :title="title"
             :is-navigation-back="true"
             :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigationBackFab />
+            </template>
             <template #mainAction>
                 <Button
                     :theme="secondaryTheme"

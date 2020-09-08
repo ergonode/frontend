@@ -11,7 +11,12 @@ import {
 
 import {
     MultiSteps,
-} from '../models';
+} from '../../models';
+import {
+    actionOnGrid,
+    checkGridRow,
+    noGridRow,
+} from '../../models/navigation';
 
 MultiSteps([
     Given,
@@ -40,34 +45,38 @@ MultiSteps([
     When,
     Then,
 ], 'I fill the {string} input with the {string} term', (id, term) => {
-    cy.get(`[data-cy=${id}]`).find('input').type(term).should('have.value', term);
+    cy.get(`[data-cy=${id}]`).find('input').clear().type(term)
+        .should('have.value', term);
 });
 
 MultiSteps([
     Then,
     And,
 ], 'I fill the {string} input with the {string} term for {string} translation', (id, term, language) => {
-    const name = `${id}_${language}`.toLowerCase();
+    const name = `${id}_${language}`;
 
-    cy.get(`[data-cy=${name}]`).find('input').type(term).should('have.value', term);
+    cy.get(`[data-cy=${name}]`).find('input').clear().type(term)
+        .should('have.value', term);
 });
 
 MultiSteps([
     Then,
     And,
 ], 'I fill the {string} textarea with the {string} term for {string} translation', (id, term, language) => {
-    const name = `${id}_${language}`.toLowerCase();
+    const name = `${id}_${language}`;
 
-    cy.get(`[data-cy=${name}]`).find('textarea').type(term).should('have.value', term);
+    cy.get(`[data-cy=${name}]`).find('textarea').clear().type(term)
+        .should('have.value', term);
 });
 
 MultiSteps([
     Then,
     And,
 ], 'I fill the {string} input for index {int} with the {string} term for {string} translation', (id, index, term, language) => {
-    const name = `${id}_${language}_${index}`.toLowerCase();
+    const name = `${id}_${language}_${index}`;
 
-    cy.get(`[data-cy=${name}]`).find('input').type(term).should('have.value', term);
+    cy.get(`[data-cy=${name}]`).find('input').clear().type(term)
+        .should('have.value', term);
 });
 
 MultiSteps([
@@ -75,6 +84,20 @@ MultiSteps([
     When,
 ], 'I click tab with {string} text', (text) => {
     cy.get('[data-cy=tab-bar__items]').contains(text).click();
+});
+
+MultiSteps([
+    Then,
+    When,
+], 'I click tab with {string} text', (text) => {
+    cy.get('[data-cy=tab-bar__items]').contains(text).click();
+});
+
+MultiSteps([
+    Then,
+    When,
+], 'I set {string} view on the grid', (view) => {
+    cy.get(`[data-cy=grid-${view}-view]`).click();
 });
 
 MultiSteps([
@@ -155,7 +178,7 @@ MultiSteps([
 MultiSteps([
     And,
     Then,
-], 'I choose {string} options from {string} multi select field', (optionNrs, id) => {
+], 'I choose {string} option(s) from {string} multi select field', (optionNrs, id) => {
     const parsedOptions = JSON.parse(optionNrs);
 
     cy.get(`[data-cy=${id}]`).click().should('be.visible');
@@ -166,12 +189,44 @@ MultiSteps([
     cy.wrap(parsedOptions).each((optionNr) => {
         cy.get('@elementList').eq(optionNr).as('selectedOption');
         cy.get('@selectedOption').click();
-        cy.get('@selectedOption').then(($option) => {
-            const optionValue = new RegExp($option.text().trim().replace('#', ''));
+        // cy.get('@selectedOption').then(($option) => {
+        //     const optionValue = $option.text().trim().replace('#', '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-            cy.get(`[data-cy=${id}-value] span`).contains(optionValue);
-        });
+        //     cy.get(`[data-cy=${id}-value] span`).contains(new RegExp(`${optionValue}`, 'g'));
+        // });
     });
     cy.get(`[data-cy=${id}-drop-down]`).find('button').contains('OK').click();
     cy.get(`[data-cy=${id}-drop-down]`).should('be.not.visible');
+});
+
+MultiSteps([
+    And,
+    Then,
+], 'On {string} I can see row with {string} value and columns data: {string}', (gridId, searchValue, columns) => {
+    checkGridRow({
+        gridId,
+        searchValue,
+        columns,
+    });
+});
+
+MultiSteps([
+    And,
+    Then,
+], 'On {string} I can not see row with {string} value', (gridId, searchValue) => {
+    noGridRow({
+        gridId,
+        searchValue,
+    });
+});
+
+MultiSteps([
+    And,
+    Then,
+], 'On {string} I click on {string} button for row with {string} value', (gridId, action, searchValue) => {
+    actionOnGrid({
+        gridId,
+        action,
+        searchValue,
+    });
 });

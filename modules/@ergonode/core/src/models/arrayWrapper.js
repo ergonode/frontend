@@ -123,16 +123,16 @@ export function removeValueAtIndex(array, index) {
  * @param {Array} array
  * @returns {number} Sum
  */
-export function sumIntegers(arr) {
-    if (!Array.isArray(arr)) return 0;
+export function sumIntegers(array) {
+    if (!Array.isArray(array)) return 0;
 
     const {
         length,
-    } = arr;
+    } = array;
     let value = 0;
 
     for (let i = 0; i < length; i += 1) {
-        if (Number.isInteger(arr[i])) value += arr[i];
+        if (Number.isInteger(array[i])) value += array[i];
     }
 
     return value;

@@ -140,7 +140,7 @@ export default {
     },
     computed: {
         ...mapState('validations', {
-            uploadError: state => state.validationErrors.upload,
+            uploadError: state => state.errors.upload,
         }),
         secondaryTheme() {
             return THEME.SECONDARY;

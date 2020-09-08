@@ -55,7 +55,7 @@ export default {
         NotificationsListPlaceholder: () => import('@Notifications/components/List/NotificationsListPlaceholder'),
     },
     computed: {
-        ...mapState('notifications', {
+        ...mapState('notification', {
             notifications: state => state.notifications,
             notificationsCount: state => state.count,
         }),
@@ -64,7 +64,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('notifications', [
+        ...mapActions('notification', [
             'requestForNotifications',
         ]),
         navigateToAllNotifications() {
@@ -72,10 +72,8 @@ export default {
                 name: 'notifications-grid',
             });
         },
-        onFocus({
-            focus, isClickedInsideMenu,
-        }) {
-            if (focus && !isClickedInsideMenu) {
+        onFocus(isFocused) {
+            if (isFocused) {
                 this.requestForNotifications();
             }
         },

@@ -12,6 +12,7 @@
             :label="label"
             :required="properties.required"
             :disabled="disabled"
+            object-fit="contain"
             height="100%"
             @input="onValueChange" />
     </ProductTemplateFormField>
@@ -37,10 +38,6 @@ export default {
             default: () => ({}),
         },
         position: {
-            type: Object,
-            default: () => ({}),
-        },
-        parameters: {
             type: Object,
             default: () => ({}),
         },

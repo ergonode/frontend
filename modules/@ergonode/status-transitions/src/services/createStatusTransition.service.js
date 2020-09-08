@@ -10,16 +10,13 @@ export default function ({
     $axios, $store,
 }) {
     const {
-        language,
-    } = $store.state.authentication.user;
-    const {
         source, destination, roles,
-    } = $store.state.transitions;
+    } = $store.state.statusTransition;
     const data = {
         source: isObject(source) ? source.key : null,
         destination: isObject(destination) ? destination.key : null,
         roles,
     };
 
-    return $axios.$post(`${language}/workflow/default/transitions`, data);
+    return $axios.$post('workflow/default/transitions', data);
 }

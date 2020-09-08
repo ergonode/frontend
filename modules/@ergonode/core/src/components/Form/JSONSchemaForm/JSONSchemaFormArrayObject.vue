@@ -3,17 +3,15 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormSection>
-        <FormSubsection>
-            <JSONSchemaFormTableRowWidget
-                v-for="(row, index) in rowValues"
-                :key="index"
-                :index="index"
-                :value="row"
-                :schema="schema.items"
-                @remove="onRemoveRowAtIndex"
-                @input="onValueChangeAtIndex" />
-        </FormSubsection>
+    <FormSubsection>
+        <JSONSchemaFormTableRowWidget
+            v-for="(row, index) in rowValues"
+            :key="index"
+            :index="index"
+            :value="row"
+            :schema="schema.items"
+            @remove="onRemoveRowAtIndex"
+            @input="onValueChangeAtIndex" />
         <Button
             ref="addSectionButton"
             title="ADD NEXT"
@@ -24,13 +22,12 @@
                 <IconAdd :fill-color="color" />
             </template>
         </Button>
-    </FormSection>
+    </FormSubsection>
 </template>
 
 <script>
 import Button from '@Core/components/Button/Button';
 import JSONSchemaFormTableRowWidget from '@Core/components/Form/JSONSchemaForm/JSONSchemaFormTableRowWidget';
-import FormSection from '@Core/components/Form/Section/FormSection';
 import FormSubsection from '@Core/components/Form/Subsection/FormSubsection';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import {
@@ -41,7 +38,6 @@ import {
 export default {
     name: 'JSONSchemaFormArrayObject',
     components: {
-        FormSection,
         FormSubsection,
         JSONSchemaFormTableRowWidget,
         IconAdd,
@@ -59,9 +55,7 @@ export default {
     },
     data() {
         return {
-            rowValues: this.value.length ? this.value : [
-                {},
-            ],
+            rowValues: this.value,
         };
     },
     computed: {
@@ -79,6 +73,7 @@ export default {
         },
         onRemoveRowAtIndex(index) {
             this.rowValues.splice(index, 1);
+            this.$emit('input', this.rowValues);
         },
         onValueChangeAtIndex({
             index, value,

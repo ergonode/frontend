@@ -130,7 +130,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('templateDesigner', {
+        ...mapState('productTemplate', {
             templateGroups: state => state.templateGroups,
             layoutElements: state => state.layoutElements,
             title: state => state.title,
@@ -215,7 +215,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('templateDesigner', [
+        ...mapActions('productTemplate', [
             'addListElementToLayout',
             'updateLayoutElementAtIndex',
             'removeLayoutElementAtIndex',

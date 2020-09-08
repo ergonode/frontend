@@ -79,7 +79,6 @@
 </template>
 
 <script>
-// import getProductDraft from '@Products/services/getProductDraft.service';
 import {
     GRAPHITE_LIGHT,
     WHITESMOKE,
@@ -110,9 +109,6 @@ import {
     mapActions,
     mapState,
 } from 'vuex';
-
-const updateProductDraft = () => import('@Products/services/updateProductDraft.service');
-const applyProductDraft = () => import('@Products/services/applyProductDraft.service');
 
 export default {
     name: 'ProductCatalogTab',
@@ -163,9 +159,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
         ...mapState('draggable', {
             isElementDragging: state => state.isElementDragging,
             draggedElement: state => state.draggedElement,
@@ -211,8 +204,8 @@ export default {
         },
         collectionCellBinding() {
             return {
-                imageColumn: `esa_default_image:${this.userLanguageCode}`,
-                descriptionColumn: `esa_default_label:${this.userLanguageCode}`,
+                imageColumn: 'esa_default_image',
+                descriptionColumn: 'esa_default_label',
             };
         },
         smallSize() {
@@ -222,25 +215,18 @@ export default {
             return THEME.SECONDARY;
         },
         verticalTabs() {
-            const isUserAllowedToReadProduct = this.$hasAccess([
-                PRIVILEGES.PRODUCT.read,
-            ]);
             return [
                 {
                     title: 'Product attributes',
                     component: () => import('@Attributes/components/Tabs/List/AttributesListTab'),
                     iconComponent: () => import('@Core/components/Icons/Menu/IconAttributes'),
-                    props: {
-                        disabled: !isUserAllowedToReadProduct,
-                    },
+                    props: {},
                 },
                 {
                     title: 'System attributes',
                     component: () => import('@Attributes/components/Tabs/List/SystemAttributesListTab'),
                     iconComponent: () => import('@Core/components/Icons/Menu/IconSettings'),
-                    props: {
-                        disabled: !isUserAllowedToReadProduct,
-                    },
+                    props: {},
                 },
             ];
         },
@@ -260,6 +246,10 @@ export default {
             'setDisabledElement',
             'setDisabledElements',
         ]),
+        ...mapActions('product', [
+            'updateProductDraft',
+            'applyProductDraft',
+        ]),
         onCellValueChange(cellValues) {
             const cachedElementIds = {};
 
@@ -276,7 +266,7 @@ export default {
                 ...drafts,
             });
 
-            const requests = cellValues.map(({
+            const requests = cellValues.map(async ({
                 rowId, columnId, value,
             }) => {
                 if (!cachedElementIds[columnId]) {
@@ -287,15 +277,13 @@ export default {
                     cachedElementIds[columnId] = element_id;
                 }
 
-                return updateProductDraft().then(response => response.default({
-                    $axios: this.$axios,
-                    $store: this.$store,
+                await this.updateProductDraft({
                     fieldKey: `${rowId}/${columnId}`,
                     languageCode: columnId.split(':')[1],
                     productId: rowId,
                     elementId: cachedElementIds[columnId],
                     value,
-                }));
+                });
             });
 
             Promise.all(requests);
@@ -343,30 +331,27 @@ export default {
         async onSaveDrafts() {
             const promises = [];
 
-            const applyProductDraftModule = await applyProductDraft()
-                .then(request => request.default);
-
             Object.keys(this.drafts).forEach((key) => {
                 const [
                     rowId,
                 ] = key.split('/');
 
-                promises.push(applyProductDraftModule({
-                    $axios: this.$axios,
-                    $store: this.$store,
+                promises.push(this.applyProductDraft({
                     id: rowId,
                 }).then(() => this.removeDraftRow(rowId)));
             });
 
-            await this.$setLoader('footerDraftButton');
-            await Promise.all(promises).then(() => {
-                this.onFetchData(this.localParams);
-                this.$addAlert({
-                    type: ALERT_TYPE.SUCCESS,
-                    message: 'Product changes saved',
-                });
+            this.$setLoader('footerDraftButton');
+
+            await Promise.all(promises);
+
+            this.onFetchData(this.localParams);
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product changes saved',
             });
-            await this.$removeLoader('footerDraftButton');
+
+            this.$removeLoader('footerDraftButton');
         },
         getDisabledElements({
             columns, filters,

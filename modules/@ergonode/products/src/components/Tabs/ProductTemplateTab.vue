@@ -59,8 +59,6 @@ import {
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import ProductTemplateForm from '@Products/components/Form/ProductTemplateForm';
 import PRIVILEGES from '@Products/config/privileges';
-import getProductCompleteness from '@Products/services/getProductCompleteness.service';
-import getProductTemplate from '@Products/services/getProductTemplate.service';
 import {
     mapActions,
     mapGetters,
@@ -83,32 +81,29 @@ export default {
         gridModalMixin,
     ],
     asyncData({
-        app: {
-            $axios,
-        }, store, params: {
+        store,
+        params: {
             id,
         },
     }) {
         const {
-            defaultLanguageCodeByPrivileges,
+            defaultLanguageCode,
         } = store.state.core;
 
         return Promise.all([
-            getProductTemplate({
-                $axios,
-                languageCode: defaultLanguageCodeByPrivileges,
+            store.dispatch('product/getProductTemplate', {
+                languageCode: defaultLanguageCode,
                 id,
             }),
-            getProductCompleteness({
-                $axios,
-                languageCode: defaultLanguageCodeByPrivileges,
+            store.dispatch('product/getProductCompleteness', {
+                languageCode: defaultLanguageCode,
                 id,
             }),
         ]).then(([
             templateResponse,
             completenessResponse,
         ]) => ({
-            elements: templateResponse.elements,
+            elements: templateResponse,
             completeness: completenessResponse,
         }));
     },
@@ -119,17 +114,17 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            user: state => state.user,
+            languagePrivileges: state => state.user.languagePrivileges,
         }),
         ...mapState('core', {
-            defaultLanguageCodeByPrivileges: state => state.defaultLanguageCodeByPrivileges,
+            defaultLanguageCode: state => state.defaultLanguageCode,
             languagesTree: state => state.languagesTree,
         }),
         ...mapState('product', {
             id: state => state.id,
         }),
         ...mapGetters('core', [
-            'getRootOnLanguagesTree',
+            'rootLanguage',
         ]),
         smallSize() {
             return SIZE.SMALL;
@@ -138,21 +133,16 @@ export default {
             return THEME.SECONDARY;
         },
         languageOptions() {
-            const {
-                languagePrivileges,
-            } = this.user;
-
             return this.languagesTree.map(language => ({
                 ...language,
                 key: language.code,
                 value: language.name,
-                disabled: !languagePrivileges[language.code].read,
+                disabled: this.languagePrivileges[language.code]
+                    ? !this.languagePrivileges[language.code].read
+                    : true,
             }));
         },
         isUserAllowedToRestore() {
-            const {
-                languagePrivileges,
-            } = this.user;
             const {
                 code,
             } = this.language;
@@ -160,29 +150,29 @@ export default {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ])
-                && languagePrivileges[code].edit
-                && this.getRootOnLanguagesTree.code !== code;
+                && this.languagePrivileges[code].edit
+                && this.rootLanguage.code !== code;
         },
     },
     created() {
         this.language = this.languageOptions
-            .find(languegeCode => languegeCode.code === this.defaultLanguageCodeByPrivileges);
+            .find(languageCode => languageCode.code === this.defaultLanguageCode);
     },
     methods: {
         ...mapActions('product', [
             'getProductDraft',
+            'getProductTemplate',
+            'getProductCompleteness',
         ]),
         onLanguageChange(value) {
             const languageCode = value.code;
 
             Promise.all([
-                getProductTemplate({
-                    $axios: this.$axios,
+                this.getProductTemplate({
                     languageCode,
                     id: this.id,
                 }),
-                getProductCompleteness({
-                    $axios: this.$axios,
+                this.getProductCompleteness({
                     languageCode,
                     id: this.id,
                 }),
@@ -194,19 +184,20 @@ export default {
                 templateResponse,
                 completenessResponse,
             ]) => {
-                this.elements = templateResponse.elements;
+                this.elements = templateResponse;
                 this.completeness = completenessResponse;
                 this.language = value;
             });
         },
-        onRestoreDraftValues() {
+        async onRestoreDraftValues() {
             const {
                 code: languageCode,
             } = this.language;
 
-            Promise.all([
-                getProductCompleteness({
-                    $axios: this.$axios,
+            const [
+                completeness,
+            ] = await Promise.all([
+                this.getProductCompleteness({
                     languageCode,
                     id: this.id,
                 }),
@@ -214,19 +205,14 @@ export default {
                     languageCode,
                     id: this.id,
                 }),
-            ]).then(([
-                completenessResponse,
-            ]) => {
-                this.completeness = completenessResponse;
-            });
+            ]);
+
+            this.completeness = completeness;
         },
-        onValueUpdated() {
-            getProductCompleteness({
-                $axios: this.$axios,
+        async onValueUpdated() {
+            this.completeness = await this.getProductCompleteness({
                 languageCode: this.language.code,
                 id: this.id,
-            }).then((response) => {
-                this.completeness = response;
             });
         },
     },

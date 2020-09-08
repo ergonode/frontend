@@ -35,10 +35,8 @@ export default {
     async fetch({
         store, params,
     }) {
-        const path = `${store.state.authentication.user.language}/status/${params.id}`;
-
         await store.dispatch('productStatus/__clearStorage');
-        await store.dispatch('productStatus/getProductStatus', path);
+        await store.dispatch('productStatus/getProductStatus', params);
         await store.dispatch('productStatus/getDefaultStatus');
     },
     computed: {
@@ -55,7 +53,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onSave() {
             const requests = [
@@ -88,7 +86,7 @@ export default {
             });
         },
         onProductStatusUpdated() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Product status updated',

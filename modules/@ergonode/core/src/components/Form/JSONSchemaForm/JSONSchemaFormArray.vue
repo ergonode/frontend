@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormSection :title="schema.title">
+    <FormSubsection
+        :title="schema.title"
+        :required="schema.isRequired">
         <Component
             :is="arrayComponent"
             :value="value"
@@ -12,11 +14,11 @@
         <FormErrorLabel
             v-if="errorMessages"
             :error-messages="errorMessages" />
-    </FormSection>
+    </FormSubsection>
 </template>
 
 <script>
-import FormSection from '@Core/components/Form/Section/FormSection';
+import FormSubsection from '@Core/components/Form/Subsection/FormSubsection';
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
@@ -24,7 +26,7 @@ import {
 export default {
     name: 'JSONSchemaFormArray',
     components: {
-        FormSection,
+        FormSubsection,
         FormErrorLabel: () => import('@Core/components/Form/FormErrorLabel'),
     },
     props: {

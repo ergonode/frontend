@@ -30,11 +30,11 @@ export default {
         const {
             id,
         } = params;
-        await store.dispatch('comments/__setState', {
+        await store.dispatch('comment/__setState', {
             key: 'objectId',
             value: id,
         });
-        await store.dispatch('comments/getComments', {
+        await store.dispatch('comment/getComments', {
             limit: DATA_LIMIT,
             offset: 0,
             filter: `object_id=${id}`,

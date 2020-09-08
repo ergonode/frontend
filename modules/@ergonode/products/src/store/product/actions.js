@@ -6,16 +6,34 @@ import {
     TYPES,
 } from '@Attributes/defaults/attributes';
 import {
+    getKeyByValue,
+} from '@Core/models/objectWrapper';
+import {
     EXTENDS,
     PRODUCT_TYPE,
 } from '@Products/defaults';
+import {
+    addBySegment,
+    addBySku,
+    applyDraft,
+    create,
+    get,
+    getBindings,
+    getChildren,
+    getCollections,
+    getCompleteness,
+    getDraft,
+    getTemplate,
+    remove,
+    removeChildren,
+    removeDraftValue,
+    update,
+    updateDraftValue,
+} from '@Products/services/index';
 
 import {
     types,
 } from './mutations';
-
-const getAttributesByFilter = () => import('@Attributes/services/getAttributesByFilter.service');
-const applyProductDraft = () => import('@Products/services/applyProductDraft.service');
 
 export default {
     setDraftValue: ({
@@ -30,97 +48,212 @@ export default {
     removeBindingAttribute: ({
         commit,
     }, index) => commit(types.REMOVE_BINDING_ATTRIBUTE, index),
-    getProductDraft({
+    async getProductDraft({
         commit,
     }, {
         languageCode, id,
     }) {
-        return this.app.$axios.$get(`${languageCode}/products/${id}/draft`).then(({
+        const {
             attributes,
-        }) => {
-            commit(types.SET_PRODUCT_DRAFT, {
-                languageCode,
-                draft: attributes,
-            });
+        } = await getDraft({
+            $axios: this.app.$axios,
+            id,
+            languageCode,
+        });
+
+        commit(types.SET_PRODUCT_DRAFT, {
+            languageCode,
+            draft: attributes,
         });
     },
-    getProduct({
-        commit, dispatch, rootState,
+    async getProduct({
+        commit,
+        dispatch,
+        rootState,
     }, id) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
         const {
             productTypes,
         } = rootState.dictionaries;
 
-        return this.app.$axios.$get(`${userLanguageCode}/products/${id}`).then((data) => {
-            const {
-                design_template_id: templateId,
-                attributes,
-                sku,
-                type,
-                status,
-                workflow = [],
-            } = data;
+        const data = await get({
+            $axios: this.app.$axios,
+            id,
+        });
 
-            if (templateId) {
-                commit('__SET_STATE', {
-                    key: 'template',
-                    value: templateId,
-                });
-            }
+        const {
+            design_template_id: templateId,
+            attributes,
+            sku,
+            type,
+            status,
+            workflow = [],
+        } = data;
+
+        if (templateId) {
+            commit('__SET_STATE', {
+                key: 'template',
+                value: templateId,
+            });
+        }
+
+        commit('__SET_STATE', {
+            key: 'id',
+            value: id,
+        });
+        commit('__SET_STATE', {
+            key: 'sku',
+            value: sku,
+        });
+        commit('__SET_STATE', {
+            key: 'type',
+            value: productTypes[type],
+        });
+        commit('__SET_STATE', {
+            key: 'status',
+            value: status,
+        });
+        commit('__SET_STATE', {
+            key: 'workflow',
+            value: workflow,
+        });
+        commit('__SET_STATE', {
+            key: 'data',
+            value: attributes,
+        });
+
+        this.$extendMethods(EXTENDS['@Products/store/product/action/getProduct'], {
+            data,
+            commit,
+            dispatch,
+        });
+
+        if (type === PRODUCT_TYPE.WITH_VARIANTS) {
+            const [
+                bindings,
+            ] = await Promise.all([
+                getBindings({
+                    $axios: this.app.$axios,
+                    id,
+                }),
+                dispatch('getSelectAttributes'),
+            ]);
 
             commit('__SET_STATE', {
-                key: 'id',
-                value: id,
+                key: 'bindingAttributesIds',
+                value: bindings,
             });
-            commit('__SET_STATE', {
-                key: 'sku',
-                value: sku,
-            });
-            commit('__SET_STATE', {
-                key: 'type',
-                value: productTypes[type],
-            });
-            commit('__SET_STATE', {
-                key: 'status',
-                value: status,
-            });
-            commit('__SET_STATE', {
-                key: 'workflow',
-                value: workflow,
-            });
-            commit('__SET_STATE', {
-                key: 'data',
-                value: attributes,
-            });
+        }
+    },
+    getProductWorkflowOptions({}, {
+        id,
+        languageCode,
+    }) {
+        return get({
+            $axios: this.app.$axios,
+            id,
+        }).then(({
+            workflow = [],
+        }) => workflow.map(e => ({
+            id: e.code,
+            key: e.code,
+            value: e.name,
+            hint: e.name
+                ? `#${e.code} ${languageCode}`
+                : '',
+        })));
+    },
+    addBySku({
+        state,
+    }, {
+        skus,
+    }) {
+        const {
+            id,
+        } = state;
+        const data = {
+            skus: skus.replace(/\n/g, ',').split(','),
+        };
 
-            this.$extendMethods(EXTENDS['@Products/store/product/action/getProduct'], {
-                data,
-                commit,
-                dispatch,
-            });
-
-            if (type === PRODUCT_TYPE.WITH_VARIANTS) {
-                const getAttributesBindings = this.app.$axios.$get(`${userLanguageCode}/products/${id}/bindings`).then((bindings) => {
-                    commit('__SET_STATE', {
-                        key: 'bindingAttributesIds',
-                        value: bindings,
-                    });
-                });
-
-                return Promise.all([
-                    getAttributesBindings,
-                    dispatch('getSelectAttributes'),
-                ]);
-            }
-
-            return true;
+        return addBySku({
+            $axios: this.app.$axios,
+            id,
+            data,
         });
     },
-    updateProductStatus({
-        state, rootState,
+    addBySegment({
+        state,
+    }, {
+        segments,
+    }) {
+        const {
+            id,
+        } = state;
+        const data = {
+            segments: segments.map(segment => segment.id),
+        };
+
+        return addBySegment({
+            $axios: this.app.$axios,
+            id,
+            data,
+        });
+    },
+    async getProductTemplate({}, {
+        languageCode,
+        id,
+    }) {
+        const {
+            elements,
+        } = await getTemplate({
+            $axios: this.app.$axios,
+            languageCode,
+            id,
+        });
+
+        return elements;
+    },
+    async getProductChildren({}, id) {
+        await getChildren({
+            $axios: this.app.$axios,
+            id,
+        });
+    },
+    async getProductBindings({}, id) {
+        await getBindings({
+            $axios: this.app.$axios,
+            id,
+        });
+    },
+    async getProductCollections({
+        state,
+    }) {
+        const {
+            id,
+        } = state;
+
+        const {
+            collection,
+        } = await getCollections({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        return collection;
+    },
+    async getProductCompleteness({}, {
+        languageCode,
+        id,
+    }) {
+        const completeness = await getCompleteness({
+            $axios: this.app.$axios,
+            languageCode,
+            id,
+        });
+
+        return completeness;
+    },
+    async updateProductStatus({
+        state,
     }, {
         attributeId,
         value,
@@ -129,75 +262,255 @@ export default {
         const {
             id,
         } = state;
-        const {
-            authentication: {
-                user: {
-                    language,
-                },
-            },
-        } = rootState;
 
-        return this.app.$axios.$put(`${language}/products/${id}/draft/${attributeId}/value`, {
+        const data = {
             value,
-        }).then(() => applyProductDraft()
-            .then(request => request
-                .default({
-                    $axios: this.app.$axios,
-                    $store: this,
-                    id,
-                })
-                .then(onSuccess)));
+        };
+
+        await updateDraftValue({
+            $axios: this.app.$axios,
+            id,
+            attributeId,
+            data,
+        });
+        await applyDraft({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        onSuccess();
     },
-    getSelectAttributes({
-        commit,
+    async applyProductDraft({}, id) {
+        await applyDraft({
+            $axios: this.app.$axios,
+            id,
+        });
+    },
+    async updateProductDraft({
+        dispatch,
+    }, {
+        fieldKey,
+        productId,
+        elementId,
+        value,
     }) {
-        return getAttributesByFilter().then(
-            response => response.default({
+        try {
+            const data = {
+                value,
+            };
+
+            await updateDraftValue({
                 $axios: this.app.$axios,
-                $store: this,
-                filter: `type=${TYPES.SELECT}`,
-            }).then((selectAttributes) => {
-                commit('__SET_STATE', {
-                    key: 'selectAttributes',
-                    value: selectAttributes,
-                });
-            }),
-        );
+                id: productId,
+                attributeId: elementId,
+                data,
+            });
+            dispatch(
+                'validations/removeError',
+                fieldKey,
+                {
+                    root: true,
+                },
+            );
+        } catch (e) {
+            const {
+                code: statusCode, errors,
+            } = e.data;
+
+            if (errors) {
+                dispatch(
+                    'validations/onError',
+                    {
+                        code: statusCode,
+                        errors,
+                        fieldKey,
+                    },
+                    {
+                        root: true,
+                    },
+                );
+            } else {
+                const internalServerError = {
+                    value: [
+                        e.statusText,
+                    ],
+                };
+
+                dispatch(
+                    'validations/onError',
+                    {
+                        code: statusCode,
+                        errors: internalServerError,
+                        fieldKey,
+                    },
+                    {
+                        root: true,
+                    },
+                );
+            }
+        }
+    },
+    async getSelectAttributes({
+        commit,
+        dispatch,
+    }) {
+        const selectAttributes = await dispatch('attribute/getAttributesByFilter', {
+            filter: `type=${TYPES.SELECT}`,
+        }, {
+            root: true,
+        });
+
+        commit('__SET_STATE', {
+            key: 'selectAttributes',
+            value: selectAttributes,
+        });
     },
     async updateProduct(
         {
-            rootState, dispatch,
+            state,
+            rootState,
         },
         {
-            id,
-            data,
             onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        const {
-            authentication: {
-                user: {
-                    language,
-                },
-            },
-        } = rootState;
+        this.$setLoader('footerButton');
 
-        await this.app.$axios.$put(`${language}/products/${id}`, data).then(onSuccess).catch(e => dispatch('validations/onError', e.data, {
-            root: true,
-        }));
+        try {
+            const {
+                productTypes,
+            } = rootState.dictionaries;
+            const {
+                id,
+                template,
+                categories,
+                type,
+                bindingAttributesIds,
+            } = state;
+
+            const data = {
+                templateId: template,
+                categoryIds: categories,
+            };
+
+            if (getKeyByValue(productTypes, type) === PRODUCT_TYPE.WITH_VARIANTS) {
+                data.bindings = bindingAttributesIds;
+            }
+
+            await update({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            await applyDraft({
+                $axios: this.app.$axios,
+                id,
+            });
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
+
+        this.$removeLoader('footerButton');
     },
-    removeProduct({
-        state, rootState,
+    async createProduct(
+        {
+            state,
+            rootState,
+        },
+        {
+            onSuccess,
+            onError,
+        },
+    ) {
+        try {
+            const {
+                productTypes,
+            } = rootState.dictionaries;
+            const {
+                sku,
+                type,
+                template,
+                categories,
+                bindingAttributesIds,
+            } = state;
+
+            const data = {
+                sku,
+                type: getKeyByValue(productTypes, type),
+                templateId: template,
+                categoryIds: categories,
+            };
+
+            if (bindingAttributesIds.length) {
+                data.bindings = bindingAttributesIds;
+            }
+
+            await create({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
+    },
+    async removeProduct({
+        state,
     }, {
         onSuccess,
     }) {
         const {
             id,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
 
-        return this.app.$axios.$delete(`${userLanguageCode}/products/${id}`).then(() => onSuccess());
+        await remove({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        onSuccess();
+    },
+    removeProductChildren({
+        state,
+    }, {
+        childrenId,
+        skus,
+    }) {
+        const {
+            id,
+        } = state;
+        const data = {
+            skus: skus.replace(/\n/g, ',').split(','),
+        };
+
+        return removeChildren({
+            $axios: this.app.$axios,
+            id,
+            childrenId,
+            data,
+        });
+    },
+    async removeProductDraft({
+        state,
+    }, {
+        languageCode,
+        attributeId,
+        onSuccess,
+    }) {
+        const {
+            id,
+        } = state;
+
+        await removeDraftValue({
+            $axios: this.app.$axios,
+            id,
+            languageCode,
+            attributeId,
+        });
+
+        onSuccess();
     },
 };

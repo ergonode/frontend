@@ -57,7 +57,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('templateDesigner', [
+        ...mapActions('productTemplate', [
             '__clearStorage',
         ]),
         onClose() {

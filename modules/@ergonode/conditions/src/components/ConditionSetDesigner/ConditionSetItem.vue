@@ -18,6 +18,7 @@
                         v-text="conditionPhrase" />
                 </div>
                 <ActionIconButton
+                    v-if="!disabled"
                     :class="['condition__contextual-menu', contextualMenuHoveStateClasses]"
                     :theme="secondaryTheme"
                     :size="tinySize"
@@ -37,7 +38,8 @@
                     :key="index"
                     :parameter="parameter"
                     :item-id="itemId"
-                    :item-row="itemRow" />
+                    :item-row="itemRow"
+                    :disabled="disabled" />
             </div>
         </template>
     </div>
@@ -80,6 +82,10 @@ export default {
             type: Number,
             required: true,
         },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
@@ -91,7 +97,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('conditions', {
+        ...mapState('condition', {
             conditionsValues: state => state.conditionsValues,
         }),
         tinySize() {

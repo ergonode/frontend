@@ -33,7 +33,6 @@ import {
 import UploadFile from '@Media/components/Inputs/UploadFile/UploadFile';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -80,9 +79,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
         greenColor() {
             return GREEN;
         },
@@ -90,7 +86,7 @@ export default {
     methods: {
         ...mapActions('validations', [
             'onError',
-            'removeValidationError',
+            'removeError',
         ]),
         onRemoveFile() {
             this.$emit('remove');
@@ -107,13 +103,13 @@ export default {
                 const formData = new FormData();
                 formData.append('upload', file, name);
 
-                this.$axios.$post(`${this.languageCode}/sources/${this.sourceId}/upload`, formData).then(() => {
+                this.$axios.$post(`sources/${this.sourceId}/upload`, formData).then(() => {
                     this.file = file;
                     this.$addAlert({
                         type: ALERT_TYPE.SUCCESS,
                         message: 'File uploaded',
                     });
-                    this.removeValidationError('upload');
+                    this.removeError('upload');
                     this.isRequestPending = false;
                     this.$emit('progress', false);
                 }).catch((e) => {

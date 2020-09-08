@@ -12,7 +12,6 @@
         </div>
         <Fab
             data-cy="modal-close"
-            :floating="{ top: '12px', right: '12px' }"
             :theme="secondaryTheme"
             @click.native="onClose">
             <template #icon="{ color }">
@@ -26,7 +25,6 @@
 import Fab from '@Core/components/Fab/Fab';
 import IconClose from '@Core/components/Icons/Window/IconClose';
 import {
-    SIZE,
     THEME,
 } from '@Core/defaults/theme';
 
@@ -41,20 +39,11 @@ export default {
             type: String,
             default: '',
         },
-        size: {
-            type: String,
-            default: SIZE.REGULAR,
-            validator: value => [
-                SIZE.SMALL,
-                SIZE.REGULAR,
-            ].indexOf(value) !== -1,
-        },
     },
     computed: {
         classes() {
             return [
                 'modal-header',
-                `modal-header--${this.size}`,
             ];
         },
         secondaryTheme() {
@@ -71,27 +60,19 @@ export default {
 
 <style lang="scss" scoped>
     .modal-header {
-        $header: &;
-
         position: relative;
-        min-height: 48px;
-        padding: 24px 24px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 64px;
+        padding: 16px 24px;
         box-sizing: border-box;
+        background-color: $WHITESMOKE;
+        border-bottom: $BORDER_1_GREY;
 
         &__title {
             color: $GRAPHITE_DARK;
-        }
-
-        &--small {
-            #{$header}__title {
-                font: $FONT_SEMI_BOLD_16_24;
-            }
-        }
-
-        &--regular {
-            #{$header}__title {
-                font: $FONT_SEMI_BOLD_20_24;
-            }
+            font: $FONT_SEMI_BOLD_20_24;
         }
     }
 
@@ -100,6 +81,5 @@ export default {
         grid-auto-flow: column;
         grid-column-gap: 4px;
         align-items: center;
-        padding-right: 24px;
     }
 </style>

@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import {
+    SKU_MODEL,
     TYPES,
 } from '@Attributes/defaults/attributes';
 import {
@@ -11,12 +12,185 @@ import {
 import {
     typesConfiguration,
 } from '@Attributes/models/attributeTypes';
+import {
+    create,
+    createOption,
+    get,
+    getAll,
+    getOption,
+    remove,
+    removeOption,
+    update,
+    updateOption,
+} from '@Attributes/services/attribute';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    getMappedTranslationArrayOptions,
+} from '@Core/models/mappers/translationsMapper';
+import {
+    getKeyByValue,
+    isEmpty,
+} from '@Core/models/objectWrapper';
 
 import {
     types,
 } from './mutations';
 
 export default {
+    async createAttribute({
+        state, rootState,
+    }) {
+        const {
+            code,
+            groups,
+            type,
+            scope,
+            parameter,
+            options,
+        } = state;
+        const {
+            attrTypes,
+        } = rootState.dictionaries;
+        const typeKey = type ? getKeyByValue(attrTypes, type) : null;
+        const data = {
+            code,
+            scope,
+            type: typeKey,
+            groups,
+        };
+
+        if (!isEmpty(options)) {
+            const optionKeys = Object.keys(options);
+            const uniqueOptions = new Set(optionKeys);
+
+            if (optionKeys.some(key => key === '')) {
+                this.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Options cannot have an empty keys',
+                });
+            }
+
+            if (optionKeys.length !== uniqueOptions.size) {
+                this.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Option code must be unique',
+                });
+            }
+        }
+
+        if (parameter && type !== TYPES.TEXT_AREA) {
+            const typesConfig = typesConfiguration.call(this, {
+                state: rootState,
+            });
+            const paramsOptions = typesConfig
+                .getParamsOptionsForType(typeKey, rootState.dictionaries);
+            let paramKey = null;
+
+            // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
+            if (Array.isArray(paramsOptions)) {
+                paramKey = paramsOptions.find(option => option.name === parameter).id;
+            } else {
+                paramKey = getKeyByValue(paramsOptions, parameter);
+            }
+
+            data.parameters = typesConfig.getParsedParameterKeys(typeKey, paramKey);
+        }
+
+        if (typeKey === TYPES.TEXT_AREA) {
+            data.parameters = {
+                richEdit: parameter,
+            };
+        }
+
+        const {
+            id,
+        } = await create({
+            $axios: this.app.$axios,
+            data,
+        });
+
+        await Promise.all(
+            Object.keys(options).map(key => createOption({
+                $axios: this.app.$axios,
+                id,
+                data: {
+                    code: options[key].key,
+                },
+            })),
+        );
+
+        return {
+            id,
+        };
+    },
+    getAttributesByFilter({
+        rootState,
+    }, {
+        filter,
+    }) {
+        const {
+            language,
+        } = rootState.authentication.user;
+
+        return getAll({
+            $axios: this.app.$axios,
+            params: {
+                limit: 9999,
+                offset: 0,
+                filter,
+                view: 'list',
+                field: 'name',
+                order: 'ASC',
+            },
+        }).then(({
+            collection,
+        }) => getMappedTranslationArrayOptions({
+            options: collection,
+            languageCode: language,
+        }));
+    },
+    getAttributesOptionsByType({
+        rootState,
+    }, {
+        type,
+    }) {
+        const {
+            language,
+        } = rootState.authentication.user;
+        const filter = `type=${type}`;
+
+        return getAll({
+            $axios: this.app.$axios,
+            params: {
+                limit: 9999,
+                offset: 0,
+                filter,
+                view: 'list',
+                field: 'name',
+                order: 'ASC',
+            },
+        }).then(({
+            collection,
+        }) => {
+            const options = collection.map(element => ({
+                id: element.id,
+                key: element.code,
+                value: element.name,
+                hint: element.name ? `#${element.code} ${language}` : '',
+            }));
+
+            // TODO: Temporary till BE will create SKU as an attribute
+            if (type === TYPES.TEXT) {
+                options.push(SKU_MODEL);
+            }
+
+            return {
+                options,
+            };
+        });
+    },
     addAttributeOptionKey({
         commit,
     }, index) {
@@ -42,12 +216,16 @@ export default {
         commit(types.INITIALIZE_OPTIONS);
     },
     removeOption({
-        commit, state, rootState,
+        commit,
+        state,
     }, {
         id, index,
     }) {
-        return this.app.$axios.$delete(`${rootState.authentication.user.language}/attributes/${state.id}/options/${id}`)
-            .then(() => commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index));
+        return removeOption({
+            $axios: this.app.$axios,
+            attributeId: state.id,
+            optionId: id,
+        }).then(() => commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index));
     },
     updateAttributeOptionKey({
         commit,
@@ -80,16 +258,13 @@ export default {
         }
     },
     getAttributeOptions({
-        commit, rootState,
+        commit,
     }, {
         id,
     }) {
-        const params = {
-            order: 'ASC',
-            field: 'code',
-        };
-        return this.app.$axios.$get(`${rootState.authentication.user.language}/attributes/${id}/options`, {
-            params,
+        return getOption({
+            $axios: this.app.$axios,
+            id,
         }).then(options => commit(types.INITIALIZE_OPTIONS, getMappedArrayOptions(options)));
     },
     getAttribute({
@@ -98,13 +273,13 @@ export default {
         id,
     }) {
         const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const {
             attrTypes,
         } = rootState.dictionaries;
 
-        return this.app.$axios.$get(`${userLanguageCode}/attributes/${id}`).then(({
+        return get({
+            $axios: this.app.$axios,
+            id,
+        }).then(({
             code,
             type,
             hint = '',
@@ -136,7 +311,7 @@ export default {
             });
 
             dispatch(
-                'translations/setTabTranslations',
+                'tab/setTranslations',
                 {
                     hint,
                     label,
@@ -168,7 +343,9 @@ export default {
     },
     async updateAttribute(
         {
-            state, commit, dispatch, rootState,
+            state,
+            commit,
+            dispatch,
         },
         {
             id,
@@ -177,9 +354,6 @@ export default {
             onError,
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
         const optionsToAddRequests = [];
         const optionsToUpdateRequests = [];
 
@@ -189,9 +363,13 @@ export default {
 
             if (!option.id) {
                 optionsToAddRequests.push(
-                    this.app.$axios.$post(`${userLanguageCode}/attributes/${id}/options`, {
-                        code: option.key,
-                        label: optionValue,
+                    createOption({
+                        $axios: this.app.$axios,
+                        id,
+                        data: {
+                            code: option.key,
+                            label: optionValue,
+                        },
                     }).then(({
                         id: optionId,
                     }) => dispatch('updateAttributeOptionKey',
@@ -203,37 +381,46 @@ export default {
                 );
             } else if (state.updatedOptions[option.id]) {
                 optionsToUpdateRequests.push(
-                    this.app.$axios.$put(`${userLanguageCode}/attributes/${id}/options/${option.id}`, {
-                        code: option.key,
-                        label: optionValue,
+                    updateOption({
+                        $axios: this.app.$axios,
+                        attributeId: id,
+                        optionId: option.id,
+                        data: {
+                            code: option.key,
+                            label: optionValue,
+                        },
                     }),
                 );
             }
         });
 
-        await this.$setLoader('footerButton');
+        this.$setLoader('footerButton');
         await Promise.all([
             ...optionsToAddRequests,
             ...optionsToUpdateRequests,
-            this.app.$axios.$put(`${userLanguageCode}/attributes/${id}`, data).catch(e => onError(e.data)),
+            update({
+                $axios: this.app.$axios,
+                id,
+                data,
+            }).catch(e => onError(e.data)),
         ]).then(() => {
             commit(types.REMOVE_UPDATED_OPTION);
             onSuccess();
         });
-        await this.$removeLoader('footerButton');
+        this.$removeLoader('footerButton');
     },
     removeAttribute({
-        state, rootState,
+        state,
     }, {
         onSuccess,
     }) {
         const {
             id,
         } = state;
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
 
-        return this.app.$axios.$delete(`${userLanguageCode}/attributes/${id}`).then(() => onSuccess());
+        return remove({
+            $axios: this.app.$axios,
+            id,
+        }).then(() => onSuccess());
     },
 };

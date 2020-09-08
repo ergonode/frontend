@@ -57,7 +57,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('users', [
+        ...mapActions('user', [
             '__clearStorage',
         ]),
         onClose() {

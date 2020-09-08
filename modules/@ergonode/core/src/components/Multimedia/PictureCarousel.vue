@@ -7,6 +7,7 @@
         <Picture
             v-for="(id, index) in imageIds"
             :class="currentIndex === index ? 'visible' : 'non-visible'"
+            :api-path="`multimedia/${id}/download/default`"
             :value="id"
             :key="id"
             object-fit="none" />

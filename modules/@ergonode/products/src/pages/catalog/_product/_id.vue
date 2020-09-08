@@ -17,17 +17,9 @@ import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import {
-    getKeyByValue,
-} from '@Core/models/objectWrapper';
-import {
-    PRODUCT_TYPE,
-} from '@Products/defaults';
-import {
     mapActions,
     mapState,
 } from 'vuex';
-
-const applyProductDraft = () => import('@Products/services/applyProductDraft.service');
 
 export default {
     name: 'ProductEdit',
@@ -44,7 +36,7 @@ export default {
         params,
     }) {
         const {
-            defaultLanguageCodeByPrivileges,
+            defaultLanguageCode,
         } = store.state.core;
         const {
             id,
@@ -52,7 +44,7 @@ export default {
 
         await Promise.all([
             store.dispatch('product/getProductDraft', {
-                languageCode: defaultLanguageCodeByPrivileges,
+                languageCode: defaultLanguageCode,
                 id,
             }),
             store.dispatch('product/getProduct', id),
@@ -60,15 +52,7 @@ export default {
     },
     computed: {
         ...mapState('product', {
-            id: state => state.id,
             sku: state => state.sku,
-            type: state => state.type,
-            template: state => state.template,
-            categories: state => state.categories,
-            bindingAttributesIds: state => state.bindingAttributesIds,
-        }),
-        ...mapState('dictionaries', {
-            productTypes: state => state.productTypes,
         }),
     },
     destroyed() {
@@ -80,7 +64,12 @@ export default {
             'removeProduct',
             '__clearStorage',
         ]),
-        onDraftAppliedSuccess() {
+        ...mapActions('validations', [
+            'onError',
+            'removeErrors',
+        ]),
+        onUpdateProductSuccess() {
+            this.removeErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Product updated',
@@ -104,35 +93,11 @@ export default {
                 }),
             });
         },
-        async onSave() {
-            const {
-                params: {
-                    id,
-                },
-            } = this.$route;
-            const data = {
-                templateId: this.template,
-                categoryIds: this.categories,
-            };
-
-            if (getKeyByValue(this.productTypes, this.type) === PRODUCT_TYPE.WITH_VARIANTS) {
-                data.bindings = this.bindingAttributesIds;
-            }
-
-            await this.$setLoader('footerButton');
-            await this.updateProduct({
-                id,
-                data,
+        onSave() {
+            this.updateProduct({
+                onSuccess: this.onUpdateProductSuccess,
+                onError: this.onError,
             });
-            await applyProductDraft()
-                .then(request => request
-                    .default({
-                        $axios: this.$axios,
-                        $store: this.$store,
-                        id,
-                    })
-                    .then(this.onDraftAppliedSuccess));
-            await this.$removeLoader('footerButton');
         },
     },
     head() {

@@ -23,9 +23,17 @@ export default {
             type: String,
             required: true,
         },
+        apiPath: {
+            type: String,
+            required: true,
+        },
         fab: {
             type: Boolean,
             default: false,
+        },
+        useCache: {
+            type: Boolean,
+            default: true,
         },
         objectFit: {
             type: String,
@@ -80,10 +88,11 @@ export default {
         getImage() {
             this.cancelToken = this.$axios.CancelToken.source();
 
-            this.$axios.$get(`multimedia/${this.value}/download/default`, {
-                useCache: true,
+            this.$axios.$get(this.apiPath, {
+                useCache: this.useCache,
                 cancelToken: this.cancelToken.token,
                 responseType: 'arraybuffer',
+                withLanguage: false,
             })
                 .then(response => this.onSuccess(response))
                 .catch(this.imageLoadOnError);
@@ -108,13 +117,11 @@ export default {
 
 <style lang="scss" scoped>
     .picture {
+        width: 100%;
         max-height: 100%;
 
-        &:not(&--fab) {
-            width: 100%;
-        }
-
         &--fab {
+            height: 100%;
             border-radius: 50%;
         }
     }

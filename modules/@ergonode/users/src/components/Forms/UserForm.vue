@@ -21,21 +21,21 @@
                     required
                     label="Email"
                     :error-messages="errorMessages[emailFieldKey]"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setEmailValue" />
                 <TextField
                     :value="firstName"
                     required
                     label="First name"
                     :error-messages="errorMessages[firstNameFieldKey]"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     @input="setFirstNameValue" />
                 <TextField
                     :value="lastName"
                     required
                     label="Last name"
                     :error-messages="errorMessages[lastNameFieldKey]"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     @input="setLastNameValue" />
                 <TextField
                     :value="password"
@@ -43,7 +43,7 @@
                     label="Password"
                     :input="{ type: 'password' }"
                     :error-messages="errorMessages[passwordFieldKey]"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     @input="setPasswordValue" />
                 <TextField
                     :value="passwordRepeat"
@@ -51,11 +51,11 @@
                     label="Password repeat"
                     :input="{ type: 'password' }"
                     :error-messages="errorMessages[passwordRepeatFieldKey]"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     @input="setPasswordRepeatValue" />
                 <Toggler
                     :value="isActive"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     label="The active status"
                     @input="setStatusValue" />
                 <Select
@@ -63,16 +63,16 @@
                     required
                     label="Language"
                     :options="languageOptions"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     :error-messages="errorMessages[languageFieldKey]"
                     @input="setLanguageValue" />
                 <TranslationLazySelect
                     :value="role"
                     :required="true"
                     label="Role"
-                    :disabled="isDisabledByPrivileges"
+                    :disabled="!isAllowedToUpdate"
                     :error-messages="errorMessages[roleIdFieldKey]"
-                    :fetch-options-request="getRolesOptionsRequest"
+                    :fetch-options-request="getRoleOptions"
                     @input="setRoleValue" />
             </FormSection>
         </template>
@@ -86,8 +86,6 @@ import {
     mapGetters,
     mapState,
 } from 'vuex';
-
-const getRolesOptions = () => import('@Users/services/getRolesOptions.service');
 
 export default {
     name: 'UserForm',
@@ -115,9 +113,9 @@ export default {
     },
     computed: {
         ...mapGetters('core', [
-            'getActiveLanguages',
+            'activeLanguages',
         ]),
-        ...mapState('users', {
+        ...mapState('user', {
             userID: state => state.id,
             email: state => state.email,
             firstName: state => state.firstName,
@@ -136,13 +134,13 @@ export default {
         isDisabled() {
             return Boolean(this.userID);
         },
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.USER.update,
             ]);
         },
         languageOptions() {
-            return this.getActiveLanguages.map(({
+            return this.activeLanguages.map(({
                 name,
             }) => name);
         },
@@ -169,17 +167,12 @@ export default {
         },
     },
     methods: {
-        ...mapActions('users', [
+        ...mapActions('user', [
             '__setState',
         ]),
-        getRolesOptionsRequest() {
-            return getRolesOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
-        },
+        ...mapActions('role', [
+            'getRoleOptions',
+        ]),
         setEmailValue(value) {
             this.__setState({
                 key: 'email',

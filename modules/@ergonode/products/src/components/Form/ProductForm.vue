@@ -11,28 +11,28 @@
                 <Select
                     :value="type"
                     required
-                    :disabled="isDisabled"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     label="Product type"
                     :options="productTypesValues"
                     @input="setTypeValue" />
                 <ProductAttributesBindingFormSection
                     v-show="isProductWithVariants"
-                    :disabled="isDisabledByPrivileges" />
+                    :disabled="!isAllowedToUpdate" />
                 <TextField
                     :value="sku"
                     hint="Products SKU must be unique"
                     label="SKU"
                     required
                     :error-messages="errorMessages[skuFieldKey]"
-                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setSkuValue" />
                 <TranslationLazySelect
                     :value="template"
                     :required="true"
                     label="Product template"
                     :error-messages="errorMessages[templateIdFieldKey]"
-                    :disabled="isDisabled || isDisabledByPrivileges"
-                    :fetch-options-request="getTemplatesOptionsRequest"
+                    :disabled="isDisabled || !isAllowedToUpdate"
+                    :fetch-options-request="getTemplateOptions"
                     @input="setTemplateValue" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
@@ -59,8 +59,6 @@ import {
     mapState,
 } from 'vuex';
 
-const getTemplatesOptions = () => import('@Templates/services/getTemplatesOptions.service');
-
 export default {
     name: 'ProductForm',
     components: {
@@ -72,9 +70,6 @@ export default {
         ProductAttributesBindingFormSection: () => import('@Products/components/Form/Section/ProductAttributesBindingFormSection'),
     },
     computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
         ...mapState('dictionaries', {
             productTypes: state => state.productTypes,
         }),
@@ -99,8 +94,8 @@ export default {
         isProductWithVariants() {
             return this.productTypeKey === PRODUCT_TYPE.WITH_VARIANTS;
         },
-        isDisabledByPrivileges() {
-            return !this.$hasAccess([
+        isAllowedToUpdate() {
+            return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ]);
         },
@@ -114,6 +109,9 @@ export default {
     methods: {
         ...mapActions('product', [
             '__setState',
+        ]),
+        ...mapActions('productTemplate', [
+            'getTemplateOptions',
         ]),
         setTypeValue(value) {
             this.__setState({
@@ -133,19 +131,11 @@ export default {
                 value,
             });
         },
-        getTemplatesOptionsRequest() {
-            return getTemplatesOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
-        },
         bindingProps({
             props,
         }) {
             return {
-                disabled: this.isDisabledByPrivileges,
+                disabled: !this.isAllowedToUpdate,
                 ...props,
             };
         },

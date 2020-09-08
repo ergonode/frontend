@@ -4,7 +4,8 @@
  */
 <template>
     <ListDraggableElement
-        :is-draggable="isAllowedToUpdate"
+        :is-draggable="!disabled"
+        :is-disabled="disabled"
         :draggable-id="item.id"
         :label="item.name"
         @drag="onDrag">
@@ -20,7 +21,6 @@ import ListElementTitle from '@Core/components/List/ListElementTitle';
 import {
     getUUID,
 } from '@Core/models/stringWrapper';
-import PRIVILEGES from '@Segments/config/privileges';
 import {
     mapActions,
 } from 'vuex';
@@ -37,31 +37,26 @@ export default {
             type: Object,
             required: true,
         },
-    },
-    computed: {
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.SEGMENT.update,
-            ]);
+        disabled: {
+            type: Boolean,
+            deafulr: false,
         },
     },
     methods: {
         ...mapActions('draggable', [
-            'setDraggedElement',
+            '__setState',
         ]),
         onDrag(isDragged) {
-            const {
-                id, name, code,
-            } = this.item;
-            if (isDragged) {
-                this.setDraggedElement({
-                    id: `${id}--${getUUID()}`,
-                    name,
-                    code,
-                });
-            } else {
-                this.setDraggedElement();
-            }
+            this.__setState({
+                key: 'draggedElement',
+                value: isDragged
+                    ? {
+                        id: `${this.item.id}--${getUUID()}`,
+                        name: this.item.name,
+                        code: this.item.code,
+                    }
+                    : null,
+            });
         },
     },
 };

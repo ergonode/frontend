@@ -7,7 +7,7 @@
         :row-height="templateRowHeight"
         :max-row="maxRows">
         <div
-            class="products-template-grid"
+            class="product-template-grid"
             :style="gridTemplateRows">
             <Component
                 v-for="(formField, index) in formFieldComponents"
@@ -15,7 +15,7 @@
                 :key="index"
                 v-bind="{
                     ...elements[index],
-                    disabled: isUserDisallowedToUpdate(elements[index].properties.scope),
+                    disabled: !isUserAllowedToUpdate(elements[index].properties.scope),
                     languageCode: language.code,
                 }"
                 @input="onValueChange" />
@@ -33,11 +33,10 @@ import {
 import PRIVILEGES from '@Products/config/privileges';
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
 import {
+    mapActions,
     mapGetters,
     mapState,
 } from 'vuex';
-
-const updateProductDraft = () => import('@Products/services/updateProductDraft.service');
 
 export default {
     name: 'ProductTemplateForm',
@@ -61,10 +60,10 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            user: state => state.user,
+            languagePrivileges: state => state.user.languagePrivileges,
         }),
         ...mapGetters('core', [
-            'getRootOnLanguagesTree',
+            'rootLanguage',
         ]),
         templateRowHeight() {
             return 40;
@@ -92,37 +91,31 @@ export default {
         }) => () => import(`@Products/components/Form/Field/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`));
     },
     methods: {
-        isUserDisallowedToUpdate(scope) {
-            const {
-                languagePrivileges,
-            } = this.user;
+        ...mapActions('product', [
+            'updateProductDraft',
+        ]),
+        isUserAllowedToUpdate(scope) {
             const {
                 code,
             } = this.language;
 
-            return !this.$hasAccess([
+            return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ])
-                || !languagePrivileges[code].edit
-                || (this.getRootOnLanguagesTree.code !== code && scope === SCOPE.GLOBAL);
+                && this.languagePrivileges[code].edit
+                && (this.rootLanguage.code === code || scope === SCOPE.LOCAL);
         },
-        onValueChange(payload) {
-            updateProductDraft().then(async (response) => {
-                await response.default({
-                    $axios: this.$axios,
-                    $store: this.$store,
-                    ...payload,
-                });
+        async onValueChange(payload) {
+            await this.updateProductDraft(payload);
 
-                this.$emit('valueUpdated');
-            });
+            this.$emit('valueUpdated');
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .products-template-grid {
+    .product-template-grid {
         display: grid;
         grid-gap: 24px;
         grid-template-columns: repeat(4, 1fr);

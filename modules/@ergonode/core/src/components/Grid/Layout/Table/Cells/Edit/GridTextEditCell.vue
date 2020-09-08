@@ -9,6 +9,7 @@
                 v-model="localValue"
                 autofocus
                 :size="smallSize"
+                :disabled="disabled"
                 :type="underlineInputType"
                 :error-messages="errorMessages" />
         </GridTextEditContentCell>

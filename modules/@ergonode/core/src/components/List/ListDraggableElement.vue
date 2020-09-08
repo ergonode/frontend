@@ -11,9 +11,7 @@
         @dragend="onDragEnd">
         <template v-if="!isDragged">
             <slot />
-            <IconDragDrop
-                class="list-draggable-element__icon"
-                v-if="isDragged" />
+            <IconDragDrop class="list-draggable-element__icon" />
         </template>
     </li>
 </template>
@@ -76,7 +74,7 @@ export default {
     },
     methods: {
         ...mapActions('draggable', [
-            'setDraggableState',
+            '__setState',
         ]),
         onDragStart(event) {
             addElementCopyToDocumentBody({
@@ -86,8 +84,9 @@ export default {
             });
 
             this.isDragged = true;
-            this.setDraggableState({
-                propName: 'isElementDragging',
+
+            this.__setState({
+                key: 'isElementDragging',
                 value: DRAGGED_ELEMENT.LIST,
             });
             this.$emit('drag', true);
@@ -96,8 +95,8 @@ export default {
             removeElementCopyFromDocumentBody(event);
 
             this.isDragged = false;
-            this.setDraggableState({
-                propName: 'isElementDragging',
+            this.__setState({
+                key: 'isElementDragging',
                 value: null,
             });
             this.$emit('drag', false);
@@ -149,7 +148,6 @@ export default {
 
         &:not(&--dragged):not(&--disabled):hover {
             background-color: $WHITESMOKE;
-            box-shadow: $ELEVATOR_2_DP;
 
             #{$element}__icon {
                 opacity: 1;

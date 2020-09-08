@@ -38,22 +38,22 @@ export default {
         store, params,
     }) {
         await Promise.all([
-            store.dispatch('tree/__clearStorage'),
-            store.dispatch('translations/__clearStorage'),
+            store.dispatch('categoryTree/__clearStorage'),
+            store.dispatch('tab/__clearStorage'),
         ]);
-        await store.dispatch('tree/getTree', {
+        await store.dispatch('categoryTree/getTree', {
             treeId: params.id,
         });
     },
     computed: {
-        ...mapState('tree', {
+        ...mapState('categoryTree', {
             treeId: state => state.treeId,
             code: state => state.code,
         }),
         ...mapState('gridDesigner', {
             fullGridData: state => state.fullGridData,
         }),
-        ...mapState('translations', {
+        ...mapState('tab', {
             translations: state => state.translations,
         }),
     },
@@ -61,7 +61,7 @@ export default {
         this.clearGridDesignerStorage();
     },
     methods: {
-        ...mapActions('tree', [
+        ...mapActions('categoryTree', [
             'updateTree',
             'removeCategoryTree',
         ]),
@@ -70,7 +70,7 @@ export default {
         }),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
+            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({
@@ -98,7 +98,7 @@ export default {
             });
         },
         onUpdateSuccess() {
-            this.removeValidationErrors();
+            this.removeErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Tree updated',

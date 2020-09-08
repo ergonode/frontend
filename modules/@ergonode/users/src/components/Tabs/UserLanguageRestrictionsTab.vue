@@ -55,9 +55,9 @@ export default {
     },
     computed: {
         ...mapGetters('core', [
-            'getActiveLanguages',
+            'activeLanguages',
         ]),
-        ...mapState('users', {
+        ...mapState('user', {
             languagePrivilegesCollection: state => state.languagePrivilegesCollection,
         }),
         isAllowedToUpdate() {
@@ -76,7 +76,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('users', [
+        ...mapActions('user', [
             '__setState',
         ]),
         onCellValueChange(cellValues) {
@@ -96,14 +96,17 @@ export default {
                 drafts[`${rowId}/${columnId}`] = value;
             });
 
-            this.setDrafts(drafts);
+            this.setDrafts({
+                ...this.drafts,
+                ...drafts,
+            });
             this.__setState({
                 key: 'drafts',
                 value: this.drafts,
             });
         },
         updateGridData() {
-            const fullDataList = this.getActiveLanguages.map(({
+            const fullDataList = this.activeLanguages.map(({
                 name, code,
             }) => ({
                 name,
@@ -119,7 +122,7 @@ export default {
                 fullDataList,
                 selectedData: getMappedRestrictions(this.languagePrivilegesCollection),
                 defaults: privilegeDefaults,
-                isEditable: true,
+                isEditable: this.isAllowedToUpdate,
             });
             const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
             const sortedColumns = config

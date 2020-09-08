@@ -79,7 +79,6 @@ export default {
 
         &:not(&--disabled):hover {
             background-color: $WHITESMOKE;
-            box-shadow: $ELEVATOR_2_DP;
         }
     }
 </style>

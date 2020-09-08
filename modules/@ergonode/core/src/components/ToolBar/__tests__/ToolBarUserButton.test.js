@@ -57,8 +57,4 @@ describe('ToolBar/ToolBarUserButton', () => {
     it('Check if user last name is capitalized', () => {
         expect(wrapper.vm.capitalizedUserLastName).toBe('Kowalski');
     });
-
-    it('Check if user initials are correct', () => {
-        expect(wrapper.vm.userInitials).toBe('Jan Kowalski');
-    });
 });

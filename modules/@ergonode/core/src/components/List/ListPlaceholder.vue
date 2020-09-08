@@ -58,8 +58,7 @@ export default {
 
 <style lang="scss" scoped>
     .placeholder {
-        width: 580px;
-        height: 280px;
+        min-height: 280px;
         box-shadow: $ELEVATOR_2_DP;
     }
 </style>

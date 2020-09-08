@@ -11,6 +11,7 @@
                 <RichTextEditor
                     v-if="isRTEEditor"
                     :disabled="disabled"
+                    height="100%"
                     :required="properties.required"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
@@ -78,10 +79,6 @@ export default {
             type: Object,
             default: () => ({}),
         },
-        parameters: {
-            type: Object,
-            default: () => ({}),
-        },
         properties: {
             type: Object,
             default: () => ({}),
@@ -98,6 +95,11 @@ export default {
             type: String,
             required: true,
         },
+    },
+    data() {
+        return {
+            isValueChanged: false,
+        };
     },
     computed: {
         ...mapState('product', {
@@ -122,7 +124,7 @@ export default {
             'setDraftValue',
         ]),
         onFocus(isFocused) {
-            if (!isFocused) {
+            if (!isFocused && this.isValueChanged) {
                 this.$emit('input', {
                     fieldKey: this.fieldKey,
                     languageCode: this.languageCode,
@@ -140,7 +142,12 @@ export default {
             });
         },
         onRTEValueChange(value) {
-            this.onValueChange(value);
+            this.isValueChanged = value !== this.fieldData;
+
+            if (this.isValueChanged) {
+                this.onValueChange(value);
+            }
+
             this.onFocus(false);
         },
     },

@@ -11,11 +11,12 @@
         :label="paramsLabel"
         :options="attributeParametersOptions"
         :error-messages="errorMessages[paramsFieldKey]"
-        :disabled="isDisabledByPrivileges"
+        :disabled="!isAllowedToUpdate"
         @input="setParameterValue" />
 </template>
 
 <script>
+import PRIVILEGES from '@Attributes/config/privileges';
 import {
     typesConfiguration,
 } from '@Attributes/models/attributeTypes';
@@ -56,16 +57,10 @@ export default {
             attrID: state => state.id,
             parameter: state => state.parameter,
         }),
-        isDisabled() {
-            return Boolean(this.attrID);
-        },
-        isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess([
-                'ATTRIBUTE_UPDATE',
-            ]))
-            || (!this.isDisabled && !this.$hasAccess([
-                'ATTRIBUTE_CREATE',
-            ]));
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.ATTRIBUTE.update,
+            ]);
         },
         paramsLabel() {
             const paramsKey = this.typesConfig.getParamsKeyForType(this.typeKey);

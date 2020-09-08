@@ -10,7 +10,10 @@ export default {
     },
     props: {
         value: {
-            type: String,
+            type: [
+                String,
+                Number,
+            ],
             default: '',
         },
         errorMessages: {
@@ -27,6 +30,10 @@ export default {
         row: {
             type: Number,
             required: true,
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
         },
         column: {
             type: Number,

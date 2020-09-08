@@ -111,7 +111,6 @@ export default {
         &__input {
             position: relative;
             display: flex;
-            flex: 1;
             flex-direction: column;
             justify-content: center;
             box-sizing: border-box;
@@ -195,8 +194,7 @@ export default {
         }
 
         &--disabled {
-            pointer-events: none;
-            cursor: not-allowed;
+            cursor: default;
 
             fieldset {
                 background-color: $WHITESMOKE;
