@@ -49,12 +49,6 @@
                     @input="setDefaultImageAttributeValue" />
             </FormSection>
         </template>
-        <template #submit>
-            <slot name="submitForm" />
-        </template>
-        <template #procced>
-            <slot name="proceedForm" />
-        </template>
     </Form>
 </template>
 

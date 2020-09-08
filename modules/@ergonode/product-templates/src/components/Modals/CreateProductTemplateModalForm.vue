@@ -7,39 +7,22 @@
         title="Create product template"
         @close="onClose">
         <template #body>
-            <TemplateDesignerForm @submit="onSubmit">
-                <template #submitForm>
-                    <Button
-                        title="CREATE"
-                        type="submit">
-                        <template
-                            v-if="isSubmitting"
-                            #append="{ color }">
-                            <IconSpinner :fill-color="color" />
-                        </template>
-                    </Button>
-                </template>
-                <template #proceedForm>
-                    <Button
-                        title="CREATE & EDIT"
-                        :theme="secondaryTheme"
-                        @click.native="onCreateAndEdit">
-                        <template
-                            v-if="isCreatingAndEdit"
-                            #prepend="{ color }">
-                            <IconSpinner :fill-color="color" />
-                        </template>
-                    </Button>
-                </template>
-            </TemplateDesignerForm>
+            <TemplateDesignerForm
+                submit-title="CREATE"
+                proceed-title="CREATE AND EDIT"
+                :is-submitting="isSubmitting"
+                :is-proceeding="isProceeding"
+                @submit="onSubmit"
+                @proceed="onProceed" />
         </template>
     </ModalForm>
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import ModalForm from '@Core/components/Modal/ModalForm';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     THEME,
 } from '@Core/defaults/theme';
@@ -52,14 +35,12 @@ export default {
     name: 'CreateProductTemplateModalForm',
     components: {
         ModalForm,
-        Button,
         TemplateDesignerForm,
-        IconSpinner,
     },
     data() {
         return {
             isSubmitting: false,
-            isCreatingAndEdit: false,
+            isProceeding: false,
         };
     },
     computed: {
@@ -76,48 +57,61 @@ export default {
             'onError',
             'removeErrors',
         ]),
-        async onSubmit() {
-            if (this.isSubmitting || this.isCreatingAndEdit) {
-                return;
-            }
-            this.isSubmitting = true;
-
-            try {
-                this.removeErrors();
-                await this.createProductTemplate();
-                this.$emit('created');
-                this.onClose();
-            } catch (e) {
-                if (e.data) {
-                    this.onError(e.data);
-                }
-            } finally {
-                this.isSubmitting = false;
-            }
-        },
         onClose() {
             this.__clearStorage();
             this.$emit('close');
         },
-        async onCreateAndEdit() {
-            this.isCreatingAndEdit = true;
-
-            try {
-                this.removeErrors();
-                const id = await this.createProductTemplate();
-                await this.$router.push({
-                    name: 'product-template-id-general',
-                    params: {
-                        id,
-                    },
-                });
-            } catch (e) {
-                if (e.data) {
-                    this.onError(e.data);
-                }
-            } finally {
-                this.isCreatingAndEdit = false;
+        onSubmit() {
+            if (this.isSubmitting || this.isProceeding) {
+                return;
             }
+            this.isSubmitting = true;
+
+            this.removeErrors();
+            this.createProductTemplate({
+                onSuccess: this.onCreateSuccess,
+                onError: this.onCreateError,
+            });
+        },
+        onProceed() {
+            if (this.isSubmitting || this.isProceeding) {
+                return;
+            }
+
+            this.isProceeding = true;
+
+            this.removeErrors();
+            this.createProductTemplate({
+                onSuccess: this.onProceedSuccess,
+                onError: this.onCreateError,
+            });
+        },
+        onCreateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product template created',
+            });
+
+            this.isSubmitting = false;
+
+            this.$emit('created');
+            this.onClose();
+        },
+        onProceedSuccess(id) {
+            this.isProceeding = false;
+
+            this.$router.push({
+                name: 'product-template-id-general',
+                params: {
+                    id,
+                },
+            });
+        },
+        onCreateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+            this.isProceeding = false;
         },
     },
 };

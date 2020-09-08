@@ -128,7 +128,7 @@ export default {
             value: layoutElements,
         });
     },
-    async updateTemplateDesigner(
+    async updateProductTemplate(
         {
             state,
         },
