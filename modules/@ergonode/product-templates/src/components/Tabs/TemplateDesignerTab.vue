@@ -93,6 +93,9 @@ import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
 import {
@@ -240,22 +243,30 @@ export default {
             'onError',
             'removeErrors',
         ]),
-        async onSubmit() {
+        onSubmit() {
             if (this.isSubmitting) {
                 return;
             }
             this.isSubmitting = true;
 
-            try {
-                this.removeErrors();
-                await this.updateProductTemplate();
-            } catch (e) {
-                if (e.data) {
-                    this.onError(e.data);
-                }
-            } finally {
-                this.isSubmitting = false;
-            }
+            this.removeErrors();
+            this.updateProductTemplate({
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
+            });
+        },
+        onUpdateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Template updated',
+            });
+
+            this.isSubmitting = false;
+        },
+        onUpdateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
         },
         onRemoveLayoutElement(index) {
             this.removeLayoutElementAtIndex(index);
