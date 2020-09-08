@@ -39,6 +39,7 @@
             <slot name="submit">
                 <Button
                     v-if="submitTitle !== ''"
+                    data-cy="submit"
                     :title="submitTitle"
                     type="submit">
                     <template
@@ -51,6 +52,7 @@
             <slot name="proceed">
                 <Button
                     v-if="proceedTitle !== ''"
+                    data-cy="proceed"
                     :title="proceedTitle"
                     :theme="secondaryTheme"
                     @click.native="onProceed">

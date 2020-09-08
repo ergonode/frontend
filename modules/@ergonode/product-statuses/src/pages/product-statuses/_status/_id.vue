@@ -48,10 +48,6 @@ export default {
         ...mapActions('productStatus', [
             'removeProductStatus',
         ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,

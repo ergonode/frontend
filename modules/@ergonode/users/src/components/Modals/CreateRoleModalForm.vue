@@ -57,6 +57,10 @@ export default {
             'onError',
             'removeErrors',
         ]),
+        onClose() {
+            this.__clearStorage();
+            this.$emit('close');
+        },
         onSubmit() {
             if (this.isSubmitting || this.isProceeding) {
                 return;
@@ -81,10 +85,6 @@ export default {
                 onSuccess: this.onProceedSuccess,
                 onError: this.onCreateError,
             });
-        },
-        onClose() {
-            this.__clearStorage();
-            this.$emit('close');
         },
         onCreateSuccess() {
             this.$addAlert({

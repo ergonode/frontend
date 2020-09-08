@@ -111,6 +111,7 @@ export default {
         {
             state,
             rooState,
+            dispatch,
         },
         {
             onSuccess = () => {},
@@ -135,6 +136,7 @@ export default {
                 description,
             };
 
+            await dispatch('updateCollectionProductsVisibility');
             await update({
                 $axios: this.app.$axios,
                 id,
@@ -149,22 +151,30 @@ export default {
     async createCollection({
         state,
     }, {
-        onSuccess,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            code,
-            type,
-        } = state;
-        const data = {
-            code,
-            typeId: type,
-        };
+        try {
+            const {
+                code,
+                type,
+            } = state;
+            const data = {
+                code,
+                typeId: type,
+            };
 
-        await create({
-            $axios: this.app.$axios,
-            data,
-        });
-        onSuccess();
+            const {
+                id,
+            } = await create({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess(id);
+        } catch (e) {
+            onError(e.data);
+        }
     },
     addBySku({
         state,

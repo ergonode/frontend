@@ -53,6 +53,10 @@ export default {
             'createProductStatus',
             '__clearStorage',
         ]),
+        ...mapActions('validations', [
+            'onError',
+            'removeErrors',
+        ]),
         onClose() {
             this.__clearStorage();
             this.$emit('close');

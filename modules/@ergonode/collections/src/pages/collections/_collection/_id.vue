@@ -5,8 +5,7 @@
 <template>
     <CollectionPage
         :title="code"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -44,16 +43,7 @@ export default {
     },
     methods: {
         ...mapActions('collection', [
-            'updateCollection',
-            'updateCollectionProductsVisibility',
             'removeCollection',
-        ]),
-        ...mapActions('grid', [
-            'setDrafts',
-        ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({
@@ -62,25 +52,6 @@ export default {
                 confirmCallback: () => this.removeCollection({
                     onSuccess: this.onRemoveSuccess,
                 }),
-            });
-        },
-        async onSave() {
-            this.removeErrors();
-
-            await this.updateCollectionProductsVisibility();
-
-            this.setDrafts();
-
-            await this.updateCollection({
-                onSuccess: this.onUpdateCollectionSuccess,
-                onError: this.onError,
-            });
-        },
-        onUpdateCollectionSuccess() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Product collection updated',
             });
         },
         onRemoveSuccess() {

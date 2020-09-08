@@ -62,10 +62,6 @@ export default {
             'removeProduct',
             '__clearStorage',
         ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,

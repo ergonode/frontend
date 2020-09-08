@@ -55,10 +55,6 @@ export default {
             '__clearStorage',
             'removeImport',
         ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
