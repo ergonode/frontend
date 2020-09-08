@@ -37,7 +37,6 @@ export default {
     },
     computed: {
         ...mapState('attributeGroup', {
-            id: state => state.id,
             code: state => state.code,
         }),
     },

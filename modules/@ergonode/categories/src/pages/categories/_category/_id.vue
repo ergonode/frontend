@@ -38,17 +38,12 @@ export default {
     },
     computed: {
         ...mapState('category', {
-            id: state => state.id,
             code: state => state.code,
         }),
     },
     methods: {
         ...mapActions('category', [
             'removeCategory',
-        ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({

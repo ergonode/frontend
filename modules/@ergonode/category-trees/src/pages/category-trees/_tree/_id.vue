@@ -37,7 +37,6 @@ export default {
     },
     computed: {
         ...mapState('categoryTree', {
-            id: state => state.id,
             code: state => state.code,
         }),
     },
@@ -51,10 +50,6 @@ export default {
         ...mapActions('gridDesigner', {
             clearGridDesignerStorage: '__clearStorage',
         }),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,

@@ -42,7 +42,6 @@ export default {
     },
     computed: {
         ...mapState('segment', {
-            id: state => state.id,
             code: state => state.code,
         }),
     },

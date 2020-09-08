@@ -69,7 +69,7 @@ export default {
                 items,
             } = await getListItems({
                 $axios: this.app.$axios,
-                path: 'categories',
+                path: `${userLanguageCode}/categories`,
                 params: {
                     // limit: categories.length,
                     limit: 99999,
@@ -135,10 +135,12 @@ export default {
                     name,
                 },
             } = rootState.tab;
-
+            const {
+                fullGridData,
+            } = rootState.gridDesigner;
             const data = {
                 name,
-                categories: getMappedTreeData(this.fullGridData),
+                categories: getMappedTreeData(fullGridData),
             };
             await update({
                 $axios: this.app.$axios,

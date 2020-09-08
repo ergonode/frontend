@@ -40,7 +40,6 @@ export default {
     },
     computed: {
         ...mapState('attribute', {
-            id: state => state.id,
             code: state => state.code,
         }),
     },
