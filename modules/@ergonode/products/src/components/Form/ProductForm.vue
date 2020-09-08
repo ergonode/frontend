@@ -5,7 +5,15 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[skuFieldKey, templateIdFieldKey]"
+        :fields-keys="[
+            skuFieldKey,
+            templateIdFieldKey
+        ]"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
         @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
@@ -43,12 +51,6 @@
                 </template>
             </FormSection>
         </template>
-        <template #submit>
-            <slot name="submitForm" />
-        </template>
-        <template #procced>
-            <slot name="proceedForm" />
-        </template>
     </Form>
 </template>
 
@@ -58,6 +60,7 @@ import FormSection from '@Core/components/Form/Section/FormSection';
 import Select from '@Core/components/Inputs/Select/Select';
 import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
 import TextField from '@Core/components/Inputs/TextField';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
@@ -81,6 +84,9 @@ export default {
         TranslationLazySelect,
         ProductAttributesBindingFormSection: () => import('@Products/components/Form/Section/ProductAttributesBindingFormSection'),
     },
+    mixins: [
+        formActionsMixin,
+    ],
     computed: {
         ...mapState('dictionaries', {
             productTypes: state => state.productTypes,

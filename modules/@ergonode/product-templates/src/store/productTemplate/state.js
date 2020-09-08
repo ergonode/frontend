@@ -4,7 +4,6 @@
  */
 
 export default () => ({
-    id: '',
     layoutElements: [],
     title: '',
     id: '',

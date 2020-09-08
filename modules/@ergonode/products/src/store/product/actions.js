@@ -406,6 +406,7 @@ export default {
                 $axios: this.app.$axios,
                 id,
             });
+
             onSuccess();
         } catch (e) {
             onError(e.data);
@@ -444,12 +445,14 @@ export default {
                 data.bindings = bindingAttributesIds;
             }
 
-            await create({
+            const {
+                id,
+            } = await create({
                 $axios: this.app.$axios,
                 data,
             });
 
-            onSuccess();
+            onSuccess(id);
         } catch (e) {
             onError(e.data);
         }

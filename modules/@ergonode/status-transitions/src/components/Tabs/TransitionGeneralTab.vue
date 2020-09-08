@@ -113,7 +113,7 @@ export default {
                 onError: this.onError,
             });
         },
-        async onUpdateSuccess() {
+        onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Transition updated',

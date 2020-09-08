@@ -54,7 +54,7 @@ export default {
                 onError: this.onUpdateError,
             });
         },
-        async onUpdateSuccess() {
+        onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Role updated',
