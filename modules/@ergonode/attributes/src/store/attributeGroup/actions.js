@@ -11,57 +11,71 @@ import {
 } from '@Attributes/services/attributeGroup';
 
 export default {
-    createAttributeGroup({
+    async createAttributeGroup({
         state,
-    }) {
-        const {
-            code,
-        } = state;
-
-        return create({
-            $axios: this.app.$axios,
-            data: {
-                code,
-            },
-        });
     },
-    getAttributeGroup(
-        {
-            commit, dispatch,
-        },
-        {
-            groupId, onError = () => {},
-        },
-    ) {
-        return get({
-            $axios: this.app.$axios,
-            id: groupId,
-        }).then(({
-            id,
-            code,
-            name = '',
-        }) => {
-            const translations = {
-                name,
+    {
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const {
+                code,
+            } = state;
+
+            const data = {
+                code,
             };
 
-            commit('__SET_STATE', {
-                key: 'id',
-                value: id,
-            });
-            commit('__SET_STATE', {
-                key: 'code',
-                value: code,
-            });
-            commit('__SET_STATE', {
-                key: 'name',
-                value: name,
+            const {
+                id,
+            } = await create({
+                $axios: this.app.$axios,
+                data,
             });
 
-            dispatch('tab/setTranslations', translations, {
-                root: true,
-            });
-        }).catch(onError);
+            onSuccess(id);
+        } catch (e) {
+            onError(e.data);
+        }
+    },
+    async getAttributeGroup(
+        {
+            commit,
+            dispatch,
+        },
+        {
+            id,
+        },
+    ) {
+        const {
+            code,
+            name = '',
+        } = await get({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        const translations = {
+            name,
+        };
+
+        commit('__SET_STATE', {
+            key: 'id',
+            value: id,
+        });
+        commit('__SET_STATE', {
+            key: 'code',
+            value: code,
+        });
+        commit('__SET_STATE', {
+            key: 'name',
+            value: name,
+        });
+
+        dispatch('tab/setTranslations', translations, {
+            root: true,
+        });
     },
     getAttributeGroupsOptions({
         rootState,
@@ -83,22 +97,40 @@ export default {
             })),
         }));
     },
-    updateAttributeGroup(
-        {},
+    async updateAttributeGroup(
         {
-            id,
-            data,
+            state,
+            rootState,
+        },
+        {
             onSuccess = () => {},
             onError = () => {},
         },
     ) {
-        return update({
-            $axios: this.app.$axios,
-            id,
-            data,
-        }).then(() => onSuccess()).catch(e => onError(e.data));
+        try {
+            const {
+                id,
+            } = state;
+            const {
+                translations: {
+                    name,
+                },
+            } = rootState.tab;
+            const data = {
+                name,
+            };
+
+            await update({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
-    removeAttributeGroup({
+    async removeAttributeGroup({
         state,
     }, {
         onSuccess,
@@ -107,9 +139,10 @@ export default {
             id,
         } = state;
 
-        return remove({
+        await remove({
             $axios: this.app.$axios,
             id,
-        }).then(() => onSuccess());
+        });
+        onSuccess();
     },
 };
