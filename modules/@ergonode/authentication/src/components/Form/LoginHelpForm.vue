@@ -24,7 +24,7 @@
                 </template>
             </LinkButton>
         </template>
-        <template #submitForm>
+        <template #proceedForm>
             <Button
                 title="BACK TO LOG IN PAGE"
                 type="submit"

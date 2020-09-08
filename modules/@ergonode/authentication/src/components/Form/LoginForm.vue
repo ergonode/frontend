@@ -3,7 +3,13 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form @submit="onSubmit">
+    <Form
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #header>
             <header class="login-header">
                 <slot name="header" />
@@ -26,6 +32,7 @@
 <script>
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 
 export default {
     name: 'LoginForm',
@@ -33,11 +40,9 @@ export default {
         Form,
         FormSection,
     },
-    methods: {
-        onSubmit() {
-            this.$emit('submit');
-        },
-    },
+    mixins: [
+        formActionsMixin,
+    ],
 };
 </script>
 
