@@ -6,6 +6,11 @@
     <Form
         title="Options"
         :fields-keys="[nameFieldKey]"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
         @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
@@ -61,6 +66,7 @@ import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
 import TextField from '@Core/components/Inputs/TextField';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 import PRIVILEGES from '@Templates/config/privileges';
 import {
@@ -77,6 +83,9 @@ export default {
         TranslationLazySelect,
         UploadImageFile,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     computed: {
         ...mapState('productTemplate', {
             id: state => state.id,

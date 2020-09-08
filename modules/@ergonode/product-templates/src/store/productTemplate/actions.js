@@ -297,12 +297,14 @@ export default {
                 defaultImage: defaultImageAttribute,
             };
 
-            await create({
+            const {
+                id,
+            } = await create({
                 $axios: this.app.$axios,
                 data,
             });
 
-            onSuccess();
+            onSuccess(id);
         } catch (e) {
             onError(e.data);
         }

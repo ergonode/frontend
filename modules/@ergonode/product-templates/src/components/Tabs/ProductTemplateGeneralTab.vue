@@ -5,27 +5,19 @@
 <template>
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
-            <TemplateDesignerForm @submit="onSubmit">
-                <template #submitForm>
-                    <Button
-                        title="SAVE CHANGES"
-                        type="submit">
-                        <template
-                            v-if="isSubmitting"
-                            #append="{ color }">
-                            <IconSpinner :fill-color="color" />
-                        </template>
-                    </Button>
-                </template>
-            </TemplateDesignerForm>
+            <TemplateDesignerForm
+                submit-title="SAVE CHANGES"
+                :is-submitting="isSubmitting"
+                @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import TemplateDesignerForm from '@Templates/components/Forms/TemplateDesignerForm';
 import {
     mapActions,
@@ -34,8 +26,6 @@ import {
 export default {
     name: 'ProductTemplateGeneralTab',
     components: {
-        Button,
-        IconSpinner,
         TemplateDesignerForm,
         CenterViewTemplate,
     },
@@ -52,22 +42,30 @@ export default {
             'onError',
             'removeErrors',
         ]),
-        async onSubmit() {
+        onSubmit() {
             if (this.isSubmitting) {
                 return;
             }
             this.isSubmitting = true;
 
-            try {
-                this.removeErrors();
-                await this.updateProductTemplate();
-            } catch (e) {
-                if (e.data) {
-                    this.onError(e.data);
-                }
-            } finally {
-                this.isSubmitting = false;
-            }
+            this.removeErrors();
+            this.updateProductTemplate({
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
+            });
+        },
+        onUpdateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product template updated',
+            });
+
+            this.isSubmitting = false;
+        },
+        onUpdateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
         },
     },
 };
