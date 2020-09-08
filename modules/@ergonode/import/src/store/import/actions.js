@@ -9,6 +9,7 @@ import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
 import {
+    create,
     get,
     getConfiguration,
     getDetails,
@@ -134,6 +135,46 @@ export default {
             });
 
             onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
+    },
+    async createImportProfile({
+        state,
+        rootState,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const {
+                type,
+                configuration,
+            } = state;
+            const {
+                sources,
+            } = rootState.dictionaries;
+            const typeId = getKeyByValue(sources, type);
+
+            let data = {
+                type: typeId,
+            };
+
+            if (configuration) {
+                data = {
+                    ...data,
+                    ...JSON.parse(configuration),
+                };
+            }
+
+            const {
+                id,
+            } = await create({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess(id);
         } catch (e) {
             onError(e.data);
         }

@@ -5,8 +5,7 @@
 <template>
     <ImportProfilePage
         :title="name"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -54,7 +53,6 @@ export default {
     methods: {
         ...mapActions('import', [
             '__clearStorage',
-            'updateImportProfile',
             'removeImport',
         ]),
         ...mapActions('validations', [
@@ -68,20 +66,6 @@ export default {
                 confirmCallback: () => this.removeImport({
                     onSuccess: this.onRemoveSuccess,
                 }),
-            });
-        },
-        onSave() {
-            this.removeErrors();
-            this.updateImportProfile({
-                onSuccess: this.onUpdateImportProfileSuccess,
-                onError: this.onError,
-            });
-        },
-        onUpdateImportProfileSuccess() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Import profiles updated',
             });
         },
         onRemoveSuccess() {
