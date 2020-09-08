@@ -78,40 +78,49 @@ export default {
     async updateCollectionProductsVisibility({
         state,
         rootState,
+    },
+    {
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
-        const {
-            drafts,
-        } = rootState.grid;
+        try {
+            const {
+                id,
+            } = state;
+            const {
+                drafts,
+            } = rootState.grid;
 
-        const requests = Object.keys(drafts).map(
-            async (key) => {
-                const [
-                    productId,
-                ] = key.split('/');
+            const requests = Object.keys(drafts).map(
+                async (key) => {
+                    const [
+                        productId,
+                    ] = key.split('/');
 
-                const data = {
-                    visible: drafts[key],
-                };
+                    const data = {
+                        visible: drafts[key],
+                    };
 
-                await updateDraftValue({
-                    $axios: this.app.$axios,
-                    id,
-                    productId,
-                    data,
-                });
-            },
-        );
+                    await updateDraftValue({
+                        $axios: this.app.$axios,
+                        id,
+                        productId,
+                        data,
+                    });
+                },
+            );
 
-        await Promise.all(requests);
+            await Promise.all(requests);
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
     async updateCollection(
         {
             state,
             rooState,
-            dispatch,
         },
         {
             onSuccess = () => {},
@@ -136,7 +145,6 @@ export default {
                 description,
             };
 
-            await dispatch('updateCollectionProductsVisibility');
             await update({
                 $axios: this.app.$axios,
                 id,

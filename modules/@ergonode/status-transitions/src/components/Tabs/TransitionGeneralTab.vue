@@ -21,7 +21,6 @@ import {
 import TransitionForm from '@Transitions/components/Forms/TransitionForm';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -34,16 +33,6 @@ export default {
         return {
             isSubmitting: false,
         };
-    },
-    computed: {
-        ...mapState('statusTransition', {
-            roles: state => state.roles,
-            conditionSetId: state => state.conditionSetId,
-        }),
-        ...mapState('condition', {
-            conditions: state => state.conditions,
-            conditionsValues: state => state.conditionsValues,
-        }),
     },
     methods: {
         ...mapActions('statusTransition', [

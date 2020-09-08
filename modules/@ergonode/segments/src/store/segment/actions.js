@@ -79,7 +79,6 @@ export default {
             rootState,
         },
         {
-            conditionSetId,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -93,6 +92,7 @@ export default {
 
         const {
             id,
+            conditionSetId,
         } = state;
 
         const data = {

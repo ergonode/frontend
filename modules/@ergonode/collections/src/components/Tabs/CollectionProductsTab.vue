@@ -34,6 +34,17 @@
                         </template>
                     </ActionButton>
                 </template>
+                <template #appendFooter>
+                    <Button
+                        title="SAVE CHANGES"
+                        @click.native="onSubmit">
+                        <template
+                            v-if="isSubmitting"
+                            #prepend="{ color }">
+                            <IconSpinner :fill-color="color" />
+                        </template>
+                    </Button>
+                </template>
             </Grid>
             <Component
                 v-if="selectedAppModalOption"
@@ -51,8 +62,13 @@ import {
     EXTENDS,
 } from '@Collections/defaults';
 import ActionButton from '@Core/components/ActionButton/ActionButton';
+import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     SIZE,
     THEME,
@@ -69,6 +85,8 @@ export default {
         CenterViewTemplate,
         ActionButton,
         IconAdd,
+        IconSpinner,
+        Button,
     },
     mixins: [
         fetchGridDataMixin({
@@ -81,6 +99,7 @@ export default {
     },
     data() {
         return {
+            isSubmitting: false,
             isPrefetchingData: true,
             selectedAppModalOption: null,
         };
@@ -133,6 +152,42 @@ export default {
         ...mapActions('grid', [
             'setDrafts',
         ]),
+        ...mapActions('collection', [
+            'updateCollectionProductsVisibility',
+        ]),
+        ...mapActions('validations', [
+            'onError',
+            'removeErrors',
+        ]),
+        onSubmit() {
+            if (this.isSubmitting) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeErrors();
+            this.updateCollectionProductsVisibility({
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
+            });
+        },
+        async onUpdateSuccess() {
+            await this.onFetchData(this.localParams);
+
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product visibilities in collection updated',
+            });
+
+            this.setDrafts();
+
+            this.isSubmitting = false;
+        },
+        onUpdateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+        },
         onCellValueChange(cellValues) {
             const drafts = cellValues.reduce((prev, {
                 rowId, columnId, value,

@@ -14,9 +14,6 @@
 </template>
 
 <script>
-import {
-    getMappedConditionSetData,
-} from '@Conditions/models/conditionSetMapper';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     ALERT_TYPE,
@@ -24,7 +21,6 @@ import {
 import SegmentForm from '@Segments/components/Forms/SegmentForm';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -38,22 +34,9 @@ export default {
             isSubmitting: false,
         };
     },
-    computed: {
-        ...mapState('segment', {
-            conditionSetId: state => state.conditionSetId,
-        }),
-        ...mapState('condition', {
-            conditions: state => state.conditions,
-            conditionsValues: state => state.conditionsValues,
-        }),
-    },
     methods: {
         ...mapActions('segment', [
             'updateSegment',
-        ]),
-        ...mapActions('condition', [
-            'createConditionSet',
-            'updateConditionSet',
         ]),
         ...mapActions('validations', [
             'onError',
@@ -65,33 +48,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            const data = {
-                conditions: getMappedConditionSetData(
-                    this.conditionsValues,
-                    this.conditions,
-                ),
-            };
-
             this.removeErrors();
 
-            if (!this.conditionSetId) {
-                this.createConditionSet({
-                    data,
-                    onSuccess: this.onCreateConditionSet,
-                    onError: this.onUpdateError,
-                });
-            } else {
-                this.updateConditionSet({
-                    id: this.conditionSetId,
-                    data,
-                    onSuccess: this.onCreateConditionSet,
-                    onError: this.onUpdateError,
-                });
-            }
-        },
-        onCreateConditionSet(conditionSetId) {
             this.updateSegment({
-                conditionSetId,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

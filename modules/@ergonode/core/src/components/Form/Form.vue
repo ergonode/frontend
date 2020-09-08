@@ -35,7 +35,9 @@
         <slot
             name="body"
             :error-messages="errorMessages" />
-        <div class="form__footer">
+        <div
+            class="form__footer"
+            v-if="isFooterVisible">
             <slot name="submit">
                 <Button
                     v-if="submitTitle !== ''"
@@ -111,6 +113,11 @@ export default {
         ...mapState('validations', {
             errors: state => state.errors,
         }),
+        isFooterVisible() {
+            return !!(this.$slots.submit || this.$slots.proceed)
+                || this.proceedTitle !== ''
+                || this.submitTitle !== '';
+        },
         secondaryTheme() {
             return THEME.SECONDARY;
         },
