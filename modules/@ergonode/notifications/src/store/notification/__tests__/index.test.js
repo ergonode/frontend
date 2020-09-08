@@ -24,6 +24,13 @@ jest.mock('axios', () => ({
 let action;
 const $setLoader = jest.fn();
 const $removeLoader = jest.fn();
+
+actions.__setState = ({
+    commit,
+}, payload) => {
+    commit('__SET_STATE', payload);
+};
+
 const testedAction = (context = {}, payload = {}) => actions[action]
     .bind({
         app: {
@@ -89,11 +96,14 @@ describe('Notifications', () => {
         });
 
         it('Setting up notifications limit', () => {
-            action = 'setNotificationsLimit';
+            action = '__setState';
 
             testedAction({
                 commit,
-            }, 100);
+            }, {
+                key: 'limit',
+                value: 100,
+            });
             expect(store.state.limit).toBe(100);
         });
 
