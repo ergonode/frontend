@@ -36,13 +36,6 @@
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
-        <Footer flex-end>
-            <Button
-                title="SAVE CHANNEL"
-                :size="smallSize"
-                :disabled="$isLoading('footerButton')"
-                @click.native="onSave" />
-        </Footer>
     </Page>
 </template>
 

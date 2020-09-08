@@ -52,10 +52,6 @@ export default {
         ...mapActions('dictionaries', [
             'getDictionary',
         ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,

@@ -97,10 +97,10 @@ export default {
             this.$emit('created');
             this.onClose();
         },
-        async onProceedSuccess(id) {
+        onProceedSuccess(id) {
             this.isProceeding = false;
 
-            await this.$router.push({
+            this.$router.push({
                 name: 'collection-id-general',
                 params: {
                     id,

@@ -97,10 +97,10 @@ export default {
             this.$emit('created');
             this.onClose();
         },
-        async onProceedSuccess(id) {
+        onProceedSuccess(id) {
             this.isProceeding = false;
 
-            await this.$router.push({
+            this.$router.push({
                 name: 'import-id-general',
                 params: {
                     id,

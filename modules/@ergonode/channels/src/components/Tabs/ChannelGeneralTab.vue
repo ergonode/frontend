@@ -5,7 +5,7 @@
 <template>
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
-            <SchedulerForm
+            <ChannelForm
                 submit-title="SAVE CHANGES"
                 :is-submitting="isSubmitting"
                 @submit="onSubmit" />
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import SchedulerForm from '@Channels/components/Forms/SchedulerForm';
+import ChannelForm from '@Channels/components/Forms/ChannelForm';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     ALERT_TYPE,
@@ -24,13 +24,10 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'ChannelSchedulerTab',
+    name: 'ChannelGeneralTab',
     components: {
         CenterViewTemplate,
-        SchedulerForm,
-    },
-    fetch() {
-        this.getSchedulerConfiguration();
+        ChannelForm,
     },
     data() {
         return {
@@ -39,8 +36,7 @@ export default {
     },
     methods: {
         ...mapActions('channel', [
-            'updateScheduler',
-            'getSchedulerConfiguration',
+            'updateChannel',
         ]),
         ...mapActions('validations', [
             'onError',
@@ -53,7 +49,7 @@ export default {
             this.isSubmitting = true;
 
             this.removeErrors();
-            this.updateScheduler({
+            this.updateChannel({
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });
