@@ -107,7 +107,7 @@ export default {
 
         return configuration;
     },
-    updateImportProfile(
+    async updateImportProfile(
         {
             state,
         },
@@ -127,7 +127,7 @@ export default {
                 ...JSON.parse(configuration),
             };
 
-            update({
+            await update({
                 $axios: this.app.$axios,
                 id,
                 data,

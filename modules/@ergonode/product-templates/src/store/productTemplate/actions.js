@@ -133,12 +133,10 @@ export default {
             state,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        this.$setLoader('footerButton');
-
         try {
             const {
                 id,
@@ -159,17 +157,16 @@ export default {
                 elements: getMappedLayoutElementsForAPIUpdate(layoutElements),
             };
 
-            update({
+            await update({
                 $axios: this.app.$axios,
                 id,
                 data,
             });
+
             onSuccess();
         } catch (e) {
             onError(e.data);
         }
-
-        this.$removeLoader('footerButton');
     },
     async addListElementToLayout({
         commit, dispatch, rootState, state,
@@ -277,8 +274,8 @@ export default {
             state,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {

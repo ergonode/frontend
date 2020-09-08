@@ -66,8 +66,8 @@ export default {
     },
     async updateLanguageTree({}, {
         languages,
-        onSuccess,
-        onError,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
         try {
             const data = {

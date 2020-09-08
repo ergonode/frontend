@@ -46,26 +46,12 @@ export default {
     },
     methods: {
         ...mapActions('productStatus', [
-            'updateProductStatus',
-            'updateDefaultStatus',
             'removeProductStatus',
         ]),
         ...mapActions('validations', [
             'onError',
             'removeErrors',
         ]),
-        onSave() {
-            const requests = [
-                this.updateProductStatus({
-                    onError: this.onError,
-                }),
-                this.updateDefaultStatus(),
-            ];
-
-            Promise.all(requests).then(() => {
-                this.onProductStatusUpdated();
-            });
-        },
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,

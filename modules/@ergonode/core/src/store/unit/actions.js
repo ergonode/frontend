@@ -70,8 +70,8 @@ export default {
     async createUnit({
         state,
     }, {
-        onSuccess,
-        onError,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
         try {
             const {
