@@ -38,11 +38,11 @@ export default {
     },
     computed: {
         ...mapState('categoryTree', {
-            treeID: state => state.treeId,
+            id: state => state.id,
             code: state => state.code,
         }),
         isDisabled() {
-            return Boolean(this.treeID);
+            return Boolean(this.id);
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
