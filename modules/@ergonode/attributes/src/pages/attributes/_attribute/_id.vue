@@ -54,6 +54,9 @@ export default {
             'removeAttribute',
             '__clearStorage',
         ]),
+        ...mapActions('validations', [
+            'removeErrors',
+        ]),
         ...mapActions('tab', {
             clearTranslationsStorage: '__clearStorage',
         }),

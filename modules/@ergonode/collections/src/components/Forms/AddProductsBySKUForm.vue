@@ -3,7 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form :fields-keys="[skusFieldKey]">
+    <Form
+        :fields-keys="[skusFieldKey]"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextArea
@@ -22,14 +29,21 @@
 
 <script>
 import PRIVILEGES from '@Collections/config/privileges';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TextArea from '@Core/components/Inputs/TextArea';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 
 export default {
     name: 'AddProductsBySKUForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TextArea: () => import('@Core/components/Inputs/TextArea'),
+        Form,
+        FormSection,
+        TextArea,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     props: {
         productSkus: {
             type: String,

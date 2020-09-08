@@ -176,41 +176,55 @@ export default {
             onError(e.data);
         }
     },
-    addBySku({
+    async addBySku({
         state,
     }, {
         skus,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
-        const data = {
-            skus: skus.replace(/\n/g, ',').split(','),
-        };
+        try {
+            const {
+                id,
+            } = state;
+            const data = {
+                skus: skus.replace(/\n/g, ',').split(','),
+            };
 
-        return addBySku({
-            $axios: this.app.$axios,
-            id,
-            data,
-        });
+            await addBySku({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
-    addBySegment({
+    async addBySegment({
         state,
     }, {
         segments,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
-        const data = {
-            segments: segments.map(segment => segment.id),
-        };
+        try {
+            const {
+                id,
+            } = state;
+            const data = {
+                segments: segments.map(segment => segment.id),
+            };
 
-        return addBySegment({
-            $axios: this.app.$axios,
-            id,
-            data,
-        });
+            await addBySegment({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
     async removeCollection({
         state,
