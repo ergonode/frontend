@@ -53,4 +53,4 @@ Feature: Collection adding
     Then I fill the "collection-description" textarea with the "collection-description_1_EN" term for "en_GB" translation
     And I fill the "collection-name" input with the "collection-name_1_PL" term for "pl_PL" translation
     Then I fill the "collection-description" textarea with the "collection-description_1_PL" term for "pl_PL" translation
-    And I click on "save-collection" button
+    And I click on "submit" button
