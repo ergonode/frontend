@@ -71,7 +71,6 @@ export default {
                 $axios: this.app.$axios,
                 path: `${userLanguageCode}/categories`,
                 params: {
-                    // limit: categories.length,
                     limit: 99999,
                     offset: 0,
                     // TODO: BE has no filter via ID's - we gonna wait for them
