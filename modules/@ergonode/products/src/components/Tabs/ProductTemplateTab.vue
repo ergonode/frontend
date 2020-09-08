@@ -39,12 +39,14 @@
                 :language="language"
                 :elements="elements"
                 @valueUpdated="onValueUpdated" />
+        </template>
+        <template #default>
             <Button
                 title="SAVE CHANGES"
                 :floating="{ bottom: '24px', right: '24px' }"
                 @click.native="onSave">
                 <template
-                    v-if="isSavingProductTemplate"
+                    v-if="isSubmitting"
                     #prepend="{ color }">
                     <IconSpinner :fill-color="color" />
                 </template>
@@ -58,6 +60,9 @@ import Button from '@Core/components/Button/Button';
 import IconRestore from '@Core/components/Icons/Actions/IconRestore';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     SIZE,
     THEME,
@@ -120,7 +125,7 @@ export default {
     data() {
         return {
             language: {},
-            isSavingProductTemplate: false,
+            isSubmitting: false,
         };
     },
     computed: {
@@ -180,22 +185,31 @@ export default {
             'onError',
             'removeErrors',
         ]),
-        async onSave() {
-            if (this.isSavingProductTemplate) {
+        onSave() {
+            if (this.isSubmitting) {
                 return;
             }
-            this.isSavingProductTemplate = true;
+            this.isSubmitting = true;
 
-            try {
-                this.removeErrors();
-                await this.applyProductDraft();
-            } catch (e) {
-                if (e.data) {
-                    this.onError(e.data);
-                }
-            } finally {
-                this.isSavingProductTemplate = false;
-            }
+            this.removeErrors();
+            this.applyProductDraft({
+                id: this.id,
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
+            });
+        },
+        onUpdateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product updated',
+            });
+
+            this.isSubmitting = false;
+        },
+        onUpdateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
         },
         onLanguageChange(value) {
             const languageCode = value.code;

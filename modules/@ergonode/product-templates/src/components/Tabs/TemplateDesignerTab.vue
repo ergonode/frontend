@@ -68,9 +68,9 @@
             <Button
                 title="SAVE CHANGES"
                 :floating="{ bottom: '24px', right: '24px' }"
-                @click.native="onSave">
+                @click.native="onSubmit">
                 <template
-                    v-if="isSavingDesigner"
+                    v-if="isSubmitting"
                     #prepend="{ color }">
                     <IconSpinner :fill-color="color" />
                 </template>
@@ -135,7 +135,7 @@ export default {
     data() {
         return {
             highlightedPositions: [],
-            isSavingDesigner: false,
+            isSubmitting: false,
             isSectionAdded: false,
             sectionPosition: null,
             sectionIndex: null,
@@ -240,11 +240,11 @@ export default {
             'onError',
             'removeErrors',
         ]),
-        async onSave() {
-            if (this.isSavingDesigner) {
+        async onSubmit() {
+            if (this.isSubmitting) {
                 return;
             }
-            this.isSavingDesigner = true;
+            this.isSubmitting = true;
 
             try {
                 this.removeErrors();
@@ -254,7 +254,7 @@ export default {
                     this.onError(e.data);
                 }
             } finally {
-                this.isSavingDesigner = false;
+                this.isSubmitting = false;
             }
         },
         onRemoveLayoutElement(index) {

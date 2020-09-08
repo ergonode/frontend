@@ -295,11 +295,20 @@ export default {
 
         onSuccess();
     },
-    async applyProductDraft({}, id) {
-        await applyDraft({
-            $axios: this.app.$axios,
-            id,
-        });
+    async applyProductDraft({}, {
+        id,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            await applyDraft({
+                $axios: this.app.$axios,
+                id,
+            });
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
     async updateProductDraft({
         dispatch,

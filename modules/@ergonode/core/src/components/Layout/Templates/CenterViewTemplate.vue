@@ -19,6 +19,7 @@
                     </div>
                 </VerticalFixedScroll>
             </slot>
+            <slot />
         </div>
     </div>
 </template>
