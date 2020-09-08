@@ -4,7 +4,7 @@
  */
 <template>
     <div
-        class="grid-container"
+        class="template-grid-container"
         :draggable="isDraggingEnabled && gridData.length"
         @dragstart="onDragStart"
         @dragend="onDragEnd"
@@ -568,10 +568,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .grid-container {
+    .template-grid-container {
         position: relative;
         height: 100%;
-        overflow: auto;
-        scrollbar-width: 4px;
     }
 </style>

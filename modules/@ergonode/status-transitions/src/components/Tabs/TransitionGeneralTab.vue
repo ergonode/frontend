@@ -14,9 +14,6 @@
 </template>
 
 <script>
-import {
-    getMappedConditionSetData,
-} from '@Conditions/models/conditionSetMapper';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     ALERT_TYPE,
@@ -52,10 +49,6 @@ export default {
         ...mapActions('statusTransition', [
             'updateTransition',
         ]),
-        ...mapActions('condition', [
-            'createConditionSet',
-            'updateConditionSet',
-        ]),
         ...mapActions('validations', [
             'onError',
             'removeErrors',
@@ -66,57 +59,17 @@ export default {
             }
             this.isSubmitting = true;
 
-            const data = {
-                conditions: getMappedConditionSetData(
-                    this.conditionsValues,
-                    this.conditions,
-                ),
-            };
-
             this.removeErrors();
 
-            if (!this.conditionSetId) {
-                this.createConditionSet({
-                    data,
-                    onSuccess: this.onCreateConditionSet,
-                    onError: this.onUpdateError,
-                });
-            } else {
-                this.updateConditionSet({
-                    id: this.conditionSetId,
-                    data,
-                    onSuccess: this.onUpdateConditionSet,
-                    onError: this.onUpdateError,
-                });
-            }
-        },
-        onCreateConditionSet(conditionSetId) {
-            const data = {
-                condition_set: conditionSetId,
-                roles: this.roles,
-            };
-
             this.updateTransition({
-                data,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
-            });
-        },
-        onUpdateConditionSet() {
-            const data = {
-                roles: this.roles,
-            };
-
-            this.updateTransition({
-                data,
-                onSuccess: this.onUpdateSuccess,
-                onError: this.onError,
             });
         },
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Transition updated',
+                message: 'Status transition updated',
             });
 
             this.isSubmitting = false;

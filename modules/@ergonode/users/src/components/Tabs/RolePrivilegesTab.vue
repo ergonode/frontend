@@ -17,7 +17,7 @@
                     <div class="role-privileges-footer">
                         <Button
                             title="SAVE CHANGES"
-                            @click.native="onSavePrivileges">
+                            @click.native="onSubmit">
                             <template
                                 v-if="isSubmitting"
                                 #prepend="{ color }">
@@ -36,6 +36,9 @@ import Button from '@Core/components/Button/Button';
 import Grid from '@Core/components/Grid/Grid';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
     getSortedColumnsByIDs,
@@ -100,22 +103,30 @@ export default {
             'onError',
             'removeErrors',
         ]),
-        async onSavePrivileges() {
+        onSubmit() {
             if (this.isSubmitting) {
                 return;
             }
             this.isSubmitting = true;
 
-            try {
-                this.removeErrors();
-                await this.updateRole();
-            } catch (e) {
-                if (e.data) {
-                    this.onError(e.data);
-                }
-            } finally {
-                this.isSubmitting = false;
-            }
+            this.removeErrors();
+            this.updateRole({
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
+            });
+        },
+        onUpdateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Role privileges updated',
+            });
+
+            this.isSubmitting = false;
+        },
+        onUpdateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
         },
         onCellValueChange(cellValues) {
             const drafts = {};
@@ -146,7 +157,6 @@ export default {
             });
         },
         updateGridData() {
-            console.log(this.privileges, this.privilegesDictionary);
             const {
                 rows, columns,
             } = getMappedGridData({
@@ -171,6 +181,7 @@ export default {
 <style lang="scss" scoped>
     .role-privileges-footer {
         display: flex;
+        flex: 1;
         justify-content: flex-end;
         align-items: center;
     }

@@ -53,11 +53,11 @@ export default {
 
             this.removeErrors();
             this.updateUnit({
-                onSuccess: this.onUpdateUnitSuccess,
-                onError: this.onUpdateUnitError,
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdatetError,
             });
         },
-        async onUpdateUnitSuccess() {
+        async onUpdateSuccess() {
             await this.getDictionary({
                 dictionaryName: 'units',
             });
@@ -69,7 +69,7 @@ export default {
 
             this.isSubmitting = false;
         },
-        onUpdateUnitError(errors) {
+        onUpdateError(errors) {
             this.onError(errors);
 
             this.isSubmitting = false;

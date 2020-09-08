@@ -79,7 +79,6 @@ export default {
             state,
         },
         {
-            data,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -87,7 +86,16 @@ export default {
         const {
             source,
             destination,
+            conditionSetId,
+            roles,
         } = state;
+        const data = {
+            roles,
+        };
+
+        if (conditionSetId) {
+            data.condition_set = conditionSetId;
+        }
 
         try {
             await update({

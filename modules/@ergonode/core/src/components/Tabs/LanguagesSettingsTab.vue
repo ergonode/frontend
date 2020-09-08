@@ -23,9 +23,9 @@
             <Button
                 title="SAVE CHANGES"
                 :floating="{ bottom: '24px', right: '24px' }"
-                @click.native="onSave">
+                @click.native="onSubmit">
                 <template
-                    v-if="isSavingTree"
+                    v-if="isSubmitting"
                     #prepend="{ color }">
                     <IconSpinner :fill-color="color" />
                 </template>
@@ -101,7 +101,7 @@ export default {
     },
     data() {
         return {
-            isSavingTree: false,
+            isSubmitting: false,
         };
     },
     computed: {
@@ -139,26 +139,26 @@ export default {
             'setDefaultLanguage',
             'updateLanguageTree',
         ]),
-        async onSave() {
-            if (this.isSavingTree) {
+        onSubmit() {
+            if (this.isSubmitting) {
                 return;
             }
 
             if (!isEmpty(this.fullGridData)) {
-                this.isSavingTree = true;
+                this.isSubmitting = true;
 
                 const [
                     languages,
                 ] = getMappedTreeData(this.fullGridData);
 
-                await this.updateLanguageTree({
+                this.updateLanguageTree({
                     languages,
-                    onSuccess: () => this.onUpdateLanguagesTreeSuccess(languages),
-                    onError: this.onUpdateLanguagesTreeError,
+                    onSuccess: () => this.onUpdateSuccess(languages),
+                    onError: this.onUpdateError,
                 });
             }
         },
-        onUpdateLanguagesTreeSuccess(languages) {
+        onUpdateSuccess(languages) {
             this.setLanguageTree(languages);
             this.setDefaultLanguage();
 
@@ -166,14 +166,14 @@ export default {
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Languages tree updated',
             });
-            this.isSavingTree = false;
+            this.isSubmitting = false;
         },
-        onUpdateLanguagesTreeError(message) {
+        onUpdateError(message) {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
                 message,
             });
-            this.isSavingTree = false;
+            this.isSubmitting = false;
         },
     },
 };
