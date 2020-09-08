@@ -46,7 +46,6 @@ export default {
     },
     methods: {
         ...mapActions('productTemplate', [
-            'updateTemplateDesigner',
             'removeTemplate',
             '__clearStorage',
         ]),
@@ -57,13 +56,6 @@ export default {
             'onError',
             'removeErrors',
         ]),
-        onUpdateTemplateDesignerSuccess() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Template updated',
-            });
-        },
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
@@ -87,12 +79,6 @@ export default {
                         onSuccess: this.onRemoveSuccess,
                     });
                 },
-            });
-        },
-        onCreate() {
-            this.updateTemplateDesigner({
-                onSuccess: this.onUpdateTemplateDesignerSuccess,
-                onError: this.onError,
             });
         },
     },

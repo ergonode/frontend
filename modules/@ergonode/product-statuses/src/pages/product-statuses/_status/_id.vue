@@ -5,8 +5,7 @@
 <template>
     <ProductStatusPage
         :title="code"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -83,13 +82,6 @@ export default {
             });
             this.$router.push({
                 name: 'product-statuses-grid',
-            });
-        },
-        onProductStatusUpdated() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Product status updated',
             });
         },
     },

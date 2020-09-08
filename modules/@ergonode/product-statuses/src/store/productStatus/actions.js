@@ -97,26 +97,12 @@ export default {
             });
         }
     },
-    updateDefaultStatus({
-        state,
-    }) {
-        if (state.isDefaultStatus) {
-            const {
-                id,
-            } = state;
-
-            return updateDefault({
-                $axios: this.app.$axios,
-                id,
-            });
-        }
-        return null;
-    },
     async updateProductStatus({
         state,
         rootState,
     }, {
-        onError,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
         try {
             const {
@@ -127,6 +113,7 @@ export default {
             const {
                 id,
                 color,
+                isDefaultStatus,
             } = state;
             const data = {
                 color,
@@ -134,16 +121,29 @@ export default {
                 description,
             };
 
-            update({
-                $axios: this.app.$axios,
-                id,
-                data,
-            });
+            const requests = [
+                update({
+                    $axios: this.app.$axios,
+                    id,
+                    data,
+                }),
+            ];
+
+            if (isDefaultStatus) {
+                requests.push(updateDefault({
+                    $axios: this.app.$axios,
+                    id,
+                }));
+            }
+
+            await Promise.all(requests);
+
+            onSuccess();
         } catch (e) {
             onError(e);
         }
     },
-    async createStatus(
+    async createProductStatus(
         {
             state,
         },
@@ -163,12 +163,14 @@ export default {
                 color,
             };
 
-            await create({
+            const {
+                id,
+            } = await create({
                 $axios: this.app.$axios,
                 data,
             });
 
-            onSuccess();
+            onSuccess(id);
         } catch (e) {
             onError(e.data);
         }
