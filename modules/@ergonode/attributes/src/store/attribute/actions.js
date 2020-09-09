@@ -42,89 +42,96 @@ import {
 
 export default {
     async createAttribute({
-        state, rootState,
+        state,
+        rootState,
+    },
+    {
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            code,
-            groups,
-            type,
-            scope,
-            parameter,
-            options,
-        } = state;
-        const {
-            attrTypes,
-        } = rootState.dictionaries;
-        const typeKey = type ? getKeyByValue(attrTypes, type) : null;
-        const data = {
-            code,
-            scope,
-            type: typeKey,
-            groups,
-        };
-
-        if (!isEmpty(options)) {
-            const optionKeys = Object.keys(options);
-            const uniqueOptions = new Set(optionKeys);
-
-            if (optionKeys.some(key => key === '')) {
-                this.$addAlert({
-                    type: ALERT_TYPE.WARNING,
-                    message: 'Options cannot have an empty keys',
-                });
-            }
-
-            if (optionKeys.length !== uniqueOptions.size) {
-                this.$addAlert({
-                    type: ALERT_TYPE.WARNING,
-                    message: 'Option code must be unique',
-                });
-            }
-        }
-
-        if (parameter && type !== TYPES.TEXT_AREA) {
-            const paramsOptions = getParamsOptionsForType(typeKey, rootState.dictionaries);
-            let paramKey = null;
-
-            // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
-            if (Array.isArray(paramsOptions)) {
-                paramKey = paramsOptions.find(option => option.name === parameter).id;
-            } else {
-                paramKey = getKeyByValue(paramsOptions, parameter);
-            }
-
-            data.parameters = getParsedParameterKeys({
-                selectedType: typeKey,
-                selectedParam: paramKey,
-            });
-        }
-
-        if (typeKey === TYPES.TEXT_AREA) {
-            data.parameters = {
-                richEdit: parameter,
+        try {
+            const {
+                code,
+                groups,
+                type,
+                scope,
+                parameter,
+                options,
+            } = state;
+            const {
+                attrTypes,
+            } = rootState.dictionaries;
+            const typeKey = type ? getKeyByValue(attrTypes, type) : null;
+            const data = {
+                code,
+                scope,
+                type: typeKey,
+                groups,
             };
-        }
 
-        const {
-            id,
-        } = await create({
-            $axios: this.app.$axios,
-            data,
-        });
+            if (!isEmpty(options)) {
+                const optionKeys = Object.keys(options);
+                const uniqueOptions = new Set(optionKeys);
 
-        await Promise.all(
-            Object.keys(options).map(key => createOption({
-                $axios: this.app.$axios,
+                if (optionKeys.some(key => key === '')) {
+                    this.$addAlert({
+                        type: ALERT_TYPE.WARNING,
+                        message: 'Options cannot have an empty keys',
+                    });
+                }
+
+                if (optionKeys.length !== uniqueOptions.size) {
+                    this.$addAlert({
+                        type: ALERT_TYPE.WARNING,
+                        message: 'Option code must be unique',
+                    });
+                }
+            }
+
+            if (parameter && type !== TYPES.TEXT_AREA) {
+                const paramsOptions = getParamsOptionsForType(typeKey, rootState.dictionaries);
+                let paramKey = null;
+
+                // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
+                if (Array.isArray(paramsOptions)) {
+                    paramKey = paramsOptions.find(option => option.name === parameter).id;
+                } else {
+                    paramKey = getKeyByValue(paramsOptions, parameter);
+                }
+
+                data.parameters = getParsedParameterKeys({
+                    selectedType: typeKey,
+                    selectedParam: paramKey,
+                });
+            }
+
+            if (typeKey === TYPES.TEXT_AREA) {
+                data.parameters = {
+                    richEdit: parameter,
+                };
+            }
+
+            const {
                 id,
-                data: {
-                    code: options[key].key,
-                },
-            })),
-        );
+            } = await create({
+                $axios: this.app.$axios,
+                data,
+            });
 
-        return {
-            id,
-        };
+            await Promise.all(
+                Object.keys(options).map(key => createOption({
+                    $axios: this.app.$axios,
+                    id,
+                    data: {
+                        code: options[key].key,
+                    },
+                })),
+            );
+
+            onSuccess(id);
+        } catch (e) {
+            onError(e.data);
+        }
     },
     getAttributesByFilter({
         rootState,
@@ -258,17 +265,19 @@ export default {
             commit(types.SET_UPDATED_OPTION, id);
         }
     },
-    getAttributeOptions({
+    async getAttributeOptions({
         commit,
     }, {
         id,
     }) {
-        return getOption({
+        const options = await getOption({
             $axios: this.app.$axios,
             id,
-        }).then(options => commit(types.INITIALIZE_OPTIONS, getMappedArrayOptions(options)));
+        });
+
+        commit(types.INITIALIZE_OPTIONS, getMappedArrayOptions(options));
     },
-    getAttribute({
+    async getAttribute({
         dispatch, commit, rootState,
     }, {
         id,
@@ -277,10 +286,7 @@ export default {
             attrTypes,
         } = rootState.dictionaries;
 
-        return get({
-            $axios: this.app.$axios,
-            id,
-        }).then(({
+        const {
             code,
             type,
             hint = '',
@@ -289,124 +295,216 @@ export default {
             parameters,
             placeholder = '',
             scope,
-        }) => {
-            commit('__SET_STATE', {
-                key: 'id',
-                value: id,
-            });
-            commit('__SET_STATE', {
-                key: 'code',
-                value: code,
-            });
-            commit('__SET_STATE', {
-                key: 'scope',
-                value: scope,
-            });
-            commit('__SET_STATE', {
-                key: 'groups',
-                value: groupIds,
-            });
-            commit('__SET_STATE', {
-                key: 'type',
-                value: attrTypes[type],
-            });
-
-            dispatch(
-                'tab/setTranslations',
-                {
-                    hint,
-                    label,
-                    placeholder,
-                },
-                {
-                    root: true,
-                },
-            );
-
-            if (parameters && type !== TYPES.TEXT_AREA) {
-                commit('__SET_STATE', {
-                    key: 'parameter',
-                    value: getMappedParameterValues(type, parameters, rootState.dictionaries),
-                });
-            }
-
-            if (type === TYPES.TEXT_AREA) {
-                commit('__SET_STATE', {
-                    key: 'parameter',
-                    value: parameters.rich_edit,
-                });
-            }
+        } = await get({
+            $axios: this.app.$axios,
+            id,
         });
+
+        commit('__SET_STATE', {
+            key: 'id',
+            value: id,
+        });
+        commit('__SET_STATE', {
+            key: 'code',
+            value: code,
+        });
+        commit('__SET_STATE', {
+            key: 'scope',
+            value: scope,
+        });
+        commit('__SET_STATE', {
+            key: 'groups',
+            value: groupIds,
+        });
+        commit('__SET_STATE', {
+            key: 'type',
+            value: attrTypes[type],
+        });
+
+        dispatch(
+            'tab/setTranslations',
+            {
+                hint,
+                label,
+                placeholder,
+            },
+            {
+                root: true,
+            },
+        );
+
+        if (parameters && type !== TYPES.TEXT_AREA) {
+            commit('__SET_STATE', {
+                key: 'parameter',
+                value: getMappedParameterValues(type, parameters, rootState.dictionaries),
+            });
+        }
+
+        if (type === TYPES.TEXT_AREA) {
+            commit('__SET_STATE', {
+                key: 'parameter',
+                value: parameters.rich_edit,
+            });
+        }
     },
     async updateAttribute(
         {
             state,
+            rootState,
             commit,
             dispatch,
         },
         {
-            id,
-            data,
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        const optionsToAddRequests = [];
-        const optionsToUpdateRequests = [];
-
-        Object.keys(state.options).forEach((key) => {
-            const option = state.options[key];
-            const optionValue = option.value || null;
-
-            if (!option.id) {
-                optionsToAddRequests.push(
-                    createOption({
-                        $axios: this.app.$axios,
-                        id,
-                        data: {
-                            code: option.key,
-                            label: optionValue,
-                        },
-                    }).then(({
-                        id: optionId,
-                    }) => dispatch('updateAttributeOptionKey',
-                        {
-                            index: key,
-                            id: optionId,
-                            key: option.key,
-                        })),
-                );
-            } else if (state.updatedOptions[option.id]) {
-                optionsToUpdateRequests.push(
-                    updateOption({
-                        $axios: this.app.$axios,
-                        attributeId: id,
-                        optionId: option.id,
-                        data: {
-                            code: option.key,
-                            label: optionValue,
-                        },
-                    }),
-                );
-            }
-        });
-
-        this.$setLoader('footerButton');
-        await Promise.all([
-            ...optionsToAddRequests,
-            ...optionsToUpdateRequests,
-            update({
-                $axios: this.app.$axios,
+        try {
+            const {
                 id,
-                data,
-            }).catch(e => onError(e.data)),
-        ]).then(() => {
+                options,
+                updatedOptions,
+                type,
+                groups,
+                scope,
+                parameter,
+            } = state;
+            const {
+                attrTypes,
+            } = rootState.dictionaries;
+            const {
+                translations: {
+                    label, placeholder, hint,
+                },
+            } = rootState.tab;
+            const addOptionsRequests = [];
+            const updateOptionsRequests = [];
+            const typeKey = getKeyByValue(attrTypes, type);
+            const optionKeys = Object.keys(options);
+            const data = {
+                groups,
+                scope,
+                label,
+                hint,
+                placeholder,
+            };
+
+            console.log(options, 'dupa');
+
+            if (optionKeys.length > 0) {
+                const optionValues = Object.values(options);
+                const errors = {};
+                let isAnyError = false;
+
+                optionKeys.forEach((optionKey) => {
+                    const fieldKey = `option_${optionKey}`;
+                    const duplications = optionValues
+                        .filter(({
+                            key,
+                        }) => key === options[optionKey].key);
+
+                    if (duplications.length > 1) {
+                        errors[fieldKey] = [
+                            'Option code must be unique',
+                        ];
+                        isAnyError = true;
+                    }
+                    if (!options[optionKey].key) {
+                        errors[fieldKey] = [
+                            'Option cannot be empty',
+                        ];
+                        isAnyError = true;
+                    }
+                });
+
+                if (isAnyError) {
+                    onError({
+                        errors,
+                    });
+                    return;
+                }
+            }
+
+            optionKeys.forEach((key) => {
+                const option = options[key];
+                const optionValue = option.value || null;
+
+                if (!option.id) {
+                    addOptionsRequests.push(
+                        createOption({
+                            $axios: this.app.$axios,
+                            id,
+                            data: {
+                                code: option.key,
+                                label: optionValue,
+                            },
+                        }).then(({
+                            id: optionId,
+                        }) => dispatch('updateAttributeOptionKey',
+                            {
+                                index: key,
+                                id: optionId,
+                                key: option.key,
+                            })),
+                    );
+                } else if (updatedOptions[option.id]) {
+                    updateOptionsRequests.push(
+                        updateOption({
+                            $axios: this.app.$axios,
+                            attributeId: id,
+                            optionId: option.id,
+                            data: {
+                                code: option.key,
+                                label: optionValue,
+                            },
+                        }),
+                    );
+                }
+            });
+
+            if (parameter && typeKey !== TYPES.TEXT_AREA) {
+                let paramKey = null;
+                const paramsOptions = getParamsOptionsForType(
+                    typeKey,
+                    rootState.dictionaries,
+                );
+
+                // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
+                if (Array.isArray(paramsOptions)) {
+                    paramKey = paramsOptions.find(option => option.name === parameter).id;
+                } else {
+                    paramKey = getKeyByValue(paramsOptions, parameter);
+                }
+
+                data.parameters = getParsedParameterKeys({
+                    selectedType: typeKey,
+                    selectedParam: paramKey,
+                });
+            }
+
+            if (typeKey === TYPES.TEXT_AREA) {
+                data.parameters = {
+                    richEdit: parameter,
+                };
+            }
+
+            await Promise.all([
+                ...addOptionsRequests,
+                ...updateOptionsRequests,
+                update({
+                    $axios: this.app.$axios,
+                    id,
+                    data,
+                }),
+            ]);
+
             commit(types.REMOVE_UPDATED_OPTION);
             onSuccess();
-        });
-        this.$removeLoader('footerButton');
+        } catch (e) {
+            onError(e.data);
+        }
     },
-    removeAttribute({
+    async removeAttribute({
         state,
     }, {
         onSuccess,
@@ -415,9 +513,10 @@ export default {
             id,
         } = state;
 
-        return remove({
+        await remove({
             $axios: this.app.$axios,
             id,
-        }).then(() => onSuccess());
+        });
+        onSuccess();
     },
 };

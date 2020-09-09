@@ -50,4 +50,4 @@ Feature: Attribute group adding
     And I choose "[1]" option from "translation-language-select" multi select field
     Then I fill the "attribute-group-name" input with the "attribute_group_EN" term for "en_GB" translation
     And I fill the "attribute-group-name" input with the "attribute_group_PL" term for "pl_PL" translation
-    And I click on "save-attribute-group" button
+    And I click on "submit" button

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate>
+    <CenterViewTemplate>
         <template #content>
             <Grid
                 :is-editable="isAllowedToUpdate"
@@ -18,7 +18,7 @@
                 @deleteRow="onRemoveRow"
                 @fetchData="onFetchData" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
@@ -26,13 +26,13 @@ import PRIVILEGES from '@Attributes/config/privileges';
 import {
     WHITESMOKE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
 export default {
     name: 'AttributeGridTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
     },
     mixins: [
         fetchGridDataMixin({

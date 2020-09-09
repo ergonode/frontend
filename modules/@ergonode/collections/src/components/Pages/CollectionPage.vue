@@ -25,14 +25,6 @@
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar :items="tabs" />
-        <Footer flex-end>
-            <Button
-                data-cy="save-collection"
-                title="SAVE COLLECTION"
-                :size="smallSize"
-                :disabled="$isLoading('footerButton')"
-                @click.native="onSave" />
-        </Footer>
     </Page>
 </template>
 

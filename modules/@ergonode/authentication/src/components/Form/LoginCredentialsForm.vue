@@ -3,7 +3,10 @@
  * See LICENSE for license details.
  */
 <template>
-    <LoginForm>
+    <LoginForm
+        submit-title="LOG IN"
+        :is-submitting="isSubmitting"
+        @submit="onSubmit">
         <template #header>
             <div class="logo-header">
                 <IconLogoName />
@@ -18,25 +21,16 @@
                 data-cy="login-pass"
                 v-model="password"
                 :input="passwordInputType"
-                label="Password"
-                @keyup.13="onSubmit" />
+                label="Password" />
             <Toggler
                 v-model="isPasswordVisible"
                 label="Show password" />
-        </template>
-        <template #footer>
-            <Button
-                data-cy="login-button"
-                title="LOG IN"
-                type="submit"
-                @click.stop.prevent.native="onSubmit" />
         </template>
     </LoginForm>
 </template>
 
 <script>
 import LoginForm from '@Authentication/components/Form/LoginForm';
-import Button from '@Core/components/Button/Button';
 import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
 import TextField from '@Core/components/Inputs/TextField';
 import Toggler from '@Core/components/Inputs/Toggler/Toggler';
@@ -52,7 +46,6 @@ export default {
     components: {
         LoginForm,
         TextField,
-        Button,
         Toggler,
         IconLogoName,
     },
@@ -61,6 +54,7 @@ export default {
             email: '',
             password: '',
             isPasswordVisible: false,
+            isSubmitting: false,
         };
     },
     computed: {
@@ -77,20 +71,29 @@ export default {
         ...mapActions('authentication', [
             'authenticateUser',
         ]),
-        async onSubmit() {
-            try {
-                await this.authenticateUser({
-                    data: {
-                        username: this.email,
-                        password: this.password,
-                    },
-                });
-                this.$router.push({
-                    name: 'dashboard',
-                });
-            } catch (e) {
-                console.error(e);
-            }
+        onSubmit() {
+            this.isSubmitting = true;
+
+            const data = {
+                username: this.email,
+                password: this.password,
+            };
+
+            this.authenticateUser({
+                data,
+                onSuccess: this.onLoginSuccess,
+                onError: this.onLoginError,
+            });
+        },
+        onLoginSuccess() {
+            this.$router.push({
+                name: 'dashboard',
+            });
+
+            this.isSubmitting = false;
+        },
+        onLoginError() {
+            this.isSubmitting = false;
         },
     },
 };

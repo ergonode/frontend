@@ -65,6 +65,16 @@
                     :element="sectionElement"
                     @close="onCloseSectionModal" />
             </TemplateGridDesigner>
+            <Button
+                title="SAVE CHANGES"
+                :floating="{ bottom: '24px', right: '24px' }"
+                @click.native="onSubmit">
+                <template
+                    v-if="isSubmitting"
+                    #prepend="{ color }">
+                    <IconSpinner :fill-color="color" />
+                </template>
+            </Button>
         </template>
     </GridViewTemplate>
 </template>
@@ -76,10 +86,15 @@ import {
 import {
     GRAPHITE_LIGHT,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import Button from '@Core/components/Button/Button';
 import DropZone from '@Core/components/DropZone/DropZone';
 import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
@@ -105,6 +120,8 @@ import {
 export default {
     name: 'TemplateDesignerTab',
     components: {
+        Button,
+        IconSpinner,
         DropZone,
         FadeTransition,
         GridViewTemplate,
@@ -121,6 +138,7 @@ export default {
     data() {
         return {
             highlightedPositions: [],
+            isSubmitting: false,
             isSectionAdded: false,
             sectionPosition: null,
             sectionIndex: null,
@@ -216,10 +234,40 @@ export default {
     },
     methods: {
         ...mapActions('productTemplate', [
+            'updateProductTemplate',
             'addListElementToLayout',
             'updateLayoutElementAtIndex',
             'removeLayoutElementAtIndex',
         ]),
+        ...mapActions('validations', [
+            'onError',
+            'removeErrors',
+        ]),
+        onSubmit() {
+            if (this.isSubmitting) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeErrors();
+            this.updateProductTemplate({
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
+            });
+        },
+        onUpdateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Template updated',
+            });
+
+            this.isSubmitting = false;
+        },
+        onUpdateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+        },
         onRemoveLayoutElement(index) {
             this.removeLayoutElementAtIndex(index);
         },

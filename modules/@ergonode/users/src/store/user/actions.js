@@ -102,12 +102,10 @@ export default {
             rootGetters,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        this.$setLoader('footerButton');
-
         try {
             const {
                 id,
@@ -183,8 +181,6 @@ export default {
         } catch (e) {
             onError(e.data);
         }
-
-        this.$removeLoader('footerButton');
     },
     async createUser(
         {
@@ -192,8 +188,8 @@ export default {
             rootGetters,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {
@@ -234,8 +230,8 @@ export default {
             state,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         const {

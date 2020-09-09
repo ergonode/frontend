@@ -5,7 +5,17 @@
 <template>
     <Form
         title="Configuration"
-        :fields-keys="[activeFieldKey, startFieldKey, hourFieldKey]">
+        :fields-keys="[
+            activeFieldKey,
+            startFieldKey,
+            hourFieldKey
+        ]"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <Toggler
@@ -44,6 +54,13 @@
 
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
+import Divider from '@Core/components/Dividers/Divider';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
+import TextField from '@Core/components/Inputs/TextField';
+import Toggler from '@Core/components/Inputs/Toggler/Toggler';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     DEFAULT_FORMAT,
     DEFAULT_HOUR_FORMAT,
@@ -60,13 +77,16 @@ import {
 export default {
     name: 'SchedulerForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        DatePicker: () => import('@Core/components/Inputs/DatePicker/DatePicker'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
-        Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
-        Divider: () => import('@Core/components/Dividers/Divider'),
+        Form,
+        FormSection,
+        DatePicker,
+        TextField,
+        Toggler,
+        Divider,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     data() {
         return {
             schedulerConfiguration: {},

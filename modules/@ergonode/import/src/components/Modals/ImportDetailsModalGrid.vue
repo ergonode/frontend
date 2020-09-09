@@ -43,7 +43,10 @@ export default {
         },
     },
     async fetch() {
-        await this.getImportDetails();
+        this.details = await this.getImportDetails({
+            sourceId: this.sourceId,
+            importId: this.importId,
+        });
     },
     data() {
         return {
@@ -59,12 +62,6 @@ export default {
         ...mapActions('import', [
             'getImportDetails',
         ]),
-        getImportDetails() {
-            this.details = this.getImportDetails({
-                sourceId: this.sourceId,
-                importId: this.importId,
-            });
-        },
         onClose() {
             this.$emit('close');
         },

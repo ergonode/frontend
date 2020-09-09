@@ -144,26 +144,51 @@ export default {
     },
     async createExport({
         state,
+        rootState,
     }, {
-        onSuccess,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
+        try {
+            const {
+                type,
+                configuration,
+            } = state;
+            const {
+                channels,
+            } = rootState.dictionaries;
+            const typeId = getKeyByValue(channels, type);
 
-        await create({
-            $axios: this.app.$axios,
-            id,
-        });
-        onSuccess();
+            let data = {
+                type: typeId,
+            };
+
+            if (configuration) {
+                data = {
+                    ...data,
+                    ...JSON.parse(configuration),
+                };
+            }
+
+            const {
+                id,
+            } = await create({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess(id);
+        } catch (e) {
+            onError(e.data);
+        }
     },
     async updateChannel(
         {
             state,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {
@@ -193,8 +218,8 @@ export default {
             state,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {
@@ -212,6 +237,7 @@ export default {
                 id,
                 data,
             });
+
             onSuccess();
         } catch (e) {
             onError(e.data);

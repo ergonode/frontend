@@ -3,6 +3,6 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    treeId: null,
+    id: null,
     code: '',
 });

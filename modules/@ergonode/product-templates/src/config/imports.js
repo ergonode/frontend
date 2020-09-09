@@ -8,7 +8,7 @@ export const Pages = {
 };
 
 export const Tabs = {
-    TemplateDesignerBaseTab: () => import('@Templates/components/Tabs/TemplateDesignerBaseTab').then(m => m.default || m),
+    ProductTemplateGeneralTab: () => import('@Templates/components/Tabs/ProductTemplateGeneralTab').then(m => m.default || m),
     TemplateDesignerTab: () => import('@Templates/components/Tabs/TemplateDesignerTab').then(m => m.default || m),
 };
 

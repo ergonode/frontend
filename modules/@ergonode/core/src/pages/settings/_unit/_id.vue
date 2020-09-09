@@ -5,8 +5,7 @@
 <template>
     <UnitPage
         :title="name"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -47,16 +46,11 @@ export default {
     },
     methods: {
         ...mapActions('unit', {
-            updateUnit: 'updateUnit',
             removeUnit: 'removeUnit',
             clearUnitStorage: '__clearStorage',
         }),
         ...mapActions('dictionaries', [
-            'getCurrentDictionary',
-        ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
+            'getDictionary',
         ]),
         onRemove() {
             this.$openModal({
@@ -67,25 +61,8 @@ export default {
                 }),
             });
         },
-        onSave() {
-            this.removeErrors();
-
-            this.updateUnit({
-                onSuccess: this.onUpdateUnitSuccess,
-                onError: this.onError,
-            });
-        },
-        async onUpdateUnitSuccess() {
-            await this.getCurrentDictionary({
-                dictionaryName: 'units',
-            });
-            await this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Unit updated',
-            });
-        },
         async onRemoveUnitSuccess() {
-            await this.getCurrentDictionary({
+            await this.getDictionary({
                 dictionaryName: 'units',
             });
             await this.$addAlert({

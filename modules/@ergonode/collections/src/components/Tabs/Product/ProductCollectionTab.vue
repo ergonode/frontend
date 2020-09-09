@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <div class="product-collection-container">
                 <ProductCollection v-if="collections.length">
@@ -34,13 +34,13 @@
                 </ListPlaceholder>
             </div>
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import ProductCollection from '@Collections/components/ProductCollection/ProductCollection';
 import ProductCollectionItem from '@Collections/components/ProductCollection/ProductCollectionItem';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     LAYOUT_ORIENTATION,
 } from '@Core/defaults/layout';
@@ -54,7 +54,7 @@ import {
 export default {
     name: 'ProductCollectionTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         ProductCollection,
         ProductCollectionItem,
         ExpandingCollection: () => import('@Core/components/ExpandingCollection/ExpandingCollection'),
@@ -76,14 +76,14 @@ export default {
     },
     async created() {
         const [
-            options,
-            collection,
+            collectionTypeOptionsResponse,
+            productCollections,
         ] = await Promise.all([
             this.getCollectionTypeOptions(),
             this.getProductCollections(),
         ]);
 
-        this.collections = collection
+        this.collections = productCollections
             .map(({
                 id,
                 code,
@@ -92,7 +92,7 @@ export default {
                 elements_count,
                 type_id,
             }) => {
-                const collectionType = options
+                const collectionType = collectionTypeOptionsResponse.options
                     .find(type => type.id === type_id);
 
                 return {

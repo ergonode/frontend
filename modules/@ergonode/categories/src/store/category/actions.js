@@ -11,57 +11,67 @@ import {
 } from '@Categories/services/index';
 
 export default {
-    createCategory({
+    async createCategory({
         state,
-    }) {
-        const {
-            code,
-        } = state;
-
-        return create({
-            $axios: this.app.$axios,
-            data: {
-                code,
-            },
-        });
     },
-    getCategory(
+    {
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const {
+                code,
+            } = state;
+
+            await create({
+                $axios: this.app.$axios,
+                data: {
+                    code,
+                },
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
+    },
+    async getCategory(
         {
-            commit, dispatch,
+            commit,
+            dispatch,
         },
         {
-            categoryId, onError = () => {},
+            id,
         },
     ) {
-        return get({
-            $axios: this.app.$axios,
-            id: categoryId,
-        }).then(({
-            id,
+        const {
             code,
             name = '',
-        }) => {
-            const translations = {
-                name,
-            };
+        } = await get({
+            $axios: this.app.$axios,
+            id,
+        });
 
-            commit('__SET_STATE', {
-                key: 'id',
-                value: id,
-            });
-            commit('__SET_STATE', {
-                key: 'code',
-                value: code,
-            });
-            commit('__SET_STATE', {
-                key: 'name',
-                value: name,
-            });
+        const translations = {
+            name,
+        };
 
-            dispatch('tab/setTranslations', translations, {
-                root: true,
-            });
-        }).catch(onError);
+        commit('__SET_STATE', {
+            key: 'id',
+            value: id,
+        });
+        commit('__SET_STATE', {
+            key: 'code',
+            value: code,
+        });
+        commit('__SET_STATE', {
+            key: 'name',
+            value: name,
+        });
+
+        dispatch('tab/setTranslations', translations, {
+            root: true,
+        });
     },
     getCategoriesOptions({
         rootState,
@@ -84,23 +94,40 @@ export default {
         }));
     },
     async updateCategory(
-        {},
         {
-            id,
-            data,
-            onSuccess,
-            onError,
+            state,
+            rootState,
+        },
+        {
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        this.$setLoader('footerButton');
-        await update({
-            $axios: this.app.$axios,
-            id,
-            data,
-        }).then(() => onSuccess()).catch(e => onError(e.data));
-        this.$removeLoader('footerButton');
+        try {
+            const {
+                id,
+            } = state;
+            const {
+                translations: {
+                    name,
+                },
+            } = rootState;
+            const data = {
+                name,
+            };
+
+            await update({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
-    removeCategory({
+    async removeCategory({
         state,
     }, {
         onSuccess,
@@ -109,9 +136,10 @@ export default {
             id,
         } = state;
 
-        return remove({
+        await remove({
             $axios: this.app.$axios,
             id,
-        }).then(() => onSuccess());
+        });
+        onSuccess();
     },
 };

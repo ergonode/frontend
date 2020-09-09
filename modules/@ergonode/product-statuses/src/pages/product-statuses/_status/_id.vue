@@ -5,8 +5,7 @@
 <template>
     <ProductStatusPage
         :title="code"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -47,26 +46,8 @@ export default {
     },
     methods: {
         ...mapActions('productStatus', [
-            'updateProductStatus',
-            'updateDefaultStatus',
             'removeProductStatus',
         ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
-        onSave() {
-            const requests = [
-                this.updateProductStatus({
-                    onError: this.onError,
-                }),
-                this.updateDefaultStatus(),
-            ];
-
-            Promise.all(requests).then(() => {
-                this.onProductStatusUpdated();
-            });
-        },
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
@@ -83,13 +64,6 @@ export default {
             });
             this.$router.push({
                 name: 'product-statuses-grid',
-            });
-        },
-        onProductStatusUpdated() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Product status updated',
             });
         },
     },

@@ -7,50 +7,42 @@
         title="Create attribute"
         @close="onClose">
         <template #body>
-            <AttributeForm />
-        </template>
-        <template #footer>
-            <Button
-                title="CREATE"
-                :disabled="isRequestPending"
-                @click.native="onCreate" />
-            <Button
-                title="CREATE & EDIT"
-                :theme="secondaryTheme"
-                :disabled="isRequestPending"
-                @click.native="onCreatedAndEdit" />
+            <AttributeForm
+                submit-title="CREATE"
+                proceed-title="CREATE AND EDIT"
+                :is-submitting="isSubmitting"
+                :is-proceeding="isProceeding"
+                @submit="onSubmit"
+                @proceed="onProceed" />
         </template>
     </ModalForm>
 </template>
 
 <script>
+import AttributeForm from '@Attributes/components/Forms/AttributeForm';
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
-    MODAL_ACTION,
-} from '@Core/defaults/modals';
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     THEME,
 } from '@Core/defaults/theme';
-import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
 import {
     mapActions,
 } from 'vuex';
 
-const createAttribute = () => import('@Attributes/services/createAttribute.service');
-
 export default {
     name: 'CreateAttributeModalForm',
     components: {
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
-        AttributeForm: () => import('@Attributes/components/Forms/AttributeForm'),
+        ModalForm,
+        AttributeForm,
     },
-    mixins: [
-        actionModalFormMixin({
-            action: MODAL_ACTION.CREATE,
-            namespace: 'Attribute',
-            request: createAttribute,
-        }),
-    ],
+    data() {
+        return {
+            isSubmitting: false,
+            isProceeding: false,
+        };
+    },
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
@@ -58,26 +50,68 @@ export default {
     },
     methods: {
         ...mapActions('attribute', [
+            'createAttribute',
             '__clearStorage',
+        ]),
+        ...mapActions('validations', [
+            'onError',
+            'removeErrors',
         ]),
         onClose() {
             this.__clearStorage();
             this.$emit('close');
         },
-        onCreate() {
-            this.onActionRequest(() => {
-                this.__clearStorage();
+        onSubmit() {
+            if (this.isSubmitting || this.isProceeding) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeErrors();
+            this.createAttribute({
+                onSuccess: this.onCreateSuccess,
+                onError: this.onCreateError,
             });
         },
-        onCreatedAndEdit() {
-            this.onActionRequest((id) => {
-                this.$router.push({
-                    name: 'attribute-id-general',
-                    params: {
-                        id,
-                    },
-                });
+        onProceed() {
+            if (this.isSubmitting || this.isProceeding) {
+                return;
+            }
+
+            this.isProceeding = true;
+
+            this.removeErrors();
+            this.createAttribute({
+                onSuccess: this.onProceedSuccess,
+                onError: this.onCreateError,
             });
+        },
+        onCreateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Attribute created',
+            });
+
+            this.isSubmitting = false;
+
+            this.$emit('created');
+            this.onClose();
+        },
+        onProceedSuccess(id) {
+            this.isProceeding = false;
+
+            this.$router.push({
+                name: 'attribute-id-general',
+                params: {
+                    id,
+                },
+            });
+        },
+        onCreateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+            this.isProceeding = false;
         },
     },
 };

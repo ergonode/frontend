@@ -26,13 +26,6 @@
             </template> -->
         </TitleBar>
         <HorizontalRoutingTabBar :items="tabs" />
-        <Footer flex-end>
-            <Button
-                title="SAVE USER"
-                :size="smallSize"
-                :disabled="$isLoading('footerButton')"
-                @click.native="onSave" />
-        </Footer>
     </Page>
 </template>
 

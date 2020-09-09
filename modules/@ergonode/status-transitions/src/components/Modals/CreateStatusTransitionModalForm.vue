@@ -7,51 +7,43 @@
         title="Create status transition"
         @close="onClose">
         <template #body>
-            <TransitionForm />
-        </template>
-        <template #footer>
-            <Button
-                title="CREATE"
-                :disabled="isRequestPending"
-                @click.native="onCreate" />
-            <Button
-                title="CREATE & EDIT"
-                :theme="secondaryTheme"
-                :disabled="isRequestPending"
-                @click.native="onCreatedAndEdit" />
+            <TransitionForm
+                submit-title="CREATE"
+                proceed-title="CREATE AND EDIT"
+                :is-submitting="isSubmitting"
+                :is-proceeding="isProceeding"
+                @submit="onSubmit"
+                @proceed="onProceed" />
         </template>
     </ModalForm>
 </template>
 
 <script>
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
-    MODAL_ACTION,
-} from '@Core/defaults/modals';
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     THEME,
 } from '@Core/defaults/theme';
-import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
+import TransitionForm from '@Transitions/components/Forms/TransitionForm';
 import {
     mapActions,
     mapState,
 } from 'vuex';
 
-const createStatusTransition = () => import('@Transitions/services/createStatusTransition.service');
-
 export default {
     name: 'CreateStatusTransitionModalForm',
     components: {
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
-        TransitionForm: () => import('@Transitions/components/Forms/TransitionForm'),
+        ModalForm,
+        TransitionForm,
     },
-    mixins: [
-        actionModalFormMixin({
-            action: MODAL_ACTION.CREATE,
-            namespace: 'Status transition',
-            request: createStatusTransition,
-        }),
-    ],
+    data() {
+        return {
+            isSubmitting: false,
+            isProceeding: false,
+        };
+    },
     computed: {
         ...mapState('statusTransition', {
             source: state => state.source,
@@ -70,28 +62,70 @@ export default {
     methods: {
         ...mapActions('statusTransition', [
             '__clearStorage',
+            'createTransition',
         ]),
         ...mapActions('productStatus', [
             'getProductStatuses',
+        ]),
+        ...mapActions('validations', [
+            'onError',
+            'removeErrors',
         ]),
         onClose() {
             this.__clearStorage();
             this.$emit('close');
         },
-        onCreate() {
-            this.onActionRequest(() => {
-                this.__clearStorage();
+        onSubmit() {
+            if (this.isSubmitting || this.isProceeding) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeErrors();
+            this.createTransition({
+                onSuccess: this.onCreateSuccess,
+                onError: this.onCreateError,
             });
         },
-        onCreatedAndEdit() {
-            this.onActionRequest(() => {
-                this.$router.push({
-                    name: 'transition-id-general',
-                    params: {
-                        id: `${this.source.key}--${this.destination.key}`,
-                    },
-                });
+        onProceed() {
+            if (this.isSubmitting || this.isProceeding) {
+                return;
+            }
+
+            this.isProceeding = true;
+
+            this.removeErrors();
+            this.createTransition({
+                onSuccess: this.onProceedSuccess,
+                onError: this.onCreateError,
             });
+        },
+        onCreateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Transition created',
+            });
+
+            this.isSubmitting = false;
+
+            this.$emit('created');
+            this.onClose();
+        },
+        onProceedSuccess() {
+            this.isProceeding = false;
+
+            this.$router.push({
+                name: 'transition-id-general',
+                params: {
+                    id: `${this.source.key}--${this.destination.key}`,
+                },
+            });
+        },
+        onCreateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+            this.isProceeding = false;
         },
     },
 };

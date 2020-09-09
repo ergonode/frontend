@@ -10,23 +10,20 @@
             <AddProductsBySKUForm
                 :product-skus="productSkus"
                 :is-user-allowed-to-update="isUserAllowedToUpdate"
+                submit-title="ADD TO COLLECTION"
+                proceed-title="CANCEL"
+                :is-submitting="isAdding"
+                @submit="onSubmit"
+                @proceed="onClose"
                 @input="onFormValueChange" />
-        </template>
-        <template #footer>
-            <Button
-                title="ADD TO COLLECTION"
-                :disabled="isRequestPending"
-                @click.native="onAdd" />
-            <Button
-                title="CANCEL"
-                :theme="secondaryTheme"
-                @click.native="onClose" />
         </template>
     </ModalForm>
 </template>
 
 <script>
+import AddProductsBySKUForm from '@Collections/components/Forms/AddProductsBySKUForm';
 import PRIVILEGES from '@Collections/config/privileges';
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -40,14 +37,13 @@ import {
 export default {
     name: 'AddProductsBySKUModalForm',
     components: {
-        AddProductsBySKUForm: () => import('@Products/components/Form/AddProductsBySKUForm'),
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
+        AddProductsBySKUForm,
+        ModalForm,
     },
     data() {
         return {
             productSkus: '',
-            isRequestPending: false,
+            isAdding: false,
         };
     },
     computed: {
@@ -74,25 +70,33 @@ export default {
         onClose() {
             this.$emit('close');
         },
-        onAdd() {
-            this.removeErrors();
+        onSubmit() {
+            if (this.isAdding) {
+                return;
+            }
+            this.isAdding = true;
 
-            this.isRequestPending = true;
+            this.removeErrors();
             this.addBySku({
                 skus: this.productSkus,
-            }).then(() => {
-                this.isRequestPending = false;
-                this.removeErrors();
-                this.$addAlert({
-                    type: ALERT_TYPE.SUCCESS,
-                    message: 'Products has been added to collection',
-                });
-
-                this.$emit('added');
-            }).catch((e) => {
-                this.isRequestPending = false;
-                this.onError(e.data);
+                onSuccess: this.onAddSuccess,
+                onError: this.onAddError,
             });
+        },
+        onAddSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Products has been added to collection',
+            });
+
+            this.isAdding = false;
+
+            this.$emit('added');
+        },
+        onAddError(errors) {
+            this.onError(errors);
+
+            this.isAdding = false;
         },
     },
 };

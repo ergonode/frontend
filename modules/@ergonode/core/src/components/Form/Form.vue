@@ -5,7 +5,7 @@
 <template>
     <form
         class="form"
-        @submit.prevent>
+        @submit.prevent="onSubmit">
         <slot name="header">
             <h2
                 v-if="title"
@@ -35,6 +35,37 @@
         <slot
             name="body"
             :error-messages="errorMessages" />
+        <div
+            class="form__footer"
+            v-if="isFooterVisible">
+            <slot name="submit">
+                <Button
+                    v-if="isSubmitButtonVisible"
+                    data-cy="submit"
+                    :title="submitTitle"
+                    type="submit">
+                    <template
+                        v-if="isSubmitting"
+                        #append="{ color }">
+                        <IconSpinner :fill-color="color" />
+                    </template>
+                </Button>
+            </slot>
+            <slot name="proceed">
+                <Button
+                    v-if="isProceedButtonVisible"
+                    data-cy="proceed"
+                    :title="proceedTitle"
+                    :theme="secondaryTheme"
+                    @click.native="onProceed">
+                    <template
+                        v-if="isProceeding"
+                        #prepend="{ color }">
+                        <IconSpinner :fill-color="color" />
+                    </template>
+                </Button>
+            </slot>
+        </div>
     </form>
 </template>
 
@@ -42,9 +73,15 @@
 import {
     RED,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import Button from '@Core/components/Button/Button';
 import Divider from '@Core/components/Dividers/Divider';
 import IconError from '@Core/components/Icons/Feedback/IconError';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import LinkButton from '@Core/components/LinkButton/LinkButton';
+import {
+    THEME,
+} from '@Core/defaults/theme';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     mapActions,
     mapState,
@@ -53,10 +90,15 @@ import {
 export default {
     name: 'Form',
     components: {
+        Button,
         LinkButton,
         IconError,
         Divider,
+        IconSpinner,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     props: {
         title: {
             type: String,
@@ -71,6 +113,20 @@ export default {
         ...mapState('validations', {
             errors: state => state.errors,
         }),
+        isFooterVisible() {
+            return !!(this.$slots.submit || this.$slots.proceed)
+                || this.isSubmitButtonVisible
+                || this.isProceedButtonVisible;
+        },
+        isSubmitButtonVisible() {
+            return this.submitTitle !== '';
+        },
+        isProceedButtonVisible() {
+            return this.submitTitle !== '';
+        },
+        secondaryTheme() {
+            return THEME.SECONDARY;
+        },
         errorMessages() {
             return this.fieldsKeys.reduce((acc, current) => {
                 const errors = acc;
@@ -132,6 +188,11 @@ export default {
             border: $BORDER_2_RED;
             padding: 16px;
             box-sizing: border-box;
+        }
+
+        &__footer {
+            display: flex;
+            justify-content: space-between;
         }
 
         .errors-list {

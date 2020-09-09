@@ -25,7 +25,6 @@
                     :id="associatedLabel"
                     :class="classes"
                     ref="input"
-                    :style="textareaStyle"
                     :value="value"
                     :placeholder="placeholderValue"
                     :disabled="disabled"
@@ -165,11 +164,6 @@ export default {
                 `textarea--${this.size}`,
                 `textarea--${this.alignment}`,
             ];
-        },
-        textareaStyle() {
-            return {
-                resize: this.resize,
-            };
         },
         styleComponent() {
             return () => import(`@Core/components/Inputs/Input${toCapitalize(this.type)}Style`);

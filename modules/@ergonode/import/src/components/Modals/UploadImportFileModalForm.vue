@@ -18,15 +18,13 @@
                             @progress="onUploadingCSVFile" />
                     </FormSection>
                 </template>
+                <template #submit>
+                    <Button
+                        title="IMPORT NOW"
+                        :disabled="isCSVUploading"
+                        @click.native="onImportNow" />
+                </template>
             </Form>
-        </template>
-        <template #footer>
-            <div>
-                <Button
-                    title="IMPORT NOW"
-                    :disabled="isCSVUploading"
-                    @click.native="onImportNow" />
-            </div>
         </template>
     </ModalForm>
 </template>

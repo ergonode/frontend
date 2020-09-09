@@ -25,6 +25,11 @@ export const update = ({
     data,
 }) => $axios.$put(`sources/${id}`, data);
 
+export const create = ({
+    $axios,
+    data,
+}) => $axios.$post('sources', data);
+
 export const remove = ({
     $axios,
     id,

@@ -75,8 +75,8 @@ export default {
         },
         {
             content,
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         this.$setLoader('commentButton');
@@ -138,8 +138,8 @@ export default {
         {
             id,
             content,
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         this.$setLoader('commentButton');
@@ -188,8 +188,8 @@ export default {
         },
         {
             id,
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {

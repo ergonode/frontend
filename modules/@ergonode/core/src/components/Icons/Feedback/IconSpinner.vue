@@ -3,90 +3,40 @@
  * See LICENSE for license details.
  */
 <template>
-    <svg
-        class="spinner"
-        :width="width"
-        :height="height"
-        viewBox="0 0 50 50">
-        <circle
-            class="path"
-            cx="25"
-            cy="25"
-            r="20"
-            fill="none"
-            :stroke="color"
-            stroke-width="5"
-        />
-    </svg>
+    <Icon v-bind="$attrs">
+        <path :d="drawingCommands1" />
+        <path :d="drawingCommands2" />
+    </Icon>
 </template>
 
 <script>
-import {
-    WHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
+import Icon from '@Core/components/Icons/Icon';
 
 export default {
     name: 'IconSpinner',
-    props: {
-        color: {
-            type: String,
-            default: WHITE,
-            validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
+    components: {
+        Icon,
+    },
+    inheritAttrs: false,
+    computed: {
+        drawingCommands1() {
+            return 'M11.9999 5.80005C8.74182 5.80005 6.09041 8.38587 5.985 11.6182H3.51709L6.909 15.0101L10.3009 11.6182H7.841C7.94527 9.41074 9.76651 7.6546 11.9999 7.6546C12.704 7.6546 13.3632 7.83137 13.9471 8.13723L14.0773 8.20546L15.4209 6.86189L15.2077 6.72864C14.2762 6.14643 13.1816 5.80005 11.9999 5.80005Z';
         },
-        width: {
-            type: [
-                Number,
-                String,
-            ],
-            default: 24,
-        },
-        height: {
-            type: [
-                Number,
-                String,
-            ],
-            default: 24,
+        drawingCommands2() {
+            return 'M20.4826 12.0182L17.0907 8.62626L13.6988 12.0182H16.1587C16.0544 14.2256 14.2332 15.9818 11.9998 15.9818C11.2957 15.9818 10.6365 15.805 10.0526 15.4992L9.92236 15.4309L8.57878 16.7745L8.79198 16.9077C9.72347 17.4899 10.8181 17.8363 11.9998 17.8363C15.2578 17.8363 17.9093 15.2505 18.0147 12.0182H20.4826Z';
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .spinner {
+    svg {
         animation: rotate 2s linear infinite;
-
-        & .path {
-            stroke-linecap: round;
-            animation: dash 1.5s ease-in-out infinite;
-        }
     }
 
     @keyframes rotate {
-        100% {
+        to {
             transform: rotate(360deg);
-        }
-    }
-
-    @keyframes dash {
-        0% {
-            stroke-dasharray:
-                1,
-                150;
-            stroke-dashoffset: 0;
-        }
-
-        50% {
-            stroke-dasharray:
-                90,
-                150;
-            stroke-dashoffset: -35;
-        }
-
-        100% {
-            stroke-dasharray:
-                90,
-                150;
-            stroke-dashoffset: -124;
         }
     }
 </style>

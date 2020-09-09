@@ -36,17 +36,10 @@
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
-        <Footer flex-end>
-            <Button
-                title="SAVE IMPORT PROFILE"
-                :size="smallSize"
-                :disabled="$isLoading('footerButton')"
-                @click.native="onSave" />
-        </Footer>
         <UploadImportFileModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @create="onCreatedData" />
+            @created="onCreatedData" />
     </Page>
 </template>
 

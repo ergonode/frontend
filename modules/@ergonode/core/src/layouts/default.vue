@@ -108,7 +108,7 @@ export default {
 <style lang="scss" scoped>
     .app-main {
         width: 100%;
-        height: 100%;
+        height: 100vh;
         padding: 48px 0 0;
         box-sizing: border-box;
     }

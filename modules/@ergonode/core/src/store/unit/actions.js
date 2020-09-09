@@ -44,8 +44,8 @@ export default {
             state,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         const {
@@ -55,7 +55,7 @@ export default {
             name,
             symbol,
         };
-        this.$setLoader('footerButton');
+
         try {
             await update({
                 $axios: this.app.$axios,
@@ -66,17 +66,15 @@ export default {
         } catch (e) {
             onError(e.data);
         }
-        this.$removeLoader('footerButton');
     },
     async createUnit({
         state,
     }, {
-        onSuccess,
-        onError,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
         try {
             const {
-                id,
                 name,
                 symbol,
             } = state;
@@ -86,12 +84,13 @@ export default {
                 symbol,
             };
 
-            await create({
-                $axios: this.app.$axios,
+            const {
                 id,
+            } = await create({
+                $axios: this.app.$axios,
                 data,
             });
-            onSuccess();
+            onSuccess(id);
         } catch (e) {
             onError(e.data);
         }

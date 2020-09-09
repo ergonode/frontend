@@ -3,15 +3,10 @@
  * See LICENSE for license details.
  */
 <template>
-    <UserPage
-        :title="title"
-        @save="onSave" />
+    <UserPage :title="title" />
 </template>
 
 <script>
-import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
 import {
     mapActions,
     mapState,
@@ -48,24 +43,7 @@ export default {
     methods: {
         ...mapActions('user', [
             '__clearStorage',
-            'updateUser',
         ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
-        onSave() {
-            this.updateUser({
-                onError: this.onError,
-                onSuccess: () => {
-                    this.removeErrors();
-                    this.$addAlert({
-                        type: ALERT_TYPE.SUCCESS,
-                        message: 'User updated',
-                    });
-                },
-            });
-        },
     },
 };
 </script>

@@ -5,14 +5,10 @@
 <template>
     <TransitionPage
         :title="`${params[0]} -> ${params[1]}`"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
-import {
-    getMappedConditionSetData,
-} from '@Conditions/models/conditionSetMapper';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -32,22 +28,13 @@ export default {
     async fetch({
         store, params,
     }) {
-        await Promise.all([
-            store.dispatch('statusTransition/__clearStorage'),
-            store.dispatch('productStatus/getProductStatuses'),
-        ]);
+        await store.dispatch('productStatus/getProductStatuses');
         await store.dispatch('statusTransition/getTransition', params);
     },
     computed: {
         ...mapState('statusTransition', {
             source: state => state.source,
             destination: state => state.destination,
-            roles: state => state.roles,
-            conditionSetId: state => state.conditionSetId,
-        }),
-        ...mapState('condition', {
-            conditionsValues: state => state.conditionsValues,
-            conditions: state => state.conditions,
         }),
         params() {
             const {
@@ -62,60 +49,12 @@ export default {
     },
     methods: {
         ...mapActions('condition', {
-            createConditionSet: 'createConditionSet',
-            updateConditionSet: 'updateConditionSet',
             clearConditionSetStorage: '__clearStorage',
         }),
         ...mapActions('statusTransition', {
-            updateTransition: 'updateTransition',
             removeTransition: 'removeTransition',
             clearTransitionStorage: '__clearStorage',
         }),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
-        onSave() {
-            const propertiesToUpdate = {
-                conditions: getMappedConditionSetData(this.conditionsValues, this.conditions),
-            };
-
-            this.removeErrors();
-            if (!this.conditionSetId) {
-                this.createConditionSet({
-                    data: propertiesToUpdate,
-                    onSuccess: this.onConditionCreated,
-                    onError: this.onError,
-                });
-            } else {
-                this.updateConditionSet({
-                    id: this.conditionSetId,
-                    data: propertiesToUpdate,
-                    onSuccess: () => {
-                        this.updateTransition({
-                            data: {
-                                roles: this.roles,
-                            },
-                            onSuccess: this.onTransitionUpdated,
-                            onError: this.onError,
-                        });
-                    },
-                    onError: this.onError,
-                });
-            }
-        },
-        onConditionCreated(conditionSetId) {
-            const propertiesToUpdate = {
-                condition_set: conditionSetId,
-                roles: this.roles,
-            };
-
-            this.updateTransition({
-                data: propertiesToUpdate,
-                onSuccess: this.onTransitionUpdated,
-                onError: this.onError,
-            });
-        },
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
@@ -123,12 +62,6 @@ export default {
                 confirmCallback: () => this.removeTransition({
                     onSuccess: this.onRemoveTransitionSuccess,
                 }),
-            });
-        },
-        onTransitionUpdated() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Transition updated',
             });
         },
         onRemoveTransitionSuccess() {

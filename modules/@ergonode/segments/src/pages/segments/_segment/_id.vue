@@ -5,14 +5,10 @@
 <template>
     <SegmentPage
         :title="code"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
-import {
-    getMappedConditionSetData,
-} from '@Conditions/models/conditionSetMapper';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -46,12 +42,7 @@ export default {
     },
     computed: {
         ...mapState('segment', {
-            id: state => state.id,
             code: state => state.code,
-            conditionSetId: state => state.conditionSetId,
-        }),
-        ...mapState('tab', {
-            translations: state => state.translations,
         }),
     },
     destroyed() {
@@ -60,19 +51,12 @@ export default {
     },
     methods: {
         ...mapActions('condition', {
-            createConditionSet: 'createConditionSet',
-            updateConditionSet: 'updateConditionSet',
             clearConditionSetStorage: '__clearStorage',
         }),
         ...mapActions('segment', {
-            updateSegment: 'updateSegment',
             removeSegment: 'removeSegment',
             clearSegmentStorage: '__clearStorage',
         }),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
@@ -80,40 +64,6 @@ export default {
                 confirmCallback: () => this.removeSegment({
                     onSuccess: this.onRemoveSegmentSuccess,
                 }),
-            });
-        },
-        onSave() {
-            const propertiesToUpdate = {
-                conditions: getMappedConditionSetData(this.conditionsValues, this.conditions),
-            };
-
-            this.removeErrors();
-            if (!this.conditionSetId) {
-                this.createConditionSet({
-                    data: propertiesToUpdate,
-                    onSuccess: this.onUpdateSegment,
-                    onError: this.onError,
-                });
-            } else {
-                this.updateConditionSet({
-                    id: this.conditionSetId,
-                    data: propertiesToUpdate,
-                    onSuccess: this.onUpdateSegment,
-                    onError: this.onError,
-                });
-            }
-        },
-        onUpdateSegment(conditionSetId) {
-            this.updateSegment({
-                conditionSetId,
-                onSuccess: this.onUpdateSegmentsSuccess,
-                onError: this.onError,
-            });
-        },
-        onUpdateSegmentsSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Segment updated',
             });
         },
         onRemoveSegmentSuccess() {

@@ -30,18 +30,20 @@
                         />
                     </FormSection>
                 </template>
+                <template #submit>
+                    <Button
+                        title="SAVE SETTINGS"
+                        :size="smallSize"
+                        @click.native="onApply" />
+                </template>
+                <template #proceed>
+                    <Button
+                        :theme="theme.SECONDARY"
+                        title="CANCEL"
+                        :size="smallSize"
+                        @click.native="onClose" />
+                </template>
             </Form>
-        </template>
-        <template #footer>
-            <Button
-                title="SAVE SETTINGS"
-                :size="smallSize"
-                @click.native="onApply" />
-            <Button
-                :theme="theme.SECONDARY"
-                title="CANCEL"
-                :size="smallSize"
-                @click.native="onClose" />
         </template>
     </ModalForm>
 </template>

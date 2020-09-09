@@ -12,7 +12,13 @@
             scopeFieldKey,
             paramsFieldKey,
             ...optionsFieldKeys,
-        ]">
+        ]"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
@@ -96,6 +102,7 @@ import {
     hasOptions,
     hasParams,
 } from '@Attributes/models/attributeTypes';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
@@ -121,6 +128,9 @@ export default {
         TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
         Divider: () => import('@Core/components/Dividers/Divider'),
     },
+    mixins: [
+        formActionsMixin,
+    ],
     computed: {
         ...mapState('attribute', {
             attrID: state => state.id,
