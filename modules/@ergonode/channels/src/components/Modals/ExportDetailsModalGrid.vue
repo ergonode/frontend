@@ -57,7 +57,34 @@ export default {
         },
     },
     async fetch() {
-        await this.getExportDetails();
+        const details = await this.$axios.$get(`channels/${this.channelId}/exports/${this.exportId}`);
+
+        this.details = [
+            {
+                label: 'Date of start',
+                value: details.started_at,
+            },
+            {
+                label: 'Date of finish',
+                value: details.ended_at,
+            },
+            {
+                label: 'Status',
+                value: details.status,
+            },
+            {
+                label: 'Processed',
+                value: details.processed || '0',
+            },
+            {
+                label: 'Errors',
+                value: details.errors || '0',
+            },
+        ];
+
+        if (details._links && details._links.attachment) {
+            this.downloadLink = details._links.attachment.href;
+        }
     },
     data() {
         return {
@@ -104,36 +131,6 @@ export default {
         },
         onClose() {
             this.$emit('close');
-        },
-        async getExportDetails() {
-            const details = await this.$axios.$get(`channels/${this.channelId}/exports/${this.exportId}`);
-
-            this.details = [
-                {
-                    label: 'Date of start',
-                    value: details.started_at,
-                },
-                {
-                    label: 'Date of finish',
-                    value: details.ended_at,
-                },
-                {
-                    label: 'Status',
-                    value: details.status,
-                },
-                {
-                    label: 'Processed',
-                    value: details.processed || '0',
-                },
-                {
-                    label: 'Errors',
-                    value: details.errors || '0',
-                },
-            ];
-
-            if (details._links && details._links.attachment) {
-                this.downloadLink = details._links.attachment.href;
-            }
         },
     },
 };

@@ -79,7 +79,9 @@ export default {
             'removeError',
         ]),
         onRemoveFile() {
-            this.$axios.$delete(`${this.languageCode}/accounts/${this.userId}/avatar`).then(() => {
+            this.$axios.$delete(`${this.languageCode}/accounts/${this.userId}/avatar`, {
+                withLanguage: false,
+            }).then(() => {
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
                     message: 'Avatar removed',
@@ -99,7 +101,9 @@ export default {
                 const formData = new FormData();
                 formData.append('upload', file, name);
 
-                this.$axios.$post(`${this.languageCode}/accounts/${this.userId}/avatar`, formData).then(() => {
+                this.$axios.$post(`${this.languageCode}/accounts/${this.userId}/avatar`, formData, {
+                    withLanguage: false,
+                }).then(() => {
                     this.$addAlert({
                         type: ALERT_TYPE.SUCCESS,
                         message: 'Avatar uploaded',

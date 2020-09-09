@@ -36,6 +36,7 @@
                     :is-border="true"
                     :collection-cell-binding="collectionCellBinding"
                     @editRow="onEditRow"
+                    @previewRow="onEditRow"
                     @deleteRow="onRemoveRow"
                     @fetchData="onFetchData" />
             </template>

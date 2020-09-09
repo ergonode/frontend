@@ -40,7 +40,26 @@ export default {
         },
     },
     async fetch() {
-        await this.getImportDetails();
+        const details = await this.$axios.$get(`sources/${this.sourceId}/imports/${this.importId}`);
+
+        this.details = [
+            {
+                label: 'Date of start',
+                value: details.started_at,
+            },
+            {
+                label: 'Status',
+                value: details.status,
+            },
+            {
+                label: 'Records',
+                value: details.records || '0',
+            },
+            {
+                label: 'Errors',
+                value: details.errors || '0',
+            },
+        ];
     },
     data() {
         return {
@@ -53,28 +72,6 @@ export default {
         },
     },
     methods: {
-        async getImportDetails() {
-            const details = await this.$axios.$get(`sources/${this.sourceId}/imports/${this.importId}`);
-
-            this.details = [
-                {
-                    label: 'Date of start',
-                    value: details.started_at,
-                },
-                {
-                    label: 'Status',
-                    value: details.status,
-                },
-                {
-                    label: 'Records',
-                    value: details.records || '0',
-                },
-                {
-                    label: 'Errors',
-                    value: details.errors || '0',
-                },
-            ];
-        },
         onClose() {
             this.$emit('close');
         },

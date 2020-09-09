@@ -20,6 +20,9 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'UserFabAvatar',
@@ -46,8 +49,11 @@ export default {
         },
     },
     computed: {
+        ...mapState('authentication', {
+            userLanguageCode: state => state.user.language,
+        }),
         avatarPath() {
-            return `accounts/${this.userId}/avatar`;
+            return `${this.userLanguageCode}/accounts/${this.userId}/avatar`;
         },
         avatarInitial() {
             return this.name.length ? this.name[0] : '';
