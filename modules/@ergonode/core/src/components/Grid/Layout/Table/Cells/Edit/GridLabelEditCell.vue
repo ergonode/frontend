@@ -71,7 +71,9 @@ export default {
         },
     },
     fetch() {
-        this.$axios.$get(`${this.languageCode}/products/${this.rowId}`).then(({
+        this.$axios.$get(`${this.languageCode}/products/${this.rowId}`, {
+            withLanguage: false,
+        }).then(({
             workflow = [],
         }) => {
             this.options = workflow.map(e => ({
