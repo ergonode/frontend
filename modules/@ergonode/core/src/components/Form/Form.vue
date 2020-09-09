@@ -40,7 +40,7 @@
             v-if="isFooterVisible">
             <slot name="submit">
                 <Button
-                    v-if="submitTitle !== ''"
+                    v-if="isSubmitButtonVisible"
                     data-cy="submit"
                     :title="submitTitle"
                     type="submit">
@@ -53,7 +53,7 @@
             </slot>
             <slot name="proceed">
                 <Button
-                    v-if="proceedTitle !== ''"
+                    v-if="isProceedButtonVisible"
                     data-cy="proceed"
                     :title="proceedTitle"
                     :theme="secondaryTheme"
@@ -115,8 +115,14 @@ export default {
         }),
         isFooterVisible() {
             return !!(this.$slots.submit || this.$slots.proceed)
-                || this.proceedTitle !== ''
-                || this.submitTitle !== '';
+                || this.isSubmitButtonVisible
+                || this.isProceedButtonVisible;
+        },
+        isSubmitButtonVisible() {
+            return this.submitTitle !== '';
+        },
+        isProceedButtonVisible() {
+            return this.submitTitle !== '';
         },
         secondaryTheme() {
             return THEME.SECONDARY;

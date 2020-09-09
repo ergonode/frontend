@@ -43,6 +43,9 @@ import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect'
 import PRIVILEGES from '@Core/config/privileges';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
+    getMappedTranslationArrayOptions,
+} from '@Core/models/mappers/translationsMapper';
+import {
     mapState,
 } from 'vuex';
 
