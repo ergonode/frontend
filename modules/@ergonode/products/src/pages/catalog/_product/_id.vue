@@ -5,8 +5,7 @@
 <template>
     <ProductPage
         :title="sku"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -60,21 +59,9 @@ export default {
     },
     methods: {
         ...mapActions('product', [
-            'updateProduct',
             'removeProduct',
             '__clearStorage',
         ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
-        onUpdateProductSuccess() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Product updated',
-            });
-        },
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
@@ -91,12 +78,6 @@ export default {
                 confirmCallback: () => this.removeProduct({
                     onSuccess: this.onRemoveSuccess,
                 }),
-            });
-        },
-        onSave() {
-            this.updateProduct({
-                onSuccess: this.onUpdateProductSuccess,
-                onError: this.onError,
             });
         },
     },

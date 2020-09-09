@@ -4,9 +4,10 @@
  */
 <template>
     <button
-        type="button"
+        :style="floatingStyle"
         :class="classes"
         :disabled="disabled"
+        type="button"
         :aria-label="title">
         <!--
             @slot Prepend element - icon recommended
@@ -80,6 +81,14 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * The floating state, absolute position relative to parent
+         * @values top, left, bottom, right
+         */
+        floating: {
+            type: Object,
+            default: null,
+        },
     },
     computed: {
         foregroundColor() {
@@ -91,6 +100,14 @@ export default {
             }
 
             return WHITE;
+        },
+        floatingStyle() {
+            if (!this.floating) return null;
+
+            return {
+                position: 'absolute',
+                ...this.floating,
+            };
         },
         classes() {
             return [

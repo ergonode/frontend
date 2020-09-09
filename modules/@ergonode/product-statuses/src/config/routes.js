@@ -59,7 +59,7 @@ export default [
             {
                 name: 'product-status-id-general',
                 path: 'general',
-                component: Tabs.ProductStatusBaseTab,
+                component: Tabs.ProductStatusGeneralTab,
                 meta: {
                     title: 'Options',
                     breadcrumbs: [

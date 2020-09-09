@@ -61,7 +61,7 @@ export default function ({
             ...mapActions('list', [
                 'setDisabledElement',
             ]),
-            onFetchData({
+            async onFetchData({
                 offset,
                 limit,
                 filters,
@@ -91,21 +91,21 @@ export default function ({
                     params.order = orderState;
                 }
 
-                return getGridData({
-                    $axios: this.$axios,
-                    path: this.getPath(),
-                    params,
-                }).then(({
+                const {
                     columns,
                     rows,
                     filtered,
-                }) => {
-                    this.columns = columns;
-                    this.rows = rows;
-                    this.filtered = filtered;
-
-                    this.$emit('fetched');
+                } = await getGridData({
+                    $axios: this.$axios,
+                    path: this.getPath(),
+                    params,
                 });
+
+                this.columns = columns;
+                this.rows = rows;
+                this.filtered = filtered;
+
+                this.$emit('fetched');
             },
             onRemoveRow() {
                 this.onFetchData(this.localParams);

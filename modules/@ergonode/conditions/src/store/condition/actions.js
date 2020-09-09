@@ -104,8 +104,8 @@ export default {
             commit,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {
@@ -139,13 +139,13 @@ export default {
             state,
         },
         {
-            id,
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {
             const {
+                id,
                 conditions,
                 conditionsValues,
             } = state;
@@ -156,6 +156,7 @@ export default {
 
             await updateSet({
                 $axios: this.app.$axios,
+                id,
                 data,
             });
 

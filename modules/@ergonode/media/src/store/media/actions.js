@@ -83,13 +83,13 @@ export default {
 
         return relations.filter(row => row.relations.length > 0);
     },
-    updateResource({
+    async updateResource({
         commit,
         state,
         rootState,
     }, {
-        onSuccess,
-        onError,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
         try {
             const {
@@ -107,11 +107,12 @@ export default {
                 alt,
             };
 
-            update({
+            await update({
                 $axios: this.app.$axios,
                 id,
                 data,
             });
+
             onSuccess();
         } catch (e) {
             onError(e.data);

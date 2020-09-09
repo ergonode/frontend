@@ -3,38 +3,35 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
-        <template #content>
-            <GridViewTemplate>
-                <template #sidebar>
-                    <VerticalTabBar :items="verticalTabs">
-                        <FadeTransition>
-                            <DropZone
-                                v-show="isDropZoneVisible"
-                                :hover-background-color="graphiteLightColor"
-                                title="REMOVE CATEGORY">
-                                <template #icon="{ color }">
-                                    <IconRemoveFilter :fill-color="color" />
-                                </template>
-                            </DropZone>
-                        </FadeTransition>
-                    </VerticalTabBar>
-                </template>
-                <template #grid>
-                    <LanguagesTreeWrapper />
-                </template>
-            </GridViewTemplate>
+    <GridViewTemplate>
+        <template #sidebar>
+            <VerticalTabBar :items="verticalTabs">
+                <FadeTransition>
+                    <DropZone
+                        v-show="isDropZoneVisible"
+                        :hover-background-color="graphiteLightColor"
+                        title="REMOVE CATEGORY">
+                        <template #icon="{ color }">
+                            <IconRemoveFilter :fill-color="color" />
+                        </template>
+                    </DropZone>
+                </FadeTransition>
+            </VerticalTabBar>
         </template>
-        <template #footer>
-            <FooterActions>
-                <Button
-                    title="SAVE TREE"
-                    :size="smallSize"
-                    :disabled="$isLoading('saveSettings')"
-                    @click.native="onSave" />
-            </FooterActions>
+        <template #grid>
+            <LanguagesTreeWrapper />
+            <Button
+                title="SAVE CHANGES"
+                :floating="{ bottom: '24px', right: '24px' }"
+                @click.native="onSubmit">
+                <template
+                    v-if="isSubmitting"
+                    #prepend="{ color }">
+                    <IconSpinner :fill-color="color" />
+                </template>
+            </Button>
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </GridViewTemplate>
 </template>
 
 <script>
@@ -44,9 +41,8 @@ import {
 import Button from '@Core/components/Button/Button';
 import DropZone from '@Core/components/DropZone/DropZone';
 import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
-import FooterActions from '@Core/components/Layout/Footer/FooterActions';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import {
     ALERT_TYPE,
@@ -54,9 +50,6 @@ import {
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import {
     getMappedTreeData,
 } from '@Core/models/mappers/languageTreeMapper';
@@ -71,13 +64,12 @@ import {
 export default {
     name: 'LanguagesSettingsTab',
     components: {
-        ResponsiveCenteredViewTemplate,
         GridViewTemplate,
-        FooterActions,
         Button,
         IconRemoveFilter,
         DropZone,
         FadeTransition,
+        IconSpinner,
         LanguagesTreeWrapper: () => import('@Core/components/LanguagesTreeDesigner/LanguagesTreeWrapper'),
         VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
     },
@@ -107,6 +99,11 @@ export default {
         store.dispatch('gridDesigner/setGridData', treeToSet);
         store.dispatch('gridDesigner/setFullGridData', treeToSet);
     },
+    data() {
+        return {
+            isSubmitting: false,
+        };
+    },
     computed: {
         ...mapState('gridDesigner', {
             fullGridData: state => state.fullGridData,
@@ -122,9 +119,6 @@ export default {
                     iconComponent: () => import('@Core/components/Icons/Others/IconTranslate'),
                 },
             ];
-        },
-        smallSize() {
-            return SIZE.SMALL;
         },
         isDropZoneVisible() {
             return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
@@ -145,39 +139,41 @@ export default {
             'setDefaultLanguage',
             'updateLanguageTree',
         ]),
-        async onSave() {
-            let isUpdated = false;
-            let languages = null;
-
-            try {
-                this.$setLoader('saveSettings');
-
-                if (isEmpty(this.fullGridData)) {
-                    this.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: 'Tree must have a root branch',
-                    });
-                    throw new Error();
-                }
-                [
-                    languages,
-                ] = getMappedTreeData(this.fullGridData);
-                isUpdated = await this.updateLanguageTree(languages);
-            } catch {
-                return false;
-            } finally {
-                if (isUpdated !== false) {
-                    await this.setLanguageTree(languages);
-                    await this.setDefaultLanguage();
-                    this.$addAlert({
-                        type: ALERT_TYPE.SUCCESS,
-                        message: 'Languages updated',
-                    });
-                }
-                this.$removeLoader('saveSettings');
+        onSubmit() {
+            if (this.isSubmitting) {
+                return;
             }
 
-            return true;
+            if (!isEmpty(this.fullGridData)) {
+                this.isSubmitting = true;
+
+                const [
+                    languages,
+                ] = getMappedTreeData(this.fullGridData);
+
+                this.updateLanguageTree({
+                    languages,
+                    onSuccess: () => this.onUpdateSuccess(languages),
+                    onError: this.onUpdateError,
+                });
+            }
+        },
+        onUpdateSuccess(languages) {
+            this.setLanguageTree(languages);
+            this.setDefaultLanguage();
+
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Languages tree updated',
+            });
+            this.isSubmitting = false;
+        },
+        onUpdateError(message) {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message,
+            });
+            this.isSubmitting = false;
         },
     },
 };

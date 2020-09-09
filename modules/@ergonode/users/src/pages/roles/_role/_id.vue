@@ -5,8 +5,7 @@
 <template>
     <UserRolesPage
         :title="name"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -48,12 +47,7 @@ export default {
     methods: {
         ...mapActions('role', [
             '__clearStorage',
-            'updateRole',
             'removeRole',
-        ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
         ]),
         onRemoveRoleSuccess() {
             this.$addAlert({
@@ -70,18 +64,6 @@ export default {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
                 message,
-            });
-        },
-        onSave() {
-            this.updateRole({
-                onSuccess: () => {
-                    this.removeErrors();
-                    this.$addAlert({
-                        type: ALERT_TYPE.SUCCESS,
-                        message: 'Role updated',
-                    });
-                },
-                onError: this.onError,
             });
         },
         onRemove() {

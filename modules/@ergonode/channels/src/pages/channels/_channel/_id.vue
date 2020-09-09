@@ -5,8 +5,7 @@
 <template>
     <ChannelPage
         :title="name"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -39,7 +38,6 @@ export default {
     computed: {
         ...mapState('channel', {
             configuration: state => state.configuration,
-            scheduler: state => state.scheduler,
         }),
         name() {
             const {
@@ -55,13 +53,7 @@ export default {
     methods: {
         ...mapActions('channel', [
             '__clearStorage',
-            'updateChannel',
-            'updateScheduler',
             'removeChannel',
-        ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({
@@ -70,33 +62,6 @@ export default {
                 confirmCallback: () => this.removeChannel({
                     onSuccess: this.onRemoveSuccess,
                 }),
-            });
-        },
-        onSave() {
-            this.removeErrors();
-            this.updateChannel({
-                onSuccess: this.onUpdateChannelSuccess,
-                onError: this.onError,
-            });
-            if (this.scheduler) {
-                this.updateScheduler({
-                    onSuccess: this.onUpdateSchedulerSuccess,
-                    onError: this.onError,
-                });
-            }
-        },
-        onUpdateSchedulerSuccess() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Scheduler updated',
-            });
-        },
-        onUpdateChannelSuccess() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Channel updated',
             });
         },
         onRemoveSuccess() {

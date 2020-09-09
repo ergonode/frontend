@@ -5,7 +5,13 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[typeFieldKey]">
+        :fields-keys="[typeFieldKey]"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <Select
@@ -46,6 +52,7 @@ import FormSection from '@Core/components/Form/Section/FormSection';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import Select from '@Core/components/Inputs/Select/Select';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import PRIVILEGES from '@Import/config/privileges';
 import {
     mapActions,
@@ -62,6 +69,9 @@ export default {
         Select,
         FadeTransition,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     data() {
         return {
             schemas: {},

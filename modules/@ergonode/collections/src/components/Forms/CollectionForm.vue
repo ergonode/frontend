@@ -5,7 +5,16 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[typeIdFieldKey, codeFieldKey]">
+        :fields-keys="[
+            typeIdFieldKey,
+            codeFieldKey,
+        ]"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
@@ -33,6 +42,11 @@
 
 <script>
 import PRIVILEGES from '@Collections/config/privileges';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import TextField from '@Core/components/Inputs/TextField';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     mapActions,
     mapState,
@@ -41,11 +55,14 @@ import {
 export default {
     name: 'CollectionForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
-        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
+        Form,
+        FormSection,
+        TextField,
+        TranslationLazySelect,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     computed: {
         ...mapState('collection', {
             id: state => state.id,

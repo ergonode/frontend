@@ -5,8 +5,7 @@
 <template>
     <TemplatePage
         :title="templateTitle"
-        @remove="onRemove"
-        @save="onCreate" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -47,24 +46,12 @@ export default {
     },
     methods: {
         ...mapActions('productTemplate', [
-            'updateTemplateDesigner',
             'removeTemplate',
             '__clearStorage',
         ]),
         ...mapActions('list', {
             list__clearStorage: '__clearStorage',
         }),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
-        onUpdateTemplateDesignerSuccess() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Template updated',
-            });
-        },
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
@@ -88,12 +75,6 @@ export default {
                         onSuccess: this.onRemoveSuccess,
                     });
                 },
-            });
-        },
-        onCreate() {
-            this.updateTemplateDesigner({
-                onSuccess: this.onUpdateTemplateDesignerSuccess,
-                onError: this.onError,
             });
         },
     },

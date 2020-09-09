@@ -58,7 +58,19 @@ export default {
         },
     },
     async fetch() {
-        await this.getExportDetails();
+        const {
+            details,
+            links,
+        } = await this.getExportDetails({
+            channelId: this.channelId,
+            exportId: this.exportId,
+        });
+
+        this.details = details;
+
+        if (links && links.attachment) {
+            this.downloadLink = links.attachment.href;
+        }
     },
     data() {
         return {
@@ -108,20 +120,6 @@ export default {
         },
         onClose() {
             this.$emit('close');
-        },
-        async getExportDetails() {
-            const {
-                details, links,
-            } = await this.getExportDetails({
-                channelId: this.channelId,
-                exportId: this.exportId,
-            });
-
-            this.details = details;
-
-            if (links && links.attachment) {
-                this.downloadLink = links.attachment.href;
-            }
         },
     },
 };

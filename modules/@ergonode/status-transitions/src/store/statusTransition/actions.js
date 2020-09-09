@@ -79,17 +79,23 @@ export default {
             state,
         },
         {
-            data,
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        this.$setLoader('footerButton');
-
         const {
             source,
             destination,
+            conditionSetId,
+            roles,
         } = state;
+        const data = {
+            roles,
+        };
+
+        if (conditionSetId) {
+            data.condition_set = conditionSetId;
+        }
 
         try {
             await update({
@@ -102,16 +108,14 @@ export default {
         } catch (e) {
             onError(e.data);
         }
-
-        this.$removeLoader('footerButton');
     },
     async createTransition(
         {
             state,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {
@@ -127,12 +131,14 @@ export default {
                 roles,
             };
 
-            await create({
+            const {
+                id,
+            } = await create({
                 $axios: this.app.$axios,
                 data,
             });
 
-            onSuccess();
+            onSuccess(id);
         } catch (e) {
             onError(e.data);
         }

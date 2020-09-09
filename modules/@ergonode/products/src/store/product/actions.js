@@ -51,7 +51,8 @@ export default {
     async getProductDraft({
         commit,
     }, {
-        languageCode, id,
+        id,
+        languageCode,
     }) {
         const {
             attributes,
@@ -162,41 +163,55 @@ export default {
                 : '',
         })));
     },
-    addBySku({
+    async addBySku({
         state,
     }, {
         skus,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
-        const data = {
-            skus: skus.replace(/\n/g, ',').split(','),
-        };
+        try {
+            const {
+                id,
+            } = state;
+            const data = {
+                skus: skus.replace(/\n/g, ',').split(','),
+            };
 
-        return addBySku({
-            $axios: this.app.$axios,
-            id,
-            data,
-        });
+            await addBySku({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
-    addBySegment({
+    async addBySegment({
         state,
     }, {
         segments,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
-        const data = {
-            segments: segments.map(segment => segment.id),
-        };
+        try {
+            const {
+                id,
+            } = state;
+            const data = {
+                segments: segments.map(segment => segment.id),
+            };
 
-        return addBySegment({
-            $axios: this.app.$axios,
-            id,
-            data,
-        });
+            await addBySegment({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
     async getProductTemplate({}, {
         languageCode,
@@ -213,16 +228,22 @@ export default {
         return elements;
     },
     async getProductChildren({}, id) {
-        await getChildren({
+        const {
+            collection,
+        } = await getChildren({
             $axios: this.app.$axios,
             id,
         });
+
+        return collection;
     },
     async getProductBindings({}, id) {
-        await getBindings({
+        const bindings = await getBindings({
             $axios: this.app.$axios,
             id,
         });
+
+        return bindings;
     },
     async getProductCollections({
         state,
@@ -280,11 +301,20 @@ export default {
 
         onSuccess();
     },
-    async applyProductDraft({}, id) {
-        await applyDraft({
-            $axios: this.app.$axios,
-            id,
-        });
+    async applyProductDraft({}, {
+        id,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            await applyDraft({
+                $axios: this.app.$axios,
+                id,
+            });
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
     async updateProductDraft({
         dispatch,
@@ -375,8 +405,6 @@ export default {
             onError = () => {},
         },
     ) {
-        this.$setLoader('footerButton');
-
         try {
             const {
                 productTypes,
@@ -407,12 +435,11 @@ export default {
                 $axios: this.app.$axios,
                 id,
             });
+
             onSuccess();
         } catch (e) {
             onError(e.data);
         }
-
-        this.$removeLoader('footerButton');
     },
     async createProduct(
         {
@@ -420,8 +447,8 @@ export default {
             rootState,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {
@@ -447,12 +474,14 @@ export default {
                 data.bindings = bindingAttributesIds;
             }
 
-            await create({
+            const {
+                id,
+            } = await create({
                 $axios: this.app.$axios,
                 data,
             });
 
-            onSuccess();
+            onSuccess(id);
         } catch (e) {
             onError(e.data);
         }

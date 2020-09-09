@@ -9,7 +9,7 @@ export const Pages = {
 
 export const Tabs = {
     SegmentsGridTab: () => import('@Segments/components/Tabs/SegmentsGridTab').then(m => m.default || m),
-    SegmentBaseTab: () => import('@Segments/components/Tabs/SegmentBaseTab').then(m => m.default || m),
+    SegmentGeneralTab: () => import('@Segments/components/Tabs/SegmentGeneralTab').then(m => m.default || m),
     SegmentTranslationsTab: () => import('@Segments/components/Tabs/SegmentTranslationsTab').then(m => m.default || m),
     ConditionDesignerTab: () => import('@Segments/components/Tabs/ConditionDesignerTab').then(m => m.default || m),
 };

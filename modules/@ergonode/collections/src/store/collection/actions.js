@@ -78,34 +78,44 @@ export default {
     async updateCollectionProductsVisibility({
         state,
         rootState,
+    },
+    {
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
-        const {
-            drafts,
-        } = rootState.grid;
+        try {
+            const {
+                id,
+            } = state;
+            const {
+                drafts,
+            } = rootState.grid;
 
-        const requests = Object.keys(drafts).map(
-            async (key) => {
-                const [
-                    productId,
-                ] = key.split('/');
+            const requests = Object.keys(drafts).map(
+                async (key) => {
+                    const [
+                        productId,
+                    ] = key.split('/');
 
-                const data = {
-                    visible: drafts[key],
-                };
+                    const data = {
+                        visible: drafts[key],
+                    };
 
-                await updateDraftValue({
-                    $axios: this.app.$axios,
-                    id,
-                    productId,
-                    data,
-                });
-            },
-        );
+                    await updateDraftValue({
+                        $axios: this.app.$axios,
+                        id,
+                        productId,
+                        data,
+                    });
+                },
+            );
 
-        await Promise.all(requests);
+            await Promise.all(requests);
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
     async updateCollection(
         {
@@ -113,8 +123,8 @@ export default {
             rooState,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {
@@ -149,58 +159,80 @@ export default {
     async createCollection({
         state,
     }, {
-        onSuccess,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            code,
-            type,
-        } = state;
-        const data = {
-            code,
-            typeId: type,
-        };
+        try {
+            const {
+                code,
+                type,
+            } = state;
+            const data = {
+                code,
+                typeId: type,
+            };
 
-        await create({
-            $axios: this.app.$axios,
-            data,
-        });
-        onSuccess();
+            const {
+                id,
+            } = await create({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess(id);
+        } catch (e) {
+            onError(e.data);
+        }
     },
-    addBySku({
+    async addBySku({
         state,
     }, {
         skus,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
-        const data = {
-            skus: skus.replace(/\n/g, ',').split(','),
-        };
+        try {
+            const {
+                id,
+            } = state;
+            const data = {
+                skus: skus.replace(/\n/g, ',').split(','),
+            };
 
-        return addBySku({
-            $axios: this.app.$axios,
-            id,
-            data,
-        });
+            await addBySku({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
-    addBySegment({
+    async addBySegment({
         state,
     }, {
         segments,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
-        const data = {
-            segments: segments.map(segment => segment.id),
-        };
+        try {
+            const {
+                id,
+            } = state;
+            const data = {
+                segments: segments.map(segment => segment.id),
+            };
 
-        return addBySegment({
-            $axios: this.app.$axios,
-            id,
-            data,
-        });
+            await addBySegment({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
     async removeCollection({
         state,

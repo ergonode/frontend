@@ -3,16 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
-            <SchedulerForm />
+            <SchedulerForm
+                submit-title="SAVE CHANGES"
+                :is-submitting="isSubmitting"
+                @submit="onSubmit" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import SchedulerForm from '@Channels/components/Forms/SchedulerForm';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     mapActions,
 } from 'vuex';
@@ -20,16 +26,51 @@ import {
 export default {
     name: 'ChannelSchedulerTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         SchedulerForm,
     },
     async fetch() {
         await this.getSchedulerConfiguration();
     },
+    data() {
+        return {
+            isSubmitting: false,
+        };
+    },
     methods: {
         ...mapActions('channel', [
+            'updateScheduler',
             'getSchedulerConfiguration',
         ]),
+        ...mapActions('validations', [
+            'onError',
+            'removeErrors',
+        ]),
+        onSubmit() {
+            if (this.isSubmitting) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeErrors();
+            this.updateScheduler({
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
+            });
+        },
+        onUpdateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Channel scheduler updated',
+            });
+
+            this.isSubmitting = false;
+        },
+        onUpdateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+        },
     },
 };
 </script>

@@ -10,51 +10,43 @@
             <AddProductsFromSegmentForm
                 :segment-options="segmentOptions"
                 :segments="segments"
+                submit-title="ADD TO COLLECTION"
+                proceed-title="CANCEL"
+                :is-submitting="isAdding"
+                @submit="onSubmit"
+                @proceed="onClose"
                 @input="onFormValueChange" />
-        </template>
-        <template #footer>
-            <Button
-                title="ADD TO PRODUCT"
-                :disabled="isRequestPending"
-                @click.native="onAdd" />
-            <Button
-                title="CANCEL"
-                :theme="secondaryTheme"
-                @click.native="onClose" />
         </template>
     </ModalForm>
 </template>
 
 <script>
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     THEME,
 } from '@Core/defaults/theme';
+import AddProductsFromSegmentForm from '@Segments/components/Forms/Product/AddProductsFromSegmentForm';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
     name: 'AddProductsFromSegmentModalForm',
     components: {
-        AddProductsFromSegmentForm: () => import('@Segments/components/Forms/Product/AddProductsFromSegmentForm'),
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
+        AddProductsFromSegmentForm,
+        ModalForm,
     },
     data() {
         return {
             segmentOptions: [],
             segments: [],
-            isRequestPending: false,
+            isAdding: false,
         };
     },
     computed: {
-        ...mapState('product', {
-            id: state => state.id,
-        }),
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -79,26 +71,33 @@ export default {
         onClose() {
             this.$emit('close');
         },
-        onAdd() {
+        onSubmit() {
+            if (this.isAdding) {
+                return;
+            }
+            this.isAdding = true;
+
             this.removeErrors();
-
-            this.isRequestPending = true;
-
             this.addBySegment({
                 segments: this.segments,
-            }).then(() => {
-                this.isRequestPending = false;
-                this.removeErrors();
-                this.$addAlert({
-                    type: ALERT_TYPE.SUCCESS,
-                    message: 'Products has been added',
-                });
-
-                this.$emit('added');
-            }).catch((e) => {
-                this.isRequestPending = false;
-                this.onError(e.data);
+                onSuccess: this.onAddSuccess,
+                onError: this.onAddError,
             });
+        },
+        onAddSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Products has been added to collection',
+            });
+
+            this.isAdding = false;
+
+            this.$emit('added');
+        },
+        onAddError(errors) {
+            this.onError(errors);
+
+            this.isAdding = false;
         },
     },
 };

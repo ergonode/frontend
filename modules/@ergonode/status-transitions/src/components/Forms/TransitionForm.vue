@@ -5,7 +5,17 @@
 <template>
     <Form
         title="Status change"
-        :fields-keys="[roleFieldKey, destinationFieldKey, sourceFieldKey]">
+        :fields-keys="[
+            roleFieldKey,
+            destinationFieldKey,
+            sourceFieldKey
+        ]"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TranslationSelect
@@ -44,6 +54,12 @@
 </template>
 
 <script>
+import Divider from '@Core/components/Dividers/Divider';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     isEmpty,
 } from '@Core/models/objectWrapper';
@@ -56,12 +72,15 @@ import {
 export default {
     name: 'TransitionForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        Divider: () => import('@Core/components/Dividers/Divider'),
-        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
-        TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
+        Form,
+        FormSection,
+        Divider,
+        TranslationLazySelect,
+        TranslationSelect,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     computed: {
         ...mapState('statusTransition', {
             source: state => state.source,

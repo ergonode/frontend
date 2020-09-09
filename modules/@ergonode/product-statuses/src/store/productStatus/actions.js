@@ -15,7 +15,8 @@ import {
 
 export default {
     async getProductStatuses({
-        commit, rootState,
+        commit,
+        rootState,
     }) {
         const {
             language: userLanguageCode,
@@ -96,29 +97,13 @@ export default {
             });
         }
     },
-    updateDefaultStatus({
-        state,
-    }) {
-        if (state.isDefaultStatus) {
-            const {
-                id,
-            } = state;
-
-            return updateDefault({
-                $axios: this.app.$axios,
-                id,
-            });
-        }
-        return null;
-    },
     async updateProductStatus({
         state,
         rootState,
     }, {
-        onError,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        this.$setLoader('footerButton');
-
         try {
             const {
                 translations: {
@@ -128,6 +113,7 @@ export default {
             const {
                 id,
                 color,
+                isDefaultStatus,
             } = state;
             const data = {
                 color,
@@ -135,24 +121,35 @@ export default {
                 description,
             };
 
-            update({
-                $axios: this.app.$axios,
-                id,
-                data,
-            });
+            const requests = [
+                update({
+                    $axios: this.app.$axios,
+                    id,
+                    data,
+                }),
+            ];
+
+            if (isDefaultStatus) {
+                requests.push(updateDefault({
+                    $axios: this.app.$axios,
+                    id,
+                }));
+            }
+
+            await Promise.all(requests);
+
+            onSuccess();
         } catch (e) {
             onError(e);
         }
-
-        this.$removeLoader('footerButton');
     },
-    async createStatus(
+    async createProductStatus(
         {
             state,
         },
         {
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
         try {
@@ -166,12 +163,14 @@ export default {
                 color,
             };
 
-            await create({
+            const {
+                id,
+            } = await create({
                 $axios: this.app.$axios,
                 data,
             });
 
-            onSuccess();
+            onSuccess(id);
         } catch (e) {
             onError(e.data);
         }

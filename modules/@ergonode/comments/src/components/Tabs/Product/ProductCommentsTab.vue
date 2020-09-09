@@ -3,16 +3,16 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <ProductCommentsForm />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import ProductCommentsForm from '@Comments/components/Forms/ProductCommentsForm';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
@@ -21,7 +21,7 @@ export default {
     name: 'ProductCommentsTab',
     components: {
         ProductCommentsForm,
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
     },
     async fetch({
         store,

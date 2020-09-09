@@ -48,7 +48,7 @@ export default [
             {
                 name: 'product-template-id-general',
                 path: 'general',
-                component: Tabs.TemplateDesignerBaseTab,
+                component: Tabs.ProductTemplateGeneralTab,
                 meta: {
                     title: 'Options',
                     breadcrumbs: [

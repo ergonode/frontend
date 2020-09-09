@@ -47,4 +47,4 @@ Feature: Category tree adding
     And I choose "[1]" options from "translation-language-select" multi select field
     Then I fill the "category-tree-name" input with the "category_tree_EN" term for "en_GB" translation
     And I fill the "category-tree-name" input with the "category_tree_PL" term for "pl_PL" translation
-    And I click on "save-category-tree" button
+    And I click on "submit" button

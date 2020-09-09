@@ -46,7 +46,7 @@ export default {
 
         await Promise.all(promises);
     },
-    async getCurrentDictionary({
+    async getDictionary({
         commit,
     }, {
         dictionaryName,

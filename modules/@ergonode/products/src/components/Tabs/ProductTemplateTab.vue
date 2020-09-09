@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #header>
             <div class="view-template-header__section">
                 <TreeSelect
@@ -13,11 +13,6 @@
                     label="Edit language"
                     :options="languageOptions"
                     @input="onLanguageChange" />
-                <!-- Uncomment when needed
-                <Toggler
-                    :value="missingValues"
-                    label="Show only the missing values"
-                    @input="setOnlyMissingValues" /> -->
             </div>
             <div class="view-template-header__section">
                 <ProductCompleteness :completeness="completeness" />
@@ -45,13 +40,29 @@
                 :elements="elements"
                 @valueUpdated="onValueUpdated" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+        <template #default>
+            <Button
+                title="SAVE CHANGES"
+                :floating="{ bottom: '24px', right: '24px' }"
+                @click.native="onSave">
+                <template
+                    v-if="isSubmitting"
+                    #prepend="{ color }">
+                    <IconSpinner :fill-color="color" />
+                </template>
+            </Button>
+        </template>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import Button from '@Core/components/Button/Button';
 import IconRestore from '@Core/components/Icons/Actions/IconRestore';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     SIZE,
     THEME,
@@ -68,14 +79,14 @@ import {
 export default {
     name: 'ProductTemplateTab',
     components: {
+        IconSpinner,
         Button,
         IconRestore,
         ProductTemplateForm,
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         RestoreAttributeParentModalForm: () => import('@Products/components/Modals/RestoreAttributeParentModalForm'),
         ProductCompleteness: () => import('@Products/components/Progress/ProductCompleteness'),
         TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
-        // Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
     },
     mixins: [
         gridModalMixin,
@@ -99,6 +110,10 @@ export default {
                 languageCode: defaultLanguageCode,
                 id,
             }),
+            store.dispatch('product/getProductDraft', {
+                languageCode: defaultLanguageCode,
+                id,
+            }),
         ]).then(([
             templateResponse,
             completenessResponse,
@@ -110,6 +125,7 @@ export default {
     data() {
         return {
             language: {},
+            isSubmitting: false,
         };
     },
     computed: {
@@ -163,7 +179,38 @@ export default {
             'getProductDraft',
             'getProductTemplate',
             'getProductCompleteness',
+            'applyProductDraft',
         ]),
+        ...mapActions('validations', [
+            'onError',
+            'removeErrors',
+        ]),
+        onSave() {
+            if (this.isSubmitting) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeErrors();
+            this.applyProductDraft({
+                id: this.id,
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
+            });
+        },
+        onUpdateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product updated',
+            });
+
+            this.isSubmitting = false;
+        },
+        onUpdateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+        },
         onLanguageChange(value) {
             const languageCode = value.code;
 

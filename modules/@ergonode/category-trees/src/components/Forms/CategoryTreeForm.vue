@@ -5,7 +5,13 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[codeFieldKey]">
+        :fields-keys="[codeFieldKey]"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
@@ -23,6 +29,10 @@
 </template>
 
 <script>
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TextField from '@Core/components/Inputs/TextField';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import PRIVILEGES from '@Trees/config/privileges';
 import {
     mapActions,
@@ -32,17 +42,20 @@ import {
 export default {
     name: 'CategoryTreeForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
+        Form,
+        FormSection,
+        TextField,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     computed: {
         ...mapState('categoryTree', {
-            treeID: state => state.treeId,
+            id: state => state.id,
             code: state => state.code,
         }),
         isDisabled() {
-            return Boolean(this.treeID);
+            return Boolean(this.id);
         },
         isAllowedToUpdate() {
             return this.$hasAccess([

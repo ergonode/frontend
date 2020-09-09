@@ -69,9 +69,14 @@
                 <template #appendFooter>
                     <Button
                         title="SAVE CHANGES"
-                        :size="smallSize"
-                        :disabled="!isUserAllowedToUpdate || $isLoading('footerDraftButton')"
-                        @click.native="onSaveDrafts" />
+                        :disabled="!isUserAllowedToUpdate"
+                        @click.native="onSubmit">
+                        <template
+                            v-if="isSubmitting"
+                            #prepend="{ color }">
+                            <IconSpinner :fill-color="color" />
+                        </template>
+                    </Button>
                 </template>
             </Grid>
         </template>
@@ -87,6 +92,7 @@ import Button from '@Core/components/Button/Button';
 import DropZone from '@Core/components/DropZone/DropZone';
 import IconRemoveColumn from '@Core/components/Icons/Actions/IconRemoveColumn';
 import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
 import VerticalTabBar from '@Core/components/TabBar/VerticalTabBar';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
@@ -120,6 +126,7 @@ export default {
         IconRemoveFilter,
         IconRemoveColumn,
         FadeTransition,
+        IconSpinner,
         // RestoreAttributeParentModalConfirm: () => import('@Products/components/Modals/RestoreAttributeParentModalConfirm'),
         // IconRestore: () => import('@Core/components/Icons/Actions/IconRestore'),
     },
@@ -134,7 +141,7 @@ export default {
         }),
         gridDraftMixin,
     ],
-    fetch() {
+    async fetch() {
         const requests = [
             this.onFetchData(),
         ];
@@ -144,7 +151,7 @@ export default {
             requests.push(this.onFetchAdvancedFilters(advFiltersIds));
         }
 
-        return Promise.all(requests).then(() => {
+        await Promise.all(requests).then(() => {
             this.isPrefetchingData = false;
             this.setDisabledElements(this.getDisabledElements({
                 columns: this.columns,
@@ -155,6 +162,7 @@ export default {
     data() {
         return {
             isPrefetchingData: true,
+            isSubmitting: false,
             focusedCellToRestore: null,
         };
     },
@@ -328,7 +336,9 @@ export default {
                 },
             });
         },
-        async onSaveDrafts() {
+        async onSubmit() {
+            this.isSubmitting = true;
+
             const promises = [];
 
             Object.keys(this.drafts).forEach((key) => {
@@ -341,17 +351,15 @@ export default {
                 }).then(() => this.removeDraftRow(rowId)));
             });
 
-            this.$setLoader('footerDraftButton');
-
             await Promise.all(promises);
 
             this.onFetchData(this.localParams);
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product changes saved',
+                message: 'Products updated',
             });
 
-            this.$removeLoader('footerDraftButton');
+            this.isSubmitting = false;
         },
         getDisabledElements({
             columns, filters,

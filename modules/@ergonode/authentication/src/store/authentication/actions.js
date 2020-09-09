@@ -15,45 +15,52 @@ import {
 import camelcaseKeys from 'camelcase-keys';
 
 export default {
-    authenticateUser({
-        commit, dispatch,
+    async authenticateUser({
+        commit,
+        dispatch,
     }, {
         data,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        return create({
-            $axios: this.app.$axios,
-            data,
-        }).then(({
-            token,
-        }) => {
+        try {
+            const {
+                token,
+            } = await create({
+                $axios: this.app.$axios,
+                data,
+            });
+
             this.$cookies.set(JWT_KEY, token);
             commit('__SET_STATE', {
                 key: 'jwt',
                 value: token,
             });
 
-            return dispatch('getUser');
-        });
+            await dispatch('getUser');
+
+            onSuccess();
+        } catch (e) {
+            onError(e);
+        }
     },
-    getUser({
+    async getUser({
         commit,
     }) {
-        return get({
+        const user = await get({
             $axios: this.app.$axios,
-        }).then((user) => {
-            const transformedUserData = camelcaseKeys(user);
+        });
 
-            transformedUserData.privileges = getMappedPrivileges(transformedUserData.privileges);
-            commit('__SET_STATE', {
-                key: 'user',
-                value: transformedUserData,
-            });
-            commit('__SET_STATE', {
-                key: 'isLogged',
-                value: true,
-            });
-        }).catch((e) => {
-            console.error(e);
+        const transformedUserData = camelcaseKeys(user);
+
+        transformedUserData.privileges = getMappedPrivileges(transformedUserData.privileges);
+        commit('__SET_STATE', {
+            key: 'user',
+            value: transformedUserData,
+        });
+        commit('__SET_STATE', {
+            key: 'isLogged',
+            value: true,
         });
     },
 };
