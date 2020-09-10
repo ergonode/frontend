@@ -391,8 +391,6 @@ export default {
                 placeholder,
             };
 
-            console.log(options, 'dupa');
-
             if (optionKeys.length > 0) {
                 const optionValues = Object.values(options);
                 const errors = {};

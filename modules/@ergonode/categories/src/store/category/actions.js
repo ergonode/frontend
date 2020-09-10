@@ -113,7 +113,7 @@ export default {
                 translations: {
                     name,
                 },
-            } = rootState;
+            } = rootState.tab;
             const data = {
                 name,
             };
@@ -126,6 +126,7 @@ export default {
 
             onSuccess();
         } catch (e) {
+            console.log(e);
             onError(e.data);
         }
     },
