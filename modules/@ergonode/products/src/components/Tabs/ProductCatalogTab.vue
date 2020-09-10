@@ -151,13 +151,13 @@ export default {
             requests.push(this.onFetchAdvancedFilters(advFiltersIds));
         }
 
-        await Promise.all(requests).then(() => {
-            this.isPrefetchingData = false;
-            this.setDisabledElements(this.getDisabledElements({
-                columns: this.columns,
-                filters: this.advancedFilters,
-            }));
-        });
+        await Promise.all(requests);
+
+        this.isPrefetchingData = false;
+        this.setDisabledElements(this.getDisabledElements({
+            columns: this.columns,
+            filters: this.advancedFilters,
+        }));
     },
     data() {
         return {
