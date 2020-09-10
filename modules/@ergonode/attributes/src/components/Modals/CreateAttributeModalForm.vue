@@ -48,10 +48,6 @@ export default {
             return THEME.SECONDARY;
         },
     },
-    destroyed() {
-        this.__clearStorage();
-        this.removeErrors();
-    },
     methods: {
         ...mapActions('attribute', [
             'createAttribute',
@@ -62,6 +58,9 @@ export default {
             'removeErrors',
         ]),
         onClose() {
+            this.__clearStorage();
+            this.removeErrors();
+
             this.$emit('close');
         },
         onSubmit() {

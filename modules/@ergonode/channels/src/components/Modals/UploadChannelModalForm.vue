@@ -68,7 +68,7 @@ export default {
             return 'It may take some time to upload, please be patient. Maybe this is a great time for coffee?';
         },
     },
-    destroyed() {
+    beforeDestroy() {
         this.__clearStorage();
     },
     methods: {

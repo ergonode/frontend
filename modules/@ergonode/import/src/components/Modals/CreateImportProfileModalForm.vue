@@ -48,10 +48,6 @@ export default {
             return THEME.SECONDARY;
         },
     },
-    destroyed() {
-        this.__clearStorage();
-        this.removeErrors();
-    },
     methods: {
         ...mapActions('import', [
             'createImportProfile',
@@ -62,6 +58,8 @@ export default {
             'removeErrors',
         ]),
         onClose() {
+            this.__clearStorage();
+            this.removeErrors();
             this.$emit('close');
         },
         onSubmit() {
@@ -83,7 +81,6 @@ export default {
 
             this.isProceeding = true;
 
-            this.removeErrors();
             this.createImportProfile({
                 onSuccess: this.onProceedSuccess,
                 onError: this.onCreateError,
@@ -102,6 +99,8 @@ export default {
         },
         onProceedSuccess(id) {
             this.isProceeding = false;
+
+            this.removeErrors();
 
             this.$router.push({
                 name: 'import-id-general',

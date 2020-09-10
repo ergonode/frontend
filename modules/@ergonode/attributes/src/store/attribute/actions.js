@@ -278,7 +278,9 @@ export default {
         commit(types.INITIALIZE_OPTIONS, getMappedArrayOptions(options));
     },
     async getAttribute({
-        dispatch, commit, rootState,
+        dispatch,
+        commit,
+        rootState,
     }, {
         id,
     }) {

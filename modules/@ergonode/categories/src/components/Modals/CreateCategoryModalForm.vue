@@ -48,10 +48,6 @@ export default {
             return THEME.SECONDARY;
         },
     },
-    destroyed() {
-        this.__clearStorage();
-        this.removeErrors();
-    },
     methods: {
         ...mapActions('category', [
             'createCategory',
@@ -63,6 +59,8 @@ export default {
         ]),
         onClose() {
             this.__clearStorage();
+            this.removeErrors();
+
             this.$emit('close');
         },
         onSubmit() {

@@ -43,7 +43,6 @@ export const checkGridRow = ({
     const parsedColumns = JSON.parse(columns.replace(/'/g, '"'));
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(100);
     cy.get(`[data-cy=${gridId}]`).should('be.visible').as('grid');
     cy.get('@grid').find('.grid-table-cell').contains(searchValue).parent()
         .as('row');

@@ -9,7 +9,7 @@ Feature: Collection adding
   Scenario: Add collection and delete by request
     When I fill the "collection-code" input with the "collection_1" term
     And I choose 0 option from "collection-typeId" select field
-    When On "modal" element I click button with "CREATE" text
+    When I click on "submit" button
     Then I send a "POST" request and status code should be 201
     And I open "collections/grid" page
     Then On "grid" I can see row with "collection_1" value and columns data: "{'0': 'collection_1', '4': '0'}"
@@ -20,7 +20,7 @@ Feature: Collection adding
   Scenario: Add collection and delete by grid button
     When I fill the "collection-code" input with the "collection_2" term
     And I choose 0 option from "collection-typeId" select field
-    When On "modal" element I click button with "CREATE" text
+    When I click on "submit" button
     Then I send a "POST" request and status code should be 201
     And I open "collections/grid" page
     Then On "grid" I can see row with "collection_2" value and columns data: "{'0': 'collection_2', '4': '0'}"
@@ -31,7 +31,7 @@ Feature: Collection adding
   Scenario: Add collection and delete from edit
     When I fill the "collection-code" input with the "collection_3" term
     And I choose 0 option from "collection-typeId" select field
-    When On "modal" element I click button with "CREATE & EDIT" text
+    When I click on "proceed" button
     Then I send a "POST" request and status code should be 201
     And I see "collections/collection/%UUID%/general" page
     Then Element "collection-code" is "visible"
@@ -44,7 +44,7 @@ Feature: Collection adding
   Scenario: Add collection1 for use
     When I fill the "collection-code" input with the "collection_1" term
     And I choose 0 option from "collection-typeId" select field
-    And On "modal" element I click button with "CREATE & EDIT" text
+    And I click on "proceed" button
     Then I send a "POST" request and status code should be 201
     And I see "collections/collection/%UUID%/general" page
     Then I click tab with "Translations" text

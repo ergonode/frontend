@@ -8,7 +8,7 @@ Feature: Attribute group adding
 
   Scenario: Add attribute group and delete by request
     When I fill the "attribute-group-code" input with the "text_attribute_group" term
-    When On "modal" element I click button with "CREATE" text
+    When I click on "submit" button
     Then I send a "POST" request and status code should be 201
     And I open "attribute-groups/grid" page
     Then On "grid" I can see row with "text_attribute_group" value and columns data: "{'0': 'text_attribute_group', '2': '0'}"
@@ -18,7 +18,7 @@ Feature: Attribute group adding
 
   Scenario: Add attribute group and delete by grid button
     When I fill the "attribute-group-code" input with the "text_attribute_group2" term
-    When On "modal" element I click button with "CREATE" text
+    When I click on "submit" button
     Then I send a "POST" request and status code should be 201
     And I open "attribute-groups/grid" page
     Then On "grid" I can see row with "text_attribute_group2" value and columns data: "{'0': 'text_attribute_group2', '2': '0'}"
@@ -28,7 +28,7 @@ Feature: Attribute group adding
 
   Scenario: Add attribute group and delete from edit
     When I fill the "attribute-group-code" input with the "text_attribute_group3" term
-    When On "modal" element I click button with "CREATE & EDIT" text
+    When I click on "proceed" button
     Then I send a "POST" request and status code should be 201
     And I see "attribute-groups/group/%UUID%/general" page
     Then Element "attribute-group-code" is "visible"
@@ -40,7 +40,7 @@ Feature: Attribute group adding
 
   Scenario: Add attribute group for use in attribute
     When I fill the "attribute-group-code" input with the "attribute_group" term
-    And On "modal" element I click button with "CREATE" text
+    And I click on "submit" button
     Then I send a "POST" request and status code should be 201
     And I open "attribute-groups/grid" page
     Then On "grid" I can see row with "attribute_group" value and columns data: "{'0': 'attribute_group', '2': '0'}"

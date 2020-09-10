@@ -104,6 +104,7 @@ MultiSteps([
     Then,
     And,
 ], 'Element {string} is {string}', (id, state) => {
+    console.log(id, state);
     cy.get(`[data-cy=${id}]`).should(`be.${state}`);
 });
 

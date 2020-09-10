@@ -59,10 +59,6 @@ export default {
             offset: 0,
         });
     },
-    destroyed() {
-        this.__clearStorage();
-        this.removeErrors();
-    },
     methods: {
         ...mapActions('statusTransition', [
             '__clearStorage',
@@ -76,6 +72,9 @@ export default {
             'removeErrors',
         ]),
         onClose() {
+            this.__clearStorage();
+            this.removeErrors();
+
             this.$emit('close');
         },
         onSubmit() {

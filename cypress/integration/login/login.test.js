@@ -34,7 +34,7 @@ context('Login page', () => {
         cy.get('[data-cy=submit]').as('loginButton');
     });
 
-    describe('Login faild', () => {
+    describe('Login fail', () => {
         it('Without data', () => {
             cy.get('@loginButton').click();
             cy.wait('@postLogin').its('status').should('eq', 401);

@@ -48,13 +48,9 @@ export default {
             return THEME.SECONDARY;
         },
     },
-    destroyed() {
-        this.__clearStorage();
-        this.removeErrors();
-    },
     methods: {
         ...mapActions('productTemplate', [
-            'createProductTemplate',
+            'createTemplate',
             '__clearStorage',
         ]),
         ...mapActions('validations', [
@@ -62,6 +58,9 @@ export default {
             'removeErrors',
         ]),
         onClose() {
+            this.__clearStorage();
+            this.removeErrors();
+
             this.$emit('close');
         },
         onSubmit() {
@@ -71,7 +70,7 @@ export default {
             this.isSubmitting = true;
 
             this.removeErrors();
-            this.createProductTemplate({
+            this.createTemplate({
                 onSuccess: this.onCreateSuccess,
                 onError: this.onCreateError,
             });
@@ -84,7 +83,7 @@ export default {
             this.isProceeding = true;
 
             this.removeErrors();
-            this.createProductTemplate({
+            this.createTemplate({
                 onSuccess: this.onProceedSuccess,
                 onError: this.onCreateError,
             });

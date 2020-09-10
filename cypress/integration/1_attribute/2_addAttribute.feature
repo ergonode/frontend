@@ -12,7 +12,7 @@ Feature: Attribute adding
     And I choose <type> option from "attribute-type" select field
     And I choose <scope> option from "attribute-scope" select field
     Then I can see "Configuration" text on "modal" element
-    When On "modal" element I click button with "CREATE" text
+    When I click on "submit" button
     Then I send a "POST" request and status code should be 201
     And I open "attributes/grid" page
     Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_txt>'}"
@@ -41,7 +41,7 @@ Feature: Attribute adding
     And I choose <scope> option from "attribute-scope" select field
     Then I can see "Configuration" text on "modal" element
     And I choose 0 option from "attribute-params" select field
-    When On "modal" element I click button with "CREATE" text
+    When I click on "submit" button
     Then I send a "POST" request and status code should be 201
     And I open "attributes/grid" page
     Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_txt>'}"
@@ -68,7 +68,7 @@ Feature: Attribute adding
     Then I fill the "attribute-option-0" input with the "attribute_option_0" term
     And On "attribute-add-options" element I click button with "ADD OPTION KEY" text
     Then I fill the "attribute-option-1" input with the "attribute_option_1" term
-    When On "modal" element I click button with "CREATE" text
+    When I click on "submit" button
     Then I send a "POST" request and status code should be 201
     And I open "attributes/grid" page
     Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_txt>'}"
@@ -93,7 +93,7 @@ Feature: Attribute adding
     And I choose 8 option from "attribute-type" select field
     And I choose 0 option from "attribute-scope" select field
     Then I can see "Configuration" text on "modal" element
-    When On "modal" element I click button with "CREATE & EDIT" text
+    When I click on "proceed" button
     Then I send a "POST" request and status code should be 201
     And I see "attributes/attribute/%UUID%/general" page
     And Element "attribute-group" is "visible"
@@ -118,7 +118,7 @@ Feature: Attribute adding
     And I choose 1 option from "attribute-scope" select field
     Then I can see "Configuration" text on "modal" element
     And I choose 0 option from "attribute-params" select field
-    When On "modal" element I click button with "CREATE & EDIT" text
+    When I click on "proceed" button
     Then I send a "POST" request and status code should be 201
     And I see "attributes/attribute/%UUID%/general" page
     And Element "attribute-group" is "visible"
@@ -142,7 +142,7 @@ Feature: Attribute adding
     And I choose 7 option from "attribute-type" select field
     And I choose 0 option from "attribute-scope" select field
     Then I can see "Configuration" text on "modal" element
-    When On "modal" element I click button with "CREATE & EDIT" text
+    When I click on "proceed" button
     Then I send a "POST" request and status code should be 201
     And I see "attributes/attribute/%UUID%/general" page
     And Element "attribute-group" is "visible"
@@ -168,7 +168,7 @@ Feature: Attribute adding
     And I choose 3 option from "attribute-type" select field
     And I choose 0 option from "attribute-scope" select field
     Then I can see "Configuration" text on "modal" element
-    When On "modal" element I click button with "CREATE & EDIT" text
+    When I click on "proceed" button
     Then I send a "POST" request and status code should be 201
     And I see "attributes/attribute/%UUID%/general" page
     And Element "attribute-group" is "visible"
