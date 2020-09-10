@@ -46,6 +46,7 @@ export default {
     beforeDestroy() {
         this.clearTransitionStorage();
         this.clearConditionSetStorage();
+        this.removeErrors();
     },
     methods: {
         ...mapActions('condition', {
@@ -55,6 +56,9 @@ export default {
             removeTransition: 'removeTransition',
             clearTransitionStorage: '__clearStorage',
         }),
+        ...mapActions('validations', [
+            'removeErrors',
+        ]),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,

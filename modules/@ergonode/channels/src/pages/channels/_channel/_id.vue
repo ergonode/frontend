@@ -47,13 +47,17 @@ export default {
             return name;
         },
     },
-    destroyed() {
+    beforeDestroy() {
         this.__clearStorage();
+        this.removeErrors();
     },
     methods: {
         ...mapActions('channel', [
             '__clearStorage',
             'removeChannel',
+        ]),
+        ...mapActions('validations', [
+            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({

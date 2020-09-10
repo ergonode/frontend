@@ -40,9 +40,10 @@ export default {
             templateTitle: state => state.title,
         }),
     },
-    destroyed() {
+    beforeDestroy() {
         this.list__clearStorage();
         this.__clearStorage();
+        this.removeErrors();
     },
     methods: {
         ...mapActions('productTemplate', [
@@ -52,6 +53,9 @@ export default {
         ...mapActions('list', {
             list__clearStorage: '__clearStorage',
         }),
+        ...mapActions('validations', [
+            'removeErrors',
+        ]),
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,

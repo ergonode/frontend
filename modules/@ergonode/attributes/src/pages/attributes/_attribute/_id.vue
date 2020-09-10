@@ -43,7 +43,7 @@ export default {
             code: state => state.code,
         }),
     },
-    destroyed() {
+    beforeDestroy() {
         this.__clearStorage();
         this.clearTranslationsStorage();
         this.removeErrors();

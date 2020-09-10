@@ -40,13 +40,23 @@ export default {
             code: state => state.code,
         }),
     },
-    destroyed() {
+    beforeDestroy() {
         this.clearGridDesignerStorage();
+        this.__clearStorage();
+        this.clearTranslationsStorage();
+        this.removeErrors();
     },
     methods: {
         ...mapActions('categoryTree', [
             'removeCategoryTree',
+            '__clearStorage',
         ]),
+        ...mapActions('validations', [
+            'removeErrors',
+        ]),
+        ...mapActions('tab', {
+            clearTranslationsStorage: '__clearStorage',
+        }),
         ...mapActions('gridDesigner', {
             clearGridDesignerStorage: '__clearStorage',
         }),

@@ -113,7 +113,7 @@ export default {
             return GRAPHITE_LIGHT;
         },
     },
-    destroyed() {
+    beforeDestroy() {
         this.clearGridDesignerStorage();
         this.clearConditionsStorage();
     },

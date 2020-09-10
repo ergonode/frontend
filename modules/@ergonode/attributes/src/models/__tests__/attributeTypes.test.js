@@ -75,13 +75,11 @@ describe('AttributeTypes/getParamsOptionsForType', () => {
             {},
         ],
 
-    ])(
-        ' Set type (%s) and get params options (%s)',
+    ])('Set type (%s) and get params options (%s)',
         (type, expected) => {
             const fun = getParamsOptionsForType(type, data);
             expect(fun).toEqual(expected);
-        },
-    );
+        });
 });
 
 describe('AttributeTypes/getParamsKeyForType', () => {
@@ -103,11 +101,9 @@ describe('AttributeTypes/getParamsKeyForType', () => {
             '',
         ],
 
-    ])(
-        ' Set type (%s) and get params key (%s)',
+    ])('Set type (%s) and get params key (%s)',
         (type, expected) => {
             const fun = getParamsKeyForType(type);
             expect(fun).toBe(expected);
-        },
-    );
+        });
 });

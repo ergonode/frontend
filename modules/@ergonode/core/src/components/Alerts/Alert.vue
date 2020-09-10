@@ -44,7 +44,7 @@ import {
 
 /**
  * `Alert` is a default feedback component for user on http response.
- * Alerts are going to be displayed as default `FlashMessage`.
+ * Alerts are going to be displayed as default `FlashMessages`.
  */
 export default {
     name: 'Alert',

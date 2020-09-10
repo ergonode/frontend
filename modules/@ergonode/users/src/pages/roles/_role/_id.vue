@@ -41,13 +41,17 @@ export default {
             name: state => state.name,
         }),
     },
-    destroyed() {
+    beforeDestroy() {
         this.__clearStorage();
+        this.removeErrors();
     },
     methods: {
         ...mapActions('role', [
             '__clearStorage',
             'removeRole',
+        ]),
+        ...mapActions('validations', [
+            'removeErrors',
         ]),
         onRemoveRoleSuccess() {
             this.$addAlert({

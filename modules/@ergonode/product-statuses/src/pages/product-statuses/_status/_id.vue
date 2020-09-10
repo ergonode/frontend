@@ -34,7 +34,6 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('productStatus/__clearStorage');
         await store.dispatch('productStatus/getProductStatus', params);
         await store.dispatch('productStatus/getDefaultStatus');
     },
@@ -44,10 +43,22 @@ export default {
             isDefaultStatus: state => state.isDefaultStatus,
         }),
     },
+    beforeDestroy() {
+        this.__clearStorage();
+        this.clearTranslationsStorage();
+        this.removeErrors();
+    },
     methods: {
         ...mapActions('productStatus', [
             'removeProductStatus',
+            '__clearStorage',
         ]),
+        ...mapActions('validations', [
+            'removeErrors',
+        ]),
+        ...mapActions('tab', {
+            clearTranslationsStorage: '__clearStorage',
+        }),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
