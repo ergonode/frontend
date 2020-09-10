@@ -41,8 +41,11 @@
 import {
     GRAPHITE_LIGHT,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import ActionIconButton from '@Core/components/ActionIconButton/ActionIconButton';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 import GridTitleHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridTitleHeaderCell';
+import IconArrowSort from '@Core/components/Icons/Arrows/IconArrowSort';
+import IconDots from '@Core/components/Icons/Others/IconDots';
 import {
     SORTING_ORDER,
 } from '@Core/defaults/icons';
@@ -63,9 +66,9 @@ export default {
     components: {
         GridTableCell,
         GridTitleHeaderCell,
-        ActionIconButton: () => import('@Core/components/ActionIconButton/ActionIconButton'),
-        IconArrowSort: () => import('@Core/components/Icons/Arrows/IconArrowSort'),
-        IconDots: () => import('@Core/components/Icons/Others/IconDots'),
+        ActionIconButton,
+        IconArrowSort,
+        IconDots,
     },
     props: {
         label: {

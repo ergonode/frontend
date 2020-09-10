@@ -70,27 +70,25 @@ export default function ({
                     }),
                 ]);
 
-                this.groups[languegCode] = [
-                    ...groupItems.groups,
-                    unassignedGroup,
-                ];
-                this.items[languegCode] = {
-                    ...groupItems.items,
-                    [UNASSIGNED_GROUP_ID]: listItems.items,
+                this.groups = {
+                    ...this.groups,
+                    [languegCode]: [
+                        ...groupItems.groups,
+                        unassignedGroup,
+                    ],
                 };
+
+                this.items = {
+                    ...this.items,
+                    [languegCode]: {
+                        ...groupItems.items,
+                        [UNASSIGNED_GROUP_ID]: listItems.items,
+                    },
+                };
+
                 this.groupItemsCount = {
                     ...groupItems.groupItemsCount,
                     [UNASSIGNED_GROUP_ID]: listItems.items.length,
-                };
-
-                this.groups = {
-                    ...this.groups,
-                };
-                this.items = {
-                    ...this.items,
-                };
-                this.groupItemsCount = {
-                    ...this.groupItemsCount,
                 };
             },
             getGroups(languageCode) {

@@ -11,5 +11,5 @@ export const Tabs = {
 };
 
 export const Components = {
-    ToolBarNotificationButton: () => import('@Notifications/components/ToolBar/ToolBarNotificationButton'),
+    ToolBarNotificationButton: () => import('@Notifications/components/ToolBar/ToolBarNotificationButton').then(m => m.default || m),
 };

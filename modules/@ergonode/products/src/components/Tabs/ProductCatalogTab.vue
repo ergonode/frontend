@@ -49,22 +49,22 @@
                         :is-expanded="isFiltersExpanded"
                         @click.native="onFiltersExpand" />
                     <!--
-                      Uncomment when product draft will be change on grid
-                      <Button
-                        :theme="secondaryTheme"
-                        :size="smallSize"
-                        title="RESTORE"
-                        :disabled="!isUserAllowedToRestore"
-                        @click.native="onShowModal">
-                        <template #prepend="{ color }">
-                            <IconRestore :fill-color="color" />
-                        </template>
-                    </Button> -->
+                                  Uncomment when product draft will be change on grid
+                                  <Button
+                                    :theme="secondaryTheme"
+                                    :size="smallSize"
+                                    title="RESTORE"
+                                    :disabled="!isUserAllowedToRestore"
+                                    @click.native="onShowModal">
+                                    <template #prepend="{ color }">
+                                        <IconRestore :fill-color="color" />
+                                    </template>
+                                </Button> -->
                     <!-- <RestoreAttributeParentModalConfirm
-                        v-if="isModalVisible"
-                        :element="focusedCellToRestore"
-                        @close="onCloseConfirmModal"
-                        @restore="onRestoreDraftSuccess" /> -->
+                                    v-if="isModalVisible"
+                                    :element="focusedCellToRestore"
+                                    @close="onCloseConfirmModal"
+                                    @restore="onRestoreDraftSuccess" /> -->
                 </template>
                 <template #appendFooter>
                     <Button

@@ -34,7 +34,14 @@
 </template>
 
 <script>
+import AttributesListElement from '@Attributes/components/Lists/AttributesListElement';
 import PRIVILEGES from '@Attributes/config/privileges';
+import TreeSelect from '@Core/components/Inputs/Select/Tree/TreeSelect';
+import List from '@Core/components/List/List';
+import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
+import ListSearchHeader from '@Core/components/List/ListSearchHeader';
+import ListSearchSelectHeader from '@Core/components/List/ListSearchSelectHeader';
+import VerticalTabBarList from '@Core/components/TabBar/VerticalTabBarList';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -46,13 +53,13 @@ import {
 export default {
     name: 'SystemAttributesListTab',
     components: {
-        VerticalTabBarList: () => import('@Core/components/TabBar/VerticalTabBarList'),
-        ListSearchSelectHeader: () => import('@Core/components/List/ListSearchSelectHeader'),
-        ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
-        List: () => import('@Core/components/List/List'),
-        ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
-        AttributesListElement: () => import('@Attributes/components/Lists/AttributesListElement'),
-        TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
+        VerticalTabBarList,
+        ListSearchSelectHeader,
+        ListSearchHeader,
+        List,
+        ListScrollableContainer,
+        AttributesListElement,
+        TreeSelect,
     },
     mixins: [
         fetchListDataMixin({
