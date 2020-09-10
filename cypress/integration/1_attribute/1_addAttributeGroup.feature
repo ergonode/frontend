@@ -6,7 +6,7 @@ Feature: Attribute group adding
     When I click on "new-attribute-group" button
     Then Element "modal" is "visible"
 
-  Scenario: Add attibute group and delete by request
+  Scenario: Add attribute group and delete by request
     When I fill the "attribute-group-code" input with the "text_attribute_group" term
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
@@ -16,7 +16,7 @@ Feature: Attribute group adding
     Then I close modal by button
     And I remove "this" element by "DELETE" request
 
-  Scenario: Add attibute group and delete by grid button
+  Scenario: Add attribute group and delete by grid button
     When I fill the "attribute-group-code" input with the "text_attribute_group2" term
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
@@ -26,7 +26,7 @@ Feature: Attribute group adding
     Then I confirm modal
     And On "grid" I can not see row with "text_attribute_group2" value
 
-  Scenario: Add attibute group and delete from edit
+  Scenario: Add attribute group and delete from edit
     When I fill the "attribute-group-code" input with the "text_attribute_group3" term
     When On "modal" element I click button with "CREATE & EDIT" text
     Then I send a "POST" request and status code should be 201
@@ -38,7 +38,7 @@ Feature: Attribute group adding
     Then I confirm modal
     And I see "attribute-groups/grid" page
 
-  Scenario: Add attibute group for use in attribute
+  Scenario: Add attribute group for use in attribute
     When I fill the "attribute-group-code" input with the "attribute_group" term
     And On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201

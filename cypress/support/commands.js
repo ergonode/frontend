@@ -19,7 +19,7 @@ Cypress.Commands.add('login', (email, pass) => {
     cy.apiRequest('POST', 'login').as('postLogin');
     cy.get('[data-cy=login-email]').find('input').type(email).should('have.value', email);
     cy.get('[data-cy=login-pass]').find('input').type(pass).should('have.value', pass);
-    cy.get('[data-cy=login-button]').click();
+    cy.get('[data-cy=submit]').click();
     cy.wait('@postLogin').its('status').should('eq', 200);
     cy.wrap(Object.keys(DICTIONARIES)).each((d) => {
         cy.wait(`@${d}`).its('status').should('eq', 200);
