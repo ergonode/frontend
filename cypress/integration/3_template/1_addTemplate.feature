@@ -9,7 +9,7 @@ Feature: Template adding
   Scenario: Add template and remove it from Grid
     When I fill the "template-name" input with the "template_1" term
     And I choose 0 option from "template-default-label" select field
-    When I click on "submit" button
+    Then I click on "submit" button
     Then I send a "POST" request and status code should be 201
     Then I set "table" view on the grid
     Then On "grid" I can see row with "template_1" value and columns data: "{'0': 'template_1'}"

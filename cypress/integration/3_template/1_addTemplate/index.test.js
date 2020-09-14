@@ -11,11 +11,6 @@ import {
 import {
     MultiSteps,
 } from '../../../models/index';
-import {
-    getToken,
-    // removeRequest,
-    sendRequest,
-} from '../../../models/requests';
 
 before(() => {
     cy.login(Cypress.env('adminEmail'), Cypress.env('adminPass'));
@@ -40,19 +35,6 @@ beforeEach(() => {
             url: '**/templates?offset=0&limit=25&extended=true&filter=&columns=',
         })
         .as('templates');
-    // cy
-    //     .route({
-    //         method: 'GET',
-    //         url: '**/templates/*',
-    //     })
-    //     .as('templates');
-    // cy
-    //     .route({
-    //         method: 'GET',
-    //         url: '**/templates',
-    //     })
-    //     .as('templates');
-    // cy.apiRequest('POST', `${LANGUAGE}/templates`).as('POST-REQUEST');
 });
 
 Then('I send a {string} request and status code should be {int}', (reqType, status) => {
