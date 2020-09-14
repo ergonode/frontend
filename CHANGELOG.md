@@ -1,5 +1,41 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [0.10.0](https://github.com/bleto/frontend/compare/v0.9.0...v0.10.0) (2020-09-14)
+
+**Note:** Version bump only for package ergonode-front
+
+
+
+
+
 # CHANGELOG
 This changelog references the relevant changes.
+
+## CHANGELOG FOR v0.10.0
+ - feature [#474](https://github.com/ergonode/frontend/issues/474) Channels & exports
+ - feature [#411](https://github.com/ergonode/frontend/issues/411) Multimedia
+ - feature - dependencies update
+ - feature - thumbnails
+ - feature - user avatar
+ - feature - grid placeholders
+ - feature - Lerna implementation
+ - perf - JSONSchema style performance
+ - refactor - Global language code url
+ - refactor - vuex clean architecture
+ - refactor - e2e test
+ - refactor - clear module relations
+ - refactor - advanced filters improvement
+ - refactor - inputs unification
+ - refactor - range picker improve
+ - bugfix - language list crash
+ - bugfix - Preview grid column
+ - bugfix - navigation
+ - bugfix - workflow
+ - bugfix - select/multiselect filter selection, range filters
+
 
 ## CHANGELOG FOR v0.9.0
  - feature [#384](https://github.com/ergonode/frontend/issues/384) Product variants
