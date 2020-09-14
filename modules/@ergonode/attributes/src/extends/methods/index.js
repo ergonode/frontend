@@ -7,11 +7,7 @@ import {
     createOption,
 } from '@Attributes/services/attribute';
 import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import {
     getKeyByValue,
-    isEmpty,
     isObject,
 } from '@Core/models/objectWrapper';
 
@@ -81,50 +77,37 @@ export const prepareOptionsData = ({
     const {
         options,
     } = $this.state.attribute;
+    const optionKeys = Object.keys(options);
 
-    if (!isEmpty(options)) {
-        const optionKeys = Object.keys(options);
-        const uniqueOptions = new Set(optionKeys);
-        let msg = '';
+    if (optionKeys.length > 0) {
+        const optionValues = Object.values(options);
+        const errors = {};
+        let isAnyError = false;
 
-        if (Object.values(options).some(({
-            key,
-        }) => key === null)) {
-            msg = 'Options cannot have an empty keys';
+        optionKeys.forEach((optionKey) => {
+            const fieldKey = `option_${optionKey}`;
+            const duplications = optionValues
+                .filter(({
+                    key,
+                }) => key === options[optionKey].key);
 
-            $this.$addAlert({
-                type: ALERT_TYPE.WARNING,
-                message: msg,
-            });
-
+            if (duplications.length > 1) {
+                errors[fieldKey] = [
+                    'Option code must be unique',
+                ];
+                isAnyError = true;
+            }
+            if (!options[optionKey].key) {
+                errors[fieldKey] = [
+                    'Option cannot be empty',
+                ];
+                isAnyError = true;
+            }
+        });
+        if (isAnyError) {
             throw {
                 data: {
-                    errors: {
-                        options: [
-                            msg,
-                        ],
-                    },
-                    message: 'Form validation error',
-                },
-            };
-        }
-
-        if (optionKeys.length !== uniqueOptions.size) {
-            msg = 'Option code must be unique';
-
-            $this.$addAlert({
-                type: ALERT_TYPE.WARNING,
-                message: msg,
-            });
-
-            throw {
-                data: {
-                    errors: {
-                        options: [
-                            msg,
-                        ],
-                    },
-                    message: 'Form validation error',
+                    errors,
                 },
             };
         }

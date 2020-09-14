@@ -249,13 +249,19 @@ export default {
             attrTypes,
         } = rootState.dictionaries;
 
+        // EXTENDED BEFORE METHOD
         this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__before', {
             $this: this,
             data: {
                 id,
             },
         });
+        // EXTENDED BEFORE METHOD
 
+        const data = await get({
+            $axios: this.app.$axios,
+            id,
+        });
         const {
             code,
             type,
@@ -264,11 +270,7 @@ export default {
             groups: groupIds,
             placeholder = '',
             scope,
-            ...restData
-        } = await get({
-            $axios: this.app.$axios,
-            id,
-        });
+        } = data;
 
         commit('__SET_STATE', {
             key: 'id',
@@ -303,11 +305,13 @@ export default {
             },
         );
 
+        // EXTENDED AFTER METHOD
         this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__after', {
             $this: this,
-            data: restData,
+            data,
             type,
         });
+        // EXTENDED AFTER METHOD
     },
     async updateAttribute(
         {
@@ -421,11 +425,13 @@ export default {
                 }
             });
 
+            // EXTENDED BEFORE METHOD
             const extendedData = this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__before', {
                 $this: this,
                 type: typeKey,
                 data,
             });
+            // EXTENDED BEFORE METHOD
 
             extendedData.forEach((extend) => {
                 data = {
@@ -444,11 +450,13 @@ export default {
                 }),
             ]);
 
+            // EXTENDED AFTER METHOD
             await this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__after', {
                 $this: this,
                 type: typeKey,
                 data,
             });
+            // EXTENDED AFTER METHOD
 
             commit(types.REMOVE_UPDATED_OPTION);
             onSuccess();
@@ -457,18 +465,37 @@ export default {
         }
     },
     async removeAttribute({
-        state,
+        state, rootState,
     }, {
         onSuccess,
     }) {
         const {
             id,
+            type,
         } = state;
+        const {
+            attrTypes,
+        } = rootState.dictionaries;
+        const typeKey = getKeyByValue(attrTypes, type);
+
+        // EXTENDED BEFORE METHOD
+        await this.$extendMethods('@Attributes/store/attribute/action/removeAttribute/__before', {
+            $this: this,
+            type: typeKey,
+        });
+        // EXTENDED BEFORE METHOD
 
         await remove({
             $axios: this.app.$axios,
             id,
         });
+
+        // EXTENDED AFTER METHOD
+        await this.$extendMethods('@Attributes/store/attribute/action/removeAttribute/__after', {
+            $this: this,
+            type: typeKey,
+        });
+        // EXTENDED AFTER METHOD
         onSuccess();
     },
 };
