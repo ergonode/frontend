@@ -36,7 +36,7 @@
     },
     "dependencies": {
         "@babel/register": "^7.10.4",
-        "@ergonode/vuems": "^0.10.0",
+        "@ergonode/vuems": "^0.10.1",
         "@nuxtjs/axios": "^5.12.2",
         "@nuxtjs/component-cache": "^1.1.5",
         "@nuxtjs/router": "^1.5.0",
