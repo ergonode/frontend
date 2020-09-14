@@ -4,7 +4,7 @@
  */
 <template>
     <Toggler
-        :value="parameter"
+        :value="value"
         label="Rich text content enabled"
         @input="setParameterValue" />
 </template>
@@ -12,7 +12,6 @@
 <script>
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -25,19 +24,30 @@ export default {
             type: String,
             default: '',
         },
+        getParams: {
+            type: Function,
+            default: () => ({}),
+        },
+    },
+    data() {
+        return {
+            parameterData: {},
+        };
     },
     computed: {
-        ...mapState('attribute', {
-            parameter: state => state.parameter,
-        }),
+        value() {
+            return this.$store.state.attribute[this.parameterData.fieldName];
+        },
     },
     watch: {
         typeKey: {
-            immediate: true,
             handler() {
                 this.setParameterValue();
             },
         },
+    },
+    created() {
+        this.parameterData = this.getParams(this).params;
     },
     beforeDestroy() {
         this.setParameterValue();
@@ -48,7 +58,7 @@ export default {
         ]),
         setParameterValue(value = null) {
             this.__setState({
-                key: 'parameter',
+                key: this.parameterData.fieldName,
                 value,
             });
         },

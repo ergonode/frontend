@@ -10,9 +10,6 @@ import {
     getMappedArrayOptions,
 } from '@Attributes/models/attributeMapper';
 import {
-    typesConfiguration,
-} from '@Attributes/models/attributeTypes';
-import {
     create,
     createOption,
     get,
@@ -24,14 +21,10 @@ import {
     updateOption,
 } from '@Attributes/services/attribute';
 import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import {
     getMappedTranslationArrayOptions,
 } from '@Core/models/mappers/translationsMapper';
 import {
     getKeyByValue,
-    isEmpty,
 } from '@Core/models/objectWrapper';
 
 import {
@@ -53,63 +46,32 @@ export default {
                 groups,
                 type,
                 scope,
-                parameter,
-                options,
             } = state;
             const {
                 attrTypes,
             } = rootState.dictionaries;
             const typeKey = type ? getKeyByValue(attrTypes, type) : null;
-            const data = {
+            let data = {
                 code,
                 scope,
                 type: typeKey,
                 groups,
             };
 
-            if (!isEmpty(options)) {
-                const optionKeys = Object.keys(options);
-                const uniqueOptions = new Set(optionKeys);
+            // EXTENDED BEFORE METHOD
+            const extendedData = this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__before', {
+                $this: this,
+                type: typeKey,
+                data,
+            });
+            // EXTENDED BEFORE METHOD
 
-                if (optionKeys.some(key => key === '')) {
-                    this.$addAlert({
-                        type: ALERT_TYPE.WARNING,
-                        message: 'Options cannot have an empty keys',
-                    });
-                }
-
-                if (optionKeys.length !== uniqueOptions.size) {
-                    this.$addAlert({
-                        type: ALERT_TYPE.WARNING,
-                        message: 'Option code must be unique',
-                    });
-                }
-            }
-
-            if (parameter && type !== TYPES.TEXT_AREA) {
-                const typesConfig = typesConfiguration.call(this);
-                const paramsOptions = typesConfig
-                    .getParamsOptionsForType(typeKey, rootState.dictionaries);
-                let paramKey = null;
-
-                // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
-                if (Array.isArray(paramsOptions)) {
-                    paramKey = paramsOptions.find(option => option.name === parameter).id;
-                } else {
-                    paramKey = getKeyByValue(paramsOptions, parameter);
-                }
-
-                data.parameters = typesConfig.getParsedParameterKeys({
-                    selectedType: typeKey,
-                    selectedParam: paramKey,
-                });
-            }
-
-            if (typeKey === TYPES.TEXT_AREA) {
-                data.parameters = {
-                    richEdit: parameter,
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
                 };
-            }
+            });
 
             const {
                 id,
@@ -118,15 +80,16 @@ export default {
                 data,
             });
 
-            await Promise.all(
-                Object.keys(options).map(key => createOption({
-                    $axios: this.app.$axios,
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__after', {
+                $this: this,
+                type: typeKey,
+                data: {
                     id,
-                    data: {
-                        code: options[key].key,
-                    },
-                })),
-            );
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
 
             onSuccess(id);
         } catch (e) {
@@ -286,15 +249,22 @@ export default {
             attrTypes,
         } = rootState.dictionaries;
 
+        this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__before', {
+            $this: this,
+            data: {
+                id,
+            },
+        });
+
         const {
             code,
             type,
             hint = '',
             label = '',
             groups: groupIds,
-            parameters,
             placeholder = '',
             scope,
+            ...restData
         } = await get({
             $axios: this.app.$axios,
             id,
@@ -333,22 +303,11 @@ export default {
             },
         );
 
-        if (parameters && type !== TYPES.TEXT_AREA) {
-            const typesConfig = typesConfiguration.call(this);
-
-            commit('__SET_STATE', {
-                key: 'parameter',
-                value: typesConfig
-                    .getMappedParameterValues(type, parameters, rootState.dictionaries),
-            });
-        }
-
-        if (type === TYPES.TEXT_AREA) {
-            commit('__SET_STATE', {
-                key: 'parameter',
-                value: parameters.rich_edit,
-            });
-        }
+        this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__after', {
+            $this: this,
+            data: restData,
+            type,
+        });
     },
     async updateAttribute(
         {
@@ -370,7 +329,6 @@ export default {
                 type,
                 groups,
                 scope,
-                parameter,
             } = state;
             const {
                 attrTypes,
@@ -384,15 +342,13 @@ export default {
             const updateOptionsRequests = [];
             const typeKey = getKeyByValue(attrTypes, type);
             const optionKeys = Object.keys(options);
-            const data = {
+            let data = {
                 groups,
                 scope,
                 label,
                 hint,
                 placeholder,
             };
-
-            console.log(options, 'dupa');
 
             if (optionKeys.length > 0) {
                 const optionValues = Object.values(options);
@@ -465,32 +421,18 @@ export default {
                 }
             });
 
-            if (parameter && typeKey !== TYPES.TEXT_AREA) {
-                const typesConfig = typesConfiguration.call(this);
-                let paramKey = null;
-                const paramsOptions = typesConfig.getParamsOptionsForType(
-                    typeKey,
-                    rootState.dictionaries,
-                );
+            const extendedData = this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__before', {
+                $this: this,
+                type: typeKey,
+                data,
+            });
 
-                // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
-                if (Array.isArray(paramsOptions)) {
-                    paramKey = paramsOptions.find(option => option.name === parameter).id;
-                } else {
-                    paramKey = getKeyByValue(paramsOptions, parameter);
-                }
-
-                data.parameters = typesConfig.getParsedParameterKeys({
-                    selectedType: typeKey,
-                    selectedParam: paramKey,
-                });
-            }
-
-            if (typeKey === TYPES.TEXT_AREA) {
-                data.parameters = {
-                    richEdit: parameter,
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
                 };
-            }
+            });
 
             await Promise.all([
                 ...addOptionsRequests,
@@ -501,6 +443,12 @@ export default {
                     data,
                 }),
             ]);
+
+            await this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__after', {
+                $this: this,
+                type: typeKey,
+                data,
+            });
 
             commit(types.REMOVE_UPDATED_OPTION);
             onSuccess();

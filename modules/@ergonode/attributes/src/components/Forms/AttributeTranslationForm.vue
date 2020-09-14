@@ -4,7 +4,12 @@
  */
 <template>
     <Card :title="selectedLanguage">
-        <Form :fields-keys="[labelFieldKey, placeholderFieldKey, hintFieldKey]">
+        <Form
+            :fields-keys="[
+                labelFieldKey,
+                hintFieldKey,
+                ...extendedFieldKeys,
+            ]">
             <template #body="{ errorMessages }">
                 <FormSection>
                     <TextField
@@ -15,16 +20,6 @@
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'label')" />
                     <TextArea
-                        v-if="hasPlaceholder"
-                        :data-cy="dataCyGenerator(placeholderFieldKey)"
-                        :value="translations.placeholder[languageCode]"
-                        label="Placeholder"
-                        resize="none"
-                        height="150px"
-                        :error-messages="errorMessages[placeholderFieldKey]"
-                        :disabled="!isUserAllowedToUpdate"
-                        @input="(value) => setTranslationPropertyValue(value, 'placeholder')" />
-                    <TextArea
                         :data-cy="dataCyGenerator(hintFieldKey)"
                         :value="translations.hint[languageCode]"
                         label="Tooltip for writers"
@@ -33,12 +28,14 @@
                         :error-messages="errorMessages[hintFieldKey]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'hint')" />
-                    <template v-if="hasOptions">
-                        <Divider />
-                        <AttributeOptionValues
-                            :language-code="languageCode"
-                            :disabled="!isUserAllowedToUpdate" />
-                    </template>
+                    <Divider />
+                    <Component
+                        :is="formComponent.component"
+                        :type-key="typeKey"
+                        :error-messages="errorMessages"
+                        :language-code="languageCode"
+                        v-bind="formComponent.props"
+                        @fieldKeys="onFieldKeys" />
                 </FormSection>
             </template>
         </Form>
@@ -48,9 +45,6 @@
 <script>
 import AttributeOptionValues from '@Attributes/components/Forms/Sections/AttributeOptionValues';
 import PRIVILEGES from '@Attributes/config/privileges';
-import {
-    typesConfiguration,
-} from '@Attributes/models/attributeTypes';
 import Card from '@Core/components/Card/Card';
 import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
@@ -81,7 +75,7 @@ export default {
     ],
     data() {
         return {
-            typesConfig: typesConfiguration.call(this),
+            extendedFieldKeys: [],
         };
     },
     computed: {
@@ -91,11 +85,14 @@ export default {
         ...mapState('attribute', {
             type: state => state.type,
         }),
-        hasPlaceholder() {
-            return this.typesConfig.hasPlaceholder(this.typeKey);
-        },
-        hasOptions() {
-            return this.typesConfig.hasOptions(this.typeKey);
+        formComponent() {
+            const extendedComponents = this.$getExtendedComponents('@Attributes/components/Forms/AttributeTranslationForm');
+
+            if (extendedComponents && extendedComponents[this.typeKey]) {
+                return extendedComponents[this.typeKey];
+            }
+
+            return {};
         },
         typeKey() {
             return getKeyByValue(this.attrTypes, this.type);
@@ -108,9 +105,6 @@ export default {
         hintFieldKey() {
             return `hint_${this.languageCode}`;
         },
-        placeholderFieldKey() {
-            return `placeholder_${this.languageCode}`;
-        },
         labelFieldKey() {
             return `label_${this.languageCode}`;
         },
@@ -118,6 +112,9 @@ export default {
     methods: {
         dataCyGenerator(key) {
             return `attribute-${key}`;
+        },
+        onFieldKeys(fields) {
+            this.extendedFieldKeys = fields;
         },
     },
 };

@@ -6,7 +6,7 @@
     <Select
         :data-cy="dataCyGenerator('params')"
         key="attrHasParams"
-        :value="parameter"
+        :value="value"
         required
         :label="paramsLabel"
         :options="attributeParametersOptions"
@@ -17,9 +17,6 @@
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
-import {
-    typesConfiguration,
-} from '@Attributes/models/attributeTypes';
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
@@ -42,33 +39,33 @@ export default {
             type: String,
             default: '',
         },
-        dupa: {
-            type: String,
-            default: '',
+        getParams: {
+            type: Function,
+            default: () => ({}),
         },
     },
     data() {
         return {
-            typesConfig: typesConfiguration.call(this),
+            parameterData: {},
         };
     },
     computed: {
         ...mapState('attribute', {
             attrID: state => state.id,
-            parameter: state => state.parameter,
         }),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,
             ]);
         },
+        value() {
+            return this.$store.state.attribute[this.parameterData.fieldName];
+        },
         paramsLabel() {
-            const paramsKey = this.typesConfig.getParamsKeyForType(this.typeKey);
-
-            return toCapitalize(paramsKey);
+            return toCapitalize(this.parameterData.key);
         },
         params() {
-            return this.typesConfig.getParamsOptionsForType(this.typeKey);
+            return this.parameterData.value;
         },
         attributeParametersOptions() {
             // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
@@ -83,13 +80,13 @@ export default {
     },
     watch: {
         typeKey: {
-            immediate: true,
             handler() {
                 this.setParameterValue();
             },
         },
     },
     created() {
+        this.parameterData = this.getParams(this).params;
         this.$emit('fieldKeys', [
             this.paramsFieldKey,
         ]);
@@ -103,7 +100,7 @@ export default {
         ]),
         setParameterValue(value = null) {
             this.__setState({
-                key: 'parameter',
+                key: this.parameterData.fieldName,
                 value,
             });
         },

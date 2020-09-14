@@ -10,7 +10,6 @@
             typeFieldKey,
             groupsFieldKey,
             scopeFieldKey,
-            ...optionsFieldKeys,
             ...extendedFieldKeys,
         ]"
         :submit-title="submitTitle"
@@ -71,10 +70,6 @@
                     :error-messages="errorMessages"
                     v-bind="formComponent.props"
                     @fieldKeys="onFieldKeys" />
-                <AttributeOptionKeyValues
-                    v-show="hasOptions"
-                    key="attrHasOptions"
-                    :disabled="isDisabledByPrivileges" />
             </FormSection>
         </template>
     </Form>
@@ -85,9 +80,6 @@ import PRIVILEGES from '@Attributes/config/privileges';
 import {
     SCOPE,
 } from '@Attributes/defaults/attributes';
-import {
-    typesConfiguration,
-} from '@Attributes/models/attributeTypes';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     getKeyByValue,
@@ -101,7 +93,6 @@ import {
 export default {
     name: 'AttributeForm',
     components: {
-        AttributeOptionKeyValues: () => import('@Attributes/components/Forms/Sections/AttributeOptionKeyValues'),
         Form: () => import('@Core/components/Form/Form'),
         FormSection: () => import('@Core/components/Form/Section/FormSection'),
         InfoHint: () => import('@Core/components/Hints/InfoHint'),
@@ -115,22 +106,20 @@ export default {
     ],
     data() {
         return {
-            typesConfig: typesConfiguration.call(this),
             extendedFieldKeys: [],
         };
     },
     computed: {
-        ...mapState('attribute', {
-            attrID: state => state.id,
-            code: state => state.code,
-            options: state => state.options,
-            groups: state => state.groups,
-            type: state => state.type,
-            scope: state => state.scope,
-        }),
-        ...mapState('dictionaries', {
-            attrTypes: state => state.attrTypes,
-        }),
+        ...mapState('attribute', [
+            'id',
+            'code',
+            'groups',
+            'type',
+            'scope',
+        ]),
+        ...mapState('dictionaries', [
+            'attrTypes',
+        ]),
         ...mapGetters('core', [
             'rootLanguage',
         ]),
@@ -150,24 +139,18 @@ export default {
             return getKeyByValue(this.attrTypes, this.type);
         },
         isDisabled() {
-            return Boolean(this.attrID);
+            return Boolean(this.id);
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,
             ]);
         },
-        hasOptions() {
-            return this.typesConfig.hasOptions(this.typeKey);
-        },
         attributeTypeOptions() {
             return Object.values(this.attrTypes).sort();
         },
         attributeScopeOptions() {
             return Object.values(SCOPE);
-        },
-        optionsFieldKeys() {
-            return Object.keys(this.options).map(key => `code_${key}`);
         },
         codeFieldKey() {
             return 'code';
@@ -185,7 +168,6 @@ export default {
     methods: {
         ...mapActions('attribute', [
             '__setState',
-            'removeAttributeOptions',
         ]),
         ...mapActions('attributeGroup', [
             'getAttributeGroupsOptions',
@@ -219,10 +201,6 @@ export default {
         },
         onTypeChange(type) {
             this.setTypeValue(type);
-
-            if (!this.hasOptions) {
-                this.removeAttributeOptions();
-            }
         },
         onFieldKeys(fields) {
             this.extendedFieldKeys = fields;

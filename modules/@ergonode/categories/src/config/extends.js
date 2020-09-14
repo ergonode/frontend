@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import {
-    getProduct,
+    setDataFromProduct,
 } from '@Categories/extends/methods';
 
 import {
@@ -24,17 +24,6 @@ export default {
         ],
     },
     extendMethods: {
-        '@Products/store/product/action/getProduct': getProduct,
-        '@Attributes/typeConfig': ({
-            state,
-        }) => ({
-            DATE2: {
-                params: {
-                    key: 'format',
-                    value: state.dictionaries.dateFormats,
-                },
-                icon: null,
-            },
-        }),
+        '@Products/store/product/action/getProduct': setDataFromProduct,
     },
 };
