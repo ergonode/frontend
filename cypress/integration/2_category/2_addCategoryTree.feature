@@ -6,7 +6,7 @@ Feature: Category tree adding
     When I click on "new-category-tree" button
     Then Element "modal" is "visible"
 
-  Scenario: Add category tree and delete by request
+  Scenario: Add category tree and remove it from Grid
     When I fill the "category-tree-code" input with the "category_tree_1" term
     When I click on "submit" button
     Then I send a "POST" request and status code should be 201
@@ -14,7 +14,7 @@ Feature: Category tree adding
     Then On "grid" I can see row with "category_tree_1" value and columns data: "{'0': 'category_tree_1'}"
     And On "grid" I click on "delete" button for row with "category_tree_1" value
     Then I close modal by button
-    And I remove "this" element by "DELETE" request
+    And I remove element by "DELETE" request
 
   Scenario: Add category tree and delete by grid button
     When I fill the "category-tree-code" input with the "category_tree_2" term

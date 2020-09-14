@@ -6,7 +6,7 @@ Feature: Attribute group adding
     When I click on "new-attribute-group" button
     Then Element "modal" is "visible"
 
-  Scenario: Add attribute group and delete by request
+  Scenario: Add attribute group and remove it from Grid
     When I fill the "attribute-group-code" input with the "text_attribute_group" term
     When I click on "submit" button
     Then I send a "POST" request and status code should be 201
@@ -14,7 +14,7 @@ Feature: Attribute group adding
     Then On "grid" I can see row with "text_attribute_group" value and columns data: "{'0': 'text_attribute_group', '2': '0'}"
     And On "grid" I click on "delete" button for row with "text_attribute_group" value
     Then I close modal by button
-    And I remove "this" element by "DELETE" request
+    And I remove element by "DELETE" request
 
   Scenario: Add attribute group and delete by grid button
     When I fill the "attribute-group-code" input with the "text_attribute_group2" term

@@ -6,7 +6,7 @@ Feature: Status adding
     When I click on "new-status" button
     Then Element "modal" is "visible"
 
-  Scenario: Add status and delete by request
+  Scenario: Add status and remove it from Grid
     When I fill the "status-code" input with the "status_4" term
     And I choose 0 option from "status-color" color picker field
     When I click on "submit" button
@@ -15,7 +15,7 @@ Feature: Status adding
     Then On "grid" I can see row with "status_4" value and columns data: "{'0': 'status_4'}"
     And On "grid" I click on "delete" button for row with "status_4" value
     Then I close modal by button
-    And I remove "this" element by "DELETE" request
+    And I remove element by "DELETE" request
 
   Scenario: Add status and delete by grid button
     When I fill the "status-code" input with the "status_5" term

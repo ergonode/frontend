@@ -12,7 +12,7 @@ import {
 import {
     getToken,
     removeRequest,
-    sendPostRequest,
+    sendRequest,
 } from '../../../models/requests';
 
 before(() => {
@@ -21,19 +21,20 @@ before(() => {
 
 beforeEach(() => {
     Cypress.Cookies.preserveOnce('jwt');
-    cy.apiRequest('POST', `${LANGUAGE}/attributes`).as('POST-REQUEST');
+    cy.apiRequest('POST', `${LANGUAGE}/attributes`)
+        .as('POST-REQUEST');
 });
 
 Then('I send a {string} request and status code should be {int}', (reqType, status) => {
     getToken();
-    sendPostRequest({
+    sendRequest({
         reqType,
         status,
         urlRegExp: /\/attributes$/,
     });
 });
 
-Then('I remove {string} element by {string} request', (element, reqType) => {
+Then('I remove element by {string} request', (element, reqType) => {
     removeRequest({
         element,
         reqType,

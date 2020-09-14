@@ -6,7 +6,7 @@ Feature: Collection adding
     When I click on "new-collection" button
     Then Element "modal" is "visible"
 
-  Scenario: Add collection and delete by request
+  Scenario: Add collection and remove it from Grid
     When I fill the "collection-code" input with the "collection_1" term
     And I choose 0 option from "collection-typeId" select field
     When I click on "submit" button
@@ -15,7 +15,7 @@ Feature: Collection adding
     Then On "grid" I can see row with "collection_1" value and columns data: "{'0': 'collection_1', '4': '0'}"
     And On "grid" I click on "delete" button for row with "collection_1" value
     Then I close modal by button
-    And I remove "this" element by "DELETE" request
+    And I remove element by "DELETE" request
 
   Scenario: Add collection and delete by grid button
     When I fill the "collection-code" input with the "collection_2" term
