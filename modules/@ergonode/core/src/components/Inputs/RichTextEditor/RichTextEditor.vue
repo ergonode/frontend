@@ -206,6 +206,9 @@ export default {
                 editable: !this.disabled,
             });
         },
+        value() {
+            this.editor.setContent(this.value);
+        },
     },
     mounted() {
         this.editor = new Editor({
