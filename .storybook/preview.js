@@ -4,8 +4,13 @@
  */
 import '!style-loader!css-loader!sass-loader!./reset-storybook.scss';
 import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks';
-import { addParameters } from '@storybook/vue';
+import {addDecorator, addParameters} from '@storybook/vue';
 
+addDecorator(story => {
+    document.body.classList.add('app');
+    document.body.style.position = 'relative';
+    return story();
+})
 addParameters({
     docs: {
         container: DocsContainer,

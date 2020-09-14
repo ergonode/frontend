@@ -1,15 +1,215 @@
-import { Meta, Props } from '@storybook/addon-docs/blocks';
-import ActionButton from '@Core/components/Buttons/ActionButton';
+import { Meta, Story, Preview, Props, Description } from '@storybook/addon-docs/blocks';
+import ActionButton from '@Core/components/ActionButton/ActionButton';
+import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import { SIZE, THEME } from '@Core/defaults/theme';
 
 <Meta title="Components API|ActionButton" />
 
 # ActionButton
 
-`ActionButton` is an `ActionBaseButton` with a `Button` inside named slot `button`. It's implementing `Button` props.
+<Description of={ActionButton} />
 
 ```
-    import ActionButton from '@Core/components/Buttons/ActionButton'
+    import ActionButton from '@Core/components/ActionButton/ActionButton'
 ```
+
+### Theme
+
+<Preview mdxSource={`
+   <ActionButton title="PRIMARY" theme="${THEME.PRIMARY}" :options="['first', 'second', 'third']" />
+    <!-- -->
+   <ActionButton title="SECONDARY" theme="${THEME.SECONDARY}" :options="['first', 'second', 'third']" />
+`}>
+    <Story name="primary">
+        {{
+            components: { ActionButton },
+            template: `<ActionButton title="PRIMARY" :theme="primaryTheme" :options="['first', 'second', 'third']" />`,
+            computed: {
+                primaryTheme() {
+                    return THEME.PRIMARY;
+                }
+            }
+        }}
+    </Story>
+    <Story name="secondary">
+        {{
+            components: { ActionButton },
+            template: `<ActionButton title="SECONDARY" :theme="secondaryTheme" :options="['first', 'second', 'third']" />`,
+            computed: {
+                secondaryTheme() {
+                    return THEME.SECONDARY;
+                }
+            }
+        }}
+    </Story>
+</Preview>
+
+### Disabled
+
+<Preview mdxSource={`
+    <ActionButton title="PRIMARY" theme="${THEME.PRIMARY}" :disabled="true" :options="['first', 'second', 'third']" />
+    <!-- -->
+    <ActionButton title="SECONDARY" theme="${THEME.SECONDARY}" :disabled="true" :options="['first', 'second', 'third']" />
+`}>
+    <Story name="disabled-primary">
+        {{
+            components: { ActionButton },
+            template: `<ActionButton title="PRIMARY" :theme="primaryTheme" :disabled="true" :options="['first', 'second', 'third']" />`,
+            computed: {
+                primaryTheme() {
+                    return THEME.PRIMARY;
+                }
+            }
+        }}
+    </Story>
+    <Story name="disabled-secondary">
+        {{
+            components: { ActionButton },
+            template: `<ActionButton title="SECONDARY" :theme="secondaryTheme" :disabled="true" :options="['first', 'second', 'third']" />`,
+            computed: {
+                secondaryTheme() {
+                    return THEME.SECONDARY;
+                }
+            }
+        }}
+    </Story>
+</Preview>
+
+### Fixed Content
+
+<Preview mdxSource={`
+    <ActionButton title="FIXED CONTENT" theme="${THEME.PRIMARY}" :fixed-content="true" :options="['first', 'second', 'third']" />
+`}>
+    <Story name="fixed-content">
+        {{
+            components: { ActionButton },
+            template: `<ActionButton title="PRIMARY" :theme="primaryTheme" :fixed-content="true" :options="['first', 'second', 'third']" />`,
+            computed: {
+                primaryTheme() {
+                    return THEME.PRIMARY;
+                }
+            }
+        }}
+    </Story>
+</Preview>
+
+### Size
+
+<Preview mdxSource={`
+    <ActionButton title="PRIMARY" theme="${THEME.PRIMARY}" size="${SIZE.REGULAR}" :options="['first', 'second', 'third']" />
+    <!-- -->
+    <ActionButton title="PRIMARY" theme="${THEME.PRIMARY}" size="${SIZE.SMALL}" :options="['first', 'second', 'third']" />
+    <!-- -->
+    <ActionButton title="PRIMARY" theme="${THEME.PRIMARY}" size="${SIZE.TINY}" :options="['first', 'second', 'third']" />
+`}>
+    <Story name="regular">
+        {{
+            components: { ActionButton },
+            template: `<ActionButton title="PRIMARY" :theme="primaryTheme" :size="regularSize" :options="['first', 'second', 'third']" />`,
+            computed: {
+                primaryTheme() {
+                    return THEME.PRIMARY;
+                },
+                regularSize() {
+                    return SIZE.REGULAR;
+                },
+            }
+        }}
+    </Story>
+    <Story name="small">
+        {{
+            components: { ActionButton },
+            template: `<ActionButton title="PRIMARY" :theme="primaryTheme" :size="smallSize" :options="['first', 'second', 'third']" />`,
+            computed: {
+                primaryTheme() {
+                    return THEME.PRIMARY;
+                },
+                smallSize() {
+                    return SIZE.SMALL;
+                },
+            }
+        }}
+    </Story>
+    <Story name="tiny">
+        {{
+            components: { ActionButton },
+            template: `<ActionButton title="PRIMARY" :theme="primaryTheme" :size="tinySize" :options="['first', 'second', 'third']" />`,
+            computed: {
+                primaryTheme() {
+                    return THEME.PRIMARY;
+                },
+                tinySize() {
+                    return SIZE.TINY;
+                },
+            }
+        }}
+    </Story>
+</Preview>
+
+### Slots
+
+<Preview mdxSource={`
+    <ActionButton title="APPEND" :options="['first', 'second', 'third']" >
+        <template #append="{ color }">
+            <IconAdd :fill-color="color" />
+        </template>
+    </ActionButton>
+    <!-- -->
+    <ActionButton title="PREPEND" :options="['first', 'second', 'third']" >
+        <template #prepend="{ color }">
+            <IconAdd :fill-color="color" />
+        </template>
+    </ActionButton>
+    <!-- -->
+    <ActionButton title="APPEND | PREPEND" :options="['first', 'second', 'third']" >
+        <template #append="{ color }">
+            <IconAdd :fill-color="color" />
+        </template>
+        <template #prepend="{ color }">
+            <IconAdd :fill-color="color" />
+        </template>
+    </ActionButton>
+`}>
+    <Story name="append">
+        {{
+            components: { ActionButton, IconAdd },
+            template: `
+                <ActionButton title="APPEND" :options="['first', 'second', 'third']">
+                    <template #append="{ color }">
+                        <IconAdd :fill-color="color" />
+                    </template>
+                </ActionButton>
+            `,
+        }}
+    </Story>
+    <Story name="prepend">
+        {{
+            components: { ActionButton, IconAdd },
+            template: `
+                <ActionButton title="PREPEND" :options="['first', 'second', 'third']">
+                    <template #prepend="{ color }">
+                        <IconAdd :fill-color="color" />
+                    </template>
+                </ActionButton>
+            `,
+        }}
+    </Story>
+    <Story name="append-prepend">
+        {{
+            components: { ActionButton, IconAdd },
+            template: `
+                <ActionButton title="APPEND | PREPEND" :options="['first', 'second', 'third']">
+                    <template #append="{ color }">
+                        <IconAdd :fill-color="color" />
+                    </template>
+                    <template #prepend="{ color }">
+                        <IconAdd :fill-color="color" />
+                    </template>
+                </ActionButton>
+            `,
+        }}
+    </Story>
+</Preview>
 
 ### Props
 

@@ -2,7 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getUUID } from '@Core/models/stringWrapper';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
 
 context('Page access denied', () => {
     const uuid = getUUID();
@@ -68,7 +70,9 @@ context('Page access denied', () => {
 
         it('Select activity status', () => {
             cy.get('input[aria-label="Activity status"]')
-                .click({ force: true })
+                .click({
+                    force: true,
+                })
                 .should('be.visible');
             cy.get('.list').contains('Active').click();
             cy.get('input[aria-label="Activity status"]').should('have.value', 'Active');
@@ -101,7 +105,9 @@ context('Page access denied', () => {
     describe('Login to Data inputer and navigate to denied link', () => {
         it('Login', () => {
             cy.login(dataInputerEmail, dataInputerPassword);
-            cy.visit('/workflow', { failOnStatusCode: false });
+            cy.visit('/workflow', {
+                failOnStatusCode: false,
+            });
             cy.get('h1').invoke('text').should('include', 'Access denied');
         });
     });

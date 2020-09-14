@@ -1,13 +1,31 @@
-<p align="center" style="padding: 20px; background: #252832">
+<!--
+How to do a release:
+
+1. Make sure you have publish access for all packages:
+    - You must be in the developers team in the npm @ergonode organization
+    - You must have publish access to all @ergonode modules
+2. Merge develop to master and from master create release branch (release/v0.9.0).
+3. Run `npm run publish:all ${semver}` - semver is semantic version (major, minor, path, etc.)
+4A. If everything works properly, all modules are published and CHANGELOG will be created
+4B. If the publish fails half-way, things have gotten hairy. Now you need to
+    go to npm to check which packages have been published and manually publish
+    the ones that have not been published yet.
+5. Edit CHANGELOG and other things and push changes to release branch.
+4. Go to GitHub and merge release branch to master branch.
+5. Go to GitHub and verify that the changelog is live.
+6. Go to GitHub releases page and publish the release.
+
+ -->
+<p align="center">
   <a href="https://ergonode.com" rel="noopener noreferrer">
-    <img width="300" src="https://ergonode.com/img/logo.svg" alt="Egronode logo">
+    <img width="300" src="https://ergonode.com/img/logo-dark.svg" alt="Ergonode logo">
   </a>
 </p>
 <p align="center">Desktop PWA Ready Product Information Management Platform</p>
 
 <p align="center">
   <a href="https://ergonode.com">
-    <img src="https://img.shields.io/badge/version-0.9.0-4c9aff.svg" alt="Version">
+    <img src="https://img.shields.io/badge/version-0.10.0-4c9aff.svg" alt="Version">
   </a>
   <a href="https://ergonode.com">
     <img src="https://img.shields.io/badge/version%20code-Vegas-00bc87.svg" alt="Code Version">
@@ -21,12 +39,16 @@
   <a href="https://github.com/ergonode/frontend/blob/master/LICENSE.txt">
     <img src="https://img.shields.io/github/license/ergonode/frontend.svg" alt="License">
   </a>
+  <a href="https://lerna.js.org">
+    <img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg" alt="Lerna">
+  </a>
 </p>
 <br>
 
 ## Installation
 
-**1) Manual**
+
+**1) Startup**
 
 Clone project repository to your local directory:
 
@@ -40,7 +62,16 @@ Install project dependencies:
 npm install
 ```
 
-Follow cli steps to configure project:
+Set your local `.env` file:
+
+```bash
+npm run env
+```
+> *You may want to override created .env file by other settings*
+
+**2) Module configuration**
+
+Follow **CLI** steps to configure project:
 
 ```bash
 npm run modules
@@ -50,8 +81,7 @@ You might want automatically setup all modules by executing command:
 ```bash
 npm run modules:all
 ```
-
-> *You may want to override created .env file by other settings*
+**3) Build**
 
 Run development mode
 
@@ -68,7 +98,7 @@ npm run start
 
 > *After you set up [backend application][backend] and generated default fixtures you may login into application with credentials `test@ergonode.com`, password: `abcd1234`*
 
-**2) Docker**
+**4) Docker**
 
 Installation guide at [docker repository][docker]
 

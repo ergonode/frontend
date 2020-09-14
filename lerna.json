@@ -1,0 +1,18 @@
+{
+  "packages": [
+    "modules/@ergonode/*"
+  ],
+  "command": {
+    "version": {
+      "allowBranch": [
+        "master",
+        "release/*",
+        "release-*"
+      ],
+      "conventionalCommits": true,
+      "exact": true,
+      "message": "chore(release): %s"
+    }
+  },
+  "version": "0.10.0"
+}

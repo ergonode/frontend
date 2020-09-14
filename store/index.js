@@ -2,14 +2,21 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { JWT_KEY } from '@Authentication/defaults/cookies';
+import {
+    JWT_KEY,
+} from '@Authentication/defaults/cookies';
 
 export const actions = {
-    async nuxtServerInit({ dispatch }) {
+    async nuxtServerInit({
+        dispatch,
+    }) {
         try {
             const token = this.$cookies.get(JWT_KEY) || null;
 
-            await dispatch('authentication/setAuth', token);
+            await dispatch('authentication/__setState', {
+                key: 'jwt',
+                value: token,
+            });
             if (token) {
                 await dispatch('authentication/getUser');
             }

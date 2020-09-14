@@ -9,19 +9,25 @@
 </template>
 
 <script>
-import { isEmpty } from '@Core/models/objectWrapper';
+import {
+    isEmpty,
+} from '@Core/models/objectWrapper';
 
 export default {
     name: 'NuxtDefaultLayout',
     components: {
         DefaultLayout: () => import('@Core/layouts/default'),
     },
-    async middleware({ store, redirect }) {
-        const { dictionaries, authentication } = store.state;
+    async middleware({
+        store, redirect,
+    }) {
+        const {
+            dictionaries, authentication,
+        } = store.state;
         let emptyState = 0;
 
         if (!authentication.isLogged) {
-            redirect('/');
+            return redirect('/');
         }
 
         Object.values(dictionaries).forEach((value) => {
@@ -32,12 +38,18 @@ export default {
                 emptyState += 1;
             }
         });
+
         if (emptyState > 0) {
-            await store.dispatch('dictionaries/getDictionaries');
-            await store.dispatch('core/getLanguages');
+            await Promise.all([
+                store.dispatch('dictionaries/getDictionaries'),
+                store.dispatch('core/getLanguages'),
+            ]);
+
             await store.dispatch('core/getLanguagesTree');
             await store.dispatch('core/setDefaultLanguage');
         }
+
+        return null;
     },
 };
 </script>
