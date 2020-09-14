@@ -12,12 +12,12 @@
                     :value="name"
                     required
                     label="Role name"
+                    hint="Role name must be unique"
                     :error-messages="errorMessages[nameFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setNameValue" />
                 <TextArea
                     :value="description"
-                    required
                     label="Role description"
                     resize="none"
                     height="150px"

@@ -30,7 +30,7 @@ export default {
             if (categories.length) {
                 await getListItems({
                     $axios: this.app.$axios,
-                    path: 'categories',
+                    path: `${userLanguageCode}/categories`,
                     params: {
                         // limit: categories.length,
                         limit: 99999,
