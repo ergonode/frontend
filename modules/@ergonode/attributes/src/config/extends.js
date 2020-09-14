@@ -18,7 +18,7 @@ import {
 } from './imports';
 
 const getTypeConfiguration = ({
-    $this = null, type,
+    $this, type,
 }) => {
     switch (type) {
     case 'DATE':
@@ -81,14 +81,6 @@ const getTypeConfiguration = ({
     case 'IMAGE':
         return {
             icon: Icons.IconImage,
-        };
-    case 'GALLERY':
-        return {
-            icon: null,
-        };
-    case 'FILE':
-        return {
-            icon: null,
         };
     default:
         return null;

@@ -22,7 +22,6 @@ import {
 } from '@Core/models/stringWrapper';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -50,9 +49,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('attribute', {
-            attrID: state => state.id,
-        }),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,
