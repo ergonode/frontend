@@ -24,7 +24,7 @@
         <SideBar @expand="onExpandSideBar" />
         <main class="app-main">
             <slot />
-            <FlashMessage />
+            <FlashMessages />
             <ConfirmModal
                 v-if="$getModal(modalConfirmType)"
                 :type="modalConfirmType" />
@@ -36,6 +36,7 @@
 import App from '@Core/components/Layout/App';
 import SideBar from '@Core/components/SideBar/SideBar';
 import ToolBar from '@Core/components/ToolBar/ToolBar';
+import ToolBarBreadcrumb from '@Core/components/ToolBar/ToolBarBreadcrumb';
 import ToolBarUserButton from '@Core/components/ToolBar/ToolBarUserButton';
 import {
     COMPONENTS,
@@ -54,8 +55,8 @@ export default {
         SideBar,
         ToolBar,
         ToolBarUserButton,
-        ToolBarBreadcrumb: () => import('@Core/components/ToolBar/ToolBarBreadcrumb'),
-        FlashMessage: () => import('@Core/components/Alerts/FlashMessage'),
+        ToolBarBreadcrumb,
+        FlashMessages: () => import('@Core/components/Alerts/FlashMessages'),
         ConfirmModal: () => import('@Core/components/Modals/ConfirmModal'),
     },
     data() {
@@ -90,7 +91,7 @@ export default {
     mounted() {
         this.setRequestTimeout();
     },
-    destroyed() {
+    beforeDestroy() {
         this.invalidateRequestTimeout();
     },
     methods: {

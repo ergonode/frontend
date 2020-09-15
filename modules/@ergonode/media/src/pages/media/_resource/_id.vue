@@ -37,10 +37,22 @@ export default {
             extension: state => state.extension,
         }),
     },
+    beforeDestroy() {
+        this.__clearStorage();
+        this.clearTranslationsStorage();
+        this.removeErrors();
+    },
     methods: {
         ...mapActions('media', [
             'removeResource',
+            '__clearStorage',
         ]),
+        ...mapActions('validations', [
+            'removeErrors',
+        ]),
+        ...mapActions('tab', {
+            clearTranslationsStorage: '__clearStorage',
+        }),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,

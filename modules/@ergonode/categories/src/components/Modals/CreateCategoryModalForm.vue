@@ -9,7 +9,7 @@
         <template #body>
             <CategoryForm
                 submit-title="CREATE"
-                proceed-title="CREATE AND EDIT"
+                proceed-title="CREATE & EDIT"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 @submit="onSubmit"
@@ -37,6 +37,12 @@ export default {
         ModalForm,
         CategoryForm,
     },
+    data() {
+        return {
+            isSubmitting: false,
+            isProceeding: false,
+        };
+    },
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
@@ -53,6 +59,8 @@ export default {
         ]),
         onClose() {
             this.__clearStorage();
+            this.removeErrors();
+
             this.$emit('close');
         },
         onSubmit() {

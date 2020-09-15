@@ -9,7 +9,7 @@
         <template #body>
             <ImportProfileForm
                 submit-title="CREATE"
-                proceed-title="CREATE AND EDIT"
+                proceed-title="CREATE & EDIT"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 @submit="onSubmit"
@@ -59,6 +59,7 @@ export default {
         ]),
         onClose() {
             this.__clearStorage();
+            this.removeErrors();
             this.$emit('close');
         },
         onSubmit() {
@@ -80,7 +81,6 @@ export default {
 
             this.isProceeding = true;
 
-            this.removeErrors();
             this.createImportProfile({
                 onSuccess: this.onProceedSuccess,
                 onError: this.onCreateError,
@@ -99,6 +99,8 @@ export default {
         },
         onProceedSuccess(id) {
             this.isProceeding = false;
+
+            this.removeErrors();
 
             this.$router.push({
                 name: 'import-id-general',

@@ -50,22 +50,22 @@
                         :is-expanded="isFiltersExpanded"
                         @click.native="onFiltersExpand" />
                     <!--
-                      Uncomment when product draft will be change on grid
-                      <Button
-                        :theme="secondaryTheme"
-                        :size="smallSize"
-                        title="RESTORE"
-                        :disabled="!isUserAllowedToRestore"
-                        @click.native="onShowModal">
-                        <template #prepend="{ color }">
-                            <IconRestore :fill-color="color" />
-                        </template>
-                    </Button> -->
+                                  Uncomment when product draft will be change on grid
+                                  <Button
+                                    :theme="secondaryTheme"
+                                    :size="smallSize"
+                                    title="RESTORE"
+                                    :disabled="!isUserAllowedToRestore"
+                                    @click.native="onShowModal">
+                                    <template #prepend="{ color }">
+                                        <IconRestore :fill-color="color" />
+                                    </template>
+                                </Button> -->
                     <!-- <RestoreAttributeParentModalConfirm
-                        v-if="isModalVisible"
-                        :element="focusedCellToRestore"
-                        @close="onCloseConfirmModal"
-                        @restore="onRestoreDraftSuccess" /> -->
+                                    v-if="isModalVisible"
+                                    :element="focusedCellToRestore"
+                                    @close="onCloseConfirmModal"
+                                    @restore="onRestoreDraftSuccess" /> -->
                 </template>
                 <template #appendFooter>
                     <Button
@@ -152,13 +152,13 @@ export default {
             requests.push(this.onFetchAdvancedFilters(advFiltersIds));
         }
 
-        await Promise.all(requests).then(() => {
-            this.isPrefetchingData = false;
-            this.setDisabledElements(this.getDisabledElements({
-                columns: this.columns,
-                filters: this.advancedFilters,
-            }));
-        });
+        await Promise.all(requests);
+
+        this.isPrefetchingData = false;
+        this.setDisabledElements(this.getDisabledElements({
+            columns: this.columns,
+            filters: this.advancedFilters,
+        }));
     },
     data() {
         return {

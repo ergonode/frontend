@@ -37,12 +37,16 @@ export default {
             return `${this.firstName} ${this.lastName}`;
         },
     },
-    destroyed() {
+    beforeDestroy() {
         this.__clearStorage();
+        this.removeErrors();
     },
     methods: {
         ...mapActions('user', [
             '__clearStorage',
+        ]),
+        ...mapActions('validations', [
+            'removeErrors',
         ]),
     },
 };

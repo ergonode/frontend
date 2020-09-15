@@ -50,12 +50,16 @@ export default {
         const [
             template,
             templateTypes,
+            attributes,
         ] = await Promise.all([
             get({
                 $axios: this.app.$axios,
                 id,
             }),
             getTypes({
+                $axios: this.app.$axios,
+            }),
+            getAllAttributes({
                 $axios: this.app.$axios,
             }),
         ]);
@@ -93,19 +97,14 @@ export default {
             value: imageID,
         });
 
-        const {
-            collection,
-        } = await getAllAttributes({
-            $axios: this.app.$axios,
-        });
+        const elementDescriptions = attributes.collection
+            .reduce((prev, curr) => {
+                const tmp = prev;
 
-        const elementDescriptions = collection.reduce((prev, curr) => {
-            const tmp = prev;
+                tmp[curr.id] = curr.label || curr.code;
 
-            tmp[curr.id] = curr.label || curr.code;
-
-            return tmp;
-        }, {});
+                return tmp;
+            }, {});
 
         const layoutElements = getMappedLayoutElements(
             elements,

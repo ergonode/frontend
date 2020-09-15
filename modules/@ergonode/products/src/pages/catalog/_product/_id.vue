@@ -54,13 +54,17 @@ export default {
             sku: state => state.sku,
         }),
     },
-    destroyed() {
+    beforeDestroy() {
         this.__clearStorage();
+        this.removeErrors();
     },
     methods: {
         ...mapActions('product', [
             'removeProduct',
             '__clearStorage',
+        ]),
+        ...mapActions('validations', [
+            'removeErrors',
         ]),
         onRemoveSuccess() {
             this.$addAlert({

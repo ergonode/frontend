@@ -9,7 +9,7 @@
         <template #body>
             <ProductForm
                 submit-title="CREATE"
-                proceed-title="CREATE AND EDIT"
+                proceed-title="CREATE & EDIT"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 @submit="onSubmit"
@@ -63,6 +63,8 @@ export default {
         ]),
         onClose() {
             this.__clearStorage();
+            this.removeErrors();
+
             this.$emit('close');
         },
         onSubmit() {

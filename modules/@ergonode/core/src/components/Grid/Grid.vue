@@ -332,6 +332,10 @@ export default {
             return this.isElementDragging === DRAGGED_ELEMENT.LIST;
         },
         isColumnExists() {
+            if (this.draggedElement) {
+                return false;
+            }
+
             return this.columns.some(
                 column => column.id === this.draggedElement,
             );

@@ -41,7 +41,7 @@ export default {
             name: state => state.name,
         }),
     },
-    destroyed() {
+    beforeDestroy() {
         this.clearUnitStorage();
     },
     methods: {
