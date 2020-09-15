@@ -34,10 +34,6 @@ export default {
         store,
         params,
     }) {
-        await Promise.all([
-            store.dispatch('tab/__clearStorage'),
-            store.dispatch('segment/__clearStorage'),
-        ]);
         await store.dispatch('segment/getSegment', params);
     },
     computed: {
@@ -45,9 +41,11 @@ export default {
             code: state => state.code,
         }),
     },
-    destroyed() {
+    beforeDestroy() {
         this.clearSegmentStorage();
         this.clearConditionSetStorage();
+        this.clearGridDesignerStorage();
+        this.removeErrors();
     },
     methods: {
         ...mapActions('condition', {
@@ -56,6 +54,12 @@ export default {
         ...mapActions('segment', {
             removeSegment: 'removeSegment',
             clearSegmentStorage: '__clearStorage',
+        }),
+        ...mapActions('validations', [
+            'removeErrors',
+        ]),
+        ...mapActions('gridDesigner', {
+            clearGridDesignerStorage: '__clearStorage',
         }),
         onRemove() {
             this.$openModal({

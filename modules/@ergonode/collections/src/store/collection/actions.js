@@ -120,7 +120,7 @@ export default {
     async updateCollection(
         {
             state,
-            rooState,
+            rootState,
         },
         {
             onSuccess = () => {},
@@ -137,7 +137,7 @@ export default {
                     name,
                     description,
                 },
-            } = rooState.tab;
+            } = rootState.tab;
 
             const data = {
                 typeId: type,

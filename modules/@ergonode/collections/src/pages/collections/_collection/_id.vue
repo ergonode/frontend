@@ -40,10 +40,22 @@ export default {
             code: state => state.code,
         }),
     },
+    beforeDestroy() {
+        this.__clearStorage();
+        this.clearTranslationsStorage();
+        this.removeErrors();
+    },
     methods: {
         ...mapActions('collection', [
             'removeCollection',
+            '__clearStorage',
         ]),
+        ...mapActions('validations', [
+            'removeErrors',
+        ]),
+        ...mapActions('tab', {
+            clearTranslationsStorage: '__clearStorage',
+        }),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,

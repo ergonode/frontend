@@ -24,7 +24,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'FlashMessage',
+    name: 'FlashMessages',
     components: {
         Alert,
     },

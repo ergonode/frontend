@@ -165,7 +165,9 @@ export default {
         });
     },
     async getAttribute({
-        dispatch, commit, rootState,
+        dispatch,
+        commit,
+        rootState,
     }, {
         id,
     }) {

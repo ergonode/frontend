@@ -113,7 +113,7 @@ export default {
                 translations: {
                     name,
                 },
-            } = rootState;
+            } = rootState.tab;
             const data = {
                 name,
             };
