@@ -4,7 +4,8 @@
  */
 
 export const getMappedErrors = ({
-    errors, fieldKey = null,
+    errors,
+    fieldKey = null,
 }) => {
     let mappedErrors = {};
 
