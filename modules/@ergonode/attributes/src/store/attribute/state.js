@@ -9,6 +9,4 @@ export default () => ({
     groups: [],
     type: null,
     scope: null,
-    options: {},
-    updatedOptions: {},
 });

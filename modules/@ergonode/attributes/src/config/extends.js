@@ -3,12 +3,18 @@
  * See LICENSE for license details.
  */
 import {
+    SKU_MODEL,
+} from '@Attributes/defaults/attributes';
+import {
+    createOptionsData,
     prepareOptionsData,
     prepareParametersData,
     prepareTextAreaData,
-    sendOptionsData,
     setParametersData,
     setTextAreaData,
+    setTranslation,
+    updateOptionsData,
+    updateTranslation,
 } from '@Attributes/extends/methods';
 
 import {
@@ -28,7 +34,6 @@ const getTypeConfiguration = ({
                 value: $this.state.dictionaries.dateFormats,
                 fieldName: 'parameters',
             },
-            icon: Icons.IconDate,
         };
     case 'UNIT':
         return {
@@ -37,7 +42,6 @@ const getTypeConfiguration = ({
                 value: $this.state.dictionaries.units,
                 fieldName: 'parameters',
             },
-            icon: Icons.IconUnit,
         };
     case 'PRICE':
         return {
@@ -46,7 +50,6 @@ const getTypeConfiguration = ({
                 value: $this.state.dictionaries.currencies,
                 fieldName: 'parameters',
             },
-            icon: Icons.IconPrice,
         };
     case 'TEXT_AREA':
         return {
@@ -54,33 +57,18 @@ const getTypeConfiguration = ({
                 key: 'richEdit',
                 fieldName: 'parameters',
             },
-            icon: Icons.IconTextArea,
-        };
-    case 'TEXT':
-        return {
-            icon: Icons.IconText,
-        };
-    case 'NUMERIC':
-        return {
-            icon: Icons.Numeric,
         };
     case 'SELECT':
         return {
             params: {
                 fieldName: 'options',
             },
-            icon: Icons.IconSelect,
         };
     case 'MULTI_SELECT':
         return {
             params: {
                 fieldName: 'options',
             },
-            icon: Icons.IconMultiSelect,
-        };
-    case 'IMAGE':
-        return {
-            icon: Icons.IconImage,
         };
     default:
         return null;
@@ -145,7 +133,7 @@ export default {
                 switch (type) {
                 case 'SELECT':
                 case 'MULTI_SELECT':
-                    return sendOptionsData({
+                    return createOptionsData({
                         $this,
                         typeConfig,
                         data,
@@ -155,6 +143,79 @@ export default {
                 }
             }
             return {};
+        },
+        '@Attributes/store/attribute/action/updateAttribute/__before': ({
+            $this, type, data,
+        }) => {
+            const typeConfig = getTypeConfiguration({
+                $this,
+                type,
+            });
+
+            if (typeConfig) {
+                switch (type) {
+                case 'SELECT':
+                case 'MULTI_SELECT':
+                    prepareOptionsData({
+                        $this,
+                        typeConfig,
+                    });
+                    updateOptionsData({
+                        $this,
+                        data,
+                    });
+                    return {};
+                case 'NUMERIC':
+                case 'TEXT':
+                case 'TEXT_AREA':
+                    return updateTranslation({
+                        $this,
+                    });
+                default:
+                    return {};
+                }
+            }
+            return {};
+        },
+        '@Attributes/store/attribute/action/updateAttribute/__after': ({
+            $this, type,
+        }) => {
+            const typeConfig = getTypeConfiguration({
+                $this,
+                type,
+            });
+
+            if (typeConfig) {
+                switch (type) {
+                case 'SELECT':
+                case 'MULTI_SELECT':
+                    $this.commit('attribute/REMOVE_UPDATED_OPTION');
+                    break;
+                default:
+                    break;
+                }
+            }
+        },
+        '@Attributes/store/attribute/action/getAttributesOptionsByType/__after': ({
+            $this, type,
+        }) => {
+            const typeConfig = getTypeConfiguration({
+                $this,
+                type,
+            });
+
+            if (typeConfig) {
+                switch (type) {
+                case 'TEXT':
+                    // TODO: Temporary till BE will create SKU as an attribute
+                    return [
+                        SKU_MODEL,
+                    ];
+                default:
+                    return [];
+                }
+            }
+            return [];
         },
         '@Attributes/store/attribute/action/getAttribute/__after': ({
             $this, data, type,
@@ -169,22 +230,34 @@ export default {
                 case 'DATE':
                 case 'UNIT':
                 case 'PRICE':
-                    return setParametersData({
+                    setParametersData({
                         $this,
                         data,
                         typeConfig,
                     });
+                    break;
                 case 'TEXT_AREA':
-                    return setTextAreaData({
+                    setTranslation({
+                        $this,
+                        data,
+                    });
+                    setTextAreaData({
                         $this,
                         data,
                         typeConfig,
                     });
+                    break;
+                case 'NUMERIC':
+                case 'TEXT':
+                    setTranslation({
+                        $this,
+                        data,
+                    });
+                    break;
                 default:
-                    return {};
+                    break;
                 }
             }
-            return {};
         },
     },
     extendComponents: {
@@ -246,6 +319,35 @@ export default {
             },
             MULTI_SELECT: {
                 component: Components.AttributeTranslationFormOptions,
+            },
+        },
+        '@Attributes/components/Lists/AttributeListElement/Icon': {
+            NUMERIC: {
+                component: Icons.IconNumeric,
+            },
+            TEXT: {
+                component: Icons.IconText,
+            },
+            TEXT_AREA: {
+                component: Icons.IconTextArea,
+            },
+            SELECT: {
+                component: Icons.IconSelect,
+            },
+            MULTI_SELECT: {
+                component: Icons.IconMultiSelect,
+            },
+            DATE: {
+                component: Icons.IconDate,
+            },
+            UNIT: {
+                component: Icons.IconUnit,
+            },
+            PRICE: {
+                component: Icons.IconPrice,
+            },
+            IMAGE: {
+                component: Icons.IconImage,
             },
         },
     },
