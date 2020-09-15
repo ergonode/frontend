@@ -143,6 +143,7 @@ export default {
 
         &__item {
             display: grid;
+            flex: 1;
             align-items: center;
             grid-auto-flow: column;
             grid-template-columns: max-content;

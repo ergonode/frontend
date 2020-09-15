@@ -23,14 +23,16 @@ export default {
                 code,
             } = state;
 
-            await create({
+            const {
+                id,
+            } = await create({
                 $axios: this.app.$axios,
                 data: {
                     code,
                 },
             });
 
-            onSuccess();
+            onSuccess(id);
         } catch (e) {
             onError(e.data);
         }
