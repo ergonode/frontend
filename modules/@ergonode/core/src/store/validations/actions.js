@@ -14,7 +14,8 @@ export default {
     onError({
         commit,
     }, {
-        errors = null, fieldKey = null,
+        errors = null,
+        fieldKey = null,
     }) {
         if (errors) {
             commit(types.SET_ERRORS, getMappedErrors({
