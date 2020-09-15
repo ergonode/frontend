@@ -17,6 +17,7 @@
                 :is-border="true"
                 :is-collection-layout="true"
                 @editRow="onEditRow"
+                @previewRow="onEditRow"
                 @deleteRow="onRemoveRow"
                 @fetchData="onFetchData" />
         </template>

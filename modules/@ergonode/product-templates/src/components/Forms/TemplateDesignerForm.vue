@@ -34,7 +34,6 @@
                 <TranslationLazySelect
                     :data-cy="dataCyGenerator('default-label')"
                     :value="defaultTextAttribute"
-                    required
                     label="Default label attribute"
                     :fetch-options-request="getDefaultTextAttributeOptionsRequest"
                     :disabled="!isAllowedToUpdate"

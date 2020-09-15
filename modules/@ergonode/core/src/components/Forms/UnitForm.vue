@@ -20,7 +20,7 @@
                     :error-messages="errorMessages[nameFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     label="Unit name"
-                    hint="System name must be unique"
+                    hint="Unit name must be unique"
                     @input="setNameValue" />
                 <TextField
                     :value="symbol"
@@ -28,7 +28,7 @@
                     :error-messages="errorMessages[symbolFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     label="Unit symbol"
-                    hint="System name must be unique"
+                    hint="Unit symbol must be unique"
                     @input="setSymbolValue" />
             </FormSection>
         </template>

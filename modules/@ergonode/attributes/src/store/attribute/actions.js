@@ -8,12 +8,7 @@ import {
 } from '@Attributes/defaults/attributes';
 import {
     getMappedArrayOptions,
-    getMappedParameterValues,
-    getParsedParameterKeys,
 } from '@Attributes/models/attributeMapper';
-import {
-    getParamsOptionsForType,
-} from '@Attributes/models/attributeTypes';
 import {
     create,
     createOption,
@@ -26,14 +21,10 @@ import {
     updateOption,
 } from '@Attributes/services/attribute';
 import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import {
     getMappedTranslationArrayOptions,
 } from '@Core/models/mappers/translationsMapper';
 import {
     getKeyByValue,
-    isEmpty,
 } from '@Core/models/objectWrapper';
 
 import {
@@ -55,61 +46,32 @@ export default {
                 groups,
                 type,
                 scope,
-                parameter,
-                options,
             } = state;
             const {
                 attrTypes,
             } = rootState.dictionaries;
             const typeKey = type ? getKeyByValue(attrTypes, type) : null;
-            const data = {
+            let data = {
                 code,
                 scope,
                 type: typeKey,
                 groups,
             };
 
-            if (!isEmpty(options)) {
-                const optionKeys = Object.keys(options);
-                const uniqueOptions = new Set(optionKeys);
+            // EXTENDED BEFORE METHOD
+            const extendedData = this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__before', {
+                $this: this,
+                type: typeKey,
+                data,
+            });
+            // EXTENDED BEFORE METHOD
 
-                if (optionKeys.some(key => key === '')) {
-                    this.$addAlert({
-                        type: ALERT_TYPE.WARNING,
-                        message: 'Options cannot have an empty keys',
-                    });
-                }
-
-                if (optionKeys.length !== uniqueOptions.size) {
-                    this.$addAlert({
-                        type: ALERT_TYPE.WARNING,
-                        message: 'Option code must be unique',
-                    });
-                }
-            }
-
-            if (parameter && type !== TYPES.TEXT_AREA) {
-                const paramsOptions = getParamsOptionsForType(typeKey, rootState.dictionaries);
-                let paramKey = null;
-
-                // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
-                if (Array.isArray(paramsOptions)) {
-                    paramKey = paramsOptions.find(option => option.name === parameter).id;
-                } else {
-                    paramKey = getKeyByValue(paramsOptions, parameter);
-                }
-
-                data.parameters = getParsedParameterKeys({
-                    selectedType: typeKey,
-                    selectedParam: paramKey,
-                });
-            }
-
-            if (typeKey === TYPES.TEXT_AREA) {
-                data.parameters = {
-                    richEdit: parameter,
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
                 };
-            }
+            });
 
             const {
                 id,
@@ -118,15 +80,16 @@ export default {
                 data,
             });
 
-            await Promise.all(
-                Object.keys(options).map(key => createOption({
-                    $axios: this.app.$axios,
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__after', {
+                $this: this,
+                type: typeKey,
+                data: {
                     id,
-                    data: {
-                        code: options[key].key,
-                    },
-                })),
-            );
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
 
             onSuccess(id);
         } catch (e) {
@@ -288,19 +251,28 @@ export default {
             attrTypes,
         } = rootState.dictionaries;
 
+        // EXTENDED BEFORE METHOD
+        this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__before', {
+            $this: this,
+            data: {
+                id,
+            },
+        });
+        // EXTENDED BEFORE METHOD
+
+        const data = await get({
+            $axios: this.app.$axios,
+            id,
+        });
         const {
             code,
             type,
             hint = '',
             label = '',
             groups: groupIds,
-            parameters,
             placeholder = '',
             scope,
-        } = await get({
-            $axios: this.app.$axios,
-            id,
-        });
+        } = data;
 
         commit('__SET_STATE', {
             key: 'id',
@@ -335,19 +307,13 @@ export default {
             },
         );
 
-        if (parameters && type !== TYPES.TEXT_AREA) {
-            commit('__SET_STATE', {
-                key: 'parameter',
-                value: getMappedParameterValues(type, parameters, rootState.dictionaries),
-            });
-        }
-
-        if (type === TYPES.TEXT_AREA) {
-            commit('__SET_STATE', {
-                key: 'parameter',
-                value: parameters.rich_edit,
-            });
-        }
+        // EXTENDED AFTER METHOD
+        this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__after', {
+            $this: this,
+            data,
+            type,
+        });
+        // EXTENDED AFTER METHOD
     },
     async updateAttribute(
         {
@@ -369,7 +335,6 @@ export default {
                 type,
                 groups,
                 scope,
-                parameter,
             } = state;
             const {
                 attrTypes,
@@ -383,7 +348,7 @@ export default {
             const updateOptionsRequests = [];
             const typeKey = getKeyByValue(attrTypes, type);
             const optionKeys = Object.keys(options);
-            const data = {
+            let data = {
                 groups,
                 scope,
                 label,
@@ -462,31 +427,20 @@ export default {
                 }
             });
 
-            if (parameter && typeKey !== TYPES.TEXT_AREA) {
-                let paramKey = null;
-                const paramsOptions = getParamsOptionsForType(
-                    typeKey,
-                    rootState.dictionaries,
-                );
+            // EXTENDED BEFORE METHOD
+            const extendedData = this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__before', {
+                $this: this,
+                type: typeKey,
+                data,
+            });
+            // EXTENDED BEFORE METHOD
 
-                // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
-                if (Array.isArray(paramsOptions)) {
-                    paramKey = paramsOptions.find(option => option.name === parameter).id;
-                } else {
-                    paramKey = getKeyByValue(paramsOptions, parameter);
-                }
-
-                data.parameters = getParsedParameterKeys({
-                    selectedType: typeKey,
-                    selectedParam: paramKey,
-                });
-            }
-
-            if (typeKey === TYPES.TEXT_AREA) {
-                data.parameters = {
-                    richEdit: parameter,
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
                 };
-            }
+            });
 
             await Promise.all([
                 ...addOptionsRequests,
@@ -498,6 +452,14 @@ export default {
                 }),
             ]);
 
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__after', {
+                $this: this,
+                type: typeKey,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+
             commit(types.REMOVE_UPDATED_OPTION);
             onSuccess();
         } catch (e) {
@@ -505,18 +467,37 @@ export default {
         }
     },
     async removeAttribute({
-        state,
+        state, rootState,
     }, {
         onSuccess,
     }) {
         const {
             id,
+            type,
         } = state;
+        const {
+            attrTypes,
+        } = rootState.dictionaries;
+        const typeKey = getKeyByValue(attrTypes, type);
+
+        // EXTENDED BEFORE METHOD
+        await this.$extendMethods('@Attributes/store/attribute/action/removeAttribute/__before', {
+            $this: this,
+            type: typeKey,
+        });
+        // EXTENDED BEFORE METHOD
 
         await remove({
             $axios: this.app.$axios,
             id,
         });
+
+        // EXTENDED AFTER METHOD
+        await this.$extendMethods('@Attributes/store/attribute/action/removeAttribute/__after', {
+            $this: this,
+            type: typeKey,
+        });
+        // EXTENDED AFTER METHOD
         onSuccess();
     },
 };

@@ -135,6 +135,8 @@ export default {
             }
         },
         onValueChange(value) {
+            this.isValueChanged = value !== this.fieldData;
+
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,
@@ -142,9 +144,7 @@ export default {
             });
         },
         onRTEValueChange(value) {
-            this.isValueChanged = value !== this.fieldData;
-
-            if (this.isValueChanged) {
+            if (value !== this.fieldData) {
                 this.onValueChange(value);
             }
 

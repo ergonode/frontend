@@ -3,12 +3,16 @@
  * See LICENSE for license details.
  */
 
+import {
+    SKU_MODEL_ID,
+} from '@Attributes/defaults/attributes';
+
 export default () => ({
     layoutElements: [],
     title: '',
     id: '',
     image: null,
     types: [],
-    defaultTextAttribute: null,
+    defaultTextAttribute: SKU_MODEL_ID,
     defaultImageAttribute: null,
 });

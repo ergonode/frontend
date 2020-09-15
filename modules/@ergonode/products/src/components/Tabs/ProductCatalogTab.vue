@@ -36,6 +36,7 @@
                 :is-basic-filter="true"
                 :is-collection-layout="true"
                 @editRow="onEditRow"
+                @previewRow="onEditRow"
                 @cellValue="onCellValueChange"
                 @focusCell="onFocusCell"
                 @deleteRow="onRemoveRow"

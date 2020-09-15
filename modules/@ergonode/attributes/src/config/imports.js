@@ -18,6 +18,27 @@ export const Tabs = {
     AttributeGroupTranslationsTab: () => import('@Attributes/components/Tabs/AttributeGroupTranslationsTab').then(m => m.default || m),
 };
 
+export const Components = {
+    AttributeFormParamsSelect: () => import('@Attributes/extends/components/Forms/AttributeFormParamsSelect').then(m => m.default || m),
+    AttributeFormParamsToggle: () => import('@Attributes/extends/components/Forms/AttributeFormParamsToggle').then(m => m.default || m),
+    AttributeFormOptions: () => import('@Attributes/extends/components/Forms/AttributeFormOptions').then(m => m.default || m),
+    AttributeTranslationFormPlaceholder: () => import('@Attributes/extends/components/Forms/AttributeTranslationFormPlaceholder').then(m => m.default || m),
+    AttributeTranslationFormOptions: () => import('@Attributes/extends/components/Forms/AttributeTranslationFormOptions').then(m => m.default || m),
+};
+
 export const Icons = {
-    Templates: () => import('@Core/components/Icons/Menu/IconTemplates'),
+    Templates: () => import('@Core/components/Icons/Menu/IconTemplates').then(m => m.default || m),
+    IconTextArea: () => import('@Core/components/Icons/Attributes/IconTextArea').then(m => m.default || m),
+    IconText: () => import('@Core/components/Icons/Attributes/IconText').then(m => m.default || m),
+    IconDate: () => import('@Core/components/Icons/Attributes/IconDate').then(m => m.default || m),
+    IconImage: () => import('@Core/components/Icons/Attributes/IconImage').then(m => m.default || m),
+    IconMultiSelect: () => import('@Core/components/Icons/Attributes/IconMultiSelect').then(m => m.default || m),
+    IconSelect: () => import('@Core/components/Icons/Attributes/IconSelect').then(m => m.default || m),
+    IconNumeric: () => import('@Core/components/Icons/Attributes/IconNumeric').then(m => m.default || m),
+    IconPrice: () => import('@Core/components/Icons/Attributes/IconPrice').then(m => m.default || m),
+    IconUnit: () => import('@Core/components/Icons/Attributes/IconMultiSelect').then(m => m.default || m),
+};
+
+export const Store = {
+    Attribute: () => import('@Attributes/extends/store/attribute').then(m => m.default || m),
 };
