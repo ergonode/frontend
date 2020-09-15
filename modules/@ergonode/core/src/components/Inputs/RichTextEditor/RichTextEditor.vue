@@ -35,6 +35,7 @@
                     <RichTextEditorMenu
                         v-if="isSolidType && isFocused"
                         :type="type"
+                        :editor-width="editorWidth"
                         :editor="editor" />
                 </div>
                 <InputLabel
@@ -184,6 +185,7 @@ export default {
         return {
             isFocused: false,
             editor: null,
+            editorWidth: 0,
         };
     },
     computed: {
@@ -278,6 +280,10 @@ export default {
             if (this.disabled) {
                 return;
             }
+
+            window.requestAnimationFrame(() => {
+                this.editorWidth = this.$refs.editorContent.$el.offsetWidth;
+            });
 
             const isClickedInsideEditor = this.$refs.editorContent.$el.contains(event.target);
 

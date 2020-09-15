@@ -2,64 +2,149 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    create,
+    get,
+    getAll,
+    remove,
+    update,
+} from '@Segments/services/index';
+
 export default {
     async getSegment(
         {
-            commit, dispatch,
+            commit,
+            dispatch,
         },
         {
-            segmentId,
+            id,
         },
     ) {
-        await this.app.$axios.$get(`segments/${segmentId}`).then(async ({
-            id,
+        const {
             code,
             condition_set_id: conditionSetId,
             name = '',
             description = '',
-        }) => {
-            const translations = {
-                name,
-                description,
-            };
-            commit('__SET_STATE', {
-                key: 'id',
-                value: id,
-            });
-            commit('__SET_STATE', {
-                key: 'code',
-                value: code,
-            });
-            commit('__SET_STATE', {
-                key: 'conditionSetId',
-                value: conditionSetId,
-            });
-            dispatch('tab/setTranslations', translations, {
+        } = await get({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        const translations = {
+            name,
+            description,
+        };
+
+        commit('__SET_STATE', {
+            key: 'id',
+            value: id,
+        });
+        commit('__SET_STATE', {
+            key: 'code',
+            value: code,
+        });
+        commit('__SET_STATE', {
+            key: 'conditionSetId',
+            value: conditionSetId,
+        });
+        dispatch('tab/setTranslations', translations, {
+            root: true,
+        });
+
+        if (conditionSetId) {
+            await dispatch('condition/getConditionSet', {
+                id: conditionSetId,
+            }, {
                 root: true,
             });
-            if (conditionSetId) {
-                await dispatch('condition/getConditionSet', {
-                    conditionSetId,
-                }, {
-                    root: true,
-                });
-            }
-        });
+        }
+    },
+    getSegmentOptions() {
+        return getAll({
+            $axios: this.app.$axios,
+        }).then(({
+            collection,
+        }) => collection.map(({
+            id, code, name,
+        }) => ({
+            id,
+            key: code,
+            value: name,
+            hint: name ? `#${code}` : '',
+        })));
     },
     async updateSegment(
-        {},
         {
-            id,
-            data,
-            onSuccess,
-            onError,
+            state,
+            rootState,
+        },
+        {
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`segments/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
-        await this.$removeLoader('footerButton');
+        const {
+            translations: {
+                name,
+                description,
+            },
+        } = rootState.tab;
+
+        const {
+            id,
+            conditionSetId,
+        } = state;
+
+        const data = {
+            name,
+            description,
+            condition_set_id: conditionSetId,
+        };
+
+        try {
+            await update({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
-    removeSegment({
+
+    async createSegment(
+        {
+            state,
+        },
+        {
+            onSuccess = () => {},
+            onError = () => {},
+        },
+    ) {
+        try {
+            const {
+                code,
+            } = state;
+
+            const data = {
+                code,
+            };
+
+            const {
+                id,
+            } = await create({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess(id);
+        } catch (e) {
+            onError(e.data);
+        }
+    },
+    async removeSegment({
         state,
     }, {
         onSuccess,
@@ -68,14 +153,15 @@ export default {
             id, conditionSetId,
         } = state;
 
-        return this.app.$axios.$delete(`segments/${id}`)
-            .then(() => {
-                if (conditionSetId) {
-                    this.app.$axios.$delete(`conditionsets/${conditionSetId}`)
-                        .then(() => onSuccess());
-                } else {
-                    onSuccess();
-                }
-            });
+        await remove({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        if (conditionSetId) {
+            this.app.$axios.$delete(`conditionsets/${conditionSetId}`);
+        }
+
+        onSuccess();
     },
 };

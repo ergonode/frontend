@@ -10,51 +10,43 @@
             <AddProductsBySKUForm
                 :product-skus="productSkus"
                 :is-user-allowed-to-update="isUserAllowedToUpdate"
+                submit-title="ADD TO PRODUCT"
+                proceed-title="CANCEL"
+                :is-submitting="isAdding"
+                @submit="onSubmit"
+                @proceed="onClose"
                 @input="onFormValueChange" />
-        </template>
-        <template #footer>
-            <Button
-                title="ADD TO PRODUCT"
-                :disabled="isRequestPending"
-                @click.native="onAdd" />
-            <Button
-                title="CANCEL"
-                :theme="secondaryTheme"
-                @click.native="onClose" />
         </template>
     </ModalForm>
 </template>
 
 <script>
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     THEME,
 } from '@Core/defaults/theme';
+import AddProductsBySKUForm from '@Products/components/Form/AddProductsBySKUForm';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
     name: 'AddProductsBySKUModalForm',
     components: {
-        AddProductsBySKUForm: () => import('@Products/components/Form/AddProductsBySKUForm'),
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
+        AddProductsBySKUForm,
+        ModalForm,
     },
     data() {
         return {
             productSkus: '',
-            isRequestPending: false,
+            isAdding: false,
         };
     },
     computed: {
-        ...mapState('product', {
-            id: state => state.id,
-        }),
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -69,32 +61,42 @@ export default {
             'onError',
             'removeErrors',
         ]),
+        ...mapActions('product', [
+            'addBySku',
+        ]),
         onFormValueChange(value) {
             this.productSkus = value;
         },
         onClose() {
             this.$emit('close');
         },
-        onAdd() {
+        onSubmit() {
+            if (this.isAdding) {
+                return;
+            }
+            this.isAdding = true;
+
             this.removeErrors();
-            const data = {
-                skus: this.productSkus.replace(/\n/g, ',').split(','),
-            };
-
-            this.isRequestPending = true;
-            this.$axios.$post(`products/${this.id}/children/add-from-skus`, data).then(() => {
-                this.isRequestPending = false;
-                this.removeErrors();
-                this.$addAlert({
-                    type: ALERT_TYPE.SUCCESS,
-                    message: 'Products has been added',
-                });
-
-                this.$emit('added');
-            }).catch((e) => {
-                this.isRequestPending = false;
-                this.onError(e.data);
+            this.addBySku({
+                skus: this.productSkus,
+                onSuccess: this.onAddSuccess,
+                onError: this.onAddError,
             });
+        },
+        onAddSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Products has been added',
+            });
+
+            this.isAdding = false;
+
+            this.$emit('added');
+        },
+        onAddError(errors) {
+            this.onError(errors);
+
+            this.isAdding = false;
         },
     },
 };

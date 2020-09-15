@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #header>
             <div class="view-template-header__section">
                 <TreeSelect
@@ -13,11 +13,6 @@
                     label="Edit language"
                     :options="languageOptions"
                     @input="onLanguageChange" />
-                <!-- Uncomment when needed
-                <Toggler
-                    :value="missingValues"
-                    label="Show only the missing values"
-                    @input="setOnlyMissingValues" /> -->
             </div>
             <div class="view-template-header__section">
                 <ProductCompleteness :completeness="completeness" />
@@ -45,13 +40,29 @@
                 :elements="elements"
                 @valueUpdated="onValueUpdated" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+        <template #default>
+            <Button
+                title="SAVE CHANGES"
+                :floating="{ bottom: '24px', right: '24px' }"
+                @click.native="onSave">
+                <template
+                    v-if="isSubmitting"
+                    #prepend="{ color }">
+                    <IconSpinner :fill-color="color" />
+                </template>
+            </Button>
+        </template>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import Button from '@Core/components/Button/Button';
 import IconRestore from '@Core/components/Icons/Actions/IconRestore';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     SIZE,
     THEME,
@@ -59,8 +70,6 @@ import {
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import ProductTemplateForm from '@Products/components/Form/ProductTemplateForm';
 import PRIVILEGES from '@Products/config/privileges';
-import getProductCompleteness from '@Products/services/getProductCompleteness.service';
-import getProductTemplate from '@Products/services/getProductTemplate.service';
 import {
     mapActions,
     mapGetters,
@@ -70,22 +79,21 @@ import {
 export default {
     name: 'ProductTemplateTab',
     components: {
+        IconSpinner,
         Button,
         IconRestore,
         ProductTemplateForm,
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         RestoreAttributeParentModalForm: () => import('@Products/components/Modals/RestoreAttributeParentModalForm'),
         ProductCompleteness: () => import('@Products/components/Progress/ProductCompleteness'),
         TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
-        // Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
     },
     mixins: [
         gridModalMixin,
     ],
     asyncData({
-        app: {
-            $axios,
-        }, store, params: {
+        store,
+        params: {
             id,
         },
     }) {
@@ -94,13 +102,15 @@ export default {
         } = store.state.core;
 
         return Promise.all([
-            getProductTemplate({
-                $axios,
+            store.dispatch('product/getProductTemplate', {
                 languageCode: defaultLanguageCode,
                 id,
             }),
-            getProductCompleteness({
-                $axios,
+            store.dispatch('product/getProductCompleteness', {
+                languageCode: defaultLanguageCode,
+                id,
+            }),
+            store.dispatch('product/getProductDraft', {
                 languageCode: defaultLanguageCode,
                 id,
             }),
@@ -108,13 +118,14 @@ export default {
             templateResponse,
             completenessResponse,
         ]) => ({
-            elements: templateResponse.elements,
+            elements: templateResponse,
             completeness: completenessResponse,
         }));
     },
     data() {
         return {
             language: {},
+            isSubmitting: false,
         };
     },
     computed: {
@@ -166,18 +177,49 @@ export default {
     methods: {
         ...mapActions('product', [
             'getProductDraft',
+            'getProductTemplate',
+            'getProductCompleteness',
+            'applyProductDraft',
         ]),
+        ...mapActions('validations', [
+            'onError',
+            'removeErrors',
+        ]),
+        onSave() {
+            if (this.isSubmitting) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeErrors();
+            this.applyProductDraft({
+                id: this.id,
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
+            });
+        },
+        onUpdateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product updated',
+            });
+
+            this.isSubmitting = false;
+        },
+        onUpdateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+        },
         onLanguageChange(value) {
             const languageCode = value.code;
 
             Promise.all([
-                getProductTemplate({
-                    $axios: this.$axios,
+                this.getProductTemplate({
                     languageCode,
                     id: this.id,
                 }),
-                getProductCompleteness({
-                    $axios: this.$axios,
+                this.getProductCompleteness({
                     languageCode,
                     id: this.id,
                 }),
@@ -189,19 +231,20 @@ export default {
                 templateResponse,
                 completenessResponse,
             ]) => {
-                this.elements = templateResponse.elements;
+                this.elements = templateResponse;
                 this.completeness = completenessResponse;
                 this.language = value;
             });
         },
-        onRestoreDraftValues() {
+        async onRestoreDraftValues() {
             const {
                 code: languageCode,
             } = this.language;
 
-            Promise.all([
-                getProductCompleteness({
-                    $axios: this.$axios,
+            const [
+                completeness,
+            ] = await Promise.all([
+                this.getProductCompleteness({
                     languageCode,
                     id: this.id,
                 }),
@@ -209,19 +252,14 @@ export default {
                     languageCode,
                     id: this.id,
                 }),
-            ]).then(([
-                completenessResponse,
-            ]) => {
-                this.completeness = completenessResponse;
-            });
+            ]);
+
+            this.completeness = completeness;
         },
-        onValueUpdated() {
-            getProductCompleteness({
-                $axios: this.$axios,
+        async onValueUpdated() {
+            this.completeness = await this.getProductCompleteness({
                 languageCode: this.language.code,
                 id: this.id,
-            }).then((response) => {
-                this.completeness = response;
             });
         },
     },

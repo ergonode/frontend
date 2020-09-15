@@ -8,47 +8,59 @@ import {
 import {
     getMappedPrivileges,
 } from '@Authentication/models/userMapper';
+import {
+    create,
+    get,
+} from '@Authentication/services/index';
 import camelcaseKeys from 'camelcase-keys';
 
 export default {
-    authenticateUser({
-        commit, dispatch,
+    async authenticateUser({
+        commit,
+        dispatch,
     }, {
         data,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        return this.app.$axios.$post('login', data, {
-            withLanguage: false,
-        }).then(({
-            token,
-        }) => {
+        try {
+            const {
+                token,
+            } = await create({
+                $axios: this.app.$axios,
+                data,
+            });
+
             this.$cookies.set(JWT_KEY, token);
             commit('__SET_STATE', {
                 key: 'jwt',
                 value: token,
             });
 
-            return dispatch('getUser');
-        });
+            await dispatch('getUser');
+
+            onSuccess();
+        } catch (e) {
+            onError(e);
+        }
     },
-    getUser({
+    async getUser({
         commit,
     }) {
-        return this.app.$axios.$get('profile', {
-            withLanguage: false,
-        }).then((user) => {
-            const transformedUserData = camelcaseKeys(user);
+        const user = await get({
+            $axios: this.app.$axios,
+        });
 
-            transformedUserData.privileges = getMappedPrivileges(transformedUserData.privileges);
-            commit('__SET_STATE', {
-                key: 'user',
-                value: transformedUserData,
-            });
-            commit('__SET_STATE', {
-                key: 'isLogged',
-                value: true,
-            });
-        }).catch((e) => {
-            console.error(e);
+        const transformedUserData = camelcaseKeys(user);
+
+        transformedUserData.privileges = getMappedPrivileges(transformedUserData.privileges);
+        commit('__SET_STATE', {
+            key: 'user',
+            value: transformedUserData,
+        });
+        commit('__SET_STATE', {
+            key: 'isLogged',
+            value: true,
         });
     },
 };

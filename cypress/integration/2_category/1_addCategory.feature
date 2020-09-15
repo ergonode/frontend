@@ -47,7 +47,7 @@ Feature: Category adding
     And I choose "[1]" options from "translation-language-select" multi select field
     Then I fill the "category-name" input with the "category_1_EN" term for "en_GB" translation
     And I fill the "category-name" input with the "category_1_PL" term for "pl_PL" translation
-    And I click on "save-category" button
+    And I click on "submit" button
 
   Scenario: Add category2 for use in tree
     When I fill the "category-code" input with the "category_2" term
@@ -58,7 +58,7 @@ Feature: Category adding
     And I choose "[1]" options from "translation-language-select" multi select field
     Then I fill the "category-name" input with the "category_2_EN" term for "en_GB" translation
     And I fill the "category-name" input with the "category_2_PL" term for "pl_PL" translation
-    And I click on "save-category" button
+    And I click on "submit" button
 
   Scenario: Add category3 for use in tree
     When I fill the "category-code" input with the "category_3" term
@@ -69,4 +69,4 @@ Feature: Category adding
     And I choose "[1]" options from "translation-language-select" multi select field
     Then I fill the "category-name" input with the "category_3_EN" term for "en_GB" translation
     And I fill the "category-name" input with the "category_3_PL" term for "pl_PL" translation
-    And I click on "save-category" button
+    And I click on "submit" button

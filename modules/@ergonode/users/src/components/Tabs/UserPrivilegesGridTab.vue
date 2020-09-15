@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate>
+    <CenterViewTemplate>
         <template #content>
             <Grid
                 :columns="columns"
@@ -13,12 +13,12 @@
                 :is-border="true"
                 :is-footer-visible="false" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import Grid from '@Core/components/Grid/Grid';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
@@ -30,7 +30,7 @@ import {
 export default {
     name: 'UserPrivilegesGridTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         Grid,
     },
     asyncData({

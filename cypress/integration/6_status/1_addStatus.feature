@@ -53,4 +53,4 @@ Feature: Status adding
     Then I fill the "status-description" textarea with the "status-description_done_EN" term for "en_GB" translation
     And I fill the "status-name" input with the "status-name_done_PL" term for "pl_PL" translation
     Then I fill the "status-description" textarea with the "status-description_done_PL" term for "pl_PL" translation
-    And I click on "save-status" button
+    And I click on "submit" button

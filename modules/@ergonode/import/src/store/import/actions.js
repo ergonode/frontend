@@ -8,37 +8,77 @@ import {
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
+import {
+    create,
+    get,
+    getConfiguration,
+    getDetails,
+    remove,
+    update,
+} from '@Import/services/index';
 
 export default {
-    getImportProfile(
+    async getImportProfile(
         {
             commit, rootState,
         },
         {
-            id, onError = () => {},
+            id,
         },
     ) {
         const {
             sources,
         } = rootState.dictionaries;
 
-        return this.app.$axios.$get(`sources/${id}`).then(({
+        const {
             type,
             ...rest
-        }) => {
-            commit('__SET_STATE', {
-                key: 'id',
-                value: id,
-            });
-            commit('__SET_STATE', {
-                key: 'type',
-                value: sources[type],
-            });
-            commit('__SET_STATE', {
-                key: 'configuration',
-                value: JSON.stringify(rest),
-            });
-        }).catch(onError);
+        } = await get({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        commit('__SET_STATE', {
+            key: 'id',
+            value: id,
+        });
+        commit('__SET_STATE', {
+            key: 'type',
+            value: sources[type],
+        });
+        commit('__SET_STATE', {
+            key: 'configuration',
+            value: JSON.stringify(rest),
+        });
+    },
+    async getImportDetails({}, {
+        sourceId,
+        importId,
+    }) {
+        const details = await getDetails({
+            $axios: this.app.$axios,
+            sourceId,
+            importId,
+        });
+
+        return [
+            {
+                label: 'Date of start',
+                value: details.started_at,
+            },
+            {
+                label: 'Status',
+                value: details.status,
+            },
+            {
+                label: 'Records',
+                value: details.records || '0',
+            },
+            {
+                label: 'Errors',
+                value: details.errors || '0',
+            },
+        ];
     },
     async getConfiguration({
         commit,
@@ -52,7 +92,10 @@ export default {
         const {
             sources,
         } = rootState.dictionaries;
-        const configuration = await this.app.$axios.$get(`sources/${getKeyByValue(sources, type)}/configuration`);
+        const configuration = await getConfiguration({
+            $axios: this.app.$axios,
+            id: getKeyByValue(sources, type),
+        });
 
         if (!id) {
             const defaultConfiguration = getDefaultJsonSchemaTypes(configuration.properties);
@@ -65,18 +108,78 @@ export default {
 
         return configuration;
     },
-    updateImportProfile(
-        {},
+    async updateImportProfile(
         {
-            id,
-            data,
-            onSuccess,
-            onError,
+            state,
+        },
+        {
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        return this.app.$axios.$put(`sources/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        try {
+            const {
+                id,
+                type,
+                configuration,
+            } = state;
+            const data = {
+                type,
+                ...JSON.parse(configuration),
+            };
+
+            await update({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
-    removeImport({
+    async createImportProfile({
+        state,
+        rootState,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const {
+                type,
+                configuration,
+            } = state;
+            const {
+                sources,
+            } = rootState.dictionaries;
+            const typeId = getKeyByValue(sources, type);
+
+            let data = {
+                type: typeId,
+            };
+
+            if (configuration) {
+                data = {
+                    ...data,
+                    ...JSON.parse(configuration),
+                };
+            }
+
+            const {
+                id,
+            } = await create({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess(id);
+        } catch (e) {
+            onError(e.data);
+        }
+    },
+    async removeImport({
         state,
     }, {
         onSuccess,
@@ -85,6 +188,10 @@ export default {
             id,
         } = state;
 
-        return this.app.$axios.$delete(`sources/${id}`).then(() => onSuccess());
+        await remove({
+            $axios: this.app.$axios,
+            id,
+        });
+        onSuccess();
     },
 };

@@ -5,14 +5,10 @@
 <template>
     <TemplatePage
         :title="templateTitle"
-        @remove="onRemove"
-        @save="onCreate" />
+        @remove="onRemove" />
 </template>
 
 <script>
-import {
-    SKU_MODEL_ID,
-} from '@Attributes/defaults/attributes';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -37,20 +33,11 @@ export default {
     async fetch({
         store, params,
     }) {
-        const {
-            id,
-        } = params;
-
-        await store.dispatch('productTemplate/getTemplateByID', id);
+        await store.dispatch('productTemplate/getTemplate', params);
     },
     computed: {
         ...mapState('productTemplate', {
-            groups: state => state.templateGroups,
             templateTitle: state => state.title,
-            templateImage: state => state.image,
-            layoutElements: state => state.layoutElements,
-            defaultTextAttribute: state => state.defaultTextAttribute,
-            defaultImageAttribute: state => state.defaultImageAttribute,
         }),
     },
     destroyed() {
@@ -59,25 +46,12 @@ export default {
     },
     methods: {
         ...mapActions('productTemplate', [
-            'updateTemplateDesigner',
             'removeTemplate',
-            'getTemplateByID',
             '__clearStorage',
         ]),
         ...mapActions('list', {
             list__clearStorage: '__clearStorage',
         }),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
-        onUpdateTemplateDesignerSuccess() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Template updated',
-            });
-        },
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
@@ -101,29 +75,6 @@ export default {
                         onSuccess: this.onRemoveSuccess,
                     });
                 },
-            });
-        },
-        onCreate() {
-            import('@Templates/models/templateMapper').then(({
-                getMappedLayoutElementsForAPIUpdate,
-            }) => {
-                const {
-                    id,
-                } = this.$route.params;
-                this.updateTemplateDesigner({
-                    id,
-                    data: {
-                        name: this.templateTitle,
-                        image: this.templateImage,
-                        defaultLabel: this.defaultTextAttribute !== SKU_MODEL_ID
-                            ? this.defaultTextAttribute
-                            : null,
-                        defaultImage: this.defaultImageAttribute,
-                        elements: getMappedLayoutElementsForAPIUpdate(this.layoutElements),
-                    },
-                    onSuccess: this.onUpdateTemplateDesignerSuccess,
-                    onError: this.onError,
-                });
             });
         },
     },

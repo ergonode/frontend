@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #header>
             <TranslationSelect
                 data-cy="translation-language-select"
@@ -18,12 +18,15 @@
         <template #centeredContent>
             <slot :language-codes="selectedLanguageCodes" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+        <template #default>
+            <slot name="saveButton" />
+        </template>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     TRANSLATIONS_LANGUAGES,
 } from '@Core/defaults/cookies';
@@ -38,7 +41,7 @@ import {
 export default {
     name: 'TranslationsTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         TranslationSelect,
     },
     data() {

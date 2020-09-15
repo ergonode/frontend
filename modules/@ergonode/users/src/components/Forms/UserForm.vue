@@ -13,7 +13,13 @@
             passwordRepeatFieldKey,
             languageFieldKey,
             roleIdFieldKey,
-        ]">
+        ]"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
@@ -72,7 +78,7 @@
                     label="Role"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errorMessages[roleIdFieldKey]"
-                    :fetch-options-request="getRolesOptionsRequest"
+                    :fetch-options-request="getRoleOptions"
                     @input="setRoleValue" />
             </FormSection>
         </template>
@@ -80,6 +86,13 @@
 </template>
 
 <script>
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import Select from '@Core/components/Inputs/Select/Select';
+import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import TextField from '@Core/components/Inputs/TextField';
+import Toggler from '@Core/components/Inputs/Toggler/Toggler';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
@@ -87,18 +100,19 @@ import {
     mapState,
 } from 'vuex';
 
-const getRolesOptions = () => import('@Users/services/getRolesOptions.service');
-
 export default {
     name: 'UserForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
-        Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
-        Select: () => import('@Core/components/Inputs/Select/Select'),
-        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
+        Form,
+        FormSection,
+        TextField,
+        Toggler,
+        Select,
+        TranslationLazySelect,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     data() {
         return {
             activityStatuses: [
@@ -118,7 +132,7 @@ export default {
             'activeLanguages',
         ]),
         ...mapState('user', {
-            userID: state => state.id,
+            id: state => state.id,
             email: state => state.email,
             firstName: state => state.firstName,
             lastName: state => state.lastName,
@@ -134,7 +148,7 @@ export default {
             ]);
         },
         isDisabled() {
-            return Boolean(this.userID);
+            return Boolean(this.id);
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
@@ -172,14 +186,9 @@ export default {
         ...mapActions('user', [
             '__setState',
         ]),
-        getRolesOptionsRequest() {
-            return getRolesOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
-        },
+        ...mapActions('role', [
+            'getRoleOptions',
+        ]),
         setEmailValue(value) {
             this.__setState({
                 key: 'email',

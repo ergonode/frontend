@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate>
+    <CenterViewTemplate>
         <template #content>
             <Grid
                 :is-editable="isAllowedToUpdate"
@@ -19,21 +19,21 @@
                 @deleteRow="onRemoveRow"
                 @fetchData="onFetchData" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import {
     WHITESMOKE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import PRIVILEGES from '@Transitions/config/privileges';
 
 export default {
     name: 'TransitionsGridTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
     },
     mixins: [
         fetchGridDataMixin({

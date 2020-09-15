@@ -112,7 +112,7 @@ export default [
             {
                 name: 'unit-id-general',
                 path: 'general',
-                component: Tabs.UnitBaseTab,
+                component: Tabs.UnitGeneralTab,
                 meta: {
                     title: 'Options',
                     breadcrumbs: [

@@ -49,4 +49,4 @@ Feature: Segment adding
     Then I fill the "segment-description" textarea with the "segment_description_1_EN" term for "en_GB" translation
     And I fill the "segment-name" input with the "segment_label_1_PL" term for "pl_PL" translation
     Then I fill the "segment-description" textarea with the "segment_description_1_PL" term for "pl_PL" translation
-    And I click on "save-segment" button
+    And I click on "submit" button

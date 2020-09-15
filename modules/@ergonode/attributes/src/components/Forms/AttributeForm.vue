@@ -10,9 +10,14 @@
             typeFieldKey,
             groupsFieldKey,
             scopeFieldKey,
-            paramsFieldKey,
-            ...optionsFieldKeys,
-        ]">
+            ...extendedFieldKeys,
+        ]"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
@@ -32,7 +37,7 @@
                     :clearable="true"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errorMessages[groupsFieldKey]"
-                    :fetch-options-request="getAttributeGroupOptionsRequest"
+                    :fetch-options-request="getAttributeGroupsOptions"
                     @input="setGroupsValue" />
                 <Select
                     :data-cy="dataCyGenerator(typeFieldKey)"
@@ -59,26 +64,12 @@
                         <InfoHint :hint="scopeHint" />
                     </template>
                 </Select>
-                <Select
-                    v-if="hasParams"
-                    :data-cy="dataCyGenerator('params')"
-                    key="attrHasParams"
-                    :value="parameter"
-                    required
-                    :label="paramsLabel"
-                    :options="attributeParametersOptions"
-                    :error-messages="errorMessages[paramsFieldKey]"
-                    :disabled="!isAllowedToUpdate"
-                    @input="setParameterValue" />
-                <AttributeOptionKeyValues
-                    v-show="hasOptions"
-                    key="attrHasOptions"
-                    :disabled="!isAllowedToUpdate" />
-                <Toggler
-                    v-if="isTextArea"
-                    :value="parameter"
-                    label="Rich text content enabled"
-                    @input="setParameterValue" />
+                <Component
+                    :is="formComponent.component"
+                    :type-key="typeKey"
+                    :error-messages="errorMessages"
+                    v-bind="formComponent.props"
+                    @fieldKeys="onFieldKeys" />
             </FormSection>
         </template>
     </Form>
@@ -88,106 +79,78 @@
 import PRIVILEGES from '@Attributes/config/privileges';
 import {
     SCOPE,
-    TYPES,
 } from '@Attributes/defaults/attributes';
-import {
-    getParamsKeyForType,
-    getParamsOptionsForType,
-    hasOptions,
-    hasParams,
-} from '@Attributes/models/attributeTypes';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
-import {
-    toCapitalize,
-} from '@Core/models/stringWrapper';
 import {
     mapActions,
     mapGetters,
     mapState,
 } from 'vuex';
 
-const getAttributeGroupsOptions = () => import('@Attributes/services/getAttributeGroupsOptions.service');
-
 export default {
     name: 'AttributeForm',
     components: {
-        AttributeOptionKeyValues: () => import('@Attributes/components/Forms/Sections/AttributeOptionKeyValues'),
         Form: () => import('@Core/components/Form/Form'),
         FormSection: () => import('@Core/components/Form/Section/FormSection'),
         InfoHint: () => import('@Core/components/Hints/InfoHint'),
         TextField: () => import('@Core/components/Inputs/TextField'),
         Select: () => import('@Core/components/Inputs/Select/Select'),
-        Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
         TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
         Divider: () => import('@Core/components/Dividers/Divider'),
     },
+    mixins: [
+        formActionsMixin,
+    ],
+    data() {
+        return {
+            extendedFieldKeys: [],
+        };
+    },
     computed: {
-        ...mapState('attribute', {
-            attrID: state => state.id,
-            code: state => state.code,
-            options: state => state.options,
-            groups: state => state.groups,
-            type: state => state.type,
-            parameter: state => state.parameter,
-            scope: state => state.scope,
-        }),
-        ...mapState('dictionaries', {
-            attrTypes: state => state.attrTypes,
-        }),
+        ...mapState('attribute', [
+            'id',
+            'code',
+            'groups',
+            'type',
+            'scope',
+        ]),
+        ...mapState('dictionaries', [
+            'attrTypes',
+        ]),
         ...mapGetters('core', [
             'rootLanguage',
         ]),
+        formComponent() {
+            const extendedComponents = this.$getExtendedComponents('@Attributes/components/Forms/AttributeForm');
+
+            if (extendedComponents && extendedComponents[this.typeKey]) {
+                return extendedComponents[this.typeKey];
+            }
+
+            return {};
+        },
         scopeHint() {
             return `Global means the same attribute values for each language, inherited from the root language (${this.rootLanguage.name}). Option values can be translated, but cannot be changed in the product template.`;
         },
-        paramsLabel() {
-            const paramsKey = getParamsKeyForType(this.typeKey);
-
-            return toCapitalize(paramsKey);
+        typeKey() {
+            return getKeyByValue(this.attrTypes, this.type);
         },
         isDisabled() {
-            return Boolean(this.attrID);
+            return Boolean(this.id);
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,
             ]);
         },
-        isTextArea() {
-            return this.typeKey === TYPES.TEXT_AREA;
-        },
-        hasParams() {
-            return hasParams(this.typeKey);
-        },
-        typeKey() {
-            return getKeyByValue(this.attrTypes, this.type);
-        },
-        params() {
-            return getParamsOptionsForType(
-                this.typeKey,
-                this.$store.state.dictionaries,
-            );
-        },
-        hasOptions() {
-            return hasOptions(this.typeKey);
-        },
         attributeTypeOptions() {
             return Object.values(this.attrTypes).sort();
         },
         attributeScopeOptions() {
             return Object.values(SCOPE);
-        },
-        attributeParametersOptions() {
-            // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
-            if (Array.isArray(this.params)) {
-                return this.params.map(data => data.name);
-            }
-            return Object.values(this.params);
-        },
-        optionsFieldKeys() {
-            return Object.keys(this.options).map(key => `code_${key}`);
         },
         codeFieldKey() {
             return 'code';
@@ -201,14 +164,13 @@ export default {
         scopeFieldKey() {
             return 'scope';
         },
-        paramsFieldKey() {
-            return `parameters_${this.paramsLabel.toLowerCase()}`;
-        },
     },
     methods: {
         ...mapActions('attribute', [
             '__setState',
-            'removeAttributeOptions',
+        ]),
+        ...mapActions('attributeGroup', [
+            'getAttributeGroupsOptions',
         ]),
         setCodeValue(value) {
             this.__setState({
@@ -234,30 +196,14 @@ export default {
                 value,
             });
         },
-        setParameterValue(value = null) {
-            this.__setState({
-                key: 'parameter',
-                value,
-            });
-        },
         dataCyGenerator(key) {
             return `attribute-${key}`;
         },
-        getAttributeGroupOptionsRequest() {
-            return getAttributeGroupsOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
-        },
         onTypeChange(type) {
             this.setTypeValue(type);
-            this.setParameterValue();
-
-            if (!this.hasOptions) {
-                this.removeAttributeOptions();
-            }
+        },
+        onFieldKeys(fields) {
+            this.extendedFieldKeys = fields;
         },
     },
 };

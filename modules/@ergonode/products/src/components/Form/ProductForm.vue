@@ -5,7 +5,16 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[skuFieldKey, templateIdFieldKey]">
+        :fields-keys="[
+            skuFieldKey,
+            templateIdFieldKey
+        ]"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <Select
@@ -32,7 +41,7 @@
                     label="Product template"
                     :error-messages="errorMessages[templateIdFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :fetch-options-request="getTemplatesOptionsRequest"
+                    :fetch-options-request="getTemplateOptions"
                     @input="setTemplateValue" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
@@ -46,6 +55,12 @@
 </template>
 
 <script>
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import Select from '@Core/components/Inputs/Select/Select';
+import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import TextField from '@Core/components/Inputs/TextField';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
@@ -59,24 +74,25 @@ import {
     mapState,
 } from 'vuex';
 
-const getTemplatesOptions = () => import('@Templates/services/getTemplatesOptions.service');
-
 export default {
     name: 'ProductForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        Select: () => import('@Core/components/Inputs/Select/Select'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
-        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
+        Form,
+        FormSection,
+        Select,
+        TextField,
+        TranslationLazySelect,
         ProductAttributesBindingFormSection: () => import('@Products/components/Form/Section/ProductAttributesBindingFormSection'),
     },
+    mixins: [
+        formActionsMixin,
+    ],
     computed: {
         ...mapState('dictionaries', {
             productTypes: state => state.productTypes,
         }),
         ...mapState('product', {
-            productID: state => state.id,
+            id: state => state.id,
             sku: state => state.sku,
             type: state => state.type,
             template: state => state.template,
@@ -91,7 +107,7 @@ export default {
             return Object.values(this.productTypes);
         },
         isDisabled() {
-            return Boolean(this.productID);
+            return Boolean(this.id);
         },
         isProductWithVariants() {
             return this.productTypeKey === PRODUCT_TYPE.WITH_VARIANTS;
@@ -112,6 +128,12 @@ export default {
         ...mapActions('product', [
             '__setState',
         ]),
+        ...mapActions('productTemplate', [
+            'getTemplateOptions',
+        ]),
+        onSubmit() {
+            this.$emit('submit');
+        },
         setTypeValue(value) {
             this.__setState({
                 key: 'type',
@@ -129,14 +151,6 @@ export default {
                 key: 'template',
                 value,
             });
-        },
-        getTemplatesOptionsRequest() {
-            return getTemplatesOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
         },
         bindingProps({
             props,

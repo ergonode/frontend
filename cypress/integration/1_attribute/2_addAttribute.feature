@@ -109,7 +109,7 @@ Feature: Attribute adding
     And I fill the "attribute-label" input with the "attribute_txt_label_PL" term for "pl_PL" translation
     And I fill the "attribute-placeholder" textarea with the "attribute_txt_placeholder_PL" term for "pl_PL" translation
     And I fill the "attribute-hint" textarea with the "attribute_txt_hint_PL" term for "pl_PL" translation
-    Then I click on "save-attribute" button
+    Then I click on "submit" button
     And I open "attributes/grid" page
 
   Scenario: Add price attibute with global scope and edit
@@ -133,7 +133,7 @@ Feature: Attribute adding
     And I fill the "attribute-hint" textarea with the "attribute_price_hint_EN" term for "en_GB" translation
     And I fill the "attribute-label" input with the "attribute_price_label_PL" term for "pl_PL" translation
     And I fill the "attribute-hint" textarea with the "attribute_price_hint_PL" term for "pl_PL" translation
-    Then I click on "save-attribute" button
+    Then I click on "submit" button
     And I open "attributes/grid" page
 
 
@@ -160,7 +160,7 @@ Feature: Attribute adding
     And I fill the "attribute-label" input with the "attribute_select_label_PL" term for "pl_PL" translation
     And I fill the "attribute-hint" textarea with the "attribute_select_hint_PL" term for "pl_PL" translation
     And I fill the "attribute-option" input for index 0 with the "attribute_select_option_0_PL" term for "pl_PL" translation
-    Then I click on "save-attribute" button
+    Then I click on "submit" button
     And I open "attributes/grid" page
 
   Scenario: Add image attibute with local scope and edit
@@ -182,5 +182,5 @@ Feature: Attribute adding
     And I fill the "attribute-hint" textarea with the "attribute_img_hint_EN" term for "en_GB" translation
     And I fill the "attribute-label" input with the "attribute_img_label_PL" term for "pl_PL" translation
     And I fill the "attribute-hint" textarea with the "attribute_img_hint_PL" term for "pl_PL" translation
-    Then I click on "save-attribute" button
+    Then I click on "submit" button
     And I open "attributes/grid" page

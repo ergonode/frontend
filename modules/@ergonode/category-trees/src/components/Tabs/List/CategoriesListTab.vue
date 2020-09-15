@@ -28,7 +28,7 @@
         <CreateCategoryModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @create="onCreatedData" />
+            @created="onCreatedData" />
     </VerticalTabBarList>
 </template>
 

@@ -50,6 +50,9 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import gridEditCellMixin from '@Core/mixins/grid/cell/gridEditCellMixin';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'GridLabelEditCell',
@@ -70,23 +73,13 @@ export default {
             default: () => ({}),
         },
     },
-    fetch() {
-        this.$axios.$get(`${this.languageCode}/products/${this.rowId}`, {
-            withLanguage: false,
-        }).then(({
-            workflow = [],
-        }) => {
-            this.options = workflow.map(e => ({
-                id: e.code,
-                key: e.code,
-                value: e.name,
-                hint: e.name
-                    ? `#${e.code} ${this.languageCode}`
-                    : '',
-            }));
-
-            this.localValue = this.options.find(option => option.id === this.value);
+    async fetch() {
+        this.options = await this.getProductWorkflowOptions({
+            id: this.rowId,
+            languageCode: this.languageCode,
         });
+
+        this.localValue = this.options.find(option => option.id === this.value);
     },
     data() {
         return {
@@ -122,6 +115,9 @@ export default {
         }
     },
     methods: {
+        ...mapActions('product', [
+            'getProductWorkflowOptions',
+        ]),
         onFocus(isFocused) {
             if (!isFocused) {
                 this.onEditCell();

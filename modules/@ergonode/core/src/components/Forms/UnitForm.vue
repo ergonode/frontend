@@ -5,7 +5,13 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[nameFieldKey, symbolFieldKey]">
+        :fields-keys="[nameFieldKey, symbolFieldKey]"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
@@ -30,7 +36,11 @@
 </template>
 
 <script>
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TextField from '@Core/components/Inputs/TextField';
 import PRIVILEGES from '@Core/config/privileges';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     mapActions,
     mapState,
@@ -39,10 +49,13 @@ import {
 export default {
     name: 'UnitForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
+        Form,
+        FormSection,
+        TextField,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     computed: {
         ...mapState('unit', {
             name: state => state.name,
@@ -64,6 +77,12 @@ export default {
         ...mapActions('unit', [
             '__setState',
         ]),
+        onSubmit() {
+            this.$emit('submit');
+        },
+        onProceed() {
+            this.$emit('proceed');
+        },
         setNameValue(value) {
             this.__setState({
                 key: 'name',

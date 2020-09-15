@@ -5,8 +5,7 @@
 <template>
     <UnitPage
         :title="name"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -35,16 +34,11 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('unit/__clearStorage');
-        await store.dispatch('unit/getUnit', {
-            unitId: params.id,
-        });
+        await store.dispatch('unit/getUnit', params);
     },
     computed: {
         ...mapState('unit', {
-            id: state => state.id,
             name: state => state.name,
-            symbol: state => state.symbol,
         }),
     },
     destroyed() {
@@ -52,16 +46,11 @@ export default {
     },
     methods: {
         ...mapActions('unit', {
-            updateUnit: 'updateUnit',
             removeUnit: 'removeUnit',
             clearUnitStorage: '__clearStorage',
         }),
         ...mapActions('dictionaries', [
-            'getCurrentDictionary',
-        ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
+            'getDictionary',
         ]),
         onRemove() {
             this.$openModal({
@@ -72,30 +61,8 @@ export default {
                 }),
             });
         },
-        onSave() {
-            this.removeErrors();
-
-            this.updateUnit({
-                id: this.id,
-                data: {
-                    name: this.name,
-                    symbol: this.symbol,
-                },
-                onSuccess: this.onUpdateUnitSuccess,
-                onError: this.onError,
-            });
-        },
-        async onUpdateUnitSuccess() {
-            await this.getCurrentDictionary({
-                dictionaryName: 'units',
-            });
-            await this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Unit updated',
-            });
-        },
         async onRemoveUnitSuccess() {
-            await this.getCurrentDictionary({
+            await this.getDictionary({
                 dictionaryName: 'units',
             });
             await this.$addAlert({

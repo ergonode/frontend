@@ -20,7 +20,7 @@
                 </Button>
             </template>
         </TitleBar>
-        <ResponsiveCenteredViewTemplate>
+        <CenterViewTemplate>
             <template #content>
                 <Grid
                     :is-editable="isAllowedToUpdate"
@@ -40,11 +40,11 @@
                     @deleteRow="onRemoveRow"
                     @fetchData="onFetchData" />
             </template>
-        </ResponsiveCenteredViewTemplate>
+        </CenterViewTemplate>
         <CreateProductTemplateModalForm
             v-if="isCreateProductTemplateVisible"
             @close="onCloseModal"
-            @create="onCreatedProductTemplate" />
+            @created="onCreatedProductTemplate" />
     </Page>
 </template>
 
@@ -52,7 +52,7 @@
 import {
     WHITESMOKE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     GRID_LAYOUT,
 } from '@Core/defaults/grid';
@@ -65,7 +65,7 @@ import PRIVILEGES from '@Templates/config/privileges';
 export default {
     name: 'Templates',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),

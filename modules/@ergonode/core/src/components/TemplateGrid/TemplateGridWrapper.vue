@@ -304,12 +304,12 @@ export default {
 
 <style lang="scss" scoped>
     .template-grid-wrapper {
-        z-index: $Z_INDEX_LVL_2;
         display: flex;
         flex: 1 1 auto;
         flex-direction: column;
         justify-content: space-between;
         height: 0;
         padding: 24px 24px 0;
+        overflow: auto;
     }
 </style>

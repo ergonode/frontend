@@ -5,8 +5,7 @@
 <template>
     <ProductPage
         :title="sku"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -17,17 +16,9 @@ import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import {
-    getKeyByValue,
-} from '@Core/models/objectWrapper';
-import {
-    PRODUCT_TYPE,
-} from '@Products/defaults';
-import {
     mapActions,
     mapState,
 } from 'vuex';
-
-const applyProductDraft = () => import('@Products/services/applyProductDraft.service');
 
 export default {
     name: 'ProductEdit',
@@ -60,15 +51,7 @@ export default {
     },
     computed: {
         ...mapState('product', {
-            id: state => state.id,
             sku: state => state.sku,
-            type: state => state.type,
-            template: state => state.template,
-            categories: state => state.categories,
-            bindingAttributesIds: state => state.bindingAttributesIds,
-        }),
-        ...mapState('dictionaries', {
-            productTypes: state => state.productTypes,
         }),
     },
     destroyed() {
@@ -76,16 +59,9 @@ export default {
     },
     methods: {
         ...mapActions('product', [
-            'updateProduct',
             'removeProduct',
             '__clearStorage',
         ]),
-        onDraftAppliedSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Product updated',
-            });
-        },
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
@@ -103,36 +79,6 @@ export default {
                     onSuccess: this.onRemoveSuccess,
                 }),
             });
-        },
-        async onSave() {
-            const {
-                params: {
-                    id,
-                },
-            } = this.$route;
-            const data = {
-                templateId: this.template,
-                categoryIds: this.categories,
-            };
-
-            if (getKeyByValue(this.productTypes, this.type) === PRODUCT_TYPE.WITH_VARIANTS) {
-                data.bindings = this.bindingAttributesIds;
-            }
-
-            await this.$setLoader('footerButton');
-            await this.updateProduct({
-                id,
-                data,
-            });
-            await applyProductDraft()
-                .then(request => request
-                    .default({
-                        $axios: this.$axios,
-                        $store: this.$store,
-                        id,
-                    })
-                    .then(this.onDraftAppliedSuccess));
-            await this.$removeLoader('footerButton');
         },
     },
     head() {

@@ -7,25 +7,39 @@ import {
     SYSTEM_TYPES,
 } from '@Attributes/defaults/attributes';
 import {
+    getAll as getAllAttributes,
+} from '@Attributes/services/attribute/index';
+import {
     getUUID,
 } from '@Core/models/stringWrapper';
 import {
     getMappedLayoutElement,
     getMappedLayoutElements,
+    getMappedLayoutElementsForAPIUpdate,
 } from '@Templates/models/templateMapper';
+import {
+    create,
+    get,
+    getAll,
+    getTypes,
+    remove,
+    update,
+} from '@Templates/services/index';
 
 import {
     types,
 } from './mutations';
 
 export default {
-    getTemplateByID(
+    async getTemplate(
         {
             commit,
             dispatch,
             rootState,
         },
-        id,
+        {
+            id,
+        },
     ) {
         const {
             user: {
@@ -33,107 +47,128 @@ export default {
             },
         } = rootState.authentication;
 
-        return Promise.all([
-            this.app.$axios.$get(`templates/${id}`),
-            this.app.$axios.$get('templates/types', {
-                params: {
-                    view: 'list',
-                },
-            }),
-        ]).then(([
+        const [
             template,
             templateTypes,
-        ]) => {
-            const {
-                name,
-                image_id: imageID,
-                default_label: defaultLabel,
-                default_image: defaultImage,
-                elements,
-            } = template;
+        ] = await Promise.all([
+            get({
+                $axios: this.app.$axios,
+                id,
+            }),
+            getTypes({
+                $axios: this.app.$axios,
+            }),
+        ]);
 
-            // TODO: BE has no filter via ID's - we gonna wait for them
-            // const attributesId = elements.map(el => el.properties.attribute_id);
-            const params = {
-                // filter: `id=${attributesId.join(',')}`,
-                view: 'list',
-            };
+        const {
+            name,
+            image_id: imageID,
+            default_label: defaultLabel,
+            default_image: defaultImage,
+            elements,
+        } = template;
 
-            commit('__SET_STATE', {
-                key: 'defaultTextAttribute',
-                value: defaultLabel || SKU_MODEL_ID,
+        commit('__SET_STATE', {
+            key: 'defaultTextAttribute',
+            value: defaultLabel || SKU_MODEL_ID,
+        });
+        commit('__SET_STATE', {
+            key: 'defaultImageAttribute',
+            value: defaultImage,
+        });
+        commit('__SET_STATE', {
+            key: 'types',
+            value: templateTypes.collection,
+        });
+        commit('__SET_STATE', {
+            key: 'title',
+            value: name,
+        });
+        commit('__SET_STATE', {
+            key: 'id',
+            value: id,
+        });
+        commit('__SET_STATE', {
+            key: 'image',
+            value: imageID,
+        });
+
+        const {
+            collection,
+        } = await getAllAttributes({
+            $axios: this.app.$axios,
+        });
+
+        const elementDescriptions = collection.reduce((prev, curr) => {
+            const tmp = prev;
+
+            tmp[curr.id] = curr.label || curr.code;
+
+            return tmp;
+        }, {});
+
+        const layoutElements = getMappedLayoutElements(
+            elements,
+            elementDescriptions,
+            templateTypes.collection,
+        );
+
+        for (let i = layoutElements.length - 1; i > -1; i -= 1) {
+            dispatch('list/setDisabledElement', {
+                languageCode,
+                elementId: layoutElements[i].id,
+                disabled: true,
+            }, {
+                root: true,
             });
-            commit('__SET_STATE', {
-                key: 'defaultImageAttribute',
-                value: defaultImage,
-            });
-            commit('__SET_STATE', {
-                key: 'types',
-                value: templateTypes.collection,
-            });
-            commit('__SET_STATE', {
-                key: 'title',
-                value: name,
-            });
-            commit('__SET_STATE', {
-                key: 'id',
-                value: id,
-            });
-            commit('__SET_STATE', {
-                key: 'image',
-                value: imageID,
-            });
+        }
 
-            return this.app.$axios.$get('attributes', {
-                params,
-            }).then(({
-                collection,
-            }) => {
-                const elementDescriptions = collection.reduce((prev, curr) => {
-                    const tmp = prev;
-
-                    tmp[curr.id] = curr.label || curr.code;
-
-                    return tmp;
-                }, {});
-
-                const layoutElements = getMappedLayoutElements(
-                    elements,
-                    elementDescriptions,
-                    templateTypes.collection,
-                );
-
-                for (let i = layoutElements.length - 1; i > -1; i -= 1) {
-                    dispatch('list/setDisabledElement', {
-                        languageCode,
-                        elementId: layoutElements[i].id,
-                        disabled: true,
-                    }, {
-                        root: true,
-                    });
-                }
-
-                commit('__SET_STATE', {
-                    key: 'layoutElements',
-                    value: layoutElements,
-                });
-            });
+        commit('__SET_STATE', {
+            key: 'layoutElements',
+            value: layoutElements,
         });
     },
-    async updateTemplateDesigner(
-        {},
+    async updateProductTemplate(
         {
-            id,
-            data,
-            onSuccess,
-            onError,
+            state,
+        },
+        {
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`templates/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
-        await this.$removeLoader('footerButton');
+        try {
+            const {
+                id,
+                title,
+                image,
+                defaultTextAttribute,
+                defaultImageAttribute,
+                layoutElements,
+            } = state;
+
+            const data = {
+                name: title,
+                image,
+                defaultLabel: defaultTextAttribute !== SKU_MODEL_ID
+                    ? defaultTextAttribute
+                    : null,
+                defaultImage: defaultImageAttribute,
+                elements: getMappedLayoutElementsForAPIUpdate(layoutElements),
+            };
+
+            await update({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
-    addListElementToLayout({
+    async addListElementToLayout({
         commit, dispatch, rootState, state,
     }, position) {
         const {
@@ -151,31 +186,49 @@ export default {
             view: 'list',
             order: 'ASC',
         };
-        this.app.$axios.$get('attributes', {
+
+        const {
+            collection,
+        } = await getAllAttributes({
+            $axios: this.app.$axios,
             params,
+        });
+
+        const [
+            element,
+        ] = collection;
+
+        const layoutElement = getMappedLayoutElement({
+            id: element.id,
+            bounds: state.types.find(attributeType => attributeType.type === element.type),
+            label: element.label || element.code,
+            position,
+        });
+
+        dispatch('list/setDisabledElement', {
+            languageCode,
+            elementId: element.id,
+            disabled: true,
+        }, {
+            root: true,
+        });
+        commit(types.ADD_ELEMENT_TO_LAYOUT, layoutElement);
+    },
+    getTemplateOptions() {
+        return getAll({
+            $axios: this.app.$axios,
         }).then(({
             collection,
-        }) => {
-            const [
-                element,
-            ] = collection;
-
-            const layoutElement = getMappedLayoutElement({
-                id: element.id,
-                bounds: state.types.find(attributeType => attributeType.type === element.type),
-                label: element.label || element.code,
-                position,
-            });
-
-            dispatch('list/setDisabledElement', {
-                languageCode,
-                elementId: element.id,
-                disabled: true,
-            }, {
-                root: true,
-            });
-            commit(types.ADD_ELEMENT_TO_LAYOUT, layoutElement);
-        });
+        }) => ({
+            options: collection.map(({
+                id, name,
+            }) => ({
+                id,
+                key: '',
+                value: name,
+                hint: '',
+            })),
+        }));
     },
     addSectionElementToLayout: ({
         commit, state,
@@ -216,9 +269,65 @@ export default {
         });
         commit(types.REMOVE_LAYOUT_ELEMENT_AT_INDEX, index);
     },
-    removeTemplate({}, {
-        id, onSuccess,
-    }) {
-        return this.app.$axios.$delete(`templates/${id}`).then(() => onSuccess());
+    async createTemplate(
+        {
+            state,
+        },
+        {
+            onSuccess = () => {},
+            onError = () => {},
+        },
+    ) {
+        try {
+            const {
+                title,
+                image,
+                defaultTextAttribute,
+                defaultImageAttribute,
+            } = state;
+            const data = {
+                name: title,
+                image,
+                defaultLabel: defaultTextAttribute !== SKU_MODEL_ID
+                    ? defaultTextAttribute
+                    : null,
+                defaultImage: defaultImageAttribute,
+            };
+
+            const {
+                id,
+            } = await create({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess(id);
+        } catch (e) {
+            onError(e.data);
+        }
+    },
+    async removeTemplate(
+        {
+            state,
+        },
+        {
+            onSuccess,
+            onError = () => {},
+        },
+    ) {
+        const {
+            id,
+        } = state;
+
+        try {
+            await remove({
+                $axios: this.app.$axios,
+                id,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
 };

@@ -3,22 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <UserAvatarForm />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import UserAvatarForm from '@Users/components/Forms/UserAvatarForm';
 
 export default {
     name: 'UserAvatarTab',
     components: {
         UserAvatarForm,
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
     },
 };
 </script>

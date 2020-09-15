@@ -5,7 +5,16 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[typeIdFieldKey, codeFieldKey]">
+        :fields-keys="[
+            typeIdFieldKey,
+            codeFieldKey,
+        ]"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
@@ -24,7 +33,7 @@
                     label="Type"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errorMessages[typeIdFieldKey]"
-                    :fetch-options-request="getCollectionTypesOptionsRequest"
+                    :fetch-options-request="getCollectionTypeOptions"
                     @input="setTypeValue" />
             </FormSection>
         </template>
@@ -33,21 +42,27 @@
 
 <script>
 import PRIVILEGES from '@Collections/config/privileges';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import TextField from '@Core/components/Inputs/TextField';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     mapActions,
     mapState,
 } from 'vuex';
 
-const getCollectionTypesOptions = () => import('@Collections/services/getCollectionTypesOptions.service');
-
 export default {
     name: 'CollectionForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
-        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
+        Form,
+        FormSection,
+        TextField,
+        TranslationLazySelect,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     computed: {
         ...mapState('collection', {
             id: state => state.id,
@@ -72,6 +87,7 @@ export default {
     methods: {
         ...mapActions('collection', [
             '__setState',
+            'getCollectionTypeOptions',
         ]),
         setCodeValue(value) {
             this.__setState({
@@ -84,14 +100,6 @@ export default {
                 key: 'type',
                 value,
             });
-        },
-        getCollectionTypesOptionsRequest() {
-            return getCollectionTypesOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
         },
         dataCyGenerator(key) {
             return `collection-${key}`;

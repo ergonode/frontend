@@ -5,8 +5,7 @@
 <template>
     <ChannelPage
         :title="name"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -16,9 +15,6 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
-import {
-    removeObjectProperty,
-} from '@Core/models/objectWrapper';
 import {
     mapActions,
     mapState,
@@ -37,15 +33,11 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('channel/getChannel', {
-            id: params.id,
-        });
+        await store.dispatch('channel/getChannel', params);
     },
     computed: {
         ...mapState('channel', {
-            type: state => state.type,
             configuration: state => state.configuration,
-            scheduler: state => state.scheduler,
         }),
         name() {
             const {
@@ -61,13 +53,7 @@ export default {
     methods: {
         ...mapActions('channel', [
             '__clearStorage',
-            'updateChannel',
-            'updateScheduler',
             'removeChannel',
-        ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({
@@ -76,41 +62,6 @@ export default {
                 confirmCallback: () => this.removeChannel({
                     onSuccess: this.onRemoveSuccess,
                 }),
-            });
-        },
-        onSave() {
-            this.removeErrors();
-            this.updateChannel({
-                id: this.$route.params.id,
-                data: {
-                    type: this.type,
-                    ...JSON.parse(this.configuration),
-                },
-                onSuccess: this.onUpdateChannelSuccess,
-                onError: this.onError,
-            });
-            if (this.scheduler) {
-                const tmp = JSON.parse(this.scheduler);
-
-                this.updateScheduler({
-                    data: removeObjectProperty(tmp, 'id'),
-                    onSuccess: this.onUpdateSchedulerSuccess,
-                    onError: this.onError,
-                });
-            }
-        },
-        onUpdateSchedulerSuccess() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Scheduler updated',
-            });
-        },
-        onUpdateChannelSuccess() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Channel updated',
             });
         },
         onRemoveSuccess() {

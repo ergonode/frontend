@@ -3,18 +3,165 @@
  * See LICENSE for license details.
  */
 import {
+    SKU_MODEL,
     TYPES,
 } from '@Attributes/defaults/attributes';
 import {
     getMappedArrayOptions,
-    getMappedParameterValues,
 } from '@Attributes/models/attributeMapper';
+import {
+    create,
+    createOption,
+    get,
+    getAll,
+    getOption,
+    remove,
+    removeOption,
+    update,
+    updateOption,
+} from '@Attributes/services/attribute';
+import {
+    getMappedTranslationArrayOptions,
+} from '@Core/models/mappers/translationsMapper';
+import {
+    getKeyByValue,
+} from '@Core/models/objectWrapper';
 
 import {
     types,
 } from './mutations';
 
 export default {
+    async createAttribute({
+        state,
+        rootState,
+    },
+    {
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const {
+                code,
+                groups,
+                type,
+                scope,
+            } = state;
+            const {
+                attrTypes,
+            } = rootState.dictionaries;
+            const typeKey = type ? getKeyByValue(attrTypes, type) : null;
+            let data = {
+                code,
+                scope,
+                type: typeKey,
+                groups,
+            };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__before', {
+                $this: this,
+                type: typeKey,
+                data,
+            });
+            // EXTENDED BEFORE METHOD
+
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+
+            const {
+                id,
+            } = await create({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__after', {
+                $this: this,
+                type: typeKey,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess(id);
+        } catch (e) {
+            onError(e.data);
+        }
+    },
+    getAttributesByFilter({
+        rootState,
+    }, {
+        filter,
+    }) {
+        const {
+            language,
+        } = rootState.authentication.user;
+
+        return getAll({
+            $axios: this.app.$axios,
+            params: {
+                limit: 9999,
+                offset: 0,
+                filter,
+                view: 'list',
+                field: 'name',
+                order: 'ASC',
+            },
+        }).then(({
+            collection,
+        }) => getMappedTranslationArrayOptions({
+            options: collection,
+            languageCode: language,
+        }));
+    },
+    getAttributesOptionsByType({
+        rootState,
+    }, {
+        type,
+    }) {
+        const {
+            language,
+        } = rootState.authentication.user;
+        const filter = `type=${type}`;
+
+        return getAll({
+            $axios: this.app.$axios,
+            params: {
+                limit: 9999,
+                offset: 0,
+                filter,
+                view: 'list',
+                field: 'name',
+                order: 'ASC',
+            },
+        }).then(({
+            collection,
+        }) => {
+            const options = collection.map(element => ({
+                id: element.id,
+                key: element.code,
+                value: element.name,
+                hint: element.name ? `#${element.code} ${language}` : '',
+            }));
+
+            // TODO: Temporary till BE will create SKU as an attribute
+            if (type === TYPES.TEXT) {
+                options.push(SKU_MODEL);
+            }
+
+            return {
+                options,
+            };
+        });
+    },
     addAttributeOptionKey({
         commit,
     }, index) {
@@ -45,8 +192,11 @@ export default {
     }, {
         id, index,
     }) {
-        return this.app.$axios.$delete(`attributes/${state.id}/options/${id}`)
-            .then(() => commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index));
+        return removeOption({
+            $axios: this.app.$axios,
+            attributeId: state.id,
+            optionId: id,
+        }).then(() => commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index));
     },
     updateAttributeOptionKey({
         commit,
@@ -78,20 +228,19 @@ export default {
             commit(types.SET_UPDATED_OPTION, id);
         }
     },
-    getAttributeOptions({
+    async getAttributeOptions({
         commit,
     }, {
         id,
     }) {
-        const params = {
-            order: 'ASC',
-            field: 'code',
-        };
-        return this.app.$axios.$get(`attributes/${id}/options`, {
-            params,
-        }).then(options => commit(types.INITIALIZE_OPTIONS, getMappedArrayOptions(options)));
+        const options = await getOption({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        commit(types.INITIALIZE_OPTIONS, getMappedArrayOptions(options));
     },
-    getAttribute({
+    async getAttribute({
         dispatch, commit, rootState,
     }, {
         id,
@@ -100,127 +249,253 @@ export default {
             attrTypes,
         } = rootState.dictionaries;
 
-        return this.app.$axios.$get(`attributes/${id}`).then(({
+        // EXTENDED BEFORE METHOD
+        this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__before', {
+            $this: this,
+            data: {
+                id,
+            },
+        });
+        // EXTENDED BEFORE METHOD
+
+        const data = await get({
+            $axios: this.app.$axios,
+            id,
+        });
+        const {
             code,
             type,
             hint = '',
             label = '',
             groups: groupIds,
-            parameters,
             placeholder = '',
             scope,
-        }) => {
-            commit('__SET_STATE', {
-                key: 'id',
-                value: id,
-            });
-            commit('__SET_STATE', {
-                key: 'code',
-                value: code,
-            });
-            commit('__SET_STATE', {
-                key: 'scope',
-                value: scope,
-            });
-            commit('__SET_STATE', {
-                key: 'groups',
-                value: groupIds,
-            });
-            commit('__SET_STATE', {
-                key: 'type',
-                value: attrTypes[type],
-            });
+        } = data;
 
-            dispatch(
-                'tab/setTranslations',
-                {
-                    hint,
-                    label,
-                    placeholder,
-                },
-                {
-                    root: true,
-                },
-            );
-
-            if (parameters && type !== TYPES.TEXT_AREA) {
-                commit('__SET_STATE', {
-                    key: 'parameter',
-                    value: getMappedParameterValues(type, parameters, rootState.dictionaries),
-                });
-            }
-
-            if (type === TYPES.TEXT_AREA) {
-                commit('__SET_STATE', {
-                    key: 'parameter',
-                    value: parameters.rich_edit,
-                });
-            }
+        commit('__SET_STATE', {
+            key: 'id',
+            value: id,
         });
+        commit('__SET_STATE', {
+            key: 'code',
+            value: code,
+        });
+        commit('__SET_STATE', {
+            key: 'scope',
+            value: scope,
+        });
+        commit('__SET_STATE', {
+            key: 'groups',
+            value: groupIds,
+        });
+        commit('__SET_STATE', {
+            key: 'type',
+            value: attrTypes[type],
+        });
+
+        dispatch(
+            'tab/setTranslations',
+            {
+                hint,
+                label,
+                placeholder,
+            },
+            {
+                root: true,
+            },
+        );
+
+        // EXTENDED AFTER METHOD
+        this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__after', {
+            $this: this,
+            data,
+            type,
+        });
+        // EXTENDED AFTER METHOD
     },
     async updateAttribute(
         {
             state,
+            rootState,
             commit,
             dispatch,
         },
         {
-            id,
-            data,
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        const optionsToAddRequests = [];
-        const optionsToUpdateRequests = [];
+        try {
+            const {
+                id,
+                options,
+                updatedOptions,
+                type,
+                groups,
+                scope,
+            } = state;
+            const {
+                attrTypes,
+            } = rootState.dictionaries;
+            const {
+                translations: {
+                    label, placeholder, hint,
+                },
+            } = rootState.tab;
+            const addOptionsRequests = [];
+            const updateOptionsRequests = [];
+            const typeKey = getKeyByValue(attrTypes, type);
+            const optionKeys = Object.keys(options);
+            let data = {
+                groups,
+                scope,
+                label,
+                hint,
+                placeholder,
+            };
 
-        Object.keys(state.options).forEach((key) => {
-            const option = state.options[key];
-            const optionValue = option.value || null;
+            if (optionKeys.length > 0) {
+                const optionValues = Object.values(options);
+                const errors = {};
+                let isAnyError = false;
 
-            if (!option.id) {
-                optionsToAddRequests.push(
-                    this.app.$axios.$post(`attributes/${id}/options`, {
-                        code: option.key,
-                        label: optionValue,
-                    }).then(({
-                        id: optionId,
-                    }) => dispatch('updateAttributeOptionKey',
-                        {
-                            index: key,
-                            id: optionId,
-                            key: option.key,
-                        })),
-                );
-            } else if (state.updatedOptions[option.id]) {
-                optionsToUpdateRequests.push(
-                    this.app.$axios.$put(`attributes/${id}/options/${option.id}`, {
-                        code: option.key,
-                        label: optionValue,
-                    }),
-                );
+                optionKeys.forEach((optionKey) => {
+                    const fieldKey = `option_${optionKey}`;
+                    const duplications = optionValues
+                        .filter(({
+                            key,
+                        }) => key === options[optionKey].key);
+
+                    if (duplications.length > 1) {
+                        errors[fieldKey] = [
+                            'Option code must be unique',
+                        ];
+                        isAnyError = true;
+                    }
+                    if (!options[optionKey].key) {
+                        errors[fieldKey] = [
+                            'Option cannot be empty',
+                        ];
+                        isAnyError = true;
+                    }
+                });
+
+                if (isAnyError) {
+                    onError({
+                        errors,
+                    });
+                    return;
+                }
             }
-        });
 
-        await this.$setLoader('footerButton');
-        await Promise.all([
-            ...optionsToAddRequests,
-            ...optionsToUpdateRequests,
-            this.app.$axios.$put(`attributes/${id}`, data).catch(e => onError(e.data)),
-        ]).then(() => {
+            optionKeys.forEach((key) => {
+                const option = options[key];
+                const optionValue = option.value || null;
+
+                if (!option.id) {
+                    addOptionsRequests.push(
+                        createOption({
+                            $axios: this.app.$axios,
+                            id,
+                            data: {
+                                code: option.key,
+                                label: optionValue,
+                            },
+                        }).then(({
+                            id: optionId,
+                        }) => dispatch('updateAttributeOptionKey',
+                            {
+                                index: key,
+                                id: optionId,
+                                key: option.key,
+                            })),
+                    );
+                } else if (updatedOptions[option.id]) {
+                    updateOptionsRequests.push(
+                        updateOption({
+                            $axios: this.app.$axios,
+                            attributeId: id,
+                            optionId: option.id,
+                            data: {
+                                code: option.key,
+                                label: optionValue,
+                            },
+                        }),
+                    );
+                }
+            });
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__before', {
+                $this: this,
+                type: typeKey,
+                data,
+            });
+            // EXTENDED BEFORE METHOD
+
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+
+            await Promise.all([
+                ...addOptionsRequests,
+                ...updateOptionsRequests,
+                update({
+                    $axios: this.app.$axios,
+                    id,
+                    data,
+                }),
+            ]);
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__after', {
+                $this: this,
+                type: typeKey,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+
             commit(types.REMOVE_UPDATED_OPTION);
             onSuccess();
-        });
-        await this.$removeLoader('footerButton');
+        } catch (e) {
+            onError(e.data);
+        }
     },
-    removeAttribute({
-        state,
+    async removeAttribute({
+        state, rootState,
     }, {
         onSuccess,
     }) {
         const {
             id,
+            type,
         } = state;
-        return this.app.$axios.$delete(`attributes/${id}`).then(() => onSuccess());
+        const {
+            attrTypes,
+        } = rootState.dictionaries;
+        const typeKey = getKeyByValue(attrTypes, type);
+
+        // EXTENDED BEFORE METHOD
+        await this.$extendMethods('@Attributes/store/attribute/action/removeAttribute/__before', {
+            $this: this,
+            type: typeKey,
+        });
+        // EXTENDED BEFORE METHOD
+
+        await remove({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        // EXTENDED AFTER METHOD
+        await this.$extendMethods('@Attributes/store/attribute/action/removeAttribute/__after', {
+            $this: this,
+            type: typeKey,
+        });
+        // EXTENDED AFTER METHOD
+        onSuccess();
     },
 };

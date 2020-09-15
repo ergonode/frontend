@@ -30,8 +30,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-
-const deleteAttributeValues = () => import('@Products/services/deleteAttributeValues.service');
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'RestoreAttributeParentModalConfirm',
@@ -59,6 +60,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions('product', [
+            'removeProductDraft',
+        ]),
         onClose() {
             this.$emit('close');
         },
@@ -67,14 +71,9 @@ export default {
                 languageCode, productId, attribute,
             } = this.element;
 
-            deleteAttributeValues().then(response => response.default({
-                $axios: this.$axios,
-                $store: this.$store,
+            this.removeProductDraft({
                 languageCode,
-                elements: [
-                    attribute.element_id,
-                ],
-                productId,
+                attributeId: attribute.element_id,
             }).then(() => {
                 this.isRequestPending = false;
                 this.$addAlert({
@@ -93,7 +92,7 @@ export default {
                     type: ALERT_TYPE.ERROR,
                     message: 'Restore error',
                 });
-            }));
+            });
         },
     },
 };

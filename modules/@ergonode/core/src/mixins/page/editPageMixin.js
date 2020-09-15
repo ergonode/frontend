@@ -48,8 +48,5 @@ export default {
         onRemove() {
             this.$emit('remove');
         },
-        onSave() {
-            this.$emit('save');
-        },
     },
 };

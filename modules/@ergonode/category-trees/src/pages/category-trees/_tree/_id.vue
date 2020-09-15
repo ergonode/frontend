@@ -5,8 +5,7 @@
 <template>
     <CategoryTreePage
         :title="code"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -16,9 +15,6 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
-import {
-    getMappedTreeData,
-} from '@Trees/models/treeMapper';
 import {
     mapActions,
     mapState,
@@ -37,24 +33,11 @@ export default {
     async fetch({
         store, params,
     }) {
-        await Promise.all([
-            store.dispatch('categoryTree/__clearStorage'),
-            store.dispatch('tab/__clearStorage'),
-        ]);
-        await store.dispatch('categoryTree/getTree', {
-            treeId: params.id,
-        });
+        await store.dispatch('categoryTree/getCategoryTree', params);
     },
     computed: {
         ...mapState('categoryTree', {
-            treeId: state => state.treeId,
             code: state => state.code,
-        }),
-        ...mapState('gridDesigner', {
-            fullGridData: state => state.fullGridData,
-        }),
-        ...mapState('tab', {
-            translations: state => state.translations,
         }),
     },
     destroyed() {
@@ -62,16 +45,11 @@ export default {
     },
     methods: {
         ...mapActions('categoryTree', [
-            'updateTree',
             'removeCategoryTree',
         ]),
         ...mapActions('gridDesigner', {
             clearGridDesignerStorage: '__clearStorage',
         }),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
@@ -79,29 +57,6 @@ export default {
                 confirmCallback: () => this.removeCategoryTree({
                     onSuccess: this.onRemoveSuccess,
                 }),
-            });
-        },
-        onSave() {
-            const {
-                name,
-            } = this.translations;
-            const data = {
-                name,
-                categories: getMappedTreeData(this.fullGridData),
-            };
-
-            this.updateTree({
-                id: this.treeId,
-                data,
-                onSuccess: this.onUpdateSuccess,
-                onError: this.onError,
-            });
-        },
-        onUpdateSuccess() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Tree updated',
             });
         },
         onRemoveSuccess() {

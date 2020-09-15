@@ -2,56 +2,132 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    create,
+    get,
+    getAll,
+    remove,
+    update,
+} from '@Categories/services/index';
+
 export default {
-    getCategory(
+    async createCategory({
+        state,
+    },
+    {
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const {
+                code,
+            } = state;
+
+            await create({
+                $axios: this.app.$axios,
+                data: {
+                    code,
+                },
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
+    },
+    async getCategory(
         {
-            commit, dispatch,
+            commit,
+            dispatch,
         },
         {
-            categoryId, onError = () => {},
+            id,
         },
     ) {
-        return this.app.$axios.$get(`categories/${categoryId}`).then(({
-            id,
+        const {
             code,
             name = '',
-        }) => {
-            const translations = {
+        } = await get({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        const translations = {
+            name,
+        };
+
+        commit('__SET_STATE', {
+            key: 'id',
+            value: id,
+        });
+        commit('__SET_STATE', {
+            key: 'code',
+            value: code,
+        });
+        commit('__SET_STATE', {
+            key: 'name',
+            value: name,
+        });
+
+        dispatch('tab/setTranslations', translations, {
+            root: true,
+        });
+    },
+    getCategoriesOptions({
+        rootState,
+    }) {
+        const {
+            language,
+        } = rootState.authentication.user;
+
+        return getAll({
+            $axios: this.app.$axios,
+        }).then(({
+            collection,
+        }) => ({
+            options: collection.map(element => ({
+                id: element.id,
+                key: element.code,
+                value: element.name,
+                hint: element.name ? `#${element.code} ${language}` : '',
+            })),
+        }));
+    },
+    async updateCategory(
+        {
+            state,
+            rootState,
+        },
+        {
+            onSuccess = () => {},
+            onError = () => {},
+        },
+    ) {
+        try {
+            const {
+                id,
+            } = state;
+            const {
+                translations: {
+                    name,
+                },
+            } = rootState;
+            const data = {
                 name,
             };
 
-            commit('__SET_STATE', {
-                key: 'id',
-                value: id,
-            });
-            commit('__SET_STATE', {
-                key: 'code',
-                value: code,
-            });
-            commit('__SET_STATE', {
-                key: 'name',
-                value: name,
+            await update({
+                $axios: this.app.$axios,
+                id,
+                data,
             });
 
-            dispatch('tab/setTranslations', translations, {
-                root: true,
-            });
-        }).catch(onError);
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
-    async updateCategory(
-        {},
-        {
-            id,
-            data,
-            onSuccess,
-            onError,
-        },
-    ) {
-        await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`categories/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
-        await this.$removeLoader('footerButton');
-    },
-    removeCategory({
+    async removeCategory({
         state,
     }, {
         onSuccess,
@@ -59,6 +135,11 @@ export default {
         const {
             id,
         } = state;
-        return this.app.$axios.$delete(`categories/${id}`).then(() => onSuccess());
+
+        await remove({
+            $axios: this.app.$axios,
+            id,
+        });
+        onSuccess();
     },
 };

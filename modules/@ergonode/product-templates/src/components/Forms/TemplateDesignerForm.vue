@@ -5,7 +5,13 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[nameFieldKey]">
+        :fields-keys="[nameFieldKey]"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
@@ -49,23 +55,30 @@
 import {
     TYPES,
 } from '@Attributes/defaults/attributes';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import TextField from '@Core/components/Inputs/TextField';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 import PRIVILEGES from '@Templates/config/privileges';
 import {
     mapActions,
     mapState,
 } from 'vuex';
 
-const getAttributesOptionsByType = () => import('@Attributes/services/getAttributesOptionsByType.service');
-
 export default {
     name: 'TemplateDesignerForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
-        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
-        UploadImageFile: () => import('@Media/components/Inputs/UploadFile/UploadImageFile'),
+        Form,
+        FormSection,
+        TextField,
+        TranslationLazySelect,
+        UploadImageFile,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     computed: {
         ...mapState('productTemplate', {
             id: state => state.id,
@@ -90,6 +103,12 @@ export default {
         ...mapActions('productTemplate', [
             '__setState',
         ]),
+        ...mapActions('attribute', [
+            'getAttributesOptionsByType',
+        ]),
+        onSubmit() {
+            this.$emit('submit');
+        },
         setTitleValue(value) {
             this.__setState({
                 key: 'title',
@@ -115,22 +134,14 @@ export default {
             });
         },
         getDefaultTextAttributeOptionsRequest() {
-            return getAttributesOptionsByType().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                    type: TYPES.TEXT,
-                },
-            ));
+            return this.getAttributesOptionsByType({
+                type: TYPES.TEXT,
+            });
         },
         getDefaultImageAttributeOptionsRequest() {
-            return getAttributesOptionsByType().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                    type: TYPES.IMAGE,
-                },
-            ));
+            return this.getAttributesOptionsByType({
+                type: TYPES.IMAGE,
+            });
         },
         dataCyGenerator(key) {
             return `template-${key}`;

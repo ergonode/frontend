@@ -2,48 +2,100 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    create,
+    get,
+    remove,
+    update,
+} from '@Core/services/unit/index';
+
 export default {
     async getUnit(
         {
             commit,
         },
         {
-            unitId,
+            id,
         },
     ) {
-        await this.app.$axios.$get(`units/${unitId}`).then(async ({
+        const {
+            name,
+            symbol,
+        } = await get({
+            $axios: this.app.$axios,
             id,
-            name = '',
-            symbol = '',
-        }) => {
-            commit('__SET_STATE', {
-                key: 'id',
-                value: id,
-            });
-            commit('__SET_STATE', {
-                key: 'name',
-                value: name,
-            });
-            commit('__SET_STATE', {
-                key: 'symbol',
-                value: symbol,
-            });
+        });
+
+        commit('__SET_STATE', {
+            key: 'id',
+            value: id,
+        });
+        commit('__SET_STATE', {
+            key: 'name',
+            value: name,
+        });
+        commit('__SET_STATE', {
+            key: 'symbol',
+            value: symbol,
         });
     },
     async updateUnit(
-        {},
         {
-            id,
-            data,
-            onSuccess,
-            onError,
+            state,
+        },
+        {
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`units/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
-        await this.$removeLoader('footerButton');
+        const {
+            id, name, symbol,
+        } = state;
+        const data = {
+            name,
+            symbol,
+        };
+
+        try {
+            await update({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
-    removeUnit({
+    async createUnit({
+        state,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const {
+                name,
+                symbol,
+            } = state;
+
+            const data = {
+                name,
+                symbol,
+            };
+
+            const {
+                id,
+            } = await create({
+                $axios: this.app.$axios,
+                data,
+            });
+            onSuccess(id);
+        } catch (e) {
+            onError(e.data);
+        }
+    },
+    async removeUnit({
         state,
     }, {
         onSuccess,
@@ -52,9 +104,10 @@ export default {
             id,
         } = state;
 
-        return this.app.$axios.$delete(`units/${id}`)
-            .then(() => {
-                onSuccess();
-            });
+        await remove({
+            $axios: this.app.$axios,
+            id,
+        });
+        onSuccess();
     },
 };

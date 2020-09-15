@@ -3,7 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form :fields-keys="[segmentsFieldKey]">
+    <Form
+        :fields-keys="[segmentsFieldKey]"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TranslationSelect
@@ -21,14 +28,21 @@
 
 <script>
 import PRIVILEGES from '@Collections/config/privileges';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 
 export default {
     name: 'AddProductsFromSegmentForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
+        Form,
+        FormSection,
+        TranslationSelect,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     props: {
         segments: {
             type: Array,

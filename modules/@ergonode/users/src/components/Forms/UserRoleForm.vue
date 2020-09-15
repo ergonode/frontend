@@ -5,7 +5,13 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[descriptionFieldKey, nameFieldKey]">
+        :fields-keys="[descriptionFieldKey, nameFieldKey]"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
@@ -30,6 +36,11 @@
 </template>
 
 <script>
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TextArea from '@Core/components/Inputs/TextArea';
+import TextField from '@Core/components/Inputs/TextField';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
@@ -39,19 +50,22 @@ import {
 export default {
     name: 'UserRoleForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
-        TextArea: () => import('@Core/components/Inputs/TextArea'),
+        Form,
+        FormSection,
+        TextField,
+        TextArea,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     computed: {
         ...mapState('role', {
-            roleID: state => state.id,
+            id: state => state.id,
             name: state => state.name,
             description: state => state.description,
         }),
         isDisabled() {
-            return Boolean(this.roleID);
+            return Boolean(this.id);
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
@@ -69,6 +83,9 @@ export default {
         ...mapActions('role', [
             '__setState',
         ]),
+        onSubmit() {
+            this.$emit('submit');
+        },
         setNameValue(value) {
             this.__setState({
                 key: 'name',

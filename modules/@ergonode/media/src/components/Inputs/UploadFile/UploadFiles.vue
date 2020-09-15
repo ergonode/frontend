@@ -87,6 +87,9 @@ import {
 import {
     MEDIA_TYPE,
 } from '@Media/defaults';
+import {
+    get,
+} from '@Media/services/index';
 
 export default {
     name: 'UploadFiles',
@@ -202,7 +205,10 @@ export default {
 
                 this.value.forEach((id) => {
                     if (typeof this.localValue[id] === 'undefined') {
-                        requests.push(this.$axios.$get(`multimedia/${id}`).then(({
+                        requests.push(get({
+                            $axios: this.$axios,
+                            id,
+                        }).then(({
                             name,
                         }) => {
                             this.localValue[id] = name;

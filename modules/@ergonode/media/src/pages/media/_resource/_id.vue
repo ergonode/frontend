@@ -5,8 +5,7 @@
 <template>
     <ResourcePage
         :title="`${name}.${extension}`"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -30,7 +29,7 @@ export default {
     asyncData({
         store, params,
     }) {
-        return store.dispatch('media/getResource', params.id);
+        return store.dispatch('media/getResource', params);
     },
     computed: {
         ...mapState('media', {
@@ -41,11 +40,6 @@ export default {
     methods: {
         ...mapActions('media', [
             'removeResource',
-            'updateResource',
-        ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
         ]),
         onRemove() {
             this.$openModal({
@@ -56,12 +50,6 @@ export default {
                 }),
             });
         },
-        onSave() {
-            this.updateResource({
-                onSuccess: this.onResourceUpdated,
-                onError: this.onError,
-            });
-        },
         onRemoveResourceSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
@@ -69,13 +57,6 @@ export default {
             });
             this.$router.push({
                 name: 'media-grid',
-            });
-        },
-        onResourceUpdated() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Resource updated',
             });
         },
     },
