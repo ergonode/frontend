@@ -8,7 +8,9 @@
         @mouseover.native="onMouseOver"
         @mouseout.native="onMouseOut">
         <div class="element-content__icon">
-            <Component :is="attributeIconComponent" />
+            <Component
+                :is="attributeIconComponent.component"
+                v-bind="attributeIconComponent.props" />
         </div>
         <div class="vertical-wrapper">
             <span
@@ -60,9 +62,6 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import {
-    capitalizeAndConcatenationArray,
-} from '@Core/models/stringWrapper';
 import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
 import {
     mapActions,
@@ -123,13 +122,13 @@ export default {
             return 'element-content__header';
         },
         attributeIconComponent() {
-            if (!this.element.type) return '';
+            const extendedIcon = this.$getExtendedComponents('@Attributes/components/Lists/AttributeListElement/Icon');
 
-            const types = this.element.type.split('_');
-            const attributeName = capitalizeAndConcatenationArray(types);
+            if (extendedIcon && extendedIcon[this.element.type]) {
+                return extendedIcon[this.element.type];
+            }
 
-            return () => import(`@Core/components/Icons/Attributes/Icon${attributeName}`)
-                .catch(() => import('@Core/components/Icons/Menu/IconAttributes'));
+            return () => import('@Core/components/Icons/Menu/IconAttributes');
         },
         contextualMenuHoveStateClasses() {
             return {

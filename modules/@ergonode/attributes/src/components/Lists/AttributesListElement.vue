@@ -12,8 +12,9 @@
         @drag="onDrag">
         <ListElementIcon>
             <Component
-                :is="typeIconComponent"
-                :fill-color="iconFillColor" />
+                :is="typeIconComponent.component"
+                :fill-color="iconFillColor"
+                v-bind="typeIconComponent.props" />
         </ListElementIcon>
         <ListElementDescription>
             <ListElementTitle
@@ -27,9 +28,6 @@
 </template>
 
 <script>
-import {
-    TYPES,
-} from '@Attributes/defaults/attributes';
 import {
     GRAPHITE,
     GREY,
@@ -85,10 +83,13 @@ export default {
             return this.item.label || `#${this.item.code}`;
         },
         typeIconComponent() {
-            if (typeof TYPES[this.item.type] === 'undefined') {
-                return () => import('@Core/components/Icons/Menu/IconAttributes');
+            const extendedIcon = this.$getExtendedComponents('@Attributes/components/Lists/AttributeListElement/Icon');
+
+            if (extendedIcon && extendedIcon[this.item.type]) {
+                return extendedIcon[this.item.type];
             }
-            return () => import(`@Core/components/Icons/Attributes/Icon${this.formattedAttributeType}`);
+
+            return () => import('@Core/components/Icons/Menu/IconAttributes');
         },
         formattedAttributeType() {
             return capitalizeAndConcatenationArray(this.item.type.split('_'));

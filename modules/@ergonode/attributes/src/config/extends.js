@@ -34,7 +34,6 @@ const getTypeConfiguration = ({
                 value: $this.state.dictionaries.dateFormats,
                 fieldName: 'parameters',
             },
-            icon: Icons.IconDate,
         };
     case 'UNIT':
         return {
@@ -43,7 +42,6 @@ const getTypeConfiguration = ({
                 value: $this.state.dictionaries.units,
                 fieldName: 'parameters',
             },
-            icon: Icons.IconUnit,
         };
     case 'PRICE':
         return {
@@ -52,7 +50,6 @@ const getTypeConfiguration = ({
                 value: $this.state.dictionaries.currencies,
                 fieldName: 'parameters',
             },
-            icon: Icons.IconPrice,
         };
     case 'TEXT_AREA':
         return {
@@ -60,33 +57,18 @@ const getTypeConfiguration = ({
                 key: 'richEdit',
                 fieldName: 'parameters',
             },
-            icon: Icons.IconTextArea,
-        };
-    case 'TEXT':
-        return {
-            icon: Icons.IconText,
-        };
-    case 'NUMERIC':
-        return {
-            icon: Icons.Numeric,
         };
     case 'SELECT':
         return {
             params: {
                 fieldName: 'options',
             },
-            icon: Icons.IconSelect,
         };
     case 'MULTI_SELECT':
         return {
             params: {
                 fieldName: 'options',
             },
-            icon: Icons.IconMultiSelect,
-        };
-    case 'IMAGE':
-        return {
-            icon: Icons.IconImage,
         };
     default:
         return null;
@@ -337,6 +319,35 @@ export default {
             },
             MULTI_SELECT: {
                 component: Components.AttributeTranslationFormOptions,
+            },
+        },
+        '@Attributes/components/Lists/AttributeListElement/Icon': {
+            NUMERIC: {
+                component: Icons.IconNumeric,
+            },
+            TEXT: {
+                component: Icons.IconText,
+            },
+            TEXT_AREA: {
+                component: Icons.IconTextArea,
+            },
+            SELECT: {
+                component: Icons.IconSelect,
+            },
+            MULTI_SELECT: {
+                component: Icons.IconMultiSelect,
+            },
+            DATE: {
+                component: Icons.IconDate,
+            },
+            UNIT: {
+                component: Icons.IconUnit,
+            },
+            PRICE: {
+                component: Icons.IconPrice,
+            },
+            IMAGE: {
+                component: Icons.IconImage,
             },
         },
     },
