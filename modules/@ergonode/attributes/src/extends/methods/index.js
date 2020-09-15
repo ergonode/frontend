@@ -5,7 +5,8 @@
  */
 import {
     createOption,
-} from '@Attributes/services/attribute';
+    updateOption,
+} from '@Attributes/extends/services';
 import {
     getKeyByValue,
     isObject,
@@ -114,7 +115,7 @@ export const prepareOptionsData = ({
     }
 };
 
-export const sendOptionsData = async ({
+export const createOptionsData = async ({
     $this, data,
 }) => {
     const {
@@ -133,6 +134,60 @@ export const sendOptionsData = async ({
             },
         })),
     );
+};
+
+export const updateOptionsData = async ({
+    $this,
+}) => {
+    const {
+        id,
+        options,
+        updatedOptions,
+    } = $this.state.attribute;
+    const optionKeys = Object.keys(options);
+    const addOptionsRequests = [];
+    const updateOptionsRequests = [];
+
+    optionKeys.forEach((key) => {
+        const option = options[key];
+        const optionValue = option.value || null;
+
+        if (!option.id) {
+            addOptionsRequests.push(
+                createOption({
+                    $axios: $this.app.$axios,
+                    id,
+                    data: {
+                        code: option.key,
+                        label: optionValue,
+                    },
+                }).then(({
+                    id: optionId,
+                }) => $this.dispatch('attribute/updateAttributeOptionKey',
+                    {
+                        index: key,
+                        id: optionId,
+                        key: option.key,
+                    })),
+            );
+        } else if (updatedOptions[option.id]) {
+            updateOptionsRequests.push(
+                updateOption({
+                    $axios: $this.app.$axios,
+                    attributeId: id,
+                    optionId: option.id,
+                    data: {
+                        code: option.key,
+                        label: optionValue,
+                    },
+                }),
+            );
+        }
+    });
+    await Promise.all([
+        ...addOptionsRequests,
+        ...updateOptionsRequests,
+    ]);
 };
 
 export const setParametersData = ({
@@ -171,4 +226,28 @@ export const setTextAreaData = ({
         key: fieldName,
         value: data[fieldName].rich_edit,
     });
+};
+
+export const setTranslation = ({
+    $this, data,
+}) => {
+    const {
+        placeholder = '',
+    } = data;
+
+    $this.commit('tab/SET_TRANSLATIONS', {
+        placeholder,
+    });
+};
+
+export const updateTranslation = ({
+    $this,
+}) => {
+    const {
+        placeholder,
+    } = $this.state.tab.translations;
+
+    return {
+        placeholder,
+    };
 };

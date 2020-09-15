@@ -14,6 +14,7 @@ export const types = {
 export default {
     [types.SET_TRANSLATIONS](state, translations) {
         state.translations = {
+            ...state.translations,
             ...translations,
         };
     },

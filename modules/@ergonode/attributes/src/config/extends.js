@@ -3,12 +3,18 @@
  * See LICENSE for license details.
  */
 import {
+    SKU_MODEL,
+} from '@Attributes/defaults/attributes';
+import {
+    createOptionsData,
     prepareOptionsData,
     prepareParametersData,
     prepareTextAreaData,
-    sendOptionsData,
     setParametersData,
     setTextAreaData,
+    setTranslation,
+    updateOptionsData,
+    updateTranslation,
 } from '@Attributes/extends/methods';
 
 import {
@@ -145,7 +151,7 @@ export default {
                 switch (type) {
                 case 'SELECT':
                 case 'MULTI_SELECT':
-                    return sendOptionsData({
+                    return createOptionsData({
                         $this,
                         typeConfig,
                         data,
@@ -155,6 +161,79 @@ export default {
                 }
             }
             return {};
+        },
+        '@Attributes/store/attribute/action/updateAttribute/__before': ({
+            $this, type, data,
+        }) => {
+            const typeConfig = getTypeConfiguration({
+                $this,
+                type,
+            });
+
+            if (typeConfig) {
+                switch (type) {
+                case 'SELECT':
+                case 'MULTI_SELECT':
+                    prepareOptionsData({
+                        $this,
+                        typeConfig,
+                    });
+                    updateOptionsData({
+                        $this,
+                        data,
+                    });
+                    return {};
+                case 'NUMERIC':
+                case 'TEXT':
+                case 'TEXT_AREA':
+                    return updateTranslation({
+                        $this,
+                    });
+                default:
+                    return {};
+                }
+            }
+            return {};
+        },
+        '@Attributes/store/attribute/action/updateAttribute/__after': ({
+            $this, type,
+        }) => {
+            const typeConfig = getTypeConfiguration({
+                $this,
+                type,
+            });
+
+            if (typeConfig) {
+                switch (type) {
+                case 'SELECT':
+                case 'MULTI_SELECT':
+                    $this.commit('attribute/REMOVE_UPDATED_OPTION');
+                    break;
+                default:
+                    break;
+                }
+            }
+        },
+        '@Attributes/store/attribute/action/getAttributesOptionsByType/__after': ({
+            $this, type,
+        }) => {
+            const typeConfig = getTypeConfiguration({
+                $this,
+                type,
+            });
+
+            if (typeConfig) {
+                switch (type) {
+                case 'TEXT':
+                    // TODO: Temporary till BE will create SKU as an attribute
+                    return [
+                        SKU_MODEL,
+                    ];
+                default:
+                    return [];
+                }
+            }
+            return [];
         },
         '@Attributes/store/attribute/action/getAttribute/__after': ({
             $this, data, type,
@@ -169,22 +248,34 @@ export default {
                 case 'DATE':
                 case 'UNIT':
                 case 'PRICE':
-                    return setParametersData({
+                    setParametersData({
                         $this,
                         data,
                         typeConfig,
                     });
+                    break;
                 case 'TEXT_AREA':
-                    return setTextAreaData({
+                    setTranslation({
+                        $this,
+                        data,
+                    });
+                    setTextAreaData({
                         $this,
                         data,
                         typeConfig,
                     });
+                    break;
+                case 'NUMERIC':
+                case 'TEXT':
+                    setTranslation({
+                        $this,
+                        data,
+                    });
+                    break;
                 default:
-                    return {};
+                    break;
                 }
             }
-            return {};
         },
     },
     extendComponents: {

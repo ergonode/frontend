@@ -3,22 +3,11 @@
  * See LICENSE for license details.
  */
 import {
-    SKU_MODEL,
-    TYPES,
-} from '@Attributes/defaults/attributes';
-import {
-    getMappedArrayOptions,
-} from '@Attributes/models/attributeMapper';
-import {
     create,
-    createOption,
     get,
     getAll,
-    getOption,
     remove,
-    removeOption,
     update,
-    updateOption,
 } from '@Attributes/services/attribute';
 import {
     getMappedTranslationArrayOptions,
@@ -26,10 +15,6 @@ import {
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
-
-import {
-    types,
-} from './mutations';
 
 export default {
     async createAttribute({
@@ -59,17 +44,17 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__before', {
+            const extendedData = await this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__before', {
                 $this: this,
                 type: typeKey,
                 data,
             });
             // EXTENDED BEFORE METHOD
 
-            extendedData.forEach((extend) => {
+            extendedData.forEach((extended) => {
                 data = {
                     ...data,
-                    ...extend,
+                    ...extended,
                 };
             });
 
@@ -132,6 +117,13 @@ export default {
         } = rootState.authentication.user;
         const filter = `type=${type}`;
 
+        // EXTENDED BEFORE METHOD
+        this.$extendMethods('@Attributes/store/attribute/action/getAttributesOptionsByType/__before', {
+            $this: this,
+            type,
+        });
+        // EXTENDED BEFORE METHOD
+
         return getAll({
             $axios: this.app.$axios,
             params: {
@@ -145,100 +137,32 @@ export default {
         }).then(({
             collection,
         }) => {
-            const options = collection.map(element => ({
+            let options = collection.map(element => ({
                 id: element.id,
                 key: element.code,
                 value: element.name,
                 hint: element.name ? `#${element.code} ${language}` : '',
             }));
 
-            // TODO: Temporary till BE will create SKU as an attribute
-            if (type === TYPES.TEXT) {
-                options.push(SKU_MODEL);
-            }
+            // EXTENDED AFTER METHOD
+            const extendedData = this.$extendMethods('@Attributes/store/attribute/action/getAttributesOptionsByType/__after', {
+                $this: this,
+                type,
+                data: options,
+            });
+            // EXTENDED AFTER METHOD
+
+            extendedData.forEach((extended) => {
+                options = [
+                    ...options,
+                    ...extended,
+                ];
+            });
 
             return {
                 options,
             };
         });
-    },
-    addAttributeOptionKey({
-        commit,
-    }, index) {
-        commit(types.ADD_ATTRIBUTE_OPTION_KEY, index);
-    },
-    removeAttributeOptionKey({
-        commit, dispatch,
-    }, {
-        id, index,
-    }) {
-        if (id) {
-            dispatch('removeOption', {
-                id,
-                index,
-            });
-        } else {
-            commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index);
-        }
-    },
-    removeAttributeOptions({
-        commit,
-    }) {
-        commit(types.INITIALIZE_OPTIONS);
-    },
-    removeOption({
-        commit,
-        state,
-    }, {
-        id, index,
-    }) {
-        return removeOption({
-            $axios: this.app.$axios,
-            attributeId: state.id,
-            optionId: id,
-        }).then(() => commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index));
-    },
-    updateAttributeOptionKey({
-        commit,
-    }, option) {
-        if (option.id) {
-            commit(types.SET_UPDATED_OPTION, option.id);
-        }
-        commit(types.SET_ATTRIBUTE_OPTION_KEY, option);
-    },
-    setOptionValueForLanguageCode({
-        commit, state,
-    }, {
-        index, languageCode, value, id,
-    }) {
-        if (!state.options[index].value || !state.options[index].value[languageCode]) {
-            commit(types.SET_OPTION_LANGUAGE_CODE_FOR_VALUE, {
-                index,
-                languageCode,
-            });
-        }
-
-        commit(types.SET_OPTION_VALUE_FOR_LANGUAGE_CODE, {
-            index,
-            languageCode,
-            value,
-        });
-
-        if (id) {
-            commit(types.SET_UPDATED_OPTION, id);
-        }
-    },
-    async getAttributeOptions({
-        commit,
-    }, {
-        id,
-    }) {
-        const options = await getOption({
-            $axios: this.app.$axios,
-            id,
-        });
-
-        commit(types.INITIALIZE_OPTIONS, getMappedArrayOptions(options));
     },
     async getAttribute({
         dispatch, commit, rootState,
@@ -268,7 +192,6 @@ export default {
             hint = '',
             label = '',
             groups: groupIds,
-            placeholder = '',
             scope,
         } = data;
 
@@ -298,7 +221,6 @@ export default {
             {
                 hint,
                 label,
-                placeholder,
             },
             {
                 root: true,
@@ -317,8 +239,6 @@ export default {
         {
             state,
             rootState,
-            commit,
-            dispatch,
         },
         {
             onSuccess = () => {},
@@ -328,8 +248,6 @@ export default {
         try {
             const {
                 id,
-                options,
-                updatedOptions,
                 type,
                 groups,
                 scope,
@@ -339,97 +257,25 @@ export default {
             } = rootState.dictionaries;
             const {
                 translations: {
-                    label, placeholder, hint,
+                    label, hint,
                 },
             } = rootState.tab;
-            const addOptionsRequests = [];
-            const updateOptionsRequests = [];
             const typeKey = getKeyByValue(attrTypes, type);
-            const optionKeys = Object.keys(options);
             let data = {
                 groups,
                 scope,
                 label,
                 hint,
-                placeholder,
             };
 
-            if (optionKeys.length > 0) {
-                const optionValues = Object.values(options);
-                const errors = {};
-                let isAnyError = false;
-
-                optionKeys.forEach((optionKey) => {
-                    const fieldKey = `option_${optionKey}`;
-                    const duplications = optionValues
-                        .filter(({
-                            key,
-                        }) => key === options[optionKey].key);
-
-                    if (duplications.length > 1) {
-                        errors[fieldKey] = [
-                            'Option code must be unique',
-                        ];
-                        isAnyError = true;
-                    }
-                    if (!options[optionKey].key) {
-                        errors[fieldKey] = [
-                            'Option cannot be empty',
-                        ];
-                        isAnyError = true;
-                    }
-                });
-
-                if (isAnyError) {
-                    onError({
-                        errors,
-                    });
-                    return;
-                }
-            }
-
-            optionKeys.forEach((key) => {
-                const option = options[key];
-                const optionValue = option.value || null;
-
-                if (!option.id) {
-                    addOptionsRequests.push(
-                        createOption({
-                            $axios: this.app.$axios,
-                            id,
-                            data: {
-                                code: option.key,
-                                label: optionValue,
-                            },
-                        }).then(({
-                            id: optionId,
-                        }) => dispatch('updateAttributeOptionKey',
-                            {
-                                index: key,
-                                id: optionId,
-                                key: option.key,
-                            })),
-                    );
-                } else if (updatedOptions[option.id]) {
-                    updateOptionsRequests.push(
-                        updateOption({
-                            $axios: this.app.$axios,
-                            attributeId: id,
-                            optionId: option.id,
-                            data: {
-                                code: option.key,
-                                label: optionValue,
-                            },
-                        }),
-                    );
-                }
-            });
-
             // EXTENDED BEFORE METHOD
-            const extendedData = this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__before', {
+            const extendedData = await this.$extendMethods('@Attributes/store/attribute/action/updateAttribute/__before', {
                 $this: this,
                 type: typeKey,
-                data,
+                data: {
+                    id,
+                    ...data,
+                },
             });
             // EXTENDED BEFORE METHOD
 
@@ -440,25 +286,20 @@ export default {
                 };
             });
 
-            await Promise.all([
-                ...addOptionsRequests,
-                ...updateOptionsRequests,
-                update({
-                    $axios: this.app.$axios,
-                    id,
-                    data,
-                }),
-            ]);
+            await update({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__after', {
+            await this.$extendMethods('@Attributes/store/attribute/action/updateAttribute/__after', {
                 $this: this,
                 type: typeKey,
                 data,
             });
             // EXTENDED AFTER METHOD
 
-            commit(types.REMOVE_UPDATED_OPTION);
             onSuccess();
         } catch (e) {
             onError(e.data);
