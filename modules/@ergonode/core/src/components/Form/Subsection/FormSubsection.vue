@@ -45,11 +45,6 @@ export default {
         &__title {
             color: $GRAPHITE_DARK;
             font: $FONT_SEMI_BOLD_14_20;
-
-            &::after {
-                color: $RED;
-                content: "*";
-            }
         }
 
         &--required {

@@ -15,6 +15,7 @@
         :is-header-visible="true"
         :is-collection-layout="true"
         @editRow="onEditRow"
+        @previewRow="onEditRow"
         @cellValue="onCellValueChange"
         @deleteRow="onRemoveRow"
         @fetchData="onFetchData">

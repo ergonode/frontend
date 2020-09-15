@@ -1,6 +1,6 @@
 {
   "name": "@ergonode/users",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "author": "Team Ergonode <team@ergonode.com>",
   "description": "Ergonode users module",
   "license": "OSL-3.0",

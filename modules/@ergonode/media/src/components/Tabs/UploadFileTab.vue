@@ -129,6 +129,7 @@ export default {
                 const cancelToken = this.$axios.CancelToken.source();
                 const config = {
                     cancelToken: cancelToken.token,
+                    withLanguage: false,
                     onUploadProgress: ({
                         loaded, total,
                     }) => {

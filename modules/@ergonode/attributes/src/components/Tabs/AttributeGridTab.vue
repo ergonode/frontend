@@ -15,6 +15,7 @@
                 :is-basic-filter="true"
                 :is-border="true"
                 @editRow="onEditRow"
+                @previewRow="onEditRow"
                 @deleteRow="onRemoveRow"
                 @fetchData="onFetchData" />
         </template>
