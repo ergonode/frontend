@@ -6,21 +6,21 @@ Feature: Status adding
     When I click on "new-status" button
     Then Element "modal" is "visible"
 
-  Scenario: Add status and delete by request
+  Scenario: Add status and remove it from Grid
     When I fill the "status-code" input with the "status_4" term
     And I choose 0 option from "status-color" color picker field
-    When On "modal" element I click button with "CREATE" text
+    When I click on "submit" button
     Then I send a "POST" request and status code should be 201
     And I open "product-statuses/grid" page
     Then On "grid" I can see row with "status_4" value and columns data: "{'0': 'status_4'}"
     And On "grid" I click on "delete" button for row with "status_4" value
     Then I close modal by button
-    And I remove "this" element by "DELETE" request
+    And I remove element by "DELETE" request
 
   Scenario: Add status and delete by grid button
     When I fill the "status-code" input with the "status_5" term
     And I choose 4 option from "status-color" color picker field
-    When On "modal" element I click button with "CREATE" text
+    When I click on "submit" button
     Then I send a "POST" request and status code should be 201
     And I open "product-statuses/grid" page
     Then On "grid" I can see row with "status_5" value and columns data: "{'0': 'status_5'}"
@@ -31,7 +31,7 @@ Feature: Status adding
   Scenario: Add status and delete from edit
     When I fill the "status-code" input with the "status_6" term
     And I choose 6 option from "status-color" color picker field
-    When On "modal" element I click button with "CREATE & EDIT" text
+    When I click on "proceed" button
     Then I send a "POST" request and status code should be 201
     And I see "product-statuses/status/%UUID%/general" page
     Then Element "status-code" is "visible"
@@ -44,7 +44,7 @@ Feature: Status adding
   Scenario: Add status for use
     When I fill the "status-code" input with the "status_done" term
     And I choose 6 option from "status-color" color picker field
-    And On "modal" element I click button with "CREATE & EDIT" text
+    And I click on "proceed" button
     Then I send a "POST" request and status code should be 201
     And I see "product-statuses/status/%UUID%/general" page
     Then I click tab with "Translations" text

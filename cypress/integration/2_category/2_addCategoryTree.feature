@@ -6,19 +6,19 @@ Feature: Category tree adding
     When I click on "new-category-tree" button
     Then Element "modal" is "visible"
 
-  Scenario: Add category tree and delete by request
+  Scenario: Add category tree and remove it from Grid
     When I fill the "category-tree-code" input with the "category_tree_1" term
-    When On "modal" element I click button with "CREATE" text
+    When I click on "submit" button
     Then I send a "POST" request and status code should be 201
     And I open "category-trees/grid" page
     Then On "grid" I can see row with "category_tree_1" value and columns data: "{'0': 'category_tree_1'}"
     And On "grid" I click on "delete" button for row with "category_tree_1" value
     Then I close modal by button
-    And I remove "this" element by "DELETE" request
+    And I remove element by "DELETE" request
 
   Scenario: Add category tree and delete by grid button
     When I fill the "category-tree-code" input with the "category_tree_2" term
-    When On "modal" element I click button with "CREATE" text
+    When I click on "submit" button
     Then I send a "POST" request and status code should be 201
     And I open "category-trees/grid" page
     Then On "grid" I can see row with "category_tree_2" value and columns data: "{'0': 'category_tree_2'}"
@@ -28,7 +28,7 @@ Feature: Category tree adding
 
   Scenario: Add category tree and delete from edit
     When I fill the "category-tree-code" input with the "category_tree_3" term
-    When On "modal" element I click button with "CREATE & EDIT" text
+    When I click on "proceed" button
     Then I send a "POST" request and status code should be 201
     And I see "category-trees/tree/%UUID%/general" page
     Then Element "category-tree-code" is "visible"
@@ -40,7 +40,7 @@ Feature: Category tree adding
 
   Scenario: Add category tree and edit
     When I fill the "category-tree-code" input with the "category_tree" term
-    And On "modal" element I click button with "CREATE & EDIT" text
+    And I click on "proceed" button
     Then I send a "POST" request and status code should be 201
     And I see "category-trees/tree/%UUID%/general" page
     Then I click tab with "Translations" text

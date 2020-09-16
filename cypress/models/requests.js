@@ -13,7 +13,8 @@ export const visitPage = ({
     if (id === 'this') {
         fullPath = `${path}/${responseID}`;
     }
-    cy.url().should('include', fullPath);
+    cy.url()
+        .should('include', fullPath);
 };
 
 export const getToken = () => {
@@ -24,38 +25,17 @@ export const getToken = () => {
         });
 };
 
-export const sendPostRequest = ({
+export const sendRequest = ({
     reqType, status, urlRegExp,
 }) => {
-    cy.wait(`@${reqType}-REQUEST`).should((xhr) => {
-        expect(xhr.method).to.equal(reqType);
-        expect(xhr.status, 'Successful response').to.equal(status);
-        expect(xhr.url, 'Response URL').to.match(urlRegExp);
-        if (reqType === 'POST') {
-            responseID = xhr.response.body.id;
-        }
-    });
-};
-
-export const removeRequest = ({
-    element, reqType, path,
-}) => {
-    let fullPath = `${path}/${element}`;
-
-    if (element === 'this') {
-        fullPath = `${path}/${responseID}`;
-    }
-
-    cy.request({
-        method: reqType,
-        url: `${Cypress.env('apiServer')}${fullPath}`,
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            JWTAuthorization: `Bearer ${token}`,
-        },
-    }).should((response) => {
-        expect(response.status).to.eq(204);
-    });
-    cy.reload();
+    cy
+        .wait(`@${reqType}-REQUEST`)
+        .should((xhr) => {
+            expect(xhr.method).to.equal(reqType);
+            expect(xhr.status, 'Successful response').to.equal(status);
+            expect(xhr.url, 'Response URL').to.match(urlRegExp);
+            if (reqType === 'POST') {
+                responseID = xhr.response.body.id;
+            }
+        });
 };

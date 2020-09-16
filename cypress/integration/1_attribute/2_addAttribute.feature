@@ -6,17 +6,17 @@ Feature: Attribute adding
     When I click on "new-attribute" button
     Then Element "modal" is "visible"
 
-  Scenario Outline: Add <type_txt> attibute and delete by request
+  Scenario Outline: Add <type_txt> attribute and remove it from Grid
     When I fill the "attribute-code" input with the "<name>" term
     And I choose "[0]" options from "attribute-group" multi select field
     And I choose <type> option from "attribute-type" select field
     And I choose <scope> option from "attribute-scope" select field
     Then I can see "Configuration" text on "modal" element
-    When On "modal" element I click button with "CREATE" text
+    When I click on "submit" button
     Then I send a "POST" request and status code should be 201
     And I open "attributes/grid" page
     Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_txt>'}"
-    And I remove "this" element by "DELETE" request
+    And I remove element by "DELETE" request
 
     Examples:
       | name                | type | type_txt | scope | scope_txt |
@@ -34,14 +34,14 @@ Feature: Attribute adding
       | gallery_attribute2  | 2    | Gallery  | 1     | local     |
 
 
-  Scenario Outline: Add <type_txt> attibute and delete by grid button
+  Scenario Outline: Add <type_txt> attribute and delete by grid button
     When I fill the "attribute-code" input with the "<name>" term
     And I choose "[0]" options from "attribute-group" multi select field
     And I choose <type> option from "attribute-type" select field
     And I choose <scope> option from "attribute-scope" select field
     Then I can see "Configuration" text on "modal" element
     And I choose 0 option from "attribute-params" select field
-    When On "modal" element I click button with "CREATE" text
+    When I click on "submit" button
     Then I send a "POST" request and status code should be 201
     And I open "attributes/grid" page
     Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_txt>'}"
@@ -58,7 +58,7 @@ Feature: Attribute adding
       | unit_attribute   | 10   | Unit     | 0     | global    |
       | unit_attribute2  | 10   | Unit     | 1     | local     |
 
-  Scenario Outline: Add <type_txt> attibute and delete from edit
+  Scenario Outline: Add <type_txt> attribute and delete from edit
     When I fill the "attribute-code" input with the "<name>" term
     And I choose "[0]" options from "attribute-group" multi select field
     And I choose <type> option from "attribute-type" select field
@@ -68,7 +68,7 @@ Feature: Attribute adding
     Then I fill the "attribute-option-0" input with the "attribute_option_0" term
     And On "attribute-add-options" element I click button with "ADD OPTION KEY" text
     Then I fill the "attribute-option-1" input with the "attribute_option_1" term
-    When On "modal" element I click button with "CREATE" text
+    When I click on "submit" button
     Then I send a "POST" request and status code should be 201
     And I open "attributes/grid" page
     Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_txt>'}"
@@ -88,12 +88,12 @@ Feature: Attribute adding
     | multiselect_attribute  | 4    | Multi select | 0     | global    |
     | multiselect_attribute2 | 4    | Multi select | 1     | local     |
 
-  Scenario: Add text attibute with local scope and edit
+  Scenario: Add text attribute with local scope and edit
     When I fill the "attribute-code" input with the "text_attribute3" term
     And I choose 8 option from "attribute-type" select field
     And I choose 0 option from "attribute-scope" select field
     Then I can see "Configuration" text on "modal" element
-    When On "modal" element I click button with "CREATE & EDIT" text
+    When I click on "proceed" button
     Then I send a "POST" request and status code should be 201
     And I see "attributes/attribute/%UUID%/general" page
     And Element "attribute-group" is "visible"
@@ -112,13 +112,13 @@ Feature: Attribute adding
     Then I click on "submit" button
     And I open "attributes/grid" page
 
-  Scenario: Add price attibute with global scope and edit
+  Scenario: Add price attribute with global scope and edit
     When I fill the "attribute-code" input with the "price_attribute3" term
     And I choose 6 option from "attribute-type" select field
     And I choose 1 option from "attribute-scope" select field
     Then I can see "Configuration" text on "modal" element
     And I choose 0 option from "attribute-params" select field
-    When On "modal" element I click button with "CREATE & EDIT" text
+    When I click on "proceed" button
     Then I send a "POST" request and status code should be 201
     And I see "attributes/attribute/%UUID%/general" page
     And Element "attribute-group" is "visible"
@@ -137,12 +137,12 @@ Feature: Attribute adding
     And I open "attributes/grid" page
 
 
-  Scenario: Add select attibute with local scope and edit
+  Scenario: Add select attribute with local scope and edit
     When I fill the "attribute-code" input with the "select_attribute3" term
     And I choose 7 option from "attribute-type" select field
     And I choose 0 option from "attribute-scope" select field
     Then I can see "Configuration" text on "modal" element
-    When On "modal" element I click button with "CREATE & EDIT" text
+    When I click on "proceed" button
     Then I send a "POST" request and status code should be 201
     And I see "attributes/attribute/%UUID%/general" page
     And Element "attribute-group" is "visible"
@@ -163,12 +163,12 @@ Feature: Attribute adding
     Then I click on "submit" button
     And I open "attributes/grid" page
 
-  Scenario: Add image attibute with local scope and edit
+  Scenario: Add image attribute with local scope and edit
     When I fill the "attribute-code" input with the "img_attribute3" term
     And I choose 3 option from "attribute-type" select field
     And I choose 0 option from "attribute-scope" select field
     Then I can see "Configuration" text on "modal" element
-    When On "modal" element I click button with "CREATE & EDIT" text
+    When I click on "proceed" button
     Then I send a "POST" request and status code should be 201
     And I see "attributes/attribute/%UUID%/general" page
     And Element "attribute-group" is "visible"

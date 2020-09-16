@@ -16,25 +16,35 @@ context('Add User', () => {
 
     describe('Navigate to User creation page', () => {
         it('Visit /users/grid', () => {
-            cy.get('.header-title__title').should('contain', 'Users');
-            cy.url().should('include', '/users');
+            cy.get('.header-title__title')
+                .should('contain', 'Users');
+            cy.url()
+                .should('include', '/users');
         });
 
         it('Visit /users/new/general', () => {
-            cy.get('button').contains('NEW USER').click();
-            cy.url().should('include', '/users/new/general');
+            cy.get('button')
+                .contains('NEW USER')
+                .click();
+            cy.url()
+                .should('include', '/users/new/general');
         });
     });
 
     describe('Insert User values - invalid', () => {
         before(() => {
             cy.server();
-            cy.route('POST', '/api/v1/EN/accounts').as('addUser');
+            cy.route('POST', '/api/v1/EN/accounts')
+                .as('addUser');
         });
 
         it('Invalid User data', () => {
-            cy.get('button').contains('NEW USER').click();
-            cy.wait('@addUser').its('status').should('eq', 400);
+            cy.get('button')
+                .contains('NEW USER')
+                .click();
+            cy.wait('@addUser')
+                .its('status')
+                .should('eq', 400);
         });
     });
 
@@ -74,8 +84,11 @@ context('Add User', () => {
                 .contains('Language')
                 .click()
                 .should('be.visible');
-            cy.get('.list').contains('English').click();
-            cy.get('input[aria-label="Language"]').should('have.value', 'English');
+            cy.get('.list')
+                .contains('English')
+                .click();
+            cy.get('input[aria-label="Language"]')
+                .should('have.value', 'English');
         });
 
         it('Select role', () => {
@@ -83,16 +96,25 @@ context('Add User', () => {
                 .contains('Role')
                 .click()
                 .should('be.visible');
-            cy.get('.list').contains('Admin').click();
-            cy.get('input[aria-label="Role"]').should('have.value', 'Admin');
+            cy.get('.list')
+                .contains('Admin')
+                .click();
+            cy.get('input[aria-label="Role"]')
+                .should('have.value', 'Admin');
         });
 
         it('Create User', () => {
             cy.server();
-            cy.route('POST', '/api/v1/EN/accounts').as('addUser');
-            cy.get('button').contains('NEW USER').click();
-            cy.wait('@addUser').its('status').should('eq', 201);
-            cy.url().should('include', '/users/edit');
+            cy.route('POST', '/api/v1/EN/accounts')
+                .as('addUser');
+            cy.get('button')
+                .contains('NEW USER')
+                .click();
+            cy.wait('@addUser')
+                .its('status')
+                .should('eq', 201);
+            cy.url()
+                .should('include', '/users/edit');
         });
     });
 });
