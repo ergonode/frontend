@@ -153,7 +153,10 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'collectionGeneralTab',
+            });
         }
     },
     async createCollection({
@@ -181,7 +184,10 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'collectionForm',
+            });
         }
     },
     async addBySku({

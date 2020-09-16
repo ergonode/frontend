@@ -179,7 +179,10 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'channelForm',
+            });
         }
     },
     async updateChannel(
@@ -210,7 +213,10 @@ export default {
             });
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'channelGeneralTab',
+            });
         }
     },
     async updateScheduler(
@@ -240,7 +246,10 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'schedulerGeneralTab',
+            });
         }
     },
     async removeChannel({

@@ -17,6 +17,7 @@
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
+import Select from '@Core/components/Inputs/Select/Select';
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
@@ -27,7 +28,7 @@ import {
 export default {
     name: 'AttributeFormParamsSelect',
     components: {
-        Select: () => import('@Core/components/Inputs/Select/Select'),
+        Select,
     },
     props: {
         errorMessages: {

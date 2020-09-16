@@ -64,7 +64,10 @@ export default {
             });
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'unitGeneralTab',
+            });
         }
     },
     async createUnit({
@@ -92,7 +95,10 @@ export default {
             });
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'unitForm',
+            });
         }
     },
     async removeUnit({

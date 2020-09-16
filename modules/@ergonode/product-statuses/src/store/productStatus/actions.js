@@ -140,7 +140,10 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e);
+            onError({
+                errors: e.data.errors,
+                scope: 'productStatusGeneralTab',
+            });
         }
     },
     async createProductStatus(
@@ -172,7 +175,10 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'productStatusForm',
+            });
         }
     },
     async removeProductStatus({

@@ -79,7 +79,6 @@ export default {
             const {
                 id,
                 privileges,
-                name,
                 description,
                 drafts,
             } = state;

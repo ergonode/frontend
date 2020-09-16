@@ -29,7 +29,7 @@ export default {
         store, params,
     }) {
         await store.dispatch('productStatus/getProductStatuses');
-        await store.dispatch('statusTransition/getTransition', params);
+        await store.dispatch('statusTransition/getStatusTransition', params);
     },
     computed: {
         ...mapState('statusTransition', {
@@ -53,7 +53,7 @@ export default {
             clearConditionSetStorage: '__clearStorage',
         }),
         ...mapActions('statusTransition', {
-            removeTransition: 'removeTransition',
+            removeStatusTransition: 'removeStatusTransition',
             clearTransitionStorage: '__clearStorage',
         }),
         ...mapActions('validations', [
@@ -63,12 +63,12 @@ export default {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Are you sure you want to delete this transition?',
-                confirmCallback: () => this.removeTransition({
-                    onSuccess: this.onRemoveTransitionSuccess,
+                confirmCallback: () => this.removeStatusTransition({
+                    onSuccess: this.onRemoveStatusTransitionSuccess,
                 }),
             });
         },
-        onRemoveTransitionSuccess() {
+        onRemoveStatusTransitionSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Transition removed',

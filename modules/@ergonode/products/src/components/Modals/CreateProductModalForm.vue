@@ -12,6 +12,7 @@
                 proceed-title="CREATE & EDIT"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
+                :errors="errors"
                 @submit="onSubmit"
                 @proceed="onProceed" />
         </template>
@@ -29,6 +30,7 @@ import {
 import ProductForm from '@Products/components/Form/ProductForm';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -47,6 +49,9 @@ export default {
         };
     },
     computed: {
+        ...mapState('validations', {
+            errors: state => state.errors.productForm,
+        }),
         secondaryTheme() {
             return THEME.SECONDARY;
         },

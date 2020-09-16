@@ -136,7 +136,10 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'importProfileGeneralTab',
+            });
         }
     },
     async createImportProfile({
@@ -176,7 +179,10 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'importProfileForm',
+            });
         }
     },
     async removeImport({

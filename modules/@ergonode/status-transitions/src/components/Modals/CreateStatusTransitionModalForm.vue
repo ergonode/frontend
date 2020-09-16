@@ -12,6 +12,7 @@
                 proceed-title="CREATE & EDIT"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
+                :errors="errors"
                 @submit="onSubmit"
                 @proceed="onProceed" />
         </template>
@@ -45,6 +46,9 @@ export default {
         };
     },
     computed: {
+        ...mapState('validations', {
+            errors: state => state.errors.statusTransitionForm,
+        }),
         ...mapState('statusTransition', {
             source: state => state.source,
             destination: state => state.destination,
@@ -62,7 +66,7 @@ export default {
     methods: {
         ...mapActions('statusTransition', [
             '__clearStorage',
-            'createTransition',
+            'createStatusTransition',
         ]),
         ...mapActions('productStatus', [
             'getProductStatuses',
@@ -84,7 +88,7 @@ export default {
             this.isSubmitting = true;
 
             this.removeErrors();
-            this.createTransition({
+            this.createStatusTransition({
                 onSuccess: this.onCreateSuccess,
                 onError: this.onCreateError,
             });
@@ -97,7 +101,7 @@ export default {
             this.isProceeding = true;
 
             this.removeErrors();
-            this.createTransition({
+            this.createStatusTransition({
                 onSuccess: this.onProceedSuccess,
                 onError: this.onCreateError,
             });

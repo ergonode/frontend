@@ -91,11 +91,11 @@ export default {
             return this.$isReadOnly(PRIVILEGES.PRODUCT.namespace);
         },
         tabs() {
-            const tabs = getNestedTabRoutes(
-                this.$hasAccess,
-                this.$router.options.routes,
-                this.$route,
-            );
+            const tabs = getNestedTabRoutes({
+                hasAccess: this.$hasAccess,
+                routes: this.$router.options.routes,
+                route: this.$route,
+            });
 
             switch (getKeyByValue(this.productTypes, this.type)) {
             case PRODUCT_TYPE.WITH_VARIANTS:

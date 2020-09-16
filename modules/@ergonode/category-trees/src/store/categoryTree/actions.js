@@ -40,7 +40,10 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'categoryTreeForm',
+            });
         }
     },
     async getCategoryTree(
@@ -151,7 +154,10 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'categoryTreeGeneralTab',
+            });
         }
     },
     async removeCategoryTree({

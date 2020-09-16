@@ -8,6 +8,7 @@
             <TemplateDesignerForm
                 submit-title="SAVE CHANGES"
                 :is-submitting="isSubmitting"
+                :errors="errors"
                 @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
@@ -21,6 +22,7 @@ import {
 import TemplateDesignerForm from '@Templates/components/Forms/TemplateDesignerForm';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -33,6 +35,11 @@ export default {
         return {
             isSubmitting: false,
         };
+    },
+    computed: {
+        ...mapState('validations', {
+            errors: state => state.errors.templateGeneralTab,
+        }),
     },
     methods: {
         ...mapActions('productTemplate', [

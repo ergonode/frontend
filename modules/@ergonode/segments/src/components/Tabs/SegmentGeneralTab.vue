@@ -8,6 +8,7 @@
             <SegmentForm
                 submit-title="SAVE CHANGES"
                 :is-submitting="isSubmitting"
+                :errors="errors"
                 @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
@@ -21,6 +22,7 @@ import {
 import SegmentForm from '@Segments/components/Forms/SegmentForm';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -33,6 +35,11 @@ export default {
         return {
             isSubmitting: false,
         };
+    },
+    computed: {
+        ...mapState('validations', {
+            errors: state => state.errors.segmentGeneralTab,
+        }),
     },
     methods: {
         ...mapActions('segment', [

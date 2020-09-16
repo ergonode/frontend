@@ -8,6 +8,7 @@
             <TransitionForm
                 submit-title="SAVE CHANGES"
                 :is-submitting="isSubmitting"
+                :errors="errors"
                 @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
@@ -21,6 +22,7 @@ import {
 import TransitionForm from '@Transitions/components/Forms/TransitionForm';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -34,9 +36,14 @@ export default {
             isSubmitting: false,
         };
     },
+    computed: {
+        ...mapState('validations', {
+            errors: state => state.errors.statusTransiationGeneralTab,
+        }),
+    },
     methods: {
         ...mapActions('statusTransition', [
-            'updateTransition',
+            'updateStatusTransition',
         ]),
         ...mapActions('validations', [
             'onError',
@@ -50,7 +57,7 @@ export default {
 
             this.removeErrors();
 
-            this.updateTransition({
+            this.updateStatusTransition({
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

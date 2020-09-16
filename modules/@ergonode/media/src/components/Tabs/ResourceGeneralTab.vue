@@ -8,6 +8,7 @@
             <ResourceForm
                 submit-title="SAVE CHANGES"
                 :is-submitting="isSubmitting"
+                :errors="errors"
                 @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
@@ -21,6 +22,7 @@ import {
 import ResourceForm from '@Media/components/Forms/ResourceForm';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -33,6 +35,11 @@ export default {
         return {
             isSubmitting: false,
         };
+    },
+    computed: {
+        ...mapState('validations', {
+            errors: state => state.errors.resourceGeneralTab,
+        }),
     },
     methods: {
         ...mapActions('media', [

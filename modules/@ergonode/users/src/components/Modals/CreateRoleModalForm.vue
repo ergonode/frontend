@@ -12,6 +12,7 @@
                 proceed-title="CREATE & EDIT"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
+                :errors="errors"
                 @submit="onSubmit"
                 @proceed="onProceed" />
         </template>
@@ -29,6 +30,7 @@ import {
 import UserRoleForm from '@Users/components/Forms/UserRoleForm';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -44,6 +46,9 @@ export default {
         };
     },
     computed: {
+        ...mapState('validations', {
+            errors: state => state.errors.roleForm,
+        }),
         secondaryTheme() {
             return THEME.SECONDARY;
         },

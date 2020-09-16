@@ -164,7 +164,10 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'templateGeneralTab',
+            });
         }
     },
     async addListElementToLayout({
@@ -302,7 +305,10 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'templateForm',
+            });
         }
     },
     async removeTemplate(

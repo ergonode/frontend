@@ -79,6 +79,7 @@ export default {
         padding-top: 6px;
         word-break: break-all;
         text-overflow: ellipsis;
+        cursor: pointer;
         overflow: hidden;
 
         &--error {

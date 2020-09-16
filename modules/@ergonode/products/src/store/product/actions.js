@@ -438,7 +438,10 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'productGeneralTab',
+            });
         }
     },
     async createProduct(
@@ -483,7 +486,10 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'productForm',
+            });
         }
     },
     async removeProduct({

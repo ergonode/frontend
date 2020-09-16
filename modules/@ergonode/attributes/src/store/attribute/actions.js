@@ -78,7 +78,10 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'attributeForm',
+            });
         }
     },
     getAttributesByFilter({
@@ -304,7 +307,10 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'attributeGeneralTab',
+            });
         }
     },
     async removeAttribute({
