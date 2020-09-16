@@ -142,7 +142,7 @@ export default {
             value: JSON.stringify(rest),
         });
     },
-    async createExport({
+    async createChannel({
         state,
         rootState,
     }, {

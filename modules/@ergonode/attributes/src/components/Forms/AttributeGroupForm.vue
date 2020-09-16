@@ -5,11 +5,11 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[codeFieldKey]"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
         <template #body="{ errorMessages }">
@@ -30,6 +30,9 @@
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TextField from '@Core/components/Inputs/TextField';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     mapActions,
@@ -39,13 +42,19 @@ import {
 export default {
     name: 'AttributeGroupForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
+        Form,
+        FormSection,
+        TextField,
     },
     mixins: [
         formActionsMixin,
     ],
+    props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     computed: {
         ...mapState('attributeGroup', {
             id: state => state.id,

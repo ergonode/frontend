@@ -5,11 +5,11 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[nameFieldKey]"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
         <template #body="{ errorMessages }">
@@ -54,6 +54,12 @@ export default {
     mixins: [
         formActionsMixin,
     ],
+    props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     computed: {
         ...mapState('media', {
             id: state => state.id,

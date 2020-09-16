@@ -17,6 +17,7 @@
                             :key="index"
                             :index="index"
                             :item="item"
+                            :errors="errors[item.scope]"
                             @select="onSelectTabBarItem" />
                     </slot>
                 </template>
@@ -50,6 +51,10 @@ export default {
         items: {
             type: Array,
             required: true,
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
         },
     },
     data() {

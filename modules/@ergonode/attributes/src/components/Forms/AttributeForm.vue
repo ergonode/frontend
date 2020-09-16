@@ -5,17 +5,11 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[
-            codeFieldKey,
-            typeFieldKey,
-            groupsFieldKey,
-            scopeFieldKey,
-            ...extendedFieldKeys,
-        ]"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
         <template #body="{ errorMessages }">
@@ -68,8 +62,7 @@
                     :is="formComponent.component"
                     :type-key="typeKey"
                     :error-messages="errorMessages"
-                    v-bind="formComponent.props"
-                    @fieldKeys="onFieldKeys" />
+                    v-bind="formComponent.props" />
             </FormSection>
         </template>
     </Form>
@@ -80,6 +73,13 @@ import PRIVILEGES from '@Attributes/config/privileges';
 import {
     SCOPE,
 } from '@Attributes/defaults/attributes';
+import Divider from '@Core/components/Dividers/Divider';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import InfoHint from '@Core/components/Hints/InfoHint';
+import Select from '@Core/components/Inputs/Select/Select';
+import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import TextField from '@Core/components/Inputs/TextField';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     getKeyByValue,
@@ -93,21 +93,22 @@ import {
 export default {
     name: 'AttributeForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        InfoHint: () => import('@Core/components/Hints/InfoHint'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
-        Select: () => import('@Core/components/Inputs/Select/Select'),
-        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
-        Divider: () => import('@Core/components/Dividers/Divider'),
+        Form,
+        FormSection,
+        InfoHint,
+        TextField,
+        Select,
+        TranslationLazySelect,
+        Divider,
     },
     mixins: [
         formActionsMixin,
     ],
-    data() {
-        return {
-            extendedFieldKeys: [],
-        };
+    props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     computed: {
         ...mapState('attribute', [
@@ -201,9 +202,6 @@ export default {
         },
         onTypeChange(type) {
             this.setTypeValue(type);
-        },
-        onFieldKeys(fields) {
-            this.extendedFieldKeys = fields;
         },
     },
 };

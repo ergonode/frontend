@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import {
-    getMappedErrors,
+    getMappedErrorsV2,
 } from '@Core/models/mappers/errorsMapper';
 
 import {
@@ -14,13 +14,13 @@ export default {
     onError({
         commit,
     }, {
-        errors = null,
-        fieldKey = null,
+        errors,
+        scope = 'default',
     }) {
         if (errors) {
-            commit(types.SET_ERRORS, getMappedErrors({
+            commit(types.SET_ERRORS, getMappedErrorsV2({
                 errors,
-                fieldKey,
+                scope,
             }));
         }
     },

@@ -4,7 +4,7 @@
  */
 <template>
     <Card :title="selectedLanguage">
-        <Form :fields-keys="[altKeyField]">
+        <Form :errors="errors">
             <template #body="{ errorMessages }">
                 <FormSection>
                     <TextArea
@@ -41,6 +41,12 @@ export default {
     mixins: [
         translationCardMixin,
     ],
+    props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     computed: {
         isUserAllowedToUpdate() {
             return this.$hasAccess([

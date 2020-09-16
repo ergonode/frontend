@@ -4,7 +4,7 @@
  */
 <template>
     <Card :title="selectedLanguage">
-        <Form :fields-keys="[descriptionKeyField, nameKeyField]">
+        <Form :errors="errors">
             <template #body="{ errorMessages }">
                 <FormSection>
                     <TextField
@@ -50,6 +50,12 @@ export default {
     mixins: [
         translationCardMixin,
     ],
+    props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     computed: {
         isUserAllowedToUpdate() {
             return this.$hasAccess([

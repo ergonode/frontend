@@ -8,6 +8,7 @@
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
         <template #header>
@@ -43,6 +44,12 @@ export default {
     mixins: [
         formActionsMixin,
     ],
+    props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
 };
 </script>
 

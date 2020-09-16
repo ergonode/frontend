@@ -73,7 +73,11 @@ export default {
             return SIZE.SMALL;
         },
         tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+            return getNestedTabRoutes({
+                hasAccess: this.$hasAccess,
+                routes: this.$router.options.routes,
+                route: this.$route,
+            });
         },
     },
     head() {

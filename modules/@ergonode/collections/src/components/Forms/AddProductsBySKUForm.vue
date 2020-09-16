@@ -4,11 +4,11 @@
  */
 <template>
     <Form
-        :fields-keys="[skusFieldKey]"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
         <template #body="{ errorMessages }">
@@ -45,6 +45,10 @@ export default {
         formActionsMixin,
     ],
     props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         productSkus: {
             type: String,
             default: '',

@@ -50,11 +50,6 @@ export default {
             },
         },
     },
-    created() {
-        this.$emit('fieldKeys', [
-            ...this.optionsFieldKeys,
-        ]);
-    },
     methods: {
         ...mapActions('attribute', [
             'removeAttributeOptions',

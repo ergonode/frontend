@@ -83,9 +83,6 @@ export default {
     },
     created() {
         this.parameterData = this.getParams(this).params;
-        this.$emit('fieldKeys', [
-            this.paramsFieldKey,
-        ]);
     },
     beforeDestroy() {
         this.setParameterValue();

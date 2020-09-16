@@ -127,6 +127,7 @@
                         :key="`${rowIds[rowIndex]}|${column.id}`"
                         :column-index="orderedColumns.length + columnIndex + columnsOffset"
                         :column="column"
+                        :type="columnActionTypes[column.id]"
                         :action="row._links.value[column.id]"
                         :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
                         :is-selected="isSelectedAllRows
@@ -300,6 +301,13 @@ export default {
             return this.visibleColumns.reduce((acc, current) => {
                 const tmp = acc;
                 tmp[current.type] = capitalizeAndConcatenationArray(current.type.split('_'));
+                return tmp;
+            }, {});
+        },
+        columnActionTypes() {
+            return this.actionColumns.reduce((acc, current) => {
+                const tmp = acc;
+                tmp[current.id] = capitalizeAndConcatenationArray(current.id.split('_'));
                 return tmp;
             }, {});
         },

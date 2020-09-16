@@ -3,23 +3,65 @@
  * See LICENSE for license details.
  */
 <template>
-    <NuxtLink
-        :to="item.route"
-        class="tab-bar-item"
-        v-text="item.title"
-        @click.native="onLinkSelect" />
+    <div
+        :class="classes"
+        tabindex="-1"
+        @click="onLinkSelect">
+        {{ item.title }}
+        <IconError
+            v-if="hasError"
+            view-box="6 -6 12 36"
+            :fill-color="redColor" />
+    </div>
 </template>
 
 <script>
-import tabBarItemMixin from '@Core/mixins/tabBar/tabBarItemMixin';
+import {
+    RED,
+} from '@Core/assets/scss/_js-variables/colors.scss';
+import IconError from '@Core/components/Icons/Feedback/IconError';
 
 export default {
     name: 'HorizontalRoutingTabBarItem',
-    mixins: [
-        tabBarItemMixin,
-    ],
+    components: {
+        IconError,
+    },
+    props: {
+        index: {
+            type: Number,
+            required: true,
+        },
+        item: {
+            type: Object,
+            required: true,
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
+    computed: {
+        classes() {
+            return [
+                'tab-bar-item',
+                {
+                    'tab-bar-item--error': this.hasError,
+                },
+            ];
+        },
+        redColor() {
+            return RED;
+        },
+        hasError() {
+            return Object.keys(this.errors).length > 0;
+        },
+    },
     methods: {
         onLinkSelect() {
+            this.$router.push({
+                name: this.item.route.name,
+            });
+
             this.$emit('select', this.index);
         },
     },
@@ -32,13 +74,15 @@ export default {
         display: flex;
         flex: 0 0 176px;
         justify-content: center;
-        padding-top: 6px;
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_14_20;
-        text-align: center;
+        padding-top: 6px;
+        word-break: break-all;
         text-overflow: ellipsis;
         overflow: hidden;
-        word-break: break-all;
-        text-decoration: none;
+
+        &--error {
+            color: $RED;
+        }
     }
 </style>

@@ -36,3 +36,33 @@ export const getMappedErrors = ({
 
     return mappedErrors;
 };
+
+const flattenErrors = (mappedErrors, errors) => {
+    const keys = Object.keys(errors);
+    const tmpErrors = {};
+
+    for (let i = 0; i < keys.length; i += 1) {
+        const key = keys[i];
+
+        if (Array.isArray(errors[key])) {
+            tmpErrors[key] = errors[key].join(', ');
+        } else {
+            return {
+                ...mappedErrors,
+                [key]: flattenErrors(mappedErrors, errors[key]),
+            };
+        }
+    }
+
+    return {
+        ...mappedErrors,
+        ...tmpErrors,
+    };
+};
+
+export const getMappedErrorsV2 = ({
+    errors,
+    scope,
+}) => ({
+    [scope]: flattenErrors({}, errors),
+});

@@ -43,11 +43,6 @@ export default {
             return `placeholder_${this.languageCode}`;
         },
     },
-    created() {
-        this.$emit('fieldKeys', [
-            this.placeholderFieldKey,
-        ]);
-    },
     methods: {
         dataCyGenerator(key) {
             return `attribute-${key}`;

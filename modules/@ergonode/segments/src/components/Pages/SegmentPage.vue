@@ -25,7 +25,9 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs" />
+        <HorizontalRoutingTabBar
+            :items="tabs"
+            :errors="errors" />
     </Page>
 </template>
 

@@ -9,6 +9,7 @@
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :errors="errors"
         @proceed="onProceed"
         @submit="onSubmitForm">
         <template #body>
@@ -57,6 +58,12 @@ export default {
     mixins: [
         formActionsMixin,
     ],
+    props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             filteredValue: '',

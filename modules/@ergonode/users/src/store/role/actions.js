@@ -102,7 +102,6 @@ export default {
             });
 
             const data = {
-                name,
                 description,
                 privileges: Object.keys(tmpPrivileges),
             };
@@ -128,7 +127,10 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'roleGeneralTab',
+            });
         }
     },
     async createRole(
@@ -160,7 +162,10 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope: 'roleForm',
+            });
         }
     },
     async removeRole(

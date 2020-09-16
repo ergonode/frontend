@@ -4,12 +4,7 @@
  */
 <template>
     <Card :title="selectedLanguage">
-        <Form
-            :fields-keys="[
-                labelFieldKey,
-                hintFieldKey,
-                ...extendedFieldKeys,
-            ]">
+        <Form :errors="errors">
             <template #body="{ errorMessages }">
                 <FormSection>
                     <TextField
@@ -34,8 +29,7 @@
                         :type-key="typeKey"
                         :error-messages="errorMessages"
                         :language-code="languageCode"
-                        v-bind="formComponent.props"
-                        @fieldKeys="onFieldKeys" />
+                        v-bind="formComponent.props" />
                 </FormSection>
             </template>
         </Form>
@@ -73,10 +67,11 @@ export default {
     mixins: [
         translationCardMixin,
     ],
-    data() {
-        return {
-            extendedFieldKeys: [],
-        };
+    props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     computed: {
         ...mapState('dictionaries', {
@@ -112,9 +107,6 @@ export default {
     methods: {
         dataCyGenerator(key) {
             return `attribute-${key}`;
-        },
-        onFieldKeys(fields) {
-            this.extendedFieldKeys = fields;
         },
     },
 };
