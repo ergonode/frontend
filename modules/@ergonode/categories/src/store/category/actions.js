@@ -104,7 +104,7 @@ export default {
             rootState,
         },
         {
-            scope = 'categoryGeneralTab',
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },

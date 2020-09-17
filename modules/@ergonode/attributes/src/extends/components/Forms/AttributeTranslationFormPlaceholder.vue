@@ -40,7 +40,7 @@ export default {
             ]);
         },
         placeholderFieldKey() {
-            return `placeholder_${this.languageCode}`;
+            return `placeholder`;
         },
     },
     methods: {

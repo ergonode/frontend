@@ -12,12 +12,12 @@
         :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <TextField
                     :value="name"
                     required
-                    :error-messages="errorMessages[nameFieldKey]"
+                    :error-messages="errors[nameFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     label="Unit name"
                     hint="Unit name must be unique"
@@ -25,7 +25,7 @@
                 <TextField
                     :value="symbol"
                     required
-                    :error-messages="errorMessages[symbolFieldKey]"
+                    :error-messages="errors[symbolFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     label="Unit symbol"
                     hint="Unit symbol must be unique"

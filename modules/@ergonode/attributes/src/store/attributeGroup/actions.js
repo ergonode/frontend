@@ -106,7 +106,7 @@ export default {
             rootState,
         },
         {
-            scope = 'attributeGroupGeneralTab',
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },

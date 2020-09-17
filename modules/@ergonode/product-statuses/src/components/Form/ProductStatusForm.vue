@@ -12,13 +12,13 @@
         :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <TextField
                     :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
                     required
-                    :error-messages="errorMessages[codeFieldKey]"
+                    :error-messages="errors[codeFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     label="System name"
                     hint="System name must be unique"
@@ -36,7 +36,7 @@
                     :data-cy="dataCyGenerator(colorFieldKey)"
                     :value="color"
                     required
-                    :error-messages="errorMessages[colorFieldKey]"
+                    :error-messages="errors[colorFieldKey]"
                     clearable
                     :dismissible="false"
                     :options="colorOptions"

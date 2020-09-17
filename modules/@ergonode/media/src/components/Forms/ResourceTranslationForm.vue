@@ -4,8 +4,8 @@
  */
 <template>
     <Card :title="selectedLanguage">
-        <Form :errors="errors">
-            <template #body="{ errorMessages }">
+        <Form :errors="translationErrors">
+            <template #body>
                 <FormSection>
                     <TextArea
                         :data-cy="dataCyGenerator(altKeyField)"
@@ -14,7 +14,7 @@
                         resize="none"
                         height="150px"
                         :disabled="!isUserAllowedToUpdate"
-                        :error-messages="errorMessages[altKeyField]"
+                        :error-messages="translationErrors[altKeyField]"
                         @input="(value) => setTranslationPropertyValue(value, 'alt')" />
                 </FormSection>
             </template>
@@ -41,12 +41,6 @@ export default {
     mixins: [
         translationCardMixin,
     ],
-    props: {
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         isUserAllowedToUpdate() {
             return this.$hasAccess([
@@ -54,7 +48,7 @@ export default {
             ]);
         },
         altKeyField() {
-            return `alt_${this.languageCode}`;
+            return 'alt';
         },
     },
     methods: {

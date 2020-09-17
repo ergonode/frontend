@@ -22,7 +22,6 @@ import {
 } from '@Core/defaults/alerts';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -31,15 +30,20 @@ export default {
         CenterViewTemplate,
         CollectionForm,
     },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             isSubmitting: false,
         };
-    },
-    computed: {
-        ...mapState('validations', {
-            errors: state => state.errors.collectionGeneralTab,
-        }),
     },
     methods: {
         ...mapActions('collection', [
@@ -58,10 +62,11 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeErrors(this.scope);
             this.setDrafts();
 
             this.updateCollection({
+                scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

@@ -36,7 +36,6 @@ import {
 import CategoryTreeTranslationForm from '@Trees/components/Forms/CategoryTreeTranslationForm';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -47,15 +46,20 @@ export default {
         Button,
         IconSpinner,
     },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             isSubmitting: false,
         };
-    },
-    computed: {
-        ...mapState('validations', {
-            errors: state => state.errors.categoryTreeTranslationsTab,
-        }),
     },
     methods: {
         ...mapActions('categoryTree', [
@@ -71,9 +75,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeErrors(this.scope);
             this.updateCategoryTree({
-                scope: 'categoryTreeTranslationsTab',
+                scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

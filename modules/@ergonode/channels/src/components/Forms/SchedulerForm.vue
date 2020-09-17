@@ -12,20 +12,20 @@
         :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <Toggler
                     :value="isActive"
                     label="Is active"
                     :disabled="!isAllowedToUpdate"
-                    :error-messages="errorMessages[activeFieldKey]"
+                    :error-messages="errors[activeFieldKey]"
                     @input="setIsActiveValue" />
                 <DatePicker
                     :value="date"
                     :placeholder="format"
                     :format="format"
                     :disabled="!isAllowedToUpdate"
-                    :error-messages="errorMessages[startFieldKey]"
+                    :error-messages="errors[startFieldKey]"
                     label="Date"
                     @input="setDateChange" />
                 <TextField
@@ -39,7 +39,7 @@
                     :value="recurrency"
                     :disabled="!isAllowedToUpdate"
                     :input="timeInputType"
-                    :error-messages="errorMessages[hourFieldKey]"
+                    :error-messages="errors[hourFieldKey]"
                     label="Recurrency"
                     hint="The time interval determining how often process would be executed"
                     @input="setRecurrencyChange" />

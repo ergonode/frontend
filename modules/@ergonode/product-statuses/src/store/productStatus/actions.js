@@ -102,7 +102,7 @@ export default {
         state,
         rootState,
     }, {
-        scope = 'productStatusGeneralTab',
+        scope,
         onSuccess = () => {},
         onError = () => {},
     }) {

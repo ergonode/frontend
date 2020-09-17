@@ -22,7 +22,6 @@ import {
 import ProductStatusForm from '@Statuses/components/Form/ProductStatusForm';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -31,15 +30,20 @@ export default {
         ProductStatusForm,
         CenterViewTemplate,
     },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             isSubmitting: false,
         };
-    },
-    computed: {
-        ...mapState('validations', {
-            errors: state => state.errors.productStatusGeneralTab,
-        }),
     },
     methods: {
         ...mapActions('productStatus', [
@@ -55,8 +59,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeErrors(this.scope);
             this.updateProductStatus({
+                scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

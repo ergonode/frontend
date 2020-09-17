@@ -4,15 +4,15 @@
  */
 <template>
     <Card :title="selectedLanguage">
-        <Form :errors="errors">
-            <template #body="{ errorMessages }">
+        <Form :errors="translationErrors">
+            <template #body>
                 <FormSection>
                     <TextField
                         :data-cy="dataCyGenerator(nameKeyField)"
                         :value="translations.name[languageCode]"
                         label="Product collection name"
                         :disabled="!isUserAllowedToUpdate"
-                        :error-messages="errorMessages[nameKeyField]"
+                        :error-messages="translationErrors[nameKeyField]"
                         @input="(value) => setTranslationPropertyValue(value, 'name')" />
                     <TextArea
                         :data-cy="dataCyGenerator(descriptionKeyField)"
@@ -20,7 +20,7 @@
                         label="Description"
                         resize="vertical"
                         height="150px"
-                        :error-messages="errorMessages[descriptionKeyField]"
+                        :error-messages="translationErrors[descriptionKeyField]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'description')" />
                 </FormSection>
@@ -50,12 +50,6 @@ export default {
     mixins: [
         translationCardMixin,
     ],
-    props: {
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         isUserAllowedToUpdate() {
             return this.$hasAccess([
@@ -63,10 +57,10 @@ export default {
             ]);
         },
         descriptionKeyField() {
-            return `description_${this.languageCode}`;
+            return 'description';
         },
         nameKeyField() {
-            return `name_${this.languageCode}`;
+            return 'name';
         },
     },
     methods: {

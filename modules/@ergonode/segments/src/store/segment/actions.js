@@ -79,7 +79,7 @@ export default {
             rootState,
         },
         {
-            scope = 'segmentGeneralTab',
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },

@@ -4,14 +4,14 @@
  */
 <template>
     <Card :title="selectedLanguage">
-        <Form :errors="errors">
-            <template #body="{ errorMessages }">
+        <Form :errors="translationErrors">
+            <template>
                 <FormSection>
                     <TextField
                         :data-cy="dataCyGenerator(labelFieldKey)"
                         :value="translations.label[languageCode]"
                         label="Attribute name"
-                        :error-messages="errorMessages[labelFieldKey]"
+                        :error-messages="translationErrors[labelFieldKey]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'label')" />
                     <TextArea
@@ -20,14 +20,14 @@
                         label="Tooltip for writers"
                         resize="none"
                         height="150px"
-                        :error-messages="errorMessages[hintFieldKey]"
+                        :error-messages="translationErrors[hintFieldKey]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'hint')" />
                     <Divider />
                     <Component
                         :is="formComponent.component"
                         :type-key="typeKey"
-                        :error-messages="errorMessages"
+                        :error-messages="translationErrors"
                         :language-code="languageCode"
                         v-bind="formComponent.props" />
                 </FormSection>
@@ -67,12 +67,6 @@ export default {
     mixins: [
         translationCardMixin,
     ],
-    props: {
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         ...mapState('dictionaries', {
             attrTypes: state => state.attrTypes,
@@ -98,10 +92,10 @@ export default {
             ]);
         },
         hintFieldKey() {
-            return `hint_${this.languageCode}`;
+            return 'hint';
         },
         labelFieldKey() {
-            return `label_${this.languageCode}`;
+            return 'label';
         },
     },
     methods: {

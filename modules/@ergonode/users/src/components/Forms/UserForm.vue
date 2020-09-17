@@ -12,27 +12,27 @@
         :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <TextField
                     :value="email"
                     required
                     label="Email"
-                    :error-messages="errorMessages[emailFieldKey]"
+                    :error-messages="errors[emailFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setEmailValue" />
                 <TextField
                     :value="firstName"
                     required
                     label="First name"
-                    :error-messages="errorMessages[firstNameFieldKey]"
+                    :error-messages="errors[firstNameFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     @input="setFirstNameValue" />
                 <TextField
                     :value="lastName"
                     required
                     label="Last name"
-                    :error-messages="errorMessages[lastNameFieldKey]"
+                    :error-messages="errors[lastNameFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     @input="setLastNameValue" />
                 <TextField
@@ -40,7 +40,7 @@
                     required
                     label="Password"
                     :input="{ type: 'password' }"
-                    :error-messages="errorMessages[passwordFieldKey]"
+                    :error-messages="errors[passwordFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     @input="setPasswordValue" />
                 <TextField
@@ -48,7 +48,7 @@
                     required
                     label="Password repeat"
                     :input="{ type: 'password' }"
-                    :error-messages="errorMessages[passwordRepeatFieldKey]"
+                    :error-messages="errors[passwordRepeatFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     @input="setPasswordRepeatValue" />
                 <Toggler
@@ -62,14 +62,14 @@
                     label="Language"
                     :options="languageOptions"
                     :disabled="!isAllowedToUpdate"
-                    :error-messages="errorMessages[languageFieldKey]"
+                    :error-messages="errors[languageFieldKey]"
                     @input="setLanguageValue" />
                 <TranslationLazySelect
                     :value="role"
                     :required="true"
                     label="Role"
                     :disabled="!isAllowedToUpdate"
-                    :error-messages="errorMessages[roleIdFieldKey]"
+                    :error-messages="errors[roleIdFieldKey]"
                     :fetch-options-request="getRoleOptions"
                     @input="setRoleValue" />
             </FormSection>

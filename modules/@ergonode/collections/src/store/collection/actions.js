@@ -123,7 +123,7 @@ export default {
             rootState,
         },
         {
-            scope = 'collectionGeneralTab',
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },

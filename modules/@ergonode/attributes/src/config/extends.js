@@ -144,7 +144,7 @@ export default {
             }
             return {};
         },
-        '@Attributes/store/attribute/action/updateAttribute/__before': ({
+        '@Attributes/store/attribute/action/updateAttribute/__before': async ({
             $this, type, data,
         }) => {
             const typeConfig = getTypeConfiguration({
@@ -152,30 +152,29 @@ export default {
                 type,
             });
 
-            if (typeConfig) {
-                switch (type) {
-                case 'SELECT':
-                case 'MULTI_SELECT':
-                    prepareOptionsData({
-                        $this,
-                        typeConfig,
-                    });
-                    updateOptionsData({
-                        $this,
-                        data,
-                    });
-                    return {};
-                case 'NUMERIC':
-                case 'TEXT':
-                case 'TEXT_AREA':
-                    return updateTranslation({
-                        $this,
-                    });
-                default:
-                    return {};
-                }
+            switch (type) {
+            case 'SELECT':
+            case 'MULTI_SELECT':
+                prepareOptionsData({
+                    $this,
+                    typeConfig,
+                });
+
+                await updateOptionsData({
+                    $this,
+                    data,
+                });
+
+                return {};
+            case 'NUMERIC':
+            case 'TEXT':
+            case 'TEXT_AREA':
+                return updateTranslation({
+                    $this,
+                });
+            default:
+                return {};
             }
-            return {};
         },
         '@Attributes/store/attribute/action/updateAttribute/__after': ({
             $this, type,

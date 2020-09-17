@@ -66,3 +66,18 @@ export const getMappedErrorsV2 = ({
 }) => ({
     [scope]: flattenErrors({}, errors),
 });
+
+export const getMappedTranslationErrors = ({
+    errors,
+    languageCode,
+}) => {
+    const translationErrors = {};
+
+    Object.keys(errors).forEach((key) => {
+        translationErrors[key] = errors[key][languageCode];
+    });
+
+    console.log(translationErrors);
+
+    return translationErrors;
+};

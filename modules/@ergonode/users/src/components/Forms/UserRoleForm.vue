@@ -12,14 +12,14 @@
         :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <TextField
                     :value="name"
                     required
                     label="Role name"
                     hint="Role name must be unique"
-                    :error-messages="errorMessages[nameFieldKey]"
+                    :error-messages="errors[nameFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setNameValue" />
                 <TextArea
@@ -27,7 +27,7 @@
                     label="Role description"
                     resize="none"
                     height="150px"
-                    :error-messages="errorMessages[descriptionFieldKey]"
+                    :error-messages="errors[descriptionFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     @input="setDescriptionValue" />
             </FormSection>

@@ -22,7 +22,6 @@ import {
 } from '@Core/defaults/alerts';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -35,11 +34,6 @@ export default {
         return {
             isSubmitting: false,
         };
-    },
-    computed: {
-        ...mapState('validations', {
-            errors: state => state.errors.categoryGeneralTab,
-        }),
     },
     methods: {
         ...mapActions('category', [

@@ -5,15 +5,16 @@
 <template>
     <CenterViewTemplate :fixed="true">
         <template #header>
-            <TranslationSelect
-                data-cy="translation-language-select"
-                :style="{ flex: '0 0 192px' }"
-                v-model="selectedLanguages"
-                :options="languageOptions"
-                :size="smallSize"
-                :multiselect="true"
-                :clearable="true"
-                label="Translations" />
+            <div class="translation-language-select">
+                <TranslationSelect
+                    data-cy="translation-language-select"
+                    v-model="selectedLanguages"
+                    :options="languageOptions"
+                    :size="smallSize"
+                    :multiselect="true"
+                    :clearable="true"
+                    label="Translations" />
+            </div>
         </template>
         <template #centeredContent>
             <slot :language-codes="selectedLanguageCodes" />
@@ -99,3 +100,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .translation-language-select {
+        flex: 0 0 192px;
+    }
+</style>

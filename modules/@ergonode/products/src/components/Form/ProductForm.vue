@@ -12,7 +12,7 @@
         :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <Select
                     :value="type"
@@ -29,14 +29,14 @@
                     hint="Products SKU must be unique"
                     label="SKU"
                     required
-                    :error-messages="errorMessages[skuFieldKey]"
+                    :error-messages="errors[skuFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setSkuValue" />
                 <TranslationLazySelect
                     :value="template"
                     :required="true"
                     label="Product template"
-                    :error-messages="errorMessages[templateIdFieldKey]"
+                    :error-messages="errors[templateIdFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :fetch-options-request="getTemplateOptions"
                     @input="setTemplateValue" />

@@ -12,13 +12,13 @@
         :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <TextField
                     :data-cy="dataCyGenerator(nameFieldKey)"
                     :value="title"
                     required
-                    :error-messages="errorMessages[nameFieldKey]"
+                    :error-messages="errors[nameFieldKey]"
                     label="Template name"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setTitleValue" />

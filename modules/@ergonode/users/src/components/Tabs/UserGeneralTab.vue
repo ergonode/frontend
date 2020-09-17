@@ -22,7 +22,6 @@ import {
 import UserForm from '@Users/components/Forms/UserForm';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -31,15 +30,20 @@ export default {
         CenterViewTemplate,
         UserForm,
     },
+    props: {
+        scope: {
+            type: String,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             isSubmitting: false,
         };
-    },
-    computed: {
-        ...mapState('validations', {
-            errors: state => state.errors.userGeneralTab,
-        }),
     },
     methods: {
         ...mapActions('user', [
@@ -55,8 +59,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeErrors(this.scope);
             this.updateUser({
+                scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

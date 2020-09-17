@@ -12,7 +12,7 @@
         :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <TranslationSelect
                     :value="source"
@@ -21,7 +21,7 @@
                     :clearable="true"
                     :options="sourceOptions"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :error-messages="errorMessages[sourceFieldKey]"
+                    :error-messages="errors[sourceFieldKey]"
                     @input="setSourceValue" />
                 <TranslationSelect
                     :value="destination"
@@ -30,7 +30,7 @@
                     :clearable="true"
                     :options="destinationOptions"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :error-messages="errorMessages[destinationFieldKey]"
+                    :error-messages="errors[destinationFieldKey]"
                     @input="setDestinationValue" />
             </FormSection>
             <Divider />
@@ -41,7 +41,7 @@
                     :multiselect="true"
                     label="Role"
                     :disabled="!isAllowedToUpdate"
-                    :error-messages="errorMessages[roleFieldKey]"
+                    :error-messages="errors[roleFieldKey]"
                     :fetch-options-request="getRoleOptions"
                     @input="setRolesValue" />
             </FormSection>

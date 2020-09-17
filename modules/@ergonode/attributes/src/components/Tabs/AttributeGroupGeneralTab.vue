@@ -22,7 +22,6 @@ import {
 } from '@Core/defaults/alerts';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -31,15 +30,20 @@ export default {
         CenterViewTemplate,
         AttributeGroupForm,
     },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             isSubmitting: false,
         };
-    },
-    computed: {
-        ...mapState('validations', {
-            errors: state => state.errors.attributeGroupGeneralTab,
-        }),
     },
     methods: {
         ...mapActions('attributeGroup', [
@@ -55,8 +59,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeErrors(this.scope);
             this.updateAttributeGroup({
+                scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

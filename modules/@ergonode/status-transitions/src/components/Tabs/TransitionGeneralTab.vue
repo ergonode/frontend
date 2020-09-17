@@ -22,7 +22,6 @@ import {
 import TransitionForm from '@Transitions/components/Forms/TransitionForm';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -31,15 +30,20 @@ export default {
         TransitionForm,
         CenterViewTemplate,
     },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             isSubmitting: false,
         };
-    },
-    computed: {
-        ...mapState('validations', {
-            errors: state => state.errors.statusTransiationGeneralTab,
-        }),
     },
     methods: {
         ...mapActions('statusTransition', [
@@ -55,9 +59,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
-
+            this.removeErrors(this.scope);
             this.updateStatusTransition({
+                scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

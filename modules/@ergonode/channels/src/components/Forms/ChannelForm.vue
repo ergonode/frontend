@@ -12,7 +12,7 @@
         :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <Select
                     :value="type"
@@ -20,7 +20,7 @@
                     label="Channel type"
                     :disabled="isFetchingConfiguration || isDisabled || !isAllowedToUpdate"
                     :options="channelsOptions"
-                    :error-messages="errorMessages[typeFieldKey]"
+                    :error-messages="errors[typeFieldKey]"
                     @input="setTypeValue">
                     <template #append>
                         <FadeTransition>

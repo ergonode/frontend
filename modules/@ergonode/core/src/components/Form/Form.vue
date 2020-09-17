@@ -32,9 +32,7 @@
             </section>
             <Divider />
         </template>
-        <slot
-            name="body"
-            :error-messages="errors" />
+        <slot name="body" />
         <div
             class="form__footer"
             v-if="isFooterVisible">

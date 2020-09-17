@@ -22,7 +22,6 @@ import {
 import SegmentForm from '@Segments/components/Forms/SegmentForm';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -31,15 +30,20 @@ export default {
         SegmentForm,
         CenterViewTemplate,
     },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             isSubmitting: false,
         };
-    },
-    computed: {
-        ...mapState('validations', {
-            errors: state => state.errors.segmentGeneralTab,
-        }),
     },
     methods: {
         ...mapActions('segment', [
@@ -55,9 +59,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
-
+            this.removeErrors(this.scope);
             this.updateSegment({
+                scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

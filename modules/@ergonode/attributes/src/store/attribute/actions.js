@@ -246,7 +246,7 @@ export default {
             rootState,
         },
         {
-            scope = 'attributeGeneralTab',
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -256,7 +256,7 @@ export default {
                 id,
                 type,
                 groups,
-                scope,
+                scope: attributeScope,
             } = state;
             const {
                 attrTypes,
@@ -269,7 +269,7 @@ export default {
             const typeKey = getKeyByValue(attrTypes, type);
             let data = {
                 groups,
-                scope,
+                scope: attributeScope,
                 label,
                 hint,
             };

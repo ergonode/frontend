@@ -28,8 +28,11 @@
             <slot
                 name="content"
                 v-if="items.length"
-                :item="items[selectedTabIndex]">
-                <HorizontalRoutingTabBarContent />
+                :item="items[selectedTabIndex]"
+                :errors="errors[items[selectedTabIndex].scope]">
+                <HorizontalRoutingTabBarContent
+                    :scope="items[selectedTabIndex].scope"
+                    :errors="errors[items[selectedTabIndex].scope]" />
             </slot>
         </div>
     </div>

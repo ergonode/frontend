@@ -88,7 +88,7 @@ export default {
         state,
         rootState,
     }, {
-        scope = 'resourceGeneralTab',
+        scope,
         onSuccess = () => {},
         onError = () => {},
     }) {

@@ -12,13 +12,13 @@
         :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <TextField
                     :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
                     required
-                    :error-messages="errorMessages[codeFieldKey]"
+                    :error-messages="errors[codeFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     label="System name"
                     hint="System name must be unique"
@@ -30,7 +30,7 @@
                     :multiselect="true"
                     :clearable="true"
                     :disabled="!isAllowedToUpdate"
-                    :error-messages="errorMessages[groupsFieldKey]"
+                    :error-messages="errors[groupsFieldKey]"
                     :fetch-options-request="getAttributeGroupsOptions"
                     @input="setGroupsValue" />
                 <Select
@@ -40,7 +40,7 @@
                     label="Type"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :options="attributeTypeOptions"
-                    :error-messages="errorMessages[typeFieldKey]"
+                    :error-messages="errors[typeFieldKey]"
                     @input="onTypeChange" />
             </FormSection>
             <Divider />
@@ -52,7 +52,7 @@
                     label="Scope"
                     :disabled="!isAllowedToUpdate"
                     :options="attributeScopeOptions"
-                    :error-messages="errorMessages[scopeFieldKey]"
+                    :error-messages="errors[scopeFieldKey]"
                     @input="setScopeValue">
                     <template #append>
                         <InfoHint :hint="scopeHint" />
@@ -61,7 +61,7 @@
                 <Component
                     :is="formComponent.component"
                     :type-key="typeKey"
-                    :error-messages="errorMessages"
+                    :error-messages="errors"
                     v-bind="formComponent.props" />
             </FormSection>
         </template>

@@ -11,14 +11,14 @@
         :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <TranslationSelect
                     :value="segments"
                     :multiselect="true"
                     label="From segmentation rules"
                     :disabled="!isUserAllowedToUpdate"
-                    :error-messages="errorMessages[segmentsFieldKey]"
+                    :error-messages="errors[segmentsFieldKey]"
                     :options="segmentOptions"
                     @input="onSegmentChange" />
             </FormSection>
