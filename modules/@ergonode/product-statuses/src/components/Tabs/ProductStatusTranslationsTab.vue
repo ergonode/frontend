@@ -8,6 +8,7 @@
             <ProductStatusTranslationForm
                 v-for="languageCode in languageCodes"
                 :key="languageCode"
+                :errors="errors"
                 :language-code="languageCode" />
         </template>
         <template #saveButton>
@@ -35,6 +36,7 @@ import {
 import ProductStatusTranslationForm from '@Statuses/components/Form/ProductStatusTranslationForm';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -49,6 +51,11 @@ export default {
         return {
             isSubmitting: false,
         };
+    },
+    computed: {
+        ...mapState('validations', {
+            errors: state => state.errors.productStatusTranslationsTab,
+        }),
     },
     methods: {
         ...mapActions('productStatus', [
@@ -66,6 +73,7 @@ export default {
 
             this.removeErrors();
             this.updateProductStatus({
+                scope: 'productStatusTranslationsTab',
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

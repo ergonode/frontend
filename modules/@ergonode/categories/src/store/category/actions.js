@@ -104,6 +104,7 @@ export default {
             rootState,
         },
         {
+            scope = 'categoryGeneralTab',
             onSuccess = () => {},
             onError = () => {},
         },
@@ -131,7 +132,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
-                scope: 'categoryGeneralTab',
+                scope,
             });
         }
     },

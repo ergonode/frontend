@@ -123,6 +123,7 @@ export default {
             rootState,
         },
         {
+            scope = 'collectionGeneralTab',
             onSuccess = () => {},
             onError = () => {},
         },
@@ -155,7 +156,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
-                scope: 'collectionGeneralTab',
+                scope,
             });
         }
     },

@@ -8,6 +8,7 @@
             <ResourceTranslationForm
                 v-for="languageCode in languageCodes"
                 :key="languageCode"
+                :errors="errors"
                 :language-code="languageCode" />
         </template>
         <template #saveButton>
@@ -35,6 +36,7 @@ import {
 import ResourceTranslationForm from '@Media/components/Forms/ResourceTranslationForm';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -49,6 +51,11 @@ export default {
         return {
             isSubmitting: false,
         };
+    },
+    computed: {
+        ...mapState('validations', {
+            errors: state => state.errors.resourceTranslationsTab,
+        }),
     },
     methods: {
         ...mapActions('media', [
@@ -66,6 +73,7 @@ export default {
 
             this.removeErrors();
             this.updateResource({
+                scope: 'resourceTranslationsTab',
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

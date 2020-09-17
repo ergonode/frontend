@@ -88,6 +88,7 @@ export default {
         state,
         rootState,
     }, {
+        scope = 'resourceGeneralTab',
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -117,7 +118,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
-                scope: 'resourceGeneralTab',
+                scope,
             });
         }
     },

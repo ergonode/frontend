@@ -246,6 +246,7 @@ export default {
             rootState,
         },
         {
+            scope = 'attributeGeneralTab',
             onSuccess = () => {},
             onError = () => {},
         },
@@ -309,7 +310,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
-                scope: 'attributeGeneralTab',
+                scope,
             });
         }
     },

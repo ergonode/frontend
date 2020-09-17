@@ -79,6 +79,7 @@ export default {
             rootState,
         },
         {
+            scope = 'segmentGeneralTab',
             onSuccess = () => {},
             onError = () => {},
         },
@@ -112,7 +113,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
-                scope: 'segmentGeneralTab',
+                scope,
             });
         }
     },

@@ -41,7 +41,8 @@ export default {
         });
     },
     async getProductStatus({
-        commit, dispatch,
+        commit,
+        dispatch,
     }, {
         id,
     }) {
@@ -101,6 +102,7 @@ export default {
         state,
         rootState,
     }, {
+        scope = 'productStatusGeneralTab',
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -142,7 +144,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
-                scope: 'productStatusGeneralTab',
+                scope,
             });
         }
     },

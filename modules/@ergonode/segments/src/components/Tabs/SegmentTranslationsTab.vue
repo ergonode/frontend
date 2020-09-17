@@ -8,6 +8,7 @@
             <SegmentTranslationForm
                 v-for="languageCode in languageCodes"
                 :key="languageCode"
+                :errors="errors"
                 :language-code="languageCode" />
         </template>
         <template #saveButton>
@@ -35,6 +36,7 @@ import {
 import SegmentTranslationForm from '@Segments/components/Forms/SegmentTranslationForm';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -49,6 +51,11 @@ export default {
         return {
             isSubmitting: false,
         };
+    },
+    computed: {
+        ...mapState('validations', {
+            errors: state => state.errors.segmentTranslationsTab,
+        }),
     },
     methods: {
         ...mapActions('segment', [
@@ -66,6 +73,7 @@ export default {
 
             this.removeErrors();
             this.updateSegment({
+                scope: 'segmentTranslationsTab',
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });
