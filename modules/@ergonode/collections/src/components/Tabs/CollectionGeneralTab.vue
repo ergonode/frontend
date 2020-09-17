@@ -51,7 +51,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeErrors',
+            'removeError',
         ]),
         ...mapActions('grid', [
             'setDrafts',
@@ -62,7 +62,7 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors(this.scope);
+            this.removeError(this.scope);
             this.setDrafts();
 
             this.updateCollection({

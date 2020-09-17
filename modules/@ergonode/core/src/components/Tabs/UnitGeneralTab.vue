@@ -54,7 +54,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeErrors',
+            'removeError',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -62,11 +62,11 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors(this.scope);
+            this.removeError(this.scope);
             this.updateUnit({
                 scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
-                onError: this.onUpdatetError,
+                onError: this.onUpdateError,
             });
         },
         async onUpdateSuccess() {
