@@ -13,6 +13,7 @@
                 submit-title="ADD TO PRODUCT"
                 proceed-title="CANCEL"
                 :is-submitting="isAdding"
+                :errors="scopeErrors"
                 @submit="onSubmit"
                 @proceed="onClose"
                 @input="onFormValueChange" />
@@ -28,10 +29,14 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
+import {
+    toLowerCaseFirstLetter,
+} from '@Core/models/stringWrapper';
 import AddProductsBySKUForm from '@Products/components/Form/AddProductsBySKUForm';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -47,6 +52,9 @@ export default {
         };
     },
     computed: {
+        ...mapState('validations', {
+            errors: state => state.errors,
+        }),
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -55,11 +63,17 @@ export default {
                 PRIVILEGES.PRODUCT.update,
             ]);
         },
+        scope() {
+            return toLowerCaseFirstLetter(this.$options.name);
+        },
+        scopeErrors() {
+            return this.errors[this.scope];
+        },
     },
     methods: {
         ...mapActions('validations', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         ...mapActions('product', [
             'addBySku',
@@ -76,8 +90,9 @@ export default {
             }
             this.isAdding = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.addBySku({
+                scope: this.scope,
                 skus: this.productSkus,
                 onSuccess: this.onAddSuccess,
                 onError: this.onAddError,

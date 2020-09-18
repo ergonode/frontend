@@ -174,8 +174,9 @@ export default {
             const {
                 id,
             } = state;
+            const mappedSkus = skus.replace(/\n/g, ',');
             const data = {
-                skus: skus.replace(/\n/g, ',').split(','),
+                skus: mappedSkus !== '' ? mappedSkus.split(',') : [],
             };
 
             await addBySku({
@@ -536,8 +537,9 @@ export default {
         const {
             id,
         } = state;
+        const mappedSkus = skus.replace(/\n/g, ',');
         const data = {
-            skus: skus.replace(/\n/g, ',').split(','),
+            skus: mappedSkus !== '' ? mappedSkus.split(',') : [],
         };
 
         return removeChildren({

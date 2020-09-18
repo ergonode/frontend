@@ -12,7 +12,7 @@
                 proceed-title="CREATE & EDIT"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
-                :errors="errors"
+                :errors="scopeErrors"
                 @submit="onSubmit"
                 @proceed="onProceed" />
         </template>
@@ -50,7 +50,7 @@ export default {
     },
     computed: {
         ...mapState('validations', {
-            errors: state => state.errors[this.scope],
+            errors: state => state.errors,
         }),
         ...mapState('statusTransition', {
             source: state => state.source,
@@ -61,6 +61,9 @@ export default {
         },
         scope() {
             return toLowerCaseFirstLetter(this.$options.name);
+        },
+        scopeErrors() {
+            return this.errors[this.scope];
         },
     },
     created() {

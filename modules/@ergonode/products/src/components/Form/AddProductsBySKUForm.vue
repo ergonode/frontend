@@ -32,6 +32,7 @@ import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import TextArea from '@Core/components/Inputs/TextArea';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import PRIVILEGES from '@Products/config/privileges';
 
 export default {
     name: 'AddProductsBySKUForm',
@@ -52,12 +53,13 @@ export default {
             type: String,
             default: '',
         },
-        isUserAllowedToUpdate: {
-            type: Boolean,
-            default: true,
-        },
     },
     computed: {
+        isUserAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT.update,
+            ]);
+        },
         skusFieldKey() {
             return 'skus';
         },

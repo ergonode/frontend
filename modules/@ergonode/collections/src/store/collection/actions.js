@@ -199,6 +199,7 @@ export default {
     async addBySku({
         state,
     }, {
+        scope,
         skus,
         onSuccess = () => {},
         onError = () => {},
@@ -207,8 +208,9 @@ export default {
             const {
                 id,
             } = state;
+            const mappedSkus = skus.replace(/\n/g, ',');
             const data = {
-                skus: skus.replace(/\n/g, ',').split(','),
+                skus: mappedSkus !== '' ? mappedSkus.split(',') : [],
             };
 
             await addBySku({
@@ -218,7 +220,10 @@ export default {
             });
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async addBySegment({
