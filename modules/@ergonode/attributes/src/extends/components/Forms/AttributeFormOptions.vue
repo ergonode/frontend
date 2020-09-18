@@ -5,7 +5,7 @@
 <template>
     <AttributeOptionKeyValues
         key="attrHasOptions"
-        :error-messages="errorMessages"
+        :errors="errors"
         :disabled="!isAllowedToUpdate" />
 </template>
 
@@ -23,7 +23,7 @@ export default {
         AttributeOptionKeyValues,
     },
     props: {
-        errorMessages: {
+        errors: {
             type: Object,
             default: () => ({}),
         },

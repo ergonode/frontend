@@ -5,7 +5,7 @@
 <template>
     <Card :title="selectedLanguage">
         <Form :errors="translationErrors">
-            <template>
+            <template #body>
                 <FormSection>
                     <TextField
                         :data-cy="dataCyGenerator(labelFieldKey)"
@@ -23,11 +23,11 @@
                         :error-messages="translationErrors[hintFieldKey]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'hint')" />
-                    <Divider />
+                    <Divider v-if="formComponent.component" />
                     <Component
                         :is="formComponent.component"
                         :type-key="typeKey"
-                        :error-messages="translationErrors"
+                        :errors="translationErrors"
                         :language-code="languageCode"
                         v-bind="formComponent.props" />
                 </FormSection>

@@ -10,7 +10,7 @@
         required
         :label="paramsLabel"
         :options="attributeParametersOptions"
-        :error-messages="errorMessages[paramsFieldKey]"
+        :error-messages="errors[paramsFieldKey]"
         :disabled="!isAllowedToUpdate"
         @input="setParameterValue" />
 </template>
@@ -31,7 +31,7 @@ export default {
         Select,
     },
     props: {
-        errorMessages: {
+        errors: {
             type: Object,
             default: () => ({}),
         },
