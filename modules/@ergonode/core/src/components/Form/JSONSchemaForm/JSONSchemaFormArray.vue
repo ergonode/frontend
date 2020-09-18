@@ -3,18 +3,12 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormSubsection
-        :title="schema.title"
-        :required="schema.isRequired">
-        <Component
-            :is="arrayComponent"
-            :value="value"
-            :schema="schema"
-            @input="onValueChange" />
-        <FormErrorLabel
-            v-if="errorMessages"
-            :error-messages="errorMessages" />
-    </FormSubsection>
+    <Component
+        :is="arrayComponent"
+        :value="value"
+        :schema="schema"
+        :errors="errors"
+        @input="onValueChange" />
 </template>
 
 <script>
@@ -27,7 +21,6 @@ export default {
     name: 'JSONSchemaFormArray',
     components: {
         FormSubsection,
-        FormErrorLabel: () => import('@Core/components/Form/FormErrorLabel'),
     },
     props: {
         schema: {
@@ -38,9 +31,9 @@ export default {
             type: Array,
             default: () => [],
         },
-        errorMessages: {
-            type: String,
-            default: '',
+        errors: {
+            type: Object,
+            default: () => ({}),
         },
     },
     data() {

@@ -20,6 +20,7 @@
                 :is="element.component"
                 :value="value[element.key]"
                 :schema="element.props"
+                :error-messages="errors[element.key]"
                 @input="onValueChange" />
         </div>
     </div>
@@ -54,6 +55,10 @@ export default {
             required: true,
         },
         value: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
             type: Object,
             default: () => ({}),
         },

@@ -35,6 +35,7 @@
                         v-if="schema"
                         :value="configuration"
                         :schema="schema"
+                        :errors="errors"
                         @input="setConfigurationValue" />
                 </FadeTransition>
             </FormSection>

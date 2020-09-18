@@ -14,7 +14,7 @@
                 :value="model[element.key]"
                 :is="element.component"
                 :schema="element.props"
-                :error-messages="errors[element.key]"
+                :errors="errors[element.key]"
                 @input="onValueChange" />
         </template>
     </Form>
@@ -38,6 +38,10 @@ export default {
                 properties: {},
                 required: [],
             }),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
         },
         value: {
             type: String,
