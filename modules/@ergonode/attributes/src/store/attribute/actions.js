@@ -22,6 +22,7 @@ export default {
         rootState,
     },
     {
+        scope,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -30,7 +31,7 @@ export default {
                 code,
                 groups,
                 type,
-                scope,
+                scope: attributeScope,
             } = state;
             const {
                 attrTypes,
@@ -38,7 +39,7 @@ export default {
             const typeKey = type ? getKeyByValue(attrTypes, type) : null;
             let data = {
                 code,
-                scope,
+                scope: attributeScope,
                 type: typeKey,
                 groups,
             };
@@ -80,7 +81,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
-                scope: 'attributeForm',
+                scope,
             });
         }
     },

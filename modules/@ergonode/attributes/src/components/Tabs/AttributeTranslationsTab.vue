@@ -67,7 +67,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -75,9 +75,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.updateAttribute({
-                scope: 'attributeTranslationsTab',
+                scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

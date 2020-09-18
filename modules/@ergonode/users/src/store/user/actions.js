@@ -102,6 +102,7 @@ export default {
             rootGetters,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -181,7 +182,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
-                scope: 'userGeneralTab',
+                scope,
             });
         }
     },
@@ -191,6 +192,7 @@ export default {
             rootGetters,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -229,7 +231,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
-                scope: 'userForm',
+                scope,
             });
         }
     },

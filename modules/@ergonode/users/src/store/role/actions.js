@@ -71,6 +71,7 @@ export default {
             commit,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -128,7 +129,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
-                scope: 'roleGeneralTab',
+                scope,
             });
         }
     },
@@ -137,6 +138,7 @@ export default {
             state,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -163,7 +165,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
-                scope: 'roleForm',
+                scope,
             });
         }
     },

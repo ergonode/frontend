@@ -29,6 +29,9 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import {
+    toLowerCaseFirstLetter,
+} from '@Core/models/stringWrapper';
+import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -47,10 +50,13 @@ export default {
     },
     computed: {
         ...mapState('validations', {
-            errors: state => state.errors.unitForm,
+            errors: state => state.errors[this.scope],
         }),
         secondaryTheme() {
             return THEME.SECONDARY;
+        },
+        scope() {
+            return toLowerCaseFirstLetter(this.$options.name);
         },
     },
     methods: {
@@ -63,16 +69,23 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
+        onClose() {
+            this.__clearStorage();
+            this.removeScopeErrors(this.scope);
+
+            this.$emit('close');
+        },
         onSubmit() {
             if (this.isSubmitting || this.isProceeding) {
                 return;
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.createUnit({
+                scope: this.scope,
                 onSuccess: this.onCreateSuccess,
                 onError: this.onCreateError,
             });
@@ -84,15 +97,12 @@ export default {
 
             this.isProceeding = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.createUnit({
+                scope: this.scope,
                 onSuccess: this.onProceedSuccess,
                 onError: this.onCreateError,
             });
-        },
-        onClose() {
-            this.__clearStorage();
-            this.$emit('close');
         },
         async onCreateSuccess() {
             await this.getDictionary({

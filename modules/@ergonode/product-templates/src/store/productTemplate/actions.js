@@ -132,6 +132,7 @@ export default {
             state,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -166,7 +167,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
-                scope: 'templateGeneralTab',
+                scope,
             });
         }
     },
@@ -276,6 +277,7 @@ export default {
             state,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -307,7 +309,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
-                scope: 'templateForm',
+                scope,
             });
         }
     },

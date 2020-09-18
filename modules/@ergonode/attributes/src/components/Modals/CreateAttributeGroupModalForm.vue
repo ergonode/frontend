@@ -29,6 +29,9 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import {
+    toLowerCaseFirstLetter,
+} from '@Core/models/stringWrapper';
+import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -47,10 +50,13 @@ export default {
     },
     computed: {
         ...mapState('validations', {
-            errors: state => state.errors.attributeGroupForm,
+            errors: state => state.errors[this.scope],
         }),
         secondaryTheme() {
             return THEME.SECONDARY;
+        },
+        scope() {
+            return toLowerCaseFirstLetter(this.$options.name);
         },
     },
     methods: {
@@ -60,11 +66,11 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         onClose() {
             this.__clearStorage();
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
 
             this.$emit('close');
         },
@@ -74,8 +80,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.createAttributeGroup({
+                scope: this.scope,
                 onSuccess: this.onCreateSuccess,
                 onError: this.onCreateError,
             });
@@ -87,8 +94,9 @@ export default {
 
             this.isProceeding = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.createAttributeGroup({
+                scope: this.scope,
                 onSuccess: this.onProceedSuccess,
                 onError: this.onCreateError,
             });

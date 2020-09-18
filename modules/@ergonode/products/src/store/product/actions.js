@@ -418,6 +418,7 @@ export default {
             rootState,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -457,7 +458,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
-                scope: 'productGeneralTab',
+                scope,
             });
         }
     },
@@ -467,6 +468,7 @@ export default {
             rootState,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -505,7 +507,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
-                scope: 'productForm',
+                scope,
             });
         }
     },

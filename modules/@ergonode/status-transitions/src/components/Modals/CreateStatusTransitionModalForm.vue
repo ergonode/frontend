@@ -27,6 +27,9 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
+import {
+    toLowerCaseFirstLetter,
+} from '@Core/models/stringWrapper';
 import TransitionForm from '@Transitions/components/Forms/TransitionForm';
 import {
     mapActions,
@@ -47,7 +50,7 @@ export default {
     },
     computed: {
         ...mapState('validations', {
-            errors: state => state.errors.statusTransitionForm,
+            errors: state => state.errors[this.scope],
         }),
         ...mapState('statusTransition', {
             source: state => state.source,
@@ -55,6 +58,9 @@ export default {
         }),
         secondaryTheme() {
             return THEME.SECONDARY;
+        },
+        scope() {
+            return toLowerCaseFirstLetter(this.$options.name);
         },
     },
     created() {
@@ -73,11 +79,11 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         onClose() {
             this.__clearStorage();
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
 
             this.$emit('close');
         },
@@ -87,8 +93,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.createStatusTransition({
+                scope: this.scope,
                 onSuccess: this.onCreateSuccess,
                 onError: this.onCreateError,
             });
@@ -100,8 +107,9 @@ export default {
 
             this.isProceeding = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.createStatusTransition({
+                scope: this.scope,
                 onSuccess: this.onProceedSuccess,
                 onError: this.onCreateError,
             });

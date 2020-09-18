@@ -123,6 +123,7 @@ export default {
             state,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -147,7 +148,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
-                scope: 'segmentForm',
+                scope,
             });
         }
     },

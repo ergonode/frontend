@@ -113,6 +113,7 @@ export default {
             state,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -138,7 +139,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
-                scope: 'importProfileGeneralTab',
+                scope,
             });
         }
     },
@@ -146,6 +147,7 @@ export default {
         state,
         rootState,
     }, {
+        scope,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -181,7 +183,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
-                scope: 'importProfileForm',
+                scope,
             });
         }
     },

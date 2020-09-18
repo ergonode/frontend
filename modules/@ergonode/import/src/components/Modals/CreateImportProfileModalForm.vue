@@ -27,6 +27,9 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
+import {
+    toLowerCaseFirstLetter,
+} from '@Core/models/stringWrapper';
 import ImportProfileForm from '@Import/components/Forms/ImportProfileForm';
 import {
     mapActions,
@@ -47,10 +50,13 @@ export default {
     },
     computed: {
         ...mapState('validations', {
-            errors: state => state.errors.importProfileForm,
+            errors: state => state.errors[this.scope],
         }),
         secondaryTheme() {
             return THEME.SECONDARY;
+        },
+        scope() {
+            return toLowerCaseFirstLetter(this.$options.name);
         },
     },
     methods: {
@@ -60,11 +66,11 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         onClose() {
             this.__clearStorage();
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.$emit('close');
         },
         onSubmit() {
@@ -73,8 +79,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.createImportProfile({
+                scope: this.scope,
                 onSuccess: this.onCreateSuccess,
                 onError: this.onCreateError,
             });
@@ -87,6 +94,7 @@ export default {
             this.isProceeding = true;
 
             this.createImportProfile({
+                scope: this.scope,
                 onSuccess: this.onProceedSuccess,
                 onError: this.onCreateError,
             });
@@ -105,7 +113,7 @@ export default {
         onProceedSuccess(id) {
             this.isProceeding = false;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
 
             this.$router.push({
                 name: 'import-id-general',

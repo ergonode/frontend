@@ -31,6 +31,9 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import {
+    toLowerCaseFirstLetter,
+} from '@Core/models/stringWrapper';
+import {
     mapActions,
 } from 'vuex';
 
@@ -54,6 +57,9 @@ export default {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT_COLLECTION.update,
             ]);
+        },
+        scope() {
+            return toLowerCaseFirstLetter(this.$options.name);
         },
     },
     methods: {
