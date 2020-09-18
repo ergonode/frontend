@@ -43,7 +43,7 @@
         <UploadImportFileModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @created="onCreatedData" />
+            @import="onCreatedData" />
     </Page>
 </template>
 
