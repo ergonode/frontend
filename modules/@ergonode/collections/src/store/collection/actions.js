@@ -90,6 +90,9 @@ export default {
             const {
                 drafts,
             } = rootState.grid;
+            const {
+                language: userLanguageCode,
+            } = rootState.authentication.user;
 
             const requests = Object.keys(drafts).map(
                 async (key) => {
@@ -105,6 +108,7 @@ export default {
                         $axios: this.app.$axios,
                         id,
                         productId,
+                        languageCode: userLanguageCode,
                         data,
                     });
                 },

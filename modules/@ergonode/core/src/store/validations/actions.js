@@ -16,13 +16,31 @@ export default {
     }, {
         errors,
         scope = 'default',
+        fieldKeys = {},
     }) {
         if (errors) {
             commit(types.SET_ERRORS, getMappedErrorsV2({
                 errors,
+                fieldKeys,
                 scope,
             }));
         }
+    },
+    removeScopeErrors({
+        commit,
+    }, scope) {
+        commit(types.REMOVE_ERROR, scope);
+    },
+    removeScopeError({
+        commit,
+    }, {
+        scope,
+        fieldKey,
+    }) {
+        commit(types.REMOVE_SCOPE_ERROR, {
+            scope,
+            fieldKey,
+        });
     },
     removeError({
         commit,

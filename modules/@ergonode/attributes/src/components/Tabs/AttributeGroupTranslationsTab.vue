@@ -67,7 +67,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeError',
+            'removeScopeErrors',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -75,7 +75,7 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeError(this.scope);
+            this.removeScopeErrors(this.scope);
             this.updateAttributeGroup({
                 scope: this.scope,
                 onSuccess: this.onUpdateSuccess,

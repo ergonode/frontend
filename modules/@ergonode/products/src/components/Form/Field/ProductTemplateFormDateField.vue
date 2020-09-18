@@ -6,37 +6,32 @@
     <ProductTemplateFormField
         :size="size"
         :position="position">
-        <FormValidatorField :field-key="fieldKey">
-            <template #validator="{ errorMessages }">
-                <DatePicker
-                    :value="fieldData"
-                    :label="label"
-                    :placeholder="properties.placeholder"
-                    :foramt="parameter"
-                    :error-messages="errorMessages"
-                    :required="properties.required"
-                    :disabled="disabled"
-                    @focus="onFocus"
-                    @input="onValueChange">
-                    <template #append>
-                        <TextFieldSuffix
-                            v-if="parameter"
-                            :suffix="parameter" />
-                        <InfoHint
-                            v-if="properties.hint"
-                            :hint="properties.hint" />
-                    </template>
-                    <template #details>
-                        <div />
-                    </template>
-                </DatePicker>
+        <DatePicker
+            :value="localValue"
+            :label="label"
+            :placeholder="properties.placeholder"
+            :foramt="parameter"
+            :error-messages="errors[fieldKey]"
+            :required="properties.required"
+            :disabled="disabled"
+            @focus="onFocus"
+            @input="onValueChange">
+            <template #append>
+                <TextFieldSuffix
+                    v-if="parameter"
+                    :suffix="parameter" />
+                <InfoHint
+                    v-if="properties.hint"
+                    :hint="properties.hint" />
             </template>
-        </FormValidatorField>
+            <template #details>
+                <div />
+            </template>
+        </DatePicker>
     </ProductTemplateFormField>
 </template>
 
 <script>
-import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import InfoHint from '@Core/components/Hints/InfoHint';
 import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
@@ -46,9 +41,9 @@ import {
 import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import {
     format as formatDate,
+    isEqual,
 } from 'date-fns';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -57,7 +52,6 @@ export default {
     components: {
         ProductTemplateFormField,
         DatePicker,
-        FormValidatorField,
         TextFieldSuffix,
         InfoHint,
     },
@@ -74,6 +68,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         disabled: {
             type: Boolean,
             default: false,
@@ -86,6 +84,11 @@ export default {
             type: String,
             required: true,
         },
+    },
+    data() {
+        return {
+            localValue: '',
+        };
     },
     computed: {
         ...mapState('product', {
@@ -112,31 +115,31 @@ export default {
             return `${this.properties.attribute_code}/${this.languageCode}`;
         },
     },
+    watch: {
+        languageCode: {
+            immediate: true,
+            handler() {
+                this.localValue = this.fieldData;
+            },
+        },
+    },
     methods: {
-        ...mapActions('product', [
-            'setDraftValue',
-        ]),
         onFocus(isFocused) {
-            if (!isFocused) {
+            if (!isFocused && !isEqual(this.fieldData, this.localValue)) {
                 this.$emit('input', {
                     fieldKey: this.fieldKey,
                     languageCode: this.languageCode,
                     productId: this.$route.params.id,
                     elementId: this.properties.attribute_id,
-                    value: this.fieldData
-                        ? formatDate(this.fieldData, DEFAULT_FORMAT)
+                    code: this.properties.attribute_code,
+                    value: this.localValue
+                        ? formatDate(this.localValue, DEFAULT_FORMAT)
                         : '',
                 });
             }
         },
         onValueChange(value) {
-            const date = value ? formatDate(value, DEFAULT_FORMAT) : null;
-
-            this.setDraftValue({
-                languageCode: this.languageCode,
-                key: this.properties.attribute_code,
-                value: date,
-            });
+            this.localValue = value;
         },
     },
 };

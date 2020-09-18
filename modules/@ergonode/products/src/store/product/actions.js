@@ -275,6 +275,7 @@ export default {
     },
     async updateProductStatus({
         state,
+        rootState,
     }, {
         attributeId,
         value,
@@ -284,6 +285,10 @@ export default {
             id,
         } = state;
 
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
+
         const data = {
             value,
         };
@@ -292,6 +297,7 @@ export default {
             $axios: this.app.$axios,
             id,
             attributeId,
+            languageCode: userLanguageCode,
             data,
         });
         await applyDraft({
@@ -319,10 +325,12 @@ export default {
     async updateProductDraft({
         dispatch,
     }, {
+        languageCode,
         fieldKey,
         productId,
         elementId,
         value,
+        scope,
     }) {
         try {
             const data = {
@@ -333,27 +341,36 @@ export default {
                 $axios: this.app.$axios,
                 id: productId,
                 attributeId: elementId,
+                languageCode,
                 data,
             });
+
             dispatch(
-                'validations/removeError',
-                fieldKey,
+                'validations/removeScopeError',
+                {
+                    scope,
+                    fieldKey,
+                },
                 {
                     root: true,
                 },
             );
         } catch (e) {
             const {
-                code: statusCode, errors,
+                errors,
             } = e.data;
+
+            const fieldKeys = {
+                value: fieldKey,
+            };
 
             if (errors) {
                 dispatch(
                     'validations/onError',
                     {
-                        code: statusCode,
                         errors,
-                        fieldKey,
+                        fieldKeys,
+                        scope,
                     },
                     {
                         root: true,
@@ -369,9 +386,9 @@ export default {
                 dispatch(
                     'validations/onError',
                     {
-                        code: statusCode,
                         errors: internalServerError,
-                        fieldKey,
+                        fieldKeys,
+                        scope,
                     },
                     {
                         root: true,

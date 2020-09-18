@@ -13,11 +13,10 @@
                 v-for="(formField, index) in formFieldComponents"
                 :is="formField"
                 :key="index"
-                v-bind="{
-                    ...elements[index],
-                    disabled: !isUserAllowedToUpdate(elements[index].properties.scope),
-                    languageCode: language.code,
-                }"
+                :disabled="!isUserAllowedToUpdate(elements[index].properties.scope)"
+                :language-code="language.code"
+                :errors="errors"
+                v-bind="elements[index]"
                 @input="onValueChange" />
         </div>
     </TemplateGridDesigner>
@@ -33,7 +32,6 @@ import {
 import PRIVILEGES from '@Products/config/privileges';
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
 import {
-    mapActions,
     mapGetters,
     mapState,
 } from 'vuex';
@@ -51,6 +49,10 @@ export default {
         elements: {
             type: Array,
             default: () => [],
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
         },
     },
     data() {
@@ -91,9 +93,6 @@ export default {
         }) => () => import(`@Products/components/Form/Field/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`));
     },
     methods: {
-        ...mapActions('product', [
-            'updateProductDraft',
-        ]),
         isUserAllowedToUpdate(scope) {
             const {
                 code,
@@ -105,10 +104,8 @@ export default {
                 && this.languagePrivileges[code].edit
                 && (this.rootLanguage.code === code || scope === SCOPE.LOCAL);
         },
-        async onValueChange(payload) {
-            await this.updateProductDraft(payload);
-
-            this.$emit('valueUpdated');
+        onValueChange(payload) {
+            this.$emit('input', payload);
         },
     },
 };

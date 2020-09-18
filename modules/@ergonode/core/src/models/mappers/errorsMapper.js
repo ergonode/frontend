@@ -37,19 +37,26 @@ export const getMappedErrors = ({
     return mappedErrors;
 };
 
-const flattenErrors = (mappedErrors, errors) => {
+const flattenErrors = ({
+    mappedErrors, errors, fieldKeys,
+}) => {
     const keys = Object.keys(errors);
     const tmpErrors = {};
 
     for (let i = 0; i < keys.length; i += 1) {
         const key = keys[i];
+        const fieldKey = fieldKeys[key];
 
         if (Array.isArray(errors[key])) {
-            tmpErrors[key] = errors[key].join(', ');
+            tmpErrors[fieldKey || key] = errors[key].join(', ');
         } else {
             return {
                 ...mappedErrors,
-                [key]: flattenErrors(mappedErrors, errors[key]),
+                [fieldKey || key]: flattenErrors({
+                    mappedErrors,
+                    errors: errors[key],
+                    fieldKeys,
+                }),
             };
         }
     }
@@ -62,9 +69,14 @@ const flattenErrors = (mappedErrors, errors) => {
 
 export const getMappedErrorsV2 = ({
     errors,
+    fieldKeys,
     scope,
 }) => ({
-    [scope]: flattenErrors({}, errors),
+    [scope]: flattenErrors({
+        mappedErrors: {},
+        errors,
+        fieldKeys,
+    }),
 });
 
 export const getMappedTranslationErrors = ({
@@ -76,8 +88,6 @@ export const getMappedTranslationErrors = ({
     Object.keys(errors).forEach((key) => {
         translationErrors[key] = errors[key][languageCode];
     });
-
-    console.log(translationErrors);
 
     return translationErrors;
 };
