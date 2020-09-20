@@ -173,7 +173,7 @@ export default {
             });
 
             if (rootState.authentication.user.id === id) {
-                await dispatch('authentication/getUser', {
+                await dispatch('authentication/getUser', {}, {
                     root: true,
                 });
             }

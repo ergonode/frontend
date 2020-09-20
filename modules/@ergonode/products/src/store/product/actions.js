@@ -325,6 +325,7 @@ export default {
     },
     async updateProductDraft({
         dispatch,
+        rootState,
     }, {
         languageCode,
         fieldKey,
@@ -346,17 +347,20 @@ export default {
                 data,
             });
 
-            dispatch(
-                'validations/removeScopeError',
-                {
-                    scope,
-                    fieldKey,
-                },
-                {
-                    root: true,
-                },
-            );
+            if (rootState.validations.errors[scope]) {
+                dispatch(
+                    'validations/removeScopeError',
+                    {
+                        scope,
+                        fieldKey,
+                    },
+                    {
+                        root: true,
+                    },
+                );
+            }
         } catch (e) {
+            console.log(e);
             const {
                 errors,
             } = e.data;

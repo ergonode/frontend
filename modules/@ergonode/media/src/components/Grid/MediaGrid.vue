@@ -284,23 +284,25 @@ export default {
 
             this.setDrafts();
 
-            if (this.multiple) {
-                const mappedValue = [
-                    ...this.value.filter(id => !toRemove.some(removeId => removeId === id)),
-                    ...value,
-                ];
+            if (value.length || toRemove.length) {
+                if (this.multiple) {
+                    const mappedValue = [
+                        ...this.value.filter(id => !toRemove.some(removeId => removeId === id)),
+                        ...value,
+                    ];
 
-                this.$emit('input', mappedValue);
-            } else {
-                this.$emit('input', value.join(''));
+                    this.$emit('input', mappedValue);
+                } else if (value.length) {
+                    this.$emit('input', value.join(''));
+                }
+
+                this.onFetchData(this.localParams);
+
+                this.$addAlert({
+                    type: ALERT_TYPE.SUCCESS,
+                    message: 'Media have been updated',
+                });
             }
-
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Media have been added',
-            });
-
-            this.onFetchData(this.localParams);
         },
         onSearchFocus(isFocused) {
             this.isSearchFocused = isFocused;

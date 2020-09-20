@@ -13,11 +13,14 @@
                     v-if="isValue"
                     class="upload-image-file">
                     <div class="fixed-container">
-                        <Picture
-                            v-if="!multiple"
-                            :api-path="`multimedia/${value}/download/default`"
-                            :value="value"
-                            :object-fit="objectFit" />
+                        <div
+                            class="upload-image-file__image"
+                            v-if="!multiple">
+                            <Picture
+                                :api-path="`multimedia/${value}/download/default`"
+                                :value="value"
+                                :object-fit="objectFit" />
+                        </div>
                         <PictureCarousel
                             v-else
                             :image-ids="value"
@@ -313,6 +316,13 @@ export default {
             right: 8px;
             background-color: $WHITE;
             border-radius: 50%;
+        }
+
+        &__image {
+            position: relative;
+            display: flex;
+            flex: 1;
+            height: 100%;
         }
     }
 </style>

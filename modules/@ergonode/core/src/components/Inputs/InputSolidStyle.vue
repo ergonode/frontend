@@ -68,7 +68,7 @@ export default {
     computed: {
         inputStyle() {
             return {
-                maxHeight: this.height,
+                height: this.height,
                 flexBasis: this.height,
             };
         },

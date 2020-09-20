@@ -88,7 +88,7 @@ export default {
         },
     },
     watch: {
-        privileges: {
+        languagePrivilegesCollection: {
             deep: true,
             immediate: true,
             handler() {
@@ -189,6 +189,8 @@ export default {
             this.columns = sortedColumns;
             this.dataCount = fullDataList.length;
             this.rows = rows;
+
+            console.log(rows);
         },
     },
 };

@@ -37,6 +37,7 @@ export default {
         scope,
         fieldKey,
     }) {
+        console.log(scope, fieldKey);
         commit(types.REMOVE_SCOPE_ERROR, {
             scope,
             fieldKey,
