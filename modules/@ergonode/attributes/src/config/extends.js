@@ -140,7 +140,7 @@ export default {
                 return {};
             }
         },
-        '@Attributes/store/attribute/action/updateAttribute/__before': async ({
+        '@Attributes/store/attribute/action/updateAttribute/__before': ({
             $this, type, data,
         }) => {
             const typeConfig = getTypeConfiguration({
@@ -149,6 +149,13 @@ export default {
             });
 
             switch (type) {
+            case 'DATE':
+            case 'UNIT':
+            case 'PRICE':
+                return prepareParametersData({
+                    $this,
+                    typeConfig,
+                });
             case 'SELECT':
             case 'MULTI_SELECT':
                 prepareOptionsData({
@@ -156,7 +163,7 @@ export default {
                     typeConfig,
                 });
 
-                await updateOptionsData({
+                updateOptionsData({
                     $this,
                     data,
                 });

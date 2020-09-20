@@ -61,7 +61,7 @@
                 <Component
                     :is="formComponent.component"
                     :type-key="typeKey"
-                    :error-messages="errors"
+                    :errors="errors"
                     v-bind="formComponent.props" />
             </FormSection>
         </template>
