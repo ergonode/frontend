@@ -5,14 +5,14 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[typeFieldKey]"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <Select
                     :value="type"
@@ -20,7 +20,7 @@
                     label="Channel type"
                     :disabled="isFetchingConfiguration || isDisabled || !isAllowedToUpdate"
                     :options="channelsOptions"
-                    :error-messages="errorMessages[typeFieldKey]"
+                    :error-messages="errors[typeFieldKey]"
                     @input="setTypeValue">
                     <template #append>
                         <FadeTransition>
@@ -72,6 +72,12 @@ export default {
     mixins: [
         formActionsMixin,
     ],
+    props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             schemas: {},

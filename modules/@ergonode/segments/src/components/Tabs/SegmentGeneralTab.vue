@@ -8,6 +8,7 @@
             <SegmentForm
                 submit-title="SAVE CHANGES"
                 :is-submitting="isSubmitting"
+                :errors="errors"
                 @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
@@ -29,6 +30,16 @@ export default {
         SegmentForm,
         CenterViewTemplate,
     },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             isSubmitting: false,
@@ -40,7 +51,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -48,9 +59,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
-
+            this.removeScopeErrors(this.scope);
             this.updateSegment({
+                scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

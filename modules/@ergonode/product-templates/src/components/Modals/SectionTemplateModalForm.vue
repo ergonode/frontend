@@ -10,7 +10,11 @@
             <IconFontSize />
         </template>
         <template #body>
-            <Form>
+            <Form
+                submit-title="SAVE"
+                proceed-title="CANCEL"
+                @submit="onSave"
+                @proceed="onClose">
                 <template #body>
                     <FormSection>
                         <TextField
@@ -23,28 +27,15 @@
                 </template>
             </Form>
         </template>
-        <template #footer>
-            <Button
-                title="SAVE"
-                @click.native="onSave" />
-            <Button
-                :theme="secondaryTheme"
-                title="CANCEL"
-                @click.native="onClose" />
-        </template>
     </ModalForm>
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
 import TextField from '@Core/components/Inputs/TextField';
 import ModalForm from '@Core/components/Modal/ModalForm';
-import {
-    THEME,
-} from '@Core/defaults/theme';
 import {
     mapActions,
 } from 'vuex';
@@ -57,7 +48,6 @@ export default {
         Form,
         TextField,
         ModalForm,
-        Button,
     },
     props: {
         index: {
@@ -78,11 +68,6 @@ export default {
             title: '',
             error: null,
         };
-    },
-    computed: {
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
     },
     mounted() {
         if (this.element) {

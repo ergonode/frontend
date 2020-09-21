@@ -95,54 +95,50 @@ export default {
                 type,
             });
 
-            if (typeConfig) {
-                switch (type) {
-                case 'DATE':
-                case 'UNIT':
-                case 'PRICE':
-                    return prepareParametersData({
-                        $this,
-                        typeConfig,
-                    });
-                case 'TEXT_AREA':
-                    return prepareTextAreaData({
-                        $this,
-                        typeConfig,
-                    });
-                case 'SELECT':
-                case 'MULTI_SELECT':
-                    return prepareOptionsData({
-                        $this,
-                        typeConfig,
-                    });
-                default:
-                    return {};
-                }
+            switch (type) {
+            case 'DATE':
+            case 'UNIT':
+            case 'PRICE':
+                return prepareParametersData({
+                    $this,
+                    typeConfig,
+                });
+            case 'TEXT_AREA':
+                return prepareTextAreaData({
+                    $this,
+                    typeConfig,
+                });
+            case 'SELECT':
+            case 'MULTI_SELECT':
+                return prepareOptionsData({
+                    $this,
+                    typeConfig,
+                });
+            default:
+                return {};
             }
-            return {};
         },
         '@Attributes/store/attribute/action/createAttribute/__after': ({
-            $this, data, type,
+            $this,
+            data,
+            type,
         }) => {
             const typeConfig = getTypeConfiguration({
                 $this,
                 type,
             });
 
-            if (typeConfig) {
-                switch (type) {
-                case 'SELECT':
-                case 'MULTI_SELECT':
-                    return createOptionsData({
-                        $this,
-                        typeConfig,
-                        data,
-                    });
-                default:
-                    return {};
-                }
+            switch (type) {
+            case 'SELECT':
+            case 'MULTI_SELECT':
+                return createOptionsData({
+                    $this,
+                    typeConfig,
+                    data,
+                });
+            default:
+                return {};
             }
-            return {};
         },
         '@Attributes/store/attribute/action/updateAttribute/__before': ({
             $this, type, data,
@@ -152,70 +148,62 @@ export default {
                 type,
             });
 
-            if (typeConfig) {
-                switch (type) {
-                case 'SELECT':
-                case 'MULTI_SELECT':
-                    prepareOptionsData({
-                        $this,
-                        typeConfig,
-                    });
-                    updateOptionsData({
-                        $this,
-                        data,
-                    });
-                    return {};
-                case 'NUMERIC':
-                case 'TEXT':
-                case 'TEXT_AREA':
-                    return updateTranslation({
-                        $this,
-                    });
-                default:
-                    return {};
-                }
+            switch (type) {
+            case 'DATE':
+            case 'UNIT':
+            case 'PRICE':
+                return prepareParametersData({
+                    $this,
+                    typeConfig,
+                });
+            case 'SELECT':
+            case 'MULTI_SELECT':
+                prepareOptionsData({
+                    $this,
+                    typeConfig,
+                });
+
+                updateOptionsData({
+                    $this,
+                    data,
+                });
+
+                return {};
+            case 'NUMERIC':
+            case 'TEXT':
+            case 'TEXT_AREA':
+                return updateTranslation({
+                    $this,
+                });
+            default:
+                return {};
             }
-            return {};
         },
         '@Attributes/store/attribute/action/updateAttribute/__after': ({
             $this, type,
         }) => {
-            const typeConfig = getTypeConfiguration({
-                $this,
-                type,
-            });
-
-            if (typeConfig) {
-                switch (type) {
-                case 'SELECT':
-                case 'MULTI_SELECT':
-                    $this.commit('attribute/REMOVE_UPDATED_OPTION');
-                    break;
-                default:
-                    break;
-                }
+            switch (type) {
+            case 'SELECT':
+            case 'MULTI_SELECT':
+                $this.commit('attribute/REMOVE_UPDATED_OPTION');
+                break;
+            default:
+                break;
             }
         },
         '@Attributes/store/attribute/action/getAttributesOptionsByType/__after': ({
+            // eslint-disable-next-line no-unused-vars
             $this, type,
         }) => {
-            const typeConfig = getTypeConfiguration({
-                $this,
-                type,
-            });
-
-            if (typeConfig) {
-                switch (type) {
-                case 'TEXT':
-                    // TODO: Temporary till BE will create SKU as an attribute
-                    return [
-                        SKU_MODEL,
-                    ];
-                default:
-                    return [];
-                }
+            switch (type) {
+            case 'TEXT':
+                // TODO: Temporary till BE will create SKU as an attribute
+                return [
+                    SKU_MODEL,
+                ];
+            default:
+                return [];
             }
-            return [];
         },
         '@Attributes/store/attribute/action/getAttribute/__after': ({
             $this, data, type,
@@ -225,38 +213,36 @@ export default {
                 type,
             });
 
-            if (typeConfig) {
-                switch (type) {
-                case 'DATE':
-                case 'UNIT':
-                case 'PRICE':
-                    setParametersData({
-                        $this,
-                        data,
-                        typeConfig,
-                    });
-                    break;
-                case 'TEXT_AREA':
-                    setTranslation({
-                        $this,
-                        data,
-                    });
-                    setTextAreaData({
-                        $this,
-                        data,
-                        typeConfig,
-                    });
-                    break;
-                case 'NUMERIC':
-                case 'TEXT':
-                    setTranslation({
-                        $this,
-                        data,
-                    });
-                    break;
-                default:
-                    break;
-                }
+            switch (type) {
+            case 'DATE':
+            case 'UNIT':
+            case 'PRICE':
+                setParametersData({
+                    $this,
+                    data,
+                    typeConfig,
+                });
+                break;
+            case 'TEXT_AREA':
+                setTranslation({
+                    $this,
+                    data,
+                });
+                setTextAreaData({
+                    $this,
+                    data,
+                    typeConfig,
+                });
+                break;
+            case 'NUMERIC':
+            case 'TEXT':
+                setTranslation({
+                    $this,
+                    data,
+                });
+                break;
+            default:
+                break;
             }
         },
     },

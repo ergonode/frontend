@@ -71,6 +71,7 @@ export default {
             commit,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -79,7 +80,6 @@ export default {
             const {
                 id,
                 privileges,
-                name,
                 description,
                 drafts,
             } = state;
@@ -102,7 +102,6 @@ export default {
             });
 
             const data = {
-                name,
                 description,
                 privileges: Object.keys(tmpPrivileges),
             };
@@ -128,7 +127,10 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async createRole(
@@ -136,6 +138,7 @@ export default {
             state,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -160,7 +163,10 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async removeRole(

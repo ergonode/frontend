@@ -5,19 +5,19 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[nameFieldKey]"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <TextField
                     :value="name"
                     required
-                    :error-messages="errorMessages[nameFieldKey]"
+                    :error-messages="errors[nameFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     label="File name"
                     @input="setNameValue" />
@@ -54,6 +54,12 @@ export default {
     mixins: [
         formActionsMixin,
     ],
+    props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     computed: {
         ...mapState('media', {
             id: state => state.id,

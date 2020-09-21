@@ -88,7 +88,7 @@ export default {
         },
     },
     watch: {
-        privileges: {
+        languagePrivilegesCollection: {
             deep: true,
             immediate: true,
             handler() {

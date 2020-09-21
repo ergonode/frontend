@@ -4,15 +4,15 @@
  */
 <template>
     <Card :title="selectedLanguage">
-        <Form :fields-keys="[nameFieldKey]">
-            <template #body="{ errorMessages }">
+        <Form :errors="translationErrors">
+            <template #body>
                 <FormSection>
                     <TextField
                         :data-cy="dataCyGenerator(nameFieldKey)"
                         :value="translations.name[languageCode]"
                         label="Category name"
                         :disabled="!isUserAllowedToUpdate"
-                        :error-messages="errorMessages[nameFieldKey]"
+                        :error-messages="translationErrors[nameFieldKey]"
                         @input="(value) => setTranslationPropertyValue(value, 'name')" />
                 </FormSection>
             </template>
@@ -46,7 +46,7 @@ export default {
             ]);
         },
         nameFieldKey() {
-            return `name_${this.languageCode}`;
+            return 'name';
         },
     },
     methods: {

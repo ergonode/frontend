@@ -8,6 +8,7 @@
             <CategoryTreeForm
                 submit-title="SAVE CHANGES"
                 :is-submitting="isSubmitting"
+                :errors="errors"
                 @submit="onSubmit" />
         </template>
     </CenterViewTemplate>

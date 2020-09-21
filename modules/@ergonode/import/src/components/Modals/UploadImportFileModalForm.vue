@@ -68,7 +68,7 @@ export default {
             this.$emit('close');
         },
         onImportNow() {
-            this.$emit('create');
+            this.$emit('import');
         },
         onUploadingCSVFile(progress) {
             this.isCSVUploading = progress;

@@ -90,6 +90,9 @@ export default {
             const {
                 drafts,
             } = rootState.grid;
+            const {
+                language: userLanguageCode,
+            } = rootState.authentication.user;
 
             const requests = Object.keys(drafts).map(
                 async (key) => {
@@ -105,6 +108,7 @@ export default {
                         $axios: this.app.$axios,
                         id,
                         productId,
+                        languageCode: userLanguageCode,
                         data,
                     });
                 },
@@ -123,6 +127,7 @@ export default {
             rootState,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -153,12 +158,16 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async createCollection({
         state,
     }, {
+        scope,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -181,12 +190,16 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async addBySku({
         state,
     }, {
+        scope,
         skus,
         onSuccess = () => {},
         onError = () => {},
@@ -195,8 +208,9 @@ export default {
             const {
                 id,
             } = state;
+            const mappedSkus = skus.replace(/\n/g, ',');
             const data = {
-                skus: skus.replace(/\n/g, ',').split(','),
+                skus: mappedSkus !== '' ? mappedSkus.split(',') : [],
             };
 
             await addBySku({
@@ -206,7 +220,10 @@ export default {
             });
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async addBySegment({

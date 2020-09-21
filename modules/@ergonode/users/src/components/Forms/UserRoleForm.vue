@@ -5,21 +5,21 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[descriptionFieldKey, nameFieldKey]"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <TextField
                     :value="name"
                     required
                     label="Role name"
                     hint="Role name must be unique"
-                    :error-messages="errorMessages[nameFieldKey]"
+                    :error-messages="errors[nameFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setNameValue" />
                 <TextArea
@@ -27,7 +27,7 @@
                     label="Role description"
                     resize="none"
                     height="150px"
-                    :error-messages="errorMessages[descriptionFieldKey]"
+                    :error-messages="errors[descriptionFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     @input="setDescriptionValue" />
             </FormSection>
@@ -58,6 +58,12 @@ export default {
     mixins: [
         formActionsMixin,
     ],
+    props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     computed: {
         ...mapState('role', {
             id: state => state.id,

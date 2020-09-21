@@ -12,6 +12,7 @@
                 proceed-title="CREATE & EDIT"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
+                :errors="scopeErrors"
                 @submit="onSubmit"
                 @proceed="onProceed" />
         </template>
@@ -26,6 +27,9 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
+import {
+    toLowerCaseFirstLetter,
+} from '@Core/models/stringWrapper';
 import TransitionForm from '@Transitions/components/Forms/TransitionForm';
 import {
     mapActions,
@@ -45,12 +49,21 @@ export default {
         };
     },
     computed: {
+        ...mapState('validations', {
+            errors: state => state.errors,
+        }),
         ...mapState('statusTransition', {
             source: state => state.source,
             destination: state => state.destination,
         }),
         secondaryTheme() {
             return THEME.SECONDARY;
+        },
+        scope() {
+            return toLowerCaseFirstLetter(this.$options.name);
+        },
+        scopeErrors() {
+            return this.errors[this.scope];
         },
     },
     created() {
@@ -62,18 +75,18 @@ export default {
     methods: {
         ...mapActions('statusTransition', [
             '__clearStorage',
-            'createTransition',
+            'createStatusTransition',
         ]),
         ...mapActions('productStatus', [
             'getProductStatuses',
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         onClose() {
             this.__clearStorage();
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
 
             this.$emit('close');
         },
@@ -83,8 +96,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
-            this.createTransition({
+            this.removeScopeErrors(this.scope);
+            this.createStatusTransition({
+                scope: this.scope,
                 onSuccess: this.onCreateSuccess,
                 onError: this.onCreateError,
             });
@@ -96,8 +110,9 @@ export default {
 
             this.isProceeding = true;
 
-            this.removeErrors();
-            this.createTransition({
+            this.removeScopeErrors(this.scope);
+            this.createStatusTransition({
+                scope: this.scope,
                 onSuccess: this.onProceedSuccess,
                 onError: this.onCreateError,
             });

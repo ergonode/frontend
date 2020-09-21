@@ -184,6 +184,7 @@ export const updateOptionsData = async ({
             );
         }
     });
+
     await Promise.all([
         ...addOptionsRequests,
         ...updateOptionsRequests,

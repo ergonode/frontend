@@ -4,19 +4,14 @@
  */
 <template>
     <Card :title="selectedLanguage">
-        <Form
-            :fields-keys="[
-                labelFieldKey,
-                hintFieldKey,
-                ...extendedFieldKeys,
-            ]">
-            <template #body="{ errorMessages }">
+        <Form :errors="translationErrors">
+            <template #body>
                 <FormSection>
                     <TextField
                         :data-cy="dataCyGenerator(labelFieldKey)"
                         :value="translations.label[languageCode]"
                         label="Attribute name"
-                        :error-messages="errorMessages[labelFieldKey]"
+                        :error-messages="translationErrors[labelFieldKey]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'label')" />
                     <TextArea
@@ -25,17 +20,16 @@
                         label="Tooltip for writers"
                         resize="none"
                         height="150px"
-                        :error-messages="errorMessages[hintFieldKey]"
+                        :error-messages="translationErrors[hintFieldKey]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'hint')" />
-                    <Divider />
+                    <Divider v-if="formComponent.component" />
                     <Component
                         :is="formComponent.component"
                         :type-key="typeKey"
-                        :error-messages="errorMessages"
+                        :errors="translationErrors"
                         :language-code="languageCode"
-                        v-bind="formComponent.props"
-                        @fieldKeys="onFieldKeys" />
+                        v-bind="formComponent.props" />
                 </FormSection>
             </template>
         </Form>
@@ -73,11 +67,6 @@ export default {
     mixins: [
         translationCardMixin,
     ],
-    data() {
-        return {
-            extendedFieldKeys: [],
-        };
-    },
     computed: {
         ...mapState('dictionaries', {
             attrTypes: state => state.attrTypes,
@@ -103,18 +92,15 @@ export default {
             ]);
         },
         hintFieldKey() {
-            return `hint_${this.languageCode}`;
+            return 'hint';
         },
         labelFieldKey() {
-            return `label_${this.languageCode}`;
+            return 'label';
         },
     },
     methods: {
         dataCyGenerator(key) {
             return `attribute-${key}`;
-        },
-        onFieldKeys(fields) {
-            this.extendedFieldKeys = fields;
         },
     },
 };

@@ -24,7 +24,7 @@
                             v-if="formGlobalError"
                             :title="formGlobalError" />
                         <LinkButton
-                            v-for="(error, index) in errorMessages"
+                            v-for="(error, index) in errors"
                             :title="error"
                             :key="index" />
                     </div>
@@ -32,9 +32,7 @@
             </section>
             <Divider />
         </template>
-        <slot
-            name="body"
-            :error-messages="errorMessages" />
+        <slot name="body" />
         <div
             class="form__footer"
             v-if="isFooterVisible">
@@ -82,10 +80,6 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import {
-    mapActions,
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'Form',
@@ -104,15 +98,12 @@ export default {
             type: String,
             default: '',
         },
-        fieldsKeys: {
-            type: Array,
-            default: () => [],
+        errors: {
+            type: Object,
+            default: () => ({}),
         },
     },
     computed: {
-        ...mapState('validations', {
-            errors: state => state.errors,
-        }),
         isFooterVisible() {
             return !!(this.$slots.submit || this.$slots.proceed)
                 || this.isSubmitButtonVisible
@@ -127,35 +118,17 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        errorMessages() {
-            return this.fieldsKeys.reduce((acc, current) => {
-                const errors = acc;
-                const error = this.getErrorForKey(current);
-
-                if (error) {
-                    errors[current] = error;
-                }
-
-                return errors;
-            }, {});
-        },
         formGlobalError() {
             return this.getErrorForKey('form');
         },
         hasAnyError() {
-            return Object.values(this.errorMessages).length > 0 || this.formGlobalError;
+            return Object.values(this.errors).length > 0 || this.formGlobalError;
         },
         redColor() {
             return RED;
         },
     },
-    beforeDestroy() {
-        this.removeErrors();
-    },
     methods: {
-        ...mapActions('validations', [
-            'removeErrors',
-        ]),
         getErrorForKey(key) {
             return this.errors[key] || null;
         },

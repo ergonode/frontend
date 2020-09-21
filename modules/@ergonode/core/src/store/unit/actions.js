@@ -44,6 +44,7 @@ export default {
             state,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -64,12 +65,16 @@ export default {
             });
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async createUnit({
         state,
     }, {
+        scope,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -92,7 +97,10 @@ export default {
             });
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async removeUnit({

@@ -5,23 +5,20 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[
-            typeIdFieldKey,
-            codeFieldKey,
-        ]"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <TextField
                     :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
                     required
-                    :error-messages="errorMessages[codeFieldKey]"
+                    :error-messages="errors[codeFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     label="System name"
                     hint="System name must be unique"
@@ -32,7 +29,7 @@
                     required
                     label="Type"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :error-messages="errorMessages[typeIdFieldKey]"
+                    :error-messages="errors[typeIdFieldKey]"
                     :fetch-options-request="getCollectionTypeOptions"
                     @input="setTypeValue" />
             </FormSection>
@@ -63,6 +60,12 @@ export default {
     mixins: [
         formActionsMixin,
     ],
+    props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     computed: {
         ...mapState('collection', {
             id: state => state.id,

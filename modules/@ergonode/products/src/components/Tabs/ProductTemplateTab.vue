@@ -38,7 +38,8 @@
             <ProductTemplateForm
                 :language="language"
                 :elements="elements"
-                @valueUpdated="onValueUpdated" />
+                :errors="errors"
+                @input="onValueChange" />
         </template>
         <template #default>
             <Button
@@ -91,6 +92,16 @@ export default {
     mixins: [
         gridModalMixin,
     ],
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     asyncData({
         store,
         params: {
@@ -176,6 +187,8 @@ export default {
     },
     methods: {
         ...mapActions('product', [
+            'updateProductDraft',
+            'setDraftValue',
             'getProductDraft',
             'getProductTemplate',
             'getProductCompleteness',
@@ -256,7 +269,18 @@ export default {
 
             this.completeness = completeness;
         },
-        async onValueUpdated() {
+        async onValueChange(payload) {
+            this.setDraftValue({
+                languageCode: payload.languageCode,
+                key: payload.code,
+                value: payload.value,
+            });
+
+            await this.updateProductDraft({
+                ...payload,
+                scope: this.scope,
+            });
+
             this.completeness = await this.getProductCompleteness({
                 languageCode: this.language.code,
                 id: this.id,

@@ -66,8 +66,11 @@ export const updateDraftValue = ({
     $axios,
     id,
     attributeId,
+    languageCode,
     data,
-}) => $axios.$put(`products/${id}/draft/${attributeId}/value`, data);
+}) => $axios.$put(`${languageCode}/products/${id}/draft/${attributeId}/value`, data, {
+    withLanguage: false,
+});
 
 export const applyDraft = ({
     $axios,

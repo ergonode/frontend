@@ -4,14 +4,14 @@
  */
 <template>
     <Card :title="selectedLanguage">
-        <Form :fields-keys="[descriptionKeyField, nameKeyField]">
-            <template #body="{ errorMessages }">
+        <Form :errors="translationErrors">
+            <template #body>
                 <FormSection>
                     <TextField
                         :data-cy="dataCyGenerator(nameKeyField)"
                         :value="translations.name[languageCode]"
                         label="Status name"
-                        :error-messages="errorMessages[nameKeyField]"
+                        :error-messages="translationErrors[nameKeyField]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'name')" />
                     <TextArea
@@ -20,7 +20,7 @@
                         label="Status description"
                         resize="none"
                         height="150px"
-                        :error-messages="errorMessages[descriptionKeyField]"
+                        :error-messages="translationErrors[descriptionKeyField]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'description')" />
                 </FormSection>
@@ -57,10 +57,10 @@ export default {
             ]);
         },
         descriptionKeyField() {
-            return `description_${this.languageCode}`;
+            return 'description';
         },
         nameKeyField() {
-            return `name_${this.languageCode}`;
+            return 'name';
         },
     },
     methods: {

@@ -174,8 +174,9 @@ export default {
             const {
                 id,
             } = state;
+            const mappedSkus = skus.replace(/\n/g, ',');
             const data = {
-                skus: skus.replace(/\n/g, ',').split(','),
+                skus: mappedSkus !== '' ? mappedSkus.split(',') : [],
             };
 
             await addBySku({
@@ -275,6 +276,7 @@ export default {
     },
     async updateProductStatus({
         state,
+        rootState,
     }, {
         attributeId,
         value,
@@ -284,6 +286,10 @@ export default {
             id,
         } = state;
 
+        const {
+            language: userLanguageCode,
+        } = rootState.authentication.user;
+
         const data = {
             value,
         };
@@ -292,6 +298,7 @@ export default {
             $axios: this.app.$axios,
             id,
             attributeId,
+            languageCode: userLanguageCode,
             data,
         });
         await applyDraft({
@@ -318,11 +325,14 @@ export default {
     },
     async updateProductDraft({
         dispatch,
+        rootState,
     }, {
+        languageCode,
         fieldKey,
         productId,
         elementId,
         value,
+        scope,
     }) {
         try {
             const data = {
@@ -333,27 +343,39 @@ export default {
                 $axios: this.app.$axios,
                 id: productId,
                 attributeId: elementId,
+                languageCode,
                 data,
             });
-            dispatch(
-                'validations/removeError',
-                fieldKey,
-                {
-                    root: true,
-                },
-            );
+
+            if (rootState.validations.errors[scope]) {
+                dispatch(
+                    'validations/removeScopeError',
+                    {
+                        scope,
+                        fieldKey,
+                    },
+                    {
+                        root: true,
+                    },
+                );
+            }
         } catch (e) {
+            console.log(e);
             const {
-                code: statusCode, errors,
+                errors,
             } = e.data;
+
+            const fieldKeys = {
+                value: fieldKey,
+            };
 
             if (errors) {
                 dispatch(
                     'validations/onError',
                     {
-                        code: statusCode,
                         errors,
-                        fieldKey,
+                        fieldKeys,
+                        scope,
                     },
                     {
                         root: true,
@@ -369,9 +391,9 @@ export default {
                 dispatch(
                     'validations/onError',
                     {
-                        code: statusCode,
                         errors: internalServerError,
-                        fieldKey,
+                        fieldKeys,
+                        scope,
                     },
                     {
                         root: true,
@@ -401,6 +423,7 @@ export default {
             rootState,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -438,7 +461,10 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async createProduct(
@@ -447,6 +473,7 @@ export default {
             rootState,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -483,7 +510,10 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async removeProduct({
@@ -511,8 +541,9 @@ export default {
         const {
             id,
         } = state;
+        const mappedSkus = skus.replace(/\n/g, ',');
         const data = {
-            skus: skus.replace(/\n/g, ',').split(','),
+            skus: mappedSkus !== '' ? mappedSkus.split(',') : [],
         };
 
         return removeChildren({

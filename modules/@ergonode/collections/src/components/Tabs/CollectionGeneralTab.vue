@@ -8,6 +8,7 @@
             <CollectionForm
                 submit-title="SAVE CHANGES"
                 :is-submitting="isSubmitting"
+                :errors="errors"
                 @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
@@ -29,6 +30,16 @@ export default {
         CenterViewTemplate,
         CollectionForm,
     },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             isSubmitting: false,
@@ -40,7 +51,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         ...mapActions('grid', [
             'setDrafts',
@@ -51,10 +62,11 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.setDrafts();
 
             this.updateCollection({
+                scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

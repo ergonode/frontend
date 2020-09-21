@@ -29,7 +29,9 @@
                     @click.native="onCreateExport" />
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs">
+        <HorizontalRoutingTabBar
+            :items="tabs"
+            :errors="errors">
             <template #content>
                 <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"

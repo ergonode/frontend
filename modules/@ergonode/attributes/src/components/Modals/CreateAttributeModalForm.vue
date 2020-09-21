@@ -12,6 +12,7 @@
                 proceed-title="CREATE & EDIT"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
+                :errors="scopeErrors"
                 @submit="onSubmit"
                 @proceed="onProceed" />
         </template>
@@ -28,7 +29,11 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import {
+    toLowerCaseFirstLetter,
+} from '@Core/models/stringWrapper';
+import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -44,8 +49,17 @@ export default {
         };
     },
     computed: {
+        ...mapState('validations', {
+            errors: state => state.errors,
+        }),
         secondaryTheme() {
             return THEME.SECONDARY;
+        },
+        scope() {
+            return toLowerCaseFirstLetter(this.$options.name);
+        },
+        scopeErrors() {
+            return this.errors[this.scope];
         },
     },
     methods: {
@@ -55,11 +69,11 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         onClose() {
             this.__clearStorage();
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
 
             this.$emit('close');
         },
@@ -69,8 +83,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.createAttribute({
+                scope: this.scope,
                 onSuccess: this.onCreateSuccess,
                 onError: this.onCreateError,
             });
@@ -82,7 +97,7 @@ export default {
 
             this.isProceeding = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.createAttribute({
                 onSuccess: this.onProceedSuccess,
                 onError: this.onCreateError,

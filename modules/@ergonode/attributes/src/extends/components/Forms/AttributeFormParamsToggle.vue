@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import Toggler from '@Core/components/Inputs/Toggler/Toggler';
 import {
     mapActions,
 } from 'vuex';
@@ -17,7 +18,7 @@ import {
 export default {
     name: 'AttributeFormParamsToggle',
     components: {
-        Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
+        Toggler,
     },
     props: {
         typeKey: {
