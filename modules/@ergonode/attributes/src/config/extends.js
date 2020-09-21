@@ -192,6 +192,7 @@ export default {
             }
         },
         '@Attributes/store/attribute/action/getAttributesOptionsByType/__after': ({
+            // eslint-disable-next-line no-unused-vars
             $this, type,
         }) => {
             switch (type) {

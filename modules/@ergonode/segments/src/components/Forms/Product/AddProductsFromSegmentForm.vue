@@ -48,8 +48,6 @@ export default {
             type: Object,
             default: () => ({}),
         },
-    },
-    props: {
         segments: {
             type: Array,
             default: () => [],

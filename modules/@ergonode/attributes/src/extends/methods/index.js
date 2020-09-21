@@ -139,60 +139,56 @@ export const createOptionsData = async ({
 export const updateOptionsData = async ({
     $this,
 }) => {
-    try {
-        const {
-            id,
-            options,
-            updatedOptions,
-        } = $this.state.attribute;
-        const optionKeys = Object.keys(options);
-        const addOptionsRequests = [];
-        const updateOptionsRequests = [];
+    const {
+        id,
+        options,
+        updatedOptions,
+    } = $this.state.attribute;
+    const optionKeys = Object.keys(options);
+    const addOptionsRequests = [];
+    const updateOptionsRequests = [];
 
-        optionKeys.forEach((key) => {
-            const option = options[key];
-            const optionValue = option.value || null;
+    optionKeys.forEach((key) => {
+        const option = options[key];
+        const optionValue = option.value || null;
 
-            if (!option.id) {
-                addOptionsRequests.push(
-                    createOption({
-                        $axios: $this.app.$axios,
-                        id,
-                        data: {
-                            code: option.key,
-                            label: optionValue,
-                        },
-                    }).then(({
+        if (!option.id) {
+            addOptionsRequests.push(
+                createOption({
+                    $axios: $this.app.$axios,
+                    id,
+                    data: {
+                        code: option.key,
+                        label: optionValue,
+                    },
+                }).then(({
+                    id: optionId,
+                }) => $this.dispatch('attribute/updateAttributeOptionKey',
+                    {
+                        index: key,
                         id: optionId,
-                    }) => $this.dispatch('attribute/updateAttributeOptionKey',
-                        {
-                            index: key,
-                            id: optionId,
-                            key: option.key,
-                        })),
-                );
-            } else if (updatedOptions[option.id]) {
-                updateOptionsRequests.push(
-                    updateOption({
-                        $axios: $this.app.$axios,
-                        attributeId: id,
-                        optionId: option.id,
-                        data: {
-                            code: option.key,
-                            label: optionValue,
-                        },
-                    }),
-                );
-            }
-        });
+                        key: option.key,
+                    })),
+            );
+        } else if (updatedOptions[option.id]) {
+            updateOptionsRequests.push(
+                updateOption({
+                    $axios: $this.app.$axios,
+                    attributeId: id,
+                    optionId: option.id,
+                    data: {
+                        code: option.key,
+                        label: optionValue,
+                    },
+                }),
+            );
+        }
+    });
 
-        await Promise.all([
-            ...addOptionsRequests,
-            ...updateOptionsRequests,
-        ]);
-    } catch (e) {
-        throw e;
-    }
+    await Promise.all([
+        ...addOptionsRequests,
+        ...updateOptionsRequests,
+    ]);
 };
 
 export const setParametersData = ({
