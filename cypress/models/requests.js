@@ -3,39 +3,42 @@
  * See LICENSE for license details.
  */
 let responseID = null;
-let token = null;
-
-export const visitPage = ({
-    path, id,
-}) => {
-    let fullPath = `${path}/${id}`;
-
-    if (id === 'this') {
-        fullPath = `${path}/${responseID}`;
-    }
-    cy.url()
-        .should('include', fullPath);
-};
-
-export const getToken = () => {
-    cy.getCookie('jwt')
-        .should('exist')
-        .then((c) => {
-            token = c.value;
-        });
-};
 
 export const sendRequest = ({
-    reqType, status, urlRegExp,
+    reqType, status, requestName,
 }) => {
     cy
-        .wait(`@${reqType}-REQUEST`)
+        .wait(`@${requestName}_${reqType}`)
         .should((xhr) => {
             expect(xhr.method).to.equal(reqType);
             expect(xhr.status, 'Successful response').to.equal(status);
-            expect(xhr.url, 'Response URL').to.match(urlRegExp);
             if (reqType === 'POST') {
                 responseID = xhr.response.body.id;
             }
         });
+};
+
+export const removeRequest = ({
+    path,
+}) => {
+    const fullPath = `${Cypress.env('defaultLanguage')}/${path}/${responseID}`;
+
+    cy.getCookie('jwt')
+        .should('exist')
+        .then((c) => {
+            const token = c.value;
+
+            cy.request({
+                method: 'DELETE',
+                url: `${Cypress.env('apiServer')}${fullPath}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    JWTAuthorization: `Bearer ${token}`,
+                },
+            }).should((response) => {
+                expect(response.status).to.eq(204);
+            });
+        });
+    cy.reload();
 };

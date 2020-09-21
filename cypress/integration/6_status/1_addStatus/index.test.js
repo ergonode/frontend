@@ -4,17 +4,20 @@
  */
 import {
     And,
+    Given,
     Then,
 } from 'cypress-cucumber-preprocessor/steps';
 
 import {
-    LANGUAGE,
-} from '../../../defaults';
+    MultiSteps,
+} from '../../../models/index';
 import {
-    getToken,
     removeRequest,
     sendRequest,
 } from '../../../models/requests';
+
+const requestName = 'statusRequest';
+const url = 'status';
 
 before(() => {
     cy.login(Cypress.env('adminEmail'), Cypress.env('adminPass'));
@@ -22,48 +25,68 @@ before(() => {
 
 beforeEach(() => {
     Cypress.Cookies.preserveOnce('jwt');
-    cy.apiRequest('POST', `${LANGUAGE}/status`)
-        .as('POST-REQUEST');
+    cy.apiRequest({
+        method: 'POST',
+        url,
+        alias: `${requestName}_POST`,
+    });
+
+    cy.apiRequest({
+        method: 'PUT',
+        url,
+        alias: `${requestName}_PUT`,
+    });
+
+    cy.apiRequest({
+        method: 'DELETE',
+        url,
+        alias: `${requestName}_DELETE`,
+    });
+
+    cy.apiRequest({
+        method: 'GET',
+        url: 'status?offset=0&limit=25&extended=true&filter=&columns=',
+        alias: `${requestName}_GET_GRID`,
+    });
+
+    cy.apiRequest({
+        method: 'GET',
+        url: 'status/**',
+        alias: `${requestName}_GET`,
+    });
 });
 
-And('I choose {int} option from {string} color picker field', (optionNr, id) => {
-    cy.get(`[data-cy=${id}]`)
-        .click();
-    cy.get(`[data-cy=${id}-drop-down]`)
-        .should('be.visible')
-        .find('.color-picker-content > .color')
-        .as('elementList');
-    cy.get('@elementList')
-        .its('length')
-        .should('be.gt', 0);
-    cy.get('@elementList')
-        .eq(optionNr)
-        .as('selectedOption');
-    cy.get('@selectedOption')
-        .click({
-            force: true,
-        });
-    cy.get(`[data-cy=${id}-drop-down]`)
-        .find('button')
-        .contains('OK')
-        .click();
-    cy.get(`[data-cy=${id}-drop-down]`)
-        .should('be.not.visible');
-});
-
-Then('I send a {string} request and status code should be {int}', (reqType, status) => {
-    getToken();
+MultiSteps([
+    Then,
+    And,
+], 'I send a {string} request and status code should be {int}', (reqType, status) => {
     sendRequest({
         reqType,
         status,
-        urlRegExp: /\/status$/,
+        requestName,
     });
 });
 
-Then('I remove element by {string} request', (element, reqType) => {
+Then('I remove element by request', () => {
     removeRequest({
-        element,
-        reqType,
-        path: `${LANGUAGE}/status`,
+        path: 'status',
     });
+});
+
+MultiSteps([
+    Given,
+    And,
+], 'I open {string} page', (page) => {
+    cy.visit(`/${page}`);
+    cy.wait(`@${requestName}_GET_GRID`);
+    cy
+        .url()
+        .should('include', `/${page}`);
+});
+
+MultiSteps([
+    Then,
+    And,
+], 'I wait for {string} request', (type) => {
+    cy.wait(`@${requestName}_${type}`);
 });

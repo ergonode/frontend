@@ -16,10 +16,8 @@
 // the project's config changing)
 
 const cucumber = require('cypress-cucumber-preprocessor').default;
-const cypressNuxt = require('cypress-nuxt');
 
 module.exports = async (on /* config */) => {
-    on('file:preprocessor', await cypressNuxt.plugin()); // make sure to include "await"!
     on('file:preprocessor', cucumber());
     // `on` is used to hook into various events Cypress emits
     // `config` is the resolved Cypress config

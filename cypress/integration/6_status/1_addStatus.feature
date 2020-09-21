@@ -15,7 +15,7 @@ Feature: Status adding
     Then On "grid" I can see row with "status_4" value and columns data: "{'0': 'status_4'}"
     And On "grid" I click on "delete" button for row with "status_4" value
     Then I close modal by button
-    And I remove element by "DELETE" request
+    And I remove element by request
 
   Scenario: Add status and delete by grid button
     When I fill the "status-code" input with the "status_5" term

@@ -6,12 +6,16 @@ import {
     DICTIONARIES,
 } from '../defaults';
 
-Cypress.Commands.add('apiRequest', (method, url) => {
+Cypress.Commands.add('apiRequest', ({
+    method, url, alias,
+}) => {
     cy.server();
-    cy.route({
-        method,
-        url: `**/${url}`,
-    });
+    cy
+        .route({
+            method,
+            url: `**/${url}`,
+        })
+        .as(alias);
 });
 
 Cypress.Commands.add('login', (email, pass) => {

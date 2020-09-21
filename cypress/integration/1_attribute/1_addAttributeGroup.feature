@@ -13,8 +13,9 @@ Feature: Attribute group adding
     And I open "attribute-groups/grid" page
     Then On "grid" I can see row with "text_attribute_group" value and columns data: "{'0': 'text_attribute_group', '2': '0'}"
     And On "grid" I click on "delete" button for row with "text_attribute_group" value
+    Then Element "modal" is "visible"
     Then I close modal by button
-    And I remove element by "DELETE" request
+    And I remove element by request
 
   Scenario: Add attribute group and delete by grid button
     When I fill the "attribute-group-code" input with the "text_attribute_group2" term

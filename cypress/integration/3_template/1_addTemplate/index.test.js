@@ -11,50 +11,66 @@ import {
 import {
     MultiSteps,
 } from '../../../models/index';
+import {
+    removeRequest,
+    sendRequest,
+} from '../../../models/requests';
+
+const requestName = 'templateRequest';
+const url = 'templates';
 
 before(() => {
     cy.login(Cypress.env('adminEmail'), Cypress.env('adminPass'));
 });
 
 beforeEach(() => {
-    cy
-        .route({
-            method: 'POST',
-            url: '**/templates',
-        })
-        .as('addTemplate');
-    cy
-        .route({
-            method: 'DELETE',
-            url: '**/templates',
-        })
-        .as('removeTemplate');
-    cy
-        .route({
-            method: 'GET',
-            url: '**/templates?offset=0&limit=25&extended=true&filter=&columns=',
-        })
-        .as('templates');
+    Cypress.Cookies.preserveOnce('jwt');
+    cy.apiRequest({
+        method: 'POST',
+        url,
+        alias: `${requestName}_POST`,
+    });
+
+    cy.apiRequest({
+        method: 'PUT',
+        url,
+        alias: `${requestName}_PUT`,
+    });
+
+    cy.apiRequest({
+        method: 'DELETE',
+        url,
+        alias: `${requestName}_DELETE`,
+    });
+
+    cy.apiRequest({
+        method: 'GET',
+        url: 'templates?offset=0&limit=25&extended=true&filter=&columns=',
+        alias: `${requestName}_GET_GRID`,
+    });
+
+    cy.apiRequest({
+        method: 'GET',
+        url: 'templates/**',
+        alias: `${requestName}_GET`,
+    });
 });
 
-Then('I send a {string} request and status code should be {int}', (reqType, status) => {
-    cy
-        .wait('@addTemplate')
-        .should((xhr) => {
-            expect(xhr.status, 'Successful response').to.equal(status);
-        });
-    cy
-        .get('[data-cy=modal]')
-        .should('be.not.visible');
-    cy.wait('@templates');
+MultiSteps([
+    Then,
+    And,
+], 'I send a {string} request and status code should be {int}', (reqType, status) => {
+    sendRequest({
+        reqType,
+        status,
+        requestName,
+    });
 });
 
-Then('I remove element by {string} request', (element, reqType) => {
-    // removeRequest({
-    //     element,
-    //     reqType,
-    //     path: `${LANGUAGE}/templates`,
-    // });
+Then('I remove element by request', () => {
+    removeRequest({
+        path: 'templates',
+    });
 });
 
 MultiSteps([
@@ -62,8 +78,15 @@ MultiSteps([
     And,
 ], 'I open {string} page', (page) => {
     cy.visit(`/${page}`);
-    cy.wait('@templates');
+    cy.wait(`@${requestName}_GET_GRID`);
     cy
         .url()
         .should('include', `/${page}`);
+});
+
+MultiSteps([
+    Then,
+    And,
+], 'I wait for {string} request', (type) => {
+    cy.wait(`@${requestName}_${type}`);
 });

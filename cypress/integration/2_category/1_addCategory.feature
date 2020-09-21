@@ -2,7 +2,7 @@ Feature: Category adding
   This feature allows adding category
 
   Background:
-    Given I open "categories/grid" page
+    Given I open "categories" page
     When I click on "new-category" button
     Then Element "modal" is "visible"
 
@@ -14,7 +14,7 @@ Feature: Category adding
     Then On "grid" I can see row with "category_1" value and columns data: "{'1': 'category_1', '3': '0'}"
     And On "grid" I click on "delete" button for row with "category_1" value
     Then I close modal by button
-    And I remove element by "DELETE" request
+    And I remove element by request
 
   Scenario: Add category and delete by grid button
     When I fill the "category-code" input with the "category_2" term

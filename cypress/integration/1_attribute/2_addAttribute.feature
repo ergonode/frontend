@@ -16,7 +16,7 @@ Feature: Attribute adding
     Then I send a "POST" request and status code should be 201
     And I open "attributes/grid" page
     Then On "grid" I can see row with "<name>" value and columns data: "{'1': '<name>', '3': '<type_txt>', '4': '<scope_txt>'}"
-    And I remove element by "DELETE" request
+    And I remove element by request
 
     Examples:
       | name                | type | type_txt | scope | scope_txt |

@@ -4,13 +4,11 @@
  */
 import {
     And,
-    Given,
     Then,
     When,
 } from 'cypress-cucumber-preprocessor/steps';
 
 import {
-    LANGUAGE,
     MultiSteps,
 } from '../../models';
 import {
@@ -18,20 +16,10 @@ import {
     checkGridRow,
     noGridRow,
 } from '../../models/navigation';
-import {
-    getRequest,
-    removeRequest,
-} from '../../models/requests';
-
-MultiSteps([
-    Given,
-    And,
-], 'I open {string} page', (page) => {
-    cy.visit(`/${page}`);
-    cy
-        .url()
-        .should('include', `/${page}`);
-});
+// import {
+//     getRequest,
+//     removeRequest,
+// } from '../../models/requests';
 
 MultiSteps([
     When,
@@ -100,15 +88,6 @@ MultiSteps([
         .clear()
         .type(term)
         .should('have.value', term);
-});
-
-MultiSteps([
-    Then,
-    When,
-], 'I click tab with {string} text', (text) => {
-    cy.get('[data-cy=tab-bar__items]')
-        .contains(text)
-        .click();
 });
 
 MultiSteps([
@@ -249,11 +228,6 @@ MultiSteps([
                 .as('selectedOption');
             cy.get('@selectedOption')
                 .click();
-            // cy.get('@selectedOption').then(($option) => {
-            //     const optionValue = $option.text().trim().replace('#', '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
-        //     cy.get(`[data-cy=${id}-value] span`).contains(new RegExp(`${optionValue}`, 'g'));
-        // });
         });
     cy.get(`[data-cy=${id}-drop-down]`)
         .find('button')
@@ -293,14 +267,4 @@ MultiSteps([
         action,
         searchValue,
     });
-});
-
-MultiSteps([
-    And,
-    Then,
-], 'I remove {string}', (alias) => {
-    // removeRequest({
-    //     path: `${LANGUAGE}/${element}`,
-    // });
-    cy.wait(`@${alias}`);
 });

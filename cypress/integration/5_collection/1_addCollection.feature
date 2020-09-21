@@ -15,7 +15,7 @@ Feature: Collection adding
     Then On "grid" I can see row with "collection_1" value and columns data: "{'0': 'collection_1', '4': '0'}"
     And On "grid" I click on "delete" button for row with "collection_1" value
     Then I close modal by button
-    And I remove element by "DELETE" request
+    And I remove element by request
 
   Scenario: Add collection and delete by grid button
     When I fill the "collection-code" input with the "collection_2" term
