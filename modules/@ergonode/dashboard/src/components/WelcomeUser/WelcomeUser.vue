@@ -35,9 +35,9 @@ export default {
         UserFabAvatar,
     },
     computed: {
-        ...mapState('authentication', {
-            user: state => state.user,
-        }),
+        ...mapState('authentication', [
+            'user',
+        ]),
         extraLargeSize() {
             return SIZE.EXTRA_LARGE;
         },

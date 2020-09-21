@@ -49,9 +49,9 @@ export default {
         },
     },
     computed: {
-        ...mapState('list', {
-            disabledElements: state => state.disabledElements,
-        }),
+        ...mapState('list', [
+            'disabledElements',
+        ]),
     },
     methods: {
         ...mapActions('draggable', [

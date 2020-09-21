@@ -86,14 +86,14 @@ export default {
         };
     },
     computed: {
-        ...mapState('import', {
-            id: state => state.id,
-            type: state => state.type,
-            configuration: state => state.configuration,
-        }),
-        ...mapState('dictionaries', {
-            sources: state => state.sources,
-        }),
+        ...mapState('import', [
+            'id',
+            'type',
+            'configuration',
+        ]),
+        ...mapState('dictionaries', [
+            'sources',
+        ]),
         graphiteColor() {
             return GRAPHITE;
         },

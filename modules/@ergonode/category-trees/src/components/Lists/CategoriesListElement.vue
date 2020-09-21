@@ -53,9 +53,9 @@ export default {
         },
     },
     computed: {
-        ...mapState('list', {
-            disabledElements: state => state.disabledElements,
-        }),
+        ...mapState('list', [
+            'disabledElements',
+        ]),
         isDisabled() {
             return this.disabledElements[this.languageCode]
                 && this.disabledElements[this.languageCode][this.item.id];

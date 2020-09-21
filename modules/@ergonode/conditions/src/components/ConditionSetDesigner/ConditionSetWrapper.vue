@@ -50,9 +50,9 @@ export default {
         },
     },
     computed: {
-        ...mapState('condition', {
-            conditions: state => state.conditions,
-        }),
+        ...mapState('condition', [
+            'conditions',
+        ]),
         contextName() {
             return CONTEXT_NAME;
         },

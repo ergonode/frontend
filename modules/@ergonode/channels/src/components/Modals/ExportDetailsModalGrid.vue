@@ -79,9 +79,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('channel', {
-            type: state => state.type,
-        }),
+        ...mapState('channel', [
+            'type',
+        ]),
         isUserAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.CHANNEL.update,

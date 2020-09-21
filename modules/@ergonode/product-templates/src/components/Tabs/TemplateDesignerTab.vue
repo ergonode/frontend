@@ -148,15 +148,15 @@ export default {
         };
     },
     computed: {
-        ...mapState('productTemplate', {
-            templateGroups: state => state.templateGroups,
-            layoutElements: state => state.layoutElements,
-            title: state => state.title,
-        }),
-        ...mapState('draggable', {
-            draggedElement: state => state.draggedElement,
-            isElementDragging: state => state.isElementDragging,
-        }),
+        ...mapState('productTemplate', [
+            'templateGroups',
+            'layoutElements',
+            'title',
+        ]),
+        ...mapState('draggable', [
+            'draggedElement',
+            'isElementDragging',
+        ]),
         isDropZoneVisible() {
             return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
         },

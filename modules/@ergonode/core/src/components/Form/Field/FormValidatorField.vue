@@ -21,9 +21,9 @@ export default {
         },
     },
     computed: {
-        ...mapState('validations', {
-            errors: state => state.errors,
-        }),
+        ...mapState('validations', [
+            'errors',
+        ]),
         errorMessages() {
             if (Array.isArray(this.fieldKey)) {
                 let errors = null;

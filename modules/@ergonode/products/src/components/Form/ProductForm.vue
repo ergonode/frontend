@@ -91,15 +91,15 @@ export default {
         },
     },
     computed: {
-        ...mapState('dictionaries', {
-            productTypes: state => state.productTypes,
-        }),
-        ...mapState('product', {
-            id: state => state.id,
-            sku: state => state.sku,
-            type: state => state.type,
-            template: state => state.template,
-        }),
+        ...mapState('dictionaries', [
+            'productTypes',
+        ]),
+        ...mapState('product', [
+            'id',
+            'sku',
+            'type',
+            'template',
+        ]),
         extendedForm() {
             return this.$getExtendedComponents(EXTENDS['@Products/components/Form/ProductForm']);
         },

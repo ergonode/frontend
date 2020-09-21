@@ -49,13 +49,13 @@ export default {
         };
     },
     computed: {
-        ...mapState('validations', {
-            errors: state => state.errors,
-        }),
-        ...mapState('statusTransition', {
-            source: state => state.source,
-            destination: state => state.destination,
-        }),
+        ...mapState('validations', [
+            'errors',
+        ]),
+        ...mapState('statusTransition', [
+            'source',
+            'destination',
+        ]),
         secondaryTheme() {
             return THEME.SECONDARY;
         },

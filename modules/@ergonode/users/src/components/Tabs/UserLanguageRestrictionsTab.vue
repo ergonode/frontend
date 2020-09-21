@@ -78,9 +78,9 @@ export default {
         ...mapGetters('core', [
             'activeLanguages',
         ]),
-        ...mapState('user', {
-            languagePrivilegesCollection: state => state.languagePrivilegesCollection,
-        }),
+        ...mapState('user', [
+            'languagePrivilegesCollection',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.USER.update,

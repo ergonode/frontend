@@ -32,10 +32,10 @@ export default {
         await store.dispatch('statusTransition/getStatusTransition', params);
     },
     computed: {
-        ...mapState('statusTransition', {
-            source: state => state.source,
-            destination: state => state.destination,
-        }),
+        ...mapState('statusTransition', [
+            'source',
+            'destination',
+        ]),
         params() {
             const {
                 id,

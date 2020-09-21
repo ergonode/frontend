@@ -105,9 +105,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
+        ...mapState('grid', [
+            'drafts',
+        ]),
         isUserAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT_COLLECTION.update,

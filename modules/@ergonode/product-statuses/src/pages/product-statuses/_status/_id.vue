@@ -38,10 +38,10 @@ export default {
         await store.dispatch('productStatus/getDefaultStatus');
     },
     computed: {
-        ...mapState('productStatus', {
-            code: state => state.code,
-            isDefaultStatus: state => state.isDefaultStatus,
-        }),
+        ...mapState('productStatus', [
+            'code',
+            'isDefaultStatus',
+        ]),
     },
     beforeDestroy() {
         this.__clearStorage();

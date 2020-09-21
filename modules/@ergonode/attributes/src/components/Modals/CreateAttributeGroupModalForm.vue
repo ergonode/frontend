@@ -49,9 +49,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('validations', {
-            errors: state => state.errors,
-        }),
+        ...mapState('validations', [
+            'errors',
+        ]),
         secondaryTheme() {
             return THEME.SECONDARY;
         },

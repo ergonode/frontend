@@ -86,13 +86,13 @@ export default {
         },
     },
     computed: {
-        ...mapState('productTemplate', {
-            id: state => state.id,
-            title: state => state.title,
-            image: state => state.image,
-            defaultTextAttribute: state => state.defaultTextAttribute,
-            defaultImageAttribute: state => state.defaultImageAttribute,
-        }),
+        ...mapState('productTemplate', [
+            'id',
+            'title',
+            'image',
+            'defaultTextAttribute',
+            'defaultImageAttribute',
+        ]),
         isDisabled() {
             return Boolean(this.id);
         },

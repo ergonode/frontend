@@ -39,9 +39,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('core', {
-            languagesTree: state => state.languagesTree,
-        }),
+        ...mapState('core', [
+            'languagesTree',
+        ]),
     },
     methods: {
         ...mapActions('core', [

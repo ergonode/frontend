@@ -71,9 +71,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('product', {
-            id: state => state.id,
-        }),
+        ...mapState('product', [
+            'id',
+        ]),
     },
     watch: {
         data() {

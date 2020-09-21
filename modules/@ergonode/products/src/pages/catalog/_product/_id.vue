@@ -50,9 +50,9 @@ export default {
         ]);
     },
     computed: {
-        ...mapState('product', {
-            sku: state => state.sku,
-        }),
+        ...mapState('product', [
+            'sku',
+        ]),
     },
     beforeDestroy() {
         this.__clearStorage();

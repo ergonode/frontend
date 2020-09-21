@@ -29,9 +29,9 @@ export default {
         Alert,
     },
     computed: {
-        ...mapState('alert', {
-            alerts: state => state.alerts,
-        }),
+        ...mapState('alert', [
+            'alerts',
+        ]),
     },
 };
 </script>

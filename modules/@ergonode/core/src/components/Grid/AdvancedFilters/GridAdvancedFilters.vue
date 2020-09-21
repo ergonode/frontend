@@ -65,13 +65,13 @@ export default {
         };
     },
     computed: {
-        ...mapState('list', {
-            disabledElements: state => state.disabledElements,
-        }),
-        ...mapState('draggable', {
-            isElementDragging: state => state.isElementDragging,
-            draggedElement: state => state.draggedElement,
-        }),
+        ...mapState('list', [
+            'disabledElements',
+        ]),
+        ...mapState('draggable', [
+            'isElementDragging',
+            'draggedElement',
+        ]),
         classes() {
             return 'grid-advanced-filters';
         },

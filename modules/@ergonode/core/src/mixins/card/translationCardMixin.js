@@ -23,9 +23,9 @@ export default {
         },
     },
     computed: {
-        ...mapState('tab', {
-            translations: state => state.translations,
-        }),
+        ...mapState('tab', [
+            'translations',
+        ]),
         ...mapGetters('core', [
             'getActiveLanguageByCode',
         ]),

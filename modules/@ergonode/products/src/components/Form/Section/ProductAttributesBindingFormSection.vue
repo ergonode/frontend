@@ -42,10 +42,10 @@ export default {
         },
     },
     computed: {
-        ...mapState('product', {
-            bindingAttributesIds: state => state.bindingAttributesIds,
-            selectAttributes: state => state.selectAttributes,
-        }),
+        ...mapState('product', [
+            'bindingAttributesIds',
+            'selectAttributes',
+        ]),
         isDisabled() {
             return this.disabled
                 || this.bindingAttributesIds.length === this.selectAttributes.length;

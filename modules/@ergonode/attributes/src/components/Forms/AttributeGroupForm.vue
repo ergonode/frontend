@@ -56,10 +56,10 @@ export default {
         },
     },
     computed: {
-        ...mapState('attributeGroup', {
-            id: state => state.id,
-            code: state => state.code,
-        }),
+        ...mapState('attributeGroup', [
+            'id',
+            'code',
+        ]),
         isDisabled() {
             return Boolean(this.id);
         },

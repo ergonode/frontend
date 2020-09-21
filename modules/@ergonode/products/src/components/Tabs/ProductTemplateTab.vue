@@ -143,13 +143,13 @@ export default {
         ...mapState('authentication', {
             languagePrivileges: state => state.user.languagePrivileges,
         }),
-        ...mapState('core', {
-            defaultLanguageCode: state => state.defaultLanguageCode,
-            languagesTree: state => state.languagesTree,
-        }),
-        ...mapState('product', {
-            id: state => state.id,
-        }),
+        ...mapState('core', [
+            'defaultLanguageCode',
+            'languagesTree',
+        ]),
+        ...mapState('product', [
+            'id',
+        ]),
         ...mapGetters('core', [
             'rootLanguage',
         ]),

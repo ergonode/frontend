@@ -29,10 +29,10 @@ export default {
         await store.dispatch('user/getUser', params);
     },
     computed: {
-        ...mapState('user', {
-            firstName: state => state.firstName,
-            lastName: state => state.lastName,
-        }),
+        ...mapState('user', [
+            'firstName',
+            'lastName',
+        ]),
         title() {
             return `${this.firstName} ${this.lastName}`;
         },

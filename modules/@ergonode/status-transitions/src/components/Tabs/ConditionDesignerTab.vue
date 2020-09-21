@@ -83,12 +83,12 @@ export default {
         };
     },
     computed: {
-        ...mapState('draggable', {
-            isElementDragging: state => state.isElementDragging,
-        }),
-        ...mapState('statusTransition', {
-            conditionSetId: state => state.conditionSetId,
-        }),
+        ...mapState('draggable', [
+            'isElementDragging',
+        ]),
+        ...mapState('statusTransition', [
+            'conditionSetId',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.WORKFLOW.update,

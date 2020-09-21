@@ -84,14 +84,14 @@ export default {
         },
     },
     computed: {
-        ...mapState('statusTransition', {
-            source: state => state.source,
-            destination: state => state.destination,
-            roles: state => state.roles,
-        }),
-        ...mapState('productStatus', {
-            statuses: state => state.statuses,
-        }),
+        ...mapState('statusTransition', [
+            'source',
+            'destination',
+            'roles',
+        ]),
+        ...mapState('productStatus', [
+            'statuses',
+        ]),
         isDisabled() {
             if (!isEmpty(this.$route.params)) {
                 const {

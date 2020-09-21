@@ -36,9 +36,9 @@ export default {
         await store.dispatch('categoryTree/getCategoryTree', params);
     },
     computed: {
-        ...mapState('categoryTree', {
-            code: state => state.code,
-        }),
+        ...mapState('categoryTree', [
+            'code',
+        ]),
     },
     beforeDestroy() {
         this.clearGridDesignerStorage();

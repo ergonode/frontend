@@ -37,9 +37,9 @@ export default {
         await store.dispatch('role/getRole', params);
     },
     computed: {
-        ...mapState('role', {
-            name: state => state.name,
-        }),
+        ...mapState('role', [
+            'name',
+        ]),
     },
     beforeDestroy() {
         this.__clearStorage();

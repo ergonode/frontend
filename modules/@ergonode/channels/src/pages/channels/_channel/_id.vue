@@ -36,9 +36,9 @@ export default {
         await store.dispatch('channel/getChannel', params);
     },
     computed: {
-        ...mapState('channel', {
-            configuration: state => state.configuration,
-        }),
+        ...mapState('channel', [
+            'configuration',
+        ]),
         name() {
             const {
                 name,

@@ -54,9 +54,9 @@ export default {
         },
     },
     computed: {
-        ...mapState('product', {
-            bindingAttributesIds: state => state.bindingAttributesIds,
-        }),
+        ...mapState('product', [
+            'bindingAttributesIds',
+        ]),
         smallSize() {
             return SIZE.SMALL;
         },

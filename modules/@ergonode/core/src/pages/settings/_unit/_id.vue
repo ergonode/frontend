@@ -37,9 +37,9 @@ export default {
         await store.dispatch('unit/getUnit', params);
     },
     computed: {
-        ...mapState('unit', {
-            name: state => state.name,
-        }),
+        ...mapState('unit', [
+            'name',
+        ]),
     },
     beforeDestroy() {
         this.clearUnitStorage();

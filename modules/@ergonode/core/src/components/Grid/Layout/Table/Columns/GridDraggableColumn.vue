@@ -40,12 +40,12 @@ export default {
         };
     },
     computed: {
-        ...mapState('draggable', {
-            draggedElement: state => state.draggedElement,
-            ghostIndex: state => state.ghostIndex,
-            draggedElIndex: state => state.draggedElIndex,
-            isElementDragging: state => state.isElementDragging,
-        }),
+        ...mapState('draggable', [
+            'isElementDragging',
+            'draggedElement',
+            'ghostIndex',
+            'draggedElIndex',
+        ]),
     },
     mounted() {
         if (this.$slots.default[0].elm) {

@@ -129,17 +129,17 @@ export default {
         ...mapGetters('core', [
             'activeLanguages',
         ]),
-        ...mapState('user', {
-            id: state => state.id,
-            email: state => state.email,
-            firstName: state => state.firstName,
-            lastName: state => state.lastName,
-            password: state => state.password,
-            passwordRepeat: state => state.passwordRepeat,
-            language: state => state.language,
-            isActive: state => state.isActive,
-            role: state => state.role,
-        }),
+        ...mapState('user', [
+            'id',
+            'email',
+            'firstName',
+            'lastName',
+            'password',
+            'passwordRepeat',
+            'language',
+            'isActive',
+            'role',
+        ]),
         isUserAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.USER.update,

@@ -39,9 +39,9 @@ export default {
         ]);
     },
     computed: {
-        ...mapState('attribute', {
-            code: state => state.code,
-        }),
+        ...mapState('attribute', [
+            'code',
+        ]),
     },
     beforeDestroy() {
         this.__clearStorage();

@@ -57,9 +57,9 @@ export default {
         },
     },
     computed: {
-        ...mapState('product', {
-            draft: state => state.draft,
-        }),
+        ...mapState('product', [
+            'draft',
+        ]),
         fieldData() {
             const {
                 attribute_code,

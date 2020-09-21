@@ -65,11 +65,11 @@ export default {
         },
     },
     computed: {
-        ...mapState('role', {
-            id: state => state.id,
-            name: state => state.name,
-            description: state => state.description,
-        }),
+        ...mapState('role', [
+            'id',
+            'name',
+            'description',
+        ]),
         isDisabled() {
             return Boolean(this.id);
         },

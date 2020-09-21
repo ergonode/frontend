@@ -109,12 +109,12 @@ export default {
         };
     },
     computed: {
-        ...mapState('productTemplate', {
-            layoutElements: state => state.layoutElements,
-        }),
-        ...mapState('draggable', {
-            draggedElement: state => state.draggedElement,
-        }),
+        ...mapState('productTemplate', [
+            'layoutElements',
+        ]),
+        ...mapState('draggable', [
+            'draggedElement',
+        ]),
         classes() {
             return [
                 'layout-element',

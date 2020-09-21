@@ -37,9 +37,9 @@ export default {
         await store.dispatch('category/getCategory', params);
     },
     computed: {
-        ...mapState('category', {
-            code: state => state.code,
-        }),
+        ...mapState('category', [
+            'code',
+        ]),
     },
     beforeDestroy() {
         this.__clearStorage();

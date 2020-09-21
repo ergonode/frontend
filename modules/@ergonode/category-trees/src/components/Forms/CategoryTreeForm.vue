@@ -56,10 +56,10 @@ export default {
         },
     },
     computed: {
-        ...mapState('categoryTree', {
-            id: state => state.id,
-            code: state => state.code,
-        }),
+        ...mapState('categoryTree', [
+            'id',
+            'code',
+        ]),
         isDisabled() {
             return Boolean(this.id);
         },
