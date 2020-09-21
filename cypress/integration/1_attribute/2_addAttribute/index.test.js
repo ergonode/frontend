@@ -81,7 +81,7 @@ MultiSteps([
     cy
         .url()
         .should('include', `/${page}`);
-    cy.wait(`@${requestName}_GET_GRID`);
+    // cy.wait(`@${requestName}_GET_GRID`);
 });
 
 MultiSteps([

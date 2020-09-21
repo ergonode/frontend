@@ -34,7 +34,7 @@ Feature: Attribute group adding
     And I see "attribute-groups/group/%UUID%/general" page
     Then Element "attribute-group-code" is "visible"
     Then Element "title-bar-header" is "visible"
-    Then I can see "text_attribute_group3" text on "title-bar-header" element
+    # Then I can see "text_attribute_group3" text on "title-bar-header" element
     When I click on "delete-attribute-group" button
     Then I confirm modal
     And I see "attribute-groups/grid" page

@@ -13,6 +13,7 @@
         <template #saveButton>
             <Button
                 title="SAVE CHANGES"
+                data-cy="submit"
                 :floating="{ bottom: '24px', right: '24px' }"
                 @click.native="onSubmit">
                 <template
