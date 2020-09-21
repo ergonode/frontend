@@ -20,7 +20,7 @@
                     label="Role name"
                     hint="Role name must be unique"
                     :error-messages="errors[nameFieldKey]"
-                    :disabled="isDisabled || !isAllowedToUpdate"
+                    :disabled="!isAllowedToUpdate"
                     @input="setNameValue" />
                 <TextArea
                     :value="description"
@@ -66,13 +66,9 @@ export default {
     },
     computed: {
         ...mapState('role', {
-            id: state => state.id,
             name: state => state.name,
             description: state => state.description,
         }),
-        isDisabled() {
-            return Boolean(this.id);
-        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.USER_ROLE.update,

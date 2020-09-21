@@ -4,6 +4,7 @@
  */
 import {
     create,
+    createExport,
     get,
     getConfiguration,
     getDetails,
@@ -179,6 +180,31 @@ export default {
             });
 
             onSuccess(id);
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
+    },
+    async createChannelExport({
+        state,
+    }, {
+        scope = 'default',
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const {
+                id,
+            } = state;
+
+            await createExport({
+                $axios: this.app.$axios,
+                id,
+            });
+
+            onSuccess();
         } catch (e) {
             onError({
                 errors: e.data.errors,

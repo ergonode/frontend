@@ -20,7 +20,7 @@
                 :is="element.component"
                 :value="value[element.key]"
                 :schema="element.props"
-                :error-messages="errors[element.key]"
+                :errors="errors[element.key]"
                 @input="onValueChange" />
         </div>
     </div>

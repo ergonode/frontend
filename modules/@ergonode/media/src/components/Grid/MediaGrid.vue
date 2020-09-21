@@ -302,6 +302,11 @@ export default {
                     type: ALERT_TYPE.SUCCESS,
                     message: 'Media have been updated',
                 });
+            } else {
+                this.$addAlert({
+                    type: ALERT_TYPE.INFO,
+                    message: 'No changes have been made',
+                });
             }
         },
         onSearchFocus(isFocused) {
