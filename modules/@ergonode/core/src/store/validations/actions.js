@@ -29,7 +29,7 @@ export default {
     removeScopeErrors({
         commit,
     }, scope) {
-        commit(types.REMOVE_ERROR, scope);
+        commit(types.REMOVE_SCOPE_ERRORS, scope);
     },
     removeScopeError({
         commit,
@@ -37,7 +37,6 @@ export default {
         scope,
         fieldKey,
     }) {
-        console.log(scope, fieldKey);
         commit(types.REMOVE_SCOPE_ERROR, {
             scope,
             fieldKey,

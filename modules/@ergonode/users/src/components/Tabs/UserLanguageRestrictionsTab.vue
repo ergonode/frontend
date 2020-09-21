@@ -189,8 +189,6 @@ export default {
             this.columns = sortedColumns;
             this.dataCount = fullDataList.length;
             this.rows = rows;
-
-            console.log(rows);
         },
     },
 };
