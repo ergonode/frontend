@@ -4,6 +4,7 @@
   "viewportHeight": 800,
   "testFiles": "**/*.feature",
   "video": false,
+  "screenshotOnRunFailure": false,
   "env": {
     "apiServer": "http://localhost:8000/api/v1/",
     "defaultLanguage": "en_GB",
