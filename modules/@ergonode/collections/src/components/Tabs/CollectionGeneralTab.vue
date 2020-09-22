@@ -49,7 +49,7 @@ export default {
         ...mapActions('collection', [
             'updateCollection',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),
@@ -74,7 +74,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Collection updated',
+                message: 'Collection has been updated',
             });
 
             this.isSubmitting = false;

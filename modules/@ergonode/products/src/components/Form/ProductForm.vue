@@ -139,6 +139,10 @@ export default {
         },
         setTypeValue(value) {
             this.__setState({
+                key: 'bindingAttributesIds',
+                value: [],
+            });
+            this.__setState({
                 key: 'type',
                 value,
             });

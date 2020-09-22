@@ -65,7 +65,7 @@ export default {
         ...mapActions('media', [
             'updateResource',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),
@@ -85,7 +85,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Resource translations updated',
+                message: 'Resource translations have been updated',
             });
 
             this.isSubmitting = false;

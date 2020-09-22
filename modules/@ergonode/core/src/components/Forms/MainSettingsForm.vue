@@ -44,6 +44,7 @@ import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect'
 import PRIVILEGES from '@Core/config/privileges';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -59,6 +60,14 @@ export default {
         formActionsMixin,
     ],
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
         errors: {
             type: Object,
             default: () => ({}),
@@ -105,6 +114,9 @@ export default {
                 PRIVILEGES.SETTINGS.update,
             ]);
         },
+        languagesFieldKey() {
+            return 'langauges';
+        },
     },
     created() {
         this.activeLanguages = this.languages
@@ -120,8 +132,20 @@ export default {
             }));
     },
     methods: {
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         setSelectedLanguages(selectedLanguages) {
             this.activeLanguages = selectedLanguages;
+
+            // TODO: Only for CR purpose
+
+            // this.onScopeValueChange({
+            //     scope: this.scope,
+            //     fieldKey: this.languagesFieldKey,
+            //     value: selectedLanguages,
+            // });
+
             this.$emit('selectedLanguages', selectedLanguages);
         },
         onSubmitForm() {

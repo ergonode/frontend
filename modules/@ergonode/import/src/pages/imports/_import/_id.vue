@@ -49,16 +49,16 @@ export default {
     },
     beforeDestroy() {
         this.__clearStorage();
-        this.removeErrors();
+        this.__clearFeedbackStorage();
     },
     methods: {
         ...mapActions('import', [
             '__clearStorage',
             'removeImport',
         ]),
-        ...mapActions('validations', [
-            'removeErrors',
-        ]),
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,

@@ -22,8 +22,6 @@ jest.mock('axios', () => ({
     $patch: jest.fn(() => Promise.resolve(mockAxiosGetResult)),
 }));
 let action;
-const $setLoader = jest.fn();
-const $removeLoader = jest.fn();
 
 actions.__setState = ({
     commit,
@@ -36,8 +34,6 @@ const testedAction = (context = {}, payload = {}) => actions[action]
         app: {
             $axios: axios,
         },
-        $setLoader,
-        $removeLoader,
     })(context, payload);
 
 const mutations = {

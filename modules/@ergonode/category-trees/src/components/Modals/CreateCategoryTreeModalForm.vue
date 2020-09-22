@@ -49,7 +49,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('validations', [
+        ...mapState('feedback', [
             'errors',
         ]),
         secondaryTheme() {
@@ -67,7 +67,7 @@ export default {
             'createCategoryTree',
             '__clearStorage',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),

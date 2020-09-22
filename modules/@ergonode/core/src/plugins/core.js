@@ -5,12 +5,6 @@
 export default ({
     app,
 }, inject) => {
-    inject('setLoader', (key) => {
-        app.store.dispatch('core/setLoader', key);
-    });
-    inject('removeLoader', (key) => {
-        app.store.dispatch('core/removeLoader', key);
-    });
     inject('openModal', (payload) => {
         app.store.dispatch('core/openModal', payload);
     });
@@ -23,12 +17,5 @@ export default ({
     });
     inject('closeModal', (key) => {
         app.store.dispatch('core/closeModal', key);
-    });
-    inject('isLoading', (key) => {
-        const {
-            loaders,
-        } = app.store.state.core;
-
-        return Boolean(loaders[key]);
     });
 };

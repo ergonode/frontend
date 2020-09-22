@@ -119,7 +119,7 @@ export default {
             return THEME.SECONDARY;
         },
         formGlobalError() {
-            return this.getErrorForKey('form');
+            return this.getErrorForKey('__form');
         },
         hasAnyError() {
             return Object.values(this.errors).length > 0 || this.formGlobalError;

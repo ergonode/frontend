@@ -11,6 +11,40 @@ import {
 } from './mutations';
 
 export default {
+    onScopeValueChange({
+        state,
+        commit,
+    }, {
+        scope,
+        value,
+        fieldKey,
+    }) {
+        const {
+            changeValues,
+        } = state;
+
+        if (typeof changeValues[scope] === 'undefined') {
+            commit(types.SET_CHANGE_VALUES_SCOPE, scope);
+        }
+
+        commit(types.SET_CHANGE_VALUES_SCOPE_FIELD_VALUE, {
+            scope,
+            fieldKey,
+            value,
+        });
+    },
+    markChangeValuesAsSaved({
+        state,
+        commit,
+    }, scope) {
+        const {
+            changeValues,
+        } = state;
+
+        if (typeof changeValues[scope] !== 'undefined') {
+            commit(types.SET_CHANGE_VALUES_SCOPE_SAVE_FLAG, scope);
+        }
+    },
     onError({
         commit,
     }, {
@@ -28,7 +62,7 @@ export default {
     },
     removeScopeErrors({
         commit,
-    }, scope) {
+    }, scope = 'default') {
         commit(types.REMOVE_SCOPE_ERRORS, scope);
     },
     removeScopeError({
@@ -46,10 +80,5 @@ export default {
         commit,
     }, key) {
         commit(types.REMOVE_ERROR, key);
-    },
-    removeErrors({
-        commit,
-    }) {
-        commit(types.REMOVE_ERRORS);
     },
 };

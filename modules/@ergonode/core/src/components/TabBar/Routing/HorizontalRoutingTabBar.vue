@@ -17,6 +17,7 @@
                             :key="index"
                             :index="index"
                             :item="item"
+                            :change-values="changeValues[item.scope]"
                             :errors="errors[item.scope]"
                             @select="onSelectTabBarItem" />
                     </slot>
@@ -29,9 +30,11 @@
                 name="content"
                 v-if="items.length"
                 :item="items[selectedTabIndex]"
+                :change-values="changeValues[items[selectedTabIndex].scope]"
                 :errors="errors[items[selectedTabIndex].scope]">
                 <HorizontalRoutingTabBarContent
                     :scope="items[selectedTabIndex].scope"
+                    :change-values="changeValues[items[selectedTabIndex].scope]"
                     :errors="errors[items[selectedTabIndex].scope]" />
             </slot>
         </div>
@@ -56,6 +59,10 @@ export default {
             required: true,
         },
         errors: {
+            type: Object,
+            default: () => ({}),
+        },
+        changeValues: {
             type: Object,
             default: () => ({}),
         },

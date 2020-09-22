@@ -8,6 +8,9 @@
             <MainSettingsForm
                 submit-title="SAVE CHANGES"
                 :is-submitting="isSubmitting"
+                :scope="scope"
+                :change-values="changeValues"
+                :errors="errors"
                 @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
@@ -33,6 +36,20 @@ export default {
         MainSettingsForm,
         CenterViewTemplate,
     },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             isSubmitting: false,
@@ -44,6 +61,10 @@ export default {
         ]),
     },
     methods: {
+        ...mapActions('feedback', [
+            'onError',
+            'markChangeValuesAsSaved',
+        ]),
         ...mapActions('core', [
             'getLanguages',
             'updateLanguages',
@@ -89,6 +110,7 @@ export default {
 
             await this.updateLanguages({
                 languages: selectedLanguages,
+                scope: this.scope,
                 onError: this.onUpdateError,
                 onSuccess: this.onUpdateSuccess,
             });
@@ -98,15 +120,15 @@ export default {
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Languages updated',
+                message: 'Languages have been updated',
             });
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
-        onUpdateError(message) {
-            this.$addAlert({
-                type: ALERT_TYPE.ERROR,
-                message,
-            });
+        onUpdateError(errors) {
+            this.onError(errors);
+
             this.isSubmitting = false;
         },
     },

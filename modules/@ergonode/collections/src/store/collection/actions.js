@@ -80,6 +80,7 @@ export default {
         rootState,
     },
     {
+        scope,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -118,7 +119,10 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async updateCollection(
@@ -248,7 +252,9 @@ export default {
             });
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+            });
         }
     },
     async removeCollection({

@@ -93,6 +93,16 @@ export default {
             path: 'collections/_id/elements',
         }),
     ],
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     async fetch() {
         await this.onFetchData();
         this.isPrefetchingData = false;
@@ -155,9 +165,9 @@ export default {
         ...mapActions('collection', [
             'updateCollectionProductsVisibility',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -165,8 +175,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.updateCollectionProductsVisibility({
+                scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });
@@ -176,7 +187,7 @@ export default {
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product visibilities in collection updated',
+                message: 'Product visibilities in collection have been updated',
             });
 
             this.setDrafts();

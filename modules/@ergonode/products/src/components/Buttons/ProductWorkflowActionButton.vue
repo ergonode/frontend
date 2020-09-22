@@ -96,7 +96,7 @@ export default {
                         this.getProduct(id);
                         this.$addAlert({
                             type: ALERT_TYPE.SUCCESS,
-                            message: 'Status updated',
+                            message: 'Status has been updated',
                         });
                     },
                 }),

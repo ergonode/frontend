@@ -194,9 +194,9 @@ export default {
             'getProductCompleteness',
             'applyProductDraft',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         onSave() {
             if (this.isSubmitting) {
@@ -204,9 +204,10 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.applyProductDraft({
                 id: this.id,
+                scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });
@@ -214,7 +215,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product updated',
+                message: 'Product has been updated',
             });
 
             this.isSubmitting = false;

@@ -66,7 +66,7 @@ export default {
         ...mapActions('segment', [
             'updateSegment',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),
@@ -86,7 +86,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Segment translations updated',
+                message: 'Segment translations have been updated',
             });
 
             this.isSubmitting = false;

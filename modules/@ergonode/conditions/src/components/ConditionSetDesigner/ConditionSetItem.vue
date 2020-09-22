@@ -39,6 +39,7 @@
                     :parameter="parameter"
                     :item-id="itemId"
                     :item-row="itemRow"
+                    :error-messages="errors[parameter.name]"
                     :disabled="disabled" />
             </div>
         </template>
@@ -81,6 +82,10 @@ export default {
         itemRow: {
             type: Number,
             required: true,
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
         },
         disabled: {
             type: Boolean,

@@ -66,7 +66,7 @@ export default {
         ...mapActions('category', [
             'updateCategory',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),
@@ -86,7 +86,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Category translations updated',
+                message: 'Category translations have been updated',
             });
 
             this.isSubmitting = false;

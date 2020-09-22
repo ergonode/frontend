@@ -190,7 +190,7 @@ export default {
     async createChannelExport({
         state,
     }, {
-        scope = 'default',
+        scope,
         onSuccess = () => {},
         onError = () => {},
     }) {

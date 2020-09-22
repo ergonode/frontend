@@ -66,7 +66,7 @@ export default {
         ...mapActions('productStatus', [
             'updateProductStatus',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),
@@ -86,7 +86,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product status translations updated',
+                message: 'Product status translations have been updated',
             });
 
             this.isSubmitting = false;

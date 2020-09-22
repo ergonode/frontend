@@ -135,6 +135,16 @@ export default {
         AttributeElementContent: () => import('@Templates/components/Template/ProductDesigner/AttributeElementContent'),
         SectionElementContent: () => import('@Templates/components/Template/ProductDesigner/SectionElementContent'),
     },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             highlightedPositions: [],
@@ -239,9 +249,9 @@ export default {
             'updateLayoutElementAtIndex',
             'removeLayoutElementAtIndex',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -249,8 +259,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeScopeErrors();
             this.updateTemplate({
+                scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });
@@ -258,7 +269,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Template updated',
+                message: 'Template has been updated',
             });
 
             this.isSubmitting = false;

@@ -49,7 +49,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('validations', [
+        ...mapState('feedback', [
             'errors',
         ]),
         secondaryTheme() {
@@ -70,7 +70,7 @@ export default {
         ...mapActions('dictionaries', [
             'getDictionary',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),

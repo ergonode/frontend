@@ -49,7 +49,7 @@ export default {
         ...mapActions('productTemplate', [
             'updateTemplate',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),
@@ -69,7 +69,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product template updated',
+                message: 'Product template has been updated',
             });
 
             this.isSubmitting = false;

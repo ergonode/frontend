@@ -39,15 +39,15 @@ export default {
     },
     beforeDestroy() {
         this.__clearStorage();
-        this.removeErrors();
+        this.__clearFeedbackStorage();
     },
     methods: {
         ...mapActions('user', [
             '__clearStorage',
         ]),
-        ...mapActions('validations', [
-            'removeErrors',
-        ]),
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
     },
 };
 </script>

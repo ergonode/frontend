@@ -46,6 +46,7 @@ export default {
     },
     async updateLanguages({}, {
         languages = [],
+        scope,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -61,11 +62,15 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async updateLanguageTree({}, {
         languages,
+        scope,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -81,7 +86,10 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     setLanguageTree({
@@ -123,16 +131,6 @@ export default {
             key: 'defaultLanguageCode',
             value: defaultLanguage.code,
         });
-    },
-    setLoader({
-        commit,
-    }, key) {
-        commit(types.SET_LOADER, key);
-    },
-    removeLoader({
-        commit,
-    }, key) {
-        commit(types.REMOVE_LOADER, key);
     },
     openModal({
         commit,

@@ -385,7 +385,9 @@ export default {
             // EXTENDED BEFORE METHOD
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+            });
         }
     },
 };

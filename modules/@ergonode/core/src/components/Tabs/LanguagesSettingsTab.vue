@@ -128,11 +128,11 @@ export default {
         },
     },
     beforeDestroy() {
-        this.clearGridDesignerStorage();
+        this.__clearGridDesignerStorage();
     },
     methods: {
         ...mapActions('gridDesigner', {
-            clearGridDesignerStorage: '__clearStorage',
+            __clearGridDesignerStorage: '__clearStorage',
         }),
         ...mapActions('core', [
             'setLanguageTree',
@@ -164,7 +164,7 @@ export default {
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Languages tree updated',
+                message: 'Languages tree has been updated',
             });
             this.isSubmitting = false;
         },

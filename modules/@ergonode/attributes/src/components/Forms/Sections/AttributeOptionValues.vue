@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import AttributeOptionValue from '@Attributes/components/Forms/Sections/AttributeOptionValue';
+import FormSection from '@Core/components/Form/Section/FormSection';
 import {
     mapState,
 } from 'vuex';
@@ -23,8 +25,8 @@ import {
 export default {
     name: 'AttributeOptionValues',
     components: {
-        AttributeOptionValue: () => import('@Attributes/components/Forms/Sections/AttributeOptionValue'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
+        AttributeOptionValue,
+        FormSection,
     },
     props: {
         languageCode: {

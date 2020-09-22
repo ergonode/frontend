@@ -192,7 +192,9 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+            });
         }
     },
 };

@@ -13,12 +13,17 @@
         :context-name="contextName"
         @afterDrop="onGetConditionConfiguration"
         @afterRemove="removeConditionValue">
-        <template #gridItem="{item, gridItemStyles}">
+        <template
+            #gridItem="{
+                item,
+                index,
+                gridItemStyles,}">
             <ConditionSetItem
                 :style="gridItemStyles"
                 :condition="getCondition(item.id)"
                 :item-id="item.id"
                 :item-row="item.row"
+                :errors="conditionErrors[`element-${index}`]"
                 :disabled="disabled"
                 @remove="removeCondition" />
         </template>
@@ -48,6 +53,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     computed: {
         ...mapState('condition', [
@@ -61,6 +70,9 @@ export default {
         },
         rowHeight() {
             return ROW_HEIGHT;
+        },
+        conditionErrors() {
+            return this.errors.conditions || {};
         },
     },
     methods: {

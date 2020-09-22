@@ -41,24 +41,24 @@ export default {
         ]),
     },
     beforeDestroy() {
-        this.clearGridDesignerStorage();
+        this.__clearGridDesignerStorage();
         this.__clearStorage();
-        this.clearTranslationsStorage();
-        this.removeErrors();
+        this.__clearTranslationsStorage();
+        this.__clearFeedbackStorage();
     },
     methods: {
         ...mapActions('categoryTree', [
             'removeCategoryTree',
             '__clearStorage',
         ]),
-        ...mapActions('validations', [
-            'removeErrors',
-        ]),
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
         ...mapActions('tab', {
-            clearTranslationsStorage: '__clearStorage',
+            __clearTranslationsStorage: '__clearStorage',
         }),
         ...mapActions('gridDesigner', {
-            clearGridDesignerStorage: '__clearStorage',
+            __clearGridDesignerStorage: '__clearStorage',
         }),
         onRemove() {
             this.$openModal({

@@ -19,7 +19,9 @@
             </VerticalTabBar>
         </template>
         <template #grid>
-            <ConditionSetWrapper :disabled="!isAllowedToUpdate" />
+            <ConditionSetWrapper
+                :errors="errors"
+                :disabled="!isAllowedToUpdate" />
             <Button
                 title="SAVE CHANGES"
                 :floating="{ bottom: '24px', right: '24px' }"
@@ -70,6 +72,16 @@ export default {
         VerticalTabBar,
         ConditionSetWrapper,
     },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     async fetch({
         store,
     }) {
@@ -114,8 +126,8 @@ export default {
         },
     },
     beforeDestroy() {
-        this.clearGridDesignerStorage();
-        this.clearConditionsStorage();
+        this.__clearGridDesignerStorage();
+        this.__clearConditionStorage();
     },
     methods: {
         ...mapActions('condition', [
@@ -123,14 +135,18 @@ export default {
             'updateConditionSet',
         ]),
         ...mapActions('gridDesigner', {
-            clearGridDesignerStorage: '__clearStorage',
+            __clearGridDesignerStorage: '__clearStorage',
         }),
         ...mapActions('condition', {
-            clearConditionsStorage: '__clearStorage',
+            __clearConditionStorage: '__clearStorage',
         }),
-        ...mapActions('validations', [
+        ...mapActions('segment', [
+            'updateSegment',
+            '__setState',
+        ]),
+        ...mapActions('feedback', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -138,24 +154,35 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
 
             if (!this.conditionSetId) {
                 this.createConditionSet({
+                    scope: this.scope,
                     onSuccess: this.onUpdateSuccess,
                     onError: this.onUpdateError,
                 });
             } else {
                 this.updateConditionSet({
+                    scope: this.scope,
                     onSuccess: this.onUpdateSuccess,
                     onError: this.onUpdateError,
                 });
             }
         },
-        onUpdateSuccess() {
+        async onUpdateSuccess(id) {
+            this.__setState({
+                key: 'conditionSetId',
+                value: id,
+            });
+
+            await this.updateSegment({
+                scope: this.scope,
+            });
+
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Segment conditions updated',
+                message: 'Segment conditions have been updated',
             });
 
             this.isSubmitting = false;
