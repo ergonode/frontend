@@ -13,7 +13,9 @@ context('Page not found', () => {
             cy.visit('page/not/found', {
                 failOnStatusCode: false,
             });
-            cy.get('h1').invoke('text').should('include', 'Not found');
+            cy.get('h1')
+                .invoke('text')
+                .should('include', 'Not found');
         });
     });
 });

@@ -51,7 +51,7 @@ export default {
     },
     methods: {
         dataCyGenerator(key) {
-            return `category-tree-${key}`;
+            return `category-tree-${key}_${this.languageCode}`;
         },
     },
 };

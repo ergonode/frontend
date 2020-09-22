@@ -20,7 +20,7 @@
                     required
                     label="System name"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :error-messages="errorMessages[codeFieldKey]"
+                    :error-messages="errors[codeFieldKey]"
                     hint="System name must be unique"
                     @input="setCodeValue" />
             </FormSection>

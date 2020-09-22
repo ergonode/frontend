@@ -3,59 +3,42 @@
  * See LICENSE for license details.
  */
 let responseID = null;
-let token = null;
 
-export const visitPage = ({
-    path, id,
+export const sendRequest = ({
+    reqType, status, requestName,
 }) => {
-    let fullPath = `${path}/${id}`;
-
-    if (id === 'this') {
-        fullPath = `${path}/${responseID}`;
-    }
-    cy.url().should('include', fullPath);
-};
-
-export const getToken = () => {
-    cy.getCookie('jwt')
-        .should('exist')
-        .then((c) => {
-            token = c.value;
+    cy
+        .wait(`@${requestName}_${reqType}`)
+        .should((xhr) => {
+            expect(xhr.method).to.equal(reqType);
+            expect(xhr.status, 'Successful response').to.equal(status);
+            if (reqType === 'POST') {
+                responseID = xhr.response.body.id;
+            }
         });
 };
 
-export const sendPostRequest = ({
-    reqType, status, urlRegExp,
-}) => {
-    cy.wait(`@${reqType}-REQUEST`).should((xhr) => {
-        expect(xhr.method).to.equal(reqType);
-        expect(xhr.status, 'Successful response').to.equal(status);
-        expect(xhr.url, 'Response URL').to.match(urlRegExp);
-        if (reqType === 'POST') {
-            responseID = xhr.response.body.id;
-        }
-    });
-};
-
 export const removeRequest = ({
-    element, reqType, path,
+    path,
 }) => {
-    let fullPath = `${path}/${element}`;
+    const fullPath = `${Cypress.env('defaultLanguage')}/${path}/${responseID}`;
 
-    if (element === 'this') {
-        fullPath = `${path}/${responseID}`;
-    }
+    cy.getCookie('jwt')
+        .should('exist')
+        .then((c) => {
+            const token = c.value;
 
-    cy.request({
-        method: reqType,
-        url: `${Cypress.env('apiServer')}${fullPath}`,
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            JWTAuthorization: `Bearer ${token}`,
-        },
-    }).should((response) => {
-        expect(response.status).to.eq(204);
-    });
+            cy.request({
+                method: 'DELETE',
+                url: `${Cypress.env('apiServer')}${fullPath}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    JWTAuthorization: `Bearer ${token}`,
+                },
+            }).should((response) => {
+                expect(response.status).to.eq(204);
+            });
+        });
     cy.reload();
 };

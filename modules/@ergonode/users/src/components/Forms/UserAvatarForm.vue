@@ -53,11 +53,16 @@ export default {
         ...mapActions('user', [
             '__setState',
         ]),
+        ...mapActions('authentication', [
+            'getUser',
+        ]),
         uploadValue(value = '') {
             this.__setState({
                 key: 'avatarId',
                 value,
             });
+
+            this.getUser();
         },
     },
 };

@@ -357,7 +357,7 @@ export default {
             this.onFetchData(this.localParams);
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Products updated',
+                message: 'Products have been updated',
             });
 
             this.isSubmitting = false;

@@ -101,7 +101,7 @@ export default {
         onAddSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Products has been added',
+                message: 'Products have been added',
             });
 
             this.isAdding = false;

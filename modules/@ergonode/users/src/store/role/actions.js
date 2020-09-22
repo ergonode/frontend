@@ -79,6 +79,7 @@ export default {
         try {
             const {
                 id,
+                name,
                 privileges,
                 description,
                 drafts,
@@ -102,6 +103,7 @@ export default {
             });
 
             const data = {
+                name,
                 description,
                 privileges: Object.keys(tmpPrivileges),
             };

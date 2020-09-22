@@ -9,7 +9,7 @@
         }]"
         @click="markAsRead">
         <UserFabAvatar
-            :avatar-id="notification.user_id"
+            :avatar-id="avatarId"
             :user-id="notification.user_id"
             :name="notification.author"
             :size="regularSize" />
@@ -51,6 +51,11 @@ export default {
         },
         graphiteColor() {
             return GRAPHITE;
+        },
+        avatarId() {
+            return this.notification.avatar_filename
+                ? this.notification.user_id
+                : null;
         },
     },
     methods: {
