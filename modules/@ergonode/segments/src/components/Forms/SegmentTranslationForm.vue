@@ -65,7 +65,7 @@ export default {
     },
     methods: {
         dataCyGenerator(key) {
-            return `segment-${key}`;
+            return `segment-${key}_${this.languageCode}`;
         },
     },
 };

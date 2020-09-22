@@ -36,7 +36,6 @@ Feature: Status adding
     And I see "product-statuses/status/%UUID%/general" page
     Then Element "status-code" is "visible"
     Then Element "title-bar-header" is "visible"
-    Then I can see "status_6" text on "title-bar-header" element
     When I click on "delete-status" button
     Then I confirm modal
     And I see "product-statuses/grid" page

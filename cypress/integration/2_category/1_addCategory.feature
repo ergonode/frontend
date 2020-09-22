@@ -33,7 +33,6 @@ Feature: Category adding
     And I see "categories/category/%UUID%/general" page
     Then Element "category-code" is "visible"
     Then Element "title-bar-header" is "visible"
-    Then I can see "category_3" text on "title-bar-header" element
     When I click on "delete-category" button
     Then I confirm modal
     And I see "categories/grid" page

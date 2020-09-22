@@ -36,7 +36,6 @@ Feature: Collection adding
     And I see "collections/collection/%UUID%/general" page
     Then Element "collection-code" is "visible"
     Then Element "title-bar-header" is "visible"
-    Then I can see "collection_3" text on "title-bar-header" element
     When I click on "delete-collection" button
     Then I confirm modal
     And I see "collections/grid" page

@@ -33,7 +33,6 @@ Feature: Category tree adding
     And I see "category-trees/tree/%UUID%/general" page
     Then Element "category-tree-code" is "visible"
     Then Element "title-bar-header" is "visible"
-    Then I can see "category_tree_3" text on "title-bar-header" element
     When I click on "delete-category-tree" button
     Then I confirm modal
     And I see "category-trees/grid" page

@@ -33,7 +33,6 @@ Feature: Segment adding
     And I see "segments/segment/%UUID%/general" page
     Then Element "segment-code" is "visible"
     Then Element "title-bar-header" is "visible"
-    Then I can see "segment_3" text on "title-bar-header" element
     When I click on "delete-segment" button
     Then I confirm modal
     And I see "segments/grid" page

@@ -78,7 +78,7 @@ MultiSteps([
     And,
 ], 'I open {string} page', (page) => {
     cy.visit(`/${page}`);
-    cy.wait(`@${requestName}_GET_GRID`);
+    // cy.wait(`@${requestName}_GET_GRID`);
     cy
         .url()
         .should('include', `/${page}`);
