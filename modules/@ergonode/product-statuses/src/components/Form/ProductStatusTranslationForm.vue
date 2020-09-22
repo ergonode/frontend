@@ -65,7 +65,7 @@ export default {
     },
     methods: {
         dataCyGenerator(key) {
-            return `status-${key}`;
+            return `status-${key}_${this.languageCode}`;
         },
     },
 };

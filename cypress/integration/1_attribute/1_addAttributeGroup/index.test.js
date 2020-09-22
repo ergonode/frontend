@@ -3,17 +3,21 @@
  * See LICENSE for license details.
  */
 import {
+    And,
+    Given,
     Then,
 } from 'cypress-cucumber-preprocessor/steps';
 
 import {
-    LANGUAGE,
-} from '../../../defaults';
+    MultiSteps,
+} from '../../../models/index';
 import {
-    getToken,
     removeRequest,
-    sendPostRequest,
+    sendRequest,
 } from '../../../models/requests';
+
+const requestName = 'attributeGroupRequest';
+const url = 'attributes/groups';
 
 before(() => {
     cy.login(Cypress.env('adminEmail'), Cypress.env('adminPass'));
@@ -21,22 +25,68 @@ before(() => {
 
 beforeEach(() => {
     Cypress.Cookies.preserveOnce('jwt');
-    cy.apiRequest('POST', `${LANGUAGE}/attributes/groups`).as('POST-REQUEST');
+    cy.apiRequest({
+        method: 'POST',
+        url,
+        alias: `${requestName}_POST`,
+    });
+
+    cy.apiRequest({
+        method: 'PUT',
+        url,
+        alias: `${requestName}_PUT`,
+    });
+
+    cy.apiRequest({
+        method: 'DELETE',
+        url,
+        alias: `${requestName}_DELETE`,
+    });
+
+    cy.apiRequest({
+        method: 'GET',
+        url: 'attributes/groups?offset=0&limit=25&extended=true&filter=&columns=',
+        alias: `${requestName}_GET_GRID`,
+    });
+
+    cy.apiRequest({
+        method: 'GET',
+        url: 'attributes/groups/**',
+        alias: `${requestName}_GET`,
+    });
 });
 
-Then('I send a {string} request and status code should be {int}', (reqType, status) => {
-    getToken();
-    sendPostRequest({
+MultiSteps([
+    Then,
+    And,
+], 'I send a {string} request and status code should be {int}', (reqType, status) => {
+    sendRequest({
         reqType,
         status,
-        urlRegExp: /\/attributes\/groups$/,
+        requestName,
     });
 });
 
-Then('I remove {string} element by {string} request', (element, reqType) => {
+Then('I remove element by request', () => {
     removeRequest({
-        element,
-        reqType,
-        path: `${LANGUAGE}/attributes/groups`,
+        path: 'attributes/groups',
     });
+});
+
+MultiSteps([
+    Given,
+    And,
+], 'I open {string} page', (page) => {
+    cy.visit(`/${page}`);
+    // cy.wait(`@${requestName}_GET_GRID`);
+    cy
+        .url()
+        .should('include', `/${page}`);
+});
+
+MultiSteps([
+    Then,
+    And,
+], 'I wait for {string} request', (type) => {
+    cy.wait(`@${requestName}_${type}`);
 });

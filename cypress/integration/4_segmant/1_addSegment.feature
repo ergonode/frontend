@@ -6,19 +6,19 @@ Feature: Segment adding
     When I click on "new-segment" button
     Then Element "modal" is "visible"
 
-  Scenario: Add segment and delete by request
+  Scenario: Add segment and remove it from Grid
     When I fill the "segment-code" input with the "segment_1" term
-    When On "modal" element I click button with "CREATE" text
+    When I click on "submit" button
     Then I send a "POST" request and status code should be 201
     And I open "segments/grid" page
     Then On "grid" I can see row with "segment_1" value and columns data: "{'0': 'segment_1', '4': '0'}"
     And On "grid" I click on "delete" button for row with "segment_1" value
     Then I close modal by button
-    And I remove "this" element by "DELETE" request
+    And I remove element by request
 
   Scenario: Add segment and delete by grid button
     When I fill the "segment-code" input with the "segment_2" term
-    When On "modal" element I click button with "CREATE" text
+    When I click on "submit" button
     Then I send a "POST" request and status code should be 201
     And I open "segments/grid" page
     Then On "grid" I can see row with "segment_2" value and columns data: "{'0': 'segment_2', '4': '0'}"
@@ -28,19 +28,18 @@ Feature: Segment adding
 
   Scenario: Add segment and delete from edit
     When I fill the "segment-code" input with the "segment_3" term
-    When On "modal" element I click button with "CREATE & EDIT" text
+    When I click on "proceed" button
     Then I send a "POST" request and status code should be 201
     And I see "segments/segment/%UUID%/general" page
     Then Element "segment-code" is "visible"
     Then Element "title-bar-header" is "visible"
-    Then I can see "segment_3" text on "title-bar-header" element
     When I click on "delete-segment" button
     Then I confirm modal
     And I see "segments/grid" page
 
   Scenario: Add segment1 for use
     When I fill the "segment-code" input with the "segment_1" term
-    And On "modal" element I click button with "CREATE & EDIT" text
+    And I click on "proceed" button
     Then I send a "POST" request and status code should be 201
     And I see "segments/segment/%UUID%/general" page
     Then I click tab with "Translations" text
