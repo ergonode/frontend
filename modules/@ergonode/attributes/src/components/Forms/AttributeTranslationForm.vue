@@ -100,7 +100,7 @@ export default {
     },
     methods: {
         dataCyGenerator(key) {
-            return `attribute-${key}`;
+            return `attribute-${key}_${this.languageCode}`;
         },
     },
 };

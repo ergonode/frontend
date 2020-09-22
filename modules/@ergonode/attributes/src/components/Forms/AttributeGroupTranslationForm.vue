@@ -51,7 +51,7 @@ export default {
     },
     methods: {
         dataCyGenerator(key) {
-            return `attribute-group-${key}`;
+            return `attribute-group-${key}_${this.languageCode}`;
         },
     },
 };
