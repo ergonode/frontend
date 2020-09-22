@@ -319,6 +319,7 @@ export default {
         state, rootState,
     }, {
         onSuccess,
+        onError = () => {},
     }) {
         const {
             id,
@@ -329,24 +330,28 @@ export default {
         } = rootState.dictionaries;
         const typeKey = getKeyByValue(attrTypes, type);
 
-        // EXTENDED BEFORE METHOD
-        await this.$extendMethods('@Attributes/store/attribute/action/removeAttribute/__before', {
-            $this: this,
-            type: typeKey,
-        });
-        // EXTENDED BEFORE METHOD
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Attributes/store/attribute/action/removeAttribute/__before', {
+                $this: this,
+                type: typeKey,
+            });
+            // EXTENDED BEFORE METHOD
 
-        await remove({
-            $axios: this.app.$axios,
-            id,
-        });
+            await remove({
+                $axios: this.app.$axios,
+                id,
+            });
 
-        // EXTENDED AFTER METHOD
-        await this.$extendMethods('@Attributes/store/attribute/action/removeAttribute/__after', {
-            $this: this,
-            type: typeKey,
-        });
-        // EXTENDED AFTER METHOD
-        onSuccess();
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Attributes/store/attribute/action/removeAttribute/__after', {
+                $this: this,
+                type: typeKey,
+            });
+            // EXTENDED AFTER METHOD
+            onSuccess();
+        } catch (e) {
+            onError(e.data);
+        }
     },
 };

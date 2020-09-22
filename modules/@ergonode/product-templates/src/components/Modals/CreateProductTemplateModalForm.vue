@@ -7,7 +7,7 @@
         title="Create product template"
         @close="onClose">
         <template #body>
-            <TemplateDesignerForm
+            <ProductTemplateForm
                 submit-title="CREATE"
                 proceed-title="CREATE & EDIT"
                 :is-submitting="isSubmitting"
@@ -30,7 +30,7 @@ import {
 import {
     toLowerCaseFirstLetter,
 } from '@Core/models/stringWrapper';
-import TemplateDesignerForm from '@Templates/components/Forms/TemplateDesignerForm';
+import ProductTemplateForm from '@Templates/components/Forms/ProductTemplateForm';
 import {
     mapActions,
     mapState,
@@ -40,7 +40,7 @@ export default {
     name: 'CreateProductTemplateModalForm',
     components: {
         ModalForm,
-        TemplateDesignerForm,
+        ProductTemplateForm,
     },
     data() {
         return {

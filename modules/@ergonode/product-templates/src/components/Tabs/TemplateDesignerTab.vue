@@ -234,7 +234,7 @@ export default {
     },
     methods: {
         ...mapActions('productTemplate', [
-            'updateProductTemplate',
+            'updateTemplate',
             'addListElementToLayout',
             'updateLayoutElementAtIndex',
             'removeLayoutElementAtIndex',
@@ -250,7 +250,7 @@ export default {
             this.isSubmitting = true;
 
             this.removeErrors();
-            this.updateProductTemplate({
+            this.updateTemplate({
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

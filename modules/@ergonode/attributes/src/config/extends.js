@@ -15,7 +15,11 @@ import {
     setTranslation,
     updateOptionsData,
     updateTranslation,
-} from '@Attributes/extends/methods';
+} from '@Attributes/extends/methods/attribute';
+import {
+    prepareTemplateData,
+    setTemplateData,
+} from '@Attributes/extends/methods/template';
 
 import {
     Components,
@@ -85,6 +89,7 @@ export default {
     ],
     extendStore: {
         attribute: Store.Attribute,
+        productTemplate: Store.Template,
     },
     extendMethods: {
         '@Attributes/store/attribute/action/createAttribute/__before': ({
@@ -245,6 +250,24 @@ export default {
                 break;
             }
         },
+        '@Templates/store/productTemplate/action/createTemplate/__before': ({
+            $this,
+        }) => prepareTemplateData({
+            $this,
+        }),
+        '@Templates/store/productTemplate/action/updateTemplate/__before': ({
+            $this,
+        }) => prepareTemplateData({
+            $this,
+        }),
+        '@Templates/store/productTemplate/action/getTemplate/__after': ({
+            $this, data,
+        }) => {
+            setTemplateData({
+                $this,
+                data,
+            });
+        },
     },
     extendComponents: {
         '@Attributes/components/Forms/AttributeForm': {
@@ -336,5 +359,10 @@ export default {
                 component: Icons.IconImage,
             },
         },
+        '@Templates/components/Forms/ProductTemplateForm': [
+            {
+                component: Components.ProductTemplateFormPresentation,
+            },
+        ],
     },
 };
