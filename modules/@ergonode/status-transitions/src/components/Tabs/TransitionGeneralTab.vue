@@ -49,7 +49,7 @@ export default {
         ...mapActions('statusTransition', [
             'updateStatusTransition',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),
@@ -69,7 +69,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Status transition updated',
+                message: 'Status transition has been updated',
             });
 
             this.isSubmitting = false;

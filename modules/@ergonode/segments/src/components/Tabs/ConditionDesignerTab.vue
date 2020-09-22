@@ -114,8 +114,8 @@ export default {
         },
     },
     beforeDestroy() {
-        this.clearGridDesignerStorage();
-        this.clearConditionsStorage();
+        this.__clearGridDesignerStorage();
+        this.__clearConditionStorage();
     },
     methods: {
         ...mapActions('condition', [
@@ -123,14 +123,14 @@ export default {
             'updateConditionSet',
         ]),
         ...mapActions('gridDesigner', {
-            clearGridDesignerStorage: '__clearStorage',
+            __clearGridDesignerStorage: '__clearStorage',
         }),
         ...mapActions('condition', {
-            clearConditionsStorage: '__clearStorage',
+            __clearConditionStorage: '__clearStorage',
         }),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -138,15 +138,17 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeScopeErrors();
 
             if (!this.conditionSetId) {
                 this.createConditionSet({
+                    scope: this.scope,
                     onSuccess: this.onUpdateSuccess,
                     onError: this.onUpdateError,
                 });
             } else {
                 this.updateConditionSet({
+                    scope: this.scope,
                     onSuccess: this.onUpdateSuccess,
                     onError: this.onUpdateError,
                 });
@@ -155,7 +157,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Segment conditions updated',
+                message: 'Segment conditions have been updated',
             });
 
             this.isSubmitting = false;

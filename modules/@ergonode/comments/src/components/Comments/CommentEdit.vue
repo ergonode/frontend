@@ -93,9 +93,9 @@ export default {
             'createComment',
             'updateComment',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         saveComment() {
             if (this.isEdit && this.commentId) {
@@ -114,7 +114,7 @@ export default {
             }
         },
         onSuccess() {
-            this.removeErrors();
+            this.removeScopeErrors();
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: `Comment ${this.isEdit ? 'edited' : 'created'}`,

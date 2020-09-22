@@ -65,7 +65,7 @@ export default {
         ...mapActions('categoryTree', [
             'updateCategoryTree',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),
@@ -85,7 +85,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Category tree translations updated',
+                message: 'Category tree translations have been updated',
             });
 
             this.isSubmitting = false;

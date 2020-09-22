@@ -31,11 +31,18 @@
         </TitleBar>
         <HorizontalRoutingTabBar
             :items="tabs"
+            :change-values="changeValues"
             :errors="errors">
-            <template #content="{ item, errors: tabErrors }">
+            <template
+                #content="{
+                    item,
+                    errors: tabErrors,
+                    changeValues: tabChangeValues,
+                }">
                 <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
                     :scope="item.scope"
+                    :change-values="tabChangeValues"
                     :errors="tabErrors"
                     @fetched="onFetchedGridData" />
             </template>

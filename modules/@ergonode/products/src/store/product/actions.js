@@ -186,7 +186,9 @@ export default {
             });
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+            });
         }
     },
     async addBySegment({
@@ -211,7 +213,9 @@ export default {
             });
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+            });
         }
     },
     async getProductTemplate({}, {
@@ -310,6 +314,7 @@ export default {
     },
     async applyProductDraft({}, {
         id,
+        scope,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -320,7 +325,10 @@ export default {
             });
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async updateProductDraft({
@@ -347,9 +355,9 @@ export default {
                 data,
             });
 
-            if (rootState.validations.errors[scope]) {
+            if (rootState.feedback.errors[scope]) {
                 dispatch(
-                    'validations/removeScopeError',
+                    'feedback/removeScopeError',
                     {
                         scope,
                         fieldKey,
@@ -360,7 +368,6 @@ export default {
                 );
             }
         } catch (e) {
-            console.log(e);
             const {
                 errors,
             } = e.data;
@@ -371,7 +378,7 @@ export default {
 
             if (errors) {
                 dispatch(
-                    'validations/onError',
+                    'feedback/onError',
                     {
                         errors,
                         fieldKeys,
@@ -389,7 +396,7 @@ export default {
                 };
 
                 dispatch(
-                    'validations/onError',
+                    'feedback/onError',
                     {
                         errors: internalServerError,
                         fieldKeys,

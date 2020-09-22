@@ -69,6 +69,16 @@ export default {
         DropZone,
         FadeTransition,
     },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             isSubmitting: false,
@@ -98,9 +108,9 @@ export default {
         ...mapActions('categoryTree', [
             'updateCategoryTree',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -108,8 +118,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.updateCategoryTree({
+                scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });
@@ -117,7 +128,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Category tree updated',
+                message: 'Category tree has been updated',
             });
 
             this.isSubmitting = false;

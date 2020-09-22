@@ -43,16 +43,16 @@ export default {
     },
     beforeDestroy() {
         this.__clearStorage();
-        this.removeErrors();
+        this.__clearFeedbackStorage();
     },
     methods: {
         ...mapActions('role', [
             '__clearStorage',
             'removeRole',
         ]),
-        ...mapActions('validations', [
-            'removeErrors',
-        ]),
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
         onRemoveRoleSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,

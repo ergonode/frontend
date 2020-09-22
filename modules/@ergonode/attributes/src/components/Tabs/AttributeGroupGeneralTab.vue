@@ -49,7 +49,7 @@ export default {
         ...mapActions('attributeGroup', [
             'updateAttributeGroup',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),
@@ -69,7 +69,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Attribute group updated',
+                message: 'Attribute group has been updated',
             });
 
             this.isSubmitting = false;

@@ -42,24 +42,24 @@ export default {
         }),
     },
     beforeDestroy() {
-        this.clearSegmentStorage();
-        this.clearConditionSetStorage();
-        this.clearGridDesignerStorage();
-        this.removeErrors();
+        this.__clearSegmentStorage();
+        this.__clearConditionStorage();
+        this.__clearGridDesignerStorage();
+        this.__clearFeedbackStorage();
     },
     methods: {
         ...mapActions('condition', {
-            clearConditionSetStorage: '__clearStorage',
+            __clearConditionStorage: '__clearStorage',
         }),
         ...mapActions('segment', {
             removeSegment: 'removeSegment',
-            clearSegmentStorage: '__clearStorage',
+            __clearSegmentStorage: '__clearStorage',
         }),
-        ...mapActions('validations', [
-            'removeErrors',
-        ]),
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
         ...mapActions('gridDesigner', {
-            clearGridDesignerStorage: '__clearStorage',
+            __clearGridDesignerStorage: '__clearStorage',
         }),
         onRemove() {
             this.$openModal({

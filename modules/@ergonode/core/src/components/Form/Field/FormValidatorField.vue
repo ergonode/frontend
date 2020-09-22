@@ -21,7 +21,7 @@ export default {
         },
     },
     computed: {
-        ...mapState('validations', {
+        ...mapState('feedback', {
             errors: state => state.errors,
         }),
         errorMessages() {
@@ -48,7 +48,7 @@ export default {
         this.removeError(this.fieldKey);
     },
     methods: {
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'removeError',
         ]),
     },

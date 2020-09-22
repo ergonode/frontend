@@ -44,21 +44,21 @@ export default {
         },
     },
     beforeDestroy() {
-        this.clearTransitionStorage();
-        this.clearConditionSetStorage();
-        this.removeErrors();
+        this.__clearTransitionStorage();
+        this.__clearConditionStorage();
+        this.__clearFeedbackStorage();
     },
     methods: {
         ...mapActions('condition', {
-            clearConditionSetStorage: '__clearStorage',
+            __clearConditionStorage: '__clearStorage',
         }),
         ...mapActions('statusTransition', {
             removeStatusTransition: 'removeStatusTransition',
-            clearTransitionStorage: '__clearStorage',
+            __clearTransitionStorage: '__clearStorage',
         }),
-        ...mapActions('validations', [
-            'removeErrors',
-        ]),
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,

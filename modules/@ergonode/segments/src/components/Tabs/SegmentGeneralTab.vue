@@ -49,7 +49,7 @@ export default {
         ...mapActions('segment', [
             'updateSegment',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),
@@ -69,7 +69,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Segment updated',
+                message: 'Segment has been updated',
             });
 
             this.isSubmitting = false;

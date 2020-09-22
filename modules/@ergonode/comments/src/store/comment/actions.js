@@ -125,7 +125,9 @@ export default {
             });
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+            });
         }
 
         this.$removeLoader('commentButton');
@@ -176,7 +178,9 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+            });
         }
 
         this.$removeLoader('commentButton');
@@ -210,7 +214,9 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+            });
         }
     },
 };

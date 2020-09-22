@@ -52,7 +52,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('validations', {
+        ...mapState('feedback', {
             errors: state => state.errors,
         }),
         secondaryTheme() {
@@ -71,7 +71,7 @@ export default {
             'createProduct',
             '__clearStorage',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),

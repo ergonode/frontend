@@ -8,10 +8,20 @@
             title="Settings"
             :is-read-only="$isReadOnly('SETTINGS')" />
         <HorizontalRoutingTabBar
-            :items="tabs">
-            <template #content>
+            :items="tabs"
+            :change-values="changeValues"
+            :errors="errors">
+            <template
+                #content="{
+                    item,
+                    errors: tabErrors,
+                    changeValues: tabChangeValues,
+                }">
                 <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
+                    :scope="item.scope"
+                    :change-values="tabChangeValues"
+                    :errors="tabErrors"
                     @fetched="onFetchedGridData"
                     @showModal="onShowModalByType" />
             </template>
@@ -25,17 +35,23 @@
 </template>
 
 <script>
+import Page from '@Core/components/Layout/Page';
+import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@Core/components/TitleBar/TitleBar';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import {
     getNestedTabRoutes,
 } from '@Core/models/navigation/tabs';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'Settings',
     components: {
-        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
-        Page: () => import('@Core/components/Layout/Page'),
-        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
+        TitleBar,
+        Page,
+        HorizontalRoutingTabBar,
     },
     mixins: [
         gridModalMixin,
@@ -46,6 +62,10 @@ export default {
         };
     },
     computed: {
+        ...mapState('feedback', [
+            'changeValues',
+            'errors',
+        ]),
         tabs() {
             return getNestedTabRoutes({
                 hasAccess: this.$hasAccess,

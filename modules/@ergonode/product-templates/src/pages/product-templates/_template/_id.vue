@@ -41,9 +41,9 @@ export default {
         }),
     },
     beforeDestroy() {
-        this.list__clearStorage();
+        this.__clearListStorage();
         this.__clearStorage();
-        this.removeErrors();
+        this.__clearFeedbackStorage();
     },
     methods: {
         ...mapActions('productTemplate', [
@@ -51,11 +51,11 @@ export default {
             '__clearStorage',
         ]),
         ...mapActions('list', {
-            list__clearStorage: '__clearStorage',
+            __clearListStorage: '__clearStorage',
         }),
-        ...mapActions('validations', [
-            'removeErrors',
-        ]),
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,

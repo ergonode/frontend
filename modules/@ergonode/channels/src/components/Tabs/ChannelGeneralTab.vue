@@ -49,7 +49,7 @@ export default {
         ...mapActions('channel', [
             'updateChannel',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),
@@ -69,7 +69,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Channel updated',
+                message: 'Channel has been updated',
             });
 
             this.isSubmitting = false;

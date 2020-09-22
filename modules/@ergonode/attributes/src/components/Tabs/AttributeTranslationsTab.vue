@@ -65,7 +65,7 @@ export default {
         ...mapActions('attribute', [
             'updateAttribute',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),
@@ -85,7 +85,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Attribute translations updated',
+                message: 'Attribute translations have been updated',
             });
 
             this.isSubmitting = false;
