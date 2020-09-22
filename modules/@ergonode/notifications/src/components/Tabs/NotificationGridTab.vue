@@ -12,10 +12,15 @@
                         :key="notification.id"
                         :notification="notification" />
                     <NotificationsListFooter v-if="isMoreButtonVisible">
-                        <Loader v-if="!$isLoading('moreNotifications')" />
                         <Button
                             :title="buttonTitle"
-                            @click.native="onLoadMoreNotifications" />
+                            @click.native="onLoadMoreNotifications">
+                            <template
+                                v-if="isFetchingData"
+                                #append="{ color }">
+                                <IconSpinner :fill-color="color" />
+                            </template>
+                        </Button>
                     </NotificationsListFooter>
                 </List>
                 <ListPlaceholder
@@ -30,13 +35,19 @@
 </template>
 
 <script>
+import Button from '@Core/components/Button/Button';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import List from '@Core/components/List/List';
+import ListPlaceholder from '@Core/components/List/ListPlaceholder';
 import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
 import {
     LAYOUT_ORIENTATION,
 } from '@Core/defaults/layout';
+import NotificationsListElement from '@Notifications/components/List/NotificationsListElement';
+import NotificationsListFooter from '@Notifications/components/List/NotificationsListFooter';
 import {
     mapActions,
     mapState,
@@ -46,12 +57,17 @@ export default {
     name: 'NotificationGridTab',
     components: {
         CenterViewTemplate,
-        Loader: () => import('@Core/components/Loader/Loader'),
-        Button: () => import('@Core/components/Button/Button'),
-        List: () => import('@Core/components/List/List'),
-        ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
-        NotificationsListElement: () => import('@Notifications/components/List/NotificationsListElement'),
-        NotificationsListFooter: () => import('@Notifications/components/List/NotificationsListFooter'),
+        Button,
+        List,
+        IconSpinner,
+        ListPlaceholder,
+        NotificationsListElement,
+        NotificationsListFooter,
+    },
+    data() {
+        return {
+            isFetchingData: false,
+        };
     },
     computed: {
         ...mapState('notification', {
@@ -84,11 +100,17 @@ export default {
         ...mapActions('notification', [
             '__setState',
         ]),
-        onLoadMoreNotifications() {
+        async onLoadMoreNotifications() {
+            this.isFetchingData = true;
+
             this.__setState({
                 key: 'limit',
                 value: this.limit + DATA_LIMIT,
             });
+
+            await this.requestForNotifications();
+
+            this.isFetchingData = false;
         },
     },
 };

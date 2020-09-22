@@ -42,8 +42,6 @@ export default {
             params,
         },
     ) {
-        this.$setLoader('moreComments');
-
         let {
             currentPage,
         } = state;
@@ -64,8 +62,6 @@ export default {
             value: info.filtered,
         });
         commit(types.INSERT_MORE_COMMENTS, comments);
-
-        this.$removeLoader('moreComments');
     },
     async createComment(
         {
@@ -75,12 +71,11 @@ export default {
         },
         {
             content,
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
     ) {
-        this.$setLoader('commentButton');
-
         try {
             const {
                 firstName,
@@ -127,10 +122,9 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
+                scope,
             });
         }
-
-        this.$removeLoader('commentButton');
     },
     async updateComment(
         {
@@ -139,13 +133,12 @@ export default {
         },
         {
             id,
+            scope,
             content,
             onSuccess = () => {},
             onError = () => {},
         },
     ) {
-        this.$setLoader('commentButton');
-
         try {
             const data = {
                 content,
@@ -180,10 +173,9 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
+                scope,
             });
         }
-
-        this.$removeLoader('commentButton');
     },
     async removeComment(
         {
