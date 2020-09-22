@@ -19,7 +19,9 @@
             </VerticalTabBar>
         </template>
         <template #grid>
-            <ConditionSetWrapper :disabled="!isAllowedToUpdate" />
+            <ConditionSetWrapper
+                :errors="errors"
+                :disabled="!isAllowedToUpdate" />
             <Button
                 title="SAVE CHANGES"
                 :floating="{ bottom: '24px', right: '24px' }"
@@ -69,6 +71,16 @@ export default {
         FadeTransition,
         VerticalTabBar,
         ConditionSetWrapper,
+    },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     async fetch({
         store,
@@ -128,6 +140,10 @@ export default {
         ...mapActions('condition', {
             __clearConditionStorage: '__clearStorage',
         }),
+        ...mapActions('segment', [
+            'updateSegment',
+            '__setState',
+        ]),
         ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
@@ -138,7 +154,7 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeScopeErrors();
+            this.removeScopeErrors(this.scope);
 
             if (!this.conditionSetId) {
                 this.createConditionSet({
@@ -154,7 +170,16 @@ export default {
                 });
             }
         },
-        onUpdateSuccess() {
+        async onUpdateSuccess(id) {
+            this.__setState({
+                key: 'conditionSetId',
+                value: id,
+            });
+
+            await this.updateSegment({
+                scope: this.scope,
+            });
+
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Segment conditions have been updated',

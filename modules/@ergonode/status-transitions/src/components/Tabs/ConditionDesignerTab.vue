@@ -141,6 +141,10 @@ export default {
         ...mapActions('gridDesigner', {
             __clearGridDesignerStorage: '__clearStorage',
         }),
+        ...mapActions('statusTransition', [
+            '__setState',
+            'updateStatusTransition',
+        ]),
         ...mapActions('condition', {
             __clearConditionStorage: '__clearStorage',
         }),
@@ -150,7 +154,7 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeScopeErrors();
+            this.removeScopeErrors(this.scope);
 
             if (!this.conditionSetId) {
                 this.createConditionSet({
@@ -166,7 +170,16 @@ export default {
                 });
             }
         },
-        onUpdateSuccess() {
+        async onUpdateSuccess(id) {
+            this.__setState({
+                key: 'conditionSetId',
+                value: id,
+            });
+
+            await this.updateStatusTransition({
+                scope: this.scope,
+            });
+
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Status transition conditions have been updated',

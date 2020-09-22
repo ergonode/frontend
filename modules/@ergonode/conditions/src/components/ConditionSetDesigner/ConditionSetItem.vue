@@ -39,6 +39,7 @@
                     :parameter="parameter"
                     :item-id="itemId"
                     :item-row="itemRow"
+                    :error-messages="errors[parameter.name]"
                     :disabled="disabled" />
             </div>
         </template>

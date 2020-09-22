@@ -29,7 +29,7 @@
             <TemplateGridItemsContainer
                 :style="gridStyles">
                 <TemplateGridItemArea
-                    v-for="item in filteredGridData"
+                    v-for="(item, index) in filteredGridData"
                     :key="item.id"
                     :item="item"
                     :columns="columns"
@@ -46,6 +46,7 @@
                         v-else
                         name="gridItem"
                         :item="item"
+                        :index="index"
                         :grid-item-styles="gridItemStyles"
                         :toggle-item="toggleItem"
                         :remove-item="removeItem">
