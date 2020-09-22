@@ -8,6 +8,7 @@
             <CategoryTreeTranslationForm
                 v-for="languageCode in languageCodes"
                 :key="languageCode"
+                :errors="errors"
                 :language-code="languageCode" />
         </template>
         <template #saveButton>
@@ -45,6 +46,16 @@ export default {
         Button,
         IconSpinner,
     },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             isSubmitting: false,
@@ -56,7 +67,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -64,8 +75,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.updateCategoryTree({
+                scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

@@ -7,14 +7,14 @@
     <Form
         :title="schema.title"
         :fields-keys="fieldsKeys">
-        <template #body="{ errorMessages }">
+        <template #body>
             <Component
                 v-for="element in schemaComponents"
                 :key="element.key"
                 :value="model[element.key]"
                 :is="element.component"
                 :schema="element.props"
-                :error-messages="errorMessages[element.key]"
+                :errors="errors[element.key]"
                 @input="onValueChange" />
         </template>
     </Form>
@@ -38,6 +38,10 @@ export default {
                 properties: {},
                 required: [],
             }),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
         },
         value: {
             type: String,

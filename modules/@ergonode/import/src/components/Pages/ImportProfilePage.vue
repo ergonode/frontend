@@ -29,17 +29,21 @@
                     @click.native="onShowModal" />
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs">
-            <template #content>
+        <HorizontalRoutingTabBar
+            :items="tabs"
+            :errors="errors">
+            <template #content="{ item, errors: tabErrors }">
                 <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
+                    :scope="item.scope"
+                    :errors="tabErrors"
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
         <UploadImportFileModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @created="onCreatedData" />
+            @import="onCreatedData" />
     </Page>
 </template>
 

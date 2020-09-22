@@ -29,10 +29,14 @@
                     @click.native="onCreateExport" />
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs">
-            <template #content>
+        <HorizontalRoutingTabBar
+            :items="tabs"
+            :errors="errors">
+            <template #content="{ item, errors: tabErrors }">
                 <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
+                    :scope="item.scope"
+                    :errors="tabErrors"
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
@@ -87,7 +91,7 @@ export default {
     },
     methods: {
         ...mapActions('channel', [
-            'createExport',
+            'createChannelExport',
         ]),
         onFetchedGridData() {
             this.fetchGridData = false;
@@ -96,7 +100,7 @@ export default {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Are you sure you want to start export?',
-                confirmCallback: () => this.createExport({
+                confirmCallback: () => this.createChannelExport({
                     onSuccess: this.onExportSuccess,
                 }),
             });

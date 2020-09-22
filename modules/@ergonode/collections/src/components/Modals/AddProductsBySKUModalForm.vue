@@ -9,10 +9,10 @@
         <template #body>
             <AddProductsBySKUForm
                 :product-skus="productSkus"
-                :is-user-allowed-to-update="isUserAllowedToUpdate"
                 submit-title="ADD TO COLLECTION"
                 proceed-title="CANCEL"
                 :is-submitting="isAdding"
+                :errors="scopeErrors"
                 @submit="onSubmit"
                 @proceed="onClose"
                 @input="onFormValueChange" />
@@ -22,7 +22,6 @@
 
 <script>
 import AddProductsBySKUForm from '@Collections/components/Forms/AddProductsBySKUForm';
-import PRIVILEGES from '@Collections/config/privileges';
 import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     ALERT_TYPE,
@@ -31,7 +30,11 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import {
+    toLowerCaseFirstLetter,
+} from '@Core/models/stringWrapper';
+import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -47,19 +50,23 @@ export default {
         };
     },
     computed: {
+        ...mapState('validations', {
+            errors: state => state.errors,
+        }),
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        isUserAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.PRODUCT_COLLECTION.update,
-            ]);
+        scope() {
+            return toLowerCaseFirstLetter(this.$options.name);
+        },
+        scopeErrors() {
+            return this.errors[this.scope];
         },
     },
     methods: {
         ...mapActions('validations', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         ...mapActions('collection', [
             'addBySku',
@@ -76,8 +83,9 @@ export default {
             }
             this.isAdding = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.addBySku({
+                scope: this.scope,
                 skus: this.productSkus,
                 onSuccess: this.onAddSuccess,
                 onError: this.onAddError,
@@ -86,7 +94,7 @@ export default {
         onAddSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Products has been added to collection',
+                message: 'Products have been added to collection',
             });
 
             this.isAdding = false;

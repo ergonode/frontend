@@ -4,6 +4,7 @@
  */
 import {
     create,
+    createExport,
     get,
     getConfiguration,
     getDetails,
@@ -142,10 +143,11 @@ export default {
             value: JSON.stringify(rest),
         });
     },
-    async createExport({
+    async createChannel({
         state,
         rootState,
     }, {
+        scope,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -179,7 +181,35 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
+    },
+    async createChannelExport({
+        state,
+    }, {
+        scope = 'default',
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const {
+                id,
+            } = state;
+
+            await createExport({
+                $axios: this.app.$axios,
+                id,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async updateChannel(
@@ -187,6 +217,7 @@ export default {
             state,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -210,7 +241,10 @@ export default {
             });
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async updateScheduler(
@@ -218,6 +252,7 @@ export default {
             state,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -240,7 +275,10 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async removeChannel({

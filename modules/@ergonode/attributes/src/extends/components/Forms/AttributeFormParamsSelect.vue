@@ -10,13 +10,14 @@
         required
         :label="paramsLabel"
         :options="attributeParametersOptions"
-        :error-messages="errorMessages[paramsFieldKey]"
+        :error-messages="errors[paramsFieldKey]"
         :disabled="!isAllowedToUpdate"
         @input="setParameterValue" />
 </template>
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
+import Select from '@Core/components/Inputs/Select/Select';
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
@@ -27,10 +28,10 @@ import {
 export default {
     name: 'AttributeFormParamsSelect',
     components: {
-        Select: () => import('@Core/components/Inputs/Select/Select'),
+        Select,
     },
     props: {
-        errorMessages: {
+        errors: {
             type: Object,
             default: () => ({}),
         },
@@ -83,9 +84,6 @@ export default {
     },
     created() {
         this.parameterData = this.getParams(this).params;
-        this.$emit('fieldKeys', [
-            this.paramsFieldKey,
-        ]);
     },
     beforeDestroy() {
         this.setParameterValue();

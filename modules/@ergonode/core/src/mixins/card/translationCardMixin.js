@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    getMappedTranslationErrors,
+} from '@Core/models/mappers/errorsMapper';
+import {
     mapActions,
     mapGetters,
     mapState,
@@ -14,6 +17,10 @@ export default {
             type: String,
             default: '',
         },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     computed: {
         ...mapState('tab', {
@@ -22,6 +29,12 @@ export default {
         ...mapGetters('core', [
             'getActiveLanguageByCode',
         ]),
+        translationErrors() {
+            return getMappedTranslationErrors({
+                errors: this.errors,
+                languageCode: this.languageCode,
+            });
+        },
         selectedLanguage() {
             return this.getActiveLanguageByCode(this.languageCode).name || null;
         },

@@ -3,10 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form :fields-keys="[restoreFieldKey]">
+    <Form>
         <template #body>
-            <FormSection
-                :title="modalTitle">
+            <FormSection :title="modalTitle">
                 <RadioButton
                     v-for="(element, index) in elementsToRestore"
                     :key="index"
@@ -24,6 +23,9 @@ import {
     SCOPE,
     SYSTEM_TYPES,
 } from '@Attributes/defaults/attributes';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import RadioButton from '@Core/components/Inputs/RadioButton';
 import {
     mapGetters,
 } from 'vuex';
@@ -31,9 +33,9 @@ import {
 export default {
     name: 'RestoreForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        RadioButton: () => import('@Core/components/Inputs/RadioButton'),
+        Form,
+        FormSection,
+        RadioButton,
     },
     props: {
         elements: {

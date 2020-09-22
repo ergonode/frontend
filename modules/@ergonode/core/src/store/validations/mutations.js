@@ -5,6 +5,8 @@
 export const types = {
     SET_ERRORS: 'SET_ERRORS',
     REMOVE_ERROR: 'REMOVE_ERROR',
+    REMOVE_SCOPE_ERROR: 'REMOVE_SCOPE_ERROR',
+    REMOVE_SCOPE_ERRORS: 'REMOVE_SCOPE_ERRORS',
     REMOVE_ERRORS: 'REMOVE_ERRORS',
 };
 export default {
@@ -18,6 +20,21 @@ export default {
         delete state.errors[key];
         state.errors = {
             ...state.errors,
+        };
+    },
+    [types.REMOVE_SCOPE_ERRORS](state, scope) {
+        delete state.errors[scope];
+        state.errors = {
+            ...state.errors,
+        };
+    },
+    [types.REMOVE_SCOPE_ERROR](state, {
+        scope,
+        fieldKey,
+    }) {
+        delete state.errors[scope][fieldKey];
+        state.errors[scope] = {
+            ...state.errors[scope],
         };
     },
     [types.REMOVE_ERRORS](state) {

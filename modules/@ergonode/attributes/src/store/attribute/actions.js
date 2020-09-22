@@ -22,6 +22,7 @@ export default {
         rootState,
     },
     {
+        scope,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -30,7 +31,7 @@ export default {
                 code,
                 groups,
                 type,
-                scope,
+                scope: attributeScope,
             } = state;
             const {
                 attrTypes,
@@ -38,7 +39,7 @@ export default {
             const typeKey = type ? getKeyByValue(attrTypes, type) : null;
             let data = {
                 code,
-                scope,
+                scope: attributeScope,
                 type: typeKey,
                 groups,
             };
@@ -78,7 +79,10 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     getAttributesByFilter({
@@ -243,6 +247,7 @@ export default {
             rootState,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -252,7 +257,7 @@ export default {
                 id,
                 type,
                 groups,
-                scope,
+                scope: attributeScope,
             } = state;
             const {
                 attrTypes,
@@ -265,7 +270,7 @@ export default {
             const typeKey = getKeyByValue(attrTypes, type);
             let data = {
                 groups,
-                scope,
+                scope: attributeScope,
                 label,
                 hint,
             };
@@ -304,7 +309,10 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async removeAttribute({

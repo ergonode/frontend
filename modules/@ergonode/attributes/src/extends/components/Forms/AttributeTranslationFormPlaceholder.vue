@@ -9,7 +9,7 @@
         label="Placeholder"
         resize="none"
         height="150px"
-        :error-messages="errorMessages[placeholderFieldKey]"
+        :error-messages="errors[placeholderFieldKey]"
         :disabled="!isUserAllowedToUpdate"
         @input="(value) => setTranslationPropertyValue(value, 'placeholder')" />
 </template>
@@ -28,7 +28,7 @@ export default {
         translationCardMixin,
     ],
     props: {
-        errorMessages: {
+        errors: {
             type: Object,
             default: () => ({}),
         },
@@ -40,13 +40,8 @@ export default {
             ]);
         },
         placeholderFieldKey() {
-            return `placeholder_${this.languageCode}`;
+            return 'placeholder';
         },
-    },
-    created() {
-        this.$emit('fieldKeys', [
-            this.placeholderFieldKey,
-        ]);
     },
     methods: {
         dataCyGenerator(key) {

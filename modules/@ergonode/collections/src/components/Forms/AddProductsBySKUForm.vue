@@ -4,14 +4,14 @@
  */
 <template>
     <Form
-        :fields-keys="[skusFieldKey]"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <TextArea
                     :value="productSkus"
@@ -19,7 +19,7 @@
                     hint="Separate multiple SKU’s by using enter or comma, e.g. “SKU1, SKU2, SKU3”"
                     resize="none"
                     height="150px"
-                    :error-messages="errorMessages[skusFieldKey]"
+                    :error-messages="errors[skusFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     @input="onSKUChange" />
             </FormSection>
@@ -45,6 +45,10 @@ export default {
         formActionsMixin,
     ],
     props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         productSkus: {
             type: String,
             default: '',

@@ -5,23 +5,20 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[
-            codeFieldKey,
-            colorFieldKey,
-        ]"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <TextField
                     :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
                     required
-                    :error-messages="errorMessages[codeFieldKey]"
+                    :error-messages="errors[codeFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     label="System name"
                     hint="System name must be unique"
@@ -39,7 +36,7 @@
                     :data-cy="dataCyGenerator(colorFieldKey)"
                     :value="color"
                     required
-                    :error-messages="errorMessages[colorFieldKey]"
+                    :error-messages="errors[colorFieldKey]"
                     clearable
                     :dismissible="false"
                     :options="colorOptions"
@@ -83,6 +80,12 @@ export default {
     mixins: [
         formActionsMixin,
     ],
+    props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     computed: {
         ...mapState('productStatus', {
             id: state => state.id,

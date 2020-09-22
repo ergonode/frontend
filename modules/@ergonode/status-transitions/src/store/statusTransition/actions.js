@@ -13,7 +13,7 @@ import {
 } from '@Transitions/services/index';
 
 export default {
-    async getTransition(
+    async getStatusTransition(
         {
             commit,
             dispatch,
@@ -74,11 +74,12 @@ export default {
             });
         }
     },
-    async updateTransition(
+    async updateStatusTransition(
         {
             state,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -106,14 +107,18 @@ export default {
             });
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
-    async createTransition(
+    async createStatusTransition(
         {
             state,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -140,10 +145,13 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
-    async removeTransition({
+    async removeStatusTransition({
         state,
     }, {
         onSuccess,

@@ -5,10 +5,12 @@
 <template>
     <AttributeOptionKeyValues
         key="attrHasOptions"
+        :errors="errors"
         :disabled="!isAllowedToUpdate" />
 </template>
 
 <script>
+import AttributeOptionKeyValues from '@Attributes/components/Forms/Sections/AttributeOptionKeyValues';
 import PRIVILEGES from '@Attributes/config/privileges';
 import {
     mapActions,
@@ -18,10 +20,10 @@ import {
 export default {
     name: 'AttributeFormOptions',
     components: {
-        AttributeOptionKeyValues: () => import('@Attributes/components/Forms/Sections/AttributeOptionKeyValues'),
+        AttributeOptionKeyValues,
     },
     props: {
-        errorMessages: {
+        errors: {
             type: Object,
             default: () => ({}),
         },
@@ -49,11 +51,6 @@ export default {
                 this.removeAttributeOptions();
             },
         },
-    },
-    created() {
-        this.$emit('fieldKeys', [
-            ...this.optionsFieldKeys,
-        ]);
     },
     methods: {
         ...mapActions('attribute', [

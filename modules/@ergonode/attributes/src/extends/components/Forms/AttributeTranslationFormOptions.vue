@@ -5,6 +5,7 @@
 <template>
     <AttributeOptionValues
         :language-code="languageCode"
+        :errors="errors"
         :disabled="!isUserAllowedToUpdate" />
 </template>
 
@@ -21,6 +22,12 @@ export default {
     mixins: [
         translationCardMixin,
     ],
+    props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     computed: {
         isUserAllowedToUpdate() {
             return this.$hasAccess([

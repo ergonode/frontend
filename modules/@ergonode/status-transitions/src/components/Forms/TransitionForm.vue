@@ -5,18 +5,14 @@
 <template>
     <Form
         title="Status change"
-        :fields-keys="[
-            roleFieldKey,
-            destinationFieldKey,
-            sourceFieldKey
-        ]"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <TranslationSelect
                     :value="source"
@@ -25,7 +21,7 @@
                     :clearable="true"
                     :options="sourceOptions"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :error-messages="errorMessages[sourceFieldKey]"
+                    :error-messages="errors[sourceFieldKey]"
                     @input="setSourceValue" />
                 <TranslationSelect
                     :value="destination"
@@ -34,7 +30,7 @@
                     :clearable="true"
                     :options="destinationOptions"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :error-messages="errorMessages[destinationFieldKey]"
+                    :error-messages="errors[destinationFieldKey]"
                     @input="setDestinationValue" />
             </FormSection>
             <Divider />
@@ -45,7 +41,7 @@
                     :multiselect="true"
                     label="Role"
                     :disabled="!isAllowedToUpdate"
-                    :error-messages="errorMessages[roleFieldKey]"
+                    :error-messages="errors[roleFieldKey]"
                     :fetch-options-request="getRoleOptions"
                     @input="setRolesValue" />
             </FormSection>
@@ -81,6 +77,12 @@ export default {
     mixins: [
         formActionsMixin,
     ],
+    props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     computed: {
         ...mapState('statusTransition', {
             source: state => state.source,

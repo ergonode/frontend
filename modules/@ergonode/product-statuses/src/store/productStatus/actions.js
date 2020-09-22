@@ -41,7 +41,8 @@ export default {
         });
     },
     async getProductStatus({
-        commit, dispatch,
+        commit,
+        dispatch,
     }, {
         id,
     }) {
@@ -101,6 +102,7 @@ export default {
         state,
         rootState,
     }, {
+        scope,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -140,7 +142,10 @@ export default {
 
             onSuccess();
         } catch (e) {
-            onError(e);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async createProductStatus(
@@ -148,6 +153,7 @@ export default {
             state,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -172,7 +178,10 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async removeProductStatus({

@@ -21,7 +21,6 @@
 import UploadFiles from '@Media/components/Inputs/UploadFile/UploadFiles';
 import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -82,21 +81,13 @@ export default {
         },
     },
     methods: {
-        ...mapActions('product', [
-            'setDraftValue',
-        ]),
         onValueChange(value) {
-            this.setDraftValue({
-                languageCode: this.languageCode,
-                key: this.properties.attribute_code,
-                value,
-            });
-
             this.$emit('input', {
                 fieldKey: this.fieldKey,
                 languageCode: this.languageCode,
                 productId: this.$route.params.id,
                 elementId: this.properties.attribute_id,
+                code: this.properties.attribute_code,
                 value,
             });
         },

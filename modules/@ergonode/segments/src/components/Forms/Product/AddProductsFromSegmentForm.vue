@@ -4,21 +4,21 @@
  */
 <template>
     <Form
-        :fields-keys="[segmentsFieldKey]"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <TranslationSelect
                     :value="segments"
                     :multiselect="true"
                     label="From segmentation rules"
                     :disabled="!isUserAllowedToUpdate"
-                    :error-messages="errorMessages[segmentsFieldKey]"
+                    :error-messages="errors[segmentsFieldKey]"
                     :options="segmentOptions"
                     @input="onSegmentChange" />
             </FormSection>
@@ -44,6 +44,10 @@ export default {
         formActionsMixin,
     ],
     props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         segments: {
             type: Array,
             default: () => [],

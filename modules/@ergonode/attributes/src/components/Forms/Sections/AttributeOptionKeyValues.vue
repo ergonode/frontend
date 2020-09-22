@@ -15,23 +15,19 @@
                 :field-key="fieldKey"
                 :disabled="disabled"
                 @remove="removeAttribute">
-                <FormValidatorField :field-key="`option_${fieldKey}`">
-                    <template #validator="{ errorMessages }">
-                        <TextField
-                            :data-cy="dataCyGenerator(i)"
-                            :value="options[fieldKey].key"
-                            required
-                            :size="smallSize"
-                            :disabled="disabled"
-                            label="Option code"
-                            :error-messages="errorMessages"
-                            @input="value => updateAttributeOptionKey({
-                                index: fieldKey,
-                                id: options[fieldKey].id,
-                                key: value,
-                            })" />
-                    </template>
-                </FormValidatorField>
+                <TextField
+                    :data-cy="dataCyGenerator(i)"
+                    :value="options[fieldKey].key"
+                    required
+                    :size="smallSize"
+                    :disabled="disabled"
+                    label="Option code"
+                    :error-messages="errorMessages[`option_${fieldKey}`]"
+                    @input="value => updateAttributeOptionKey({
+                        index: fieldKey,
+                        id: options[fieldKey].id,
+                        key: value,
+                    })" />
             </FormListElementField>
         </FormListSubsection>
     </FormListSection>
@@ -39,9 +35,9 @@
 
 <script>
 import FormListElementField from '@Core/components/Form/Field/FormListElementField';
-import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import FormListSection from '@Core/components/Form/Section/FormListSection';
 import FormListSubsection from '@Core/components/Form/Subsection/FormListSubsection';
+import TextField from '@Core/components/Inputs/TextField';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -56,16 +52,19 @@ import {
 export default {
     name: 'AttributeOptionKeyValues',
     components: {
-        FormValidatorField,
         FormListElementField,
         FormListSection,
         FormListSubsection,
-        TextField: () => import('@Core/components/Inputs/TextField'),
+        TextField,
     },
     props: {
         disabled: {
             type: Boolean,
             required: true,
+        },
+        errorMessages: {
+            type: Object,
+            default: () => ({}),
         },
     },
     computed: {

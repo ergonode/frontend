@@ -5,17 +5,14 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[
-            skuFieldKey,
-            templateIdFieldKey
-        ]"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
+        :errors="errors"
         @proceed="onProceed"
         @submit="onSubmit">
-        <template #body="{ errorMessages }">
+        <template #body>
             <FormSection>
                 <Select
                     :value="type"
@@ -32,14 +29,14 @@
                     hint="Products SKU must be unique"
                     label="SKU"
                     required
-                    :error-messages="errorMessages[skuFieldKey]"
+                    :error-messages="errors[skuFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setSkuValue" />
                 <TranslationLazySelect
                     :value="template"
                     :required="true"
                     label="Product template"
-                    :error-messages="errorMessages[templateIdFieldKey]"
+                    :error-messages="errors[templateIdFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :fetch-options-request="getTemplateOptions"
                     @input="setTemplateValue" />
@@ -87,6 +84,12 @@ export default {
     mixins: [
         formActionsMixin,
     ],
+    props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     computed: {
         ...mapState('dictionaries', {
             productTypes: state => state.productTypes,

@@ -102,6 +102,7 @@ export default {
             rootGetters,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -172,14 +173,17 @@ export default {
             });
 
             if (rootState.authentication.user.id === id) {
-                dispatch('authentication/getUser', {
+                await dispatch('authentication/getUser', {}, {
                     root: true,
                 });
             }
 
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async createUser(
@@ -188,6 +192,7 @@ export default {
             rootGetters,
         },
         {
+            scope,
             onSuccess = () => {},
             onError = () => {},
         },
@@ -224,7 +229,10 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
     async removeUser(
