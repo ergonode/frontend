@@ -82,6 +82,10 @@ export default {
             type: Number,
             required: true,
         },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         disabled: {
             type: Boolean,
             default: false,

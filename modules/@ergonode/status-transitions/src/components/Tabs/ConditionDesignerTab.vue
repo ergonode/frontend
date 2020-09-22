@@ -19,7 +19,9 @@
             </VerticalTabBar>
         </template>
         <template #grid>
-            <ConditionSetWrapper :disabled="!isAllowedToUpdate" />
+            <ConditionSetWrapper
+                :errors="errors"
+                :disabled="!isAllowedToUpdate" />
             <Button
                 title="SAVE CHANGES"
                 :floating="{ bottom: '24px', right: '24px' }"
@@ -69,6 +71,16 @@ export default {
         FadeTransition,
         VerticalTabBar,
         ConditionSetWrapper,
+    },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     async fetch({
         store,

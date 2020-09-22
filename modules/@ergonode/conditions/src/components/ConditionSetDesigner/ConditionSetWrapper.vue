@@ -19,6 +19,7 @@
                 :condition="getCondition(item.id)"
                 :item-id="item.id"
                 :item-row="item.row"
+                :errors="errors.conditions"
                 :disabled="disabled"
                 @remove="removeCondition" />
         </template>
@@ -47,6 +48,10 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
         },
     },
     computed: {
