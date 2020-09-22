@@ -104,8 +104,8 @@ export default {
 
             this.isLoading = false;
         },
-        imageLoadOnError() {
-            if (this.$refs.img) {
+        imageLoadOnError(error) {
+            if (this.$refs.img && !this.$axios.isCancel(error)) {
                 this.$refs.img.src = require('@Core/assets/images/placeholders/image_error.svg'); // eslint-disable-line global-require, import/no-dynamic-require
             }
 

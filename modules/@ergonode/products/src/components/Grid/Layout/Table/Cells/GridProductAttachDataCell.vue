@@ -96,7 +96,7 @@ export default {
                 }).then(() => {
                     this.$addAlert({
                         type: ALERT_TYPE.SUCCESS,
-                        message: 'Products has been added',
+                        message: 'Products have been added',
                     });
                     this.localValue = true;
                 }).catch((e) => {
@@ -112,7 +112,7 @@ export default {
                 }).then(() => {
                     this.$addAlert({
                         type: ALERT_TYPE.SUCCESS,
-                        message: 'Products has been removed',
+                        message: 'Products have been removed',
                     });
                     this.localValue = false;
                 }).catch((e) => {

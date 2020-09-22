@@ -26,8 +26,14 @@ export const getDetails = ({
 
 export const create = ({
     $axios,
+    data,
+}) => $axios.$post('channels', data);
+
+export const createExport = ({
+    $axios,
     id,
-}) => $axios.$post(`channels/${id}/exports`);
+    data,
+}) => $axios.$post(`channels/${id}/exports`, data);
 
 export const update = ({
     $axios,
