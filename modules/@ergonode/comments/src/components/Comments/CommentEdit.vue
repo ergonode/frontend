@@ -10,25 +10,26 @@
                 v-text="isEdit ? 'Edit comment' : 'Add new comment'" />
         </template>
         <template #body>
-            <FormValidatorField field-key="content">
-                <template #validator="{ errorMessage }">
-                    <TextArea
-                        :value="content"
-                        label="Comment"
-                        resize="none"
-                        :required="true"
-                        height="128px"
-                        :error-messages="errorMessage"
-                        @input="setCommentValue" />
-                </template>
-            </FormValidatorField>
+            <TextArea
+                :value="content"
+                label="Comment"
+                resize="none"
+                :required="true"
+                height="128px"
+                :error-messages="errors.content"
+                @input="setCommentValue" />
         </template>
         <template #footer>
             <Button
                 :size="smallSize"
                 :title="`${isEdit ? 'SAVE' : 'ADD'} COMMENT`"
-                :disabled="$isLoading('commentButton')"
-                @click.native="saveComment" />
+                @click.native="saveComment">
+                <template
+                    v-if="isSubmitting"
+                    #append="{ color }">
+                    <IconSpinner :fill-color="color" />
+                </template>
+            </Button>
             <Button
                 :theme="secondaryTheme"
                 :size="smallSize"
@@ -40,7 +41,7 @@
 <script>
 import Comment from '@Comments/components/Comments/Comment';
 import Button from '@Core/components/Button/Button';
-import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import TextArea from '@Core/components/Inputs/TextArea';
 import {
     ALERT_TYPE,
@@ -59,9 +60,17 @@ export default {
         Comment,
         Button,
         TextArea,
-        FormValidatorField,
+        IconSpinner,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         commentValue: {
             type: String,
             default: '',
@@ -78,6 +87,7 @@ export default {
     data() {
         return {
             content: this.commentValue,
+            isSubmitting: false,
         };
     },
     computed: {
@@ -93,33 +103,48 @@ export default {
             'createComment',
             'updateComment',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         saveComment() {
+            if (this.isSubmitting) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeScopeErrors(this.scope);
+
             if (this.isEdit && this.commentId) {
                 this.updateComment({
                     id: this.commentId,
+                    scope: this.scope,
                     content: this.content,
-                    onSuccess: this.onSuccess,
-                    onError: this.onError,
+                    onSuccess: this.onUpdateSuccess,
+                    onError: this.onUpdateError,
                 });
             } else {
                 this.createComment({
+                    scope: this.scope,
                     content: this.content,
-                    onSuccess: this.onSuccess,
-                    onError: this.onError,
+                    onSuccess: this.onUpdateSuccess,
+                    onError: this.onUpdateError,
                 });
             }
         },
-        onSuccess() {
-            this.removeErrors();
+        onUpdateSuccess() {
+            this.isSubmitting = false;
+
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: `Comment ${this.isEdit ? 'edited' : 'created'}`,
             });
             this.$emit('close');
+        },
+        onUpdateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
         },
         closeComment() {
             this.$emit('close');

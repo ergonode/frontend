@@ -8,6 +8,7 @@
             <SchedulerForm
                 submit-title="SAVE CHANGES"
                 :is-submitting="isSubmitting"
+                :errors="errors"
                 @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
@@ -29,6 +30,16 @@ export default {
         CenterViewTemplate,
         SchedulerForm,
     },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     async fetch() {
         await this.getSchedulerConfiguration();
     },
@@ -42,9 +53,9 @@ export default {
             'updateScheduler',
             'getSchedulerConfiguration',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -52,8 +63,9 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeErrors();
+            this.removeScopeErrors(this.scope);
             this.updateScheduler({
+                scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });
@@ -61,7 +73,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Channel scheduler updated',
+                message: 'Channel scheduler has been updated',
             });
 
             this.isSubmitting = false;

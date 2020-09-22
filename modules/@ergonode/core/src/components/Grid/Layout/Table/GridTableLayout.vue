@@ -280,7 +280,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('validations', {
+        ...mapState('feedback', {
             errors: state => state.errors,
         }),
         ...mapState('list', {

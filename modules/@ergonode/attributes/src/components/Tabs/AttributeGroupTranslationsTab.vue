@@ -66,7 +66,7 @@ export default {
         ...mapActions('attributeGroup', [
             'updateAttributeGroup',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),
@@ -86,7 +86,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Attribute group translations updated',
+                message: 'Attribute group translations have been updated',
             });
 
             this.isSubmitting = false;

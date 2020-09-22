@@ -5,7 +5,9 @@
 <template>
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
-            <ProductCommentsForm />
+            <ProductCommentsForm
+                :scope="scope"
+                :errors="errors" />
         </template>
     </CenterViewTemplate>
 </template>
@@ -22,6 +24,16 @@ export default {
     components: {
         ProductCommentsForm,
         CenterViewTemplate,
+    },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     async fetch({
         store,

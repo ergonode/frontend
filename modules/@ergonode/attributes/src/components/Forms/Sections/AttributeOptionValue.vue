@@ -3,21 +3,18 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormValidatorField :field-key="fieldKey">
-        <template #validator="{ errorMessages }">
-            <TextField
-                :value="translationOptionValue"
-                :label="option.key"
-                :size="smallSize"
-                :disabled="disabled"
-                :error-messages="errorMessages"
-                @input="onOptionValueChange" />
-        </template>
-    </FormValidatorField>
+    <!--    TODO: ERROR MESSAGES     -->
+    <TextField
+        :value="translationOptionValue"
+        :label="option.key"
+        :size="smallSize"
+        :disabled="disabled"
+        :error-messages="''"
+        @input="onOptionValueChange" />
 </template>
 
 <script>
-import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import TextField from '@Core/components/Inputs/TextField';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -28,8 +25,7 @@ import {
 export default {
     name: 'AttributeOptionValue',
     components: {
-        FormValidatorField,
-        TextField: () => import('@Core/components/Inputs/TextField'),
+        TextField,
     },
     props: {
         index: {

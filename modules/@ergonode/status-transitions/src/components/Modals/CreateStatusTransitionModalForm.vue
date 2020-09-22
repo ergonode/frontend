@@ -49,7 +49,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('validations', {
+        ...mapState('feedback', {
             errors: state => state.errors,
         }),
         ...mapState('statusTransition', {
@@ -80,7 +80,7 @@ export default {
         ...mapActions('productStatus', [
             'getProductStatuses',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),

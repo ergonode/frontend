@@ -43,19 +43,19 @@ export default {
     },
     beforeDestroy() {
         this.__clearStorage();
-        this.clearTranslationsStorage();
-        this.removeErrors();
+        this.__clearTranslationsStorage();
+        this.__clearFeedbackStorage();
     },
     methods: {
         ...mapActions('category', [
             'removeCategory',
             '__clearStorage',
         ]),
-        ...mapActions('validations', [
-            'removeErrors',
-        ]),
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
         ...mapActions('tab', {
-            clearTranslationsStorage: '__clearStorage',
+            __clearTranslationsStorage: '__clearStorage',
         }),
         onRemove() {
             this.$openModal({

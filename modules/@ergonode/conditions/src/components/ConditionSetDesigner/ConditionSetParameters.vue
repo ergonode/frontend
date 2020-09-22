@@ -3,27 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormValidatorField :field-key="paramFieldKeys">
-        <template #validator="{ errorMessages }">
-            <Component
-                :is="getComponentViaType"
-                :required="true"
-                :clearable="true"
-                :size="smallSize"
-                :label="parameter.name"
-                :options="conditionOptions"
-                :value="conditionValue"
-                :multiselect="isConditionTypeMultiSelect"
-                :error-messages="errorMessages"
-                @input="setConditionValueByType" />
-        </template>
-    </FormValidatorField>
+    <Component
+        :is="getComponentViaType"
+        :required="true"
+        :clearable="true"
+        :size="smallSize"
+        :label="parameter.name"
+        :options="conditionOptions"
+        :value="conditionValue"
+        :multiselect="isConditionTypeMultiSelect"
+        :error-messages="errorMessages"
+        @input="setConditionValueByType" />
 </template>
 <script>
 import {
     TYPES,
 } from '@Conditions/defaults/conditionsDesigner';
-import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -34,9 +29,6 @@ import {
 
 export default {
     name: 'ConditionSetParameters',
-    components: {
-        FormValidatorField,
-    },
     props: {
         parameter: {
             type: Object,
@@ -49,6 +41,10 @@ export default {
         itemRow: {
             type: Number,
             required: true,
+        },
+        errorMessages: {
+            type: String,
+            default: '',
         },
     },
     data() {
@@ -112,12 +108,6 @@ export default {
                     value: this.parameter.options[key],
                 }))
                 : [];
-        },
-        paramFieldKeys() {
-            return [
-                `conditions_element-${this.itemRow}`,
-                this.parameter.name,
-            ];
         },
     },
     watch: {

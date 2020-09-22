@@ -66,9 +66,9 @@ export default {
         },
     },
     methods: {
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         ...mapActions('product', [
             'removeProductDraft',
@@ -98,7 +98,7 @@ export default {
                 ).properties.attribute_id,
             }).then(() => {
                 this.isRequestPending = false;
-                this.removeErrors();
+                this.removeScopeErrors();
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
                     message: `${this.restoredElement} value restored`,
@@ -107,7 +107,9 @@ export default {
                 this.$emit('close');
             }).catch((e) => {
                 this.isRequestPending = false;
-                this.onError(e.data);
+                this.onError({
+                    errors: e.data.errors,
+                });
             });
         },
     },

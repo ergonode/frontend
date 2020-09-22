@@ -12,19 +12,31 @@
             v-if="hasError"
             view-box="6 -6 12 36"
             :fill-color="redColor" />
+        <IconSync
+            v-else-if="hasValueToSave"
+            :fill-color="graphiteDarkColor" />
+        <IconMark
+            v-else-if="changeValues.saved"
+            :fill-color="greenColor" />
     </div>
 </template>
 
 <script>
 import {
+    GRAPHITE_DARK,
+    GREEN,
     RED,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import IconError from '@Core/components/Icons/Feedback/IconError';
+import IconMark from '@Core/components/Icons/Feedback/IconMark';
+import IconSync from '@Core/components/Icons/Feedback/IconSync';
 
 export default {
     name: 'HorizontalRoutingTabBarItem',
     components: {
         IconError,
+        IconSync,
+        IconMark,
     },
     props: {
         index: {
@@ -34,6 +46,10 @@ export default {
         item: {
             type: Object,
             required: true,
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
         },
         errors: {
             type: Object,
@@ -51,6 +67,15 @@ export default {
         },
         redColor() {
             return RED;
+        },
+        greenColor() {
+            return GREEN;
+        },
+        graphiteDarkColor() {
+            return GRAPHITE_DARK;
+        },
+        hasValueToSave() {
+            return Object.keys(this.changeValues).length > 0 && !this.changeValues.saved;
         },
         hasError() {
             return Object.keys(this.errors).length > 0;

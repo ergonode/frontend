@@ -37,8 +37,9 @@ export default {
         },
     },
     computed: {
-        ...mapState('validations', [
+        ...mapState('feedback', [
             'errors',
+            'changedValues',
         ]),
         tabs() {
             return getNestedTabRoutes({

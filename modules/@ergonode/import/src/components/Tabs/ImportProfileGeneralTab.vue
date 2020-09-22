@@ -49,7 +49,7 @@ export default {
         ...mapActions('import', [
             'updateImportProfile',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),
@@ -69,7 +69,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Import profile updated',
+                message: 'Import profile has been updated',
             });
 
             this.isSubmitting = false;

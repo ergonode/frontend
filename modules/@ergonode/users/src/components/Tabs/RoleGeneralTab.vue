@@ -49,7 +49,7 @@ export default {
         ...mapActions('role', [
             'updateRole',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),
@@ -69,7 +69,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Role updated',
+                message: 'Role has been updated',
             });
 
             this.isSubmitting = false;

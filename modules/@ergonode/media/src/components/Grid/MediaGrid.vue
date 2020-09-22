@@ -300,7 +300,7 @@ export default {
 
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
-                    message: 'Media have been updated',
+                    message: 'Resources have been updated',
                 });
             } else {
                 this.$addAlert({

@@ -29,10 +29,9 @@ export default {
         });
     },
     async requestForNotifications({
-        commit, state,
+        commit,
+        state,
     }) {
-        this.$setLoader('moreNotifications');
-
         const params = {
             limit: state.limit,
             offset: 0,
@@ -51,8 +50,6 @@ export default {
             key: 'notifications',
             value: collection,
         });
-
-        this.$removeLoader('moreNotifications');
     },
     async markNotificationAsRead({
         dispatch,

@@ -52,7 +52,7 @@ export default {
         ...mapActions('dictionaries', [
             'getDictionary',
         ]),
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),
@@ -76,7 +76,7 @@ export default {
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Unit updated',
+                message: 'Unit have been updated',
             });
 
             this.isSubmitting = false;

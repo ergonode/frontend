@@ -50,7 +50,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('validations', {
+        ...mapState('feedback', {
             errors: state => state.errors,
         }),
         secondaryTheme() {
@@ -64,7 +64,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
         ]),

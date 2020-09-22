@@ -139,7 +139,7 @@ export default {
         };
     },
     computed: {
-        ...mapState('validations', {
+        ...mapState('feedback', {
             uploadError: state => state.errors.upload,
         }),
         secondaryTheme() {

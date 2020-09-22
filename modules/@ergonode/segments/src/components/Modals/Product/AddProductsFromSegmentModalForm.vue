@@ -55,9 +55,9 @@ export default {
         this.segmentOptions = await this.getSegmentOptions();
     },
     methods: {
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
         ]),
         ...mapActions('segment', [
             'getSegmentOptions',
@@ -77,7 +77,7 @@ export default {
             }
             this.isAdding = true;
 
-            this.removeErrors();
+            this.removeScopeErrors();
             this.addBySegment({
                 segments: this.segments,
                 onSuccess: this.onAddSuccess,
