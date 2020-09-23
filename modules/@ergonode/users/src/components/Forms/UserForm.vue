@@ -106,6 +106,14 @@ export default {
         formActionsMixin,
     ],
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
         errors: {
             type: Object,
             default: () => ({}),
@@ -179,6 +187,12 @@ export default {
         roleIdFieldKey() {
             return 'roleId';
         },
+        roleFieldKey() {
+            return 'role';
+        },
+        isActiveFieldKey() {
+            return 'isActive';
+        },
     },
     methods: {
         ...mapActions('user', [
@@ -187,51 +201,102 @@ export default {
         ...mapActions('role', [
             'getRoleOptions',
         ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         setEmailValue(value) {
             this.__setState({
-                key: 'email',
+                key: this.emailFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.emailFieldKey,
                 value,
             });
         },
         setFirstNameValue(value) {
             this.__setState({
-                key: 'firstName',
+                key: this.firstNameFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.firstNameFieldKey,
                 value,
             });
         },
         setLastNameValue(value) {
             this.__setState({
-                key: 'lastName',
+                key: this.lastNameFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.lastNameFieldKey,
                 value,
             });
         },
         setPasswordValue(value) {
             this.__setState({
-                key: 'password',
+                key: this.passwordFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.passwordFieldKey,
                 value,
             });
         },
         setPasswordRepeatValue(value) {
             this.__setState({
-                key: 'passwordRepeat',
+                key: this.passwordRepeatFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.passwordRepeatFieldKey,
                 value,
             });
         },
         setLanguageValue(value) {
             this.__setState({
-                key: 'language',
+                key: this.languageFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.languageFieldKey,
                 value,
             });
         },
         setRoleValue(value) {
             this.__setState({
-                key: 'role',
+                key: this.roleFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.roleFieldKey,
                 value,
             });
         },
         setStatusValue(value) {
             this.__setState({
-                key: 'isActive',
+                key: this.isActiveFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.isActiveFieldKey,
                 value,
             });
         },

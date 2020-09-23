@@ -42,6 +42,7 @@ export default {
             [scope]: {
                 ...state.changeValues[scope],
                 [fieldKey]: value,
+                saved: false,
             },
         };
     },

@@ -101,26 +101,26 @@ export default {
             this.$emit('proceed');
         },
         setNameValue(value) {
+            this.__setState({
+                key: this.nameFieldKey,
+                value,
+            });
+
             this.onScopeValueChange({
                 scope: this.scope,
                 fieldKey: this.nameFieldKey,
                 value,
             });
-
-            this.__setState({
-                key: this.nameFieldKey,
-                value,
-            });
         },
         setSymbolValue(value) {
+            this.__setState({
+                key: this.symbolFieldKey,
+                value,
+            });
+
             this.onScopeValueChange({
                 scope: this.scope,
                 fieldKey: this.symbolFieldKey,
-                value,
-            });
-
-            this.__setState({
-                key: this.symbolFieldKey,
                 value,
             });
         },

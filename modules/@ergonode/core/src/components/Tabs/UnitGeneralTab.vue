@@ -61,6 +61,7 @@ export default {
         ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
+            'markChangeValuesAsSaved',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -86,6 +87,8 @@ export default {
             });
 
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onUpdateError(errors) {
             this.onError(errors);

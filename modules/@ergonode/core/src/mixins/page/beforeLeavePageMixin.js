@@ -13,7 +13,7 @@ import {
 export default {
     beforeRouteLeave(to, from, next) {
         const hasError = Object.keys(this.errors).length > 0;
-        const hasChange = Object.keys(this.changeValues).length > 0;
+        const hasChange = Object.keys(this.changeValues).some(key => !this.changeValues[key].saved);
 
         if (hasError || hasChange) {
             this.$openModal({

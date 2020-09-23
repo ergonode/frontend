@@ -78,13 +78,13 @@ export default {
             return Object.keys(this.changeValues);
         },
         hasValueToSave() {
-            return this.changeValuesKeys.length > 0;
+            return this.changeValuesKeys.length > 0 && !this.changeValues.saved;
         },
         hasError() {
             return Object.keys(this.errors).length > 0;
         },
         hasSuccess() {
-            return this.changeValues.saved && this.changeValuesKeys.length === 1;
+            return this.changeValues.saved;
         },
     },
     methods: {

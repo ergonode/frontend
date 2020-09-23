@@ -58,6 +58,7 @@ export default {
         ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
+            'markChangeValuesAsSaved',
         ]),
         ...mapActions('grid', [
             'setDrafts',
@@ -84,6 +85,8 @@ export default {
             });
 
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onUpdateError(errors) {
             this.onError(errors);

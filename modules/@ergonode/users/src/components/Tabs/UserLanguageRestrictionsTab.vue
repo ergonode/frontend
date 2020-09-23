@@ -71,6 +71,10 @@ export default {
             type: String,
             default: '',
         },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
         errors: {
             type: Object,
             default: () => ({}),
@@ -114,6 +118,10 @@ export default {
         ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
+            'markChangeValuesAsSaved',
+        ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -141,6 +149,8 @@ export default {
             });
 
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onUpdateError(errors) {
             this.onError(errors);
@@ -170,6 +180,11 @@ export default {
             });
             this.__setState({
                 key: 'drafts',
+                value: this.drafts,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'rolePrivileges',
                 value: this.drafts,
             });
         },
