@@ -20,6 +20,8 @@
         </template>
         <template #grid>
             <ConditionSetWrapper
+                :scope="scope"
+                :change-values="changeValues"
                 :errors="errors"
                 :disabled="!isAllowedToUpdate" />
             <Button
@@ -76,6 +78,10 @@ export default {
         scope: {
             type: String,
             default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
         },
         errors: {
             type: Object,
@@ -147,6 +153,7 @@ export default {
         ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
+            'markChangeValuesAsSaved',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -186,6 +193,8 @@ export default {
             });
 
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onUpdateError(errors) {
             this.onError(errors);

@@ -20,6 +20,8 @@
         </template>
         <template #grid>
             <ConditionSetWrapper
+                :scope="scope"
+                :change-values="changeValues"
                 :errors="errors"
                 :disabled="!isAllowedToUpdate" />
             <Button
@@ -76,6 +78,10 @@ export default {
         scope: {
             type: String,
             default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
         },
         errors: {
             type: Object,

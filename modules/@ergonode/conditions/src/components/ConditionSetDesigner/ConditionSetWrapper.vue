@@ -17,12 +17,15 @@
             #gridItem="{
                 item,
                 index,
-                gridItemStyles,}">
+                gridItemStyles,
+            }">
             <ConditionSetItem
                 :style="gridItemStyles"
                 :condition="getCondition(item.id)"
                 :item-id="item.id"
                 :item-row="item.row"
+                :scope="scope"
+                :change-values="changeValues"
                 :errors="conditionErrors[`element-${index}`]"
                 :disabled="disabled"
                 @remove="removeCondition" />
@@ -31,6 +34,7 @@
 </template>
 
 <script>
+import ConditionSetItem from '@Conditions/components/ConditionSetDesigner/ConditionSetItem';
 import {
     COLUMNS,
     CONTEXT_NAME,
@@ -45,13 +49,21 @@ import {
 export default {
     name: 'ConditionSetWrapper',
     components: {
+        ConditionSetItem,
         TemplateGridWrapper,
-        ConditionSetItem: () => import('@Conditions/components/ConditionSetDesigner/ConditionSetItem'),
     },
     props: {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
         },
         errors: {
             type: Object,
