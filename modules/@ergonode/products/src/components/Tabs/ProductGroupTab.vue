@@ -10,10 +10,13 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :drafts="drafts"
                 :collection-cell-binding="collectionCellBinding"
                 :is-collection-layout="true"
                 :is-header-visible="true"
                 :is-border="true"
+                @editRow="onEditRow"
+                @cellValue="onCellValueChange"
                 @fetchData="onFetchData">
                 <template #actions>
                     <ActionButton
@@ -29,6 +32,18 @@
                         </template>
                     </ActionButton>
                 </template>
+                <template #appendFooter>
+                    <Button
+                        title="SAVE CHANGES"
+                        :disabled="!isUserAllowedToUpdate"
+                        @click.native="onSubmit">
+                        <template
+                            v-if="isSubmitting"
+                            #prepend="{ color }">
+                            <IconSpinner :fill-color="color" />
+                        </template>
+                    </Button>
+                </template>
             </Grid>
             <Component
                 v-if="selectedAppModalOption"
@@ -41,8 +56,14 @@
 
 <script>
 import ActionButton from '@Core/components/ActionButton/ActionButton';
+import Button from '@Core/components/Button/Button';
+import Grid from '@Core/components/Grid/Grid';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     DATA_LIMIT,
     DEFAULT_GRID_FETCH_PARAMS,
@@ -51,6 +72,7 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
@@ -71,7 +93,26 @@ export default {
         CenterViewTemplate,
         ActionButton,
         IconAdd,
-        Grid: () => import('@Core/components/Grid/Grid'),
+        Grid,
+        Button,
+        IconSpinner,
+    },
+    mixins: [
+        gridDraftMixin,
+    ],
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     async asyncData({
         app, store, params: {
@@ -123,7 +164,7 @@ export default {
                 {
                     language: languageCode,
                     id: 'esa_attached',
-                    type: 'PRODUCT_ATTACH',
+                    type: 'BOOL',
                     label: 'Attached',
                     visible: true,
                     editable: true,
@@ -137,6 +178,7 @@ export default {
     },
     data() {
         return {
+            isSubmitting: false,
             selectedAppModalOption: null,
             localParams: {
                 offset: 0,
@@ -144,6 +186,7 @@ export default {
                 filters: {},
                 sortedColumn: {},
             },
+            skus: {},
         };
     },
     computed: {
@@ -196,6 +239,12 @@ export default {
     methods: {
         ...mapActions('product', [
             'getProductChildren',
+            'addBySku',
+            'removeProductChildren',
+        ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+            'markChangeValuesAsSaved',
         ]),
         onSelectAddProductOption(option) {
             this.selectedAppModalOption = option;
@@ -206,6 +255,76 @@ export default {
         onCreatedData() {
             this.onFetchData(this.localParams);
             this.selectedAppModalOption = null;
+        },
+        onCellValueChange(cellValues) {
+            const drafts = {};
+
+            cellValues.forEach(({
+                rowId, columnId, value, row,
+            }) => {
+                drafts[`${rowId}/${columnId}`] = value;
+
+                this.skus[rowId] = {
+                    sku: this.rows[row].sku.value,
+                    value,
+                };
+            });
+
+            this.setDrafts({
+                ...this.drafts,
+                ...drafts,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'groupProducts',
+                value: drafts,
+            });
+        },
+        onEditRow(args) {
+            const lastIndex = args.length - 1;
+
+            this.$router.push({
+                name: 'product-id-general',
+                params: {
+                    id: args[lastIndex],
+                },
+            });
+        },
+        async onSubmit() {
+            this.isSubmitting = true;
+
+            const requests = [];
+
+            Object.keys(this.skus).forEach((key) => {
+                const {
+                    sku, value,
+                } = this.skus[key];
+
+                if (value) {
+                    requests.push(this.addBySku({
+                        skus: sku,
+                    }));
+                } else {
+                    requests.push(this.removeProductChildren({
+                        childrenId: key,
+                        skus: sku,
+                    }));
+                }
+            });
+
+            await Promise.all(requests);
+
+            this.setDrafts();
+
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Products attachment have been updated',
+            });
+
+            this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         async onFetchData({
             offset,
@@ -246,9 +365,7 @@ export default {
                 path: 'products',
                 params,
             });
-            const {
-                collection,
-            } = await this.getProductChildren(this.id);
+            const collection = await this.getProductChildren(this.id);
 
             const tmpRows = [
                 ...rows,
@@ -270,7 +387,7 @@ export default {
                 {
                     language: this.languageCode,
                     id: 'esa_attached',
-                    type: 'PRODUCT_ATTACH',
+                    type: 'BOOL',
                     label: 'Attached',
                     visible: true,
                     editable: true,

@@ -13,7 +13,7 @@
             <Form
                 submit-title="SAVE"
                 proceed-title="CANCEL"
-                @submit="onSave"
+                @submit="onSubmit"
                 @proceed="onClose">
                 <template #body>
                     <FormSection>
@@ -89,7 +89,7 @@ export default {
         onClose() {
             this.$emit('close');
         },
-        onSave() {
+        onSubmit() {
             if (this.title !== '' && this.title.length <= 255) {
                 if (this.position) {
                     this.addSectionElementToLayout({

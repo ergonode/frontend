@@ -23,6 +23,7 @@
 import {
     TYPES,
 } from '@Attributes/defaults/attributes';
+import Grid from '@Core/components/Grid/Grid';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     DATA_LIMIT,
@@ -44,7 +45,7 @@ export default {
     name: 'ProductVariantsTab',
     components: {
         CenterViewTemplate,
-        Grid: () => import('@Core/components/Grid/Grid'),
+        Grid,
     },
     async asyncData({
         app, store, params: {

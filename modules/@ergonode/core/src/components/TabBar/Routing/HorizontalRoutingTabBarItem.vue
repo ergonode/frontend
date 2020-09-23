@@ -43,6 +43,10 @@ export default {
             type: Number,
             required: true,
         },
+        selectedIndex: {
+            type: Number,
+            required: true,
+        },
         item: {
             type: Object,
             required: true,
@@ -89,11 +93,13 @@ export default {
     },
     methods: {
         onLinkSelect() {
-            this.$router.push({
-                name: this.item.route.name,
-            });
+            if (this.selectedIndex !== this.index) {
+                this.$router.push({
+                    name: this.item.route.name,
+                });
 
-            this.$emit('select', this.index);
+                this.$emit('select', this.index);
+            }
         },
     },
 };

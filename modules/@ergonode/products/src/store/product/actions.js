@@ -186,6 +186,7 @@ export default {
             });
             onSuccess();
         } catch (e) {
+            console.log(e);
             onError({
                 errors: e.data.errors,
             });

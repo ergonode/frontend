@@ -19,7 +19,3 @@ export const Tabs = {
 export const Icons = {
     Product: () => import('@Core/components/Icons/Menu/IconProduct'),
 };
-
-export const Components = {
-    GridProductAttachDataCell: () => import('@Products/components/Grid/Layout/Table/Cells/GridProductAttachDataCell'),
-};

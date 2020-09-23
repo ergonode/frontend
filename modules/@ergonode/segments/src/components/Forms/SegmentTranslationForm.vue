@@ -13,7 +13,7 @@
                         label="Condition set name"
                         :error-messages="translationErrors[nameKeyField]"
                         :disabled="!isUserAllowedToUpdate"
-                        @input="(value) => setTranslationPropertyValue(value, 'name')" />
+                        @input="(value) => setTranslationPropertyValue(value, nameKeyField)" />
                     <TextArea
                         :data-cy="dataCyGenerator(descriptionKeyField)"
                         :value="translations.description[languageCode]"
@@ -22,7 +22,10 @@
                         height="150px"
                         :error-messages="translationErrors[descriptionKeyField]"
                         :disabled="!isUserAllowedToUpdate"
-                        @input="(value) => setTranslationPropertyValue(value, 'description')" />
+                        @input="(value) => setTranslationPropertyValue(
+                            value,
+                            descriptionKeyField,
+                        )" />
                 </FormSection>
             </template>
         </Form>

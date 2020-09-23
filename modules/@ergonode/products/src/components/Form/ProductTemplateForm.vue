@@ -32,6 +32,7 @@ import {
 import PRIVILEGES from '@Products/config/privileges';
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
 import {
+    mapActions,
     mapGetters,
     mapState,
 } from 'vuex';
@@ -49,6 +50,14 @@ export default {
         elements: {
             type: Array,
             default: () => [],
+        },
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
         },
         errors: {
             type: Object,
@@ -93,6 +102,9 @@ export default {
         }) => () => import(`@Products/components/Form/Field/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`));
     },
     methods: {
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         isUserAllowedToUpdate(scope) {
             const {
                 code,
@@ -105,6 +117,12 @@ export default {
                 && (this.rootLanguage.code === code || scope === SCOPE.LOCAL);
         },
         onValueChange(payload) {
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: `${payload.languageCode}|${payload.fieldKey}`,
+                value: payload.value,
+            });
+
             this.$emit('input', payload);
         },
     },

@@ -190,6 +190,9 @@ export default {
         }) {
             return {
                 disabled: !this.isAllowedToUpdate,
+                changeValues: this.changeValues,
+                scope: this.scope,
+                errors: this.errors,
                 ...props,
             };
         },

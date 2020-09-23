@@ -27,6 +27,8 @@
                     <Component
                         :is="formComponent.component"
                         :type-key="typeKey"
+                        :scope="scope"
+                        :change-values="changeValues"
                         :errors="translationErrors"
                         :language-code="languageCode"
                         v-bind="formComponent.props" />

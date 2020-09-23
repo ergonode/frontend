@@ -12,8 +12,11 @@ import {
 
 export default {
     beforeRouteLeave(to, from, next) {
+        const changeValuesKeys = Object.keys(this.changeValues);
         const hasError = Object.keys(this.errors).length > 0;
-        const hasChange = Object.keys(this.changeValues).some(key => !this.changeValues[key].saved);
+        const hasChange = changeValuesKeys.length > 0
+            && changeValuesKeys.some(key => Object.keys(this.changeValues[key]).length > 0
+                && !this.changeValues[key].saved);
 
         if (hasError || hasChange) {
             this.$openModal({

@@ -2,6 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import Grid from '@Core/components/Grid/Grid';
 import {
     DATA_LIMIT,
     DEFAULT_GRID_FETCH_PARAMS,
@@ -24,7 +25,7 @@ export default function ({
 }) {
     return {
         components: {
-            Grid: () => import('@Core/components/Grid/Grid'),
+            Grid,
         },
         props: {
             isFetchingNeeded: {

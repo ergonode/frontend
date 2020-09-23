@@ -98,6 +98,10 @@ export default {
             type: String,
             default: '',
         },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
         errors: {
             type: Object,
             default: () => ({}),
@@ -168,6 +172,8 @@ export default {
         ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
+            'onScopeValueChange',
+            'markChangeValuesAsSaved',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -193,6 +199,8 @@ export default {
             this.setDrafts();
 
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onUpdateError(errors) {
             this.onError(errors);
@@ -211,6 +219,12 @@ export default {
             this.setDrafts({
                 ...this.drafts,
                 ...drafts,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'collectionProducts',
+                value: drafts,
             });
         },
         onSelectAddProductOption(option) {

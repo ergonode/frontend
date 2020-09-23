@@ -8,6 +8,8 @@
             <CategoryTranslationForm
                 v-for="languageCode in languageCodes"
                 :key="languageCode"
+                :scope="scope"
+                :change-values="changeValues"
                 :errors="errors"
                 :language-code="languageCode" />
         </template>
@@ -52,6 +54,10 @@ export default {
             type: String,
             default: '',
         },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
         errors: {
             type: Object,
             default: () => ({}),
@@ -69,6 +75,7 @@ export default {
         ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
+            'markChangeValuesAsSaved',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -90,6 +97,8 @@ export default {
             });
 
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onUpdateError(errors) {
             this.onError(errors);
