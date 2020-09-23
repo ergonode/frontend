@@ -84,6 +84,14 @@ export default {
         formActionsMixin,
     ],
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
         errors: {
             type: Object,
             default: () => ({}),
@@ -178,6 +186,9 @@ export default {
         ...mapActions('channel', [
             '__setState',
         ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         setIsActiveValue(value) {
             const tmpScheduler = {
                 ...this.schedulerConfiguration,
@@ -187,6 +198,12 @@ export default {
             this.__setState({
                 key: 'scheduler',
                 value: JSON.stringify(tmpScheduler),
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.activeFieldKey,
+                value,
             });
         },
         setDateChange(value) {
@@ -202,6 +219,12 @@ export default {
                     ...this.schedulerConfiguration,
                     start: date,
                 }),
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.startFieldKey,
+                value: date,
             });
         },
         setTimeChange(value) {
@@ -225,6 +248,12 @@ export default {
                     start: tmpDate,
                 }),
             });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'time',
+                value: tmpDate,
+            });
         },
         setRecurrencyChange(value) {
             const [
@@ -240,6 +269,12 @@ export default {
             this.__setState({
                 key: 'scheduler',
                 value: JSON.stringify(tmpScheduler),
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.hourFieldKey,
+                value,
             });
         },
     },

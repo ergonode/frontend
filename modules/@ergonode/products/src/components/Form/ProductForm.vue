@@ -85,6 +85,14 @@ export default {
         formActionsMixin,
     ],
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
         errors: {
             type: Object,
             default: () => ({}),
@@ -134,6 +142,9 @@ export default {
         ...mapActions('productTemplate', [
             'getTemplateOptions',
         ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         onSubmit() {
             this.$emit('submit');
         },
@@ -146,16 +157,31 @@ export default {
                 key: 'type',
                 value,
             });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'type',
+                value,
+            });
         },
         setSkuValue(value) {
             this.__setState({
-                key: 'sku',
+                key: this.skuFieldKey,
+                value,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.skuFieldKey,
                 value,
             });
         },
         setTemplateValue(value) {
             this.__setState({
                 key: 'template',
+                value,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'template',
                 value,
             });
         },

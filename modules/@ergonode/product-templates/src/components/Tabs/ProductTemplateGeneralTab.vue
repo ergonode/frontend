@@ -8,7 +8,9 @@
             <TemplateDesignerForm
                 submit-title="SAVE CHANGES"
                 :is-submitting="isSubmitting"
+                :scope="scope"
                 :errors="errors"
+                :changed-values="changeValues"
                 @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
@@ -34,6 +36,10 @@ export default {
         scope: {
             type: String,
             default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
         },
         errors: {
             type: Object,

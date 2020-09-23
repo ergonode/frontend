@@ -61,6 +61,14 @@ export default {
         formActionsMixin,
     ],
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
         errors: {
             type: Object,
             default: () => ({}),
@@ -83,6 +91,9 @@ export default {
         typeIdFieldKey() {
             return 'typeId';
         },
+        typeFieldKey() {
+            return 'type';
+        },
         codeFieldKey() {
             return 'code';
         },
@@ -92,15 +103,30 @@ export default {
             '__setState',
             'getCollectionTypeOptions',
         ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         setCodeValue(value) {
             this.__setState({
-                key: 'code',
+                key: this.codeFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.codeFieldKey,
                 value,
             });
         },
         setTypeValue(value) {
             this.__setState({
-                key: 'type',
+                key: this.typeFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.typeFieldKey,
                 value,
             });
         },

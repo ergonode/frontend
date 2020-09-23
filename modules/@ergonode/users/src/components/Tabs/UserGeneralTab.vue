@@ -8,7 +8,9 @@
             <UserForm
                 submit-title="SAVE CHANGES"
                 :is-submitting="isSubmitting"
+                :scope="scope"
                 :errors="errors"
+                :changed-values="changeValues"
                 @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
@@ -33,6 +35,10 @@ export default {
     props: {
         scope: {
             type: String,
+            default: () => ({}),
+        },
+        changeValues: {
+            type: Object,
             default: () => ({}),
         },
         errors: {

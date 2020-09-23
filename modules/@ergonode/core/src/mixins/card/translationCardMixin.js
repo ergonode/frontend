@@ -17,6 +17,14 @@ export default {
             type: String,
             default: '',
         },
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
         errors: {
             type: Object,
             default: () => ({}),
@@ -43,10 +51,19 @@ export default {
         ...mapActions('tab', [
             'setTranslationValue',
         ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         setTranslationPropertyValue(value, propertyName) {
             this.setTranslationValue({
                 languageCode: this.languageCode,
                 propertyName,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: propertyName,
                 value,
             });
         },

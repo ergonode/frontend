@@ -13,7 +13,7 @@
                         label="Attribute name"
                         :error-messages="translationErrors[labelFieldKey]"
                         :disabled="!isUserAllowedToUpdate"
-                        @input="(value) => setTranslationPropertyValue(value, 'label')" />
+                        @input="(value) => setTranslationPropertyValue(value, labelFieldKey)" />
                     <TextArea
                         :data-cy="dataCyGenerator(hintFieldKey)"
                         :value="translations.hint[languageCode]"
@@ -22,7 +22,7 @@
                         height="150px"
                         :error-messages="translationErrors[hintFieldKey]"
                         :disabled="!isUserAllowedToUpdate"
-                        @input="(value) => setTranslationPropertyValue(value, 'hint')" />
+                        @input="(value) => setTranslationPropertyValue(value, hintFieldKey)" />
                     <Divider v-if="formComponent.component" />
                     <Component
                         :is="formComponent.component"

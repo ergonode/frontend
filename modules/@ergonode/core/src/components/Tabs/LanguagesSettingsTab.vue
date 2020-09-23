@@ -42,7 +42,9 @@ import Button from '@Core/components/Button/Button';
 import DropZone from '@Core/components/DropZone/DropZone';
 import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import LanguagesTreeWrapper from '@Core/components/LanguagesTreeDesigner/LanguagesTreeWrapper';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
+import VerticalTabBar from '@Core/components/TabBar/VerticalTabBar';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import {
     ALERT_TYPE,
@@ -70,8 +72,22 @@ export default {
         DropZone,
         FadeTransition,
         IconSpinner,
-        LanguagesTreeWrapper: () => import('@Core/components/LanguagesTreeDesigner/LanguagesTreeWrapper'),
-        VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
+        LanguagesTreeWrapper,
+        VerticalTabBar,
+    },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     asyncData({
         store,

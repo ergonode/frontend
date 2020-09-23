@@ -59,6 +59,14 @@ export default {
         formActionsMixin,
     ],
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
         errors: {
             type: Object,
             default: () => ({}),
@@ -85,18 +93,33 @@ export default {
         ...mapActions('role', [
             '__setState',
         ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         onSubmit() {
             this.$emit('submit');
         },
         setNameValue(value) {
             this.__setState({
-                key: 'name',
+                key: this.nameFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.nameFieldKey,
                 value,
             });
         },
         setDescriptionValue(value) {
             this.__setState({
-                key: 'description',
+                key: this.descriptionFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.descriptionFieldKey,
                 value,
             });
         },

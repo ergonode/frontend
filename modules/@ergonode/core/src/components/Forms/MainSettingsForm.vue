@@ -138,13 +138,11 @@ export default {
         setSelectedLanguages(selectedLanguages) {
             this.activeLanguages = selectedLanguages;
 
-            // TODO: Only for CR purpose
-
-            // this.onScopeValueChange({
-            //     scope: this.scope,
-            //     fieldKey: this.languagesFieldKey,
-            //     value: selectedLanguages,
-            // });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.languagesFieldKey,
+                value: selectedLanguages,
+            });
 
             this.$emit('selectedLanguages', selectedLanguages);
         },

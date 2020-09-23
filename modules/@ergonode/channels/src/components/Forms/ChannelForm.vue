@@ -74,6 +74,14 @@ export default {
         formActionsMixin,
     ],
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
         errors: {
             type: Object,
             default: () => ({}),
@@ -129,6 +137,9 @@ export default {
             '__setState',
             'getConfiguration',
         ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         async setSchema(type) {
             this.isFetchingConfiguration = true;
 
@@ -144,10 +155,22 @@ export default {
                 key: 'configuration',
                 value,
             });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'configuration',
+                value,
+            });
         },
         setTypeValue(value) {
             this.__setState({
-                key: 'type',
+                key: this.typeFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.typeFieldKey,
                 value,
             });
 

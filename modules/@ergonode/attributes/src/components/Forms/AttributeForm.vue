@@ -105,6 +105,14 @@ export default {
         formActionsMixin,
     ],
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
         errors: {
             type: Object,
             default: () => ({}),
@@ -160,7 +168,7 @@ export default {
             return 'type';
         },
         groupsFieldKey() {
-            return 'group';
+            return 'groups';
         },
         scopeFieldKey() {
             return 'scope';
@@ -173,27 +181,54 @@ export default {
         ...mapActions('attributeGroup', [
             'getAttributeGroupsOptions',
         ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         setCodeValue(value) {
             this.__setState({
-                key: 'code',
+                key: this.codeFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.codeFieldKey,
                 value,
             });
         },
         setScopeValue(value) {
             this.__setState({
-                key: 'scope',
+                key: this.scopeFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.scopeFieldKey,
                 value,
             });
         },
         setGroupsValue(value) {
             this.__setState({
-                key: 'groups',
+                key: this.groupsFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.groupsFieldKey,
                 value,
             });
         },
         setTypeValue(value) {
             this.__setState({
-                key: 'type',
+                key: this.typeFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.typeFieldKey,
                 value,
             });
         },
