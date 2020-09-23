@@ -63,6 +63,7 @@ export default {
     methods: {
         ...mapActions('feedback', [
             'onError',
+            'removeScopeErrors',
             'markChangeValuesAsSaved',
         ]),
         ...mapActions('core', [
@@ -107,6 +108,8 @@ export default {
         },
         async onConfirm(selectedLanguages) {
             this.isSubmitting = true;
+
+            this.removeScopeErrors(this.scope);
 
             await this.updateLanguages({
                 languages: selectedLanguages,
