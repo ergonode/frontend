@@ -121,12 +121,12 @@ export default {
         };
     },
     computed: {
-        ...mapState('gridDesigner', {
-            fullGridData: state => state.fullGridData,
-        }),
-        ...mapState('draggable', {
-            isElementDragging: state => state.isElementDragging,
-        }),
+        ...mapState('gridDesigner', [
+            'fullGridData',
+        ]),
+        ...mapState('draggable', [
+            'isElementDragging',
+        ]),
         verticalTabs() {
             return [
                 {

@@ -94,16 +94,16 @@ export default {
         debounceFunc: null,
     }),
     computed: {
-        ...mapState('gridDesigner', {
-            fullGridData: state => state.fullGridData,
-            hiddenItems: state => state.hiddenItems,
-        }),
+        ...mapState('gridDesigner', [
+            'fullGridData',
+            'hiddenItems',
+        ]),
         ...mapState('authentication', {
             language: state => state.user.language,
         }),
-        ...mapState('draggable', {
-            draggedElement: state => state.draggedElement,
-        }),
+        ...mapState('draggable', [
+            'draggedElement',
+        ]),
         ...mapGetters('gridDesigner', [
             'getItem',
         ]),

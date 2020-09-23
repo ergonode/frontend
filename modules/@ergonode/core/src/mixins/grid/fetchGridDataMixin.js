@@ -46,9 +46,9 @@ export default function ({
             };
         },
         computed: {
-            ...mapState('list', {
-                disabledElements: state => state.disabledElements,
-            }),
+            ...mapState('list', [
+                'disabledElements',
+            ]),
         },
         watch: {
             isFetchingNeeded() {

@@ -87,12 +87,12 @@ export default {
         },
     },
     computed: {
-        ...mapState('productStatus', {
-            id: state => state.id,
-            code: state => state.code,
-            color: state => state.color,
-            isDefaultStatus: state => state.isDefaultStatus,
-        }),
+        ...mapState('productStatus', [
+            'id',
+            'code',
+            'color',
+            'isDefaultStatus',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.WORKFLOW.update,

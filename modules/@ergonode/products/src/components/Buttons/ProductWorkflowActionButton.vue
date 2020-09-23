@@ -56,10 +56,10 @@ export default {
         ListElementTitle,
     },
     computed: {
-        ...mapState('product', {
-            status: state => state.status,
-            workflow: state => state.workflow,
-        }),
+        ...mapState('product', [
+            'status',
+            'workflow',
+        ]),
         smallSize() {
             return SIZE.SMALL;
         },

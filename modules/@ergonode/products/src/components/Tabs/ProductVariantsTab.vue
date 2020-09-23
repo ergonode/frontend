@@ -140,11 +140,11 @@ export default {
         };
     },
     computed: {
-        ...mapState('product', {
-            id: state => state.id,
-            selectAttributes: state => state.selectAttributes,
-            bindingAttributesIds: state => state.bindingAttributesIds,
-        }),
+        ...mapState('product', [
+            'id',
+            'selectAttributes',
+            'bindingAttributesIds',
+        ]),
         ...mapState('authentication', {
             languageCode: state => state.user.language,
         }),

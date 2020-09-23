@@ -23,9 +23,9 @@ export default {
         ModalGrid,
     },
     computed: {
-        ...mapState('collection', {
-            id: state => state.id,
-        }),
+        ...mapState('collection', [
+            'id',
+        ]),
         columnParams() {
             return 'index,sku,esa_template';
         },

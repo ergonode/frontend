@@ -62,9 +62,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            isLogged: state => state.isLogged,
-        }),
+        ...mapState('authentication', [
+            'isLogged',
+        ]),
         loginFormComponents() {
             switch (this.loginState) {
             case LOGIN_STATE.CREDENTIALS:

@@ -31,9 +31,9 @@ export default {
         },
     },
     computed: {
-        ...mapState('product', {
-            categories: state => state.categories,
-        }),
+        ...mapState('product', [
+            'categories',
+        ]),
     },
     methods: {
         ...mapActions('product', [

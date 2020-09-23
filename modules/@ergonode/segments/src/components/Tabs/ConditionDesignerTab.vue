@@ -95,12 +95,12 @@ export default {
         };
     },
     computed: {
-        ...mapState('draggable', {
-            isElementDragging: state => state.isElementDragging,
-        }),
-        ...mapState('segment', {
-            conditionSetId: state => state.conditionSetId,
-        }),
+        ...mapState('segment', [
+            'conditionSetId',
+        ]),
+        ...mapState('draggable', [
+            'isElementDragging',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.SEGMENT.update,

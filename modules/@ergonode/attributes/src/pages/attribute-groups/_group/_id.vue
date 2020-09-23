@@ -36,9 +36,9 @@ export default {
         await store.dispatch('attributeGroup/getAttributeGroup', params);
     },
     computed: {
-        ...mapState('attributeGroup', {
-            code: state => state.code,
-        }),
+        ...mapState('attributeGroup', [
+            'code',
+        ]),
     },
     beforeDestroy() {
         this.__clearStorage();

@@ -46,9 +46,9 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapState('core', {
-            languages: state => state.languages,
-        }),
+        ...mapState('core', [
+            'languages',
+        ]),
         ...mapGetters('core', [
             'activeLanguages',
         ]),

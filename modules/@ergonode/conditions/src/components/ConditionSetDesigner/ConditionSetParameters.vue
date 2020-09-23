@@ -53,9 +53,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('condition', {
-            conditionsValues: state => state.conditionsValues,
-        }),
+        ...mapState('condition', [
+            'conditionsValues',
+        ]),
         smallSize() {
             return SIZE.SMALL;
         },

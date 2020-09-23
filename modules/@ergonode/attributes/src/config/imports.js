@@ -24,6 +24,7 @@ export const Components = {
     AttributeFormOptions: () => import('@Attributes/extends/components/Forms/AttributeFormOptions').then(m => m.default || m),
     AttributeTranslationFormPlaceholder: () => import('@Attributes/extends/components/Forms/AttributeTranslationFormPlaceholder').then(m => m.default || m),
     AttributeTranslationFormOptions: () => import('@Attributes/extends/components/Forms/AttributeTranslationFormOptions').then(m => m.default || m),
+    ProductTemplateFormPresentation: () => import('@Attributes/extends/components/Forms/ProductTemplateFormPresentation').then(m => m.default || m),
 };
 
 export const Icons = {
@@ -41,4 +42,5 @@ export const Icons = {
 
 export const Store = {
     Attribute: () => import('@Attributes/extends/store/attribute').then(m => m.default || m),
+    Template: () => import('@Attributes/extends/store/productTemplate').then(m => m.default || m),
 };

@@ -137,14 +137,14 @@ export default {
         ...mapState('authentication', {
             language: state => state.user.language,
         }),
-        ...mapState('list', {
-            disabledElements: state => state.disabledElements,
-        }),
-        ...mapState('gridDesigner', {
-            rows: state => state.rows,
-            gridData: state => state.gridData,
-            hiddenItems: state => state.hiddenItems,
-        }),
+        ...mapState('list', [
+            'disabledElements',
+        ]),
+        ...mapState('gridDesigner', [
+            'rows',
+            'gridData',
+            'hiddenItems',
+        ]),
         ...mapGetters('gridDesigner', [
             'getChildrenLength',
             'getExpandState',

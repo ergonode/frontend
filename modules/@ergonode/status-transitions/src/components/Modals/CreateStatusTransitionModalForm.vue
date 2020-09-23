@@ -49,13 +49,13 @@ export default {
         };
     },
     computed: {
-        ...mapState('feedback', {
-            errors: state => state.errors,
-        }),
-        ...mapState('statusTransition', {
-            source: state => state.source,
-            destination: state => state.destination,
-        }),
+        ...mapState('feedback', [
+            'errors',
+        ]),
+        ...mapState('statusTransition', [
+            'source',
+            'destination',
+        ]),
         secondaryTheme() {
             return THEME.SECONDARY;
         },

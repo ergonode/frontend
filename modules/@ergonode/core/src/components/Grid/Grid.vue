@@ -262,10 +262,10 @@ export default {
         };
     },
     computed: {
-        ...mapState('draggable', {
-            isElementDragging: state => state.isElementDragging,
-            draggedElement: state => state.draggedElement,
-        }),
+        ...mapState('draggable', [
+            'isElementDragging',
+            'draggedElement',
+        ]),
         noRecordsFilterPlaceholder() {
             if (!this.dataCount
                 && (!Object.keys(this.filterValues).length

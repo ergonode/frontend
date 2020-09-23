@@ -80,9 +80,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('core', {
-            languages: state => state.languages,
-        }),
+        ...mapState('core', [
+            'languages',
+        ]),
         mappedLanguages() {
             return this.languages.map(({
                 id, name, code,

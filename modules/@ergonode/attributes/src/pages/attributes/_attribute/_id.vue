@@ -16,6 +16,9 @@ import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import {
+    toLowerCaseFirstLetter,
+} from '@Core/models/stringWrapper';
+import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -39,9 +42,12 @@ export default {
         ]);
     },
     computed: {
-        ...mapState('attribute', {
-            code: state => state.code,
-        }),
+        ...mapState('attribute', [
+            'code',
+        ]),
+        scope() {
+            return toLowerCaseFirstLetter(this.$options.name);
+        },
     },
     beforeDestroy() {
         this.__clearStorage();
@@ -72,9 +78,12 @@ export default {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Are you sure you want to delete this attribute?',
-                confirmCallback: () => this.removeAttribute({
-                    onSuccess: this.onRemoveSuccess,
-                }),
+                confirmCallback: () => {
+                    this.removeAttribute({
+                        scope: this.scope,
+                        onSuccess: this.onRemoveSuccess,
+                    });
+                },
             });
         },
     },
