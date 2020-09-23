@@ -318,6 +318,7 @@ export default {
     async removeAttribute({
         state, rootState,
     }, {
+        scope,
         onSuccess,
         onError = () => {},
     }) {
@@ -351,7 +352,10 @@ export default {
             // EXTENDED AFTER METHOD
             onSuccess();
         } catch (e) {
-            onError(e.data);
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
         }
     },
 };
