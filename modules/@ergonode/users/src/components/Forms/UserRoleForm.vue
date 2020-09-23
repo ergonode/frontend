@@ -65,10 +65,10 @@ export default {
         },
     },
     computed: {
-        ...mapState('role', {
-            name: state => state.name,
-            description: state => state.description,
-        }),
+        ...mapState('role', [
+            'name',
+            'description',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.USER_ROLE.update,

@@ -63,10 +63,10 @@ export default {
         },
     },
     computed: {
-        ...mapState('unit', {
-            name: state => state.name,
-            symbol: state => state.symbol,
-        }),
+        ...mapState('unit', [
+            'name',
+            'symbol',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.SETTINGS.update,

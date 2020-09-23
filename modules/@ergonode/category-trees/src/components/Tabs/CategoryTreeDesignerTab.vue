@@ -85,9 +85,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('draggable', {
-            isElementDragging: state => state.isElementDragging,
-        }),
+        ...mapState('draggable', [
+            'isElementDragging',
+        ]),
         verticalTabs() {
             return [
                 {

@@ -37,9 +37,9 @@ export default {
         await store.dispatch('segment/getSegment', params);
     },
     computed: {
-        ...mapState('segment', {
-            code: state => state.code,
-        }),
+        ...mapState('segment', [
+            'code',
+        ]),
     },
     beforeDestroy() {
         this.__clearSegmentStorage();

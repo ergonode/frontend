@@ -32,10 +32,10 @@ export default {
         return store.dispatch('media/getResource', params);
     },
     computed: {
-        ...mapState('media', {
-            name: state => state.name,
-            extension: state => state.extension,
-        }),
+        ...mapState('media', [
+            'name',
+            'extension',
+        ]),
     },
     beforeDestroy() {
         this.__clearStorage();

@@ -67,11 +67,11 @@ export default {
         },
     },
     computed: {
-        ...mapState('collection', {
-            id: state => state.id,
-            code: state => state.code,
-            type: state => state.type,
-        }),
+        ...mapState('collection', [
+            'id',
+            'code',
+            'type',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT_COLLECTION.update,

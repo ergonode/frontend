@@ -32,9 +32,9 @@ export default {
         ListHeader: () => import('@Core/components/List/ListHeader'),
     },
     computed: {
-        ...mapState('productTemplate', {
-            types: state => state.types,
-        }),
+        ...mapState('productTemplate', [
+            'types',
+        ]),
         widgets() {
             return this.types.filter(type => type.variant === 'ui');
         },

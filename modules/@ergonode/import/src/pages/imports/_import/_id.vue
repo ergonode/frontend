@@ -36,9 +36,9 @@ export default {
         await store.dispatch('import/getImportProfile', params);
     },
     computed: {
-        ...mapState('import', {
-            configuration: state => state.configuration,
-        }),
+        ...mapState('import', [
+            'configuration',
+        ]),
         name() {
             const {
                 name,

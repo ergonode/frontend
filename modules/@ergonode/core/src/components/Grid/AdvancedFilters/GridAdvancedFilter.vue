@@ -149,11 +149,11 @@ export default {
         };
     },
     computed: {
-        ...mapState('draggable', {
-            ghostIndex: state => state.ghostIndex,
-            isElementDragging: state => state.isElementDragging,
-            draggedElement: state => state.draggedElement,
-        }),
+        ...mapState('draggable', [
+            'ghostIndex',
+            'isElementDragging',
+            'draggedElement',
+        ]),
         isFilterExists() {
             return this.draggedElement === this.filterId;
         },

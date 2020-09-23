@@ -111,7 +111,7 @@ export default {
             languageCode: language,
         }));
     },
-    getAttributesOptionsByType({
+    async getAttributesOptionsByType({
         rootState,
     }, {
         type,
@@ -122,7 +122,7 @@ export default {
         const filter = `type=${type}`;
 
         // EXTENDED BEFORE METHOD
-        this.$extendMethods('@Attributes/store/attribute/action/getAttributesOptionsByType/__before', {
+        await this.$extendMethods('@Attributes/store/attribute/action/getAttributesOptionsByType/__before', {
             $this: this,
             type,
         });
@@ -138,7 +138,7 @@ export default {
                 field: 'name',
                 order: 'ASC',
             },
-        }).then(({
+        }).then(async ({
             collection,
         }) => {
             let options = collection.map(element => ({
@@ -149,7 +149,7 @@ export default {
             }));
 
             // EXTENDED AFTER METHOD
-            const extendedData = this.$extendMethods('@Attributes/store/attribute/action/getAttributesOptionsByType/__after', {
+            const extendedData = await this.$extendMethods('@Attributes/store/attribute/action/getAttributesOptionsByType/__after', {
                 $this: this,
                 type,
                 data: options,
@@ -180,7 +180,7 @@ export default {
         } = rootState.dictionaries;
 
         // EXTENDED BEFORE METHOD
-        this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__before', {
+        await this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__before', {
             $this: this,
             data: {
                 id,
@@ -234,7 +234,7 @@ export default {
         );
 
         // EXTENDED AFTER METHOD
-        this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__after', {
+        await this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__after', {
             $this: this,
             data,
             type,
@@ -318,7 +318,9 @@ export default {
     async removeAttribute({
         state, rootState,
     }, {
+        scope,
         onSuccess,
+        onError = () => {},
     }) {
         const {
             id,
@@ -329,24 +331,31 @@ export default {
         } = rootState.dictionaries;
         const typeKey = getKeyByValue(attrTypes, type);
 
-        // EXTENDED BEFORE METHOD
-        await this.$extendMethods('@Attributes/store/attribute/action/removeAttribute/__before', {
-            $this: this,
-            type: typeKey,
-        });
-        // EXTENDED BEFORE METHOD
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Attributes/store/attribute/action/removeAttribute/__before', {
+                $this: this,
+                type: typeKey,
+            });
+            // EXTENDED BEFORE METHOD
 
-        await remove({
-            $axios: this.app.$axios,
-            id,
-        });
+            await remove({
+                $axios: this.app.$axios,
+                id,
+            });
 
-        // EXTENDED AFTER METHOD
-        await this.$extendMethods('@Attributes/store/attribute/action/removeAttribute/__after', {
-            $this: this,
-            type: typeKey,
-        });
-        // EXTENDED AFTER METHOD
-        onSuccess();
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Attributes/store/attribute/action/removeAttribute/__after', {
+                $this: this,
+                type: typeKey,
+            });
+            // EXTENDED AFTER METHOD
+            onSuccess();
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
     },
 };

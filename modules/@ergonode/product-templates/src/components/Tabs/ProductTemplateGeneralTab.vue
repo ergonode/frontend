@@ -5,7 +5,7 @@
 <template>
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
-            <TemplateDesignerForm
+            <ProductTemplateForm
                 submit-title="SAVE CHANGES"
                 :is-submitting="isSubmitting"
                 :errors="errors"
@@ -19,7 +19,7 @@ import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemp
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import TemplateDesignerForm from '@Templates/components/Forms/TemplateDesignerForm';
+import ProductTemplateForm from '@Templates/components/Forms/ProductTemplateForm';
 import {
     mapActions,
 } from 'vuex';
@@ -27,7 +27,7 @@ import {
 export default {
     name: 'ProductTemplateGeneralTab',
     components: {
-        TemplateDesignerForm,
+        ProductTemplateForm,
         CenterViewTemplate,
     },
     props: {
@@ -47,7 +47,7 @@ export default {
     },
     methods: {
         ...mapActions('productTemplate', [
-            'updateProductTemplate',
+            'updateTemplate',
         ]),
         ...mapActions('feedback', [
             'onError',
@@ -60,7 +60,7 @@ export default {
             this.isSubmitting = true;
 
             this.removeScopeErrors(this.scope);
-            this.updateProductTemplate({
+            this.updateTemplate({
                 scope: this.scope,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,

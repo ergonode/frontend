@@ -86,14 +86,14 @@ export default {
         };
     },
     computed: {
-        ...mapState('channel', {
-            id: state => state.id,
-            type: state => state.type,
-            configuration: state => state.configuration,
-        }),
-        ...mapState('dictionaries', {
-            channels: state => state.channels,
-        }),
+        ...mapState('channel', [
+            'id',
+            'type',
+            'configuration',
+        ]),
+        ...mapState('dictionaries', [
+            'channels',
+        ]),
         graphiteColor() {
             return GRAPHITE;
         },

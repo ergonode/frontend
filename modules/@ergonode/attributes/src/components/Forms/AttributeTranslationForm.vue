@@ -68,12 +68,12 @@ export default {
         translationCardMixin,
     ],
     computed: {
-        ...mapState('dictionaries', {
-            attrTypes: state => state.attrTypes,
-        }),
-        ...mapState('attribute', {
-            type: state => state.type,
-        }),
+        ...mapState('dictionaries', [
+            'attrTypes',
+        ]),
+        ...mapState('attribute', [
+            'type',
+        ]),
         formComponent() {
             const extendedComponents = this.$getExtendedComponents('@Attributes/components/Forms/AttributeTranslationForm');
 

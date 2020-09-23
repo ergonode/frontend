@@ -86,9 +86,9 @@ export default {
         ...mapState('dictionaries', {
             privilegesDictionary: state => state.privileges,
         }),
-        ...mapState('role', {
-            privileges: state => state.privileges,
-        }),
+        ...mapState('role', [
+            'privileges',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.USER_ROLE.update,

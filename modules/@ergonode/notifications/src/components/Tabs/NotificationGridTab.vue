@@ -70,11 +70,11 @@ export default {
         };
     },
     computed: {
-        ...mapState('notification', {
-            notifications: state => state.notifications,
-            limit: state => state.limit,
-            count: state => state.count,
-        }),
+        ...mapState('notification', [
+            'notifications',
+            'limit',
+            'count',
+        ]),
         horizontalOrientation() {
             return LAYOUT_ORIENTATION.HORIZONTAL;
         },

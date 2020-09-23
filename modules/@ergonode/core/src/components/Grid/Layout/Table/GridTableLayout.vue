@@ -280,12 +280,12 @@ export default {
         };
     },
     computed: {
-        ...mapState('feedback', {
-            errors: state => state.errors,
-        }),
-        ...mapState('list', {
-            disabledElements: state => state.disabledElements,
-        }),
+        ...mapState('feedback', [
+            'errors',
+        ]),
+        ...mapState('list', [
+            'disabledElements',
+        ]),
         classes() {
             return [
                 'grid-table-layout',

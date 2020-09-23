@@ -88,9 +88,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('product', {
-            draft: state => state.draft,
-        }),
+        ...mapState('product', [
+            'draft',
+        ]),
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;
         },

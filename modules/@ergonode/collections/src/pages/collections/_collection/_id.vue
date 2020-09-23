@@ -36,9 +36,9 @@ export default {
         await store.dispatch('collection/getCollection', params);
     },
     computed: {
-        ...mapState('collection', {
-            code: state => state.code,
-        }),
+        ...mapState('collection', [
+            'code',
+        ]),
     },
     beforeDestroy() {
         this.__clearStorage();

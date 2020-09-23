@@ -16,6 +16,9 @@ import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import {
+    toLowerCaseFirstLetter,
+} from '@Core/models/stringWrapper';
+import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -39,6 +42,9 @@ export default {
         ...mapState('productTemplate', {
             templateTitle: state => state.title,
         }),
+        scope() {
+            return toLowerCaseFirstLetter(this.$options.name);
+        },
     },
     beforeDestroy() {
         this.__clearListStorage();
@@ -70,12 +76,8 @@ export default {
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Are you sure you want to delete this template?',
                 confirmCallback: () => {
-                    const {
-                        id,
-                    } = this.$route.params;
-
                     this.removeTemplate({
-                        id,
+                        scope: this.scope,
                         onSuccess: this.onRemoveSuccess,
                     });
                 },

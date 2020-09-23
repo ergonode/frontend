@@ -81,10 +81,10 @@ export default {
         ...mapState('authentication', {
             languagePrivileges: state => state.user.languagePrivileges,
         }),
-        ...mapState('core', {
-            defaultLanguageCode: state => state.defaultLanguageCode,
-            languagesTree: state => state.languagesTree,
-        }),
+        ...mapState('core', [
+            'defaultLanguageCode',
+            'languagesTree',
+        ]),
         smallSize() {
             return SIZE.SMALL;
         },

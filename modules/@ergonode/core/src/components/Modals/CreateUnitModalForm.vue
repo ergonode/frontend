@@ -49,9 +49,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('feedback', {
-            errors: state => state.errors,
-        }),
+        ...mapState('feedback', [
+            'errors',
+        ]),
         secondaryTheme() {
             return THEME.SECONDARY;
         },

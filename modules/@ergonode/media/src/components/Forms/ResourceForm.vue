@@ -61,10 +61,10 @@ export default {
         },
     },
     computed: {
-        ...mapState('media', {
-            id: state => state.id,
-            name: state => state.name,
-        }),
+        ...mapState('media', [
+            'id',
+            'name',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.MULTIMEDIA.update,

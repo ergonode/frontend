@@ -71,14 +71,14 @@ export default {
         editPageMixin,
     ],
     computed: {
-        ...mapState('product', {
-            status: state => state.status,
-            type: state => state.type,
-            workflow: state => state.workflow,
-        }),
-        ...mapState('dictionaries', {
-            productTypes: state => state.productTypes,
-        }),
+        ...mapState('product', [
+            'status',
+            'type',
+            'workflow',
+        ]),
+        ...mapState('dictionaries', [
+            'productTypes',
+        ]),
         smallSize() {
             return SIZE.SMALL;
         },

@@ -147,9 +147,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('product', {
-            id: state => state.id,
-        }),
+        ...mapState('product', [
+            'id',
+        ]),
         ...mapState('authentication', {
             languageCode: state => state.user.language,
         }),

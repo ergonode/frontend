@@ -3,7 +3,6 @@
  * See LICENSE for license details.
  */
 import {
-    SKU_MODEL_ID,
     SYSTEM_TYPES,
 } from '@Attributes/defaults/attributes';
 import {
@@ -47,6 +46,15 @@ export default {
             },
         } = rootState.authentication;
 
+        // EXTENDED BEFORE METHOD
+        await this.$extendMethods('@Templates/store/productTemplate/action/getTemplate/__before', {
+            $this: this,
+            data: {
+                id,
+            },
+        });
+        // EXTENDED BEFORE METHOD
+
         const [
             template,
             templateTypes,
@@ -67,19 +75,9 @@ export default {
         const {
             name,
             image_id: imageID,
-            default_label: defaultLabel,
-            default_image: defaultImage,
             elements,
         } = template;
 
-        commit('__SET_STATE', {
-            key: 'defaultTextAttribute',
-            value: defaultLabel || SKU_MODEL_ID,
-        });
-        commit('__SET_STATE', {
-            key: 'defaultImageAttribute',
-            value: defaultImage,
-        });
         commit('__SET_STATE', {
             key: 'types',
             value: templateTypes.collection,
@@ -126,8 +124,15 @@ export default {
             key: 'layoutElements',
             value: layoutElements,
         });
+
+        // EXTENDED AFTER METHOD
+        await this.$extendMethods('@Templates/store/productTemplate/action/getTemplate/__after', {
+            $this: this,
+            data: template,
+        });
+        // EXTENDED AFTER METHOD
     },
-    async updateProductTemplate(
+    async updateTemplate(
         {
             state,
         },
@@ -142,26 +147,43 @@ export default {
                 id,
                 title,
                 image,
-                defaultTextAttribute,
-                defaultImageAttribute,
                 layoutElements,
             } = state;
-
-            const data = {
+            let data = {
                 name: title,
                 image,
-                defaultLabel: defaultTextAttribute !== SKU_MODEL_ID
-                    ? defaultTextAttribute
-                    : null,
-                defaultImage: defaultImageAttribute,
                 elements: getMappedLayoutElementsForAPIUpdate(layoutElements),
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Templates/store/productTemplate/action/updateTemplate/__before', {
+                $this: this,
+                data,
+            });
+            // EXTENDED BEFORE METHOD
+
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
 
             await update({
                 $axios: this.app.$axios,
                 id,
                 data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Templates/store/productTemplate/action/updateTemplate/__after', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
 
             onSuccess();
         } catch (e) {
@@ -286,17 +308,25 @@ export default {
             const {
                 title,
                 image,
-                defaultTextAttribute,
-                defaultImageAttribute,
             } = state;
-            const data = {
+            let data = {
                 name: title,
                 image,
-                defaultLabel: defaultTextAttribute !== SKU_MODEL_ID
-                    ? defaultTextAttribute
-                    : null,
-                defaultImage: defaultImageAttribute,
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Templates/store/productTemplate/action/createTemplate/__before', {
+                $this: this,
+                data,
+            });
+            // EXTENDED BEFORE METHOD
+
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
 
             const {
                 id,
@@ -304,6 +334,16 @@ export default {
                 $axios: this.app.$axios,
                 data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Templates/store/productTemplate/action/createTemplate/__after', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
 
             onSuccess(id);
         } catch (e) {
@@ -318,6 +358,7 @@ export default {
             state,
         },
         {
+            scope,
             onSuccess,
             onError = () => {},
         },
@@ -327,15 +368,27 @@ export default {
         } = state;
 
         try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Templates/store/productTemplate/action/removeTemplate/__before', {
+                $this: this,
+            });
+            // EXTENDED BEFORE METHOD
+
             await remove({
                 $axios: this.app.$axios,
                 id,
             });
 
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Templates/store/productTemplate/action/removeTemplate/__after', {
+                $this: this,
+            });
+            // EXTENDED BEFORE METHOD
             onSuccess();
         } catch (e) {
             onError({
                 errors: e.data.errors,
+                scope,
             });
         }
     },

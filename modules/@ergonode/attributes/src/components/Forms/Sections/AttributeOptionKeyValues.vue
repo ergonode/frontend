@@ -68,9 +68,9 @@ export default {
         },
     },
     computed: {
-        ...mapState('attribute', {
-            options: state => state.options,
-        }),
+        ...mapState('attribute', [
+            'options',
+        ]),
         smallSize() {
             return SIZE.SMALL;
         },
