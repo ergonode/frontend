@@ -15,6 +15,8 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import CategoryTreePage from '@Trees/components/Pages/CategoryTreePage';
 import {
     mapActions,
     mapState,
@@ -23,8 +25,11 @@ import {
 export default {
     name: 'EditCategoryTree',
     components: {
-        CategoryTreePage: () => import('@Trees/components/Pages/CategoryTreePage'),
+        CategoryTreePage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {

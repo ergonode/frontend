@@ -9,12 +9,14 @@
 </template>
 
 <script>
+import ChannelPage from '@Channels/components/Pages/ChannelPage';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import {
     mapActions,
     mapState,
@@ -23,8 +25,11 @@ import {
 export default {
     name: 'EditChannel',
     components: {
-        ChannelPage: () => import('@Channels/components/Pages/ChannelPage'),
+        ChannelPage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {

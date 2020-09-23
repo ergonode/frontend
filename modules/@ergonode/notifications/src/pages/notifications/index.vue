@@ -10,14 +10,21 @@
 </template>
 
 <script>
+import Page from '@Core/components/Layout/Page';
+import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@Core/components/TitleBar/TitleBar';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 
 export default {
     name: 'NotificationTabs',
     components: {
-        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
-        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
-        Page: () => import('@Core/components/Layout/Page'),
+        HorizontalRoutingTabBar,
+        TitleBar,
+        Page,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     async fetch({
         store,
     }) {

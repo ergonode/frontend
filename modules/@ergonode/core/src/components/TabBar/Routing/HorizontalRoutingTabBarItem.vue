@@ -12,12 +12,12 @@
             v-if="hasError"
             view-box="6 -6 12 36"
             :fill-color="redColor" />
+        <IconMark
+            v-else-if="hasSuccess"
+            :fill-color="greenColor" />
         <IconSync
             v-else-if="hasValueToSave"
             :fill-color="graphiteDarkColor" />
-        <IconMark
-            v-else-if="changeValues.saved"
-            :fill-color="greenColor" />
     </div>
 </template>
 
@@ -74,11 +74,17 @@ export default {
         graphiteDarkColor() {
             return GRAPHITE_DARK;
         },
+        changeValuesKeys() {
+            return Object.keys(this.changeValues);
+        },
         hasValueToSave() {
-            return Object.keys(this.changeValues).length > 0 && !this.changeValues.saved;
+            return this.changeValuesKeys.length > 0;
         },
         hasError() {
             return Object.keys(this.errors).length > 0;
+        },
+        hasSuccess() {
+            return this.changeValues.saved && this.changeValuesKeys.length === 1;
         },
     },
     methods: {

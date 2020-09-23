@@ -9,12 +9,14 @@
 </template>
 
 <script>
+import CollectionPage from '@Collections/components/Pages/CollectionPage';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import {
     mapActions,
     mapState,
@@ -23,8 +25,11 @@ import {
 export default {
     name: 'EditCollection',
     components: {
-        CollectionPage: () => import('@Collections/components/Pages/CollectionPage'),
+        CollectionPage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {

@@ -9,12 +9,14 @@
 </template>
 
 <script>
+import AttributePage from '@Attributes/components/Pages/AttributePage';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import {
     toLowerCaseFirstLetter,
 } from '@Core/models/stringWrapper';
@@ -26,8 +28,11 @@ import {
 export default {
     name: 'EditAttribute',
     components: {
-        AttributePage: () => import('@Attributes/components/Pages/AttributePage'),
+        AttributePage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {

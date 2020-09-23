@@ -9,12 +9,14 @@
 </template>
 
 <script>
+import AttributeGroupPage from '@Attributes/components/Pages/AttributeGroupPage';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import {
     mapActions,
     mapState,
@@ -23,8 +25,11 @@ import {
 export default {
     name: 'EditAttributeGroup',
     components: {
-        AttributeGroupPage: () => import('@Attributes/components/Pages/AttributeGroupPage'),
+        AttributeGroupPage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {

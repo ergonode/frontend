@@ -15,6 +15,8 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import SegmentPage from '@Segments/components/Pages/SegmentPage';
 import {
     mapActions,
     mapState,
@@ -23,8 +25,11 @@ import {
 export default {
     name: 'SegmentEdit',
     components: {
-        SegmentPage: () => import('@Segments/components/Pages/SegmentPage'),
+        SegmentPage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {

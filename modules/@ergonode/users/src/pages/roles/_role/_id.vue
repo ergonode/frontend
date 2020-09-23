@@ -15,6 +15,8 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import UserRolesPage from '@Users/components/Pages/UserRolesPage';
 import {
     mapActions,
     mapState,
@@ -23,8 +25,11 @@ import {
 export default {
     name: 'EditUserRoles',
     components: {
-        UserRolesPage: () => import('@Users/components/Pages/UserRolesPage'),
+        UserRolesPage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {

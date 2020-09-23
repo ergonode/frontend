@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import UserPage from '@Users/components/Pages/UserPage';
 import {
     mapActions,
     mapState,
@@ -15,8 +17,11 @@ import {
 export default {
     name: 'EditUser',
     components: {
-        UserPage: () => import('@Users/components/Pages/UserPage'),
+        UserPage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {

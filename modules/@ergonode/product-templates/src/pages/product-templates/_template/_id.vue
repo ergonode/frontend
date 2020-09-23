@@ -15,9 +15,11 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import {
     toLowerCaseFirstLetter,
 } from '@Core/models/stringWrapper';
+import TemplatePage from '@Templates/components/Pages/TemplatePage';
 import {
     mapActions,
     mapState,
@@ -26,8 +28,11 @@ import {
 export default {
     name: 'Edit',
     components: {
-        TemplatePage: () => import('@Templates/components/Pages/TemplatePage'),
+        TemplatePage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {
