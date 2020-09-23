@@ -128,7 +128,9 @@ export default {
                 return extendedIcon[this.element.type];
             }
 
-            return () => import('@Core/components/Icons/Menu/IconAttributes');
+            return {
+                component: () => import('@Core/components/Icons/Menu/IconAttributes'),
+            };
         },
         contextualMenuHoveStateClasses() {
             return {

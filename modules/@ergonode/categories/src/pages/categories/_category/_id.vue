@@ -31,10 +31,21 @@ export default {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
+        app,
         store,
         params,
     }) {
-        await store.dispatch('category/getCategory', params);
+        await store.dispatch('category/getCategory', {
+            id: params.id,
+            onError: () => {
+                if (process.client) {
+                    app.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Category hasn’t been fetched properly',
+                    });
+                }
+            },
+        });
     },
     computed: {
         ...mapState('category', [
@@ -61,9 +72,12 @@ export default {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Are you sure you want to delete this category?',
-                confirmCallback: () => this.removeCategory({
-                    onSuccess: this.onRemoveSuccess,
-                }),
+                confirmCallback: () => {
+                    this.removeCategory({
+                        onSuccess: this.onRemoveSuccess,
+                        onError: this.onRemoveError,
+                    });
+                },
             });
         },
         onRemoveSuccess() {
@@ -73,6 +87,12 @@ export default {
             });
             this.$router.push({
                 name: 'categories-grid',
+            });
+        },
+        onRemoveError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Category hasn’t been deleted',
             });
         },
     },

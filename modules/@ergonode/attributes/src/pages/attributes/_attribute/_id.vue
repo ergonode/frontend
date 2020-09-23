@@ -16,9 +16,6 @@ import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import {
-    toLowerCaseFirstLetter,
-} from '@Core/models/stringWrapper';
-import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -34,20 +31,26 @@ export default {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
-        store, params,
+        app,
+        store,
+        params,
     }) {
-        await Promise.all([
-            store.dispatch('attribute/getAttribute', params),
-            store.dispatch('attribute/getAttributeOptions', params),
-        ]);
+        await store.dispatch('attribute/getAttribute', {
+            id: params.id,
+            onError: () => {
+                if (process.client) {
+                    app.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Attribute hasn’t been fetched properly',
+                    });
+                }
+            },
+        });
     },
     computed: {
         ...mapState('attribute', [
             'code',
         ]),
-        scope() {
-            return toLowerCaseFirstLetter(this.$options.name);
-        },
     },
     beforeDestroy() {
         this.__clearStorage();
@@ -65,6 +68,18 @@ export default {
         ...mapActions('tab', {
             __clearTranslationsStorage: '__clearStorage',
         }),
+        onRemove() {
+            this.$openModal({
+                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
+                message: 'Are you sure you want to delete this attribute?',
+                confirmCallback: () => {
+                    this.removeAttribute({
+                        onSuccess: this.onRemoveSuccess,
+                        onError: this.onRemoveError,
+                    });
+                },
+            });
+        },
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
@@ -74,16 +89,10 @@ export default {
                 name: 'attributes-grid',
             });
         },
-        onRemove() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this attribute?',
-                confirmCallback: () => {
-                    this.removeAttribute({
-                        scope: this.scope,
-                        onSuccess: this.onRemoveSuccess,
-                    });
-                },
+        onRemoveError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Attribute hasn’t been deleted',
             });
         },
     },

@@ -8,6 +8,9 @@ import {
     updateOption,
 } from '@Attributes/extends/services';
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     getKeyByValue,
     isObject,
 } from '@Core/models/objectWrapper';
@@ -189,6 +192,24 @@ export const updateOptionsData = async ({
         ...addOptionsRequests,
         ...updateOptionsRequests,
     ]);
+};
+
+export const getAttributeOptions = async ({
+    $this, data,
+}) => {
+    const {
+        id,
+    } = data;
+
+    await $this.dispatch('attribute/getAttributeOptions', {
+        id,
+        onError: () => {
+            $this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Attribute options hasn’t been fetched properly',
+            });
+        },
+    });
 };
 
 export const setParametersData = ({

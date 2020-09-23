@@ -53,6 +53,7 @@ export default {
         fieldKeys = {},
     }) {
         if (errors) {
+            console.log(this.$options.name);
             commit(types.SET_ERRORS, getMappedErrorsV2({
                 errors,
                 fieldKeys,

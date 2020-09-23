@@ -23,15 +23,39 @@ export default {
             const {
                 code,
             } = state;
+            let data = {
+                code,
+            };
 
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Categories/store/category/action/createCategory/__before', {
+                $this: this,
+                data,
+            });
+            // EXTENDED BEFORE METHOD
+
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
             const {
                 id,
             } = await create({
                 $axios: this.app.$axios,
+                data,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Categories/store/category/action/createCategory/__after', {
+                $this: this,
                 data: {
-                    code,
+                    id,
+                    ...data,
                 },
             });
+            // EXTENDED AFTER METHOD
 
             onSuccess(id);
         } catch (e) {
@@ -48,36 +72,52 @@ export default {
         },
         {
             id,
+            onError = () => {},
         },
     ) {
-        const {
-            code,
-            name = '',
-        } = await get({
-            $axios: this.app.$axios,
-            id,
-        });
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Categories/store/category/action/getCategory/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
 
-        const translations = {
-            name,
-        };
+            const data = await get({
+                $axios: this.app.$axios,
+                id,
+            });
+            const {
+                code,
+                name = '',
+            } = data;
 
-        commit('__SET_STATE', {
-            key: 'id',
-            value: id,
-        });
-        commit('__SET_STATE', {
-            key: 'code',
-            value: code,
-        });
-        commit('__SET_STATE', {
-            key: 'name',
-            value: name,
-        });
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'code',
+                value: code,
+            });
 
-        dispatch('tab/setTranslations', translations, {
-            root: true,
-        });
+            dispatch('tab/setTranslations', {
+                name,
+            }, {
+                root: true,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Categories/store/category/action/getCategory/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            onError(e);
+        }
     },
     getCategoriesOptions({
         rootState,
@@ -119,15 +159,39 @@ export default {
                     name,
                 },
             } = rootState.tab;
-            const data = {
+            let data = {
                 name,
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Categories/store/category/action/updateCategory/__before', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
 
             await update({
                 $axios: this.app.$axios,
                 id,
                 data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Categories/store/category/action/updateCategory/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
 
             onSuccess();
         } catch (e) {
@@ -140,16 +204,34 @@ export default {
     async removeCategory({
         state,
     }, {
-        onSuccess,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
         const {
             id,
         } = state;
 
-        await remove({
-            $axios: this.app.$axios,
-            id,
-        });
-        onSuccess();
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Categories/store/category/action/removeCategory/__before', {
+                $this: this,
+            });
+            // EXTENDED BEFORE METHOD
+
+            await remove({
+                $axios: this.app.$axios,
+                id,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Categories/store/category/action/removeCategory/__after', {
+                $this: this,
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess();
+        } catch (e) {
+            onError(e);
+        }
     },
 };

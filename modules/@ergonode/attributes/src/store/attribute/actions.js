@@ -174,72 +174,77 @@ export default {
         rootState,
     }, {
         id,
+        onError = () => {},
     }) {
         const {
             attrTypes,
         } = rootState.dictionaries;
 
-        // EXTENDED BEFORE METHOD
-        await this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__before', {
-            $this: this,
-            data: {
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+
+            const data = await get({
+                $axios: this.app.$axios,
                 id,
-            },
-        });
-        // EXTENDED BEFORE METHOD
+            });
+            const {
+                code,
+                type,
+                hint = '',
+                label = '',
+                groups: groupIds,
+                scope,
+            } = data;
 
-        const data = await get({
-            $axios: this.app.$axios,
-            id,
-        });
-        const {
-            code,
-            type,
-            hint = '',
-            label = '',
-            groups: groupIds,
-            scope,
-        } = data;
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'code',
+                value: code,
+            });
+            commit('__SET_STATE', {
+                key: 'scope',
+                value: scope,
+            });
+            commit('__SET_STATE', {
+                key: 'groups',
+                value: groupIds,
+            });
+            commit('__SET_STATE', {
+                key: 'type',
+                value: attrTypes[type],
+            });
 
-        commit('__SET_STATE', {
-            key: 'id',
-            value: id,
-        });
-        commit('__SET_STATE', {
-            key: 'code',
-            value: code,
-        });
-        commit('__SET_STATE', {
-            key: 'scope',
-            value: scope,
-        });
-        commit('__SET_STATE', {
-            key: 'groups',
-            value: groupIds,
-        });
-        commit('__SET_STATE', {
-            key: 'type',
-            value: attrTypes[type],
-        });
+            dispatch(
+                'tab/setTranslations',
+                {
+                    hint,
+                    label,
+                },
+                {
+                    root: true,
+                },
+            );
 
-        dispatch(
-            'tab/setTranslations',
-            {
-                hint,
-                label,
-            },
-            {
-                root: true,
-            },
-        );
-
-        // EXTENDED AFTER METHOD
-        await this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__after', {
-            $this: this,
-            data,
-            type,
-        });
-        // EXTENDED AFTER METHOD
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__after', {
+                $this: this,
+                data,
+                type,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            onError(e);
+        }
     },
     async updateAttribute(
         {
@@ -318,8 +323,7 @@ export default {
     async removeAttribute({
         state, rootState,
     }, {
-        scope,
-        onSuccess,
+        onSuccess = () => {},
         onError = () => {},
     }) {
         const {
@@ -352,10 +356,7 @@ export default {
             // EXTENDED AFTER METHOD
             onSuccess();
         } catch (e) {
-            onError({
-                errors: e.data.errors,
-                scope,
-            });
+            onError(e);
         }
     },
 };
