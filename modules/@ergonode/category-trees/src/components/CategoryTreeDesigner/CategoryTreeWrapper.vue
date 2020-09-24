@@ -4,6 +4,9 @@
  */
 <template>
     <TemplateGridWrapper
+        :scope="scope"
+        :change-values="changeValues"
+        :errors="errors"
         :columns="columns"
         :row-height="rowHeight"
         :context-name="contextName"
@@ -23,6 +26,20 @@ export default {
     name: 'CategoryTreeWrapper',
     components: {
         TemplateGridWrapper,
+    },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     computed: {
         isAllowedToUpdate() {
