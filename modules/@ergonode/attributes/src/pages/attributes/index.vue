@@ -5,12 +5,12 @@
 <template>
     <Page>
         <TitleBar
-            title="Attributes"
+            :title="$t('attribute.page.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <Button
                     data-cy="new-attribute"
-                    title="NEW ATTRIBUTE"
+                    :title="$t('attribute.page.addButton')"
                     :size="smallSize"
                     :disabled="!isAllowedToCreate"
                     @click.native="onShowModal">
@@ -83,7 +83,7 @@ export default {
     },
     head() {
         return {
-            title: 'Attributes - Ergonode',
+            title: this.$t('attribute.page.head'),
         };
     },
 };

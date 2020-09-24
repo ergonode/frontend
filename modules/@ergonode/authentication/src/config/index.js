@@ -4,6 +4,7 @@
  */
 export default {
     name: '@ergonode/authentication',
+    order: 20,
     aliases: {
         '@Authentication': '/',
     },

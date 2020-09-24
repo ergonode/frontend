@@ -4,6 +4,7 @@
  */
 export default {
     name: '@ergonode/import',
+    order: 180,
     aliases: {
         '@Import': '/',
     },

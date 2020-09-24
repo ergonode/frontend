@@ -4,6 +4,7 @@
  */
 export default {
     name: '@ergonode/media',
+    order: 160,
     aliases: {
         '@Media': '/',
     },

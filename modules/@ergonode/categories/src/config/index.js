@@ -4,6 +4,7 @@
  */
 export default {
     name: '@ergonode/categories',
+    order: 60,
     aliases: {
         '@Categories': '/',
     },

@@ -4,6 +4,7 @@
  */
 export default {
     name: '@ergonode/core',
+    order: 10,
     aliases: {
         '@Core': '/',
     },

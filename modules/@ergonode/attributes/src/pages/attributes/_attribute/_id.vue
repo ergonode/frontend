@@ -41,7 +41,7 @@ export default {
                 if (process.client) {
                     app.$addAlert({
                         type: ALERT_TYPE.ERROR,
-                        message: 'Attribute hasn’t been fetched properly',
+                        message: app.i18n.t('attribute.errors.getRequest'),
                     });
                 }
             },
@@ -71,7 +71,7 @@ export default {
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this attribute?',
+                message: this.$t('attribute.messages.deleteConfirm'),
                 confirmCallback: () => {
                     this.removeAttribute({
                         onSuccess: this.onRemoveSuccess,
@@ -83,7 +83,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Attribute removed',
+                message: this.$t('attribute.messages.deleteSuccess'),
             });
             this.$router.push({
                 name: 'attributes-grid',
@@ -92,13 +92,13 @@ export default {
         onRemoveError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Attribute hasn’t been deleted',
+                message: this.$t('attribute.errors.deleteRequest'),
             });
         },
     },
     head() {
         return {
-            title: `${this.code} - Attributes - Ergonode`,
+            title: `${this.code} - ${this.$t('attribute.page.title')}`,
         };
     },
 };
