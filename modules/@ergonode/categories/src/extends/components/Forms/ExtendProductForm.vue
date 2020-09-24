@@ -9,11 +9,14 @@
         :clearable="true"
         label="Category"
         :disabled="disabled"
+        :error-messages="errors[categoryFieldKey]"
         :fetch-options-request="getCategoriesOptions"
         @input="setCategoriesValue" />
 </template>
 
 <script>
+import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,
     mapState,
@@ -22,8 +25,11 @@ import {
 export default {
     name: 'ExtendProductForm',
     components: {
-        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
+        TranslationLazySelect,
     },
+    mixins: [
+        formFeedbackMixin,
+    ],
     props: {
         disabled: {
             type: Boolean,
@@ -34,6 +40,9 @@ export default {
         ...mapState('product', [
             'categories',
         ]),
+        categoryFieldKey() {
+            return 'categories';
+        },
     },
     methods: {
         ...mapActions('product', [
@@ -44,7 +53,13 @@ export default {
         ]),
         setCategoriesValue(value) {
             this.__setState({
-                key: 'categories',
+                key: this.categoryFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.categoryFieldKey,
                 value,
             });
         },

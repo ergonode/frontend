@@ -15,6 +15,8 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import ImportProfilePage from '@Import/components/Pages/ImportProfilePage';
 import {
     mapActions,
     mapState,
@@ -23,8 +25,11 @@ import {
 export default {
     name: 'EditImportProfile',
     components: {
-        ImportProfilePage: () => import('@Import/components/Pages/ImportProfilePage'),
+        ImportProfilePage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {

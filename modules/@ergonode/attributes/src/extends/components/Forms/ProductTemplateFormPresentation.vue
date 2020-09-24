@@ -25,6 +25,7 @@
 <script>
 import FormSection from '@Core/components/Form/Section/FormSection';
 import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,
     mapState,
@@ -36,6 +37,9 @@ export default {
         FormSection,
         TranslationLazySelect,
     },
+    mixins: [
+        formFeedbackMixin,
+    ],
     props: {
         disabled: {
             type: Boolean,
@@ -60,10 +64,22 @@ export default {
                 key: 'defaultTextAttribute',
                 value,
             });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'defaultTextAttribute',
+                value,
+            });
         },
         setDefaultImageAttributeValue(value) {
             this.__setState({
                 key: 'defaultImageAttribute',
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'defaultImageAttribute',
                 value,
             });
         },

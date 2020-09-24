@@ -16,6 +16,8 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import ProductStatusPage from '@Statuses/components/Pages/ProductStatusPage';
 import {
     mapActions,
     mapState,
@@ -24,8 +26,11 @@ import {
 export default {
     name: 'StatusEdit',
     components: {
-        ProductStatusPage: () => import('@Statuses/components/Pages/ProductStatusPage'),
+        ProductStatusPage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {

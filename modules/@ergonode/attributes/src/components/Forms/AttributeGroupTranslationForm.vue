@@ -13,7 +13,7 @@
                         label="Group name"
                         :disabled="!isUserAllowedToUpdate"
                         :error-messages="translationErrors[nameKeyField]"
-                        @input="(value) => setTranslationPropertyValue(value, 'name')" />
+                        @input="(value) => setTranslationPropertyValue(value, nameKeyField)" />
                 </FormSection>
             </template>
         </Form>

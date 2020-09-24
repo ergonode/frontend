@@ -47,7 +47,7 @@
             <FormSection title="Configuration">
                 <Select
                     :data-cy="dataCyGenerator(scopeFieldKey)"
-                    :value="scope"
+                    :value="attributeScope"
                     required
                     label="Scope"
                     :disabled="!isAllowedToUpdate"
@@ -61,6 +61,8 @@
                 <Component
                     :is="formComponent.component"
                     :type-key="typeKey"
+                    :scope="scope"
+                    :change-values="changeValues"
                     :errors="errors"
                     v-bind="formComponent.props" />
             </FormSection>
@@ -81,6 +83,7 @@ import Select from '@Core/components/Inputs/Select/Select';
 import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
 import TextField from '@Core/components/Inputs/TextField';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
@@ -103,21 +106,18 @@ export default {
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
-    props: {
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         ...mapState('attribute', [
             'id',
             'code',
             'groups',
             'type',
-            'scope',
         ]),
+        ...mapState('attribute', {
+            attributeScope: state => state.scope,
+        }),
         ...mapState('dictionaries', [
             'attrTypes',
         ]),
@@ -160,7 +160,7 @@ export default {
             return 'type';
         },
         groupsFieldKey() {
-            return 'group';
+            return 'groups';
         },
         scopeFieldKey() {
             return 'scope';
@@ -175,25 +175,49 @@ export default {
         ]),
         setCodeValue(value) {
             this.__setState({
-                key: 'code',
+                key: this.codeFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.codeFieldKey,
                 value,
             });
         },
         setScopeValue(value) {
             this.__setState({
-                key: 'scope',
+                key: this.scopeFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.scopeFieldKey,
                 value,
             });
         },
         setGroupsValue(value) {
             this.__setState({
-                key: 'groups',
+                key: this.groupsFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.groupsFieldKey,
                 value,
             });
         },
         setTypeValue(value) {
             this.__setState({
-                key: 'type',
+                key: this.typeFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.typeFieldKey,
                 value,
             });
         },

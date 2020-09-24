@@ -9,12 +9,14 @@
 </template>
 
 <script>
+import CategoryPage from '@Categories/components/Pages/CategoryPage';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import {
     mapActions,
     mapState,
@@ -23,8 +25,11 @@ import {
 export default {
     name: 'EditCategory',
     components: {
-        CategoryPage: () => import('@Categories/components/Pages/CategoryPage'),
+        CategoryPage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {

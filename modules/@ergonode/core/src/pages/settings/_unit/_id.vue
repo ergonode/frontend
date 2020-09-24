@@ -9,12 +9,14 @@
 </template>
 
 <script>
+import UnitPage from '@Core/components/Pages/UnitPage';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import {
     mapActions,
     mapState,
@@ -23,8 +25,11 @@ import {
 export default {
     name: 'UnitEdit',
     components: {
-        UnitPage: () => import('@Core/components/Pages/UnitPage'),
+        UnitPage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {

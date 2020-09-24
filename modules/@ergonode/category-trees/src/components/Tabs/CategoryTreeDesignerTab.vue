@@ -19,7 +19,10 @@
             </VerticalTabBar>
         </template>
         <template #grid>
-            <CategoryTreeWrapper />
+            <CategoryTreeWrapper
+                :scope="scope"
+                :change-values="changeValues"
+                :errors="errors" />
             <Button
                 title="SAVE CHANGES"
                 :floating="{ bottom: '24px', right: '24px' }"
@@ -51,6 +54,7 @@ import {
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import CategoryTreeWrapper from '@Trees/components/CategoryTreeDesigner/CategoryTreeWrapper';
 import {
     mapActions,
@@ -69,16 +73,9 @@ export default {
         DropZone,
         FadeTransition,
     },
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     data() {
         return {
             isSubmitting: false,
@@ -108,10 +105,6 @@ export default {
         ...mapActions('categoryTree', [
             'updateCategoryTree',
         ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
-        ]),
         onSubmit() {
             if (this.isSubmitting) {
                 return;
@@ -132,6 +125,8 @@ export default {
             });
 
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onUpdateError(errors) {
             this.onError(errors);

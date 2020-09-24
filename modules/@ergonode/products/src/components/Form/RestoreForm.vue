@@ -3,7 +3,13 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form>
+    <Form
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #body>
             <FormSection :title="modalTitle">
                 <RadioButton
@@ -26,6 +32,7 @@ import {
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import RadioButton from '@Core/components/Inputs/RadioButton';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     mapGetters,
 } from 'vuex';
@@ -37,6 +44,9 @@ export default {
         FormSection,
         RadioButton,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     props: {
         elements: {
             type: Array,
@@ -66,9 +76,6 @@ export default {
             const parentName = this.getLanguage(parent).name;
 
             return `Select attributes which values you want to restore from ${name} to parent translation (${parentName})`;
-        },
-        restoreFieldKey() {
-            return 'restored_elements';
         },
     },
     methods: {

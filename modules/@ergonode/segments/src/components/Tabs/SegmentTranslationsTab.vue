@@ -8,6 +8,8 @@
             <SegmentTranslationForm
                 v-for="languageCode in languageCodes"
                 :key="languageCode"
+                :scope="scope"
+                :change-values="changeValues"
                 :errors="errors"
                 :language-code="languageCode" />
         </template>
@@ -34,6 +36,7 @@ import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import SegmentTranslationForm from '@Segments/components/Forms/SegmentTranslationForm';
 import {
     mapActions,
@@ -47,16 +50,9 @@ export default {
         Button,
         IconSpinner,
     },
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     data() {
         return {
             isSubmitting: false,
@@ -65,10 +61,6 @@ export default {
     methods: {
         ...mapActions('segment', [
             'updateSegment',
-        ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -90,6 +82,8 @@ export default {
             });
 
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onUpdateError(errors) {
             this.onError(errors);

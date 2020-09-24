@@ -44,6 +44,7 @@ import FormSection from '@Core/components/Form/Section/FormSection';
 import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
 import TextField from '@Core/components/Inputs/TextField';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,
     mapState,
@@ -59,13 +60,8 @@ export default {
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
-    props: {
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         ...mapState('collection', [
             'id',
@@ -83,6 +79,9 @@ export default {
         typeIdFieldKey() {
             return 'typeId';
         },
+        typeFieldKey() {
+            return 'type';
+        },
         codeFieldKey() {
             return 'code';
         },
@@ -94,13 +93,25 @@ export default {
         ]),
         setCodeValue(value) {
             this.__setState({
-                key: 'code',
+                key: this.codeFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.codeFieldKey,
                 value,
             });
         },
         setTypeValue(value) {
             this.__setState({
-                key: 'type',
+                key: this.typeFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.typeFieldKey,
                 value,
             });
         },

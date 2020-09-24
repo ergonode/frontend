@@ -42,7 +42,9 @@ import Button from '@Core/components/Button/Button';
 import DropZone from '@Core/components/DropZone/DropZone';
 import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import LanguagesTreeWrapper from '@Core/components/LanguagesTreeDesigner/LanguagesTreeWrapper';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
+import VerticalTabBar from '@Core/components/TabBar/VerticalTabBar';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import {
     ALERT_TYPE,
@@ -50,6 +52,7 @@ import {
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     getMappedTreeData,
 } from '@Core/models/mappers/languageTreeMapper';
@@ -70,9 +73,12 @@ export default {
         DropZone,
         FadeTransition,
         IconSpinner,
-        LanguagesTreeWrapper: () => import('@Core/components/LanguagesTreeDesigner/LanguagesTreeWrapper'),
-        VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
+        LanguagesTreeWrapper,
+        VerticalTabBar,
     },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     asyncData({
         store,
     }) {
@@ -151,6 +157,8 @@ export default {
                     languages,
                 ] = getMappedTreeData(this.fullGridData);
 
+                this.removeScopeErrors(this.scope);
+
                 this.updateLanguageTree({
                     languages,
                     onSuccess: () => this.onUpdateSuccess(languages),
@@ -167,6 +175,8 @@ export default {
                 message: 'Languages tree has been updated',
             });
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onUpdateError(message) {
             this.$addAlert({

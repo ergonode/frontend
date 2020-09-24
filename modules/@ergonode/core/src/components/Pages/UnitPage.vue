@@ -25,6 +25,7 @@
         </TitleBar>
         <HorizontalRoutingTabBar
             :items="tabs"
+            :change-values="changeValues"
             :errors="errors" />
     </Page>
 </template>

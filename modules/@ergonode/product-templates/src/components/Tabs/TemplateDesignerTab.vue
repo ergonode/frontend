@@ -45,6 +45,9 @@
                             <template #content>
                                 <AttributeElementContent
                                     v-if="element.type !== sectionType"
+                                    :scope="scope"
+                                    :errors="errors"
+                                    :change-values="changeValues"
                                     :element="element"
                                     :disabled="!isUserAllowedToUpdate"
                                     :index="index" />
@@ -61,6 +64,9 @@
                 <SectionTemplateModalForm
                     v-if="isSectionAdded"
                     :index="sectionIndex"
+                    :scope="scope"
+                    :errors="errors"
+                    :change-values="changeValues"
                     :position="sectionPosition"
                     :element="sectionElement"
                     @close="onCloseSectionModal" />
@@ -91,6 +97,7 @@ import DropZone from '@Core/components/DropZone/DropZone';
 import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
+import VerticalTabBar from '@Core/components/TabBar/VerticalTabBar';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import {
     ALERT_TYPE,
@@ -98,6 +105,7 @@ import {
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     getObjectWithMaxValueInArrayByObjectKey,
 } from '@Core/models/arrayWrapper';
@@ -107,7 +115,9 @@ import {
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
 import TemplateGridDraggableLayer from '@Templates/components/Template/Base/TemplateGridDraggableLayer';
 import TemplateGridPlaceholderItem from '@Templates/components/Template/Base/TemplateGridPlaceholderItem';
+import AttributeElementContent from '@Templates/components/Template/ProductDesigner/AttributeElementContent';
 import LayoutElement from '@Templates/components/Template/ProductDesigner/LayoutElement';
+import SectionElementContent from '@Templates/components/Template/ProductDesigner/SectionElementContent';
 import PRIVILEGES from '@Templates/config/privileges';
 import {
     getHighlightingLayoutDropPositions,
@@ -130,21 +140,14 @@ export default {
         TemplateGridPlaceholderItem,
         LayoutElement,
         IconRemoveFilter,
-        VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
+        VerticalTabBar,
+        AttributeElementContent,
+        SectionElementContent,
         SectionTemplateModalForm: () => import('@Templates/components/Modals/SectionTemplateModalForm'),
-        AttributeElementContent: () => import('@Templates/components/Template/ProductDesigner/AttributeElementContent'),
-        SectionElementContent: () => import('@Templates/components/Template/ProductDesigner/SectionElementContent'),
     },
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     data() {
         return {
             highlightedPositions: [],
@@ -250,8 +253,7 @@ export default {
             'removeLayoutElementAtIndex',
         ]),
         ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
+            'onScopeValueChange',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -273,6 +275,8 @@ export default {
             });
 
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onUpdateError(errors) {
             this.onError(errors);
@@ -281,11 +285,23 @@ export default {
         },
         onRemoveLayoutElement(index) {
             this.removeLayoutElementAtIndex(index);
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'templateDesigner',
+                value: true,
+            });
         },
         onResizingElMaxRow(row) {
             if (row > this.maxRow) {
                 this.maxRow = row;
             }
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'templateDesigner',
+                value: true,
+            });
         },
         onRowsCountChange({
             value,
@@ -316,6 +332,12 @@ export default {
             } else {
                 this.addListElementToLayout(position);
             }
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'templateDesigner',
+                value: true,
+            });
         },
         onEditSectionTitle(index) {
             this.sectionElement = this.layoutElements[index];

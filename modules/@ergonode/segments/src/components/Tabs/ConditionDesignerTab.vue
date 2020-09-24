@@ -20,6 +20,8 @@
         </template>
         <template #grid>
             <ConditionSetWrapper
+                :scope="scope"
+                :change-values="changeValues"
                 :errors="errors"
                 :disabled="!isAllowedToUpdate" />
             <Button
@@ -54,6 +56,7 @@ import {
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import PRIVILEGES from '@Segments/config/privileges';
 import {
     mapActions,
@@ -72,16 +75,9 @@ export default {
         VerticalTabBar,
         ConditionSetWrapper,
     },
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     async fetch({
         store,
     }) {
@@ -144,10 +140,6 @@ export default {
             'updateSegment',
             '__setState',
         ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
-        ]),
         onSubmit() {
             if (this.isSubmitting) {
                 return;
@@ -186,6 +178,8 @@ export default {
             });
 
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onUpdateError(errors) {
             this.onError(errors);

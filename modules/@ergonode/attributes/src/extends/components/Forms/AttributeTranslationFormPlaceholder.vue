@@ -11,7 +11,7 @@
         height="150px"
         :error-messages="errors[placeholderFieldKey]"
         :disabled="!isUserAllowedToUpdate"
-        @input="(value) => setTranslationPropertyValue(value, 'placeholder')" />
+        @input="(value) => setTranslationPropertyValue(value, placeholderFieldKey)" />
 </template>
 
 <script>
@@ -27,12 +27,6 @@ export default {
     mixins: [
         translationCardMixin,
     ],
-    props: {
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         isUserAllowedToUpdate() {
             return this.$hasAccess([

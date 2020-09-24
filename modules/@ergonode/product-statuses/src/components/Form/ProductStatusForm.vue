@@ -61,6 +61,7 @@ import {
     COLORS,
 } from '@Core/defaults/colors';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Statuses/config/privileges';
 import {
     mapActions,
@@ -79,13 +80,8 @@ export default {
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
-    props: {
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         ...mapState('productStatus', [
             'id',
@@ -117,19 +113,34 @@ export default {
         ]),
         setCodeValue(value) {
             this.__setState({
-                key: 'code',
+                key: this.codeFieldKey,
+                value,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.codeFieldKey,
                 value,
             });
         },
         setColorValue(value) {
             this.__setState({
-                key: 'color',
+                key: this.colorFieldKey,
+                value,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.colorFieldKey,
                 value,
             });
         },
         setStatusAsDefaultValue(value) {
             this.__setState({
                 key: 'isDefaultStatus',
+                value,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'isDefaultStatus',
                 value,
             });
         },

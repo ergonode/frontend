@@ -13,7 +13,6 @@
             :grid-data="filteredGridData"
             :is-dragging-enabled="isDraggingEnabled"
             :is-multi-draggable="isMultiDraggable"
-            @removeDisabledElementsOnList="removeDisabledElementsOnList"
             @toggleItem="toggleItem"
             @afterDrop="id => $emit('afterDrop', id)"
             @afterRemove="id => $emit('afterRemove', id)"
@@ -100,6 +99,18 @@ export default {
         TemplateGridItem,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         isDraggingEnabled: {
             type: Boolean,
             default: false,
@@ -179,6 +190,9 @@ export default {
         ...mapActions('list', [
             'removeDisabledElement',
         ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         toggleItem({
             id, row, column, expanded,
         }) {
@@ -228,6 +242,12 @@ export default {
                     value: false,
                 });
             }
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'designer',
+                value: true,
+            });
         },
         connectionLineStyle({
             id, row, parent,
@@ -261,6 +281,12 @@ export default {
         },
         removeItemOnDrop(item) {
             this.removeDisabledElementsOnList(item.id);
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'designer',
+                value: true,
+            });
         },
         removeItem(item) {
             const {
@@ -275,6 +301,12 @@ export default {
                 value: -1,
             });
             this.removeGridItem(row);
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'designer',
+                value: true,
+            });
         },
         removeDisabledElementsOnList(id) {
             if (this.hiddenItems[id]) {
@@ -298,6 +330,12 @@ export default {
                     elementId: id,
                 });
             }
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'designer',
+                value: true,
+            });
         },
     },
 };

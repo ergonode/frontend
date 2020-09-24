@@ -51,3 +51,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .template-form-field {
+        display: flex;
+    }
+</style>

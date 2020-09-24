@@ -85,6 +85,7 @@ import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLaz
 import TextField from '@Core/components/Inputs/TextField';
 import Toggler from '@Core/components/Inputs/Toggler/Toggler';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
@@ -104,13 +105,8 @@ export default {
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
-    props: {
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     data() {
         return {
             activityStatuses: [
@@ -179,6 +175,12 @@ export default {
         roleIdFieldKey() {
             return 'roleId';
         },
+        roleFieldKey() {
+            return 'role';
+        },
+        isActiveFieldKey() {
+            return 'isActive';
+        },
     },
     methods: {
         ...mapActions('user', [
@@ -189,49 +191,97 @@ export default {
         ]),
         setEmailValue(value) {
             this.__setState({
-                key: 'email',
+                key: this.emailFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.emailFieldKey,
                 value,
             });
         },
         setFirstNameValue(value) {
             this.__setState({
-                key: 'firstName',
+                key: this.firstNameFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.firstNameFieldKey,
                 value,
             });
         },
         setLastNameValue(value) {
             this.__setState({
-                key: 'lastName',
+                key: this.lastNameFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.lastNameFieldKey,
                 value,
             });
         },
         setPasswordValue(value) {
             this.__setState({
-                key: 'password',
+                key: this.passwordFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.passwordFieldKey,
                 value,
             });
         },
         setPasswordRepeatValue(value) {
             this.__setState({
-                key: 'passwordRepeat',
+                key: this.passwordRepeatFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.passwordRepeatFieldKey,
                 value,
             });
         },
         setLanguageValue(value) {
             this.__setState({
-                key: 'language',
+                key: this.languageFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.languageFieldKey,
                 value,
             });
         },
         setRoleValue(value) {
             this.__setState({
-                key: 'role',
+                key: this.roleFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.roleFieldKey,
                 value,
             });
         },
         setStatusValue(value) {
             this.__setState({
-                key: 'isActive',
+                key: this.isActiveFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.isActiveFieldKey,
                 value,
             });
         },

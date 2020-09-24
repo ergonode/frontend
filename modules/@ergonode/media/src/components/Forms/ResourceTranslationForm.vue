@@ -15,7 +15,7 @@
                         height="150px"
                         :disabled="!isUserAllowedToUpdate"
                         :error-messages="translationErrors[altKeyField]"
-                        @input="(value) => setTranslationPropertyValue(value, 'alt')" />
+                        @input="(value) => setTranslationPropertyValue(value, altKeyField)" />
                 </FormSection>
             </template>
         </Form>

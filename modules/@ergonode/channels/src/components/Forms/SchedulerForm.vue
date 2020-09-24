@@ -57,6 +57,7 @@ import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 import TextField from '@Core/components/Inputs/TextField';
 import Toggler from '@Core/components/Inputs/Toggler/Toggler';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     DEFAULT_FORMAT,
     DEFAULT_HOUR_FORMAT,
@@ -82,13 +83,8 @@ export default {
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
-    props: {
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     data() {
         return {
             schedulerConfiguration: {},
@@ -188,6 +184,12 @@ export default {
                 key: 'scheduler',
                 value: JSON.stringify(tmpScheduler),
             });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.activeFieldKey,
+                value,
+            });
         },
         setDateChange(value) {
             let date = value ? formatDate(value, DEFAULT_FORMAT) : null;
@@ -202,6 +204,12 @@ export default {
                     ...this.schedulerConfiguration,
                     start: date,
                 }),
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.startFieldKey,
+                value: date,
             });
         },
         setTimeChange(value) {
@@ -225,6 +233,12 @@ export default {
                     start: tmpDate,
                 }),
             });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'time',
+                value: tmpDate,
+            });
         },
         setRecurrencyChange(value) {
             const [
@@ -240,6 +254,12 @@ export default {
             this.__setState({
                 key: 'scheduler',
                 value: JSON.stringify(tmpScheduler),
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.hourFieldKey,
+                value,
             });
         },
     },

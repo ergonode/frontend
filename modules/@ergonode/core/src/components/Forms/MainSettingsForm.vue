@@ -43,8 +43,8 @@ import InfoHint from '@Core/components/Hints/InfoHint';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import PRIVILEGES from '@Core/config/privileges';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -58,21 +58,8 @@ export default {
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     data() {
         return {
             filteredValue: '',
@@ -132,19 +119,14 @@ export default {
             }));
     },
     methods: {
-        ...mapActions('feedback', [
-            'onScopeValueChange',
-        ]),
         setSelectedLanguages(selectedLanguages) {
             this.activeLanguages = selectedLanguages;
 
-            // TODO: Only for CR purpose
-
-            // this.onScopeValueChange({
-            //     scope: this.scope,
-            //     fieldKey: this.languagesFieldKey,
-            //     value: selectedLanguages,
-            // });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.languagesFieldKey,
+                value: selectedLanguages,
+            });
 
             this.$emit('selectedLanguages', selectedLanguages);
         },

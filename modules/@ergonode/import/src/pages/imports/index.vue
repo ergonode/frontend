@@ -36,6 +36,9 @@
 <script>
 import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import Page from '@Core/components/Layout/Page';
+import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@Core/components/TitleBar/TitleBar';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -48,12 +51,12 @@ import PRIVILEGES from '@Import/config/privileges';
 export default {
     name: 'Imports',
     components: {
-        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
-        Page: () => import('@Core/components/Layout/Page'),
-        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
-        CreateImportProfileModalForm: () => import('@Import/components/Modals/CreateImportProfileModalForm'),
+        TitleBar,
+        Page,
+        HorizontalRoutingTabBar,
         Button,
         IconAdd,
+        CreateImportProfileModalForm: () => import('@Import/components/Modals/CreateImportProfileModalForm'),
     },
     mixins: [
         gridModalMixin,

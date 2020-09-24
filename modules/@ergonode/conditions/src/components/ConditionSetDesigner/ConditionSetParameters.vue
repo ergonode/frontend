@@ -42,6 +42,10 @@ export default {
             type: Number,
             required: true,
         },
+        scope: {
+            type: String,
+            default: '',
+        },
         errorMessages: {
             type: String,
             default: '',
@@ -129,6 +133,9 @@ export default {
         ...mapActions('condition', [
             'setConditionValue',
         ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         setConditionValueByType(value) {
             const {
                 name,
@@ -138,6 +145,12 @@ export default {
                 conditionId: this.itemId,
                 parameterName: name,
                 parameterValue: value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: `${this.itemId}|${name}`,
+                value,
             });
         },
     },
