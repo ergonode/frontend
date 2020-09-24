@@ -41,6 +41,7 @@ import FormSection from '@Core/components/Form/Section/FormSection';
 import TextArea from '@Core/components/Inputs/TextArea';
 import TextField from '@Core/components/Inputs/TextField';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
@@ -57,21 +58,8 @@ export default {
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         ...mapState('role', [
             'name',
@@ -92,9 +80,6 @@ export default {
     methods: {
         ...mapActions('role', [
             '__setState',
-        ]),
-        ...mapActions('feedback', [
-            'onScopeValueChange',
         ]),
         onSubmit() {
             this.$emit('submit');

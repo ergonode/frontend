@@ -85,6 +85,7 @@ import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLaz
 import TextField from '@Core/components/Inputs/TextField';
 import Toggler from '@Core/components/Inputs/Toggler/Toggler';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
@@ -104,21 +105,8 @@ export default {
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     data() {
         return {
             activityStatuses: [
@@ -200,9 +188,6 @@ export default {
         ]),
         ...mapActions('role', [
             'getRoleOptions',
-        ]),
-        ...mapActions('feedback', [
-            'onScopeValueChange',
         ]),
         setEmailValue(value) {
             this.__setState({

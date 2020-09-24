@@ -83,6 +83,7 @@ import Select from '@Core/components/Inputs/Select/Select';
 import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
 import TextField from '@Core/components/Inputs/TextField';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
@@ -105,21 +106,8 @@ export default {
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         ...mapState('attribute', [
             'id',
@@ -182,9 +170,6 @@ export default {
         ]),
         ...mapActions('attributeGroup', [
             'getAttributeGroupsOptions',
-        ]),
-        ...mapActions('feedback', [
-            'onScopeValueChange',
         ]),
         setCodeValue(value) {
             this.__setState({

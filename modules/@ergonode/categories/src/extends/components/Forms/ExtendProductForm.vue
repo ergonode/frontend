@@ -16,6 +16,7 @@
 
 <script>
 import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,
     mapState,
@@ -26,19 +27,10 @@ export default {
     components: {
         TranslationLazySelect,
     },
+    mixins: [
+        formFeedbackMixin,
+    ],
     props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
         disabled: {
             type: Boolean,
             default: false,
@@ -58,9 +50,6 @@ export default {
         ]),
         ...mapActions('category', [
             'getCategoriesOptions',
-        ]),
-        ...mapActions('feedback', [
-            'onScopeValueChange',
         ]),
         setCategoriesValue(value) {
             this.__setState({

@@ -34,6 +34,7 @@ import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import TextField from '@Core/components/Inputs/TextField';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,
     mapState,
@@ -48,21 +49,8 @@ export default {
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         ...mapState('attributeGroup', [
             'id',
@@ -83,9 +71,6 @@ export default {
     methods: {
         ...mapActions('attributeGroup', [
             '__setState',
-        ]),
-        ...mapActions('feedback', [
-            'onScopeValueChange',
         ]),
         setCodeValue(value) {
             this.__setState({

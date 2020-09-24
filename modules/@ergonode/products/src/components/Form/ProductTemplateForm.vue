@@ -26,13 +26,13 @@
 import {
     SCOPE,
 } from '@Attributes/defaults/attributes';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';
 import PRIVILEGES from '@Products/config/privileges';
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
 import {
-    mapActions,
     mapGetters,
     mapState,
 } from 'vuex';
@@ -42,6 +42,9 @@ export default {
     components: {
         TemplateGridDesigner,
     },
+    mixins: [
+        formFeedbackMixin,
+    ],
     props: {
         language: {
             type: Object,
@@ -50,18 +53,6 @@ export default {
         elements: {
             type: Array,
             default: () => [],
-        },
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
         },
     },
     data() {
@@ -102,9 +93,6 @@ export default {
         }) => () => import(`@Products/components/Form/Field/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`));
     },
     methods: {
-        ...mapActions('feedback', [
-            'onScopeValueChange',
-        ]),
         isUserAllowedToUpdate(scope) {
             const {
                 code,

@@ -45,6 +45,7 @@ import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import TextField from '@Core/components/Inputs/TextField';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 import PRIVILEGES from '@Templates/config/privileges';
 import {
@@ -62,21 +63,8 @@ export default {
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         ...mapState('productTemplate', [
             'id',
@@ -101,9 +89,6 @@ export default {
     methods: {
         ...mapActions('productTemplate', [
             '__setState',
-        ]),
-        ...mapActions('feedback', [
-            'onScopeValueChange',
         ]),
         onSubmit() {
             this.$emit('submit');

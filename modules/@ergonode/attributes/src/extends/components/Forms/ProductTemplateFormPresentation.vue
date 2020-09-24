@@ -25,6 +25,7 @@
 <script>
 import FormSection from '@Core/components/Form/Section/FormSection';
 import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,
     mapState,
@@ -36,19 +37,10 @@ export default {
         FormSection,
         TranslationLazySelect,
     },
+    mixins: [
+        formFeedbackMixin,
+    ],
     props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
         disabled: {
             type: Boolean,
             default: false,
@@ -66,9 +58,6 @@ export default {
         ]),
         ...mapActions('attribute', [
             'getAttributesOptionsByType',
-        ]),
-        ...mapActions('feedback', [
-            'onScopeValueChange',
         ]),
         setDefaultTextAttributeValue(value) {
             this.__setState({

@@ -2,6 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     getMappedTranslationErrors,
 } from '@Core/models/mappers/errorsMapper';
@@ -12,22 +13,13 @@ import {
 } from 'vuex';
 
 export default {
+    mixins: [
+        formFeedbackMixin,
+    ],
     props: {
         languageCode: {
             type: String,
             default: '',
-        },
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
         },
     },
     computed: {
@@ -50,9 +42,6 @@ export default {
     methods: {
         ...mapActions('tab', [
             'setTranslationValue',
-        ]),
-        ...mapActions('feedback', [
-            'onScopeValueChange',
         ]),
         setTranslationPropertyValue(value, propertyName) {
             this.setTranslationValue({

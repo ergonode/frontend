@@ -55,6 +55,7 @@ import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import Select from '@Core/components/Inputs/Select/Select';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,
     mapState,
@@ -72,21 +73,8 @@ export default {
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     data() {
         return {
             schemas: {},
@@ -136,9 +124,6 @@ export default {
         ...mapActions('channel', [
             '__setState',
             'getConfiguration',
-        ]),
-        ...mapActions('feedback', [
-            'onScopeValueChange',
         ]),
         async setSchema(type) {
             this.isFetchingConfiguration = true;

@@ -57,6 +57,7 @@ import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 import TextField from '@Core/components/Inputs/TextField';
 import Toggler from '@Core/components/Inputs/Toggler/Toggler';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     DEFAULT_FORMAT,
     DEFAULT_HOUR_FORMAT,
@@ -82,21 +83,8 @@ export default {
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     data() {
         return {
             schedulerConfiguration: {},
@@ -185,9 +173,6 @@ export default {
     methods: {
         ...mapActions('channel', [
             '__setState',
-        ]),
-        ...mapActions('feedback', [
-            'onScopeValueChange',
         ]),
         setIsActiveValue(value) {
             const tmpScheduler = {

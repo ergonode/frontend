@@ -36,6 +36,7 @@ import FormSection from '@Core/components/Form/Section/FormSection';
 import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
 import TextField from '@Core/components/Inputs/TextField';
 import ModalForm from '@Core/components/Modal/ModalForm';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,
 } from 'vuex';
@@ -49,19 +50,10 @@ export default {
         TextField,
         ModalForm,
     },
+    mixins: [
+        formFeedbackMixin,
+    ],
     props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
         index: {
             type: Number,
             default: null,
@@ -90,9 +82,6 @@ export default {
         ...mapActions('productTemplate', [
             'addSectionElementToLayout',
             'updateLayoutElementAtIndex',
-        ]),
-        ...mapActions('feedback', [
-            'onScopeValueChange',
         ]),
         onTitleChange(value) {
             this.title = value;
