@@ -1,0 +1,9 @@
+{
+  "core": {
+    "buttons": {
+      "create": "CREATE",
+      "proceed": "CREATE & EDIT",
+      "submit": "SAVE CHANGES"
+    }
+  }
+}

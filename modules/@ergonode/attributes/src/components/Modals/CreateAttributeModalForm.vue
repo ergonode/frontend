@@ -4,12 +4,12 @@
  */
 <template>
     <ModalForm
-        title="Create attribute"
+        :title="$t('attribute.form.createTitle')"
         @close="onClose">
         <template #body>
             <AttributeForm
-                submit-title="CREATE"
-                proceed-title="CREATE & EDIT"
+                :submit-title="$t('core.buttons.create')"
+                :proceed-title="$t('core.buttons.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :errors="scopeErrors"
@@ -106,7 +106,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Attribute created',
+                message: this.$t('attribute.messages.createSuccess'),
             });
 
             this.isSubmitting = false;

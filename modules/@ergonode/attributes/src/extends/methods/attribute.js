@@ -8,6 +8,9 @@ import {
     updateOption,
 } from '@Attributes/extends/services';
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     getKeyByValue,
     isObject,
 } from '@Core/models/objectWrapper';
@@ -94,13 +97,13 @@ export const prepareOptionsData = ({
 
             if (duplications.length > 1) {
                 errors[fieldKey] = [
-                    'Option code must be unique',
+                    $this.app.i18n.t('attribute.errors.optionUniq'),
                 ];
                 isAnyError = true;
             }
             if (!options[optionKey].key) {
                 errors[fieldKey] = [
-                    'Option cannot be empty',
+                    $this.app.i18n.t('attribute.errors.optionEmpty'),
                 ];
                 isAnyError = true;
             }
@@ -189,6 +192,24 @@ export const updateOptionsData = async ({
         ...addOptionsRequests,
         ...updateOptionsRequests,
     ]);
+};
+
+export const getAttributeOptions = async ({
+    $this, data,
+}) => {
+    const {
+        id,
+    } = data;
+
+    await $this.dispatch('attribute/getAttributeOptions', {
+        id,
+        onError: () => {
+            $this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: $this.app.i18n.t('attribute.errors.getOptionRequest'),
+            });
+        },
+    });
 };
 
 export const setParametersData = ({

@@ -7,6 +7,7 @@ import {
 } from '@Attributes/defaults/attributes';
 import {
     createOptionsData,
+    getAttributeOptions,
     prepareOptionsData,
     prepareParametersData,
     prepareTextAreaData,
@@ -145,7 +146,7 @@ export default {
                 return {};
             }
         },
-        '@Attributes/store/attribute/action/updateAttribute/__before': ({
+        '@Attributes/store/attribute/action/updateAttribute/__before': async ({
             $this, type, data,
         }) => {
             const typeConfig = getTypeConfiguration({
@@ -163,12 +164,12 @@ export default {
                 });
             case 'SELECT':
             case 'MULTI_SELECT':
-                prepareOptionsData({
+                await prepareOptionsData({
                     $this,
                     typeConfig,
                 });
 
-                updateOptionsData({
+                await updateOptionsData({
                     $this,
                     data,
                 });
@@ -210,7 +211,7 @@ export default {
                 return [];
             }
         },
-        '@Attributes/store/attribute/action/getAttribute/__after': ({
+        '@Attributes/store/attribute/action/getAttribute/__after': async ({
             $this, data, type,
         }) => {
             const typeConfig = getTypeConfiguration({
@@ -242,6 +243,13 @@ export default {
             case 'NUMERIC':
             case 'TEXT':
                 setTranslation({
+                    $this,
+                    data,
+                });
+                break;
+            case 'SELECT':
+            case 'MULTI_SELECT':
+                await getAttributeOptions({
                     $this,
                     data,
                 });

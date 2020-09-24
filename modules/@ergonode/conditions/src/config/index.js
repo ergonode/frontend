@@ -4,6 +4,7 @@
  */
 export default {
     name: '@ergonode/conditions',
+    order: 120,
     aliases: {
         '@Conditions': '/',
     },

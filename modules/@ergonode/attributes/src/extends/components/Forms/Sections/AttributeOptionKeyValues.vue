@@ -6,7 +6,7 @@
     <FormListSection
         data-cy="attribute-add-options"
         :disabled="disabled"
-        add-list-title="ADD OPTION KEY"
+        :add-list-title="$t('attribute.form.addOption')"
         @add="addOptionKey">
         <FormListSubsection v-if="optionIndexes.length">
             <FormListElementField
@@ -21,7 +21,7 @@
                     required
                     :size="smallSize"
                     :disabled="disabled"
-                    label="Option code"
+                    :label="$t('attribute.form.optionLabel')"
                     :error-messages="errorMessages[`option_${fieldKey}`]"
                     @input="value => updateAttributeOptionKey({
                         index: fieldKey,

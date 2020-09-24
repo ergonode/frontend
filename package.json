@@ -36,7 +36,7 @@
     },
     "dependencies": {
         "@babel/register": "^7.10.4",
-        "@ergonode/vuems": "^0.10.2",
+        "@ergonode/vuems": "^0.11.0",
         "@nuxtjs/axios": "^5.12.2",
         "@nuxtjs/component-cache": "^1.1.5",
         "@nuxtjs/router": "^1.5.0",
@@ -61,6 +61,7 @@
         "git-repo-info": "^2.1.1",
         "inquirer": "^7.3.0",
         "nuxt": "^2.14.6",
+        "nuxt-i18n": "^6.15.1",
         "tiptap": "^1.30.0",
         "tiptap-extensions": "^1.33.0",
         "vue-chartjs": "^3.5.0",

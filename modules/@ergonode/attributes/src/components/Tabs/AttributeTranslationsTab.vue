@@ -15,7 +15,7 @@
         </template>
         <template #saveButton>
             <Button
-                title="SAVE CHANGES"
+                :title="$t('core.buttons.submit')"
                 data-cy="submit"
                 :floating="{ bottom: '24px', right: '24px' }"
                 @click.native="onSubmit">
@@ -78,7 +78,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Attribute translations have been updated',
+                message: this.$t('attribute.messages.updateTranslationSuccess'),
             });
 
             this.isSubmitting = false;

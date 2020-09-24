@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import AttributeOptionKeyValues from '@Attributes/components/Forms/Sections/AttributeOptionKeyValues';
 import PRIVILEGES from '@Attributes/config/privileges';
+import AttributeOptionKeyValues from '@Attributes/extends/components/Forms/Sections/AttributeOptionKeyValues';
 import {
     mapActions,
     mapState,

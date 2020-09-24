@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="Options"
+        :title="$t('attribute.form.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -20,13 +20,13 @@
                     required
                     :error-messages="errors[codeFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    label="System name"
-                    hint="System name must be unique"
+                    :label="$t('attribute.form.nameLabel')"
+                    :hint="$t('attribute.form.nameHint')"
                     @input="setCodeValue" />
                 <TranslationLazySelect
                     :data-cy="dataCyGenerator(groupsFieldKey)"
                     :value="groups"
-                    label="Groups"
+                    :label="$t('attribute.form.groupLabel')"
                     :multiselect="true"
                     :clearable="true"
                     :disabled="!isAllowedToUpdate"
@@ -37,19 +37,19 @@
                     :data-cy="dataCyGenerator(typeFieldKey)"
                     :value="type"
                     required
-                    label="Type"
+                    :label="$t('attribute.form.typeLabel')"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :options="attributeTypeOptions"
                     :error-messages="errors[typeFieldKey]"
                     @input="onTypeChange" />
             </FormSection>
             <Divider />
-            <FormSection title="Configuration">
+            <FormSection :title="$t('attribute.form.sectionTitle')">
                 <Select
                     :data-cy="dataCyGenerator(scopeFieldKey)"
                     :value="attributeScope"
                     required
-                    label="Scope"
+                    :label="$t('attribute.form.scopeLabel')"
                     :disabled="!isAllowedToUpdate"
                     :options="attributeScopeOptions"
                     :error-messages="errors[scopeFieldKey]"
@@ -134,7 +134,9 @@ export default {
             return {};
         },
         scopeHint() {
-            return `Global means the same attribute values for each language, inherited from the root language (${this.rootLanguage.name}). Option values can be translated, but cannot be changed in the product template.`;
+            return this.$t('attribute.form.scopeHint', {
+                lang: this.rootLanguage.name,
+            });
         },
         typeKey() {
             return getKeyByValue(this.attrTypes, this.type);

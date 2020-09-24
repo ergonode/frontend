@@ -4,6 +4,7 @@
  */
 export default {
     name: '@ergonode/status-transitions',
+    order: 150,
     relations: [
         '@ergonode/conditions',
         '@ergonode/product-statuses',

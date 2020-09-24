@@ -4,6 +4,7 @@
  */
 export default {
     name: '@ergonode/users',
+    order: 30,
     aliases: {
         '@Users': '/',
     },

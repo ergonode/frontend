@@ -19,13 +19,18 @@ export default {
         commit,
     }, {
         id,
+        onError = () => {},
     }) {
-        const options = await getOption({
-            $axios: this.app.$axios,
-            id,
-        });
+        try {
+            const options = await getOption({
+                $axios: this.app.$axios,
+                id,
+            });
 
-        commit(types.INITIALIZE_OPTIONS, getMappedArrayOptions(options));
+            commit(types.INITIALIZE_OPTIONS, getMappedArrayOptions(options));
+        } catch (e) {
+            onError(e);
+        }
     },
     addAttributeOptionKey({
         commit,

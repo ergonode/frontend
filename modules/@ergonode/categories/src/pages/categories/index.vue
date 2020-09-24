@@ -5,12 +5,12 @@
 <template>
     <Page>
         <TitleBar
-            title="Categories"
+            :title="$t('category.page.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <Button
                     data-cy="new-category"
-                    title="NEW CATEGORY"
+                    :title="$t('category.page.addButton')"
                     :size="smallSize"
                     :disabled="!isAllowedToCreate"
                     @click.native="onShowModal">
@@ -85,7 +85,7 @@ export default {
     },
     head() {
         return {
-            title: 'Categories - Ergonode',
+            title: this.$t('category.page.head'),
         };
     },
 };

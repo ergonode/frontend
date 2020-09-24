@@ -4,6 +4,7 @@
  */
 export default {
     name: '@ergonode/segments',
+    order: 140,
     relations: [
         '@ergonode/conditions',
         '@ergonode/products',

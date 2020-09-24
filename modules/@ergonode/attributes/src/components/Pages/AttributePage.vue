@@ -15,7 +15,7 @@
                     data-cy="delete-attribute"
                     :theme="secondaryTheme"
                     :size="smallSize"
-                    title="REMOVE ATTRIBUTE"
+                    :title="$t('attribute.page.removeButton')"
                     :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
