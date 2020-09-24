@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import AttributeOptionValues from '@Attributes/components/Forms/Sections/AttributeOptionValues';
 import PRIVILEGES from '@Attributes/config/privileges';
+import AttributeOptionValues from '@Attributes/extends/components/Forms/Sections/AttributeOptionValues';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 
 export default {

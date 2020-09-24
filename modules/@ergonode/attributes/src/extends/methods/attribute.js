@@ -97,13 +97,13 @@ export const prepareOptionsData = ({
 
             if (duplications.length > 1) {
                 errors[fieldKey] = [
-                    'Option code must be unique',
+                    $this.app.i18n.t('attribute.errors.optionUniq'),
                 ];
                 isAnyError = true;
             }
             if (!options[optionKey].key) {
                 errors[fieldKey] = [
-                    'Option cannot be empty',
+                    $this.app.i18n.t('attribute.errors.optionEmpty'),
                 ];
                 isAnyError = true;
             }
@@ -206,7 +206,7 @@ export const getAttributeOptions = async ({
         onError: () => {
             $this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Attribute options hasn’t been fetched properly',
+                message: $this.app.i18n.t('attribute.errors.getOptionRequest'),
             });
         },
     });

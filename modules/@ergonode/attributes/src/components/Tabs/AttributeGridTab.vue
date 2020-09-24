@@ -52,8 +52,8 @@ export default {
     computed: {
         noRecordsPlaceholder() {
             return {
-                title: 'No attributes',
-                subtitle: 'There are no attributes in the system, you can create the first one.',
+                title: this.$t('attribute.grid.placeholderTitle'),
+                subtitle: this.$t('attribute.grid.placeholderSubtitle'),
                 bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
                 color: WHITESMOKE,
             };

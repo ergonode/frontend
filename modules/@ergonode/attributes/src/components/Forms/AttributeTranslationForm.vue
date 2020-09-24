@@ -10,14 +10,14 @@
                     <TextField
                         :data-cy="dataCyGenerator(labelFieldKey)"
                         :value="translations.label[languageCode]"
-                        label="Attribute name"
+                        :label="$t('attribute.translation.nameLabel')"
                         :error-messages="translationErrors[labelFieldKey]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, labelFieldKey)" />
                     <TextArea
                         :data-cy="dataCyGenerator(hintFieldKey)"
                         :value="translations.hint[languageCode]"
-                        label="Tooltip for writers"
+                        :label="$t('attribute.translation.hintLabel')"
                         resize="none"
                         height="150px"
                         :error-messages="translationErrors[hintFieldKey]"
@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import AttributeOptionValues from '@Attributes/components/Forms/Sections/AttributeOptionValues';
 import PRIVILEGES from '@Attributes/config/privileges';
 import Card from '@Core/components/Card/Card';
 import Divider from '@Core/components/Dividers/Divider';
@@ -64,7 +63,6 @@ export default {
         Divider,
         TextField,
         TextArea,
-        AttributeOptionValues,
     },
     mixins: [
         translationCardMixin,
