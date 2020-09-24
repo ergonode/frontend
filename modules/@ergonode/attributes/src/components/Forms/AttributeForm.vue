@@ -47,7 +47,7 @@
             <FormSection title="Configuration">
                 <Select
                     :data-cy="dataCyGenerator(scopeFieldKey)"
-                    :value="scope"
+                    :value="attributeScope"
                     required
                     label="Scope"
                     :disabled="!isAllowedToUpdate"
@@ -114,8 +114,10 @@ export default {
             'code',
             'groups',
             'type',
-            'scope',
         ]),
+        ...mapState('attribute', {
+            attributeScope: state => state.scope,
+        }),
         ...mapState('dictionaries', [
             'attrTypes',
         ]),
