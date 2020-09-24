@@ -26,6 +26,7 @@
 import {
     SCOPE,
 } from '@Attributes/defaults/attributes';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';
@@ -41,6 +42,9 @@ export default {
     components: {
         TemplateGridDesigner,
     },
+    mixins: [
+        formFeedbackMixin,
+    ],
     props: {
         language: {
             type: Object,
@@ -49,10 +53,6 @@ export default {
         elements: {
             type: Array,
             default: () => [],
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
         },
     },
     data() {
@@ -105,6 +105,12 @@ export default {
                 && (this.rootLanguage.code === code || scope === SCOPE.LOCAL);
         },
         onValueChange(payload) {
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: `${payload.languageCode}|${payload.fieldKey}`,
+                value: payload.value,
+            });
+
             this.$emit('input', payload);
         },
     },

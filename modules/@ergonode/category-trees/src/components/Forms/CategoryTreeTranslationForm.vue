@@ -13,7 +13,7 @@
                         label="Tree name"
                         :disabled="!isUserAllowedToUpdate"
                         :error-messages="translationErrors[nameFieldKey]"
-                        @input="(value) => setTranslationPropertyValue(value, 'name')" />
+                        @input="(value) => setTranslationPropertyValue(value, nameFieldKey)" />
                 </FormSection>
             </template>
         </Form>

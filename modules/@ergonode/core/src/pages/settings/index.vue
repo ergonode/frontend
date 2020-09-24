@@ -39,6 +39,7 @@ import Page from '@Core/components/Layout/Page';
 import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@Core/components/TitleBar/TitleBar';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import {
     getNestedTabRoutes,
 } from '@Core/models/navigation/tabs';
@@ -55,6 +56,7 @@ export default {
     },
     mixins: [
         gridModalMixin,
+        beforeLeavePageMixin,
     ],
     data() {
         return {

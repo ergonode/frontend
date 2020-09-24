@@ -39,6 +39,7 @@
                     :parameter="parameter"
                     :item-id="itemId"
                     :item-row="itemRow"
+                    :scope="scope"
                     :error-messages="errors[parameter.name]"
                     :disabled="disabled" />
             </div>
@@ -82,6 +83,14 @@ export default {
         itemRow: {
             type: Number,
             required: true,
+        },
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
         },
         errors: {
             type: Object,

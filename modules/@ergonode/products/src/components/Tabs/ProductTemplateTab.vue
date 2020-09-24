@@ -38,6 +38,8 @@
             <ProductTemplateForm
                 :language="language"
                 :elements="elements"
+                :scope="scope"
+                :change-values="changeValues"
                 :errors="errors"
                 @input="onValueChange" />
         </template>
@@ -45,7 +47,7 @@
             <Button
                 title="SAVE CHANGES"
                 :floating="{ bottom: '24px', right: '24px' }"
-                @click.native="onSave">
+                @click.native="onSubmit">
                 <template
                     v-if="isSubmitting"
                     #prepend="{ color }">
@@ -60,6 +62,7 @@
 import Button from '@Core/components/Button/Button';
 import IconRestore from '@Core/components/Icons/Actions/IconRestore';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import TreeSelect from '@Core/components/Inputs/Select/Tree/TreeSelect';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     ALERT_TYPE,
@@ -69,7 +72,9 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import ProductTemplateForm from '@Products/components/Form/ProductTemplateForm';
+import ProductCompleteness from '@Products/components/Progress/ProductCompleteness';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     mapActions,
@@ -85,24 +90,15 @@ export default {
         IconRestore,
         ProductTemplateForm,
         CenterViewTemplate,
+        TreeSelect,
+        ProductCompleteness,
         RestoreAttributeParentModalForm: () => import('@Products/components/Modals/RestoreAttributeParentModalForm'),
-        ProductCompleteness: () => import('@Products/components/Progress/ProductCompleteness'),
-        TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
     },
     mixins: [
         gridModalMixin,
+        tabFeedbackMixin,
     ],
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
-    asyncData({
+    async asyncData({
         store,
         params: {
             id,
@@ -112,7 +108,10 @@ export default {
             defaultLanguageCode,
         } = store.state.core;
 
-        return Promise.all([
+        const [
+            templateResponse,
+            completenessResponse,
+        ] = await Promise.all([
             store.dispatch('product/getProductTemplate', {
                 languageCode: defaultLanguageCode,
                 id,
@@ -125,13 +124,12 @@ export default {
                 languageCode: defaultLanguageCode,
                 id,
             }),
-        ]).then(([
-            templateResponse,
-            completenessResponse,
-        ]) => ({
+        ]);
+
+        return {
             elements: templateResponse,
             completeness: completenessResponse,
-        }));
+        };
     },
     data() {
         return {
@@ -194,11 +192,7 @@ export default {
             'getProductCompleteness',
             'applyProductDraft',
         ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
-        ]),
-        onSave() {
+        onSubmit() {
             if (this.isSubmitting) {
                 return;
             }
@@ -219,16 +213,21 @@ export default {
             });
 
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onUpdateError(errors) {
             this.onError(errors);
 
             this.isSubmitting = false;
         },
-        onLanguageChange(value) {
+        async onLanguageChange(value) {
             const languageCode = value.code;
 
-            Promise.all([
+            const [
+                templateResponse,
+                completenessResponse,
+            ] = await Promise.all([
                 this.getProductTemplate({
                     languageCode,
                     id: this.id,
@@ -241,14 +240,11 @@ export default {
                     languageCode,
                     id: this.id,
                 }),
-            ]).then(([
-                templateResponse,
-                completenessResponse,
-            ]) => {
-                this.elements = templateResponse;
-                this.completeness = completenessResponse;
-                this.language = value;
-            });
+            ]);
+
+            this.elements = templateResponse;
+            this.completeness = completenessResponse;
+            this.language = value;
         },
         async onRestoreDraftValues() {
             const {

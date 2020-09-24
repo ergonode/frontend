@@ -19,19 +19,21 @@ export default {
         value,
         fieldKey,
     }) {
-        const {
-            changeValues,
-        } = state;
+        if (scope) {
+            const {
+                changeValues,
+            } = state;
 
-        if (typeof changeValues[scope] === 'undefined') {
-            commit(types.SET_CHANGE_VALUES_SCOPE, scope);
+            if (typeof changeValues[scope] === 'undefined') {
+                commit(types.SET_CHANGE_VALUES_SCOPE, scope);
+            }
+
+            commit(types.SET_CHANGE_VALUES_SCOPE_FIELD_VALUE, {
+                scope,
+                fieldKey,
+                value,
+            });
         }
-
-        commit(types.SET_CHANGE_VALUES_SCOPE_FIELD_VALUE, {
-            scope,
-            fieldKey,
-            value,
-        });
     },
     markChangeValuesAsSaved({
         state,

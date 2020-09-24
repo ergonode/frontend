@@ -137,7 +137,6 @@ export default {
             'addGridItem',
             'removeGridItem',
             'rebuildGrid',
-            'removeHiddenItem',
         ]),
         calculateRowsCount() {
             const {
@@ -283,11 +282,6 @@ export default {
                 this.setGhostItemPosition(coordinates);
             }
             return true;
-        },
-        removeElementFromGrid(id) {
-            if (!this.isMultiDraggable) this.$emit('removeDisabledElementsOnList', id);
-            this.removeHiddenItem(id);
-            this.$emit('afterRemove', id);
         },
         insertElementIntoGrid() {
             const {

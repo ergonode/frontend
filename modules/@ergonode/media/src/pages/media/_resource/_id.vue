@@ -15,6 +15,7 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import ResourcePage from '@Media/components/Pages/ResourcePage';
 import {
     mapActions,
@@ -26,6 +27,9 @@ export default {
     components: {
         ResourcePage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     asyncData({
         store, params,
     }) {

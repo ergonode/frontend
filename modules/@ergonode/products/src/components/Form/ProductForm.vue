@@ -58,6 +58,7 @@ import Select from '@Core/components/Inputs/Select/Select';
 import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
 import TextField from '@Core/components/Inputs/TextField';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
@@ -83,13 +84,8 @@ export default {
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
-    props: {
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         ...mapState('dictionaries', [
             'productTypes',
@@ -146,10 +142,20 @@ export default {
                 key: 'type',
                 value,
             });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'type',
+                value,
+            });
         },
         setSkuValue(value) {
             this.__setState({
-                key: 'sku',
+                key: this.skuFieldKey,
+                value,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.skuFieldKey,
                 value,
             });
         },
@@ -158,12 +164,20 @@ export default {
                 key: 'template',
                 value,
             });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'template',
+                value,
+            });
         },
         bindingProps({
             props,
         }) {
             return {
                 disabled: !this.isAllowedToUpdate,
+                changeValues: this.changeValues,
+                scope: this.scope,
+                errors: this.errors,
                 ...props,
             };
         },

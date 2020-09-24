@@ -8,7 +8,9 @@
             <ImportProfileForm
                 submit-title="SAVE CHANGES"
                 :is-submitting="isSubmitting"
+                :scope="scope"
                 :errors="errors"
+                :changed-values="changeValues"
                 @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
@@ -19,6 +21,7 @@ import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemp
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import ImportProfileForm from '@Import/components/Forms/ImportProfileForm';
 import {
     mapActions,
@@ -30,16 +33,9 @@ export default {
         CenterViewTemplate,
         ImportProfileForm,
     },
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     data() {
         return {
             isSubmitting: false,
@@ -48,10 +44,6 @@ export default {
     methods: {
         ...mapActions('import', [
             'updateImportProfile',
-        ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -73,6 +65,8 @@ export default {
             });
 
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onUpdateError(errors) {
             this.onError(errors);

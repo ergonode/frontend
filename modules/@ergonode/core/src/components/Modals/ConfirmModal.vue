@@ -9,12 +9,12 @@
         <template #footer>
             <Button
                 data-cy="modal-confirm"
-                :title="agreeButtonText"
+                :title="applyTitle"
                 :size="smallSize"
                 @click.native="onAgree" />
             <Button
                 data-cy="modal-cancel"
-                title="CANCEL"
+                :title="cancelTitle"
                 :theme="secondaryTheme"
                 :size="smallSize"
                 @click.native="onClose" />
@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import Button from '@Core/components/Button/Button';
+import ModalConfirm from '@Core/components/Modal/ModalConfirm';
 import {
     SIZE,
     THEME,
@@ -31,17 +33,13 @@ import {
 export default {
     name: 'ConfirmModal',
     components: {
-        ModalConfirm: () => import('@Core/components/Modal/ModalConfirm'),
-        Button: () => import('@Core/components/Button/Button'),
+        ModalConfirm,
+        Button,
     },
     props: {
         type: {
             type: String,
             default: '',
-        },
-        agreeButton: {
-            type: String,
-            default: 'OK',
         },
     },
     computed: {
@@ -51,11 +49,14 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-        agreeButtonText() {
-            return this.agreeButton.toUpperCase();
-        },
         modalData() {
             return this.$getModal(this.type);
+        },
+        applyTitle() {
+            return this.modalData.applyTitle || 'OK';
+        },
+        cancelTitle() {
+            return this.modalData.cancelTitle || 'CANCEL';
         },
     },
     methods: {

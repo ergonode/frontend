@@ -8,31 +8,27 @@
         @close="onClose">
         <template #body>
             <RestoreForm
+                submit-title="RESTORE"
+                proceed-title="CANCEL"
+                :is-submitting="isSubmitting"
                 :elements="elements"
                 :language="language"
-                @update="updateRestoredElement" />
-        </template>
-        <template #footer>
-            <Button
-                title="RESTORE"
-                :disabled="isRequestPending"
-                @click.native="onRestore" />
-            <Button
-                title="CANCEL"
-                :theme="secondaryTheme"
-                :disabled="isRequestPending"
-                @click.native="onClose" />
+                @update="updateRestoredElement"
+                @submit="onRestore"
+                @proceed="onClose" />
         </template>
     </ModalForm>
 </template>
 
 <script>
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     THEME,
 } from '@Core/defaults/theme';
+import RestoreForm from '@Products/components/Form/RestoreForm';
 import {
     mapActions,
 } from 'vuex';
@@ -40,9 +36,8 @@ import {
 export default {
     name: 'RestoreAttributeParentModalForm',
     components: {
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
-        RestoreForm: () => import('@Products/components/Form/RestoreForm'),
+        ModalForm,
+        RestoreForm,
     },
     props: {
         language: {
@@ -56,7 +51,7 @@ export default {
     },
     data() {
         return {
-            isRequestPending: false,
+            isSubmitting: false,
             restoredElement: '',
         };
     },
@@ -97,7 +92,7 @@ export default {
                     element => element.label === this.restoredElement,
                 ).properties.attribute_id,
             }).then(() => {
-                this.isRequestPending = false;
+                this.isSubmitting = false;
                 this.removeScopeErrors();
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
@@ -106,7 +101,7 @@ export default {
                 this.$emit('restore');
                 this.$emit('close');
             }).catch((e) => {
-                this.isRequestPending = false;
+                this.isSubmitting = false;
                 this.onError({
                     errors: e.data.errors,
                 });

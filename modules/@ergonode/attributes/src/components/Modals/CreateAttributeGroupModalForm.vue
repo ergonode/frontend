@@ -70,6 +70,7 @@ export default {
         ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
+            'markChangeValuesAsSaved',
         ]),
         onClose() {
             this.__clearStorage();

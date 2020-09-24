@@ -9,11 +9,12 @@
 </template>
 
 <script>
+import LoginLayout from '@Core/layouts/login';
 
 export default {
     name: 'NuxtLoginLayout',
     components: {
-        LoginLayout: () => import('@Core/layouts/login'),
+        LoginLayout,
     },
     middleware({
         store, redirect,

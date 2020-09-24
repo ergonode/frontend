@@ -15,6 +15,7 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import TransitionPage from '@Transitions/components/Pages/TransitionPage';
 import {
     mapActions,
     mapState,
@@ -23,7 +24,7 @@ import {
 export default {
     name: 'TransitionEdit',
     components: {
-        TransitionPage: () => import('@Transitions/components/Pages/TransitionPage'),
+        TransitionPage,
     },
     async fetch({
         store, params,

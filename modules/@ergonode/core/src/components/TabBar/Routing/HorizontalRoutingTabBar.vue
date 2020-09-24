@@ -17,6 +17,7 @@
                             :key="index"
                             :index="index"
                             :item="item"
+                            :selected-index="selectedTabIndex"
                             :change-values="changeValues[item.scope]"
                             :errors="errors[item.scope]"
                             @select="onSelectTabBarItem" />

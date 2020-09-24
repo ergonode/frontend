@@ -56,6 +56,7 @@ import FormSection from '@Core/components/Form/Section/FormSection';
 import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     isEmpty,
 } from '@Core/models/objectWrapper';
@@ -76,13 +77,8 @@ export default {
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
-    props: {
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         ...mapState('statusTransition', [
             'source',
@@ -138,19 +134,34 @@ export default {
         ]),
         setSourceValue(value) {
             this.__setState({
-                key: 'source',
+                key: this.sourceFieldKey,
+                value,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.sourceFieldKey,
                 value,
             });
         },
         setDestinationValue(value) {
             this.__setState({
-                key: 'destination',
+                key: this.destinationFieldKey,
+                value,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.destinationFieldKey,
                 value,
             });
         },
         setRolesValue(value) {
             this.__setState({
                 key: 'roles',
+                value,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'roles',
                 value,
             });
         },

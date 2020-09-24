@@ -74,6 +74,7 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     mapActions,
     mapState,
@@ -92,17 +93,8 @@ export default {
         fetchGridDataMixin({
             path: 'collections/_id/elements',
         }),
+        tabFeedbackMixin,
     ],
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     async fetch() {
         await this.onFetchData();
         this.isPrefetchingData = false;
@@ -166,8 +158,7 @@ export default {
             'updateCollectionProductsVisibility',
         ]),
         ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
+            'onScopeValueChange',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -193,6 +184,8 @@ export default {
             this.setDrafts();
 
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onUpdateError(errors) {
             this.onError(errors);
@@ -211,6 +204,12 @@ export default {
             this.setDrafts({
                 ...this.drafts,
                 ...drafts,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'collectionProducts',
+                value: drafts,
             });
         },
         onSelectAddProductOption(option) {

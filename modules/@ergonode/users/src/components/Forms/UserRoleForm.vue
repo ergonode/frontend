@@ -41,6 +41,7 @@ import FormSection from '@Core/components/Form/Section/FormSection';
 import TextArea from '@Core/components/Inputs/TextArea';
 import TextField from '@Core/components/Inputs/TextField';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
@@ -57,13 +58,8 @@ export default {
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
-    props: {
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         ...mapState('role', [
             'name',
@@ -90,13 +86,25 @@ export default {
         },
         setNameValue(value) {
             this.__setState({
-                key: 'name',
+                key: this.nameFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.nameFieldKey,
                 value,
             });
         },
         setDescriptionValue(value) {
             this.__setState({
-                key: 'description',
+                key: this.descriptionFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.descriptionFieldKey,
                 value,
             });
         },

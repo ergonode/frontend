@@ -40,6 +40,7 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
@@ -63,17 +64,8 @@ export default {
     },
     mixins: [
         gridDraftMixin,
+        tabFeedbackMixin,
     ],
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     data() {
         return {
             columns: [],
@@ -110,8 +102,7 @@ export default {
             'updateRole',
         ]),
         ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
+            'onScopeValueChange',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -133,6 +124,8 @@ export default {
             });
 
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onUpdateError(errors) {
             this.onError(errors);
@@ -164,6 +157,11 @@ export default {
             });
             this.__setState({
                 key: 'drafts',
+                value: this.drafts,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'rolePrivileges',
                 value: this.drafts,
             });
         },

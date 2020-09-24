@@ -12,12 +12,12 @@
             v-if="hasError"
             view-box="6 -6 12 36"
             :fill-color="redColor" />
+        <IconMark
+            v-else-if="hasSuccess"
+            :fill-color="greenColor" />
         <IconSync
             v-else-if="hasValueToSave"
             :fill-color="graphiteDarkColor" />
-        <IconMark
-            v-else-if="changeValues.saved"
-            :fill-color="greenColor" />
     </div>
 </template>
 
@@ -40,6 +40,10 @@ export default {
     },
     props: {
         index: {
+            type: Number,
+            required: true,
+        },
+        selectedIndex: {
             type: Number,
             required: true,
         },
@@ -74,20 +78,28 @@ export default {
         graphiteDarkColor() {
             return GRAPHITE_DARK;
         },
+        changeValuesKeys() {
+            return Object.keys(this.changeValues);
+        },
         hasValueToSave() {
-            return Object.keys(this.changeValues).length > 0 && !this.changeValues.saved;
+            return this.changeValuesKeys.length > 0 && !this.changeValues.saved;
         },
         hasError() {
             return Object.keys(this.errors).length > 0;
         },
+        hasSuccess() {
+            return this.changeValues.saved;
+        },
     },
     methods: {
         onLinkSelect() {
-            this.$router.push({
-                name: this.item.route.name,
-            });
+            if (this.selectedIndex !== this.index) {
+                this.$router.push({
+                    name: this.item.route.name,
+                });
 
-            this.$emit('select', this.index);
+                this.$emit('select', this.index);
+            }
         },
     },
 };
