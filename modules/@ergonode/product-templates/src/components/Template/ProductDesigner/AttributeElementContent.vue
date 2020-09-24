@@ -80,6 +80,18 @@ export default {
         CheckBox,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         index: {
             type: Number,
             required: true,
@@ -141,6 +153,9 @@ export default {
             'updateLayoutElementAtIndex',
             'removeLayoutElementAtIndex',
         ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         onSelectFocus(isFocused) {
             if (!isFocused) this.isHovered = false;
 
@@ -156,9 +171,21 @@ export default {
                         required: !this.element.required,
                     },
                 });
+
+                this.onScopeValueChange({
+                    scope: this.scope,
+                    fieldKey: 'templateDesigner',
+                    value: true,
+                });
                 break;
             case 'Remove':
                 this.removeLayoutElementAtIndex(this.index);
+
+                this.onScopeValueChange({
+                    scope: this.scope,
+                    fieldKey: 'templateDesigner',
+                    value: true,
+                });
                 break;
             default: break;
             }

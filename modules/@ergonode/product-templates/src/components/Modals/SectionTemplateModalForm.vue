@@ -50,6 +50,18 @@ export default {
         ModalForm,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         index: {
             type: Number,
             default: null,
@@ -79,6 +91,9 @@ export default {
             'addSectionElementToLayout',
             'updateLayoutElementAtIndex',
         ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         onTitleChange(value) {
             this.title = value;
 
@@ -105,6 +120,13 @@ export default {
                         },
                     });
                 }
+
+                this.onScopeValueChange({
+                    scope: this.scope,
+                    fieldKey: 'templateDesigner',
+                    value: true,
+                });
+
                 this.$emit('close');
             } else if (this.title === '') {
                 this.setTitleError();

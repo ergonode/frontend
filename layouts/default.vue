@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import DefaultLayout from '@Core/layouts/default';
 import {
     isEmpty,
 } from '@Core/models/objectWrapper';
@@ -16,7 +17,7 @@ import {
 export default {
     name: 'NuxtDefaultLayout',
     components: {
-        DefaultLayout: () => import('@Core/layouts/default'),
+        DefaultLayout,
     },
     async middleware({
         store, redirect,

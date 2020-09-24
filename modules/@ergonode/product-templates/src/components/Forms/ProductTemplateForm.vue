@@ -64,6 +64,14 @@ export default {
         formActionsMixin,
     ],
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
         errors: {
             type: Object,
             default: () => ({}),
@@ -94,6 +102,9 @@ export default {
         ...mapActions('productTemplate', [
             '__setState',
         ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         onSubmit() {
             this.$emit('submit');
         },
@@ -102,10 +113,22 @@ export default {
                 key: 'title',
                 value,
             });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'title',
+                value,
+            });
         },
         setImageValue(value) {
             this.__setState({
                 key: 'image',
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'image',
                 value,
             });
         },
@@ -116,6 +139,9 @@ export default {
             props,
         }) {
             return {
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.errors,
                 disabled: !this.isAllowedToUpdate,
                 ...props,
             };

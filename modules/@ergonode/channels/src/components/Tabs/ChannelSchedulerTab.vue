@@ -8,7 +8,9 @@
             <SchedulerForm
                 submit-title="SAVE CHANGES"
                 :is-submitting="isSubmitting"
+                :scope="scope"
                 :errors="errors"
+                :changed-values="changeValues"
                 @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
@@ -35,6 +37,10 @@ export default {
             type: String,
             default: '',
         },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
         errors: {
             type: Object,
             default: () => ({}),
@@ -56,6 +62,7 @@ export default {
         ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
+            'markChangeValuesAsSaved',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -77,6 +84,8 @@ export default {
             });
 
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onUpdateError(errors) {
             this.onError(errors);

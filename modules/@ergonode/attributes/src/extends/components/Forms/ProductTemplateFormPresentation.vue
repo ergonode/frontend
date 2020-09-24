@@ -37,6 +37,18 @@ export default {
         TranslationLazySelect,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         disabled: {
             type: Boolean,
             default: false,
@@ -55,15 +67,30 @@ export default {
         ...mapActions('attribute', [
             'getAttributesOptionsByType',
         ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         setDefaultTextAttributeValue(value) {
             this.__setState({
                 key: 'defaultTextAttribute',
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'defaultTextAttribute',
                 value,
             });
         },
         setDefaultImageAttributeValue(value) {
             this.__setState({
                 key: 'defaultImageAttribute',
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'defaultImageAttribute',
                 value,
             });
         },

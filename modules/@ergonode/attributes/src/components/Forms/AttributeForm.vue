@@ -61,6 +61,8 @@
                 <Component
                     :is="formComponent.component"
                     :type-key="typeKey"
+                    :scope="scope"
+                    :change-values="changeValues"
                     :errors="errors"
                     v-bind="formComponent.props" />
             </FormSection>
