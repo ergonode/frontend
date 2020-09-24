@@ -73,6 +73,7 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
@@ -99,21 +100,8 @@ export default {
     },
     mixins: [
         gridDraftMixin,
+        tabFeedbackMixin,
     ],
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     async asyncData({
         app, store, params: {
             id,
@@ -244,7 +232,6 @@ export default {
         ]),
         ...mapActions('feedback', [
             'onScopeValueChange',
-            'markChangeValuesAsSaved',
         ]),
         onSelectAddProductOption(option) {
             this.selectedAppModalOption = option;

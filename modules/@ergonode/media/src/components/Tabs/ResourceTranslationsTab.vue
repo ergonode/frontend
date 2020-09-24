@@ -35,6 +35,7 @@ import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import ResourceTranslationForm from '@Media/components/Forms/ResourceTranslationForm';
 import {
     mapActions,
@@ -48,20 +49,9 @@ export default {
         Button,
         IconSpinner,
     },
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     data() {
         return {
             isSubmitting: false,
@@ -70,11 +60,6 @@ export default {
     methods: {
         ...mapActions('media', [
             'updateResource',
-        ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
-            'markChangeValuesAsSaved',
         ]),
         onSubmit() {
             if (this.isSubmitting) {

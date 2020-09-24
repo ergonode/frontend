@@ -40,6 +40,7 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
@@ -65,21 +66,8 @@ export default {
     },
     mixins: [
         gridDraftMixin,
+        tabFeedbackMixin,
     ],
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     data() {
         return {
             columns: [],
@@ -114,11 +102,6 @@ export default {
         ...mapActions('user', [
             'updateUser',
             '__setState',
-        ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
-            'markChangeValuesAsSaved',
         ]),
         ...mapActions('feedback', [
             'onScopeValueChange',

@@ -52,6 +52,7 @@ import {
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     getMappedTreeData,
 } from '@Core/models/mappers/languageTreeMapper';
@@ -75,20 +76,9 @@ export default {
         LanguagesTreeWrapper,
         VerticalTabBar,
     },
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     asyncData({
         store,
     }) {
@@ -167,6 +157,8 @@ export default {
                     languages,
                 ] = getMappedTreeData(this.fullGridData);
 
+                this.removeScopeErrors(this.scope);
+
                 this.updateLanguageTree({
                     languages,
                     onSuccess: () => this.onUpdateSuccess(languages),
@@ -183,6 +175,8 @@ export default {
                 message: 'Languages tree has been updated',
             });
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onUpdateError(message) {
             this.$addAlert({

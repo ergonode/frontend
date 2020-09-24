@@ -54,6 +54,7 @@ import {
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import CategoryTreeWrapper from '@Trees/components/CategoryTreeDesigner/CategoryTreeWrapper';
 import {
     mapActions,
@@ -72,20 +73,9 @@ export default {
         DropZone,
         FadeTransition,
     },
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     data() {
         return {
             isSubmitting: false,
@@ -114,11 +104,6 @@ export default {
     methods: {
         ...mapActions('categoryTree', [
             'updateCategoryTree',
-        ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
-            'markChangeValuesAsSaved',
         ]),
         onSubmit() {
             if (this.isSubmitting) {

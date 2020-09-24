@@ -21,6 +21,7 @@ import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemp
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import ResourceForm from '@Media/components/Forms/ResourceForm';
 import {
     mapActions,
@@ -32,20 +33,9 @@ export default {
         ResourceForm,
         CenterViewTemplate,
     },
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     data() {
         return {
             isSubmitting: false,
@@ -54,11 +44,6 @@ export default {
     methods: {
         ...mapActions('media', [
             'updateResource',
-        ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
-            'markChangeValuesAsSaved',
         ]),
         onSubmit() {
             if (this.isSubmitting) {

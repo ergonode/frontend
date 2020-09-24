@@ -25,6 +25,7 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     mapActions,
     mapState,
@@ -36,20 +37,9 @@ export default {
         MainSettingsForm,
         CenterViewTemplate,
     },
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     data() {
         return {
             isSubmitting: false,
@@ -61,11 +51,6 @@ export default {
         ]),
     },
     methods: {
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
-            'markChangeValuesAsSaved',
-        ]),
         ...mapActions('core', [
             'getLanguages',
             'updateLanguages',

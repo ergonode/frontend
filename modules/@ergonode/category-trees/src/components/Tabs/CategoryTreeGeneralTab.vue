@@ -21,6 +21,7 @@ import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemp
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import CategoryTreeForm from '@Trees/components/Forms/CategoryTreeForm';
 import {
     mapActions,
@@ -32,20 +33,9 @@ export default {
         CategoryTreeForm,
         CenterViewTemplate,
     },
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     data() {
         return {
             isSubmitting: false,
@@ -54,11 +44,6 @@ export default {
     methods: {
         ...mapActions('categoryTree', [
             'updateCategoryTree',
-        ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
-            'markChangeValuesAsSaved',
         ]),
         onSubmit() {
             if (this.isSubmitting) {

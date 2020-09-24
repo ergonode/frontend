@@ -22,6 +22,7 @@ import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemp
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     mapActions,
 } from 'vuex';
@@ -32,20 +33,9 @@ export default {
         UnitForm,
         CenterViewTemplate,
     },
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     data() {
         return {
             isSubmitting: false,
@@ -57,11 +47,6 @@ export default {
         ]),
         ...mapActions('dictionaries', [
             'getDictionary',
-        ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
-            'markChangeValuesAsSaved',
         ]),
         onSubmit() {
             if (this.isSubmitting) {

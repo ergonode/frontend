@@ -105,6 +105,7 @@ import {
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     getObjectWithMaxValueInArrayByObjectKey,
 } from '@Core/models/arrayWrapper';
@@ -144,20 +145,9 @@ export default {
         SectionElementContent,
         SectionTemplateModalForm: () => import('@Templates/components/Modals/SectionTemplateModalForm'),
     },
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     data() {
         return {
             highlightedPositions: [],
@@ -263,10 +253,7 @@ export default {
             'removeLayoutElementAtIndex',
         ]),
         ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
             'onScopeValueChange',
-            'markChangeValuesAsSaved',
         ]),
         onSubmit() {
             if (this.isSubmitting) {

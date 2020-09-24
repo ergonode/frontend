@@ -72,6 +72,7 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import ProductTemplateForm from '@Products/components/Form/ProductTemplateForm';
 import ProductCompleteness from '@Products/components/Progress/ProductCompleteness';
 import PRIVILEGES from '@Products/config/privileges';
@@ -95,21 +96,8 @@ export default {
     },
     mixins: [
         gridModalMixin,
+        tabFeedbackMixin,
     ],
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     async asyncData({
         store,
         params: {
@@ -203,11 +191,6 @@ export default {
             'getProductTemplate',
             'getProductCompleteness',
             'applyProductDraft',
-        ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
-            'markChangeValuesAsSaved',
         ]),
         onSubmit() {
             if (this.isSubmitting) {

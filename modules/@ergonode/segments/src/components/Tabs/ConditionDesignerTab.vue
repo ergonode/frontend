@@ -56,6 +56,7 @@ import {
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import PRIVILEGES from '@Segments/config/privileges';
 import {
     mapActions,
@@ -74,20 +75,9 @@ export default {
         VerticalTabBar,
         ConditionSetWrapper,
     },
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     async fetch({
         store,
     }) {
@@ -149,11 +139,6 @@ export default {
         ...mapActions('segment', [
             'updateSegment',
             '__setState',
-        ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
-            'markChangeValuesAsSaved',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
