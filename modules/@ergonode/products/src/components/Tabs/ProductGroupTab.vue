@@ -18,7 +18,7 @@
                 @editRow="onEditRow"
                 @cellValue="onCellValueChange"
                 @fetchData="onFetchData">
-                <template #actions>
+                <template #headerActions>
                     <ActionButton
                         title="ADD PRODUCTS"
                         :theme="secondaryTheme"
@@ -298,11 +298,20 @@ export default {
                         skus: sku,
                     }));
                 }
+
+                const row = this.rows.find(({
+                    id,
+                }) => id.value === key);
+
+                if (row) {
+                    row.esa_attached.value = value;
+                }
             });
 
             await Promise.all(requests);
 
             this.setDrafts();
+            this.skus = {};
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,

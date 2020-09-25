@@ -10,11 +10,27 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :drafts="drafts"
                 :collection-cell-binding="collectionCellBinding"
                 :is-collection-layout="true"
                 :is-header-visible="true"
                 :is-border="true"
-                @fetchData="onFetchData" />
+                @editRow="onEditRow"
+                @cellValue="onCellValueChange"
+                @fetchData="onFetchData">
+                <template #appendFooter>
+                    <Button
+                        title="SAVE CHANGES"
+                        :disabled="!isUserAllowedToUpdate"
+                        @click.native="onSubmit">
+                        <template
+                            v-if="isSubmitting"
+                            #prepend="{ color }">
+                            <IconSpinner :fill-color="color" />
+                        </template>
+                    </Button>
+                </template>
+            </Grid>
         </template>
     </CenterViewTemplate>
 </template>
@@ -23,12 +39,19 @@
 import {
     TYPES,
 } from '@Attributes/defaults/attributes';
+import Button from '@Core/components/Button/Button';
 import Grid from '@Core/components/Grid/Grid';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     DATA_LIMIT,
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
+import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
@@ -46,7 +69,13 @@ export default {
     components: {
         CenterViewTemplate,
         Grid,
+        Button,
+        IconSpinner,
     },
+    mixins: [
+        gridDraftMixin,
+        tabFeedbackMixin,
+    ],
     async asyncData({
         app, store, params: {
             id,
@@ -118,7 +147,7 @@ export default {
                 {
                     language: languageCode,
                     id: 'esa_attached',
-                    type: 'PRODUCT_ATTACH',
+                    type: 'BOOL',
                     label: 'Attached',
                     visible: true,
                     editable: true,
@@ -132,12 +161,14 @@ export default {
     },
     data() {
         return {
+            isSubmitting: false,
             localParams: {
                 offset: 0,
                 limit: DATA_LIMIT,
                 filters: {},
                 sortedColumn: {},
             },
+            skus: {},
         };
     },
     computed: {
@@ -176,7 +207,93 @@ export default {
     methods: {
         ...mapActions('product', [
             'getProductChildren',
+            'addBySku',
+            'removeProductChildren',
         ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
+        onCellValueChange(cellValues) {
+            const drafts = {};
+
+            cellValues.forEach(({
+                rowId, columnId, value, row,
+            }) => {
+                drafts[`${rowId}/${columnId}`] = value;
+
+                this.skus[rowId] = {
+                    sku: this.rows[row].sku.value,
+                    value,
+                };
+            });
+
+            this.setDrafts({
+                ...this.drafts,
+                ...drafts,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'groupProducts',
+                value: drafts,
+            });
+        },
+        onEditRow(args) {
+            const lastIndex = args.length - 1;
+
+            this.$router.push({
+                name: 'product-id-general',
+                params: {
+                    id: args[lastIndex],
+                },
+            });
+        },
+        async onSubmit() {
+            this.isSubmitting = true;
+
+            const requests = [];
+
+            console.log(this.skus);
+
+            Object.keys(this.skus).forEach((key) => {
+                const {
+                    sku, value,
+                } = this.skus[key];
+
+                if (value) {
+                    requests.push(this.addBySku({
+                        skus: sku,
+                    }));
+                } else {
+                    requests.push(this.removeProductChildren({
+                        childrenId: key,
+                        skus: sku,
+                    }));
+                }
+
+                const row = this.rows.find(({
+                    id,
+                }) => id.value === key);
+
+                if (row) {
+                    row.esa_attached.value = value;
+                }
+            });
+
+            await Promise.all(requests);
+
+            this.setDrafts();
+            this.skus = {};
+
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Products attachment have been updated',
+            });
+
+            this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
+        },
         async onFetchData({
             offset,
             limit,
@@ -241,7 +358,7 @@ export default {
                 {
                     language: this.languageCode,
                     id: 'esa_attached',
-                    type: 'PRODUCT_ATTACH',
+                    type: 'BOOL',
                     label: 'Attached',
                     visible: true,
                     editable: true,

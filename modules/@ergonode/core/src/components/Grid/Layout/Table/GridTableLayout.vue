@@ -236,6 +236,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         filters: {
             type: Object,
             default: () => ({}),
@@ -280,9 +284,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('feedback', [
-            'errors',
-        ]),
         ...mapState('list', [
             'disabledElements',
         ]),

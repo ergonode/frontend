@@ -20,28 +20,53 @@ export default {
         dispatch,
     }, {
         data,
+        scope,
         onSuccess = () => {},
         onError = () => {},
     }) {
-        try {
-            const {
-                token,
-            } = await create({
-                $axios: this.app.$axios,
-                data,
+        let isError = false;
+        const errors = {};
+
+        if (!data.username) {
+            errors.username = [
+                'Email is required',
+            ];
+            isError = true;
+        }
+
+        if (!data.password) {
+            errors.password = [
+                'Password is required',
+            ];
+            isError = true;
+        }
+
+        if (!isError) {
+            try {
+                const {
+                    token,
+                } = await create({
+                    $axios: this.app.$axios,
+                    data,
+                });
+
+                this.$cookies.set(JWT_KEY, token);
+                commit('__SET_STATE', {
+                    key: 'jwt',
+                    value: token,
+                });
+
+                await dispatch('getUser');
+
+                onSuccess();
+            } catch (e) {
+                onError(e);
+            }
+        } else {
+            onError({
+                errors,
+                scope,
             });
-
-            this.$cookies.set(JWT_KEY, token);
-            commit('__SET_STATE', {
-                key: 'jwt',
-                value: token,
-            });
-
-            await dispatch('getUser');
-
-            onSuccess();
-        } catch (e) {
-            onError(e);
         }
     },
     async getUser({

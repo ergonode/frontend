@@ -20,7 +20,7 @@
         @deleteRow="onRemoveRow"
         @fetchData="onFetchData">
         <!--  TODO: Uncomment when we have global search      -->
-        <!--        <template #actions>-->
+        <!--        <template #headerActions>-->
         <!--            <TextField-->
         <!--                :value="searchResult"-->
         <!--                :size="smallSize"-->
@@ -280,6 +280,14 @@ export default {
                 } else {
                     toRemove.push(rowId);
                 }
+
+                const row = this.rows.find(({
+                    id,
+                }) => id.value === rowId);
+
+                if (row) {
+                    row.esa_attached.value = this.drafts[key];
+                }
             });
 
             this.setDrafts();
@@ -295,8 +303,6 @@ export default {
                 } else if (value.length) {
                     this.$emit('input', value.join(''));
                 }
-
-                this.onFetchData(this.localParams);
 
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,

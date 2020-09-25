@@ -15,10 +15,8 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
-import {
-    toLowerCaseFirstLetter,
-} from '@Core/models/stringWrapper';
 import TemplatePage from '@Templates/components/Pages/TemplatePage';
 import {
     mapActions,
@@ -32,6 +30,7 @@ export default {
     },
     mixins: [
         beforeLeavePageMixin,
+        scopeErrorsMixin,
     ],
     validate({
         params,
@@ -47,9 +46,6 @@ export default {
         ...mapState('productTemplate', {
             templateTitle: state => state.title,
         }),
-        scope() {
-            return toLowerCaseFirstLetter(this.$options.name);
-        },
     },
     beforeDestroy() {
         this.__clearListStorage();

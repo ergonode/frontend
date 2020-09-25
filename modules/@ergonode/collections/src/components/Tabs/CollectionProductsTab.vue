@@ -174,7 +174,19 @@ export default {
             });
         },
         async onUpdateSuccess() {
-            await this.onFetchData(this.localParams);
+            Object.keys(this.drafts).forEach((key) => {
+                const [
+                    rowId,
+                ] = key.split('/');
+
+                const row = this.rows.find(({
+                    id,
+                }) => id.value === rowId);
+
+                if (row) {
+                    row.visible.value = this.drafts[key];
+                }
+            });
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,

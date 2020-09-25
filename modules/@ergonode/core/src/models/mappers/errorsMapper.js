@@ -49,7 +49,7 @@ const flattenErrors = ({
 
         if (Array.isArray(errors[key])) {
             tmpErrors[fieldKey || key] = errors[key].join(', ');
-        } else {
+        } else if (typeof errors[key] === 'object') {
             return {
                 ...mappedErrors,
                 [fieldKey || key]: flattenErrors({
@@ -57,6 +57,11 @@ const flattenErrors = ({
                     errors: errors[key],
                     fieldKeys,
                 }),
+            };
+        } else {
+            return {
+                ...mappedErrors,
+                [fieldKey || key]: errors[key],
             };
         }
     }

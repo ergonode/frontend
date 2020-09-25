@@ -47,6 +47,10 @@ export default {
                 value,
             } = this.cellData;
 
+            if (typeof this.options[value] === 'undefined') {
+                return '';
+            }
+
             return this.options[value].label
             || `#${this.options[value].code}`;
         },
