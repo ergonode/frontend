@@ -31,7 +31,6 @@ import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import ProductTemplateForm from '@Templates/components/Forms/ProductTemplateForm';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
