@@ -48,6 +48,7 @@
                     :rows="rows"
                     :row-ids="rowIds"
                     :drafts="drafts"
+                    :errors="errors"
                     :filters="filterValues"
                     :current-page="currentPage"
                     :max-rows="maxRows"
@@ -173,6 +174,10 @@ export default {
             default: () => [],
         },
         drafts: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
             type: Object,
             default: () => ({}),
         },
@@ -332,10 +337,6 @@ export default {
             return this.isElementDragging === DRAGGED_ELEMENT.LIST;
         },
         isColumnExists() {
-            if (this.draggedElement) {
-                return false;
-            }
-
             return this.columns.some(
                 column => column.id === this.draggedElement,
             );

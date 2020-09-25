@@ -6,6 +6,7 @@
     <LoginForm
         submit-title="LOG IN"
         :is-submitting="isSubmitting"
+        :errors="scopeErrors"
         @submit="onSubmit">
         <template #header>
             <div class="logo-header">
@@ -16,11 +17,13 @@
             <TextField
                 data-cy="login-email"
                 v-model="email"
+                :error-messages="scopeErrors.username"
                 label="E-mail" />
             <TextField
                 data-cy="login-pass"
                 v-model="password"
                 :input="passwordInputType"
+                :error-messages="scopeErrors.password"
                 label="Password" />
             <Toggler
                 v-model="isPasswordVisible"
@@ -37,6 +40,7 @@ import Toggler from '@Core/components/Inputs/Toggler/Toggler';
 import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import {
     mapActions,
 } from 'vuex';
@@ -49,6 +53,9 @@ export default {
         Toggler,
         IconLogoName,
     },
+    mixins: [
+        scopeErrorsMixin,
+    ],
     data() {
         return {
             email: '',
@@ -79,8 +86,11 @@ export default {
                 password: this.password,
             };
 
+            this.removeScopeErrors(this.scope);
+
             this.authenticateUser({
                 data,
+                scope: this.scope,
                 onSuccess: this.onLoginSuccess,
                 onError: this.onLoginError,
             });
@@ -92,7 +102,9 @@ export default {
 
             this.isSubmitting = false;
         },
-        onLoginError() {
+        onLoginError(errors) {
+            this.onError(errors);
+
             this.isSubmitting = false;
         },
     },

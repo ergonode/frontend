@@ -29,12 +29,9 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-import {
-    toLowerCaseFirstLetter,
-} from '@Core/models/stringWrapper';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -43,6 +40,9 @@ export default {
         AddProductsBySKUForm,
         ModalForm,
     },
+    mixins: [
+        scopeErrorsMixin,
+    ],
     data() {
         return {
             productSkus: '',
@@ -50,24 +50,11 @@ export default {
         };
     },
     computed: {
-        ...mapState('feedback', [
-            'errors',
-        ]),
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        scope() {
-            return toLowerCaseFirstLetter(this.$options.name);
-        },
-        scopeErrors() {
-            return this.errors[this.scope];
-        },
     },
     methods: {
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
-        ]),
         ...mapActions('collection', [
             'addBySku',
         ]),
@@ -75,6 +62,8 @@ export default {
             this.productSkus = value;
         },
         onClose() {
+            this.removeScopeErrors(this.scope);
+
             this.$emit('close');
         },
         onSubmit() {

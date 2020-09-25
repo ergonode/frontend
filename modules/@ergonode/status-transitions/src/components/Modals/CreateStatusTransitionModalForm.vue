@@ -27,9 +27,7 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-import {
-    toLowerCaseFirstLetter,
-} from '@Core/models/stringWrapper';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import TransitionForm from '@Transitions/components/Forms/TransitionForm';
 import {
     mapActions,
@@ -42,6 +40,9 @@ export default {
         ModalForm,
         TransitionForm,
     },
+    mixins: [
+        scopeErrorsMixin,
+    ],
     data() {
         return {
             isSubmitting: false,
@@ -49,21 +50,12 @@ export default {
         };
     },
     computed: {
-        ...mapState('feedback', [
-            'errors',
-        ]),
         ...mapState('statusTransition', [
             'source',
             'destination',
         ]),
         secondaryTheme() {
             return THEME.SECONDARY;
-        },
-        scope() {
-            return toLowerCaseFirstLetter(this.$options.name);
-        },
-        scopeErrors() {
-            return this.errors[this.scope];
         },
     },
     created() {
@@ -79,10 +71,6 @@ export default {
         ]),
         ...mapActions('productStatus', [
             'getProductStatuses',
-        ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
         ]),
         onClose() {
             this.__clearStorage();

@@ -27,9 +27,7 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-import {
-    toLowerCaseFirstLetter,
-} from '@Core/models/stringWrapper';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import UserRoleForm from '@Users/components/Forms/UserRoleForm';
 import {
     mapActions,
@@ -42,6 +40,9 @@ export default {
         ModalForm,
         UserRoleForm,
     },
+    mixins: [
+        scopeErrorsMixin,
+    ],
     data() {
         return {
             isSubmitting: false,
@@ -55,21 +56,11 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        scope() {
-            return toLowerCaseFirstLetter(this.$options.name);
-        },
-        scopeErrors() {
-            return this.errors[this.scope];
-        },
     },
     methods: {
         ...mapActions('role', [
             'createRole',
             '__clearStorage',
-        ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
         ]),
         onClose() {
             this.__clearStorage();

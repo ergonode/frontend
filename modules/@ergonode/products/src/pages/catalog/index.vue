@@ -19,10 +19,21 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs">
-            <template #content>
+        <HorizontalRoutingTabBar
+            :items="tabs"
+            :errors="errors"
+            :change-values="changeValues">
+            <template
+                #content="{
+                    item,
+                    errors: tabErrors,
+                    changeValues: tabChangeValues,
+                }">
                 <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
+                    :scope="item.scope"
+                    :change-values="tabChangeValues"
+                    :errors="tabErrors"
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
@@ -48,6 +59,9 @@ import {
     getNestedTabRoutes,
 } from '@Core/models/navigation/tabs';
 import PRIVILEGES from '@Products/config/privileges';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'Products',
@@ -64,6 +78,10 @@ export default {
         beforeLeavePageMixin,
     ],
     computed: {
+        ...mapState('feedback', [
+            'errors',
+            'changeValues',
+        ]),
         tabs() {
             return getNestedTabRoutes({
                 hasAccess: this.$hasAccess,

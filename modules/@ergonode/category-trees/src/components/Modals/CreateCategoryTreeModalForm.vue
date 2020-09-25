@@ -27,13 +27,10 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-import {
-    toLowerCaseFirstLetter,
-} from '@Core/models/stringWrapper';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import CategoryTreeForm from '@Trees/components/Forms/CategoryTreeForm';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -49,27 +46,17 @@ export default {
         };
     },
     computed: {
-        ...mapState('feedback', [
-            'errors',
-        ]),
+        mixins: [
+            scopeErrorsMixin,
+        ],
         secondaryTheme() {
             return THEME.SECONDARY;
-        },
-        scope() {
-            return toLowerCaseFirstLetter(this.$options.name);
-        },
-        scopeErrors() {
-            return this.errors[this.scope];
         },
     },
     methods: {
         ...mapActions('categoryTree', [
             'createCategoryTree',
             '__clearStorage',
-        ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
         ]),
         onClose() {
             this.__clearStorage();
