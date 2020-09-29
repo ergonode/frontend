@@ -1,3 +1,4 @@
+/* eslint-disable no-throw-literal */
 /*
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
@@ -209,6 +210,8 @@ export default {
         onError = () => {},
     }) {
         try {
+            const errors = {};
+            let isAnyError = false;
             const {
                 id,
             } = state;
@@ -216,6 +219,21 @@ export default {
             const data = {
                 skus: mappedSkus !== '' ? mappedSkus.split(',') : [],
             };
+
+            if (!mappedSkus.length) {
+                errors.skus = [
+                    'Sku is required',
+                ];
+                isAnyError = true;
+            }
+
+            if (isAnyError) {
+                throw {
+                    data: {
+                        errors,
+                    },
+                };
+            }
 
             await addBySku({
                 $axios: this.app.$axios,
@@ -233,11 +251,14 @@ export default {
     async addBySegment({
         state,
     }, {
+        scope,
         segments,
         onSuccess = () => {},
         onError = () => {},
     }) {
         try {
+            const errors = {};
+            let isAnyError = false;
             const {
                 id,
             } = state;
@@ -245,6 +266,20 @@ export default {
                 segments: segments.map(segment => segment.id),
             };
 
+            if (!data.segments.length) {
+                errors.segments = [
+                    'Segment rule is required',
+                ];
+                isAnyError = true;
+            }
+
+            if (isAnyError) {
+                throw {
+                    data: {
+                        errors,
+                    },
+                };
+            }
             await addBySegment({
                 $axios: this.app.$axios,
                 id,
@@ -254,6 +289,7 @@ export default {
         } catch (e) {
             onError({
                 errors: e.data.errors,
+                scope,
             });
         }
     },

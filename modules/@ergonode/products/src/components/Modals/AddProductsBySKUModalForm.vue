@@ -82,6 +82,7 @@ export default {
             this.productSkus = value;
         },
         onClose() {
+            this.removeScopeErrors(this.scope);
             this.$emit('close');
         },
         onSubmit() {

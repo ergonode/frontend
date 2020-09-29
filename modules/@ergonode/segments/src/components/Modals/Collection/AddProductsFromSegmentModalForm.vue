@@ -13,6 +13,7 @@
                 submit-title="ADD TO COLLECTION"
                 proceed-title="CANCEL"
                 :is-submitting="isAdding"
+                :errors="scopeErrors"
                 @submit="onSubmit"
                 @proceed="onClose"
                 @input="onFormValueChange" />
@@ -28,9 +29,13 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
+import {
+    toLowerCaseFirstLetter,
+} from '@Core/models/stringWrapper';
 import AddProductsFromSegmentForm from '@Segments/components/Forms/Collection/AddProductsFromSegmentForm';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -47,8 +52,17 @@ export default {
         };
     },
     computed: {
+        ...mapState('feedback', [
+            'errors',
+        ]),
         secondaryTheme() {
             return THEME.SECONDARY;
+        },
+        scope() {
+            return toLowerCaseFirstLetter(this.$options.name);
+        },
+        scopeErrors() {
+            return this.errors[this.scope];
         },
     },
     async created() {
@@ -69,6 +83,7 @@ export default {
             this.segments = value;
         },
         onClose() {
+            this.removeScopeErrors(this.scope);
             this.$emit('close');
         },
         onSubmit() {
@@ -77,8 +92,9 @@ export default {
             }
             this.isAdding = true;
 
-            this.removeScopeErrors();
+            this.removeScopeErrors(this.scope);
             this.addBySegment({
+                scope: this.scope,
                 segments: this.segments,
                 onSuccess: this.onAddSuccess,
                 onError: this.onAddError,
