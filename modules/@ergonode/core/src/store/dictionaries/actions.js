@@ -59,13 +59,10 @@ export default {
             stateProp: name,
         }) => name === dictionaryName);
         const path = `${requestPath}${isGrid ? '?view=list' : ''}`;
-
         const response = await get({
             $axios: this.app.$axios,
             path,
-            useCache: isGrid,
         });
-
         const value = isGrid ? response.collection : response;
 
         commit('__SET_STATE', {

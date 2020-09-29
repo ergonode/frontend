@@ -4,7 +4,7 @@
  */
 
 export const get = ({
-    $axios, path, useCache,
+    $axios, path, useCache = false,
 }) => $axios.$get(path, {
     useCache,
 });

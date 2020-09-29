@@ -12,6 +12,7 @@
             </template>
             <template #mainAction>
                 <Button
+                    data-cy="delete-unit"
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE UNIT"

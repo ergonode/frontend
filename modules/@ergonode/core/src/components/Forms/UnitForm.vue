@@ -15,6 +15,7 @@
         <template #body>
             <FormSection>
                 <TextField
+                    :data-cy="dataCyGenerator(nameFieldKey)"
                     :value="name"
                     required
                     :error-messages="errors[nameFieldKey]"
@@ -23,6 +24,7 @@
                     hint="Unit name must be unique"
                     @input="setNameValue" />
                 <TextField
+                    :data-cy="dataCyGenerator(symbolFieldKey)"
                     :value="symbol"
                     required
                     :error-messages="errors[symbolFieldKey]"
@@ -108,6 +110,9 @@ export default {
                 fieldKey: this.symbolFieldKey,
                 value,
             });
+        },
+        dataCyGenerator(key) {
+            return `unit-${key}`;
         },
     },
 };
