@@ -24,6 +24,7 @@ import {
     getCompleteness,
     getDraft,
     getTemplate,
+    getWorkflow,
     remove,
     removeChildren,
     removeDraftValue,
@@ -67,6 +68,31 @@ export default {
             draft: attributes,
         });
     },
+    async getProductWorkflow({
+        commit,
+    }, {
+        id,
+        languageCode,
+    }) {
+        const {
+            status = {},
+            workflow = [],
+        } = await getWorkflow({
+            $axios: this.app.$axios,
+            id,
+            languageCode,
+        });
+
+        commit('__SET_STATE', {
+            key: 'status',
+            value: status,
+        });
+
+        commit('__SET_STATE', {
+            key: 'workflow',
+            value: workflow,
+        });
+    },
     async getProduct({
         commit,
         dispatch,
@@ -86,8 +112,6 @@ export default {
             attributes,
             sku,
             type,
-            status,
-            workflow = [],
         } = data;
 
         if (templateId) {
@@ -108,14 +132,6 @@ export default {
         commit('__SET_STATE', {
             key: 'type',
             value: productTypes[type],
-        });
-        commit('__SET_STATE', {
-            key: 'status',
-            value: status,
-        });
-        commit('__SET_STATE', {
-            key: 'workflow',
-            value: workflow,
         });
         commit('__SET_STATE', {
             key: 'data',
@@ -149,13 +165,14 @@ export default {
         id,
         languageCode,
     }) {
-        return get({
+        return getWorkflow({
             $axios: this.app.$axios,
             id,
+            languageCode,
         }).then(({
             workflow = [],
         }) => workflow.map(e => ({
-            id: e.code,
+            id: e.id,
             key: e.code,
             value: e.name,
             hint: e.name
@@ -280,20 +297,15 @@ export default {
     },
     async updateProductStatus({
         state,
-        rootState,
     }, {
         attributeId,
         value,
+        languageCode,
         onSuccess,
     }) {
         const {
             id,
         } = state;
-
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
         const data = {
             value,
         };
@@ -302,7 +314,7 @@ export default {
             $axios: this.app.$axios,
             id,
             attributeId,
-            languageCode: userLanguageCode,
+            languageCode,
             data,
         });
         await applyDraft({

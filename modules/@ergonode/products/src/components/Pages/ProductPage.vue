@@ -10,11 +10,6 @@
             <template #prependHeader>
                 <NavigationBackFab />
             </template>
-            <template #prependBadge>
-                <ProductStatusBadge
-                    v-if="status"
-                    :status="status" />
-            </template>
             <template #mainAction>
                 <Button
                     :theme="secondaryTheme"
@@ -27,11 +22,6 @@
                     </template>
                 </Button>
             </template>
-            <template #subActions>
-                <TitleBarSubActions>
-                    <ProductWorkflowActionButton v-if="workflow.length" />
-                </TitleBarSubActions>
-            </template>
         </TitleBar>
         <HorizontalRoutingTabBar
             :items="tabs"
@@ -40,7 +30,6 @@
     </Page>
 </template>
 <script>
-import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -51,8 +40,6 @@ import {
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
-import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
-import ProductWorkflowActionButton from '@Products/components/Buttons/ProductWorkflowActionButton';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     PRODUCT_TYPE,
@@ -63,19 +50,12 @@ import {
 
 export default {
     name: 'ProductPage',
-    components: {
-        TitleBarSubActions,
-        ProductStatusBadge,
-        ProductWorkflowActionButton,
-    },
     mixins: [
         editPageMixin,
     ],
     computed: {
         ...mapState('product', [
-            'status',
             'type',
-            'workflow',
         ]),
         ...mapState('dictionaries', [
             'productTypes',

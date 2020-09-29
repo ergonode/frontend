@@ -131,8 +131,8 @@ export default {
             } = state;
 
             const data = {
-                source: isObject(source) ? source.key : null,
-                destination: isObject(destination) ? destination.key : null,
+                source: isObject(source) ? source.id : null,
+                destination: isObject(destination) ? destination.id : null,
                 roles,
             };
 

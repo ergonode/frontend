@@ -18,13 +18,13 @@
                     <div
                         v-if="localValue"
                         class="presentation-badge">
-                        <PointBadge :color="colors[localValue.id]" />
+                        <PointBadge :color="colors[localValue.id].color" />
                     </div>
                 </template>
                 <template #option="{ option }">
                     <ListElementAction :size="smallSize">
                         <div class="presentation-badge-option">
-                            <PointBadge :color="colors[option.id]" />
+                            <PointBadge :color="colors[option.id].color" />
                         </div>
                     </ListElementAction>
                     <ListElementDescription>

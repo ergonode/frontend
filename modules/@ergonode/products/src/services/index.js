@@ -21,6 +21,12 @@ export const getBindings = ({
     id,
 }) => $axios.$get(`products/${id}/bindings`);
 
+export const getWorkflow = ({
+    $axios,
+    id,
+    languageCode,
+}) => $axios.$get(`products/${id}/workflow/${languageCode}`);
+
 export const getCollections = ({
     $axios,
     id,

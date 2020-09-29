@@ -17,7 +17,6 @@
             <GridLabelPresentationCell
                 :value="cellData.value"
                 :options="options"
-                :colors="column.colors"
                 :suffix="data.suffix"
                 :is-locked="isLocked" />
             <GridSuffixPresentationCell
@@ -67,7 +66,7 @@ export default {
                     row: this.rowIndex,
                     column: this.columnIndex,
                     disabled: this.isLocked,
-                    colors: this.column.colors,
+                    colors: this.options,
                     rowId: this.rowId,
                     columnId: this.column.id,
                     errorMessages: this.errorMessages,

@@ -16,6 +16,9 @@
             </div>
             <div class="view-template-header__section">
                 <ProductCompleteness :completeness="completeness" />
+                <TitleBarSubActions>
+                    <ProductWorkflowActionButton :language="language" />
+                </TitleBarSubActions>
                 <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
@@ -64,6 +67,7 @@ import IconRestore from '@Core/components/Icons/Actions/IconRestore';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import TreeSelect from '@Core/components/Inputs/Select/Tree/TreeSelect';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -73,6 +77,7 @@ import {
 } from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import ProductWorkflowActionButton from '@Products/components/Buttons/ProductWorkflowActionButton';
 import ProductTemplateForm from '@Products/components/Form/ProductTemplateForm';
 import ProductCompleteness from '@Products/components/Progress/ProductCompleteness';
 import PRIVILEGES from '@Products/config/privileges';
@@ -91,7 +96,9 @@ export default {
         ProductTemplateForm,
         CenterViewTemplate,
         TreeSelect,
+        TitleBarSubActions,
         ProductCompleteness,
+        ProductWorkflowActionButton,
         RestoreAttributeParentModalForm: () => import('@Products/components/Modals/RestoreAttributeParentModalForm'),
     },
     mixins: [
@@ -121,6 +128,10 @@ export default {
                 id,
             }),
             store.dispatch('product/getProductDraft', {
+                languageCode: defaultLanguageCode,
+                id,
+            }),
+            store.dispatch('product/getProductWorkflow', {
                 languageCode: defaultLanguageCode,
                 id,
             }),
@@ -187,6 +198,7 @@ export default {
         ...mapActions('product', [
             'updateProductDraft',
             'setDraftValue',
+            'getProductWorkflow',
             'getProductDraft',
             'getProductTemplate',
             'getProductCompleteness',
@@ -237,6 +249,10 @@ export default {
                     id: this.id,
                 }),
                 this.getProductDraft({
+                    languageCode,
+                    id: this.id,
+                }),
+                this.getProductWorkflow({
                     languageCode,
                     id: this.id,
                 }),
