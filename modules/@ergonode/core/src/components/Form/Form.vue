@@ -113,7 +113,7 @@ export default {
             return this.submitTitle !== '';
         },
         isProceedButtonVisible() {
-            return this.submitTitle !== '';
+            return this.proceedTitle !== '';
         },
         secondaryTheme() {
             return THEME.SECONDARY;
