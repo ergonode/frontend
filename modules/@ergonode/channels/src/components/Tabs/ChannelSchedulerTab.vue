@@ -3,16 +3,26 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
-            <SchedulerForm />
+            <SchedulerForm
+                submit-title="SAVE CHANGES"
+                :is-submitting="isSubmitting"
+                :scope="scope"
+                :errors="errors"
+                :changed-values="changeValues"
+                @submit="onSubmit" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import SchedulerForm from '@Channels/components/Forms/SchedulerForm';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     mapActions,
 } from 'vuex';
@@ -20,16 +30,53 @@ import {
 export default {
     name: 'ChannelSchedulerTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         SchedulerForm,
     },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     async fetch() {
         await this.getSchedulerConfiguration();
     },
+    data() {
+        return {
+            isSubmitting: false,
+        };
+    },
     methods: {
-        ...mapActions('channels', [
+        ...mapActions('channel', [
+            'updateScheduler',
             'getSchedulerConfiguration',
         ]),
+        onSubmit() {
+            if (this.isSubmitting) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeScopeErrors(this.scope);
+            this.updateScheduler({
+                scope: this.scope,
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
+            });
+        },
+        onUpdateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Channel scheduler has been updated',
+            });
+
+            this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
+        },
+        onUpdateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+        },
     },
 };
 </script>

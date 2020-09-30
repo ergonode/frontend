@@ -6,7 +6,7 @@
     <ListDraggableElement
         :draggable-id="item.id"
         :is-draggable="isDraggable"
-        :is-disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
+        :is-disabled="isDisabled"
         :hint="hint"
         :label="title"
         @drag="onDrag">
@@ -53,9 +53,13 @@ export default {
         },
     },
     computed: {
-        ...mapState('list', {
-            disabledElements: state => state.disabledElements,
-        }),
+        ...mapState('list', [
+            'disabledElements',
+        ]),
+        isDisabled() {
+            return this.disabledElements[this.languageCode]
+                && this.disabledElements[this.languageCode][this.item.id];
+        },
         hint() {
             return this.item.name ? `#${this.item.code} ${this.languageCode}` : '';
         },
@@ -68,21 +72,19 @@ export default {
     },
     methods: {
         ...mapActions('draggable', [
-            'setDraggedElement',
+            '__setState',
         ]),
         onDrag(isDragged) {
-            if (isDragged) {
-                const {
-                    id, code, name,
-                } = this.item;
-                this.setDraggedElement({
-                    id,
-                    code,
-                    name,
-                });
-            } else {
-                this.setDraggedElement();
-            }
+            this.__setState({
+                key: 'draggedElement',
+                value: isDragged
+                    ? {
+                        id: this.item.id,
+                        code: this.item.code,
+                        name: this.item.name,
+                    }
+                    : null,
+            });
         },
     },
 };

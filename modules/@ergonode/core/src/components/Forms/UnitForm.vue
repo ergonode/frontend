@@ -5,24 +5,30 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[nameFieldKey, symbolFieldKey]">
-        <template #body="{ errorMessages }">
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        :errors="errors"
+        @proceed="onProceed"
+        @submit="onSubmit">
+        <template #body>
             <FormSection>
                 <TextField
                     :value="name"
                     required
-                    :error-messages="errorMessages[nameFieldKey]"
+                    :error-messages="errors[nameFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     label="Unit name"
-                    hint="System name must be unique"
+                    hint="Unit name must be unique"
                     @input="setNameValue" />
                 <TextField
                     :value="symbol"
                     required
-                    :error-messages="errorMessages[symbolFieldKey]"
+                    :error-messages="errors[symbolFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     label="Unit symbol"
-                    hint="System name must be unique"
+                    hint="Unit symbol must be unique"
                     @input="setSymbolValue" />
             </FormSection>
         </template>
@@ -30,7 +36,12 @@
 </template>
 
 <script>
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TextField from '@Core/components/Inputs/TextField';
 import PRIVILEGES from '@Core/config/privileges';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,
     mapState,
@@ -39,15 +50,19 @@ import {
 export default {
     name: 'UnitForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
+        Form,
+        FormSection,
+        TextField,
     },
+    mixins: [
+        formActionsMixin,
+        formFeedbackMixin,
+    ],
     computed: {
-        ...mapState('units', {
-            name: state => state.name,
-            symbol: state => state.symbol,
-        }),
+        ...mapState('unit', [
+            'name',
+            'symbol',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.SETTINGS.update,
@@ -61,18 +76,36 @@ export default {
         },
     },
     methods: {
-        ...mapActions('units', [
+        ...mapActions('unit', [
             '__setState',
         ]),
+        onSubmit() {
+            this.$emit('submit');
+        },
+        onProceed() {
+            this.$emit('proceed');
+        },
         setNameValue(value) {
             this.__setState({
-                key: 'name',
+                key: this.nameFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.nameFieldKey,
                 value,
             });
         },
         setSymbolValue(value) {
             this.__setState({
-                key: 'symbol',
+                key: this.symbolFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.symbolFieldKey,
                 value,
             });
         },

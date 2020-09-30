@@ -12,8 +12,9 @@
         @drag="onDrag">
         <ListElementIcon>
             <Component
-                :is="typeIconComponent"
-                :fill-color="iconFillColor" />
+                :is="typeIconComponent.component"
+                :fill-color="iconFillColor"
+                v-bind="typeIconComponent.props" />
         </ListElementIcon>
         <ListElementDescription>
             <ListElementTitle
@@ -27,9 +28,6 @@
 </template>
 
 <script>
-import {
-    TYPES,
-} from '@Attributes/defaults/attributes';
 import {
     GRAPHITE,
     GREY,
@@ -71,9 +69,9 @@ export default {
         },
     },
     computed: {
-        ...mapState('list', {
-            disabledElements: state => state.disabledElements,
-        }),
+        ...mapState('list', [
+            'disabledElements',
+        ]),
         isDisabled() {
             return this.disabledElements[this.languageCode]
                 && this.disabledElements[this.languageCode][this.item.id];
@@ -85,10 +83,15 @@ export default {
             return this.item.label || `#${this.item.code}`;
         },
         typeIconComponent() {
-            if (typeof TYPES[this.item.type] === 'undefined') {
-                return () => import('@Core/components/Icons/Menu/IconAttributes');
+            const extendedIcon = this.$getExtendedComponents('@Attributes/components/Lists/AttributeListElement/Icon');
+
+            if (extendedIcon && extendedIcon[this.item.type]) {
+                return extendedIcon[this.item.type];
             }
-            return () => import(`@Core/components/Icons/Attributes/Icon${this.formattedAttributeType}`);
+
+            return {
+                component: () => import('@Core/components/Icons/Menu/IconAttributes'),
+            };
         },
         formattedAttributeType() {
             return capitalizeAndConcatenationArray(this.item.type.split('_'));
@@ -99,14 +102,13 @@ export default {
     },
     methods: {
         ...mapActions('draggable', [
-            'setDraggedElement',
+            '__setState',
         ]),
         onDrag(isDragged) {
-            if (isDragged) {
-                this.setDraggedElement(`${this.item.code}:${this.languageCode}`);
-            } else {
-                this.setDraggedElement();
-            }
+            this.__setState({
+                key: 'draggedElement',
+                value: isDragged ? `${this.item.code}:${this.languageCode}` : null,
+            });
         },
     },
 };

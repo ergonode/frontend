@@ -25,7 +25,7 @@ const IS_DEV = process.env.NODE_ENV !== 'production';
 const BASE_URL = process.env.API_BASE_URL || 'http://localhost:8000';
 
 module.exports = {
-    mode: 'universal',
+    ssr: true,
     dev: IS_DEV,
     head: {
         htmlAttrs: {
@@ -92,11 +92,29 @@ module.exports = {
             },
         ],
         'cookie-universal-nuxt',
+        'nuxt-i18n',
     ],
     vuems: {
         required: _requiredModules,
         modules: modulesConfig,
+        i18n: true,
+        i18nLocales: [
+            'en',
+        ],
         isDev: process.env.NODE_ENV !== 'production',
+    },
+    i18n: {
+        locales: [
+            {
+                code: 'en',
+                iso: 'en-US',
+                file: 'en.json',
+            },
+        ],
+        defaultLocale: 'en',
+        lazy: true,
+        langDir: '.nuxt/locales/',
+        strategy: 'no_prefix',
     },
     router: {
         middleware: [

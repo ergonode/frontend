@@ -13,7 +13,6 @@
             :grid-data="filteredGridData"
             :is-dragging-enabled="isDraggingEnabled"
             :is-multi-draggable="isMultiDraggable"
-            @removeDisabledElementsOnList="removeDisabledElementsOnList"
             @toggleItem="toggleItem"
             @afterDrop="id => $emit('afterDrop', id)"
             @afterRemove="id => $emit('afterRemove', id)"
@@ -29,7 +28,7 @@
             <TemplateGridItemsContainer
                 :style="gridStyles">
                 <TemplateGridItemArea
-                    v-for="item in filteredGridData"
+                    v-for="(item, index) in filteredGridData"
                     :key="item.id"
                     :item="item"
                     :columns="columns"
@@ -46,6 +45,7 @@
                         v-else
                         name="gridItem"
                         :item="item"
+                        :index="index"
                         :grid-item-styles="gridItemStyles"
                         :toggle-item="toggleItem"
                         :remove-item="removeItem">
@@ -99,6 +99,18 @@ export default {
         TemplateGridItem,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         isDraggingEnabled: {
             type: Boolean,
             default: false,
@@ -136,14 +148,14 @@ export default {
         ...mapState('authentication', {
             language: state => state.user.language,
         }),
-        ...mapState('list', {
-            disabledElements: state => state.disabledElements,
-        }),
-        ...mapState('gridDesigner', {
-            rows: state => state.rows,
-            gridData: state => state.gridData,
-            hiddenItems: state => state.hiddenItems,
-        }),
+        ...mapState('list', [
+            'disabledElements',
+        ]),
+        ...mapState('gridDesigner', [
+            'rows',
+            'gridData',
+            'hiddenItems',
+        ]),
         ...mapGetters('gridDesigner', [
             'getChildrenLength',
             'getExpandState',
@@ -177,6 +189,9 @@ export default {
         ]),
         ...mapActions('list', [
             'removeDisabledElement',
+        ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
         ]),
         toggleItem({
             id, row, column, expanded,
@@ -227,6 +242,12 @@ export default {
                     value: false,
                 });
             }
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'designer',
+                value: true,
+            });
         },
         connectionLineStyle({
             id, row, parent,
@@ -260,6 +281,12 @@ export default {
         },
         removeItemOnDrop(item) {
             this.removeDisabledElementsOnList(item.id);
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'designer',
+                value: true,
+            });
         },
         removeItem(item) {
             const {
@@ -274,6 +301,12 @@ export default {
                 value: -1,
             });
             this.removeGridItem(row);
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'designer',
+                value: true,
+            });
         },
         removeDisabledElementsOnList(id) {
             if (this.hiddenItems[id]) {
@@ -297,6 +330,12 @@ export default {
                     elementId: id,
                 });
             }
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'designer',
+                value: true,
+            });
         },
     },
 };
@@ -304,12 +343,12 @@ export default {
 
 <style lang="scss" scoped>
     .template-grid-wrapper {
-        z-index: $Z_INDEX_LVL_2;
         display: flex;
         flex: 1 1 auto;
         flex-direction: column;
         justify-content: space-between;
         height: 0;
         padding: 24px 24px 0;
+        overflow: auto;
     }
 </style>

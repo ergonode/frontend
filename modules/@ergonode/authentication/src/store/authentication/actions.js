@@ -8,43 +8,84 @@ import {
 import {
     getMappedPrivileges,
 } from '@Authentication/models/userMapper';
+import {
+    create,
+    get,
+} from '@Authentication/services/index';
 import camelcaseKeys from 'camelcase-keys';
 
 export default {
-    authenticateUser({
-        commit, dispatch,
+    async authenticateUser({
+        commit,
+        dispatch,
     }, {
         data,
+        scope,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        return this.app.$axios.$post('login', data).then(({
-            token,
-        }) => {
-            this.$cookies.set(JWT_KEY, token);
-            commit('__SET_STATE', {
-                key: 'jwt',
-                value: token,
-            });
+        let isError = false;
+        const errors = {};
 
-            return dispatch('getUser');
-        });
+        if (!data.username) {
+            errors.username = [
+                'Email is required',
+            ];
+            isError = true;
+        }
+
+        if (!data.password) {
+            errors.password = [
+                'Password is required',
+            ];
+            isError = true;
+        }
+
+        if (!isError) {
+            try {
+                const {
+                    token,
+                } = await create({
+                    $axios: this.app.$axios,
+                    data,
+                });
+
+                this.$cookies.set(JWT_KEY, token);
+                commit('__SET_STATE', {
+                    key: 'jwt',
+                    value: token,
+                });
+
+                await dispatch('getUser');
+
+                onSuccess();
+            } catch (e) {
+                onError(e);
+            }
+        } else {
+            onError({
+                errors,
+                scope,
+            });
+        }
     },
-    getUser({
+    async getUser({
         commit,
     }) {
-        return this.app.$axios.$get('profile').then((user) => {
-            const transformedUserData = camelcaseKeys(user);
+        const user = await get({
+            $axios: this.app.$axios,
+        });
 
-            transformedUserData.privileges = getMappedPrivileges(transformedUserData.privileges);
-            commit('__SET_STATE', {
-                key: 'user',
-                value: transformedUserData,
-            });
-            commit('__SET_STATE', {
-                key: 'isLogged',
-                value: true,
-            });
-        }).catch((e) => {
-            console.error(e);
+        const transformedUserData = camelcaseKeys(user);
+
+        transformedUserData.privileges = getMappedPrivileges(transformedUserData.privileges);
+        commit('__SET_STATE', {
+            key: 'user',
+            value: transformedUserData,
+        });
+        commit('__SET_STATE', {
+            key: 'isLogged',
+            value: true,
         });
     },
 };

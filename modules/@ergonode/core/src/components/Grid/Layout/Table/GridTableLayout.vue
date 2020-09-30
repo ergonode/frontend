@@ -87,7 +87,7 @@
                             :draft="drafts[`${rowIds[rowIndex]}/${column.id}`]"
                             :column="column"
                             :type="columnTypes[column.type]"
-                            :error-messages="validationErrors[`${rowIds[rowIndex]}/${column.id}`]"
+                            :error-messages="errors[`${rowIds[rowIndex]}/${column.id}`]"
                             :row-id="rowIds[rowIndex]"
                             :column-index="columnIndex + columnsOffset"
                             :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
@@ -127,6 +127,7 @@
                         :key="`${rowIds[rowIndex]}|${column.id}`"
                         :column-index="orderedColumns.length + columnIndex + columnsOffset"
                         :column="column"
+                        :type="columnActionTypes[column.id]"
                         :action="row._links.value[column.id]"
                         :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
                         :is-selected="isSelectedAllRows
@@ -235,6 +236,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         filters: {
             type: Object,
             default: () => ({}),
@@ -279,12 +284,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('validations', {
-            validationErrors: state => state.validationErrors,
-        }),
-        ...mapState('list', {
-            disabledElements: state => state.disabledElements,
-        }),
+        ...mapState('list', [
+            'disabledElements',
+        ]),
         classes() {
             return [
                 'grid-table-layout',
@@ -300,6 +302,13 @@ export default {
             return this.visibleColumns.reduce((acc, current) => {
                 const tmp = acc;
                 tmp[current.type] = capitalizeAndConcatenationArray(current.type.split('_'));
+                return tmp;
+            }, {});
+        },
+        columnActionTypes() {
+            return this.actionColumns.reduce((acc, current) => {
+                const tmp = acc;
+                tmp[current.id] = capitalizeAndConcatenationArray(current.id.split('_'));
                 return tmp;
             }, {});
         },

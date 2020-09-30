@@ -5,13 +5,19 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[nameFieldKey]">
-        <template #body="{ errorMessages }">
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        :errors="errors"
+        @proceed="onProceed"
+        @submit="onSubmit">
+        <template #body>
             <FormSection>
                 <TextField
                     :value="name"
                     required
-                    :error-messages="errorMessages[nameFieldKey]"
+                    :error-messages="errors[nameFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     label="File name"
                     @input="setNameValue" />
@@ -29,6 +35,8 @@
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import TextField from '@Core/components/Inputs/TextField';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 import PRIVILEGES from '@Media/config/privileges';
 import {
@@ -44,11 +52,15 @@ export default {
         TextField,
         UploadImageFile,
     },
+    mixins: [
+        formActionsMixin,
+        formFeedbackMixin,
+    ],
     computed: {
-        ...mapState('media', {
-            id: state => state.id,
-            name: state => state.name,
-        }),
+        ...mapState('media', [
+            'id',
+            'name',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.MULTIMEDIA.update,
@@ -64,7 +76,13 @@ export default {
         ]),
         setNameValue(value) {
             this.__setState({
-                key: 'name',
+                key: this.nameFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.nameFieldKey,
                 value,
             });
         },

@@ -68,12 +68,14 @@ export default {
             return 'It may take some time to upload, please be patient. Maybe this is a great time for coffee?';
         },
     },
+    beforeDestroy() {
+        this.__clearStorage();
+    },
     methods: {
-        ...mapActions('channels', [
+        ...mapActions('channel', [
             '__clearStorage',
         ]),
         onClose() {
-            this.__clearStorage();
             this.$emit('close');
         },
         onUploadingCSVFile(progress) {

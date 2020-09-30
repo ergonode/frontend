@@ -10,7 +10,11 @@
             <IconFontSize />
         </template>
         <template #body>
-            <Form>
+            <Form
+                submit-title="SAVE"
+                proceed-title="CANCEL"
+                @submit="onSubmit"
+                @proceed="onClose">
                 <template #body>
                     <FormSection>
                         <TextField
@@ -23,28 +27,16 @@
                 </template>
             </Form>
         </template>
-        <template #footer>
-            <Button
-                title="SAVE"
-                @click.native="onSave" />
-            <Button
-                :theme="secondaryTheme"
-                title="CANCEL"
-                @click.native="onClose" />
-        </template>
     </ModalForm>
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
 import TextField from '@Core/components/Inputs/TextField';
 import ModalForm from '@Core/components/Modal/ModalForm';
-import {
-    THEME,
-} from '@Core/defaults/theme';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,
 } from 'vuex';
@@ -57,8 +49,10 @@ export default {
         Form,
         TextField,
         ModalForm,
-        Button,
     },
+    mixins: [
+        formFeedbackMixin,
+    ],
     props: {
         index: {
             type: Number,
@@ -79,18 +73,13 @@ export default {
             error: null,
         };
     },
-    computed: {
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
-    },
     mounted() {
         if (this.element) {
             this.title = this.element.label;
         }
     },
     methods: {
-        ...mapActions('templateDesigner', [
+        ...mapActions('productTemplate', [
             'addSectionElementToLayout',
             'updateLayoutElementAtIndex',
         ]),
@@ -104,7 +93,7 @@ export default {
         onClose() {
             this.$emit('close');
         },
-        onSave() {
+        onSubmit() {
             if (this.title !== '' && this.title.length <= 255) {
                 if (this.position) {
                     this.addSectionElementToLayout({
@@ -120,6 +109,13 @@ export default {
                         },
                     });
                 }
+
+                this.onScopeValueChange({
+                    scope: this.scope,
+                    fieldKey: 'templateDesigner',
+                    value: true,
+                });
+
                 this.$emit('close');
             } else if (this.title === '') {
                 this.setTitleError();

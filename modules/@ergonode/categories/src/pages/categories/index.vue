@@ -5,12 +5,12 @@
 <template>
     <Page>
         <TitleBar
-            title="Categories"
+            :title="$t('category.page.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <Button
                     data-cy="new-category"
-                    title="NEW CATEGORY"
+                    :title="$t('category.page.addButton')"
                     :size="smallSize"
                     :disabled="!isAllowedToCreate"
                     @click.native="onShowModal">
@@ -30,17 +30,21 @@
         <CreateCategoryModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @create="onCreatedData" />
+            @created="onCreatedData" />
     </Page>
 </template>
 <script>
 import PRIVILEGES from '@Categories/config/privileges';
 import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import Page from '@Core/components/Layout/Page';
+import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@Core/components/TitleBar/TitleBar';
 import {
     SIZE,
 } from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import {
     getNestedTabRoutes,
 } from '@Core/models/navigation/tabs';
@@ -48,15 +52,16 @@ import {
 export default {
     name: 'Categories',
     components: {
-        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
-        Page: () => import('@Core/components/Layout/Page'),
-        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
-        CreateCategoryModalForm: () => import('@Categories/components/Modals/CreateCategoryModalForm'),
+        TitleBar,
+        Page,
+        HorizontalRoutingTabBar,
         Button,
         IconAdd,
+        CreateCategoryModalForm: () => import('@Categories/components/Modals/CreateCategoryModalForm'),
     },
     mixins: [
         gridModalMixin,
+        beforeLeavePageMixin,
     ],
     computed: {
         isReadOnly() {
@@ -71,12 +76,16 @@ export default {
             return SIZE.SMALL;
         },
         tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+            return getNestedTabRoutes({
+                hasAccess: this.$hasAccess,
+                routes: this.$router.options.routes,
+                route: this.$route,
+            });
         },
     },
     head() {
         return {
-            title: 'Categories - Ergonode',
+            title: this.$t('category.page.head'),
         };
     },
 };

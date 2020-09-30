@@ -60,7 +60,7 @@ export default [
             {
                 name: 'media-id-general',
                 path: 'general',
-                component: Tabs.ResourceBaseTab,
+                component: Tabs.ResourceGeneralTab,
                 meta: {
                     title: 'Options',
                     breadcrumbs: [

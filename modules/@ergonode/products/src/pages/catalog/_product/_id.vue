@@ -5,8 +5,7 @@
 <template>
     <ProductPage
         :title="sku"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -16,24 +15,21 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
-import {
-    getKeyByValue,
-} from '@Core/models/objectWrapper';
-import {
-    PRODUCT_TYPE,
-} from '@Products/defaults';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import ProductPage from '@Products/components/Pages/ProductPage';
 import {
     mapActions,
     mapState,
 } from 'vuex';
 
-const applyProductDraft = () => import('@Products/services/applyProductDraft.service');
-
 export default {
     name: 'ProductEdit',
     components: {
-        ProductPage: () => import('@Products/components/Pages/ProductPage'),
+        ProductPage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {
@@ -59,33 +55,22 @@ export default {
         ]);
     },
     computed: {
-        ...mapState('product', {
-            id: state => state.id,
-            sku: state => state.sku,
-            type: state => state.type,
-            template: state => state.template,
-            categories: state => state.categories,
-            bindingAttributesIds: state => state.bindingAttributesIds,
-        }),
-        ...mapState('dictionaries', {
-            productTypes: state => state.productTypes,
-        }),
+        ...mapState('product', [
+            'sku',
+        ]),
     },
-    destroyed() {
+    beforeDestroy() {
         this.__clearStorage();
+        this.__clearFeedbackStorage();
     },
     methods: {
         ...mapActions('product', [
-            'updateProduct',
             'removeProduct',
             '__clearStorage',
         ]),
-        onDraftAppliedSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Product updated',
-            });
-        },
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
@@ -103,36 +88,6 @@ export default {
                     onSuccess: this.onRemoveSuccess,
                 }),
             });
-        },
-        async onSave() {
-            const {
-                params: {
-                    id,
-                },
-            } = this.$route;
-            const data = {
-                templateId: this.template,
-                categoryIds: this.categories,
-            };
-
-            if (getKeyByValue(this.productTypes, this.type) === PRODUCT_TYPE.WITH_VARIANTS) {
-                data.bindings = this.bindingAttributesIds;
-            }
-
-            await this.$setLoader('footerButton');
-            await this.updateProduct({
-                id,
-                data,
-            });
-            await applyProductDraft()
-                .then(request => request
-                    .default({
-                        $axios: this.$axios,
-                        $store: this.$store,
-                        id,
-                    })
-                    .then(this.onDraftAppliedSuccess));
-            await this.$removeLoader('footerButton');
         },
     },
     head() {

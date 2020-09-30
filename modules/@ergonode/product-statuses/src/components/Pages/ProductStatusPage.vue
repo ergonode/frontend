@@ -12,6 +12,7 @@
             </template>
             <template #mainAction>
                 <Button
+                    data-cy="delete-status"
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE STATUS"
@@ -24,14 +25,10 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs" />
-        <Footer flex-end>
-            <Button
-                title="SAVE STATUS"
-                :size="smallSize"
-                :disabled="$isLoading('footerButton')"
-                @click.native="onSave" />
-        </Footer>
+        <HorizontalRoutingTabBar
+            :items="tabs"
+            :change-values="changeValues"
+            :errors="errors" />
     </Page>
 </template>
 

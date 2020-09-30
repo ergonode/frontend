@@ -22,14 +22,10 @@
                 <!--                </Button>-->
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs" />
-        <Footer flex-end>
-            <Button
-                title="SAVE RESOURCE"
-                :size="smallSize"
-                :disabled="$isLoading('footerButton')"
-                @click.native="onSave" />
-        </Footer>
+        <HorizontalRoutingTabBar
+            :items="tabs"
+            :change-values="changeValues"
+            :errors="errors" />
     </Page>
 </template>
 

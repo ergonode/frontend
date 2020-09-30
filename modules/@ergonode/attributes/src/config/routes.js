@@ -60,7 +60,7 @@ export default [
             {
                 name: 'attribute-id-general',
                 path: 'general',
-                component: Tabs.AttributeBaseTab,
+                component: Tabs.AttributeGeneralTab,
                 meta: {
                     title: 'Options',
                     breadcrumbs: [
@@ -147,7 +147,7 @@ export default [
             {
                 name: 'attribute-group-id-general',
                 path: 'general',
-                component: Tabs.AttributeGroupBaseTab,
+                component: Tabs.AttributeGroupGeneralTab,
                 meta: {
                     title: 'Options',
                     breadcrumbs: [

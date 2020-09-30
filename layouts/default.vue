@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import DefaultLayout from '@Core/layouts/default';
 import {
     isEmpty,
 } from '@Core/models/objectWrapper';
@@ -16,7 +17,7 @@ import {
 export default {
     name: 'NuxtDefaultLayout',
     components: {
-        DefaultLayout: () => import('@Core/layouts/default'),
+        DefaultLayout,
     },
     async middleware({
         store, redirect,
@@ -45,7 +46,7 @@ export default {
                 store.dispatch('core/getLanguages'),
             ]);
 
-            await store.dispatch('core/getLanguagesTree');
+            await store.dispatch('core/getLanguageTree');
             await store.dispatch('core/setDefaultLanguage');
         }
 

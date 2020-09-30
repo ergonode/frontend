@@ -3,7 +3,13 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="classes">
+    <div
+        :class=" [
+            'form-subsection',
+            {
+                'form-subsection--required': required,
+            },
+        ]">
         <span
             v-if="title"
             class="form-subsection__title"
@@ -25,16 +31,6 @@ export default {
             default: false,
         },
     },
-    computed: {
-        classes() {
-            return [
-                'form-subsection',
-                {
-                    'form-subsection--required': this.required,
-                },
-            ];
-        },
-    },
 };
 </script>
 
@@ -49,11 +45,6 @@ export default {
         &__title {
             color: $GRAPHITE_DARK;
             font: $FONT_SEMI_BOLD_14_20;
-
-            &::after {
-                color: $RED;
-                content: "*";
-            }
         }
 
         &--required {

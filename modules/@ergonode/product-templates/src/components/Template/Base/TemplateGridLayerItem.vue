@@ -43,9 +43,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('draggable', {
-            draggedElement: state => state.draggedElement,
-        }),
+        ...mapState('draggable', [
+            'draggedElement',
+        ]),
         classes() {
             return [
                 'template-grid-layer-item',

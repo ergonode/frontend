@@ -24,7 +24,7 @@
         <SideBar @expand="onExpandSideBar" />
         <main class="app-main">
             <slot />
-            <FlashMessage />
+            <FlashMessages />
             <ConfirmModal
                 v-if="$getModal(modalConfirmType)"
                 :type="modalConfirmType" />
@@ -36,6 +36,7 @@
 import App from '@Core/components/Layout/App';
 import SideBar from '@Core/components/SideBar/SideBar';
 import ToolBar from '@Core/components/ToolBar/ToolBar';
+import ToolBarBreadcrumb from '@Core/components/ToolBar/ToolBarBreadcrumb';
 import ToolBarUserButton from '@Core/components/ToolBar/ToolBarUserButton';
 import {
     COMPONENTS,
@@ -45,7 +46,6 @@ import {
 } from '@Core/defaults/modals';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -55,8 +55,8 @@ export default {
         SideBar,
         ToolBar,
         ToolBarUserButton,
-        ToolBarBreadcrumb: () => import('@Core/components/ToolBar/ToolBarBreadcrumb'),
-        FlashMessage: () => import('@Core/components/Alerts/FlashMessage'),
+        ToolBarBreadcrumb,
+        FlashMessages: () => import('@Core/components/Alerts/FlashMessages'),
         ConfirmModal: () => import('@Core/components/Modals/ConfirmModal'),
     },
     data() {
@@ -66,9 +66,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            user: state => state.user,
-        }),
         navigationBarPosition() {
             return {
                 top: 0,
@@ -94,11 +91,11 @@ export default {
     mounted() {
         this.setRequestTimeout();
     },
-    destroyed() {
+    beforeDestroy() {
         this.invalidateRequestTimeout();
     },
     methods: {
-        ...mapActions('notifications', [
+        ...mapActions('notification', [
             'setRequestTimeout',
             'invalidateRequestTimeout',
         ]),
@@ -112,7 +109,7 @@ export default {
 <style lang="scss" scoped>
     .app-main {
         width: 100%;
-        height: 100%;
+        height: 100vh;
         padding: 48px 0 0;
         box-sizing: border-box;
     }

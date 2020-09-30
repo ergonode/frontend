@@ -5,17 +5,18 @@
 <template>
     <CategoryPage
         :title="code"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
+import CategoryPage from '@Categories/components/Pages/CategoryPage';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import {
     mapActions,
     mapState,
@@ -24,88 +25,85 @@ import {
 export default {
     name: 'EditCategory',
     components: {
-        CategoryPage: () => import('@Categories/components/Pages/CategoryPage'),
+        CategoryPage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
+        app,
         store,
         params,
     }) {
-        await Promise.all([
-            store.dispatch('translations/__clearStorage'),
-            store.dispatch('categories/__clearStorage'),
-        ]);
-        await store.dispatch('categories/getCategory', {
-            categoryId: params.id,
+        await store.dispatch('category/getCategory', {
+            id: params.id,
+            onError: () => {
+                if (process.client) {
+                    app.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: app.i18n.t('category.errors.getRequest'),
+                    });
+                }
+            },
         });
     },
     computed: {
-        ...mapState('categories', {
-            id: state => state.id,
-            code: state => state.code,
-        }),
-        ...mapState('translations', {
-            translations: state => state.translations,
-        }),
+        ...mapState('category', [
+            'code',
+        ]),
+    },
+    beforeDestroy() {
+        this.__clearStorage();
+        this.__clearTranslationsStorage();
+        this.__clearFeedbackStorage();
     },
     methods: {
-        ...mapActions('categories', [
-            'updateCategory',
+        ...mapActions('category', [
             'removeCategory',
+            '__clearStorage',
         ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeValidationErrors',
-        ]),
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
+        ...mapActions('tab', {
+            __clearTranslationsStorage: '__clearStorage',
+        }),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this category?',
-                confirmCallback: () => this.removeCategory({
-                    onSuccess: this.onRemoveSuccess,
-                }),
-            });
-        },
-        onSave() {
-            this.removeValidationErrors();
-            const {
-                name,
-            } = this.translations;
-            const data = {
-                name,
-            };
-
-            this.updateCategory({
-                id: this.id,
-                data,
-                onSuccess: this.onUpdateCategorySuccess,
-                onError: this.onError,
-            });
-        },
-        onUpdateCategorySuccess() {
-            this.removeValidationErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Category updated',
+                message: this.$t('category.messages.deleteConfirm'),
+                confirmCallback: () => {
+                    this.removeCategory({
+                        onSuccess: this.onRemoveSuccess,
+                        onError: this.onRemoveError,
+                    });
+                },
             });
         },
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Category removed',
+                message: this.$t('category.messages.deleteSuccess'),
             });
             this.$router.push({
                 name: 'categories-grid',
             });
         },
+        onRemoveError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: this.$t('category.errors.deleteRequest'),
+            });
+        },
     },
     head() {
         return {
-            title: `${this.code} - Categories - Ergonode`,
+            title: `${this.code} - ${this.$t('category.page.title')}`,
         };
     },
 };

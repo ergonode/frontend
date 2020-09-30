@@ -3,19 +3,21 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate>
+    <CenterViewTemplate>
         <template #content>
             <Grid
                 :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :drafts="drafts"
                 :collection-cell-binding="collectionCellBinding"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-collection-layout="true"
                 :is-header-visible="true"
                 :is-border="true"
+                @cellValue="onCellValueChange"
                 @deleteRow="onRemoveRow"
                 @fetchData="onFetchData">
                 <template #headerActions>
@@ -32,6 +34,17 @@
                         </template>
                     </ActionButton>
                 </template>
+                <template #appendFooter>
+                    <Button
+                        title="SAVE CHANGES"
+                        @click.native="onSubmit">
+                        <template
+                            v-if="isSubmitting"
+                            #prepend="{ color }">
+                            <IconSpinner :fill-color="color" />
+                        </template>
+                    </Button>
+                </template>
             </Grid>
             <Component
                 v-if="selectedAppModalOption"
@@ -39,7 +52,7 @@
                 @close="onCloseModal"
                 @added="onCreatedData" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
@@ -49,28 +62,38 @@ import {
     EXTENDS,
 } from '@Collections/defaults';
 import ActionButton from '@Core/components/ActionButton/ActionButton';
+import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
 export default {
     name: 'CollectionProductsTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         ActionButton,
         IconAdd,
+        IconSpinner,
+        Button,
     },
     mixins: [
         fetchGridDataMixin({
             path: 'collections/_id/elements',
         }),
+        tabFeedbackMixin,
     ],
     async fetch() {
         await this.onFetchData();
@@ -78,14 +101,15 @@ export default {
     },
     data() {
         return {
+            isSubmitting: false,
             isPrefetchingData: true,
             selectedAppModalOption: null,
         };
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
+        ...mapState('grid', [
+            'drafts',
+        ]),
         isUserAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT_COLLECTION.update,
@@ -93,8 +117,8 @@ export default {
         },
         collectionCellBinding() {
             return {
-                imageColumn: 'esa_default_image',
-                descriptionColumn: 'esa_default_label',
+                imageColumn: 'default_image',
+                descriptionColumn: 'default_label',
             };
         },
         smallSize() {
@@ -127,6 +151,79 @@ export default {
         },
     },
     methods: {
+        ...mapActions('grid', [
+            'setDrafts',
+        ]),
+        ...mapActions('collection', [
+            'updateCollectionProductsVisibility',
+        ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
+        onSubmit() {
+            if (this.isSubmitting) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeScopeErrors(this.scope);
+            this.updateCollectionProductsVisibility({
+                scope: this.scope,
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
+            });
+        },
+        async onUpdateSuccess() {
+            Object.keys(this.drafts).forEach((key) => {
+                const [
+                    rowId,
+                ] = key.split('/');
+
+                const row = this.rows.find(({
+                    id,
+                }) => id.value === rowId);
+
+                if (row) {
+                    row.visible.value = this.drafts[key];
+                }
+            });
+
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product visibilities in collection have been updated',
+            });
+
+            this.setDrafts();
+
+            this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
+        },
+        onUpdateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+        },
+        onCellValueChange(cellValues) {
+            const drafts = cellValues.reduce((prev, {
+                rowId, columnId, value,
+            }) => {
+                const tmp = prev;
+                tmp[`${rowId}/${columnId}`] = value;
+                return tmp;
+            }, {});
+
+            this.setDrafts({
+                ...this.drafts,
+                ...drafts,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'collectionProducts',
+                value: drafts,
+            });
+        },
         onSelectAddProductOption(option) {
             this.selectedAppModalOption = option;
         },

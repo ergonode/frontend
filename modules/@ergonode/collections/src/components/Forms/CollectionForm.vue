@@ -5,14 +5,20 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[typeIdFieldKey, codeFieldKey]">
-        <template #body="{ errorMessages }">
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        :errors="errors"
+        @proceed="onProceed"
+        @submit="onSubmit">
+        <template #body>
             <FormSection>
                 <TextField
                     :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
                     required
-                    :error-messages="errorMessages[codeFieldKey]"
+                    :error-messages="errors[codeFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     label="System name"
                     hint="System name must be unique"
@@ -23,8 +29,8 @@
                     required
                     label="Type"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :error-messages="errorMessages[typeIdFieldKey]"
-                    :fetch-options-request="getCollectionTypesOptionsRequest"
+                    :error-messages="errors[typeIdFieldKey]"
+                    :fetch-options-request="getCollectionTypeOptions"
                     @input="setTypeValue" />
             </FormSection>
         </template>
@@ -33,27 +39,35 @@
 
 <script>
 import PRIVILEGES from '@Collections/config/privileges';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import TextField from '@Core/components/Inputs/TextField';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,
     mapState,
 } from 'vuex';
 
-const getCollectionTypesOptions = () => import('@Collections/services/getCollectionTypesOptions.service');
-
 export default {
     name: 'CollectionForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
-        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
+        Form,
+        FormSection,
+        TextField,
+        TranslationLazySelect,
     },
+    mixins: [
+        formActionsMixin,
+        formFeedbackMixin,
+    ],
     computed: {
-        ...mapState('collections', {
-            id: state => state.id,
-            code: state => state.code,
-            type: state => state.type,
-        }),
+        ...mapState('collection', [
+            'id',
+            'code',
+            'type',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT_COLLECTION.update,
@@ -65,33 +79,41 @@ export default {
         typeIdFieldKey() {
             return 'typeId';
         },
+        typeFieldKey() {
+            return 'type';
+        },
         codeFieldKey() {
             return 'code';
         },
     },
     methods: {
-        ...mapActions('collections', [
+        ...mapActions('collection', [
             '__setState',
+            'getCollectionTypeOptions',
         ]),
         setCodeValue(value) {
             this.__setState({
-                key: 'code',
+                key: this.codeFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.codeFieldKey,
                 value,
             });
         },
         setTypeValue(value) {
             this.__setState({
-                key: 'type',
+                key: this.typeFieldKey,
                 value,
             });
-        },
-        getCollectionTypesOptionsRequest() {
-            return getCollectionTypesOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.typeFieldKey,
+                value,
+            });
         },
         dataCyGenerator(key) {
             return `collection-${key}`;

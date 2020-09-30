@@ -12,7 +12,7 @@
             </template>
             <template #mainAction>
                 <Button
-                    data-cy="delete-segment"
+                    data-cy="delete-template"
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE TEMPLATE"
@@ -25,15 +25,10 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs" />
-        <Footer flex-end>
-            <Button
-                data-cy="save-template"
-                title="SAVE TEMPLATE"
-                :size="smallSize"
-                :disabled="$isLoading('footerButton')"
-                @click.native="onSave" />
-        </Footer>
+        <HorizontalRoutingTabBar
+            :items="tabs"
+            :change-values="changeValues"
+            :errors="errors" />
     </Page>
 </template>
 

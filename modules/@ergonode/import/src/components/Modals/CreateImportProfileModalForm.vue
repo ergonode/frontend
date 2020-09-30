@@ -7,50 +7,47 @@
         title="Create import profile"
         @close="onClose">
         <template #body>
-            <ImportProfileForm />
-        </template>
-        <template #footer>
-            <Button
-                title="CREATE"
-                :disabled="isRequestPending"
-                @click.native="onCreate" />
-            <Button
-                title="CREATE & EDIT"
-                :theme="secondaryTheme"
-                :disabled="isRequestPending"
-                @click.native="onCreatedAndEdit" />
+            <ImportProfileForm
+                submit-title="CREATE"
+                proceed-title="CREATE & EDIT"
+                :is-submitting="isSubmitting"
+                :is-proceeding="isProceeding"
+                :errors="scopeErrors"
+                @submit="onSubmit"
+                @proceed="onProceed" />
         </template>
     </ModalForm>
 </template>
 
 <script>
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
-    MODAL_ACTION,
-} from '@Core/defaults/modals';
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     THEME,
 } from '@Core/defaults/theme';
-import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import ImportProfileForm from '@Import/components/Forms/ImportProfileForm';
 import {
     mapActions,
 } from 'vuex';
 
-const createImportProfile = () => import('@Import/services/createImportProfile.service');
-
 export default {
     name: 'CreateImportProfileModalForm',
     components: {
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
-        ImportProfileForm: () => import('@Import/components/Forms/ImportProfileForm'),
+        ModalForm,
+        ImportProfileForm,
     },
     mixins: [
-        actionModalFormMixin({
-            action: MODAL_ACTION.CREATE,
-            namespace: 'Import profile',
-            request: createImportProfile,
-        }),
+        scopeErrorsMixin,
     ],
+    data() {
+        return {
+            isSubmitting: false,
+            isProceeding: false,
+        };
+    },
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
@@ -58,26 +55,68 @@ export default {
     },
     methods: {
         ...mapActions('import', [
+            'createImportProfile',
             '__clearStorage',
         ]),
         onClose() {
             this.__clearStorage();
+            this.removeScopeErrors(this.scope);
             this.$emit('close');
         },
-        onCreate() {
-            this.onActionRequest(() => {
-                this.__clearStorage();
+        onSubmit() {
+            if (this.isSubmitting || this.isProceeding) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeScopeErrors(this.scope);
+            this.createImportProfile({
+                scope: this.scope,
+                onSuccess: this.onCreateSuccess,
+                onError: this.onCreateError,
             });
         },
-        onCreatedAndEdit() {
-            this.onActionRequest((id) => {
-                this.$router.push({
-                    name: 'import-id-general',
-                    params: {
-                        id,
-                    },
-                });
+        onProceed() {
+            if (this.isSubmitting || this.isProceeding) {
+                return;
+            }
+
+            this.isProceeding = true;
+
+            this.createImportProfile({
+                scope: this.scope,
+                onSuccess: this.onProceedSuccess,
+                onError: this.onCreateError,
             });
+        },
+        onCreateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Import profile created',
+            });
+
+            this.isSubmitting = false;
+
+            this.$emit('created');
+            this.onClose();
+        },
+        onProceedSuccess(id) {
+            this.isProceeding = false;
+
+            this.removeScopeErrors(this.scope);
+
+            this.$router.push({
+                name: 'import-id-general',
+                params: {
+                    id,
+                },
+            });
+        },
+        onCreateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+            this.isProceeding = false;
         },
     },
 };

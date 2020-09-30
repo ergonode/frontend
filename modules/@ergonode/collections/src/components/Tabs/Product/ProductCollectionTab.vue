@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <div class="product-collection-container">
                 <ProductCollection v-if="collections.length">
@@ -34,13 +34,13 @@
                 </ListPlaceholder>
             </div>
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import ProductCollection from '@Collections/components/ProductCollection/ProductCollection';
 import ProductCollectionItem from '@Collections/components/ProductCollection/ProductCollectionItem';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     LAYOUT_ORIENTATION,
 } from '@Core/defaults/layout';
@@ -48,13 +48,13 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import {
-    mapState,
+    mapActions,
 } from 'vuex';
 
 export default {
     name: 'ProductCollectionTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         ProductCollection,
         ProductCollectionItem,
         ExpandingCollection: () => import('@Core/components/ExpandingCollection/ExpandingCollection'),
@@ -67,9 +67,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
         horizontalOrientation() {
             return LAYOUT_ORIENTATION.HORIZONTAL;
         },
@@ -78,28 +75,43 @@ export default {
         },
     },
     async created() {
-        const {
-            collection: types,
-        } = await this.$axios.$get(`${this.languageCode}/collections/type`);
-        const {
-            collection: collections,
-        } = await this.$axios.$get(`${this.languageCode}/products/${this.$route.params.id}/collections`);
+        const [
+            collectionTypeOptionsResponse,
+            productCollections,
+        ] = await Promise.all([
+            this.getCollectionTypeOptions(),
+            this.getProductCollections(),
+        ]);
 
-        this.collections = collections.map(({
-            id, code, name, description, elements_count, type_id,
-        }) => {
-            const collectionType = types.find(type => type.id === type_id);
-            return {
+        this.collections = productCollections
+            .map(({
                 id,
-                title: name || `#${code}`,
-                subtitle: collectionType ? collectionType.name : '',
+                code,
+                name,
                 description,
-                itemsCount: elements_count,
-                items: [],
-            };
-        });
+                elements_count,
+                type_id,
+            }) => {
+                const collectionType = collectionTypeOptionsResponse.options
+                    .find(type => type.id === type_id);
+
+                return {
+                    id,
+                    title: name || `#${code}`,
+                    subtitle: collectionType ? collectionType.name : '',
+                    description,
+                    itemsCount: elements_count,
+                    items: [],
+                };
+            });
     },
     methods: {
+        ...mapActions('product', [
+            'getProductCollections',
+        ]),
+        ...mapActions('collection', [
+            'getCollectionTypeOptions',
+        ]),
         onNavigateToCollections() {
             this.$router.push({
                 name: 'collections-grid',
@@ -108,7 +120,7 @@ export default {
         fetchCollectionItems({
             id, index,
         }) {
-            this.$axios.$get(`${this.$store.state.authentication.user.language}/collections/${id}/elements`).then(({
+            this.$axios.$get(`collections/${id}/elements`).then(({
                 collection,
             }) => {
                 this.collections[index].items = collection.map(({

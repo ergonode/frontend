@@ -29,13 +29,16 @@
         <CreateStatusTransitionModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @create="onCreatedData" />
+            @created="onCreatedData" />
     </Page>
 </template>
 
 <script>
 import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import Page from '@Core/components/Layout/Page';
+import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@Core/components/TitleBar/TitleBar';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -48,12 +51,12 @@ import PRIVILEGES from '@Transitions/config/privileges';
 export default {
     name: 'WorkflowTabs',
     components: {
-        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
-        Page: () => import('@Core/components/Layout/Page'),
-        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
-        CreateStatusTransitionModalForm: () => import('@Transitions/components/Modals/CreateStatusTransitionModalForm'),
+        TitleBar,
+        Page,
+        HorizontalRoutingTabBar,
         Button,
         IconAdd,
+        CreateStatusTransitionModalForm: () => import('@Transitions/components/Modals/CreateStatusTransitionModalForm'),
     },
     mixins: [
         gridModalMixin,
@@ -68,7 +71,11 @@ export default {
             return SIZE.SMALL;
         },
         tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+            return getNestedTabRoutes({
+                hasAccess: this.$hasAccess,
+                routes: this.$router.options.routes,
+                route: this.$route,
+            });
         },
     },
     head() {

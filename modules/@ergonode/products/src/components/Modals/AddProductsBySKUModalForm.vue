@@ -10,54 +10,48 @@
             <AddProductsBySKUForm
                 :product-skus="productSkus"
                 :is-user-allowed-to-update="isUserAllowedToUpdate"
+                submit-title="ADD TO PRODUCT"
+                proceed-title="CANCEL"
+                :is-submitting="isAdding"
+                :errors="scopeErrors"
+                @submit="onSubmit"
+                @proceed="onClose"
                 @input="onFormValueChange" />
-        </template>
-        <template #footer>
-            <Button
-                title="ADD TO PRODUCT"
-                :disabled="isRequestPending"
-                @click.native="onAdd" />
-            <Button
-                title="CANCEL"
-                :theme="secondaryTheme"
-                @click.native="onClose" />
         </template>
     </ModalForm>
 </template>
 
 <script>
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     THEME,
 } from '@Core/defaults/theme';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import AddProductsBySKUForm from '@Products/components/Form/AddProductsBySKUForm';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
     name: 'AddProductsBySKUModalForm',
     components: {
-        AddProductsBySKUForm: () => import('@Products/components/Form/AddProductsBySKUForm'),
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
+        AddProductsBySKUForm,
+        ModalForm,
     },
+    mixins: [
+        scopeErrorsMixin,
+    ],
     data() {
         return {
             productSkus: '',
-            isRequestPending: false,
+            isAdding: false,
         };
     },
     computed: {
-        ...mapState('authentication', {
-            language: state => state.user.language,
-        }),
-        ...mapState('product', {
-            id: state => state.id,
-        }),
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -68,36 +62,45 @@ export default {
         },
     },
     methods: {
-        ...mapActions('validations', [
-            'onError',
-            'removeValidationErrors',
+        ...mapActions('product', [
+            'addBySku',
         ]),
         onFormValueChange(value) {
             this.productSkus = value;
         },
         onClose() {
+            this.removeScopeErrors(this.scope);
+
             this.$emit('close');
         },
-        onAdd() {
-            this.removeValidationErrors();
-            const data = {
-                skus: this.productSkus.replace(/\n/g, ',').split(','),
-            };
+        onSubmit() {
+            if (this.isAdding) {
+                return;
+            }
+            this.isAdding = true;
 
-            this.isRequestPending = true;
-            this.$axios.$post(`${this.language}/products/${this.id}/children/add-from-skus`, data).then(() => {
-                this.isRequestPending = false;
-                this.removeValidationErrors();
-                this.$addAlert({
-                    type: ALERT_TYPE.SUCCESS,
-                    message: 'Products has been added',
-                });
-
-                this.$emit('added');
-            }).catch((e) => {
-                this.isRequestPending = false;
-                this.onError(e.data);
+            this.removeScopeErrors(this.scope);
+            this.addBySku({
+                scope: this.scope,
+                skus: this.productSkus,
+                onSuccess: this.onAddSuccess,
+                onError: this.onAddError,
             });
+        },
+        onAddSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Products have been added',
+            });
+
+            this.isAdding = false;
+
+            this.$emit('added');
+        },
+        onAddError(errors) {
+            this.onError(errors);
+
+            this.isAdding = false;
         },
     },
 };

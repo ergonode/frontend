@@ -3,27 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormValidatorField :field-key="paramFieldKeys">
-        <template #validator="{ errorMessages }">
-            <Component
-                :is="getComponentViaType"
-                :required="true"
-                :clearable="true"
-                :size="smallSize"
-                :label="parameter.name"
-                :options="conditionOptions"
-                :value="conditionValue"
-                :multiselect="isConditionTypeMultiSelect"
-                :error-messages="errorMessages"
-                @input="setConditionValueByType" />
-        </template>
-    </FormValidatorField>
+    <Component
+        :is="getComponentViaType"
+        :required="true"
+        :clearable="true"
+        :size="smallSize"
+        :label="parameter.name"
+        :options="conditionOptions"
+        :value="conditionValue"
+        :multiselect="isConditionTypeMultiSelect"
+        :error-messages="errorMessages"
+        @input="setConditionValueByType" />
 </template>
 <script>
 import {
     TYPES,
 } from '@Conditions/defaults/conditionsDesigner';
-import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -34,9 +29,6 @@ import {
 
 export default {
     name: 'ConditionSetParameters',
-    components: {
-        FormValidatorField,
-    },
     props: {
         parameter: {
             type: Object,
@@ -50,6 +42,14 @@ export default {
             type: Number,
             required: true,
         },
+        scope: {
+            type: String,
+            default: '',
+        },
+        errorMessages: {
+            type: String,
+            default: '',
+        },
     },
     data() {
         return {
@@ -57,9 +57,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('conditions', {
-            conditionsValues: state => state.conditionsValues,
-        }),
+        ...mapState('condition', [
+            'conditionsValues',
+        ]),
         smallSize() {
             return SIZE.SMALL;
         },
@@ -113,12 +113,6 @@ export default {
                 }))
                 : [];
         },
-        paramFieldKeys() {
-            return [
-                `conditions_element-${this.itemRow}`,
-                this.parameter.name,
-            ];
-        },
     },
     watch: {
         conditionsValues: {
@@ -136,8 +130,11 @@ export default {
         },
     },
     methods: {
-        ...mapActions('conditions', [
+        ...mapActions('condition', [
             'setConditionValue',
+        ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
         ]),
         setConditionValueByType(value) {
             const {
@@ -148,6 +145,12 @@ export default {
                 conditionId: this.itemId,
                 parameterName: name,
                 parameterValue: value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: `${this.itemId}|${name}`,
+                value,
             });
         },
     },

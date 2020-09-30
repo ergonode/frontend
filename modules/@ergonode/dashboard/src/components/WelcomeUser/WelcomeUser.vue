@@ -7,7 +7,6 @@
         <UserFabAvatar
             :avatar-id="user.avatarId"
             :user-id="user.id"
-            :language-code="user.language"
             :name="user.firstName"
             :size="extraLargeSize" />
         <div class="user-welcome__description">
@@ -36,9 +35,9 @@ export default {
         UserFabAvatar,
     },
     computed: {
-        ...mapState('authentication', {
-            user: state => state.user,
-        }),
+        ...mapState('authentication', [
+            'user',
+        ]),
         extraLargeSize() {
             return SIZE.EXTRA_LARGE;
         },

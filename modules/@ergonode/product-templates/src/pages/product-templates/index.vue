@@ -20,7 +20,7 @@
                 </Button>
             </template>
         </TitleBar>
-        <ResponsiveCenteredViewTemplate>
+        <CenterViewTemplate>
             <template #content>
                 <Grid
                     :is-editable="isAllowedToUpdate"
@@ -36,14 +36,15 @@
                     :is-border="true"
                     :collection-cell-binding="collectionCellBinding"
                     @editRow="onEditRow"
+                    @previewRow="onEditRow"
                     @deleteRow="onRemoveRow"
                     @fetchData="onFetchData" />
             </template>
-        </ResponsiveCenteredViewTemplate>
+        </CenterViewTemplate>
         <CreateProductTemplateModalForm
             v-if="isCreateProductTemplateVisible"
             @close="onCloseModal"
-            @create="onCreatedProductTemplate" />
+            @created="onCreatedProductTemplate" />
     </Page>
 </template>
 
@@ -51,7 +52,11 @@
 import {
     WHITESMOKE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import Button from '@Core/components/Button/Button';
+import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import Page from '@Core/components/Layout/Page';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import TitleBar from '@Core/components/TitleBar/TitleBar';
 import {
     GRID_LAYOUT,
 } from '@Core/defaults/grid';
@@ -59,22 +64,24 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import PRIVILEGES from '@Templates/config/privileges';
 
 export default {
     name: 'Templates',
     components: {
-        ResponsiveCenteredViewTemplate,
-        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
-        Page: () => import('@Core/components/Layout/Page'),
-        IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
-        Button: () => import('@Core/components/Button/Button'),
+        CenterViewTemplate,
+        TitleBar,
+        Page,
+        IconAdd,
+        Button,
         CreateProductTemplateModalForm: () => import('@Templates/components/Modals/CreateProductTemplateModalForm'),
     },
     mixins: [
         fetchGridDataMixin({
             path: 'templates',
         }),
+        beforeLeavePageMixin,
     ],
     async fetch() {
         await this.onFetchData();

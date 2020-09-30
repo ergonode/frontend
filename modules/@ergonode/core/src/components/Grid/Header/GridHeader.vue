@@ -35,9 +35,11 @@
             </template>
             <template #configuration>
                 <GridTableLayoutActivator
+                    data-cy="grid-table-view"
                     :is-selected="layout === gridLayouts.TABLE"
                     @active="onLayoutActivate" />
                 <GridCollectionLayoutActivator
+                    data-cy="grid-collection-view"
                     v-if="isCollectionLayout"
                     :is-selected="layout === gridLayouts.COLLECTION"
                     @active="onLayoutActivate" />
@@ -150,10 +152,10 @@ export default {
         };
     },
     computed: {
-        ...mapState('draggable', {
-            isElementDragging: state => state.isElementDragging,
-            draggedElement: state => state.draggedElement,
-        }),
+        ...mapState('draggable', [
+            'isElementDragging',
+            'draggedElement',
+        ]),
         classes() {
             return [
                 'grid-header',

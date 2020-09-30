@@ -12,6 +12,10 @@
 </template>
 
 <script>
+import Page from '@Core/components/Layout/Page';
+import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@Core/components/TitleBar/TitleBar';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import {
     getNestedTabRoutes,
 } from '@Core/models/navigation/tabs';
@@ -19,13 +23,20 @@ import {
 export default {
     name: 'UsersTabs',
     components: {
-        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
-        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
-        Page: () => import('@Core/components/Layout/Page'),
+        HorizontalRoutingTabBar,
+        TitleBar,
+        Page,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     computed: {
         tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+            return getNestedTabRoutes({
+                hasAccess: this.$hasAccess,
+                routes: this.$router.options.routes,
+                route: this.$route,
+            });
         },
     },
 };

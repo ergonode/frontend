@@ -15,11 +15,12 @@
         :is-header-visible="true"
         :is-collection-layout="true"
         @editRow="onEditRow"
+        @previewRow="onEditRow"
         @cellValue="onCellValueChange"
         @deleteRow="onRemoveRow"
         @fetchData="onFetchData">
         <!--  TODO: Uncomment when we have global search      -->
-        <!--        <template #actions>-->
+        <!--        <template #headerActions>-->
         <!--            <TextField-->
         <!--                :value="searchResult"-->
         <!--                :size="smallSize"-->
@@ -71,9 +72,6 @@ import {
 import {
     debounce,
 } from 'debounce';
-import {
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'MediaGrid',
@@ -122,9 +120,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.MULTIMEDIA.update,
@@ -235,7 +230,7 @@ export default {
 
             return getGridData({
                 $axios: this.$axios,
-                path: `${this.languageCode}/multimedia`,
+                path: 'multimedia',
                 params,
             }).then(({
                 columns,
@@ -285,27 +280,40 @@ export default {
                 } else {
                     toRemove.push(rowId);
                 }
+
+                const row = this.rows.find(({
+                    id,
+                }) => id.value === rowId);
+
+                if (row) {
+                    row.esa_attached.value = this.drafts[key];
+                }
             });
 
             this.setDrafts();
 
-            if (this.multiple) {
-                const mappedValue = [
-                    ...this.value.filter(id => !toRemove.some(removeId => removeId === id)),
-                    ...value,
-                ];
+            if (value.length || toRemove.length) {
+                if (this.multiple) {
+                    const mappedValue = [
+                        ...this.value.filter(id => !toRemove.some(removeId => removeId === id)),
+                        ...value,
+                    ];
 
-                this.$emit('input', mappedValue);
+                    this.$emit('input', mappedValue);
+                } else if (value.length) {
+                    this.$emit('input', value.join(''));
+                }
+
+                this.$addAlert({
+                    type: ALERT_TYPE.SUCCESS,
+                    message: 'Resources have been updated',
+                });
             } else {
-                this.$emit('input', value.join(''));
+                this.$addAlert({
+                    type: ALERT_TYPE.INFO,
+                    message: 'No changes have been made',
+                });
             }
-
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Media have been added',
-            });
-
-            this.onFetchData(this.localParams);
         },
         onSearchFocus(isFocused) {
             this.isSearchFocused = isFocused;

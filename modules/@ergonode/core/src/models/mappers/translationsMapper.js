@@ -16,7 +16,7 @@ export function getMappedObjectOption({
     };
 }
 
-export function getMappedArrayOptions({
+export function getMappedTranslationArrayOptions({
     options, languageCode,
 }) {
     return options.map(option => getMappedObjectOption({

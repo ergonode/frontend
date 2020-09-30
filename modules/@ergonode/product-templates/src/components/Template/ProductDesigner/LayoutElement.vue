@@ -109,12 +109,12 @@ export default {
         };
     },
     computed: {
-        ...mapState('templateDesigner', {
-            layoutElements: state => state.layoutElements,
-        }),
-        ...mapState('draggable', {
-            draggedElement: state => state.draggedElement,
-        }),
+        ...mapState('productTemplate', [
+            'layoutElements',
+        ]),
+        ...mapState('draggable', [
+            'draggedElement',
+        ]),
         classes() {
             return [
                 'layout-element',
@@ -127,25 +127,27 @@ export default {
         },
     },
     methods: {
-        ...mapActions('templateDesigner', [
+        ...mapActions('productTemplate', [
             'updateLayoutElementAtIndex',
             'removeLayoutElementAtIndex',
         ]),
         ...mapActions('draggable', [
-            'setDraggedElement',
-            'setDraggableState',
+            '__setState',
         ]),
         onDragStart(event) {
             const {
                 id, width, height,
             } = this.element;
 
-            this.setDraggedElement({
-                ...this.element,
-                index: this.index,
+            this.__setState({
+                key: 'draggedElement',
+                value: {
+                    ...this.element,
+                    index: this.index,
+                },
             });
-            this.setDraggableState({
-                propName: 'isElementDragging',
+            this.__setState({
+                key: 'isElementDragging',
                 value: DRAGGED_ELEMENT.TEMPLATE,
             });
             window.requestAnimationFrame(() => { this.isDragged = true; });
@@ -177,9 +179,12 @@ export default {
 
             this.isDragged = false;
             this.highlightingPositions = [];
-            this.setDraggedElement();
-            this.setDraggableState({
-                propName: 'isElementDragging',
+            this.__setState({
+                key: 'draggedElement',
+                value: null,
+            });
+            this.__setState({
+                key: 'isElementDragging',
                 value: null,
             });
 

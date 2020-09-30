@@ -88,8 +88,8 @@ import {
     MEDIA_TYPE,
 } from '@Media/defaults';
 import {
-    mapState,
-} from 'vuex';
+    get,
+} from '@Media/services/index';
 
 export default {
     name: 'UploadFiles',
@@ -151,9 +151,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -208,7 +205,10 @@ export default {
 
                 this.value.forEach((id) => {
                     if (typeof this.localValue[id] === 'undefined') {
-                        requests.push(this.$axios.$get(`${this.languageCode}/multimedia/${id}`).then(({
+                        requests.push(get({
+                            $axios: this.$axios,
+                            id,
+                        }).then(({
                             name,
                         }) => {
                             this.localValue[id] = name;

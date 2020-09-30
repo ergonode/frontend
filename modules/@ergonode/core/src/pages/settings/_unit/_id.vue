@@ -5,17 +5,18 @@
 <template>
     <UnitPage
         :title="name"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
+import UnitPage from '@Core/components/Pages/UnitPage';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import {
     mapActions,
     mapState,
@@ -24,8 +25,11 @@ import {
 export default {
     name: 'UnitEdit',
     components: {
-        UnitPage: () => import('@Core/components/Pages/UnitPage'),
+        UnitPage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {
@@ -35,33 +39,23 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('units/__clearStorage');
-        await store.dispatch('units/getUnit', {
-            unitId: params.id,
-        });
+        await store.dispatch('unit/getUnit', params);
     },
     computed: {
-        ...mapState('units', {
-            id: state => state.id,
-            name: state => state.name,
-            symbol: state => state.symbol,
-        }),
+        ...mapState('unit', [
+            'name',
+        ]),
     },
-    destroyed() {
+    beforeDestroy() {
         this.clearUnitStorage();
     },
     methods: {
-        ...mapActions('units', {
-            updateUnit: 'updateUnit',
+        ...mapActions('unit', {
             removeUnit: 'removeUnit',
             clearUnitStorage: '__clearStorage',
         }),
         ...mapActions('dictionaries', [
-            'getCurrentDictionary',
-        ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeValidationErrors',
+            'getDictionary',
         ]),
         onRemove() {
             this.$openModal({
@@ -72,30 +66,8 @@ export default {
                 }),
             });
         },
-        onSave() {
-            this.removeValidationErrors();
-
-            this.updateUnit({
-                id: this.id,
-                data: {
-                    name: this.name,
-                    symbol: this.symbol,
-                },
-                onSuccess: this.onUpdateUnitSuccess,
-                onError: this.onError,
-            });
-        },
-        async onUpdateUnitSuccess() {
-            await this.getCurrentDictionary({
-                dictionaryName: 'units',
-            });
-            await this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Unit updated',
-            });
-        },
         async onRemoveUnitSuccess() {
-            await this.getCurrentDictionary({
+            await this.getDictionary({
                 dictionaryName: 'units',
             });
             await this.$addAlert({

@@ -7,14 +7,14 @@
     <Form
         :title="schema.title"
         :fields-keys="fieldsKeys">
-        <template #body="{ errorMessages }">
+        <template #body>
             <Component
                 v-for="element in schemaComponents"
                 :key="element.key"
-                :is="element.component"
                 :value="model[element.key]"
+                :is="element.component"
                 :schema="element.props"
-                :error-messages="errorMessages[element.key]"
+                :errors="errors[element.key]"
                 @input="onValueChange" />
         </template>
     </Form>
@@ -39,6 +39,10 @@ export default {
                 required: [],
             }),
         },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         value: {
             type: String,
             default: '',
@@ -59,14 +63,9 @@ export default {
             return Object.keys(this.schema.properties);
         },
     },
-    watch: {
-        schema: {
-            immediate: true,
-            handler() {
-                this.schemaComponents = this.getComponents();
-                this.model = JSON.parse(this.value);
-            },
-        },
+    created() {
+        this.model = JSON.parse(this.value);
+        this.schemaComponents = this.getComponents();
     },
     methods: {
         getComponents() {

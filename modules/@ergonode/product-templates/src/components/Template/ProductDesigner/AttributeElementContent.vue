@@ -8,7 +8,9 @@
         @mouseover.native="onMouseOver"
         @mouseout.native="onMouseOut">
         <div class="element-content__icon">
-            <Component :is="attributeIconComponent" />
+            <Component
+                :is="attributeIconComponent.component"
+                v-bind="attributeIconComponent.props" />
         </div>
         <div class="vertical-wrapper">
             <span
@@ -60,9 +62,6 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import {
-    capitalizeAndConcatenationArray,
-} from '@Core/models/stringWrapper';
 import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
 import {
     mapActions,
@@ -81,6 +80,18 @@ export default {
         CheckBox,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         index: {
             type: Number,
             required: true,
@@ -123,13 +134,15 @@ export default {
             return 'element-content__header';
         },
         attributeIconComponent() {
-            if (!this.element.type) return '';
+            const extendedIcon = this.$getExtendedComponents('@Attributes/components/Lists/AttributeListElement/Icon');
 
-            const types = this.element.type.split('_');
-            const attributeName = capitalizeAndConcatenationArray(types);
+            if (extendedIcon && extendedIcon[this.element.type]) {
+                return extendedIcon[this.element.type];
+            }
 
-            return () => import(`@Core/components/Icons/Attributes/Icon${attributeName}`)
-                .catch(() => import('@Core/components/Icons/Menu/IconAttributes'));
+            return {
+                component: () => import('@Core/components/Icons/Menu/IconAttributes'),
+            };
         },
         contextualMenuHoveStateClasses() {
             return {
@@ -138,9 +151,12 @@ export default {
         },
     },
     methods: {
-        ...mapActions('templateDesigner', [
+        ...mapActions('productTemplate', [
             'updateLayoutElementAtIndex',
             'removeLayoutElementAtIndex',
+        ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
         ]),
         onSelectFocus(isFocused) {
             if (!isFocused) this.isHovered = false;
@@ -157,9 +173,21 @@ export default {
                         required: !this.element.required,
                     },
                 });
+
+                this.onScopeValueChange({
+                    scope: this.scope,
+                    fieldKey: 'templateDesigner',
+                    value: true,
+                });
                 break;
             case 'Remove':
                 this.removeLayoutElementAtIndex(this.index);
+
+                this.onScopeValueChange({
+                    scope: this.scope,
+                    fieldKey: 'templateDesigner',
+                    value: true,
+                });
                 break;
             default: break;
             }

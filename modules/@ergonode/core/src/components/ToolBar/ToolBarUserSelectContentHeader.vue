@@ -7,7 +7,6 @@
         <UserFabAvatar
             :avatar-id="avatarId"
             :user-id="user.id"
-            :language-code="user.language"
             :name="initials"
             :size="largeSize" />
         <span
@@ -39,9 +38,9 @@ export default {
         UserFabAvatar: () => import('@Core/components/Multimedia/UserFabAvatar'),
     },
     computed: {
-        ...mapState('authentication', {
-            user: state => state.user,
-        }),
+        ...mapState('authentication', [
+            'user',
+        ]),
         avatarId() {
             return this.user.avatarFilename
                 ? this.user.avatarFilename.split('.')[0]

@@ -5,8 +5,14 @@
 <template>
     <Form
         title="Status change"
-        :fields-keys="[roleFieldKey, destinationFieldKey, sourceFieldKey]">
-        <template #body="{ errorMessages }">
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        :errors="errors"
+        @proceed="onProceed"
+        @submit="onSubmit">
+        <template #body>
             <FormSection>
                 <TranslationSelect
                     :value="source"
@@ -15,7 +21,7 @@
                     :clearable="true"
                     :options="sourceOptions"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :error-messages="errorMessages[sourceFieldKey]"
+                    :error-messages="errors[sourceFieldKey]"
                     @input="setSourceValue" />
                 <TranslationSelect
                     :value="destination"
@@ -24,7 +30,7 @@
                     :clearable="true"
                     :options="destinationOptions"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :error-messages="errorMessages[destinationFieldKey]"
+                    :error-messages="errors[destinationFieldKey]"
                     @input="setDestinationValue" />
             </FormSection>
             <Divider />
@@ -35,8 +41,8 @@
                     :multiselect="true"
                     label="Role"
                     :disabled="!isAllowedToUpdate"
-                    :error-messages="errorMessages[roleFieldKey]"
-                    :fetch-options-request="getRolesOptionsRequest"
+                    :error-messages="errors[roleFieldKey]"
+                    :fetch-options-request="getRoleOptions"
                     @input="setRolesValue" />
             </FormSection>
         </template>
@@ -44,6 +50,13 @@
 </template>
 
 <script>
+import Divider from '@Core/components/Dividers/Divider';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     isEmpty,
 } from '@Core/models/objectWrapper';
@@ -53,26 +66,28 @@ import {
     mapState,
 } from 'vuex';
 
-const getRolesOptions = () => import('@Users/services/getRolesOptions.service');
-
 export default {
     name: 'TransitionForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        Divider: () => import('@Core/components/Dividers/Divider'),
-        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
-        TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
+        Form,
+        FormSection,
+        Divider,
+        TranslationLazySelect,
+        TranslationSelect,
     },
+    mixins: [
+        formActionsMixin,
+        formFeedbackMixin,
+    ],
     computed: {
-        ...mapState('transitions', {
-            source: state => state.source,
-            destination: state => state.destination,
-            roles: state => state.roles,
-        }),
-        ...mapState('productStatus', {
-            statuses: state => state.statuses,
-        }),
+        ...mapState('statusTransition', [
+            'source',
+            'destination',
+            'roles',
+        ]),
+        ...mapState('productStatus', [
+            'statuses',
+        ]),
         isDisabled() {
             if (!isEmpty(this.$route.params)) {
                 const {
@@ -111,18 +126,31 @@ export default {
         },
     },
     methods: {
-        ...mapActions('transitions', [
+        ...mapActions('statusTransition', [
             '__setState',
+        ]),
+        ...mapActions('role', [
+            'getRoleOptions',
         ]),
         setSourceValue(value) {
             this.__setState({
-                key: 'source',
+                key: this.sourceFieldKey,
+                value,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.sourceFieldKey,
                 value,
             });
         },
         setDestinationValue(value) {
             this.__setState({
-                key: 'destination',
+                key: this.destinationFieldKey,
+                value,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.destinationFieldKey,
                 value,
             });
         },
@@ -131,14 +159,11 @@ export default {
                 key: 'roles',
                 value,
             });
-        },
-        getRolesOptionsRequest() {
-            return getRolesOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'roles',
+                value,
+            });
         },
     },
 };

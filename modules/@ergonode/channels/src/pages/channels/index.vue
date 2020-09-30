@@ -29,7 +29,7 @@
         <CreateChannelModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @create="onCreatedData" />
+            @created="onCreatedData" />
     </Page>
 </template>
 
@@ -37,10 +37,14 @@
 import PRIVILEGES from '@Channels/config/privileges';
 import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import Page from '@Core/components/Layout/Page';
+import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@Core/components/TitleBar/TitleBar';
 import {
     SIZE,
 } from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import {
     getNestedTabRoutes,
 } from '@Core/models/navigation/tabs';
@@ -48,22 +52,27 @@ import {
 export default {
     name: 'Channels',
     components: {
-        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
-        Page: () => import('@Core/components/Layout/Page'),
-        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
-        CreateChannelModalForm: () => import('@Channels/components/Modals/CreateChannelModalForm'),
+        TitleBar,
+        Page,
+        HorizontalRoutingTabBar,
         Button,
         IconAdd,
+        CreateChannelModalForm: () => import('@Channels/components/Modals/CreateChannelModalForm'),
     },
     mixins: [
         gridModalMixin,
+        beforeLeavePageMixin,
     ],
     computed: {
         smallSize() {
             return SIZE.SMALL;
         },
         tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+            return getNestedTabRoutes({
+                hasAccess: this.$hasAccess,
+                routes: this.$router.options.routes,
+                route: this.$route,
+            });
         },
         isUserAllowedToCreate() {
             return this.$hasAccess([

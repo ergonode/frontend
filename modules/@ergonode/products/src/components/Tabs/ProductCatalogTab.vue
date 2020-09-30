@@ -27,6 +27,7 @@
                 :rows="rows"
                 :placeholder="noRecordsPlaceholder"
                 :drafts="drafts"
+                :errors="errors"
                 :advanced-filters="advancedFilters"
                 :data-count="filtered"
                 :collection-cell-binding="collectionCellBinding"
@@ -36,42 +37,43 @@
                 :is-basic-filter="true"
                 :is-collection-layout="true"
                 @editRow="onEditRow"
+                @previewRow="onEditRow"
                 @cellValue="onCellValueChange"
                 @focusCell="onFocusCell"
                 @deleteRow="onRemoveRow"
                 @dropColumn="onDropColumn"
                 @dropFilter="onDropFilter"
                 @fetchData="onFetchData">
-                <template #actions>
-                    <ExpandNumericButton
-                        title="FILTERS"
-                        :number="filtersCount"
-                        :is-expanded="isFiltersExpanded"
-                        @click.native="onFiltersExpand" />
-                    <!--
-                      Uncomment when product draft will be change on grid
-                      <Button
-                        :theme="secondaryTheme"
-                        :size="smallSize"
-                        title="RESTORE"
-                        :disabled="!isUserAllowedToRestore"
-                        @click.native="onShowModal">
-                        <template #prepend="{ color }">
-                            <IconRestore :fill-color="color" />
-                        </template>
-                    </Button> -->
-                    <!-- <RestoreAttributeParentModalConfirm
-                        v-if="isModalVisible"
-                        :element="focusedCellToRestore"
-                        @close="onCloseConfirmModal"
-                        @restore="onRestoreDraftSuccess" /> -->
-                </template>
+                <!--                <template #headerActions>-->
+                <!--
+                                  Uncomment when product draft will be change on grid
+                                  <Button
+                                    :theme="secondaryTheme"
+                                    :size="smallSize"
+                                    title="RESTORE"
+                                    :disabled="!isUserAllowedToRestore"
+                                    @click.native="onShowModal">
+                                    <template #prepend="{ color }">
+                                        <IconRestore :fill-color="color" />
+                                    </template>
+                                </Button> -->
+                <!-- <RestoreAttributeParentModalConfirm
+                                    v-if="isModalVisible"
+                                    :element="focusedCellToRestore"
+                                    @close="onCloseConfirmModal"
+                                    @restore="onRestoreDraftSuccess" /> -->
+                <!--                </template>-->
                 <template #appendFooter>
                     <Button
                         title="SAVE CHANGES"
-                        :size="smallSize"
-                        :disabled="!isUserAllowedToUpdate || $isLoading('footerDraftButton')"
-                        @click.native="onSaveDrafts" />
+                        :disabled="!isUserAllowedToUpdate"
+                        @click.native="onSubmit">
+                        <template
+                            v-if="isSubmitting"
+                            #prepend="{ color }">
+                            <IconSpinner :fill-color="color" />
+                        </template>
+                    </Button>
                 </template>
             </Grid>
         </template>
@@ -79,7 +81,6 @@
 </template>
 
 <script>
-// import getProductDraft from '@Products/services/getProductDraft.service';
 import {
     GRAPHITE_LIGHT,
     WHITESMOKE,
@@ -88,6 +89,7 @@ import Button from '@Core/components/Button/Button';
 import DropZone from '@Core/components/DropZone/DropZone';
 import IconRemoveColumn from '@Core/components/Icons/Actions/IconRemoveColumn';
 import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
 import VerticalTabBar from '@Core/components/TabBar/VerticalTabBar';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
@@ -105,14 +107,12 @@ import fetchAdvancedFiltersDataMixin from '@Core/mixins/grid/fetchAdvancedFilter
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     mapActions,
     mapState,
 } from 'vuex';
-
-const updateProductDraft = () => import('@Products/services/updateProductDraft.service');
-const applyProductDraft = () => import('@Products/services/applyProductDraft.service');
 
 export default {
     name: 'ProductCatalogTab',
@@ -124,6 +124,7 @@ export default {
         IconRemoveFilter,
         IconRemoveColumn,
         FadeTransition,
+        IconSpinner,
         // RestoreAttributeParentModalConfirm: () => import('@Products/components/Modals/RestoreAttributeParentModalConfirm'),
         // IconRestore: () => import('@Core/components/Icons/Actions/IconRestore'),
     },
@@ -137,8 +138,9 @@ export default {
             path: 'products',
         }),
         gridDraftMixin,
+        tabFeedbackMixin,
     ],
-    fetch() {
+    async fetch() {
         const requests = [
             this.onFetchData(),
         ];
@@ -148,28 +150,27 @@ export default {
             requests.push(this.onFetchAdvancedFilters(advFiltersIds));
         }
 
-        return Promise.all(requests).then(() => {
-            this.isPrefetchingData = false;
-            this.setDisabledElements(this.getDisabledElements({
-                columns: this.columns,
-                filters: this.advancedFilters,
-            }));
-        });
+        await Promise.all(requests);
+
+        this.isPrefetchingData = false;
+
+        this.setDisabledElements(this.getDisabledElements({
+            columns: this.columns,
+            filters: this.advancedFilters,
+        }));
     },
     data() {
         return {
             isPrefetchingData: true,
+            isSubmitting: false,
             focusedCellToRestore: null,
         };
     },
     computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
-        ...mapState('draggable', {
-            isElementDragging: state => state.isElementDragging,
-            draggedElement: state => state.draggedElement,
-        }),
+        ...mapState('draggable', [
+            'isElementDragging',
+            'draggedElement',
+        ]),
         noRecordsPlaceholder() {
             return {
                 title: 'No products',
@@ -253,7 +254,14 @@ export default {
             'setDisabledElement',
             'setDisabledElements',
         ]),
-        onCellValueChange(cellValues) {
+        ...mapActions('product', [
+            'updateProductDraft',
+            'applyProductDraft',
+        ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
+        async onCellValueChange(cellValues) {
             const cachedElementIds = {};
 
             const drafts = cellValues.reduce((prev, {
@@ -269,7 +277,7 @@ export default {
                 ...drafts,
             });
 
-            const requests = cellValues.map(({
+            const requests = cellValues.map(async ({
                 rowId, columnId, value,
             }) => {
                 if (!cachedElementIds[columnId]) {
@@ -280,18 +288,23 @@ export default {
                     cachedElementIds[columnId] = element_id;
                 }
 
-                return updateProductDraft().then(response => response.default({
-                    $axios: this.$axios,
-                    $store: this.$store,
+                await this.updateProductDraft({
                     fieldKey: `${rowId}/${columnId}`,
                     languageCode: columnId.split(':')[1],
                     productId: rowId,
                     elementId: cachedElementIds[columnId],
                     value,
-                }));
+                    scope: this.scope,
+                });
             });
 
-            Promise.all(requests);
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'productsGrid',
+                value: this.drafts,
+            });
+
+            await Promise.all(requests);
         },
         onFocusCell({
             column, rowId,
@@ -333,33 +346,32 @@ export default {
                 },
             });
         },
-        async onSaveDrafts() {
-            const promises = [];
+        async onSubmit() {
+            this.isSubmitting = true;
 
-            const applyProductDraftModule = await applyProductDraft()
-                .then(request => request.default);
+            const promises = [];
 
             Object.keys(this.drafts).forEach((key) => {
                 const [
                     rowId,
                 ] = key.split('/');
 
-                promises.push(applyProductDraftModule({
-                    $axios: this.$axios,
-                    $store: this.$store,
+                promises.push(this.applyProductDraft({
                     id: rowId,
                 }).then(() => this.removeDraftRow(rowId)));
             });
 
-            await this.$setLoader('footerDraftButton');
-            await Promise.all(promises).then(() => {
-                this.onFetchData(this.localParams);
-                this.$addAlert({
-                    type: ALERT_TYPE.SUCCESS,
-                    message: 'Product changes saved',
-                });
+            await Promise.all(promises);
+
+            this.onFetchData(this.localParams);
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Products have been updated',
             });
-            await this.$removeLoader('footerDraftButton');
+
+            this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         getDisabledElements({
             columns, filters,

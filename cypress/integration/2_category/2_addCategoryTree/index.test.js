@@ -4,59 +4,89 @@
  */
 import {
     And,
+    Given,
     Then,
 } from 'cypress-cucumber-preprocessor/steps';
 
 import {
-    checkGridRow,
-    getToken,
-    noGridRow,
-    removeOnGrid,
+    MultiSteps,
+} from '../../../models/index';
+import {
     removeRequest,
-    sendPostRequest,
-} from '../../models/addingItems';
+    sendRequest,
+} from '../../../models/requests';
+
+const requestName = 'treesRequest';
+const url = 'trees';
+
+before(() => {
+    cy.login(Cypress.env('adminEmail'), Cypress.env('adminPass'));
+});
 
 beforeEach(() => {
-    cy.apiRequest('POST', 'en/trees').as('POST-REQUEST');
+    Cypress.Cookies.preserveOnce('jwt');
+    cy.apiRequest({
+        method: 'POST',
+        url,
+        alias: `${requestName}_POST`,
+    });
+
+    cy.apiRequest({
+        method: 'PUT',
+        url,
+        alias: `${requestName}_PUT`,
+    });
+
+    cy.apiRequest({
+        method: 'DELETE',
+        url,
+        alias: `${requestName}_DELETE`,
+    });
+
+    cy.apiRequest({
+        method: 'GET',
+        url: 'trees?offset=0&limit=25&extended=true&filter=&columns=',
+        alias: `${requestName}_GET_GRID`,
+    });
+
+    cy.apiRequest({
+        method: 'GET',
+        url: 'trees/**',
+        alias: `${requestName}_GET`,
+    });
 });
 
-Then('I send a {string} request and status code should be {int}', (reqType, status) => {
-    getToken();
-    sendPostRequest({
+MultiSteps([
+    Then,
+    And,
+], 'I send a {string} request and status code should be {int}', (reqType, status) => {
+    sendRequest({
         reqType,
         status,
-        urlRegExp: /\/en\/trees$/,
+        requestName,
     });
 });
 
-And('On {string} I can not see row {int} with columns data: {string}', (gridId, rowNr, columns) => {
-    noGridRow({
-        gridId,
-        rowNr,
-        columns,
-    });
-});
-
-Then('On {string} I can see row {int} with columns data: {string}', (gridId, rowNr, columns) => {
-    checkGridRow({
-        gridId,
-        rowNr,
-        columns,
-    });
-});
-
-Then('I remove {string} element by {string} request', (element, reqType) => {
+Then('I remove element by request', () => {
     removeRequest({
-        element,
-        reqType,
-        path: 'en/trees',
+        path: 'trees',
     });
 });
 
-And('On {string} I click on {string} button for row {int}', (gridId, action, rowNr) => {
-    removeOnGrid({
-        gridId,
-        action,
-        rowNr,
-    });
+MultiSteps([
+    Given,
+    And,
+], 'I open {string} page', (page) => {
+    cy.visit(`/${page}`);
+    // cy.wait(`@${requestName}_GET_GRID`);
+    cy
+        .url()
+        .should('include', `/${page}`);
+});
+
+MultiSteps([
+    Then,
+    And,
+], 'I wait for {string} request', (type) => {
+    cy.wait(`@${requestName}_${type}`);
 });

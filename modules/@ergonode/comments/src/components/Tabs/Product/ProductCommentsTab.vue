@@ -3,16 +3,18 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
-            <ProductCommentsForm />
+            <ProductCommentsForm
+                :scope="scope"
+                :errors="errors" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import ProductCommentsForm from '@Comments/components/Forms/ProductCommentsForm';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
@@ -21,7 +23,17 @@ export default {
     name: 'ProductCommentsTab',
     components: {
         ProductCommentsForm,
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
+    },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     async fetch({
         store,
@@ -30,11 +42,11 @@ export default {
         const {
             id,
         } = params;
-        await store.dispatch('comments/__setState', {
+        await store.dispatch('comment/__setState', {
             key: 'objectId',
             value: id,
         });
-        await store.dispatch('comments/getComments', {
+        await store.dispatch('comment/getComments', {
             limit: DATA_LIMIT,
             offset: 0,
             filter: `object_id=${id}`,

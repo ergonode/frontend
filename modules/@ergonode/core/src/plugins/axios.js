@@ -23,10 +23,19 @@ export default function ({
             enabledByDefault: false,
             cacheFlag: 'useCache',
         }),
+        withLanguage: true,
     });
 
     axios.onRequest((config) => {
         const configLocal = config;
+
+        if (configLocal.withLanguage) {
+            const {
+                language,
+            } = store.state.authentication.user;
+
+            configLocal.baseURL = `${process.env.baseURL}${language}/`;
+        }
 
         configLocal.headers.JWTAuthorization = `Bearer ${store.state.authentication.jwt}`;
 
@@ -95,7 +104,7 @@ export default function ({
         }
 
         if (process.client) {
-            store.dispatch('alerts/addAlert', {
+            store.dispatch('alert/addAlert', {
                 type: 'error',
                 message: msg,
             });

@@ -2,6 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import Grid from '@Core/components/Grid/Grid';
 import {
     DATA_LIMIT,
     DEFAULT_GRID_FETCH_PARAMS,
@@ -24,7 +25,7 @@ export default function ({
 }) {
     return {
         components: {
-            Grid: () => import('@Core/components/Grid/Grid'),
+            Grid,
         },
         props: {
             isFetchingNeeded: {
@@ -46,12 +47,9 @@ export default function ({
             };
         },
         computed: {
-            ...mapState('authentication', {
-                languageCode: state => state.user.language,
-            }),
-            ...mapState('list', {
-                disabledElements: state => state.disabledElements,
-            }),
+            ...mapState('list', [
+                'disabledElements',
+            ]),
         },
         watch: {
             isFetchingNeeded() {
@@ -64,7 +62,7 @@ export default function ({
             ...mapActions('list', [
                 'setDisabledElement',
             ]),
-            onFetchData({
+            async onFetchData({
                 offset,
                 limit,
                 filters,
@@ -94,21 +92,21 @@ export default function ({
                     params.order = orderState;
                 }
 
-                return getGridData({
-                    $axios: this.$axios,
-                    path: `${this.languageCode}/${this.getPath()}`,
-                    params,
-                }).then(({
+                const {
                     columns,
                     rows,
                     filtered,
-                }) => {
-                    this.columns = columns;
-                    this.rows = rows;
-                    this.filtered = filtered;
-
-                    this.$emit('fetched');
+                } = await getGridData({
+                    $axios: this.$axios,
+                    path: this.getPath(),
+                    params,
                 });
+
+                this.columns = columns;
+                this.rows = rows;
+                this.filtered = filtered;
+
+                this.$emit('fetched');
             },
             onRemoveRow() {
                 this.onFetchData(this.localParams);

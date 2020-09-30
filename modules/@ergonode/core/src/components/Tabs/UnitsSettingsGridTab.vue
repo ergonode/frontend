@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate>
+    <CenterViewTemplate>
         <template #content>
             <Grid
                 :is-editable="isUserAllowedToUpdate"
@@ -16,6 +16,7 @@
                 :is-border="true"
                 :is-basic-filter="true"
                 @editRow="onEditRow"
+                @previewRow="onEditRow"
                 @deleteRow="onRemoveUnit"
                 @fetchData="onFetchData">
                 <template #headerActions>
@@ -32,7 +33,7 @@
                 </template>
             </Grid>
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
@@ -41,7 +42,7 @@ import {
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import PRIVILEGES from '@Core/config/privileges';
 import {
     SIZE,
@@ -55,7 +56,7 @@ import {
 export default {
     name: 'UnitsSettingsGridTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         Button,
         IconAdd,
     },
@@ -101,12 +102,12 @@ export default {
     },
     methods: {
         ...mapActions('dictionaries', [
-            'getCurrentDictionary',
+            'getDictionary',
         ]),
         onRemoveUnit() {
             Promise.all([
                 this.onRemoveRow(),
-                this.getCurrentDictionary({
+                this.getDictionary({
                     dictionaryName: 'units',
                 }),
             ]);

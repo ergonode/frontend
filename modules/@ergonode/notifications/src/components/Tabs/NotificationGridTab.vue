@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <div class="notifications-list">
                 <List v-if="notifications.length">
@@ -12,10 +12,15 @@
                         :key="notification.id"
                         :notification="notification" />
                     <NotificationsListFooter v-if="isMoreButtonVisible">
-                        <Loader v-if="!$isLoading('moreNotifications')" />
                         <Button
                             :title="buttonTitle"
-                            @click.native="onLoadMoreNotifications" />
+                            @click.native="onLoadMoreNotifications">
+                            <template
+                                v-if="isFetchingData"
+                                #append="{ color }">
+                                <IconSpinner :fill-color="color" />
+                            </template>
+                        </Button>
                     </NotificationsListFooter>
                 </List>
                 <ListPlaceholder
@@ -26,17 +31,23 @@
                     :bg-url="require('@Core/assets/images/placeholders/notify.svg')" />
             </div>
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import Button from '@Core/components/Button/Button';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import List from '@Core/components/List/List';
+import ListPlaceholder from '@Core/components/List/ListPlaceholder';
 import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
 import {
     LAYOUT_ORIENTATION,
 } from '@Core/defaults/layout';
+import NotificationsListElement from '@Notifications/components/List/NotificationsListElement';
+import NotificationsListFooter from '@Notifications/components/List/NotificationsListFooter';
 import {
     mapActions,
     mapState,
@@ -45,20 +56,25 @@ import {
 export default {
     name: 'NotificationGridTab',
     components: {
-        ResponsiveCenteredViewTemplate,
-        Loader: () => import('@Core/components/Loader/Loader'),
-        Button: () => import('@Core/components/Button/Button'),
-        List: () => import('@Core/components/List/List'),
-        ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
-        NotificationsListElement: () => import('@Notifications/components/List/NotificationsListElement'),
-        NotificationsListFooter: () => import('@Notifications/components/List/NotificationsListFooter'),
+        CenterViewTemplate,
+        Button,
+        List,
+        IconSpinner,
+        ListPlaceholder,
+        NotificationsListElement,
+        NotificationsListFooter,
+    },
+    data() {
+        return {
+            isFetchingData: false,
+        };
     },
     computed: {
-        ...mapState('notifications', {
-            notifications: state => state.notifications,
-            limit: state => state.limit,
-            count: state => state.count,
-        }),
+        ...mapState('notification', [
+            'notifications',
+            'limit',
+            'count',
+        ]),
         horizontalOrientation() {
             return LAYOUT_ORIENTATION.HORIZONTAL;
         },
@@ -81,11 +97,20 @@ export default {
         },
     },
     methods: {
-        ...mapActions('notifications', [
-            'setNotificationsLimit',
+        ...mapActions('notification', [
+            '__setState',
         ]),
-        onLoadMoreNotifications() {
-            this.setNotificationsLimit(this.limit + DATA_LIMIT);
+        async onLoadMoreNotifications() {
+            this.isFetchingData = true;
+
+            this.__setState({
+                key: 'limit',
+                value: this.limit + DATA_LIMIT,
+            });
+
+            await this.requestForNotifications();
+
+            this.isFetchingData = false;
         },
     },
 };

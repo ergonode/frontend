@@ -48,6 +48,7 @@
                     :rows="rows"
                     :row-ids="rowIds"
                     :drafts="drafts"
+                    :errors="errors"
                     :filters="filterValues"
                     :current-page="currentPage"
                     :max-rows="maxRows"
@@ -95,15 +96,17 @@
             </template>
         </GridBody>
         <GridFooter v-if="isFooterVisible">
-            <GridPageSelector
-                :value="maxRows"
-                :max-rows="dataCount"
-                @input="onMaxRowsChange" />
-            <GridPagination
-                :value="currentPage"
-                :max-page="maxPage"
-                @input="onCurrentPageChange" />
-            <slot name="appendFooter" />
+            <slot name="footer">
+                <GridPageSelector
+                    :value="maxRows"
+                    :max-rows="dataCount"
+                    @input="onMaxRowsChange" />
+                <GridPagination
+                    :value="currentPage"
+                    :max-page="maxPage"
+                    @input="onCurrentPageChange" />
+                <slot name="appendFooter" />
+            </slot>
         </GridFooter>
     </div>
 </template>
@@ -171,6 +174,10 @@ export default {
             default: () => [],
         },
         drafts: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
             type: Object,
             default: () => ({}),
         },
@@ -260,10 +267,10 @@ export default {
         };
     },
     computed: {
-        ...mapState('draggable', {
-            isElementDragging: state => state.isElementDragging,
-            draggedElement: state => state.draggedElement,
-        }),
+        ...mapState('draggable', [
+            'isElementDragging',
+            'draggedElement',
+        ]),
         noRecordsFilterPlaceholder() {
             if (!this.dataCount
                 && (!Object.keys(this.filterValues).length

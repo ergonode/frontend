@@ -6,34 +6,30 @@
     <ProductTemplateFormField
         :size="size"
         :position="position">
-        <FormValidatorField :field-key="fieldKey">
-            <template #validator="{ errorMessages }">
-                <TranslationSelect
-                    :value="fieldData"
-                    :clearable="true"
-                    :label="label"
-                    :options="options"
-                    :placeholder="properties.placeholder"
-                    :error-messages="errorMessages"
-                    :required="properties.required"
-                    :disabled="disabled"
-                    @input="debounceValueChange">
-                    <template #append>
-                        <InfoHint
-                            v-if="properties.hint"
-                            :hint="properties.hint" />
-                    </template>
-                    <template #details>
-                        <div />
-                    </template>
-                </TranslationSelect>
+        <TranslationSelect
+            :value="localValue"
+            :clearable="true"
+            :label="label"
+            :options="options"
+            :placeholder="properties.placeholder"
+            :error-messages="errors[fieldKey]"
+            :required="properties.required"
+            :disabled="disabled"
+            @input="onValueChange"
+            @focus="onFocus">
+            <template #append>
+                <InfoHint
+                    v-if="properties.hint"
+                    :hint="properties.hint" />
             </template>
-        </FormValidatorField>
+            <template #details>
+                <div />
+            </template>
+        </TranslationSelect>
     </ProductTemplateFormField>
 </template>
 
 <script>
-import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import InfoHint from '@Core/components/Hints/InfoHint';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import {
@@ -42,10 +38,6 @@ import {
 } from '@Core/models/mappers/translationsMapper';
 import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import {
-    debounce,
-} from 'debounce';
-import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -54,7 +46,6 @@ export default {
     components: {
         ProductTemplateFormField,
         TranslationSelect,
-        FormValidatorField,
         InfoHint,
     },
     props: {
@@ -67,6 +58,10 @@ export default {
             default: () => ({}),
         },
         properties: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
             type: Object,
             default: () => ({}),
         },
@@ -85,13 +80,13 @@ export default {
     },
     data() {
         return {
-            debounceValueChange: null,
+            localValue: '',
         };
     },
     computed: {
-        ...mapState('product', {
-            draft: state => state.draft,
-        }),
+        ...mapState('product', [
+            'draft',
+        ]),
         fieldData() {
             const {
                 attribute_code,
@@ -125,27 +120,29 @@ export default {
             });
         },
     },
-    created() {
-        this.debounceValueChange = debounce(this.onValueChange, 500);
+    watch: {
+        languageCode: {
+            immediate: true,
+            handler() {
+                this.localValue = this.fieldData;
+            },
+        },
     },
     methods: {
-        ...mapActions('product', [
-            'setDraftValue',
-        ]),
+        onFocus(isFocused) {
+            if (!isFocused && this.fieldData.id !== this.localValue.id) {
+                this.$emit('input', {
+                    fieldKey: this.fieldKey,
+                    languageCode: this.languageCode,
+                    productId: this.$route.params.id,
+                    elementId: this.properties.attribute_id,
+                    code: this.properties.attribute_code,
+                    value: this.localValue.id,
+                });
+            }
+        },
         onValueChange(value) {
-            this.setDraftValue({
-                languageCode: this.languageCode,
-                key: this.properties.attribute_code,
-                value: value.id,
-            });
-
-            this.$emit('input', {
-                fieldKey: this.fieldKey,
-                languageCode: this.languageCode,
-                productId: this.$route.params.id,
-                elementId: this.properties.attribute_id,
-                value: value.id,
-            });
+            this.localValue = value;
         },
     },
 };

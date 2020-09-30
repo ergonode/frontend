@@ -3,10 +3,15 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form :fields-keys="[restoreFieldKey]">
+    <Form
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #body>
-            <FormSection
-                :title="modalTitle">
+            <FormSection :title="modalTitle">
                 <RadioButton
                     v-for="(element, index) in elementsToRestore"
                     :key="index"
@@ -24,6 +29,10 @@ import {
     SCOPE,
     SYSTEM_TYPES,
 } from '@Attributes/defaults/attributes';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import RadioButton from '@Core/components/Inputs/RadioButton';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     mapGetters,
 } from 'vuex';
@@ -31,10 +40,13 @@ import {
 export default {
     name: 'RestoreForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        RadioButton: () => import('@Core/components/Inputs/RadioButton'),
+        Form,
+        FormSection,
+        RadioButton,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     props: {
         elements: {
             type: Array,
@@ -64,9 +76,6 @@ export default {
             const parentName = this.getLanguage(parent).name;
 
             return `Select attributes which values you want to restore from ${name} to parent translation (${parentName})`;
-        },
-        restoreFieldKey() {
-            return 'restored_elements';
         },
     },
     methods: {

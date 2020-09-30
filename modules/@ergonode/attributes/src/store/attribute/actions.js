@@ -3,115 +3,206 @@
  * See LICENSE for license details.
  */
 import {
-    TYPES,
-} from '@Attributes/defaults/attributes';
+    create,
+    get,
+    getAll,
+    remove,
+    update,
+} from '@Attributes/services/attribute';
 import {
-    getMappedArrayOptions,
-    getMappedParameterValues,
-} from '@Attributes/models/attributeMapper';
-
+    getMappedTranslationArrayOptions,
+} from '@Core/models/mappers/translationsMapper';
 import {
-    types,
-} from './mutations';
+    getKeyByValue,
+} from '@Core/models/objectWrapper';
 
 export default {
-    addAttributeOptionKey({
-        commit,
-    }, index) {
-        commit(types.ADD_ATTRIBUTE_OPTION_KEY, index);
+    async createAttribute({
+        state,
+        rootState,
     },
-    removeAttributeOptionKey({
-        commit, dispatch,
-    }, {
-        id, index,
+    {
+        scope,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        if (id) {
-            dispatch('removeOption', {
+        try {
+            const {
+                code,
+                groups,
+                type,
+                scope: attributeScope,
+            } = state;
+            const {
+                attrTypes,
+            } = rootState.dictionaries;
+            const typeKey = type ? getKeyByValue(attrTypes, type) : null;
+            let data = {
+                code,
+                scope: attributeScope,
+                type: typeKey,
+                groups,
+            };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__before', {
+                $this: this,
+                type: typeKey,
+                data,
+            });
+            // EXTENDED BEFORE METHOD
+
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
+
+            const {
                 id,
-                index,
+            } = await create({
+                $axios: this.app.$axios,
+                data,
             });
-        } else {
-            commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index);
-        }
-    },
-    removeAttributeOptions({
-        commit,
-    }) {
-        commit(types.INITIALIZE_OPTIONS);
-    },
-    removeOption({
-        commit, state, rootState,
-    }, {
-        id, index,
-    }) {
-        return this.app.$axios.$delete(`${rootState.authentication.user.language}/attributes/${state.id}/options/${id}`)
-            .then(() => commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index));
-    },
-    updateAttributeOptionKey({
-        commit,
-    }, option) {
-        if (option.id) {
-            commit(types.SET_UPDATED_OPTION, option.id);
-        }
-        commit(types.SET_ATTRIBUTE_OPTION_KEY, option);
-    },
-    setOptionValueForLanguageCode({
-        commit, state,
-    }, {
-        index, languageCode, value, id,
-    }) {
-        if (!state.options[index].value || !state.options[index].value[languageCode]) {
-            commit(types.SET_OPTION_LANGUAGE_CODE_FOR_VALUE, {
-                index,
-                languageCode,
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__after', {
+                $this: this,
+                type: typeKey,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess(id);
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
             });
         }
-
-        commit(types.SET_OPTION_VALUE_FOR_LANGUAGE_CODE, {
-            index,
-            languageCode,
-            value,
-        });
-
-        if (id) {
-            commit(types.SET_UPDATED_OPTION, id);
-        }
     },
-    getAttributeOptions({
-        commit, rootState,
+    getAttributesByFilter({
+        rootState,
     }, {
-        id,
-    }) {
-        const params = {
-            order: 'ASC',
-            field: 'code',
-        };
-        return this.app.$axios.$get(`${rootState.authentication.user.language}/attributes/${id}/options`, {
-            params,
-        }).then(options => commit(types.INITIALIZE_OPTIONS, getMappedArrayOptions(options)));
-    },
-    getAttribute({
-        dispatch, commit, rootState,
-    }, {
-        id,
+        filter,
     }) {
         const {
-            language: userLanguageCode,
+            language,
         } = rootState.authentication.user;
+
+        return getAll({
+            $axios: this.app.$axios,
+            params: {
+                limit: 9999,
+                offset: 0,
+                filter,
+                view: 'list',
+                field: 'name',
+                order: 'ASC',
+            },
+        }).then(({
+            collection,
+        }) => getMappedTranslationArrayOptions({
+            options: collection,
+            languageCode: language,
+        }));
+    },
+    async getAttributesOptionsByType({
+        rootState,
+    }, {
+        type,
+    }) {
+        const {
+            language,
+        } = rootState.authentication.user;
+        const filter = `type=${type}`;
+
+        // EXTENDED BEFORE METHOD
+        await this.$extendMethods('@Attributes/store/attribute/action/getAttributesOptionsByType/__before', {
+            $this: this,
+            type,
+        });
+        // EXTENDED BEFORE METHOD
+
+        return getAll({
+            $axios: this.app.$axios,
+            params: {
+                limit: 9999,
+                offset: 0,
+                filter,
+                view: 'list',
+                field: 'name',
+                order: 'ASC',
+            },
+        }).then(async ({
+            collection,
+        }) => {
+            let options = collection.map(element => ({
+                id: element.id,
+                key: element.code,
+                value: element.name,
+                hint: element.name ? `#${element.code} ${language}` : '',
+            }));
+
+            // EXTENDED AFTER METHOD
+            const extendedData = await this.$extendMethods('@Attributes/store/attribute/action/getAttributesOptionsByType/__after', {
+                $this: this,
+                type,
+                data: options,
+            });
+            // EXTENDED AFTER METHOD
+
+            extendedData.forEach((extended) => {
+                options = [
+                    ...options,
+                    ...extended,
+                ];
+            });
+
+            return {
+                options,
+            };
+        });
+    },
+    async getAttribute({
+        dispatch,
+        commit,
+        rootState,
+    }, {
+        id,
+        onError = () => {},
+    }) {
         const {
             attrTypes,
         } = rootState.dictionaries;
 
-        return this.app.$axios.$get(`${userLanguageCode}/attributes/${id}`).then(({
-            code,
-            type,
-            hint = '',
-            label = '',
-            groups: groupIds,
-            parameters,
-            placeholder = '',
-            scope,
-        }) => {
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+
+            const data = await get({
+                $axios: this.app.$axios,
+                id,
+            });
+            const {
+                code,
+                type,
+                hint = '',
+                label = '',
+                groups: groupIds,
+                scope,
+            } = data;
+
             commit('__SET_STATE', {
                 key: 'id',
                 value: id,
@@ -134,100 +225,138 @@ export default {
             });
 
             dispatch(
-                'translations/setTabTranslations',
+                'tab/setTranslations',
                 {
                     hint,
                     label,
-                    placeholder,
                 },
                 {
                     root: true,
                 },
             );
 
-            if (parameters && type !== TYPES.TEXT_AREA) {
-                commit('__SET_STATE', {
-                    key: 'parameter',
-                    value: getMappedParameterValues(type, parameters, rootState.dictionaries),
-                });
-            }
-
-            if (type === TYPES.TEXT_AREA) {
-                commit('__SET_STATE', {
-                    key: 'parameter',
-                    value: parameters.rich_edit,
-                });
-            }
-        });
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__after', {
+                $this: this,
+                data,
+                type,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            onError(e);
+        }
     },
     async updateAttribute(
         {
-            state, commit, dispatch, rootState,
+            state,
+            rootState,
         },
         {
-            id,
-            data,
-            onSuccess,
-            onError,
+            scope,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const optionsToAddRequests = [];
-        const optionsToUpdateRequests = [];
+        try {
+            const {
+                id,
+                type,
+                groups,
+                scope: attributeScope,
+            } = state;
+            const {
+                attrTypes,
+            } = rootState.dictionaries;
+            const {
+                translations: {
+                    label, hint,
+                },
+            } = rootState.tab;
+            const typeKey = getKeyByValue(attrTypes, type);
+            let data = {
+                groups,
+                scope: attributeScope,
+                label,
+                hint,
+            };
 
-        Object.keys(state.options).forEach((key) => {
-            const option = state.options[key];
-            const optionValue = option.value || null;
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Attributes/store/attribute/action/updateAttribute/__before', {
+                $this: this,
+                type: typeKey,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED BEFORE METHOD
 
-            if (!option.id) {
-                optionsToAddRequests.push(
-                    this.app.$axios.$post(`${userLanguageCode}/attributes/${id}/options`, {
-                        code: option.key,
-                        label: optionValue,
-                    }).then(({
-                        id: optionId,
-                    }) => dispatch('updateAttributeOptionKey',
-                        {
-                            index: key,
-                            id: optionId,
-                            key: option.key,
-                        })),
-                );
-            } else if (state.updatedOptions[option.id]) {
-                optionsToUpdateRequests.push(
-                    this.app.$axios.$put(`${userLanguageCode}/attributes/${id}/options/${option.id}`, {
-                        code: option.key,
-                        label: optionValue,
-                    }),
-                );
-            }
-        });
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
 
-        await this.$setLoader('footerButton');
-        await Promise.all([
-            ...optionsToAddRequests,
-            ...optionsToUpdateRequests,
-            this.app.$axios.$put(`${userLanguageCode}/attributes/${id}`, data).catch(e => onError(e.data)),
-        ]).then(() => {
-            commit(types.REMOVE_UPDATED_OPTION);
+            await update({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Attributes/store/attribute/action/updateAttribute/__after', {
+                $this: this,
+                type: typeKey,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+
             onSuccess();
-        });
-        await this.$removeLoader('footerButton');
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
     },
-    removeAttribute({
+    async removeAttribute({
         state, rootState,
     }, {
-        onSuccess,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
         const {
             id,
+            type,
         } = state;
         const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
+            attrTypes,
+        } = rootState.dictionaries;
+        const typeKey = getKeyByValue(attrTypes, type);
 
-        return this.app.$axios.$delete(`${userLanguageCode}/attributes/${id}`).then(() => onSuccess());
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Attributes/store/attribute/action/removeAttribute/__before', {
+                $this: this,
+                type: typeKey,
+            });
+            // EXTENDED BEFORE METHOD
+
+            await remove({
+                $axios: this.app.$axios,
+                id,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Attributes/store/attribute/action/removeAttribute/__after', {
+                $this: this,
+                type: typeKey,
+            });
+            // EXTENDED AFTER METHOD
+            onSuccess();
+        } catch (e) {
+            onError(e);
+        }
     },
 };

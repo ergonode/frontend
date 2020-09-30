@@ -29,20 +29,24 @@
                     @click.native="onCreateExport" />
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs">
-            <template #content>
+        <HorizontalRoutingTabBar
+            :items="tabs"
+            :change-values="changeValues"
+            :errors="errors">
+            <template
+                #content="{
+                    item,
+                    errors: tabErrors,
+                    changeValues: tabChangeValues,
+                }">
                 <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
+                    :scope="item.scope"
+                    :change-values="tabChangeValues"
+                    :errors="tabErrors"
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
-        <Footer flex-end>
-            <Button
-                title="SAVE CHANNEL"
-                :size="smallSize"
-                :disabled="$isLoading('footerButton')"
-                @click.native="onSave" />
-        </Footer>
     </Page>
 </template>
 
@@ -75,9 +79,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('channels', {
-            id: state => state.id,
-        }),
+        ...mapState('channel', [
+            'id',
+        ]),
         isUserAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.CHANNEL.update,
@@ -93,8 +97,8 @@ export default {
         },
     },
     methods: {
-        ...mapActions('channels', [
-            'createExport',
+        ...mapActions('channel', [
+            'createChannelExport',
         ]),
         onFetchedGridData() {
             this.fetchGridData = false;
@@ -103,7 +107,7 @@ export default {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Are you sure you want to start export?',
-                confirmCallback: () => this.createExport({
+                confirmCallback: () => this.createChannelExport({
                     onSuccess: this.onExportSuccess,
                 }),
             });

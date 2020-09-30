@@ -65,7 +65,6 @@ export default {
 <style lang="scss" scoped>
     .template-grid-draggable-layer {
         position: relative;
-        z-index: $Z_INDEX_LVL_3;
         display: grid;
         height: 0;
         flex-grow: 1;

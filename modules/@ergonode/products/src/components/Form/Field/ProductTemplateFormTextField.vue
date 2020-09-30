@@ -6,42 +6,36 @@
     <ProductTemplateFormField
         :size="size"
         :position="position">
-        <FormValidatorField :field-key="fieldKey">
-            <template #validator="{ errorMessages }">
-                <TextField
-                    :value="fieldData"
-                    :label="label"
-                    :placeholder="properties.placeholder"
-                    :error-messages="errorMessages"
-                    :required="properties.required"
-                    :disabled="disabled"
-                    @focus="onFocus"
-                    @input="onValueChange">
-                    <template #append>
-                        <TextFieldSuffix
-                            v-if="parameter"
-                            :suffix="parameter" />
-                        <InfoHint
-                            v-if="properties.hint"
-                            :hint="properties.hint" />
-                    </template>
-                    <template #details>
-                        <div />
-                    </template>
-                </TextField>
+        <TextField
+            :value="localValue"
+            :label="label"
+            :placeholder="properties.placeholder"
+            :error-messages="errors[fieldKey]"
+            :required="properties.required"
+            :disabled="disabled"
+            @focus="onFocus"
+            @input="onValueChange">
+            <template #append>
+                <TextFieldSuffix
+                    v-if="parameter"
+                    :suffix="parameter" />
+                <InfoHint
+                    v-if="properties.hint"
+                    :hint="properties.hint" />
             </template>
-        </FormValidatorField>
+            <template #details>
+                <div />
+            </template>
+        </TextField>
     </ProductTemplateFormField>
 </template>
 
 <script>
-import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import InfoHint from '@Core/components/Hints/InfoHint';
 import TextField from '@Core/components/Inputs/TextField';
 import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
 import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -50,7 +44,6 @@ export default {
     components: {
         ProductTemplateFormField,
         TextField,
-        FormValidatorField,
         TextFieldSuffix,
         InfoHint,
     },
@@ -67,6 +60,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         disabled: {
             type: Boolean,
             default: false,
@@ -80,10 +77,15 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            localValue: '',
+        };
+    },
     computed: {
-        ...mapState('product', {
-            draft: state => state.draft,
-        }),
+        ...mapState('product', [
+            'draft',
+        ]),
         fieldData() {
             const {
                 attribute_code,
@@ -104,27 +106,29 @@ export default {
             return `${this.properties.attribute_code}/${this.languageCode}`;
         },
     },
+    watch: {
+        languageCode: {
+            immediate: true,
+            handler() {
+                this.localValue = this.fieldData;
+            },
+        },
+    },
     methods: {
-        ...mapActions('product', [
-            'setDraftValue',
-        ]),
         onFocus(isFocused) {
-            if (!isFocused) {
+            if (!isFocused && this.fieldData !== this.localValue) {
                 this.$emit('input', {
                     fieldKey: this.fieldKey,
                     languageCode: this.languageCode,
                     productId: this.$route.params.id,
                     elementId: this.properties.attribute_id,
-                    value: this.fieldData,
+                    code: this.properties.attribute_code,
+                    value: this.localValue,
                 });
             }
         },
         onValueChange(value) {
-            this.setDraftValue({
-                languageCode: this.languageCode,
-                key: this.properties.attribute_code,
-                value,
-            });
+            this.localValue = value;
         },
     },
 };

@@ -32,6 +32,10 @@
 
 <script>
 
+import Fab from '@Core/components/Fab/Fab';
+import IconArrowDouble from '@Core/components/Icons/Arrows/IconArrowDouble';
+import VerticalTabBarItem from '@Core/components/TabBar/VerticalTabBarItem';
+import VerticalTabContent from '@Core/components/TabBar/VerticalTabContent';
 import {
     ARROW,
 } from '@Core/defaults/icons';
@@ -42,10 +46,10 @@ import {
 export default {
     name: 'VerticalTabBar',
     components: {
-        VerticalTabContent: () => import('@Core/components/TabBar/VerticalTabContent'),
-        VerticalTabBarItem: () => import('@Core/components/TabBar/VerticalTabBarItem'),
-        Fab: () => import('@Core/components/Fab/Fab'),
-        IconArrowDouble: () => import('@Core/components/Icons/Arrows/IconArrowDouble'),
+        VerticalTabContent,
+        VerticalTabBarItem,
+        Fab,
+        IconArrowDouble,
     },
     props: {
         items: {

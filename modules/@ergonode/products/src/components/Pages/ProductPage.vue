@@ -33,14 +33,10 @@
                 </TitleBarSubActions>
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs" />
-        <Footer flex-end>
-            <Button
-                title="SAVE PRODUCT"
-                :size="smallSize"
-                :disabled="$isLoading('footerButton')"
-                @click.native="onSave" />
-        </Footer>
+        <HorizontalRoutingTabBar
+            :items="tabs"
+            :change-values="changeValues"
+            :errors="errors" />
     </Page>
 </template>
 <script>
@@ -76,14 +72,14 @@ export default {
         editPageMixin,
     ],
     computed: {
-        ...mapState('product', {
-            status: state => state.status,
-            type: state => state.type,
-            workflow: state => state.workflow,
-        }),
-        ...mapState('dictionaries', {
-            productTypes: state => state.productTypes,
-        }),
+        ...mapState('product', [
+            'status',
+            'type',
+            'workflow',
+        ]),
+        ...mapState('dictionaries', [
+            'productTypes',
+        ]),
         smallSize() {
             return SIZE.SMALL;
         },
@@ -96,11 +92,11 @@ export default {
             return this.$isReadOnly(PRIVILEGES.PRODUCT.namespace);
         },
         tabs() {
-            const tabs = getNestedTabRoutes(
-                this.$hasAccess,
-                this.$router.options.routes,
-                this.$route,
-            );
+            const tabs = getNestedTabRoutes({
+                hasAccess: this.$hasAccess,
+                routes: this.$router.options.routes,
+                route: this.$route,
+            });
 
             switch (getKeyByValue(this.productTypes, this.type)) {
             case PRODUCT_TYPE.WITH_VARIANTS:

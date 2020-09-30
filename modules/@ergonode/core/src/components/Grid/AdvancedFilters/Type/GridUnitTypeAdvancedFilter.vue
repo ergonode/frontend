@@ -68,9 +68,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('dictionaries', {
-            units: state => state.units,
-        }),
+        ...mapState('dictionaries', [
+            'units',
+        ]),
         parameters() {
             if (!this.filter.parameters) return '';
 

@@ -5,7 +5,7 @@
 <template>
     <form
         class="form"
-        @submit.prevent>
+        @submit.prevent="onSubmit">
         <slot name="header">
             <h2
                 v-if="title"
@@ -24,7 +24,7 @@
                             v-if="formGlobalError"
                             :title="formGlobalError" />
                         <LinkButton
-                            v-for="(error, index) in errorMessages"
+                            v-for="(error, index) in presentationErrors"
                             :title="error"
                             :key="index" />
                     </div>
@@ -32,9 +32,38 @@
             </section>
             <Divider />
         </template>
-        <slot
-            name="body"
-            :error-messages="errorMessages" />
+        <slot name="body" />
+        <div
+            class="form__footer"
+            v-if="isFooterVisible">
+            <slot name="submit">
+                <Button
+                    v-if="isSubmitButtonVisible"
+                    data-cy="submit"
+                    :title="submitTitle"
+                    type="submit">
+                    <template
+                        v-if="isSubmitting"
+                        #append="{ color }">
+                        <IconSpinner :fill-color="color" />
+                    </template>
+                </Button>
+            </slot>
+            <slot name="proceed">
+                <Button
+                    v-if="isProceedButtonVisible"
+                    data-cy="proceed"
+                    :title="proceedTitle"
+                    :theme="secondaryTheme"
+                    @click.native="onProceed">
+                    <template
+                        v-if="isProceeding"
+                        #prepend="{ color }">
+                        <IconSpinner :fill-color="color" />
+                    </template>
+                </Button>
+            </slot>
+        </div>
     </form>
 </template>
 
@@ -42,66 +71,77 @@
 import {
     RED,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import Button from '@Core/components/Button/Button';
 import Divider from '@Core/components/Dividers/Divider';
 import IconError from '@Core/components/Icons/Feedback/IconError';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import LinkButton from '@Core/components/LinkButton/LinkButton';
 import {
-    mapActions,
-    mapState,
-} from 'vuex';
+    THEME,
+} from '@Core/defaults/theme';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 
 export default {
     name: 'Form',
     components: {
+        Button,
         LinkButton,
         IconError,
         Divider,
+        IconSpinner,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     props: {
         title: {
             type: String,
             default: '',
         },
-        fieldsKeys: {
-            type: Array,
-            default: () => [],
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+        errorsPresentationMapper: {
+            type: Function,
+            default: null,
         },
     },
     computed: {
-        ...mapState('validations', {
-            validationErrors: state => state.validationErrors,
-        }),
-        errorMessages() {
-            return this.fieldsKeys.reduce((acc, current) => {
-                const errors = acc;
-                const error = this.getValidationErrorForKey(current);
-
-                if (error) {
-                    errors[current] = error;
-                }
-
-                return errors;
-            }, {});
+        isFooterVisible() {
+            return !!(this.$slots.submit || this.$slots.proceed)
+                || this.isSubmitButtonVisible
+                || this.isProceedButtonVisible;
+        },
+        isSubmitButtonVisible() {
+            return this.submitTitle !== '';
+        },
+        isProceedButtonVisible() {
+            return this.proceedTitle !== '';
+        },
+        secondaryTheme() {
+            return THEME.SECONDARY;
         },
         formGlobalError() {
-            return this.getValidationErrorForKey('form');
+            return this.getErrorForKey('__form');
         },
         hasAnyError() {
-            return Object.values(this.errorMessages).length > 0 || this.formGlobalError;
+            return Object.values(this.errors).length > 0 || this.formGlobalError;
         },
         redColor() {
             return RED;
         },
-    },
-    beforeDestroy() {
-        this.removeValidationErrors();
+        presentationErrors() {
+            if (!this.errorsPresentationMapper) {
+                return this.errors;
+            }
+
+            return this.presentationErrors(this.errors);
+        },
     },
     methods: {
-        ...mapActions('validations', [
-            'removeValidationErrors',
-        ]),
-        getValidationErrorForKey(key) {
-            return this.validationErrors[key] || null;
+        getErrorForKey(key) {
+            return this.errors[key] || null;
         },
     },
 };
@@ -132,6 +172,11 @@ export default {
             border: $BORDER_2_RED;
             padding: 16px;
             box-sizing: border-box;
+        }
+
+        &__footer {
+            display: flex;
+            justify-content: space-between;
         }
 
         .errors-list {

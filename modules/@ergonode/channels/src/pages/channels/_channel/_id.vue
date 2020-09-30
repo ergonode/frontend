@@ -5,20 +5,18 @@
 <template>
     <ChannelPage
         :title="name"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
+import ChannelPage from '@Channels/components/Pages/ChannelPage';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
-import {
-    removeObjectProperty,
-} from '@Core/models/objectWrapper';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import {
     mapActions,
     mapState,
@@ -27,8 +25,11 @@ import {
 export default {
     name: 'EditChannel',
     components: {
-        ChannelPage: () => import('@Channels/components/Pages/ChannelPage'),
+        ChannelPage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {
@@ -37,16 +38,12 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('channels/getChannel', {
-            id: params.id,
-        });
+        await store.dispatch('channel/getChannel', params);
     },
     computed: {
-        ...mapState('channels', {
-            type: state => state.type,
-            configuration: state => state.configuration,
-            scheduler: state => state.scheduler,
-        }),
+        ...mapState('channel', [
+            'configuration',
+        ]),
         name() {
             const {
                 name,
@@ -55,20 +52,18 @@ export default {
             return name;
         },
     },
-    destroyed() {
+    beforeDestroy() {
         this.__clearStorage();
+        this.__clearFeedbackStorage();
     },
     methods: {
-        ...mapActions('channels', [
+        ...mapActions('channel', [
             '__clearStorage',
-            'updateChannel',
-            'updateScheduler',
             'removeChannel',
         ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeValidationErrors',
-        ]),
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
@@ -76,41 +71,6 @@ export default {
                 confirmCallback: () => this.removeChannel({
                     onSuccess: this.onRemoveSuccess,
                 }),
-            });
-        },
-        onSave() {
-            this.removeValidationErrors();
-            this.updateChannel({
-                id: this.$route.params.id,
-                data: {
-                    type: this.type,
-                    ...JSON.parse(this.configuration),
-                },
-                onSuccess: this.onUpdateChannelSuccess,
-                onError: this.onError,
-            });
-            if (this.scheduler) {
-                const tmp = JSON.parse(this.scheduler);
-
-                this.updateScheduler({
-                    data: removeObjectProperty(tmp, 'id'),
-                    onSuccess: this.onUpdateSchedulerSuccess,
-                    onError: this.onError,
-                });
-            }
-        },
-        onUpdateSchedulerSuccess() {
-            this.removeValidationErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Scheduler updated',
-            });
-        },
-        onUpdateChannelSuccess() {
-            this.removeValidationErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Channel updated',
             });
         },
         onRemoveSuccess() {

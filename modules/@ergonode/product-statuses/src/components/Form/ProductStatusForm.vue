@@ -5,13 +5,20 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[codeFieldKey, colorFieldKey]">
-        <template #body="{ errorMessages }">
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        :errors="errors"
+        @proceed="onProceed"
+        @submit="onSubmit">
+        <template #body>
             <FormSection>
                 <TextField
+                    :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
                     required
-                    :error-messages="errorMessages[colorFieldKey]"
+                    :error-messages="errors[codeFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     label="System name"
                     hint="System name must be unique"
@@ -26,9 +33,10 @@
                     </template>
                 </CheckBox>
                 <ColorPicker
+                    :data-cy="dataCyGenerator(colorFieldKey)"
                     :value="color"
                     required
-                    :error-messages="errorMessages[colorFieldKey]"
+                    :error-messages="errors[colorFieldKey]"
                     clearable
                     :dismissible="false"
                     :options="colorOptions"
@@ -43,9 +51,17 @@
 </template>
 
 <script>
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import InfoHint from '@Core/components/Hints/InfoHint';
+import CheckBox from '@Core/components/Inputs/CheckBox';
+import ColorPicker from '@Core/components/Inputs/ColorPicker/ColorPicker';
+import TextField from '@Core/components/Inputs/TextField';
 import {
     COLORS,
 } from '@Core/defaults/colors';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Statuses/config/privileges';
 import {
     mapActions,
@@ -55,20 +71,24 @@ import {
 export default {
     name: 'ProductStatusForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
-        ColorPicker: () => import('@Core/components/Inputs/ColorPicker/ColorPicker'),
-        CheckBox: () => import('@Core/components/Inputs/CheckBox'),
-        InfoHint: () => import('@Core/components/Hints/InfoHint'),
+        Form,
+        FormSection,
+        TextField,
+        ColorPicker,
+        CheckBox,
+        InfoHint,
     },
+    mixins: [
+        formActionsMixin,
+        formFeedbackMixin,
+    ],
     computed: {
-        ...mapState('productStatus', {
-            id: state => state.id,
-            code: state => state.code,
-            color: state => state.color,
-            isDefaultStatus: state => state.isDefaultStatus,
-        }),
+        ...mapState('productStatus', [
+            'id',
+            'code',
+            'color',
+            'isDefaultStatus',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.WORKFLOW.update,
@@ -93,13 +113,23 @@ export default {
         ]),
         setCodeValue(value) {
             this.__setState({
-                key: 'code',
+                key: this.codeFieldKey,
+                value,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.codeFieldKey,
                 value,
             });
         },
         setColorValue(value) {
             this.__setState({
-                key: 'color',
+                key: this.colorFieldKey,
+                value,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.colorFieldKey,
                 value,
             });
         },
@@ -108,6 +138,14 @@ export default {
                 key: 'isDefaultStatus',
                 value,
             });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'isDefaultStatus',
+                value,
+            });
+        },
+        dataCyGenerator(key) {
+            return `status-${key}`;
         },
     },
 };

@@ -74,12 +74,14 @@ export default {
         };
     },
     methods: {
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
-            'removeValidationError',
+            'removeError',
         ]),
         onRemoveFile() {
-            this.$axios.$delete(`${this.languageCode}/accounts/${this.userId}/avatar`).then(() => {
+            this.$axios.$delete(`${this.languageCode}/accounts/${this.userId}/avatar`, {
+                withLanguage: false,
+            }).then(() => {
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
                     message: 'Avatar removed',
@@ -99,18 +101,22 @@ export default {
                 const formData = new FormData();
                 formData.append('upload', file, name);
 
-                this.$axios.$post(`${this.languageCode}/accounts/${this.userId}/avatar`, formData).then(() => {
+                this.$axios.$post(`${this.languageCode}/accounts/${this.userId}/avatar`, formData, {
+                    withLanguage: false,
+                }).then(() => {
                     this.$addAlert({
                         type: ALERT_TYPE.SUCCESS,
                         message: 'Avatar uploaded',
                     });
-                    this.removeValidationError('upload');
+                    this.removeError('upload');
                     this.isRequestPending = false;
                     this.$emit('progress', false);
                     this.$emit('upload', this.userId);
                 }).catch((e) => {
                     this.isRequestPending = false;
-                    this.onError(e.data);
+                    this.onError({
+                        errors: e.data.errors,
+                    });
                     this.$emit('progress', false);
                 });
             }

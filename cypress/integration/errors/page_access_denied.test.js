@@ -18,13 +18,18 @@ context('Page access denied', () => {
 
     describe('Navigate to User creation page', () => {
         it('Visit /users/grid', () => {
-            cy.get('.header-title__title').should('contain', 'Users');
-            cy.url().should('include', '/users');
+            cy.get('.header-title__title')
+                .should('contain', 'Users');
+            cy.url()
+                .should('include', '/users');
         });
 
         it('Visit /users/new/general', () => {
-            cy.get('button').contains('NEW USER').click();
-            cy.url().should('include', '/users/new/general');
+            cy.get('button')
+                .contains('NEW USER')
+                .click();
+            cy.url()
+                .should('include', '/users/new/general');
         });
     });
 
@@ -64,8 +69,11 @@ context('Page access denied', () => {
                 .contains('Language')
                 .click()
                 .should('be.visible');
-            cy.get('.list').contains('English').click();
-            cy.get('input[aria-label="Language"]').should('have.value', 'English');
+            cy.get('.list')
+                .contains('English')
+                .click();
+            cy.get('input[aria-label="Language"]')
+                .should('have.value', 'English');
         });
 
         it('Select activity status', () => {
@@ -74,8 +82,11 @@ context('Page access denied', () => {
                     force: true,
                 })
                 .should('be.visible');
-            cy.get('.list').contains('Active').click();
-            cy.get('input[aria-label="Activity status"]').should('have.value', 'Active');
+            cy.get('.list')
+                .contains('Active')
+                .click();
+            cy.get('input[aria-label="Activity status"]')
+                .should('have.value', 'Active');
         });
 
         it('Select role', () => {
@@ -83,16 +94,25 @@ context('Page access denied', () => {
                 .contains('Role')
                 .click()
                 .should('be.visible');
-            cy.get('.list').contains('Data inputer').click();
-            cy.get('input[aria-label="Role"]').should('have.value', 'Data inputer');
+            cy.get('.list')
+                .contains('Data inputer')
+                .click();
+            cy.get('input[aria-label="Role"]')
+                .should('have.value', 'Data inputer');
         });
 
         it('Create User', () => {
             cy.server();
-            cy.route('POST', '/api/v1/EN/accounts').as('addUser');
-            cy.get('button').contains('NEW USER').click();
-            cy.wait('@addUser').its('status').should('eq', 201);
-            cy.url().should('include', '/users/edit');
+            cy.route('POST', '/api/v1/EN/accounts')
+                .as('addUser');
+            cy.get('button')
+                .contains('NEW USER')
+                .click();
+            cy.wait('@addUser')
+                .its('status')
+                .should('eq', 201);
+            cy.url()
+                .should('include', '/users/edit');
         });
     });
 
@@ -108,7 +128,9 @@ context('Page access denied', () => {
             cy.visit('/workflow', {
                 failOnStatusCode: false,
             });
-            cy.get('h1').invoke('text').should('include', 'Access denied');
+            cy.get('h1')
+                .invoke('text')
+                .should('include', 'Access denied');
         });
     });
 });

@@ -14,17 +14,21 @@ context('Change User Avatar', () => {
         });
 
         it('Navigate to avatar tab', () => {
-            cy.get('a').contains('Avatar').click();
+            cy.get('a')
+                .contains('Avatar')
+                .click();
         });
 
         it('Upload file', () => {
-            cy.fixture('images/avatar.png', 'base64').as('avatar');
-            cy.get('input[type=file]').then(() => {
+            cy.fixture('images/avatar.png', 'base64')
+                .as('avatar');
+            cy.get('input[type=file]')
+                .then(() => {
                 // FIXME: Cypress does not work - InvalidCharacterError: Failed to execute 'atob' on 'Window': The string to be decoded is not correctly encoded.
                 // return Cypress.Blob.base64StringToBlob('@avatar', 'image/png').then((blob) => {
                 //
                 // });
-            });
+                });
         });
     });
 });

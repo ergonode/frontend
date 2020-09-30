@@ -5,6 +5,7 @@
 <template>
     <Component
         :is="actionCellComponent"
+        :data-cy="dataCyGenerator"
         :column="columnIndex"
         :row="rowIndex"
         :href="action.href"
@@ -13,10 +14,6 @@
 </template>
 
 <script>
-import {
-    capitalizeAndConcatenationArray,
-} from '@Core/models/stringWrapper';
-
 export default {
     name: 'GridActionCell',
     props: {
@@ -27,6 +24,10 @@ export default {
         column: {
             type: Object,
             required: true,
+        },
+        type: {
+            type: String,
+            default: '',
         },
         rowIndex: {
             type: Number,
@@ -43,10 +44,11 @@ export default {
     },
     computed: {
         actionCellComponent() {
-            const type = capitalizeAndConcatenationArray(this.column.id.split('_'));
-
-            return () => import(`@Core/components/Grid/Layout/Table/Cells/Action/Grid${type}ActionCell`)
+            return () => import(`@Core/components/Grid/Layout/Table/Cells/Action/Grid${this.type}ActionCell`)
                 .catch(() => import('@Core/components/Grid/Layout/Table/Cells/GridTableCell'));
+        },
+        dataCyGenerator() {
+            return `action-${this.column.id}-${this.rowIndex}`;
         },
     },
     methods: {

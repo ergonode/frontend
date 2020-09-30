@@ -7,77 +7,116 @@
         title="Create product collection"
         @close="onClose">
         <template #body>
-            <CollectionForm />
-        </template>
-        <template #footer>
-            <Button
-                title="CREATE"
-                :disabled="isRequestPending"
-                @click.native="onCreate" />
-            <Button
-                title="CREATE & EDIT"
-                :theme="secondaryTheme"
-                :disabled="isRequestPending"
-                @click.native="onCreatedAndEdit" />
+            <CollectionForm
+                submit-title="CREATE"
+                proceed-title="CREATE & EDIT"
+                :is-submitting="isSubmitting"
+                :is-proceeding="isProceeding"
+                :errors="scopeErrors"
+                @submit="onSubmit"
+                @proceed="onProceed" />
         </template>
     </ModalForm>
 </template>
 
 <script>
+import CollectionForm from '@Collections/components/Forms/CollectionForm';
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
-    MODAL_ACTION,
-} from '@Core/defaults/modals';
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     THEME,
 } from '@Core/defaults/theme';
-import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import {
     mapActions,
 } from 'vuex';
 
-const createCollection = () => import('@Collections/services/createCollection.service');
-
 export default {
     name: 'CreateCollectionModalForm',
     components: {
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
-        CollectionForm: () => import('@Collections/components/Forms/CollectionForm'),
+        ModalForm,
+        CollectionForm,
     },
     mixins: [
-        actionModalFormMixin({
-            action: MODAL_ACTION.CREATE,
-            namespace: 'Product collection',
-            request: createCollection,
-        }),
+        scopeErrorsMixin,
     ],
+    data() {
+        return {
+            isSubmitting: false,
+            isProceeding: false,
+        };
+    },
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
     },
     methods: {
-        ...mapActions('collections', [
+        ...mapActions('collection', [
+            'createCollection',
             '__clearStorage',
         ]),
         onClose() {
             this.__clearStorage();
+            this.removeScopeErrors(this.scope);
+
             this.$emit('close');
         },
-        onCreate() {
-            this.onActionRequest(() => {
-                this.__clearStorage();
+        onSubmit() {
+            if (this.isSubmitting || this.isProceeding) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeScopeErrors(this.scope);
+            this.createCollection({
+                scope: this.scope,
+                onSuccess: this.onCreateSuccess,
+                onError: this.onCreateError,
             });
         },
-        onCreatedAndEdit() {
-            this.onActionRequest((id) => {
-                this.$router.push({
-                    name: 'collection-id-general',
-                    params: {
-                        id,
-                    },
-                });
+        onProceed() {
+            if (this.isSubmitting || this.isProceeding) {
+                return;
+            }
+
+            this.isProceeding = true;
+
+            this.removeScopeErrors(this.scope);
+            this.createCollection({
+                scope: this.scope,
+                onSuccess: this.onProceedSuccess,
+                onError: this.onCreateError,
             });
+        },
+        onCreateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Collection created',
+            });
+
+            this.isSubmitting = false;
+
+            this.$emit('created');
+            this.onClose();
+        },
+        onProceedSuccess(id) {
+            this.isProceeding = false;
+
+            this.$router.push({
+                name: 'collection-id-general',
+                params: {
+                    id,
+                },
+            });
+        },
+        onCreateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+            this.isProceeding = false;
         },
     },
 };

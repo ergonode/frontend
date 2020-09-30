@@ -38,7 +38,7 @@ export default {
         FormSection,
     },
     computed: {
-        ...mapState('users', {
+        ...mapState('user', {
             avatarId: state => state.avatarId,
             userId: state => state.id,
             languageCode: state => state.languageCode,
@@ -50,14 +50,19 @@ export default {
         },
     },
     methods: {
-        ...mapActions('users', [
+        ...mapActions('user', [
             '__setState',
+        ]),
+        ...mapActions('authentication', [
+            'getUser',
         ]),
         uploadValue(value = '') {
             this.__setState({
                 key: 'avatarId',
                 value,
             });
+
+            this.getUser();
         },
     },
 };

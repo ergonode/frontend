@@ -41,8 +41,11 @@ context('Change User data', () => {
                     force: true,
                 })
                 .should('be.visible');
-            cy.get('.list').contains('Polish').click();
-            cy.get('input[aria-label="Language"]').should('have.value', 'Polish');
+            cy.get('.list')
+                .contains('Polish')
+                .click();
+            cy.get('input[aria-label="Language"]')
+                .should('have.value', 'Polish');
         });
 
         it('Select role', () => {
@@ -51,8 +54,11 @@ context('Change User data', () => {
                     force: true,
                 })
                 .should('be.visible');
-            cy.get('.list').contains('Data inputer').click();
-            cy.get('input[aria-label="Role"]').should('have.value', 'Data inputer');
+            cy.get('.list')
+                .contains('Data inputer')
+                .click();
+            cy.get('input[aria-label="Role"]')
+                .should('have.value', 'Data inputer');
         });
 
         it('Update User', () => {

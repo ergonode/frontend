@@ -9,23 +9,27 @@
         :clearable="true"
         label="Category"
         :disabled="disabled"
-        :fetch-options-request="getCategoriesOptionsRequest"
+        :error-messages="errors[categoryFieldKey]"
+        :fetch-options-request="getCategoriesOptions"
         @input="setCategoriesValue" />
 </template>
 
 <script>
+import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,
     mapState,
 } from 'vuex';
 
-const getCategoriesOptions = () => import('@Categories/services/getCategoriesOptions.service');
-
 export default {
     name: 'ExtendProductForm',
     components: {
-        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
+        TranslationLazySelect,
     },
+    mixins: [
+        formFeedbackMixin,
+    ],
     props: {
         disabled: {
             type: Boolean,
@@ -33,27 +37,31 @@ export default {
         },
     },
     computed: {
-        ...mapState('product', {
-            categories: state => state.categories,
-        }),
+        ...mapState('product', [
+            'categories',
+        ]),
+        categoryFieldKey() {
+            return 'categories';
+        },
     },
     methods: {
         ...mapActions('product', [
             '__setState',
         ]),
+        ...mapActions('category', [
+            'getCategoriesOptions',
+        ]),
         setCategoriesValue(value) {
             this.__setState({
-                key: 'categories',
+                key: this.categoryFieldKey,
                 value,
             });
-        },
-        getCategoriesOptionsRequest() {
-            return getCategoriesOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.categoryFieldKey,
+                value,
+            });
         },
     },
 };

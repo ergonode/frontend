@@ -3,8 +3,15 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form :fields-keys="[skusFieldKey]">
-        <template #body="{ errorMessages }">
+    <Form
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        :errors="errors"
+        @proceed="onProceed"
+        @submit="onSubmit">
+        <template #body>
             <FormSection>
                 <TextArea
                     :value="productSkus"
@@ -12,7 +19,7 @@
                     hint="Separate multiple SKU’s by using enter or comma, e.g. “SKU1, SKU2, SKU3”"
                     resize="none"
                     height="150px"
-                    :error-messages="errorMessages[skusFieldKey]"
+                    :error-messages="errors[skusFieldKey]"
                     :disabled="!isUserAllowedToUpdate"
                     @input="onSKUChange" />
             </FormSection>
@@ -21,25 +28,38 @@
 </template>
 
 <script>
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TextArea from '@Core/components/Inputs/TextArea';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import PRIVILEGES from '@Products/config/privileges';
 
 export default {
     name: 'AddProductsBySKUForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TextArea: () => import('@Core/components/Inputs/TextArea'),
+        Form,
+        FormSection,
+        TextArea,
     },
+    mixins: [
+        formActionsMixin,
+    ],
     props: {
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         productSkus: {
             type: String,
             default: '',
         },
-        isUserAllowedToUpdate: {
-            type: Boolean,
-            default: true,
-        },
     },
     computed: {
+        isUserAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT.update,
+            ]);
+        },
         skusFieldKey() {
             return 'skus';
         },

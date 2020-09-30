@@ -9,8 +9,7 @@
         }]"
         @click="markAsRead">
         <UserFabAvatar
-            :language-code="languageCode"
-            :avatar-id="notification.user_id"
+            :avatar-id="avatarId"
             :user-id="notification.user_id"
             :name="notification.author"
             :size="regularSize" />
@@ -33,7 +32,6 @@ import {
 } from '@Core/defaults/theme';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -48,18 +46,20 @@ export default {
         },
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
         regularSize() {
             return SIZE.REGULAR;
         },
         graphiteColor() {
             return GRAPHITE;
         },
+        avatarId() {
+            return this.notification.avatar_filename
+                ? this.notification.user_id
+                : null;
+        },
     },
     methods: {
-        ...mapActions('notifications', [
+        ...mapActions('notification', [
             'markNotificationAsRead',
         ]),
         markAsRead() {

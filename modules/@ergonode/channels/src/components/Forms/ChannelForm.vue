@@ -5,8 +5,14 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[typeFieldKey]">
-        <template #body="{ errorMessages }">
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        :errors="errors"
+        @proceed="onProceed"
+        @submit="onSubmit">
+        <template #body>
             <FormSection>
                 <Select
                     :value="type"
@@ -14,7 +20,7 @@
                     label="Channel type"
                     :disabled="isFetchingConfiguration || isDisabled || !isAllowedToUpdate"
                     :options="channelsOptions"
-                    :error-messages="errorMessages[typeFieldKey]"
+                    :error-messages="errors[typeFieldKey]"
                     @input="setTypeValue">
                     <template #append>
                         <FadeTransition>
@@ -29,6 +35,7 @@
                         v-if="schema"
                         :value="configuration"
                         :schema="schema"
+                        :errors="errors"
                         @input="setConfigurationValue" />
                 </FadeTransition>
             </FormSection>
@@ -47,6 +54,8 @@ import FormSection from '@Core/components/Form/Section/FormSection';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import Select from '@Core/components/Inputs/Select/Select';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,
     mapState,
@@ -62,6 +71,10 @@ export default {
         FadeTransition,
         Select,
     },
+    mixins: [
+        formActionsMixin,
+        formFeedbackMixin,
+    ],
     data() {
         return {
             schemas: {},
@@ -69,14 +82,14 @@ export default {
         };
     },
     computed: {
-        ...mapState('channels', {
-            id: state => state.id,
-            type: state => state.type,
-            configuration: state => state.configuration,
-        }),
-        ...mapState('dictionaries', {
-            channels: state => state.channels,
-        }),
+        ...mapState('channel', [
+            'id',
+            'type',
+            'configuration',
+        ]),
+        ...mapState('dictionaries', [
+            'channels',
+        ]),
         graphiteColor() {
             return GRAPHITE;
         },
@@ -108,7 +121,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions('channels', [
+        ...mapActions('channel', [
             '__setState',
             'getConfiguration',
         ]),
@@ -127,10 +140,22 @@ export default {
                 key: 'configuration',
                 value,
             });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'configuration',
+                value,
+            });
         },
         setTypeValue(value) {
             this.__setState({
-                key: 'type',
+                key: this.typeFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.typeFieldKey,
                 value,
             });
 

@@ -31,6 +31,7 @@ module.exports = {
         'modules-newline',
     ],
     rules: {
+        'no-empty-pattern': 'off',
         'modules-newline/import-declaration-newline': 'error',
         'modules-newline/export-declaration-newline': 'error',
         'newline-per-chained-call': 'error',

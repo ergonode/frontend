@@ -4,23 +4,28 @@
  */
 <template>
     <Card :title="selectedLanguage">
-        <Form :fields-keys="[descriptionKeyField, nameKeyField]">
-            <template #body="{ errorMessages }">
+        <Form :errors="translationErrors">
+            <template #body>
                 <FormSection>
                     <TextField
+                        :data-cy="dataCyGenerator(nameKeyField)"
                         :value="translations.name[languageCode]"
                         label="Status name"
-                        :error-messages="errorMessages[nameKeyField]"
+                        :error-messages="translationErrors[nameKeyField]"
                         :disabled="!isUserAllowedToUpdate"
-                        @input="(value) => setTranslationPropertyValue(value, 'name')" />
+                        @input="(value) => setTranslationPropertyValue(value, nameKeyField)" />
                     <TextArea
+                        :data-cy="dataCyGenerator(descriptionKeyField)"
                         :value="translations.description[languageCode]"
                         label="Status description"
                         resize="none"
                         height="150px"
-                        :error-messages="errorMessages[descriptionKeyField]"
+                        :error-messages="translationErrors[descriptionKeyField]"
                         :disabled="!isUserAllowedToUpdate"
-                        @input="(value) => setTranslationPropertyValue(value, 'description')" />
+                        @input="(value) => setTranslationPropertyValue(
+                            value,
+                            descriptionKeyField,
+                        )" />
                 </FormSection>
             </template>
         </Form>
@@ -55,10 +60,15 @@ export default {
             ]);
         },
         descriptionKeyField() {
-            return `description_${this.languageCode}`;
+            return 'description';
         },
         nameKeyField() {
-            return `name_${this.languageCode}`;
+            return 'name';
+        },
+    },
+    methods: {
+        dataCyGenerator(key) {
+            return `status-${key}_${this.languageCode}`;
         },
     },
 };

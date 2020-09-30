@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate>
+    <CenterViewTemplate>
         <template #content>
             <Grid
                 :columns="columns"
@@ -12,16 +12,35 @@
                 :data-count="dataCount"
                 :is-editable="isAllowedToUpdate"
                 :is-border="true"
-                :is-footer-visible="false"
-                @cellValue="onCellValueChange" />
+                @cellValue="onCellValueChange">
+                <template #footer>
+                    <div class="role-privileges-footer">
+                        <Button
+                            title="SAVE CHANGES"
+                            @click.native="onSubmit">
+                            <template
+                                v-if="isSubmitting"
+                                #prepend="{ color }">
+                                <IconSpinner :fill-color="color" />
+                            </template>
+                        </Button>
+                    </div>
+                </template>
+            </Grid>
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
+import Button from '@Core/components/Button/Button';
 import Grid from '@Core/components/Grid/Grid';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
@@ -38,26 +57,30 @@ import {
 export default {
     name: 'RolePrivilegesTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        Button,
+        IconSpinner,
+        CenterViewTemplate,
         Grid,
     },
     mixins: [
         gridDraftMixin,
+        tabFeedbackMixin,
     ],
     data() {
         return {
             columns: [],
             rows: {},
             dataCount: 0,
+            isSubmitting: false,
         };
     },
     computed: {
         ...mapState('dictionaries', {
             privilegesDictionary: state => state.privileges,
         }),
-        ...mapState('roles', {
-            privileges: state => state.privileges,
-        }),
+        ...mapState('role', [
+            'privileges',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.USER_ROLE.update,
@@ -74,9 +97,41 @@ export default {
         },
     },
     methods: {
-        ...mapActions('roles', [
+        ...mapActions('role', [
             '__setState',
+            'updateRole',
         ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
+        onSubmit() {
+            if (this.isSubmitting) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeScopeErrors(this.scope);
+            this.updateRole({
+                scope: this.scope,
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
+            });
+        },
+        onUpdateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Role privileges have been updated',
+            });
+
+            this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
+        },
+        onUpdateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+        },
         onCellValueChange(cellValues) {
             const drafts = {};
 
@@ -104,6 +159,11 @@ export default {
                 key: 'drafts',
                 value: this.drafts,
             });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'rolePrivileges',
+                value: this.drafts,
+            });
         },
         updateGridData() {
             const {
@@ -126,3 +186,12 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .role-privileges-footer {
+        display: flex;
+        flex: 1;
+        justify-content: flex-end;
+        align-items: center;
+    }
+</style>

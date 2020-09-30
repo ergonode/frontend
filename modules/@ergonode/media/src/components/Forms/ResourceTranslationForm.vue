@@ -4,8 +4,8 @@
  */
 <template>
     <Card :title="selectedLanguage">
-        <Form :fields-keys="[altKeyField]">
-            <template #body="{ errorMessages }">
+        <Form :errors="translationErrors">
+            <template #body>
                 <FormSection>
                     <TextArea
                         :data-cy="dataCyGenerator(altKeyField)"
@@ -14,8 +14,8 @@
                         resize="none"
                         height="150px"
                         :disabled="!isUserAllowedToUpdate"
-                        :error-messages="errorMessages[altKeyField]"
-                        @input="(value) => setTranslationPropertyValue(value, 'alt')" />
+                        :error-messages="translationErrors[altKeyField]"
+                        @input="(value) => setTranslationPropertyValue(value, altKeyField)" />
                 </FormSection>
             </template>
         </Form>
@@ -48,7 +48,7 @@ export default {
             ]);
         },
         altKeyField() {
-            return `alt_${this.languageCode}`;
+            return 'alt';
         },
     },
     methods: {

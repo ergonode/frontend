@@ -76,15 +76,15 @@
         <CreateAttributeModalForm
             v-if="isCreateAttributeVisible"
             @close="onCloseAttributeModal"
-            @create="onCreatedAttribute" />
+            @created="onCreatedAttribute" />
         <CreateProductTemplateModalForm
             v-if="isCreateProductTemplateVisible"
             @close="onCloseProductTemplateModal"
-            @create="onCreatedProductTemplate" />
+            @created="onCreatedProductTemplate" />
         <CreateProductModalForm
             v-if="isCreateProductVisible"
             @close="onCloseProductModal"
-            @create="onCreatedProduct" />
+            @created="onCreatedProduct" />
     </div>
 </template>
 

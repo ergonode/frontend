@@ -4,6 +4,7 @@
  */
 export default {
     name: '@ergonode/dashboard',
+    order: 200,
     aliases: {
         '@Dashboard': '/',
     },

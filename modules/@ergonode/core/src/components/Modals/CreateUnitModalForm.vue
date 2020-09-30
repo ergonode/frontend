@@ -7,86 +7,132 @@
         title="New unit"
         @close="onClose">
         <template #body>
-            <UnitForm />
-        </template>
-        <template #footer>
-            <Button
-                title="CREATE"
-                :disabled="isRequestPending"
-                @click.native="onCreate" />
-            <Button
-                title="CREATE & EDIT"
-                :theme="secondaryTheme"
-                :disabled="isRequestPending"
-                @click.native="onCreatedAndEdit" />
+            <UnitForm
+                submit-title="CREATE"
+                proceed-title="CREATE & EDIT"
+                :is-submitting="isSubmitting"
+                :is-proceeding="isProceeding"
+                :errors="scopeErrors"
+                @submit="onSubmit"
+                @proceed="onProceed" />
         </template>
     </ModalForm>
 </template>
 
 <script>
+import UnitForm from '@Core/components/Forms/UnitForm';
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
-    MODAL_ACTION,
-} from '@Core/defaults/modals';
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     THEME,
 } from '@Core/defaults/theme';
-import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import {
     mapActions,
 } from 'vuex';
 
-const createUnit = () => import('@Core/services/settings/createUnit.service');
-
 export default {
     name: 'CreateUnitModalForm',
     components: {
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
-        UnitForm: () => import('@Core/components/Forms/UnitForm'),
+        ModalForm,
+        UnitForm,
     },
     mixins: [
-        actionModalFormMixin({
-            action: MODAL_ACTION.CREATE,
-            namespace: 'Unit',
-            request: createUnit,
-        }),
+        scopeErrorsMixin,
     ],
+    data() {
+        return {
+            isSubmitting: false,
+            isProceeding: false,
+        };
+    },
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
     },
     methods: {
-        ...mapActions('units', [
+        ...mapActions('unit', [
+            'createUnit',
             '__clearStorage',
         ]),
         ...mapActions('dictionaries', [
-            'getCurrentDictionary',
+            'getDictionary',
         ]),
         onClose() {
             this.__clearStorage();
+            this.removeScopeErrors(this.scope);
+
             this.$emit('close');
         },
-        onCreate() {
-            this.onActionRequest(async () => {
-                await this.getCurrentDictionary({
-                    dictionaryName: 'units',
-                });
-                await this.__clearStorage();
+        onSubmit() {
+            if (this.isSubmitting || this.isProceeding) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeScopeErrors(this.scope);
+            this.createUnit({
+                scope: this.scope,
+                onSuccess: this.onCreateSuccess,
+                onError: this.onCreateError,
             });
         },
-        onCreatedAndEdit() {
-            this.onActionRequest(async (id) => {
-                await this.getCurrentDictionary({
-                    dictionaryName: 'units',
-                });
-                await this.$router.push({
-                    name: 'unit-id-general',
-                    params: {
-                        id,
-                    },
-                });
+        onProceed() {
+            if (this.isSubmitting || this.isProceeding) {
+                return;
+            }
+
+            this.isProceeding = true;
+
+            this.removeScopeErrors(this.scope);
+            this.createUnit({
+                scope: this.scope,
+                onSuccess: this.onProceedSuccess,
+                onError: this.onCreateError,
             });
+        },
+        async onCreateSuccess() {
+            await this.getDictionary({
+                dictionaryName: 'units',
+            });
+
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Unit created',
+            });
+
+            this.isSubmitting = false;
+
+            this.$emit('created');
+            this.onClose();
+        },
+        async onProceedSuccess(id) {
+            await this.getDictionary({
+                dictionaryName: 'units',
+            });
+
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Unit created',
+            });
+
+            this.isProceeding = false;
+
+            await this.$router.push({
+                name: 'unit-id-general',
+                params: {
+                    id,
+                },
+            });
+        },
+        onCreateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+            this.isProceeding = false;
         },
     },
 };

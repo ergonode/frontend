@@ -6,58 +6,52 @@
     <ProductTemplateFormField
         :size="size"
         :position="position">
-        <FormValidatorField :field-key="fieldKey">
-            <template #validator="{ errorMessages }">
-                <RichTextEditor
-                    v-if="isRTEEditor"
-                    :disabled="disabled"
-                    height="100%"
-                    :required="properties.required"
-                    :placeholder="properties.placeholder"
-                    :error-messages="errorMessages"
-                    :label="label"
-                    :value="fieldData"
-                    @blur="onRTEValueChange">
-                    <template #append>
-                        <InfoHint
-                            v-if="properties.hint"
-                            :hint="properties.hint" />
-                    </template>
-                </RichTextEditor>
-                <TextArea
-                    v-else
-                    :value="fieldData"
-                    resize="none"
-                    height="100%"
-                    :label="label"
-                    :placeholder="properties.placeholder"
-                    :error-messages="errorMessages"
-                    :required="properties.required"
-                    :disabled="disabled"
-                    @focus="onFocus"
-                    @input="onValueChange">
-                    <template #append>
-                        <InfoHint
-                            v-if="properties.hint"
-                            :hint="properties.hint" />
-                    </template>
-                    <template #details>
-                        <div />
-                    </template>
-                </TextArea>
+        <RichTextEditor
+            v-if="isRTEEditor"
+            :disabled="disabled"
+            height="100%"
+            :required="properties.required"
+            :placeholder="properties.placeholder"
+            :error-messages="errors[fieldKey]"
+            :label="label"
+            :value="localValue"
+            @blur="onRTEValueChange">
+            <template #append>
+                <InfoHint
+                    v-if="properties.hint"
+                    :hint="properties.hint" />
             </template>
-        </FormValidatorField>
+        </RichTextEditor>
+        <TextArea
+            v-else
+            :value="localValue"
+            resize="none"
+            height="100%"
+            :label="label"
+            :placeholder="properties.placeholder"
+            :error-messages="errors[fieldKey]"
+            :required="properties.required"
+            :disabled="disabled"
+            @focus="onFocus"
+            @input="onValueChange">
+            <template #append>
+                <InfoHint
+                    v-if="properties.hint"
+                    :hint="properties.hint" />
+            </template>
+            <template #details>
+                <div />
+            </template>
+        </TextArea>
     </ProductTemplateFormField>
 </template>
 
 <script>
-import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import InfoHint from '@Core/components/Hints/InfoHint';
 import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
 import TextArea from '@Core/components/Inputs/TextArea';
 import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -67,7 +61,6 @@ export default {
         ProductTemplateFormField,
         TextArea,
         RichTextEditor,
-        FormValidatorField,
         InfoHint,
     },
     props: {
@@ -80,6 +73,10 @@ export default {
             default: () => ({}),
         },
         properties: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
             type: Object,
             default: () => ({}),
         },
@@ -98,13 +95,13 @@ export default {
     },
     data() {
         return {
-            isValueChanged: false,
+            localValue: '',
         };
     },
     computed: {
-        ...mapState('product', {
-            draft: state => state.draft,
-        }),
+        ...mapState('product', [
+            'draft',
+        ]),
         fieldData() {
             const {
                 attribute_code,
@@ -119,34 +116,32 @@ export default {
             return this.properties.parameters.rich_edit;
         },
     },
+    watch: {
+        languageCode: {
+            immediate: true,
+            handler() {
+                this.localValue = this.fieldData;
+            },
+        },
+    },
     methods: {
-        ...mapActions('product', [
-            'setDraftValue',
-        ]),
         onFocus(isFocused) {
-            if (!isFocused && this.isValueChanged) {
+            if (!isFocused && this.fieldData !== this.localValue) {
                 this.$emit('input', {
                     fieldKey: this.fieldKey,
                     languageCode: this.languageCode,
                     productId: this.$route.params.id,
                     elementId: this.properties.attribute_id,
-                    value: this.fieldData,
+                    code: this.properties.attribute_code,
+                    value: this.localValue,
                 });
             }
         },
         onValueChange(value) {
-            this.setDraftValue({
-                languageCode: this.languageCode,
-                key: this.properties.attribute_code,
-                value,
-            });
+            this.localValue = value;
         },
         onRTEValueChange(value) {
-            this.isValueChanged = value !== this.fieldData;
-
-            if (this.isValueChanged) {
-                this.onValueChange(value);
-            }
+            this.localValue = value;
 
             this.onFocus(false);
         },

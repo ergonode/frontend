@@ -28,7 +28,7 @@
         <CreateCategoryModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @create="onCreatedData" />
+            @created="onCreatedData" />
     </VerticalTabBarList>
 </template>
 
@@ -37,6 +37,7 @@ import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import PRIVILEGES from '@Trees/config/privileges';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -73,7 +74,13 @@ export default {
             ]);
         },
     },
+    beforeDestroy() {
+        this.setDisabledElements({});
+    },
     methods: {
+        ...mapActions('list', [
+            'setDisabledElements',
+        ]),
         onSearch(value) {
             this.codeFilter = value;
             this.getItems(this.languageCode);

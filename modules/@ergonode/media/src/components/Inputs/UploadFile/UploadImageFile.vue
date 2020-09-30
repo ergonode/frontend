@@ -13,11 +13,14 @@
                     v-if="isValue"
                     class="upload-image-file">
                     <div class="fixed-container">
-                        <Picture
-                            v-if="!multiple"
-                            :api-path="`multimedia/${value}/download/default`"
-                            :value="value"
-                            :object-fit="objectFit" />
+                        <div
+                            class="upload-image-file__image"
+                            v-if="!multiple">
+                            <Picture
+                                :api-path="`multimedia/${value}/download/default`"
+                                :value="value"
+                                :object-fit="objectFit" />
+                        </div>
                         <PictureCarousel
                             v-else
                             :image-ids="value"
@@ -244,10 +247,11 @@ export default {
             const value = this.multiple
                 ? this.value[this.currentIndex]
                 : this.value;
-            const url = `${process.env.baseURL}multimedia/${value}/download/default`;
+            const url = `multimedia/${value}/download/default`;
 
             this.$axios.$get(url, {
                 responseType: 'arraybuffer',
+                withLanguage: false,
             })
                 .then((response) => {
                     const downloadUrl = window.URL.createObjectURL(new Blob([
@@ -264,7 +268,12 @@ export default {
         },
         onRemoveImage() {
             if (this.multiple) {
-                this.$emit('input', this.value.filter(id => id !== this.value[this.currentIndex]));
+                const value = this.value.filter(id => id !== this.value[this.currentIndex]);
+
+                if (this.currentIndex > 0) {
+                    this.currentIndex -= 1;
+                }
+                this.$emit('input', value);
             } else {
                 this.$emit('input', '');
             }
@@ -307,6 +316,13 @@ export default {
             right: 8px;
             background-color: $WHITE;
             border-radius: 50%;
+        }
+
+        &__image {
+            position: relative;
+            display: flex;
+            flex: 1;
+            height: 100%;
         }
     }
 </style>

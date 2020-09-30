@@ -13,11 +13,10 @@
                 v-for="(formField, index) in formFieldComponents"
                 :is="formField"
                 :key="index"
-                v-bind="{
-                    ...elements[index],
-                    disabled: !isUserAllowedToUpdate(elements[index].properties.scope),
-                    languageCode: language.code,
-                }"
+                :disabled="!isUserAllowedToUpdate(elements[index].properties.scope)"
+                :language-code="language.code"
+                :errors="errors"
+                v-bind="elements[index]"
                 @input="onValueChange" />
         </div>
     </TemplateGridDesigner>
@@ -27,6 +26,7 @@
 import {
     SCOPE,
 } from '@Attributes/defaults/attributes';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';
@@ -37,13 +37,14 @@ import {
     mapState,
 } from 'vuex';
 
-const updateProductDraft = () => import('@Products/services/updateProductDraft.service');
-
 export default {
     name: 'ProductTemplateForm',
     components: {
         TemplateGridDesigner,
     },
+    mixins: [
+        formFeedbackMixin,
+    ],
     props: {
         language: {
             type: Object,
@@ -61,7 +62,7 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            user: state => state.user,
+            languagePrivileges: state => state.user.languagePrivileges,
         }),
         ...mapGetters('core', [
             'rootLanguage',
@@ -94,28 +95,23 @@ export default {
     methods: {
         isUserAllowedToUpdate(scope) {
             const {
-                languagePrivileges,
-            } = this.user;
-            const {
                 code,
             } = this.language;
 
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ])
-                && languagePrivileges[code].edit
+                && this.languagePrivileges[code].edit
                 && (this.rootLanguage.code === code || scope === SCOPE.LOCAL);
         },
         onValueChange(payload) {
-            updateProductDraft().then(async (response) => {
-                await response.default({
-                    $axios: this.$axios,
-                    $store: this.$store,
-                    ...payload,
-                });
-
-                this.$emit('valueUpdated');
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: `${payload.languageCode}|${payload.fieldKey}`,
+                value: payload.value,
             });
+
+            this.$emit('input', payload);
         },
     },
 };

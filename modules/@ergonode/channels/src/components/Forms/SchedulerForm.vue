@@ -5,28 +5,33 @@
 <template>
     <Form
         title="Configuration"
-        :fields-keys="[activeFieldKey, startFieldKey, hourFieldKey]">
-        <template #body="{ errorMessages }">
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        :errors="errors"
+        @proceed="onProceed"
+        @submit="onSubmit">
+        <template #body>
             <FormSection>
                 <Toggler
                     :value="isActive"
                     label="Is active"
                     :disabled="!isAllowedToUpdate"
-                    :error-messages="errorMessages[activeFieldKey]"
+                    :error-messages="errors[activeFieldKey]"
                     @input="setIsActiveValue" />
                 <DatePicker
                     :value="date"
                     :placeholder="format"
                     :format="format"
                     :disabled="!isAllowedToUpdate"
-                    :error-messages="errorMessages[startFieldKey]"
+                    :error-messages="errors[startFieldKey]"
                     label="Date"
                     @input="setDateChange" />
                 <TextField
                     :value="time"
                     :disabled="!isAllowedToUpdate"
                     :input="timeInputType"
-                    :error-messages="errorMessages[startFieldKey]"
                     label="Started on"
                     @input="setTimeChange" />
                 <Divider />
@@ -34,7 +39,7 @@
                     :value="recurrency"
                     :disabled="!isAllowedToUpdate"
                     :input="timeInputType"
-                    :error-messages="errorMessages[hourFieldKey]"
+                    :error-messages="errors[hourFieldKey]"
                     label="Recurrency"
                     hint="The time interval determining how often process would be executed"
                     @input="setRecurrencyChange" />
@@ -45,6 +50,14 @@
 
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
+import Divider from '@Core/components/Dividers/Divider';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
+import TextField from '@Core/components/Inputs/TextField';
+import Toggler from '@Core/components/Inputs/Toggler/Toggler';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     DEFAULT_FORMAT,
     DEFAULT_HOUR_FORMAT,
@@ -61,20 +74,24 @@ import {
 export default {
     name: 'SchedulerForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        DatePicker: () => import('@Core/components/Inputs/DatePicker/DatePicker'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
-        Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
-        Divider: () => import('@Core/components/Dividers/Divider'),
+        Form,
+        FormSection,
+        DatePicker,
+        TextField,
+        Toggler,
+        Divider,
     },
+    mixins: [
+        formActionsMixin,
+        formFeedbackMixin,
+    ],
     data() {
         return {
             schedulerConfiguration: {},
         };
     },
     computed: {
-        ...mapState('channels', [
+        ...mapState('channel', [
             'scheduler',
         ]),
         isAllowedToUpdate() {
@@ -154,7 +171,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('channels', [
+        ...mapActions('channel', [
             '__setState',
         ]),
         setIsActiveValue(value) {
@@ -167,11 +184,17 @@ export default {
                 key: 'scheduler',
                 value: JSON.stringify(tmpScheduler),
             });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.activeFieldKey,
+                value,
+            });
         },
         setDateChange(value) {
             let date = value ? formatDate(value, DEFAULT_FORMAT) : null;
 
-            if (this.time) {
+            if (this.time && date) {
                 date = `${date} ${this.time}`;
             }
 
@@ -181,6 +204,12 @@ export default {
                     ...this.schedulerConfiguration,
                     start: date,
                 }),
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.startFieldKey,
+                value: date,
             });
         },
         setTimeChange(value) {
@@ -204,6 +233,12 @@ export default {
                     start: tmpDate,
                 }),
             });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'time',
+                value: tmpDate,
+            });
         },
         setRecurrencyChange(value) {
             const [
@@ -219,6 +254,12 @@ export default {
             this.__setState({
                 key: 'scheduler',
                 value: JSON.stringify(tmpScheduler),
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.hourFieldKey,
+                value,
             });
         },
     },

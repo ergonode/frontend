@@ -10,7 +10,6 @@ import {
 } from '@Core/services/grid/getGridData.service';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default function ({
@@ -21,11 +20,6 @@ export default function ({
             return {
                 advancedFilters: [],
             };
-        },
-        computed: {
-            ...mapState('authentication', {
-                languageCode: state => state.user.language,
-            }),
         },
         methods: {
             ...mapActions('list', [
@@ -41,7 +35,7 @@ export default function ({
                 return getAdvancedFiltersData({
                     $axios: this.$axios,
                     $addAlert: this.$addAlert,
-                    path: `${this.languageCode}/${this.getPath()}`,
+                    path: this.getPath(),
                     params: filtersParams,
                 }).then((advancedFilters) => {
                     this.advancedFilters = advancedFilters;
@@ -57,7 +51,7 @@ export default function ({
                 const advancedFilters = await getAdvancedFiltersData({
                     $axios: this.$axios,
                     $addAlert: this.$addAlert,
-                    path: `${this.languageCode}/${path}`,
+                    path,
                     params,
                 });
                 const filter = advancedFilters.find(({

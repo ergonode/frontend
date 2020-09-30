@@ -1,0 +1,17 @@
+{
+  "category": {
+    "page": {
+      "title": "Categories",
+      "head": "Categories - Ergonode",
+      "addButton": "NEW CATEGORY"
+    },
+    "messages": {
+        "deleteConfirm": "Are you sure you want to delete this category?",
+        "deleteSuccess": "Category removed"
+    },
+    "errors": {
+        "getRequest": "Category hasn’t been fetched properly",
+        "deleteRequest": "Category hasn’t been deleted"
+    }
+  }
+}

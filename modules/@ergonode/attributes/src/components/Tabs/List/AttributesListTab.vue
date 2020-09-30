@@ -45,12 +45,21 @@
         <CreateAttributeModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @create="onCreatedAttribute" />
+            @created="onCreatedAttribute" />
     </VerticalTabBarList>
 </template>
 
 <script>
+import AttributesListGroup from '@Attributes/components/Lists/AttributesListGroup';
 import PRIVILEGES from '@Attributes/config/privileges';
+import Fab from '@Core/components/Fab/Fab';
+import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import TreeSelect from '@Core/components/Inputs/Select/Tree/TreeSelect';
+import List from '@Core/components/List/List';
+import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
+import ListSearchHeader from '@Core/components/List/ListSearchHeader';
+import ListSearchSelectHeader from '@Core/components/List/ListSearchSelectHeader';
+import VerticalTabBarList from '@Core/components/TabBar/VerticalTabBarList';
 import {
     UNASSIGNED_GROUP_ID,
 } from '@Core/defaults/list';
@@ -67,16 +76,16 @@ import {
 export default {
     name: 'AttributesListTab',
     components: {
-        VerticalTabBarList: () => import('@Core/components/TabBar/VerticalTabBarList'),
-        List: () => import('@Core/components/List/List'),
-        ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
-        AttributesListGroup: () => import('@Attributes/components/Lists/AttributesListGroup'),
-        ListSearchSelectHeader: () => import('@Core/components/List/ListSearchSelectHeader'),
-        ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
-        Fab: () => import('@Core/components/Fab/Fab'),
-        IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
+        VerticalTabBarList,
+        List,
+        ListScrollableContainer,
+        AttributesListGroup,
+        ListSearchSelectHeader,
+        ListSearchHeader,
+        Fab,
+        IconAdd,
+        TreeSelect,
         CreateAttributeModalForm: () => import('@Attributes/components/Modals/CreateAttributeModalForm'),
-        TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
     },
     mixins: [
         gridModalMixin,
@@ -101,12 +110,12 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            user: state => state.user,
+            languagePrivileges: state => state.user.languagePrivileges,
         }),
-        ...mapState('core', {
-            defaultLanguageCode: state => state.defaultLanguageCode,
-            languagesTree: state => state.languagesTree,
-        }),
+        ...mapState('core', [
+            'defaultLanguageCode',
+            'languagesTree',
+        ]),
         smallSize() {
             return SIZE.SMALL;
         },
@@ -129,16 +138,12 @@ export default {
             ]);
         },
         languageOptions() {
-            const {
-                languagePrivileges,
-            } = this.user;
-
             return this.languagesTree.map(language => ({
                 ...language,
                 key: language.code,
                 value: language.name,
-                disabled: languagePrivileges[language.code]
-                    ? !languagePrivileges[language.code].read
+                disabled: this.languagePrivileges[language.code]
+                    ? !this.languagePrivileges[language.code].read
                     : true,
             }));
         },

@@ -5,8 +5,7 @@
 <template>
     <ResourcePage
         :title="`${name}.${extension}`"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -16,6 +15,7 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import ResourcePage from '@Media/components/Pages/ResourcePage';
 import {
     mapActions,
@@ -27,26 +27,36 @@ export default {
     components: {
         ResourcePage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     asyncData({
         store, params,
     }) {
-        return store.dispatch('media/getResource', params.id);
+        return store.dispatch('media/getResource', params);
     },
     computed: {
-        ...mapState('media', {
-            name: state => state.name,
-            extension: state => state.extension,
-        }),
+        ...mapState('media', [
+            'name',
+            'extension',
+        ]),
+    },
+    beforeDestroy() {
+        this.__clearStorage();
+        this.__clearTranslationsStorage();
+        this.__clearFeedbackStorage();
     },
     methods: {
         ...mapActions('media', [
             'removeResource',
-            'updateResource',
+            '__clearStorage',
         ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeValidationErrors',
-        ]),
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
+        ...mapActions('tab', {
+            __clearTranslationsStorage: '__clearStorage',
+        }),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
@@ -56,12 +66,6 @@ export default {
                 }),
             });
         },
-        onSave() {
-            this.updateResource({
-                onSuccess: this.onResourceUpdated,
-                onError: this.onError,
-            });
-        },
         onRemoveResourceSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
@@ -69,13 +73,6 @@ export default {
             });
             this.$router.push({
                 name: 'media-grid',
-            });
-        },
-        onResourceUpdated() {
-            this.removeValidationErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Resource updated',
             });
         },
     },

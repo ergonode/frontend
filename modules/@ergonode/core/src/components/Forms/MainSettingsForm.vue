@@ -3,11 +3,19 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form title="Options">
+    <Form
+        title="Options"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        :errors="errors"
+        @proceed="onProceed"
+        @submit="onSubmitForm">
         <template #body>
             <FormSection>
                 <TranslationSelect
-                    :value="activeLanguages"
+                    v-model="activeLanguages"
                     :options="languageOptions"
                     label="Languages"
                     :multiselect="true"
@@ -29,8 +37,13 @@
 </template>
 
 <script>
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
 import InfoHint from '@Core/components/Hints/InfoHint';
+import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import PRIVILEGES from '@Core/config/privileges';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapState,
 } from 'vuex';
@@ -39,32 +52,44 @@ export default {
     name: 'MainSettingsForm',
     components: {
         InfoHint,
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
+        Form,
+        FormSection,
+        TranslationSelect,
     },
+    mixins: [
+        formActionsMixin,
+        formFeedbackMixin,
+    ],
     data() {
         return {
             filteredValue: '',
-            tmpLanguages: [],
             activeLanguages: [],
         };
     },
     computed: {
-        ...mapState('core', {
-            languages: state => state.languages,
-        }),
+        ...mapState('core', [
+            'languages',
+        ]),
+        mappedLanguages() {
+            return this.languages.map(({
+                id, name, code,
+            }) => ({
+                id,
+                key: code,
+                value: name,
+            }));
+        },
         languageOptions() {
             if (this.filteredValue) {
                 const rgx = new RegExp(this.filteredValue, 'i');
 
-                return this.tmpLanguages.filter(
+                return this.mappedLanguages.filter(
                     ({
                         key, value,
                     }) => key.match(rgx) || value.match(rgx),
                 );
             }
-            return this.tmpLanguages;
+            return this.mappedLanguages;
         },
         hint() {
             return this.activeLanguages.map(({
@@ -76,34 +101,37 @@ export default {
                 PRIVILEGES.SETTINGS.update,
             ]);
         },
-    },
-    watch: {
-        languages: {
-            deep: true,
-            immediate: true,
-            handler(value) {
-                const mappedLanguage = ({
-                    id, name, code,
-                }) => ({
-                    id,
-                    key: code,
-                    value: name,
-                });
-
-                this.tmpLanguages = value.map(mappedLanguage);
-                this.activeLanguages = value
-                    .filter(({
-                        active,
-                    }) => active === true)
-                    .map(mappedLanguage);
-                this.$emit('selectedLanguages', this.activeLanguages);
-            },
+        languagesFieldKey() {
+            return 'langauges';
         },
+    },
+    created() {
+        this.activeLanguages = this.languages
+            .filter(({
+                active,
+            }) => active)
+            .map(({
+                id, name, code,
+            }) => ({
+                id,
+                key: code,
+                value: name,
+            }));
     },
     methods: {
         setSelectedLanguages(selectedLanguages) {
             this.activeLanguages = selectedLanguages;
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.languagesFieldKey,
+                value: selectedLanguages,
+            });
+
             this.$emit('selectedLanguages', selectedLanguages);
+        },
+        onSubmitForm() {
+            this.$emit('submit', this.activeLanguages);
         },
         onSearch(value) {
             this.filteredValue = value;

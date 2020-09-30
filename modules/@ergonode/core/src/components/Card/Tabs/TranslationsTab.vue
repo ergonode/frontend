@@ -3,27 +3,31 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #header>
-            <TranslationSelect
-                data-cy="translation-language-select"
-                :style="{ flex: '0 0 192px' }"
-                v-model="selectedLanguages"
-                :options="languageOptions"
-                :size="smallSize"
-                :multiselect="true"
-                :clearable="true"
-                label="Translations" />
+            <div class="translation-language-select">
+                <TranslationSelect
+                    data-cy="translation-language-select"
+                    v-model="selectedLanguages"
+                    :options="languageOptions"
+                    :size="smallSize"
+                    :multiselect="true"
+                    :clearable="true"
+                    label="Translations" />
+            </div>
         </template>
         <template #centeredContent>
             <slot :language-codes="selectedLanguageCodes" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+        <template #default>
+            <slot name="saveButton" />
+        </template>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     TRANSLATIONS_LANGUAGES,
 } from '@Core/defaults/cookies';
@@ -38,7 +42,7 @@ import {
 export default {
     name: 'TranslationsTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         TranslationSelect,
     },
     data() {
@@ -96,3 +100,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .translation-language-select {
+        flex: 0 0 192px;
+    }
+</style>

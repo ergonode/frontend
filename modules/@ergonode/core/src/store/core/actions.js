@@ -5,6 +5,14 @@
 import {
     getFlattenedTreeData,
 } from '@Core/models/mappers/treeMapper';
+import {
+    getAll as getAllLanguages,
+    update as updateLanguage,
+} from '@Core/services/language/index';
+import {
+    get as getLanguageTree,
+    update as updateLanguageTree,
+} from '@Core/services/languageTree/index';
 
 import {
     types,
@@ -12,22 +20,12 @@ import {
 
 export default {
     async getLanguages({
-        commit, rootState,
+        commit,
     }) {
         const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const params = {
-            limit: 9999,
-            offset: 0,
-            view: 'list',
-            field: 'name',
-            order: 'ASC',
-        };
-        const {
             collection,
-        } = await this.app.$axios.$get(`${userLanguageCode}/languages`, {
-            params,
+        } = await getAllLanguages({
+            $axios: this.app.$axios,
         });
 
         commit('__SET_STATE', {
@@ -35,41 +33,66 @@ export default {
             value: collection,
         });
     },
-    async getLanguagesTree({
-        dispatch, rootState,
+    async getLanguageTree({
+        dispatch,
     }) {
         const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-        const {
             languages,
-        } = await this.app.$axios.$get(`${userLanguageCode}/language/tree`);
-
-        dispatch('setLanguagesTree', languages);
-    },
-    async updateLanguages({
-        rootState,
-    }, collection) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
-        await this.app.$axios.$put(`${userLanguageCode}/languages`, {
-            collection,
+        } = await getLanguageTree({
+            $axios: this.app.$axios,
         });
-    },
-    async updateLanguageTree({
-        rootState,
-    }, languages) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
 
-        await this.app.$axios.$put(`${userLanguageCode}/language/tree`, {
-            languages,
-        });
+        dispatch('setLanguageTree', languages);
     },
-    setLanguagesTree({
+    async updateLanguages({}, {
+        languages = [],
+        scope,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const data = {
+                collection: languages,
+            };
+
+            await updateLanguage({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
+    },
+    async updateLanguageTree({}, {
+        languages,
+        scope,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const data = {
+                languages,
+            };
+
+            await updateLanguageTree({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
+    },
+    setLanguageTree({
         state, commit,
     }, treeData) {
         const reducer = (id) => {
@@ -108,16 +131,6 @@ export default {
             key: 'defaultLanguageCode',
             value: defaultLanguage.code,
         });
-    },
-    setLoader({
-        commit,
-    }, key) {
-        commit(types.SET_LOADER, key);
-    },
-    removeLoader({
-        commit,
-    }, key) {
-        commit(types.REMOVE_LOADER, key);
     },
     openModal({
         commit,

@@ -4,5 +4,4 @@
  */
 export default () => ({
     drafts: {},
-    editCell: null,
 });

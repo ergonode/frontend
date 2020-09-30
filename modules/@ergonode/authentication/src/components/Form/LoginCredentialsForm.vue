@@ -3,7 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <LoginForm>
+    <LoginForm
+        submit-title="LOG IN"
+        :is-submitting="isSubmitting"
+        :errors="scopeErrors"
+        @submit="onSubmit">
         <template #header>
             <div class="logo-header">
                 <IconLogoName />
@@ -13,36 +17,30 @@
             <TextField
                 data-cy="login-email"
                 v-model="email"
+                :error-messages="scopeErrors.username"
                 label="E-mail" />
             <TextField
                 data-cy="login-pass"
                 v-model="password"
                 :input="passwordInputType"
-                label="Password"
-                @keyup.13="onSubmit" />
+                :error-messages="scopeErrors.password"
+                label="Password" />
             <Toggler
                 v-model="isPasswordVisible"
                 label="Show password" />
-        </template>
-        <template #footer>
-            <Button
-                data-cy="login-button"
-                title="LOG IN"
-                type="submit"
-                @click.stop.prevent.native="onSubmit" />
         </template>
     </LoginForm>
 </template>
 
 <script>
 import LoginForm from '@Authentication/components/Form/LoginForm';
-import Button from '@Core/components/Button/Button';
 import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
 import TextField from '@Core/components/Inputs/TextField';
 import Toggler from '@Core/components/Inputs/Toggler/Toggler';
 import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import {
     mapActions,
 } from 'vuex';
@@ -52,15 +50,18 @@ export default {
     components: {
         LoginForm,
         TextField,
-        Button,
         Toggler,
         IconLogoName,
     },
+    mixins: [
+        scopeErrorsMixin,
+    ],
     data() {
         return {
             email: '',
             password: '',
             isPasswordVisible: false,
+            isSubmitting: false,
         };
     },
     computed: {
@@ -77,20 +78,34 @@ export default {
         ...mapActions('authentication', [
             'authenticateUser',
         ]),
-        async onSubmit() {
-            try {
-                await this.authenticateUser({
-                    data: {
-                        username: this.email,
-                        password: this.password,
-                    },
-                });
-                this.$router.push({
-                    name: 'dashboard',
-                });
-            } catch (e) {
-                console.error(e);
-            }
+        onSubmit() {
+            this.isSubmitting = true;
+
+            const data = {
+                username: this.email,
+                password: this.password,
+            };
+
+            this.removeScopeErrors(this.scope);
+
+            this.authenticateUser({
+                data,
+                scope: this.scope,
+                onSuccess: this.onLoginSuccess,
+                onError: this.onLoginError,
+            });
+        },
+        onLoginSuccess() {
+            this.$router.push({
+                name: 'dashboard',
+            });
+
+            this.isSubmitting = false;
+        },
+        onLoginError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
         },
     },
 };

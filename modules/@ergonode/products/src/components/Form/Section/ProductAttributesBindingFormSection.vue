@@ -7,7 +7,7 @@
         :disabled="isDisabled"
         add-list-title="ADD BINDING ATTRIBUTE"
         @add="addBindingAttribute">
-        <FormListSubsection v-if="selectAttributes.length">
+        <FormListSubsection v-if="bindingAttributesIds.length && selectAttributes.length">
             <ProductAttributeBindingField
                 v-for="(attribute, index) in bindingAttributesIds"
                 :key="index"
@@ -42,10 +42,10 @@ export default {
         },
     },
     computed: {
-        ...mapState('product', {
-            bindingAttributesIds: state => state.bindingAttributesIds,
-            selectAttributes: state => state.selectAttributes,
-        }),
+        ...mapState('product', [
+            'bindingAttributesIds',
+            'selectAttributes',
+        ]),
         isDisabled() {
             return this.disabled
                 || this.bindingAttributesIds.length === this.selectAttributes.length;

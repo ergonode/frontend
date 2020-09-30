@@ -57,6 +57,18 @@ export default {
         ElementContentBase,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         index: {
             type: Number,
             required: true,
@@ -94,8 +106,11 @@ export default {
         },
     },
     methods: {
-        ...mapActions('templateDesigner', [
+        ...mapActions('productTemplate', [
             'removeLayoutElementAtIndex',
+        ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
         ]),
         onSelectFocus(isFocused) {
             if (!isFocused) this.isHovered = false;
@@ -106,6 +121,12 @@ export default {
             switch (value) {
             case 'Remove':
                 this.removeLayoutElementAtIndex(this.index);
+
+                this.onScopeValueChange({
+                    scope: this.scope,
+                    fieldKey: 'templateDesigner',
+                    value: true,
+                });
                 break;
             case 'Edit title':
                 this.$emit('editTitle', this.index);

@@ -5,7 +5,7 @@
 <template>
     <App>
         <slot />
-        <FlashMessage />
+        <FlashMessages />
     </App>
 </template>
 
@@ -14,7 +14,7 @@ export default {
     name: 'LoginLayout',
     components: {
         App: () => import('@Core/components/Layout/App'),
-        FlashMessage: () => import('@Core/components/Alerts/FlashMessage'),
+        FlashMessages: () => import('@Core/components/Alerts/FlashMessages'),
     },
 };
 </script>

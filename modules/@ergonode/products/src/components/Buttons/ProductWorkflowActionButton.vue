@@ -56,10 +56,10 @@ export default {
         ListElementTitle,
     },
     computed: {
-        ...mapState('product', {
-            status: state => state.status,
-            workflow: state => state.workflow,
-        }),
+        ...mapState('product', [
+            'status',
+            'workflow',
+        ]),
         smallSize() {
             return SIZE.SMALL;
         },
@@ -96,7 +96,7 @@ export default {
                         this.getProduct(id);
                         this.$addAlert({
                             type: ALERT_TYPE.SUCCESS,
-                            message: 'Status updated',
+                            message: 'Status has been updated',
                         });
                     },
                 }),

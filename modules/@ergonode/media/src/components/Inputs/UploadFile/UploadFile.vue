@@ -139,8 +139,8 @@ export default {
         };
     },
     computed: {
-        ...mapState('validations', {
-            uploadError: state => state.validationErrors.upload,
+        ...mapState('feedback', {
+            uploadError: state => state.errors.upload,
         }),
         secondaryTheme() {
             return THEME.SECONDARY;
@@ -215,6 +215,7 @@ export default {
             left: 0;
             bottom: 0;
             right: 0;
+            z-index: $Z_INDEX_LVL_1;
             width: 100%;
             height: 100%;
             padding: 0;
