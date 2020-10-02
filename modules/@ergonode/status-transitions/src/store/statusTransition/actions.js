@@ -30,7 +30,6 @@ export default {
             source,
             destination,
         ] = id.split('--');
-        console.log(statusOptions, source);
 
         const {
             condition_set_id: conditionSetId,

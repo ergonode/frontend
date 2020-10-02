@@ -217,7 +217,6 @@ export default {
                 filter: `esa_product_type=${productTypes}`,
                 columns: defaultColumns.join(','),
             };
-            console.log(params);
 
             if (Object.keys(sortedColumn).length) {
                 const {
