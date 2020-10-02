@@ -209,17 +209,17 @@ export default {
         onSuccess = () => {},
         onError = () => {},
     }) {
-        try {
-            const errors = {};
-            let isAnyError = false;
-            const {
-                id,
-            } = state;
-            const mappedSkus = skus.replace(/\n/g, ',');
-            const data = {
-                skus: mappedSkus !== '' ? mappedSkus.split(',') : [],
-            };
+        const errors = {};
+        let isAnyError = false;
+        const {
+            id,
+        } = state;
+        const mappedSkus = skus.replace(/\n/g, ',');
+        const data = {
+            skus: mappedSkus !== '' ? mappedSkus.split(',') : [],
+        };
 
+        try {
             if (!mappedSkus.length) {
                 errors.skus = [
                     'Sku is required',
@@ -234,7 +234,6 @@ export default {
                     },
                 };
             }
-
             await addBySku({
                 $axios: this.app.$axios,
                 id,
@@ -245,6 +244,11 @@ export default {
             onError({
                 errors: e.data.errors,
                 scope,
+                fieldKeys: data.skus.reduce((prev, curr, index) => {
+                    const tmp = prev;
+                    tmp[`element-${index}`] = curr;
+                    return tmp;
+                }, {}),
             });
         }
     },

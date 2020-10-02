@@ -21,10 +21,20 @@
         </TitleBar>
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
-            :items="asyncTabs">
-            <template #content>
+            :items="asyncTabs"
+            :errors="errors"
+            :change-values="changeValues">
+            <template
+                #content="{
+                    item,
+                    errors: tabErrors,
+                    changeValues: tabChangeValues,
+                }">
                 <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
+                    :scope="item.scope"
+                    :change-values="tabChangeValues"
+                    :errors="tabErrors"
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
@@ -48,6 +58,9 @@ import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import pageMixin from '@Core/mixins/page/pageMixin';
 import PRIVILEGES from '@Products/config/privileges';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'Products',
@@ -65,6 +78,10 @@ export default {
         pageMixin,
     ],
     computed: {
+        ...mapState('feedback', [
+            'errors',
+            'changeValues',
+        ]),
         smallSize() {
             return SIZE.SMALL;
         },

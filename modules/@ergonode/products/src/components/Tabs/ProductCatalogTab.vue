@@ -27,6 +27,7 @@
                 :rows="rows"
                 :placeholder="noRecordsPlaceholder"
                 :drafts="drafts"
+                :errors="errors"
                 :advanced-filters="advancedFilters"
                 :data-count="filtered"
                 :collection-cell-binding="collectionCellBinding"
@@ -43,13 +44,8 @@
                 @dropColumn="onDropColumn"
                 @dropFilter="onDropFilter"
                 @fetchData="onFetchData">
-                <template #actions>
-                    <ExpandNumericButton
-                        title="FILTERS"
-                        :number="filtersCount"
-                        :is-expanded="isFiltersExpanded"
-                        @click.native="onFiltersExpand" />
-                    <!--
+                <!--                <template #headerActions>-->
+                <!--
                                   Uncomment when product draft will be change on grid
                                   <Button
                                     :theme="secondaryTheme"
@@ -61,12 +57,12 @@
                                         <IconRestore :fill-color="color" />
                                     </template>
                                 </Button> -->
-                    <!-- <RestoreAttributeParentModalConfirm
+                <!-- <RestoreAttributeParentModalConfirm
                                     v-if="isModalVisible"
                                     :element="focusedCellToRestore"
                                     @close="onCloseConfirmModal"
                                     @restore="onRestoreDraftSuccess" /> -->
-                </template>
+                <!--                </template>-->
                 <template #appendFooter>
                     <Button
                         title="SAVE CHANGES"
@@ -111,6 +107,7 @@ import fetchAdvancedFiltersDataMixin from '@Core/mixins/grid/fetchAdvancedFilter
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     mapActions,
@@ -141,6 +138,7 @@ export default {
             path: 'products',
         }),
         gridDraftMixin,
+        tabFeedbackMixin,
     ],
     async fetch() {
         const requests = [
@@ -155,6 +153,7 @@ export default {
         await Promise.all(requests);
 
         this.isPrefetchingData = false;
+
         this.setDisabledElements(this.getDisabledElements({
             columns: this.columns,
             filters: this.advancedFilters,
@@ -259,7 +258,10 @@ export default {
             'updateProductDraft',
             'applyProductDraft',
         ]),
-        onCellValueChange(cellValues) {
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
+        async onCellValueChange(cellValues) {
             const cachedElementIds = {};
 
             const drafts = cellValues.reduce((prev, {
@@ -292,10 +294,17 @@ export default {
                     productId: rowId,
                     elementId: cachedElementIds[columnId],
                     value,
+                    scope: this.scope,
                 });
             });
 
-            Promise.all(requests);
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'productsGrid',
+                value: this.drafts,
+            });
+
+            await Promise.all(requests);
         },
         onFocusCell({
             column, rowId,
@@ -361,6 +370,8 @@ export default {
             });
 
             this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         getDisabledElements({
             columns, filters,

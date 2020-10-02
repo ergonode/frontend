@@ -27,13 +27,10 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-import {
-    toLowerCaseFirstLetter,
-} from '@Core/models/stringWrapper';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import ProductForm from '@Products/components/Forms/ProductForm';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -42,6 +39,9 @@ export default {
         ModalForm,
         ProductForm,
     },
+    mixins: [
+        scopeErrorsMixin,
+    ],
     async fetch() {
         await this.getSelectAttributes();
     },
@@ -52,17 +52,8 @@ export default {
         };
     },
     computed: {
-        ...mapState('feedback', [
-            'errors',
-        ]),
         secondaryTheme() {
             return THEME.SECONDARY;
-        },
-        scope() {
-            return toLowerCaseFirstLetter(this.$options.name);
-        },
-        scopeErrors() {
-            return this.errors[this.scope];
         },
     },
     methods: {
@@ -70,10 +61,6 @@ export default {
             'getSelectAttributes',
             'createProduct',
             '__clearStorage',
-        ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
         ]),
         onClose() {
             this.__clearStorage();

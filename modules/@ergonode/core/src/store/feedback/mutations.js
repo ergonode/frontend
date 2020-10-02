@@ -2,6 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import deepmerge from 'deepmerge';
+
 export const types = {
     SET_ERRORS: 'SET_ERRORS',
     SET_CHANGE_VALUES_SCOPE: 'SET_CHANGE_VALUES_SCOPE',
@@ -13,12 +15,10 @@ export const types = {
     REMOVE_ERRORS: 'REMOVE_ERRORS',
     REMOVE_CHANGE_VALUES: 'REMOVE_CHANGE_VALUES',
 };
+
 export default {
     [types.SET_ERRORS](state, errors) {
-        state.errors = {
-            ...state.errors,
-            ...errors,
-        };
+        state.errors = deepmerge(state.errors, errors);
     },
     [types.SET_CHANGE_VALUES_SCOPE](state, scope) {
         state.changeValues[scope] = {};

@@ -27,13 +27,10 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-import {
-    toLowerCaseFirstLetter,
-} from '@Core/models/stringWrapper';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import UserForm from '@Users/components/Forms/UserForm';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -42,6 +39,9 @@ export default {
         ModalForm,
         UserForm,
     },
+    mixins: [
+        scopeErrorsMixin,
+    ],
     data() {
         return {
             isSubmitting: false,
@@ -49,27 +49,14 @@ export default {
         };
     },
     computed: {
-        ...mapState('feedback', [
-            'errors',
-        ]),
         secondaryTheme() {
             return THEME.SECONDARY;
-        },
-        scope() {
-            return toLowerCaseFirstLetter(this.$options.name);
-        },
-        scopeErrors() {
-            return this.errors[this.scope];
         },
     },
     methods: {
         ...mapActions('user', [
             'createUser',
             '__clearStorage',
-        ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
         ]),
         onClose() {
             this.__clearStorage();

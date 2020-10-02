@@ -24,7 +24,7 @@
                             v-if="formGlobalError"
                             :title="formGlobalError" />
                         <LinkButton
-                            v-for="(error, index) in errors"
+                            v-for="(error, index) in presentationErrors"
                             :title="error"
                             :key="index" />
                     </div>
@@ -102,6 +102,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        errorsPresentationMapper: {
+            type: Function,
+            default: null,
+        },
     },
     computed: {
         isFooterVisible() {
@@ -126,6 +130,13 @@ export default {
         },
         redColor() {
             return RED;
+        },
+        presentationErrors() {
+            if (!this.errorsPresentationMapper) {
+                return this.errors;
+            }
+
+            return this.presentationErrors(this.errors);
         },
     },
     methods: {
