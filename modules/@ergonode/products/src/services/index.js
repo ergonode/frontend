@@ -16,11 +16,6 @@ export const getDraft = ({
     withLanguage: false,
 });
 
-export const getBindings = ({
-    $axios,
-    id,
-}) => $axios.$get(`products/${id}/bindings`);
-
 export const getWorkflow = ({
     $axios,
     id,

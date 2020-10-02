@@ -59,7 +59,6 @@
 import PRIVILEGES from '@Collections/config/privileges';
 import {
     ADD_PRODUCT,
-    EXTENDS,
 } from '@Collections/defaults';
 import ActionButton from '@Core/components/ActionButton/ActionButton';
 import Button from '@Core/components/Button/Button';
@@ -136,7 +135,7 @@ export default {
             return options;
         },
         extendedComponents() {
-            return this.$getExtendedComponents(EXTENDS.COLLECTIONS_ADD_PRODUCTS);
+            return this.$getExtendedComponents('@Collections/components/Tabs/collectionProductsTab/addFromSegment');
         },
         modalComponent() {
             const modals = [

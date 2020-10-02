@@ -8,7 +8,8 @@
             title="Settings"
             :is-read-only="$isReadOnly('SETTINGS')" />
         <HorizontalRoutingTabBar
-            :items="tabs"
+            v-if="asyncTabs"
+            :items="asyncTabs"
             :change-values="changeValues"
             :errors="errors">
             <template
@@ -40,9 +41,7 @@ import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalR
 import TitleBar from '@Core/components/TitleBar/TitleBar';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
-import {
-    getNestedTabRoutes,
-} from '@Core/models/navigation/tabs';
+import pageMixin from '@Core/mixins/page/pageMixin';
 import {
     mapState,
 } from 'vuex';
@@ -57,6 +56,7 @@ export default {
     mixins: [
         gridModalMixin,
         beforeLeavePageMixin,
+        pageMixin,
     ],
     data() {
         return {
@@ -68,13 +68,6 @@ export default {
             'changeValues',
             'errors',
         ]),
-        tabs() {
-            return getNestedTabRoutes({
-                hasAccess: this.$hasAccess,
-                routes: this.$router.options.routes,
-                route: this.$route,
-            });
-        },
         getModalComponentViaType() {
             switch (this.modalType) {
             case 'units':

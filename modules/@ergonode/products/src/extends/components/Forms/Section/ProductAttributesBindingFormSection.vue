@@ -22,7 +22,7 @@
 <script>
 import FormListSection from '@Core/components/Form/Section/FormListSection';
 import FormListSubsection from '@Core/components/Form/Subsection/FormListSubsection';
-import ProductAttributeBindingField from '@Products/components/Form/Field/ProductAttributeBindingField';
+import ProductAttributeBindingField from '@Products/extends/components/Forms/Field/ProductAttributeBindingField';
 import {
     mapActions,
     mapState,
@@ -51,8 +51,15 @@ export default {
                 || this.bindingAttributesIds.length === this.selectAttributes.length;
         },
     },
+    mounted() {
+        this.__setState({
+            key: 'bindingAttributesIds',
+            value: [],
+        });
+    },
     methods: {
         ...mapActions('product', [
+            '__setState',
             'addBindingAttribute',
         ]),
     },

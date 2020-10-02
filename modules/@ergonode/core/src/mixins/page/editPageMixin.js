@@ -41,13 +41,6 @@ export default {
             'errors',
             'changeValues',
         ]),
-        tabs() {
-            return getNestedTabRoutes({
-                hasAccess: this.$hasAccess,
-                routes: this.$router.options.routes,
-                route: this.$route,
-            });
-        },
         smallSize() {
             return SIZE.SMALL;
         },
@@ -58,6 +51,23 @@ export default {
     methods: {
         onRemove() {
             this.$emit('remove');
+        },
+    },
+    asyncComputed: {
+        async asyncTabs() {
+            const tmpTabs = getNestedTabRoutes({
+                hasAccess: this.$hasAccess,
+                routes: this.$router.options.routes,
+                route: this.$route,
+            });
+            const tabs = await this.$extendMethods('@Core/pages/tabs', {
+                $this: this,
+                tabs: tmpTabs,
+            });
+
+            return tabs.length ? [
+                ...new Set([].concat(...tabs)),
+            ] : tmpTabs;
         },
     },
 };

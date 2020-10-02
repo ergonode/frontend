@@ -32,7 +32,7 @@ import {
 import {
     toLowerCaseFirstLetter,
 } from '@Core/models/stringWrapper';
-import AddProductsBySKUForm from '@Products/components/Form/AddProductsBySKUForm';
+import AddProductsBySKUForm from '@Products/components/Forms/AddProductsBySKUForm';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     mapActions,

@@ -30,6 +30,7 @@ export default {
             source,
             destination,
         ] = id.split('--');
+        console.log(statusOptions, source);
 
         const {
             condition_set_id: conditionSetId,
@@ -43,10 +44,10 @@ export default {
         const regex = /%20/g;
 
         const sourceOption = statusOptions.find(
-            status => status.key === source.replace(regex, ' '),
+            status => status.id === source.replace(regex, ' '),
         );
         const destinationOption = statusOptions.find(
-            status => status.key === destination.replace(regex, ' '),
+            status => status.id === destination.replace(regex, ' '),
         );
 
         commit('__SET_STATE', {

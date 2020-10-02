@@ -25,7 +25,8 @@
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
-            :items="tabs"
+            v-if="asyncTabs"
+            :items="asyncTabs"
             :change-values="changeValues"
             :errors="errors" />
     </Page>
@@ -34,6 +35,15 @@
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
+import {
+    getNestedTabRoutes,
+} from '@Core/models/navigation/tabs';
+import {
+    getKeyByValue,
+} from '@Core/models/objectWrapper';
+import {
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'AttributePage',
@@ -41,6 +51,12 @@ export default {
         editPageMixin,
     ],
     computed: {
+        ...mapState('attribute', [
+            'type',
+        ]),
+        ...mapState('dictionaries', [
+            'attrTypes',
+        ]),
         isAllowedToDelete() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.delete,
@@ -48,6 +64,25 @@ export default {
         },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.ATTRIBUTE.namespace);
+        },
+    },
+    asyncComputed: {
+        async asyncTabs() {
+            const tmpTabs = getNestedTabRoutes({
+                hasAccess: this.$hasAccess,
+                routes: this.$router.options.routes,
+                route: this.$route,
+            });
+            const type = getKeyByValue(this.attrTypes, this.type);
+            const tabs = await this.$extendMethods('@Core/pages/tabs', {
+                $this: this,
+                type,
+                tabs: tmpTabs,
+            });
+
+            return tabs.length ? [
+                ...new Set([].concat(...tabs)),
+            ] : tmpTabs;
         },
     },
 };

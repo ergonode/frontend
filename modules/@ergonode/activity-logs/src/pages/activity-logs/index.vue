@@ -7,7 +7,9 @@
         <TitleBar
             title="Users activity logs"
             :is-read-only="$isReadOnly('USER')" />
-        <HorizontalRoutingTabBar :items="tabs" />
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs" />
     </Page>
 </template>
 
@@ -16,9 +18,7 @@ import Page from '@Core/components/Layout/Page';
 import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@Core/components/TitleBar/TitleBar';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
-import {
-    getNestedTabRoutes,
-} from '@Core/models/navigation/tabs';
+import pageMixin from '@Core/mixins/page/pageMixin';
 
 export default {
     name: 'UsersTabs',
@@ -29,15 +29,7 @@ export default {
     },
     mixins: [
         beforeLeavePageMixin,
+        pageMixin,
     ],
-    computed: {
-        tabs() {
-            return getNestedTabRoutes({
-                hasAccess: this.$hasAccess,
-                routes: this.$router.options.routes,
-                route: this.$route,
-            });
-        },
-    },
 };
 </script>

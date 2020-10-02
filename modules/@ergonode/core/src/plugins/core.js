@@ -18,4 +18,22 @@ export default ({
     inject('closeModal', (key) => {
         app.store.dispatch('core/closeModal', key);
     });
+    inject('getExtendedFormByType', ({
+        key, type,
+    }) => {
+        const forAllTypes = '__ALL';
+        const components = [];
+        const extendedComponents = app.$getExtendedComponents(key);
+
+        if (extendedComponents) {
+            if (extendedComponents[forAllTypes]) {
+                components.push(...extendedComponents[forAllTypes]);
+            }
+            if (extendedComponents[type]) {
+                components.push(...extendedComponents[type]);
+            }
+        }
+
+        return components;
+    });
 };

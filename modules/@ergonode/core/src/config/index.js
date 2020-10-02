@@ -30,8 +30,8 @@ export default {
             src: './plugins/alerts',
         },
         {
-            ssr: false,
-            src: './plugins/directives',
+            ssr: true,
+            src: './plugins/asyncComputed',
         },
     ],
     css: [

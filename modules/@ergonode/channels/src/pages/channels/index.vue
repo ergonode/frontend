@@ -19,7 +19,9 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs">
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs">
             <template #content>
                 <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
@@ -45,9 +47,7 @@ import {
 } from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
-import {
-    getNestedTabRoutes,
-} from '@Core/models/navigation/tabs';
+import pageMixin from '@Core/mixins/page/pageMixin';
 
 export default {
     name: 'Channels',
@@ -62,17 +62,11 @@ export default {
     mixins: [
         gridModalMixin,
         beforeLeavePageMixin,
+        pageMixin,
     ],
     computed: {
         smallSize() {
             return SIZE.SMALL;
-        },
-        tabs() {
-            return getNestedTabRoutes({
-                hasAccess: this.$hasAccess,
-                routes: this.$router.options.routes,
-                route: this.$route,
-            });
         },
         isUserAllowedToCreate() {
             return this.$hasAccess([

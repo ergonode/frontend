@@ -6,10 +6,11 @@
     <ProductTemplateFormField
         :size="size"
         :position="position">
-        <TextField
+        <DatePicker
             :value="localValue"
             :label="label"
             :placeholder="properties.placeholder"
+            :foramt="parameter"
             :error-messages="errors[fieldKey]"
             :required="properties.required"
             :disabled="disabled"
@@ -26,24 +27,31 @@
             <template #details>
                 <div />
             </template>
-        </TextField>
+        </DatePicker>
     </ProductTemplateFormField>
 </template>
 
 <script>
 import InfoHint from '@Core/components/Hints/InfoHint';
-import TextField from '@Core/components/Inputs/TextField';
+import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
-import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import {
+    DEFAULT_FORMAT,
+} from '@Core/models/calendar/calendar';
+import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
+import {
+    format as formatDate,
+    isEqual,
+} from 'date-fns';
 import {
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'ProductTemplateFormTextField',
+    name: 'ProductTemplateFormDateField',
     components: {
         ProductTemplateFormField,
-        TextField,
+        DatePicker,
         TextFieldSuffix,
         InfoHint,
     },
@@ -90,11 +98,12 @@ export default {
             const {
                 attribute_code,
             } = this.properties;
+            const value = this.draft[this.languageCode][attribute_code];
 
-            return this.draft[this.languageCode][attribute_code] || '';
+            return value ? new Date(value) : null;
         },
         parameter() {
-            if (!this.properties.parameters) return null;
+            if (!this.properties.parameters) return DEFAULT_FORMAT;
 
             const [
                 key,
@@ -116,14 +125,16 @@ export default {
     },
     methods: {
         onFocus(isFocused) {
-            if (!isFocused && this.fieldData !== this.localValue) {
+            if (!isFocused && !isEqual(this.fieldData, this.localValue)) {
                 this.$emit('input', {
                     fieldKey: this.fieldKey,
                     languageCode: this.languageCode,
                     productId: this.$route.params.id,
                     elementId: this.properties.attribute_id,
                     code: this.properties.attribute_code,
-                    value: this.localValue,
+                    value: this.localValue
+                        ? formatDate(this.localValue, DEFAULT_FORMAT)
+                        : '',
                 });
             }
         },

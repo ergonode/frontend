@@ -132,7 +132,7 @@ module.exports = {
         cssSourceMap: false,
         optimizeCSS: true,
         extend(config, {
-            isDev, isClient,
+            isDev, isClient, loaders,
         }) {
             const alias = config.resolve.alias || {};
 
@@ -158,6 +158,32 @@ module.exports = {
                     config.plugins[i].options.chunksSortMode = 'none';
                 }
             }
+
+            // remove Cypress e2e ids when not needed
+            loaders.vue.compilerOptions = {
+                modules: [
+                    {
+                        preTransformNode(astEl) {
+                            if (process.env.NODE_ENV === 'production' && !process.env.LEAVE_TEST_TAG_ATTRS) {
+                                const id = 'data-cy';
+                                const {
+                                    attrsMap, attrsList,
+                                } = astEl;
+
+                                if (attrsMap[id]) {
+                                    delete attrsMap[id];
+
+                                    const index = attrsList.findIndex(
+                                        x => x.name === id,
+                                    );
+                                    attrsList.splice(index, 1);
+                                }
+                            }
+                            return astEl;
+                        },
+                    },
+                ],
+            };
         },
         optimization: {
             splitChunks: {
@@ -177,5 +203,6 @@ module.exports = {
         VUE_APP_VERSION: version,
         VUE_APP_GIT_INFO: getRepoInfo(),
         SHOW_RELEASE_INFO: process.env.SHOW_RELEASE_INFO || false,
+        LEAVE_TEST_TAG_ATTRS: process.env.LEAVE_TEST_TAG_ATTRS || true,
     },
 };

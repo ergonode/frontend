@@ -18,7 +18,7 @@ export const Icons = {
 };
 
 export const Components = {
-    ExtendProductForm: () => import('@Categories/extends/components/Forms/ExtendProductForm'),
+    ProductFormCategory: () => import('@Categories/extends/components/Forms/ProductFormCategory'),
 };
 
 export const Store = {

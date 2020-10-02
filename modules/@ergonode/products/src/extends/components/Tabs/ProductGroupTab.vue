@@ -80,8 +80,6 @@ import {
 import PRIVILEGES from '@Products/config/privileges';
 import {
     ADD_PRODUCT,
-    EXTENDS,
-    PRODUCT_TYPE,
 } from '@Products/defaults';
 import {
     mapActions,
@@ -110,15 +108,27 @@ export default {
         const {
             language: languageCode,
         } = store.state.authentication.user;
-
         const productChildren = await store.dispatch('product/getProductChildren', id);
+        const filteredProductTypes = await app.$extendMethods('@Products/components/Tabs/ProductGroupTab/filteredProductTypes', {
+            $this: this,
+        });
+        const productTypes = [
+            ...new Set([].concat(...filteredProductTypes)),
+        ].join(',');
+        const defaultColumns = [
+            'esa_default_image',
+            'esa_default_label',
+            'esa_product_type',
+            'sku',
+            'esa_template',
+        ];
 
         const params = {
             offset: 0,
             limit: DATA_LIMIT,
             extended: true,
-            filter: `esa_product_type=${PRODUCT_TYPE.SIMPLE_PRODUCT},${PRODUCT_TYPE.WITH_VARIANTS}`,
-            columns: 'esa_default_image,esa_default_label,esa_product_type,sku,esa_template',
+            filter: `esa_product_type=${productTypes}`,
+            columns: defaultColumns.join(','),
         };
 
         const {
@@ -210,7 +220,7 @@ export default {
             return options;
         },
         extendedComponents() {
-            return this.$getExtendedComponents(EXTENDS.PRODUCT_GROUP_ADD_PRODUCTS);
+            return this.$getExtendedComponents('@Products/components/Tabs/ProductGroupTab/addFromSegment');
         },
         modalComponent() {
             const modals = [
@@ -325,13 +335,26 @@ export default {
                 filters,
                 sortedColumn,
             };
+            const filteredProductTypes = await this.$extendMethods('@Products/components/Tabs/ProductGroupTab/filteredProductTypes', {
+                $this: this,
+            });
+            const productTypes = [
+                ...new Set([].concat(...filteredProductTypes)),
+            ].join(',');
+            const defaultColumns = [
+                'esa_default_image',
+                'esa_default_label',
+                'esa_product_type',
+                'sku',
+                'esa_template',
+            ];
 
             const params = {
                 offset,
                 limit,
                 extended: true,
-                filter: `esa_product_type=${PRODUCT_TYPE.SIMPLE_PRODUCT},${PRODUCT_TYPE.WITH_VARIANTS}`,
-                columns: 'esa_default_image,esa_default_label,esa_product_type,sku,esa_template',
+                filter: `esa_product_type=${productTypes}`,
+                columns: defaultColumns.join(','),
             };
 
             if (Object.keys(sortedColumn).length) {

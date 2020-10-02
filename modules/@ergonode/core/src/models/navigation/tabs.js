@@ -27,6 +27,9 @@ export const getNestedTabRoutes = ({
                 const {
                     meta,
                 } = children[j];
+                const {
+                    visible = true,
+                } = meta;
 
                 if (hasAccess(meta.privileges)) {
                     childRoutes.push({
@@ -34,6 +37,7 @@ export const getNestedTabRoutes = ({
                         route: {
                             name: children[j].name,
                         },
+                        visible,
                         isReadOnly: meta.isReadOnly,
                         scope: toLowerCaseFirstLetter(children[j].component.name),
                     });

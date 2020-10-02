@@ -24,7 +24,8 @@
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
-            :items="tabs"
+            v-if="asyncTabs"
+            :items="asyncTabs"
             :change-values="changeValues"
             :errors="errors" />
     </Page>
@@ -41,9 +42,6 @@ import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
 import PRIVILEGES from '@Products/config/privileges';
-import {
-    PRODUCT_TYPE,
-} from '@Products/defaults';
 import {
     mapState,
 } from 'vuex';
@@ -71,20 +69,24 @@ export default {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.PRODUCT.namespace);
         },
-        tabs() {
-            const tabs = getNestedTabRoutes({
+    },
+    asyncComputed: {
+        async asyncTabs() {
+            const tmpTabs = getNestedTabRoutes({
                 hasAccess: this.$hasAccess,
                 routes: this.$router.options.routes,
                 route: this.$route,
             });
+            const type = getKeyByValue(this.productTypes, this.type);
+            const tabs = await this.$extendMethods('@Core/pages/tabs', {
+                $this: this,
+                type,
+                tabs: tmpTabs,
+            });
 
-            switch (getKeyByValue(this.productTypes, this.type)) {
-            case PRODUCT_TYPE.WITH_VARIANTS:
-                return tabs.filter(tab => tab.title !== 'Group');
-            case PRODUCT_TYPE.GROUPING:
-                return tabs.filter(tab => tab.title !== 'Variants');
-            default: return tabs.filter(tab => tab.title !== 'Variants' && tab.title !== 'Group');
-            }
+            return tabs.length ? [
+                ...new Set([].concat(...tabs)),
+            ] : tmpTabs;
         },
     },
 };

@@ -78,7 +78,7 @@ import {
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import ProductWorkflowActionButton from '@Products/components/Buttons/ProductWorkflowActionButton';
-import ProductTemplateForm from '@Products/components/Form/ProductTemplateForm';
+import ProductTemplateForm from '@Products/components/Forms/ProductTemplateForm';
 import ProductCompleteness from '@Products/components/Progress/ProductCompleteness';
 import PRIVILEGES from '@Products/config/privileges';
 import {

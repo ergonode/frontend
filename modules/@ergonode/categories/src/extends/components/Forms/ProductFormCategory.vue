@@ -23,7 +23,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'ExtendProductForm',
+    name: 'ProductFormCategory',
     components: {
         TranslationLazySelect,
     },

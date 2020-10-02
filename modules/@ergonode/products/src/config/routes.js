@@ -96,44 +96,6 @@ export default [
                 },
             },
             {
-                name: 'product-id-variants',
-                path: 'variants',
-                component: Tabs.ProductVariantsTab,
-                meta: {
-                    title: 'Variants',
-                    breadcrumbs: [
-                        {
-                            title: 'Products',
-                            icon: Icons.Product,
-                        },
-                        {
-                            title: 'Catalog',
-                            routeName: 'catalog-products',
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-            {
-                name: 'product-id-group',
-                path: 'group',
-                component: Tabs.ProductGroupTab,
-                meta: {
-                    title: 'Group',
-                    breadcrumbs: [
-                        {
-                            title: 'Products',
-                            icon: Icons.Product,
-                        },
-                        {
-                            title: 'Catalog',
-                            routeName: 'catalog-products',
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-            {
                 name: 'product-id-history',
                 path: 'history',
                 component: Tabs.ProductHistoryTab,

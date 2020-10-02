@@ -98,7 +98,6 @@ export default {
     methods: {
         ...mapActions('product', [
             'updateProductStatus',
-            'getProduct',
             'getProductWorkflow',
         ]),
         onUpdateStatus({

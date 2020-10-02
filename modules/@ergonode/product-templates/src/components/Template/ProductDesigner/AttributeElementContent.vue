@@ -8,9 +8,12 @@
         @mouseover.native="onMouseOver"
         @mouseout.native="onMouseOut">
         <div class="element-content__icon">
-            <Component
-                :is="attributeIconComponent.component"
-                v-bind="attributeIconComponent.props" />
+            <template v-for="(formComponent, i) in typeIconComponent">
+                <Component
+                    :is="formComponent.component"
+                    :key="i"
+                    v-bind="formComponent.props" />
+            </template>
         </div>
         <div class="vertical-wrapper">
             <span
@@ -133,16 +136,21 @@ export default {
         typeLabelClasses() {
             return 'element-content__header';
         },
-        attributeIconComponent() {
-            const extendedIcon = this.$getExtendedComponents('@Attributes/components/Lists/AttributeListElement/Icon');
+        typeIconComponent() {
+            const icon = this.$getExtendedFormByType({
+                key: '@Attributes/components/Lists/AttributeListElement/Icon',
+                type: this.element.type,
+            });
 
-            if (extendedIcon && extendedIcon[this.element.type]) {
-                return extendedIcon[this.element.type];
+            if (!icon.length) {
+                return [
+                    {
+                        component: () => import('@Core/components/Icons/Menu/IconAttributes'),
+                    },
+                ];
             }
 
-            return {
-                component: () => import('@Core/components/Icons/Menu/IconAttributes'),
-            };
+            return icon;
         },
         contextualMenuHoveStateClasses() {
             return {

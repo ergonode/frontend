@@ -30,7 +30,7 @@ import {
 import {
     toLowerCaseFirstLetter,
 } from '@Core/models/stringWrapper';
-import ProductStatusForm from '@Statuses/components/Form/ProductStatusForm';
+import ProductStatusForm from '@Statuses/components/Forms/ProductStatusForm';
 import {
     mapActions,
     mapState,
