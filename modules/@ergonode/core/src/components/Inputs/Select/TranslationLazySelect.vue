@@ -203,7 +203,6 @@ export default {
                     ),
                 );
             } else {
-
                 this.localValue = options.find(option => option[this.optionKey] === this.value);
             }
         },
