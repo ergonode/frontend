@@ -29,10 +29,6 @@ export default {
             ssr: false,
             src: './plugins/alerts',
         },
-        {
-            ssr: true,
-            src: './plugins/asyncComputed',
-        },
     ],
     css: [
         './assets/scss/reset.scss',
