@@ -59,6 +59,7 @@ import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import PRIVILEGES from '@Products/config/privileges';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -93,6 +94,14 @@ export default {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.PRODUCT.namespace);
         },
+    },
+    beforeDestroy() {
+        this.__clearFeedbackStorage();
+    },
+    methods: {
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
     },
     head() {
         return {

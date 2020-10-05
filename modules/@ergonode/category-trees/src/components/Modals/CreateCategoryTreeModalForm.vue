@@ -39,6 +39,9 @@ export default {
         ModalForm,
         CategoryTreeForm,
     },
+    mixins: [
+        scopeErrorsMixin,
+    ],
     data() {
         return {
             isSubmitting: false,
@@ -46,9 +49,6 @@ export default {
         };
     },
     computed: {
-        mixins: [
-            scopeErrorsMixin,
-        ],
         secondaryTheme() {
             return THEME.SECONDARY;
         },

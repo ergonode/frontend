@@ -34,7 +34,7 @@ import {
 } from '@Core/defaults/theme';
 
 export default {
-    name: 'ModalConfirmHeader',
+    name: 'ConfirmModalHeader',
     components: {
         Fab,
         IconClose,

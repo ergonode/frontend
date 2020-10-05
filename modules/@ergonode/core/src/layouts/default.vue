@@ -22,18 +22,19 @@
             </template>
         </ToolBar>
         <SideBar @expand="onExpandSideBar" />
-        <main class="app-main">
+        <AppMain>
             <slot />
             <FlashMessages />
-            <ConfirmModal
-                v-if="$getModal(modalConfirmType)"
-                :type="modalConfirmType" />
-        </main>
+        </AppMain>
+        <ConfirmModal
+            v-if="$getModal(modalConfirmType)"
+            :type="modalConfirmType" />
     </App>
 </template>
 
 <script>
 import App from '@Core/components/Layout/App';
+import AppMain from '@Core/components/Layout/AppMain';
 import SideBar from '@Core/components/SideBar/SideBar';
 import ToolBar from '@Core/components/ToolBar/ToolBar';
 import ToolBarBreadcrumb from '@Core/components/ToolBar/ToolBarBreadcrumb';
@@ -51,6 +52,7 @@ import {
 export default {
     name: 'DefaultLayout',
     components: {
+        AppMain,
         App,
         SideBar,
         ToolBar,
@@ -105,12 +107,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .app-main {
-        width: 100%;
-        height: 100vh;
-        padding: 48px 0 0;
-        box-sizing: border-box;
-    }
-</style>

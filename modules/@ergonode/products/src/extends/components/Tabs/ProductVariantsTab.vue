@@ -227,7 +227,7 @@ export default {
                 drafts[`${rowId}/${columnId}`] = value;
 
                 this.skus[rowId] = {
-                    sku: this.rows[row].sku.value,
+                    sku: this.rows[row - 1].sku.value,
                     value,
                 };
             });
@@ -257,8 +257,6 @@ export default {
             this.isSubmitting = true;
 
             const requests = [];
-
-            console.log(this.skus);
 
             Object.keys(this.skus).forEach((key) => {
                 const {
