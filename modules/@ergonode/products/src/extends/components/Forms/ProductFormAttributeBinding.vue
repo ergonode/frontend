@@ -8,11 +8,12 @@
 </template>
 
 <script>
+import ProductAttributesBindingFormSection from '@Products/extends/components/Forms/Section/ProductAttributesBindingFormSection';
 
 export default {
     name: 'ProductFormAttributeBinding',
     components: {
-        ProductAttributesBindingFormSection: () => import('@Products/extends/components/Forms/Section/ProductAttributesBindingFormSection'),
+        ProductAttributesBindingFormSection,
     },
     props: {
         disabled: {
