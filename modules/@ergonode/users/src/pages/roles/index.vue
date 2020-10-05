@@ -46,7 +46,7 @@ import {
 } from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
-import pageMixin from '@Core/mixins/page/pageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import PRIVILEGES from '@Users/config/privileges';
 
 export default {
@@ -62,7 +62,7 @@ export default {
     mixins: [
         gridModalMixin,
         beforeLeavePageMixin,
-        pageMixin,
+        asyncTabsMixin,
     ],
     computed: {
         isReadOnly() {

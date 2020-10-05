@@ -35,11 +35,13 @@
 <script>
 import PRIVILEGES from '@Core/config/privileges';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 
 export default {
     name: 'UnitPage',
     mixins: [
         editPageMixin,
+        asyncTabsMixin,
     ],
     computed: {
         isReadOnly() {

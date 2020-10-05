@@ -110,11 +110,9 @@ export default {
         } = store.state.authentication.user;
         const productChildren = await store.dispatch('product/getProductChildren', id);
         const filteredProductTypes = await app.$extendMethods('@Products/components/Tabs/ProductGroupTab/filteredProductTypes', {
-            $this: this,
+            $this: app,
         });
-        const productTypes = [
-            ...new Set([].concat(...filteredProductTypes)),
-        ].join(',');
+        const productTypes = Array.from(new Set([].concat(...filteredProductTypes))).join(',');
         const defaultColumns = [
             'esa_default_image',
             'esa_default_label',
@@ -347,9 +345,7 @@ export default {
             const filteredProductTypes = await this.$extendMethods('@Products/components/Tabs/ProductGroupTab/filteredProductTypes', {
                 $this: this,
             });
-            const productTypes = [
-                ...new Set([].concat(...filteredProductTypes)),
-            ].join(',');
+            const productTypes = Array.from(new Set([].concat(...filteredProductTypes))).join(',');
             const defaultColumns = [
                 'esa_default_image',
                 'esa_default_label',

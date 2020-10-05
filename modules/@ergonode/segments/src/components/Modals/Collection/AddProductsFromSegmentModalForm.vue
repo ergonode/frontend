@@ -29,13 +29,10 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-import {
-    toLowerCaseFirstLetter,
-} from '@Core/models/stringWrapper';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import AddProductsFromSegmentForm from '@Segments/components/Forms/Collection/AddProductsFromSegmentForm';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -44,6 +41,9 @@ export default {
         AddProductsFromSegmentForm,
         ModalForm,
     },
+    mixins: [
+        scopeErrorsMixin,
+    ],
     data() {
         return {
             segmentOptions: [],
@@ -52,27 +52,14 @@ export default {
         };
     },
     computed: {
-        ...mapState('feedback', [
-            'errors',
-        ]),
         secondaryTheme() {
             return THEME.SECONDARY;
-        },
-        scope() {
-            return toLowerCaseFirstLetter(this.$options.name);
-        },
-        scopeErrors() {
-            return this.errors[this.scope];
         },
     },
     async created() {
         this.segmentOptions = await this.getSegmentOptions();
     },
     methods: {
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
-        ]),
         ...mapActions('segment', [
             'getSegmentOptions',
         ]),

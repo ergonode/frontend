@@ -16,7 +16,7 @@ import Page from '@Core/components/Layout/Page';
 import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@Core/components/TitleBar/TitleBar';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
-import pageMixin from '@Core/mixins/page/pageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 
 export default {
     name: 'UserProfileTabs',
@@ -27,7 +27,7 @@ export default {
     },
     mixins: [
         beforeLeavePageMixin,
-        pageMixin,
+        asyncTabsMixin,
     ],
     head() {
         return {

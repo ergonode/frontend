@@ -45,7 +45,7 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
-import pageMixin from '@Core/mixins/page/pageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import PRIVILEGES from '@Import/config/privileges';
 
 export default {
@@ -60,7 +60,7 @@ export default {
     },
     mixins: [
         gridModalMixin,
-        pageMixin,
+        asyncTabsMixin,
     ],
     computed: {
         isReadOnly() {

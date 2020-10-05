@@ -61,6 +61,7 @@ import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import {
     mapActions,
     mapState,
@@ -73,6 +74,7 @@ export default {
     },
     mixins: [
         editPageMixin,
+        asyncTabsMixin,
     ],
     data() {
         return {

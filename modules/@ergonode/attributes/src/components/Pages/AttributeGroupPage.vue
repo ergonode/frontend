@@ -35,11 +35,13 @@
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 
 export default {
     name: 'AttributeGroupPage',
     mixins: [
         editPageMixin,
+        asyncTabsMixin,
     ],
     computed: {
         isAllowedToDelete() {

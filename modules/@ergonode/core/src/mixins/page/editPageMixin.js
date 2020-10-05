@@ -14,9 +14,6 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import {
-    getNestedTabRoutes,
-} from '@Core/models/navigation/tabs';
-import {
     mapState,
 } from 'vuex';
 
@@ -51,23 +48,6 @@ export default {
     methods: {
         onRemove() {
             this.$emit('remove');
-        },
-    },
-    asyncComputed: {
-        async asyncTabs() {
-            const tmpTabs = getNestedTabRoutes({
-                hasAccess: this.$hasAccess,
-                routes: this.$router.options.routes,
-                route: this.$route,
-            });
-            const tabs = await this.$extendMethods('@Core/pages/tabs', {
-                $this: this,
-                tabs: tmpTabs,
-            });
-
-            return tabs.length ? [
-                ...new Set([].concat(...tabs)),
-            ] : tmpTabs;
         },
     },
 };

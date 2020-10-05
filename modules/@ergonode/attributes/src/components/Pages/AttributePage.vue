@@ -50,6 +50,11 @@ export default {
     mixins: [
         editPageMixin,
     ],
+    data() {
+        return {
+            asyncTabs: null,
+        };
+    },
     computed: {
         ...mapState('attribute', [
             'type',
@@ -66,23 +71,24 @@ export default {
             return this.$isReadOnly(PRIVILEGES.ATTRIBUTE.namespace);
         },
     },
-    asyncComputed: {
-        async asyncTabs() {
-            const tmpTabs = getNestedTabRoutes({
-                hasAccess: this.$hasAccess,
-                routes: this.$router.options.routes,
-                route: this.$route,
-            });
-            const type = getKeyByValue(this.attrTypes, this.type);
-            const tabs = await this.$extendMethods('@Core/pages/tabs', {
-                $this: this,
-                type,
-                tabs: tmpTabs,
-            });
+    watch: {
+        $route: {
+            immediate: true,
+            async handler() {
+                const tmpTabs = getNestedTabRoutes({
+                    hasAccess: this.$hasAccess,
+                    routes: this.$router.options.routes,
+                    route: this.$route,
+                });
+                const type = getKeyByValue(this.attrTypes, this.type);
+                const tabs = await this.$extendMethods('@Core/pages/tabs', {
+                    $this: this,
+                    type,
+                    tabs: tmpTabs,
+                });
 
-            return tabs.length ? [
-                ...new Set([].concat(...tabs)),
-            ] : tmpTabs;
+                this.asyncTabs = tabs.length ? Array.from(new Set([].concat(...tabs))) : tmpTabs;
+            },
         },
     },
 };

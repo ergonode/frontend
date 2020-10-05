@@ -41,7 +41,7 @@ import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalR
 import TitleBar from '@Core/components/TitleBar/TitleBar';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
-import pageMixin from '@Core/mixins/page/pageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import {
     mapState,
 } from 'vuex';
@@ -56,7 +56,7 @@ export default {
     mixins: [
         gridModalMixin,
         beforeLeavePageMixin,
-        pageMixin,
+        asyncTabsMixin,
     ],
     data() {
         return {
