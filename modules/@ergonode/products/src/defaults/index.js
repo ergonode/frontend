@@ -11,9 +11,3 @@ export const PRODUCT_TYPE = {
     GROUPING: 'GROUPING-PRODUCT',
     SIMPLE_PRODUCT: 'SIMPLE-PRODUCT',
 };
-
-export const EXTENDS = {
-    PRODUCT_GROUP_ADD_PRODUCTS: 'PRODUCT_GROUP_ADD_PRODUCTS',
-    '@Products/components/Form/ProductForm': '@Products/components/Form/ProductForm',
-    '@Products/store/product/action/getProduct': '@Products/store/product/action/getProduct',
-};

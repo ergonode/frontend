@@ -30,7 +30,8 @@
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
-            :items="tabs"
+            v-if="asyncTabs"
+            :items="asyncTabs"
             :change-values="changeValues"
             :errors="errors">
             <template
@@ -60,6 +61,7 @@ import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import {
     mapActions,
     mapState,
@@ -72,6 +74,7 @@ export default {
     },
     mixins: [
         editPageMixin,
+        asyncTabsMixin,
     ],
     data() {
         return {

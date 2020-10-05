@@ -4,16 +4,23 @@
  */
 <template>
     <ActionButton
-        title="STATUS CHANGE"
+        :title="status.name"
         :theme="secondaryTheme"
         :size="smallSize"
-        :disabled="!isUserAllowedToUpdate"
+        :disabled="!isUserAllowedToUpdate || !workflow.length"
         :options="workflow"
         :fixed-content="true"
         @input="onUpdateStatus">
+        <template #prepend>
+            <PointBadge
+                :color="status.color"
+                :style="badgeStyles" />
+        </template>
         <template #option="{ option }">
             <ListElementAction :size="smallSize">
-                <PointBadge :color="option.color" />
+                <PointBadge
+                    :color="option.color"
+                    :style="optionsBadgeStyles" />
             </ListElementAction>
             <ListElementDescription>
                 <ListElementTitle
@@ -55,6 +62,12 @@ export default {
         ListElementDescription,
         ListElementTitle,
     },
+    props: {
+        language: {
+            type: Object,
+            required: true,
+        },
+    },
     computed: {
         ...mapState('product', [
             'status',
@@ -71,20 +84,37 @@ export default {
                 PRIVILEGES.PRODUCT.update,
             ]);
         },
+        badgeStyles() {
+            return {
+                margin: '0 8px 0 4px',
+            };
+        },
+        optionsBadgeStyles() {
+            return {
+                margin: '0 8px',
+            };
+        },
     },
     methods: {
         ...mapActions('product', [
             'updateProductStatus',
-            'getProduct',
+            'getProductWorkflow',
         ]),
         onUpdateStatus({
             code,
         }) {
+            const {
+                id: statusId,
+            } = this.workflow.find(({
+                code: workflowCode,
+            }) => code === workflowCode);
+
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: `Are you sure you want to change status to ${code}?`,
                 confirmCallback: () => this.updateProductStatus({
-                    value: code,
+                    value: statusId,
+                    languageCode: this.language.code,
                     attributeId: this.status.attribute_id,
                     onSuccess: () => {
                         const {
@@ -93,7 +123,10 @@ export default {
                             },
                         } = this.$route;
 
-                        this.getProduct(id);
+                        this.getProductWorkflow({
+                            languageCode: this.language.code,
+                            id,
+                        });
                         this.$addAlert({
                             type: ALERT_TYPE.SUCCESS,
                             message: 'Status has been updated',

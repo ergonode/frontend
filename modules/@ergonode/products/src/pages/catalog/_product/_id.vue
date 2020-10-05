@@ -36,6 +36,7 @@ export default {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
+        app,
         store,
         params,
     }) {
@@ -50,8 +51,26 @@ export default {
             store.dispatch('product/getProductDraft', {
                 languageCode: defaultLanguageCode,
                 id,
+                onError: () => {
+                    if (process.client) {
+                        app.$addAlert({
+                            type: ALERT_TYPE.ERROR,
+                            message: 'Product draft hasn’t been fetched properly',
+                        });
+                    }
+                },
             }),
-            store.dispatch('product/getProduct', id),
+            store.dispatch('product/getProduct', {
+                id,
+                onError: () => {
+                    if (process.client) {
+                        app.$addAlert({
+                            type: ALERT_TYPE.ERROR,
+                            message: 'Product hasn’t been fetched properly',
+                        });
+                    }
+                },
+            }),
         ]);
     },
     computed: {
@@ -71,6 +90,16 @@ export default {
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
+        onRemove() {
+            this.$openModal({
+                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
+                message: 'Are you sure you want to delete this product?',
+                confirmCallback: () => this.removeProduct({
+                    onSuccess: this.onRemoveSuccess,
+                    onError: this.onRemoveError,
+                }),
+            });
+        },
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
@@ -80,13 +109,10 @@ export default {
                 name: 'catalog-products',
             });
         },
-        onRemove() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this product?',
-                confirmCallback: () => this.removeProduct({
-                    onSuccess: this.onRemoveSuccess,
-                }),
+        onRemoveError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Product hasn’t been deleted',
             });
         },
     },

@@ -29,10 +29,6 @@ export default {
             ssr: false,
             src: './plugins/alerts',
         },
-        {
-            ssr: false,
-            src: './plugins/directives',
-        },
     ],
     css: [
         './assets/scss/reset.scss',

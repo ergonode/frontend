@@ -6,34 +6,17 @@
     <ProductTemplateFormField
         :size="size"
         :position="position">
-        <RichTextEditor
-            v-if="isRTEEditor"
-            :disabled="disabled"
-            height="100%"
-            :required="properties.required"
-            :placeholder="properties.placeholder"
-            :error-messages="errors[fieldKey]"
-            :label="label"
+        <TranslationSelect
             :value="localValue"
-            @blur="onRTEValueChange">
-            <template #append>
-                <InfoHint
-                    v-if="properties.hint"
-                    :hint="properties.hint" />
-            </template>
-        </RichTextEditor>
-        <TextArea
-            v-else
-            :value="localValue"
-            resize="none"
-            height="100%"
+            :clearable="true"
             :label="label"
+            :options="options"
             :placeholder="properties.placeholder"
             :error-messages="errors[fieldKey]"
             :required="properties.required"
             :disabled="disabled"
-            @focus="onFocus"
-            @input="onValueChange">
+            @input="onValueChange"
+            @focus="onFocus">
             <template #append>
                 <InfoHint
                     v-if="properties.hint"
@@ -42,25 +25,27 @@
             <template #details>
                 <div />
             </template>
-        </TextArea>
+        </TranslationSelect>
     </ProductTemplateFormField>
 </template>
 
 <script>
 import InfoHint from '@Core/components/Hints/InfoHint';
-import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
-import TextArea from '@Core/components/Inputs/TextArea';
-import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import {
+    getMappedObjectOption,
+    getMappedObjectOptions,
+} from '@Core/models/mappers/translationsMapper';
+import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
 import {
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'ProductTemplateFormTextAreaField',
+    name: 'ProductTemplateFormSelectField',
     components: {
         ProductTemplateFormField,
-        TextArea,
-        RichTextEditor,
+        TranslationSelect,
         InfoHint,
     },
     props: {
@@ -106,14 +91,33 @@ export default {
             const {
                 attribute_code,
             } = this.properties;
+            const value = this.draft[this.languageCode][attribute_code];
 
-            return this.draft[this.languageCode][attribute_code] || '';
+            if (!this.hasOptions || !value) {
+                return '';
+            }
+
+            return getMappedObjectOption({
+                option: {
+                    id: value,
+                    ...this.properties.options[value],
+                },
+                languageCode: this.languageCode,
+            });
         },
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;
         },
-        isRTEEditor() {
-            return this.properties.parameters.rich_edit;
+        hasOptions() {
+            return typeof this.properties.options !== 'undefined';
+        },
+        options() {
+            if (!this.hasOptions) return [];
+
+            return getMappedObjectOptions({
+                options: this.properties.options,
+                languageCode: this.languageCode,
+            });
         },
     },
     watch: {
@@ -126,24 +130,19 @@ export default {
     },
     methods: {
         onFocus(isFocused) {
-            if (!isFocused && this.fieldData !== this.localValue) {
+            if (!isFocused && this.fieldData.id !== this.localValue.id) {
                 this.$emit('input', {
                     fieldKey: this.fieldKey,
                     languageCode: this.languageCode,
                     productId: this.$route.params.id,
                     elementId: this.properties.attribute_id,
                     code: this.properties.attribute_code,
-                    value: this.localValue,
+                    value: this.localValue.id,
                 });
             }
         },
         onValueChange(value) {
             this.localValue = value;
-        },
-        onRTEValueChange(value) {
-            this.localValue = value;
-
-            this.onFocus(false);
         },
     },
 };

@@ -36,9 +36,6 @@
 </template>
 
 <script>
-import {
-    TYPES,
-} from '@Attributes/defaults/attributes';
 import Button from '@Core/components/Button/Button';
 import Grid from '@Core/components/Grid/Grid';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
@@ -56,9 +53,6 @@ import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
 import PRIVILEGES from '@Products/config/privileges';
-import {
-    PRODUCT_TYPE,
-} from '@Products/defaults';
 import {
     mapActions,
     mapState,
@@ -90,7 +84,7 @@ export default {
             productChildren,
         ] = await Promise.all([
             store.dispatch('attribute/getAttributesByFilter', {
-                filter: `type=${TYPES.SELECT}`,
+                filter: 'type=SELECT',
             }),
             store.dispatch('product/getProductBindings', id),
             store.dispatch('product/getProductChildren', id),
@@ -106,13 +100,24 @@ export default {
             .map(({
                 key,
             }) => key);
+        const filteredProductTypes = await app.$extendMethods('@Products/components/Tabs/ProductVariantsTab/filteredProductTypes', {
+            $this: app,
+        });
+        const productTypes = Array.from(new Set([].concat(...filteredProductTypes))).join(',');
+        const defaultColumns = [
+            'esa_default_image',
+            'esa_default_label',
+            ...attributeCodes,
+            'sku',
+            'esa_template',
+        ];
 
         const params = {
             offset: 0,
             limit: DATA_LIMIT,
             extended: true,
-            filter: `${attributeCodes.map(attr => `${attr}!=`).join(';')},esa_product_type=${PRODUCT_TYPE.SIMPLE_PRODUCT}`,
-            columns: `esa_default_image,esa_default_label,${attributeCodes.join(',')},sku,esa_template`,
+            filter: `${attributeCodes.map(attr => `${attr}!=`).join(';')},esa_product_type=${productTypes}`,
+            columns: defaultColumns.join(','),
         };
 
         const {
@@ -201,7 +206,7 @@ export default {
                 )
                 .map(({
                     key,
-                }) => key).join(',');
+                }) => key);
         },
     },
     methods: {
@@ -306,13 +311,24 @@ export default {
                 filters,
                 sortedColumn,
             };
+            const filteredProductTypes = await this.$extendMethods('@Products/components/Tabs/ProductVariantsTab/filteredProductTypes', {
+                $this: this,
+            });
+            const productTypes = Array.from(new Set([].concat(...filteredProductTypes))).join(',');
+            const defaultColumns = [
+                'esa_default_image',
+                'esa_default_label',
+                ...this.attributeCodes,
+                'sku',
+                'esa_template',
+            ];
 
             const params = {
                 offset,
                 limit,
                 extended: true,
-                filter: `esa_product_type=${PRODUCT_TYPE.SIMPLE_PRODUCT}`,
-                columns: `esa_default_image,esa_default_label,${this.attributeCodes},sku,esa_template`,
+                filter: `esa_product_type=${productTypes}`,
+                columns: defaultColumns.join(','),
             };
 
             if (Object.keys(sortedColumn).length) {

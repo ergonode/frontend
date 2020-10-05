@@ -30,7 +30,8 @@
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
-            :items="tabs"
+            v-if="asyncTabs"
+            :items="asyncTabs"
             :change-values="changeValues"
             :errors="errors">
             <template
@@ -57,6 +58,7 @@
 <script>
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import PRIVILEGES from '@Import/config/privileges';
 
 export default {
@@ -66,6 +68,7 @@ export default {
     },
     mixins: [
         editPageMixin,
+        asyncTabsMixin,
         gridModalMixin,
     ],
     computed: {

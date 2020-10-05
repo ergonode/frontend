@@ -8,8 +8,8 @@
         :position="position">
         <TextField
             :value="localValue"
-            :input="{ type: 'number' }"
             :label="label"
+            :input="{ type: 'number'}"
             :placeholder="properties.placeholder"
             :error-messages="errors[fieldKey]"
             :required="properties.required"
@@ -35,13 +35,13 @@
 import InfoHint from '@Core/components/Hints/InfoHint';
 import TextField from '@Core/components/Inputs/TextField';
 import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
-import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
 import {
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'ProductTemplateFormUnitField',
+    name: 'ProductTemplateFormNumericField',
     components: {
         ProductTemplateFormField,
         TextField,

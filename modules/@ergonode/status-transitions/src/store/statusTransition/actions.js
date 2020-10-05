@@ -43,10 +43,10 @@ export default {
         const regex = /%20/g;
 
         const sourceOption = statusOptions.find(
-            status => status.key === source.replace(regex, ' '),
+            status => status.id === source.replace(regex, ' '),
         );
         const destinationOption = statusOptions.find(
-            status => status.key === destination.replace(regex, ' '),
+            status => status.id === destination.replace(regex, ' '),
         );
 
         commit('__SET_STATE', {
@@ -131,8 +131,8 @@ export default {
             } = state;
 
             const data = {
-                source: isObject(source) ? source.key : null,
-                destination: isObject(destination) ? destination.key : null,
+                source: isObject(source) ? source.id : null,
+                destination: isObject(destination) ? destination.id : null,
                 roles,
             };
 

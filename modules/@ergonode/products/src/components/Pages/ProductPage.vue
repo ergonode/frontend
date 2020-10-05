@@ -10,11 +10,6 @@
             <template #prependHeader>
                 <NavigationBackFab />
             </template>
-            <template #prependBadge>
-                <ProductStatusBadge
-                    v-if="status"
-                    :status="status" />
-            </template>
             <template #mainAction>
                 <Button
                     :theme="secondaryTheme"
@@ -27,20 +22,15 @@
                     </template>
                 </Button>
             </template>
-            <template #subActions>
-                <TitleBarSubActions>
-                    <ProductWorkflowActionButton v-if="workflow.length" />
-                </TitleBarSubActions>
-            </template>
         </TitleBar>
         <HorizontalRoutingTabBar
-            :items="tabs"
+            v-if="asyncTabs"
+            :items="asyncTabs"
             :change-values="changeValues"
             :errors="errors" />
     </Page>
 </template>
 <script>
-import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -51,31 +41,24 @@ import {
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
-import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
-import ProductWorkflowActionButton from '@Products/components/Buttons/ProductWorkflowActionButton';
 import PRIVILEGES from '@Products/config/privileges';
-import {
-    PRODUCT_TYPE,
-} from '@Products/defaults';
 import {
     mapState,
 } from 'vuex';
 
 export default {
     name: 'ProductPage',
-    components: {
-        TitleBarSubActions,
-        ProductStatusBadge,
-        ProductWorkflowActionButton,
-    },
     mixins: [
         editPageMixin,
     ],
+    data() {
+        return {
+            asyncTabs: null,
+        };
+    },
     computed: {
         ...mapState('product', [
-            'status',
             'type',
-            'workflow',
         ]),
         ...mapState('dictionaries', [
             'productTypes',
@@ -91,20 +74,25 @@ export default {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.PRODUCT.namespace);
         },
-        tabs() {
-            const tabs = getNestedTabRoutes({
-                hasAccess: this.$hasAccess,
-                routes: this.$router.options.routes,
-                route: this.$route,
-            });
+    },
+    watch: {
+        $route: {
+            immediate: true,
+            async handler() {
+                const tmpTabs = getNestedTabRoutes({
+                    hasAccess: this.$hasAccess,
+                    routes: this.$router.options.routes,
+                    route: this.$route,
+                });
+                const type = getKeyByValue(this.productTypes, this.type);
+                const tabs = await this.$extendMethods('@Core/pages/tabs', {
+                    $this: this,
+                    type,
+                    tabs: tmpTabs,
+                });
 
-            switch (getKeyByValue(this.productTypes, this.type)) {
-            case PRODUCT_TYPE.WITH_VARIANTS:
-                return tabs.filter(tab => tab.title !== 'Group');
-            case PRODUCT_TYPE.GROUPING:
-                return tabs.filter(tab => tab.title !== 'Variants');
-            default: return tabs.filter(tab => tab.title !== 'Variants' && tab.title !== 'Group');
-            }
+                this.asyncTabs = tabs.length ? Array.from(new Set([].concat(...tabs))) : tmpTabs;
+            },
         },
     },
 };

@@ -11,10 +11,13 @@
         :label="title"
         @drag="onDrag">
         <ListElementIcon>
-            <Component
-                :is="typeIconComponent.component"
-                :fill-color="iconFillColor"
-                v-bind="typeIconComponent.props" />
+            <template v-for="(formComponent, index) in typeIconComponent">
+                <Component
+                    :is="formComponent.component"
+                    :key="index"
+                    :fill-color="iconFillColor"
+                    v-bind="formComponent.props" />
+            </template>
         </ListElementIcon>
         <ListElementDescription>
             <ListElementTitle
@@ -83,15 +86,20 @@ export default {
             return this.item.label || `#${this.item.code}`;
         },
         typeIconComponent() {
-            const extendedIcon = this.$getExtendedComponents('@Attributes/components/Lists/AttributeListElement/Icon');
+            const icon = this.$getExtendedFormByType({
+                key: '@Attributes/components/Lists/AttributeListElement/Icon',
+                type: this.item.type,
+            });
 
-            if (extendedIcon && extendedIcon[this.item.type]) {
-                return extendedIcon[this.item.type];
+            if (!icon.length) {
+                return [
+                    {
+                        component: () => import('@Core/components/Icons/Menu/IconAttributes'),
+                    },
+                ];
             }
 
-            return {
-                component: () => import('@Core/components/Icons/Menu/IconAttributes'),
-            };
+            return icon;
         },
         formattedAttributeType() {
             return capitalizeAndConcatenationArray(this.item.type.split('_'));

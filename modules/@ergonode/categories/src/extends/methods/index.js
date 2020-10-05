@@ -2,13 +2,17 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export function setDataFromProduct({
-    data, commit,
-}) {
-    if (data.categories) {
-        commit('__SET_STATE', {
+export const setCategory = ({
+    $this, data,
+}) => {
+    const {
+        categories = '',
+    } = data;
+
+    if (categories) {
+        $this.commit('product/__SET_STATE', {
             key: 'categories',
-            value: data.categories,
+            value: categories,
         });
     }
-}
+};

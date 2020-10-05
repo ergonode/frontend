@@ -4,6 +4,7 @@
  */
 import {
     SKU_MODEL,
+    TYPES,
 } from '@Attributes/defaults/attributes';
 import {
     createOptionsData,
@@ -32,7 +33,7 @@ const getTypeConfiguration = ({
     $this, type,
 }) => {
     switch (type) {
-    case 'DATE':
+    case TYPES.DATE:
         return {
             params: {
                 key: 'format',
@@ -40,7 +41,7 @@ const getTypeConfiguration = ({
                 fieldName: 'parameters',
             },
         };
-    case 'UNIT':
+    case TYPES.UNIT:
         return {
             params: {
                 key: 'unit',
@@ -48,7 +49,7 @@ const getTypeConfiguration = ({
                 fieldName: 'parameters',
             },
         };
-    case 'PRICE':
+    case TYPES.PRICE:
         return {
             params: {
                 key: 'currency',
@@ -56,20 +57,20 @@ const getTypeConfiguration = ({
                 fieldName: 'parameters',
             },
         };
-    case 'TEXT_AREA':
+    case TYPES.TEXT_AREA:
         return {
             params: {
                 key: 'richEdit',
                 fieldName: 'parameters',
             },
         };
-    case 'SELECT':
+    case TYPES.SELECT:
         return {
             params: {
                 fieldName: 'options',
             },
         };
-    case 'MULTI_SELECT':
+    case TYPES.MULTI_SELECT:
         return {
             params: {
                 fieldName: 'options',
@@ -102,20 +103,20 @@ export default {
             });
 
             switch (type) {
-            case 'DATE':
-            case 'UNIT':
-            case 'PRICE':
+            case TYPES.DATE:
+            case TYPES.UNIT:
+            case TYPES.PRICE:
                 return prepareParametersData({
                     $this,
                     typeConfig,
                 });
-            case 'TEXT_AREA':
+            case TYPES.TEXT_AREA:
                 return prepareTextAreaData({
                     $this,
                     typeConfig,
                 });
-            case 'SELECT':
-            case 'MULTI_SELECT':
+            case TYPES.SELECT:
+            case TYPES.MULTI_SELECT:
                 return prepareOptionsData({
                     $this,
                     typeConfig,
@@ -135,8 +136,8 @@ export default {
             });
 
             switch (type) {
-            case 'SELECT':
-            case 'MULTI_SELECT':
+            case TYPES.SELECT:
+            case TYPES.MULTI_SELECT:
                 return createOptionsData({
                     $this,
                     typeConfig,
@@ -155,15 +156,15 @@ export default {
             });
 
             switch (type) {
-            case 'DATE':
-            case 'UNIT':
-            case 'PRICE':
+            case TYPES.DATE:
+            case TYPES.UNIT:
+            case TYPES.PRICE:
                 return prepareParametersData({
                     $this,
                     typeConfig,
                 });
-            case 'SELECT':
-            case 'MULTI_SELECT':
+            case TYPES.SELECT:
+            case TYPES.MULTI_SELECT:
                 await prepareOptionsData({
                     $this,
                     typeConfig,
@@ -175,9 +176,9 @@ export default {
                 });
 
                 return {};
-            case 'NUMERIC':
-            case 'TEXT':
-            case 'TEXT_AREA':
+            case TYPES.NUMERIC:
+            case TYPES.TEXT:
+            case TYPES.TEXT_AREA:
                 return updateTranslation({
                     $this,
                 });
@@ -189,8 +190,8 @@ export default {
             $this, type,
         }) => {
             switch (type) {
-            case 'SELECT':
-            case 'MULTI_SELECT':
+            case TYPES.SELECT:
+            case TYPES.MULTI_SELECT:
                 $this.commit('attribute/REMOVE_UPDATED_OPTION');
                 break;
             default:
@@ -198,11 +199,10 @@ export default {
             }
         },
         '@Attributes/store/attribute/action/getAttributesOptionsByType/__after': ({
-            // eslint-disable-next-line no-unused-vars
-            $this, type,
+            type,
         }) => {
             switch (type) {
-            case 'TEXT':
+            case TYPES.TEXT:
                 // TODO: Temporary till BE will create SKU as an attribute
                 return [
                     SKU_MODEL,
@@ -220,16 +220,16 @@ export default {
             });
 
             switch (type) {
-            case 'DATE':
-            case 'UNIT':
-            case 'PRICE':
+            case TYPES.DATE:
+            case TYPES.UNIT:
+            case TYPES.PRICE:
                 setParametersData({
                     $this,
                     data,
                     typeConfig,
                 });
                 break;
-            case 'TEXT_AREA':
+            case TYPES.TEXT_AREA:
                 setTranslation({
                     $this,
                     data,
@@ -240,15 +240,15 @@ export default {
                     typeConfig,
                 });
                 break;
-            case 'NUMERIC':
-            case 'TEXT':
+            case TYPES.NUMERIC:
+            case TYPES.TEXT:
                 setTranslation({
                     $this,
                     data,
                 });
                 break;
-            case 'SELECT':
-            case 'MULTI_SELECT':
+            case TYPES.SELECT:
+            case TYPES.MULTI_SELECT:
                 await getAttributeOptions({
                     $this,
                     data,
@@ -279,93 +279,133 @@ export default {
     },
     extendComponents: {
         '@Attributes/components/Forms/AttributeForm': {
-            DATE: {
-                component: Components.AttributeFormParamsSelect,
-                props: {
-                    getParams: $this => getTypeConfiguration({
-                        $this: $this.$store,
-                        type: 'DATE',
-                    }),
+            [TYPES.DATE]: [
+                {
+                    component: Components.AttributeFormParamsSelect,
+                    props: {
+                        getParams: $this => getTypeConfiguration({
+                            $this: $this.$store,
+                            type: TYPES.DATE,
+                        }),
+                    },
                 },
-            },
-            UNIT: {
-                component: Components.AttributeFormParamsSelect,
-                props: {
-                    getParams: $this => getTypeConfiguration({
-                        $this: $this.$store,
-                        type: 'UNIT',
-                    }),
+            ],
+            [TYPES.UNIT]: [
+                {
+                    component: Components.AttributeFormParamsSelect,
+                    props: {
+                        getParams: $this => getTypeConfiguration({
+                            $this: $this.$store,
+                            type: TYPES.UNIT,
+                        }),
+                    },
                 },
-            },
-            PRICE: {
-                component: Components.AttributeFormParamsSelect,
-                props: {
-                    getParams: $this => getTypeConfiguration({
-                        $this: $this.$store,
-                        type: 'PRICE',
-                    }),
+            ],
+            [TYPES.PRICE]: [
+                {
+                    component: Components.AttributeFormParamsSelect,
+                    props: {
+                        getParams: $this => getTypeConfiguration({
+                            $this: $this.$store,
+                            type: TYPES.PRICE,
+                        }),
+                    },
                 },
-            },
-            TEXT_AREA: {
-                component: Components.AttributeFormParamsToggle,
-                props: {
-                    getParams: () => getTypeConfiguration({
-                        type: 'TEXT_AREA',
-                    }),
+            ],
+            [TYPES.TEXT_AREA]: [
+                {
+                    component: Components.AttributeFormParamsToggle,
+                    props: {
+                        getParams: () => getTypeConfiguration({
+                            type: TYPES.TEXT_AREA,
+                        }),
+                    },
                 },
-            },
-            SELECT: {
-                component: Components.AttributeFormOptions,
-            },
-            MULTI_SELECT: {
-                component: Components.AttributeFormOptions,
-            },
+            ],
+            [TYPES.SELECT]: [
+                {
+                    component: Components.AttributeFormOptions,
+                },
+            ],
+            [TYPES.MULTI_SELECT]: [
+                {
+                    component: Components.AttributeFormOptions,
+                },
+            ],
         },
         '@Attributes/components/Forms/AttributeTranslationForm': {
-            NUMERIC: {
-                component: Components.AttributeTranslationFormPlaceholder,
-            },
-            TEXT: {
-                component: Components.AttributeTranslationFormPlaceholder,
-            },
-            TEXT_AREA: {
-                component: Components.AttributeTranslationFormPlaceholder,
-            },
-            SELECT: {
-                component: Components.AttributeTranslationFormOptions,
-            },
-            MULTI_SELECT: {
-                component: Components.AttributeTranslationFormOptions,
-            },
+            [TYPES.NUMERIC]: [
+                {
+                    component: Components.AttributeTranslationFormPlaceholder,
+                },
+            ],
+            [TYPES.TEXT]: [
+                {
+                    component: Components.AttributeTranslationFormPlaceholder,
+                },
+            ],
+            [TYPES.TEXT_AREA]: [
+                {
+                    component: Components.AttributeTranslationFormPlaceholder,
+                },
+            ],
+            [TYPES.SELECT]: [
+                {
+                    component: Components.AttributeTranslationFormOptions,
+                },
+            ],
+            [TYPES.MULTI_SELECT]: [
+                {
+                    component: Components.AttributeTranslationFormOptions,
+                },
+            ],
         },
         '@Attributes/components/Lists/AttributeListElement/Icon': {
-            NUMERIC: {
-                component: Icons.IconNumeric,
-            },
-            TEXT: {
-                component: Icons.IconText,
-            },
-            TEXT_AREA: {
-                component: Icons.IconTextArea,
-            },
-            SELECT: {
-                component: Icons.IconSelect,
-            },
-            MULTI_SELECT: {
-                component: Icons.IconMultiSelect,
-            },
-            DATE: {
-                component: Icons.IconDate,
-            },
-            UNIT: {
-                component: Icons.IconUnit,
-            },
-            PRICE: {
-                component: Icons.IconPrice,
-            },
-            IMAGE: {
-                component: Icons.IconImage,
-            },
+            [TYPES.NUMERIC]: [
+                {
+                    component: Icons.IconNumeric,
+                },
+            ],
+            [TYPES.TEXT]: [
+                {
+                    component: Icons.IconText,
+                },
+            ],
+            [TYPES.TEXT_AREA]: [
+                {
+                    component: Icons.IconTextArea,
+                },
+            ],
+            [TYPES.SELECT]: [
+                {
+                    component: Icons.IconSelect,
+                },
+            ],
+            [TYPES.MULTI_SELECT]: [
+                {
+                    component: Icons.IconMultiSelect,
+                },
+            ],
+            [TYPES.DATE]: [
+                {
+                    component: Icons.IconDate,
+                },
+            ],
+            [TYPES.UNIT]: [
+                {
+                    component: Icons.IconUnit,
+                },
+            ],
+            [TYPES.PRICE]: [
+                {
+                    component: Icons.IconPrice,
+                },
+            ],
+            [TYPES.IMAGE]: [
+                {
+                    component: Icons.IconImage,
+                },
+            ],
         },
         '@Templates/components/Forms/ProductTemplateForm': [
             {

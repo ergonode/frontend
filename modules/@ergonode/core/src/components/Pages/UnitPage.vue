@@ -12,6 +12,7 @@
             </template>
             <template #mainAction>
                 <Button
+                    data-cy="delete-unit"
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE UNIT"
@@ -24,7 +25,8 @@
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
-            :items="tabs"
+            v-if="asyncTabs"
+            :items="asyncTabs"
             :change-values="changeValues"
             :errors="errors" />
     </Page>
@@ -33,11 +35,13 @@
 <script>
 import PRIVILEGES from '@Core/config/privileges';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 
 export default {
     name: 'UnitPage',
     mixins: [
         editPageMixin,
+        asyncTabsMixin,
     ],
     computed: {
         isReadOnly() {

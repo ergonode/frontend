@@ -12,7 +12,7 @@
             :label="label"
             :required="properties.required"
             :disabled="disabled"
-            object-fit="contain"
+            :multiple="true"
             height="100%"
             @input="onValueChange" />
     </ProductTemplateFormField>
@@ -20,13 +20,13 @@
 
 <script>
 import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
-import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
 import {
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'ProductTemplateFormImageField',
+    name: 'ProductTemplateFormGalleryField',
     components: {
         UploadImageFile,
         ProductTemplateFormField,
@@ -66,7 +66,7 @@ export default {
                 attribute_code,
             } = this.properties;
 
-            return this.draft[this.languageCode][attribute_code] || null;
+            return this.draft[this.languageCode][attribute_code] || [];
         },
         parameter() {
             if (!this.properties.parameters) return null;

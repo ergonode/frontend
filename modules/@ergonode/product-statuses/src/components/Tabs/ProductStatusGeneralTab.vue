@@ -22,7 +22,7 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
-import ProductStatusForm from '@Statuses/components/Form/ProductStatusForm';
+import ProductStatusForm from '@Statuses/components/Forms/ProductStatusForm';
 import {
     mapActions,
 } from 'vuex';
