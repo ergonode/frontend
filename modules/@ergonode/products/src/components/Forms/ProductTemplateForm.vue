@@ -90,7 +90,7 @@ export default {
     created() {
         this.formFieldComponents = this.elements.map(({
             type,
-        }) => () => import(`@Products/components/Form/Field/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`));
+        }) => () => import(`@Products/components/Forms/Field/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`));
     },
     methods: {
         isUserAllowedToUpdate(scope) {

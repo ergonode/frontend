@@ -19,11 +19,9 @@
                     required
                     :disabled="isDisabled || !isAllowedToUpdate"
                     label="Product type"
+                    :error-messages="errors[typeFieldKey]"
                     :options="productTypesValues"
                     @input="setTypeValue" />
-                <ProductAttributesBindingFormSection
-                    v-show="isProductWithVariants"
-                    :disabled="!isAllowedToUpdate" />
                 <TextField
                     :value="sku"
                     hint="Products SKU must be unique"
@@ -40,11 +38,12 @@
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :fetch-options-request="getTemplateOptions"
                     @input="setTemplateValue" />
-                <template v-for="(field, index) in extendedForm">
+                <Divider v-if="extendedForm.length" />
+                <template v-for="(formComponent, index) in extendedForm">
                     <Component
-                        :is="field.component"
+                        :is="formComponent.component"
                         :key="index"
-                        v-bind="bindingProps(field)" />
+                        v-bind="bindingProps(formComponent)" />
                 </template>
             </FormSection>
         </template>
@@ -52,6 +51,7 @@
 </template>
 
 <script>
+import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import Select from '@Core/components/Inputs/Select/Select';
@@ -64,10 +64,6 @@ import {
 } from '@Core/models/objectWrapper';
 import PRIVILEGES from '@Products/config/privileges';
 import {
-    EXTENDS,
-    PRODUCT_TYPE,
-} from '@Products/defaults';
-import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -75,12 +71,12 @@ import {
 export default {
     name: 'ProductForm',
     components: {
+        Divider,
         Form,
         FormSection,
         Select,
         TextField,
         TranslationLazySelect,
-        ProductAttributesBindingFormSection: () => import('@Products/components/Form/Section/ProductAttributesBindingFormSection'),
     },
     mixins: [
         formActionsMixin,
@@ -97,7 +93,10 @@ export default {
             'template',
         ]),
         extendedForm() {
-            return this.$getExtendedComponents(EXTENDS['@Products/components/Form/ProductForm']);
+            return this.$getExtendedFormByType({
+                key: '@Products/components/Forms/ProductForm',
+                type: this.productTypeKey,
+            });
         },
         productTypeKey() {
             return getKeyByValue(this.productTypes, this.type);
@@ -107,9 +106,6 @@ export default {
         },
         isDisabled() {
             return Boolean(this.id);
-        },
-        isProductWithVariants() {
-            return this.productTypeKey === PRODUCT_TYPE.WITH_VARIANTS;
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
@@ -121,6 +117,9 @@ export default {
         },
         skuFieldKey() {
             return 'sku';
+        },
+        typeFieldKey() {
+            return 'type';
         },
     },
     methods: {
@@ -135,16 +134,12 @@ export default {
         },
         setTypeValue(value) {
             this.__setState({
-                key: 'bindingAttributesIds',
-                value: [],
-            });
-            this.__setState({
-                key: 'type',
+                key: this.typeFieldKey,
                 value,
             });
             this.onScopeValueChange({
                 scope: this.scope,
-                fieldKey: 'type',
+                fieldKey: this.typeFieldKey,
                 value,
             });
         },
@@ -171,7 +166,7 @@ export default {
             });
         },
         bindingProps({
-            props,
+            props = {},
         }) {
             return {
                 disabled: !this.isAllowedToUpdate,

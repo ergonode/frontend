@@ -24,8 +24,8 @@ export default {
 <style lang="scss" scoped>
     .point-badge {
         flex-shrink: 0;
-        width: 12px;
-        height: 12px;
-        border-radius: 6px;
+        width: 10px;
+        height: 10px;
+        border-radius: 5px;
     }
 </style>

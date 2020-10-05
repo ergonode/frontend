@@ -12,7 +12,7 @@
                         :value="translations.label[languageCode]"
                         :label="$t('attribute.translation.nameLabel')"
                         :error-messages="translationErrors[labelFieldKey]"
-                        :disabled="!isUserAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, labelFieldKey)" />
                     <TextArea
                         :data-cy="dataCyGenerator(hintFieldKey)"
@@ -21,17 +21,15 @@
                         resize="none"
                         height="150px"
                         :error-messages="translationErrors[hintFieldKey]"
-                        :disabled="!isUserAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, hintFieldKey)" />
-                    <Divider v-if="formComponent.component" />
-                    <Component
-                        :is="formComponent.component"
-                        :type-key="typeKey"
-                        :scope="scope"
-                        :change-values="changeValues"
-                        :errors="translationErrors"
-                        :language-code="languageCode"
-                        v-bind="formComponent.props" />
+                    <Divider v-if="extendedForm.length" />
+                    <template v-for="(formComponent, index) in extendedForm">
+                        <Component
+                            :is="formComponent.component"
+                            :key="index"
+                            v-bind="bindingProps(formComponent)" />
+                    </template>
                 </FormSection>
             </template>
         </Form>
@@ -47,6 +45,7 @@ import FormSection from '@Core/components/Form/Section/FormSection';
 import TextArea from '@Core/components/Inputs/TextArea';
 import TextField from '@Core/components/Inputs/TextField';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
@@ -66,6 +65,7 @@ export default {
     },
     mixins: [
         translationCardMixin,
+        formFeedbackMixin,
     ],
     computed: {
         ...mapState('dictionaries', [
@@ -74,19 +74,16 @@ export default {
         ...mapState('attribute', [
             'type',
         ]),
-        formComponent() {
-            const extendedComponents = this.$getExtendedComponents('@Attributes/components/Forms/AttributeTranslationForm');
-
-            if (extendedComponents && extendedComponents[this.typeKey]) {
-                return extendedComponents[this.typeKey];
-            }
-
-            return {};
+        extendedForm() {
+            return this.$getExtendedFormByType({
+                key: '@Attributes/components/Forms/AttributeTranslationForm',
+                type: this.typeKey,
+            });
         },
         typeKey() {
             return getKeyByValue(this.attrTypes, this.type);
         },
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,
             ]);
@@ -99,6 +96,19 @@ export default {
         },
     },
     methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                disabled: !this.isAllowedToUpdate,
+                typeKey: this.typeKey,
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.errors,
+                languageCode: this.languageCode,
+                ...props,
+            };
+        },
         dataCyGenerator(key) {
             return `attribute-${key}_${this.languageCode}`;
         },

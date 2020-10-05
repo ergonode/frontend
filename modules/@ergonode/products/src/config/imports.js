@@ -11,11 +11,19 @@ export const Tabs = {
     ProductCatalogTab: () => import('@Products/components/Tabs/ProductCatalogTab').then(m => m.default || m),
     ProductGeneralTab: () => import('@Products/components/Tabs/ProductGeneralTab').then(m => m.default || m),
     ProductTemplateTab: () => import('@Products/components/Tabs/ProductTemplateTab').then(m => m.default || m),
-    ProductVariantsTab: () => import('@Products/components/Tabs/ProductVariantsTab').then(m => m.default || m),
-    ProductGroupTab: () => import('@Products/components/Tabs/ProductGroupTab').then(m => m.default || m),
     ProductHistoryTab: () => import('@Products/components/Tabs/ProductHistoryTab').then(m => m.default || m),
+    ProductGroupTab: () => import('@Products/extends/components/Tabs/ProductGroupTab').then(m => m.default || m),
+    ProductVariantsTab: () => import('@Products/extends/components/Tabs/ProductVariantsTab').then(m => m.default || m),
 };
 
 export const Icons = {
     Product: () => import('@Core/components/Icons/Menu/IconProduct'),
+};
+
+export const Components = {
+    ProductFormAttributeBinding: () => import('@Products/extends/components/Forms/ProductFormAttributeBinding'),
+};
+
+export const Store = {
+    Product: () => import('@Products/extends/store/product').then(m => m.default || m),
 };

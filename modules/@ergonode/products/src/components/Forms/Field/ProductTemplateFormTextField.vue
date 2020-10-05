@@ -6,18 +6,19 @@
     <ProductTemplateFormField
         :size="size"
         :position="position">
-        <TranslationSelect
+        <TextField
             :value="localValue"
-            :clearable="true"
             :label="label"
-            :options="options"
             :placeholder="properties.placeholder"
             :error-messages="errors[fieldKey]"
             :required="properties.required"
             :disabled="disabled"
-            @input="onValueChange"
-            @focus="onFocus">
+            @focus="onFocus"
+            @input="onValueChange">
             <template #append>
+                <TextFieldSuffix
+                    v-if="parameter"
+                    :suffix="parameter" />
                 <InfoHint
                     v-if="properties.hint"
                     :hint="properties.hint" />
@@ -25,27 +26,25 @@
             <template #details>
                 <div />
             </template>
-        </TranslationSelect>
+        </TextField>
     </ProductTemplateFormField>
 </template>
 
 <script>
 import InfoHint from '@Core/components/Hints/InfoHint';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
-import {
-    getMappedObjectOption,
-    getMappedObjectOptions,
-} from '@Core/models/mappers/translationsMapper';
-import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import TextField from '@Core/components/Inputs/TextField';
+import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
+import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
 import {
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'ProductTemplateFormSelectField',
+    name: 'ProductTemplateFormTextField',
     components: {
         ProductTemplateFormField,
-        TranslationSelect,
+        TextField,
+        TextFieldSuffix,
         InfoHint,
     },
     props: {
@@ -91,33 +90,20 @@ export default {
             const {
                 attribute_code,
             } = this.properties;
-            const value = this.draft[this.languageCode][attribute_code];
 
-            if (!this.hasOptions || !value) {
-                return '';
-            }
+            return this.draft[this.languageCode][attribute_code] || '';
+        },
+        parameter() {
+            if (!this.properties.parameters) return null;
 
-            return getMappedObjectOption({
-                option: {
-                    id: value,
-                    ...this.properties.options[value],
-                },
-                languageCode: this.languageCode,
-            });
+            const [
+                key,
+            ] = Object.keys(this.properties.parameters);
+
+            return this.properties.parameters[key];
         },
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;
-        },
-        hasOptions() {
-            return typeof this.properties.options !== 'undefined';
-        },
-        options() {
-            if (!this.hasOptions) return [];
-
-            return getMappedObjectOptions({
-                options: this.properties.options,
-                languageCode: this.languageCode,
-            });
         },
     },
     watch: {
@@ -130,14 +116,14 @@ export default {
     },
     methods: {
         onFocus(isFocused) {
-            if (!isFocused && this.fieldData.id !== this.localValue.id) {
+            if (!isFocused && this.fieldData !== this.localValue) {
                 this.$emit('input', {
                     fieldKey: this.fieldKey,
                     languageCode: this.languageCode,
                     productId: this.$route.params.id,
                     elementId: this.properties.attribute_id,
                     code: this.properties.attribute_code,
-                    value: this.localValue.id,
+                    value: this.localValue,
                 });
             }
         },

@@ -6,28 +6,29 @@
     <ProductTemplateFormField
         :size="size"
         :position="position">
-        <UploadFiles
+        <UploadImageFile
             :style="{ height: '100%' }"
             :value="fieldData"
             :label="label"
             :required="properties.required"
             :disabled="disabled"
+            object-fit="contain"
             height="100%"
             @input="onValueChange" />
     </ProductTemplateFormField>
 </template>
 
 <script>
-import UploadFiles from '@Media/components/Inputs/UploadFile/UploadFiles';
-import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
+import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
 import {
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'ProductTemplateFormFileField',
+    name: 'ProductTemplateFormImageField',
     components: {
-        UploadFiles,
+        UploadImageFile,
         ProductTemplateFormField,
     },
     props: {
@@ -65,7 +66,7 @@ export default {
                 attribute_code,
             } = this.properties;
 
-            return this.draft[this.languageCode][attribute_code] || [];
+            return this.draft[this.languageCode][attribute_code] || null;
         },
         parameter() {
             if (!this.properties.parameters) return null;

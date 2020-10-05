@@ -20,7 +20,8 @@
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
-            :items="tabs"
+            v-if="asyncTabs"
+            :items="asyncTabs"
             :errors="errors"
             :change-values="changeValues">
             <template
@@ -55,9 +56,7 @@ import {
 } from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
-import {
-    getNestedTabRoutes,
-} from '@Core/models/navigation/tabs';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     mapActions,
@@ -77,19 +76,13 @@ export default {
     mixins: [
         gridModalMixin,
         beforeLeavePageMixin,
+        asyncTabsMixin,
     ],
     computed: {
         ...mapState('feedback', [
             'errors',
             'changeValues',
         ]),
-        tabs() {
-            return getNestedTabRoutes({
-                hasAccess: this.$hasAccess,
-                routes: this.$router.options.routes,
-                route: this.$route,
-            });
-        },
         smallSize() {
             return SIZE.SMALL;
         },

@@ -28,7 +28,7 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
-import ProductStatusForm from '@Statuses/components/Form/ProductStatusForm';
+import ProductStatusForm from '@Statuses/components/Forms/ProductStatusForm';
 import {
     mapActions,
 } from 'vuex';

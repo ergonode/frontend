@@ -26,7 +26,8 @@
             </template> -->
         </TitleBar>
         <HorizontalRoutingTabBar
-            :items="tabs"
+            v-if="asyncTabs"
+            :items="asyncTabs"
             :change-values="changeValues"
             :errors="errors" />
     </Page>
@@ -34,12 +35,14 @@
 
 <script>
 import editPageMixin from '@Core/mixins/page/editPageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import PRIVILEGES from '@Users/config/privileges';
 
 export default {
     name: 'UserPage',
     mixins: [
         editPageMixin,
+        asyncTabsMixin,
     ],
     computed: {
         isReadOnly() {

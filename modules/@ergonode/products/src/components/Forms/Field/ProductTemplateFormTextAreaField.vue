@@ -6,10 +6,28 @@
     <ProductTemplateFormField
         :size="size"
         :position="position">
-        <TextField
-            :value="localValue"
+        <RichTextEditor
+            v-if="isRTEEditor"
+            :disabled="disabled"
+            height="100%"
+            :required="properties.required"
+            :placeholder="properties.placeholder"
+            :error-messages="errors[fieldKey]"
             :label="label"
-            :input="{ type: 'number'}"
+            :value="localValue"
+            @blur="onRTEValueChange">
+            <template #append>
+                <InfoHint
+                    v-if="properties.hint"
+                    :hint="properties.hint" />
+            </template>
+        </RichTextEditor>
+        <TextArea
+            v-else
+            :value="localValue"
+            resize="none"
+            height="100%"
+            :label="label"
             :placeholder="properties.placeholder"
             :error-messages="errors[fieldKey]"
             :required="properties.required"
@@ -17,9 +35,6 @@
             @focus="onFocus"
             @input="onValueChange">
             <template #append>
-                <TextFieldSuffix
-                    v-if="parameter"
-                    :suffix="parameter" />
                 <InfoHint
                     v-if="properties.hint"
                     :hint="properties.hint" />
@@ -27,25 +42,25 @@
             <template #details>
                 <div />
             </template>
-        </TextField>
+        </TextArea>
     </ProductTemplateFormField>
 </template>
 
 <script>
 import InfoHint from '@Core/components/Hints/InfoHint';
-import TextField from '@Core/components/Inputs/TextField';
-import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
-import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
+import TextArea from '@Core/components/Inputs/TextArea';
+import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
 import {
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'ProductTemplateFormPriceField',
+    name: 'ProductTemplateFormTextAreaField',
     components: {
         ProductTemplateFormField,
-        TextField,
-        TextFieldSuffix,
+        TextArea,
+        RichTextEditor,
         InfoHint,
     },
     props: {
@@ -94,17 +109,11 @@ export default {
 
             return this.draft[this.languageCode][attribute_code] || '';
         },
-        parameter() {
-            if (!this.properties.parameters) return null;
-
-            const [
-                key,
-            ] = Object.keys(this.properties.parameters);
-
-            return this.properties.parameters[key];
-        },
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;
+        },
+        isRTEEditor() {
+            return this.properties.parameters.rich_edit;
         },
     },
     watch: {
@@ -130,6 +139,11 @@ export default {
         },
         onValueChange(value) {
             this.localValue = value;
+        },
+        onRTEValueChange(value) {
+            this.localValue = value;
+
+            this.onFocus(false);
         },
     },
 };

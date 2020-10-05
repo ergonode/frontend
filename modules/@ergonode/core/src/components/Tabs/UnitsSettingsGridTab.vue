@@ -21,6 +21,7 @@
                 @fetchData="onFetchData">
                 <template #headerActions>
                     <Button
+                        data-cy="new-unit"
                         title="NEW UNIT"
                         :theme="secondaryTheme"
                         :disabled="!isUserAllowedToCreate"

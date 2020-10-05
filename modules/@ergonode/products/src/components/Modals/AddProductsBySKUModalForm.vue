@@ -30,7 +30,7 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
-import AddProductsBySKUForm from '@Products/components/Form/AddProductsBySKUForm';
+import AddProductsBySKUForm from '@Products/components/Forms/AddProductsBySKUForm';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     mapActions,
@@ -70,7 +70,6 @@ export default {
         },
         onClose() {
             this.removeScopeErrors(this.scope);
-
             this.$emit('close');
         },
         onSubmit() {

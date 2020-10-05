@@ -4,7 +4,7 @@
  */
 <template>
     <TransitionPage
-        :title="`${params[0]} -> ${params[1]}`"
+        :title="`${source.value} -> ${destination.value}`"
         @remove="onRemove" />
 </template>
 
@@ -81,7 +81,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.params[0]} -> ${this.params[1]} - Status transitions - Ergonode`,
+            title: `${this.source.value} -> ${this.destination.value} - Status transitions - Ergonode`,
         };
     },
 };
