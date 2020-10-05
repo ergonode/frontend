@@ -67,6 +67,8 @@ export default {
         ...mapActions('product', [
             'removeProduct',
             '__clearStorage',
+            'getProductDraft',
+            'getProduct',
         ]),
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',

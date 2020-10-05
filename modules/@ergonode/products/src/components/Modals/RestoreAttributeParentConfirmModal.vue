@@ -3,26 +3,34 @@
  * See LICENSE for license details.
  */
 <template>
-    <ModalConfirm
-        title="Do you want to restore parent translation value of selected cell? "
-        @close="onClose">
-        <template #footer>
-            <Button
-                title="YES, RESTORE"
-                :disabled="isRequestPending"
-                :size="smallSize"
-                @click.native="onRestore" />
-            <Button
-                title="CANCEL"
-                :theme="secondaryTheme"
-                :disabled="isRequestPending"
-                :size="smallSize"
-                @click.native="onClose" />
-        </template>
-    </ModalConfirm>
+    <ModalOverlay @close="onClose">
+        <Modal data-cy="modal">
+            <ConfirmModalHeader
+                title="Do you want to restore parent translation value of selected cell?"
+                @close="onClose" />
+            <ModalFooter>
+                <Button
+                    title="YES, RESTORE"
+                    :disabled="isRequestPending"
+                    :size="smallSize"
+                    @click.native="onRestore" />
+                <Button
+                    title="CANCEL"
+                    :theme="secondaryTheme"
+                    :disabled="isRequestPending"
+                    :size="smallSize"
+                    @click.native="onClose" />
+            </ModalFooter>
+        </Modal>
+    </ModalOverlay>
 </template>
 
 <script>
+import Button from '@Core/components/Button/Button';
+import Modal from '@Core/components/Modal/Modal';
+import ModalFooter from '@Core/components/Modal/ModalFooter';
+import ModalOverlay from '@Core/components/Modal/ModalOverlay';
+import ConfirmModalHeader from '@Core/components/Modals/ConfirmModalHeader';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -35,10 +43,13 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'RestoreAttributeParentModalConfirm',
+    name: 'RestoreAttributeParentConfirmModal',
     components: {
-        ModalConfirm: () => import('@Core/components/Modal/ModalConfirm'),
-        Button: () => import('@Core/components/Button/Button'),
+        ModalOverlay,
+        ConfirmModalHeader,
+        Modal,
+        ModalFooter,
+        Button,
     },
     props: {
         element: {

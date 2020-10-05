@@ -67,7 +67,6 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import fetchListGroupDataMixin from '@Core/mixins/list/fetchListGroupDataMixin';
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import {
     mapActions,
     mapState,
@@ -88,7 +87,6 @@ export default {
         CreateAttributeModalForm: () => import('@Attributes/components/Modals/CreateAttributeModalForm'),
     },
     mixins: [
-        gridModalMixin,
         fetchListGroupDataMixin({
             namespace: 'attributes',
         }),
@@ -105,6 +103,7 @@ export default {
     },
     data() {
         return {
+            isModalVisible: false,
             language: {},
         };
     },
@@ -159,6 +158,12 @@ export default {
         ...mapActions('list', [
             'setDisabledElements',
         ]),
+        onShowModal() {
+            this.isModalVisible = true;
+        },
+        onCloseModal() {
+            this.isModalVisible = false;
+        },
         onCreatedAttribute() {
             this.onCloseModal();
             this.fetchListData(this.language.code);

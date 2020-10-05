@@ -60,6 +60,7 @@ import {
 } from '@Core/models/navigation/tabs';
 import PRIVILEGES from '@Products/config/privileges';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -100,6 +101,14 @@ export default {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.PRODUCT.namespace);
         },
+    },
+    beforeDestroy() {
+        this.__clearFeedbackStorage();
+    },
+    methods: {
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
     },
     head() {
         return {

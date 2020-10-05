@@ -57,7 +57,7 @@
                                         <IconRestore :fill-color="color" />
                                     </template>
                                 </Button> -->
-                <!-- <RestoreAttributeParentModalConfirm
+                <!-- <RestoreAttributeParentConfirmModal
                                     v-if="isModalVisible"
                                     :element="focusedCellToRestore"
                                     @close="onCloseConfirmModal"
@@ -125,7 +125,7 @@ export default {
         IconRemoveColumn,
         FadeTransition,
         IconSpinner,
-        // RestoreAttributeParentModalConfirm: () => import('@Products/components/Modals/RestoreAttributeParentModalConfirm'),
+        // RestoreAttributeParentConfirmModal: () => import('@Products/components/Modals/RestoreAttributeParentConfirmModal'),
         // IconRestore: () => import('@Core/components/Icons/Actions/IconRestore'),
     },
     mixins: [
