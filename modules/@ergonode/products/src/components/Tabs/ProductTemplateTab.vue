@@ -23,7 +23,7 @@
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="RESTORE"
-                    :disabled="!isUserAllowedToRestore"
+                    :disabled="!isAllowedToRestore"
                     @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconRestore :fill-color="color" />
@@ -178,7 +178,7 @@ export default {
                     : true,
             }));
         },
-        isUserAllowedToRestore() {
+        isAllowedToRestore() {
             const {
                 code,
             } = this.language;

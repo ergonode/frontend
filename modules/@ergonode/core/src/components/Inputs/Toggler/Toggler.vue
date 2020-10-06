@@ -47,7 +47,9 @@ export default {
         },
     },
     methods: {
-        onValueChange() {
+        onValueChange(event) {
+            event.preventDefault();
+
             this.$emit('input', !this.value);
         },
     },

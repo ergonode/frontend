@@ -38,7 +38,7 @@
                             :element="element"
                             :columns-number="columnsNumber"
                             :rows-number="maxLayoutRow"
-                            :disabled="!isUserAllowedToUpdate"
+                            :disabled="!isAllowedToUpdate"
                             @highlightedPositionChange="onHighlightedPositionsChange"
                             @resizingElMaxRow="onResizingElMaxRow"
                             @remove="onRemoveLayoutElement">
@@ -49,13 +49,13 @@
                                     :errors="errors"
                                     :change-values="changeValues"
                                     :element="element"
-                                    :disabled="!isUserAllowedToUpdate"
+                                    :disabled="!isAllowedToUpdate"
                                     :index="index" />
                                 <SectionElementContent
                                     v-else
                                     :element="element"
                                     :index="index"
-                                    :disabled="!isUserAllowedToUpdate"
+                                    :disabled="!isAllowedToUpdate"
                                     @editTitle="onEditSectionTitle" />
                             </template>
                         </LayoutElement>
@@ -196,7 +196,7 @@ export default {
                 },
             ];
         },
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.TEMPLATE_DESIGNER.update,
             ]);

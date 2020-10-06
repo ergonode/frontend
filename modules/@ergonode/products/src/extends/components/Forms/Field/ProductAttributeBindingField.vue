@@ -5,14 +5,13 @@
 <template>
     <FormListElementField
         :field-key="index"
-        :disabled="disabled"
-        @remove="removeBindingAttribute">
+        @remove="onRemove">
         <TranslationSelect
             :value="attribute"
             required
             label="Binding attribute"
+            :error-messages="errorMessages"
             :size="smallSize"
-            :disabled="disabled"
             :options="filteredOptions"
             @input="onValueChange" />
     </FormListElementField>
@@ -24,10 +23,6 @@ import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect'
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import {
-    mapActions,
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'ProductAttributeBindingField',
@@ -40,45 +35,47 @@ export default {
             type: Number,
             required: true,
         },
-        attributeId: {
+        errorMessages: {
             type: String,
             default: '',
+        },
+        binding: {
+            type: String,
+            default: '',
+        },
+        bindings: {
+            type: Array,
+            default: () => [],
         },
         attributes: {
             type: Array,
             default: () => [],
         },
-        disabled: {
-            type: Boolean,
-            default: false,
-        },
     },
     computed: {
-        ...mapState('product', [
-            'bindingAttributesIds',
-        ]),
         smallSize() {
             return SIZE.SMALL;
         },
         attribute() {
-            return this.attributes.find(attribute => attribute.id === this.attributeId);
+            return this.attributes.find(attribute => attribute.id === this.binding);
         },
         filteredOptions() {
             return this.attributes
-                .filter(attribute => attribute.id === this.attributeId
-                    || !this.bindingAttributesIds.some(id => id === attribute.id));
+                .filter(attribute => attribute.id === this.binding
+                    || !this.bindings.some(id => id === attribute.id));
         },
     },
     methods: {
-        ...mapActions('product', [
-            'setBindingAttributeId',
-            'removeBindingAttribute',
-        ]),
-        onValueChange(value) {
-            this.setBindingAttributeId({
-                id: value.id,
+        onValueChange({
+            id,
+        }) {
+            this.$emit('input', {
                 index: this.index,
+                value: id,
             });
+        },
+        onRemove() {
+            this.$emit('remove', this.index);
         },
     },
 };

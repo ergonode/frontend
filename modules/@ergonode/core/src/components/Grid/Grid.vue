@@ -27,6 +27,9 @@
             <template #configuration>
                 <slot name="headerConfiguration" />
             </template>
+            <template #panel>
+                <slot name="headerPanel" />
+            </template>
         </GridHeader>
         <GridBody
             :disabled="isListElementDragging && isColumnExists"
@@ -42,7 +45,7 @@
             <Preloader v-show="isPrefetchingData" />
             <KeepAlive>
                 <GridTableLayout
-                    v-if="isTableLayout"
+                    v-if="isTableLayout && !isPrefetchingData"
                     :columns="columns"
                     :action-columns="actionColumns"
                     :rows="rows"
@@ -62,38 +65,38 @@
                     @focusCell="onFocusCell"
                     @rowAction="onRowAction" />
                 <GridCollectionLayout
-                    v-else-if="isCollectionLayout && collectionData.length"
-                    :data="collectionData"
+                    v-else-if="isCollectionLayout && !isPrefetchingData"
+                    :rows="rows"
+                    :row-ids="rowIds"
+                    :collection-cell-binding="collectionCellBinding"
                     :drafts="drafts"
                     :columns-number="collectionLayoutConfig.columnsNumber"
                     :object-fit="collectionLayoutConfig.scaling"
                     @rowAction="onRowAction"
                     @cellValue="onCellValueChange" />
             </KeepAlive>
-            <template v-if="dataCount === 0 && !isPrefetchingData">
-                <GridPlaceholder
-                    v-if="noRecordsFilterPlaceholder"
-                    v-bind="{ ...noRecordsFilterPlaceholder }">
-                    <template #action>
-                        <Button
-                            title="REMOVE FILTERS"
-                            :size="smallSize"
-                            :theme="secondaryTheme"
-                            @click.native="onRemoveAllFilters">
-                            <template #prepend="{ color }">
-                                <IconFilledClose :fill-color="color" />
-                            </template>
-                        </Button>
-                    </template>
-                </GridPlaceholder>
-                <GridPlaceholder
-                    v-else
-                    v-bind="{ ...placeholder }">
-                    <template #action>
-                        <slot name="placeholderNoRecordsAction" />
-                    </template>
-                </GridPlaceholder>
-            </template>
+            <GridPlaceholder
+                v-show="isPlaceholderVisible && noRecordsFilterPlaceholder"
+                v-bind="{ ...noRecordsFilterPlaceholder }">
+                <template #action>
+                    <Button
+                        title="REMOVE FILTERS"
+                        :size="smallSize"
+                        :theme="secondaryTheme"
+                        @click.native="onRemoveAllFilters">
+                        <template #prepend="{ color }">
+                            <IconFilledClose :fill-color="color" />
+                        </template>
+                    </Button>
+                </template>
+            </GridPlaceholder>
+            <GridPlaceholder
+                v-show="isPlaceholderVisible && !noRecordsFilterPlaceholder"
+                v-bind="{ ...placeholder }">
+                <template #action>
+                    <slot name="placeholderNoRecordsAction" />
+                </template>
+            </GridPlaceholder>
         </GridBody>
         <GridFooter v-if="isFooterVisible">
             <slot name="footer">
@@ -187,12 +190,7 @@ export default {
         },
         collectionCellBinding: {
             type: Object,
-            default: () => ({
-                imageColumn: '',
-                descriptionColumn: '',
-                type: '',
-                additionalColumns: [],
-            }),
+            default: null,
         },
         placeholder: {
             type: Object,
@@ -344,6 +342,9 @@ export default {
         isTableLayout() {
             return this.layout === GRID_LAYOUT.TABLE;
         },
+        isPlaceholderVisible() {
+            return this.dataCount === 0 && !this.isPrefetchingData;
+        },
         maxPage() {
             return Math.ceil(this.dataCount / this.maxRows) || 1;
         },
@@ -357,38 +358,6 @@ export default {
 
                 return getUUID();
             });
-        },
-        collectionData() {
-            const {
-                imageColumn,
-                type,
-                descriptionColumn,
-                additionalColumns,
-            } = this.collectionCellBinding;
-
-            if (!(imageColumn && descriptionColumn)) {
-                return [];
-            }
-
-            return this.rows
-                .map((row, index) => {
-                    const additionalData = {};
-
-                    if (additionalColumns) {
-                        additionalColumns.forEach((columnId) => {
-                            additionalData[columnId] = row[columnId] ? row[columnId].value : '';
-                        });
-                    }
-
-                    return {
-                        id: this.rowIds[index],
-                        image: row[imageColumn] ? row[imageColumn].value : '',
-                        description: row[descriptionColumn] ? row[descriptionColumn].value : '',
-                        type,
-                        actions: row._links ? row._links.value : '',
-                        ...additionalData,
-                    };
-                });
         },
     },
     methods: {

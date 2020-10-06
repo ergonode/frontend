@@ -17,7 +17,7 @@
                     :value="segments"
                     :multiselect="true"
                     label="From segmentation rules"
-                    :disabled="!isUserAllowedToUpdate"
+                    :disabled="!isAllowedToUpdate"
                     :error-messages="errors[segmentsFieldKey]"
                     :options="segmentOptions"
                     @input="onSegmentChange" />
@@ -63,7 +63,7 @@ export default {
         segmentsFieldKey() {
             return 'segments';
         },
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ]);

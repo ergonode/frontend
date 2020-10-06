@@ -20,9 +20,7 @@ export const Icons = {
     Product: () => import('@Core/components/Icons/Menu/IconProduct'),
 };
 
-export const Components = {
-    ProductFormAttributeBinding: () => import('@Products/extends/components/Forms/ProductFormAttributeBinding'),
-};
+export const Components = {};
 
 export const Store = {
     Product: () => import('@Products/extends/store/product').then(m => m.default || m),

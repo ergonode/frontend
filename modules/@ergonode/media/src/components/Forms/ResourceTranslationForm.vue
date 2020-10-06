@@ -13,7 +13,7 @@
                         label="Alternate text"
                         resize="none"
                         height="150px"
-                        :disabled="!isUserAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate"
                         :error-messages="translationErrors[altKeyField]"
                         @input="(value) => setTranslationPropertyValue(value, altKeyField)" />
                 </FormSection>
@@ -42,7 +42,7 @@ export default {
         translationCardMixin,
     ],
     computed: {
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.MULTIMEDIA.update,
             ]);

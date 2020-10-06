@@ -12,7 +12,7 @@
                         :value="translations.name[languageCode]"
                         label="Status name"
                         :error-messages="translationErrors[nameKeyField]"
-                        :disabled="!isUserAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, nameKeyField)" />
                     <TextArea
                         :data-cy="dataCyGenerator(descriptionKeyField)"
@@ -21,7 +21,7 @@
                         resize="none"
                         height="150px"
                         :error-messages="translationErrors[descriptionKeyField]"
-                        :disabled="!isUserAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(
                             value,
                             descriptionKeyField,
@@ -54,7 +54,7 @@ export default {
         translationCardMixin,
     ],
     computed: {
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.WORKFLOW.update,
             ]);

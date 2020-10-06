@@ -6,6 +6,7 @@
     <ModalGrid
         title="Import details"
         :api-path="importGridPath"
+        :is-basic-filter="true"
         @close="onClose">
         <template #headerActions>
             <div class="import-details-tiles">

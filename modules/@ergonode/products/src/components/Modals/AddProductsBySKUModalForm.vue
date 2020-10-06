@@ -9,7 +9,7 @@
         <template #body>
             <AddProductsBySKUForm
                 :product-skus="productSkus"
-                :is-user-allowed-to-update="isUserAllowedToUpdate"
+                :is-user-allowed-to-update="isAllowedToUpdate"
                 submit-title="ADD TO PRODUCT"
                 proceed-title="CANCEL"
                 :is-submitting="isAdding"
@@ -55,7 +55,7 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ]);
