@@ -127,8 +127,6 @@ export default {
                 fieldKey: this.languagesFieldKey,
                 value: selectedLanguages,
             });
-
-            this.$emit('selectedLanguages', selectedLanguages);
         },
         onSubmitForm() {
             this.$emit('submit', this.activeLanguages);

@@ -47,7 +47,7 @@ export default {
     },
     methods: {
         onEditCell() {
-            this.$emit('editFilterCell', {
+            this.$emit('edit-filter-cell', {
                 type: this.data.type,
                 props: {
                     bounds: this.$el.getBoundingClientRect(),

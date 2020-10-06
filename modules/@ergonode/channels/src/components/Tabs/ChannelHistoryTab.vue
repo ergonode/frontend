@@ -13,7 +13,7 @@
                 :is-basic-filter="true"
                 :is-border="true"
                 @previewRow="onPreviewRow"
-                @fetchData="onFetchData" />
+                @fetch-data="onFetchData" />
             <ExportDetailsModalGrid
                 v-if="isExportDetailsModalVisible"
                 :export-id="selectedRow.exportId"

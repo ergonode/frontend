@@ -8,7 +8,7 @@
             v-show="isVisible"
             :offset="offset"
             :fixed="fixedContent"
-            @clickOutside="onClickOutside">
+            @click-outside="onClickOutside">
             <template #body>
                 <slot name="dropdown">
                     <List>
@@ -16,8 +16,7 @@
                             v-if="searchable"
                             :value="searchResult"
                             :sticky="stickySearch"
-                            @input="onSearch"
-                            @searchFocused="onSearchFocused" />
+                            @input="onSearch" />
                         <ListElement
                             v-for="(option, index) in options"
                             :key="index"
@@ -176,7 +175,7 @@ export default {
     },
     methods: {
         onClickOutside(payload) {
-            this.$emit('clickOutside', payload);
+            this.$emit('click-outside', payload);
         },
         onDismiss() {
             this.$emit('dismiss');
@@ -186,9 +185,6 @@ export default {
         },
         onSearch(value) {
             this.$emit('search', value);
-        },
-        onSearchFocused(isFocused) {
-            this.$emit('searchFocus', isFocused);
         },
         onSelectValue(value, index) {
             if (this.multiselect) {

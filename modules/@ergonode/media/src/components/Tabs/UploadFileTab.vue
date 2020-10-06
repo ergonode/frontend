@@ -158,7 +158,7 @@ export default {
                         message: 'File uploaded',
                     });
                     this.isRequestPending = false;
-                    this.$emit('uploadedFile', id);
+                    this.$emit('uploaded-file', id);
                 }).catch((e) => {
                     if (this.$axios.isCancel(e)) {
                         this.$addAlert({

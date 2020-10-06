@@ -129,7 +129,7 @@ export default {
                 });
                 break;
             case 'Edit title':
-                this.$emit('editTitle', this.index);
+                this.$emit('edit-title', this.index);
                 break;
             default: break;
             }

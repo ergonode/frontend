@@ -35,7 +35,7 @@ export default {
     props: {
         scope: {
             type: String,
-            default: () => ({}),
+            default: '',
         },
         changeValues: {
             type: Object,

@@ -16,9 +16,9 @@
         :is-collection-layout="true"
         @editRow="onEditRow"
         @previewRow="onEditRow"
-        @cellValue="onCellValueChange"
+        @cell-value="onCellValueChange"
         @deleteRow="onRemoveRow"
-        @fetchData="onFetchData">
+        @fetch-data="onFetchData">
         <!--  TODO: Uncomment when we have global search      -->
         <!--        <template #headerActions>-->
         <!--            <TextField-->

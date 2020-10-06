@@ -98,7 +98,7 @@ export default {
     methods: {
         onSearch(value) {
             this.searchResult = value;
-            this.$emit('searchResult', value);
+            this.$emit('search-result', value);
         },
         onSearchButtonClick() {
             this.isSearchButtonClicked = !this.isSearchButtonClicked;

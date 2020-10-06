@@ -106,13 +106,13 @@ export default {
         onMonthSelect(month) {
             const monthIndex = getMonthIndex(month) + 1;
             this.$emit('month', monthIndex);
-            this.$emit('calendarType', CALENDAR_TYPE.DAY);
-            this.$emit('calendarHeader', getHeaderForCalendarDaysType(monthIndex, this.year));
+            this.$emit('calendar-type', CALENDAR_TYPE.DAY);
+            this.$emit('calendar-header', getHeaderForCalendarDaysType(monthIndex, this.year));
         },
         onYearSelect(year) {
             this.$emit('year', year);
-            this.$emit('calendarType', CALENDAR_TYPE.MONTH);
-            this.$emit('calendarHeader', year);
+            this.$emit('calendar-type', CALENDAR_TYPE.MONTH);
+            this.$emit('calendar-header', year);
         },
     },
 };

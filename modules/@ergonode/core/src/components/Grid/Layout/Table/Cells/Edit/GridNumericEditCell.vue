@@ -74,7 +74,7 @@ export default {
     },
     beforeDestroy() {
         if (String(this.localValue) !== String(this.value)) {
-            this.$emit('cellValue', [
+            this.$emit('cell-value', [
                 {
                     value: this.localValue !== '' ? +this.localValue : '',
                     rowId: this.rowId,

@@ -68,7 +68,7 @@ export default {
         const localValue = this.localValue ? formatDate(this.localValue, DEFAULT_FORMAT) : '';
 
         if (localValue !== this.value) {
-            this.$emit('cellValue', [
+            this.$emit('cell-value', [
                 {
                     value: localValue,
                     rowId: this.rowId,

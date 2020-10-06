@@ -20,7 +20,7 @@
                 :is-select-column="isSelectColumn"
                 :is-header-visible="true"
                 :is-basic-filter="true"
-                @fetchData="onFetchData">
+                @fetch-data="onFetchData">
                 <template #headerActions>
                     <slot name="headerActions" />
                 </template>

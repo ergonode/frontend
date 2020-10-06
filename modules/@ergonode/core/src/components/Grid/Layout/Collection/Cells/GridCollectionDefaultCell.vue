@@ -70,7 +70,7 @@ export default {
             if (this.data.actions.edit) {
                 const args = this.data.actions.edit.href.split('/');
 
-                this.$emit('rowAction', {
+                this.$emit('row-action', {
                     key: 'edit',
                     value: args,
                 });

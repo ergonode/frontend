@@ -85,7 +85,7 @@ export default {
             if (this.data.actions.edit) {
                 const args = this.data.actions.edit.href.split('/');
 
-                this.$emit('rowAction', {
+                this.$emit('row-action', {
                     key: 'edit',
                     value: args,
                 });
@@ -94,7 +94,7 @@ export default {
         onCellValueChange(value) {
             this.localValue = value;
 
-            this.$emit('cellValue', [
+            this.$emit('cell-value', [
                 {
                     rowId: this.data.id,
                     columnId: 'esa_attached',

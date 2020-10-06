@@ -38,7 +38,7 @@
                     @editRow="onEditRow"
                     @previewRow="onEditRow"
                     @deleteRow="onRemoveRow"
-                    @fetchData="onFetchData" />
+                    @fetch-data="onFetchData" />
             </template>
         </CenterViewTemplate>
         <CreateProductTemplateModalForm

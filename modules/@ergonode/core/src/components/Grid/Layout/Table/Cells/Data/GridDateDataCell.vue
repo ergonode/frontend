@@ -59,7 +59,7 @@ export default {
     },
     methods: {
         onEditCell() {
-            this.$emit('editCell', {
+            this.$emit('edit-cell', {
                 type: this.column.type,
                 props: {
                     bounds: this.$el.getBoundingClientRect(),

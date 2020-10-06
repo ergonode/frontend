@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ClickOutsideGlobalEvent @clickOutside="onClickOutside">
+    <ClickOutsideGlobalEvent @click-outside="onClickOutside">
         <div
             class="dropdown"
             :style="positionStyle"
@@ -99,7 +99,7 @@ export default {
     },
     methods: {
         onClickOutside(payload) {
-            this.$emit('clickOutside', payload);
+            this.$emit('click-outside', payload);
         },
     },
 };

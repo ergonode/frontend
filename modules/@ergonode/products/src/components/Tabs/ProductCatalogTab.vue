@@ -38,12 +38,12 @@
                 :is-collection-layout="true"
                 @editRow="onEditRow"
                 @previewRow="onEditRow"
-                @cellValue="onCellValueChange"
-                @focusCell="onFocusCell"
+                @cell-value="onCellValueChange"
+                @focus-cell="onFocusCell"
                 @deleteRow="onRemoveRow"
-                @dropColumn="onDropColumn"
-                @dropFilter="onDropFilter"
-                @fetchData="onFetchData">
+                @drop-column="onDropColumn"
+                @drop-filter="onDropFilter"
+                @fetch-data="onFetchData">
                 <!--                <template #headerActions>-->
                 <!--
                                   Uncomment when product draft will be change on grid

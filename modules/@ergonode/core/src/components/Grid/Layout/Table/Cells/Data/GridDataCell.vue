@@ -15,8 +15,8 @@
         :is-locked="isLocked"
         :is-copyable="isCopyable"
         :is-selected="isSelected"
-        @editCell="onEditCell"
-        @cellValue="onCellValueChange"
+        @edit-cell="onEditCell"
+        @cell-value="onCellValueChange"
     />
 </template>
 
@@ -86,10 +86,10 @@ export default {
     },
     methods: {
         onEditCell(payload) {
-            this.$emit('editCell', payload);
+            this.$emit('edit-cell', payload);
         },
         onCellValueChange(payload) {
-            this.$emit('cellValue', payload);
+            this.$emit('cell-value', payload);
         },
     },
 };

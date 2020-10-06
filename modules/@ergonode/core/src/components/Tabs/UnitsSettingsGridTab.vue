@@ -18,7 +18,7 @@
                 @editRow="onEditRow"
                 @previewRow="onEditRow"
                 @deleteRow="onRemoveUnit"
-                @fetchData="onFetchData">
+                @fetch-data="onFetchData">
                 <template #headerActions>
                     <Button
                         data-cy="new-unit"
@@ -124,7 +124,7 @@ export default {
             });
         },
         onShowModal() {
-            this.$emit('showModal', 'units');
+            this.$emit('show-modal', 'units');
         },
     },
 };

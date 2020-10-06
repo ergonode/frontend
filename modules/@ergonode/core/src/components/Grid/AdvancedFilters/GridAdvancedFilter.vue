@@ -58,7 +58,7 @@
             ref="menu"
             :offset="offset"
             :is-visible="isFocused"
-            @clickOutside="onClickOutside">
+            @click-outside="onClickOutside">
             <template #body>
                 <slot name="body" />
             </template>

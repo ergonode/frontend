@@ -64,7 +64,7 @@ export default {
     },
     methods: {
         onBack() {
-            this.$emit('backTo', LOGIN_STATE.CREDENTIALS);
+            this.$emit('back-to', LOGIN_STATE.CREDENTIALS);
         },
     },
 };

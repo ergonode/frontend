@@ -25,7 +25,7 @@
         @focus="onFocus"
         @search="onSearch"
         @input="onValueChange"
-        @fetchedOptions="onFetchedOptions">
+        @fetched-options="onFetchedOptions">
         <template #prepend>
             <slot name="prepend" />
         </template>

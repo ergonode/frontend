@@ -16,8 +16,8 @@
                 :is-header-visible="true"
                 :is-border="true"
                 @editRow="onEditRow"
-                @cellValue="onCellValueChange"
-                @fetchData="onFetchData">
+                @cell-value="onCellValueChange"
+                @fetch-data="onFetchData">
                 <template #appendFooter>
                     <Button
                         title="SAVE CHANGES"
