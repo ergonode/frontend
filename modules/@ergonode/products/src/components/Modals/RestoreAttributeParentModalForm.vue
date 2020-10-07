@@ -28,7 +28,7 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-import RestoreForm from '@Products/components/Form/RestoreForm';
+import RestoreForm from '@Products/components/Forms/RestoreForm';
 import {
     mapActions,
 } from 'vuex';

@@ -8,13 +8,13 @@ import {
 
 export default {
     extendComponents: {
-        PRODUCT_GROUP_ADD_PRODUCTS: [
+        '@Products/components/Tabs/ProductGroupTab/addFromSegment': [
             {
                 component: Components.AddProductsFromSegmentToProductGroupModalForm,
                 name: 'Add from segment',
             },
         ],
-        COLLECTIONS_ADD_PRODUCTS: [
+        '@Collections/components/Tabs/collectionProductsTab/addFromSegment': [
             {
                 component: Components.AddProductsFromSegmentToCollectioModalForm,
                 name: 'Add from segment',

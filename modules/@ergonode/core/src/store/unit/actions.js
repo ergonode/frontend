@@ -95,7 +95,7 @@ export default {
                 $axios: this.app.$axios,
                 data,
             });
-            onSuccess(id);
+            await onSuccess(id);
         } catch (e) {
             onError({
                 errors: e.data.errors,
@@ -116,6 +116,6 @@ export default {
             $axios: this.app.$axios,
             id,
         });
-        onSuccess();
+        await onSuccess();
     },
 };

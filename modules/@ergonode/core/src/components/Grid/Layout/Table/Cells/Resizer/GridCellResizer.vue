@@ -119,7 +119,10 @@ export default {
             return true;
         },
         onStopResizing() {
-            if (this.currentHeight !== this.startHeight) {
+            const absCurrentHeight = Math.abs(this.currentHeight);
+            const absStartHeight = Math.abs(this.startHeight);
+
+            if (absCurrentHeight !== absStartHeight || absCurrentHeight === absStartHeight) {
                 const factor = Math.ceil(this.currentHeight / this.startHeight);
 
                 this.$emit('copy', factor);

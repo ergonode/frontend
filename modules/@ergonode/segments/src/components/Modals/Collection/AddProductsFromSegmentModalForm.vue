@@ -13,6 +13,7 @@
                 submit-title="ADD TO COLLECTION"
                 proceed-title="CANCEL"
                 :is-submitting="isAdding"
+                :errors="scopeErrors"
                 @submit="onSubmit"
                 @proceed="onClose"
                 @input="onFormValueChange" />
@@ -28,6 +29,7 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import AddProductsFromSegmentForm from '@Segments/components/Forms/Collection/AddProductsFromSegmentForm';
 import {
     mapActions,
@@ -39,6 +41,9 @@ export default {
         AddProductsFromSegmentForm,
         ModalForm,
     },
+    mixins: [
+        scopeErrorsMixin,
+    ],
     data() {
         return {
             segmentOptions: [],
@@ -55,10 +60,6 @@ export default {
         this.segmentOptions = await this.getSegmentOptions();
     },
     methods: {
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
-        ]),
         ...mapActions('segment', [
             'getSegmentOptions',
         ]),
@@ -69,6 +70,7 @@ export default {
             this.segments = value;
         },
         onClose() {
+            this.removeScopeErrors(this.scope);
             this.$emit('close');
         },
         onSubmit() {
@@ -77,8 +79,9 @@ export default {
             }
             this.isAdding = true;
 
-            this.removeScopeErrors();
+            this.removeScopeErrors(this.scope);
             this.addBySegment({
+                scope: this.scope,
                 segments: this.segments,
                 onSuccess: this.onAddSuccess,
                 onError: this.onAddError,

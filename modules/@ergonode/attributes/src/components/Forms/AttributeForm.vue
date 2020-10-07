@@ -58,13 +58,12 @@
                         <InfoHint :hint="scopeHint" />
                     </template>
                 </Select>
-                <Component
-                    :is="formComponent.component"
-                    :type-key="typeKey"
-                    :scope="scope"
-                    :change-values="changeValues"
-                    :errors="errors"
-                    v-bind="formComponent.props" />
+                <template v-for="(formComponent, index) in extendedForm">
+                    <Component
+                        :is="formComponent.component"
+                        :key="index"
+                        v-bind="bindingProps(formComponent)" />
+                </template>
             </FormSection>
         </template>
     </Form>
@@ -124,14 +123,11 @@ export default {
         ...mapGetters('core', [
             'rootLanguage',
         ]),
-        formComponent() {
-            const extendedComponents = this.$getExtendedComponents('@Attributes/components/Forms/AttributeForm');
-
-            if (extendedComponents && extendedComponents[this.typeKey]) {
-                return extendedComponents[this.typeKey];
-            }
-
-            return {};
+        extendedForm() {
+            return this.$getExtendedFormByType({
+                key: '@Attributes/components/Forms/AttributeForm',
+                type: this.typeKey,
+            });
         },
         scopeHint() {
             return this.$t('attribute.form.scopeHint', {
@@ -175,6 +171,18 @@ export default {
         ...mapActions('attributeGroup', [
             'getAttributeGroupsOptions',
         ]),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                disabled: !this.isAllowedToUpdate,
+                typeKey: this.typeKey,
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.errors,
+                ...props,
+            };
+        },
         setCodeValue(value) {
             this.__setState({
                 key: this.codeFieldKey,

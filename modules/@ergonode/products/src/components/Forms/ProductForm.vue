@@ -1,0 +1,181 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+<template>
+    <Form
+        title="Options"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        :errors="errors"
+        @proceed="onProceed"
+        @submit="onSubmit">
+        <template #body>
+            <FormSection>
+                <Select
+                    :value="type"
+                    required
+                    :disabled="isDisabled || !isAllowedToUpdate"
+                    label="Product type"
+                    :error-messages="errors[typeFieldKey]"
+                    :options="productTypesValues"
+                    @input="setTypeValue" />
+                <TextField
+                    :value="sku"
+                    hint="Products SKU must be unique"
+                    label="SKU"
+                    required
+                    :error-messages="errors[skuFieldKey]"
+                    :disabled="isDisabled || !isAllowedToUpdate"
+                    @input="setSkuValue" />
+                <TranslationLazySelect
+                    :value="template"
+                    :required="true"
+                    label="Product template"
+                    :error-messages="errors[templateIdFieldKey]"
+                    :disabled="isDisabled || !isAllowedToUpdate"
+                    :fetch-options-request="getTemplateOptions"
+                    @input="setTemplateValue" />
+                <Divider v-if="extendedForm.length" />
+                <template v-for="(formComponent, index) in extendedForm">
+                    <Component
+                        :is="formComponent.component"
+                        :key="index"
+                        v-bind="bindingProps(formComponent)" />
+                </template>
+            </FormSection>
+        </template>
+    </Form>
+</template>
+
+<script>
+import Divider from '@Core/components/Dividers/Divider';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import Select from '@Core/components/Inputs/Select/Select';
+import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import TextField from '@Core/components/Inputs/TextField';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import {
+    getKeyByValue,
+} from '@Core/models/objectWrapper';
+import PRIVILEGES from '@Products/config/privileges';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
+
+export default {
+    name: 'ProductForm',
+    components: {
+        Divider,
+        Form,
+        FormSection,
+        Select,
+        TextField,
+        TranslationLazySelect,
+    },
+    mixins: [
+        formActionsMixin,
+        formFeedbackMixin,
+    ],
+    computed: {
+        ...mapState('dictionaries', [
+            'productTypes',
+        ]),
+        ...mapState('product', [
+            'id',
+            'sku',
+            'type',
+            'template',
+        ]),
+        extendedForm() {
+            return this.$getExtendedFormByType({
+                key: '@Products/components/Forms/ProductForm',
+                type: this.productTypeKey,
+            });
+        },
+        productTypeKey() {
+            return getKeyByValue(this.productTypes, this.type);
+        },
+        productTypesValues() {
+            return Object.values(this.productTypes);
+        },
+        isDisabled() {
+            return Boolean(this.id);
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT.update,
+            ]);
+        },
+        templateIdFieldKey() {
+            return 'templateId';
+        },
+        skuFieldKey() {
+            return 'sku';
+        },
+        typeFieldKey() {
+            return 'type';
+        },
+    },
+    methods: {
+        ...mapActions('product', [
+            '__setState',
+        ]),
+        ...mapActions('productTemplate', [
+            'getTemplateOptions',
+        ]),
+        onSubmit() {
+            this.$emit('submit');
+        },
+        setTypeValue(value) {
+            this.__setState({
+                key: this.typeFieldKey,
+                value,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.typeFieldKey,
+                value,
+            });
+        },
+        setSkuValue(value) {
+            this.__setState({
+                key: this.skuFieldKey,
+                value,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.skuFieldKey,
+                value,
+            });
+        },
+        setTemplateValue(value) {
+            this.__setState({
+                key: 'template',
+                value,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'template',
+                value,
+            });
+        },
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                disabled: !this.isAllowedToUpdate,
+                changeValues: this.changeValues,
+                scope: this.scope,
+                errors: this.errors,
+                ...props,
+            };
+        },
+    },
+};
+</script>

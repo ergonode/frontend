@@ -32,6 +32,7 @@ import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 
 export default {
     name: 'AddProductsFromSegmentForm',
@@ -42,6 +43,7 @@ export default {
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
     props: {
         errors: {

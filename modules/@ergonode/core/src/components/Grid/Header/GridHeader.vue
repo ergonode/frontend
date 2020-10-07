@@ -21,7 +21,7 @@
                     :theme="isActionsSelected ? theme.PRIMARY : theme.SECONDARY"
                     :size="smallSize"
                     :options="[]">
-                    <template #icon="{ color }">
+                    <template #prepend="{ color }">
                         <IconArrowDropDown :fill-color="color" />
                     </template>
                 </ActionButton> -->

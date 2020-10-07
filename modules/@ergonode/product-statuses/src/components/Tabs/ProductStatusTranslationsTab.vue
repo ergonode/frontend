@@ -37,7 +37,7 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
-import ProductStatusTranslationForm from '@Statuses/components/Form/ProductStatusTranslationForm';
+import ProductStatusTranslationForm from '@Statuses/components/Forms/ProductStatusTranslationForm';
 import {
     mapActions,
 } from 'vuex';

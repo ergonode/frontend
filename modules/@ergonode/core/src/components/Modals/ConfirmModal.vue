@@ -3,28 +3,34 @@
  * See LICENSE for license details.
  */
 <template>
-    <ModalConfirm
-        :title="modalData.message"
-        @close="onClose">
-        <template #footer>
-            <Button
-                data-cy="modal-confirm"
-                :title="applyTitle"
-                :size="smallSize"
-                @click.native="onAgree" />
-            <Button
-                data-cy="modal-cancel"
-                :title="cancelTitle"
-                :theme="secondaryTheme"
-                :size="smallSize"
-                @click.native="onClose" />
-        </template>
-    </ModalConfirm>
+    <ModalOverlay @close="onClose">
+        <Modal data-cy="modal">
+            <ConfirmModalHeader
+                :title="modalData.message"
+                @close="onClose" />
+            <ModalFooter>
+                <Button
+                    data-cy="modal-confirm"
+                    :title="applyTitle"
+                    :size="smallSize"
+                    @click.native="onAgree" />
+                <Button
+                    data-cy="modal-cancel"
+                    :title="cancelTitle"
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    @click.native="onClose" />
+            </ModalFooter>
+        </Modal>
+    </ModalOverlay>
 </template>
 
 <script>
 import Button from '@Core/components/Button/Button';
-import ModalConfirm from '@Core/components/Modal/ModalConfirm';
+import Modal from '@Core/components/Modal/Modal';
+import ModalFooter from '@Core/components/Modal/ModalFooter';
+import ModalOverlay from '@Core/components/Modal/ModalOverlay';
+import ConfirmModalHeader from '@Core/components/Modals/ConfirmModalHeader';
 import {
     SIZE,
     THEME,
@@ -33,7 +39,10 @@ import {
 export default {
     name: 'ConfirmModal',
     components: {
-        ModalConfirm,
+        ModalOverlay,
+        ConfirmModalHeader,
+        Modal,
+        ModalFooter,
         Button,
     },
     props: {

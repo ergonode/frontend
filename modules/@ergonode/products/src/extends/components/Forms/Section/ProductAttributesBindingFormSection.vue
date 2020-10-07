@@ -1,0 +1,67 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+<template>
+    <FormListSection
+        :disabled="isDisabled"
+        add-list-title="ADD BINDING ATTRIBUTE"
+        @add="addBindingAttribute">
+        <FormListSubsection v-if="bindingAttributesIds.length && selectAttributes.length">
+            <ProductAttributeBindingField
+                v-for="(attribute, index) in bindingAttributesIds"
+                :key="index"
+                :index="index"
+                :attribute-id="attribute"
+                :attributes="selectAttributes"
+                :disabled="disabled" />
+        </FormListSubsection>
+    </FormListSection>
+</template>
+
+<script>
+import FormListSection from '@Core/components/Form/Section/FormListSection';
+import FormListSubsection from '@Core/components/Form/Subsection/FormListSubsection';
+import ProductAttributeBindingField from '@Products/extends/components/Forms/Field/ProductAttributeBindingField';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
+
+export default {
+    name: 'ProductAttributesBindingFormSection',
+    components: {
+        FormListSection,
+        FormListSubsection,
+        ProductAttributeBindingField,
+    },
+    props: {
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
+    },
+    computed: {
+        ...mapState('product', [
+            'bindingAttributesIds',
+            'selectAttributes',
+        ]),
+        isDisabled() {
+            return this.disabled
+                || this.bindingAttributesIds.length === this.selectAttributes.length;
+        },
+    },
+    mounted() {
+        this.__setState({
+            key: 'bindingAttributesIds',
+            value: [],
+        });
+    },
+    methods: {
+        ...mapActions('product', [
+            '__setState',
+            'addBindingAttribute',
+        ]),
+    },
+};
+</script>
