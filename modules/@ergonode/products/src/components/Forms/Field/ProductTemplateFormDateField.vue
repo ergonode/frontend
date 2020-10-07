@@ -32,9 +32,9 @@
 </template>
 
 <script>
+import DatePicker from '@Core/components/DatePicker/DatePicker';
 import InfoHint from '@Core/components/Hints/InfoHint';
-import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
-import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
+import TextFieldSuffix from '@Core/components/TextField/TextFieldSuffix';
 import {
     DEFAULT_FORMAT,
 } from '@Core/models/calendar/calendar';

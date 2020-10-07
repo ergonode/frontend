@@ -37,7 +37,7 @@
 import FormListElementField from '@Core/components/Form/Field/FormListElementField';
 import FormListSection from '@Core/components/Form/Section/FormListSection';
 import FormListSubsection from '@Core/components/Form/Subsection/FormListSubsection';
-import TextField from '@Core/components/Inputs/TextField';
+import TextField from '@Core/components/TextField/TextField';
 import {
     SIZE,
 } from '@Core/defaults/theme';

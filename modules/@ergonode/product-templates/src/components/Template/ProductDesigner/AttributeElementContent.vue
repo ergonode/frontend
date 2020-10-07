@@ -55,8 +55,8 @@
 
 <script>
 import ActionIconButton from '@Core/components/ActionIconButton/ActionIconButton';
+import CheckBox from '@Core/components/CheckBox/CheckBox';
 import IconDots from '@Core/components/Icons/Others/IconDots';
-import CheckBox from '@Core/components/Inputs/CheckBox';
 import ListElement from '@Core/components/List/ListElement';
 import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';

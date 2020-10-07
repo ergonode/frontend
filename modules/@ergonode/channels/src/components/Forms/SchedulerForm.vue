@@ -50,12 +50,12 @@
 
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
+import DatePicker from '@Core/components/DatePicker/DatePicker';
 import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
-import TextField from '@Core/components/Inputs/TextField';
-import Toggler from '@Core/components/Inputs/Toggler/Toggler';
+import TextField from '@Core/components/TextField/TextField';
+import Toggler from '@Core/components/Toggler/Toggler';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {

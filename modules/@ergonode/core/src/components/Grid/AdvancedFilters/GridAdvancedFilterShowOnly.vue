@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import Toggler from '@Core/components/Inputs/Toggler/Toggler';
+import Toggler from '@Core/components/Toggler/Toggler';
 
 export default {
     name: 'GridAdvancedFilterShowOnly',

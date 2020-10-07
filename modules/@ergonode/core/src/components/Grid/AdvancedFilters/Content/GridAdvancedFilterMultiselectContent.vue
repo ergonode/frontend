@@ -30,8 +30,8 @@
 </template>
 
 <script>
+import CheckBox from '@Core/components/CheckBox/CheckBox';
 import GridAdvancedFilterContent from '@Core/components/Grid/AdvancedFilters/Content/GridAdvancedFilterContent';
-import CheckBox from '@Core/components/Inputs/CheckBox';
 import List from '@Core/components/List/List';
 import ListElement from '@Core/components/List/ListElement';
 import ListElementAction from '@Core/components/List/ListElementAction';

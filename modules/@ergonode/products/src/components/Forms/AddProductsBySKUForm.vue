@@ -30,7 +30,7 @@
 <script>
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import TextArea from '@Core/components/Inputs/TextArea';
+import TextArea from '@Core/components/TextArea/TextArea';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Products/config/privileges';

@@ -54,11 +54,11 @@ import AttributesListGroup from '@Attributes/components/Lists/AttributesListGrou
 import PRIVILEGES from '@Attributes/config/privileges';
 import Fab from '@Core/components/Fab/Fab';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import TreeSelect from '@Core/components/Inputs/Select/Tree/TreeSelect';
 import List from '@Core/components/List/List';
 import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
 import ListSearchHeader from '@Core/components/List/ListSearchHeader';
 import ListSearchSelectHeader from '@Core/components/List/ListSearchSelectHeader';
+import TreeSelect from '@Core/components/Select/Tree/TreeSelect';
 import VerticalTabBarList from '@Core/components/TabBar/VerticalTabBarList';
 import {
     UNASSIGNED_GROUP_ID,

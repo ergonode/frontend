@@ -58,13 +58,13 @@
 </template>
 
 <script>
+import CheckBox from '@Core/components/CheckBox/CheckBox';
+import ColorPicker from '@Core/components/ColorPicker/ColorPicker';
 import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import InfoHint from '@Core/components/Hints/InfoHint';
-import CheckBox from '@Core/components/Inputs/CheckBox';
-import ColorPicker from '@Core/components/Inputs/ColorPicker/ColorPicker';
-import TextField from '@Core/components/Inputs/TextField';
+import TextField from '@Core/components/TextField/TextField';
 import {
     COLORS,
 } from '@Core/defaults/colors';

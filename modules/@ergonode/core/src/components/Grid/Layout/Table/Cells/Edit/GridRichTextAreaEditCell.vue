@@ -20,7 +20,7 @@
 
 <script>
 import GridTextEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
-import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
+import RichTextEditor from '@Core/components/RichTextEditor/RichTextEditor';
 import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';

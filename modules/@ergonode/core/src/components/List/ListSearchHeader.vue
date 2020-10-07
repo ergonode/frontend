@@ -37,8 +37,8 @@ import {
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import Fab from '@Core/components/Fab/Fab';
 import IconSearch from '@Core/components/Icons/Actions/IconSearch';
-import TextField from '@Core/components/Inputs/TextField';
 import ListHeader from '@Core/components/List/ListHeader';
+import TextField from '@Core/components/TextField/TextField';
 import {
     SIZE,
 } from '@Core/defaults/theme';

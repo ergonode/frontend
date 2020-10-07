@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
+import DropDown from '@Core/components/Select/DropDown/DropDown';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 
 export default {

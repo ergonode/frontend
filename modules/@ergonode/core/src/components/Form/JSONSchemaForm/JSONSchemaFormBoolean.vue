@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import CheckBox from '@Core/components/Inputs/CheckBox';
+import CheckBox from '@Core/components/CheckBox/CheckBox';
 
 export default {
     name: 'JSONSchemaFormBoolean',
