@@ -23,6 +23,13 @@
                     label="System name"
                     hint="System name must be unique"
                     @input="setCodeValue" />
+                <Divider v-if="extendedForm.length" />
+                <template v-for="(field, index) in extendedForm">
+                    <Component
+                        :is="field.component"
+                        :key="index"
+                        v-bind="bindingProps(field)" />
+                </template>
             </FormSection>
         </template>
     </Form>
@@ -30,6 +37,7 @@
 
 <script>
 import PRIVILEGES from '@Categories/config/privileges';
+import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import TextField from '@Core/components/Inputs/TextField';
@@ -43,6 +51,7 @@ import {
 export default {
     name: 'CategoryForm',
     components: {
+        Divider,
         Form,
         FormSection,
         TextField,
@@ -56,6 +65,11 @@ export default {
             'id',
             'code',
         ]),
+        extendedForm() {
+            return this.$getExtendedFormByType({
+                key: '@Categories/components/Forms/CategoryForm',
+            });
+        },
         isDisabled() {
             return Boolean(this.id);
         },
@@ -86,6 +100,17 @@ export default {
         },
         dataCyGenerator(key) {
             return `category-${key}`;
+        },
+        bindingProps({
+            props,
+        }) {
+            return {
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.errors,
+                disabled: !this.isAllowedToUpdate,
+                ...props,
+            };
         },
     },
 };

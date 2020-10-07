@@ -32,12 +32,20 @@
                     label="Unit symbol"
                     hint="Unit symbol must be unique"
                     @input="setSymbolValue" />
+                <Divider v-if="extendedForm.length" />
+                <template v-for="(field, index) in extendedForm">
+                    <Component
+                        :is="field.component"
+                        :key="index"
+                        v-bind="bindingProps(field)" />
+                </template>
             </FormSection>
         </template>
     </Form>
 </template>
 
 <script>
+import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import TextField from '@Core/components/Inputs/TextField';
@@ -52,6 +60,7 @@ import {
 export default {
     name: 'UnitForm',
     components: {
+        Divider,
         Form,
         FormSection,
         TextField,
@@ -65,6 +74,11 @@ export default {
             'name',
             'symbol',
         ]),
+        extendedForm() {
+            return this.$getExtendedFormByType({
+                key: '@Core/components/Forms/UnitForm',
+            });
+        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.SETTINGS.update,
@@ -81,6 +95,17 @@ export default {
         ...mapActions('unit', [
             '__setState',
         ]),
+        bindingProps({
+            props,
+        }) {
+            return {
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.errors,
+                disabled: !this.isAllowedToUpdate,
+                ...props,
+            };
+        },
         onSubmit() {
             this.$emit('submit');
         },
