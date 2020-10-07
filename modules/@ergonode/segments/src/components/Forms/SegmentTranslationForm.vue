@@ -12,7 +12,7 @@
                         :value="translations.name[languageCode]"
                         label="Condition set name"
                         :error-messages="translationErrors[nameKeyField]"
-                        :disabled="!isUserAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, nameKeyField)" />
                     <TextArea
                         :data-cy="dataCyGenerator(descriptionKeyField)"
@@ -21,11 +21,18 @@
                         resize="vertical"
                         height="150px"
                         :error-messages="translationErrors[descriptionKeyField]"
-                        :disabled="!isUserAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(
                             value,
                             descriptionKeyField,
                         )" />
+                    <Divider v-if="extendedForm.length" />
+                    <template v-for="(field, index) in extendedForm">
+                        <Component
+                            :is="field.component"
+                            :key="index"
+                            v-bind="bindingProps(field)" />
+                    </template>
                 </FormSection>
             </template>
         </Form>
@@ -34,6 +41,7 @@
 
 <script>
 import Card from '@Core/components/Card/Card';
+import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import TextArea from '@Core/components/Inputs/TextArea';
@@ -44,6 +52,7 @@ import PRIVILEGES from '@Segments/config/privileges';
 export default {
     name: 'SegmentTranslationForm',
     components: {
+        Divider,
         Form,
         FormSection,
         Card,
@@ -54,10 +63,15 @@ export default {
         translationCardMixin,
     ],
     computed: {
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.SEGMENT.update,
             ]);
+        },
+        extendedForm() {
+            return this.$getExtendedFormByType({
+                key: '@Segments/components/Forms/SegmentTranslationForm',
+            });
         },
         descriptionKeyField() {
             return 'description';
@@ -67,6 +81,18 @@ export default {
         },
     },
     methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                disabled: !this.isAllowedToUpdate,
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.translationErrors,
+                languageCode: this.languageCode,
+                ...props,
+            };
+        },
         dataCyGenerator(key) {
             return `segment-${key}_${this.languageCode}`;
         },

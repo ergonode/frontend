@@ -66,7 +66,9 @@ export default {
             'code',
         ]),
         extendedForm() {
-            return this.$getExtendedComponents('@Categories/components/Forms/CategoryForm');
+            return this.$getExtendedFormByType({
+                key: '@Categories/components/Forms/CategoryForm',
+            });
         },
         isDisabled() {
             return Boolean(this.id);

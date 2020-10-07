@@ -66,7 +66,9 @@ export default {
             'code',
         ]),
         extendedForm() {
-            return this.$getExtendedComponents('@Attributes/components/Forms/AttributeGroupForm');
+            return this.$getExtendedFormByType({
+                key: '@Attributes/components/Forms/AttributeGroupForm',
+            });
         },
         isDisabled() {
             return Boolean(this.id);

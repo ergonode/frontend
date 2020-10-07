@@ -58,7 +58,9 @@ export default {
             return 'name';
         },
         extendedForm() {
-            return this.$getExtendedComponents('@Attributes/components/Forms/AttributeGroupTranslationForm');
+            return this.$getExtendedFormByType({
+                key: '@Attributes/components/Forms/AttributeGroupTranslationForm',
+            });
         },
     },
     methods: {

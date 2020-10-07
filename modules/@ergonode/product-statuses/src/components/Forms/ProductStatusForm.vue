@@ -45,12 +45,20 @@
                     hint="Badge color is needed for presentation purpose"
                     :disabled="!isAllowedToUpdate"
                     @input="setColorValue" />
+                <Divider v-if="extendedForm.length" />
+                <template v-for="(field, index) in extendedForm">
+                    <Component
+                        :is="field.component"
+                        :key="index"
+                        v-bind="bindingProps(field)" />
+                </template>
             </FormSection>
         </template>
     </Form>
 </template>
 
 <script>
+import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import InfoHint from '@Core/components/Hints/InfoHint';
@@ -71,6 +79,7 @@ import {
 export default {
     name: 'ProductStatusForm',
     components: {
+        Divider,
         Form,
         FormSection,
         TextField,
@@ -89,6 +98,11 @@ export default {
             'color',
             'isDefaultStatus',
         ]),
+        extendedForm() {
+            return this.$getExtendedFormByType({
+                key: '@Statuses/components/Forms/ProductStatusForm',
+            });
+        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.WORKFLOW.update,
@@ -111,6 +125,17 @@ export default {
         ...mapActions('productStatus', [
             '__setState',
         ]),
+        bindingProps({
+            props,
+        }) {
+            return {
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.errors,
+                disabled: !this.isAllowedToUpdate,
+                ...props,
+            };
+        },
         setCodeValue(value) {
             this.__setState({
                 key: this.codeFieldKey,
