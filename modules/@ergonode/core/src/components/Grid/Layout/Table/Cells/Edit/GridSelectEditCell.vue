@@ -83,7 +83,8 @@ export default {
         },
     },
     beforeDestroy() {
-        if (this.localValue && this.localValue.id !== this.value) {
+        if ((this.localValue && this.localValue.id !== this.value)
+            || (!this.localValue && this.value)) {
             this.$emit('cell-value', [
                 {
                     value: this.localValue.id || this.localValue,

@@ -52,7 +52,6 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
-    DATA_LIMIT,
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 // TODO: Uncomment when we have global search
@@ -111,12 +110,7 @@ export default {
             rows: [],
             columns: [],
             filtered: 0,
-            localParams: {
-                offset: 0,
-                limit: DATA_LIMIT,
-                filters: '',
-                sortedColumn: {},
-            },
+            localParams: DEFAULT_GRID_FETCH_PARAMS,
         };
     },
     computed: {
@@ -152,7 +146,7 @@ export default {
                 ...this.columns.filter(column => column.id !== 'type'),
                 {
                     id: 'esa_attached',
-                    type: 'MEDIA_ATTACH',
+                    type: 'BOOL',
                     label: 'Attached',
                     visible: true,
                     editable: true,

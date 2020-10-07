@@ -13,7 +13,7 @@
                 v-for="(formField, index) in formFieldComponents"
                 :is="formField"
                 :key="index"
-                :disabled="!isUserAllowedToUpdate(elements[index].properties.scope)"
+                :disabled="!isAllowedToUpdate(elements[index].properties.scope)"
                 :language-code="language.code"
                 :errors="errors"
                 v-bind="elements[index]"
@@ -93,7 +93,7 @@ export default {
         }) => () => import(`@Products/components/Forms/Field/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`));
     },
     methods: {
-        isUserAllowedToUpdate(scope) {
+        isAllowedToUpdate(scope) {
             const {
                 code,
             } = this.language;

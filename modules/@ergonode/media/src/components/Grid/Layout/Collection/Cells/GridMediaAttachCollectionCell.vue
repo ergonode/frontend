@@ -81,26 +81,17 @@ export default {
         },
     },
     methods: {
-        onClick() {
-            if (this.data.actions.edit) {
-                const args = this.data.actions.edit.href.split('/');
-
-                this.$emit('row-action', {
-                    key: 'edit',
-                    value: args,
-                });
+        onClick(event) {
+            if (event.target.closest('.toggler') || !this.data.actions.edit) {
+                return;
             }
-        },
-        onCellValueChange(value) {
-            this.localValue = value;
 
-            this.$emit('cell-value', [
-                {
-                    rowId: this.data.id,
-                    columnId: 'esa_attached',
-                    value,
-                },
-            ]);
+            const args = this.data.actions.edit.href.split('/');
+
+            this.$emit('row-action', {
+                key: 'edit',
+                value: args,
+            });
         },
     },
 };

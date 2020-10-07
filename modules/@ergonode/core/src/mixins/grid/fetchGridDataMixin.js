@@ -111,18 +111,22 @@ export default function ({
             onRemoveRow() {
                 this.onFetchData(this.localParams);
             },
-            onDropColumn(columnId) {
-                insertCookieAtIndex({
-                    cookies: this.$cookies,
-                    cookieName: `GRID_CONFIG:${this.$route.name}`,
-                    index: 0,
-                    data: columnId,
-                });
+            async onDropColumn(payload) {
+                try {
+                    const columnCode = payload.split('/')[1];
 
-                this.onFetchData(this.localParams).then(() => {
+                    insertCookieAtIndex({
+                        cookies: this.$cookies,
+                        cookieName: `GRID_CONFIG:${this.$route.name}`,
+                        index: 0,
+                        data: columnCode,
+                    });
+
+                    await this.onFetchData(this.localParams);
+
                     const column = this.columns.find(({
                         id,
-                    }) => id === columnId);
+                    }) => id === columnCode);
 
                     if (column && column.element_id) {
                         this.setDisabledElement(this.getDisabledListElement({
@@ -131,13 +135,13 @@ export default function ({
                             disabledElements: this.disabledElements,
                         }));
                     }
-                }).catch(() => {
+                } catch {
                     removeCookieAtIndex({
                         cookies: this.$cookies,
-                        cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
+                        cookieName: `GRID_CONFIG:${this.$route.name}`,
                         index: 0,
                     });
-                });
+                }
             },
             getDisabledListElement({
                 languageCode,

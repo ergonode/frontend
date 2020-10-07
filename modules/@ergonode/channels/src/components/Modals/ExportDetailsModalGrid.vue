@@ -21,7 +21,7 @@
                 v-if="downloadLink"
                 title="DOWNLOAD FILE"
                 :size="smallSize"
-                :disabled="!isUserAllowedToUpdate"
+                :disabled="!isAllowedToUpdate"
                 @click.native="onDownloadExportFile" />
         </template>
     </ModalGrid>
@@ -82,7 +82,7 @@ export default {
         ...mapState('channel', [
             'type',
         ]),
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.CHANNEL.update,
             ]);

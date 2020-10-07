@@ -6,7 +6,7 @@
     <CenterViewTemplate>
         <template #content>
             <Grid
-                :is-editable="isUserAllowedToUpdate"
+                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
@@ -22,7 +22,7 @@
                     <ActionButton
                         title="ADD PRODUCTS"
                         :theme="secondaryTheme"
-                        :disabled="!isUserAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate"
                         :size="smallSize"
                         :options="addProductOptions"
                         :fixed-content="true"
@@ -35,7 +35,7 @@
                 <template #appendFooter>
                     <Button
                         title="SAVE CHANGES"
-                        :disabled="!isUserAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate"
                         @click.native="onSubmit">
                         <template
                             v-if="isSubmitting"
@@ -198,7 +198,7 @@ export default {
                 descriptionColumn: 'esa_default_label',
             };
         },
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ]);

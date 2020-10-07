@@ -22,7 +22,7 @@
         </template>
         <template #grid>
             <Grid
-                :is-editable="isUserAllowedToUpdate"
+                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :rows="rows"
                 :placeholder="noRecordsPlaceholder"
@@ -51,7 +51,7 @@
                                     :theme="secondaryTheme"
                                     :size="smallSize"
                                     title="RESTORE"
-                                    :disabled="!isUserAllowedToRestore"
+                                    :disabled="!isAllowedToRestore"
                                     @click.native="onShowModal">
                                     <template #prepend="{ color }">
                                         <IconRestore :fill-color="color" />
@@ -66,7 +66,7 @@
                 <template #appendFooter>
                     <Button
                         title="SAVE CHANGES"
-                        :disabled="!isUserAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate"
                         @click.native="onSubmit">
                         <template
                             v-if="isSubmitting"
@@ -238,12 +238,12 @@ export default {
                 },
             ];
         },
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ]);
         },
-        isUserAllowedToRestore() {
+        isAllowedToRestore() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ]) && this.focusedCellToRestore;
