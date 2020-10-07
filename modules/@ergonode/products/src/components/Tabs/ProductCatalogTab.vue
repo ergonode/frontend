@@ -40,7 +40,7 @@
                 @preview-row="onEditRow"
                 @cell-value="onCellValueChange"
                 @focus-cell="onFocusCell"
-                @@delete-row="onRemoveRow"
+                @delete-row="onRemoveRow"
                 @drop-column="onDropColumn"
                 @drop-filter="onDropFilter"
                 @fetch-data="onFetchData">

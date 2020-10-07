@@ -18,7 +18,7 @@
                 :is-collection-layout="true"
                 @edit-row="onEditRow"
                 @preview-row="onEditRow"
-                @@delete-row="onRemoveRow"
+                @delete-row="onRemoveRow"
                 @fetch-data="onFetchData" />
         </template>
     </CenterViewTemplate>

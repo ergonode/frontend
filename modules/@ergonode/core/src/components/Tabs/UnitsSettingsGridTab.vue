@@ -17,7 +17,7 @@
                 :is-basic-filter="true"
                 @edit-row="onEditRow"
                 @preview-row="onEditRow"
-                @@delete-row="onRemoveUnit"
+                @delete-row="onRemoveUnit"
                 @fetch-data="onFetchData">
                 <template #headerActions>
                     <Button

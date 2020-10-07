@@ -37,7 +37,7 @@
                     :collection-cell-binding="collectionCellBinding"
                     @edit-row="onEditRow"
                     @preview-row="onEditRow"
-                    @@delete-row="onRemoveRow"
+                    @delete-row="onRemoveRow"
                     @fetch-data="onFetchData" />
             </template>
         </CenterViewTemplate>

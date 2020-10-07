@@ -17,7 +17,7 @@
         @edit-row="onEditRow"
         @preview-row="onEditRow"
         @cell-value="onCellValueChange"
-        @@delete-row="onRemoveRow"
+        @delete-row="onRemoveRow"
         @fetch-data="onFetchData">
         <!--  TODO: Uncomment when we have global search      -->
         <!--        <template #headerActions>-->
