@@ -14,7 +14,7 @@
                 <!--                    :theme="secondaryTheme"-->
                 <!--                    :size="smallSize"-->
                 <!--                    title="REMOVE RESOURCE"-->
-                <!--                    :disabled="!isUserAllowedToDelete"-->
+                <!--                    :disabled="!isAllowedToDelete"-->
                 <!--                    @click.native="onRemove">-->
                 <!--                    <template #prepend="{ color }">-->
                 <!--                        <IconDelete :fill-color="color" />-->
@@ -45,7 +45,7 @@ export default {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.MULTIMEDIA.namespace);
         },
-        isUserAllowedToDelete() {
+        isAllowedToDelete() {
             return this.$hasAccess([
                 PRIVILEGES.MULTIMEDIA.delete,
             ]);

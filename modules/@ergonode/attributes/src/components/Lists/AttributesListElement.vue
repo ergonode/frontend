@@ -4,7 +4,7 @@
  */
 <template>
     <ListDraggableElement
-        :draggable-id="`${item.code}:${languageCode}`"
+        :draggable-id="`${item.id}/${item.code}:${languageCode}`"
         :is-draggable="isDraggable"
         :is-disabled="isDisabled"
         :hint="hint"

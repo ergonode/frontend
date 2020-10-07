@@ -11,7 +11,7 @@
                 <Button
                     title="NEW PRODUCT"
                     :size="smallSize"
-                    :disabled="!isUserAllowedToCreate"
+                    :disabled="!isAllowedToCreate"
                     @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
@@ -86,7 +86,7 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-        isUserAllowedToCreate() {
+        isAllowedToCreate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.create,
             ]);

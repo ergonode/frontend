@@ -25,17 +25,19 @@
                     :is-expanded="isExpanded" />
             </template>
         </ol>
-        <div class="side-bar__expand-button">
-            <Fab
-                :theme="secondaryTheme"
-                @click.native="onExpand">
-                <template #icon="{ isHovered, color }">
-                    <IconArrowDouble
-                        :fill-color="isHovered ? color : whiteColor"
-                        :state="expendStateIcon" />
-                </template>
-            </Fab>
-        </div>
+        <!--        <div class="side-bar__expand-button">-->
+        <!--            -->
+        <!--        </div>-->
+        <Fab
+            :floating="{ bottom: '16px', left: '24px' }"
+            :theme="secondaryTheme"
+            @click.native="onExpand">
+            <template #icon="{ isHovered, color }">
+                <IconArrowDouble
+                    :fill-color="isHovered ? color : whiteColor"
+                    :state="expendStateIcon" />
+            </template>
+        </Fab>
     </aside>
 </template>
 
@@ -182,7 +184,6 @@ export default {
         background-color: $GRAPHITE_DARK;
         box-shadow: $ELEVATOR_2_DP;
         transition: width 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-        overflow: auto;
         will-change: width;
         transform: translateZ(0);
         backface-visibility: hidden;
@@ -197,20 +198,9 @@ export default {
         }
 
         &__menu {
-            margin-bottom: 24px;
-        }
-
-        &__expand-button {
-            position: sticky;
-            left: 24px;
-            bottom: 20px;
-            width: 32px;
-            border-radius: 16px;
-            transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-
-            &:hover {
-                background-color: $GREEN;
-            }
+            padding-bottom: 48px;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
     }
 </style>

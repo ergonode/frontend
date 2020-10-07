@@ -81,15 +81,17 @@ export default {
         },
     },
     methods: {
-        onClick() {
-            if (this.data.actions.edit) {
-                const args = this.data.actions.edit.href.split('/');
-
-                this.$emit('rowAction', {
-                    key: 'edit',
-                    value: args,
-                });
+        onClick(event) {
+            if (event.target.closest('.toggler') || !this.data.actions.edit) {
+                return;
             }
+
+            const args = this.data.actions.edit.href.split('/');
+
+            this.$emit('rowAction', {
+                key: 'edit',
+                value: args,
+            });
         },
         onCellValueChange(value) {
             this.localValue = value;

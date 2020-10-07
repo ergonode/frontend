@@ -6,6 +6,7 @@ import {
     SYSTEM_TYPES,
 } from '@Attributes/defaults/attributes';
 import {
+    get as getAttribute,
     getAll as getAllAttributes,
 } from '@Attributes/services/attribute/index';
 import {
@@ -194,45 +195,36 @@ export default {
         }
     },
     async addListElementToLayout({
-        commit, dispatch, rootState, state,
-    }, position) {
-        const {
-            draggedElement,
-        } = rootState.draggable;
+        commit,
+        dispatch,
+        state,
+    }, {
+        draggableId,
+        position,
+    }) {
         const [
+            id,
             value,
+        ] = draggableId.split('/');
+        const [
+            code,
             languageCode,
-        ] = draggedElement.split(':');
-        const params = {
-            limit: 1,
-            offset: 0,
-            filter: `code=${value}`,
-            field: 'code',
-            view: 'list',
-            order: 'ASC',
-        };
-
-        const {
-            collection,
-        } = await getAllAttributes({
+        ] = value.split(':');
+        const attribute = await getAttribute({
             $axios: this.app.$axios,
-            params,
+            id,
         });
 
-        const [
-            element,
-        ] = collection;
-
         const layoutElement = getMappedLayoutElement({
-            id: element.id,
-            bounds: state.types.find(attributeType => attributeType.type === element.type),
-            label: element.label || element.code,
+            id: attribute.id,
+            bounds: state.types.find(attributeType => attributeType.type === attribute.type),
+            label: attribute.label[languageCode] || code,
             position,
         });
 
         dispatch('list/setDisabledElement', {
             languageCode,
-            elementId: element.id,
+            elementId: attribute.id,
             disabled: true,
         }, {
             root: true,
