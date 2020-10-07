@@ -69,7 +69,7 @@ export default {
         const localValue = this.localValue ? formatDate(this.localValue, DEFAULT_FORMAT) : '';
 
         if (localValue !== this.value[FILTER_OPERATOR.EQUAL]) {
-            this.$emit('filterValue', {
+            this.$emit('filter-value', {
                 value: {
                     [FILTER_OPERATOR.EQUAL]: localValue,
                 },

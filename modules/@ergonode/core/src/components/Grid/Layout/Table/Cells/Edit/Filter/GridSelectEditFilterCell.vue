@@ -81,7 +81,7 @@ export default {
     beforeDestroy() {
         if ((this.localValue && this.localValue.id !== this.value)
             || (!this.localValue && this.value)) {
-            this.$emit('filterValue', {
+            this.$emit('filter-value', {
                 value: {
                     [FILTER_OPERATOR.EQUAL]: this.localValue.id || this.localValue,
                 },

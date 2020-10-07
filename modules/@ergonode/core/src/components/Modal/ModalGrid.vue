@@ -24,8 +24,8 @@
                 :is-editable="isEditable"
                 :is-header-visible="true"
                 :is-basic-filter="isBasicFilter"
-                @cellValue="onCellValueChange"
-                @fetchData="onFetchData">
+                @cell-value="onCellValueChange"
+                @fetch-data="onFetchData">
                 <template #headerActions>
                     <slot name="headerActions" />
                 </template>
@@ -120,7 +120,7 @@ export default {
     },
     methods: {
         onCellValueChange(cellValues) {
-            this.$emit('cellValue', cellValues);
+            this.$emit('cell-value', cellValues);
         },
         async onFetchData(params = {
             offset: 0,

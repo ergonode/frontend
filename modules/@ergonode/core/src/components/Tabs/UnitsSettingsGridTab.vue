@@ -15,10 +15,10 @@
                 :is-header-visible="true"
                 :is-border="true"
                 :is-basic-filter="true"
-                @editRow="onEditRow"
-                @previewRow="onEditRow"
-                @deleteRow="onRemoveUnit"
-                @fetchData="onFetchData">
+                @edit-row="onEditRow"
+                @preview-row="onEditRow"
+                @delete-row="onRemoveUnit"
+                @fetch-data="onFetchData">
                 <template #headerActions>
                     <Button
                         data-cy="new-unit"
@@ -124,7 +124,7 @@ export default {
             });
         },
         onShowModal() {
-            this.$emit('showModal', 'units');
+            this.$emit('show-modal', 'units');
         },
     },
 };

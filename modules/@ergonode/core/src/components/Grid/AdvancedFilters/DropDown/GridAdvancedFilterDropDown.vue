@@ -7,7 +7,7 @@
         <DropDown
             v-show="isVisible"
             :offset="offset"
-            @clickOutside="onClickOutside">
+            @click-outside="onClickOutside">
             <template #body>
                 <slot name="body" />
             </template>
@@ -40,7 +40,7 @@ export default {
     },
     methods: {
         onClickOutside(payload) {
-            this.$emit('clickOutside', payload);
+            this.$emit('click-outside', payload);
         },
     },
 };

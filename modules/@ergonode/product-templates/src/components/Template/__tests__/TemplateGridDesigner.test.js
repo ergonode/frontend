@@ -76,8 +76,8 @@ describe('Template/Base/TemplateGridDesigner', () => {
     });
 
     it('Check if number of max rows number was emitted', () => {
-        wrapper.vm.$emit('rowsCount');
+        wrapper.vm.$emit('rows-count');
 
-        expect(wrapper.emitted().rowsCount).toBeTruthy();
+        expect(wrapper.emitted()['rows-count']).toBeTruthy();
     });
 });

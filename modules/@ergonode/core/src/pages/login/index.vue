@@ -12,7 +12,7 @@
             <FluidBlob />
             <Component
                 :is="loginFormComponents.loginFormComponent"
-                @backTo="onBackTo" />
+                @back-to="onBackTo" />
             <img
                 class="login__infographic"
                 :src="loginFormComponents.formImage">

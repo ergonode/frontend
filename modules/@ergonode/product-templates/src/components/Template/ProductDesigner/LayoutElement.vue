@@ -165,7 +165,7 @@ export default {
                 layoutElements: this.layoutElements.filter(el => el.id !== id),
             });
 
-            this.$emit('highlightedPositionChange', this.highlightingPositions);
+            this.$emit('highlighted-position-change', this.highlightingPositions);
         },
         onDragEnd(event) {
             removeElementCopyFromDocumentBody(event);
@@ -192,7 +192,7 @@ export default {
                 this.$emit('remove', this.index);
             }
 
-            this.$emit('highlightedPositionChange', []);
+            this.$emit('highlighted-position-change', []);
         },
         onInitResize(event) {
             this.highlightingPositions = getHighlightingPositions(
@@ -223,7 +223,7 @@ export default {
                 response.default(this.onResize, this.onStopResizing);
             });
 
-            this.$emit('highlightedPositionChange', this.highlightingPositions);
+            this.$emit('highlighted-position-change', this.highlightingPositions);
         },
         onResize(event) {
             const {
@@ -254,7 +254,7 @@ export default {
                 response.default(this.onResize, this.onStopResizing);
             });
 
-            this.$emit('highlightedPositionChange', []);
+            this.$emit('highlighted-position-change', []);
         },
         getElementWidthBasedOnMouseXPosition(xPos) {
             return this.startWidth + xPos - this.startX;
@@ -344,7 +344,7 @@ export default {
                 });
 
                 this.actualElementRow = rowBellowMouse;
-                this.$emit('resizingElMaxRow', this.newHeight + row);
+                this.$emit('resizing-el-max-row', this.newHeight + row);
             }
         },
         blockOtherInteractionsOnResizeEvent() {

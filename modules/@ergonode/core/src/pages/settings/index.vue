@@ -24,7 +24,7 @@
                     :change-values="tabChangeValues"
                     :errors="tabErrors"
                     @fetched="onFetchedGridData"
-                    @showModal="onShowModalByType" />
+                    @show-modal="onShowModalByType" />
             </template>
         </HorizontalRoutingTabBar>
         <Component

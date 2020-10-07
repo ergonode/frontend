@@ -36,14 +36,14 @@
                 :is-header-visible="true"
                 :is-basic-filter="true"
                 :is-collection-layout="true"
-                @editRow="onEditRow"
-                @previewRow="onEditRow"
-                @cellValue="onCellValueChange"
-                @focusCell="onFocusCell"
-                @deleteRow="onRemoveRow"
-                @dropColumn="onDropColumn"
-                @dropFilter="onDropFilter"
-                @fetchData="onFetchData">
+                @edit-row="onEditRow"
+                @preview-row="onEditRow"
+                @cell-value="onCellValueChange"
+                @focus-cell="onFocusCell"
+                @delete-row="onRemoveRow"
+                @drop-column="onDropColumn"
+                @drop-filter="onDropFilter"
+                @fetch-data="onFetchData">
                 <!--                <template #headerActions>-->
                 <!--
                                   Uncomment when product draft will be change on grid

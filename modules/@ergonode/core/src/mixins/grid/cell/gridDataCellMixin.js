@@ -73,7 +73,7 @@ export default {
     },
     methods: {
         onValueChange(value) {
-            this.$emit('cellValue', [
+            this.$emit('cell-value', [
                 {
                     value,
                     rowId: this.rowId,
@@ -84,7 +84,7 @@ export default {
             ]);
         },
         onEditCell() {
-            this.$emit('editCell', {
+            this.$emit('edit-cell', {
                 type: this.column.type,
                 props: {
                     bounds: this.$el.getBoundingClientRect(),

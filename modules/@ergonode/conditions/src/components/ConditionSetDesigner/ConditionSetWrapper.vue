@@ -11,7 +11,7 @@
         :is-dragging-enabled="!disabled"
         :is-multi-draggable="true"
         :context-name="contextName"
-        @afterDrop="onGetConditionConfiguration">
+        @after-drop="onGetConditionConfiguration">
         <template
             #gridItem="{
                 item,

@@ -71,7 +71,7 @@ export default {
                     endIndex: fixedRow,
                 });
 
-            this.$emit('cellValue', values);
+            this.$emit('cell-value', values);
         },
         onFocusInside(event) {
             const {

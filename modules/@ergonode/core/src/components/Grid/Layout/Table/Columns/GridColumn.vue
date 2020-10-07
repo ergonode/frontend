@@ -7,7 +7,7 @@
         <slot />
         <GridColumnResizer
             v-if="!isDragged"
-            @widthChange="onUpdateWidth"
+            @width-change="onUpdateWidth"
             @resize="onResize" />
     </div>
 </template>

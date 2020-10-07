@@ -176,7 +176,7 @@ export default {
                     } = item;
 
                     if (children && !expanded) {
-                        this.$emit('toggleItem', item);
+                        this.$emit('toggle-item', item);
                     }
 
                     this.__setState({
@@ -322,13 +322,13 @@ export default {
             });
             this.rebuildGrid(id);
             if (childrenLength > 0) {
-                this.$emit('toggleItem', {
+                this.$emit('toggle-item', {
                     ...droppedItem,
                     row: rowToInsert + this.positionBetweenRows,
                 });
             }
             this.calculateRowsCount();
-            this.$emit('afterDrop', id);
+            this.$emit('after-drop', id);
         },
         getElementBelowMouse(event) {
             const {

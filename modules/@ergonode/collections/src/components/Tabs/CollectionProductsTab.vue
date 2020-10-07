@@ -17,9 +17,9 @@
                 :is-collection-layout="true"
                 :is-header-visible="true"
                 :is-border="true"
-                @cellValue="onCellValueChange"
-                @deleteRow="onRemoveRow"
-                @fetchData="onFetchData">
+                @cell-value="onCellValueChange"
+                @delete-row="onRemoveRow"
+                @fetch-data="onFetchData">
                 <template #headerActions>
                     <ActionButton
                         title="ADD PRODUCTS"

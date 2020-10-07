@@ -12,7 +12,7 @@
                 :data-count="dataCount"
                 :is-editable="isAllowedToUpdate"
                 :is-border="true"
-                @cellValue="onCellValueChange">
+                @cell-value="onCellValueChange">
                 <template #footer>
                     <div class="role-privileges-footer">
                         <Button

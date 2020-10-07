@@ -11,7 +11,7 @@
                 :rows="rows"
                 :is-prefetching-data="isPrefetchingData"
                 :is-border="true"
-                @fetchData="onFetchData" />
+                @fetch-data="onFetchData" />
         </template>
     </CenterViewTemplate>
 </template>

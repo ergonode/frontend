@@ -112,10 +112,10 @@ export default {
     methods: {
         onSearch(value) {
             this.searchResult = value;
-            this.$emit('searchResult', value);
+            this.$emit('search-result', value);
         },
         onLanguageSelect(value) {
-            this.$emit('selectOption', value);
+            this.$emit('select-option', value);
         },
         onSearchButtonClick() {
             this.isSearchButtonClicked = !this.isSearchButtonClicked;
