@@ -14,6 +14,13 @@
                         :disabled="!isAllowedToUpdate"
                         :error-messages="translationErrors[nameFieldKey]"
                         @input="(value) => setTranslationPropertyValue(value, nameFieldKey)" />
+                    <Divider v-if="extendedForm.length" />
+                    <template v-for="(field, index) in extendedForm">
+                        <Component
+                            :is="field.component"
+                            :key="index"
+                            v-bind="bindingProps(field)" />
+                    </template>
                 </FormSection>
             </template>
         </Form>
@@ -22,6 +29,7 @@
 
 <script>
 import Card from '@Core/components/Card/Card';
+import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import TextField from '@Core/components/Inputs/TextField';
@@ -31,6 +39,7 @@ import PRIVILEGES from '@Trees/config/privileges';
 export default {
     name: 'CategoryTreeTranslationForm',
     components: {
+        Divider,
         FormSection,
         Form,
         Card,
@@ -45,11 +54,28 @@ export default {
                 PRIVILEGES.CATEGORY_TREE.update,
             ]);
         },
+        extendedForm() {
+            return this.$getExtendedFormByType({
+                key: '@Attributes/components/Forms/CategoryTreeTranslationForm',
+            });
+        },
         nameFieldKey() {
             return 'name';
         },
     },
     methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                disabled: !this.isAllowedToUpdate,
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.translationErrors,
+                languageCode: this.languageCode,
+                ...props,
+            };
+        },
         dataCyGenerator(key) {
             return `category-tree-${key}_${this.languageCode}`;
         },

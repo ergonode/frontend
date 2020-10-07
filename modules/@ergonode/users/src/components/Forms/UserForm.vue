@@ -72,12 +72,20 @@
                     :error-messages="errors[roleIdFieldKey]"
                     :fetch-options-request="getRoleOptions"
                     @input="setRoleValue" />
+                <Divider v-if="extendedForm.length" />
+                <template v-for="(field, index) in extendedForm">
+                    <Component
+                        :is="field.component"
+                        :key="index"
+                        v-bind="bindingProps(field)" />
+                </template>
             </FormSection>
         </template>
     </Form>
 </template>
 
 <script>
+import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import Select from '@Core/components/Inputs/Select/Select';
@@ -96,6 +104,7 @@ import {
 export default {
     name: 'UserForm',
     components: {
+        Divider,
         Form,
         FormSection,
         TextField,
@@ -136,10 +145,10 @@ export default {
             'isActive',
             'role',
         ]),
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.USER.update,
-            ]);
+        extendedForm() {
+            return this.$getExtendedFormByType({
+                key: '@Users/components/Forms/UserForm',
+            });
         },
         isDisabled() {
             return Boolean(this.id);
@@ -189,6 +198,17 @@ export default {
         ...mapActions('role', [
             'getRoleOptions',
         ]),
+        bindingProps({
+            props,
+        }) {
+            return {
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.errors,
+                disabled: !this.isAllowedToUpdate,
+                ...props,
+            };
+        },
         setEmailValue(value) {
             this.__setState({
                 key: this.emailFieldKey,

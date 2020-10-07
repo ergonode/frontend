@@ -38,6 +38,13 @@
                         :errors="errors"
                         @input="setConfigurationValue" />
                 </FadeTransition>
+                <Divider v-if="extendedForm.length" />
+                <template v-for="(field, index) in extendedForm">
+                    <Component
+                        :is="field.component"
+                        :key="index"
+                        v-bind="bindingProps(field)" />
+                </template>
             </FormSection>
         </template>
     </Form>
@@ -47,6 +54,7 @@
 import {
     GRAPHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import JSONSchemaForm from '@Core/components/Form/JSONSchemaForm/JSONSchemaForm';
 import FormSection from '@Core/components/Form/Section/FormSection';
@@ -64,6 +72,7 @@ import {
 export default {
     name: 'ImportProfileForm',
     components: {
+        Divider,
         IconSpinner,
         JSONSchemaForm,
         Form,
@@ -90,6 +99,12 @@ export default {
         ...mapState('dictionaries', [
             'sources',
         ]),
+        extendedForm() {
+            return this.$getExtendedFormByType({
+                key: '@Import/components/Forms/ImportProfileForm',
+                type: this.type,
+            });
+        },
         graphiteColor() {
             return GRAPHITE;
         },
@@ -125,6 +140,17 @@ export default {
             '__setState',
             'getConfiguration',
         ]),
+        bindingProps({
+            props,
+        }) {
+            return {
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.errors,
+                disabled: !this.isAllowedToUpdate,
+                ...props,
+            };
+        },
         async setSchema(type) {
             this.isFetchingConfiguration = true;
 

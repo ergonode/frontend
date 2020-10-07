@@ -26,6 +26,13 @@
                             value,
                             descriptionKeyField,
                         )" />
+                    <Divider v-if="extendedForm.length" />
+                    <template v-for="(field, index) in extendedForm">
+                        <Component
+                            :is="field.component"
+                            :key="index"
+                            v-bind="bindingProps(field)" />
+                    </template>
                 </FormSection>
             </template>
         </Form>
@@ -35,6 +42,7 @@
 <script>
 import PRIVILEGES from '@Collections/config/privileges';
 import Card from '@Core/components/Card/Card';
+import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import TextArea from '@Core/components/Inputs/TextArea';
@@ -44,6 +52,7 @@ import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 export default {
     name: 'CollectionTranslationForm',
     components: {
+        Divider,
         FormSection,
         Form,
         Card,
@@ -59,6 +68,11 @@ export default {
                 PRIVILEGES.PRODUCT_COLLECTION.update,
             ]);
         },
+        extendedForm() {
+            return this.$getExtendedFormByType({
+                key: '@Collections/components/Forms/CollectionTranslationForm',
+            });
+        },
         descriptionKeyField() {
             return 'description';
         },
@@ -67,6 +81,18 @@ export default {
         },
     },
     methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                disabled: !this.isAllowedToUpdate,
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.translationErrors,
+                languageCode: this.languageCode,
+                ...props,
+            };
+        },
         dataCyGenerator(key) {
             return `collection-${key}_${this.languageCode}`;
         },

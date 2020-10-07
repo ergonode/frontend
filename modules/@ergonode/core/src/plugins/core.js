@@ -2,6 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    isObject,
+} from '@Core/models/objectWrapper';
+
 export default ({
     app,
 }, inject) => {
@@ -19,17 +23,17 @@ export default ({
         app.store.dispatch('core/closeModal', key);
     });
     inject('getExtendedFormByType', ({
-        key, type,
+        key, type = null,
     }) => {
         const forAllTypes = '__ALL';
         const components = [];
         const extendedComponents = app.$getExtendedComponents(key);
 
-        if (extendedComponents) {
+        if (extendedComponents && isObject(extendedComponents)) {
             if (extendedComponents[forAllTypes]) {
                 components.push(...extendedComponents[forAllTypes]);
             }
-            if (extendedComponents[type]) {
+            if (type && extendedComponents[type]) {
                 components.push(...extendedComponents[type]);
             }
         }
