@@ -15,7 +15,7 @@
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE IMPORT"
-                    :disabled="!isUserAllowedToDelete"
+                    :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete :fill-color="color" />
@@ -80,7 +80,7 @@ export default {
                 PRIVILEGES.IMPORT.update,
             ]);
         },
-        isUserAllowedToDelete() {
+        isAllowedToDelete() {
             return this.$hasAccess([
                 PRIVILEGES.IMPORT.delete,
             ]);

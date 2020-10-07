@@ -16,10 +16,15 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :drafts="drafts"
                 :is-prefetching-data="isPrefetchingData"
+                :collection-cell-binding="collectionCellBinding"
                 :is-select-column="isSelectColumn"
+                :is-collection-layout="isCollectionLayout"
+                :is-editable="isEditable"
                 :is-header-visible="true"
-                :is-basic-filter="true"
+                :is-basic-filter="isBasicFilter"
+                @cellValue="onCellValueChange"
                 @fetchData="onFetchData">
                 <template #headerActions>
                     <slot name="headerActions" />
@@ -63,11 +68,31 @@ export default {
             type: String,
             required: true,
         },
+        drafts: {
+            type: Object,
+            default: () => {},
+        },
         columnParams: {
             type: String,
             default: '',
         },
+        collectionCellBinding: {
+            type: Object,
+            default: null,
+        },
         isSelectColumn: {
+            type: Boolean,
+            default: false,
+        },
+        isBasicFilter: {
+            type: Boolean,
+            default: false,
+        },
+        isEditable: {
+            type: Boolean,
+            default: true,
+        },
+        isCollectionLayout: {
             type: Boolean,
             default: false,
         },
@@ -94,6 +119,9 @@ export default {
         },
     },
     methods: {
+        onCellValueChange(cellValues) {
+            this.$emit('cellValue', cellValues);
+        },
         async onFetchData(params = {
             offset: 0,
             limit: DATA_LIMIT,

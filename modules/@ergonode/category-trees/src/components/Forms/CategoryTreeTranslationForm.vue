@@ -11,7 +11,7 @@
                         :data-cy="dataCyGenerator(nameFieldKey)"
                         :value="translations.name[languageCode]"
                         label="Tree name"
-                        :disabled="!isUserAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate"
                         :error-messages="translationErrors[nameFieldKey]"
                         @input="(value) => setTranslationPropertyValue(value, nameFieldKey)" />
                 </FormSection>
@@ -40,7 +40,7 @@ export default {
         translationCardMixin,
     ],
     computed: {
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.CATEGORY_TREE.update,
             ]);

@@ -6,7 +6,7 @@
     <CenterViewTemplate>
         <template #content>
             <Grid
-                :is-editable="isUserAllowedToUpdate"
+                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
@@ -24,7 +24,7 @@
                     <ActionButton
                         title="ADD PRODUCTS"
                         :theme="secondaryTheme"
-                        :disabled="!isUserAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate"
                         :size="smallSize"
                         :options="addProductOptions"
                         :fixed-content="true"
@@ -109,7 +109,7 @@ export default {
         ...mapState('grid', [
             'drafts',
         ]),
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT_COLLECTION.update,
             ]);

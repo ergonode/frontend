@@ -21,6 +21,7 @@ import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemp
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import UserForm from '@Users/components/Forms/UserForm';
 import {
     mapActions,
@@ -32,20 +33,9 @@ export default {
         CenterViewTemplate,
         UserForm,
     },
-    props: {
-        scope: {
-            type: String,
-            default: () => ({}),
-        },
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     data() {
         return {
             isSubmitting: false,
@@ -54,11 +44,6 @@ export default {
     methods: {
         ...mapActions('user', [
             'updateUser',
-        ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
-            'markChangeValuesAsSaved',
         ]),
         onSubmit() {
             if (this.isSubmitting) {

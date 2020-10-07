@@ -583,7 +583,8 @@ export default {
             this.hasInitialWidths = false;
         },
         disableListElement({
-            languageCode, attributeId,
+            languageCode,
+            attributeId,
         }) {
             if (this.disabledElements[languageCode][attributeId]) {
                 this.setDisabledElement({

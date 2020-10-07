@@ -136,7 +136,7 @@ export default {
             'isActive',
             'role',
         ]),
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.USER.update,
             ]);

@@ -8,7 +8,7 @@
         :scope="scope"
         :change-values="changeValues"
         :errors="errors"
-        :disabled="!isUserAllowedToUpdate" />
+        :disabled="!isAllowedToUpdate" />
 </template>
 
 <script>
@@ -25,7 +25,7 @@ export default {
         translationCardMixin,
     ],
     computed: {
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,
             ]);

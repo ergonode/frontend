@@ -16,10 +16,12 @@
 </template>
 
 <script>
+import TemplateGridLayerItem from '@Templates/components/Template/Base/TemplateGridLayerItem';
+
 export default {
     name: 'TemplateGridDraggableLayer',
     components: {
-        TemplateGridLayerItem: () => import('@Templates/components/Template/Base/TemplateGridLayerItem'),
+        TemplateGridLayerItem,
     },
     props: {
         columnsNumber: {
@@ -55,8 +57,8 @@ export default {
         },
     },
     methods: {
-        onDrop(position) {
-            this.$emit('drop', position);
+        onDrop(payload) {
+            this.$emit('drop', payload);
         },
     },
 };

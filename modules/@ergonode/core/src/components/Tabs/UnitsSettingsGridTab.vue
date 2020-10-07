@@ -6,7 +6,7 @@
     <CenterViewTemplate>
         <template #content>
             <Grid
-                :is-editable="isUserAllowedToUpdate"
+                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
@@ -24,7 +24,7 @@
                         data-cy="new-unit"
                         title="NEW UNIT"
                         :theme="secondaryTheme"
-                        :disabled="!isUserAllowedToCreate"
+                        :disabled="!isAllowedToCreate"
                         :size="smallSize"
                         @click.native="onShowModal">
                         <template #prepend="{ color }">
@@ -90,12 +90,12 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        isUserAllowedToCreate() {
+        isAllowedToCreate() {
             return this.$hasAccess([
                 PRIVILEGES.SETTINGS.create,
             ]);
         },
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.SETTINGS.update,
             ]);

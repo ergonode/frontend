@@ -7,7 +7,7 @@
         :title="status.name"
         :theme="secondaryTheme"
         :size="smallSize"
-        :disabled="!isUserAllowedToUpdate || !workflow.length"
+        :disabled="!isAllowedToUpdate || !workflow.length"
         :options="workflow"
         :fixed-content="true"
         @input="onUpdateStatus">
@@ -79,7 +79,7 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ]);

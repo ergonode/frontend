@@ -4,7 +4,7 @@
  */
 <template>
     <ListDraggableElement
-        :draggable-id="`${item.code}:${languageCode}`"
+        :draggable-id="`${item.id}/${item.code}:${languageCode}`"
         :is-draggable="isDraggable"
         :is-disabled="isDisabled"
         :hint="hint"
@@ -75,6 +75,9 @@ export default {
         ...mapState('list', [
             'disabledElements',
         ]),
+        draggableId() {
+
+        },
         isDisabled() {
             return this.disabledElements[this.languageCode]
                 && this.disabledElements[this.languageCode][this.item.id];
