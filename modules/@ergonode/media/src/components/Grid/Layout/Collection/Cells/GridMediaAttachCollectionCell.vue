@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import Toggler from '@Core/components/Inputs/Toggler/Toggler';
 import Picture from '@Core/components/Multimedia/Picture';
+import Toggler from '@Core/components/Toggler/Toggler';
 import {
     THEME,
 } from '@Core/defaults/theme';

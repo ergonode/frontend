@@ -75,9 +75,9 @@ import {
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import InputController from '@Core/components/Inputs/InputController';
-import InputLabel from '@Core/components/Inputs/InputLabel';
-import InputSolidStyle from '@Core/components/Inputs/InputSolidStyle';
+import InputController from '@Core/components/Input/InputController';
+import InputLabel from '@Core/components/Input/InputLabel';
+import InputSolidStyle from '@Core/components/Input/InputSolidStyle';
 import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 import Preloader from '@Core/components/Preloader/Preloader';
 import {

@@ -57,7 +57,7 @@ import {
 } from '@Core/defaults/grid';
 // TODO: Uncomment when we have global search
 // import IconSearch from '@Core/components/Icons/Actions/IconSearch';
-// import TextField from '@Core/components/Inputs/TextField';
+// import TextField from '@Core/components/TextField/TextField';
 import {
     SIZE,
 } from '@Core/defaults/theme';

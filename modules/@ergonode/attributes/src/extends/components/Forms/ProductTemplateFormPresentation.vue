@@ -24,7 +24,7 @@
 
 <script>
 import FormSection from '@Core/components/Form/Section/FormSection';
-import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import TranslationLazySelect from '@Core/components/Select/TranslationLazySelect';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,

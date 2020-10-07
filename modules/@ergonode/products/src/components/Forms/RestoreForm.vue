@@ -31,7 +31,7 @@ import {
 } from '@Attributes/defaults/attributes';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import RadioButton from '@Core/components/Inputs/RadioButton';
+import RadioButton from '@Core/components/RadioButton/RadioButton';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     mapGetters,

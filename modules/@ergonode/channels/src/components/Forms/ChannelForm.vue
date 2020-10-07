@@ -60,7 +60,7 @@ import Form from '@Core/components/Form/Form';
 import JSONSchemaForm from '@Core/components/Form/JSONSchemaForm/JSONSchemaForm';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import Select from '@Core/components/Inputs/Select/Select';
+import Select from '@Core/components/Select/Select';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';

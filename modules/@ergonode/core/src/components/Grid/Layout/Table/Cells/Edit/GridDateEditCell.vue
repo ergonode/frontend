@@ -19,8 +19,8 @@
 </template>
 
 <script>
+import DatePicker from '@Core/components/DatePicker/DatePicker';
 import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
-import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 import {
     SIZE,
 } from '@Core/defaults/theme';

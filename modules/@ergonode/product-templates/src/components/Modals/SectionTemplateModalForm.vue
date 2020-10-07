@@ -34,8 +34,8 @@
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
-import TextField from '@Core/components/Inputs/TextField';
 import ModalForm from '@Core/components/Modal/ModalForm';
+import TextField from '@Core/components/TextField/TextField';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,

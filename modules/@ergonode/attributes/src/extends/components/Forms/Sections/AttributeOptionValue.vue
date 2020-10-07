@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import TextField from '@Core/components/Inputs/TextField';
+import TextField from '@Core/components/TextField/TextField';
 import {
     SIZE,
 } from '@Core/defaults/theme';

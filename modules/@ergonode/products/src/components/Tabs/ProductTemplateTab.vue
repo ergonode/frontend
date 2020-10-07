@@ -65,8 +65,8 @@
 import Button from '@Core/components/Button/Button';
 import IconRestore from '@Core/components/Icons/Actions/IconRestore';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import TreeSelect from '@Core/components/Inputs/Select/Tree/TreeSelect';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import TreeSelect from '@Core/components/Select/Tree/TreeSelect';
 import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
 import {
     ALERT_TYPE,

@@ -17,7 +17,7 @@
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
-import Select from '@Core/components/Inputs/Select/Select';
+import Select from '@Core/components/Select/Select';
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';

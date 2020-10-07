@@ -48,7 +48,7 @@ import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import InfoHint from '@Core/components/Hints/InfoHint';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import PRIVILEGES from '@Core/config/privileges';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';

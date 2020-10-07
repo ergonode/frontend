@@ -16,7 +16,7 @@
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
-import TextArea from '@Core/components/Inputs/TextArea';
+import TextArea from '@Core/components/TextArea/TextArea';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 
 export default {

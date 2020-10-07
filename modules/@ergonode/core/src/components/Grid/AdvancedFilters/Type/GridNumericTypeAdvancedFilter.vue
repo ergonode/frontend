@@ -29,7 +29,7 @@
 <script>
 import GridAdvancedFilterRangeContent from '@Core/components/Grid/AdvancedFilters/Content/GridAdvancedFilterRangeContent';
 import GridAdvancedFilter from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilter';
-import MultiselectDropdownFooter from '@Core/components/Inputs/Select/DropDown/Footers/MultiselectDropdownFooter';
+import MultiselectDropdownFooter from '@Core/components/Select/DropDown/Footers/MultiselectDropdownFooter';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';

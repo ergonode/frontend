@@ -81,9 +81,9 @@
 <script>
 import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import InputController from '@Core/components/Inputs/InputController';
-import InputLabel from '@Core/components/Inputs/InputLabel';
-import InputSolidStyle from '@Core/components/Inputs/InputSolidStyle';
+import InputController from '@Core/components/Input/InputController';
+import InputLabel from '@Core/components/Input/InputLabel';
+import InputSolidStyle from '@Core/components/Input/InputSolidStyle';
 import {
     SIZE,
     THEME,

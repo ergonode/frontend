@@ -44,8 +44,8 @@ import Card from '@Core/components/Card/Card';
 import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import TextArea from '@Core/components/Inputs/TextArea';
-import TextField from '@Core/components/Inputs/TextField';
+import TextArea from '@Core/components/TextArea/TextArea';
+import TextField from '@Core/components/TextField/TextField';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import PRIVILEGES from '@Transitions/config/privileges';
 

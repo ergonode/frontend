@@ -14,8 +14,8 @@
 </template>
 
 <script>
+import DateRangePickerContent from '@Core/components/DatePicker/DateRangePickerContent';
 import GridAdvancedFilterContent from '@Core/components/Grid/AdvancedFilters/Content/GridAdvancedFilterContent';
-import DateRangePickerContent from '@Core/components/Inputs/DatePicker/DateRangePickerContent';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';

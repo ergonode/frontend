@@ -18,7 +18,7 @@
 
 <script>
 import GridAdvancedFilterContent from '@Core/components/Grid/AdvancedFilters/Content/GridAdvancedFilterContent';
-import TextField from '@Core/components/Inputs/TextField';
+import TextField from '@Core/components/TextField/TextField';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';

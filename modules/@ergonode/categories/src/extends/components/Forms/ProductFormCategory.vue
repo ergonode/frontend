@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
+import TranslationLazySelect from '@Core/components/Select/TranslationLazySelect';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,

@@ -32,8 +32,8 @@
 
 <script>
 import InfoHint from '@Core/components/Hints/InfoHint';
-import TextField from '@Core/components/Inputs/TextField';
-import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
+import TextField from '@Core/components/TextField/TextField';
+import TextFieldSuffix from '@Core/components/TextField/TextFieldSuffix';
 import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
 import {
     mapState,

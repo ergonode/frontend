@@ -53,8 +53,8 @@
 import Button from '@Core/components/Button/Button';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import Select from '@Core/components/Inputs/Select/Select';
 import ModalForm from '@Core/components/Modal/ModalForm';
+import Select from '@Core/components/Select/Select';
 import {
     COLUMNS_NUMBER,
     IMAGE_SCALING,

@@ -29,7 +29,7 @@
 <script>
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Products/config/privileges';

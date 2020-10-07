@@ -18,7 +18,7 @@
 
 <script>
 import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
