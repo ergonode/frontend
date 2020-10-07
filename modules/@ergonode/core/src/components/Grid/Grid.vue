@@ -416,7 +416,7 @@ export default {
         onRowAction({
             key, value,
         }) {
-            this.$emit(`${key}Row`, value);
+            this.$emit(`${key}-row`, value);
         },
         onDropColumn(columnId) {
             this.$emit('drop-column', columnId);

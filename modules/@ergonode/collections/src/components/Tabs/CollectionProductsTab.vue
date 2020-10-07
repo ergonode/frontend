@@ -18,7 +18,7 @@
                 :is-header-visible="true"
                 :is-border="true"
                 @cell-value="onCellValueChange"
-                @deleteRow="onRemoveRow"
+                @@delete-row="onRemoveRow"
                 @fetch-data="onFetchData">
                 <template #headerActions>
                     <ActionButton

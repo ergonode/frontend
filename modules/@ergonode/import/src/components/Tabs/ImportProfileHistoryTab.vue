@@ -12,7 +12,7 @@
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
-                @previewRow="onPreviewRow"
+                @preview-row="onPreviewRow"
                 @fetch-data="onFetchData" />
             <ImportDetailsModalGrid
                 v-if="isImportDetailsModalVisible"

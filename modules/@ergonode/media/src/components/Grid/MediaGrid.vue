@@ -14,10 +14,10 @@
         :is-basic-filter="true"
         :is-header-visible="true"
         :is-collection-layout="true"
-        @editRow="onEditRow"
-        @previewRow="onEditRow"
+        @edit-row="onEditRow"
+        @preview-row="onEditRow"
         @cell-value="onCellValueChange"
-        @deleteRow="onRemoveRow"
+        @@delete-row="onRemoveRow"
         @fetch-data="onFetchData">
         <!--  TODO: Uncomment when we have global search      -->
         <!--        <template #headerActions>-->

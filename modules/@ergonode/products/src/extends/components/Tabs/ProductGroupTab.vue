@@ -15,7 +15,7 @@
                 :is-collection-layout="true"
                 :is-header-visible="true"
                 :is-border="true"
-                @editRow="onEditRow"
+                @edit-row="onEditRow"
                 @cell-value="onCellValueChange"
                 @fetch-data="onFetchData">
                 <template #headerActions>

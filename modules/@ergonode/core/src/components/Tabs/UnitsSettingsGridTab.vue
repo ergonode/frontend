@@ -15,9 +15,9 @@
                 :is-header-visible="true"
                 :is-border="true"
                 :is-basic-filter="true"
-                @editRow="onEditRow"
-                @previewRow="onEditRow"
-                @deleteRow="onRemoveUnit"
+                @edit-row="onEditRow"
+                @preview-row="onEditRow"
+                @@delete-row="onRemoveUnit"
                 @fetch-data="onFetchData">
                 <template #headerActions>
                     <Button

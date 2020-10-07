@@ -13,9 +13,9 @@
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
-                @editRow="onEditRow"
-                @previewRow="onEditRow"
-                @deleteRow="onRemoveRow"
+                @edit-row="onEditRow"
+                @preview-row="onEditRow"
+                @@delete-row="onRemoveRow"
                 @fetch-data="onFetchData" />
         </template>
     </CenterViewTemplate>

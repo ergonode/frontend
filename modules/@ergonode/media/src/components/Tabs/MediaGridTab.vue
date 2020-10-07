@@ -16,9 +16,9 @@
                 :is-header-visible="true"
                 :is-border="true"
                 :is-collection-layout="true"
-                @editRow="onEditRow"
-                @previewRow="onEditRow"
-                @deleteRow="onRemoveRow"
+                @edit-row="onEditRow"
+                @preview-row="onEditRow"
+                @@delete-row="onRemoveRow"
                 @fetch-data="onFetchData" />
         </template>
     </CenterViewTemplate>
