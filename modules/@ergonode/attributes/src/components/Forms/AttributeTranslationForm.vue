@@ -45,7 +45,6 @@ import FormSection from '@Core/components/Form/Section/FormSection';
 import TextArea from '@Core/components/Inputs/TextArea';
 import TextField from '@Core/components/Inputs/TextField';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
@@ -65,7 +64,6 @@ export default {
     },
     mixins: [
         translationCardMixin,
-        formFeedbackMixin,
     ],
     computed: {
         ...mapState('dictionaries', [
@@ -104,7 +102,7 @@ export default {
                 typeKey: this.typeKey,
                 scope: this.scope,
                 changeValues: this.changeValues,
-                errors: this.errors,
+                errors: this.translationErrors,
                 languageCode: this.languageCode,
                 ...props,
             };
