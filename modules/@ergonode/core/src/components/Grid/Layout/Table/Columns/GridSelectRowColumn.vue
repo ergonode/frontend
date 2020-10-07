@@ -93,11 +93,11 @@ export default {
             if (anyRowsSelected) {
                 this.selectedRows = {};
 
-                this.$emit('rowSelect', this.selectedRows);
+                this.$emit('row-select', this.selectedRows);
             } else {
                 this.isSelectedAllRows = !this.isSelectedAllRows;
 
-                this.$emit('rowsSelect', this.isSelectedAllRows);
+                this.$emit('rows-select', this.isSelectedAllRows);
             }
         },
         onSelectRow({
@@ -121,7 +121,7 @@ export default {
 
                     this.isSelectedAllRows = false;
 
-                    this.$emit('rowsSelect', this.isSelectedAllRows);
+                    this.$emit('rows-select', this.isSelectedAllRows);
                 }
             }
 
@@ -129,7 +129,7 @@ export default {
                 ...this.selectedRows,
             };
 
-            this.$emit('rowSelect', this.selectedRows);
+            this.$emit('row-select', this.selectedRows);
         },
     },
 };

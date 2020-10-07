@@ -23,7 +23,7 @@
                 :editor="editor"
                 ref="menuBubble"
                 @active="onMenuBubbleActive" />
-            <slot #prepand />
+            <slot name="prepend" />
             <InputController :size="size">
                 <div class="rich-text-editor">
                     <VerticalFixedScroll>

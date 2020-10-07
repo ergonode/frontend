@@ -13,9 +13,9 @@
             :grid-data="filteredGridData"
             :is-dragging-enabled="isDraggingEnabled"
             :is-multi-draggable="isMultiDraggable"
-            @toggleItem="toggleItem"
-            @afterDrop="id => $emit('afterDrop', id)"
-            @afterRemove="id => $emit('afterRemove', id)"
+            @toggle-item="toggleItem"
+            @after-drop="id => $emit('after-drop', id)"
+            @after-remove="id => $emit('after-remove', id)"
             @remove="removeItemOnDrop">
             <slot
                 name="gridPresentationLayer"
@@ -56,8 +56,8 @@
                             :is-dragging-enabled="isDraggingEnabled"
                             :item="item"
                             :context-name="contextName"
-                            @toggleItem="toggleItem(item)"
-                            @removeItem="removeItem(item)" />
+                            @toggle-item="toggleItem(item)"
+                            @remove-item="removeItem(item)" />
                     </slot>
                     <template
                         v-if="isConnectionsVisible"

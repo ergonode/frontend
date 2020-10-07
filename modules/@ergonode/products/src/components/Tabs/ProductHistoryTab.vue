@@ -12,7 +12,7 @@
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
-                @fetchData="onFetchData" />
+                @fetch-data="onFetchData" />
         </template>
     </CenterViewTemplate>
 </template>

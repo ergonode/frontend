@@ -38,8 +38,8 @@ export default {
     },
     methods: {
         emitRowsNumber() {
-            this.$emit('rowsCount', {
-                key: 'rowsCount',
+            this.$emit('rows-count', {
+                key: 'rows-count',
                 value: this.getTotalRowsInTemplate(),
             });
         },

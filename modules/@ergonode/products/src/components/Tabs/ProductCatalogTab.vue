@@ -22,7 +22,7 @@
         </template>
         <template #grid>
             <Grid
-                :is-editable="isUserAllowedToUpdate"
+                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :rows="rows"
                 :placeholder="noRecordsPlaceholder"
@@ -36,14 +36,14 @@
                 :is-header-visible="true"
                 :is-basic-filter="true"
                 :is-collection-layout="true"
-                @editRow="onEditRow"
-                @previewRow="onEditRow"
-                @cellValue="onCellValueChange"
-                @focusCell="onFocusCell"
-                @deleteRow="onRemoveRow"
-                @dropColumn="onDropColumn"
-                @dropFilter="onDropFilter"
-                @fetchData="onFetchData">
+                @edit-row="onEditRow"
+                @preview-row="onEditRow"
+                @cell-value="onCellValueChange"
+                @focus-cell="onFocusCell"
+                @delete-row="onRemoveRow"
+                @drop-column="onDropColumn"
+                @drop-filter="onDropFilter"
+                @fetch-data="onFetchData">
                 <!--                <template #headerActions>-->
                 <!--
                                   Uncomment when product draft will be change on grid
@@ -51,7 +51,7 @@
                                     :theme="secondaryTheme"
                                     :size="smallSize"
                                     title="RESTORE"
-                                    :disabled="!isUserAllowedToRestore"
+                                    :disabled="!isAllowedToRestore"
                                     @click.native="onShowModal">
                                     <template #prepend="{ color }">
                                         <IconRestore :fill-color="color" />
@@ -66,7 +66,7 @@
                 <template #appendFooter>
                     <Button
                         title="SAVE CHANGES"
-                        :disabled="!isUserAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate"
                         @click.native="onSubmit">
                         <template
                             v-if="isSubmitting"
@@ -238,12 +238,12 @@ export default {
                 },
             ];
         },
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ]);
         },
-        isUserAllowedToRestore() {
+        isAllowedToRestore() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ]) && this.focusedCellToRestore;

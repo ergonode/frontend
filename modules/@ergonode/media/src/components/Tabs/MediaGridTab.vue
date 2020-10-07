@@ -16,10 +16,10 @@
                 :is-header-visible="true"
                 :is-border="true"
                 :is-collection-layout="true"
-                @editRow="onEditRow"
-                @previewRow="onEditRow"
-                @deleteRow="onRemoveRow"
-                @fetchData="onFetchData" />
+                @edit-row="onEditRow"
+                @preview-row="onEditRow"
+                @delete-row="onRemoveRow"
+                @fetch-data="onFetchData" />
         </template>
     </CenterViewTemplate>
 </template>

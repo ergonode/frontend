@@ -6,7 +6,7 @@
     <CenterViewTemplate>
         <template #content>
             <Grid
-                :is-editable="isUserAllowedToUpdate"
+                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
@@ -15,16 +15,16 @@
                 :is-header-visible="true"
                 :is-border="true"
                 :is-basic-filter="true"
-                @editRow="onEditRow"
-                @previewRow="onEditRow"
-                @deleteRow="onRemoveUnit"
-                @fetchData="onFetchData">
+                @edit-row="onEditRow"
+                @preview-row="onEditRow"
+                @delete-row="onRemoveUnit"
+                @fetch-data="onFetchData">
                 <template #headerActions>
                     <Button
                         data-cy="new-unit"
                         title="NEW UNIT"
                         :theme="secondaryTheme"
-                        :disabled="!isUserAllowedToCreate"
+                        :disabled="!isAllowedToCreate"
                         :size="smallSize"
                         @click.native="onShowModal">
                         <template #prepend="{ color }">
@@ -90,12 +90,12 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        isUserAllowedToCreate() {
+        isAllowedToCreate() {
             return this.$hasAccess([
                 PRIVILEGES.SETTINGS.create,
             ]);
         },
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.SETTINGS.update,
             ]);
@@ -124,7 +124,7 @@ export default {
             });
         },
         onShowModal() {
-            this.$emit('showModal', 'units');
+            this.$emit('show-modal', 'units');
         },
     },
 };

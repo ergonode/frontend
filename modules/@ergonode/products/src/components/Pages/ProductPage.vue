@@ -15,7 +15,7 @@
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE PRODUCT"
-                    :disabled="!isUserAllowedToDelete"
+                    :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete :fill-color="color" />
@@ -66,7 +66,7 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-        isUserAllowedToDelete() {
+        isAllowedToDelete() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.delete,
             ]);

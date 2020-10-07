@@ -16,7 +16,7 @@
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE COLLECTION"
-                    :disabled="!isUserAllowedToDelete"
+                    :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete :fill-color="color" />
@@ -44,7 +44,7 @@ export default {
         asyncTabsMixin,
     ],
     computed: {
-        isUserAllowedToDelete() {
+        isAllowedToDelete() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT_COLLECTION.delete,
             ]);

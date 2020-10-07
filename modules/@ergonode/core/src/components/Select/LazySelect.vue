@@ -179,7 +179,7 @@ export default {
             }) => {
                 this.options = options;
                 this.isFetchingOptions = false;
-                this.$emit('fetchedOptions', options);
+                this.$emit('fetched-options', options);
             });
         }
     },

@@ -17,7 +17,7 @@
                 v-if="isFocused"
                 :offset="getDropDownOffset()"
                 :fixed="fixedContent"
-                @clickOutside="onClickOutside">
+                @click-outside="onClickOutside">
                 <template #body>
                     <List>
                         <ListElement

@@ -6,17 +6,17 @@
     <CenterViewTemplate>
         <template #content>
             <Grid
-                :is-editable="isUserAllowedToUpdate"
+                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
-                @editRow="onEditRow"
-                @previewRow="onEditRow"
-                @deleteRow="onRemoveRow"
-                @fetchData="onFetchData" />
+                @edit-row="onEditRow"
+                @preview-row="onEditRow"
+                @delete-row="onRemoveRow"
+                @fetch-data="onFetchData" />
         </template>
     </CenterViewTemplate>
 </template>
@@ -46,7 +46,7 @@ export default {
         };
     },
     computed: {
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.CHANNEL.update,
             ]);

@@ -7,7 +7,7 @@
         <ListSearchSelectHeader
             v-if="isSelectLanguage"
             header="System attributes"
-            @searchResult="onSearch">
+            @search-result="onSearch">
             <template #select>
                 <TreeSelect
                     :value="language"
@@ -19,7 +19,7 @@
         <ListSearchHeader
             v-else
             header="System attributes"
-            @searchResult="onSearch" />
+            @search-result="onSearch" />
         <List>
             <ListScrollableContainer>
                 <AttributesListElement

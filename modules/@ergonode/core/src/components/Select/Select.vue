@@ -84,7 +84,7 @@
                 @clear="onClear"
                 @search="onSearch"
                 @input="onSelectValue"
-                @clickOutside="onClickOutside">
+                @click-outside="onClickOutside">
                 <template #dropdown>
                     <slot
                         name="dropdown"

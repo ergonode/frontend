@@ -22,6 +22,7 @@
                 <slot name="prepend" />
                 <textarea
                     :id="associatedLabel"
+                    :style="styles"
                     :class="classes"
                     ref="input"
                     :value="value"
@@ -163,6 +164,11 @@ export default {
                 `textarea--${this.size}`,
                 `textarea--${this.alignment}`,
             ];
+        },
+        styles() {
+            return {
+                resize: this.resize,
+            };
         },
         styleComponent() {
             return () => import(`@Core/components/Input/Input${toCapitalize(this.type)}Style`);

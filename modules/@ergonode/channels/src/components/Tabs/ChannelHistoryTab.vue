@@ -12,8 +12,8 @@
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
-                @previewRow="onPreviewRow"
-                @fetchData="onFetchData" />
+                @preview-row="onPreviewRow"
+                @fetch-data="onFetchData" />
             <ExportDetailsModalGrid
                 v-if="isExportDetailsModalVisible"
                 :export-id="selectedRow.exportId"

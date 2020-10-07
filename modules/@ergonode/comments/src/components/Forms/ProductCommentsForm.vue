@@ -8,7 +8,7 @@
             <Button
                 v-if="!showForm"
                 title="NEW COMMENT"
-                :disabled="!isUserAllowedToUpdate"
+                :disabled="!isAllowedToUpdate"
                 :size="smallSize"
                 @click.native="openForm">
                 <template #prepend="{ color }">
@@ -133,7 +133,7 @@ export default {
                 && listLength < this.fullListCount
                 && this.fullListCount > DATA_LIMIT;
         },
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ]);

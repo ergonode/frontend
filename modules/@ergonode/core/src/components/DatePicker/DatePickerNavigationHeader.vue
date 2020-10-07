@@ -71,13 +71,13 @@ export default {
     },
     methods: {
         onClick() {
-            this.$emit('changeCalendarType');
+            this.$emit('change-calendar-type');
         },
         onPrevious() {
-            this.$emit('previousDate');
+            this.$emit('previous-date');
         },
         onNext() {
-            this.$emit('nextDate');
+            this.$emit('next-date');
         },
     },
 };

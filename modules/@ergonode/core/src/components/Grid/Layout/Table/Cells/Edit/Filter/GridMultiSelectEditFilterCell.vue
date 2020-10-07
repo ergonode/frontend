@@ -85,7 +85,7 @@ export default {
         );
 
         if (!isEqual) {
-            this.$emit('filterValue', {
+            this.$emit('filter-value', {
                 value: {
                     [FILTER_OPERATOR.EQUAL]: optionIds,
                 },

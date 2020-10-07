@@ -18,6 +18,7 @@
 import {
     isObject,
 } from '@Core/models/objectWrapper';
+import TemplateGridGhostItem from '@Templates/components/Template/Base/TemplateGridGhostItem';
 import {
     mapState,
 } from 'vuex';
@@ -25,7 +26,7 @@ import {
 export default {
     name: 'TemplateGridLayerItem',
     components: {
-        TemplateGridGhostItem: () => import('@Templates/components/Template/Base/TemplateGridGhostItem'),
+        TemplateGridGhostItem,
     },
     props: {
         position: {
@@ -105,9 +106,13 @@ export default {
     methods: {
         onDrop(event) {
             event.preventDefault();
+
             if (this.isGhostElement) {
                 this.isGhostElement = false;
-                this.$emit('drop', this.position);
+                this.$emit('drop', {
+                    draggableId: event.dataTransfer.getData('text/plain'),
+                    position: this.position,
+                });
             }
         },
         onDragOver(event) {

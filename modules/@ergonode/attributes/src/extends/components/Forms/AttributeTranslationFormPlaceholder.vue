@@ -10,7 +10,7 @@
         resize="none"
         height="150px"
         :error-messages="errors[placeholderFieldKey]"
-        :disabled="!isUserAllowedToUpdate"
+        :disabled="!isAllowedToUpdate"
         @input="(value) => setTranslationPropertyValue(value, placeholderFieldKey)" />
 </template>
 
@@ -28,7 +28,7 @@ export default {
         translationCardMixin,
     ],
     computed: {
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,
             ]);

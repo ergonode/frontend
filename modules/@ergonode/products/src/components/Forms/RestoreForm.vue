@@ -17,7 +17,7 @@
                     :key="index"
                     :value="attributeToRestore"
                     :label="element.label"
-                    :disabled="!isUserAllowedToRestore(element.properties.scope)"
+                    :disabled="!isAllowedToRestore(element.properties.scope)"
                     @input="setElementToRestore" />
             </FormSection>
         </template>
@@ -84,7 +84,7 @@ export default {
 
             this.$emit('update', value);
         },
-        isUserAllowedToRestore(scope) {
+        isAllowedToRestore(scope) {
             return scope !== SCOPE.GLOBAL;
         },
     },

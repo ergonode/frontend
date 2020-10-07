@@ -8,8 +8,8 @@
         :data="data"
         :drafts="drafts"
         :object-fit="objectFit"
-        @rowAction="onRowAction"
-        @cellValue="onCellValueChange" />
+        @row-action="onRowAction"
+        @cell-value="onCellValueChange" />
 </template>
 
 <script>
@@ -43,10 +43,10 @@ export default {
     },
     methods: {
         onRowAction(payload) {
-            this.$emit('rowAction', payload);
+            this.$emit('row-action', payload);
         },
         onCellValueChange(payload) {
-            this.$emit('cellValue', payload);
+            this.$emit('cell-value', payload);
         },
     },
 };

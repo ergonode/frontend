@@ -15,7 +15,7 @@
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE CHANNEL"
-                    :disabled="!isUserAllowedToDelete"
+                    :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete :fill-color="color" />
@@ -25,7 +25,7 @@
                     title="EXPORT NOW"
                     :size="smallSize"
                     :theme="secondaryTheme"
-                    :disabled="!isUserAllowedToUpdate"
+                    :disabled="!isAllowedToUpdate"
                     @click.native="onCreateExport" />
             </template>
         </TitleBar>
@@ -85,12 +85,12 @@ export default {
         ...mapState('channel', [
             'id',
         ]),
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.CHANNEL.update,
             ]);
         },
-        isUserAllowedToDelete() {
+        isAllowedToDelete() {
             return this.$hasAccess([
                 PRIVILEGES.CHANNEL.delete,
             ]);

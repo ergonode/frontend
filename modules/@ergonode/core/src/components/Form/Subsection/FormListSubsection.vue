@@ -18,6 +18,6 @@ export default {
     .form-list-subsection {
         display: grid;
         grid-auto-flow: row;
-        grid-row-gap: 8px;
+        grid-row-gap: 16px;
     }
 </style>

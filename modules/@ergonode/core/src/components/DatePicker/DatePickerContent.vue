@@ -9,9 +9,9 @@
         </slot>
         <DatePickerNavigationHeader
             :header="calendarHeader"
-            @changeCalendarType="onChangeCalendarType"
-            @previousDate="onPreviousDate"
-            @nextDate="onNextDate" />
+            @change-calendar-type="onChangeCalendarType"
+            @previous-date="onPreviousDate"
+            @next-date="onNextDate" />
         <DatePickerCalendar
             :value="value"
             :range-value="rangeValue"
@@ -22,8 +22,8 @@
             @input="onDateChange"
             @month="onMonthChange"
             @year="onYearChange"
-            @calendarType="onCalendarTypeChange"
-            @calendarHeader="onCalendarHeaderChange" />
+            @calendar-type="onCalendarTypeChange"
+            @calendar-header="onCalendarHeaderChange" />
     </div>
 </template>
 
