@@ -6,11 +6,14 @@
     <Widget title="Products">
         <template #body>
             <div class="total-products-chart">
-                <DoughnutProductsChart :style="{ height: '192px', width: '192px' }" />
+                <DoughnutProductsChart
+                    :style="{ height: '192px', width: '192px' }"
+                    :data-count="maxValue"
+                    :datasets="doughnutDatasets" />
             </div>
             <ProgressList
-                :datasets="datasets"
-                :labels="labels"
+                :datasets="progressListDatasets"
+                :labels="progressListLabels"
                 :max-value="maxValue" />
         </template>
     </Widget>
@@ -18,12 +21,13 @@
 
 <script>
 import {
-    BLUE,
-    GREEN,
-    YELLOW,
+    GREY,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import ProgressList from '@Core/components/ProgressList/ProgressList';
 import Widget from '@Core/components/Widget/Widget';
+import {
+    COLORS,
+} from '@Core/defaults/colors';
 import DoughnutProductsChart from '@Products/components/Chart/DoughnutProductsChart';
 
 export default {
@@ -33,31 +37,63 @@ export default {
         DoughnutProductsChart,
         ProgressList,
     },
+    props: {
+        productsCount: {
+            type: Array,
+            required: true,
+        },
+    },
     data() {
+        const doughnutDatasets = [];
+        const progressListDatasets = [];
+        const progressListLabels = [];
+        let maxValue = 0;
+
+        this.productsCount.forEach((product) => {
+            const {
+                count, label,
+            } = product;
+
+            if (count > 0) {
+                const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+
+                progressListDatasets.push({
+                    color,
+                    label,
+                    value: count,
+                });
+                progressListLabels.push(count);
+                doughnutDatasets.push({
+                    data: [
+                        count,
+                    ],
+                    backgroundColor: [
+                        color,
+                    ],
+                    borderWidth: 0,
+                });
+
+                maxValue += count;
+            }
+        });
+
+        if (!doughnutDatasets.length) {
+            doughnutDatasets.push({
+                data: [
+                    100,
+                ],
+                backgroundColor: [
+                    GREY,
+                ],
+                borderWidth: 0,
+            });
+        }
+
         return {
-            datasets: [
-                {
-                    color: GREEN,
-                    label: 'Simple products',
-                    value: 2950,
-                },
-                {
-                    color: YELLOW,
-                    label: 'Products with variants',
-                    value: 134,
-                },
-                {
-                    color: BLUE,
-                    label: 'Grouping products',
-                    value: 205,
-                },
-            ],
-            labels: [
-                '2950',
-                '134',
-                '205',
-            ],
-            maxValue: 2950 + 134 + 205,
+            doughnutDatasets,
+            progressListDatasets,
+            progressListLabels,
+            maxValue,
         };
     },
 };

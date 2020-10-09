@@ -8,9 +8,15 @@
             <div class="dashboard-page__content">
                 <WelcomeUser />
                 <div class="dashboard-page__widgets">
-                    <ProductsWidget />
-                    <CompletenessWidget />
-                    <StatusesWidget />
+                    <ProductsWidget
+                        v-show="productsCount.length > 0"
+                        :products-count="productsCount" />
+                    <CompletenessWidget
+                        v-show="completenessCount.length > 0"
+                        :completeness-count="completenessCount" />
+                    <StatusesWidget
+                        v-show="statusesCount.length > 0"
+                        :statuses-count="statusesCount" />
                 </div>
             </div>
         </VerticalFixedScroll>
@@ -33,18 +39,29 @@ export default {
         CompletenessWidget,
         StatusesWidget,
     },
+    props: {
+        productsCount: {
+            type: Array,
+            default: () => [],
+        },
+        completenessCount: {
+            type: Array,
+            default: () => [],
+        },
+        statusesCount: {
+            type: Array,
+            default: () => [],
+        },
+    },
 };
 </script>
 
 <style lang="scss" scoped>
     .dashboard-page {
         display: flex;
-        flex: 1;
         flex-direction: column;
         width: 100%;
         height: 100%;
-        box-sizing: border-box;
-        background-color: $GRAPHITE_COAL;
 
         &__content {
             padding: 32px 40px 40px;

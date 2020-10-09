@@ -11,7 +11,7 @@
                         class="list-status-element"
                         :key="status.id">
                         <ProductStatusBadge :status="status" />
-                        <span v-text="productsInStatus" />
+                        <span v-text="status.value" />
                     </li>
                     <div
                         class="list-status-element-divider"
@@ -24,6 +24,9 @@
 
 <script>
 import Widget from '@Core/components/Widget/Widget';
+import {
+    COLORS,
+} from '@Core/defaults/colors';
 import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
 
 export default {
@@ -32,49 +35,25 @@ export default {
         Widget,
         ProductStatusBadge,
     },
-    data() {
-        return {
-            statuses: [],
-        };
-    },
-    computed: {
-        productsInStatus() {
-            return '0 products';
+    props: {
+        statusesCount: {
+            type: Array,
+            required: true,
         },
     },
-    created() {
-        const params = {
-            limit: 99999,
-            offset: 0,
-            field: 'code',
-            order: 'ASC',
-        };
+    computed: {
+        statuses() {
+            return this.statusesCount.map((status) => {
+                const color = COLORS[Math.floor(Math.random() * COLORS.length)];
 
-        this.$axios
-            .get('status', {
-                params,
-            })
-            .then(({
-                data: {
-                    columns,
-                    collection,
-                },
-            }) => {
-                const colorColumn = columns.find(({
-                    id,
-                }) => id === 'status');
-
-                this.statuses = collection.map(({
-                    id,
-                    code,
-                    name,
-                }) => ({
-                    id,
-                    name,
-                    code,
-                    color: colorColumn.colors[code],
-                }));
+                return {
+                    id: status.status_id,
+                    color,
+                    label: status.label,
+                    value: `${status.value} products`,
+                };
             });
+        },
     },
 };
 </script>

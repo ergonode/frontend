@@ -21,7 +21,7 @@ export default {
         if (hasError || hasChange) {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                applyTitle: 'YES, I AM',
+                applyTitle: 'YES, I\'M SURE',
                 message: 'Are you sure you want to leave page without saving the data?',
                 confirmCallback: () => {
                     next();

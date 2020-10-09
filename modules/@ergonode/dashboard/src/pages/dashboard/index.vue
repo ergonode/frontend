@@ -3,32 +3,85 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="grid-wrapper">
-        <SimpleGrid
-            class="grid"
-            :title="title"
-            :items="filteredItems()" />
+    <div class="dashboard">
+        <DashboardPage
+            v-if="hasAnyProductInSystem"
+            :products-count="productsCount"
+            :completeness-count="completenessCount"
+            :statuses-count="statusesCount" />
+        <EmptyDashboardPage
+            v-else
+            @product-created="onProductCreated" />
     </div>
 </template>
 
 <script>
+
+import DashboardPage from '@Dashboard/components/Pages/DashboardPage';
+import EmptyDashboardPage from '@Dashboard/components/Pages/EmptyDashboardPage';
 import {
-    GRID_ITEMS,
-} from '@Dashboard/defaults/dashboard';
+    getCompletenessCount,
+    getProductsCount,
+    getStatusesCount,
+} from '@Dashboard/services';
 
 export default {
     name: 'Dashboard',
     components: {
-        SimpleGrid: () => import('@Dashboard/components/SimpleGrid/SimpleGrid'),
+        DashboardPage,
+        EmptyDashboardPage,
     },
-    data() {
+    async asyncData({
+        app,
+    }) {
+        const [
+            productsCount,
+            completenessCount,
+            statusesCount,
+        ] = await Promise.all([
+            getProductsCount({
+                $axios: app.$axios,
+            }),
+            getCompletenessCount({
+                $axios: app.$axios,
+            }),
+            getStatusesCount({
+                $axios: app.$axios,
+            }),
+        ]);
+
         return {
-            title: 'Take an action',
+            productsCount,
+            completenessCount,
+            statusesCount,
         };
     },
+    computed: {
+        hasAnyProductInSystem() {
+            return this.productsCount.some(product => product.count > 0);
+        },
+    },
     methods: {
-        filteredItems() {
-            return GRID_ITEMS.filter(e => this.$hasAccess(e.privileges));
+        async onProductCreated() {
+            const [
+                productsCount,
+                completenessCount,
+                statusesCount,
+            ] = await Promise.all([
+                getProductsCount({
+                    $axios: this.$axios,
+                }),
+                getCompletenessCount({
+                    $axios: this.$axios,
+                }),
+                getStatusesCount({
+                    $axios: this.$axios,
+                }),
+            ]);
+
+            this.productsCount = productsCount;
+            this.completenessCount = completenessCount;
+            this.statusesCount = statusesCount;
         },
     },
     head() {
@@ -40,13 +93,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .grid-wrapper {
+    .dashboard {
         display: flex;
-        flex: 1;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        width: 100%;
         height: 100%;
-        background-color: $WHITESMOKE;
+        box-sizing: border-box;
+        background-color: $GRAPHITE_COAL;
     }
 </style>

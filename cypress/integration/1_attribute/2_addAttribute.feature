@@ -64,9 +64,9 @@ Feature: Attribute adding
     And I choose <type> option from "attribute-type" select field
     And I choose <scope> option from "attribute-scope" select field
     And Element "attribute-add-options" is "visible"
-    When On "attribute-add-options" element I click button with "ADD OPTION KEY" text
+    When On "attribute-add-options" element I click button with "ADD OPTION" text
     Then I fill the "attribute-option-0" input with the "attribute_option_0" term
-    And On "attribute-add-options" element I click button with "ADD OPTION KEY" text
+    And On "attribute-add-options" element I click button with "ADD OPTION" text
     Then I fill the "attribute-option-1" input with the "attribute_option_1" term
     When I click on "submit" button
     Then I send a "POST" request and status code should be 201
@@ -154,7 +154,7 @@ Feature: Attribute adding
     And I choose "[0]" options from "attribute-group" multi select field
     Then I choose 1 option from "attribute-scope" select field
     And Element "title-bar-header" is "visible"
-    When On "attribute-add-options" element I click button with "ADD OPTION KEY" text
+    When On "attribute-add-options" element I click button with "ADD OPTION" text
     Then I fill the "attribute-option-0" input with the "attribute_select_option_0" term
     When I click tab with "Translations" text
     Then I choose "[1]" options from "translation-language-select" multi select field

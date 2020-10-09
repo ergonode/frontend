@@ -6,8 +6,8 @@
     <Widget title="Completeness">
         <template #body>
             <ProgressList
-                :datasets="datasets"
-                :labels="labels"
+                :datasets="progressListDatasets"
+                :labels="progressListLabels"
                 :max-value="maxValue" />
         </template>
     </Widget>
@@ -19,9 +19,6 @@ import Widget from '@Core/components/Widget/Widget';
 import {
     COLORS,
 } from '@Core/defaults/colors';
-import {
-    mapGetters,
-} from 'vuex';
 
 export default {
     name: 'CompletenessWidget',
@@ -29,33 +26,42 @@ export default {
         Widget,
         ProgressList,
     },
+    props: {
+        completenessCount: {
+            type: Array,
+            required: true,
+        },
+    },
     data() {
+        const progressListDatasets = [];
+        const progressListLabels = [];
+        let maxValue = 0;
+
+        this.completenessCount.forEach((product) => {
+            const {
+                count, label,
+            } = product;
+
+            if (count > 0) {
+                const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+
+                progressListDatasets.push({
+                    color,
+                    label,
+                    value: count,
+                });
+                progressListLabels.push(count);
+
+                maxValue += count;
+            }
+        });
+
         return {
-            datasets: [],
-            labels: [],
-            maxValue: 100,
+            progressListDatasets,
+            progressListLabels,
+            maxValue,
         };
     },
-    computed: {
-        ...mapGetters('core', [
-            'activeLanguages',
-        ]),
-    },
-    mounted() {
-        function randomInt(min, max) {
-            return min + Math.floor((max - min) * Math.random());
-        }
 
-        this.activeLanguages.forEach((language) => {
-            const value = randomInt(0, 100);
-
-            this.datasets.push({
-                color: COLORS[Math.floor(Math.random() * COLORS.length)],
-                label: language.name || language.code,
-                value,
-            });
-            this.labels.push(`${value}%`);
-        });
-    },
 };
 </script>
