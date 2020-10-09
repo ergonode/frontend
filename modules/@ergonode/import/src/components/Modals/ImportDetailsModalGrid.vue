@@ -5,24 +5,40 @@
 <template>
     <ModalGrid
         title="Import details"
-        :api-path="importGridPath"
-        :is-basic-filter="true"
         @close="onClose">
-        <template #headerActions>
-            <div class="import-details-tiles">
-                <Tile
-                    v-for="(detail, index) in details"
-                    :key="index"
-                    :label="detail.label"
-                    :value="detail.value" />
-            </div>
+        <template #body>
+            <Grid
+                :columns="columns"
+                :data-count="filtered"
+                :rows="rows"
+                :is-prefetching-data="isPrefetchingData"
+                :is-header-visible="true"
+                :is-basic-filter="true"
+                @fetch-data="onFetchData">
+                <template #headerActions>
+                    <div class="import-details-tiles">
+                        <Tile
+                            v-for="(detail, index) in details"
+                            :key="index"
+                            :label="detail.label"
+                            :value="detail.value" />
+                    </div>
+                </template>
+            </Grid>
         </template>
     </ModalGrid>
 </template>
 
 <script>
+import Grid from '@Core/components/Grid/Grid';
 import ModalGrid from '@Core/components/Modal/ModalGrid';
 import Tile from '@Core/components/Tile/Tile';
+import {
+    DEFAULT_GRID_FETCH_PARAMS,
+} from '@Core/defaults/grid';
+import {
+    getGridData,
+} from '@Core/services/grid/getGridData.service';
 import {
     mapActions,
 } from 'vuex';
@@ -32,6 +48,7 @@ export default {
     components: {
         ModalGrid,
         Tile,
+        Grid,
     },
     props: {
         sourceId: {
@@ -44,25 +61,52 @@ export default {
         },
     },
     async fetch() {
-        this.details = await this.getImportDetails({
-            sourceId: this.sourceId,
-            importId: this.importId,
-        });
+        const [
+            importDetails,
+        ] = await Promise.all([
+            this.getImportDetails({
+                sourceId: this.sourceId,
+                importId: this.importId,
+            }),
+            this.onFetchData(),
+        ]);
+
+        this.details = importDetails;
+
+        this.isPrefetchingData = false;
     },
     data() {
         return {
             details: [],
+            columns: [],
+            rows: [],
+            filtered: 0,
+            isPrefetchingData: true,
         };
-    },
-    computed: {
-        importGridPath() {
-            return `sources/${this.sourceId}/imports/${this.importId}/errors`;
-        },
     },
     methods: {
         ...mapActions('import', [
             'getImportDetails',
         ]),
+        async onFetchData(params = DEFAULT_GRID_FETCH_PARAMS) {
+            const {
+                columns,
+                rows,
+                filtered,
+            } = await getGridData({
+                $axios: this.$axios,
+                path: `sources/${this.sourceId}/imports/${this.importId}/errors`,
+                params: {
+                    ...params,
+                    extended: true,
+                },
+            });
+
+            this.columns = columns;
+            this.rows = rows;
+            this.filtered = filtered;
+            this.isPrefetchingData = false;
+        },
         onClose() {
             this.$emit('close');
         },

@@ -83,11 +83,11 @@ export default {
             this.addBySegment({
                 scope: this.scope,
                 segments: this.segments,
-                onSuccess: this.onAddSuccess,
+                onSuccess: this.onSubmitSuccess,
                 onError: this.onAddError,
             });
         },
-        onAddSuccess() {
+        onSubmitSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Products have been added to collection',
@@ -95,7 +95,7 @@ export default {
 
             this.isAdding = false;
 
-            this.$emit('added');
+            this.$emit('submited');
         },
         onAddError(errors) {
             this.onError(errors);

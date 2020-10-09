@@ -53,12 +53,14 @@ export default {
     data() {
         let localValue = null;
 
-        if (this.value[FILTER_OPERATOR.EQUAL]) {
+        if (typeof this.value[FILTER_OPERATOR.EQUAL] !== 'undefined') {
+            const option = {
+                id: this.value[FILTER_OPERATOR.EQUAL],
+                ...this.options[this.value[FILTER_OPERATOR.EQUAL]],
+            };
+
             localValue = getMappedObjectOption({
-                option: {
-                    id: this.value[FILTER_OPERATOR.EQUAL],
-                    ...this.options[this.value],
-                },
+                option,
                 languageCode: this.languageCode,
             });
         }

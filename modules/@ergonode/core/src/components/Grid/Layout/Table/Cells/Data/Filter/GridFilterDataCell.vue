@@ -4,7 +4,7 @@
  */
 <template>
     <Component
-        v-if="filter"
+        v-if="filterCellComponent"
         :is="filterCellComponent"
         :value="value"
         :row-index="rowIndex"
@@ -23,9 +23,6 @@
 
 <script>
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
-import {
-    capitalizeAndConcatenationArray,
-} from '@Core/models/stringWrapper';
 
 export default {
     name: 'GridFilterDataCell',
@@ -52,6 +49,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        type: {
+            type: String,
+            default: '',
+        },
         filter: {
             type: Object,
             default: null,
@@ -63,7 +64,17 @@ export default {
     },
     computed: {
         filterCellComponent() {
-            return () => import(`@Core/components/Grid/Layout/Table/Cells/Data/Filter/Grid${capitalizeAndConcatenationArray(this.filter.type.split('_'))}FilterDataCell`)
+            if (!this.type || !this.filter) {
+                return null;
+            }
+
+            const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Table/Cells/Data/Filter');
+
+            if (extendedComponents && extendedComponents[this.filter.type]) {
+                return extendedComponents[this.filter.type];
+            }
+
+            return () => import(`@Core/components/Grid/Layout/Table/Cells/Data/Filter/Grid${this.type}FilterDataCell`)
                 .catch(() => () => import('@Core/components/Grid/Layout/Table/Cells/Data/Filter/GridDefaultFilterDataCell'));
         },
     },

@@ -50,7 +50,7 @@
                 v-if="selectedAppModalOption"
                 :is="modalComponent"
                 @close="onCloseModal"
-                @added="onCreatedData" />
+                @submited="onCreatedData" />
         </template>
     </CenterViewTemplate>
 </template>

@@ -424,7 +424,7 @@ export default {
         emitFetchData() {
             this.$emit('fetch-data', {
                 sortedColumn: this.sortedColumn,
-                filters: getMergedFilters({
+                filter: getMergedFilters({
                     basic: this.filterValues,
                     advanced: this.advancedFilterValues,
                 }),

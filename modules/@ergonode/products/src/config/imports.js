@@ -20,7 +20,9 @@ export const Icons = {
     Product: () => import('@Core/components/Icons/Menu/IconProduct'),
 };
 
-export const Components = {};
+export const Components = {
+    GridProductAttachCollectionCell: () => import('@Products/extends/components/Grid/Layout/Collection/Cells/GridProductAttachCollectionCell').then(m => m.default || m),
+};
 
 export const Store = {
     Product: () => import('@Products/extends/store/product').then(m => m.default || m),

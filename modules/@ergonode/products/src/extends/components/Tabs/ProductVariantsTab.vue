@@ -16,9 +16,9 @@
                 :placeholder="gridPlaceholder"
                 :is-prefetching-data="isPrefetchingData"
                 :is-collection-layout="true"
+                :is-basic-filter="true"
                 :is-header-visible="true"
                 :is-border="true"
-                @edit-row="onEditRow"
                 @fetch-data="onFetchData">
                 <template #headerActions>
                     <ExpandNumericButton
@@ -29,7 +29,7 @@
                     <Button
                         title="ADD PRODUCTS"
                         :size="smallSize"
-                        :disabled="!isAllowedToUpdate || filtered === 0"
+                        :disabled="!isAllowedToUpdate"
                         :theme="secondaryTheme"
                         @click.native="onShowProductsModal">
                         <template #prepend="{ color }">
@@ -39,7 +39,7 @@
                     <AddProductsFromListModalGrid
                         v-if="isAddProductsModalVisible"
                         @close="onCloseProductsModal"
-                        @created="onCreatedBindingAttributesData" />
+                        @submitted="onSubmittedProductVariants" />
                 </template>
                 <template #headerPanel>
                     <BindingAttributes
@@ -106,6 +106,9 @@ import {
     mapState,
 } from 'vuex';
 
+// TODO:
+// custom filter for attached
+
 export default {
     name: 'ProductVariantsTab',
     components: {
@@ -127,12 +130,10 @@ export default {
         return {
             isAddBindingModalVisible: false,
             isAddProductsModalVisible: false,
-            isSubmitting: false,
             columns: [],
             rows: [],
             filtered: 0,
             localParams: DEFAULT_GRID_FETCH_PARAMS,
-            skus: {},
             isPrefetchingData: false,
             isBindingAttributesExpanded: false,
         };
@@ -201,13 +202,14 @@ export default {
             this.getProductBindings(this.$route.params.id),
         ]);
 
-        await this.onFetchData();
+        if (this.bindings.length) {
+            await this.onFetchData();
+        }
 
         this.isPrefetchingData = false;
     },
     methods: {
         ...mapActions('product', [
-            'getProductChildren',
             'getProductBindings',
             'getSelectAttributes',
             'removeBinding',
@@ -224,22 +226,20 @@ export default {
         onShowProductsModal() {
             this.isAddProductsModalVisible = true;
         },
-        onCloseProductsModal() {
+        async onCloseProductsModal() {
             this.isAddProductsModalVisible = false;
         },
-        async onCreatedBindingAttributesData() {
-            this.onCloseBindingAttributesModal();
-
-            await this.onAddedBinding();
-        },
-        async onCreatedProductsData() {
-            this.onCloseProductsModal();
-
+        async onSubmittedProductVariants() {
             this.isPrefetchingData = true;
 
             await this.onFetchData();
 
             this.isPrefetchingData = false;
+        },
+        async onCreatedBindingAttributesData() {
+            this.onCloseBindingAttributesModal();
+
+            await this.onAddedBinding();
         },
         async onAddedBinding() {
             this.isPrefetchingData = true;
@@ -269,26 +269,22 @@ export default {
         onChooseVariants() {
             this.isBindingAttributesExpanded = true;
         },
-        onEditRow(args) {
-            const lastIndex = args.length - 1;
-
-            this.$router.push({
-                name: 'product-id-general',
-                params: {
-                    id: args[lastIndex],
-                },
-            });
-        },
         async onFetchData({
             offset,
             limit,
-            filters,
+            filter,
             sortedColumn,
         } = this.localParams) {
+            let filtersWithAttached = filter;
+
+            if (!filter.includes('attached=true')) {
+                filtersWithAttached = 'attached=true';
+            }
+
             this.localParams = {
                 offset,
                 limit,
-                filters: filters ? `${filters},attached=true` : 'attached=true',
+                filter: filtersWithAttached,
                 extended: true,
                 sortedColumn,
             };
@@ -308,13 +304,13 @@ export default {
                 filtered,
             } = await getGridData({
                 $axios: this.$axios,
-                path: `products/${this.$route.params.id}/children-and-available-products`,
+                path: `products/${this.id}/children-and-available-products`,
                 params: this.localParams,
             });
 
             this.columns = columns.map(column => ({
                 ...column,
-                editeable: false,
+                editable: false,
             }));
             this.filtered = filtered;
             this.rows = rows;

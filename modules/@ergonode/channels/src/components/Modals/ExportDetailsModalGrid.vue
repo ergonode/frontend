@@ -5,25 +5,34 @@
 <template>
     <ModalGrid
         title="Export details"
-        :api-path="channelGridPath"
-        :is-basic-filter="true"
         @close="onClose">
-        <template #headerActions>
-            <div class="export-details-tiles">
-                <Tile
-                    v-for="(detail, index) in details"
-                    :key="index"
-                    :label="detail.label"
-                    :value="detail.value" />
-            </div>
-        </template>
-        <template #appendFooter>
-            <Button
-                v-if="downloadLink"
-                title="DOWNLOAD FILE"
-                :size="smallSize"
-                :disabled="!isAllowedToUpdate"
-                @click.native="onDownloadExportFile" />
+        <template #body>
+            <Grid
+                :columns="columns"
+                :data-count="filtered"
+                :rows="rows"
+                :is-prefetching-data="isPrefetchingData"
+                :is-header-visible="true"
+                :is-basic-filter="true"
+                @fetch-data="onFetchData">
+                <template #headerActions>
+                    <div class="export-details-tiles">
+                        <Tile
+                            v-for="(detail, index) in details"
+                            :key="index"
+                            :label="detail.label"
+                            :value="detail.value" />
+                    </div>
+                </template>
+                <template #appendFooter>
+                    <Button
+                        v-if="downloadLink"
+                        title="DOWNLOAD FILE"
+                        :size="smallSize"
+                        :disabled="!isAllowedToUpdate"
+                        @click.native="onDownloadExportFile" />
+                </template>
+            </Grid>
         </template>
     </ModalGrid>
 </template>
@@ -31,11 +40,18 @@
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
 import Button from '@Core/components/Button/Button';
+import Grid from '@Core/components/Grid/Grid';
 import ModalGrid from '@Core/components/Modal/ModalGrid';
 import Tile from '@Core/components/Tile/Tile';
 import {
+    DEFAULT_GRID_FETCH_PARAMS,
+} from '@Core/defaults/grid';
+import {
     SIZE,
 } from '@Core/defaults/theme';
+import {
+    getGridData,
+} from '@Core/services/grid/getGridData.service';
 import {
     mapActions,
     mapState,
@@ -47,6 +63,7 @@ export default {
         ModalGrid,
         Tile,
         Button,
+        Grid,
     },
     props: {
         channelId: {
@@ -59,22 +76,35 @@ export default {
         },
     },
     async fetch() {
+        const [
+            exportDetailsResponse,
+        ] = await Promise.all([
+            this.getExportDetails({
+                channelId: this.channelId,
+                exportId: this.exportId,
+            }),
+            this.onFetchData(),
+        ]);
+
         const {
             details,
             links,
-        } = await this.getExportDetails({
-            channelId: this.channelId,
-            exportId: this.exportId,
-        });
+        } = exportDetailsResponse;
 
         this.details = details;
 
         if (links && links.attachment) {
             this.downloadLink = links.attachment.href;
         }
+
+        this.isPrefetchingData = false;
     },
     data() {
         return {
+            columns: [],
+            rows: [],
+            filtered: 0,
+            isPrefetchingData: true,
             details: [],
             downloadLink: '',
         };
@@ -94,30 +124,44 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-        channelGridPath() {
-            return `channels/${this.channelId}/exports/${this.exportId}/errors`;
-        },
     },
     methods: {
         ...mapActions('channel', [
             'getExportDetails',
         ]),
-        onDownloadExportFile() {
-            this.$axios.$get(this.downloadLink, {
-                responseType: 'arraybuffer',
-            })
-                .then((response) => {
-                    const downloadUrl = window.URL.createObjectURL(new Blob([
-                        response,
-                    ]));
-                    const link = document.createElement('a');
+        async onFetchData(params = DEFAULT_GRID_FETCH_PARAMS) {
+            const {
+                columns,
+                rows,
+                filtered,
+            } = await getGridData({
+                $axios: this.$axios,
+                path: `channels/${this.channelId}/exports/${this.exportId}/errors`,
+                params: {
+                    ...params,
+                    extended: true,
+                },
+            });
 
-                    link.href = downloadUrl;
-                    link.setAttribute('download', `export_${this.type}_${this.details[1].value}.zip`);
-                    document.body.appendChild(link);
-                    link.click();
-                    link.remove();
-                });
+            this.columns = columns;
+            this.rows = rows;
+            this.filtered = filtered;
+        },
+        async onDownloadExportFile() {
+            const response = await this.$axios.$get(this.downloadLink, {
+                responseType: 'arraybuffer',
+            });
+
+            const downloadUrl = window.URL.createObjectURL(new Blob([
+                response,
+            ]));
+            const link = document.createElement('a');
+
+            link.href = downloadUrl;
+            link.setAttribute('download', `export_${this.type}_${this.details[1].value}.zip`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
         },
         onClose() {
             this.$emit('close');

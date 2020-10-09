@@ -12,7 +12,6 @@ import {
     applyDraft,
     create,
     get,
-    getChildren,
     getCollections,
     getCompleteness,
     getDraft,
@@ -278,16 +277,6 @@ export default {
         });
 
         return elements;
-    },
-    async getProductChildren({}, id) {
-        const {
-            collection,
-        } = await getChildren({
-            $axios: this.app.$axios,
-            id,
-        });
-
-        return collection;
     },
     async getProductCollections({
         state,

@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    Components,
+} from '@Products/config/imports';
+import {
     PRODUCT_TYPE,
 } from '@Products/defaults';
 
@@ -52,7 +55,7 @@ export default {
                     path: 'group',
                     component: Tabs.ProductGroupTab,
                     meta: {
-                        title: 'Group',
+                        title: 'Groups',
                         visible: false,
                         breadcrumbs: [
                             {
@@ -80,7 +83,7 @@ export default {
                 case PRODUCT_TYPE.WITH_VARIANTS:
                     return tabs.filter(tab => tab.visible || tab.title === 'Variants');
                 case PRODUCT_TYPE.GROUPING:
-                    return tabs.filter(tab => tab.visible || tab.title === 'Group');
+                    return tabs.filter(tab => tab.visible || tab.title === 'Groups');
                 default:
                     return tabs.filter(tab => tab.visible);
                 }
@@ -97,5 +100,9 @@ export default {
             PRODUCT_TYPE.SIMPLE_PRODUCT,
         ],
     },
-    extendComponents: {},
+    extendComponents: {
+        '@Core/components/Grid/Layout/Collection/Cells': {
+            PRODUCT_ATTACH: Components.GridProductAttachCollectionCell,
+        },
+    },
 };

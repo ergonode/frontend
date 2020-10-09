@@ -59,13 +59,13 @@ export default function ({
             async onFetchData({
                 offset,
                 limit,
-                filters,
+                filter,
                 sortedColumn,
             } = DEFAULT_GRID_FETCH_PARAMS) {
                 this.localParams = {
                     offset,
                     limit,
-                    filters,
+                    filter,
                     sortedColumn,
                 };
 
@@ -73,7 +73,7 @@ export default function ({
                     offset,
                     limit,
                     extended: true,
-                    filter: filters,
+                    filter,
                     columns: this.getGridColumnParams(),
                 };
 

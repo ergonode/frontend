@@ -19,6 +19,9 @@
 <script>
 import GridFilterPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridFilterPresentationCell';
 import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
+import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
 import gridDataFilterCellMixin from '@Core/mixins/grid/cell/gridDataFilterCellMixin';
 
 export default {
@@ -43,6 +46,16 @@ export default {
             }
 
             return {};
+        },
+        presentationValue() {
+            if (typeof this.value[FILTER_OPERATOR.EQUAL] === 'undefined'
+                || this.value[FILTER_OPERATOR.EQUAL] === '') {
+                return '';
+            }
+
+            const option = this.options[this.value[FILTER_OPERATOR.EQUAL]];
+
+            return option.label || `#${this.options[option].code}`;
         },
     },
     methods: {

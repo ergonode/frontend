@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export const ADD_PRODUCT = {
-    BY_SKU: 'Add by SKU',
+    FROM_LIST: 'Select from list',
 };
 
 export const PRODUCT_TYPE = {
