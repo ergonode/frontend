@@ -64,8 +64,6 @@ export default {
         onClose() {
             this.removeScopeErrors(this.scope);
 
-            console.log('Hey...');
-
             this.$emit('close');
         },
         onSubmit() {
