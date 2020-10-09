@@ -50,7 +50,7 @@
                 v-if="selectedAppModalOption"
                 :is="modalComponent"
                 @close="onCloseModal"
-                @submited="onCreatedData" />
+                @submitted="onCreatedData" />
         </template>
     </CenterViewTemplate>
 </template>
@@ -229,9 +229,13 @@ export default {
         onCloseModal() {
             this.selectedAppModalOption = null;
         },
-        onCreatedData() {
-            this.onFetchData(this.localParams);
+        async onCreatedData() {
+            this.isPrefetchingData = true;
+
+            await this.onFetchData(this.localParams);
+
             this.selectedAppModalOption = null;
+            this.isPrefetchingData = false;
         },
     },
 };
