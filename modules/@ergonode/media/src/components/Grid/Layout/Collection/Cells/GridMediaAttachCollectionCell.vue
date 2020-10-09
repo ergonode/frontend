@@ -93,6 +93,17 @@ export default {
                 value: args,
             });
         },
+        onCellValueChange(value) {
+            this.localValue = value;
+
+            this.$emit('cell-value', [
+                {
+                    rowId: this.data.id,
+                    columnId: 'esa_attached',
+                    value,
+                },
+            ]);
+        },
     },
 };
 </script>
