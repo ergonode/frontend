@@ -42,10 +42,10 @@
 <script>
 import PointBadge from '@Core/components/Badges/PointBadge';
 import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
+import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -103,7 +103,7 @@ export default {
     },
     beforeDestroy() {
         if (this.localValue && this.localValue.id !== this.value) {
-            this.$emit('cellValue', [
+            this.$emit('cell-value', [
                 {
                     value: this.localValue.id || this.localValue,
                     rowId: this.rowId,

@@ -35,34 +35,5 @@
     "ergonode",
     "ergonode-module",
     "ergonode-module-required"
-  ],
-  "dependencies": {
-    "@babel/plugin-transform-runtime": "^7.8.3",
-    "@babel/preset-env": "^7.8.4",
-    "@babel/register": "^7.8.3",
-    "@babel/runtime": "^7.8.4",
-    "@ergonode/vuems": "^0.8.0",
-    "@nuxtjs/axios": "^5.10.2",
-    "@nuxtjs/component-cache": "^1.1.5",
-    "@nuxtjs/router": "^1.5",
-    "@nuxtjs/style-resources": "^1.0",
-    "@storybook/addon-docs": "^5.3.14",
-    "@storybook/addon-knobs": "^5.3.14",
-    "@vue/babel-preset-app": "^4.2.3",
-    "camelcase-keys": "^6.2.2",
-    "cookie-universal-nuxt": "^2.1.2",
-    "date-fns": "^2.10.0",
-    "debounce": "^1.2.0",
-    "deepmerge": "^4.2.2",
-    "ejs-loader": "^0.3.5",
-    "fs-extra": "^9.0.0",
-    "module-alias": "^2.2.2",
-    "nuxt": "^2.11.0",
-    "recursive-readdir": "^2.2.2",
-    "regenerator-runtime": "^0.13.5",
-    "tiptap": "^1.27.1",
-    "tiptap-extensions": "^1.29.1",
-    "vue-uuid": "^1.1.1",
-    "vuex": "^3.3.0"
-  }
+  ]
 }

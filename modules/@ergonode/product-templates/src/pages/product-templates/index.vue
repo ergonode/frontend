@@ -35,10 +35,10 @@
                     :is-basic-filter="true"
                     :is-border="true"
                     :collection-cell-binding="collectionCellBinding"
-                    @editRow="onEditRow"
-                    @previewRow="onEditRow"
-                    @deleteRow="onRemoveRow"
-                    @fetchData="onFetchData" />
+                    @edit-row="onEditRow"
+                    @preview-row="onEditRow"
+                    @delete-row="onRemoveRow"
+                    @fetch-data="onFetchData" />
             </template>
         </CenterViewTemplate>
         <CreateProductTemplateModalForm

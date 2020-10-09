@@ -21,7 +21,7 @@
 
 <script>
 import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -86,7 +86,7 @@ export default {
         const optionIds = this.localValue.map(option => option.id);
 
         if (!arraysAreEqual(optionIds, this.value.map(option => option.id))) {
-            this.$emit('cellValue', [
+            this.$emit('cell-value', [
                 {
                     value: optionIds,
                     rowId: this.rowId,

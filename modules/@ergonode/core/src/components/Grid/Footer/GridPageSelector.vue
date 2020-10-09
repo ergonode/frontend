@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import Select from '@Core/components/Inputs/Select/Select';
+import Select from '@Core/components/Select/Select';
 import {
     ROW_INTERVALS,
 } from '@Core/defaults/grid';

@@ -109,7 +109,7 @@ export default {
     },
     methods: {
         toggleItemExpand() {
-            this.$emit('toggleItem');
+            this.$emit('toggle-item');
         },
         onSelectFocus(isFocused) {
             if (!isFocused) this.isHovered = false;
@@ -119,7 +119,7 @@ export default {
         onSelectValue(option) {
             switch (option) {
             case 'Remove':
-                this.$emit('removeItem');
+                this.$emit('remove-item');
                 break;
             default: break;
             }

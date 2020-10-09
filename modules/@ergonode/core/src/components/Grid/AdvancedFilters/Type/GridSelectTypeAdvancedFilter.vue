@@ -31,7 +31,7 @@
 <script>
 import GridAdvancedFilterSelectContent from '@Core/components/Grid/AdvancedFilters/Content/GridAdvancedFilterTextContent';
 import GridAdvancedFilter from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilter';
-import SelectDropdownFooter from '@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownFooter';
+import SelectDropdownFooter from '@Core/components/Select/DropDown/Footers/SelectDropdownFooter';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';

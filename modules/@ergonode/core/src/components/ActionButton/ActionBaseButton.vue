@@ -17,7 +17,7 @@
                 v-if="isFocused"
                 :offset="getDropDownOffset()"
                 :fixed="fixedContent"
-                @clickOutside="onClickOutside">
+                @click-outside="onClickOutside">
                 <template #body>
                     <List>
                         <ListElement
@@ -43,11 +43,11 @@
 </template>
 
 <script>
-import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
 import List from '@Core/components/List/List';
 import ListElement from '@Core/components/List/ListElement';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
+import DropDown from '@Core/components/Select/DropDown/DropDown';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import {
     SIZE,

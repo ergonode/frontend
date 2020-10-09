@@ -48,8 +48,8 @@
 
 <script>
 import InfoHint from '@Core/components/Hints/InfoHint';
-import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
-import TextArea from '@Core/components/Inputs/TextArea';
+import RichTextEditor from '@Core/components/RichTextEditor/RichTextEditor';
+import TextArea from '@Core/components/TextArea/TextArea';
 import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
 import {
     mapState,

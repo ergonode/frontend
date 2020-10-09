@@ -183,7 +183,7 @@ export default {
     },
     methods: {
         onLayoutActivate(layout) {
-            this.$emit('layoutChange', layout);
+            this.$emit('layout-change', layout);
         },
         onFiltersCountChange(count) {
             this.filtersCount = count;
@@ -202,10 +202,10 @@ export default {
         },
         onApplySettings(payload) {
             this.isSettingsModal = false;
-            this.$emit('applySettings', payload);
+            this.$emit('apply-settings', payload);
         },
         onDropFilter(id) {
-            this.$emit('dropFilter', id);
+            this.$emit('drop-filter', id);
         },
         onFilter(filters) {
             this.$emit('filter', filters);

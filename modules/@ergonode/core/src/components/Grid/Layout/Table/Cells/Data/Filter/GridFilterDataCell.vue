@@ -12,8 +12,8 @@
         :column-id="columnId"
         :language-code="languageCode"
         :data="filter"
-        @editFilterCell="onEditFilterCell"
-        @filterValue="onFilterValueChange" />
+        @edit-filter-cell="onEditFilterCell"
+        @filter-value="onFilterValueChange" />
     <GridTableCell
         v-else
         :locked="true"
@@ -69,10 +69,10 @@ export default {
     },
     methods: {
         onEditFilterCell(payload) {
-            this.$emit('editFilterCell', payload);
+            this.$emit('edit-filter-cell', payload);
         },
         onFilterValueChange(payload) {
-            this.$emit('filterValue', payload);
+            this.$emit('filter-value', payload);
         },
     },
 };

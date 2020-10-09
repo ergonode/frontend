@@ -20,7 +20,7 @@
 
 <script>
 import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -83,8 +83,9 @@ export default {
         },
     },
     beforeDestroy() {
-        if (this.localValue && this.localValue.id !== this.value) {
-            this.$emit('cellValue', [
+        if ((this.localValue && this.localValue.id !== this.value)
+            || (!this.localValue && this.value)) {
+            this.$emit('cell-value', [
                 {
                     value: this.localValue.id || this.localValue,
                     rowId: this.rowId,

@@ -44,6 +44,12 @@
                     :error-messages="errors[roleFieldKey]"
                     :fetch-options-request="getRoleOptions"
                     @input="setRolesValue" />
+                <template v-for="(field, index) in extendedForm">
+                    <Component
+                        :is="field.component"
+                        :key="index"
+                        v-bind="bindingProps(field)" />
+                </template>
             </FormSection>
         </template>
     </Form>
@@ -53,8 +59,8 @@
 import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import TranslationLazySelect from '@Core/components/Select/TranslationLazySelect';
+import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
@@ -88,6 +94,11 @@ export default {
         ...mapState('productStatus', [
             'statuses',
         ]),
+        extendedForm() {
+            return this.$getExtendedFormByType({
+                key: '@Transitions/components/Forms/TransitionForm',
+            });
+        },
         isDisabled() {
             if (!isEmpty(this.$route.params)) {
                 const {
@@ -132,6 +143,17 @@ export default {
         ...mapActions('role', [
             'getRoleOptions',
         ]),
+        bindingProps({
+            props,
+        }) {
+            return {
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.errors,
+                disabled: !this.isAllowedToUpdate,
+                ...props,
+            };
+        },
         setSourceValue(value) {
             this.__setState({
                 key: this.sourceFieldKey,

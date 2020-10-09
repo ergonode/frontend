@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import Toggler from '@Core/components/Inputs/Toggler/Toggler';
 import Picture from '@Core/components/Multimedia/Picture';
+import Toggler from '@Core/components/Toggler/Toggler';
 import {
     THEME,
 } from '@Core/defaults/theme';
@@ -88,7 +88,7 @@ export default {
 
             const args = this.data.actions.edit.href.split('/');
 
-            this.$emit('rowAction', {
+            this.$emit('row-action', {
                 key: 'edit',
                 value: args,
             });
@@ -96,7 +96,7 @@ export default {
         onCellValueChange(value) {
             this.localValue = value;
 
-            this.$emit('cellValue', [
+            this.$emit('cell-value', [
                 {
                     rowId: this.data.id,
                     columnId: 'esa_attached',

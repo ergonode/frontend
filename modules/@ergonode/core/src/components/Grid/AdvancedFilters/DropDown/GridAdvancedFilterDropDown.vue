@@ -7,7 +7,7 @@
         <DropDown
             v-show="isVisible"
             :offset="offset"
-            @clickOutside="onClickOutside">
+            @click-outside="onClickOutside">
             <template #body>
                 <slot name="body" />
             </template>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
+import DropDown from '@Core/components/Select/DropDown/DropDown';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 
 export default {
@@ -40,7 +40,7 @@ export default {
     },
     methods: {
         onClickOutside(payload) {
-            this.$emit('clickOutside', payload);
+            this.$emit('click-outside', payload);
         },
     },
 };

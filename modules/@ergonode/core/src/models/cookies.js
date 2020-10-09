@@ -8,7 +8,9 @@ import {
 } from '@Core/models/arrayWrapper';
 
 export const removeCookieAtIndex = ({
-    cookies, cookieName, index,
+    cookies,
+    cookieName,
+    index,
 }) => {
     const cookiesData = cookies.get(cookieName);
 
@@ -21,7 +23,10 @@ export const removeCookieAtIndex = ({
 };
 
 export const insertCookieAtIndex = ({
-    cookies, cookieName, index, data,
+    cookies,
+    cookieName,
+    index,
+    data,
 }) => {
     const cookiesData = cookies.get(cookieName) || '';
     const parsedData = cookiesData.split(',');
@@ -31,7 +36,10 @@ export const insertCookieAtIndex = ({
 };
 
 export const changeCookiePosition = ({
-    cookies, cookieName, from, to,
+    cookies,
+    cookieName,
+    from,
+    to,
 }) => {
     const cookiesData = cookies.get(cookieName);
 

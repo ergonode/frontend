@@ -32,6 +32,13 @@
                     :error-messages="errors[typeIdFieldKey]"
                     :fetch-options-request="getCollectionTypeOptions"
                     @input="setTypeValue" />
+                <Divider v-if="extendedForm.length" />
+                <template v-for="(field, index) in extendedForm">
+                    <Component
+                        :is="field.component"
+                        :key="index"
+                        v-bind="bindingProps(field)" />
+                </template>
             </FormSection>
         </template>
     </Form>
@@ -39,10 +46,11 @@
 
 <script>
 import PRIVILEGES from '@Collections/config/privileges';
+import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
-import TextField from '@Core/components/Inputs/TextField';
+import TranslationLazySelect from '@Core/components/Select/TranslationLazySelect';
+import TextField from '@Core/components/TextField/TextField';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
@@ -53,6 +61,7 @@ import {
 export default {
     name: 'CollectionForm',
     components: {
+        Divider,
         Form,
         FormSection,
         TextField,
@@ -68,6 +77,12 @@ export default {
             'code',
             'type',
         ]),
+        extendedForm() {
+            return this.$getExtendedFormByType({
+                key: '@Collections/components/Forms/CollectionForm',
+                type: this.type,
+            });
+        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT_COLLECTION.update,
@@ -114,6 +129,17 @@ export default {
                 fieldKey: this.typeFieldKey,
                 value,
             });
+        },
+        bindingProps({
+            props,
+        }) {
+            return {
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.errors,
+                disabled: !this.isAllowedToUpdate,
+                ...props,
+            };
         },
         dataCyGenerator(key) {
             return `collection-${key}`;

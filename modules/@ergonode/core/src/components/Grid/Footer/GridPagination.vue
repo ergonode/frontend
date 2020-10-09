@@ -73,7 +73,7 @@
 import Fab from '@Core/components/Fab/Fab';
 import IconArrowPointerBlock from '@Core/components/Icons/Arrows/IconArrowPointerBlock';
 import IconArrowSingle from '@Core/components/Icons/Arrows/IconArrowSingle';
-import TextField from '@Core/components/Inputs/TextField';
+import TextField from '@Core/components/TextField/TextField';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import {
     ARROW,

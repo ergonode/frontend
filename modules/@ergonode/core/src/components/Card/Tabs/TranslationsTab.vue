@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import {
     TRANSLATIONS_LANGUAGES,
 } from '@Core/defaults/cookies';

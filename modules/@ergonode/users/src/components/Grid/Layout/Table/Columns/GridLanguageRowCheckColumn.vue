@@ -57,12 +57,12 @@ export default {
                 })));
             });
 
-            this.$emit('cellValue', cellValues);
+            this.$emit('cell-value', cellValues);
         },
         onSelectRow({
             rowId, value,
         }) {
-            this.$emit('cellValue', [
+            this.$emit('cell-value', [
                 'read',
                 'edit',
             ].map(columnId => ({

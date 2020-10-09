@@ -17,8 +17,8 @@
 </template>
 
 <script>
+import DatePicker from '@Core/components/DatePicker/DatePicker';
 import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
-import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
@@ -69,7 +69,7 @@ export default {
         const localValue = this.localValue ? formatDate(this.localValue, DEFAULT_FORMAT) : '';
 
         if (localValue !== this.value[FILTER_OPERATOR.EQUAL]) {
-            this.$emit('filterValue', {
+            this.$emit('filter-value', {
                 value: {
                     [FILTER_OPERATOR.EQUAL]: localValue,
                 },

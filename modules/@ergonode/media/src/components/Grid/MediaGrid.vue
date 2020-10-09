@@ -14,11 +14,11 @@
         :is-basic-filter="true"
         :is-header-visible="true"
         :is-collection-layout="true"
-        @editRow="onEditRow"
-        @previewRow="onEditRow"
-        @cellValue="onCellValueChange"
-        @deleteRow="onRemoveRow"
-        @fetchData="onFetchData">
+        @edit-row="onEditRow"
+        @preview-row="onEditRow"
+        @cell-value="onCellValueChange"
+        @delete-row="onRemoveRow"
+        @fetch-data="onFetchData">
         <!--  TODO: Uncomment when we have global search      -->
         <!--        <template #headerActions>-->
         <!--            <TextField-->
@@ -56,7 +56,7 @@ import {
 } from '@Core/defaults/grid';
 // TODO: Uncomment when we have global search
 // import IconSearch from '@Core/components/Icons/Actions/IconSearch';
-// import TextField from '@Core/components/Inputs/TextField';
+// import TextField from '@Core/components/TextField/TextField';
 import {
     SIZE,
 } from '@Core/defaults/theme';

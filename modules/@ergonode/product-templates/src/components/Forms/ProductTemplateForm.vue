@@ -30,6 +30,7 @@
                     :disabled="!isAllowedToUpdate"
                     @input="setImageValue" />
             </FormSection>
+            <Divider v-if="extendedForm.length" />
             <template v-for="(field, index) in extendedForm">
                 <Component
                     :is="field.component"
@@ -41,9 +42,10 @@
 </template>
 
 <script>
+import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import TextField from '@Core/components/Inputs/TextField';
+import TextField from '@Core/components/TextField/TextField';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
@@ -56,6 +58,7 @@ import {
 export default {
     name: 'ProductTemplateForm',
     components: {
+        Divider,
         Form,
         FormSection,
         TextField,
@@ -72,7 +75,9 @@ export default {
             'image',
         ]),
         extendedForm() {
-            return this.$getExtendedComponents('@Templates/components/Forms/ProductTemplateForm');
+            return this.$getExtendedFormByType({
+                key: '@Templates/components/Forms/ProductTemplateForm',
+            });
         },
         isDisabled() {
             return Boolean(this.id);

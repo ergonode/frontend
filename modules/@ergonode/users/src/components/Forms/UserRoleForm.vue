@@ -30,16 +30,24 @@
                     :error-messages="errors[descriptionFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     @input="setDescriptionValue" />
+                <Divider v-if="extendedForm.length" />
+                <template v-for="(field, index) in extendedForm">
+                    <Component
+                        :is="field.component"
+                        :key="index"
+                        v-bind="bindingProps(field)" />
+                </template>
             </FormSection>
         </template>
     </Form>
 </template>
 
 <script>
+import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import TextArea from '@Core/components/Inputs/TextArea';
-import TextField from '@Core/components/Inputs/TextField';
+import TextArea from '@Core/components/TextArea/TextArea';
+import TextField from '@Core/components/TextField/TextField';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Users/config/privileges';
@@ -51,6 +59,7 @@ import {
 export default {
     name: 'UserRoleForm',
     components: {
+        Divider,
         Form,
         FormSection,
         TextField,
@@ -65,6 +74,11 @@ export default {
             'name',
             'description',
         ]),
+        extendedForm() {
+            return this.$getExtendedFormByType({
+                key: '@Users/components/Forms/UserRoleForm',
+            });
+        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.USER_ROLE.update,
@@ -81,6 +95,17 @@ export default {
         ...mapActions('role', [
             '__setState',
         ]),
+        bindingProps({
+            props,
+        }) {
+            return {
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.errors,
+                disabled: !this.isAllowedToUpdate,
+                ...props,
+            };
+        },
         onSubmit() {
             this.$emit('submit');
         },

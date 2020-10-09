@@ -32,7 +32,7 @@
 
 <script>
 import InfoHint from '@Core/components/Hints/InfoHint';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import {
     arraysAreEqual,
 } from '@Core/models/arrayWrapper';

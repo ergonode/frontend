@@ -18,9 +18,9 @@
 </template>
 
 <script>
+import CheckBox from '@Core/components/CheckBox/CheckBox';
 import FormFieldset from '@Core/components/Form/FormFieldset';
 import FormSubsection from '@Core/components/Form/Subsection/FormSubsection';
-import CheckBox from '@Core/components/Inputs/CheckBox';
 
 export default {
     name: 'JSONSchemaFormArrayString',

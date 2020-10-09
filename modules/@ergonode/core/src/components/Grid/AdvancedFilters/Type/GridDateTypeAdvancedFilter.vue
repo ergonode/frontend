@@ -29,7 +29,7 @@
 <script>
 import GridAdvancedFilterDateContent from '@Core/components/Grid/AdvancedFilters/Content/GridAdvancedFilterDateContent';
 import GridAdvancedFilter from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilter';
-import SelectDropdownApplyFooter from '@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownApplyFooter';
+import SelectDropdownApplyFooter from '@Core/components/Select/DropDown/Footers/SelectDropdownApplyFooter';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';

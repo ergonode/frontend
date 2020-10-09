@@ -18,9 +18,8 @@
                 :is-collection-layout="true"
                 :is-header-visible="true"
                 :is-border="true"
-                @editRow="onEditRow"
-                @cellValue="onCellValueChange"
-                @fetchData="onFetchData">
+                @edit-row="onEditRow"
+                @fetch-data="onFetchData">
                 <template #headerActions>
                     <ExpandNumericButton
                         title="BINDING ATTRIBUTES"
@@ -56,18 +55,6 @@
                         :disabled="!isAllowedToUpdate"
                         @click.native="onChooseVariants" />
                 </template>
-                <template #appendFooter>
-                    <Button
-                        title="SAVE CHANGES"
-                        :disabled="!isAllowedToUpdate"
-                        @click.native="onSubmit">
-                        <template
-                            v-if="isSubmitting"
-                            #prepend="{ color }">
-                            <IconSpinner :fill-color="color" />
-                        </template>
-                    </Button>
-                </template>
             </Grid>
             <ListPlaceholder
                 v-else
@@ -95,12 +82,8 @@ import Button from '@Core/components/Button/Button';
 import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
 import Grid from '@Core/components/Grid/Grid';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import ListPlaceholder from '@Core/components/List/ListPlaceholder';
-import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
 import {
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
@@ -130,7 +113,6 @@ export default {
         CenterViewTemplate,
         Grid,
         Button,
-        IconSpinner,
         ExpandNumericButton,
         BindingAttributes,
         IconAdd,
@@ -229,8 +211,6 @@ export default {
             'getProductBindings',
             'getSelectAttributes',
             'removeBinding',
-            'addBySku',
-            'removeProductChildren',
         ]),
         ...mapActions('feedback', [
             'onScopeValueChange',
@@ -289,31 +269,6 @@ export default {
         onChooseVariants() {
             this.isBindingAttributesExpanded = true;
         },
-        onCellValueChange(cellValues) {
-            const drafts = {};
-
-            cellValues.forEach(({
-                rowId, columnId, value, row,
-            }) => {
-                drafts[`${rowId}/${columnId}`] = value;
-
-                this.skus[rowId] = {
-                    sku: this.rows[row - 1].sku.value,
-                    value,
-                };
-            });
-
-            this.setDrafts({
-                ...this.drafts,
-                ...drafts,
-            });
-
-            this.onScopeValueChange({
-                scope: this.scope,
-                fieldKey: 'variantProducts',
-                value: drafts,
-            });
-        },
         onEditRow(args) {
             const lastIndex = args.length - 1;
 
@@ -324,50 +279,6 @@ export default {
                 },
             });
         },
-        async onSubmit() {
-            this.isSubmitting = true;
-
-            const requests = [];
-
-            Object.keys(this.skus).forEach((key) => {
-                const {
-                    sku, value,
-                } = this.skus[key];
-
-                if (value) {
-                    requests.push(this.addBySku({
-                        skus: sku,
-                    }));
-                } else {
-                    requests.push(this.removeProductChildren({
-                        childrenId: key,
-                        skus: sku,
-                    }));
-                }
-
-                const row = this.rows.find(({
-                    id,
-                }) => id.value === key);
-
-                if (row) {
-                    row.esa_attached.value = value;
-                }
-            });
-
-            await Promise.all(requests);
-
-            this.setDrafts();
-            this.skus = {};
-
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Products attachment have been updated',
-            });
-
-            this.isSubmitting = false;
-
-            this.markChangeValuesAsSaved(this.scope);
-        },
         async onFetchData({
             offset,
             limit,
@@ -377,7 +288,7 @@ export default {
             this.localParams = {
                 offset,
                 limit,
-                filters: filters ? `${filters},attach_flag=true` : 'attach_flag=true',
+                filters: filters ? `${filters},attached=true` : 'attached=true',
                 extended: true,
                 sortedColumn,
             };

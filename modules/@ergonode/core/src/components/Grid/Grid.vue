@@ -18,9 +18,9 @@
             :filters="advancedFilters"
             :filter-values="advancedFilterValues"
             @filter="onAdvancedFilterChange"
-            @layoutChange="onLayoutChange"
-            @applySettings="onApplySettings"
-            @dropFilter="onDropFilter">
+            @layout-change="onLayoutChange"
+            @apply-settings="onApplySettings"
+            @drop-filter="onDropFilter">
             <template #actions>
                 <slot name="headerActions" />
             </template>
@@ -61,19 +61,19 @@
                     :is-basic-filter="isBasicFilter"
                     @sort="onSortColumn"
                     @filter="onFilterChange"
-                    @cellValue="onCellValueChange"
-                    @focusCell="onFocusCell"
-                    @rowAction="onRowAction" />
+                    @cell-value="onCellValueChange"
+                    @focus-cell="onFocusCell"
+                    @row-action="onRowAction" />
                 <GridCollectionLayout
-                    v-else-if="isCollectionLayout && !isPrefetchingData"
+                    v-else-if="isCollectionLayout && !isPrefetchingData && !isPlaceholderVisible"
                     :rows="rows"
                     :row-ids="rowIds"
                     :collection-cell-binding="collectionCellBinding"
                     :drafts="drafts"
                     :columns-number="collectionLayoutConfig.columnsNumber"
                     :object-fit="collectionLayoutConfig.scaling"
-                    @rowAction="onRowAction"
-                    @cellValue="onCellValueChange" />
+                    @row-action="onRowAction"
+                    @cell-value="onCellValueChange" />
             </KeepAlive>
             <GridPlaceholder
                 v-show="isPlaceholderVisible && noRecordsFilterPlaceholder"
@@ -377,18 +377,18 @@ export default {
             this.layout = layout;
         },
         onCellValueChange(payload) {
-            this.$emit('cellValue', payload);
+            this.$emit('cell-value', payload);
         },
         onFocusCell(payload) {
-            this.$emit('focusCell', payload);
+            this.$emit('focus-cell', payload);
         },
         onRowAction({
             key, value,
         }) {
-            this.$emit(`${key}Row`, value);
+            this.$emit(`${key}-row`, value);
         },
-        onDropColumn(columnId) {
-            this.$emit('dropColumn', columnId);
+        onDropColumn(payload) {
+            this.$emit('drop-column', payload);
         },
         onSortColumn(sortedColumn) {
             this.sortedColumn = sortedColumn;
@@ -419,10 +419,10 @@ export default {
             }
         },
         onDropFilter(payload) {
-            this.$emit('dropFilter', payload);
+            this.$emit('drop-filter', payload);
         },
         emitFetchData() {
-            this.$emit('fetchData', {
+            this.$emit('fetch-data', {
                 sortedColumn: this.sortedColumn,
                 filters: getMergedFilters({
                     basic: this.filterValues,

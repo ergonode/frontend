@@ -21,7 +21,7 @@
         <template #grid>
             <TemplateGridDesigner
                 :max-row="maxLayoutRow"
-                @rowsCount="onRowsCountChange">
+                @rows-count="onRowsCountChange">
                 <TemplateGridDraggableLayer
                     :style="gridStyles"
                     :rows-number="maxLayoutRow"
@@ -39,8 +39,8 @@
                             :columns-number="columnsNumber"
                             :rows-number="maxLayoutRow"
                             :disabled="!isAllowedToUpdate"
-                            @highlightedPositionChange="onHighlightedPositionsChange"
-                            @resizingElMaxRow="onResizingElMaxRow"
+                            @highlighted-position-change="onHighlightedPositionsChange"
+                            @resizing-el-max-row="onResizingElMaxRow"
                             @remove="onRemoveLayoutElement">
                             <template #content>
                                 <AttributeElementContent
@@ -56,7 +56,7 @@
                                     :element="element"
                                     :index="index"
                                     :disabled="!isAllowedToUpdate"
-                                    @editTitle="onEditSectionTitle" />
+                                    @edit-title="onEditSectionTitle" />
                             </template>
                         </LayoutElement>
                     </template>
@@ -311,7 +311,10 @@ export default {
         onHighlightedPositionsChange(positions) {
             this.highlightedPositions = positions;
         },
-        updateLayoutElement(position) {
+        updateLayoutElement({
+            position,
+            draggableId,
+        }) {
             this.highlightedPositions = [];
 
             if (isObject(this.draggedElement)) {
@@ -330,7 +333,10 @@ export default {
                 this.sectionPosition = position;
                 this.isSectionAdded = true;
             } else {
-                this.addListElementToLayout(position);
+                this.addListElementToLayout({
+                    position,
+                    draggableId,
+                });
             }
 
             this.onScopeValueChange({

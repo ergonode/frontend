@@ -21,7 +21,7 @@
 
 <script>
 import GridTextEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
-import TextArea from '@Core/components/Inputs/TextArea';
+import TextArea from '@Core/components/TextArea/TextArea';
 import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
@@ -55,7 +55,7 @@ export default {
     },
     beforeDestroy() {
         if (this.localValue !== this.value) {
-            this.$emit('cellValue', [
+            this.$emit('cell-value', [
                 {
                     value: this.localValue,
                     rowId: this.rowId,

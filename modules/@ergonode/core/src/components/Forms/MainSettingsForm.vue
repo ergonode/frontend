@@ -31,16 +31,24 @@
                             :hint="hint" />
                     </template>
                 </TranslationSelect>
+                <Divider v-if="extendedForm.length" />
+                <template v-for="(field, index) in extendedForm">
+                    <Component
+                        :is="field.component"
+                        :key="index"
+                        v-bind="bindingProps(field)" />
+                </template>
             </FormSection>
         </template>
     </Form>
 </template>
 
 <script>
+import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import InfoHint from '@Core/components/Hints/InfoHint';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import PRIVILEGES from '@Core/config/privileges';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
@@ -51,6 +59,7 @@ import {
 export default {
     name: 'MainSettingsForm',
     components: {
+        Divider,
         InfoHint,
         Form,
         FormSection,
@@ -70,6 +79,11 @@ export default {
         ...mapState('core', [
             'languages',
         ]),
+        extendedForm() {
+            return this.$getExtendedFormByType({
+                key: '@Core/components/Forms/MainSettingsForm',
+            });
+        },
         mappedLanguages() {
             return this.languages.map(({
                 id, name, code,
@@ -119,6 +133,17 @@ export default {
             }));
     },
     methods: {
+        bindingProps({
+            props,
+        }) {
+            return {
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.errors,
+                disabled: !this.isAllowedToUpdate,
+                ...props,
+            };
+        },
         setSelectedLanguages(selectedLanguages) {
             this.activeLanguages = selectedLanguages;
 
@@ -127,8 +152,6 @@ export default {
                 fieldKey: this.languagesFieldKey,
                 value: selectedLanguages,
             });
-
-            this.$emit('selectedLanguages', selectedLanguages);
         },
         onSubmitForm() {
             this.$emit('submit', this.activeLanguages);

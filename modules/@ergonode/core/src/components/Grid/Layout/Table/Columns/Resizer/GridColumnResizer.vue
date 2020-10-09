@@ -71,7 +71,7 @@ export default {
 
             if (width > this.minWidth) {
                 window.requestAnimationFrame(() => {
-                    this.$emit('widthChange', `${width}px`);
+                    this.$emit('width-change', `${width}px`);
                 });
             }
         },

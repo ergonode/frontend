@@ -17,8 +17,8 @@
                 :data-count="dataCount"
                 :rows-offset="rowsOffset"
                 :is-basic-filter="isBasicFilter"
-                @rowSelect="onRowSelect"
-                @rowsSelect="onRowsSelect" />
+                @row-select="onRowSelect"
+                @rows-select="onRowsSelect" />
         </GridTableLayoutPinnedSection>
         <GridTableLayoutColumnsSection
             :style="templateColumns"
@@ -44,10 +44,10 @@
                     @swap="onSwapColumns"
                     @resize="onResizeColumn"
                     @sort="onSortColumn"
-                    @editFilterCell="onEditFilterCell"
-                    @filterValue="onFilterValueChange"
-                    @cellValue="onCellValueChange"
-                    @editCell="onEditCell"
+                    @edit-filter-cell="onEditFilterCell"
+                    @filter-value="onFilterValueChange"
+                    @cell-value="onCellValueChange"
+                    @edit-cell="onEditCell"
                 />
                 <GridDraggableColumn
                     v-else
@@ -77,8 +77,8 @@
                                 :language-code="column.language"
                                 :column-id="column.id"
                                 :filter="column.filter"
-                                @editFilterCell="onEditFilterCell"
-                                @filterValue="onFilterValueChange" />
+                                @edit-filter-cell="onEditFilterCell"
+                                @filter-value="onFilterValueChange" />
                         </template>
                         <GridDataCell
                             v-for="(row, rowIndex) in rows"
@@ -95,8 +95,8 @@
                             :is-copyable="column.editable && isEditable"
                             :is-selected="isSelectedAllRows
                                 || selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
-                            @cellValue="onCellValueChange"
-                            @editCell="onEditCell" />
+                            @cell-value="onCellValueChange"
+                            @edit-cell="onEditCell" />
                     </GridColumn>
                 </GridDraggableColumn>
             </template>
@@ -142,14 +142,14 @@
             :is="editCellComponent"
             ref="editCell"
             v-bind="editCell.props"
-            @cellValue="onCellValueChange"
+            @cell-value="onCellValueChange"
             @dismiss="onDismissEditCell" />
         <Component
             v-if="editFilterCell"
             :is="editFilterCellComponent"
             ref="editCell"
             v-bind="editFilterCell.props"
-            @filterValue="onFilterValueChange"
+            @filter-value="onFilterValueChange"
             @dismiss="onDismissEditFilterCell" />
         <GridCellResizer
             v-if="cellResizer"
@@ -515,18 +515,18 @@ export default {
         onRowSelect(selectedRows) {
             this.selectedRows = selectedRows;
 
-            this.$emit('rowSelect', this.selectedRows);
+            this.$emit('row-select', this.selectedRows);
         },
         onRowsSelect(isSelectedAllRows) {
             this.isSelectedAllRows = isSelectedAllRows;
 
-            this.$emit('rowsSelect', this.isSelectedAllRows);
+            this.$emit('rows-select', this.isSelectedAllRows);
         },
         onCellValueChange(value) {
-            this.$emit('cellValue', value);
+            this.$emit('cell-value', value);
         },
         onRowAction(payload) {
-            this.$emit('rowAction', payload);
+            this.$emit('row-action', payload);
         },
         initializeColumns() {
             const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
@@ -583,7 +583,8 @@ export default {
             this.hasInitialWidths = false;
         },
         disableListElement({
-            languageCode, attributeId,
+            languageCode,
+            attributeId,
         }) {
             if (this.disabledElements[languageCode][attributeId]) {
                 this.setDisabledElement({

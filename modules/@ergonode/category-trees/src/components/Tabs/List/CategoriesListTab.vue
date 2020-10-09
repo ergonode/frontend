@@ -6,7 +6,7 @@
     <VerticalTabBarList>
         <ListSearchHeader
             header="Categories"
-            @searchResult="onSearch" />
+            @search-result="onSearch" />
         <List>
             <ListScrollableContainer>
                 <CategoriesListElement

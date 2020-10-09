@@ -19,7 +19,7 @@
 
 <script>
 import FormListElementField from '@Core/components/Form/Field/FormListElementField';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import {
     SIZE,
 } from '@Core/defaults/theme';
