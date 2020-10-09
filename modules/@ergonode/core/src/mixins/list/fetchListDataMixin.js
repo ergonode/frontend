@@ -18,16 +18,20 @@ export default function ({
         },
         async fetch() {
             const {
-                language: languageCode,
-            } = this.$store.state.authentication.user;
+                defaultLanguageCode,
+            } = this.$store.state.core;
 
-            await this.getItems(languageCode);
+            await this.getItems(defaultLanguageCode);
         },
         methods: {
-            getItems(languageCode) {
-                const filter = this.codeFilter ? `code=${this.codeFilter};${extraFilters}` : extraFilters;
+            async getItems(languageCode) {
+                const filter = this.codeFilter
+                    ? `code=${this.codeFilter};${extraFilters}`
+                    : extraFilters;
 
-                return getListItems({
+                const {
+                    items,
+                } = await getListItems({
                     $axios: this.$axios,
                     path: `${languageCode}/${namespace}`,
                     params: {
@@ -38,14 +42,12 @@ export default function ({
                         field: 'code',
                         order: 'ASC',
                     },
-                }).then(({
-                    items,
-                }) => {
-                    this.items = {
-                        ...this.items,
-                        [languageCode]: items,
-                    };
                 });
+
+                this.items = {
+                    ...this.items,
+                    [languageCode]: items,
+                };
             },
         },
     };

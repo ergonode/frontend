@@ -351,14 +351,20 @@ export default {
 
             const promises = [];
 
+            const cachedRows = {};
+
             Object.keys(this.drafts).forEach((key) => {
                 const [
                     rowId,
                 ] = key.split('/');
 
-                promises.push(this.applyProductDraft({
-                    id: rowId,
-                }).then(() => this.removeDraftRow(rowId)));
+                if (typeof cachedRows[rowId] === 'undefined') {
+                    cachedRows[rowId] = true;
+
+                    promises.push(this.applyProductDraft({
+                        id: rowId,
+                    }).then(() => this.removeDraftRow(rowId)));
+                }
             });
 
             await Promise.all(promises);

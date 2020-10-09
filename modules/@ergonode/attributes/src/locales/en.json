@@ -18,7 +18,7 @@
         "optionLabel": "Option code",
         "scopeLabel": "Scope",
         "scopeHint": "Global means the same attribute values for each language, inherited from the root language ({lang}). Option values can be translated, but cannot be changed in the product template.",
-        "addOption": "ADD OPTION KEY"
+        "addOption": "ADD OPTION"
       },
     "translation": {
         "nameLabel": "Attribute name",
