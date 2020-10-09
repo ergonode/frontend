@@ -210,11 +210,6 @@ export default {
             onError({
                 errors: e.data.errors,
                 scope,
-                fieldKeys: data.skus.reduce((prev, curr, index) => {
-                    const tmp = prev;
-                    tmp[`element-${index}`] = curr;
-                    return tmp;
-                }, {}),
             });
         }
     },
