@@ -42,7 +42,7 @@ import Grid from '@Core/components/Grid/Grid';
 import ModalHeader from '@Core/components/Modal/ModalHeader';
 import ModalOverlay from '@Core/components/Modal/ModalOverlay';
 import {
-    DATA_LIMIT,
+    DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 import {
     SIZE,
@@ -126,12 +126,7 @@ export default {
                 rows: this.rows,
             });
         },
-        async onFetchData(params = {
-            offset: 0,
-            limit: DATA_LIMIT,
-            filters: '',
-            sortedColumn: {},
-        }) {
+        async onFetchData(params = DEFAULT_GRID_FETCH_PARAMS) {
             const {
                 columns,
                 rows,

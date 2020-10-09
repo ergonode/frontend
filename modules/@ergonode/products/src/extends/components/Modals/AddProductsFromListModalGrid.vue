@@ -89,7 +89,7 @@ export default {
             this.isSubmitting = true;
 
             const requests = [];
-            let skus = '';
+            const skus = [];
 
             Object
                 .keys(this.skus)
@@ -100,7 +100,7 @@ export default {
                     } = this.skus[key];
 
                     if (value) {
-                        skus += `${sku},`;
+                        skus.push(sku);
                     } else {
                         requests.push(this.removeProductChildren({
                             childrenId: key,
@@ -108,18 +108,10 @@ export default {
                         }));
                     }
 
-                    if (skus) {
+                    if (skus.length) {
                         requests.push(this.addBySku({
                             skus,
                         }));
-                    }
-
-                    const row = this.rows.find(({
-                        id,
-                    }) => id.value === key);
-
-                    if (row) {
-                        row.esa_attached.value = value;
                     }
                 });
 
@@ -149,8 +141,6 @@ export default {
                 const row = rows.find(({
                     id,
                 }) => rowId === id.value);
-
-                console.log(row);
 
                 this.skus[rowId] = {
                     sku: row.sku.value,

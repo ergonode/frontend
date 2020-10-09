@@ -193,31 +193,14 @@ export default {
         onSuccess = () => {},
         onError = () => {},
     }) {
-        const errors = {};
-        let isAnyError = false;
         const {
             id,
         } = state;
-        const mappedSkus = skus.replace(/\n/g, ',');
         const data = {
-            skus: mappedSkus !== '' ? mappedSkus.split(',') : [],
+            skus,
         };
 
         try {
-            if (!mappedSkus.length) {
-                errors.skus = [
-                    'Sku is required',
-                ];
-                isAnyError = true;
-            }
-
-            if (isAnyError) {
-                throw {
-                    data: {
-                        errors,
-                    },
-                };
-            }
             await addBySku({
                 $axios: this.app.$axios,
                 id,
