@@ -147,7 +147,7 @@ Ergonode source code is released under the [OSL 3.0 License][license].
 
 [discord]: https://discord.gg/NntXFa4
 [slack]: https://ergonode.slack.com/join/shared_invite/enQtOTA2ODY0ODMxNTI0LThlZGE2YWE0YzY4NzU1ODk3NWRmNTJiMGI2NmM5ZTgxYTk0MWRhMjM1Y2M4MjdjZjAxY2FkOWE1M2FhZmJkMDY
-[contribut]: http://docs.ergonode.com/#/contribution
+[contribut]: http://docs.ergonode.com/#/community/contribution
 [license]: ./LICENSE.txt
 [roadmap]: https://ergonode.com/features/#roadmap
 [docs]: https://docs.ergonode.com

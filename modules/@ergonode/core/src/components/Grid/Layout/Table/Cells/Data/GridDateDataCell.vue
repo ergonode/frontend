@@ -27,10 +27,11 @@ import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Prese
 import GridSuffixPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 import {
-    DEFAULT_FORMAT,
+    DEFAULT_DATE_TIME_FORMAT,
 } from '@Core/models/calendar/calendar';
 import {
     format as formatDate,
+    parseISO,
 } from 'date-fns';
 
 export default {
@@ -48,13 +49,13 @@ export default {
                 return '';
             }
 
-            let format = DEFAULT_FORMAT;
+            let format = DEFAULT_DATE_TIME_FORMAT;
 
             if (this.column.parameters && this.column.parameters.format) {
                 format = this.column.parameters.format;
             }
 
-            return formatDate(new Date(this.cellData.value), format);
+            return formatDate(parseISO(this.cellData.value), format);
         },
     },
     methods: {
@@ -68,7 +69,7 @@ export default {
                     column: this.columnIndex,
                     format: this.column.parameters && this.column.parameters.format
                         ? this.column.parameters.format
-                        : DEFAULT_FORMAT,
+                        : DEFAULT_DATE_TIME_FORMAT,
                     disabled: this.isLocked,
                     rowId: this.rowId,
                     columnId: this.column.id,

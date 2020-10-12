@@ -99,19 +99,26 @@ module.exports = {
         modules: modulesConfig,
         i18n: true,
         i18nLocales: [
-            'en',
+            'en_GB',
+            'pl_PL',
         ],
         isDev: process.env.NODE_ENV !== 'production',
     },
     i18n: {
         locales: [
             {
-                code: 'en',
-                iso: 'en-US',
-                file: 'en.json',
+                code: 'en_GB',
+                file: 'en_GB.json',
+            },
+            {
+                code: 'pl_PL',
+                file: 'pl_PL.json',
             },
         ],
-        defaultLocale: 'en',
+        defaultLocale: 'en_GB',
+        vueI18n: {
+            fallbackLocale: 'en_GB',
+        },
         lazy: true,
         langDir: '.nuxt/locales/',
         strategy: 'no_prefix',
