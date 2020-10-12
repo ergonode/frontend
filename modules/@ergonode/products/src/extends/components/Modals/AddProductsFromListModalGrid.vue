@@ -176,13 +176,13 @@ export default {
                         skus: sku,
                     }));
                 }
-
-                if (skus.length) {
-                    requests.push(this.addBySku({
-                        skus,
-                    }));
-                }
             });
+
+            if (skus.length) {
+                requests.push(this.addBySku({
+                    skus,
+                }));
+            }
 
             await Promise.all(requests);
 

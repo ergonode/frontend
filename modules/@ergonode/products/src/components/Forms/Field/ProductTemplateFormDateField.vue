@@ -116,7 +116,7 @@ export default {
         },
     },
     watch: {
-        languageCode: {
+        fieldData: {
             immediate: true,
             handler() {
                 this.localValue = this.fieldData;

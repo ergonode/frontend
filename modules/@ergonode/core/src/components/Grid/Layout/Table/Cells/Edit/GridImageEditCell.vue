@@ -9,6 +9,7 @@
                 <UploadImageFile
                     v-model="localValue"
                     :disabled="disabled"
+                    object-fit="contain"
                     height="181px" />
             </GridImageEditContentCell>
         </GridSelectEditContentCell>
