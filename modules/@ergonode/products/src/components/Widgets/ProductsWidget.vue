@@ -3,31 +3,37 @@
  * See LICENSE for license details.
  */
 <template>
-    <Widget title="Products">
+    <Widget
+        title="Products"
+        :is-placeholder-visible="!isPrefetchingData && progressListLabels.length === 0">
         <template #body>
-            <div class="total-products-chart">
-                <DoughnutProductsChart
-                    :style="{ height: '192px', width: '192px' }"
-                    :data-count="maxValue"
-                    :datasets="doughnutDatasets" />
-            </div>
-            <ProgressList
-                :datasets="progressListDatasets"
-                :labels="progressListLabels"
-                :max-value="maxValue" />
+            <Preloader v-if="isPrefetchingData" />
+            <template v-else>
+                <div class="total-products-chart">
+                    <DoughnutProductsChart
+                        :style="{ height: '192px', width: '192px' }"
+                        :data-count="maxValue"
+                        :datasets="doughnutDatasets" />
+                </div>
+                <ProgressList
+                    :datasets="progressListDatasets"
+                    :labels="progressListLabels"
+                    :max-value="maxValue" />
+            </template>
         </template>
     </Widget>
 </template>
 
 <script>
-import {
-    GREY,
-} from '@Core/assets/scss/_js-variables/colors.scss';
+import Preloader from '@Core/components/Preloader/Preloader';
 import ProgressList from '@Core/components/ProgressList/ProgressList';
 import Widget from '@Core/components/Widget/Widget';
 import {
     COLORS,
 } from '@Core/defaults/colors';
+import {
+    getProductsCount,
+} from '@Dashboard/services';
 import DoughnutProductsChart from '@Products/components/Chart/DoughnutProductsChart';
 
 export default {
@@ -36,20 +42,25 @@ export default {
         Widget,
         DoughnutProductsChart,
         ProgressList,
+        Preloader,
     },
-    props: {
-        productsCount: {
-            type: Array,
-            required: true,
-        },
-    },
-    data() {
+    async fetch() {
+        const productsCount = await getProductsCount({
+            $axios: this.$axios,
+        });
+
         const doughnutDatasets = [];
         const progressListDatasets = [];
         const progressListLabels = [];
         let maxValue = 0;
 
-        this.productsCount.forEach((product) => {
+        const dataset = {
+            data: [],
+            backgroundColor: [],
+            borderWidth: 0,
+        };
+
+        productsCount.forEach((product) => {
             const {
                 count, label,
             } = product;
@@ -63,37 +74,28 @@ export default {
                     value: count,
                 });
                 progressListLabels.push(count);
-                doughnutDatasets.push({
-                    data: [
-                        count,
-                    ],
-                    backgroundColor: [
-                        color,
-                    ],
-                    borderWidth: 0,
-                });
+                dataset.data.push(count);
+                dataset.backgroundColor.push(color);
 
                 maxValue += count;
             }
         });
 
-        if (!doughnutDatasets.length) {
-            doughnutDatasets.push({
-                data: [
-                    100,
-                ],
-                backgroundColor: [
-                    GREY,
-                ],
-                borderWidth: 0,
-            });
-        }
+        doughnutDatasets.push(dataset);
 
+        this.doughnutDatasets = doughnutDatasets;
+        this.progressListDatasets = progressListDatasets;
+        this.progressListLabels = progressListLabels;
+        this.maxValue = maxValue;
+        this.isPrefetchingData = false;
+    },
+    data() {
         return {
-            doughnutDatasets,
-            progressListDatasets,
-            progressListLabels,
-            maxValue,
+            doughnutDatasets: [],
+            progressListDatasets: [],
+            progressListLabels: [],
+            maxValue: 0,
+            isPrefetchingData: true,
         };
     },
 };

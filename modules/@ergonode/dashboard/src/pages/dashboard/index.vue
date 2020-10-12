@@ -4,11 +4,7 @@
  */
 <template>
     <div class="dashboard">
-        <DashboardPage
-            v-if="hasAnyProductInSystem"
-            :products-count="productsCount"
-            :completeness-count="completenessCount"
-            :statuses-count="statusesCount" />
+        <DashboardPage v-if="hasAnyProductInSystem" />
         <EmptyDashboardPage
             v-else
             @product-created="onProductCreated" />
@@ -20,9 +16,7 @@
 import DashboardPage from '@Dashboard/components/Pages/DashboardPage';
 import EmptyDashboardPage from '@Dashboard/components/Pages/EmptyDashboardPage';
 import {
-    getCompletenessCount,
     getProductsCount,
-    getStatusesCount,
 } from '@Dashboard/services';
 
 export default {
@@ -34,26 +28,12 @@ export default {
     async asyncData({
         app,
     }) {
-        const [
-            productsCount,
-            completenessCount,
-            statusesCount,
-        ] = await Promise.all([
-            getProductsCount({
-                $axios: app.$axios,
-            }),
-            getCompletenessCount({
-                $axios: app.$axios,
-            }),
-            getStatusesCount({
-                $axios: app.$axios,
-            }),
-        ]);
+        const productsCount = await getProductsCount({
+            $axios: app.$axios,
+        });
 
         return {
             productsCount,
-            completenessCount,
-            statusesCount,
         };
     },
     computed: {
@@ -63,25 +43,9 @@ export default {
     },
     methods: {
         async onProductCreated() {
-            const [
-                productsCount,
-                completenessCount,
-                statusesCount,
-            ] = await Promise.all([
-                getProductsCount({
-                    $axios: this.$axios,
-                }),
-                getCompletenessCount({
-                    $axios: this.$axios,
-                }),
-                getStatusesCount({
-                    $axios: this.$axios,
-                }),
-            ]);
-
-            this.productsCount = productsCount;
-            this.completenessCount = completenessCount;
-            this.statusesCount = statusesCount;
+            this.productsCount = await getProductsCount({
+                $axios: this.$axios,
+            });
         },
     },
     head() {

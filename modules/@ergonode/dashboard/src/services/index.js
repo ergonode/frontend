@@ -13,4 +13,5 @@ export const getProductsCount = ({
 
 export const getStatusesCount = ({
     $axios,
-}) => $axios.$get('dashboard/widget/status-count');
+    workflowLanguage,
+}) => $axios.$get(`dashboard/widget/${workflowLanguage}/status-count`);
