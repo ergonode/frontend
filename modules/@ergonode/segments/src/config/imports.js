@@ -16,7 +16,7 @@ export const Tabs = {
 
 export const Components = {
     AddProductsFromSegmentToProductGroupModalForm: () => import('@Segments/components/Modals/Product/AddProductsFromSegmentModalForm'),
-    AddProductsFromSegmentToCollectioModalForm: () => import('@Segments/components/Modals/Collection/AddProductsFromSegmentModalForm'),
+    AddProductsFromSegmentToCollectionModalForm: () => import('@Segments/components/Modals/Collection/AddProductsFromSegmentModalForm'),
 };
 
 export const Icons = {

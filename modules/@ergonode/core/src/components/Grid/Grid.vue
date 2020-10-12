@@ -27,6 +27,9 @@
             <template #configuration>
                 <slot name="headerConfiguration" />
             </template>
+            <template #panel>
+                <slot name="headerPanel" />
+            </template>
         </GridHeader>
         <GridBody
             :disabled="isListElementDragging && isColumnExists"
@@ -62,7 +65,7 @@
                     @focus-cell="onFocusCell"
                     @row-action="onRowAction" />
                 <GridCollectionLayout
-                    v-else-if="isCollectionLayout && !isPrefetchingData"
+                    v-else-if="isCollectionLayout && !isPrefetchingData && !isPlaceholderVisible"
                     :rows="rows"
                     :row-ids="rowIds"
                     :collection-cell-binding="collectionCellBinding"
@@ -421,7 +424,7 @@ export default {
         emitFetchData() {
             this.$emit('fetch-data', {
                 sortedColumn: this.sortedColumn,
-                filters: getMergedFilters({
+                filter: getMergedFilters({
                     basic: this.filterValues,
                     advanced: this.advancedFilterValues,
                 }),

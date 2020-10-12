@@ -21,7 +21,7 @@ export const Icons = {
 };
 
 export const Components = {
-    ProductFormAttributeBinding: () => import('@Products/extends/components/Forms/ProductFormAttributeBinding'),
+    GridProductAttachCollectionCell: () => import('@Products/extends/components/Grid/Layout/Collection/Cells/GridProductAttachCollectionCell').then(m => m.default || m),
 };
 
 export const Store = {
