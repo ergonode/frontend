@@ -9,6 +9,7 @@ import {
 import {
     createOptionsData,
     getAttributeOptions,
+    getTranslation,
     prepareOptionsData,
     prepareParametersData,
     prepareTextAreaData,
@@ -16,7 +17,6 @@ import {
     setTextAreaData,
     setTranslation,
     updateOptionsData,
-    updateTranslation,
 } from '@Attributes/extends/methods/attribute';
 import {
     prepareTemplateData,
@@ -179,7 +179,7 @@ export default {
             case TYPES.NUMERIC:
             case TYPES.TEXT:
             case TYPES.TEXT_AREA:
-                return updateTranslation({
+                return getTranslation({
                     $this,
                 });
             default:

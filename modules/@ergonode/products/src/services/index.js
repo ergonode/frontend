@@ -86,7 +86,7 @@ export const removeDraftValue = ({
     id,
     languageCode,
     attributeId,
-}) => $axios.$delete(`${languageCode}products/${id}/draft/${attributeId}/value`, {
+}) => $axios.$delete(`${languageCode}/products/${id}/draft/${attributeId}/value`, {
     withLanguage: false,
 });
 
