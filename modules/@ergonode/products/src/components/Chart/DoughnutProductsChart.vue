@@ -8,22 +8,21 @@
         class="products-doughnut-chart"
         :style="styles">
         <div class="products-doughnut-chart__description">
-            <span class="products-doughnut-chart__title">3467</span>
+            <span
+                class="products-doughnut-chart__title"
+                v-text="dataCount" />
             <span class="products-doughnut-chart__subtitle">Products total</span>
         </div>
         <DoughnutChart
             class="products-doughnut-chart__doughnut"
-            :data="data"
-            :options="options" />
+            :data="chartData"
+            :options="chartOptions" />
     </div>
 </template>
 
 <script>
 import {
-    BLUE,
     GRAPHITE_COAL,
-    GREEN,
-    YELLOW,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import DoughnutChart from '@Core/components/Chart/DoughnatChart';
 
@@ -33,6 +32,14 @@ export default {
         DoughnutChart,
     },
     props: {
+        datasets: {
+            type: Array,
+            default: () => [],
+        },
+        dataCount: {
+            type: Number,
+            default: 0,
+        },
         backgroundColor: {
             type: String,
             default: GRAPHITE_COAL,
@@ -41,27 +48,17 @@ export default {
     },
     data() {
         return {
-            data: {
+            chartData: {
                 labels: [
                     'Products',
                 ],
-                datasets: [
-                    {
-                        data: [
-                            854,
-                            1431,
-                            2950,
-                        ],
-                        backgroundColor: [
-                            BLUE,
-                            YELLOW,
-                            GREEN,
-                        ],
-                        borderWidth: 0,
-                    },
-                ],
+                datasets: this.datasets,
             },
-            options: {
+        };
+    },
+    computed: {
+        chartOptions() {
+            return {
                 cutoutPercentage: 94,
                 tooltips: {
                     enabled: false,
@@ -69,10 +66,8 @@ export default {
                 legend: {
                     display: false,
                 },
-            },
-        };
-    },
-    computed: {
+            };
+        },
         styles() {
             return {
                 backgroundColor: this.backgroundColor,
