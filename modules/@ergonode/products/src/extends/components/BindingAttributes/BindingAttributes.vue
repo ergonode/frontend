@@ -68,7 +68,7 @@ export default {
             this.$emit('added');
         },
         onRemoveBinding(index) {
-            this.$emit('removeBinding', index);
+            this.$emit('remove-binding', index);
         },
     },
 };

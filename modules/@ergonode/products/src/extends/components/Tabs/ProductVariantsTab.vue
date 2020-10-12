@@ -45,7 +45,7 @@
                     <BindingAttributes
                         v-if="isBindingAttributesExpanded"
                         :attributes="bindingAttributes"
-                        @removeBinding="onRemoveBinding"
+                        @remove-binding="onRemoveBinding"
                         @added="onAddedBinding" />
                 </template>
                 <template #placeholderNoRecordsAction>
