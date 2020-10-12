@@ -407,10 +407,12 @@ export default {
                 },
             ],
         },
-        '@Templates/components/Forms/ProductTemplateForm': [
-            {
-                component: Components.ProductTemplateFormPresentation,
-            },
-        ],
+        '@Templates/components/Forms/ProductTemplateForm': {
+            __ALL: [
+                {
+                    component: Components.ProductTemplateFormPresentation,
+                },
+            ],
+        },
     },
 };
