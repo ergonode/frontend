@@ -70,7 +70,7 @@ export default {
         return {
             progressListDatasets: [],
             progressListLabels: [],
-            maxValue: 1,
+            maxValue: 100,
             colors: {},
             isPrefetchingData: true,
         };
