@@ -147,7 +147,7 @@ export default {
                     editable: false,
                 };
             });
-            this.rows = rows;
+            this.rows = rows.map((_links, ...rest) => rest);
             this.filtered = filtered;
         },
         onClose() {
