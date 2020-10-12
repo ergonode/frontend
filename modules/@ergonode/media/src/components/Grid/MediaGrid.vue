@@ -196,13 +196,13 @@ export default {
         onFetchData({
             offset,
             limit,
-            filters,
+            filter,
             sortedColumn,
         } = DEFAULT_GRID_FETCH_PARAMS) {
             this.localParams = {
                 offset,
                 limit,
-                filters: `type=${this.type}${filters ? `;${filters}` : ''}`,
+                filter: `type=${this.type}${filter ? `;${filter}` : ''}`,
                 sortedColumn,
             };
 

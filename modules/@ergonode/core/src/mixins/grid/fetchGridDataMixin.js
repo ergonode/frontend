@@ -4,7 +4,6 @@
  */
 import Grid from '@Core/components/Grid/Grid';
 import {
-    DATA_LIMIT,
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 import {
@@ -38,12 +37,7 @@ export default function ({
                 rows: [],
                 columns: [],
                 filtered: 0,
-                localParams: {
-                    offset: 0,
-                    limit: DATA_LIMIT,
-                    filters: {},
-                    sortedColumn: {},
-                },
+                localParams: DEFAULT_GRID_FETCH_PARAMS,
             };
         },
         computed: {
@@ -65,13 +59,13 @@ export default function ({
             async onFetchData({
                 offset,
                 limit,
-                filters,
+                filter,
                 sortedColumn,
             } = DEFAULT_GRID_FETCH_PARAMS) {
                 this.localParams = {
                     offset,
                     limit,
-                    filters,
+                    filter,
                     sortedColumn,
                 };
 
@@ -79,7 +73,7 @@ export default function ({
                     offset,
                     limit,
                     extended: true,
-                    filter: filters,
+                    filter,
                     columns: this.getGridColumnParams(),
                 };
 

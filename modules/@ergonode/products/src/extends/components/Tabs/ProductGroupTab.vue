@@ -12,11 +12,11 @@
                 :rows="rows"
                 :drafts="drafts"
                 :collection-cell-binding="collectionCellBinding"
+                :is-prefetching-data="isPrefetchingData"
                 :is-collection-layout="true"
+                :is-basic-filter="true"
                 :is-header-visible="true"
                 :is-border="true"
-                @edit-row="onEditRow"
-                @cell-value="onCellValueChange"
                 @fetch-data="onFetchData">
                 <template #headerActions>
                     <ActionButton
@@ -32,24 +32,12 @@
                         </template>
                     </ActionButton>
                 </template>
-                <template #appendFooter>
-                    <Button
-                        title="SAVE CHANGES"
-                        :disabled="!isAllowedToUpdate"
-                        @click.native="onSubmit">
-                        <template
-                            v-if="isSubmitting"
-                            #prepend="{ color }">
-                            <IconSpinner :fill-color="color" />
-                        </template>
-                    </Button>
-                </template>
             </Grid>
             <Component
                 v-if="selectedAppModalOption"
                 :is="modalComponent"
                 @close="onCloseModal"
-                @added="onCreatedData" />
+                @submitted="onCreatedData" />
         </template>
     </CenterViewTemplate>
 </template>
@@ -62,10 +50,6 @@ import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import {
-    DATA_LIMIT,
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 import {
@@ -82,7 +66,6 @@ import {
     ADD_PRODUCT,
 } from '@Products/defaults';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -100,89 +83,14 @@ export default {
         gridDraftMixin,
         tabFeedbackMixin,
     ],
-    async asyncData({
-        app, store, params: {
-            id,
-        },
-    }) {
-        const {
-            language: languageCode,
-        } = store.state.authentication.user;
-        const productChildren = await store.dispatch('product/getProductChildren', id);
-        const filteredProductTypes = await app.$extendMethods('@Products/components/Tabs/ProductGroupTab/filteredProductTypes', {
-            $this: app,
-        });
-        const productTypes = Array.from(new Set([].concat(...filteredProductTypes))).join(',');
-        const defaultColumns = [
-            'esa_default_image',
-            'esa_default_label',
-            'esa_product_type',
-            'sku',
-            'esa_template',
-        ];
-
-        const params = {
-            offset: 0,
-            limit: DATA_LIMIT,
-            extended: true,
-            filter: `esa_product_type=${productTypes}`,
-            columns: defaultColumns.join(','),
-        };
-
-        const {
-            columns,
-            rows,
-            filtered,
-        } = await getGridData({
-            $axios: app.$axios,
-            path: 'products',
-            params,
-        });
-        const tmpRows = [
-            ...rows,
-        ];
-
-        for (let i = 0; i < tmpRows.length; i += 1) {
-            tmpRows[i].esa_attached = {
-                value: productChildren
-                    .some(item => item.id === rows[i].id.value),
-                sku: rows[i].sku.value,
-            };
-        }
-
-        return {
-            columns: [
-                ...columns.map(column => ({
-                    ...column,
-                    editable: false,
-                    deletable: false,
-                })),
-                {
-                    language: languageCode,
-                    id: 'esa_attached',
-                    type: 'BOOL',
-                    label: 'Attached',
-                    visible: true,
-                    editable: true,
-                    deletable: false,
-                    parameters: [],
-                },
-            ],
-            filtered,
-            rows: tmpRows,
-        };
-    },
     data() {
         return {
-            isSubmitting: false,
+            columns: [],
+            rows: [],
+            filtered: 0,
             selectedAppModalOption: null,
-            localParams: {
-                offset: 0,
-                limit: DATA_LIMIT,
-                filters: {},
-                sortedColumn: {},
-            },
-            skus: {},
+            isPrefetchingData: false,
+            localParams: DEFAULT_GRID_FETCH_PARAMS,
         };
     },
     computed: {
@@ -194,8 +102,8 @@ export default {
         }),
         collectionCellBinding() {
             return {
-                imageColumn: 'esa_default_image',
-                descriptionColumn: 'esa_default_label',
+                imageColumn: 'default_image',
+                descriptionColumn: 'default_label',
             };
         },
         isAllowedToUpdate() {
@@ -223,8 +131,8 @@ export default {
         modalComponent() {
             const modals = [
                 {
-                    component: () => import('@Products/components/Modals/AddProductsBySKUModalForm'),
-                    name: ADD_PRODUCT.BY_SKU,
+                    component: () => import('@Products/extends/components/Modals/AddProductsFromListModalGrid'),
+                    name: ADD_PRODUCT.FROM_LIST,
                 },
                 ...this.extendedComponents,
             ];
@@ -232,134 +140,45 @@ export default {
             return modals.find(modal => modal.name === this.selectedAppModalOption).component;
         },
     },
+    async created() {
+        this.isPrefetchingData = true;
+
+        await this.onFetchData();
+
+        this.isPrefetchingData = false;
+    },
     methods: {
-        ...mapActions('product', [
-            'getProductChildren',
-            'addBySku',
-            'removeProductChildren',
-        ]),
-        ...mapActions('feedback', [
-            'onScopeValueChange',
-        ]),
         onSelectAddProductOption(option) {
             this.selectedAppModalOption = option;
         },
         onCloseModal() {
             this.selectedAppModalOption = null;
         },
-        onCreatedData() {
-            this.onFetchData(this.localParams);
-            this.selectedAppModalOption = null;
-        },
-        onCellValueChange(cellValues) {
-            const drafts = {};
+        async onCreatedData() {
+            this.isPrefetchingData = true;
 
-            cellValues.forEach(({
-                rowId, columnId, value, row,
-            }) => {
-                drafts[`${rowId}/${columnId}`] = value;
+            await this.onFetchData(this.localParams);
 
-                this.skus[rowId] = {
-                    sku: this.rows[row - 1].sku.value,
-                    value,
-                };
-            });
-
-            this.setDrafts({
-                ...this.drafts,
-                ...drafts,
-            });
-
-            this.onScopeValueChange({
-                scope: this.scope,
-                fieldKey: 'groupProducts',
-                value: drafts,
-            });
-        },
-        onEditRow(args) {
-            const lastIndex = args.length - 1;
-
-            this.$router.push({
-                name: 'product-id-general',
-                params: {
-                    id: args[lastIndex],
-                },
-            });
-        },
-        async onSubmit() {
-            this.isSubmitting = true;
-
-            const requests = [];
-
-            Object.keys(this.skus).forEach((key) => {
-                const {
-                    sku, value,
-                } = this.skus[key];
-
-                if (value) {
-                    requests.push(this.addBySku({
-                        skus: sku,
-                    }));
-                } else {
-                    requests.push(this.removeProductChildren({
-                        childrenId: key,
-                        skus: sku,
-                    }));
-                }
-
-                const row = this.rows.find(({
-                    id,
-                }) => id.value === key);
-
-                if (row) {
-                    row.esa_attached.value = value;
-                }
-            });
-
-            await Promise.all(requests);
-
-            this.setDrafts();
-            this.skus = {};
-
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Products attachment have been updated',
-            });
-
-            this.isSubmitting = false;
-
-            this.markChangeValuesAsSaved(this.scope);
+            this.isPrefetchingData = false;
         },
         async onFetchData({
             offset,
             limit,
-            filters,
+            filter,
             sortedColumn,
-        } = DEFAULT_GRID_FETCH_PARAMS) {
+        } = this.localParams) {
+            let filtersWithAttached = filter;
+
+            if (!filter.includes('attached=true')) {
+                filtersWithAttached = 'attached=true';
+            }
+
             this.localParams = {
                 offset,
                 limit,
-                filters,
-                sortedColumn,
-            };
-            const filteredProductTypes = await this.$extendMethods('@Products/components/Tabs/ProductGroupTab/filteredProductTypes', {
-                $this: this,
-            });
-            const productTypes = Array.from(new Set([].concat(...filteredProductTypes))).join(',');
-            const defaultColumns = [
-                'esa_default_image',
-                'esa_default_label',
-                'esa_product_type',
-                'sku',
-                'esa_template',
-            ];
-
-            const params = {
-                offset,
-                limit,
+                filter: filtersWithAttached,
                 extended: true,
-                filter: `esa_product_type=${productTypes}`,
-                columns: defaultColumns.join(','),
+                sortedColumn,
             };
 
             if (Object.keys(sortedColumn).length) {
@@ -367,8 +186,8 @@ export default {
                     index: colSortID, orderState,
                 } = sortedColumn;
 
-                params.field = colSortID;
-                params.order = orderState;
+                this.localParams.field = colSortID;
+                this.localParams.order = orderState;
             }
 
             const {
@@ -377,39 +196,24 @@ export default {
                 filtered,
             } = await getGridData({
                 $axios: this.$axios,
-                path: 'products',
-                params,
+                path: `products/${this.id}/children-and-available-products`,
+                params: this.localParams,
             });
-            const collection = await this.getProductChildren(this.id);
 
-            const tmpRows = [
-                ...rows,
-            ];
+            this.columns = columns.map((column) => {
+                if (column.id === 'attached') {
+                    return {
+                        ...column,
+                        filter: null,
+                        editable: false,
+                    };
+                }
 
-            for (let i = 0; i < rows.length; i += 1) {
-                tmpRows[i].esa_attached = {
-                    value: collection.some(item => item.id === rows[i].id.value),
-                    sku: rows[i].sku.value,
-                };
-            }
-
-            this.columns = [
-                ...columns.map(column => ({
+                return {
                     ...column,
                     editable: false,
-                    deletable: false,
-                })),
-                {
-                    language: this.languageCode,
-                    id: 'esa_attached',
-                    type: 'BOOL',
-                    label: 'Attached',
-                    visible: true,
-                    editable: true,
-                    deletable: false,
-                    parameters: [],
-                },
-            ];
+                };
+            });
             this.filtered = filtered;
             this.rows = rows;
         },

@@ -67,6 +67,7 @@
             @filter="onFilter"
             @count="onFiltersCountChange"
             @exists="onFilterExists" />
+        <slot name="panel" />
     </div>
 </template>
 
