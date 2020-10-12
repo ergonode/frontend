@@ -21,8 +21,9 @@ export default {
                 const {
                     row, column,
                 } = this.cellResizer.position;
+                const fixedRow = row + this.basicFiltersOffset + this.rowsOffset;
 
-                const tableCellElement = this.$el.querySelector(`.coordinates-${column}-${row}`);
+                const tableCellElement = this.$el.querySelector(`.coordinates-${column}-${fixedRow}`);
 
                 tableCellElement.focus();
             }
@@ -32,7 +33,7 @@ export default {
                 row, column,
             } = this.cellResizer.position;
 
-            const fixedRow = row - this.basicFiltersOffset - this.rowsOffset - 1;
+            const fixedRow = row - this.basicFiltersOffset;
             const fixedColumn = column - this.columnsOffset;
             const rowId = this.rowIds[fixedRow];
             const {
@@ -85,7 +86,7 @@ export default {
                         width,
                     },
                     position: {
-                        row: +event.target.getAttribute('row'),
+                        row: +event.target.getAttribute('row') - this.rowsOffset - this.basicFiltersOffset,
                         column: +event.target.getAttribute('column'),
                         minRow: 1 + this.basicFiltersOffset,
                         maxRow: this.basicFiltersOffset + this.dataCount,

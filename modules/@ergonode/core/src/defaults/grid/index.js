@@ -80,7 +80,7 @@ export const DRAGGED_ELEMENT = {
     LIST: 'LIST',
 };
 
-export const DATA_LIMIT = 25;
+export const DATA_LIMIT = 10;
 
 export const DEFAULT_GRID_FETCH_PARAMS = {
     offset: 0,
