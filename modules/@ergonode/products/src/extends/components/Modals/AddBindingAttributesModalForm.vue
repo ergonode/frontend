@@ -4,17 +4,18 @@
  */
 <template>
     <ModalForm
-        title="Create product"
+        title="Add binding attributes"
         @close="onClose">
         <template #body>
-            <ProductForm
-                submit-title="CREATE"
-                proceed-title="CREATE & EDIT"
+            <ProductAttributesBindingForm
+                submit-title="ADD ATTRIBUTES"
+                proceed-title="CANCEL"
                 :is-submitting="isSubmitting"
-                :is-proceeding="isProceeding"
                 :errors="scopeErrors"
+                :bindings="localBindings"
+                @input="onFormValueChange"
                 @submit="onSubmit"
-                @proceed="onProceed" />
+                @proceed="onCancel" />
         </template>
     </ModalForm>
 </template>
@@ -28,73 +29,81 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
-import ProductForm from '@Products/components/Forms/ProductForm';
+import ProductAttributesBindingForm
+    from '@Products/extends/components/Forms/ProductAttributesBindingForm';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
-    name: 'CreateProductModalForm',
+    name: 'AddBindingAttributesModalForm',
     components: {
         ModalForm,
-        ProductForm,
+        ProductAttributesBindingForm,
     },
     mixins: [
         scopeErrorsMixin,
     ],
     data() {
         return {
+            localBindings: [],
             isSubmitting: false,
-            isProceeding: false,
         };
     },
     computed: {
+        ...mapState('authentication', {
+            language: state => state.user.language,
+        }),
+        ...mapState('product', [
+            'id',
+            'bindings',
+        ]),
+        description() {
+            return 'Binding attribute is the common attribute of the products, which link products together into the product with variants.';
+        },
         secondaryTheme() {
             return THEME.SECONDARY;
         },
     },
+    created() {
+        this.localBindings = [
+            ...this.bindings,
+        ];
+    },
     methods: {
         ...mapActions('product', [
-            'createProduct',
-            '__clearStorage',
+            'addProductBindings',
         ]),
+        onFormValueChange(value) {
+            this.localBindings = value;
+        },
         onClose() {
-            this.__clearStorage();
             this.removeScopeErrors(this.scope);
 
             this.$emit('close');
         },
+        onCancel() {
+            this.$emit('close');
+        },
         onSubmit() {
-            if (this.isSubmitting || this.isProceeding) {
+            if (this.isSubmitting) {
                 return;
             }
             this.isSubmitting = true;
 
             this.removeScopeErrors(this.scope);
-            this.createProduct({
+            this.addProductBindings({
                 scope: this.scope,
+                bindings: this.localBindings,
                 onSuccess: this.onCreateSuccess,
-                onError: this.onCreateError,
-            });
-        },
-        onProceed() {
-            if (this.isSubmitting || this.isProceeding) {
-                return;
-            }
-
-            this.isProceeding = true;
-
-            this.removeScopeErrors(this.scope);
-            this.createProduct({
-                scope: this.scope,
-                onSuccess: this.onProceedSuccess,
                 onError: this.onCreateError,
             });
         },
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product created',
+                message: 'Attribute bindings added',
             });
 
             this.isSubmitting = false;
@@ -102,21 +111,10 @@ export default {
             this.$emit('created');
             this.onClose();
         },
-        onProceedSuccess(id) {
-            this.isProceeding = false;
-
-            this.$router.push({
-                name: 'product-id-general',
-                params: {
-                    id,
-                },
-            });
-        },
         onCreateError(errors) {
             this.onError(errors);
 
             this.isSubmitting = false;
-            this.isProceeding = false;
         },
     },
 };

@@ -12,7 +12,6 @@ import {
     applyDraft,
     create,
     get,
-    getChildren,
     getCollections,
     getCompleteness,
     getDraft,
@@ -193,31 +192,14 @@ export default {
         onSuccess = () => {},
         onError = () => {},
     }) {
-        const errors = {};
-        let isAnyError = false;
         const {
             id,
         } = state;
-        const mappedSkus = skus.replace(/\n/g, ',');
         const data = {
-            skus: mappedSkus !== '' ? mappedSkus.split(',') : [],
+            skus,
         };
 
         try {
-            if (!mappedSkus.length) {
-                errors.skus = [
-                    'Sku is required',
-                ];
-                isAnyError = true;
-            }
-
-            if (isAnyError) {
-                throw {
-                    data: {
-                        errors,
-                    },
-                };
-            }
             await addBySku({
                 $axios: this.app.$axios,
                 id,
@@ -228,11 +210,6 @@ export default {
             onError({
                 errors: e.data.errors,
                 scope,
-                fieldKeys: data.skus.reduce((prev, curr, index) => {
-                    const tmp = prev;
-                    tmp[`element-${index}`] = curr;
-                    return tmp;
-                }, {}),
             });
         }
     },
@@ -295,16 +272,6 @@ export default {
         });
 
         return elements;
-    },
-    async getProductChildren({}, id) {
-        const {
-            collection,
-        } = await getChildren({
-            $axios: this.app.$axios,
-            id,
-        });
-
-        return collection;
     },
     async getProductCollections({
         state,

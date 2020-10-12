@@ -4,5 +4,5 @@
  */
 export default () => ({
     selectAttributes: [],
-    bindingAttributesIds: [],
+    bindings: [],
 });

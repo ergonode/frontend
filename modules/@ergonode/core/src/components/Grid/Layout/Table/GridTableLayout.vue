@@ -73,6 +73,7 @@
                             <GridFilterDataCell
                                 :row-index="rowsOffset + basicFiltersOffset"
                                 :value="filters[column.id]"
+                                :type="column.filter ? filterTypes[column.filter.type] : ''"
                                 :column-index="columnIndex + columnsOffset"
                                 :language-code="column.language"
                                 :column-id="column.id"
@@ -301,25 +302,54 @@ export default {
         columnTypes() {
             return this.visibleColumns.reduce((acc, current) => {
                 const tmp = acc;
-                tmp[current.type] = capitalizeAndConcatenationArray(current.type.split('_'));
+
+                if (typeof tmp[current.type] === 'undefined') {
+                    tmp[current.type] = capitalizeAndConcatenationArray(current.type.split('_'));
+                }
+
+                return tmp;
+            }, {});
+        },
+        filterTypes() {
+            return this.visibleColumns.reduce((acc, current) => {
+                const tmp = acc;
+
+                if (current.filter && typeof tmp[current.filter.type] === 'undefined') {
+                    tmp[current.filter.type] = this.columnTypes[current.filter.type] || capitalizeAndConcatenationArray(current.filter.type.split('_'));
+                }
+
                 return tmp;
             }, {});
         },
         columnActionTypes() {
             return this.actionColumns.reduce((acc, current) => {
                 const tmp = acc;
+
                 tmp[current.id] = capitalizeAndConcatenationArray(current.id.split('_'));
+
                 return tmp;
             }, {});
         },
         editCellComponent() {
-            const type = capitalizeAndConcatenationArray(this.editCell.type.split('_'));
+            const type = this.columnTypes[this.editCell.type];
+
+            const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Table/Cells/Edit');
+
+            if (extendedComponents && extendedComponents[type]) {
+                return extendedComponents[type];
+            }
 
             return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Grid${type}EditCell`)
                 .catch(() => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridTextEditCell'));
         },
         editFilterCellComponent() {
-            const type = capitalizeAndConcatenationArray(this.editFilterCell.type.split('_'));
+            const type = this.filterTypes[this.editFilterCell.type];
+
+            const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Table/Cells/Edit/Filter');
+
+            if (extendedComponents && extendedComponents[type]) {
+                return extendedComponents[type];
+            }
 
             return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Filter/Grid${type}EditFilterCell`)
                 .catch(() => import('@Core/components/Grid/Layout/Table/Cells/Edit/Filter/GridTextEditFilterCell'));

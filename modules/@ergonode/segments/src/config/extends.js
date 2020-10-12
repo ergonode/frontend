@@ -16,7 +16,7 @@ export default {
         ],
         '@Collections/components/Tabs/collectionProductsTab/addFromSegment': [
             {
-                component: Components.AddProductsFromSegmentToCollectioModalForm,
+                component: Components.AddProductsFromSegmentToCollectionModalForm,
                 name: 'Add from segment',
             },
         ],

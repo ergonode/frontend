@@ -76,11 +76,11 @@ export default {
             this.addBySku({
                 scope: this.scope,
                 skus: this.productSkus,
-                onSuccess: this.onAddSuccess,
+                onSuccess: this.onSubmitSuccess,
                 onError: this.onAddError,
             });
         },
-        onAddSuccess() {
+        onSubmitSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Products have been added to collection',
@@ -88,7 +88,7 @@ export default {
 
             this.isAdding = false;
 
-            this.$emit('added');
+            this.$emit('submitted');
         },
         onAddError(errors) {
             this.onError(errors);

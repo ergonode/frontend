@@ -38,7 +38,7 @@ import {
 } from '@Core/defaults/theme';
 
 export default {
-    name: 'GridMediaAttachCollectionCell',
+    name: 'GridProductAttachCollectionCell',
     components: {
         Picture,
         Toggler,
@@ -64,14 +64,14 @@ export default {
     },
     computed: {
         cellValue() {
-            const draft = this.drafts[`${this.data.id}/esa_attached`];
+            const draft = this.drafts[`${this.data.id}/attached`];
 
             if (typeof draft !== 'undefined'
-                && Boolean(this.data.esa_attached) !== Boolean(draft)) {
+                && Boolean(this.data.attached) !== Boolean(draft)) {
                 return draft;
             }
 
-            return this.data.esa_attached;
+            return this.data.attached;
         },
         placeholderImage() {
             return require('@Core/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
@@ -99,7 +99,7 @@ export default {
             this.$emit('cell-value', [
                 {
                     rowId: this.data.id,
-                    columnId: 'esa_attached',
+                    columnId: 'attached',
                     value,
                 },
             ]);
