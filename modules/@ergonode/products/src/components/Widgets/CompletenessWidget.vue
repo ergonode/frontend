@@ -59,7 +59,7 @@ export default {
                 label,
                 value,
             });
-            progressListLabels.push(`${value * 100}%`);
+            progressListLabels.push(`${value}%`);
         });
 
         this.progressListDatasets = progressListDatasets;
