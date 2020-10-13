@@ -6,7 +6,7 @@
     <InformationBadge
         :background="status.color"
         :color="textColor"
-        :title="status.name || status.code" />
+        :title="status.label" />
 </template>
 
 <script>
@@ -14,6 +14,7 @@ import {
     GRAPHITE_DARK,
     WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import InformationBadge from '@Core/components/Badges/InformationBadge';
 import {
     calculateContrastRatio,
     calculateRelativeLuminance,
@@ -23,7 +24,7 @@ import {
 export default {
     name: 'ProductStatusBadge',
     components: {
-        InformationBadge: () => import('@Core/components/Badges/InformationBadge'),
+        InformationBadge,
     },
     props: {
         status: {

@@ -262,7 +262,7 @@ export const setTranslation = ({
     });
 };
 
-export const updateTranslation = ({
+export const getTranslation = ({
     $this,
 }) => {
     const {

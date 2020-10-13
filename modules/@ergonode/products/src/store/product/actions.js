@@ -635,19 +635,24 @@ export default {
     }, {
         languageCode,
         attributeId,
-        onSuccess,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
+        try {
+            const {
+                id,
+            } = state;
 
-        await removeDraftValue({
-            $axios: this.app.$axios,
-            id,
-            languageCode,
-            attributeId,
-        });
+            await removeDraftValue({
+                $axios: this.app.$axios,
+                id,
+                languageCode,
+                attributeId,
+            });
 
-        onSuccess();
+            onSuccess();
+        } catch {
+            onError();
+        }
     },
 };

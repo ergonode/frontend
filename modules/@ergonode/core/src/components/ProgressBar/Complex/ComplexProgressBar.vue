@@ -82,7 +82,10 @@ export default {
 
                 window.requestAnimationFrame(() => {
                     this.$refs.value.style.transform = `scaleX(${progressWidth})`;
-                    this.$refs.progressDivider.style.transform = `translateX(${progressWidth - 1}px)`;
+
+                    if (this.$refs.progressDivider) {
+                        this.$refs.progressDivider.style.transform = `translateX(${progressWidth - 1}px)`;
+                    }
                 });
                 this.observer.disconnect();
             }

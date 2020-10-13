@@ -102,6 +102,7 @@ export default {
                 expanded: false,
             };
         });
+
         store.dispatch('gridDesigner/setGridData', treeToSet);
         store.dispatch('gridDesigner/setFullGridData', treeToSet);
     },

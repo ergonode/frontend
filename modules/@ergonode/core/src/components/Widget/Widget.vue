@@ -11,18 +11,30 @@
             <slot name="appendHeader" />
         </section>
         <section class="widget__body">
-            <slot name="body" />
+            <WidgetPlaceholder v-if="isPlaceholderVisible" />
+            <slot
+                v-else
+                name="body" />
         </section>
     </div>
 </template>
 
 <script>
+import WidgetPlaceholder from '@Core/components/Widget/WidgetPlaceholder';
+
 export default {
     name: 'Widget',
+    components: {
+        WidgetPlaceholder,
+    },
     props: {
         title: {
             type: String,
             default: '',
+        },
+        isPlaceholderVisible: {
+            type: Boolean,
+            default: false,
         },
     },
 };
@@ -48,6 +60,9 @@ export default {
         }
 
         &__body {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
             margin-top: 40px;
         }
     }

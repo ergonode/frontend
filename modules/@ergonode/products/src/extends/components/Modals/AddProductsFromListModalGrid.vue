@@ -147,7 +147,12 @@ export default {
                     editable: false,
                 };
             });
-            this.rows = rows;
+            this.rows = rows.map(({
+                // eslint-disable-next-line no-unused-vars
+                _links, ...rest
+            }) => ({
+                ...rest,
+            }));
             this.filtered = filtered;
         },
         onClose() {
@@ -176,13 +181,13 @@ export default {
                         skus: sku,
                     }));
                 }
-
-                if (skus.length) {
-                    requests.push(this.addBySku({
-                        skus,
-                    }));
-                }
             });
+
+            if (skus.length) {
+                requests.push(this.addBySku({
+                    skus,
+                }));
+            }
 
             await Promise.all(requests);
 
