@@ -91,7 +91,9 @@ export const getMappedTranslationErrors = ({
     const translationErrors = {};
 
     Object.keys(errors).forEach((key) => {
-        translationErrors[key] = errors[key][languageCode];
+        if (typeof errors[key][languageCode] !== 'undefined') {
+            translationErrors[key] = errors[key][languageCode];
+        }
     });
 
     return translationErrors;
