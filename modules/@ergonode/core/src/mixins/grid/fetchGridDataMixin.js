@@ -48,7 +48,7 @@ export default function ({
         watch: {
             isFetchingNeeded() {
                 if (this.isFetchingNeeded) {
-                    this.onFetchData(this.localParams);
+                    this.onFetchData();
                 }
             },
         },
@@ -61,7 +61,7 @@ export default function ({
                 limit,
                 filter,
                 sortedColumn,
-            } = DEFAULT_GRID_FETCH_PARAMS) {
+            } = this.localParams) {
                 this.localParams = {
                     offset,
                     limit,
@@ -103,7 +103,7 @@ export default function ({
                 this.$emit('fetched');
             },
             onRemoveRow() {
-                this.onFetchData(this.localParams);
+                this.onFetchData();
             },
             async onDropColumn(payload) {
                 try {
@@ -116,7 +116,7 @@ export default function ({
                         data: columnCode,
                     });
 
-                    await this.onFetchData(this.localParams);
+                    await this.onFetchData();
 
                     const column = this.columns.find(({
                         id,

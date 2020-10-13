@@ -64,26 +64,28 @@
             v-show="isFiltersExpanded && isAdvancedFilters"
             :filters="filters"
             :filter-values="filterValues"
+            @remove="onRemoveFilter"
+            @remove-all="onRemoveAllFilters"
             @filter="onFilter"
-            @count="onFiltersCountChange"
             @exists="onFilterExists" />
         <slot name="panel" />
     </div>
 </template>
 
 <script>
+import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
 import DropZone from '@Core/components/DropZone/DropZone';
+import Fab from '@Core/components/Fab/Fab';
 import GridAdvancedFilters from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilters';
 import GridHeaderSettings from '@Core/components/Grid/Header/GridHeaderSettings';
 import GridCollectionLayoutActivator from '@Core/components/Grid/Layout/Collection/GridCollectionLayoutActivator';
 import GridTableLayoutActivator from '@Core/components/Grid/Layout/Table/GridTableLayoutActivator';
+import IconAddFilter from '@Core/components/Icons/Actions/IconAddFilter';
+import IconSettings from '@Core/components/Icons/Actions/IconSettings';
 import {
     DRAGGED_ELEMENT,
     GRID_LAYOUT,
 } from '@Core/defaults/grid';
-import {
-    ARROW,
-} from '@Core/defaults/icons';
 import {
     LAYOUT_ORIENTATION,
 } from '@Core/defaults/layout';
@@ -102,13 +104,13 @@ export default {
         GridHeaderSettings,
         GridAdvancedFilters,
         DropZone,
-        IconAddFilter: () => import('@Core/components/Icons/Actions/IconAddFilter'),
-        GridSettingsModalForm: () => import('@Core/components/Grid/Modals/GridSettingsModalForm'),
+        IconAddFilter,
+        ExpandNumericButton,
+        Fab,
+        IconSettings,
         // ActionButton: () => import('@Core/components/ActionButton/ActionButton'),
-        ExpandNumericButton: () => import('@Core/components/Buttons/ExpandNumericButton'),
-        Fab: () => import('@Core/components/Fab/Fab'),
-        IconSettings: () => import('@Core/components/Icons/Actions/IconSettings'),
         // IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
+        GridSettingsModalForm: () => import('@Core/components/Grid/Modals/GridSettingsModalForm'),
     },
     props: {
         tableLayoutConfig: {
@@ -149,7 +151,6 @@ export default {
             isFiltersExpanded: false,
             isFilterExists: false,
             isSettingsModal: false,
-            filtersCount: this.filters.length,
         };
     },
     computed: {
@@ -165,6 +166,9 @@ export default {
                 },
             ];
         },
+        filtersCount() {
+            return this.filters.length;
+        },
         isListElementDragging() {
             return this.isElementDragging === DRAGGED_ELEMENT.LIST;
         },
@@ -174,9 +178,6 @@ export default {
         theme() {
             return THEME;
         },
-        iconExpandedState() {
-            return this.isFiltersExpanded ? ARROW.UP : ARROW.DOWN;
-        },
         gridLayouts() {
             return GRID_LAYOUT;
         },
@@ -184,9 +185,6 @@ export default {
     methods: {
         onLayoutActivate(layout) {
             this.$emit('layout-change', layout);
-        },
-        onFiltersCountChange(count) {
-            this.filtersCount = count;
         },
         onFilterExists(isExist) {
             this.isFilterExists = isExist;
@@ -202,6 +200,7 @@ export default {
         },
         onApplySettings(payload) {
             this.isSettingsModal = false;
+
             this.$emit('apply-settings', payload);
         },
         onDropFilter(id) {
@@ -209,6 +208,12 @@ export default {
         },
         onFilter(filters) {
             this.$emit('filter', filters);
+        },
+        onRemoveFilter(payload) {
+            this.$emit('remove-filter', payload);
+        },
+        onRemoveAllFilters() {
+            this.$emit('remove-all-filter');
         },
     },
 };

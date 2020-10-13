@@ -41,6 +41,8 @@
                 @cell-value="onCellValueChange"
                 @focus-cell="onFocusCell"
                 @delete-row="onRemoveRow"
+                @remove-advanced-filter="onAdvancedFilterRemove"
+                @remove-all-advanced-filter="onAdvancedFilterRemoveAll"
                 @drop-column="onDropColumn"
                 @drop-filter="onDropFilter"
                 @fetch-data="onFetchData">
@@ -108,6 +110,9 @@ import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import {
+    removeCookieAtIndex,
+} from '@Core/models/cookies';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     mapActions,
@@ -253,6 +258,7 @@ export default {
         ...mapActions('list', [
             'setDisabledElement',
             'setDisabledElements',
+            'removeDisabledElement',
         ]),
         ...mapActions('product', [
             'updateProductDraft',
@@ -261,6 +267,62 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
+        disableListElement({
+            languageCode,
+            attributeId,
+        }) {
+            if (this.disabledElements[languageCode][attributeId]) {
+                this.setDisabledElement({
+                    languageCode,
+                    elementId: attributeId,
+                    disabled: false,
+                });
+            } else {
+                this.removeDisabledElement({
+                    languageCode,
+                    elementId: attributeId,
+                });
+            }
+        },
+        onAdvancedFilterRemove({
+            index,
+            filter,
+            params,
+        }) {
+            removeCookieAtIndex({
+                cookies: this.$cookies,
+                cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
+                index,
+            });
+
+            this.disableListElement({
+                languageCode: filter.languageCode,
+                attributeId: filter.attributeId,
+            });
+
+            this.advancedFilters = this.advancedFilters.filter(({
+                id,
+            }) => id !== filter.id);
+
+            this.onFetchData(params);
+        },
+        onAdvancedFilterRemoveAll(params) {
+            this.$cookies.remove(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
+
+            this.advancedFilters.forEach(({
+                attributeId,
+                languageCode,
+            }) => {
+                this.disableListElement({
+                    languageCode,
+                    attributeId,
+                });
+            });
+
+            this.advancedFilters = [];
+
+            this.onFetchData(params);
+        },
         async onCellValueChange(cellValues) {
             const cachedElementIds = {};
 

@@ -19,7 +19,7 @@
                 :is-basic-filter="true"
                 :is-header-visible="true"
                 :is-border="true"
-                @delete-row="onFetchData"
+                @delete-row="onRemoveProduct"
                 @fetch-data="onFetchData">
                 <template #headerActions>
                     <ExpandNumericButton
@@ -269,6 +269,9 @@ export default {
         },
         onChooseVariants() {
             this.isBindingAttributesExpanded = true;
+        },
+        onRemoveProduct() {
+            this.onFetchData();
         },
         async onFetchData({
             offset,

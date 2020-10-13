@@ -3,11 +3,6 @@
  * See LICENSE for license details.
  */
 
-export const get = ({
-    $axios,
-    id,
-}) => $axios.$get(`roles/${id}`);
-
 export const getAll = ({
     $axios,
     params,

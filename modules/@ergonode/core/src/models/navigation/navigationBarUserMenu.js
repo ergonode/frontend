@@ -12,11 +12,6 @@ export default [
                 icon: 'User',
             },
             {
-                title: 'Work schedule',
-                routing: '/placeholder/schedule',
-                icon: 'Flow',
-            },
-            {
                 title: 'Settings',
                 routing: '/settings',
                 icon: 'Settings',

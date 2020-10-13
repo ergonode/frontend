@@ -18,6 +18,8 @@
             :filters="advancedFilters"
             :filter-values="advancedFilterValues"
             @filter="onAdvancedFilterChange"
+            @remove-filter="onAdvancedFilterRemove"
+            @remove-all-filter="onAdvancedFilterRemoveAll"
             @layout-change="onLayoutChange"
             @apply-settings="onApplySettings"
             @drop-filter="onDropFilter">
@@ -383,7 +385,8 @@ export default {
             this.$emit('focus-cell', payload);
         },
         onRowAction({
-            key, value,
+            key,
+            value,
         }) {
             this.$emit(`${key}-row`, value);
         },
@@ -403,6 +406,45 @@ export default {
             this.advancedFilterValues = filters;
 
             this.emitFetchData();
+        },
+        onAdvancedFilterRemove({
+            index,
+            filter,
+        }) {
+            const advancedFilterValues = {
+                ...this.advancedFilterValues,
+            };
+
+            delete advancedFilterValues[filter.id];
+
+            this.advancedFilterValues = advancedFilterValues;
+
+            this.$emit('remove-advanced-filter', {
+                index,
+                filter,
+                params: {
+                    sortedColumn: this.sortedColumn,
+                    filter: getMergedFilters({
+                        basic: this.filterValues,
+                        advanced: this.advancedFilterValues,
+                    }),
+                    offset: (this.currentPage - 1) * this.maxRows,
+                    limit: this.maxRows,
+                },
+            });
+        },
+        onAdvancedFilterRemoveAll() {
+            this.advancedFilterValues = {};
+
+            this.$emit('remove-all-advanced-filter', {
+                sortedColumn: this.sortedColumn,
+                filter: getMergedFilters({
+                    basic: this.filterValues,
+                    advanced: this.advancedFilterValues,
+                }),
+                offset: (this.currentPage - 1) * this.maxRows,
+                limit: this.maxRows,
+            });
         },
         onCurrentPageChange(page) {
             this.currentPage = page;
