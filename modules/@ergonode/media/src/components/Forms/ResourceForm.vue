@@ -71,7 +71,7 @@ export default {
             'name',
         ]),
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Media/components/Forms/ResourceForm',
             });
         },

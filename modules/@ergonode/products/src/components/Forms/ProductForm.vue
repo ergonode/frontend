@@ -22,6 +22,8 @@
                     :error-messages="errors[typeFieldKey]"
                     :options="productTypesValues"
                     @input="setTypeValue" />
+            </FormSection>
+            <FormSection v-if="type">
                 <TextField
                     :value="sku"
                     hint="Products SKU must be unique"
@@ -39,7 +41,8 @@
                     :fetch-options-request="getTemplateOptions"
                     @input="setTemplateValue" />
                 <Divider v-if="extendedForm.length" />
-                <template v-for="(formComponent, index) in extendedForm">
+                <template
+                    v-for="(formComponent, index) in extendedForm">
                     <Component
                         :is="formComponent.component"
                         :key="index"
@@ -93,7 +96,7 @@ export default {
             'template',
         ]),
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Products/components/Forms/ProductForm',
                 type: this.productTypeKey,
             });

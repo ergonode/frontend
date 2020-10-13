@@ -22,7 +22,7 @@ export default ({
     inject('closeModal', (key) => {
         app.store.dispatch('core/closeModal', key);
     });
-    inject('getExtendedFormByType', ({
+    inject('extendedForm', ({
         key, type = null,
     }) => {
         const forAllTypes = '__ALL';

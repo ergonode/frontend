@@ -57,7 +57,7 @@ export default {
             ]);
         },
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Media/components/Forms/ResourceTranslationForm',
             });
         },

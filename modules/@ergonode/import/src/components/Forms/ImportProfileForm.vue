@@ -100,7 +100,7 @@ export default {
             'sources',
         ]),
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Import/components/Forms/ImportProfileForm',
                 type: this.type,
             });

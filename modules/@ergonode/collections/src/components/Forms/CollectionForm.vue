@@ -78,7 +78,7 @@ export default {
             'type',
         ]),
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Collections/components/Forms/CollectionForm',
                 type: this.type,
             });

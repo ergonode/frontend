@@ -80,7 +80,7 @@ export default {
             'languages',
         ]),
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Core/components/Forms/MainSettingsForm',
             });
         },

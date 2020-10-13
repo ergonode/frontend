@@ -136,7 +136,7 @@ export default {
                 return this.errors;
             }
 
-            return this.presentationErrors(this.errors);
+            return this.errorsPresentationMapper(this.errors);
         },
     },
     methods: {

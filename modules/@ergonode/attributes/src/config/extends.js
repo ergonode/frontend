@@ -176,9 +176,18 @@ export default {
                 });
 
                 return {};
+            case TYPES.TEXT_AREA:
+                return {
+                    ...prepareTextAreaData({
+                        $this,
+                        typeConfig,
+                    }),
+                    ...getTranslation({
+                        $this,
+                    }),
+                };
             case TYPES.NUMERIC:
             case TYPES.TEXT:
-            case TYPES.TEXT_AREA:
                 return getTranslation({
                     $this,
                 });
@@ -407,10 +416,12 @@ export default {
                 },
             ],
         },
-        '@Templates/components/Forms/ProductTemplateForm': [
-            {
-                component: Components.ProductTemplateFormPresentation,
-            },
-        ],
+        '@Templates/components/Forms/ProductTemplateForm': {
+            __ALL: [
+                {
+                    component: Components.ProductTemplateFormPresentation,
+                },
+            ],
+        },
     },
 };

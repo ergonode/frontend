@@ -95,7 +95,7 @@ export default {
             'statuses',
         ]),
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Transitions/components/Forms/TransitionForm',
             });
         },

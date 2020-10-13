@@ -75,7 +75,7 @@ export default {
             'image',
         ]),
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Templates/components/Forms/ProductTemplateForm',
             });
         },
