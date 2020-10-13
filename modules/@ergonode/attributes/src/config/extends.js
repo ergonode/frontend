@@ -176,9 +176,18 @@ export default {
                 });
 
                 return {};
+            case TYPES.TEXT_AREA:
+                return {
+                    ...prepareTextAreaData({
+                        $this,
+                        typeConfig,
+                    }),
+                    ...updateTranslation({
+                        $this,
+                    }),
+                };
             case TYPES.NUMERIC:
             case TYPES.TEXT:
-            case TYPES.TEXT_AREA:
                 return updateTranslation({
                     $this,
                 });

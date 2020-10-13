@@ -146,7 +146,7 @@ export default {
             'role',
         ]),
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Users/components/Forms/UserForm',
             });
         },

@@ -99,7 +99,7 @@ export default {
             'isDefaultStatus',
         ]),
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Statuses/components/Forms/ProductStatusForm',
             });
         },

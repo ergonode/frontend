@@ -86,7 +86,7 @@ export default {
             return this.item.label || `#${this.item.code}`;
         },
         typeIconComponent() {
-            const icon = this.$getExtendedFormByType({
+            const icon = this.$extendedForm({
                 key: '@Attributes/components/Lists/AttributeListElement/Icon',
                 type: this.item.type,
             });

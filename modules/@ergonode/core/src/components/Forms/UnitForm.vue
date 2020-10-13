@@ -75,7 +75,7 @@ export default {
             'symbol',
         ]),
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Core/components/Forms/UnitForm',
             });
         },

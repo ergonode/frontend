@@ -55,7 +55,7 @@ export default {
             ]);
         },
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Categories/components/Forms/CategoryTranslationForm',
             });
         },

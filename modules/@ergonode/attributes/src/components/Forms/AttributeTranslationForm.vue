@@ -73,7 +73,7 @@ export default {
             'type',
         ]),
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Attributes/components/Forms/AttributeTranslationForm',
                 type: this.typeKey,
             });

@@ -100,7 +100,7 @@ export default {
             'channels',
         ]),
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Channels/components/Forms/ChannelForm',
                 type: this.type,
             });

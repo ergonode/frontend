@@ -10,7 +10,7 @@
         required
         :label="paramsLabel"
         :options="attributeParametersOptions"
-        :error-messages="errors[paramsFieldKey]"
+        :error-messages="errorMessage"
         :disabled="!isAllowedToUpdate"
         @input="setParameterValue" />
 </template>
@@ -72,7 +72,12 @@ export default {
             return Object.values(this.params);
         },
         paramsFieldKey() {
-            return `parameters_${this.paramsLabel.toLowerCase()}`;
+            return 'parameters';
+        },
+        errorMessage() {
+            const error = this.errors[this.paramsFieldKey];
+
+            return error ? error[this.parameterData.key] : null;
         },
     },
     watch: {

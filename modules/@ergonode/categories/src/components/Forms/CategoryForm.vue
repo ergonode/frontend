@@ -66,7 +66,7 @@ export default {
             'code',
         ]),
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Categories/components/Forms/CategoryForm',
             });
         },

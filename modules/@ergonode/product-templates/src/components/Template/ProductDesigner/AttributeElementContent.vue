@@ -137,7 +137,7 @@ export default {
             return 'element-content__header';
         },
         typeIconComponent() {
-            const icon = this.$getExtendedFormByType({
+            const icon = this.$extendedForm({
                 key: '@Attributes/components/Lists/AttributeListElement/Icon',
                 type: this.element.type,
             });

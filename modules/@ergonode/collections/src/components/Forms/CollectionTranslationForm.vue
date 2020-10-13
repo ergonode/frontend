@@ -69,7 +69,7 @@ export default {
             ]);
         },
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Collections/components/Forms/CollectionTranslationForm',
             });
         },

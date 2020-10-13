@@ -10,10 +10,22 @@
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
         :errors="errors"
+        :errors-presentation-mapper="errorMapper"
         @proceed="onProceed"
         @submit="onSubmit">
         <template #body>
             <FormSection>
+                <Select
+                    :data-cy="dataCyGenerator(typeFieldKey)"
+                    :value="type"
+                    required
+                    :label="$t('attribute.form.typeLabel')"
+                    :disabled="isDisabled || !isAllowedToUpdate"
+                    :options="attributeTypeOptions"
+                    :error-messages="errors[typeFieldKey]"
+                    @input="onTypeChange" />
+            </FormSection>
+            <FormSection v-if="type">
                 <TextField
                     :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
@@ -33,18 +45,11 @@
                     :error-messages="errors[groupsFieldKey]"
                     :fetch-options-request="getAttributeGroupsOptions"
                     @input="setGroupsValue" />
-                <Select
-                    :data-cy="dataCyGenerator(typeFieldKey)"
-                    :value="type"
-                    required
-                    :label="$t('attribute.form.typeLabel')"
-                    :disabled="isDisabled || !isAllowedToUpdate"
-                    :options="attributeTypeOptions"
-                    :error-messages="errors[typeFieldKey]"
-                    @input="onTypeChange" />
+                <Divider />
             </FormSection>
-            <Divider />
-            <FormSection :title="$t('attribute.form.sectionTitle')">
+            <FormSection
+                v-if="type"
+                :title="$t('attribute.form.sectionTitle')">
                 <Select
                     :data-cy="dataCyGenerator(scopeFieldKey)"
                     :value="attributeScope"
@@ -85,6 +90,7 @@ import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     getKeyByValue,
+    isObject,
 } from '@Core/models/objectWrapper';
 import {
     mapActions,
@@ -124,7 +130,7 @@ export default {
             'rootLanguage',
         ]),
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Attributes/components/Forms/AttributeForm',
                 type: this.typeKey,
             });
@@ -182,6 +188,19 @@ export default {
                 errors: this.errors,
                 ...props,
             };
+        },
+        errorMapper(errors) {
+            return Object.keys(errors).reduce((acc, key) => {
+                const tmpObject = acc;
+
+                if (isObject(errors[key])) {
+                    tmpObject[key] = Object.values(errors[key]).join(', ');
+                } else {
+                    tmpObject[key] = errors[key];
+                }
+
+                return tmpObject;
+            }, {});
         },
         setCodeValue(value) {
             this.__setState({
