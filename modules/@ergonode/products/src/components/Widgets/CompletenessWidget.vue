@@ -59,7 +59,7 @@ export default {
                 label,
                 value,
             });
-            progressListLabels.push(`${value * 100}%`);
+            progressListLabels.push(`${value}%`);
         });
 
         this.progressListDatasets = progressListDatasets;
@@ -70,7 +70,7 @@ export default {
         return {
             progressListDatasets: [],
             progressListLabels: [],
-            maxValue: 1,
+            maxValue: 100,
             colors: {},
             isPrefetchingData: true,
         };

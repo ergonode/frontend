@@ -17,6 +17,7 @@
                 :is-basic-filter="true"
                 :is-header-visible="true"
                 :is-border="true"
+                @delete-row="onFetchData"
                 @fetch-data="onFetchData">
                 <template #headerActions>
                     <ActionButton

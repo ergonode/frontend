@@ -147,7 +147,12 @@ export default {
                     editable: false,
                 };
             });
-            this.rows = rows.map((_links, ...rest) => rest);
+            this.rows = rows.map(({
+                // eslint-disable-next-line no-unused-vars
+                _links, ...rest
+            }) => ({
+                ...rest,
+            }));
             this.filtered = filtered;
         },
         onClose() {
