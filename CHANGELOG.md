@@ -1,6 +1,23 @@
 # CHANGELOG
 This changelog references the relevant changes.
 
+## CHANGELOG FOR v1.0.0-beta
+- feature [#463](https://github.com/ergonode/frontend/issues/463) New dashboard
+- feature [#468](https://github.com/ergonode/frontend/issues/468) Product with variants
+- feature [#327](https://github.com/ergonode/frontend/issues/327) Multi save button
+- feature - multilingual workflow
+- refactor - extend attribute types
+- refactor - extend product types
+- refactor - extend Vuex actions
+- refactor - validations improvement
+- refactor - new format for date
+- refactor - remove language from url
+- refactor - services isolation
+- refactor - vuex clean architecture
+- bugfix - advanced filter stabilization
+- bugfix - e2e tests bugfix
+
+
 ## CHANGELOG FOR v0.10.0
  - feature [#474](https://github.com/ergonode/frontend/issues/474) Channels & exports
  - feature [#411](https://github.com/ergonode/frontend/issues/411) Multimedia
