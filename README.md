@@ -5,7 +5,7 @@ How to do a release:
     - You must be in the developers team in the npm @ergonode organization
     - You must have publish access to all @ergonode modules
 2. Merge develop to master and from master create release branch (release/v0.9.0).
-3. Run `npm run publish:all ${semver}` - semver is semantic version (major, minor, path, etc.)
+3. Run `npm run publish:all ${semver}` - semver is semantic version (1.0.0, major, minor, path, etc.)
 4A. If everything works properly, all modules are published and CHANGELOG will be created
 4B. If the publish fails half-way, things have gotten hairy. Now you need to
     go to npm to check which packages have been published and manually publish
@@ -25,7 +25,8 @@ How to do a release:
 
 <p align="center">
   <a href="https://ergonode.com">
-    <img src="https://img.shields.io/badge/version-0.10.0-4c9aff.svg" alt="Version">
+    <img src="https://img.shields.io/github/v/release/ergonode/frontend?include_prereleases" alt="Version">
+
   </a>
   <a href="https://ergonode.com">
     <img src="https://img.shields.io/badge/version%20code-Vegas-00bc87.svg" alt="Code Version">
