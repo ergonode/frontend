@@ -1,58 +1,303 @@
+/* eslint-disable no-throw-literal */
 /*
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    addBySegment,
+    addBySku,
+    create,
+    get,
+    getTypes,
+    remove,
+    update,
+    updateDraftValue,
+} from '@Collections/services/index';
+
 export default {
-    getCollection(
+    async getCollection(
         {
-            commit, dispatch,
+            commit,
+            dispatch,
         },
         {
-            collectionId, onError = () => {},
+            id,
         },
     ) {
-        return this.app.$axios.$get(`collections/${collectionId}`).then(({
-            id,
+        const {
             code,
             type_id,
             name = {},
             description = {},
-        }) => {
-            const translations = {
+        } = await get({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        const translations = {
+            name,
+            description,
+        };
+
+        commit('__SET_STATE', {
+            key: 'id',
+            value: id,
+        });
+        commit('__SET_STATE', {
+            key: 'code',
+            value: code,
+        });
+        commit('__SET_STATE', {
+            key: 'type',
+            value: type_id,
+        });
+
+        dispatch('tab/setTranslations', translations, {
+            root: true,
+        });
+    },
+    getCollectionTypeOptions({
+        rootState,
+    }) {
+        const {
+            language,
+        } = rootState.authentication.user;
+
+        return getTypes({
+            $axios: this.app.$axios,
+        }).then(({
+            collection,
+        }) => ({
+            options: collection.map(element => ({
+                id: element.id,
+                key: element.code,
+                value: element.name,
+                hint: element.name ? `#${element.code} ${language}` : '',
+            })),
+        }));
+    },
+    async updateCollectionProductsVisibility({
+        state,
+        rootState,
+    },
+    {
+        scope,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const {
+                id,
+            } = state;
+            const {
+                drafts,
+            } = rootState.grid;
+            const {
+                language: userLanguageCode,
+            } = rootState.authentication.user;
+
+            const requests = Object.keys(drafts).map(
+                async (key) => {
+                    const [
+                        productId,
+                    ] = key.split('/');
+
+                    const data = {
+                        visible: drafts[key],
+                    };
+
+                    await updateDraftValue({
+                        $axios: this.app.$axios,
+                        id,
+                        productId,
+                        languageCode: userLanguageCode,
+                        data,
+                    });
+                },
+            );
+
+            await Promise.all(requests);
+
+            onSuccess();
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
+    },
+    async updateCollection(
+        {
+            state,
+            rootState,
+        },
+        {
+            scope,
+            onSuccess = () => {},
+            onError = () => {},
+        },
+    ) {
+        try {
+            const {
+                id,
+                type,
+            } = state;
+            const {
+                translations: {
+                    name,
+                    description,
+                },
+            } = rootState.tab;
+
+            const data = {
+                typeId: type,
                 name,
                 description,
             };
 
-            commit('__SET_STATE', {
-                key: 'id',
-                value: id,
-            });
-            commit('__SET_STATE', {
-                key: 'code',
-                value: code,
-            });
-            commit('__SET_STATE', {
-                key: 'type',
-                value: type_id,
+            await update({
+                $axios: this.app.$axios,
+                id,
+                data,
             });
 
-            dispatch('tab/setTranslations', translations, {
-                root: true,
+            onSuccess();
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
             });
-        }).catch(onError);
+        }
     },
-    updateCollection(
-        {},
-        {
+    async createCollection({
+        state,
+    }, {
+        scope,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const {
+                code,
+                type,
+            } = state;
+            const data = {
+                code,
+                typeId: type,
+            };
+
+            const {
+                id,
+            } = await create({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess(id);
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
+    },
+    async addBySku({
+        state,
+    }, {
+        scope,
+        skus,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        const errors = {};
+        let isAnyError = false;
+        const {
             id,
-            data,
-            onSuccess,
-            onError,
-        },
-    ) {
-        return this.app.$axios.$put(`collections/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        } = state;
+        const mappedSkus = skus.replace(/\n/g, ',');
+        const data = {
+            skus: mappedSkus !== '' ? mappedSkus.split(',') : [],
+        };
+
+        try {
+            if (!mappedSkus.length) {
+                errors.skus = [
+                    'Sku is required',
+                ];
+                isAnyError = true;
+            }
+
+            if (isAnyError) {
+                throw {
+                    data: {
+                        errors,
+                    },
+                };
+            }
+            await addBySku({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            onSuccess();
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+                fieldKeys: data.skus.reduce((prev, curr, index) => {
+                    const tmp = prev;
+                    tmp[`element-${index}`] = curr;
+                    return tmp;
+                }, {}),
+            });
+        }
     },
-    removeCollection({
+    async addBySegment({
+        state,
+    }, {
+        scope,
+        segments,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const errors = {};
+            let isAnyError = false;
+            const {
+                id,
+            } = state;
+            const data = {
+                segments: segments.map(segment => segment.id),
+            };
+
+            if (!data.segments.length) {
+                errors.segments = [
+                    'Segment rule is required',
+                ];
+                isAnyError = true;
+            }
+
+            if (isAnyError) {
+                throw {
+                    data: {
+                        errors,
+                    },
+                };
+            }
+            await addBySegment({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            onSuccess();
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
+    },
+    async removeCollection({
         state,
     }, {
         onSuccess,
@@ -60,6 +305,11 @@ export default {
         const {
             id,
         } = state;
-        return this.app.$axios.$delete(`collections/${id}`).then(() => onSuccess());
+
+        await remove({
+            $axios: this.app.$axios,
+            id,
+        });
+        onSuccess();
     },
 };

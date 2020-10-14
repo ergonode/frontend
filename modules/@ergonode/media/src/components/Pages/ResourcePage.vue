@@ -14,7 +14,7 @@
                 <!--                    :theme="secondaryTheme"-->
                 <!--                    :size="smallSize"-->
                 <!--                    title="REMOVE RESOURCE"-->
-                <!--                    :disabled="!isUserAllowedToDelete"-->
+                <!--                    :disabled="!isAllowedToDelete"-->
                 <!--                    @click.native="onRemove">-->
                 <!--                    <template #prepend="{ color }">-->
                 <!--                        <IconDelete :fill-color="color" />-->
@@ -22,31 +22,30 @@
                 <!--                </Button>-->
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs" />
-        <Footer flex-end>
-            <Button
-                title="SAVE RESOURCE"
-                :size="smallSize"
-                :disabled="$isLoading('footerButton')"
-                @click.native="onSave" />
-        </Footer>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
     </Page>
 </template>
 
 <script>
 import editPageMixin from '@Core/mixins/page/editPageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import PRIVILEGES from '@Media/config/privileges';
 
 export default {
     name: 'ResourcePage',
     mixins: [
         editPageMixin,
+        asyncTabsMixin,
     ],
     computed: {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.MULTIMEDIA.namespace);
         },
-        isUserAllowedToDelete() {
+        isAllowedToDelete() {
             return this.$hasAccess([
                 PRIVILEGES.MULTIMEDIA.delete,
             ]);

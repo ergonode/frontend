@@ -6,27 +6,29 @@
     <Page>
         <TitleBar title="Profile" />
         <HorizontalRoutingTabBar
-            :items="tabs" />
+            v-if="asyncTabs"
+            :items="asyncTabs" />
     </Page>
 </template>
 
 <script>
-import {
-    getNestedTabRoutes,
-} from '@Core/models/navigation/tabs';
+import Page from '@Core/components/Layout/Page';
+import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@Core/components/TitleBar/TitleBar';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 
 export default {
     name: 'UserProfileTabs',
     components: {
-        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
-        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
-        Page: () => import('@Core/components/Layout/Page'),
+        HorizontalRoutingTabBar,
+        TitleBar,
+        Page,
     },
-    computed: {
-        tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
-    },
+    mixins: [
+        beforeLeavePageMixin,
+        asyncTabsMixin,
+    ],
     head() {
         return {
             title: 'Profile - Ergonode',

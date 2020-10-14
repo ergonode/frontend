@@ -1,66 +1,133 @@
+/* eslint-disable no-throw-literal */
 /*
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 import {
-    TYPES,
-} from '@Attributes/defaults/attributes';
+    getKeyByValue,
+} from '@Core/models/objectWrapper';
 import {
-    EXTENDS,
-    PRODUCT_TYPE,
-} from '@Products/defaults';
+    addBySegment,
+    addBySku,
+    applyDraft,
+    create,
+    get,
+    getCollections,
+    getCompleteness,
+    getDraft,
+    getTemplate,
+    getWorkflow,
+    remove,
+    removeChildren,
+    removeDraftValue,
+    update,
+    updateDraftValue,
+} from '@Products/services/index';
 
 import {
     types,
 } from './mutations';
 
-const getAttributesByFilter = () => import('@Attributes/services/getAttributesByFilter.service');
-const applyProductDraft = () => import('@Products/services/applyProductDraft.service');
-
 export default {
     setDraftValue: ({
         commit,
     }, payload) => commit(types.SET_DRAFT_VALUE, payload),
-    setBindingAttributeId: ({
-        commit,
-    }, payload) => commit(types.SET_BINDING_ATTRIBUTE_ID, payload),
-    addBindingAttribute: ({
-        commit,
-    }) => commit(types.ADD_BINDING_ATTRIBUTE),
-    removeBindingAttribute: ({
-        commit,
-    }, index) => commit(types.REMOVE_BINDING_ATTRIBUTE, index),
-    getProductDraft({
+    async getProductDraft({
         commit,
     }, {
-        languageCode, id,
+        id,
+        onError = () => {},
+        languageCode,
     }) {
-        return this.app.$axios.$get(`${languageCode}/products/${id}/draft`, {
-            withLanguage: false,
-        }).then(({
-            attributes,
-        }) => {
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Products/store/product/action/getProductDraft/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+            const {
+                attributes,
+            } = await getDraft({
+                $axios: this.app.$axios,
+                id,
+                languageCode,
+            });
+
             commit(types.SET_PRODUCT_DRAFT, {
                 languageCode,
                 draft: attributes,
             });
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Products/store/product/action/getProductDraft/__after', {
+                $this: this,
+                data: {
+                    attributes,
+                },
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            onError(e);
+        }
+    },
+    async getProductWorkflow({
+        commit,
+    }, {
+        id,
+        languageCode,
+    }) {
+        const {
+            status = {},
+            workflow = [],
+        } = await getWorkflow({
+            $axios: this.app.$axios,
+            id,
+            languageCode,
+        });
+
+        commit('__SET_STATE', {
+            key: 'status',
+            value: status,
+        });
+
+        commit('__SET_STATE', {
+            key: 'workflow',
+            value: workflow,
         });
     },
-    getProduct({
-        commit, dispatch, rootState,
-    }, id) {
-        const {
-            productTypes,
-        } = rootState.dictionaries;
+    async getProduct({
+        commit,
+        rootState,
+    }, {
+        id,
+        onError = () => {},
+    }) {
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Products/store/product/action/getProduct/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
 
-        return this.app.$axios.$get(`products/${id}`).then((data) => {
+            const {
+                productTypes,
+            } = rootState.dictionaries;
+
+            const data = await get({
+                $axios: this.app.$axios,
+                id,
+            });
+
             const {
                 design_template_id: templateId,
                 attributes,
                 sku,
                 type,
-                status,
-                workflow = [],
             } = data;
 
             if (templateId) {
@@ -83,102 +150,509 @@ export default {
                 value: productTypes[type],
             });
             commit('__SET_STATE', {
-                key: 'status',
-                value: status,
-            });
-            commit('__SET_STATE', {
-                key: 'workflow',
-                value: workflow,
-            });
-            commit('__SET_STATE', {
                 key: 'data',
                 value: attributes,
             });
 
-            this.$extendMethods(EXTENDS['@Products/store/product/action/getProduct'], {
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Products/store/product/action/getProduct/__after', {
+                $this: this,
                 data,
-                commit,
-                dispatch,
+                type,
             });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            onError(e);
+        }
+    },
+    getProductWorkflowOptions({}, {
+        id,
+        languageCode,
+    }) {
+        return getWorkflow({
+            $axios: this.app.$axios,
+            id,
+            languageCode,
+        }).then(({
+            workflow = [],
+        }) => workflow.map(e => ({
+            id: e.id,
+            key: e.code,
+            value: e.name,
+            hint: e.name
+                ? `#${e.code} ${languageCode}`
+                : '',
+        })));
+    },
+    async addBySku({
+        state,
+    }, {
+        scope,
+        skus,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        const {
+            id,
+        } = state;
+        const data = {
+            skus,
+        };
 
-            if (type === PRODUCT_TYPE.WITH_VARIANTS) {
-                const getAttributesBindings = this.app.$axios.$get(`products/${id}/bindings`).then((bindings) => {
-                    commit('__SET_STATE', {
-                        key: 'bindingAttributesIds',
-                        value: bindings,
-                    });
-                });
+        try {
+            await addBySku({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            onSuccess();
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
+    },
+    async addBySegment({
+        state,
+    }, {
+        scope,
+        segments,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const errors = {};
+            let isAnyError = false;
+            const {
+                id,
+            } = state;
+            const data = {
+                segments: segments.map(segment => segment.id),
+            };
 
-                return Promise.all([
-                    getAttributesBindings,
-                    dispatch('getSelectAttributes'),
-                ]);
+            if (!data.segments.length) {
+                errors.segments = [
+                    'Segment rule is required',
+                ];
+                isAnyError = true;
             }
 
-            return true;
-        });
+            if (isAnyError) {
+                throw {
+                    data: {
+                        errors,
+                    },
+                };
+            }
+
+            await addBySegment({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            onSuccess();
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
     },
-    updateProductStatus({
+    async getProductTemplate({}, {
+        languageCode,
+        id,
+    }) {
+        const {
+            elements,
+        } = await getTemplate({
+            $axios: this.app.$axios,
+            languageCode,
+            id,
+        });
+
+        return elements;
+    },
+    async getProductCollections({
+        state,
+    }) {
+        const {
+            id,
+        } = state;
+
+        const {
+            collection,
+        } = await getCollections({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        return collection;
+    },
+    async getProductCompleteness({}, {
+        languageCode,
+        id,
+    }) {
+        const completeness = await getCompleteness({
+            $axios: this.app.$axios,
+            languageCode,
+            id,
+        });
+
+        return completeness;
+    },
+    async updateProductStatus({
         state,
     }, {
         attributeId,
         value,
+        languageCode,
         onSuccess,
     }) {
         const {
             id,
         } = state;
-
-        return this.app.$axios.$put(`products/${id}/draft/${attributeId}/value`, {
+        const data = {
             value,
-        }).then(() => applyProductDraft()
-            .then(request => request
-                .default({
-                    $axios: this.app.$axios,
-                    $store: this,
-                    id,
-                })
-                .then(onSuccess)));
+        };
+
+        await updateDraftValue({
+            $axios: this.app.$axios,
+            id,
+            attributeId,
+            languageCode,
+            data,
+        });
+        await applyDraft({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        onSuccess();
     },
-    getSelectAttributes({
-        commit,
+    async applyProductDraft({}, {
+        id,
+        scope,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        return getAttributesByFilter().then(
-            response => response.default({
+        try {
+            await applyDraft({
                 $axios: this.app.$axios,
-                $store: this,
-                filter: `type=${TYPES.SELECT}`,
-            }).then((selectAttributes) => {
-                commit('__SET_STATE', {
-                    key: 'selectAttributes',
-                    value: selectAttributes,
-                });
-            }),
-        );
+                id,
+            });
+            onSuccess();
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
+    },
+    async updateProductDraft({
+        dispatch,
+        rootState,
+    }, {
+        languageCode,
+        fieldKey,
+        productId,
+        elementId,
+        value,
+        scope,
+    }) {
+        try {
+            const data = {
+                value,
+            };
+
+            await updateDraftValue({
+                $axios: this.app.$axios,
+                id: productId,
+                attributeId: elementId,
+                languageCode,
+                data,
+            });
+
+            if (rootState.feedback.errors[scope]) {
+                dispatch(
+                    'feedback/removeScopeError',
+                    {
+                        scope,
+                        fieldKey,
+                    },
+                    {
+                        root: true,
+                    },
+                );
+            }
+        } catch (e) {
+            const {
+                errors,
+            } = e.data;
+
+            const fieldKeys = {
+                value: fieldKey,
+            };
+
+            if (errors) {
+                dispatch(
+                    'feedback/onError',
+                    {
+                        errors,
+                        fieldKeys,
+                        scope,
+                    },
+                    {
+                        root: true,
+                    },
+                );
+            } else {
+                const internalServerError = {
+                    value: [
+                        e.statusText,
+                    ],
+                };
+
+                dispatch(
+                    'feedback/onError',
+                    {
+                        errors: internalServerError,
+                        fieldKeys,
+                        scope,
+                    },
+                    {
+                        root: true,
+                    },
+                );
+            }
+        }
     },
     async updateProduct(
         {
-            dispatch,
+            state,
+            rootState,
         },
         {
-            id,
-            data,
+            scope,
             onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        await this.app.$axios.$put(`products/${id}`, data).then(onSuccess).catch(e => dispatch('validations/onError', e.data, {
-            root: true,
-        }));
+        try {
+            const {
+                productTypes,
+            } = rootState.dictionaries;
+            const {
+                id,
+                template,
+                categories,
+                type,
+            } = state;
+            const typeKey = getKeyByValue(productTypes, type);
+            let data = {
+                templateId: template,
+                categoryIds: categories,
+            };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Products/store/product/action/updateProduct/__before', {
+                $this: this,
+                type: typeKey,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+
+            await update({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
+            await applyDraft({
+                $axios: this.app.$axios,
+                id,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Products/store/product/action/updateProduct/__after', {
+                $this: this,
+                type: typeKey,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess();
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
     },
-    removeProduct({
+    async createProduct(
+        {
+            state,
+            rootState,
+        },
+        {
+            scope,
+            onSuccess = () => {},
+            onError = () => {},
+        },
+    ) {
+        try {
+            const {
+                productTypes,
+            } = rootState.dictionaries;
+            const {
+                sku,
+                type,
+                template,
+                categories,
+            } = state;
+            const typeKey = getKeyByValue(productTypes, type);
+            let data = {
+                sku,
+                type: typeKey,
+                templateId: template,
+                categoryIds: categories,
+            };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Products/store/product/action/createProduct/__before', {
+                $this: this,
+                type: typeKey,
+                data,
+            });
+            // EXTENDED BEFORE METHOD
+
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+
+            const {
+                id,
+            } = await create({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Products/store/product/action/createProduct/__after', {
+                $this: this,
+                type: typeKey,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess(id);
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
+    },
+    async removeProduct({
+        state,
+        rootState,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        const {
+            productTypes,
+        } = rootState.dictionaries;
+        const {
+            id,
+            type,
+        } = state;
+        const typeKey = getKeyByValue(productTypes, type);
+
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Products/store/product/action/removeProduct/__before', {
+                $this: this,
+                type: typeKey,
+            });
+            // EXTENDED BEFORE METHOD
+
+            await remove({
+                $axios: this.app.$axios,
+                id,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Products/store/product/action/removeProduct/__after', {
+                $this: this,
+                type: typeKey,
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess();
+        } catch (e) {
+            onError(e);
+        }
+    },
+    removeProductChildren({
         state,
     }, {
-        onSuccess,
+        childrenId,
+        skus,
     }) {
         const {
             id,
         } = state;
+        const mappedSkus = skus.replace(/\n/g, ',');
+        const data = {
+            skus: mappedSkus !== '' ? mappedSkus.split(',') : [],
+        };
 
-        return this.app.$axios.$delete(`products/${id}`).then(() => onSuccess());
+        return removeChildren({
+            $axios: this.app.$axios,
+            id,
+            childrenId,
+            data,
+        });
+    },
+    async removeProductDraft({
+        state,
+    }, {
+        languageCode,
+        attributeId,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const {
+                id,
+            } = state;
+
+            await removeDraftValue({
+                $axios: this.app.$axios,
+                id,
+                languageCode,
+                attributeId,
+            });
+
+            onSuccess();
+        } catch {
+            onError();
+        }
     },
 };

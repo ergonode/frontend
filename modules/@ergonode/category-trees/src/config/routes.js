@@ -60,7 +60,7 @@ export default [
             {
                 name: 'category-tree-id-general',
                 path: 'general',
-                component: Tabs.CategoryTreeBaseTab,
+                component: Tabs.CategoryTreeGeneralTab,
                 meta: {
                     title: 'Options',
                     breadcrumbs: [

@@ -6,6 +6,8 @@ export const THIS_YEAR = +(new Date().getFullYear());
 
 export const THIS_MONTH = +(new Date().getMonth()) + 1;
 
+export const DEFAULT_DATE_TIME_FORMAT = 'yyyy-MM-dd HH:mm';
+
 export const DEFAULT_FORMAT = 'yyyy-MM-dd';
 
 export const DEFAULT_HOUR_FORMAT = 'HH:mm';

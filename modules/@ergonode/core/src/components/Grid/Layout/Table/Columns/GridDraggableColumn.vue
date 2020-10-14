@@ -40,12 +40,12 @@ export default {
         };
     },
     computed: {
-        ...mapState('draggable', {
-            draggedElement: state => state.draggedElement,
-            ghostIndex: state => state.ghostIndex,
-            draggedElIndex: state => state.draggedElIndex,
-            isElementDragging: state => state.isElementDragging,
-        }),
+        ...mapState('draggable', [
+            'isElementDragging',
+            'draggedElement',
+            'ghostIndex',
+            'draggedElIndex',
+        ]),
     },
     mounted() {
         if (this.$slots.default[0].elm) {
@@ -97,11 +97,8 @@ export default {
     },
     methods: {
         ...mapActions('draggable', [
-            'setDraggableState',
-            'setDraggedElement',
-            'setDraggedElIndex',
+            '__setState',
             'setGhostElXTranslation',
-            'setGhostIndex',
         ]),
         onDragStart(event) {
             if (this.isResizing) return false;
@@ -134,11 +131,20 @@ export default {
                 label: `${title} ${languageTitle}`,
             });
 
-            this.setGhostIndex(this.index);
-            this.setDraggedElIndex(this.index);
-            this.setDraggedElement(this.column);
-            this.setDraggableState({
-                propName: 'isElementDragging',
+            this.__setState({
+                key: 'ghostIndex',
+                value: this.index,
+            });
+            this.__setState({
+                key: 'draggedElIndex',
+                value: this.index,
+            });
+            this.__setState({
+                key: 'draggedElement',
+                value: this.column,
+            });
+            this.__setState({
+                key: 'isElementDragging',
                 value: DRAGGED_ELEMENT.COLUMN,
             });
 
@@ -167,8 +173,8 @@ export default {
 
             this.removeColumnsTransform();
             this.resetDraggedElementCache();
-            this.setDraggableState({
-                propName: 'isElementDragging',
+            this.__setState({
+                key: 'isElementDragging',
                 value: null,
             });
             this.isDragged = false;
@@ -210,7 +216,10 @@ export default {
                     this.draggedElIndex,
                     this.ghostIndex,
                 );
-                this.setGhostIndex(targetGhostIndex);
+                this.__setState({
+                    key: 'ghostIndex',
+                    value: targetGhostIndex,
+                });
             });
 
             return true;
@@ -252,9 +261,18 @@ export default {
             }
         },
         resetDraggedElementCache() {
-            this.setGhostIndex();
-            this.setDraggedElIndex();
-            this.setDraggedElement();
+            this.__setState({
+                key: 'ghostIndex',
+                value: -1,
+            });
+            this.__setState({
+                key: 'draggedElIndex',
+                value: -1,
+            });
+            this.__setState({
+                key: 'draggedElement',
+                value: null,
+            });
         },
     },
     render() {

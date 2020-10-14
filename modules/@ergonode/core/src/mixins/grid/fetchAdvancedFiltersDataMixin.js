@@ -4,6 +4,7 @@
  */
 import {
     insertCookieAtIndex,
+    removeCookieAtIndex,
 } from '@Core/models/cookies';
 import {
     getAdvancedFiltersData,
@@ -25,55 +26,71 @@ export default function ({
             ...mapActions('list', [
                 'setDisabledElement',
             ]),
-            onFetchAdvancedFilters(ids) {
+            async onFetchAdvancedFilters(ids) {
                 const filtersParams = {
                     offset: 0,
                     limit: 0,
                     columns: ids,
                 };
 
-                return getAdvancedFiltersData({
+                this.advancedFilters = await getAdvancedFiltersData({
                     $axios: this.$axios,
                     $addAlert: this.$addAlert,
                     path: this.getPath(),
                     params: filtersParams,
-                }).then((advancedFilters) => {
-                    this.advancedFilters = advancedFilters;
                 });
             },
-            async onDropFilter(filterId) {
-                const params = {
-                    limit: 0,
-                    offset: 0,
-                    columns: filterId,
-                };
+            async onDropFilter(payload) {
+                try {
+                    const filterCode = payload.split('/')[1];
+                    const params = {
+                        limit: 0,
+                        offset: 0,
+                        columns: filterCode,
+                    };
 
-                const advancedFilters = await getAdvancedFiltersData({
-                    $axios: this.$axios,
-                    $addAlert: this.$addAlert,
-                    path,
-                    params,
-                });
-                const filter = advancedFilters.find(({
-                    id,
-                }) => id === filterId);
+                    insertCookieAtIndex({
+                        cookies: this.$cookies,
+                        cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
+                        index: 0,
+                        data: filterCode,
+                    });
 
-                if (filter && filter.attributeId) {
-                    this.setDisabledElement(this.getDisabledListElement({
-                        languageCode: filter.languageCode,
-                        attributeId: filter.attributeId,
-                        disabledElements: this.disabledElements,
-                    }));
+                    const advancedFilters = await getAdvancedFiltersData({
+                        $axios: this.$axios,
+                        $addAlert: this.$addAlert,
+                        path,
+                        params,
+                    });
+
+                    if (advancedFilters.length) {
+                        const filter = advancedFilters.find(({
+                            id,
+                        }) => id === filterCode);
+
+                        if (filter.attributeId) {
+                            this.setDisabledElement(this.getDisabledListElement({
+                                languageCode: filter.languageCode,
+                                attributeId: filter.attributeId,
+                                disabledElements: this.disabledElements,
+                            }));
+                        }
+
+                        this.advancedFilters.unshift(filter);
+                    } else {
+                        removeCookieAtIndex({
+                            cookies: this.$cookies,
+                            cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
+                            index: 0,
+                        });
+                    }
+                } catch {
+                    removeCookieAtIndex({
+                        cookies: this.$cookies,
+                        cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
+                        index: 0,
+                    });
                 }
-
-                insertCookieAtIndex({
-                    cookies: this.$cookies,
-                    cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
-                    index: 0,
-                    data: filterId,
-                });
-
-                this.advancedFilters.unshift(filter);
             },
             getDisabledListElement({
                 languageCode,

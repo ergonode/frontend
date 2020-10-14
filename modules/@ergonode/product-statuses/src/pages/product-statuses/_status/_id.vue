@@ -5,8 +5,7 @@
 <template>
     <ProductStatusPage
         :title="code"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -17,6 +16,8 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import ProductStatusPage from '@Statuses/components/Pages/ProductStatusPage';
 import {
     mapActions,
     mapState,
@@ -25,8 +26,11 @@ import {
 export default {
     name: 'StatusEdit',
     components: {
-        ProductStatusPage: () => import('@Statuses/components/Pages/ProductStatusPage'),
+        ProductStatusPage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {
@@ -35,40 +39,31 @@ export default {
     async fetch({
         store, params,
     }) {
-        const path = `status/${params.id}`;
-
-        await store.dispatch('productStatus/__clearStorage');
-        await store.dispatch('productStatus/getProductStatus', path);
+        await store.dispatch('productStatus/getProductStatus', params);
         await store.dispatch('productStatus/getDefaultStatus');
     },
     computed: {
-        ...mapState('productStatus', {
-            code: state => state.code,
-            isDefaultStatus: state => state.isDefaultStatus,
-        }),
+        ...mapState('productStatus', [
+            'code',
+            'isDefaultStatus',
+        ]),
+    },
+    beforeDestroy() {
+        this.__clearStorage();
+        this.__clearTranslationsStorage();
+        this.__clearFeedbackStorage();
     },
     methods: {
         ...mapActions('productStatus', [
-            'updateProductStatus',
-            'updateDefaultStatus',
             'removeProductStatus',
+            '__clearStorage',
         ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
-        onSave() {
-            const requests = [
-                this.updateProductStatus({
-                    onError: this.onError,
-                }),
-                this.updateDefaultStatus(),
-            ];
-
-            Promise.all(requests).then(() => {
-                this.onProductStatusUpdated();
-            });
-        },
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
+        ...mapActions('tab', {
+            __clearTranslationsStorage: '__clearStorage',
+        }),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
@@ -85,13 +80,6 @@ export default {
             });
             this.$router.push({
                 name: 'product-statuses-grid',
-            });
-        },
-        onProductStatusUpdated() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Product status updated',
             });
         },
     },

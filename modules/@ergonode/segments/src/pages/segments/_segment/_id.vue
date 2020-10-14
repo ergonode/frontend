@@ -5,20 +5,18 @@
 <template>
     <SegmentPage
         :title="code"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
-import {
-    getMappedConditionSetData,
-} from '@Conditions/models/conditionSetMapper';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import SegmentPage from '@Segments/components/Pages/SegmentPage';
 import {
     mapActions,
     mapState,
@@ -27,8 +25,11 @@ import {
 export default {
     name: 'SegmentEdit',
     components: {
-        SegmentPage: () => import('@Segments/components/Pages/SegmentPage'),
+        SegmentPage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {
@@ -38,47 +39,33 @@ export default {
         store,
         params,
     }) {
-        await Promise.all([
-            store.dispatch('tab/__clearStorage'),
-            store.dispatch('segment/__clearStorage'),
-        ]);
-        await store.dispatch('segment/getSegment', {
-            segmentId: params.id,
-        });
+        await store.dispatch('segment/getSegment', params);
     },
     computed: {
-        ...mapState('segment', {
-            id: state => state.id,
-            code: state => state.code,
-            conditionSetId: state => state.conditionSetId,
-        }),
-        ...mapState('tab', {
-            translations: state => state.translations,
-        }),
-        ...mapState('condition', {
-            conditionsValues: state => state.conditionsValues,
-            conditions: state => state.conditions,
-        }),
+        ...mapState('segment', [
+            'code',
+        ]),
     },
-    destroyed() {
-        this.clearSegmentStorage();
-        this.clearConditionSetStorage();
+    beforeDestroy() {
+        this.__clearSegmentStorage();
+        this.__clearConditionStorage();
+        this.__clearGridDesignerStorage();
+        this.__clearFeedbackStorage();
     },
     methods: {
         ...mapActions('condition', {
-            createConditionSet: 'createConditionSet',
-            updateConditionSet: 'updateConditionSet',
-            clearConditionSetStorage: '__clearStorage',
+            __clearConditionStorage: '__clearStorage',
         }),
         ...mapActions('segment', {
-            updateSegment: 'updateSegment',
             removeSegment: 'removeSegment',
-            clearSegmentStorage: '__clearStorage',
+            __clearSegmentStorage: '__clearStorage',
         }),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
+        ...mapActions('gridDesigner', {
+            __clearGridDesignerStorage: '__clearStorage',
+        }),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
@@ -86,50 +73,6 @@ export default {
                 confirmCallback: () => this.removeSegment({
                     onSuccess: this.onRemoveSegmentSuccess,
                 }),
-            });
-        },
-        onSave() {
-            const propertiesToUpdate = {
-                conditions: getMappedConditionSetData(this.conditionsValues, this.conditions),
-            };
-
-            this.removeErrors();
-            if (!this.conditionSetId) {
-                this.createConditionSet({
-                    data: propertiesToUpdate,
-                    onSuccess: this.onUpdateSegment,
-                    onError: this.onError,
-                });
-            } else {
-                this.updateConditionSet({
-                    id: this.conditionSetId,
-                    data: propertiesToUpdate,
-                    onSuccess: this.onUpdateSegment,
-                    onError: this.onError,
-                });
-            }
-        },
-        onUpdateSegment(conditionSetId) {
-            const {
-                name, description,
-            } = this.translations;
-            const data = {
-                condition_set_id: conditionSetId,
-                name,
-                description,
-            };
-
-            this.updateSegment({
-                id: this.id,
-                data,
-                onSuccess: this.onUpdateSegmentsSuccess,
-                onError: this.onError,
-            });
-        },
-        onUpdateSegmentsSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Segment updated',
             });
         },
         onRemoveSegmentSuccess() {

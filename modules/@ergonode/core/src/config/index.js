@@ -4,6 +4,7 @@
  */
 export default {
     name: '@ergonode/core',
+    order: 10,
     aliases: {
         '@Core': '/',
     },
@@ -27,10 +28,6 @@ export default {
         {
             ssr: false,
             src: './plugins/alerts',
-        },
-        {
-            ssr: false,
-            src: './plugins/directives',
         },
     ],
     css: [

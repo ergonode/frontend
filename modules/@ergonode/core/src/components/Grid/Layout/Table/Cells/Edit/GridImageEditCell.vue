@@ -9,6 +9,7 @@
                 <UploadImageFile
                     v-model="localValue"
                     :disabled="disabled"
+                    object-fit="contain"
                     height="181px" />
             </GridImageEditContentCell>
         </GridSelectEditContentCell>
@@ -47,7 +48,7 @@ export default {
     },
     beforeDestroy() {
         if (this.localValue !== this.value) {
-            this.$emit('cellValue', [
+            this.$emit('cell-value', [
                 {
                     value: this.localValue,
                     rowId: this.rowId,

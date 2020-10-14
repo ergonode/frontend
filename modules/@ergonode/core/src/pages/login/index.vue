@@ -12,7 +12,7 @@
             <FluidBlob />
             <Component
                 :is="loginFormComponents.loginFormComponent"
-                @backTo="onBackTo" />
+                @back-to="onBackTo" />
             <img
                 class="login__infographic"
                 :src="loginFormComponents.formImage">
@@ -62,9 +62,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            isLogged: state => state.isLogged,
-        }),
+        ...mapState('authentication', [
+            'isLogged',
+        ]),
         loginFormComponents() {
             switch (this.loginState) {
             case LOGIN_STATE.CREDENTIALS:

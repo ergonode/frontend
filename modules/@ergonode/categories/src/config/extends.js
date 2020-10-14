@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import {
-    getProduct,
+    setCategory,
 } from '@Categories/extends/methods';
 
 import {
@@ -16,14 +16,23 @@ export default {
         product: Store.Product,
     },
     extendComponents: {
-        '@Products/components/Form/ProductForm': [
-            {
-                component: Components.ExtendProductForm,
-                props: {},
-            },
-        ],
+        '@Products/components/Forms/ProductForm': {
+            __ALL: [
+                {
+                    component: Components.ProductFormCategory,
+                    props: {},
+                },
+            ],
+        },
     },
     extendMethods: {
-        '@Products/store/product/action/getProduct': getProduct,
+        '@Products/store/product/action/getProduct/__after': ({
+            $this, data,
+        }) => {
+            setCategory({
+                $this,
+                data,
+            });
+        },
     },
 };

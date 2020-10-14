@@ -5,36 +5,34 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[
-            emailFieldKey,
-            firstNameFieldKey,
-            lastNameFieldKey,
-            passwordFieldKey,
-            passwordRepeatFieldKey,
-            languageFieldKey,
-            roleIdFieldKey,
-        ]">
-        <template #body="{ errorMessages }">
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        :errors="errors"
+        @proceed="onProceed"
+        @submit="onSubmit">
+        <template #body>
             <FormSection>
                 <TextField
                     :value="email"
                     required
                     label="Email"
-                    :error-messages="errorMessages[emailFieldKey]"
+                    :error-messages="errors[emailFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setEmailValue" />
                 <TextField
                     :value="firstName"
                     required
                     label="First name"
-                    :error-messages="errorMessages[firstNameFieldKey]"
+                    :error-messages="errors[firstNameFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     @input="setFirstNameValue" />
                 <TextField
                     :value="lastName"
                     required
                     label="Last name"
-                    :error-messages="errorMessages[lastNameFieldKey]"
+                    :error-messages="errors[lastNameFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     @input="setLastNameValue" />
                 <TextField
@@ -42,7 +40,7 @@
                     required
                     label="Password"
                     :input="{ type: 'password' }"
-                    :error-messages="errorMessages[passwordFieldKey]"
+                    :error-messages="errors[passwordFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     @input="setPasswordValue" />
                 <TextField
@@ -50,7 +48,7 @@
                     required
                     label="Password repeat"
                     :input="{ type: 'password' }"
-                    :error-messages="errorMessages[passwordRepeatFieldKey]"
+                    :error-messages="errors[passwordRepeatFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     @input="setPasswordRepeatValue" />
                 <Toggler
@@ -64,22 +62,38 @@
                     label="Language"
                     :options="languageOptions"
                     :disabled="!isAllowedToUpdate"
-                    :error-messages="errorMessages[languageFieldKey]"
+                    :error-messages="errors[languageFieldKey]"
                     @input="setLanguageValue" />
                 <TranslationLazySelect
                     :value="role"
                     :required="true"
                     label="Role"
                     :disabled="!isAllowedToUpdate"
-                    :error-messages="errorMessages[roleIdFieldKey]"
-                    :fetch-options-request="getRolesOptionsRequest"
+                    :error-messages="errors[roleIdFieldKey]"
+                    :fetch-options-request="getRoleOptions"
                     @input="setRoleValue" />
+                <Divider v-if="extendedForm.length" />
+                <template v-for="(field, index) in extendedForm">
+                    <Component
+                        :is="field.component"
+                        :key="index"
+                        v-bind="bindingProps(field)" />
+                </template>
             </FormSection>
         </template>
     </Form>
 </template>
 
 <script>
+import Divider from '@Core/components/Dividers/Divider';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import Select from '@Core/components/Select/Select';
+import TranslationLazySelect from '@Core/components/Select/TranslationLazySelect';
+import TextField from '@Core/components/TextField/TextField';
+import Toggler from '@Core/components/Toggler/Toggler';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
@@ -87,18 +101,21 @@ import {
     mapState,
 } from 'vuex';
 
-const getRolesOptions = () => import('@Users/services/getRolesOptions.service');
-
 export default {
     name: 'UserForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
-        Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
-        Select: () => import('@Core/components/Inputs/Select/Select'),
-        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
+        Divider,
+        Form,
+        FormSection,
+        TextField,
+        Toggler,
+        Select,
+        TranslationLazySelect,
     },
+    mixins: [
+        formActionsMixin,
+        formFeedbackMixin,
+    ],
     data() {
         return {
             activityStatuses: [
@@ -117,24 +134,24 @@ export default {
         ...mapGetters('core', [
             'activeLanguages',
         ]),
-        ...mapState('user', {
-            userID: state => state.id,
-            email: state => state.email,
-            firstName: state => state.firstName,
-            lastName: state => state.lastName,
-            password: state => state.password,
-            passwordRepeat: state => state.passwordRepeat,
-            language: state => state.language,
-            isActive: state => state.isActive,
-            role: state => state.role,
-        }),
-        isUserAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.USER.update,
-            ]);
+        ...mapState('user', [
+            'id',
+            'email',
+            'firstName',
+            'lastName',
+            'password',
+            'passwordRepeat',
+            'language',
+            'isActive',
+            'role',
+        ]),
+        extendedForm() {
+            return this.$extendedForm({
+                key: '@Users/components/Forms/UserForm',
+            });
         },
         isDisabled() {
-            return Boolean(this.userID);
+            return Boolean(this.id);
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
@@ -167,64 +184,124 @@ export default {
         roleIdFieldKey() {
             return 'roleId';
         },
+        roleFieldKey() {
+            return 'role';
+        },
+        isActiveFieldKey() {
+            return 'isActive';
+        },
     },
     methods: {
         ...mapActions('user', [
             '__setState',
         ]),
-        getRolesOptionsRequest() {
-            return getRolesOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
+        ...mapActions('role', [
+            'getRoleOptions',
+        ]),
+        bindingProps({
+            props,
+        }) {
+            return {
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.errors,
+                disabled: !this.isAllowedToUpdate,
+                ...props,
+            };
         },
         setEmailValue(value) {
             this.__setState({
-                key: 'email',
+                key: this.emailFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.emailFieldKey,
                 value,
             });
         },
         setFirstNameValue(value) {
             this.__setState({
-                key: 'firstName',
+                key: this.firstNameFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.firstNameFieldKey,
                 value,
             });
         },
         setLastNameValue(value) {
             this.__setState({
-                key: 'lastName',
+                key: this.lastNameFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.lastNameFieldKey,
                 value,
             });
         },
         setPasswordValue(value) {
             this.__setState({
-                key: 'password',
+                key: this.passwordFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.passwordFieldKey,
                 value,
             });
         },
         setPasswordRepeatValue(value) {
             this.__setState({
-                key: 'passwordRepeat',
+                key: this.passwordRepeatFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.passwordRepeatFieldKey,
                 value,
             });
         },
         setLanguageValue(value) {
             this.__setState({
-                key: 'language',
+                key: this.languageFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.languageFieldKey,
                 value,
             });
         },
         setRoleValue(value) {
             this.__setState({
-                key: 'role',
+                key: this.roleFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.roleFieldKey,
                 value,
             });
         },
         setStatusValue(value) {
             this.__setState({
-                key: 'isActive',
+                key: this.isActiveFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.isActiveFieldKey,
                 value,
             });
         },

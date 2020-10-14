@@ -5,18 +5,31 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[codeFieldKey]">
-        <template #body="{ errorMessages }">
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        :errors="errors"
+        @proceed="onProceed"
+        @submit="onSubmit">
+        <template #body>
             <FormSection>
                 <TextField
                     :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
                     required
-                    :error-messages="errorMessages[codeFieldKey]"
+                    :error-messages="errors[codeFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     label="System name"
                     hint="System name must be unique"
                     @input="setCodeValue" />
+                <Divider v-if="extendedForm.length" />
+                <template v-for="(field, index) in extendedForm">
+                    <Component
+                        :is="field.component"
+                        :key="index"
+                        v-bind="bindingProps(field)" />
+                </template>
             </FormSection>
         </template>
     </Form>
@@ -24,6 +37,12 @@
 
 <script>
 import PRIVILEGES from '@Categories/config/privileges';
+import Divider from '@Core/components/Dividers/Divider';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TextField from '@Core/components/TextField/TextField';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,
     mapState,
@@ -32,17 +51,27 @@ import {
 export default {
     name: 'CategoryForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
+        Divider,
+        Form,
+        FormSection,
+        TextField,
     },
+    mixins: [
+        formActionsMixin,
+        formFeedbackMixin,
+    ],
     computed: {
-        ...mapState('category', {
-            categoryID: state => state.id,
-            code: state => state.code,
-        }),
+        ...mapState('category', [
+            'id',
+            'code',
+        ]),
+        extendedForm() {
+            return this.$extendedForm({
+                key: '@Categories/components/Forms/CategoryForm',
+            });
+        },
         isDisabled() {
-            return Boolean(this.categoryID);
+            return Boolean(this.id);
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
@@ -59,12 +88,29 @@ export default {
         ]),
         setCodeValue(value) {
             this.__setState({
-                key: 'code',
+                key: this.codeFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.codeFieldKey,
                 value,
             });
         },
         dataCyGenerator(key) {
             return `category-${key}`;
+        },
+        bindingProps({
+            props,
+        }) {
+            return {
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.errors,
+                disabled: !this.isAllowedToUpdate,
+                ...props,
+            };
         },
     },
 };

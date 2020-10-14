@@ -2,8 +2,15 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    toLowerCaseFirstLetter,
+} from '@Core/models/stringWrapper';
 
-export const getNestedTabRoutes = (hasAccess, routes, currentRoute) => {
+export const getNestedTabRoutes = ({
+    hasAccess,
+    routes,
+    route,
+}) => {
     const {
         length,
     } = routes;
@@ -15,15 +22,27 @@ export const getNestedTabRoutes = (hasAccess, routes, currentRoute) => {
         } = routes[i];
 
         if (children
-            && children.find(nestedRoute => nestedRoute.name === currentRoute.name)) {
+            && children.find(nestedRoute => nestedRoute.name === route.name)) {
             for (let j = 0; j < children.length; j += 1) {
-                if (hasAccess(children[j].meta.privileges)) {
+                const {
+                    meta,
+                } = children[j];
+                const {
+                    visible = true,
+                    privileges,
+                    title,
+                    isReadOnly,
+                } = meta;
+
+                if (hasAccess(privileges)) {
                     childRoutes.push({
-                        title: children[j].meta.title,
+                        title,
                         route: {
                             name: children[j].name,
                         },
-                        isReadOnly: children[j].meta.isReadOnly,
+                        visible,
+                        isReadOnly,
+                        scope: toLowerCaseFirstLetter(children[j].component.name),
                     });
                 }
             }

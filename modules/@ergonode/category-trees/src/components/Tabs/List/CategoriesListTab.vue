@@ -6,7 +6,7 @@
     <VerticalTabBarList>
         <ListSearchHeader
             header="Categories"
-            @searchResult="onSearch" />
+            @search-result="onSearch" />
         <List>
             <ListScrollableContainer>
                 <CategoriesListElement
@@ -28,13 +28,19 @@
         <CreateCategoryModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @create="onCreatedData" />
+            @created="onCreatedCategory" />
     </VerticalTabBarList>
 </template>
 
 <script>
+import Fab from '@Core/components/Fab/Fab';
+import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import List from '@Core/components/List/List';
+import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
+import ListSearchHeader from '@Core/components/List/ListSearchHeader';
+import VerticalTabBarList from '@Core/components/TabBar/VerticalTabBarList';
 import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import CategoriesListElement from '@Trees/components/Lists/CategoriesListElement';
 import PRIVILEGES from '@Trees/config/privileges';
 import {
     mapActions,
@@ -44,21 +50,25 @@ import {
 export default {
     name: 'CategoriesListTab',
     components: {
-        List: () => import('@Core/components/List/List'),
-        ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
-        CategoriesListElement: () => import('@Trees/components/Lists/CategoriesListElement'),
+        List,
+        ListScrollableContainer,
+        CategoriesListElement,
+        VerticalTabBarList,
+        ListSearchHeader,
+        IconAdd,
+        Fab,
         CreateCategoryModalForm: () => import('@Categories/components/Modals/CreateCategoryModalForm'),
-        VerticalTabBarList: () => import('@Core/components/TabBar/VerticalTabBarList'),
-        ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
-        IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
-        Fab: () => import('@Core/components/Fab/Fab'),
     },
     mixins: [
-        gridModalMixin,
         fetchListDataMixin({
             namespace: 'categories',
         }),
     ],
+    data() {
+        return {
+            isModalVisible: false,
+        };
+    },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
@@ -81,9 +91,19 @@ export default {
         ...mapActions('list', [
             'setDisabledElements',
         ]),
+        onShowModal() {
+            this.isModalVisible = true;
+        },
+        onCloseModal() {
+            this.isModalVisible = false;
+        },
+        onCreatedCategory() {
+            this.onCloseModal();
+            this.getItems(this.userLanguageCode);
+        },
         onSearch(value) {
             this.codeFilter = value;
-            this.getItems(this.languageCode);
+            this.getItems(this.userLanguageCode);
         },
     },
 };

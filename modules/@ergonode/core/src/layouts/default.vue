@@ -22,20 +22,22 @@
             </template>
         </ToolBar>
         <SideBar @expand="onExpandSideBar" />
-        <main class="app-main">
+        <AppMain>
             <slot />
-            <FlashMessage />
-            <ConfirmModal
-                v-if="$getModal(modalConfirmType)"
-                :type="modalConfirmType" />
-        </main>
+            <FlashMessages />
+        </AppMain>
+        <ConfirmModal
+            v-if="$getModal(modalConfirmType)"
+            :type="modalConfirmType" />
     </App>
 </template>
 
 <script>
 import App from '@Core/components/Layout/App';
+import AppMain from '@Core/components/Layout/AppMain';
 import SideBar from '@Core/components/SideBar/SideBar';
 import ToolBar from '@Core/components/ToolBar/ToolBar';
+import ToolBarBreadcrumb from '@Core/components/ToolBar/ToolBarBreadcrumb';
 import ToolBarUserButton from '@Core/components/ToolBar/ToolBarUserButton';
 import {
     COMPONENTS,
@@ -50,12 +52,13 @@ import {
 export default {
     name: 'DefaultLayout',
     components: {
+        AppMain,
         App,
         SideBar,
         ToolBar,
         ToolBarUserButton,
-        ToolBarBreadcrumb: () => import('@Core/components/ToolBar/ToolBarBreadcrumb'),
-        FlashMessage: () => import('@Core/components/Alerts/FlashMessage'),
+        ToolBarBreadcrumb,
+        FlashMessages: () => import('@Core/components/Alerts/FlashMessages'),
         ConfirmModal: () => import('@Core/components/Modals/ConfirmModal'),
     },
     data() {
@@ -90,7 +93,7 @@ export default {
     mounted() {
         this.setRequestTimeout();
     },
-    destroyed() {
+    beforeDestroy() {
         this.invalidateRequestTimeout();
     },
     methods: {
@@ -104,12 +107,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .app-main {
-        width: 100%;
-        height: 100%;
-        padding: 48px 0 0;
-        box-sizing: border-box;
-    }
-</style>

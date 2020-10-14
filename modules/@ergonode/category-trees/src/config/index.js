@@ -4,6 +4,7 @@
  */
 export default {
     name: '@ergonode/category-trees',
+    order: 100,
     relations: [
         '@ergonode/categories',
     ],

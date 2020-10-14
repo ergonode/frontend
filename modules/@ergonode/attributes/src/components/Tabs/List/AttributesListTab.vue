@@ -7,7 +7,7 @@
         <ListSearchSelectHeader
             v-if="isSelectLanguage"
             header="Attributes"
-            @searchResult="onSearch">
+            @search-result="onSearch">
             <template #select>
                 <TreeSelect
                     :value="language"
@@ -19,7 +19,7 @@
         <ListSearchHeader
             v-else
             header="Attributes"
-            @searchResult="onSearch" />
+            @search-result="onSearch" />
         <List>
             <ListScrollableContainer>
                 <AttributesListGroup
@@ -45,12 +45,21 @@
         <CreateAttributeModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @create="onCreatedAttribute" />
+            @created="onCreatedAttribute" />
     </VerticalTabBarList>
 </template>
 
 <script>
+import AttributesListGroup from '@Attributes/components/Lists/AttributesListGroup';
 import PRIVILEGES from '@Attributes/config/privileges';
+import Fab from '@Core/components/Fab/Fab';
+import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import List from '@Core/components/List/List';
+import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
+import ListSearchHeader from '@Core/components/List/ListSearchHeader';
+import ListSearchSelectHeader from '@Core/components/List/ListSearchSelectHeader';
+import TreeSelect from '@Core/components/Select/Tree/TreeSelect';
+import VerticalTabBarList from '@Core/components/TabBar/VerticalTabBarList';
 import {
     UNASSIGNED_GROUP_ID,
 } from '@Core/defaults/list';
@@ -58,7 +67,6 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import fetchListGroupDataMixin from '@Core/mixins/list/fetchListGroupDataMixin';
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import {
     mapActions,
     mapState,
@@ -67,19 +75,18 @@ import {
 export default {
     name: 'AttributesListTab',
     components: {
-        VerticalTabBarList: () => import('@Core/components/TabBar/VerticalTabBarList'),
-        List: () => import('@Core/components/List/List'),
-        ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
-        AttributesListGroup: () => import('@Attributes/components/Lists/AttributesListGroup'),
-        ListSearchSelectHeader: () => import('@Core/components/List/ListSearchSelectHeader'),
-        ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
-        Fab: () => import('@Core/components/Fab/Fab'),
-        IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
+        VerticalTabBarList,
+        List,
+        ListScrollableContainer,
+        AttributesListGroup,
+        ListSearchSelectHeader,
+        ListSearchHeader,
+        Fab,
+        IconAdd,
+        TreeSelect,
         CreateAttributeModalForm: () => import('@Attributes/components/Modals/CreateAttributeModalForm'),
-        TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
     },
     mixins: [
-        gridModalMixin,
         fetchListGroupDataMixin({
             namespace: 'attributes',
         }),
@@ -96,6 +103,7 @@ export default {
     },
     data() {
         return {
+            isModalVisible: false,
             language: {},
         };
     },
@@ -103,10 +111,10 @@ export default {
         ...mapState('authentication', {
             languagePrivileges: state => state.user.languagePrivileges,
         }),
-        ...mapState('core', {
-            defaultLanguageCode: state => state.defaultLanguageCode,
-            languagesTree: state => state.languagesTree,
-        }),
+        ...mapState('core', [
+            'defaultLanguageCode',
+            'languagesTree',
+        ]),
         smallSize() {
             return SIZE.SMALL;
         },
@@ -150,6 +158,12 @@ export default {
         ...mapActions('list', [
             'setDisabledElements',
         ]),
+        onShowModal() {
+            this.isModalVisible = true;
+        },
+        onCloseModal() {
+            this.isModalVisible = false;
+        },
         onCreatedAttribute() {
             this.onCloseModal();
             this.fetchListData(this.language.code);

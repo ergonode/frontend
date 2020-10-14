@@ -5,8 +5,7 @@
 <template>
     <ProductPage
         :title="sku"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -16,30 +15,28 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
-import {
-    getKeyByValue,
-} from '@Core/models/objectWrapper';
-import {
-    PRODUCT_TYPE,
-} from '@Products/defaults';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import ProductPage from '@Products/components/Pages/ProductPage';
 import {
     mapActions,
     mapState,
 } from 'vuex';
 
-const applyProductDraft = () => import('@Products/services/applyProductDraft.service');
-
 export default {
     name: 'ProductEdit',
     components: {
-        ProductPage: () => import('@Products/components/Pages/ProductPage'),
+        ProductPage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
+        app,
         store,
         params,
     }) {
@@ -54,36 +51,55 @@ export default {
             store.dispatch('product/getProductDraft', {
                 languageCode: defaultLanguageCode,
                 id,
+                onError: () => {
+                    if (process.client) {
+                        app.$addAlert({
+                            type: ALERT_TYPE.ERROR,
+                            message: 'Product draft hasn’t been fetched properly',
+                        });
+                    }
+                },
             }),
-            store.dispatch('product/getProduct', id),
+            store.dispatch('product/getProduct', {
+                id,
+                onError: () => {
+                    if (process.client) {
+                        app.$addAlert({
+                            type: ALERT_TYPE.ERROR,
+                            message: 'Product hasn’t been fetched properly',
+                        });
+                    }
+                },
+            }),
         ]);
     },
     computed: {
-        ...mapState('product', {
-            id: state => state.id,
-            sku: state => state.sku,
-            type: state => state.type,
-            template: state => state.template,
-            categories: state => state.categories,
-            bindingAttributesIds: state => state.bindingAttributesIds,
-        }),
-        ...mapState('dictionaries', {
-            productTypes: state => state.productTypes,
-        }),
+        ...mapState('product', [
+            'sku',
+        ]),
     },
-    destroyed() {
+    beforeDestroy() {
         this.__clearStorage();
+        this.__clearFeedbackStorage();
     },
     methods: {
         ...mapActions('product', [
-            'updateProduct',
             'removeProduct',
             '__clearStorage',
+            'getProductDraft',
+            'getProduct',
         ]),
-        onDraftAppliedSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Product updated',
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
+        onRemove() {
+            this.$openModal({
+                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
+                message: 'Are you sure you want to delete this product?',
+                confirmCallback: () => this.removeProduct({
+                    onSuccess: this.onRemoveSuccess,
+                    onError: this.onRemoveError,
+                }),
             });
         },
         onRemoveSuccess() {
@@ -95,44 +111,11 @@ export default {
                 name: 'catalog-products',
             });
         },
-        onRemove() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this product?',
-                confirmCallback: () => this.removeProduct({
-                    onSuccess: this.onRemoveSuccess,
-                }),
+        onRemoveError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Product hasn’t been deleted',
             });
-        },
-        async onSave() {
-            const {
-                params: {
-                    id,
-                },
-            } = this.$route;
-            const data = {
-                templateId: this.template,
-                categoryIds: this.categories,
-            };
-
-            if (getKeyByValue(this.productTypes, this.type) === PRODUCT_TYPE.WITH_VARIANTS) {
-                data.bindings = this.bindingAttributesIds;
-            }
-
-            await this.$setLoader('footerButton');
-            await this.updateProduct({
-                id,
-                data,
-            });
-            await applyProductDraft()
-                .then(request => request
-                    .default({
-                        $axios: this.$axios,
-                        $store: this.$store,
-                        id,
-                    })
-                    .then(this.onDraftAppliedSuccess));
-            await this.$removeLoader('footerButton');
         },
     },
     head() {

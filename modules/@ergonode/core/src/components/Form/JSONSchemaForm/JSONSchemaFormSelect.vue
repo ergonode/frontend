@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Select from '@Core/components/Inputs/Select/Select';
+import Select from '@Core/components/Select/Select';
 
 export default {
     name: 'JSONSchemaFormSelect',

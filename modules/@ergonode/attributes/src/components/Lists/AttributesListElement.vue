@@ -4,16 +4,20 @@
  */
 <template>
     <ListDraggableElement
-        :draggable-id="`${item.code}:${languageCode}`"
+        :draggable-id="`${item.id}/${item.code}:${languageCode}`"
         :is-draggable="isDraggable"
         :is-disabled="isDisabled"
         :hint="hint"
         :label="title"
         @drag="onDrag">
         <ListElementIcon>
-            <Component
-                :is="typeIconComponent"
-                :fill-color="iconFillColor" />
+            <template v-for="(formComponent, index) in typeIconComponent">
+                <Component
+                    :is="formComponent.component"
+                    :key="index"
+                    :fill-color="iconFillColor"
+                    v-bind="formComponent.props" />
+            </template>
         </ListElementIcon>
         <ListElementDescription>
             <ListElementTitle
@@ -27,9 +31,6 @@
 </template>
 
 <script>
-import {
-    TYPES,
-} from '@Attributes/defaults/attributes';
 import {
     GRAPHITE,
     GREY,
@@ -71,9 +72,9 @@ export default {
         },
     },
     computed: {
-        ...mapState('list', {
-            disabledElements: state => state.disabledElements,
-        }),
+        ...mapState('list', [
+            'disabledElements',
+        ]),
         isDisabled() {
             return this.disabledElements[this.languageCode]
                 && this.disabledElements[this.languageCode][this.item.id];
@@ -85,10 +86,20 @@ export default {
             return this.item.label || `#${this.item.code}`;
         },
         typeIconComponent() {
-            if (typeof TYPES[this.item.type] === 'undefined') {
-                return () => import('@Core/components/Icons/Menu/IconAttributes');
+            const icon = this.$extendedForm({
+                key: '@Attributes/components/Lists/AttributeListElement/Icon',
+                type: this.item.type,
+            });
+
+            if (!icon.length) {
+                return [
+                    {
+                        component: () => import('@Core/components/Icons/Menu/IconAttributes'),
+                    },
+                ];
             }
-            return () => import(`@Core/components/Icons/Attributes/Icon${this.formattedAttributeType}`);
+
+            return icon;
         },
         formattedAttributeType() {
             return capitalizeAndConcatenationArray(this.item.type.split('_'));
@@ -99,14 +110,13 @@ export default {
     },
     methods: {
         ...mapActions('draggable', [
-            'setDraggedElement',
+            '__setState',
         ]),
         onDrag(isDragged) {
-            if (isDragged) {
-                this.setDraggedElement(`${this.item.code}:${this.languageCode}`);
-            } else {
-                this.setDraggedElement();
-            }
+            this.__setState({
+                key: 'draggedElement',
+                value: isDragged ? `${this.item.code}:${this.languageCode}` : null,
+            });
         },
     },
 };

@@ -3,37 +3,29 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <MainSettingsForm
-                @selectedLanguages="setSelectedLanguages" />
+                submit-title="SAVE CHANGES"
+                :is-submitting="isSubmitting"
+                :scope="scope"
+                :change-values="changeValues"
+                :errors="errors"
+                @submit="onSubmit" />
         </template>
-        <template #footer>
-            <FooterActions>
-                <Button
-                    title="SAVE SETTINGS"
-                    :size="smallSize"
-                    :disabled="$isLoading('saveSettings')"
-                    @click.native="onSave" />
-            </FooterActions>
-        </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
 import MainSettingsForm from '@Core/components/Forms/MainSettingsForm';
-import FooterActions from '@Core/components/Layout/Footer/FooterActions';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
-import {
-    SIZE,
-} from '@Core/defaults/theme';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     mapActions,
     mapState,
@@ -43,81 +35,89 @@ export default {
     name: 'MainSettingsTab',
     components: {
         MainSettingsForm,
-        ResponsiveCenteredViewTemplate,
-        FooterActions,
-        Button,
+        CenterViewTemplate,
     },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     data() {
         return {
-            selectedLanguages: [],
+            isSubmitting: false,
         };
     },
     computed: {
-        ...mapState('core', {
-            languagesTree: state => state.languagesTree,
-        }),
-        smallSize() {
-            return SIZE.SMALL;
-        },
+        ...mapState('core', [
+            'languagesTree',
+        ]),
     },
     methods: {
         ...mapActions('core', [
             'getLanguages',
             'updateLanguages',
         ]),
-        setSelectedLanguages(selectedLanguages) {
-            this.selectedLanguages = selectedLanguages;
-        },
-        onSave() {
-            const languageKeys = this.selectedLanguages.map(language => language.key);
+        onSubmit(selectedLanguages) {
+            if (this.isSubmitting) {
+                return;
+            }
+
+            if (selectedLanguages.length < 1) {
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'At least one language is required',
+                });
+
+                return;
+            }
+
+            const languageKeys = selectedLanguages.map(language => language.key);
             const isUsedOnTree = this.languagesTree.find(
                 ({
                     code,
-                }) => !languageKeys.includes(code),
+                }) => languageKeys.indexOf(code) === -1,
             );
 
-            if (languageKeys.length <= 0) {
-                this.$addAlert({
-                    type: ALERT_TYPE.ERROR,
-                    message: 'At least one language needed',
-                });
-                return false;
-            }
             if (isUsedOnTree) {
                 this.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Language you want to deactivate is used on the language tree',
+                    message: 'You cannot deactivate languages used on the language tree',
                 });
-                return false;
+
+                return;
             }
 
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Changes in language settings will affect the entire application.',
-                confirmCallback: () => this.onAgree(),
+                confirmCallback: () => this.onConfirm(languageKeys),
             });
-            return true;
         },
-        async onAgree() {
-            let isUpdated = false;
-            const languageKeys = this.selectedLanguages.map(language => language.key);
+        async onConfirm(selectedLanguages) {
+            this.isSubmitting = true;
 
-            try {
-                await this.$setLoader('saveSettings');
-                isUpdated = await this.updateLanguages(languageKeys);
-            } catch {
-                return false;
-            } finally {
-                if (isUpdated !== false) {
-                    this.$addAlert({
-                        type: ALERT_TYPE.SUCCESS,
-                        message: 'Languages updated',
-                    });
-                    await this.getLanguages();
-                }
-                await this.$removeLoader('saveSettings');
-            }
-            return true;
+            this.removeScopeErrors(this.scope);
+
+            await this.updateLanguages({
+                languages: selectedLanguages,
+                scope: this.scope,
+                onError: this.onUpdateError,
+                onSuccess: this.onUpdateSuccess,
+            });
+        },
+        async onUpdateSuccess() {
+            await this.getLanguages();
+
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Languages have been updated',
+            });
+            this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
+        },
+        onUpdateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
         },
     },
 };

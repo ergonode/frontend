@@ -30,18 +30,20 @@
                         />
                     </FormSection>
                 </template>
+                <template #submit>
+                    <Button
+                        title="SAVE SETTINGS"
+                        :size="smallSize"
+                        @click.native="onApply" />
+                </template>
+                <template #proceed>
+                    <Button
+                        :theme="theme.SECONDARY"
+                        title="CANCEL"
+                        :size="smallSize"
+                        @click.native="onClose" />
+                </template>
             </Form>
-        </template>
-        <template #footer>
-            <Button
-                title="SAVE SETTINGS"
-                :size="smallSize"
-                @click.native="onApply" />
-            <Button
-                :theme="theme.SECONDARY"
-                title="CANCEL"
-                :size="smallSize"
-                @click.native="onClose" />
         </template>
     </ModalForm>
 </template>
@@ -51,8 +53,8 @@
 import Button from '@Core/components/Button/Button';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import Select from '@Core/components/Inputs/Select/Select';
 import ModalForm from '@Core/components/Modal/ModalForm';
+import Select from '@Core/components/Select/Select';
 import {
     COLUMNS_NUMBER,
     IMAGE_SCALING,

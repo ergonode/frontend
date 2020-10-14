@@ -16,7 +16,7 @@
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE COLLECTION"
-                    :disabled="!isUserAllowedToDelete"
+                    :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete :fill-color="color" />
@@ -24,29 +24,27 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs" />
-        <Footer flex-end>
-            <Button
-                data-cy="save-collection"
-                title="SAVE COLLECTION"
-                :size="smallSize"
-                :disabled="$isLoading('footerButton')"
-                @click.native="onSave" />
-        </Footer>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
     </Page>
 </template>
 
 <script>
 import PRIVILEGES from '@Collections/config/privileges';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 
 export default {
     name: 'CollectionPage',
     mixins: [
         editPageMixin,
+        asyncTabsMixin,
     ],
     computed: {
-        isUserAllowedToDelete() {
+        isAllowedToDelete() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT_COLLECTION.delete,
             ]);

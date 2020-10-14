@@ -23,7 +23,6 @@ export default {
     .grid-view-template {
         display: grid;
         flex: 1;
-        grid-template-rows: max-content auto max-content;
         grid-template-columns: max-content 1fr;
         box-sizing: border-box;
         background-color: $WHITE;

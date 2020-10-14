@@ -5,21 +5,27 @@
 <template>
     <Form
         title="Configuration"
-        :fields-keys="[activeFieldKey, startFieldKey, hourFieldKey]">
-        <template #body="{ errorMessages }">
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        :errors="errors"
+        @proceed="onProceed"
+        @submit="onSubmit">
+        <template #body>
             <FormSection>
                 <Toggler
                     :value="isActive"
                     label="Is active"
                     :disabled="!isAllowedToUpdate"
-                    :error-messages="errorMessages[activeFieldKey]"
+                    :error-messages="errors[activeFieldKey]"
                     @input="setIsActiveValue" />
                 <DatePicker
                     :value="date"
                     :placeholder="format"
                     :format="format"
                     :disabled="!isAllowedToUpdate"
-                    :error-messages="errorMessages[startFieldKey]"
+                    :error-messages="errors[startFieldKey]"
                     label="Date"
                     @input="setDateChange" />
                 <TextField
@@ -33,7 +39,7 @@
                     :value="recurrency"
                     :disabled="!isAllowedToUpdate"
                     :input="timeInputType"
-                    :error-messages="errorMessages[hourFieldKey]"
+                    :error-messages="errors[hourFieldKey]"
                     label="Recurrency"
                     hint="The time interval determining how often process would be executed"
                     @input="setRecurrencyChange" />
@@ -44,13 +50,24 @@
 
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
+import DatePicker from '@Core/components/DatePicker/DatePicker';
+import Divider from '@Core/components/Dividers/Divider';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import TextField from '@Core/components/TextField/TextField';
+import Toggler from '@Core/components/Toggler/Toggler';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
+    DEFAULT_DATE_TIME_FORMAT,
     DEFAULT_FORMAT,
     DEFAULT_HOUR_FORMAT,
 } from '@Core/models/calendar/calendar';
 import {
     format as formatDate,
+    formatISO,
     parse as parseDate,
+    parseISO,
 } from 'date-fns';
 import {
     mapActions,
@@ -60,13 +77,17 @@ import {
 export default {
     name: 'SchedulerForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        DatePicker: () => import('@Core/components/Inputs/DatePicker/DatePicker'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
-        Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
-        Divider: () => import('@Core/components/Dividers/Divider'),
+        Form,
+        FormSection,
+        DatePicker,
+        TextField,
+        Toggler,
+        Divider,
     },
+    mixins: [
+        formActionsMixin,
+        formFeedbackMixin,
+    ],
     data() {
         return {
             schedulerConfiguration: {},
@@ -93,22 +114,14 @@ export default {
                 start,
             } = this.schedulerConfiguration;
 
-            if (start) {
-                const [
-                    date,
-                ] = start.split(' ');
-
-                return parseDate(date, DEFAULT_FORMAT, new Date());
-            }
-
-            return null;
+            return start ? parseISO(start) : null;
         },
         time() {
             const {
                 start,
             } = this.schedulerConfiguration;
 
-            return start ? start.split(' ')[1] : null;
+            return start ? formatDate(parseISO(start), DEFAULT_HOUR_FORMAT) : null;
         },
         recurrency() {
             const {
@@ -166,12 +179,18 @@ export default {
                 key: 'scheduler',
                 value: JSON.stringify(tmpScheduler),
             });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.activeFieldKey,
+                value,
+            });
         },
         setDateChange(value) {
-            let date = value ? formatDate(value, DEFAULT_FORMAT) : null;
+            let date = value ? formatISO(value) : null;
 
-            if (this.time && date) {
-                date = `${date} ${this.time}`;
+            if (this.time && value) {
+                date = formatISO(parseDate(`${formatDate(value, DEFAULT_FORMAT)} ${this.time}`, DEFAULT_DATE_TIME_FORMAT, new Date()));
             }
 
             this.__setState({
@@ -181,27 +200,32 @@ export default {
                     start: date,
                 }),
             });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.startFieldKey,
+                value: date,
+            });
         },
         setTimeChange(value) {
-            let tmpDate = `${formatDate(new Date(), DEFAULT_FORMAT)} ${value}`;
             const {
                 start,
             } = this.schedulerConfiguration;
-
-            if (start) {
-                const [
-                    date,
-                ] = start.split(' ');
-
-                tmpDate = `${date} ${value}`;
-            }
+            const strDate = `${formatDate(start ? parseISO(start) : new Date(), DEFAULT_FORMAT)} ${value}`;
+            const date = formatISO(parseDate(strDate, DEFAULT_DATE_TIME_FORMAT, new Date()));
 
             this.__setState({
                 key: 'scheduler',
                 value: JSON.stringify({
                     ...this.schedulerConfiguration,
-                    start: tmpDate,
+                    start: date,
                 }),
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'time',
+                value: date,
             });
         },
         setRecurrencyChange(value) {
@@ -218,6 +242,12 @@ export default {
             this.__setState({
                 key: 'scheduler',
                 value: JSON.stringify(tmpScheduler),
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.hourFieldKey,
+                value,
             });
         },
     },

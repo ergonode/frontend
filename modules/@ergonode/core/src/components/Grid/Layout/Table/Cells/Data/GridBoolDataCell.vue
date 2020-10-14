@@ -39,7 +39,7 @@ export default {
     ],
     computed: {
         cellData() {
-            if (this.draft !== null && Boolean(this.data.value) !== Boolean(this.draft)) {
+            if (this.isDraft && Boolean(this.data.value) !== Boolean(this.draft)) {
                 return {
                     value: this.draft,
                     isDraft: true,

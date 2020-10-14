@@ -8,7 +8,7 @@
             <Button
                 v-if="!showForm"
                 title="NEW COMMENT"
-                :disabled="!isUserAllowedToUpdate"
+                :disabled="!isAllowedToUpdate"
                 :size="smallSize"
                 @click.native="openForm">
                 <template #prepend="{ color }">
@@ -17,6 +17,8 @@
             </Button>
             <CommentEdit
                 v-else
+                :scope="scope"
+                :errors="errors"
                 :is-edit="false"
                 @close="closeForm" />
         </template>
@@ -24,6 +26,8 @@
             <CommentStateChanger
                 v-for="comment in commentList"
                 :key="comment.id"
+                :scope="scope"
+                :errors="errors"
                 :is-addition-form-visible="showForm"
                 :comment="comment"
                 @close="closeForm" />
@@ -38,10 +42,15 @@
         <template
             v-if="isMoreButtonVisible"
             #footer>
-            <Loader v-if="!$isLoading('moreComments')" />
             <Button
                 :title="showMoreText"
-                @click.native="showMore" />
+                @click.native="showMore">
+                <template
+                    v-if="isFetchingData"
+                    #append="{ color }">
+                    <IconSpinner :fill-color="color" />
+                </template>
+            </Button>
         </template>
     </CommentsList>
 </template>
@@ -52,7 +61,7 @@ import CommentStateChanger from '@Comments/components/Comments/CommentStateChang
 import CommentsList from '@Comments/components/List/CommentsList';
 import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import Loader from '@Core/components/Loader/Loader';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
@@ -71,17 +80,28 @@ import {
 export default {
     name: 'ProductCommentsForm',
     components: {
+        IconSpinner,
         Button,
-        Loader,
         IconAdd,
         CommentsList,
         CommentStateChanger,
         CommentEdit,
         ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
     },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             showForm: false,
+            isFetchingData: false,
         };
     },
     computed: {
@@ -113,7 +133,7 @@ export default {
                 && listLength < this.fullListCount
                 && this.fullListCount > DATA_LIMIT;
         },
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ]);
@@ -129,7 +149,9 @@ export default {
         openForm() {
             this.showForm = true;
         },
-        showMore() {
+        async showMore() {
+            this.isFetchingData = true;
+
             const params = {
                 limit: DATA_LIMIT,
                 offset: this.currentPage * DATA_LIMIT,
@@ -137,9 +159,11 @@ export default {
                 field: 'created_at',
             };
 
-            this.getMoreComments({
+            await this.getMoreComments({
                 params,
             });
+
+            this.isFetchingData = false;
         },
     },
 };

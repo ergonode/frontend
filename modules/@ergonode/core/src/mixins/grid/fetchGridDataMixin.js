@@ -2,8 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import Grid from '@Core/components/Grid/Grid';
 import {
-    DATA_LIMIT,
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 import {
@@ -24,7 +24,7 @@ export default function ({
 }) {
     return {
         components: {
-            Grid: () => import('@Core/components/Grid/Grid'),
+            Grid,
         },
         props: {
             isFetchingNeeded: {
@@ -37,23 +37,18 @@ export default function ({
                 rows: [],
                 columns: [],
                 filtered: 0,
-                localParams: {
-                    offset: 0,
-                    limit: DATA_LIMIT,
-                    filters: {},
-                    sortedColumn: {},
-                },
+                localParams: DEFAULT_GRID_FETCH_PARAMS,
             };
         },
         computed: {
-            ...mapState('list', {
-                disabledElements: state => state.disabledElements,
-            }),
+            ...mapState('list', [
+                'disabledElements',
+            ]),
         },
         watch: {
             isFetchingNeeded() {
                 if (this.isFetchingNeeded) {
-                    this.onFetchData(this.localParams);
+                    this.onFetchData();
                 }
             },
         },
@@ -61,16 +56,16 @@ export default function ({
             ...mapActions('list', [
                 'setDisabledElement',
             ]),
-            onFetchData({
+            async onFetchData({
                 offset,
                 limit,
-                filters,
+                filter,
                 sortedColumn,
-            } = DEFAULT_GRID_FETCH_PARAMS) {
+            } = this.localParams) {
                 this.localParams = {
                     offset,
                     limit,
-                    filters,
+                    filter,
                     sortedColumn,
                 };
 
@@ -78,7 +73,7 @@ export default function ({
                     offset,
                     limit,
                     extended: true,
-                    filter: filters,
+                    filter,
                     columns: this.getGridColumnParams(),
                 };
 
@@ -91,37 +86,41 @@ export default function ({
                     params.order = orderState;
                 }
 
-                return getGridData({
-                    $axios: this.$axios,
-                    path: this.getPath(),
-                    params,
-                }).then(({
+                const {
                     columns,
                     rows,
                     filtered,
-                }) => {
-                    this.columns = columns;
-                    this.rows = rows;
-                    this.filtered = filtered;
-
-                    this.$emit('fetched');
+                } = await getGridData({
+                    $axios: this.$axios,
+                    path: this.getPath(),
+                    params,
                 });
+
+                this.columns = columns;
+                this.rows = rows;
+                this.filtered = filtered;
+
+                this.$emit('fetched');
             },
             onRemoveRow() {
-                this.onFetchData(this.localParams);
+                this.onFetchData();
             },
-            onDropColumn(columnId) {
-                insertCookieAtIndex({
-                    cookies: this.$cookies,
-                    cookieName: `GRID_CONFIG:${this.$route.name}`,
-                    index: 0,
-                    data: columnId,
-                });
+            async onDropColumn(payload) {
+                try {
+                    const columnCode = payload.split('/')[1];
 
-                this.onFetchData(this.localParams).then(() => {
+                    insertCookieAtIndex({
+                        cookies: this.$cookies,
+                        cookieName: `GRID_CONFIG:${this.$route.name}`,
+                        index: 0,
+                        data: columnCode,
+                    });
+
+                    await this.onFetchData();
+
                     const column = this.columns.find(({
                         id,
-                    }) => id === columnId);
+                    }) => id === columnCode);
 
                     if (column && column.element_id) {
                         this.setDisabledElement(this.getDisabledListElement({
@@ -130,13 +129,13 @@ export default function ({
                             disabledElements: this.disabledElements,
                         }));
                     }
-                }).catch(() => {
+                } catch {
                     removeCookieAtIndex({
                         cookies: this.$cookies,
-                        cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
+                        cookieName: `GRID_CONFIG:${this.$route.name}`,
                         index: 0,
                     });
-                });
+                }
             },
             getDisabledListElement({
                 languageCode,

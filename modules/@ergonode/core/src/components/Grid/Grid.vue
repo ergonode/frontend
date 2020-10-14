@@ -18,14 +18,19 @@
             :filters="advancedFilters"
             :filter-values="advancedFilterValues"
             @filter="onAdvancedFilterChange"
-            @layoutChange="onLayoutChange"
-            @applySettings="onApplySettings"
-            @dropFilter="onDropFilter">
+            @remove-filter="onAdvancedFilterRemove"
+            @remove-all-filter="onAdvancedFilterRemoveAll"
+            @layout-change="onLayoutChange"
+            @apply-settings="onApplySettings"
+            @drop-filter="onDropFilter">
             <template #actions>
                 <slot name="headerActions" />
             </template>
             <template #configuration>
                 <slot name="headerConfiguration" />
+            </template>
+            <template #panel>
+                <slot name="headerPanel" />
             </template>
         </GridHeader>
         <GridBody
@@ -42,12 +47,13 @@
             <Preloader v-show="isPrefetchingData" />
             <KeepAlive>
                 <GridTableLayout
-                    v-if="isTableLayout"
+                    v-if="isTableLayout && !isPrefetchingData"
                     :columns="columns"
                     :action-columns="actionColumns"
                     :rows="rows"
                     :row-ids="rowIds"
                     :drafts="drafts"
+                    :errors="errors"
                     :filters="filterValues"
                     :current-page="currentPage"
                     :max-rows="maxRows"
@@ -57,53 +63,55 @@
                     :is-basic-filter="isBasicFilter"
                     @sort="onSortColumn"
                     @filter="onFilterChange"
-                    @cellValue="onCellValueChange"
-                    @focusCell="onFocusCell"
-                    @rowAction="onRowAction" />
+                    @cell-value="onCellValueChange"
+                    @focus-cell="onFocusCell"
+                    @row-action="onRowAction" />
                 <GridCollectionLayout
-                    v-else-if="isCollectionLayout && collectionData.length"
-                    :data="collectionData"
+                    v-else-if="isCollectionLayout && !isPrefetchingData && !isPlaceholderVisible"
+                    :rows="rows"
+                    :row-ids="rowIds"
+                    :collection-cell-binding="collectionCellBinding"
                     :drafts="drafts"
                     :columns-number="collectionLayoutConfig.columnsNumber"
                     :object-fit="collectionLayoutConfig.scaling"
-                    @rowAction="onRowAction"
-                    @cellValue="onCellValueChange" />
+                    @row-action="onRowAction"
+                    @cell-value="onCellValueChange" />
             </KeepAlive>
-            <template v-if="dataCount === 0 && !isPrefetchingData">
-                <GridPlaceholder
-                    v-if="noRecordsFilterPlaceholder"
-                    v-bind="{ ...noRecordsFilterPlaceholder }">
-                    <template #action>
-                        <Button
-                            title="REMOVE FILTERS"
-                            :size="smallSize"
-                            :theme="secondaryTheme"
-                            @click.native="onRemoveAllFilters">
-                            <template #prepend="{ color }">
-                                <IconFilledClose :fill-color="color" />
-                            </template>
-                        </Button>
-                    </template>
-                </GridPlaceholder>
-                <GridPlaceholder
-                    v-else
-                    v-bind="{ ...placeholder }">
-                    <template #action>
-                        <slot name="placeholderNoRecordsAction" />
-                    </template>
-                </GridPlaceholder>
-            </template>
+            <GridPlaceholder
+                v-show="isPlaceholderVisible && noRecordsFilterPlaceholder"
+                v-bind="{ ...noRecordsFilterPlaceholder }">
+                <template #action>
+                    <Button
+                        title="REMOVE FILTERS"
+                        :size="smallSize"
+                        :theme="secondaryTheme"
+                        @click.native="onRemoveAllFilters">
+                        <template #prepend="{ color }">
+                            <IconFilledClose :fill-color="color" />
+                        </template>
+                    </Button>
+                </template>
+            </GridPlaceholder>
+            <GridPlaceholder
+                v-show="isPlaceholderVisible && !noRecordsFilterPlaceholder"
+                v-bind="{ ...placeholder }">
+                <template #action>
+                    <slot name="placeholderNoRecordsAction" />
+                </template>
+            </GridPlaceholder>
         </GridBody>
         <GridFooter v-if="isFooterVisible">
-            <GridPageSelector
-                :value="maxRows"
-                :max-rows="dataCount"
-                @input="onMaxRowsChange" />
-            <GridPagination
-                :value="currentPage"
-                :max-page="maxPage"
-                @input="onCurrentPageChange" />
-            <slot name="appendFooter" />
+            <slot name="footer">
+                <GridPageSelector
+                    :value="maxRows"
+                    :max-rows="dataCount"
+                    @input="onMaxRowsChange" />
+                <GridPagination
+                    :value="currentPage"
+                    :max-page="maxPage"
+                    @input="onCurrentPageChange" />
+                <slot name="appendFooter" />
+            </slot>
         </GridFooter>
     </div>
 </template>
@@ -174,18 +182,17 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         advancedFilters: {
             type: Array,
             default: () => [],
         },
         collectionCellBinding: {
             type: Object,
-            default: () => ({
-                imageColumn: '',
-                descriptionColumn: '',
-                type: '',
-                additionalColumns: [],
-            }),
+            default: null,
         },
         placeholder: {
             type: Object,
@@ -260,10 +267,10 @@ export default {
         };
     },
     computed: {
-        ...mapState('draggable', {
-            isElementDragging: state => state.isElementDragging,
-            draggedElement: state => state.draggedElement,
-        }),
+        ...mapState('draggable', [
+            'isElementDragging',
+            'draggedElement',
+        ]),
         noRecordsFilterPlaceholder() {
             if (!this.dataCount
                 && (!Object.keys(this.filterValues).length
@@ -337,6 +344,9 @@ export default {
         isTableLayout() {
             return this.layout === GRID_LAYOUT.TABLE;
         },
+        isPlaceholderVisible() {
+            return this.dataCount === 0 && !this.isPrefetchingData;
+        },
         maxPage() {
             return Math.ceil(this.dataCount / this.maxRows) || 1;
         },
@@ -350,38 +360,6 @@ export default {
 
                 return getUUID();
             });
-        },
-        collectionData() {
-            const {
-                imageColumn,
-                type,
-                descriptionColumn,
-                additionalColumns,
-            } = this.collectionCellBinding;
-
-            if (!(imageColumn && descriptionColumn)) {
-                return [];
-            }
-
-            return this.rows
-                .map((row, index) => {
-                    const additionalData = {};
-
-                    if (additionalColumns) {
-                        additionalColumns.forEach((columnId) => {
-                            additionalData[columnId] = row[columnId] ? row[columnId].value : '';
-                        });
-                    }
-
-                    return {
-                        id: this.rowIds[index],
-                        image: row[imageColumn] ? row[imageColumn].value : '',
-                        description: row[descriptionColumn] ? row[descriptionColumn].value : '',
-                        type,
-                        actions: row._links ? row._links.value : '',
-                        ...additionalData,
-                    };
-                });
         },
     },
     methods: {
@@ -401,18 +379,19 @@ export default {
             this.layout = layout;
         },
         onCellValueChange(payload) {
-            this.$emit('cellValue', payload);
+            this.$emit('cell-value', payload);
         },
         onFocusCell(payload) {
-            this.$emit('focusCell', payload);
+            this.$emit('focus-cell', payload);
         },
         onRowAction({
-            key, value,
+            key,
+            value,
         }) {
-            this.$emit(`${key}Row`, value);
+            this.$emit(`${key}-row`, value);
         },
-        onDropColumn(columnId) {
-            this.$emit('dropColumn', columnId);
+        onDropColumn(payload) {
+            this.$emit('drop-column', payload);
         },
         onSortColumn(sortedColumn) {
             this.sortedColumn = sortedColumn;
@@ -427,6 +406,45 @@ export default {
             this.advancedFilterValues = filters;
 
             this.emitFetchData();
+        },
+        onAdvancedFilterRemove({
+            index,
+            filter,
+        }) {
+            const advancedFilterValues = {
+                ...this.advancedFilterValues,
+            };
+
+            delete advancedFilterValues[filter.id];
+
+            this.advancedFilterValues = advancedFilterValues;
+
+            this.$emit('remove-advanced-filter', {
+                index,
+                filter,
+                params: {
+                    sortedColumn: this.sortedColumn,
+                    filter: getMergedFilters({
+                        basic: this.filterValues,
+                        advanced: this.advancedFilterValues,
+                    }),
+                    offset: (this.currentPage - 1) * this.maxRows,
+                    limit: this.maxRows,
+                },
+            });
+        },
+        onAdvancedFilterRemoveAll() {
+            this.advancedFilterValues = {};
+
+            this.$emit('remove-all-advanced-filter', {
+                sortedColumn: this.sortedColumn,
+                filter: getMergedFilters({
+                    basic: this.filterValues,
+                    advanced: this.advancedFilterValues,
+                }),
+                offset: (this.currentPage - 1) * this.maxRows,
+                limit: this.maxRows,
+            });
         },
         onCurrentPageChange(page) {
             this.currentPage = page;
@@ -443,12 +461,12 @@ export default {
             }
         },
         onDropFilter(payload) {
-            this.$emit('dropFilter', payload);
+            this.$emit('drop-filter', payload);
         },
         emitFetchData() {
-            this.$emit('fetchData', {
+            this.$emit('fetch-data', {
                 sortedColumn: this.sortedColumn,
-                filters: getMergedFilters({
+                filter: getMergedFilters({
                     basic: this.filterValues,
                     advanced: this.advancedFilterValues,
                 }),

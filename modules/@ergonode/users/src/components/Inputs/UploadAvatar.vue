@@ -74,7 +74,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
             'removeError',
         ]),
@@ -114,7 +114,9 @@ export default {
                     this.$emit('upload', this.userId);
                 }).catch((e) => {
                     this.isRequestPending = false;
-                    this.onError(e.data);
+                    this.onError({
+                        errors: e.data.errors,
+                    });
                     this.$emit('progress', false);
                 });
             }

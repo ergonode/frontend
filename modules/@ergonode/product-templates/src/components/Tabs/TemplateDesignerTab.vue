@@ -21,7 +21,7 @@
         <template #grid>
             <TemplateGridDesigner
                 :max-row="maxLayoutRow"
-                @rowsCount="onRowsCountChange">
+                @rows-count="onRowsCountChange">
                 <TemplateGridDraggableLayer
                     :style="gridStyles"
                     :rows-number="maxLayoutRow"
@@ -38,22 +38,25 @@
                             :element="element"
                             :columns-number="columnsNumber"
                             :rows-number="maxLayoutRow"
-                            :disabled="!isUserAllowedToUpdate"
-                            @highlightedPositionChange="onHighlightedPositionsChange"
-                            @resizingElMaxRow="onResizingElMaxRow"
+                            :disabled="!isAllowedToUpdate"
+                            @highlighted-position-change="onHighlightedPositionsChange"
+                            @resizing-el-max-row="onResizingElMaxRow"
                             @remove="onRemoveLayoutElement">
                             <template #content>
                                 <AttributeElementContent
                                     v-if="element.type !== sectionType"
+                                    :scope="scope"
+                                    :errors="errors"
+                                    :change-values="changeValues"
                                     :element="element"
-                                    :disabled="!isUserAllowedToUpdate"
+                                    :disabled="!isAllowedToUpdate"
                                     :index="index" />
                                 <SectionElementContent
                                     v-else
                                     :element="element"
                                     :index="index"
-                                    :disabled="!isUserAllowedToUpdate"
-                                    @editTitle="onEditSectionTitle" />
+                                    :disabled="!isAllowedToUpdate"
+                                    @edit-title="onEditSectionTitle" />
                             </template>
                         </LayoutElement>
                     </template>
@@ -61,10 +64,23 @@
                 <SectionTemplateModalForm
                     v-if="isSectionAdded"
                     :index="sectionIndex"
+                    :scope="scope"
+                    :errors="errors"
+                    :change-values="changeValues"
                     :position="sectionPosition"
                     :element="sectionElement"
                     @close="onCloseSectionModal" />
             </TemplateGridDesigner>
+            <Button
+                title="SAVE CHANGES"
+                :floating="{ bottom: '24px', right: '24px' }"
+                @click.native="onSubmit">
+                <template
+                    v-if="isSubmitting"
+                    #prepend="{ color }">
+                    <IconSpinner :fill-color="color" />
+                </template>
+            </Button>
         </template>
     </GridViewTemplate>
 </template>
@@ -76,13 +92,20 @@ import {
 import {
     GRAPHITE_LIGHT,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import Button from '@Core/components/Button/Button';
 import DropZone from '@Core/components/DropZone/DropZone';
 import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
+import VerticalTabBar from '@Core/components/TabBar/VerticalTabBar';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     getObjectWithMaxValueInArrayByObjectKey,
 } from '@Core/models/arrayWrapper';
@@ -92,7 +115,9 @@ import {
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
 import TemplateGridDraggableLayer from '@Templates/components/Template/Base/TemplateGridDraggableLayer';
 import TemplateGridPlaceholderItem from '@Templates/components/Template/Base/TemplateGridPlaceholderItem';
+import AttributeElementContent from '@Templates/components/Template/ProductDesigner/AttributeElementContent';
 import LayoutElement from '@Templates/components/Template/ProductDesigner/LayoutElement';
+import SectionElementContent from '@Templates/components/Template/ProductDesigner/SectionElementContent';
 import PRIVILEGES from '@Templates/config/privileges';
 import {
     getHighlightingLayoutDropPositions,
@@ -105,6 +130,8 @@ import {
 export default {
     name: 'TemplateDesignerTab',
     components: {
+        Button,
+        IconSpinner,
         DropZone,
         FadeTransition,
         GridViewTemplate,
@@ -113,14 +140,18 @@ export default {
         TemplateGridPlaceholderItem,
         LayoutElement,
         IconRemoveFilter,
-        VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
+        VerticalTabBar,
+        AttributeElementContent,
+        SectionElementContent,
         SectionTemplateModalForm: () => import('@Templates/components/Modals/SectionTemplateModalForm'),
-        AttributeElementContent: () => import('@Templates/components/Template/ProductDesigner/AttributeElementContent'),
-        SectionElementContent: () => import('@Templates/components/Template/ProductDesigner/SectionElementContent'),
     },
+    mixins: [
+        tabFeedbackMixin,
+    ],
     data() {
         return {
             highlightedPositions: [],
+            isSubmitting: false,
             isSectionAdded: false,
             sectionPosition: null,
             sectionIndex: null,
@@ -130,15 +161,15 @@ export default {
         };
     },
     computed: {
-        ...mapState('productTemplate', {
-            templateGroups: state => state.templateGroups,
-            layoutElements: state => state.layoutElements,
-            title: state => state.title,
-        }),
-        ...mapState('draggable', {
-            draggedElement: state => state.draggedElement,
-            isElementDragging: state => state.isElementDragging,
-        }),
+        ...mapState('productTemplate', [
+            'templateGroups',
+            'layoutElements',
+            'title',
+        ]),
+        ...mapState('draggable', [
+            'draggedElement',
+            'isElementDragging',
+        ]),
         isDropZoneVisible() {
             return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
         },
@@ -165,7 +196,7 @@ export default {
                 },
             ];
         },
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.TEMPLATE_DESIGNER.update,
             ]);
@@ -216,17 +247,61 @@ export default {
     },
     methods: {
         ...mapActions('productTemplate', [
+            'updateTemplate',
             'addListElementToLayout',
             'updateLayoutElementAtIndex',
             'removeLayoutElementAtIndex',
         ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
+        onSubmit() {
+            if (this.isSubmitting) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeScopeErrors();
+            this.updateTemplate({
+                scope: this.scope,
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
+            });
+        },
+        onUpdateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Template has been updated',
+            });
+
+            this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
+        },
+        onUpdateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+        },
         onRemoveLayoutElement(index) {
             this.removeLayoutElementAtIndex(index);
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'templateDesigner',
+                value: true,
+            });
         },
         onResizingElMaxRow(row) {
             if (row > this.maxRow) {
                 this.maxRow = row;
             }
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'templateDesigner',
+                value: true,
+            });
         },
         onRowsCountChange({
             value,
@@ -236,7 +311,10 @@ export default {
         onHighlightedPositionsChange(positions) {
             this.highlightedPositions = positions;
         },
-        updateLayoutElement(position) {
+        updateLayoutElement({
+            position,
+            draggableId,
+        }) {
             this.highlightedPositions = [];
 
             if (isObject(this.draggedElement)) {
@@ -255,8 +333,17 @@ export default {
                 this.sectionPosition = position;
                 this.isSectionAdded = true;
             } else {
-                this.addListElementToLayout(position);
+                this.addListElementToLayout({
+                    position,
+                    draggableId,
+                });
             }
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'templateDesigner',
+                value: true,
+            });
         },
         onEditSectionTitle(index) {
             this.sectionElement = this.layoutElements[index];

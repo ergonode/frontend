@@ -19,7 +19,20 @@
             </VerticalTabBar>
         </template>
         <template #grid>
-            <CategoryTreeWrapper />
+            <CategoryTreeWrapper
+                :scope="scope"
+                :change-values="changeValues"
+                :errors="errors" />
+            <Button
+                title="SAVE CHANGES"
+                :floating="{ bottom: '24px', right: '24px' }"
+                @click.native="onSubmit">
+                <template
+                    v-if="isSubmitting"
+                    #prepend="{ color }">
+                    <IconSpinner :fill-color="color" />
+                </template>
+            </Button>
         </template>
     </GridViewTemplate>
 </template>
@@ -28,31 +41,50 @@
 import {
     GRAPHITE_LIGHT,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import Button from '@Core/components/Button/Button';
 import DropZone from '@Core/components/DropZone/DropZone';
 import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
+import VerticalTabBar from '@Core/components/TabBar/VerticalTabBar';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import CategoryTreeWrapper from '@Trees/components/CategoryTreeDesigner/CategoryTreeWrapper';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
 export default {
     name: 'CategoryTreeDesignerTab',
     components: {
-        VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
-        CategoryTreeWrapper: () => import('@Trees/components/CategoryTreeDesigner/CategoryTreeWrapper'),
+        Button,
+        IconSpinner,
+        VerticalTabBar,
+        CategoryTreeWrapper,
         GridViewTemplate,
         IconRemoveFilter,
         DropZone,
         FadeTransition,
     },
+    mixins: [
+        tabFeedbackMixin,
+    ],
+    data() {
+        return {
+            isSubmitting: false,
+        };
+    },
     computed: {
-        ...mapState('draggable', {
-            isElementDragging: state => state.isElementDragging,
-        }),
+        ...mapState('draggable', [
+            'isElementDragging',
+        ]),
         verticalTabs() {
             return [
                 {
@@ -67,6 +99,39 @@ export default {
         },
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
+        },
+    },
+    methods: {
+        ...mapActions('categoryTree', [
+            'updateCategoryTree',
+        ]),
+        onSubmit() {
+            if (this.isSubmitting) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeScopeErrors(this.scope);
+            this.updateCategoryTree({
+                scope: this.scope,
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
+            });
+        },
+        onUpdateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Category tree has been updated',
+            });
+
+            this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
+        },
+        onUpdateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
         },
     },
 };

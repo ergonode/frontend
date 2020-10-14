@@ -7,7 +7,7 @@
         :is="stringComponent"
         :value="value"
         :schema="schema"
-        :error-messages="errorMessages"
+        :error-messages="errors"
         @input="onValueChange" />
 </template>
 
@@ -19,7 +19,7 @@ export default {
             type: Object,
             required: true,
         },
-        errorMessages: {
+        errors: {
             type: String,
             default: '',
         },

@@ -5,17 +5,18 @@
 <template>
     <AttributeGroupPage
         :title="code"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
+import AttributeGroupPage from '@Attributes/components/Pages/AttributeGroupPage';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import {
     mapActions,
     mapState,
@@ -24,8 +25,11 @@ import {
 export default {
     name: 'EditAttributeGroup',
     components: {
-        AttributeGroupPage: () => import('@Attributes/components/Pages/AttributeGroupPage'),
+        AttributeGroupPage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {
@@ -34,28 +38,29 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('attributeGroup/getAttributeGroup', {
-            groupId: params.id,
-        });
+        await store.dispatch('attributeGroup/getAttributeGroup', params);
     },
     computed: {
-        ...mapState('attributeGroup', {
-            id: state => state.id,
-            code: state => state.code,
-        }),
-        ...mapState('tab', {
-            translations: state => state.translations,
-        }),
+        ...mapState('attributeGroup', [
+            'code',
+        ]),
+    },
+    beforeDestroy() {
+        this.__clearStorage();
+        this.__clearTranslationsStorage();
+        this.__clearFeedbackStorage();
     },
     methods: {
         ...mapActions('attributeGroup', [
-            'updateAttributeGroup',
             'removeAttributeGroup',
+            '__clearStorage',
         ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
+        ...mapActions('tab', {
+            __clearTranslationsStorage: '__clearStorage',
+        }),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
@@ -63,29 +68,6 @@ export default {
                 confirmCallback: () => this.removeAttributeGroup({
                     onSuccess: this.onRemoveSuccess,
                 }),
-            });
-        },
-        onSave() {
-            this.removeErrors();
-            const {
-                name,
-            } = this.translations;
-            const data = {
-                name,
-            };
-
-            this.updateAttributeGroup({
-                id: this.id,
-                data,
-                onSuccess: this.onUpdateAttributeGroupSuccess,
-                onError: this.onError,
-            });
-        },
-        onUpdateAttributeGroupSuccess() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Attribute Group updated',
             });
         },
         onRemoveSuccess() {

@@ -12,37 +12,36 @@
             </template>
             <template #mainAction>
                 <Button
+                    data-cy="delete-unit"
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE UNIT"
                     :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
-                        <IconDelete
-                            :fill-color="color" />
+                        <IconDelete :fill-color="color" />
                     </template>
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs" />
-        <Footer flex-end>
-            <Button
-                title="SAVE UNIT"
-                :size="smallSize"
-                :disabled="$isLoading('footerButton')"
-                @click.native="onSave" />
-        </Footer>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
     </Page>
 </template>
 
 <script>
 import PRIVILEGES from '@Core/config/privileges';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 
 export default {
     name: 'UnitPage',
     mixins: [
         editPageMixin,
+        asyncTabsMixin,
     ],
     computed: {
         isReadOnly() {

@@ -4,21 +4,18 @@
  */
 <template>
     <TransitionPage
-        :title="`${params[0]} -> ${params[1]}`"
-        @remove="onRemove"
-        @save="onSave" />
+        :title="`${source.value} -> ${destination.value}`"
+        @remove="onRemove" />
 </template>
 
 <script>
-import {
-    getMappedConditionSetData,
-} from '@Conditions/models/conditionSetMapper';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import TransitionPage from '@Transitions/components/Pages/TransitionPage';
 import {
     mapActions,
     mapState,
@@ -27,31 +24,19 @@ import {
 export default {
     name: 'TransitionEdit',
     components: {
-        TransitionPage: () => import('@Transitions/components/Pages/TransitionPage'),
+        TransitionPage,
     },
     async fetch({
         store, params,
     }) {
-        await Promise.all([
-            store.dispatch('statusTransition/__clearStorage'),
-            store.dispatch('productStatus/getProductStatuses', {
-                limit: 9999,
-                offset: 0,
-            }),
-        ]);
-        await store.dispatch('statusTransition/getTransition', params);
+        await store.dispatch('productStatus/getProductStatuses');
+        await store.dispatch('statusTransition/getStatusTransition', params);
     },
     computed: {
-        ...mapState('statusTransition', {
-            source: state => state.source,
-            destination: state => state.destination,
-            roles: state => state.roles,
-            conditionSetId: state => state.conditionSetId,
-        }),
-        ...mapState('condition', {
-            conditionsValues: state => state.conditionsValues,
-            conditions: state => state.conditions,
-        }),
+        ...mapState('statusTransition', [
+            'source',
+            'destination',
+        ]),
         params() {
             const {
                 id,
@@ -60,81 +45,31 @@ export default {
         },
     },
     beforeDestroy() {
-        this.clearTransitionStorage();
-        this.clearConditionSetStorage();
+        this.__clearTransitionStorage();
+        this.__clearConditionStorage();
+        this.__clearFeedbackStorage();
     },
     methods: {
         ...mapActions('condition', {
-            createConditionSet: 'createConditionSet',
-            updateConditionSet: 'updateConditionSet',
-            clearConditionSetStorage: '__clearStorage',
+            __clearConditionStorage: '__clearStorage',
         }),
         ...mapActions('statusTransition', {
-            updateTransition: 'updateTransition',
-            removeTransition: 'removeTransition',
-            clearTransitionStorage: '__clearStorage',
+            removeStatusTransition: 'removeStatusTransition',
+            __clearTransitionStorage: '__clearStorage',
         }),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
-        onSave() {
-            const propertiesToUpdate = {
-                conditions: getMappedConditionSetData(this.conditionsValues, this.conditions),
-            };
-
-            this.removeErrors();
-            if (!this.conditionSetId) {
-                this.createConditionSet({
-                    data: propertiesToUpdate,
-                    onSuccess: this.onConditionCreated,
-                    onError: this.onError,
-                });
-            } else {
-                this.updateConditionSet({
-                    id: this.conditionSetId,
-                    data: propertiesToUpdate,
-                    onSuccess: () => {
-                        this.updateTransition({
-                            data: {
-                                roles: this.roles,
-                            },
-                            onSuccess: this.onTransitionUpdated,
-                            onError: this.onError,
-                        });
-                    },
-                    onError: this.onError,
-                });
-            }
-        },
-        onConditionCreated(conditionSetId) {
-            const propertiesToUpdate = {
-                condition_set: conditionSetId,
-                roles: this.roles,
-            };
-
-            this.updateTransition({
-                data: propertiesToUpdate,
-                onSuccess: this.onTransitionUpdated,
-                onError: this.onError,
-            });
-        },
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Are you sure you want to delete this transition?',
-                confirmCallback: () => this.removeTransition({
-                    onSuccess: this.onRemoveTransitionSuccess,
+                confirmCallback: () => this.removeStatusTransition({
+                    onSuccess: this.onRemoveStatusTransitionSuccess,
                 }),
             });
         },
-        onTransitionUpdated() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Transition updated',
-            });
-        },
-        onRemoveTransitionSuccess() {
+        onRemoveStatusTransitionSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Transition removed',
@@ -146,7 +81,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.params[0]} -> ${this.params[1]} - Status transitions - Ergonode`,
+            title: `${this.source.value} -> ${this.destination.value} - Status transitions - Ergonode`,
         };
     },
 };

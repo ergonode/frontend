@@ -2,6 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    get,
+} from '@Core/services/dictionary/index';
+
 import extendsModules from '~/.nuxt/extends.modules';
 
 const modulesDictionaries = Object.values(extendsModules)
@@ -18,29 +22,31 @@ const modulesDictionaries = Object.values(extendsModules)
     }, []);
 
 export default {
-    getDictionaries({
+    async getDictionaries({
         commit,
     }) {
-        const promises = modulesDictionaries.map(({
+        const promises = modulesDictionaries.map(async ({
             stateProp, requestPath, isGrid = false,
         }) => {
             const path = `${requestPath}${isGrid ? '?view=list' : ''}`;
 
-            return this.app.$axios.$get(path, {
+            const response = await get({
+                $axios: this.app.$axios,
+                path,
                 useCache: isGrid,
-            }).then((response) => {
-                const value = isGrid ? response.collection : response;
+            });
 
-                commit('__SET_STATE', {
-                    key: stateProp,
-                    value,
-                });
+            const value = isGrid ? response.collection : response;
+
+            commit('__SET_STATE', {
+                key: stateProp,
+                value,
             });
         });
 
-        return Promise.all(promises);
+        await Promise.all(promises);
     },
-    getCurrentDictionary({
+    async getDictionary({
         commit,
     }, {
         dictionaryName,
@@ -53,16 +59,15 @@ export default {
             stateProp: name,
         }) => name === dictionaryName);
         const path = `${requestPath}${isGrid ? '?view=list' : ''}`;
+        const response = await get({
+            $axios: this.app.$axios,
+            path,
+        });
+        const value = isGrid ? response.collection : response;
 
-        return this.app.$axios.$get(path, {
-            useCache: isGrid,
-        }).then((response) => {
-            const value = isGrid ? response.collection : response;
-
-            commit('__SET_STATE', {
-                key: stateProp,
-                value,
-            });
+        commit('__SET_STATE', {
+            key: stateProp,
+            value,
         });
     },
 };

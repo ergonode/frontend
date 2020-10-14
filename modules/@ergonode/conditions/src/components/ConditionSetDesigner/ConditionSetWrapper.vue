@@ -11,14 +11,21 @@
         :is-dragging-enabled="!disabled"
         :is-multi-draggable="true"
         :context-name="contextName"
-        @afterDrop="onGetConditionConfiguration"
-        @afterRemove="removeConditionValue">
-        <template #gridItem="{item, gridItemStyles}">
+        @after-drop="onGetConditionConfiguration">
+        <template
+            #gridItem="{
+                item,
+                index,
+                gridItemStyles,
+            }">
             <ConditionSetItem
                 :style="gridItemStyles"
                 :condition="getCondition(item.id)"
                 :item-id="item.id"
                 :item-row="item.row"
+                :scope="scope"
+                :change-values="changeValues"
+                :errors="conditionErrors[`element-${index}`]"
                 :disabled="disabled"
                 @remove="removeCondition" />
         </template>
@@ -26,6 +33,7 @@
 </template>
 
 <script>
+import ConditionSetItem from '@Conditions/components/ConditionSetDesigner/ConditionSetItem';
 import {
     COLUMNS,
     CONTEXT_NAME,
@@ -40,19 +48,31 @@ import {
 export default {
     name: 'ConditionSetWrapper',
     components: {
+        ConditionSetItem,
         TemplateGridWrapper,
-        ConditionSetItem: () => import('@Conditions/components/ConditionSetDesigner/ConditionSetItem'),
     },
     props: {
         disabled: {
             type: Boolean,
             default: false,
         },
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     computed: {
-        ...mapState('condition', {
-            conditions: state => state.conditions,
-        }),
+        ...mapState('condition', [
+            'conditions',
+        ]),
         contextName() {
             return CONTEXT_NAME;
         },
@@ -61,6 +81,9 @@ export default {
         },
         rowHeight() {
             return ROW_HEIGHT;
+        },
+        conditionErrors() {
+            return this.errors.conditions || {};
         },
     },
     methods: {
@@ -85,7 +108,7 @@ export default {
 
             if (!this.conditions[correctId]) {
                 this.getConditionConfiguration({
-                    conditionId: correctId,
+                    id: correctId,
                 });
             }
             this.setConditionValue({

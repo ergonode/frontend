@@ -10,101 +10,97 @@
             <AddProductsFromSegmentForm
                 :segment-options="segmentOptions"
                 :segments="segments"
+                submit-title="ADD TO PRODUCT"
+                proceed-title="CANCEL"
+                :is-submitting="isAdding"
+                :errors="scopeErrors"
+                @submit="onSubmit"
+                @proceed="onClose"
                 @input="onFormValueChange" />
-        </template>
-        <template #footer>
-            <Button
-                title="ADD TO PRODUCT"
-                :disabled="isRequestPending"
-                @click.native="onAdd" />
-            <Button
-                title="CANCEL"
-                :theme="secondaryTheme"
-                @click.native="onClose" />
         </template>
     </ModalForm>
 </template>
 
 <script>
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     THEME,
 } from '@Core/defaults/theme';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import AddProductsFromSegmentForm from '@Segments/components/Forms/Product/AddProductsFromSegmentForm';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
     name: 'AddProductsFromSegmentModalForm',
     components: {
-        AddProductsFromSegmentForm: () => import('@Segments/components/Forms/Product/AddProductsFromSegmentForm'),
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
+        AddProductsFromSegmentForm,
+        ModalForm,
     },
+    mixins: [
+        scopeErrorsMixin,
+    ],
     data() {
         return {
             segmentOptions: [],
             segments: [],
-            isRequestPending: false,
+            isAdding: false,
         };
     },
     computed: {
-        ...mapState('product', {
-            id: state => state.id,
-        }),
         secondaryTheme() {
             return THEME.SECONDARY;
         },
     },
-    created() {
-        this.$axios.$get('segments?limit=5000&offset=0').then(({
-            collection,
-        }) => {
-            this.segmentOptions = collection.map(({
-                id, code, name,
-            }) => ({
-                id,
-                key: code,
-                value: name,
-                hint: name ? `#${code}` : '',
-            }));
-        });
+    async created() {
+        this.segmentOptions = await this.getSegmentOptions();
     },
     methods: {
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
+        ...mapActions('segment', [
+            'getSegmentOptions',
+        ]),
+        ...mapActions('product', [
+            'addBySegment',
         ]),
         onFormValueChange(value) {
             this.segments = value;
         },
         onClose() {
+            this.removeScopeErrors(this.scope);
             this.$emit('close');
         },
-        onAdd() {
-            this.removeErrors();
-            const data = {
-                segments: this.segments.map(segment => segment.id),
-            };
+        onSubmit() {
+            if (this.isAdding) {
+                return;
+            }
+            this.isAdding = true;
 
-            this.isRequestPending = true;
-
-            this.$axios.$post(`products/${this.id}/children/add-from-segments`, data).then(() => {
-                this.isRequestPending = false;
-                this.removeErrors();
-                this.$addAlert({
-                    type: ALERT_TYPE.SUCCESS,
-                    message: 'Products has been added',
-                });
-
-                this.$emit('added');
-            }).catch((e) => {
-                this.isRequestPending = false;
-                this.onError(e.data);
+            this.removeScopeErrors(this.scope);
+            this.addBySegment({
+                scope: this.scope,
+                segments: this.segments,
+                onSuccess: this.onSubmitSuccess,
+                onError: this.onAddError,
             });
+        },
+        onSubmitSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Products have been added to collection',
+            });
+
+            this.isAdding = false;
+
+            this.$emit('submitted');
+        },
+        onAddError(errors) {
+            this.onError(errors);
+
+            this.isAdding = false;
         },
     },
 };

@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="page-selector">
-        <span class="page-selector__text">
+    <div class="grid-page-selector">
+        <span class="grid-page-selector__text">
             Show
         </span>
         <Select
@@ -13,13 +13,13 @@
             :size="smallSize"
             @input="onValueChange" />
         <span
-            class="page-selector__text"
+            class="grid-page-selector__text"
             v-text="infoText" />
     </div>
 </template>
 
 <script>
-import Select from '@Core/components/Inputs/Select/Select';
+import Select from '@Core/components/Select/Select';
 import {
     ROW_INTERVALS,
 } from '@Core/defaults/grid';
@@ -62,12 +62,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .page-selector {
+    .grid-page-selector {
         display: grid;
         align-items: center;
         grid-template-columns: max-content 72px max-content;
         grid-auto-flow: column;
         column-gap: 8px;
+        margin-left: 8px;
 
         &__text {
             color: $GRAPHITE_DARK;

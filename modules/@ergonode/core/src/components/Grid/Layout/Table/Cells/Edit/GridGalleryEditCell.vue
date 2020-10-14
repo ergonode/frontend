@@ -57,7 +57,7 @@ export default {
     },
     beforeDestroy() {
         if (!arraysAreEqual(this.localValue, this.value)) {
-            this.$emit('cellValue', [
+            this.$emit('cell-value', [
                 {
                     value: this.localValue,
                     rowId: this.rowId,

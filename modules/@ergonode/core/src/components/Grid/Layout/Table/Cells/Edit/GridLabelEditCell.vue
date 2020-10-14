@@ -18,13 +18,13 @@
                     <div
                         v-if="localValue"
                         class="presentation-badge">
-                        <PointBadge :color="colors[localValue.id]" />
+                        <PointBadge :color="colors[localValue.id].color" />
                     </div>
                 </template>
                 <template #option="{ option }">
                     <ListElementAction :size="smallSize">
                         <div class="presentation-badge-option">
-                            <PointBadge :color="colors[option.id]" />
+                            <PointBadge :color="colors[option.id].color" />
                         </div>
                     </ListElementAction>
                     <ListElementDescription>
@@ -42,14 +42,17 @@
 <script>
 import PointBadge from '@Core/components/Badges/PointBadge';
 import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
+import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import {
     SIZE,
 } from '@Core/defaults/theme';
 import gridEditCellMixin from '@Core/mixins/grid/cell/gridEditCellMixin';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'GridLabelEditCell',
@@ -70,23 +73,13 @@ export default {
             default: () => ({}),
         },
     },
-    fetch() {
-        this.$axios.$get(`${this.languageCode}/products/${this.rowId}`, {
-            withLanguage: false,
-        }).then(({
-            workflow = [],
-        }) => {
-            this.options = workflow.map(e => ({
-                id: e.code,
-                key: e.code,
-                value: e.name,
-                hint: e.name
-                    ? `#${e.code} ${this.languageCode}`
-                    : '',
-            }));
-
-            this.localValue = this.options.find(option => option.id === this.value);
+    async fetch() {
+        this.options = await this.getProductWorkflowOptions({
+            id: this.rowId,
+            languageCode: this.languageCode,
         });
+
+        this.localValue = this.options.find(option => option.id === this.value);
     },
     data() {
         return {
@@ -110,7 +103,7 @@ export default {
     },
     beforeDestroy() {
         if (this.localValue && this.localValue.id !== this.value) {
-            this.$emit('cellValue', [
+            this.$emit('cell-value', [
                 {
                     value: this.localValue.id || this.localValue,
                     rowId: this.rowId,
@@ -122,6 +115,9 @@ export default {
         }
     },
     methods: {
+        ...mapActions('product', [
+            'getProductWorkflowOptions',
+        ]),
         onFocus(isFocused) {
             if (!isFocused) {
                 this.onEditCell();

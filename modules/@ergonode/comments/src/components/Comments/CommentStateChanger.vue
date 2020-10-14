@@ -7,6 +7,8 @@
         <FadeTransition>
             <CommentEdit
                 v-if="showEditingForm"
+                :scope="scope"
+                :errors="errors"
                 :comment-value="comment.content"
                 :comment-id="comment.id"
                 @close="toggleState" />
@@ -18,14 +20,26 @@
     </li>
 </template>
 <script>
+import CommentEdit from '@Comments/components/Comments/CommentEdit';
+import CommentPresentation from '@Comments/components/Comments/CommentPresentation';
+import FadeTransition from '@Core/components/Transitions/FadeTransition';
+
 export default {
     name: 'CommentStateChanger',
     components: {
-        CommentPresentation: () => import('@Comments/components/Comments/CommentPresentation'),
-        CommentEdit: () => import('@Comments/components/Comments/CommentEdit'),
-        FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),
+        CommentPresentation,
+        CommentEdit,
+        FadeTransition,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         comment: {
             type: Object,
             default: () => ({}),

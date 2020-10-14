@@ -109,12 +109,12 @@ export default {
         };
     },
     computed: {
-        ...mapState('productTemplate', {
-            layoutElements: state => state.layoutElements,
-        }),
-        ...mapState('draggable', {
-            draggedElement: state => state.draggedElement,
-        }),
+        ...mapState('productTemplate', [
+            'layoutElements',
+        ]),
+        ...mapState('draggable', [
+            'draggedElement',
+        ]),
         classes() {
             return [
                 'layout-element',
@@ -132,20 +132,22 @@ export default {
             'removeLayoutElementAtIndex',
         ]),
         ...mapActions('draggable', [
-            'setDraggedElement',
-            'setDraggableState',
+            '__setState',
         ]),
         onDragStart(event) {
             const {
                 id, width, height,
             } = this.element;
 
-            this.setDraggedElement({
-                ...this.element,
-                index: this.index,
+            this.__setState({
+                key: 'draggedElement',
+                value: {
+                    ...this.element,
+                    index: this.index,
+                },
             });
-            this.setDraggableState({
-                propName: 'isElementDragging',
+            this.__setState({
+                key: 'isElementDragging',
                 value: DRAGGED_ELEMENT.TEMPLATE,
             });
             window.requestAnimationFrame(() => { this.isDragged = true; });
@@ -163,7 +165,7 @@ export default {
                 layoutElements: this.layoutElements.filter(el => el.id !== id),
             });
 
-            this.$emit('highlightedPositionChange', this.highlightingPositions);
+            this.$emit('highlighted-position-change', this.highlightingPositions);
         },
         onDragEnd(event) {
             removeElementCopyFromDocumentBody(event);
@@ -177,9 +179,12 @@ export default {
 
             this.isDragged = false;
             this.highlightingPositions = [];
-            this.setDraggedElement();
-            this.setDraggableState({
-                propName: 'isElementDragging',
+            this.__setState({
+                key: 'draggedElement',
+                value: null,
+            });
+            this.__setState({
+                key: 'isElementDragging',
                 value: null,
             });
 
@@ -187,7 +192,7 @@ export default {
                 this.$emit('remove', this.index);
             }
 
-            this.$emit('highlightedPositionChange', []);
+            this.$emit('highlighted-position-change', []);
         },
         onInitResize(event) {
             this.highlightingPositions = getHighlightingPositions(
@@ -218,7 +223,7 @@ export default {
                 response.default(this.onResize, this.onStopResizing);
             });
 
-            this.$emit('highlightedPositionChange', this.highlightingPositions);
+            this.$emit('highlighted-position-change', this.highlightingPositions);
         },
         onResize(event) {
             const {
@@ -249,7 +254,7 @@ export default {
                 response.default(this.onResize, this.onStopResizing);
             });
 
-            this.$emit('highlightedPositionChange', []);
+            this.$emit('highlighted-position-change', []);
         },
         getElementWidthBasedOnMouseXPosition(xPos) {
             return this.startWidth + xPos - this.startX;
@@ -339,7 +344,7 @@ export default {
                 });
 
                 this.actualElementRow = rowBellowMouse;
-                this.$emit('resizingElMaxRow', this.newHeight + row);
+                this.$emit('resizing-el-max-row', this.newHeight + row);
             }
         },
         blockOtherInteractionsOnResizeEvent() {

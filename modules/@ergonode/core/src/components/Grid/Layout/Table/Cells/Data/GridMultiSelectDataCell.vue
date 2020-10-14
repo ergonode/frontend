@@ -46,7 +46,7 @@ export default {
     ],
     computed: {
         cellData() {
-            if (this.draft !== null && !arraysAreEqual(this.data.value, this.draft)) {
+            if (this.isDraft && !arraysAreEqual(this.data.value, this.draft)) {
                 return {
                     value: this.draft,
                     isDraft: true,
@@ -83,7 +83,7 @@ export default {
     },
     methods: {
         onEditCell() {
-            this.$emit('editCell', {
+            this.$emit('edit-cell', {
                 type: this.column.type,
                 props: {
                     bounds: this.$el.getBoundingClientRect(),

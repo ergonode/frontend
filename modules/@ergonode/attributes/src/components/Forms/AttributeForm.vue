@@ -4,81 +4,71 @@
  */
 <template>
     <Form
-        title="Options"
-        :fields-keys="[
-            codeFieldKey,
-            typeFieldKey,
-            groupsFieldKey,
-            scopeFieldKey,
-            paramsFieldKey,
-            ...optionsFieldKeys,
-        ]">
-        <template #body="{ errorMessages }">
+        :title="$t('attribute.form.title')"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        :errors="errors"
+        :errors-presentation-mapper="errorMapper"
+        @proceed="onProceed"
+        @submit="onSubmit">
+        <template #body>
             <FormSection>
-                <TextField
-                    :data-cy="dataCyGenerator(codeFieldKey)"
-                    :value="code"
-                    required
-                    :error-messages="errorMessages[codeFieldKey]"
-                    :disabled="isDisabled || !isAllowedToUpdate"
-                    label="System name"
-                    hint="System name must be unique"
-                    @input="setCodeValue" />
-                <TranslationLazySelect
-                    :data-cy="dataCyGenerator(groupsFieldKey)"
-                    :value="groups"
-                    label="Groups"
-                    :multiselect="true"
-                    :clearable="true"
-                    :disabled="!isAllowedToUpdate"
-                    :error-messages="errorMessages[groupsFieldKey]"
-                    :fetch-options-request="getAttributeGroupOptionsRequest"
-                    @input="setGroupsValue" />
                 <Select
                     :data-cy="dataCyGenerator(typeFieldKey)"
                     :value="type"
                     required
-                    label="Type"
+                    :label="$t('attribute.form.typeLabel')"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :options="attributeTypeOptions"
-                    :error-messages="errorMessages[typeFieldKey]"
+                    :error-messages="errors[typeFieldKey]"
                     @input="onTypeChange" />
             </FormSection>
-            <Divider />
-            <FormSection title="Configuration">
+            <FormSection v-if="type">
+                <TextField
+                    :data-cy="dataCyGenerator(codeFieldKey)"
+                    :value="code"
+                    required
+                    :error-messages="errors[codeFieldKey]"
+                    :disabled="isDisabled || !isAllowedToUpdate"
+                    :label="$t('attribute.form.nameLabel')"
+                    :hint="$t('attribute.form.nameHint')"
+                    @input="setCodeValue" />
+                <TranslationLazySelect
+                    :data-cy="dataCyGenerator(groupsFieldKey)"
+                    :value="groups"
+                    :label="$t('attribute.form.groupLabel')"
+                    :multiselect="true"
+                    :clearable="true"
+                    :disabled="!isAllowedToUpdate"
+                    :error-messages="errors[groupsFieldKey]"
+                    :fetch-options-request="getAttributeGroupsOptions"
+                    @input="setGroupsValue" />
+                <Divider />
+            </FormSection>
+            <FormSection
+                v-if="type"
+                :title="$t('attribute.form.sectionTitle')">
                 <Select
                     :data-cy="dataCyGenerator(scopeFieldKey)"
-                    :value="scope"
+                    :value="attributeScope"
                     required
-                    label="Scope"
+                    :label="$t('attribute.form.scopeLabel')"
                     :disabled="!isAllowedToUpdate"
                     :options="attributeScopeOptions"
-                    :error-messages="errorMessages[scopeFieldKey]"
+                    :error-messages="errors[scopeFieldKey]"
                     @input="setScopeValue">
                     <template #append>
                         <InfoHint :hint="scopeHint" />
                     </template>
                 </Select>
-                <Select
-                    v-if="hasParams"
-                    :data-cy="dataCyGenerator('params')"
-                    key="attrHasParams"
-                    :value="parameter"
-                    required
-                    :label="paramsLabel"
-                    :options="attributeParametersOptions"
-                    :error-messages="errorMessages[paramsFieldKey]"
-                    :disabled="!isAllowedToUpdate"
-                    @input="setParameterValue" />
-                <AttributeOptionKeyValues
-                    v-show="hasOptions"
-                    key="attrHasOptions"
-                    :disabled="!isAllowedToUpdate" />
-                <Toggler
-                    v-if="isTextArea"
-                    :value="parameter"
-                    label="Rich text content enabled"
-                    @input="setParameterValue" />
+                <template v-for="(formComponent, index) in extendedForm">
+                    <Component
+                        :is="formComponent.component"
+                        :key="index"
+                        v-bind="bindingProps(formComponent)" />
+                </template>
             </FormSection>
         </template>
     </Form>
@@ -88,106 +78,84 @@
 import PRIVILEGES from '@Attributes/config/privileges';
 import {
     SCOPE,
-    TYPES,
 } from '@Attributes/defaults/attributes';
-import {
-    getParamsKeyForType,
-    getParamsOptionsForType,
-    hasOptions,
-    hasParams,
-} from '@Attributes/models/attributeTypes';
+import Divider from '@Core/components/Dividers/Divider';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/Section/FormSection';
+import InfoHint from '@Core/components/Hints/InfoHint';
+import Select from '@Core/components/Select/Select';
+import TranslationLazySelect from '@Core/components/Select/TranslationLazySelect';
+import TextField from '@Core/components/TextField/TextField';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     getKeyByValue,
+    isObject,
 } from '@Core/models/objectWrapper';
-import {
-    toCapitalize,
-} from '@Core/models/stringWrapper';
 import {
     mapActions,
     mapGetters,
     mapState,
 } from 'vuex';
 
-const getAttributeGroupsOptions = () => import('@Attributes/services/getAttributeGroupsOptions.service');
-
 export default {
     name: 'AttributeForm',
     components: {
-        AttributeOptionKeyValues: () => import('@Attributes/components/Forms/Sections/AttributeOptionKeyValues'),
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        InfoHint: () => import('@Core/components/Hints/InfoHint'),
-        TextField: () => import('@Core/components/Inputs/TextField'),
-        Select: () => import('@Core/components/Inputs/Select/Select'),
-        Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
-        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
-        Divider: () => import('@Core/components/Dividers/Divider'),
+        Form,
+        FormSection,
+        InfoHint,
+        TextField,
+        Select,
+        TranslationLazySelect,
+        Divider,
     },
+    mixins: [
+        formActionsMixin,
+        formFeedbackMixin,
+    ],
     computed: {
+        ...mapState('attribute', [
+            'id',
+            'code',
+            'groups',
+            'type',
+        ]),
         ...mapState('attribute', {
-            attrID: state => state.id,
-            code: state => state.code,
-            options: state => state.options,
-            groups: state => state.groups,
-            type: state => state.type,
-            parameter: state => state.parameter,
-            scope: state => state.scope,
+            attributeScope: state => state.scope,
         }),
-        ...mapState('dictionaries', {
-            attrTypes: state => state.attrTypes,
-        }),
+        ...mapState('dictionaries', [
+            'attrTypes',
+        ]),
         ...mapGetters('core', [
             'rootLanguage',
         ]),
-        scopeHint() {
-            return `Global means the same attribute values for each language, inherited from the root language (${this.rootLanguage.name}). Option values can be translated, but cannot be changed in the product template.`;
+        extendedForm() {
+            return this.$extendedForm({
+                key: '@Attributes/components/Forms/AttributeForm',
+                type: this.typeKey,
+            });
         },
-        paramsLabel() {
-            const paramsKey = getParamsKeyForType(this.typeKey);
-
-            return toCapitalize(paramsKey);
+        scopeHint() {
+            return this.$t('attribute.form.scopeHint', {
+                lang: this.rootLanguage.name,
+            });
+        },
+        typeKey() {
+            return getKeyByValue(this.attrTypes, this.type);
         },
         isDisabled() {
-            return Boolean(this.attrID);
+            return Boolean(this.id);
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,
             ]);
         },
-        isTextArea() {
-            return this.typeKey === TYPES.TEXT_AREA;
-        },
-        hasParams() {
-            return hasParams(this.typeKey);
-        },
-        typeKey() {
-            return getKeyByValue(this.attrTypes, this.type);
-        },
-        params() {
-            return getParamsOptionsForType(
-                this.typeKey,
-                this.$store.state.dictionaries,
-            );
-        },
-        hasOptions() {
-            return hasOptions(this.typeKey);
-        },
         attributeTypeOptions() {
             return Object.values(this.attrTypes).sort();
         },
         attributeScopeOptions() {
             return Object.values(SCOPE);
-        },
-        attributeParametersOptions() {
-            // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
-            if (Array.isArray(this.params)) {
-                return this.params.map(data => data.name);
-            }
-            return Object.values(this.params);
-        },
-        optionsFieldKeys() {
-            return Object.keys(this.options).map(key => `code_${key}`);
         },
         codeFieldKey() {
             return 'code';
@@ -196,68 +164,97 @@ export default {
             return 'type';
         },
         groupsFieldKey() {
-            return 'group';
+            return 'groups';
         },
         scopeFieldKey() {
             return 'scope';
-        },
-        paramsFieldKey() {
-            return `parameters_${this.paramsLabel.toLowerCase()}`;
         },
     },
     methods: {
         ...mapActions('attribute', [
             '__setState',
-            'removeAttributeOptions',
         ]),
+        ...mapActions('attributeGroup', [
+            'getAttributeGroupsOptions',
+        ]),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                disabled: !this.isAllowedToUpdate,
+                typeKey: this.typeKey,
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.errors,
+                ...props,
+            };
+        },
+        errorMapper(errors) {
+            return Object.keys(errors).reduce((acc, key) => {
+                const tmpObject = acc;
+
+                if (isObject(errors[key])) {
+                    tmpObject[key] = Object.values(errors[key]).join(', ');
+                } else {
+                    tmpObject[key] = errors[key];
+                }
+
+                return tmpObject;
+            }, {});
+        },
         setCodeValue(value) {
             this.__setState({
-                key: 'code',
+                key: this.codeFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.codeFieldKey,
                 value,
             });
         },
         setScopeValue(value) {
             this.__setState({
-                key: 'scope',
+                key: this.scopeFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.scopeFieldKey,
                 value,
             });
         },
         setGroupsValue(value) {
             this.__setState({
-                key: 'groups',
+                key: this.groupsFieldKey,
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.groupsFieldKey,
                 value,
             });
         },
         setTypeValue(value) {
             this.__setState({
-                key: 'type',
+                key: this.typeFieldKey,
                 value,
             });
-        },
-        setParameterValue(value = null) {
-            this.__setState({
-                key: 'parameter',
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.typeFieldKey,
                 value,
             });
         },
         dataCyGenerator(key) {
             return `attribute-${key}`;
         },
-        getAttributeGroupOptionsRequest() {
-            return getAttributeGroupsOptions().then(response => response.default(
-                {
-                    $axios: this.$axios,
-                    $store: this.$store,
-                },
-            ));
-        },
         onTypeChange(type) {
             this.setTypeValue(type);
-            this.setParameterValue();
-
-            if (!this.hasOptions) {
-                this.removeAttributeOptions();
-            }
         },
     },
 };

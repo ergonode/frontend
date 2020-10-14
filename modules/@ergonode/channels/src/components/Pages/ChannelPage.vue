@@ -15,7 +15,7 @@
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE CHANNEL"
-                    :disabled="!isUserAllowedToDelete"
+                    :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete :fill-color="color" />
@@ -25,24 +25,29 @@
                     title="EXPORT NOW"
                     :size="smallSize"
                     :theme="secondaryTheme"
-                    :disabled="!isUserAllowedToUpdate"
+                    :disabled="!isAllowedToUpdate"
                     @click.native="onCreateExport" />
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs">
-            <template #content>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors">
+            <template
+                #content="{
+                    item,
+                    errors: tabErrors,
+                    changeValues: tabChangeValues,
+                }">
                 <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
+                    :scope="item.scope"
+                    :change-values="tabChangeValues"
+                    :errors="tabErrors"
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
-        <Footer flex-end>
-            <Button
-                title="SAVE CHANNEL"
-                :size="smallSize"
-                :disabled="$isLoading('footerButton')"
-                @click.native="onSave" />
-        </Footer>
     </Page>
 </template>
 
@@ -56,6 +61,7 @@ import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import {
     mapActions,
     mapState,
@@ -68,6 +74,7 @@ export default {
     },
     mixins: [
         editPageMixin,
+        asyncTabsMixin,
     ],
     data() {
         return {
@@ -75,15 +82,15 @@ export default {
         };
     },
     computed: {
-        ...mapState('channel', {
-            id: state => state.id,
-        }),
-        isUserAllowedToUpdate() {
+        ...mapState('channel', [
+            'id',
+        ]),
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.CHANNEL.update,
             ]);
         },
-        isUserAllowedToDelete() {
+        isAllowedToDelete() {
             return this.$hasAccess([
                 PRIVILEGES.CHANNEL.delete,
             ]);
@@ -94,7 +101,7 @@ export default {
     },
     methods: {
         ...mapActions('channel', [
-            'createExport',
+            'createChannelExport',
         ]),
         onFetchedGridData() {
             this.fetchGridData = false;
@@ -103,7 +110,7 @@ export default {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Are you sure you want to start export?',
-                confirmCallback: () => this.createExport({
+                confirmCallback: () => this.createChannelExport({
                     onSuccess: this.onExportSuccess,
                 }),
             });

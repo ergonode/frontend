@@ -24,11 +24,14 @@
 </template>
 
 <script>
+import List from '@Core/components/List/List';
+import FadeTransition from '@Core/components/Transitions/FadeTransition';
+
 export default {
     name: 'CommentsList',
     components: {
-        List: () => import('@Core/components/List/List'),
-        FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),
+        List,
+        FadeTransition,
     },
     props: {
         isPlaceholder: {

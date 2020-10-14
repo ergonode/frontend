@@ -7,26 +7,29 @@
         <TitleBar
             title="Users activity logs"
             :is-read-only="$isReadOnly('USER')" />
-        <HorizontalRoutingTabBar :items="tabs" />
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs" />
     </Page>
 </template>
 
 <script>
-import {
-    getNestedTabRoutes,
-} from '@Core/models/navigation/tabs';
+import Page from '@Core/components/Layout/Page';
+import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@Core/components/TitleBar/TitleBar';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 
 export default {
     name: 'UsersTabs',
     components: {
-        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
-        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
-        Page: () => import('@Core/components/Layout/Page'),
+        HorizontalRoutingTabBar,
+        TitleBar,
+        Page,
     },
-    computed: {
-        tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
-    },
+    mixins: [
+        beforeLeavePageMixin,
+        asyncTabsMixin,
+    ],
 };
 </script>

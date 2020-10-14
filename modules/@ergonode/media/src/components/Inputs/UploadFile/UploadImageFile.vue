@@ -13,11 +13,14 @@
                     v-if="isValue"
                     class="upload-image-file">
                     <div class="fixed-container">
-                        <Picture
-                            v-if="!multiple"
-                            :api-path="`multimedia/${value}/download/default`"
-                            :value="value"
-                            :object-fit="objectFit" />
+                        <div
+                            class="upload-image-file__image"
+                            v-if="!multiple">
+                            <Picture
+                                :api-path="`multimedia/${value}/download/default`"
+                                :value="value"
+                                :object-fit="objectFit" />
+                        </div>
                         <PictureCarousel
                             v-else
                             :image-ids="value"
@@ -78,9 +81,9 @@
 <script>
 import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import InputController from '@Core/components/Inputs/InputController';
-import InputLabel from '@Core/components/Inputs/InputLabel';
-import InputSolidStyle from '@Core/components/Inputs/InputSolidStyle';
+import InputController from '@Core/components/Input/InputController';
+import InputLabel from '@Core/components/Input/InputLabel';
+import InputSolidStyle from '@Core/components/Input/InputSolidStyle';
 import {
     SIZE,
     THEME,
@@ -313,6 +316,13 @@ export default {
             right: 8px;
             background-color: $WHITE;
             border-radius: 50%;
+        }
+
+        &__image {
+            position: relative;
+            display: flex;
+            flex: 1;
+            height: 100%;
         }
     }
 </style>

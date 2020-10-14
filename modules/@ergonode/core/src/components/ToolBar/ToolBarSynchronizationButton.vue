@@ -12,12 +12,14 @@
 import {
     WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import IconProcessing from '@Core/components/Icons/Others/IconProcessing';
+import ToolBarButton from '@Core/components/ToolBar/ToolBarButton';
 
 export default {
     name: 'ToolBarSynchronizationButton',
     components: {
-        ToolBarButton: () => import('@Core/components/ToolBar/ToolBarButton'),
-        IconProcessing: () => import('@Core/components/Icons/Others/IconProcessing'),
+        ToolBarButton,
+        IconProcessing,
     },
     computed: {
         whiteColor() {

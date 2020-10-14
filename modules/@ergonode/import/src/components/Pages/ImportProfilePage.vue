@@ -15,7 +15,7 @@
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE IMPORT"
-                    :disabled="!isUserAllowedToDelete"
+                    :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete :fill-color="color" />
@@ -29,30 +29,36 @@
                     @click.native="onShowModal" />
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs">
-            <template #content>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors">
+            <template
+                #content="{
+                    item,
+                    errors: tabErrors,
+                    changeValues: tabChangeValues,
+                }">
                 <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
+                    :scope="item.scope"
+                    :change-values="tabChangeValues"
+                    :errors="tabErrors"
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
-        <Footer flex-end>
-            <Button
-                title="SAVE IMPORT PROFILE"
-                :size="smallSize"
-                :disabled="$isLoading('footerButton')"
-                @click.native="onSave" />
-        </Footer>
         <UploadImportFileModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @create="onCreatedData" />
+            @import="onCreatedData" />
     </Page>
 </template>
 
 <script>
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import PRIVILEGES from '@Import/config/privileges';
 
 export default {
@@ -62,6 +68,7 @@ export default {
     },
     mixins: [
         editPageMixin,
+        asyncTabsMixin,
         gridModalMixin,
     ],
     computed: {
@@ -73,7 +80,7 @@ export default {
                 PRIVILEGES.IMPORT.update,
             ]);
         },
-        isUserAllowedToDelete() {
+        isAllowedToDelete() {
             return this.$hasAccess([
                 PRIVILEGES.IMPORT.delete,
             ]);

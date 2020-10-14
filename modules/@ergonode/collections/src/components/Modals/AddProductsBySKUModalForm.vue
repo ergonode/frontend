@@ -9,92 +9,91 @@
         <template #body>
             <AddProductsBySKUForm
                 :product-skus="productSkus"
-                :is-user-allowed-to-update="isUserAllowedToUpdate"
+                submit-title="ADD TO COLLECTION"
+                proceed-title="CANCEL"
+                :is-submitting="isAdding"
+                :errors="scopeErrors"
+                @submit="onSubmit"
+                @proceed="onClose"
                 @input="onFormValueChange" />
-        </template>
-        <template #footer>
-            <Button
-                title="ADD TO COLLECTION"
-                :disabled="isRequestPending"
-                @click.native="onAdd" />
-            <Button
-                title="CANCEL"
-                :theme="secondaryTheme"
-                @click.native="onClose" />
         </template>
     </ModalForm>
 </template>
 
 <script>
-import PRIVILEGES from '@Collections/config/privileges';
+import AddProductsBySKUForm from '@Collections/components/Forms/AddProductsBySKUForm';
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     THEME,
 } from '@Core/defaults/theme';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
     name: 'AddProductsBySKUModalForm',
     components: {
-        AddProductsBySKUForm: () => import('@Products/components/Form/AddProductsBySKUForm'),
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
+        AddProductsBySKUForm,
+        ModalForm,
     },
+    mixins: [
+        scopeErrorsMixin,
+    ],
     data() {
         return {
             productSkus: '',
-            isRequestPending: false,
+            isAdding: false,
         };
     },
     computed: {
-        ...mapState('collection', {
-            id: state => state.id,
-        }),
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        isUserAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.PRODUCT_COLLECTION.update,
-            ]);
-        },
     },
     methods: {
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
+        ...mapActions('collection', [
+            'addBySku',
         ]),
         onFormValueChange(value) {
             this.productSkus = value;
         },
         onClose() {
+            this.removeScopeErrors(this.scope);
+
             this.$emit('close');
         },
-        onAdd() {
-            this.removeErrors();
-            const data = {
-                skus: this.productSkus.replace(/\n/g, ',').split(','),
-            };
+        onSubmit() {
+            if (this.isAdding) {
+                return;
+            }
+            this.isAdding = true;
 
-            this.isRequestPending = true;
-            this.$axios.$post(`collections/${this.id}/elements/add-from-skus`, data).then(() => {
-                this.isRequestPending = false;
-                this.removeErrors();
-                this.$addAlert({
-                    type: ALERT_TYPE.SUCCESS,
-                    message: 'Products has been added to collection',
-                });
-
-                this.$emit('added');
-            }).catch((e) => {
-                this.isRequestPending = false;
-                this.onError(e.data);
+            this.removeScopeErrors(this.scope);
+            this.addBySku({
+                scope: this.scope,
+                skus: this.productSkus,
+                onSuccess: this.onSubmitSuccess,
+                onError: this.onAddError,
             });
+        },
+        onSubmitSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Products have been added to collection',
+            });
+
+            this.isAdding = false;
+
+            this.$emit('submitted');
+        },
+        onAddError(errors) {
+            this.onError(errors);
+
+            this.isAdding = false;
         },
     },
 };

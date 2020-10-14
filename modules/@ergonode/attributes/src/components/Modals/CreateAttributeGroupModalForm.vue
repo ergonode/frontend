@@ -7,50 +7,47 @@
         title="Create attribute group"
         @close="onClose">
         <template #body>
-            <AttributeGroupForm />
-        </template>
-        <template #footer>
-            <Button
-                title="CREATE"
-                :disabled="isRequestPending"
-                @click.native="onCreate" />
-            <Button
-                title="CREATE & EDIT"
-                :theme="secondaryTheme"
-                :disabled="isRequestPending"
-                @click.native="onCreatedAndEdit" />
+            <AttributeGroupForm
+                submit-title="CREATE"
+                proceed-title="CREATE & EDIT"
+                :is-submitting="isSubmitting"
+                :is-proceeding="isProceeding"
+                :errors="scopeErrors"
+                @submit="onSubmit"
+                @proceed="onProceed" />
         </template>
     </ModalForm>
 </template>
 
 <script>
+import AttributeGroupForm from '@Attributes/components/Forms/AttributeGroupForm';
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
-    MODAL_ACTION,
-} from '@Core/defaults/modals';
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     THEME,
 } from '@Core/defaults/theme';
-import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import {
     mapActions,
 } from 'vuex';
 
-const createAttributeGroup = () => import('@Attributes/services/createAttributeGroup.service');
-
 export default {
     name: 'CreateAttributeGroupModalForm',
     components: {
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
-        AttributeGroupForm: () => import('@Attributes/components/Forms/AttributeGroupForm'),
+        ModalForm,
+        AttributeGroupForm,
     },
     mixins: [
-        actionModalFormMixin({
-            action: MODAL_ACTION.CREATE,
-            namespace: 'Attribute group',
-            request: createAttributeGroup,
-        }),
+        scopeErrorsMixin,
     ],
+    data() {
+        return {
+            isSubmitting: false,
+            isProceeding: false,
+        };
+    },
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
@@ -58,26 +55,68 @@ export default {
     },
     methods: {
         ...mapActions('attributeGroup', [
+            'createAttributeGroup',
             '__clearStorage',
         ]),
         onClose() {
             this.__clearStorage();
+            this.removeScopeErrors(this.scope);
+
             this.$emit('close');
         },
-        onCreate() {
-            this.onActionRequest(() => {
-                this.__clearStorage();
+        onSubmit() {
+            if (this.isSubmitting || this.isProceeding) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeScopeErrors(this.scope);
+            this.createAttributeGroup({
+                scope: this.scope,
+                onSuccess: this.onCreateSuccess,
+                onError: this.onCreateError,
             });
         },
-        onCreatedAndEdit() {
-            this.onActionRequest((id) => {
-                this.$router.push({
-                    name: 'attribute-group-id-general',
-                    params: {
-                        id,
-                    },
-                });
+        onProceed() {
+            if (this.isSubmitting || this.isProceeding) {
+                return;
+            }
+
+            this.isProceeding = true;
+
+            this.removeScopeErrors(this.scope);
+            this.createAttributeGroup({
+                scope: this.scope,
+                onSuccess: this.onProceedSuccess,
+                onError: this.onCreateError,
             });
+        },
+        onCreateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Attribute group created',
+            });
+
+            this.isSubmitting = false;
+
+            this.$emit('created');
+            this.onClose();
+        },
+        onProceedSuccess(id) {
+            this.isProceeding = false;
+
+            this.$router.push({
+                name: 'attribute-group-id-general',
+                params: {
+                    id,
+                },
+            });
+        },
+        onCreateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+            this.isProceeding = false;
         },
     },
 };

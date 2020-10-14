@@ -7,50 +7,47 @@
         title="Create product status"
         @close="onClose">
         <template #body>
-            <ProductStatusForm />
-        </template>
-        <template #footer>
-            <Button
-                title="CREATE"
-                :disabled="isRequestPending"
-                @click.native="onCreate" />
-            <Button
-                title="CREATE & EDIT"
-                :theme="secondaryTheme"
-                :disabled="isRequestPending"
-                @click.native="onCreatedAndEdit" />
+            <ProductStatusForm
+                submit-title="CREATE"
+                proceed-title="CREATE & EDIT"
+                :is-submitting="isSubmitting"
+                :is-proceeding="isProceeding"
+                :errors="scopeErrors"
+                @submit="onSubmit"
+                @proceed="onProceed" />
         </template>
     </ModalForm>
 </template>
 
 <script>
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
-    MODAL_ACTION,
-} from '@Core/defaults/modals';
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     THEME,
 } from '@Core/defaults/theme';
-import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import ProductStatusForm from '@Statuses/components/Forms/ProductStatusForm';
 import {
     mapActions,
 } from 'vuex';
 
-const createProductStatus = () => import('@Statuses/services/createProductStatus.service');
-
 export default {
     name: 'CreateProductStatusModalForm',
     components: {
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
-        ProductStatusForm: () => import('@Statuses/components/Form/ProductStatusForm'),
+        ModalForm,
+        ProductStatusForm,
     },
     mixins: [
-        actionModalFormMixin({
-            action: MODAL_ACTION.CREATE,
-            namespace: 'Product status',
-            request: createProductStatus,
-        }),
+        scopeErrorsMixin,
     ],
+    data() {
+        return {
+            isSubmitting: false,
+            isProceeding: false,
+        };
+    },
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
@@ -58,26 +55,68 @@ export default {
     },
     methods: {
         ...mapActions('productStatus', [
+            'createProductStatus',
             '__clearStorage',
         ]),
         onClose() {
             this.__clearStorage();
+            this.removeScopeErrors(this.scope);
+
             this.$emit('close');
         },
-        onCreate() {
-            this.onActionRequest(() => {
-                this.__clearStorage();
+        onSubmit() {
+            if (this.isSubmitting || this.isProceeding) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeScopeErrors(this.scope);
+            this.createProductStatus({
+                scope: this.scope,
+                onSuccess: this.onCreateSuccess,
+                onError: this.onCreateError,
             });
         },
-        onCreatedAndEdit() {
-            this.onActionRequest((id) => {
-                this.$router.push({
-                    name: 'product-status-id-general',
-                    params: {
-                        id,
-                    },
-                });
+        onProceed() {
+            if (this.isSubmitting || this.isProceeding) {
+                return;
+            }
+
+            this.isProceeding = true;
+
+            this.removeScopeErrors(this.scope);
+            this.createProductStatus({
+                scope: this.scope,
+                onSuccess: this.onProceedSuccess,
+                onError: this.onCreateError,
             });
+        },
+        onCreateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product status created',
+            });
+
+            this.isSubmitting = false;
+
+            this.$emit('created');
+            this.onClose();
+        },
+        onProceedSuccess(id) {
+            this.isProceeding = false;
+
+            this.$router.push({
+                name: 'product-status-id-general',
+                params: {
+                    id,
+                },
+            });
+        },
+        onCreateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+            this.isProceeding = false;
         },
     },
 };

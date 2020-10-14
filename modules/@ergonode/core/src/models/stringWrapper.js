@@ -20,6 +20,19 @@ export function toCapitalize(string) {
 }
 
 /**
+ * Returns the string with first lower letter
+ * @function
+ * @param {string} string
+ * @returns {string} String with first lower letter
+ * @description Add any string you like
+ */
+export function toLowerCaseFirstLetter(string) {
+    if (!string) return '';
+
+    return `${string.charAt(0).toLocaleLowerCase()}${string.substring(1)}`;
+}
+
+/**
  * Returns the string composed of array elements with first capital letter
  * @function
  * @param {array} strings
@@ -28,10 +41,9 @@ export function toCapitalize(string) {
  */
 export function capitalizeAndConcatenationArray(strings) {
     let string = '';
+
     strings.forEach((s) => {
-        const lowerCasedString = s.toLowerCase();
-        const capitalizedString = toCapitalize(lowerCasedString);
-        string += capitalizedString;
+        string += `${s.charAt(0).toUpperCase()}${s.substring(1).toLowerCase()}`;
     });
 
     return string;

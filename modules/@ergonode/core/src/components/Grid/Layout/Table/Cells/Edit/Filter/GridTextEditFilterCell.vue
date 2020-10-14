@@ -16,7 +16,7 @@
 
 <script>
 import GridTextEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
-import TextField from '@Core/components/Inputs/TextField';
+import TextField from '@Core/components/TextField/TextField';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
@@ -60,7 +60,7 @@ export default {
     },
     beforeDestroy() {
         if (this.localValue !== this.value[FILTER_OPERATOR.EQUAL]) {
-            this.$emit('filterValue', {
+            this.$emit('filter-value', {
                 value: {
                     [FILTER_OPERATOR.EQUAL]: this.localValue,
                 },

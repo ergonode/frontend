@@ -39,6 +39,8 @@
                     :parameter="parameter"
                     :item-id="itemId"
                     :item-row="itemRow"
+                    :scope="scope"
+                    :error-messages="errors[parameter.name]"
                     :disabled="disabled" />
             </div>
         </template>
@@ -82,6 +84,18 @@ export default {
             type: Number,
             required: true,
         },
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         disabled: {
             type: Boolean,
             default: false,
@@ -97,9 +111,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('condition', {
-            conditionsValues: state => state.conditionsValues,
-        }),
+        ...mapState('condition', [
+            'conditionsValues',
+        ]),
         tinySize() {
             return SIZE.TINY;
         },

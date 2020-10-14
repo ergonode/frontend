@@ -17,8 +17,8 @@
                 :data-count="dataCount"
                 :rows-offset="rowsOffset"
                 :is-basic-filter="isBasicFilter"
-                @rowSelect="onRowSelect"
-                @rowsSelect="onRowsSelect" />
+                @row-select="onRowSelect"
+                @rows-select="onRowsSelect" />
         </GridTableLayoutPinnedSection>
         <GridTableLayoutColumnsSection
             :style="templateColumns"
@@ -44,10 +44,10 @@
                     @swap="onSwapColumns"
                     @resize="onResizeColumn"
                     @sort="onSortColumn"
-                    @editFilterCell="onEditFilterCell"
-                    @filterValue="onFilterValueChange"
-                    @cellValue="onCellValueChange"
-                    @editCell="onEditCell"
+                    @edit-filter-cell="onEditFilterCell"
+                    @filter-value="onFilterValueChange"
+                    @cell-value="onCellValueChange"
+                    @edit-cell="onEditCell"
                 />
                 <GridDraggableColumn
                     v-else
@@ -73,18 +73,19 @@
                             <GridFilterDataCell
                                 :row-index="rowsOffset + basicFiltersOffset"
                                 :value="filters[column.id]"
+                                :type="column.filter ? filterTypes[column.filter.type] : ''"
                                 :column-index="columnIndex + columnsOffset"
                                 :language-code="column.language"
                                 :column-id="column.id"
                                 :filter="column.filter"
-                                @editFilterCell="onEditFilterCell"
-                                @filterValue="onFilterValueChange" />
+                                @edit-filter-cell="onEditFilterCell"
+                                @filter-value="onFilterValueChange" />
                         </template>
                         <GridDataCell
                             v-for="(row, rowIndex) in rows"
                             :key="`${rowIds[rowIndex]}|${column.id}`"
                             :data="row[column.id]"
-                            :draft="drafts[`${rowIds[rowIndex]}/${column.id}`]"
+                            :drafts="drafts"
                             :column="column"
                             :type="columnTypes[column.type]"
                             :error-messages="errors[`${rowIds[rowIndex]}/${column.id}`]"
@@ -95,8 +96,8 @@
                             :is-copyable="column.editable && isEditable"
                             :is-selected="isSelectedAllRows
                                 || selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
-                            @cellValue="onCellValueChange"
-                            @editCell="onEditCell" />
+                            @cell-value="onCellValueChange"
+                            @edit-cell="onEditCell" />
                     </GridColumn>
                 </GridDraggableColumn>
             </template>
@@ -127,6 +128,7 @@
                         :key="`${rowIds[rowIndex]}|${column.id}`"
                         :column-index="orderedColumns.length + columnIndex + columnsOffset"
                         :column="column"
+                        :type="columnActionTypes[column.id]"
                         :action="row._links.value[column.id]"
                         :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
                         :is-selected="isSelectedAllRows
@@ -141,14 +143,14 @@
             :is="editCellComponent"
             ref="editCell"
             v-bind="editCell.props"
-            @cellValue="onCellValueChange"
+            @cell-value="onCellValueChange"
             @dismiss="onDismissEditCell" />
         <Component
             v-if="editFilterCell"
             :is="editFilterCellComponent"
             ref="editCell"
             v-bind="editFilterCell.props"
-            @filterValue="onFilterValueChange"
+            @filter-value="onFilterValueChange"
             @dismiss="onDismissEditFilterCell" />
         <GridCellResizer
             v-if="cellResizer"
@@ -235,6 +237,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         filters: {
             type: Object,
             default: () => ({}),
@@ -279,12 +285,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('validations', {
-            errors: state => state.errors,
-        }),
-        ...mapState('list', {
-            disabledElements: state => state.disabledElements,
-        }),
+        ...mapState('list', [
+            'disabledElements',
+        ]),
         classes() {
             return [
                 'grid-table-layout',
@@ -299,18 +302,54 @@ export default {
         columnTypes() {
             return this.visibleColumns.reduce((acc, current) => {
                 const tmp = acc;
-                tmp[current.type] = capitalizeAndConcatenationArray(current.type.split('_'));
+
+                if (typeof tmp[current.type] === 'undefined') {
+                    tmp[current.type] = capitalizeAndConcatenationArray(current.type.split('_'));
+                }
+
+                return tmp;
+            }, {});
+        },
+        filterTypes() {
+            return this.visibleColumns.reduce((acc, current) => {
+                const tmp = acc;
+
+                if (current.filter && typeof tmp[current.filter.type] === 'undefined') {
+                    tmp[current.filter.type] = this.columnTypes[current.filter.type] || capitalizeAndConcatenationArray(current.filter.type.split('_'));
+                }
+
+                return tmp;
+            }, {});
+        },
+        columnActionTypes() {
+            return this.actionColumns.reduce((acc, current) => {
+                const tmp = acc;
+
+                tmp[current.id] = capitalizeAndConcatenationArray(current.id.split('_'));
+
                 return tmp;
             }, {});
         },
         editCellComponent() {
-            const type = capitalizeAndConcatenationArray(this.editCell.type.split('_'));
+            const type = this.columnTypes[this.editCell.type];
+
+            const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Table/Cells/Edit');
+
+            if (extendedComponents && extendedComponents[type]) {
+                return extendedComponents[type];
+            }
 
             return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Grid${type}EditCell`)
                 .catch(() => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridTextEditCell'));
         },
         editFilterCellComponent() {
-            const type = capitalizeAndConcatenationArray(this.editFilterCell.type.split('_'));
+            const type = this.filterTypes[this.editFilterCell.type];
+
+            const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Table/Cells/Edit/Filter');
+
+            if (extendedComponents && extendedComponents[type]) {
+                return extendedComponents[type];
+            }
 
             return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Filter/Grid${type}EditFilterCell`)
                 .catch(() => import('@Core/components/Grid/Layout/Table/Cells/Edit/Filter/GridTextEditFilterCell'));
@@ -506,18 +545,18 @@ export default {
         onRowSelect(selectedRows) {
             this.selectedRows = selectedRows;
 
-            this.$emit('rowSelect', this.selectedRows);
+            this.$emit('row-select', this.selectedRows);
         },
         onRowsSelect(isSelectedAllRows) {
             this.isSelectedAllRows = isSelectedAllRows;
 
-            this.$emit('rowsSelect', this.isSelectedAllRows);
+            this.$emit('rows-select', this.isSelectedAllRows);
         },
         onCellValueChange(value) {
-            this.$emit('cellValue', value);
+            this.$emit('cell-value', value);
         },
         onRowAction(payload) {
-            this.$emit('rowAction', payload);
+            this.$emit('row-action', payload);
         },
         initializeColumns() {
             const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
@@ -574,7 +613,8 @@ export default {
             this.hasInitialWidths = false;
         },
         disableListElement({
-            languageCode, attributeId,
+            languageCode,
+            attributeId,
         }) {
             if (this.disabledElements[languageCode][attributeId]) {
                 this.setDisabledElement({

@@ -60,7 +60,7 @@ export default [
             {
                 name: 'channel-id-general',
                 path: 'general',
-                component: Tabs.ChannelBaseTab,
+                component: Tabs.ChannelGeneralTab,
                 meta: {
                     title: 'Options',
                     breadcrumbs: [

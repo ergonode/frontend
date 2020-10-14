@@ -10,41 +10,27 @@
             <template #prependHeader>
                 <NavigationBackFab />
             </template>
-            <template #prependBadge>
-                <ProductStatusBadge
-                    v-if="status"
-                    :status="status" />
-            </template>
             <template #mainAction>
                 <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE PRODUCT"
-                    :disabled="!isUserAllowedToDelete"
+                    :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete :fill-color="color" />
                     </template>
                 </Button>
             </template>
-            <template #subActions>
-                <TitleBarSubActions>
-                    <ProductWorkflowActionButton v-if="workflow.length" />
-                </TitleBarSubActions>
-            </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs" />
-        <Footer flex-end>
-            <Button
-                title="SAVE PRODUCT"
-                :size="smallSize"
-                :disabled="$isLoading('footerButton')"
-                @click.native="onSave" />
-        </Footer>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
     </Page>
 </template>
 <script>
-import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -55,39 +41,32 @@ import {
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
-import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
-import ProductWorkflowActionButton from '@Products/components/Buttons/ProductWorkflowActionButton';
 import PRIVILEGES from '@Products/config/privileges';
-import {
-    PRODUCT_TYPE,
-} from '@Products/defaults';
 import {
     mapState,
 } from 'vuex';
 
 export default {
     name: 'ProductPage',
-    components: {
-        TitleBarSubActions,
-        ProductStatusBadge,
-        ProductWorkflowActionButton,
-    },
     mixins: [
         editPageMixin,
     ],
+    data() {
+        return {
+            asyncTabs: null,
+        };
+    },
     computed: {
-        ...mapState('product', {
-            status: state => state.status,
-            type: state => state.type,
-            workflow: state => state.workflow,
-        }),
-        ...mapState('dictionaries', {
-            productTypes: state => state.productTypes,
-        }),
+        ...mapState('product', [
+            'type',
+        ]),
+        ...mapState('dictionaries', [
+            'productTypes',
+        ]),
         smallSize() {
             return SIZE.SMALL;
         },
-        isUserAllowedToDelete() {
+        isAllowedToDelete() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.delete,
             ]);
@@ -95,20 +74,25 @@ export default {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.PRODUCT.namespace);
         },
-        tabs() {
-            const tabs = getNestedTabRoutes(
-                this.$hasAccess,
-                this.$router.options.routes,
-                this.$route,
-            );
+    },
+    watch: {
+        $route: {
+            immediate: true,
+            async handler() {
+                const tmpTabs = getNestedTabRoutes({
+                    hasAccess: this.$hasAccess,
+                    routes: this.$router.options.routes,
+                    route: this.$route,
+                });
+                const type = getKeyByValue(this.productTypes, this.type);
+                const tabs = await this.$extendMethods('@Core/pages/tabs', {
+                    $this: this,
+                    type,
+                    tabs: tmpTabs,
+                });
 
-            switch (getKeyByValue(this.productTypes, this.type)) {
-            case PRODUCT_TYPE.WITH_VARIANTS:
-                return tabs.filter(tab => tab.title !== 'Group');
-            case PRODUCT_TYPE.GROUPING:
-                return tabs.filter(tab => tab.title !== 'Variants');
-            default: return tabs.filter(tab => tab.title !== 'Variants' && tab.title !== 'Group');
-            }
+                this.asyncTabs = tabs.length ? Array.from(new Set([].concat(...tabs))) : tmpTabs;
+            },
         },
     },
 };

@@ -5,20 +5,19 @@
 <template>
     <TemplatePage
         :title="templateTitle"
-        @remove="onRemove"
-        @save="onCreate" />
+        @remove="onRemove" />
 </template>
 
 <script>
-import {
-    SKU_MODEL_ID,
-} from '@Attributes/defaults/attributes';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import TemplatePage from '@Templates/components/Pages/TemplatePage';
 import {
     mapActions,
     mapState,
@@ -27,8 +26,12 @@ import {
 export default {
     name: 'Edit',
     components: {
-        TemplatePage: () => import('@Templates/components/Pages/TemplatePage'),
+        TemplatePage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+        scopeErrorsMixin,
+    ],
     validate({
         params,
     }) {
@@ -37,47 +40,29 @@ export default {
     async fetch({
         store, params,
     }) {
-        const {
-            id,
-        } = params;
-
-        await store.dispatch('productTemplate/getTemplateByID', id);
+        await store.dispatch('productTemplate/getTemplate', params);
     },
     computed: {
         ...mapState('productTemplate', {
-            groups: state => state.templateGroups,
             templateTitle: state => state.title,
-            templateImage: state => state.image,
-            layoutElements: state => state.layoutElements,
-            defaultTextAttribute: state => state.defaultTextAttribute,
-            defaultImageAttribute: state => state.defaultImageAttribute,
         }),
     },
-    destroyed() {
-        this.list__clearStorage();
+    beforeDestroy() {
+        this.__clearListStorage();
         this.__clearStorage();
+        this.__clearFeedbackStorage();
     },
     methods: {
         ...mapActions('productTemplate', [
-            'updateTemplateDesigner',
             'removeTemplate',
-            'getTemplateByID',
             '__clearStorage',
         ]),
         ...mapActions('list', {
-            list__clearStorage: '__clearStorage',
+            __clearListStorage: '__clearStorage',
         }),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
-        onUpdateTemplateDesignerSuccess() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Template updated',
-            });
-        },
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
@@ -92,38 +77,11 @@ export default {
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Are you sure you want to delete this template?',
                 confirmCallback: () => {
-                    const {
-                        id,
-                    } = this.$route.params;
-
                     this.removeTemplate({
-                        id,
+                        scope: this.scope,
                         onSuccess: this.onRemoveSuccess,
                     });
                 },
-            });
-        },
-        onCreate() {
-            import('@Templates/models/templateMapper').then(({
-                getMappedLayoutElementsForAPIUpdate,
-            }) => {
-                const {
-                    id,
-                } = this.$route.params;
-                this.updateTemplateDesigner({
-                    id,
-                    data: {
-                        name: this.templateTitle,
-                        image: this.templateImage,
-                        defaultLabel: this.defaultTextAttribute !== SKU_MODEL_ID
-                            ? this.defaultTextAttribute
-                            : null,
-                        defaultImage: this.defaultImageAttribute,
-                        elements: getMappedLayoutElementsForAPIUpdate(this.layoutElements),
-                    },
-                    onSuccess: this.onUpdateTemplateDesignerSuccess,
-                    onError: this.onError,
-                });
             });
         },
     },

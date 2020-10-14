@@ -12,7 +12,7 @@
                     :language-code="languageCode"
                     label="Profile picture"
                     height="152px"
-                    :disabled="!isUserAllowedToUpdate"
+                    :disabled="!isAllowedToUpdate"
                     @upload="uploadValue"
                     @remove="uploadValue" />
             </FormSection>
@@ -43,7 +43,7 @@ export default {
             userId: state => state.id,
             languageCode: state => state.languageCode,
         }),
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.USER.update,
             ]);
@@ -53,11 +53,16 @@ export default {
         ...mapActions('user', [
             '__setState',
         ]),
+        ...mapActions('authentication', [
+            'getUser',
+        ]),
         uploadValue(value = '') {
             this.__setState({
                 key: 'avatarId',
                 value,
             });
+
+            this.getUser();
         },
     },
 };

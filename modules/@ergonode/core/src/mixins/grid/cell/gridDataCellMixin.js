@@ -43,6 +43,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        isDraft: {
+            type: Boolean,
+            default: false,
+        },
         isLocked: {
             type: Boolean,
             default: false,
@@ -58,7 +62,7 @@ export default {
     },
     computed: {
         cellData() {
-            if (this.draft !== null && this.data.value !== this.draft) {
+            if (this.isDraft && this.data.value !== this.draft) {
                 return {
                     value: this.draft,
                     isDraft: true,
@@ -73,7 +77,7 @@ export default {
     },
     methods: {
         onValueChange(value) {
-            this.$emit('cellValue', [
+            this.$emit('cell-value', [
                 {
                     value,
                     rowId: this.rowId,
@@ -84,7 +88,7 @@ export default {
             ]);
         },
         onEditCell() {
-            this.$emit('editCell', {
+            this.$emit('edit-cell', {
                 type: this.column.type,
                 props: {
                     bounds: this.$el.getBoundingClientRect(),

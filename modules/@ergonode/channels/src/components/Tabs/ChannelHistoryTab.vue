@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate>
+    <CenterViewTemplate>
         <template #content>
             <Grid
                 :columns="columns"
@@ -12,25 +12,25 @@
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
-                @previewRow="onPreviewRow"
-                @fetchData="onFetchData" />
+                @preview-row="onPreviewRow"
+                @fetch-data="onFetchData" />
             <ExportDetailsModalGrid
                 v-if="isExportDetailsModalVisible"
                 :export-id="selectedRow.exportId"
                 :channel-id="selectedRow.channelId"
                 @close="onCloseModalGrid" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
 export default {
     name: 'ChannelHistoryTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         ExportDetailsModalGrid: () => import('@Channels/components/Modals/ExportDetailsModalGrid'),
     },
     mixins: [
@@ -62,6 +62,7 @@ export default {
                 exportId,
                 channelId,
             };
+
             this.isExportDetailsModalVisible = true;
         },
         onCloseModalGrid() {

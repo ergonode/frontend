@@ -58,7 +58,7 @@
             ref="menu"
             :offset="offset"
             :is-visible="isFocused"
-            @clickOutside="onClickOutside">
+            @click-outside="onClickOutside">
             <template #body>
                 <slot name="body" />
             </template>
@@ -149,11 +149,11 @@ export default {
         };
     },
     computed: {
-        ...mapState('draggable', {
-            ghostIndex: state => state.ghostIndex,
-            isElementDragging: state => state.isElementDragging,
-            draggedElement: state => state.draggedElement,
-        }),
+        ...mapState('draggable', [
+            'ghostIndex',
+            'isElementDragging',
+            'draggedElement',
+        ]),
         isFilterExists() {
             return this.draggedElement === this.filterId;
         },
@@ -166,9 +166,7 @@ export default {
     },
     methods: {
         ...mapActions('draggable', [
-            'setDraggableState',
-            'setGhostIndex',
-            'setDraggedElement',
+            '__setState',
         ]),
         ...mapActions('list', [
             'setDisabledElement',
@@ -191,14 +189,20 @@ export default {
                 id: this.filterId,
                 label: this.title,
             });
-            this.setDraggedElement(this.filterId);
-            this.setDraggableState({
-                propName: 'isElementDragging',
+            this.__setState({
+                key: 'draggedElement',
+                value: this.filterId,
+            });
+            this.__setState({
+                key: 'isElementDragging',
                 value: DRAGGED_ELEMENT.FILTER,
             });
 
             window.requestAnimationFrame(() => {
-                this.setGhostIndex(this.index);
+                this.__setState({
+                    key: 'ghostIndex',
+                    value: this.index,
+                });
             });
         },
         onDragEnd(event) {
@@ -215,12 +219,18 @@ export default {
                 this.$emit('remove', this.index);
             }
 
-            this.setDraggableState({
-                propName: 'isElementDragging',
+            this.__setState({
+                key: 'isElementDragging',
                 value: null,
             });
-            this.setDraggedElement();
-            this.setGhostIndex();
+            this.__setState({
+                key: 'draggedElement',
+                value: null,
+            });
+            this.__setState({
+                key: 'ghostIndex',
+                value: -1,
+            });
         },
         onDragOver(event) {
             event.preventDefault();
@@ -248,8 +258,10 @@ export default {
                 from: this.ghostIndex,
                 to: this.index,
             });
-            this.setGhostIndex(this.index);
-
+            this.__setState({
+                key: 'ghostIndex',
+                value: this.index,
+            });
             return true;
         },
         onApply() {

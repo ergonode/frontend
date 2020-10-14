@@ -9,9 +9,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import actions from '../actions';
-import mutations, {
-    types,
-} from '../mutations';
 import defaultState from '../state';
 
 let store;
@@ -25,16 +22,27 @@ jest.mock('axios', () => ({
     $patch: jest.fn(() => Promise.resolve(mockAxiosGetResult)),
 }));
 let action;
-const $setLoader = jest.fn();
-const $removeLoader = jest.fn();
+
+actions.__setState = ({
+    commit,
+}, payload) => {
+    commit('__SET_STATE', payload);
+};
+
 const testedAction = (context = {}, payload = {}) => actions[action]
     .bind({
         app: {
             $axios: axios,
         },
-        $setLoader,
-        $removeLoader,
     })(context, payload);
+
+const mutations = {
+    __SET_STATE(state, {
+        key, value,
+    }) {
+        state[key] = value;
+    },
+};
 
 describe('Notifications', () => {
     beforeEach(() => {
@@ -84,11 +92,14 @@ describe('Notifications', () => {
         });
 
         it('Setting up notifications limit', () => {
-            action = 'setNotificationsLimit';
+            action = '__setState';
 
             testedAction({
                 commit,
-            }, 100);
+            }, {
+                key: 'limit',
+                value: 100,
+            });
             expect(store.state.limit).toBe(100);
         });
 
@@ -109,7 +120,10 @@ describe('Notifications', () => {
 
             const fiveMinutesInMs = 300000;
 
-            commit(types.SET_REQUEST_TIME_INTERVAL, fiveMinutesInMs);
+            commit('__SET_STATE', {
+                key: 'requestTimeInterval',
+                value: fiveMinutesInMs,
+            });
 
             testedAction({
                 commit,
@@ -117,7 +131,10 @@ describe('Notifications', () => {
             });
             expect(store.state.requestTimeInterval).toBe(fiveMinutesInMs);
 
-            commit(types.SET_REQUEST_TIME_INTERVAL, fiveMinutesInMs - 1);
+            commit('__SET_STATE', {
+                key: 'requestTimeInterval',
+                value: fiveMinutesInMs - 1,
+            });
 
             testedAction({
                 commit,

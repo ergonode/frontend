@@ -5,8 +5,14 @@
 <template>
     <Form
         title="Options"
-        :fields-keys="[typeFieldKey]">
-        <template #body="{ errorMessages }">
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        :errors="errors"
+        @proceed="onProceed"
+        @submit="onSubmit">
+        <template #body>
             <FormSection>
                 <Select
                     :value="type"
@@ -14,7 +20,7 @@
                     label="Profile type"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :options="sourcesOptions"
-                    :error-messages="errorMessages[typeFieldKey]"
+                    :error-messages="errors[typeFieldKey]"
                     @input="setTypeValue">
                     <template #append>
                         <FadeTransition>
@@ -29,8 +35,16 @@
                         v-if="schema"
                         :value="configuration"
                         :schema="schema"
+                        :errors="errors"
                         @input="setConfigurationValue" />
                 </FadeTransition>
+                <Divider v-if="extendedForm.length" />
+                <template v-for="(field, index) in extendedForm">
+                    <Component
+                        :is="field.component"
+                        :key="index"
+                        v-bind="bindingProps(field)" />
+                </template>
             </FormSection>
         </template>
     </Form>
@@ -40,12 +54,15 @@
 import {
     GRAPHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import JSONSchemaForm from '@Core/components/Form/JSONSchemaForm/JSONSchemaForm';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import Select from '@Core/components/Inputs/Select/Select';
+import Select from '@Core/components/Select/Select';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Import/config/privileges';
 import {
     mapActions,
@@ -55,6 +72,7 @@ import {
 export default {
     name: 'ImportProfileForm',
     components: {
+        Divider,
         IconSpinner,
         JSONSchemaForm,
         Form,
@@ -62,6 +80,10 @@ export default {
         Select,
         FadeTransition,
     },
+    mixins: [
+        formActionsMixin,
+        formFeedbackMixin,
+    ],
     data() {
         return {
             schemas: {},
@@ -69,14 +91,20 @@ export default {
         };
     },
     computed: {
-        ...mapState('import', {
-            id: state => state.id,
-            type: state => state.type,
-            configuration: state => state.configuration,
-        }),
-        ...mapState('dictionaries', {
-            sources: state => state.sources,
-        }),
+        ...mapState('import', [
+            'id',
+            'type',
+            'configuration',
+        ]),
+        ...mapState('dictionaries', [
+            'sources',
+        ]),
+        extendedForm() {
+            return this.$extendedForm({
+                key: '@Import/components/Forms/ImportProfileForm',
+                type: this.type,
+            });
+        },
         graphiteColor() {
             return GRAPHITE;
         },
@@ -112,6 +140,17 @@ export default {
             '__setState',
             'getConfiguration',
         ]),
+        bindingProps({
+            props,
+        }) {
+            return {
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.errors,
+                disabled: !this.isAllowedToUpdate,
+                ...props,
+            };
+        },
         async setSchema(type) {
             this.isFetchingConfiguration = true;
 
@@ -127,10 +166,20 @@ export default {
                 key: 'configuration',
                 value,
             });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'configuration',
+                value,
+            });
         },
         setTypeValue(value) {
             this.__setState({
-                key: 'type',
+                key: this.typeFieldKey,
+                value,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: this.typeFieldKey,
                 value,
             });
 

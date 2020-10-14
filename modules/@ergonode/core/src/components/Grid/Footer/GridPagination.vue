@@ -3,10 +3,10 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="pagination">
+    <div class="grid-pagination">
         <FadeTransition>
             <div
-                class="pagination__decrease"
+                class="grid-pagination__decrease"
                 v-show="isLeftArrowVisible">
                 <Fab
                     :theme="secondaryTheme"
@@ -26,7 +26,7 @@
                 </Fab>
             </div>
         </FadeTransition>
-        <span class="pagination__text">
+        <span class="grid-pagination__text">
             Page
         </span>
         <TextField
@@ -36,15 +36,15 @@
             :alignment="centerAlignment"
             :input="inputNumberType"
             @input="onValueChange" />
-        <span class="pagination__text">
+        <span class="grid-pagination__text">
             of
         </span>
         <span
-            class="pagination__number"
+            class="grid-pagination__number"
             v-text="maxPage" />
         <FadeTransition>
             <div
-                class="pagination__increase"
+                class="grid-pagination__increase"
                 v-show="isRightArrowVisible">
                 <Fab
                     :theme="secondaryTheme"
@@ -70,6 +70,11 @@
 </template>
 
 <script>
+import Fab from '@Core/components/Fab/Fab';
+import IconArrowPointerBlock from '@Core/components/Icons/Arrows/IconArrowPointerBlock';
+import IconArrowSingle from '@Core/components/Icons/Arrows/IconArrowSingle';
+import TextField from '@Core/components/TextField/TextField';
+import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import {
     ARROW,
 } from '@Core/defaults/icons';
@@ -82,11 +87,11 @@ import {
 export default {
     name: 'GridPagination',
     components: {
-        TextField: () => import('@Core/components/Inputs/TextField'),
-        Fab: () => import('@Core/components/Fab/Fab'),
-        IconArrowSingle: () => import('@Core/components/Icons/Arrows/IconArrowSingle'),
-        IconArrowPointerBlock: () => import('@Core/components/Icons/Arrows/IconArrowPointerBlock'),
-        FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),
+        TextField,
+        Fab,
+        IconArrowSingle,
+        IconArrowPointerBlock,
+        FadeTransition,
     },
     props: {
         value: {
@@ -157,11 +162,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .pagination {
+    .grid-pagination {
         display: grid;
         align-items: center;
         grid-auto-flow: column;
         column-gap: 8px;
+        margin-right: 8px;
 
         &__text, &__number {
             color: $GRAPHITE_DARK;

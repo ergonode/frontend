@@ -8,7 +8,10 @@
             <div class="vertical-container">
                 <div class="horizontal-container">
                     <div class="dashboard-stats">
-                        <DoughnutProductsChart :style="{ height: '174px', width: '174px' }" />
+                        <DoughnutProductsChart
+                            :style="{ height: '174px', width: '174px' }"
+                            :datasets="datasets"
+                        />
                     </div>
                     <div class="dashboard-header">
                         <div class="dashboard-header__description">
@@ -75,21 +78,22 @@
         </VerticalFixedScroll>
         <CreateAttributeModalForm
             v-if="isCreateAttributeVisible"
-            @close="onCloseAttributeModal"
-            @create="onCreatedAttribute" />
+            @close="onCloseAttributeModal" />
         <CreateProductTemplateModalForm
             v-if="isCreateProductTemplateVisible"
-            @close="onCloseProductTemplateModal"
-            @create="onCreatedProductTemplate" />
+            @close="onCloseProductTemplateModal" />
         <CreateProductModalForm
             v-if="isCreateProductVisible"
             @close="onCloseProductModal"
-            @create="onCreatedProduct" />
+            @created="onCreatedProduct" />
     </div>
 </template>
 
 <script>
 import ATTRIBUTE_PRIVILEGES from '@Attributes/config/privileges';
+import {
+    GREY,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
@@ -123,6 +127,19 @@ export default {
         };
     },
     computed: {
+        datasets() {
+            return [
+                {
+                    data: [
+                        100,
+                    ],
+                    backgroundColor: [
+                        GREY,
+                    ],
+                    borderWidth: 0,
+                },
+            ];
+        },
         isAllowedToCreateAttribute() {
             return this.$hasAccess([
                 ATTRIBUTE_PRIVILEGES.ATTRIBUTE.create,
@@ -188,14 +205,8 @@ export default {
         onCloseProductModal() {
             this.isCreateProductVisible = false;
         },
-        onCreatedAttribute() {
-            // TODO:
-        },
-        onCreatedProductTemplate() {
-            // TODO:
-        },
         onCreatedProduct() {
-            // TODO:
+            this.$emit('product-created');
         },
     },
 };
@@ -207,8 +218,6 @@ export default {
         flex-direction: column;
         width: 100%;
         height: 100%;
-        box-sizing: border-box;
-        background-color: $GRAPHITE_COAL;
     }
 
     .vertical-container {

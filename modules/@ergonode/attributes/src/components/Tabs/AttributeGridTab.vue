@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate>
+    <CenterViewTemplate>
         <template #content>
             <Grid
                 :is-editable="isAllowedToUpdate"
@@ -14,12 +14,12 @@
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
-                @editRow="onEditRow"
-                @previewRow="onEditRow"
-                @deleteRow="onRemoveRow"
-                @fetchData="onFetchData" />
+                @edit-row="onEditRow"
+                @preview-row="onEditRow"
+                @delete-row="onRemoveRow"
+                @fetch-data="onFetchData" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
@@ -27,13 +27,13 @@ import PRIVILEGES from '@Attributes/config/privileges';
 import {
     WHITESMOKE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
 export default {
     name: 'AttributeGridTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
     },
     mixins: [
         fetchGridDataMixin({
@@ -52,8 +52,8 @@ export default {
     computed: {
         noRecordsPlaceholder() {
             return {
-                title: 'No attributes',
-                subtitle: 'There are no attributes in the system, you can create the first one.',
+                title: this.$t('attribute.grid.placeholderTitle'),
+                subtitle: this.$t('attribute.grid.placeholderSubtitle'),
                 bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
                 color: WHITESMOKE,
             };

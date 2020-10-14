@@ -8,37 +8,55 @@
             title="Settings"
             :is-read-only="$isReadOnly('SETTINGS')" />
         <HorizontalRoutingTabBar
-            :items="tabs">
-            <template #content>
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors">
+            <template
+                #content="{
+                    item,
+                    errors: tabErrors,
+                    changeValues: tabChangeValues,
+                }">
                 <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
+                    :scope="item.scope"
+                    :change-values="tabChangeValues"
+                    :errors="tabErrors"
                     @fetched="onFetchedGridData"
-                    @showModal="onShowModalByType" />
+                    @show-modal="onShowModalByType" />
             </template>
         </HorizontalRoutingTabBar>
         <Component
             :is="getModalComponentViaType"
             v-if="isModalVisible"
             @close="onCloseModal"
-            @create="onCreatedData" />
+            @created="onCreatedData" />
     </Page>
 </template>
 
 <script>
+import Page from '@Core/components/Layout/Page';
+import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@Core/components/TitleBar/TitleBar';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import {
-    getNestedTabRoutes,
-} from '@Core/models/navigation/tabs';
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'Settings',
     components: {
-        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
-        Page: () => import('@Core/components/Layout/Page'),
-        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
+        TitleBar,
+        Page,
+        HorizontalRoutingTabBar,
     },
     mixins: [
         gridModalMixin,
+        beforeLeavePageMixin,
+        asyncTabsMixin,
     ],
     data() {
         return {
@@ -46,9 +64,10 @@ export default {
         };
     },
     computed: {
-        tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
+        ...mapState('feedback', [
+            'changeValues',
+            'errors',
+        ]),
         getModalComponentViaType() {
             switch (this.modalType) {
             case 'units':

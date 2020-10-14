@@ -4,16 +4,23 @@
  */
 <template>
     <Card :title="selectedLanguage">
-        <Form :fields-keys="[nameFieldKey]">
-            <template #body="{ errorMessages }">
+        <Form :errors="translationErrors">
+            <template #body>
                 <FormSection>
                     <TextField
                         :data-cy="dataCyGenerator(nameFieldKey)"
                         :value="translations.name[languageCode]"
                         label="Tree name"
-                        :disabled="!isUserAllowedToUpdate"
-                        :error-messages="errorMessages[nameFieldKey]"
-                        @input="(value) => setTranslationPropertyValue(value, 'name')" />
+                        :disabled="!isAllowedToUpdate"
+                        :error-messages="translationErrors[nameFieldKey]"
+                        @input="(value) => setTranslationPropertyValue(value, nameFieldKey)" />
+                    <Divider v-if="extendedForm.length" />
+                    <template v-for="(field, index) in extendedForm">
+                        <Component
+                            :is="field.component"
+                            :key="index"
+                            v-bind="bindingProps(field)" />
+                    </template>
                 </FormSection>
             </template>
         </Form>
@@ -22,15 +29,17 @@
 
 <script>
 import Card from '@Core/components/Card/Card';
+import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import TextField from '@Core/components/Inputs/TextField';
+import TextField from '@Core/components/TextField/TextField';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import PRIVILEGES from '@Trees/config/privileges';
 
 export default {
     name: 'CategoryTreeTranslationForm',
     components: {
+        Divider,
         FormSection,
         Form,
         Card,
@@ -40,18 +49,35 @@ export default {
         translationCardMixin,
     ],
     computed: {
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.CATEGORY_TREE.update,
             ]);
         },
+        extendedForm() {
+            return this.$extendedForm({
+                key: '@Attributes/components/Forms/CategoryTreeTranslationForm',
+            });
+        },
         nameFieldKey() {
-            return `name_${this.languageCode}`;
+            return 'name';
         },
     },
     methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                disabled: !this.isAllowedToUpdate,
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.translationErrors,
+                languageCode: this.languageCode,
+                ...props,
+            };
+        },
         dataCyGenerator(key) {
-            return `category-tree-${key}`;
+            return `category-tree-${key}_${this.languageCode}`;
         },
     },
 };

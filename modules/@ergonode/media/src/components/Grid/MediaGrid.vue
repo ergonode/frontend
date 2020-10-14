@@ -14,13 +14,13 @@
         :is-basic-filter="true"
         :is-header-visible="true"
         :is-collection-layout="true"
-        @editRow="onEditRow"
-        @previewRow="onEditRow"
-        @cellValue="onCellValueChange"
-        @deleteRow="onRemoveRow"
-        @fetchData="onFetchData">
+        @edit-row="onEditRow"
+        @preview-row="onEditRow"
+        @cell-value="onCellValueChange"
+        @delete-row="onRemoveRow"
+        @fetch-data="onFetchData">
         <!--  TODO: Uncomment when we have global search      -->
-        <!--        <template #actions>-->
+        <!--        <template #headerActions>-->
         <!--            <TextField-->
         <!--                :value="searchResult"-->
         <!--                :size="smallSize"-->
@@ -52,12 +52,11 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
-    DATA_LIMIT,
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 // TODO: Uncomment when we have global search
 // import IconSearch from '@Core/components/Icons/Actions/IconSearch';
-// import TextField from '@Core/components/Inputs/TextField';
+// import TextField from '@Core/components/TextField/TextField';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -111,12 +110,7 @@ export default {
             rows: [],
             columns: [],
             filtered: 0,
-            localParams: {
-                offset: 0,
-                limit: DATA_LIMIT,
-                filters: '',
-                sortedColumn: {},
-            },
+            localParams: DEFAULT_GRID_FETCH_PARAMS,
         };
     },
     computed: {
@@ -152,7 +146,7 @@ export default {
                 ...this.columns.filter(column => column.id !== 'type'),
                 {
                     id: 'esa_attached',
-                    type: 'MEDIA_ATTACH',
+                    type: 'BOOL',
                     label: 'Attached',
                     visible: true,
                     editable: true,
@@ -202,13 +196,13 @@ export default {
         onFetchData({
             offset,
             limit,
-            filters,
+            filter,
             sortedColumn,
         } = DEFAULT_GRID_FETCH_PARAMS) {
             this.localParams = {
                 offset,
                 limit,
-                filters: `type=${this.type}${filters ? `;${filters}` : ''}`,
+                filter: `type=${this.type}${filter ? `;${filter}` : ''}`,
                 sortedColumn,
             };
 
@@ -280,27 +274,40 @@ export default {
                 } else {
                     toRemove.push(rowId);
                 }
+
+                const row = this.rows.find(({
+                    id,
+                }) => id.value === rowId);
+
+                if (row) {
+                    row.esa_attached.value = this.drafts[key];
+                }
             });
 
             this.setDrafts();
 
-            if (this.multiple) {
-                const mappedValue = [
-                    ...this.value.filter(id => !toRemove.some(removeId => removeId === id)),
-                    ...value,
-                ];
+            if (value.length || toRemove.length) {
+                if (this.multiple) {
+                    const mappedValue = [
+                        ...this.value.filter(id => !toRemove.some(removeId => removeId === id)),
+                        ...value,
+                    ];
 
-                this.$emit('input', mappedValue);
+                    this.$emit('input', mappedValue);
+                } else if (value.length) {
+                    this.$emit('input', value.join(''));
+                }
+
+                this.$addAlert({
+                    type: ALERT_TYPE.SUCCESS,
+                    message: 'Resources have been updated',
+                });
             } else {
-                this.$emit('input', value.join(''));
+                this.$addAlert({
+                    type: ALERT_TYPE.INFO,
+                    message: 'No changes have been made',
+                });
             }
-
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Media have been added',
-            });
-
-            this.onFetchData(this.localParams);
         },
         onSearchFocus(isFocused) {
             this.isSearchFocused = isFocused;

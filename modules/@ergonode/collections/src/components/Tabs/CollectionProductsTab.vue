@@ -3,10 +3,10 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate>
+    <CenterViewTemplate>
         <template #content>
             <Grid
-                :is-editable="isUserAllowedToUpdate"
+                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
@@ -17,14 +17,14 @@
                 :is-collection-layout="true"
                 :is-header-visible="true"
                 :is-border="true"
-                @cellValue="onCellValueChange"
-                @deleteRow="onRemoveRow"
-                @fetchData="onFetchData">
+                @cell-value="onCellValueChange"
+                @delete-row="onRemoveRow"
+                @fetch-data="onFetchData">
                 <template #headerActions>
                     <ActionButton
                         title="ADD PRODUCTS"
                         :theme="secondaryTheme"
-                        :disabled="!isUserAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate"
                         :size="smallSize"
                         :options="addProductOptions"
                         :fixed-content="true"
@@ -34,30 +34,46 @@
                         </template>
                     </ActionButton>
                 </template>
+                <template #appendFooter>
+                    <Button
+                        title="SAVE CHANGES"
+                        @click.native="onSubmit">
+                        <template
+                            v-if="isSubmitting"
+                            #prepend="{ color }">
+                            <IconSpinner :fill-color="color" />
+                        </template>
+                    </Button>
+                </template>
             </Grid>
             <Component
                 v-if="selectedAppModalOption"
                 :is="modalComponent"
                 @close="onCloseModal"
-                @added="onCreatedData" />
+                @submitted="onCreatedData" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import PRIVILEGES from '@Collections/config/privileges';
 import {
     ADD_PRODUCT,
-    EXTENDS,
 } from '@Collections/defaults';
 import ActionButton from '@Core/components/ActionButton/ActionButton';
+import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     mapActions,
     mapState,
@@ -66,14 +82,17 @@ import {
 export default {
     name: 'CollectionProductsTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         ActionButton,
         IconAdd,
+        IconSpinner,
+        Button,
     },
     mixins: [
         fetchGridDataMixin({
             path: 'collections/_id/elements',
         }),
+        tabFeedbackMixin,
     ],
     async fetch() {
         await this.onFetchData();
@@ -81,15 +100,16 @@ export default {
     },
     data() {
         return {
+            isSubmitting: false,
             isPrefetchingData: true,
             selectedAppModalOption: null,
         };
     },
     computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
-        isUserAllowedToUpdate() {
+        ...mapState('grid', [
+            'drafts',
+        ]),
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT_COLLECTION.update,
             ]);
@@ -115,7 +135,7 @@ export default {
             return options;
         },
         extendedComponents() {
-            return this.$getExtendedComponents(EXTENDS.COLLECTIONS_ADD_PRODUCTS);
+            return this.$getExtendedComponents('@Collections/components/Tabs/collectionProductsTab/addFromSegment');
         },
         modalComponent() {
             const modals = [
@@ -133,6 +153,56 @@ export default {
         ...mapActions('grid', [
             'setDrafts',
         ]),
+        ...mapActions('collection', [
+            'updateCollectionProductsVisibility',
+        ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
+        onSubmit() {
+            if (this.isSubmitting) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeScopeErrors(this.scope);
+            this.updateCollectionProductsVisibility({
+                scope: this.scope,
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
+            });
+        },
+        async onUpdateSuccess() {
+            Object.keys(this.drafts).forEach((key) => {
+                const [
+                    rowId,
+                ] = key.split('/');
+
+                const row = this.rows.find(({
+                    id,
+                }) => id.value === rowId);
+
+                if (row) {
+                    row.visible.value = this.drafts[key];
+                }
+            });
+
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product visibilities in collection have been updated',
+            });
+
+            this.setDrafts();
+
+            this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
+        },
+        onUpdateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+        },
         onCellValueChange(cellValues) {
             const drafts = cellValues.reduce((prev, {
                 rowId, columnId, value,
@@ -146,6 +216,12 @@ export default {
                 ...this.drafts,
                 ...drafts,
             });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'collectionProducts',
+                value: drafts,
+            });
         },
         onSelectAddProductOption(option) {
             this.selectedAppModalOption = option;
@@ -153,9 +229,13 @@ export default {
         onCloseModal() {
             this.selectedAppModalOption = null;
         },
-        onCreatedData() {
-            this.onFetchData(this.localParams);
+        async onCreatedData() {
+            this.isPrefetchingData = true;
+
+            await this.onFetchData(this.localParams);
+
             this.selectedAppModalOption = null;
+            this.isPrefetchingData = false;
         },
     },
 };

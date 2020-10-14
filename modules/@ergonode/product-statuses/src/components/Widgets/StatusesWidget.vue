@@ -3,15 +3,28 @@
  * See LICENSE for license details.
  */
 <template>
-    <Widget title="Statuses">
+    <Widget
+        title="Statuses"
+        :is-placeholder-visible="!isPrefetchingData && statuses.length === 0">
+        <template #appendHeader>
+            <ActionButton
+                :size="tinySize"
+                :title="workflowLanguage"
+                :disabled="isPrefetchingData"
+                :options="languageOptions"
+                @input="onValueChange" />
+        </template>
         <template #body>
-            <ul class="list-status">
+            <Preloader v-if="isPrefetchingData" />
+            <ul
+                class="list-status"
+                v-else>
                 <template v-for="(status, index) in statuses">
                     <li
                         class="list-status-element"
                         :key="status.id">
                         <ProductStatusBadge :status="status" />
-                        <span v-text="productsInStatus" />
+                        <span v-text="status.value" />
                     </li>
                     <div
                         class="list-status-element-divider"
@@ -23,58 +36,109 @@
 </template>
 
 <script>
+import ActionButton from '@Core/components/ActionButton/ActionButton';
+import Preloader from '@Core/components/Preloader/Preloader';
 import Widget from '@Core/components/Widget/Widget';
+import {
+    COLORS,
+} from '@Core/defaults/colors';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
+    getStatusesCount,
+} from '@Dashboard/services';
 import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
+import {
+    mapGetters,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'StatusesWidget',
     components: {
         Widget,
         ProductStatusBadge,
+        ActionButton,
+        Preloader,
+    },
+    async fetch() {
+        await this.getStatusesCount();
     },
     data() {
         return {
+            workflowLanguage: '',
             statuses: [],
+            colors: {},
+            isPrefetchingData: true,
         };
     },
     computed: {
-        productsInStatus() {
-            return '0 products';
+        ...mapState('core', [
+            'defaultLanguageCode',
+        ]),
+        ...mapGetters('core', [
+            'activeLanguages',
+        ]),
+        tinySize() {
+            return SIZE.TINY;
+        },
+        languageOptions() {
+            return this.activeLanguages.map(({
+                name,
+            }) => name);
         },
     },
     created() {
-        const params = {
-            limit: 99999,
-            offset: 0,
-            field: 'code',
-            order: 'ASC',
-        };
+        this.workflowLanguage = this.getWorkflowLanguageName();
+    },
+    methods: {
+        getWorkflowLanguageName() {
+            return this.activeLanguages.find(({
+                code,
+            }) => code === this.defaultLanguageCode).name;
+        },
+        getWorkflowLanguageCode() {
+            return this.activeLanguages.find(({
+                name,
+            }) => name === this.workflowLanguage).code;
+        },
+        async getStatusesCount() {
+            this.isPrefetchingData = true;
 
-        this.$axios
-            .get('status', {
-                params,
-            })
-            .then(({
-                data: {
-                    columns,
-                    collection,
-                },
-            }) => {
-                const colorColumn = columns.find(({
-                    id,
-                }) => id === 'status');
+            const workflowLanguageCode = this.getWorkflowLanguageCode();
 
-                this.statuses = collection.map(({
-                    id,
-                    code,
-                    name,
-                }) => ({
-                    id,
-                    name,
-                    code,
-                    color: colorColumn.colors[code],
-                }));
+            const statusesCount = await getStatusesCount({
+                $axios: this.$axios,
+                workflowLanguage: workflowLanguageCode,
             });
+
+            this.statuses = statusesCount.map((status) => {
+                const {
+                    status_id,
+                    value,
+                    label,
+                } = status;
+
+                if (typeof this.colors[status_id] === 'undefined') {
+                    this.colors[status_id] = COLORS[Math.floor(Math.random() * COLORS.length)];
+                }
+
+                return {
+                    id: status_id,
+                    color: this.colors[status_id],
+                    label,
+                    value: `${value} products`,
+                };
+            });
+
+            this.isPrefetchingData = false;
+        },
+        async onValueChange(value) {
+            this.workflowLanguage = value;
+
+            await this.getStatusesCount();
+        },
     },
 };
 </script>

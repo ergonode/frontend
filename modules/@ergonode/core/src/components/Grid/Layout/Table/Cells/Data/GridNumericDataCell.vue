@@ -38,15 +38,15 @@ export default {
     ],
     computed: {
         cellData() {
-            if (this.draft !== null && +this.data.value !== +this.draft) {
+            if (this.isDraft && this.data.value !== this.draft) {
                 return {
-                    value: +this.draft,
+                    value: this.draft,
                     isDraft: true,
                 };
             }
 
             return {
-                value: +this.data.value,
+                value: this.data.value,
                 isDraft: false,
             };
         },

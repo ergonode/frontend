@@ -3,26 +3,35 @@
  * See LICENSE for license details.
  */
 import {
+    create,
+    get,
+    getAll,
+    remove,
+    update,
+} from '@Comments/services/index';
+
+import {
     types,
 } from './mutations';
 
 export default {
-    getComments({
+    async getComments({
         commit,
     }, params) {
-        return this.app.$axios.$get('comments', {
-            params,
-        }).then(({
+        const {
             collection: comments, info,
-        }) => {
-            commit('__SET_STATE', {
-                key: 'comments',
-                value: comments,
-            });
-            commit('__SET_STATE', {
-                key: 'count',
-                value: info.filtered,
-            });
+        } = await getAll({
+            $axios: this.app.$axios,
+            params,
+        });
+
+        commit('__SET_STATE', {
+            key: 'comments',
+            value: comments,
+        });
+        commit('__SET_STATE', {
+            key: 'count',
+            value: info.filtered,
         });
     },
     async getMoreComments(
@@ -37,132 +46,169 @@ export default {
             currentPage,
         } = state;
 
-        await this.$setLoader('moreComments');
-        await this.app.$axios.$get('comments', {
-            params,
-        }).then(({
+        const {
             collection: comments, info,
-        }) => {
-            commit('__SET_STATE', {
-                key: 'currentPage',
-                value: currentPage += 1,
-            });
-            commit('__SET_STATE', {
-                key: 'count',
-                value: info.filtered,
-            });
-            commit(types.INSERT_MORE_COMMENTS, comments);
+        } = await getAll({
+            $axios: this.app.$axios,
+            params,
         });
-        await this.$removeLoader('moreComments');
+
+        commit('__SET_STATE', {
+            key: 'currentPage',
+            value: currentPage += 1,
+        });
+        commit('__SET_STATE', {
+            key: 'count',
+            value: info.filtered,
+        });
+        commit(types.INSERT_MORE_COMMENTS, comments);
     },
     async createComment(
         {
-            commit, rootState, state,
+            commit,
+            rootState,
+            state,
         },
         {
             content,
-            onSuccess,
-            onError,
+            scope,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        const {
-            firstName,
-            lastName,
-            avatarFilename,
-        } = rootState.authentication.user;
-        const {
-            objectId,
-        } = state;
-        let {
-            count,
-        } = state;
-        const data = {
-            content,
-            object_id: objectId,
-        };
+        try {
+            const {
+                firstName,
+                lastName,
+                avatarFilename,
+            } = rootState.authentication.user;
+            const {
+                objectId,
+            } = state;
+            const {
+                count,
+            } = state;
+            const data = {
+                content,
+                object_id: objectId,
+            };
 
-        await this.$setLoader('commentButton');
-        await this.app.$axios.$post('comments', data).then(({
-            id,
-        }) => {
-            this.app.$axios.$get(`comments/${id}`).then((addedComment) => {
-                const comment = {
-                    ...addedComment,
-                    _links: {
-                        delete: true,
-                        edit: true,
-                    },
-                    avatar_filename: avatarFilename,
-                    author: `${firstName} ${lastName}`,
-                };
-                commit(types.ADD_COMMENT, comment);
-                commit('__SET_STATE', {
-                    key: 'count',
-                    value: count += 1,
-                });
-                onSuccess(id);
+            const {
+                id,
+            } = await create({
+                $axios: this.app.$axios,
+                data,
             });
-        }).catch(e => onError(e.data));
-        await this.$removeLoader('commentButton');
+
+            const comment = await get({
+                $axios: this.app.$axios,
+                id,
+            });
+
+            commit(types.ADD_COMMENT, {
+                ...comment,
+                _links: {
+                    delete: true,
+                    edit: true,
+                },
+                avatar_filename: avatarFilename,
+                author: `${firstName} ${lastName}`,
+            });
+            commit('__SET_STATE', {
+                key: 'count',
+                value: count + 1,
+            });
+            onSuccess(id);
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
     },
     async updateComment(
         {
-            commit, rootState,
+            commit,
+            rootState,
         },
         {
             id,
+            scope,
             content,
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        const data = {
-            content,
-        };
-        const {
-            firstName,
-            lastName,
-            avatarFilename,
-        } = rootState.authentication.user;
+        try {
+            const data = {
+                content,
+            };
+            const {
+                firstName,
+                lastName,
+                avatarFilename,
+            } = rootState.authentication.user;
 
-        await this.$setLoader('commentButton');
-        await this.app.$axios.$put(`comments/${id}`, data).then(() => {
-            this.app.$axios.$get(`comments/${id}`).then((editedComment) => {
-                const comment = {
-                    ...editedComment,
-                    _links: {
-                        delete: true,
-                        edit: true,
-                    },
-                    avatar_filename: avatarFilename,
-                    author: `${firstName} ${lastName}`,
-                };
-                commit(types.EDIT_COMMENT, comment);
-                onSuccess();
+            await update({
+                $axios: this.app.$axios,
+                id,
+                data,
             });
-        }).catch(e => onError(e.data));
-        await this.$removeLoader('commentButton');
+            const comment = await get({
+                $axios: this.app.$axios,
+                id,
+            });
+
+            commit(types.EDIT_COMMENT, {
+                ...comment,
+                _links: {
+                    delete: true,
+                    edit: true,
+                },
+                avatar_filename: avatarFilename,
+                author: `${firstName} ${lastName}`,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
     },
-    removeComment(
+    async removeComment(
         {
-            commit, state,
+            commit,
+            state,
         },
         {
             id,
-            onSuccess,
-            onError,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        let {
-            count,
-        } = state;
-        return this.app.$axios.$delete(`comments/${id}`).then(() => {
+        try {
+            const {
+                count,
+            } = state;
+
+            await remove({
+                $axios: this.app.$axios,
+                id,
+            });
+
             commit(types.DELETE_COMMENT, id);
             commit('__SET_STATE', {
                 key: 'count',
-                value: count -= 1,
+                value: count - 1,
             });
+
             onSuccess();
-        }).catch(e => onError(e.data));
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+            });
+        }
     },
 };

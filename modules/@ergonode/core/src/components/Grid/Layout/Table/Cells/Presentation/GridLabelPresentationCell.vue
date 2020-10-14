@@ -7,7 +7,7 @@
         <PointBadge
             v-if="color"
             :color="color" />
-        <GridPresentationCell :value="value" />
+        <GridPresentationCell :value="label" />
     </div>
 </template>
 
@@ -26,14 +26,17 @@ export default {
             type: String,
             required: true,
         },
-        colors: {
+        options: {
             type: Object,
             default: () => ({}),
         },
     },
     computed: {
         color() {
-            return this.colors[this.value];
+            return this.options[this.value].color;
+        },
+        label() {
+            return this.options[this.value].label;
         },
     },
 };

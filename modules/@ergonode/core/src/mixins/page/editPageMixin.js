@@ -14,8 +14,8 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import {
-    getNestedTabRoutes,
-} from '@Core/models/navigation/tabs';
+    mapState,
+} from 'vuex';
 
 export default {
     components: {
@@ -34,9 +34,10 @@ export default {
         },
     },
     computed: {
-        tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
+        ...mapState('feedback', [
+            'errors',
+            'changeValues',
+        ]),
         smallSize() {
             return SIZE.SMALL;
         },
@@ -47,9 +48,6 @@ export default {
     methods: {
         onRemove() {
             this.$emit('remove');
-        },
-        onSave() {
-            this.$emit('save');
         },
     },
 };

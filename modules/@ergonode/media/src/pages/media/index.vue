@@ -20,7 +20,9 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs">
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs">
             <template #content>
                 <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
@@ -37,28 +39,32 @@
 <script>
 import Button from '@Core/components/Button/Button';
 import IconUploadFile from '@Core/components/Icons/Actions/IconUploadFile';
+import Page from '@Core/components/Layout/Page';
+import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@Core/components/TitleBar/TitleBar';
 import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
-import {
-    getNestedTabRoutes,
-} from '@Core/models/navigation/tabs';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import PRIVILEGES from '@Media/config/privileges';
 
 export default {
     name: 'Media',
     components: {
-        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
-        Page: () => import('@Core/components/Layout/Page'),
-        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
-        ModalTabBar: () => import('@Core/components/Modal/ModalTabBar'),
+        TitleBar,
+        Page,
+        HorizontalRoutingTabBar,
         Button,
         IconUploadFile,
+        ModalTabBar: () => import('@Core/components/Modal/ModalTabBar'),
     },
     mixins: [
         gridModalMixin,
+        beforeLeavePageMixin,
+        asyncTabsMixin,
     ],
     computed: {
         isReadOnly() {
@@ -74,9 +80,6 @@ export default {
         },
         secondaryTheme() {
             return THEME.SECONDARY;
-        },
-        tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },
         modalTabs() {
             return [

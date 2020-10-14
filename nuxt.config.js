@@ -25,7 +25,7 @@ const IS_DEV = process.env.NODE_ENV !== 'production';
 const BASE_URL = process.env.API_BASE_URL || 'http://localhost:8000';
 
 module.exports = {
-    mode: 'universal',
+    ssr: true,
     dev: IS_DEV,
     head: {
         htmlAttrs: {
@@ -92,11 +92,36 @@ module.exports = {
             },
         ],
         'cookie-universal-nuxt',
+        'nuxt-i18n',
     ],
     vuems: {
         required: _requiredModules,
         modules: modulesConfig,
+        i18n: true,
+        i18nLocales: [
+            'en_GB',
+            'pl_PL',
+        ],
         isDev: process.env.NODE_ENV !== 'production',
+    },
+    i18n: {
+        locales: [
+            {
+                code: 'en_GB',
+                file: 'en_GB.json',
+            },
+            {
+                code: 'pl_PL',
+                file: 'pl_PL.json',
+            },
+        ],
+        defaultLocale: 'en_GB',
+        vueI18n: {
+            fallbackLocale: 'en_GB',
+        },
+        lazy: true,
+        langDir: '.nuxt/locales/',
+        strategy: 'no_prefix',
     },
     router: {
         middleware: [
@@ -114,7 +139,7 @@ module.exports = {
         cssSourceMap: false,
         optimizeCSS: true,
         extend(config, {
-            isDev, isClient,
+            isDev, isClient, loaders,
         }) {
             const alias = config.resolve.alias || {};
 
@@ -140,6 +165,32 @@ module.exports = {
                     config.plugins[i].options.chunksSortMode = 'none';
                 }
             }
+
+            // remove Cypress e2e ids when not needed
+            loaders.vue.compilerOptions = {
+                modules: [
+                    {
+                        preTransformNode(astEl) {
+                            if (process.env.NODE_ENV === 'production' && !process.env.LEAVE_TEST_TAG_ATTRS) {
+                                const id = 'data-cy';
+                                const {
+                                    attrsMap, attrsList,
+                                } = astEl;
+
+                                if (attrsMap[id]) {
+                                    delete attrsMap[id];
+
+                                    const index = attrsList.findIndex(
+                                        x => x.name === id,
+                                    );
+                                    attrsList.splice(index, 1);
+                                }
+                            }
+                            return astEl;
+                        },
+                    },
+                ],
+            };
         },
         optimization: {
             splitChunks: {
@@ -159,5 +210,6 @@ module.exports = {
         VUE_APP_VERSION: version,
         VUE_APP_GIT_INFO: getRepoInfo(),
         SHOW_RELEASE_INFO: process.env.SHOW_RELEASE_INFO || false,
+        LEAVE_TEST_TAG_ATTRS: process.env.LEAVE_TEST_TAG_ATTRS || true,
     },
 };

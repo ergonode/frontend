@@ -60,7 +60,7 @@ export default [
             {
                 name: 'import-id-general',
                 path: 'general',
-                component: Tabs.ImportProfileBaseTab,
+                component: Tabs.ImportProfileGeneralTab,
                 meta: {
                     title: 'Options',
                     breadcrumbs: [

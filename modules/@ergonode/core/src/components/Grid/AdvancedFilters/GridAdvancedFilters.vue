@@ -32,13 +32,11 @@ import {
 } from '@Core/models/arrayWrapper';
 import {
     changeCookiePosition,
-    removeCookieAtIndex,
 } from '@Core/models/cookies';
 import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -65,13 +63,13 @@ export default {
         };
     },
     computed: {
-        ...mapState('list', {
-            disabledElements: state => state.disabledElements,
-        }),
-        ...mapState('draggable', {
-            isElementDragging: state => state.isElementDragging,
-            draggedElement: state => state.draggedElement,
-        }),
+        ...mapState('list', [
+            'disabledElements',
+        ]),
+        ...mapState('draggable', [
+            'isElementDragging',
+            'draggedElement',
+        ]),
         classes() {
             return 'grid-advanced-filters';
         },
@@ -100,10 +98,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('list', [
-            'setDisabledElement',
-            'removeDisabledElement',
-        ]),
         initializeFilters() {
             const config = this.$cookies.get(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
 
@@ -138,8 +132,6 @@ export default {
 
             this.orderedFilters = orderedFilters;
             this.filterComponents = filterComponents;
-
-            this.$emit('count', this.orderedFilters.length);
         },
         onRemove(index) {
             const filter = this.orderedFilters[index];
@@ -147,24 +139,10 @@ export default {
             this.orderedFilters.splice(index, 1);
             this.filterComponents.splice(index, 1);
 
-            removeCookieAtIndex({
-                cookies: this.$cookies,
-                cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
+            this.$emit('remove', {
                 index,
+                filter,
             });
-
-            this.disableListElement({
-                languageCode: filter.languageCode,
-                attributeId: filter.attributeId,
-            });
-
-            const filterValues = {
-                ...this.filterValues,
-            };
-            delete filterValues[filter.id];
-
-            this.$emit('count', this.orderedFilters.length);
-            this.$emit('filter', filterValues);
         },
         onSwap({
             from, to,
@@ -191,7 +169,8 @@ export default {
             });
         },
         onApply({
-            key, value,
+            key,
+            value,
         }) {
             this.$emit('filter', {
                 ...this.filterValues,
@@ -199,38 +178,10 @@ export default {
             });
         },
         onRemoveAll() {
-            this.orderedFilters.forEach(({
-                attributeId, languageCode,
-            }) => {
-                this.disableListElement({
-                    languageCode,
-                    attributeId,
-                });
-            });
-
             this.orderedFilters = [];
             this.filterComponents = [];
 
-            this.$cookies.remove(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
-
-            this.$emit('count', this.orderedFilters.length);
-            this.$emit('filter', {});
-        },
-        disableListElement({
-            languageCode, attributeId,
-        }) {
-            if (this.disabledElements[languageCode][attributeId]) {
-                this.setDisabledElement({
-                    languageCode,
-                    elementId: attributeId,
-                    disabled: false,
-                });
-            } else {
-                this.removeDisabledElement({
-                    languageCode,
-                    elementId: attributeId,
-                });
-            }
+            this.$emit('remove-all');
         },
     },
 };

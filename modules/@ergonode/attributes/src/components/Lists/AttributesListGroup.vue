@@ -56,7 +56,7 @@ export default {
     },
     computed: {
         itemsCountDescription() {
-            return `${this.itemsCount} Attributes`;
+            return `${this.itemsCount} ${this.$t('attribute.page.title')}`;
         },
     },
     methods: {

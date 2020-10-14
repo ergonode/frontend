@@ -4,40 +4,31 @@
  */
 <template>
     <Card :title="selectedLanguage">
-        <Form :fields-keys="[labelFieldKey, placeholderFieldKey, hintFieldKey]">
-            <template #body="{ errorMessages }">
+        <Form :errors="translationErrors">
+            <template #body>
                 <FormSection>
                     <TextField
                         :data-cy="dataCyGenerator(labelFieldKey)"
                         :value="translations.label[languageCode]"
-                        label="Attribute name"
-                        :error-messages="errorMessages[labelFieldKey]"
-                        :disabled="!isUserAllowedToUpdate"
-                        @input="(value) => setTranslationPropertyValue(value, 'label')" />
-                    <TextArea
-                        v-if="hasPlaceholder"
-                        :data-cy="dataCyGenerator(placeholderFieldKey)"
-                        :value="translations.placeholder[languageCode]"
-                        label="Placeholder"
-                        resize="none"
-                        height="150px"
-                        :error-messages="errorMessages[placeholderFieldKey]"
-                        :disabled="!isUserAllowedToUpdate"
-                        @input="(value) => setTranslationPropertyValue(value, 'placeholder')" />
+                        :label="$t('attribute.translation.nameLabel')"
+                        :error-messages="translationErrors[labelFieldKey]"
+                        :disabled="!isAllowedToUpdate"
+                        @input="(value) => setTranslationPropertyValue(value, labelFieldKey)" />
                     <TextArea
                         :data-cy="dataCyGenerator(hintFieldKey)"
                         :value="translations.hint[languageCode]"
-                        label="Tooltip for writers"
+                        :label="$t('attribute.translation.hintLabel')"
                         resize="none"
                         height="150px"
-                        :error-messages="errorMessages[hintFieldKey]"
-                        :disabled="!isUserAllowedToUpdate"
-                        @input="(value) => setTranslationPropertyValue(value, 'hint')" />
-                    <template v-if="hasOptions">
-                        <Divider />
-                        <AttributeOptionValues
-                            :language-code="languageCode"
-                            :disabled="!isUserAllowedToUpdate" />
+                        :error-messages="translationErrors[hintFieldKey]"
+                        :disabled="!isAllowedToUpdate"
+                        @input="(value) => setTranslationPropertyValue(value, hintFieldKey)" />
+                    <Divider v-if="extendedForm.length" />
+                    <template v-for="(formComponent, index) in extendedForm">
+                        <Component
+                            :is="formComponent.component"
+                            :key="index"
+                            v-bind="bindingProps(formComponent)" />
                     </template>
                 </FormSection>
             </template>
@@ -46,18 +37,13 @@
 </template>
 
 <script>
-import AttributeOptionValues from '@Attributes/components/Forms/Sections/AttributeOptionValues';
 import PRIVILEGES from '@Attributes/config/privileges';
-import {
-    hasOptions,
-    hasPlaceholder,
-} from '@Attributes/models/attributeTypes';
 import Card from '@Core/components/Card/Card';
 import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import TextArea from '@Core/components/Inputs/TextArea';
-import TextField from '@Core/components/Inputs/TextField';
+import TextArea from '@Core/components/TextArea/TextArea';
+import TextField from '@Core/components/TextField/TextField';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import {
     getKeyByValue,
@@ -75,45 +61,54 @@ export default {
         Divider,
         TextField,
         TextArea,
-        AttributeOptionValues,
     },
     mixins: [
         translationCardMixin,
     ],
     computed: {
-        ...mapState('dictionaries', {
-            attrTypes: state => state.attrTypes,
-        }),
-        ...mapState('attribute', {
-            type: state => state.type,
-        }),
-        hasPlaceholder() {
-            return hasPlaceholder(this.typeKey);
-        },
-        hasOptions() {
-            return hasOptions(this.typeKey);
+        ...mapState('dictionaries', [
+            'attrTypes',
+        ]),
+        ...mapState('attribute', [
+            'type',
+        ]),
+        extendedForm() {
+            return this.$extendedForm({
+                key: '@Attributes/components/Forms/AttributeTranslationForm',
+                type: this.typeKey,
+            });
         },
         typeKey() {
             return getKeyByValue(this.attrTypes, this.type);
         },
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,
             ]);
         },
         hintFieldKey() {
-            return `hint_${this.languageCode}`;
-        },
-        placeholderFieldKey() {
-            return `placeholder_${this.languageCode}`;
+            return 'hint';
         },
         labelFieldKey() {
-            return `label_${this.languageCode}`;
+            return 'label';
         },
     },
     methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                disabled: !this.isAllowedToUpdate,
+                typeKey: this.typeKey,
+                scope: this.scope,
+                changeValues: this.changeValues,
+                errors: this.translationErrors,
+                languageCode: this.languageCode,
+                ...props,
+            };
+        },
         dataCyGenerator(key) {
-            return `attribute-${key}`;
+            return `attribute-${key}_${this.languageCode}`;
         },
     },
 };

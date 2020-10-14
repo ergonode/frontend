@@ -54,9 +54,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            user: state => state.user,
-        }),
+        ...mapState('authentication', [
+            'user',
+        ]),
         avatarId() {
             return this.user.avatarFilename
                 ? this.user.avatarFilename.split('.')[0]

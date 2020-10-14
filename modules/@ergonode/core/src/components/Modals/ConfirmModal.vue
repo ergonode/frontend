@@ -3,26 +3,34 @@
  * See LICENSE for license details.
  */
 <template>
-    <ModalConfirm
-        :title="modalData.message"
-        @close="onClose">
-        <template #footer>
-            <Button
-                data-cy="modal-confirm"
-                :title="agreeButtonText"
-                :size="smallSize"
-                @click.native="onAgree" />
-            <Button
-                data-cy="modal-cancel"
-                title="CANCEL"
-                :theme="secondaryTheme"
-                :size="smallSize"
-                @click.native="onClose" />
-        </template>
-    </ModalConfirm>
+    <ModalOverlay @close="onClose">
+        <Modal data-cy="modal">
+            <ConfirmModalHeader
+                :title="modalData.message"
+                @close="onClose" />
+            <ModalFooter>
+                <Button
+                    data-cy="modal-confirm"
+                    :title="applyTitle"
+                    :size="smallSize"
+                    @click.native="onAgree" />
+                <Button
+                    data-cy="modal-cancel"
+                    :title="cancelTitle"
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    @click.native="onClose" />
+            </ModalFooter>
+        </Modal>
+    </ModalOverlay>
 </template>
 
 <script>
+import Button from '@Core/components/Button/Button';
+import Modal from '@Core/components/Modal/Modal';
+import ModalFooter from '@Core/components/Modal/ModalFooter';
+import ModalOverlay from '@Core/components/Modal/ModalOverlay';
+import ConfirmModalHeader from '@Core/components/Modals/ConfirmModalHeader';
 import {
     SIZE,
     THEME,
@@ -31,17 +39,16 @@ import {
 export default {
     name: 'ConfirmModal',
     components: {
-        ModalConfirm: () => import('@Core/components/Modal/ModalConfirm'),
-        Button: () => import('@Core/components/Button/Button'),
+        ModalOverlay,
+        ConfirmModalHeader,
+        Modal,
+        ModalFooter,
+        Button,
     },
     props: {
         type: {
             type: String,
             default: '',
-        },
-        agreeButton: {
-            type: String,
-            default: 'OK',
         },
     },
     computed: {
@@ -51,11 +58,14 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-        agreeButtonText() {
-            return this.agreeButton.toUpperCase();
-        },
         modalData() {
             return this.$getModal(this.type);
+        },
+        applyTitle() {
+            return this.modalData.applyTitle || 'OK';
+        },
+        cancelTitle() {
+            return this.modalData.cancelTitle || 'CANCEL';
         },
     },
     methods: {

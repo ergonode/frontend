@@ -7,7 +7,7 @@
         <ListSearchHeader
             header="System languages"
             is-search
-            @searchResult="onSearch" />
+            @search-result="onSearch" />
         <List>
             <ListScrollableContainer>
                 <LanguagesListElement
@@ -46,9 +46,9 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapState('core', {
-            languages: state => state.languages,
-        }),
+        ...mapState('core', [
+            'languages',
+        ]),
         ...mapGetters('core', [
             'activeLanguages',
         ]),

@@ -51,6 +51,9 @@ import {
     LAYOUT_ORIENTATION,
 } from '@Core/defaults/layout';
 import LinkRelationButton from '@Media/components/Buttons/LinkRelationButton';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'ResourceRelationsForm',
@@ -75,13 +78,15 @@ export default {
             return LAYOUT_ORIENTATION.HORIZONTAL;
         },
     },
-    created() {
-        this.$axios
-            .$get(`multimedia/${this.$route.params.id}/relation`)
-            .then((relations) => {
-                this.rows = relations.filter(row => row.relations.length > 0);
-                this.isPrefetchingData = false;
-            });
+    async created() {
+        this.rows = await this.getResourceRelation();
+
+        this.isPrefetchingData = false;
+    },
+    methods: {
+        ...mapActions('media', [
+            'getResourceRelation',
+        ]),
     },
 };
 </script>

@@ -3,23 +3,29 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormFieldset>
-        <CheckBox
-            v-for="title in schema.items.enum_titles"
-            :key="title"
-            :value="localValue"
-            :label="title"
-            @input="onValueChange" />
-    </FormFieldset>
+    <FormSubsection
+        :title="schema.title"
+        :required="schema.isRequired">
+        <FormFieldset>
+            <CheckBox
+                v-for="title in schema.items.enum_titles"
+                :key="title"
+                :value="localValue"
+                :label="title"
+                @input="onValueChange" />
+        </FormFieldset>
+    </FormSubsection>
 </template>
 
 <script>
+import CheckBox from '@Core/components/CheckBox/CheckBox';
 import FormFieldset from '@Core/components/Form/FormFieldset';
-import CheckBox from '@Core/components/Inputs/CheckBox';
+import FormSubsection from '@Core/components/Form/Subsection/FormSubsection';
 
 export default {
     name: 'JSONSchemaFormArrayString',
     components: {
+        FormSubsection,
         FormFieldset,
         CheckBox,
     },

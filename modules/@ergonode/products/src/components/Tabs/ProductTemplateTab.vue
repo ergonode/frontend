@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate :fixed="true">
+    <CenterViewTemplate :fixed="true">
         <template #header>
             <div class="view-template-header__section">
                 <TreeSelect
@@ -13,19 +13,17 @@
                     label="Edit language"
                     :options="languageOptions"
                     @input="onLanguageChange" />
-                <!-- Uncomment when needed
-                <Toggler
-                    :value="missingValues"
-                    label="Show only the missing values"
-                    @input="setOnlyMissingValues" /> -->
             </div>
             <div class="view-template-header__section">
                 <ProductCompleteness :completeness="completeness" />
+                <TitleBarSubActions>
+                    <ProductWorkflowActionButton :language="language" />
+                </TitleBarSubActions>
                 <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="RESTORE"
-                    :disabled="!isUserAllowedToRestore"
+                    :disabled="!isAllowedToRestore"
                     @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconRestore :fill-color="color" />
@@ -43,24 +41,46 @@
             <ProductTemplateForm
                 :language="language"
                 :elements="elements"
-                @valueUpdated="onValueUpdated" />
+                :scope="scope"
+                :change-values="changeValues"
+                :errors="errors"
+                @input="onValueChange" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+        <template #default>
+            <Button
+                title="SAVE CHANGES"
+                :floating="{ bottom: '24px', right: '24px' }"
+                @click.native="onSubmit">
+                <template
+                    v-if="isSubmitting"
+                    #prepend="{ color }">
+                    <IconSpinner :fill-color="color" />
+                </template>
+            </Button>
+        </template>
+    </CenterViewTemplate>
 </template>
 
 <script>
 import Button from '@Core/components/Button/Button';
 import IconRestore from '@Core/components/Icons/Actions/IconRestore';
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import TreeSelect from '@Core/components/Select/Tree/TreeSelect';
+import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
-import ProductTemplateForm from '@Products/components/Form/ProductTemplateForm';
+import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import ProductWorkflowActionButton from '@Products/components/Buttons/ProductWorkflowActionButton';
+import ProductTemplateForm from '@Products/components/Forms/ProductTemplateForm';
+import ProductCompleteness from '@Products/components/Progress/ProductCompleteness';
 import PRIVILEGES from '@Products/config/privileges';
-import getProductCompleteness from '@Products/services/getProductCompleteness.service';
-import getProductTemplate from '@Products/services/getProductTemplate.service';
 import {
     mapActions,
     mapGetters,
@@ -70,22 +90,24 @@ import {
 export default {
     name: 'ProductTemplateTab',
     components: {
+        IconSpinner,
         Button,
         IconRestore,
         ProductTemplateForm,
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
+        TreeSelect,
+        TitleBarSubActions,
+        ProductCompleteness,
+        ProductWorkflowActionButton,
         RestoreAttributeParentModalForm: () => import('@Products/components/Modals/RestoreAttributeParentModalForm'),
-        ProductCompleteness: () => import('@Products/components/Progress/ProductCompleteness'),
-        TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
-        // Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
     },
     mixins: [
         gridModalMixin,
+        tabFeedbackMixin,
     ],
-    asyncData({
-        app: {
-            $axios,
-        }, store, params: {
+    async asyncData({
+        store,
+        params: {
             id,
         },
     }) {
@@ -93,41 +115,50 @@ export default {
             defaultLanguageCode,
         } = store.state.core;
 
-        return Promise.all([
-            getProductTemplate({
-                $axios,
-                languageCode: defaultLanguageCode,
-                id,
-            }),
-            getProductCompleteness({
-                $axios,
-                languageCode: defaultLanguageCode,
-                id,
-            }),
-        ]).then(([
+        const [
             templateResponse,
             completenessResponse,
-        ]) => ({
-            elements: templateResponse.elements,
+        ] = await Promise.all([
+            store.dispatch('product/getProductTemplate', {
+                languageCode: defaultLanguageCode,
+                id,
+            }),
+            store.dispatch('product/getProductCompleteness', {
+                languageCode: defaultLanguageCode,
+                id,
+            }),
+            store.dispatch('product/getProductDraft', {
+                languageCode: defaultLanguageCode,
+                id,
+            }),
+            store.dispatch('product/getProductWorkflow', {
+                languageCode: defaultLanguageCode,
+                id,
+            }),
+        ]);
+
+        return {
+            elements: templateResponse,
             completeness: completenessResponse,
-        }));
+        };
     },
     data() {
         return {
             language: {},
+            isSubmitting: false,
         };
     },
     computed: {
         ...mapState('authentication', {
             languagePrivileges: state => state.user.languagePrivileges,
         }),
-        ...mapState('core', {
-            defaultLanguageCode: state => state.defaultLanguageCode,
-            languagesTree: state => state.languagesTree,
-        }),
-        ...mapState('product', {
-            id: state => state.id,
-        }),
+        ...mapState('core', [
+            'defaultLanguageCode',
+            'languagesTree',
+        ]),
+        ...mapState('product', [
+            'id',
+        ]),
         ...mapGetters('core', [
             'rootLanguage',
         ]),
@@ -147,7 +178,7 @@ export default {
                     : true,
             }));
         },
-        isUserAllowedToRestore() {
+        isAllowedToRestore() {
             const {
                 code,
             } = this.language;
@@ -165,19 +196,55 @@ export default {
     },
     methods: {
         ...mapActions('product', [
+            'updateProductDraft',
+            'setDraftValue',
+            'getProductWorkflow',
             'getProductDraft',
+            'getProductTemplate',
+            'getProductCompleteness',
+            'applyProductDraft',
         ]),
-        onLanguageChange(value) {
+        onSubmit() {
+            if (this.isSubmitting) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.removeScopeErrors(this.scope);
+            this.applyProductDraft({
+                id: this.id,
+                scope: this.scope,
+                onSuccess: this.onUpdateSuccess,
+                onError: this.onUpdateError,
+            });
+        },
+        onUpdateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Product has been updated',
+            });
+
+            this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
+        },
+        onUpdateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
+        },
+        async onLanguageChange(value) {
             const languageCode = value.code;
 
-            Promise.all([
-                getProductTemplate({
-                    $axios: this.$axios,
+            const [
+                templateResponse,
+                completenessResponse,
+            ] = await Promise.all([
+                this.getProductTemplate({
                     languageCode,
                     id: this.id,
                 }),
-                getProductCompleteness({
-                    $axios: this.$axios,
+                this.getProductCompleteness({
                     languageCode,
                     id: this.id,
                 }),
@@ -185,23 +252,25 @@ export default {
                     languageCode,
                     id: this.id,
                 }),
-            ]).then(([
-                templateResponse,
-                completenessResponse,
-            ]) => {
-                this.elements = templateResponse.elements;
-                this.completeness = completenessResponse;
-                this.language = value;
-            });
+                this.getProductWorkflow({
+                    languageCode,
+                    id: this.id,
+                }),
+            ]);
+
+            this.elements = templateResponse;
+            this.completeness = completenessResponse;
+            this.language = value;
         },
-        onRestoreDraftValues() {
+        async onRestoreDraftValues() {
             const {
                 code: languageCode,
             } = this.language;
 
-            Promise.all([
-                getProductCompleteness({
-                    $axios: this.$axios,
+            const [
+                completeness,
+            ] = await Promise.all([
+                this.getProductCompleteness({
                     languageCode,
                     id: this.id,
                 }),
@@ -209,19 +278,25 @@ export default {
                     languageCode,
                     id: this.id,
                 }),
-            ]).then(([
-                completenessResponse,
-            ]) => {
-                this.completeness = completenessResponse;
-            });
+            ]);
+
+            this.completeness = completeness;
         },
-        onValueUpdated() {
-            getProductCompleteness({
-                $axios: this.$axios,
+        async onValueChange(payload) {
+            this.setDraftValue({
+                languageCode: payload.languageCode,
+                key: payload.code,
+                value: payload.value,
+            });
+
+            await this.updateProductDraft({
+                ...payload,
+                scope: this.scope,
+            });
+
+            this.completeness = await this.getProductCompleteness({
                 languageCode: this.language.code,
                 id: this.id,
-            }).then((response) => {
-                this.completeness = response;
             });
         },
     },

@@ -19,8 +19,8 @@
 </template>
 
 <script>
+import DatePicker from '@Core/components/DatePicker/DatePicker';
 import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
-import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -68,7 +68,7 @@ export default {
         const localValue = this.localValue ? formatDate(this.localValue, DEFAULT_FORMAT) : '';
 
         if (localValue !== this.value) {
-            this.$emit('cellValue', [
+            this.$emit('cell-value', [
                 {
                     value: localValue,
                     rowId: this.rowId,

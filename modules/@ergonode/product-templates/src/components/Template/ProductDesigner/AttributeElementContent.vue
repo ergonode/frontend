@@ -8,7 +8,12 @@
         @mouseover.native="onMouseOver"
         @mouseout.native="onMouseOut">
         <div class="element-content__icon">
-            <Component :is="attributeIconComponent" />
+            <template v-for="(formComponent, i) in typeIconComponent">
+                <Component
+                    :is="formComponent.component"
+                    :key="i"
+                    v-bind="formComponent.props" />
+            </template>
         </div>
         <div class="vertical-wrapper">
             <span
@@ -50,8 +55,8 @@
 
 <script>
 import ActionIconButton from '@Core/components/ActionIconButton/ActionIconButton';
+import CheckBox from '@Core/components/CheckBox/CheckBox';
 import IconDots from '@Core/components/Icons/Others/IconDots';
-import CheckBox from '@Core/components/Inputs/CheckBox';
 import ListElement from '@Core/components/List/ListElement';
 import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
@@ -60,9 +65,6 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import {
-    capitalizeAndConcatenationArray,
-} from '@Core/models/stringWrapper';
 import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
 import {
     mapActions,
@@ -81,6 +83,18 @@ export default {
         CheckBox,
     },
     props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
         index: {
             type: Number,
             required: true,
@@ -122,14 +136,21 @@ export default {
         typeLabelClasses() {
             return 'element-content__header';
         },
-        attributeIconComponent() {
-            if (!this.element.type) return '';
+        typeIconComponent() {
+            const icon = this.$extendedForm({
+                key: '@Attributes/components/Lists/AttributeListElement/Icon',
+                type: this.element.type,
+            });
 
-            const types = this.element.type.split('_');
-            const attributeName = capitalizeAndConcatenationArray(types);
+            if (!icon.length) {
+                return [
+                    {
+                        component: () => import('@Core/components/Icons/Menu/IconAttributes'),
+                    },
+                ];
+            }
 
-            return () => import(`@Core/components/Icons/Attributes/Icon${attributeName}`)
-                .catch(() => import('@Core/components/Icons/Menu/IconAttributes'));
+            return icon;
         },
         contextualMenuHoveStateClasses() {
             return {
@@ -141,6 +162,9 @@ export default {
         ...mapActions('productTemplate', [
             'updateLayoutElementAtIndex',
             'removeLayoutElementAtIndex',
+        ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
         ]),
         onSelectFocus(isFocused) {
             if (!isFocused) this.isHovered = false;
@@ -157,9 +181,21 @@ export default {
                         required: !this.element.required,
                     },
                 });
+
+                this.onScopeValueChange({
+                    scope: this.scope,
+                    fieldKey: 'templateDesigner',
+                    value: true,
+                });
                 break;
             case 'Remove':
                 this.removeLayoutElementAtIndex(this.index);
+
+                this.onScopeValueChange({
+                    scope: this.scope,
+                    fieldKey: 'templateDesigner',
+                    value: true,
+                });
                 break;
             default: break;
             }

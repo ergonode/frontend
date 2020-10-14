@@ -4,7 +4,7 @@
  */
 <template>
     <div
-        class="grid-container"
+        class="template-grid-container"
         :draggable="isDraggingEnabled && gridData.length"
         @dragstart="onDragStart"
         @dragend="onDragEnd"
@@ -94,16 +94,16 @@ export default {
         debounceFunc: null,
     }),
     computed: {
-        ...mapState('gridDesigner', {
-            fullGridData: state => state.fullGridData,
-            hiddenItems: state => state.hiddenItems,
-        }),
+        ...mapState('gridDesigner', [
+            'fullGridData',
+            'hiddenItems',
+        ]),
         ...mapState('authentication', {
             language: state => state.user.language,
         }),
-        ...mapState('draggable', {
-            draggedElement: state => state.draggedElement,
-        }),
+        ...mapState('draggable', [
+            'draggedElement',
+        ]),
         ...mapGetters('gridDesigner', [
             'getItem',
         ]),
@@ -126,8 +126,7 @@ export default {
     },
     methods: {
         ...mapActions('draggable', [
-            'setDraggedElement',
-            'setDraggableState',
+            '__setState',
         ]),
         ...mapActions('list', [
             'setDisabledElement',
@@ -138,7 +137,6 @@ export default {
             'addGridItem',
             'removeGridItem',
             'rebuildGrid',
-            'removeHiddenItem',
         ]),
         calculateRowsCount() {
             const {
@@ -178,11 +176,15 @@ export default {
                     } = item;
 
                     if (children && !expanded) {
-                        this.$emit('toggleItem', item);
+                        this.$emit('toggle-item', item);
                     }
-                    this.setDraggedElement(item);
-                    this.setDraggableState({
-                        propName: 'isElementDragging',
+
+                    this.__setState({
+                        key: 'draggedElement',
+                        value: item,
+                    });
+                    this.__setState({
+                        key: 'isElementDragging',
                         value: DRAGGED_ELEMENT.TEMPLATE,
                     });
                     addElementCopyToDocumentBody({
@@ -228,9 +230,13 @@ export default {
             } else if (isOutOfBounds) {
                 this.insertElementIntoGrid();
             }
-            this.setDraggedElement();
-            this.setDraggableState({
-                propName: 'isElementDragging',
+
+            this.__setState({
+                key: 'draggedElement',
+                value: null,
+            });
+            this.__setState({
+                key: 'isElementDragging',
                 value: null,
             });
         },
@@ -277,11 +283,6 @@ export default {
             }
             return true;
         },
-        removeElementFromGrid(id) {
-            if (!this.isMultiDraggable) this.$emit('removeDisabledElementsOnList', id);
-            this.removeHiddenItem(id);
-            this.$emit('afterRemove', id);
-        },
         insertElementIntoGrid() {
             const {
                 row: ghostRow, column: ghostColumn,
@@ -321,13 +322,13 @@ export default {
             });
             this.rebuildGrid(id);
             if (childrenLength > 0) {
-                this.$emit('toggleItem', {
+                this.$emit('toggle-item', {
                     ...droppedItem,
                     row: rowToInsert + this.positionBetweenRows,
                 });
             }
             this.calculateRowsCount();
-            this.$emit('afterDrop', id);
+            this.$emit('after-drop', id);
         },
         getElementBelowMouse(event) {
             const {
@@ -561,10 +562,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .grid-container {
+    .template-grid-container {
         position: relative;
         height: 100%;
-        overflow: auto;
-        scrollbar-width: 4px;
     }
 </style>

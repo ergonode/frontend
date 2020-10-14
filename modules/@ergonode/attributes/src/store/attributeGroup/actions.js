@@ -2,54 +2,143 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import {
+    create,
+    get,
+    getAll,
+    remove,
+    update,
+} from '@Attributes/services/attributeGroup';
+
 export default {
-    getAttributeGroup(
+    async createAttributeGroup({
+        state,
+    },
+    {
+        scope,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const {
+                code,
+            } = state;
+
+            const data = {
+                code,
+            };
+
+            const {
+                id,
+            } = await create({
+                $axios: this.app.$axios,
+                data,
+            });
+
+            onSuccess(id);
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
+    },
+    async getAttributeGroup(
         {
-            commit, dispatch,
+            commit,
+            dispatch,
         },
         {
-            groupId, onError = () => {},
+            id,
         },
     ) {
-        return this.app.$axios.$get(`attributes/groups/${groupId}`).then(({
-            id,
+        const {
             code,
             name = '',
-        }) => {
-            const translations = {
+        } = await get({
+            $axios: this.app.$axios,
+            id,
+        });
+
+        const translations = {
+            name,
+        };
+
+        commit('__SET_STATE', {
+            key: 'id',
+            value: id,
+        });
+        commit('__SET_STATE', {
+            key: 'code',
+            value: code,
+        });
+        commit('__SET_STATE', {
+            key: 'name',
+            value: name,
+        });
+
+        dispatch('tab/setTranslations', translations, {
+            root: true,
+        });
+    },
+    getAttributeGroupsOptions({
+        rootState,
+    }) {
+        const {
+            language,
+        } = rootState.authentication.user;
+
+        return getAll({
+            $axios: this.app.$axios,
+        }).then(({
+            collection,
+        }) => ({
+            options: collection.map(element => ({
+                id: element.id,
+                key: element.code,
+                value: element.name,
+                hint: element.name ? `#${element.code} ${language}` : '',
+            })),
+        }));
+    },
+    async updateAttributeGroup(
+        {
+            state,
+            rootState,
+        },
+        {
+            scope,
+            onSuccess = () => {},
+            onError = () => {},
+        },
+    ) {
+        try {
+            const {
+                id,
+            } = state;
+            const {
+                translations: {
+                    name,
+                },
+            } = rootState.tab;
+            const data = {
                 name,
             };
 
-            commit('__SET_STATE', {
-                key: 'id',
-                value: id,
+            await update({
+                $axios: this.app.$axios,
+                id,
+                data,
             });
-            commit('__SET_STATE', {
-                key: 'code',
-                value: code,
+            onSuccess();
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
             });
-            commit('__SET_STATE', {
-                key: 'name',
-                value: name,
-            });
-
-            dispatch('tab/setTranslations', translations, {
-                root: true,
-            });
-        }).catch(onError);
+        }
     },
-    updateAttributeGroup(
-        {},
-        {
-            id,
-            data,
-            onSuccess,
-            onError,
-        },
-    ) {
-        return this.app.$axios.$put(`attributes/groups/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
-    },
-    removeAttributeGroup({
+    async removeAttributeGroup({
         state,
     }, {
         onSuccess,
@@ -57,6 +146,11 @@ export default {
         const {
             id,
         } = state;
-        return this.app.$axios.$delete(`attributes/groups/${id}`).then(() => onSuccess());
+
+        await remove({
+            $axios: this.app.$axios,
+            id,
+        });
+        onSuccess();
     },
 };

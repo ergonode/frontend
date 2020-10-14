@@ -7,11 +7,12 @@
 </template>
 
 <script>
+import ErrorLayout from '@Core/layouts/error';
 
 export default {
     name: 'NuxtErrorLayout',
     components: {
-        ErrorLayout: () => import('@Core/layouts/error'),
+        ErrorLayout,
     },
     props: {
         error: {

@@ -23,25 +23,24 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs" />
-        <Footer flex-end>
-            <Button
-                title="SAVE TRANSITION"
-                :size="smallSize"
-                :disabled="$isLoading('footerButton')"
-                @click.native="onSave" />
-        </Footer>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
     </Page>
 </template>
 
 <script>
 import editPageMixin from '@Core/mixins/page/editPageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import PRIVILEGES from '@Transitions/config/privileges';
 
 export default {
     name: 'TransitionPage',
     mixins: [
         editPageMixin,
+        asyncTabsMixin,
     ],
     computed: {
         isReadOnly() {

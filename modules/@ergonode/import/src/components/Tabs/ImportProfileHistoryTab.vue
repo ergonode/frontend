@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate>
+    <CenterViewTemplate>
         <template #content>
             <Grid
                 :columns="columns"
@@ -12,25 +12,25 @@
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
-                @previewRow="onPreviewRow"
-                @fetchData="onFetchData" />
+                @preview-row="onPreviewRow"
+                @fetch-data="onFetchData" />
             <ImportDetailsModalGrid
                 v-if="isImportDetailsModalVisible"
                 :import-id="selectedRow.importId"
                 :source-id="selectedRow.sourceId"
                 @close="onCloseModalGrid" />
         </template>
-    </ResponsiveCenteredViewTemplate>
+    </CenterViewTemplate>
 </template>
 
 <script>
-import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
 export default {
     name: 'CollectionProductsTab',
     components: {
-        ResponsiveCenteredViewTemplate,
+        CenterViewTemplate,
         ImportDetailsModalGrid: () => import('@Import/components/Modals/ImportDetailsModalGrid'),
     },
     mixins: [

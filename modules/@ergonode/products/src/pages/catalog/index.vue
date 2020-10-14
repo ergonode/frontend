@@ -11,7 +11,7 @@
                 <Button
                     title="NEW PRODUCT"
                     :size="smallSize"
-                    :disabled="!isUserAllowedToCreate"
+                    :disabled="!isAllowedToCreate"
                     @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
@@ -19,53 +19,74 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalRoutingTabBar :items="tabs">
-            <template #content>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :errors="errors"
+            :change-values="changeValues">
+            <template
+                #content="{
+                    item,
+                    errors: tabErrors,
+                    changeValues: tabChangeValues,
+                }">
                 <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
+                    :scope="item.scope"
+                    :change-values="tabChangeValues"
+                    :errors="tabErrors"
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
         <CreateProductModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @create="onCreatedData" />
+            @created="onCreatedData" />
     </Page>
 </template>
 
 <script>
 import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import Page from '@Core/components/Layout/Page';
+import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@Core/components/TitleBar/TitleBar';
 import {
     SIZE,
 } from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
-import {
-    getNestedTabRoutes,
-} from '@Core/models/navigation/tabs';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import PRIVILEGES from '@Products/config/privileges';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'Products',
     components: {
-        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
-        Page: () => import('@Core/components/Layout/Page'),
-        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
-        CreateProductModalForm: () => import('@Products/components/Modals/CreateProductModalForm'),
+        TitleBar,
+        Page,
+        HorizontalRoutingTabBar,
         Button,
         IconAdd,
+        CreateProductModalForm: () => import('@Products/components/Modals/CreateProductModalForm'),
     },
     mixins: [
         gridModalMixin,
+        beforeLeavePageMixin,
+        asyncTabsMixin,
     ],
     computed: {
-        tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
+        ...mapState('feedback', [
+            'errors',
+            'changeValues',
+        ]),
         smallSize() {
             return SIZE.SMALL;
         },
-        isUserAllowedToCreate() {
+        isAllowedToCreate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.create,
             ]);
@@ -73,6 +94,14 @@ export default {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.PRODUCT.namespace);
         },
+    },
+    beforeDestroy() {
+        this.__clearFeedbackStorage();
+    },
+    methods: {
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
     },
     head() {
         return {

@@ -45,9 +45,9 @@ import {
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import Fab from '@Core/components/Fab/Fab';
 import IconSearch from '@Core/components/Icons/Actions/IconSearch';
-import Select from '@Core/components/Inputs/Select/Select';
-import TextField from '@Core/components/Inputs/TextField';
 import ListHeader from '@Core/components/List/ListHeader';
+import Select from '@Core/components/Select/Select';
+import TextField from '@Core/components/TextField/TextField';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -112,10 +112,10 @@ export default {
     methods: {
         onSearch(value) {
             this.searchResult = value;
-            this.$emit('searchResult', value);
+            this.$emit('search-result', value);
         },
         onLanguageSelect(value) {
-            this.$emit('selectOption', value);
+            this.$emit('select-option', value);
         },
         onSearchButtonClick() {
             this.isSearchButtonClicked = !this.isSearchButtonClicked;

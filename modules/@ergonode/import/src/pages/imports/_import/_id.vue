@@ -5,8 +5,7 @@
 <template>
     <ImportProfilePage
         :title="name"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onRemove" />
 </template>
 
 <script>
@@ -16,6 +15,8 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import ImportProfilePage from '@Import/components/Pages/ImportProfilePage';
 import {
     mapActions,
     mapState,
@@ -24,8 +25,11 @@ import {
 export default {
     name: 'EditImportProfile',
     components: {
-        ImportProfilePage: () => import('@Import/components/Pages/ImportProfilePage'),
+        ImportProfilePage,
     },
+    mixins: [
+        beforeLeavePageMixin,
+    ],
     validate({
         params,
     }) {
@@ -34,15 +38,12 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('import/getImportProfile', {
-            id: params.id,
-        });
+        await store.dispatch('import/getImportProfile', params);
     },
     computed: {
-        ...mapState('import', {
-            type: state => state.type,
-            configuration: state => state.configuration,
-        }),
+        ...mapState('import', [
+            'configuration',
+        ]),
         name() {
             const {
                 name,
@@ -51,19 +52,18 @@ export default {
             return name;
         },
     },
-    destroyed() {
+    beforeDestroy() {
         this.__clearStorage();
+        this.__clearFeedbackStorage();
     },
     methods: {
         ...mapActions('import', [
             '__clearStorage',
-            'updateImportProfile',
             'removeImport',
         ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeErrors',
-        ]),
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
         onRemove() {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
@@ -71,26 +71,6 @@ export default {
                 confirmCallback: () => this.removeImport({
                     onSuccess: this.onRemoveSuccess,
                 }),
-            });
-        },
-        onSave() {
-            this.removeErrors();
-            this.updateImportProfile({
-                id: this.$route.params.id,
-                data: {
-                    type: this.type,
-                    name: this.name,
-                    ...JSON.parse(this.configuration),
-                },
-                onSuccess: this.onUpdateImportProfileSuccess,
-                onError: this.onError,
-            });
-        },
-        onUpdateImportProfileSuccess() {
-            this.removeErrors();
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Import profiles updated',
             });
         },
         onRemoveSuccess() {

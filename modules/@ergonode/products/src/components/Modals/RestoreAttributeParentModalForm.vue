@@ -8,43 +8,36 @@
         @close="onClose">
         <template #body>
             <RestoreForm
+                submit-title="RESTORE"
+                proceed-title="CANCEL"
+                :is-submitting="isSubmitting"
                 :elements="elements"
                 :language="language"
-                @update="updateRestoredElement" />
-        </template>
-        <template #footer>
-            <Button
-                title="RESTORE"
-                :disabled="isRequestPending"
-                @click.native="onRestore" />
-            <Button
-                title="CANCEL"
-                :theme="secondaryTheme"
-                :disabled="isRequestPending"
-                @click.native="onClose" />
+                @update="updateRestoredElement"
+                @submit="onRestore"
+                @proceed="onClose" />
         </template>
     </ModalForm>
 </template>
 
 <script>
+import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     THEME,
 } from '@Core/defaults/theme';
+import RestoreForm from '@Products/components/Forms/RestoreForm';
 import {
     mapActions,
 } from 'vuex';
 
-const deleteAttributeValue = () => import('@Products/services/deleteAttributeValue.service');
-
 export default {
     name: 'RestoreAttributeParentModalForm',
     components: {
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Button: () => import('@Core/components/Button/Button'),
-        RestoreForm: () => import('@Products/components/Form/RestoreForm'),
+        ModalForm,
+        RestoreForm,
     },
     props: {
         language: {
@@ -58,7 +51,7 @@ export default {
     },
     data() {
         return {
-            isRequestPending: false,
+            isSubmitting: false,
             restoredElement: '',
         };
     },
@@ -68,9 +61,12 @@ export default {
         },
     },
     methods: {
-        ...mapActions('validations', [
+        ...mapActions('feedback', [
             'onError',
-            'removeErrors',
+            'removeScopeErrors',
+        ]),
+        ...mapActions('product', [
+            'removeProductDraft',
         ]),
         updateRestoredElement(element) {
             this.restoredElement = element;
@@ -78,7 +74,7 @@ export default {
         onClose() {
             this.$emit('close');
         },
-        onRestore() {
+        async onRestore() {
             if (!this.restoredElement) {
                 this.onError({
                     errors: {
@@ -90,16 +86,14 @@ export default {
                 return;
             }
 
-            deleteAttributeValue().then(response => response.default({
-                $axios: this.$axios,
-                $store: this.$store,
+            this.removeProductDraft({
                 languageCode: this.language.code,
                 attributeId: this.elements.find(
                     element => element.label === this.restoredElement,
                 ).properties.attribute_id,
             }).then(() => {
-                this.isRequestPending = false;
-                this.removeErrors();
+                this.isSubmitting = false;
+                this.removeScopeErrors();
                 this.$addAlert({
                     type: ALERT_TYPE.SUCCESS,
                     message: `${this.restoredElement} value restored`,
@@ -107,9 +101,11 @@ export default {
                 this.$emit('restore');
                 this.$emit('close');
             }).catch((e) => {
-                this.isRequestPending = false;
-                this.onError(e.data);
-            }));
+                this.isSubmitting = false;
+                this.onError({
+                    errors: e.data.errors,
+                });
+            });
         },
     },
 };

@@ -3,13 +3,16 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormSubsection>
+    <FormSubsection
+        :title="schema.title"
+        :required="schema.isRequired">
         <JSONSchemaFormTableRowWidget
             v-for="(row, index) in rowValues"
             :key="index"
             :index="index"
             :value="row"
             :schema="schema.items"
+            :errors="errors[`element-${index}`]"
             @remove="onRemoveRowAtIndex"
             @input="onValueChangeAtIndex" />
         <Button
@@ -51,6 +54,10 @@ export default {
         value: {
             type: Array,
             default: () => [],
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
         },
     },
     data() {

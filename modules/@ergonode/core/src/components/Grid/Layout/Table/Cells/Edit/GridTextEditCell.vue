@@ -18,7 +18,7 @@
 
 <script>
 import GridTextEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
-import TextField from '@Core/components/Inputs/TextField';
+import TextField from '@Core/components/TextField/TextField';
 import {
     INPUT_TYPE,
     SIZE,
@@ -59,7 +59,7 @@ export default {
     },
     beforeDestroy() {
         if (this.localValue !== this.value) {
-            this.$emit('cellValue', [
+            this.$emit('cell-value', [
                 {
                     value: this.localValue,
                     rowId: this.rowId,

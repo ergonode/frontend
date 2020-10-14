@@ -12,8 +12,8 @@
             :data="element"
             :drafts="drafts"
             :object-fit="objectFit"
-            @rowAction="onRowAction"
-            @cellValue="onCellValueChange" />
+            @row-action="onRowAction"
+            @cell-value="onCellValueChange" />
     </div>
 </template>
 
@@ -26,7 +26,11 @@ export default {
         GridCollectionCell,
     },
     props: {
-        data: {
+        rows: {
+            type: Array,
+            default: () => [],
+        },
+        rowIds: {
             type: Array,
             default: () => [],
         },
@@ -36,6 +40,10 @@ export default {
         },
         columnsNumber: {
             type: Number,
+            required: true,
+        },
+        collectionCellBinding: {
+            type: Object,
             required: true,
         },
         objectFit: {
@@ -49,13 +57,45 @@ export default {
                 gridTemplateColumns: `repeat(${this.columnsNumber}, 1fr)`,
             };
         },
+        data() {
+            const {
+                imageColumn,
+                type,
+                descriptionColumn,
+                additionalColumns,
+            } = this.collectionCellBinding;
+
+            if (!(imageColumn && descriptionColumn)) {
+                return [];
+            }
+
+            return this.rows
+                .map((row, index) => {
+                    const additionalData = {};
+
+                    if (additionalColumns) {
+                        additionalColumns.forEach((columnId) => {
+                            additionalData[columnId] = row[columnId] ? row[columnId].value : '';
+                        });
+                    }
+
+                    return {
+                        id: this.rowIds[index],
+                        image: row[imageColumn] ? row[imageColumn].value : '',
+                        description: row[descriptionColumn] ? row[descriptionColumn].value : '',
+                        type,
+                        actions: row._links ? row._links.value : '',
+                        ...additionalData,
+                    };
+                });
+        },
     },
     methods: {
         onRowAction(payload) {
-            this.$emit('rowAction', payload);
+            this.$emit('row-action', payload);
         },
         onCellValueChange(payload) {
-            this.$emit('cellValue', payload);
+            this.$emit('cell-value', payload);
         },
     },
 };
