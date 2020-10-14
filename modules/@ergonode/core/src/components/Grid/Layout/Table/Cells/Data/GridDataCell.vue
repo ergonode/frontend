@@ -8,6 +8,7 @@
         :data="data"
         :column="column"
         :draft="draft"
+        :is-draft="isDraft"
         :row-id="rowId"
         :error-messages="errorMessages"
         :column-index="columnIndex"
@@ -40,9 +41,9 @@ export default {
             type: String,
             default: '',
         },
-        // eslint-disable-next-line vue/require-prop-types
-        draft: {
-            default: null,
+        drafts: {
+            type: Object,
+            default: () => ({}),
         },
         rowId: {
             type: [
@@ -82,6 +83,12 @@ export default {
 
             return () => import(`@Core/components/Grid/Layout/Table/Cells/Data/Grid${this.type}DataCell`)
                 .catch(() => import('@Core/components/Grid/Layout/Table/Cells/Data/GridTextDataCell'));
+        },
+        draft() {
+            return this.drafts[`${this.rowId}/${this.column.id}`];
+        },
+        isDraft() {
+            return typeof this.drafts[`${this.rowId}/${this.column.id}`] !== 'undefined';
         },
     },
     methods: {

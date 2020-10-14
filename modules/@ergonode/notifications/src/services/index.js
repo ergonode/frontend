@@ -14,7 +14,7 @@ export const getAll = ({
 export const update = ({
     $axios,
     id,
-}) => $axios.$post(`profile/notifications/${id}/mark`, {
+}) => $axios.$post(`profile/notifications/${id}/mark`, {}, {
     withLanguage: false,
 });
 

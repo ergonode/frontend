@@ -21,7 +21,7 @@ export default {
                 const {
                     row, column,
                 } = this.cellResizer.position;
-                const fixedRow = row + this.basicFiltersOffset + this.rowsOffset;
+                const fixedRow = row + this.basicFiltersOffset + this.rowsOffset - 1;
 
                 const tableCellElement = this.$el.querySelector(`.coordinates-${column}-${fixedRow}`);
 
@@ -30,20 +30,24 @@ export default {
         },
         onCopyCellValuesByResizing(factor) {
             const {
-                row, column,
+                row,
+                column,
             } = this.cellResizer.position;
 
-            const fixedRow = row - this.basicFiltersOffset;
+            const fixedRow = row - this.basicFiltersOffset - 1;
             const fixedColumn = column - this.columnsOffset;
             const rowId = this.rowIds[fixedRow];
             const {
                 id: columnId,
             } = this.orderedColumns[fixedColumn];
 
-            const value = this.drafts[`${rowId}/${columnId}`] || this.rows[fixedRow][columnId].value;
+            const value = typeof this.drafts[`${rowId}/${columnId}`] === 'undefined'
+                ? this.rows[fixedRow][columnId].value
+                : this.drafts[`${rowId}/${columnId}`];
 
             const getMappedValues = ({
-                startIndex, endIndex,
+                startIndex,
+                endIndex,
             }) => {
                 const values = [];
 
@@ -86,7 +90,7 @@ export default {
                         width,
                     },
                     position: {
-                        row: +event.target.getAttribute('row') - this.rowsOffset - this.basicFiltersOffset,
+                        row: +event.target.getAttribute('row') - this.rowsOffset - this.basicFiltersOffset + 1,
                         column: +event.target.getAttribute('column'),
                         minRow: 1 + this.basicFiltersOffset,
                         maxRow: this.basicFiltersOffset + this.dataCount,

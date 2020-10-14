@@ -85,7 +85,7 @@
                             v-for="(row, rowIndex) in rows"
                             :key="`${rowIds[rowIndex]}|${column.id}`"
                             :data="row[column.id]"
-                            :draft="drafts[`${rowIds[rowIndex]}/${column.id}`]"
+                            :drafts="drafts"
                             :column="column"
                             :type="columnTypes[column.type]"
                             :error-messages="errors[`${rowIds[rowIndex]}/${column.id}`]"
