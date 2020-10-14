@@ -19,7 +19,7 @@
         </span>
         <span
             class="notification-element__date"
-            v-text="notification.created_at" />
+            v-text="createdAt" />
     </li>
 </template>
 
@@ -30,6 +30,13 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import {
+    DEFAULT_DATE_TIME_FORMAT,
+} from '@Core/models/calendar/calendar';
+import {
+    format as formatDate,
+    parseISO,
+} from 'date-fns';
 import {
     mapActions,
 } from 'vuex';
@@ -56,6 +63,9 @@ export default {
             return this.notification.avatar_filename
                 ? this.notification.user_id
                 : null;
+        },
+        createdAt() {
+            return formatDate(parseISO(this.notification.created_at), DEFAULT_DATE_TIME_FORMAT);
         },
     },
     methods: {
