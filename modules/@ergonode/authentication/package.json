@@ -1,6 +1,6 @@
 {
   "name": "@ergonode/authentication",
-  "version": "0.10.0",
+  "version": "1.0.0-beta",
   "author": "Team Ergonode <team@ergonode.com>",
   "description": "Ergonode authentication module",
   "license": "OSL-3.0",
