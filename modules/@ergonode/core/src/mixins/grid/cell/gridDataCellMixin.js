@@ -43,6 +43,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        isDraft: {
+            type: Boolean,
+            default: false,
+        },
         isLocked: {
             type: Boolean,
             default: false,
@@ -58,7 +62,7 @@ export default {
     },
     computed: {
         cellData() {
-            if (this.draft !== null && this.data.value !== this.draft) {
+            if (this.isDraft && this.data.value !== this.draft) {
                 return {
                     value: this.draft,
                     isDraft: true,

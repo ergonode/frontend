@@ -62,19 +62,28 @@ export default function ({
                         path,
                         params,
                     });
-                    const filter = advancedFilters.find(({
-                        id,
-                    }) => id === filterCode);
 
-                    if (filter && filter.attributeId) {
-                        this.setDisabledElement(this.getDisabledListElement({
-                            languageCode: filter.languageCode,
-                            attributeId: filter.attributeId,
-                            disabledElements: this.disabledElements,
-                        }));
+                    if (advancedFilters.length) {
+                        const filter = advancedFilters.find(({
+                            id,
+                        }) => id === filterCode);
+
+                        if (filter.attributeId) {
+                            this.setDisabledElement(this.getDisabledListElement({
+                                languageCode: filter.languageCode,
+                                attributeId: filter.attributeId,
+                                disabledElements: this.disabledElements,
+                            }));
+                        }
+
+                        this.advancedFilters.unshift(filter);
+                    } else {
+                        removeCookieAtIndex({
+                            cookies: this.$cookies,
+                            cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
+                            index: 0,
+                        });
                     }
-
-                    this.advancedFilters.unshift(filter);
                 } catch {
                     removeCookieAtIndex({
                         cookies: this.$cookies,
