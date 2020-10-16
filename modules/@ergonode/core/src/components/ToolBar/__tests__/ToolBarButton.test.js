@@ -12,7 +12,7 @@ describe('ToolBar/ToolBarButton', () => {
     beforeEach(() => {
         wrapper = shallowMount(ToolBarButton, {
             propsData: {
-                isSelected: true,
+                selected: true,
             },
         });
     });
@@ -23,7 +23,7 @@ describe('ToolBar/ToolBarButton', () => {
     });
 
     it('Check if button is selected', () => {
-        expect(wrapper.vm.isSelected).toBeTruthy();
+        expect(wrapper.vm.selected).toBeTruthy();
         expect(wrapper.vm.$el.classList.contains('tool-bar-button--selected')).toBeTruthy();
     });
 });
