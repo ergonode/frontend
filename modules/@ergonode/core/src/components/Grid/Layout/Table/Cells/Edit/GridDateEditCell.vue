@@ -43,6 +43,9 @@ export default {
         gridEditCellMixin,
     ],
     props: {
+        /**
+         * Date format used for parsing value
+         */
         format: {
             type: String,
             default: DEFAULT_FORMAT,

@@ -217,54 +217,93 @@ export default {
         gridResizerCellMixin,
     ],
     props: {
+        /**
+         * List of columns presented at Grid
+         */
         columns: {
             type: Array,
             default: () => [],
         },
+        /**
+         * List of action columns presented in sticky right panel of columns
+         */
         actionColumns: {
             type: Array,
             default: () => [],
         },
+        /**
+         * List of rows presented at Grid
+         */
         rows: {
             type: Array,
             default: () => [],
         },
+        /**
+         * List of rows ids
+         */
         rowIds: {
             type: Array,
             default: () => [],
         },
+        /**
+         * The drafts are unsaved changes, cached changed data at given time
+         */
         drafts: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * The validation errors
+         */
         errors: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Selected filter values
+         */
         filters: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Current visible page at Grid
+         */
         currentPage: {
             type: Number,
             default: 1,
         },
+        /**
+         * Max visible rows for *currentPage* at Grid
+         */
         maxRows: {
             type: Number,
             default: 1,
         },
+        /**
+         * Determines the size of row height
+         */
         rowHeight: {
             type: Number,
             default: ROW_HEIGHT.SMALL,
         },
+        /**
+         * Determinate if the component is being able to edit
+         */
         isEditable: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if selecting row column is visible
+         */
         isSelectColumn: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if filters are visible
+         */
         isBasicFilter: {
             type: Boolean,
             default: false,

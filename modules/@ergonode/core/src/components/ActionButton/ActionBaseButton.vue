@@ -68,7 +68,7 @@ export default {
     },
     props: {
         /**
-         * The options of the dropdown
+         * Component variances that user can choose from
          */
         options: {
             type: Array,
@@ -82,7 +82,7 @@ export default {
             default: false,
         },
         /**
-         * The disabled flag
+         * Determinate if the component is disabled
          */
         disabled: {
             type: Boolean,

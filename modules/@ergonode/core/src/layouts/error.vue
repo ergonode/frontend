@@ -12,13 +12,17 @@
 </template>
 
 <script>
+import Page from '@Core/components/Layout/Page';
 
 export default {
     name: 'ErrorLayout',
     components: {
-        Page: () => import('@Core/components/Layout/Page'),
+        Page,
     },
     props: {
+        /**
+         * Validation error
+         */
         error: {
             type: [
                 Object,

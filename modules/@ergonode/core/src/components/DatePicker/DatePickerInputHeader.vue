@@ -4,7 +4,7 @@
  */
 <template>
     <div class="input-header">
-        <span v-text="header" />
+        <span v-text="title" />
         <TextField
             :value="value"
             :placeholder="dateFormat"
@@ -32,13 +32,19 @@ export default {
         TextField,
     },
     props: {
-        header: {
+        /**
+         * The title of the component
+         */
+        title: {
             type: [
                 String,
                 Number,
             ],
             required: true,
         },
+        /**
+         * Component value
+         */
         value: {
             type: String,
             default: '',

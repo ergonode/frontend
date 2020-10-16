@@ -30,10 +30,16 @@ export default {
         CheckBox,
     },
     props: {
+        /**
+         * JSON schema
+         */
         schema: {
             type: Object,
             required: true,
         },
+        /**
+         * Component value
+         */
         value: {
             type: Array,
             default: () => [],

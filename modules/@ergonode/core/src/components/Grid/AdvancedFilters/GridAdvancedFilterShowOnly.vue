@@ -20,6 +20,9 @@ export default {
         Toggler,
     },
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: Boolean,
             required: true,

@@ -6,7 +6,7 @@
     <div class="grid-image-presentation-cell">
         <Picture
             v-if="value"
-            :api-path="`multimedia/${value}/download/default`"
+            :href="`multimedia/${value}/download/default`"
             :value="value" />
     </div>
 </template>
@@ -18,6 +18,9 @@ export default {
         Picture: () => import('@Core/components/Multimedia/Picture'),
     },
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: String,
             default: '',

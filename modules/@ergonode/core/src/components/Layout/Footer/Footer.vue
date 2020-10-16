@@ -19,14 +19,23 @@
 export default {
     name: 'Footer',
     props: {
+        /**
+         * Equal space between each component
+         */
         spaceBetween: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Float to the right side
+         */
         flexEnd: {
             type: Boolean,
             default: false,
         },
+        /**
+         * FLoat to the left side
+         */
         flexStart: {
             type: Boolean,
             default: false,

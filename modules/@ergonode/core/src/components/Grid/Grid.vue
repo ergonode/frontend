@@ -170,30 +170,51 @@ export default {
         IconAddColumn: () => import('@Core/components/Icons/Actions/IconAddColumn'),
     },
     props: {
+        /**
+         * List of columns presented at Grid
+         */
         columns: {
             type: Array,
             default: () => [],
         },
+        /**
+         * List of rows presented at Grid
+         */
         rows: {
             type: Array,
             default: () => [],
         },
+        /**
+         * The drafts are unsaved changes, cached changed data at given time
+         */
         drafts: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * The validation errors
+         */
         errors: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * List of advanced filters presented at Grid
+         */
         advancedFilters: {
             type: Array,
             default: () => [],
         },
+        /**
+         * The model of data at which collection layout cells are going to be binded with data of Grid
+         */
         collectionCellBinding: {
             type: Object,
             default: null,
         },
+        /**
+         * The placeholder is a helper text for the component
+         */
         placeholder: {
             type: Object,
             default: () => ({
@@ -203,47 +224,80 @@ export default {
                 color: WHITESMOKE,
             }),
         },
+        /**
+         * Determines default layout of Grid
+         */
         defaultLayout: {
             type: String,
             default: GRID_LAYOUT.TABLE,
             validator: value => Object.values(GRID_LAYOUT).indexOf(value) !== -1,
         },
+        /**
+         * Number of visible data
+         */
         dataCount: {
             type: Number,
             required: true,
         },
+        /**
+         * Determines if data is loaded asynchronously
+         */
         isPrefetchingData: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if advanced filters are visible
+         */
         isAdvancedFilters: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if collection layout might be chosen
+         */
         isCollectionLayout: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if the component has border
+         */
         isBorder: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if the component is being able to edit
+         */
         isEditable: {
             type: Boolean,
             default: true,
         },
+        /**
+         * Determines if filters are visible
+         */
         isBasicFilter: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if selecting row column is visible
+         */
         isSelectColumn: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if footer is visible
+         */
         isFooterVisible: {
             type: Boolean,
             default: true,
         },
+        /**
+         * Determines if header is visible
+         */
         isHeaderVisible: {
             type: Boolean,
             default: false,

@@ -42,8 +42,7 @@ export default {
     name: 'Fab',
     props: {
         /**
-         * The theme of the fab
-         * @values primary, secondary, secondary-plain
+         * The theme of the component
          */
         theme: {
             type: String,
@@ -51,8 +50,7 @@ export default {
             validator: value => Object.values(THEME).indexOf(value) !== -1,
         },
         /**
-         * The size of the fab
-         * @values regular, small, tiny
+         * The size of the component
          */
         size: {
             type: String,
@@ -60,8 +58,7 @@ export default {
             validator: value => Object.values(SIZE).indexOf(value) !== -1,
         },
         /**
-         * The disabled state of the fab
-         * @values primary, secondary
+         * Determinate if the component is disabled
          */
         disabled: {
             type: Boolean,

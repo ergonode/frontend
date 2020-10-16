@@ -15,14 +15,23 @@
 export default {
     name: 'HorizontalTabBarContent',
     props: {
+        /**
+         * Tab bar content component
+         */
         component: {
             type: Function,
             required: true,
         },
+        /**
+         * Props of content component
+         */
         props: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Listeners of content component
+         */
         listeners: {
             type: Object,
             default: () => ({}),

@@ -6,7 +6,7 @@
     <div :class="classes">
         <DropZone
             v-show="isListElementDragging && !isFilterExists"
-            :orientation="horizontalOrientation"
+            :layout-orientation="horizontalOrientation"
             title="ADD FILTER"
             @drop="onDropFilter">
             <template #icon="{ color }">
@@ -15,16 +15,6 @@
         </DropZone>
         <GridHeaderSettings>
             <template #actions>
-                <!-- TODO: Uncomment when mass actions are implemented-->
-                <!-- <ActionButton
-                    title="ACTIONS"
-                    :theme="isActionsSelected ? theme.PRIMARY : theme.SECONDARY"
-                    :size="smallSize"
-                    :options="[]">
-                    <template #prepend="{ color }">
-                        <IconArrowDropDown :fill-color="color" />
-                    </template>
-                </ActionButton> -->
                 <ExpandNumericButton
                     v-if="isAdvancedFilters"
                     title="FILTERS"
@@ -108,39 +98,54 @@ export default {
         ExpandNumericButton,
         Fab,
         IconSettings,
-        // ActionButton: () => import('@Core/components/ActionButton/ActionButton'),
-        // IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
         GridSettingsModalForm: () => import('@Core/components/Grid/Modals/GridSettingsModalForm'),
     },
     props: {
+        /**
+         * Configuration of table layout
+         */
         tableLayoutConfig: {
             type: Object,
             required: true,
         },
+        /**
+         * Configuration of collection layout
+         */
         collectionLayoutConfig: {
             type: Object,
             required: true,
         },
+        /**
+         * Current selected grid layout
+         */
         layout: {
             type: String,
             default: GRID_LAYOUT.TABLE,
         },
+        /**
+         * List of advanced filters
+         */
         filters: {
             type: Array,
             default: () => [],
         },
+        /**
+         * Selected filter values
+         */
         filterValues: {
             type: Object,
             default: () => ({}),
         },
-        isActionsSelected: {
-            type: Boolean,
-            default: false,
-        },
+        /**
+         * Determines if advanced filters are visible
+         */
         isAdvancedFilters: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if collection layout might be chosen
+         */
         isCollectionLayout: {
             type: Boolean,
             default: false,

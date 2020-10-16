@@ -32,6 +32,9 @@ export default {
         Form,
     },
     props: {
+        /**
+         * JSON schema
+         */
         schema: {
             type: Object,
             default: () => ({
@@ -39,10 +42,16 @@ export default {
                 required: [],
             }),
         },
+        /**
+         * The validation errors
+         */
         errors: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Component value
+         */
         value: {
             type: String,
             default: '',

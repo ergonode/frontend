@@ -30,6 +30,9 @@ import {
 export default {
     name: 'InputSolidStyle',
     props: {
+        /**
+         * The size of the component
+         */
         size: {
             type: String,
             default: SIZE.REGULAR,
@@ -38,27 +41,45 @@ export default {
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
         },
+        /**
+         * Height of the component
+         */
         height: {
             type: String,
             default: 'unset',
         },
+        /**
+         * Alignment of selected value, might be centered or from left
+         */
         alignment: {
             type: String,
             default: ALIGNMENT.LEFT,
             validator: value => Object.values(ALIGNMENT).indexOf(value) !== -1,
         },
+        /**
+         * Determines state of focused component
+         */
         focused: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if the component has error
+         */
         error: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if the component is disabled
+         */
         disabled: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Additional label which gives user hint about component above
+         */
         detailsLabel: {
             type: String,
             default: '',

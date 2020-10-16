@@ -30,14 +30,21 @@
 </template>
 
 <script>
+import HorizontalTabBarContent from '@Core/components/TabBar/HorizontalTabBarContent';
+import HorizontalTabBarItem from '@Core/components/TabBar/HorizontalTabBarItem';
+import TabBarItemSlider from '@Core/components/TabBar/TabBarItemSlider';
+
 export default {
     name: 'HorizontalTabBar',
     components: {
-        TabBarItemSlider: () => import('@Core/components/TabBar/TabBarItemSlider'),
-        HorizontalTabBarContent: () => import('@Core/components/TabBar/HorizontalTabBarContent'),
-        HorizontalTabBarItem: () => import('@Core/components/TabBar/HorizontalTabBarItem'),
+        TabBarItemSlider,
+        HorizontalTabBarContent,
+        HorizontalTabBarItem,
     },
     props: {
+        /**
+         * List of items
+         */
         items: {
             type: Array,
             required: true,

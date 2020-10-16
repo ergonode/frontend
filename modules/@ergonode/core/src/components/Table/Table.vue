@@ -25,10 +25,16 @@ export default {
         Preloader,
     },
     props: {
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             default: '',
         },
+        /**
+         * Determines if data is loaded asynchronously
+         */
         isPrefetchingData: {
             type: Boolean,
             default: false,

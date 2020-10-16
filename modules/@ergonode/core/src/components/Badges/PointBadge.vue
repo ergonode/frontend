@@ -12,6 +12,9 @@
 export default {
     name: 'PointBadge',
     props: {
+        /**
+         * Color of badge
+         */
         color: {
             type: String,
             required: true,

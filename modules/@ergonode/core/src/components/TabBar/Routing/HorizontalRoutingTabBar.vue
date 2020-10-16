@@ -55,14 +55,23 @@ export default {
         HorizontalRoutingTabBarItem,
     },
     props: {
+        /**
+         * List of items
+         */
         items: {
             type: Array,
             required: true,
         },
+        /**
+         * The validation errors
+         */
         errors: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Values that have been changes at given context
+         */
         changeValues: {
             type: Object,
             default: () => ({}),

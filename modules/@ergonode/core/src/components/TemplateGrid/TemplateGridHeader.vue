@@ -10,7 +10,7 @@
             v-for="index in columns"
             :key="index"
             class="grid-header__title">
-            {{ addOrdinalNumberSuffix(index) }} {{ header }}
+            {{ addOrdinalNumberSuffix(index) }} {{ title }}
         </span>
     </div>
 </template>
@@ -18,11 +18,17 @@
 export default {
     name: 'TemplateGridHeader',
     props: {
+        /**
+         * Number of visible columns
+         */
         columns: {
             type: Number,
             required: true,
         },
-        header: {
+        /**
+         * The title of the component
+         */
+        title: {
             type: String,
             default: 'level',
         },

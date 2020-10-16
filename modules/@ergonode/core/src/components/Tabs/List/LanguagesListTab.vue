@@ -5,7 +5,7 @@
 <template>
     <VerticalTabBarList>
         <ListSearchHeader
-            header="System languages"
+            title="System languages"
             is-search
             @search-result="onSearch" />
         <List>
@@ -22,6 +22,11 @@
 </template>
 
 <script>
+import List from '@Core/components/List/List';
+import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
+import ListSearchHeader from '@Core/components/List/ListSearchHeader';
+import LanguagesListElement from '@Core/components/Lists/LanguagesListElement';
+import VerticalTabBarList from '@Core/components/TabBar/VerticalTabBarList';
 import PRIVILEGES from '@Core/config/privileges';
 import {
     mapGetters,
@@ -31,11 +36,11 @@ import {
 export default {
     name: 'LanguagesListTab',
     components: {
-        List: () => import('@Core/components/List/List'),
-        ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
-        LanguagesListElement: () => import('@Core/components/Lists/LanguagesListElement'),
-        VerticalTabBarList: () => import('@Core/components/TabBar/VerticalTabBarList'),
-        ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
+        List,
+        ListScrollableContainer,
+        LanguagesListElement,
+        VerticalTabBarList,
+        ListSearchHeader,
     },
     data() {
         return {

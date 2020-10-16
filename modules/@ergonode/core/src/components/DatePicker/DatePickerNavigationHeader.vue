@@ -18,7 +18,7 @@
         <span
             class="date-picker-header__title"
             @click="onClick"
-            v-text="header" />
+            v-text="title" />
         <slot name="next">
             <Fab
                 :theme="secondaryTheme"
@@ -50,7 +50,10 @@ export default {
         IconArrowSingle,
     },
     props: {
-        header: {
+        /**
+         * The title of the component
+         */
+        title: {
             type: [
                 String,
                 Number,

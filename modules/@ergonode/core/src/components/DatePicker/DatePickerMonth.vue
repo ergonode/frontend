@@ -38,18 +38,30 @@ export default {
         DatePickerContentHeader,
     },
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: Date,
             default: null,
         },
+        /**
+         * The value from/to which is selection - displayed as lighted color between range to - from
+         */
         rangeValue: {
             type: Date,
             default: null,
         },
+        /**
+         * Chosen month
+         */
         month: {
             type: Number,
             required: true,
         },
+        /**
+         * Chosen year
+         */
         year: {
             type: Number,
             required: true,

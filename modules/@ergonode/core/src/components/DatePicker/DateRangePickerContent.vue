@@ -9,7 +9,7 @@
             :range-value="value.to"
             @input="onSelectRange">
             <template #header>
-                <DatePickerHeader :header="fromHeader" />
+                <DatePickerHeader :title="fromHeader" />
             </template>
         </DatePickerContent>
         <Divider vertical />
@@ -18,7 +18,7 @@
             :range-value="value.to"
             @input="onSelectRange">
             <template #header>
-                <DatePickerHeader :header="toHeader" />
+                <DatePickerHeader :title="toHeader" />
             </template>
         </DatePickerContent>
     </div>
@@ -50,18 +50,19 @@ export default {
         DatePickerHeader,
     },
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: Object,
-            required: false,
             default: () => ({
                 from: null,
                 to: null,
             }),
         },
-        inputHeader: {
-            type: Boolean,
-            default: false,
-        },
+        /**
+         * Date format used for parsing value
+         */
         format: {
             type: String,
             default: DEFAULT_FORMAT,

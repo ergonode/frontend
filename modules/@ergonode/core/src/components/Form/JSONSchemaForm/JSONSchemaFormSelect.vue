@@ -22,14 +22,23 @@ export default {
         Select,
     },
     props: {
+        /**
+         * JSON schema
+         */
         schema: {
             type: Object,
             required: true,
         },
+        /**
+         * Component value
+         */
         value: {
             type: String,
             default: '',
         },
+        /**
+         * The error messages are messages which comes from validation process
+         */
         errorMessages: {
             type: String,
             default: '',

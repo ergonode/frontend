@@ -22,10 +22,16 @@ export default {
         BadgeLabel,
     },
     props: {
+        /**
+         * Number displaying inside badge
+         */
         number: {
             type: Number,
             default: 0,
         },
+        /**
+         * The theme of the component
+         */
         theme: {
             type: String,
             default: THEME.PRIMARY,

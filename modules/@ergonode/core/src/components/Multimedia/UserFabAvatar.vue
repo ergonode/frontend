@@ -7,7 +7,7 @@
         <Picture
             v-if="avatarId"
             :value="avatarId"
-            :api-path="avatarPath"
+            :href="avatarPath"
             :use-cache="false"
             fab />
         <span
@@ -30,18 +30,30 @@ export default {
         Picture: () => import('@Core/components/Multimedia/Picture'),
     },
     props: {
+        /**
+         * Unique identifier of user avatar
+         */
         avatarId: {
             type: String,
             default: '',
         },
+        /**
+         * Unique identifier of user
+         */
         userId: {
             type: String,
             default: '',
         },
+        /**
+         * Name of user
+         */
         name: {
             type: String,
             default: '',
         },
+        /**
+         * The size of the component
+         */
         size: {
             type: String,
             default: SIZE.TINY,

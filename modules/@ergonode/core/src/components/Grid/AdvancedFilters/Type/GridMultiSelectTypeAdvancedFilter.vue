@@ -44,14 +44,23 @@ export default {
         MultiselectDropdownFooter,
     },
     props: {
+        /**
+         * Index of given component at the loop
+         */
         index: {
             type: Number,
             required: true,
         },
+        /**
+         * Filter data model
+         */
         filter: {
             type: Object,
             required: true,
         },
+        /**
+         * Component value
+         */
         value: {
             type: Object,
             default: () => ({

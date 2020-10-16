@@ -19,6 +19,9 @@ export default {
         Toggler,
     },
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: [
                 Boolean,
@@ -26,6 +29,9 @@ export default {
             ],
             default: false,
         },
+        /**
+         * Determinate if the component is disabled
+         */
         disabled: {
             type: Boolean,
             default: false,

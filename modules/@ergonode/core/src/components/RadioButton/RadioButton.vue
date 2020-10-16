@@ -35,18 +35,30 @@ export default {
         associatedLabelMixin,
     ],
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: String,
             default: '',
         },
+        /**
+         * The label is a text caption or description for the component
+         */
         label: {
             type: String,
             default: '',
         },
+        /**
+         * Used as name attribute
+         */
         name: {
             type: String,
             default: '',
         },
+        /**
+         * Determinate if the component is disabled
+         */
         disabled: {
             type: Boolean,
             default: false,

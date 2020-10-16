@@ -17,11 +17,17 @@ import {
 export default {
     name: 'Loader',
     props: {
+        /**
+         * Color of loader
+         */
         color: {
             type: String,
             default: GREEN,
             validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
         },
+        /**
+         * The size of the component
+         */
         size: {
             type: String,
             default: '20px',

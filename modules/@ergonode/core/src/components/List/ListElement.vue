@@ -17,15 +17,24 @@ import {
 export default {
     name: 'ListElement',
     props: {
+        /**
+         * The size of the component
+         */
         size: {
             type: String,
             default: SIZE.REGULAR,
             validator: value => Object.values(SIZE).indexOf(value) !== -1,
         },
+        /**
+         * Determinate if the component is selected
+         */
         selected: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if the component is disabled
+         */
         disabled: {
             type: Boolean,
             default: false,

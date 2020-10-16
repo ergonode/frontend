@@ -27,6 +27,9 @@ export default {
         BadgeLabel,
     },
     props: {
+        /**
+         * The title of the component
+         */
         title: {
             type: [
                 String,
@@ -34,16 +37,25 @@ export default {
             ],
             required: true,
         },
+        /**
+         * Background color of badge
+         */
         background: {
             type: String,
             default: WHITE,
             validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
         },
+        /**
+         * Color of the badge label
+         */
         color: {
             type: String,
             default: GRAPHITE_DARK,
             validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
         },
+        /**
+         * The size of the component
+         */
         size: {
             type: String,
             default: SIZE.REGULAR,

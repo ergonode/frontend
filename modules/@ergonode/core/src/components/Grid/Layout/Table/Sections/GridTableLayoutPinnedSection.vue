@@ -14,6 +14,9 @@
 export default {
     name: 'GridTableLayoutPinnedSection',
     props: {
+        /**
+         * Determines the pinned state of section
+         */
         isPinned: {
             type: Boolean,
             default: false,

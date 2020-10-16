@@ -25,26 +25,44 @@
 export default {
     name: 'GridDataCell',
     props: {
+        /**
+         * Component data used for filling table cell
+         */
         data: {
             type: Object,
             required: true,
         },
+        /**
+         * Data of the column
+         */
         column: {
             type: Object,
             required: true,
         },
+        /**
+         * The error messages are messages which comes from validation process
+         */
         errorMessages: {
             type: String,
             default: '',
         },
+        /**
+         * Determines which component will be loaded
+         */
         type: {
             type: String,
             default: '',
         },
+        /**
+         * The drafts are unsaved changes, cached changed data at given time
+         */
         drafts: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Unique row identifier
+         */
         rowId: {
             type: [
                 String,
@@ -52,25 +70,40 @@ export default {
             ],
             required: true,
         },
+        /**
+         * Row index of given component at the loop
+         */
         rowIndex: {
             type: Number,
             required: true,
         },
+        /**
+         * Column index of given component at the loop
+         */
         columnIndex: {
             type: Number,
             required: true,
         },
+        /**
+         * Determinate if the component is not being able to edit
+         */
         isLocked: {
             type: Boolean,
-            required: false,
+            default: false,
         },
+        /**
+         * Determinate if the component is being able to copy value by mass action
+         */
         isCopyable: {
             type: Boolean,
-            required: false,
+            default: false,
         },
+        /**
+         * Determines if component is selected
+         */
         isSelected: {
             type: Boolean,
-            required: false,
+            default: false,
         },
     },
     computed: {
