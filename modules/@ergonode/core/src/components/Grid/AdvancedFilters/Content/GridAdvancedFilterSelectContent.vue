@@ -5,6 +5,7 @@
 <template>
     <GridAdvancedFilterContent
         :value="value.isEmptyRecord"
+        :fixed="true"
         @input="onEmptyRecordChange">
         <List>
             <ListElement

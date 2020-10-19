@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="grid-advanced-filter-content">
+    <div :class="classes">
         <GridAdvancedFilterShowOnly
             :value="value"
             @input="onValueChange" />
@@ -30,6 +30,23 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines whether content of dropdown has fixed height and width or not
+         */
+        fixed: {
+            type: Boolean,
+            default: false,
+        },
+    },
+    computed: {
+        classes() {
+            return [
+                'grid-advanced-filter-content',
+                {
+                    'grid-advanced-filter-content--fixed': this.fixed,
+                },
+            ];
+        },
     },
     methods: {
         onValueChange() {
@@ -43,6 +60,9 @@ export default {
     .grid-advanced-filter-content {
         display: flex;
         flex-direction: column;
-        overflow: auto;
+
+        &--fixed {
+            max-height: 200px;
+        }
     }
 </style>
