@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ListHeader :header="header">
+    <ListHeader :title="title">
         <slot
             v-if="!isSearchButtonClicked"
             name="select">
@@ -65,14 +65,23 @@ export default {
         IconSearch,
     },
     props: {
-        header: {
+        /**
+         * The title of the component
+         */
+        title: {
             type: String,
             required: true,
         },
+        /**
+         * Component variances that user can choose from
+         */
         options: {
             type: Array,
             default: () => ([]),
         },
+        /**
+         * Value of selected option
+         */
         selectedOption: {
             type: String,
             default: '',

@@ -39,22 +39,37 @@ export default {
         IconMark,
     },
     props: {
+        /**
+         * Index of given component at the loop
+         */
         index: {
             type: Number,
             required: true,
         },
+        /**
+         * Selected index of tab
+         */
         selectedIndex: {
             type: Number,
             required: true,
         },
+        /**
+         * Item data model
+         */
         item: {
             type: Object,
             required: true,
         },
+        /**
+         * Values that have been changes at given context
+         */
         changeValues: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * The validation errors
+         */
         errors: {
             type: Object,
             default: () => ({}),

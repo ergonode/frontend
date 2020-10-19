@@ -22,17 +22,25 @@ export default {
         TemplateGridShadowItem,
     },
     props: {
+        /**
+         * Number of visible columns
+         */
         columns: {
             type: Number,
             required: true,
         },
+        /**
+         * List of rows presented at Grid
+         */
         rows: {
             type: Number,
             required: true,
         },
+        /**
+         * Determines whether header is visible
+         */
         isHeader: {
             type: Boolean,
-            required: false,
             default: true,
         },
     },

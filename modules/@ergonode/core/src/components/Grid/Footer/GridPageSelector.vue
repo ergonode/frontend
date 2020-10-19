@@ -33,10 +33,16 @@ export default {
         Select,
     },
     props: {
+        /**
+         * Max visible rows for *currentPage* at Grid
+         */
         maxRows: {
             type: Number,
             required: true,
         },
+        /**
+         * Component value
+         */
         value: {
             type: Number,
             required: true,

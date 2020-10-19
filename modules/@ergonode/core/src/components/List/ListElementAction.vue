@@ -16,6 +16,9 @@ import {
 export default {
     name: 'ListElementAction',
     props: {
+        /**
+         * The size of the component
+         */
         size: {
             type: String,
             default: SIZE.REGULAR,

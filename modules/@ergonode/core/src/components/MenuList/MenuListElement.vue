@@ -30,6 +30,9 @@ import {
 export default {
     name: 'MenuListElement',
     props: {
+        /**
+         * Item data model
+         */
         item: {
             type: Object,
             required: true,

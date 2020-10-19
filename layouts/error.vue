@@ -15,6 +15,9 @@ export default {
         ErrorLayout,
     },
     props: {
+        /**
+         * Validation error
+         */
         error: {
             type: [
                 Object,

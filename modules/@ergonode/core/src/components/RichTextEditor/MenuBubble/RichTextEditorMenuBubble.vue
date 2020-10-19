@@ -66,6 +66,9 @@ export default {
         IconFilledClose,
     },
     props: {
+        /**
+         * RTE data model
+         */
         editor: {
             type: Object,
             default: null,

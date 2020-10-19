@@ -20,10 +20,16 @@ import {
 export default {
     name: 'ListElementTree',
     props: {
+        /**
+         * Level of nesting list element components
+         */
         level: {
             type: Number,
             default: 0,
         },
+        /**
+         * The size of the component
+         */
         size: {
             type: String,
             default: SIZE.REGULAR,
@@ -32,6 +38,9 @@ export default {
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
         },
+        /**
+         * Determines if the component is multiple choice
+         */
         multiselect: {
             type: Boolean,
             default: false,

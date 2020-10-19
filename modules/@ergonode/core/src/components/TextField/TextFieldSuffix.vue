@@ -12,6 +12,9 @@
 export default {
     name: 'TextFieldSuffix',
     props: {
+        /**
+         * Suffix is an additional information about data displaying inside field
+         */
         suffix: {
             type: String,
             default: '',

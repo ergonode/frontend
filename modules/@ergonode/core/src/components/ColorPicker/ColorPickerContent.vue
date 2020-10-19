@@ -19,13 +19,19 @@
 export default {
     name: 'ColorPickerContent',
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: String,
             default: null,
         },
+        /**
+         * Component variances that user can choose from
+         */
         options: {
             type: Array,
-            required: true,
+            default: () => [],
         },
     },
     computed: {

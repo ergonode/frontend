@@ -47,14 +47,23 @@ export default {
         Button,
     },
     props: {
+        /**
+         * JSON schema
+         */
         schema: {
             type: Object,
             required: true,
         },
+        /**
+         * Component value
+         */
         value: {
             type: Array,
             default: () => [],
         },
+        /**
+         * The validation errors
+         */
         errors: {
             type: Object,
             default: () => ({}),

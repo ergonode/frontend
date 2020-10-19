@@ -45,16 +45,24 @@
 </template>
 
 <script>
+import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
+
 export default {
     name: 'ExpandingCollection',
     components: {
-        ExpandNumericButton: () => import('@Core/components/Buttons/ExpandNumericButton'),
+        ExpandNumericButton,
     },
     props: {
+        /**
+         * Index of given component at the loop
+         */
         index: {
             type: Number,
             default: 0,
         },
+        /**
+         * Model object
+         */
         collection: {
             type: Object,
             required: true,

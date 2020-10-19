@@ -4,7 +4,7 @@
  */
 <template>
     <ToolBarButton
-        :is-selected="isFocused"
+        :selected="isFocused"
         @click.native="onClick">
         <slot name="input" />
         <FadeTransition>
@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import ToolBarButton from '@Core/components/ToolBar/ToolBarButton';
+import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import {
     isMouseOutOfBoundsElement,
 } from '@Core/models/drag_and_drop/helpers';
@@ -26,8 +28,8 @@ import {
 export default {
     name: 'ToolBarSelectButton',
     components: {
-        ToolBarButton: () => import('@Core/components/ToolBar/ToolBarButton'),
-        FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),
+        ToolBarButton,
+        FadeTransition,
     },
     data() {
         return {

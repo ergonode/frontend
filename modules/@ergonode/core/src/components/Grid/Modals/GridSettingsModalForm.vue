@@ -81,14 +81,23 @@ export default {
         Select,
     },
     props: {
+        /**
+         * Configuration of table layout
+         */
         tableLayoutConfig: {
             type: Object,
             required: true,
         },
+        /**
+         * Configuration of collection layout
+         */
         collectionLayoutConfig: {
             type: Object,
             required: true,
         },
+        /**
+         * Determines if collection layout might be chosen
+         */
         isCollectionLayout: {
             type: Boolean,
             default: false,

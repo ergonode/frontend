@@ -47,16 +47,25 @@ export default {
         ListElementTitle,
     },
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: Object,
             default: () => ({
                 isEmptyRecord: false,
             }),
         },
+        /**
+         * Code of the language
+         */
         languageCode: {
             type: String,
             required: true,
         },
+        /**
+         * Component variances that user can choose from
+         */
         options: {
             type: Array,
             default: () => [],

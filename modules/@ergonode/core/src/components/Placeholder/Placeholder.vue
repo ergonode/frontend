@@ -31,23 +31,38 @@ import {
 export default {
     name: 'Placeholder',
     props: {
+        /**
+         * Determines position of body components; vertical / horizontal
+         */
         layoutOrientation: {
             type: String,
             default: LAYOUT_ORIENTATION.VERTICAL,
             validator: value => Object.values(LAYOUT_ORIENTATION).indexOf(value) !== -1,
         },
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             default: 'Nothing to see here',
         },
+        /**
+         * The subtitle of the component
+         */
         subtitle: {
             type: String,
             default: 'There are no records in the system.',
         },
+        /**
+         * The url to background image of placeholder
+         */
         bgUrl: {
             type: String,
             required: true,
         },
+        /**
+         * Color of background
+         */
         color: {
             type: String,
             default: WHITESMOKE,

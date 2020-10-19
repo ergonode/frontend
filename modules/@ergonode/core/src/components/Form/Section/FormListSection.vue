@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormSection :title="sectionTitle">
+    <FormSection :title="title">
         <slot />
         <Button
             :title="addListTitle"
@@ -35,14 +35,23 @@ export default {
         FormSection,
     },
     props: {
-        sectionTitle: {
+        /**
+         * The title of the component
+         */
+        title: {
             type: String,
             default: '',
         },
+        /**
+         * The title of the adding new list element button component
+         */
         addListTitle: {
             type: String,
             default: '',
         },
+        /**
+         * Determinate if the component is disabled
+         */
         disabled: {
             type: Boolean,
             default: false,

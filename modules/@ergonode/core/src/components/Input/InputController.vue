@@ -19,6 +19,9 @@ import {
 export default {
     name: 'InputController',
     props: {
+        /**
+         * The size of the component
+         */
         size: {
             type: String,
             default: SIZE.REGULAR,

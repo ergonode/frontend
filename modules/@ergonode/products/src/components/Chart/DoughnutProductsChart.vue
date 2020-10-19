@@ -36,6 +36,9 @@ export default {
             type: Array,
             default: () => [],
         },
+        /**
+         * Number of visible data
+         */
         dataCount: {
             type: Number,
             default: 0,

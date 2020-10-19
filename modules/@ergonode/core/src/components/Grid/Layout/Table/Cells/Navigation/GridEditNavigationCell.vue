@@ -6,7 +6,10 @@
 export default {
     name: 'GridEditNavigationCell',
     props: {
-        keyCode: {
+        /**
+         * The key code which will invoke edit event
+         */
+        editKeyCode: {
             type: Number,
             default: 13,
         },
@@ -35,7 +38,7 @@ export default {
                 keyCode,
             } = event;
 
-            if (keyCode === this.keyCode || keyCode === 27) {
+            if (keyCode === this.editKeyCode || keyCode === 27) {
                 this.$emit('edit');
             } else if (keyCode === 9) {
                 event.preventDefault();

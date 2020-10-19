@@ -44,10 +44,16 @@ export default {
         FadeSideBarTextTransition,
     },
     props: {
+        /**
+         * Route data model
+         */
         route: {
             type: Object,
             required: true,
         },
+        /**
+         * Determines state of expanded component
+         */
         isExpanded: {
             type: Boolean,
             default: true,

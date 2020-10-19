@@ -4,7 +4,7 @@
  */
 <template>
     <VerticalTabBarList>
-        <ListHeader header="Widgets" />
+        <ListHeader title="Widgets" />
         <List>
             <ListScrollableContainer>
                 <WidgetsListElement

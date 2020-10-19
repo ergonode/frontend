@@ -35,16 +35,25 @@ import {
 export default {
     name: 'DropZone',
     props: {
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             default: 'ADD',
         },
+        /**
+         * Determines about background color on hover
+         */
         hoverBackgroundColor: {
             type: String,
             default: GREEN,
             validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
         },
-        orientation: {
+        /**
+         * Determines position of body components; vertical / horizontal
+         */
+        layoutOrientation: {
             type: String,
             default: LAYOUT_ORIENTATION.VERTICAL,
             validator: value => Object.values(LAYOUT_ORIENTATION).indexOf(value) !== -1,
@@ -82,7 +91,7 @@ export default {
             return this.isHovered ? WHITE : GRAPHITE;
         },
         isHorizontal() {
-            return this.orientation === LAYOUT_ORIENTATION.HORIZONTAL;
+            return this.layoutOrientation === LAYOUT_ORIENTATION.HORIZONTAL;
         },
     },
     methods: {

@@ -5,10 +5,10 @@
 <template>
     <div class="date-picker">
         <slot name="header">
-            <DatePickerHeader :header="header" />
+            <DatePickerHeader :title="title" />
         </slot>
         <DatePickerNavigationHeader
-            :header="calendarHeader"
+            :title="calendarHeader"
             @change-calendar-type="onChangeCalendarType"
             @previous-date="onPreviousDate"
             @next-date="onNextDate" />
@@ -56,10 +56,16 @@ export default {
         DatePickerCalendar,
     },
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: Date,
             default: null,
         },
+        /**
+         * The value from/to which is selection - displayed as lighted color between range to - from
+         */
         rangeValue: {
             type: Date,
             default: null,
@@ -80,7 +86,7 @@ export default {
         };
     },
     computed: {
-        header() {
+        title() {
             if (!this.value) return 'Pick a date';
 
             const day = this.value.getDate();

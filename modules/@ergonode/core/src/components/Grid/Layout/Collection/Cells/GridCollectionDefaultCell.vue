@@ -8,7 +8,7 @@
         @click="onClick">
         <Picture
             v-if="data.image"
-            :api-path="`multimedia/${data.image}/download/default`"
+            :href="`multimedia/${data.image}/download/default`"
             :value="data.image"
             :object-fit="objectFit"
             :height="157" />
@@ -39,14 +39,23 @@ export default {
         Picture,
     },
     props: {
+        /**
+         * Component data used for filling cell
+         */
         data: {
             type: Object,
             required: true,
         },
+        /**
+         * The drafts are unsaved changes, cached changed data at given time
+         */
         drafts: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Determines image objectFit property
+         */
         objectFit: {
             type: String,
             default: '',

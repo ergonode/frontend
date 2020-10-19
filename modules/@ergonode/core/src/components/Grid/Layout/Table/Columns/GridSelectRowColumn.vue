@@ -25,13 +25,15 @@
             :key="key"
             :column="0"
             :row="rowsOffset + index + basicFiltersOffset + 1"
-            :is-selected="isSelectedAllRows
+            :is="isSelectedAllRows
                 || selectedRows[rowsOffset + index + basicFiltersOffset + 1]"
             @select="onSelectRow" />
     </GridActionColumn>
 </template>
 
 <script>
+import GridCheckEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell';
+import GridSelectRowEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridSelectRowEditCell';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 import GridActionColumn from '@Core/components/Grid/Layout/Table/Columns/GridActionColumn';
 
@@ -40,27 +42,42 @@ export default {
     components: {
         GridActionColumn,
         GridTableCell,
-        GridCheckEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell'),
-        GridSelectRowEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridSelectRowEditCell'),
+        GridCheckEditCell,
+        GridSelectRowEditCell,
         GridCheckPlaceholderCell: () => import('@Core/components/Grid/GridCheckPlaceholderCell'),
     },
     props: {
+        /**
+         * Column index of given component at the loop
+         */
         columnIndex: {
             type: Number,
             required: true,
         },
+        /**
+         * Number of visible data
+         */
         dataCount: {
             type: Number,
             default: 0,
         },
+        /**
+         * The number from which rows are enumerated
+         */
         rowsOffset: {
             type: Number,
             default: 0,
         },
+        /**
+         * The drafts are unsaved changes, cached changed data at given time
+         */
         drafts: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Determines if filters are visible
+         */
         isBasicFilter: {
             type: Boolean,
             default: false,
@@ -101,9 +118,10 @@ export default {
             }
         },
         onSelectRow({
-            row, isSelected,
+            row,
+            selected,
         }) {
-            if (isSelected) {
+            if (selected) {
                 this.selectedRows[row] = true;
             } else {
                 delete this.selectedRows[row];

@@ -19,6 +19,9 @@ export default {
         IconTooltip,
     },
     props: {
+        /**
+         *  The hint is a tip for the component
+         */
         hint: {
             type: String,
             required: true,

@@ -19,6 +19,9 @@ export default {
         BadgeLabel,
     },
     props: {
+        /**
+         * Number of unread notifications
+         */
         number: {
             type: Number,
             required: true,

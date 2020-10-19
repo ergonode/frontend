@@ -33,6 +33,9 @@ const unregisterResizeEventListeners = () => import('@Core/models/resize/unregis
 export default {
     name: 'RangeSlider',
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: Object,
             default: () => ({

@@ -18,10 +18,16 @@ export default {
         CheckBox,
     },
     props: {
+        /**
+         * The label is a text caption or description for the component
+         */
         label: {
             type: String,
             default: '',
         },
+        /**
+         * Component value
+         */
         value: {
             type: Boolean,
             default: false,

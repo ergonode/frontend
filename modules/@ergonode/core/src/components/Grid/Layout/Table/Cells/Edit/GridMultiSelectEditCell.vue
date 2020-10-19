@@ -44,10 +44,16 @@ export default {
         gridEditCellMixin,
     ],
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: Array,
             default: () => [],
         },
+        /**
+         * Component variances that user can choose from
+         */
         options: {
             type: Object,
             default: () => ({}),

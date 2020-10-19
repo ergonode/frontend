@@ -36,14 +36,23 @@ export default {
         IconButton,
     },
     props: {
+        /**
+         * Determines whether RTE action button is active or not
+         */
         isActive: {
             type: Object,
             required: true,
         },
+        /**
+         * Chosen extension of RTE action
+         */
         extension: {
             type: Object,
             required: true,
         },
+        /**
+         * Data model of all RTE commands
+         */
         commands: {
             type: Object,
             required: true,

@@ -25,18 +25,30 @@ export default {
         IconEdit,
     },
     props: {
+        /**
+         * Determines if component is selected
+         */
         isSelected: {
             type: Boolean,
             default: false,
         },
+        /**
+         * URL of backend endpoint
+         */
         href: {
             type: String,
             required: true,
         },
+        /**
+         * Index of the column
+         */
         column: {
             type: Number,
             required: true,
         },
+        /**
+         * Index of the row
+         */
         row: {
             type: Number,
             required: true,

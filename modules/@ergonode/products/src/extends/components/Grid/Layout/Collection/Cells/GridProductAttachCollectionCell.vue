@@ -48,6 +48,9 @@ export default {
             type: Object,
             required: true,
         },
+        /**
+         * The drafts are unsaved changes, cached changed data at given time
+         */
         drafts: {
             type: Object,
             default: () => ({}),

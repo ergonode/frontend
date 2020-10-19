@@ -65,8 +65,7 @@ export default {
     },
     props: {
         /**
-         * The theme of the button
-         * @values primary, secondary
+         * The theme of the component
          */
         theme: {
             type: String,
@@ -74,8 +73,7 @@ export default {
             validator: value => Object.values(THEME).indexOf(value) !== -1,
         },
         /**
-         * The size of the button
-         * @values regular, small, tiny
+         * The size of the component
          */
         size: {
             type: String,
@@ -83,23 +81,21 @@ export default {
             validator: value => Object.values(SIZE).indexOf(value) !== -1,
         },
         /**
-         * The disabled state of the button
-         * @values primary, secondary
+         * Determinate if the component is disabled
          */
         disabled: {
             type: Boolean,
             default: false,
         },
         /**
-         * The dismissible state of the dropdown
-         * @values primary, secondary
+         * The dismissible flag is telling if we can toggle between active an inactive state
          */
         dismissible: {
             type: Boolean,
             default: true,
         },
         /**
-         * The options of the dropdown
+         * Component variances that user can choose from
          */
         options: {
             type: Array,

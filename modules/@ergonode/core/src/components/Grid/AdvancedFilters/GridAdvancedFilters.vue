@@ -47,10 +47,16 @@ export default {
         GridAdvancedFiltersRemoveAllButton,
     },
     props: {
+        /**
+         * List of advanced filters
+         */
         filters: {
             type: Array,
             default: () => [],
         },
+        /**
+         * Selected filter values
+         */
         filterValues: {
             type: Object,
             default: () => ({}),

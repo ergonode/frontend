@@ -12,6 +12,9 @@
 export default {
     name: 'MenuListHeader',
     props: {
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             default: '',

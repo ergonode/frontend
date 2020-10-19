@@ -6,7 +6,7 @@
     <div class="list-header">
         <span
             class="list-header__title"
-            v-text="header" />
+            v-text="title" />
         <slot />
     </div>
 </template>
@@ -15,7 +15,10 @@
 export default {
     name: 'ListHeader',
     props: {
-        header: {
+        /**
+         * The title of the component
+         */
+        title: {
             type: String,
             required: true,
         },

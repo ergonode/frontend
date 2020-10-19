@@ -43,10 +43,16 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if the component has not saved changes
+         */
         isDraft: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if the component is not being able to edit
+         */
         isLocked: {
             type: Boolean,
             default: false,
@@ -55,6 +61,9 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if the component is being able to copy value by mass action
+         */
         isCopyable: {
             type: Boolean,
             default: false,

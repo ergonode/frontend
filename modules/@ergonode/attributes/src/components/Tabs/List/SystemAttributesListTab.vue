@@ -6,7 +6,7 @@
     <VerticalTabBarList>
         <ListSearchSelectHeader
             v-if="isSelectLanguage"
-            header="System attributes"
+            title="System attributes"
             @search-result="onSearch">
             <template #select>
                 <TreeSelect
@@ -18,7 +18,7 @@
         </ListSearchSelectHeader>
         <ListSearchHeader
             v-else
-            header="System attributes"
+            title="System attributes"
             @search-result="onSearch" />
         <List>
             <ListScrollableContainer>

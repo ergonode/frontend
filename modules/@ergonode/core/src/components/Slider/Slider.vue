@@ -28,6 +28,9 @@ const unregisterResizeEventListeners = () => import('@Core/models/resize/unregis
 export default {
     name: 'Slider',
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: Number,
             default: 0,

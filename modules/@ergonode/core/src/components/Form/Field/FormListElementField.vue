@@ -25,6 +25,9 @@ export default {
         IconDelete,
     },
     props: {
+        /**
+         * The key of the field used for emitting
+         */
         fieldKey: {
             type: [
                 Number,
@@ -32,6 +35,9 @@ export default {
             ],
             required: true,
         },
+        /**
+         * Determinate if the component is disabled
+         */
         disabled: {
             type: Boolean,
             default: false,

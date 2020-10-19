@@ -8,27 +8,35 @@
         :row="row"
         editing-allowed
         :edit-key-code="32"
-        :selected="isSelected"
+        :selected="selected"
         @mousedown.native="onSelect"
         @edit="onSelect">
-        <GridCheckEditCell :value="isSelected" />
+        <GridCheckEditCell :value="selected" />
     </GridTableCell>
 </template>
 
 <script>
+import GridCheckEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell';
+import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 
 export default {
     name: 'GridSelectRowEditCell',
     components: {
-        GridTableCell: () => import('@Core/components/Grid/Layout/Table/Cells/GridTableCell'),
-        GridCheckEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell'),
+        GridTableCell,
+        GridCheckEditCell,
     },
     props: {
+        /**
+         * Index of the row
+         */
         row: {
             type: Number,
             required: true,
         },
-        isSelected: {
+        /**
+         * Determines if component is selected
+         */
+        selected: {
             type: Boolean,
             default: false,
         },
@@ -37,7 +45,7 @@ export default {
         onSelect() {
             this.$emit('select', {
                 row: this.row,
-                isSelected: !this.isSelected,
+                selected: !this.selected,
             });
         },
     },

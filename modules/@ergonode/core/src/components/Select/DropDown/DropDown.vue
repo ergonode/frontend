@@ -23,10 +23,16 @@ export default {
         ClickOutsideGlobalEvent,
     },
     props: {
+        /**
+         * Determines whether content of dropdown has fixed height and width or not
+         */
         fixed: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines position where component will be anchored
+         */
         offset: {
             type: Object,
             default: () => ({

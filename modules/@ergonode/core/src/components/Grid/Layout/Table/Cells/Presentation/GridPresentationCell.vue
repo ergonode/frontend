@@ -13,6 +13,9 @@
 export default {
     name: 'GridPresentationCell',
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: [
                 String,
@@ -20,6 +23,9 @@ export default {
             ],
             required: true,
         },
+    },
+    mounted() {
+        console.log(this.$el);
     },
 };
 </script>

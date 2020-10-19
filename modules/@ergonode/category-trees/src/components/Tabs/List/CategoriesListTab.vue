@@ -5,7 +5,7 @@
 <template>
     <VerticalTabBarList>
         <ListSearchHeader
-            header="Categories"
+            title="Categories"
             @search-result="onSearch" />
         <List>
             <ListScrollableContainer>
