@@ -10,6 +10,9 @@
 export default {
     name: 'Typer',
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: [
                 Array,

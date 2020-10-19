@@ -38,6 +38,9 @@ export default {
         gridEditCellMixin,
     ],
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: [
                 String,

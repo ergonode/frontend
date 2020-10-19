@@ -5,8 +5,8 @@
 <template>
     <ListDraggableElement
         :draggable-id="item.id"
-        :is-draggable="isDraggable"
-        :is-disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
+        :draggable="isDraggable"
+        :disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
         :hint="item.name ? `#${item.code}` : ''"
         :label="item.name"
         @drag="onDrag">
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import ListDraggableElement from '@Core/components/List/ListDraggableElement';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementHint from '@Core/components/List/ListElementHint';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
@@ -29,20 +30,29 @@ import {
 export default {
     name: 'LanguagesListElement',
     components: {
-        ListDraggableElement: () => import('@Core/components/List/ListDraggableElement'),
+        ListDraggableElement,
         ListElementDescription,
         ListElementTitle,
         ListElementHint,
     },
     props: {
+        /**
+         * Item data model
+         */
         item: {
             type: Object,
             required: true,
         },
+        /**
+         * Code of the language
+         */
         languageCode: {
             type: String,
             required: true,
         },
+        /**
+         * Determines state of draggable attribute
+         */
         isDraggable: {
             type: Boolean,
             default: false,

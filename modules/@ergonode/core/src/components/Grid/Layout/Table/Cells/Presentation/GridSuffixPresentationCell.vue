@@ -12,6 +12,9 @@
 export default {
     name: 'GridSuffixPresentationCell',
     props: {
+        /**
+         * Suffix is an additional information about data displaying inside cell
+         */
         suffix: {
             type: String,
             default: '',

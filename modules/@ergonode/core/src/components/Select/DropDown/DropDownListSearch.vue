@@ -36,14 +36,23 @@ export default {
         IconSearch,
     },
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: String,
             default: '',
         },
+        /**
+         * Determines small size of search
+         */
         small: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines stickiness of search
+         */
         sticky: {
             type: Boolean,
             default: false,

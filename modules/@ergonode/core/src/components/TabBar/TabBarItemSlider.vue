@@ -12,6 +12,9 @@
 export default {
     name: 'TabBarItemSlider',
     props: {
+        /**
+         * Selected index of tab
+         */
         selectedIndex: {
             type: Number,
             required: true,

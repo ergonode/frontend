@@ -14,22 +14,37 @@
 export default {
     name: 'DatePickerNode',
     props: {
+        /**
+         * Determinate if the component is selected
+         */
         selected: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if the component is disabled
+         */
         disabled: {
             type: Boolean,
             default: false,
         },
+        /**
+         * The value from/to which is selection - displayed as lighted color between range to - from
+         */
         withinRange: {
             type: Boolean,
             default: false,
         },
+        /**
+         * The node is current date
+         */
         current: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Tile of the node. It might be number of day, week or year etc.
+         */
         title: {
             type: [
                 String,

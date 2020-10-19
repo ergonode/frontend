@@ -89,14 +89,23 @@ export default {
         IconArrowDropDown,
     },
     props: {
+        /**
+         * Route data model
+         */
         route: {
             type: Object,
             required: true,
         },
+        /**
+         * Determines state of expanded component
+         */
         isExpanded: {
             type: Boolean,
             default: true,
         },
+        /**
+         * Determines if component is selected
+         */
         isSelected: {
             type: Boolean,
             default: false,

@@ -48,14 +48,16 @@ export default {
         InformationIconBadge,
     },
     props: {
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             required: true,
         },
-        icon: {
-            type: String,
-            default: null,
-        },
+        /**
+         * Determines if the context is read only
+         */
         isReadOnly: {
             type: Boolean,
             default: false,

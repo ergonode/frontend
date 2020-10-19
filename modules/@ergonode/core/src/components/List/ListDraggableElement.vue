@@ -5,7 +5,7 @@
 <template>
     <li
         :class="classes"
-        :draggable="!isDragged && isDraggable"
+        :draggable="!isDragged && draggable"
         :title="hint"
         @dragstart="onDragStart"
         @dragend="onDragEnd">
@@ -35,22 +35,37 @@ export default {
         IconDragDrop,
     },
     props: {
-        isDisabled: {
+        /**
+         * Determinate if the component is disabled
+         */
+        disabled: {
             type: Boolean,
             default: false,
         },
-        isDraggable: {
+        /**
+         * Determines state of draggable attribute
+         */
+        draggable: {
             type: Boolean,
             default: true,
         },
+        /**
+         * Unique draggable identifier
+         */
         draggableId: {
             type: String,
             default: '',
         },
+        /**
+         *  The hint is a tip for the component
+         */
         hint: {
             type: String,
             default: '',
         },
+        /**
+         * The label is a text caption or description for the component
+         */
         label: {
             type: String,
             default: '',
@@ -67,7 +82,7 @@ export default {
                 'list-draggable-element',
                 {
                     'list-draggable-element--dragged': this.isDragged,
-                    'list-draggable-element--disabled': this.isDisabled,
+                    'list-draggable-element--disabled': this.disabled,
                 },
             ];
         },

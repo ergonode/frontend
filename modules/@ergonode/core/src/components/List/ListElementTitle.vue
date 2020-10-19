@@ -17,6 +17,9 @@ import {
 export default {
     name: 'ListElementTitle',
     props: {
+        /**
+         * The title of the component
+         */
         title: {
             type: [
                 String,
@@ -24,6 +27,9 @@ export default {
             ],
             required: true,
         },
+        /**
+         * The size of the component
+         */
         size: {
             type: String,
             default: SIZE.REGULAR,
@@ -32,6 +38,9 @@ export default {
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
         },
+        /**
+         *  The hint is a tip for the component
+         */
         hint: {
             type: [
                 String,

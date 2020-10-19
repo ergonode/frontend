@@ -30,14 +30,23 @@ export default {
         GridTableCell,
     },
     props: {
+        /**
+         * Row index of given component at the loop
+         */
         rowIndex: {
             type: Number,
             required: true,
         },
+        /**
+         * Column index of given component at the loop
+         */
         columnIndex: {
             type: Number,
             required: true,
         },
+        /**
+         * Unique column identifier
+         */
         columnId: {
             type: [
                 String,
@@ -45,18 +54,30 @@ export default {
             ],
             required: true,
         },
+        /**
+         * Component value
+         */
         value: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Determines which component will be loaded
+         */
         type: {
             type: String,
             default: '',
         },
+        /**
+         * Filter data model
+         */
         filter: {
             type: Object,
             default: null,
         },
+        /**
+         * Code of the language
+         */
         languageCode: {
             type: String,
             default: '',

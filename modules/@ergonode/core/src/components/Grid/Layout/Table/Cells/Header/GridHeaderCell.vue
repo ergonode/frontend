@@ -71,10 +71,16 @@ export default {
         IconDots,
     },
     props: {
+        /**
+         * The label is a text caption or description for the component
+         */
         label: {
             type: String,
             default: 'Header',
         },
+        /**
+         * Unique column identifier
+         */
         columnId: {
             type: [
                 String,
@@ -82,18 +88,30 @@ export default {
             ],
             required: true,
         },
+        /**
+         * Data about order of sorted column
+         */
         sortedColumn: {
             type: Object,
             required: true,
         },
+        /**
+         * Column index of given component at the loop
+         */
         columnIndex: {
             type: Number,
             required: true,
         },
+        /**
+         * Row index of given component at the loop
+         */
         rowIndex: {
             type: Number,
             required: true,
         },
+        /**
+         * Determines whether column is deletable or not
+         */
         deletable: {
             type: Boolean,
             default: false,

@@ -23,6 +23,9 @@ export default {
         Divider,
     },
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: Boolean,
             default: false,

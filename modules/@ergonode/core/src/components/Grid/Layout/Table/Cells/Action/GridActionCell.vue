@@ -21,25 +21,40 @@ export default {
             type: Object,
             required: true,
         },
+        /**
+         * Data of the column
+         */
         column: {
             type: Object,
             required: true,
         },
+        /**
+         * Determines which component will be loaded
+         */
         type: {
             type: String,
             default: '',
         },
+        /**
+         * Row index of given component at the loop
+         */
         rowIndex: {
             type: Number,
             required: true,
         },
+        /**
+         * Column index of given component at the loop
+         */
         columnIndex: {
             type: Number,
             required: true,
         },
+        /**
+         * Determines if component is selected
+         */
         isSelected: {
             type: Boolean,
-            required: false,
+            default: false,
         },
     },
     computed: {

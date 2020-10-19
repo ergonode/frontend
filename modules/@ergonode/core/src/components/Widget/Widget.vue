@@ -28,10 +28,16 @@ export default {
         WidgetPlaceholder,
     },
     props: {
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             default: '',
         },
+        /**
+         * Determines whether placeholder is visible
+         */
         isPlaceholderVisible: {
             type: Boolean,
             default: false,

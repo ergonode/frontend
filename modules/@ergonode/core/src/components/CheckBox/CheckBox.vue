@@ -38,6 +38,9 @@ export default {
         associatedLabelMixin,
     ],
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: [
                 Array,
@@ -46,10 +49,16 @@ export default {
             ],
             default: false,
         },
+        /**
+         * Determinate if the component is disabled
+         */
         disabled: {
             type: Boolean,
             default: false,
         },
+        /**
+         * The label is a text caption or description for the component
+         */
         label: {
             type: String,
             default: '',

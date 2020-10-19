@@ -12,10 +12,16 @@
 export default {
     name: 'GridBody',
     props: {
+        /**
+         * Determinate if the component is disabled
+         */
         disabled: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if the component has border
+         */
         isBorder: {
             type: Boolean,
             default: false,

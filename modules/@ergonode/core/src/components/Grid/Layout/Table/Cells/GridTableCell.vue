@@ -22,38 +22,65 @@ export default {
         'getGridTableLayoutReference',
     ],
     props: {
+        /**
+         * Index of the column
+         */
         column: {
             type: Number,
             required: true,
         },
+        /**
+         * Index of the row
+         */
         row: {
             type: Number,
             required: true,
         },
+        /**
+         * Determinate if the component is disabled
+         */
         disabled: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if the component is selected
+         */
         selected: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if the component has error
+         */
         error: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if the component is being able to copy value by mass action
+         */
         copyable: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if the component is not being able to edit
+         */
         locked: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if the component has not saved changes
+         */
         draft: {
             type: Boolean,
             default: false,
         },
+        /**
+         * The key code which will invoke edit event
+         */
         editKeyCode: {
             type: Number,
             default: 13,

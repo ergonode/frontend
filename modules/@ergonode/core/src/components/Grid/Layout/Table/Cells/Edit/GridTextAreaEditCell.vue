@@ -4,7 +4,7 @@
  */
 <template>
     <GridEditNavigationCell
-        :key-code="27"
+        :edit-key-code="27"
         @edit="onEditCell">
         <GridTextEditContentCell :style="positionStyle">
             <TextArea

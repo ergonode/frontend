@@ -9,10 +9,12 @@
 </template>
 
 <script>
+import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
+
 export default {
     name: 'GridCheckPlaceholderCell',
     components: {
-        IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
+        IconArrowDropDown,
     },
 };
 </script>

@@ -35,6 +35,9 @@ export default {
         VerticalCenteredView,
     },
     props: {
+        /**
+         * Determines fixed centered content
+         */
         fixed: {
             type: Boolean,
             default: false,

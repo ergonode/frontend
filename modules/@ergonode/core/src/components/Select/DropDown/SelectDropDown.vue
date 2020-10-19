@@ -110,6 +110,9 @@ export default {
         DropDownListSearch: () => import('@Core/components/Select/DropDown/DropDownListSearch'),
     },
     props: {
+        /**
+         * The size of the component
+         */
         size: {
             type: String,
             default: SIZE.REGULAR,
@@ -118,42 +121,72 @@ export default {
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
         },
+        /**
+         * Determines if the component is multiple choice
+         */
         multiselect: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if the selected value is clearable
+         */
         clearable: {
             type: Boolean,
             default: false,
         },
+        /**
+         * The flag which tells if the dropdown has fixed content to it's parent width
+         */
         fixedContent: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if the component has possibility of search for value
+         */
         searchable: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines stickiness of search
+         */
         stickySearch: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Component variances that user can choose from
+         */
         options: {
             type: Array,
             default: () => [],
         },
+        /**
+         * Determines position where component will be anchored
+         */
         offset: {
             type: Object,
             required: true,
         },
+        /**
+         * Map of selected option values
+         */
         selectedOptions: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Search result
+         */
         searchResult: {
             type: String,
             default: '',
         },
+        /**
+         * Determines visibility of component
+         */
         isVisible: {
             type: Boolean,
             default: false,

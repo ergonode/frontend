@@ -23,10 +23,16 @@ export default {
         InfoHint,
     },
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: String,
             required: true,
         },
+        /**
+         *  The hint is a tip for the component
+         */
         hint: {
             type: String,
             default: '',

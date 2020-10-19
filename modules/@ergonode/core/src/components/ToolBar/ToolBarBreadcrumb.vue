@@ -37,6 +37,9 @@ import {
 export default {
     name: 'ToolBarBreadcrumb',
     props: {
+        /**
+         * Breadcrumb data model
+         */
         breadcrumb: {
             type: Object,
             required: true,

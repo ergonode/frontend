@@ -4,6 +4,9 @@
  */
 <template>
     <div class="rounded-badge">
+        <!--
+            @slot default slot, anything you fit inside rounded badge
+        -->
         <slot />
     </div>
 </template>

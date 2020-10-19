@@ -17,6 +17,9 @@ const unregisterResizeEventListeners = () => import('@Core/models/resize/unregis
 export default {
     name: 'GridColumnResizer',
     props: {
+        /**
+         * The minimal width of the column to which it might be stretched
+         */
         minWidth: {
             type: Number,
             default: 150,

@@ -5,8 +5,8 @@
 <template>
     <ListDraggableElement
         :draggable-id="`${item.id}/${item.code}:${languageCode}`"
-        :is-draggable="isDraggable"
-        :is-disabled="isDisabled"
+        :draggable="isDraggable"
+        :disabled="isDisabled"
         :hint="hint"
         :label="title"
         @drag="onDrag">

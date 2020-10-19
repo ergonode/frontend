@@ -22,10 +22,16 @@ export default {
         GridPresentationCell,
     },
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: String,
             required: true,
         },
+        /**
+         * Component variances that user can choose from
+         */
         options: {
             type: Object,
             default: () => ({}),

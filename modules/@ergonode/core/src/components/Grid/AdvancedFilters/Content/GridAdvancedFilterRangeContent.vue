@@ -47,6 +47,9 @@ export default {
         GridAdvancedFilterContent,
     },
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: Object,
             default: () => ({

@@ -5,6 +5,10 @@
 <template>
     <InformationBadge v-bind="$attrs">
         <template #prepend>
+            <!--
+                @slot icon element
+                @binding {string} color color of an element
+            -->
             <slot
                 name="icon"
                 :color="$attrs.color" />

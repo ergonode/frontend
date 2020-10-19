@@ -55,6 +55,9 @@ export default {
             type: String,
             required: true,
         },
+        /**
+         * Determines if the given field is required
+         */
         required: {
             type: Boolean,
             default: false,
