@@ -17,7 +17,7 @@
                 :is-basic-filter="true"
                 :is-header-visible="true"
                 :is-border="true"
-                @delete-row="onFetchData"
+                @delete-row="onRemoveProduct"
                 @fetch-data="onFetchData">
                 <template #headerActions>
                     <ActionButton
@@ -161,6 +161,9 @@ export default {
             await this.onFetchData(this.localParams);
 
             this.isPrefetchingData = false;
+        },
+        onRemoveProduct() {
+            this.onFetchData();
         },
         async onFetchData({
             offset,

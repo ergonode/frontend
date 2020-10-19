@@ -105,6 +105,7 @@ export default {
     methods: {
         ...mapActions('feedback', [
             'onScopeValueChange',
+            'markChangeValuesAsSaved',
         ]),
         ...mapActions('product', [
             'addBySku',
@@ -214,6 +215,8 @@ export default {
             if (skusKeys.length) {
                 this.$emit('submitted');
             }
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onCellValueChange(cellValues) {
             const drafts = {};

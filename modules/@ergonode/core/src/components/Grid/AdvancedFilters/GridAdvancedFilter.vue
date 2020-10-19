@@ -4,13 +4,7 @@
  */
 <template>
     <div
-        :class="[
-            'advanced-filter',
-            {
-                'advanced-filter--selected': isFocused,
-                'advanced-filter--exists': isFilterExists,
-            }
-        ]"
+        :class="classes"
         :draggable="!isFocused"
         @dragover="onDragOver"
         @dragstart="onDragStart"
@@ -154,6 +148,15 @@ export default {
             'isElementDragging',
             'draggedElement',
         ]),
+        classes() {
+            return [
+                'advanced-filter',
+                {
+                    'advanced-filter--selected': this.isFocused,
+                    'advanced-filter--exists': this.isFilterExists,
+                },
+            ];
+        },
         isFilterExists() {
             return this.draggedElement === this.filterId;
         },
