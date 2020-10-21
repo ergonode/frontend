@@ -31,36 +31,43 @@ export default function ({
         },
         async fetch() {
             const {
-                defaultLanguageCode,
+                defaultLanguageCode: languageCode,
             } = this.$store.state.core;
 
-            await this.fetchListData(defaultLanguageCode);
-
-            this.expandedGroupId = UNASSIGNED_GROUP_ID;
+            await this.fetchListData({
+                languageCode,
+                limit: 0,
+            });
         },
-        methods: {
-            async fetchListData(languegCode) {
-                const unassignedGroup = {
+        computed: {
+            unassignedGroup() {
+                return {
                     id: UNASSIGNED_GROUP_ID,
                     key: getUUID(),
                     value: 'Not Assigned',
                     hint: '',
                 };
-
+            },
+        },
+        methods: {
+            async fetchListData({
+                languageCode,
+                limit = 99999,
+            }) {
                 const [
                     groupItems,
                     listItems,
                 ] = await Promise.all([
                     getListGroups({
                         $axios: this.$axios,
-                        path: `${languegCode}/${namespace}/groups`,
-                        languageCode: languegCode,
+                        path: `${languageCode}/${namespace}/groups`,
+                        languageCode,
                     }),
                     getListItems({
                         $axios: this.$axios,
-                        path: `${languegCode}/${namespace}`,
+                        path: `${languageCode}/${namespace}`,
                         params: {
-                            limit: 9999,
+                            limit,
                             offset: 0,
                             view: 'list',
                             filter: 'groups=',
@@ -72,15 +79,15 @@ export default function ({
 
                 this.groups = {
                     ...this.groups,
-                    [languegCode]: [
+                    [languageCode]: [
                         ...groupItems.groups,
-                        unassignedGroup,
+                        this.unassignedGroup,
                     ],
                 };
 
                 this.items = {
                     ...this.items,
-                    [languegCode]: {
+                    [languageCode]: {
                         ...groupItems.items,
                         [UNASSIGNED_GROUP_ID]: listItems.items,
                     },
@@ -88,7 +95,7 @@ export default function ({
 
                 this.groupItemsCount = {
                     ...groupItems.groupItemsCount,
-                    [UNASSIGNED_GROUP_ID]: listItems.items.length,
+                    [UNASSIGNED_GROUP_ID]: listItems.info.filtered,
                 };
             },
             async getGroups(languageCode) {
@@ -113,13 +120,7 @@ export default function ({
                 this.groupItemsCount = groupItemsCount;
             },
             async getUnassignedGroupItems(languageCode) {
-                const unassignedGroup = {
-                    id: UNASSIGNED_GROUP_ID,
-                    key: getUUID(),
-                    value: 'Not Assigned',
-                    hint: '',
-                };
-                this.groups[languageCode].push(unassignedGroup);
+                this.groups[languageCode].push(this.unassignedGroup);
                 this.items[languageCode][UNASSIGNED_GROUP_ID] = [];
 
                 await this.getGroupItems({
@@ -151,7 +152,7 @@ export default function ({
                         $axios: this.$axios,
                         path: `${languageCode}/${namespace}`,
                         params: {
-                            limit: 9999,
+                            limit: 99999,
                             offset: 0,
                             filter,
                             view: 'list',
@@ -177,7 +178,7 @@ export default function ({
                     $axios: this.$axios,
                     path: `${languageCode}/${namespace}`,
                     params: {
-                        limit: 9999,
+                        limit: 99999,
                         offset: 0,
                         filter,
                         view: 'list',
@@ -205,7 +206,9 @@ export default function ({
                 this.groupItemsCount = getMappedGroupItemsCount(items);
             },
             async onGroupExpand({
-                group, languageCode, isExpanded,
+                group,
+                languageCode,
+                isExpanded,
             }) {
                 if (isExpanded) {
                     await this.getGroupItems({
