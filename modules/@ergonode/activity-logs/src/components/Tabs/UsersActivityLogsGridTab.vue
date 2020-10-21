@@ -12,7 +12,6 @@
                 :filters="filterValues"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
-                :filters="filterValues"
                 :is-border="true"
                 @fetch-data="onFetchData"
                 @filter="onFilterChange"
