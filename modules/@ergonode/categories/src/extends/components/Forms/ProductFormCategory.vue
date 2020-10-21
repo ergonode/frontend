@@ -3,19 +3,20 @@
  * See LICENSE for license details.
  */
 <template>
-    <TranslationLazySelect
+    <Autocomplete
         :value="categories"
         :multiselect="true"
         :clearable="true"
+        :searchable="true"
         label="Category"
         :disabled="disabled"
         :error-messages="errors[categoryFieldKey]"
-        :fetch-options-request="getCategoriesOptions"
+        href="categories/autocomplete"
         @input="setCategoriesValue" />
 </template>
 
 <script>
-import TranslationLazySelect from '@Core/components/Select/TranslationLazySelect';
+import Autocomplete from '@Core/components/Autocomplete/Autocomplete';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,
@@ -25,7 +26,7 @@ import {
 export default {
     name: 'ProductFormCategory',
     components: {
-        TranslationLazySelect,
+        Autocomplete,
     },
     mixins: [
         formFeedbackMixin,
@@ -47,9 +48,6 @@ export default {
     methods: {
         ...mapActions('product', [
             '__setState',
-        ]),
-        ...mapActions('category', [
-            'getCategoriesOptions',
         ]),
         setCategoriesValue(value) {
             this.__setState({

@@ -32,13 +32,14 @@
                     :error-messages="errors[skuFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setSkuValue" />
-                <TranslationLazySelect
+                <Autocomplete
                     :value="template"
                     :required="true"
+                    :searchable="true"
                     label="Product template"
                     :error-messages="errors[templateIdFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :fetch-options-request="getTemplateOptions"
+                    href="templates/autocomplete"
                     @input="setTemplateValue" />
                 <Divider v-if="extendedForm.length" />
                 <template
@@ -54,11 +55,11 @@
 </template>
 
 <script>
+import Autocomplete from '@Core/components/Autocomplete/Autocomplete';
 import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import Select from '@Core/components/Select/Select';
-import TranslationLazySelect from '@Core/components/Select/TranslationLazySelect';
 import TextField from '@Core/components/TextField/TextField';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
@@ -79,7 +80,7 @@ export default {
         FormSection,
         Select,
         TextField,
-        TranslationLazySelect,
+        Autocomplete,
     },
     mixins: [
         formActionsMixin,
@@ -128,9 +129,6 @@ export default {
     methods: {
         ...mapActions('product', [
             '__setState',
-        ]),
-        ...mapActions('productTemplate', [
-            'getTemplateOptions',
         ]),
         onSubmit() {
             this.$emit('submit');

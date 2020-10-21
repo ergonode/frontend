@@ -20,7 +20,6 @@ import {
 import {
     create,
     get,
-    getAll,
     getTypes,
     remove,
     update,
@@ -230,22 +229,6 @@ export default {
             root: true,
         });
         commit(types.ADD_ELEMENT_TO_LAYOUT, layoutElement);
-    },
-    getTemplateOptions() {
-        return getAll({
-            $axios: this.app.$axios,
-        }).then(({
-            collection,
-        }) => ({
-            options: collection.map(({
-                id, name,
-            }) => ({
-                id,
-                key: '',
-                value: name,
-                hint: '',
-            })),
-        }));
     },
     addSectionElementToLayout: ({
         commit, state,

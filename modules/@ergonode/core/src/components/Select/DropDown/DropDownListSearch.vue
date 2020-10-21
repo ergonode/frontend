@@ -4,10 +4,7 @@
  */
 <template>
     <li
-        :class="['search-element', {
-            'search-element--small': small,
-            'search-element--sticky': sticky,
-        }]">
+        :class="classes">
         <input
             class="search-element__input"
             :input="value"
@@ -15,7 +12,8 @@
             placeholder="Search..."
             @focus="onSearchFocus"
             @blur="onSearchFocusLost"
-            @input="debouncedSearch">
+            @input="debouncedSearch"
+            @click.stop>
         <IconSearch :fill-color="searchIconFillColor" />
     </li>
 </template>
@@ -64,6 +62,15 @@ export default {
         };
     },
     computed: {
+        classes() {
+            return [
+                'search-element',
+                {
+                    'search-element--small': this.small,
+                    'search-element--sticky': this.sticky,
+                },
+            ];
+        },
         searchIconFillColor() {
             return this.isSearchFocused
                 ? GREEN

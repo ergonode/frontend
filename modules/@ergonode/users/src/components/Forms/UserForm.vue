@@ -64,13 +64,14 @@
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[languageFieldKey]"
                     @input="setLanguageValue" />
-                <TranslationLazySelect
+                <Autocomplete
                     :value="role"
                     :required="true"
+                    :searchable="true"
                     label="Role"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[roleIdFieldKey]"
-                    :fetch-options-request="getRoleOptions"
+                    href="roles/autocomplete"
                     @input="setRoleValue" />
                 <Divider v-if="extendedForm.length" />
                 <template v-for="(field, index) in extendedForm">
@@ -85,11 +86,11 @@
 </template>
 
 <script>
+import Autocomplete from '@Core/components/Autocomplete/Autocomplete';
 import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import Select from '@Core/components/Select/Select';
-import TranslationLazySelect from '@Core/components/Select/TranslationLazySelect';
 import TextField from '@Core/components/TextField/TextField';
 import Toggler from '@Core/components/Toggler/Toggler';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
@@ -110,7 +111,7 @@ export default {
         TextField,
         Toggler,
         Select,
-        TranslationLazySelect,
+        Autocomplete,
     },
     mixins: [
         formActionsMixin,
@@ -194,9 +195,6 @@ export default {
     methods: {
         ...mapActions('user', [
             '__setState',
-        ]),
-        ...mapActions('role', [
-            'getRoleOptions',
         ]),
         bindingProps({
             props,
