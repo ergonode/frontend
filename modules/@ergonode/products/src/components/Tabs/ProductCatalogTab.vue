@@ -82,6 +82,8 @@ import {
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import Button from '@Core/components/Button/Button';
 import RemoveFiltersButton from '@Core/components/Grid/Buttons/RemoveFiltersButton';
+import AddFilterDropZone from '@Core/components/Grid/DropZone/AddFilterDropZone';
+import RemoveFilterAndColumnDropZone from '@Core/components/Grid/DropZone/RemoveFilterAndColumnDropZone';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
 import VerticalTabBar from '@Core/components/TabBar/VerticalTabBar';
@@ -97,8 +99,6 @@ import {
     changeCookiePosition,
     removeCookieAtIndex,
 } from '@Core/models/cookies';
-import AddFilterDropZone from '@Products/components/DropZone/AddFilterDropZone';
-import RemoveFilterAndColumnDropZone from '@Products/components/DropZone/RemoveFilterAndColumnDropZone';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     mapActions,
