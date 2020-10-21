@@ -11,11 +11,12 @@
     </div>
 </template>
 <script>
+import GridColumnResizer from '@Core/components/Grid/Layout/Table/Columns/Resizer/GridColumnResizer';
 
 export default {
-    name: 'GridDraggableColumn',
+    name: 'GridColumn',
     components: {
-        GridColumnResizer: () => import('@Core/components/Grid/Layout/Table/Columns/Resizer/GridColumnResizer'),
+        GridColumnResizer,
     },
     props: {
         /**
