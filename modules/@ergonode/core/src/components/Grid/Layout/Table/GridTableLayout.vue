@@ -374,8 +374,8 @@ export default {
 
             const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Table/Cells/Edit');
 
-            if (extendedComponents && extendedComponents[type]) {
-                return extendedComponents[type];
+            if (extendedComponents && extendedComponents[this.editCell.type]) {
+                return extendedComponents[this.editCell.type];
             }
 
             return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Grid${type}EditCell`)
@@ -386,8 +386,8 @@ export default {
 
             const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Table/Cells/Edit/Filter');
 
-            if (extendedComponents && extendedComponents[type]) {
-                return extendedComponents[type];
+            if (extendedComponents && extendedComponents[this.editFilterCell.type]) {
+                return extendedComponents[this.editFilterCell.type];
             }
 
             return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Filter/Grid${type}EditFilterCell`)
@@ -538,7 +538,8 @@ export default {
             this.$emit('filter', filters);
         },
         onResizeColumn({
-            index, width,
+            index,
+            width,
         }) {
             if (this.hasInitialWidths) {
                 this.initialColumnWidths();

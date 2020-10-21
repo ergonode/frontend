@@ -104,5 +104,11 @@ export default {
         '@Core/components/Grid/Layout/Collection/Cells': {
             PRODUCT_ATTACH: Components.GridProductAttachCollectionCell,
         },
+        '@Core/components/Grid/Layout/Table/Cells/Data': {
+            LABEL: Components.GridLabelDataCell,
+        },
+        '@Core/components/Grid/Layout/Table/Cells/Edit': {
+            LABEL: Components.GridLabelEditCell,
+        },
     },
 };

@@ -31,9 +31,9 @@
 </template>
 
 <script>
-import GridLabelPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridLabelPresentationCell';
 import GridSuffixPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
+import GridLabelPresentationCell from '@Products/extends/components/Grid/Layout/Table/Cells/Presentation/GridLabelPresentationCell';
 
 export default {
     name: 'GridLabelDataCell',
