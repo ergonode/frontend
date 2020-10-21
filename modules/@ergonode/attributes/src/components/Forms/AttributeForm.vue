@@ -42,6 +42,7 @@
                     :multiselect="true"
                     :searchable="true"
                     :clearable="true"
+                    :sticky-search="true"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[groupsFieldKey]"
                     href="attributes/groups/autocomplete"

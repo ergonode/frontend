@@ -8,6 +8,7 @@
         :multiselect="true"
         :clearable="true"
         :searchable="true"
+        :sticky-search="true"
         label="Category"
         :disabled="disabled"
         :error-messages="errors[categoryFieldKey]"
