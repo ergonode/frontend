@@ -36,6 +36,7 @@ export default function ({
             return {
                 rows: [],
                 columns: [],
+                filterValues: {},
                 filtered: 0,
                 localParams: DEFAULT_GRID_FETCH_PARAMS,
             };
@@ -56,6 +57,22 @@ export default function ({
             ...mapActions('list', [
                 'setDisabledElement',
             ]),
+            onRemoveAllFilters() {
+                this.filterValues = {};
+
+                this.onFetchData({
+                    ...this.localParams,
+                    filter: {},
+                });
+            },
+            onFilterChange(filters) {
+                this.filterValues = filters;
+
+                this.onFetchData({
+                    ...this.localParams,
+                    filter: this.filterValues,
+                });
+            },
             async onFetchData({
                 offset,
                 limit,

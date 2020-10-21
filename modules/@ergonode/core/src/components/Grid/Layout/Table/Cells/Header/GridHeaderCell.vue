@@ -132,7 +132,7 @@ export default {
             return [
                 'grid-header-cell',
                 {
-                    'grid-header-cell--exists': this.isColumnExists,
+                    'grid-header-cell--exists': this.isColumnExist,
                 },
             ];
         },
@@ -158,7 +158,7 @@ export default {
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
         },
-        isColumnExists() {
+        isColumnExist() {
             return (isObject(this.draggedElement) && this.draggedElement.id === this.columnId)
                 || this.draggedElement === this.columnId;
         },
@@ -171,7 +171,7 @@ export default {
             return this.sortedColumn.orderState;
         },
         isActionsVisible() {
-            return !this.isColumnExists
+            return !this.isColumnExist
                 && (this.isSorted || this.isMenuSelected || this.isHovered);
         },
         title() {

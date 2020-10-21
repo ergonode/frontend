@@ -45,7 +45,8 @@ export function getParsedFilter({
 }
 
 export function getMergedFilters({
-    basic, advanced,
+    basic = {},
+    advanced = {},
 }) {
     const merged = {
         ...basic,
@@ -57,6 +58,16 @@ export function getMergedFilters({
         .map(key => getParsedFilter({
             id: key,
             filter: merged[key],
+        }))
+        .join(';');
+}
+
+export function getParsedFilters(filters) {
+    return Object
+        .keys(filters)
+        .map(key => getParsedFilter({
+            id: key,
+            filter: filters[key],
         }))
         .join(';');
 }

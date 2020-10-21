@@ -12,6 +12,7 @@
                 :data-count="filtered"
                 :rows="rows"
                 :drafts="drafts"
+                :filters="filterValues"
                 :collection-cell-binding="collectionCellBinding"
                 :placeholder="gridPlaceholder"
                 :is-prefetching-data="isPrefetchingData"
@@ -20,7 +21,9 @@
                 :is-header-visible="true"
                 :is-border="true"
                 @delete-row="onRemoveProduct"
-                @fetch-data="onFetchData">
+                @fetch-data="onFetchData"
+                @remove-all-filters="onRemoveAllFilters"
+                @filter="onFilterChange">
                 <template #headerActions>
                     <ExpandNumericButton
                         title="BINDING ATTRIBUTES"
@@ -42,14 +45,14 @@
                         @close="onCloseProductsModal"
                         @submitted="onSubmittedProductVariants" />
                 </template>
-                <template #headerPanel>
+                <template #appendHeader>
                     <BindingAttributes
                         v-if="isBindingAttributesExpanded"
                         :attributes="bindingAttributes"
                         @remove-binding="onRemoveBinding"
                         @added="onAddedBinding" />
                 </template>
-                <template #placeholderNoRecordsAction>
+                <template #actionPlaceholder>
                     <Button
                         title="CHOOSE VARIANTS"
                         :size="smallSize"
@@ -107,9 +110,6 @@ import {
     mapState,
 } from 'vuex';
 
-// TODO:
-// custom filter for attached
-
 export default {
     name: 'ProductVariantsTab',
     components: {
@@ -134,6 +134,7 @@ export default {
             columns: [],
             rows: [],
             filtered: 0,
+            filterValues: {},
             localParams: DEFAULT_GRID_FETCH_PARAMS,
             isPrefetchingData: false,
             isBindingAttributesExpanded: false,
@@ -218,6 +219,22 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
+        onFilterChange(filters) {
+            this.filterValues = filters;
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: this.filterValues,
+            });
+        },
+        onRemoveAllFilters() {
+            this.filterValues = {};
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: {},
+            });
+        },
         onShowBindingAttributesModal() {
             this.isAddBindingModalVisible = true;
         },

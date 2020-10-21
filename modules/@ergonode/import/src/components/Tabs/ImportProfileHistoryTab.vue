@@ -9,11 +9,14 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :filters="filterValues"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
                 @preview-row="onPreviewRow"
-                @fetch-data="onFetchData" />
+                @fetch-data="onFetchData"
+                @remove-all-filters="onRemoveAllFilters"
+                @filter="onFilterChange" />
             <ImportDetailsModalGrid
                 v-if="isImportDetailsModalVisible"
                 :import-id="selectedRow.importId"

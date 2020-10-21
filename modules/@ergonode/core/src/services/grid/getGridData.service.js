@@ -6,6 +6,7 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
+    getParsedFilters,
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
 import {
@@ -17,15 +18,21 @@ export const getGridData = async ({
     path,
     params,
 }) => {
+    const config = {
+        params,
+    };
+
+    if (params.filter) {
+        config.params.filter = getParsedFilters(params.filter);
+    }
+
     const {
         collection,
         columns,
         info: {
             filtered,
         },
-    } = await $axios.$get(path, {
-        params,
-    });
+    } = await $axios.$get(path, config);
 
     const sortedColumns = params.columns
         ? getSortedColumnsByIDs(columns, params.columns)
