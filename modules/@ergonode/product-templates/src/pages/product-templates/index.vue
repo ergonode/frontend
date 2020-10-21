@@ -27,7 +27,8 @@
                     :columns="columns"
                     :data-count="filtered"
                     :rows="rows"
-                    :placeholder="noRecordsPlaceholder"
+                    :filters="filterValues"
+                    :placeholder="noDataPlaceholder"
                     :is-prefetching-data="isPrefetchingData"
                     :default-layout="gridLayout.COLLECTION"
                     :is-collection-layout="true"
@@ -38,7 +39,9 @@
                     @edit-row="onEditRow"
                     @preview-row="onEditRow"
                     @delete-row="onRemoveRow"
-                    @fetch-data="onFetchData" />
+                    @fetch-data="onFetchData"
+                    @remove-all-filter="onRemoveAllFilters"
+                    @filter="onFilterChange" />
             </template>
         </CenterViewTemplate>
         <CreateProductTemplateModalForm
@@ -94,7 +97,7 @@ export default {
         };
     },
     computed: {
-        noRecordsPlaceholder() {
+        noDataPlaceholder() {
             return {
                 title: 'No product templates',
                 subtitle: 'There are no product templates in the system, you can create the first one.',

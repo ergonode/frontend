@@ -11,10 +11,13 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :filters="filterValues"
                 :is-prefetching-data="isPrefetchingData"
                 :is-header-visible="true"
                 :is-basic-filter="true"
-                @fetch-data="onFetchData">
+                @fetch-data="onFetchData"
+                @filter="onFilterChange"
+                @remove-all-filters="onRemoveAllFilters">
                 <template #headerActions>
                     <div class="export-details-tiles">
                         <Tile
@@ -104,6 +107,7 @@ export default {
             columns: [],
             rows: [],
             filtered: 0,
+            filterValues: {},
             isPrefetchingData: true,
             details: [],
             downloadLink: '',
@@ -129,6 +133,22 @@ export default {
         ...mapActions('channel', [
             'getExportDetails',
         ]),
+        onRemoveAllFilters() {
+            this.filterValues = {};
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: {},
+            });
+        },
+        onFilterChange(filters) {
+            this.filterValues = filters;
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: this.filterValues,
+            });
+        },
         async onFetchData(params = DEFAULT_GRID_FETCH_PARAMS) {
             const {
                 columns,

@@ -11,10 +11,13 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :filters="filterValues"
                 :is-prefetching-data="isPrefetchingData"
                 :is-header-visible="true"
                 :is-basic-filter="true"
-                @fetch-data="onFetchData">
+                @fetch-data="onFetchData"
+                @filter="onFilterChange"
+                @remove-all-filters="onRemoveAllFilters">
                 <template #headerActions>
                     <div class="import-details-tiles">
                         <Tile
@@ -80,6 +83,7 @@ export default {
             details: [],
             columns: [],
             rows: [],
+            filterValues: {},
             filtered: 0,
             isPrefetchingData: true,
         };
@@ -88,6 +92,22 @@ export default {
         ...mapActions('import', [
             'getImportDetails',
         ]),
+        onFilterChange(filters) {
+            this.filterValues = filters;
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: this.filterValues,
+            });
+        },
+        onRemoveAllFilters() {
+            this.filterValues = {};
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: {},
+            });
+        },
         async onFetchData(params = DEFAULT_GRID_FETCH_PARAMS) {
             const {
                 columns,

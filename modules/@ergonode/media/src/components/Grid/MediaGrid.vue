@@ -8,6 +8,7 @@
         :columns="columnsWithAttachColumn"
         :data-count="filtered"
         :drafts="drafts"
+        :filters="filterValues"
         :rows="rowsWithAttachValues"
         :collection-cell-binding="collectionCellBinding"
         :is-prefetching-data="isPrefetchingData"
@@ -18,20 +19,9 @@
         @preview-row="onEditRow"
         @cell-value="onCellValueChange"
         @delete-row="onRemoveRow"
-        @fetch-data="onFetchData">
-        <!--  TODO: Uncomment when we have global search      -->
-        <!--        <template #headerActions>-->
-        <!--            <TextField-->
-        <!--                :value="searchResult"-->
-        <!--                :size="smallSize"-->
-        <!--                placeholder="Search..."-->
-        <!--                @input="debouncedSearch"-->
-        <!--                @focus="onSearchFocus">-->
-        <!--                <template #append>-->
-        <!--                    <IconSearch :fill-color="searchIconFillColor" />-->
-        <!--                </template>-->
-        <!--            </TextField>-->
-        <!--        </template>-->
+        @fetch-data="onFetchData"
+        @remove-all-filter="onRemoveAllFilters"
+        @filter="onFilterChange">
         <template #appendFooter>
             <Button
                 title="SAVE MEDIA"
@@ -54,9 +44,6 @@ import {
 import {
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
-// TODO: Uncomment when we have global search
-// import IconSearch from '@Core/components/Icons/Actions/IconSearch';
-// import TextField from '@Core/components/TextField/TextField';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -77,9 +64,6 @@ export default {
     components: {
         Grid,
         Button,
-        // TODO: Uncomment when we have global search
-        // TextField,
-        // IconSearch,
     },
     mixins: [
         gridDraftMixin,
@@ -107,6 +91,7 @@ export default {
             isSearchFocused: false,
             observer: null,
             isPrefetchingData: true,
+            filterValues: {},
             rows: [],
             columns: [],
             filtered: 0,
@@ -193,6 +178,14 @@ export default {
         this.observer.disconnect();
     },
     methods: {
+        onRemoveAllFilters() {
+            this.filterValues = {};
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: {},
+            });
+        },
         onFetchData({
             offset,
             limit,

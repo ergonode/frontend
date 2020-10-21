@@ -10,7 +10,8 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
-                :placeholder="noRecordsPlaceholder"
+                :filters="filterValues"
+                :placeholder="noDataPlaceholder"
                 :is-prefetching-data="isPrefetchingData"
                 :is-header-visible="true"
                 :is-border="true"
@@ -18,7 +19,9 @@
                 @edit-row="onEditRow"
                 @preview-row="onEditRow"
                 @delete-row="onRemoveUnit"
-                @fetch-data="onFetchData">
+                @fetch-data="onFetchData"
+                @filter="onFilterChange"
+                @remove-all-filters="onRemoveAllFilters">
                 <template #headerActions>
                     <Button
                         data-cy="new-unit"
@@ -76,7 +79,7 @@ export default {
         };
     },
     computed: {
-        noRecordsPlaceholder() {
+        noDataPlaceholder() {
             return {
                 title: 'No units',
                 subtitle: 'There are no units in the system, you can create the first one.',

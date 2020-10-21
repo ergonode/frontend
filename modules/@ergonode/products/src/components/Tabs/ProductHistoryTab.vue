@@ -9,10 +9,13 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :filters="filterValues"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
-                @fetch-data="onFetchData" />
+                @fetch-data="onFetchData"
+                @remove-all-filter="onRemoveAllFilters"
+                @filter="onFilterChange" />
         </template>
     </CenterViewTemplate>
 </template>
