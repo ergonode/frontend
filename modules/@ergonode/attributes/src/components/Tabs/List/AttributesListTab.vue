@@ -166,7 +166,9 @@ export default {
         },
         onCreatedAttribute() {
             this.onCloseModal();
-            this.fetchListData(this.language.code);
+            this.fetchListData({
+                languageCode: this.language.code,
+            });
         },
         onSearch(value) {
             this.codeFilter = value;
