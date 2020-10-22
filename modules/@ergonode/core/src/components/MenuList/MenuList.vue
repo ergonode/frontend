@@ -5,11 +5,11 @@
 <template>
     <div class="menu-section">
         <MenuListHeader
-            v-if="sectionTitle"
-            :title="sectionTitle" />
+            v-if="title"
+            :title="title" />
         <ul class="menu-section__list">
             <MenuListElement
-                v-for="(item, index) in sectionMenu"
+                v-for="(item, index) in menu"
                 :key="index"
                 :item="item" />
         </ul>
@@ -17,18 +17,26 @@
 </template>
 
 <script>
+import MenuListElement from '@Core/components/MenuList/MenuListElement';
+
 export default {
     name: 'MenuList',
     components: {
-        MenuListElement: () => import('@Core/components/MenuList/MenuListElement'),
+        MenuListElement,
         MenuListHeader: () => import('@Core/components/MenuList/MenuListHeader'),
     },
     props: {
-        sectionTitle: {
+        /**
+         * The title of the component
+         */
+        title: {
             type: String,
             default: null,
         },
-        sectionMenu: {
+        /**
+         * List of menu items
+         */
+        menu: {
             type: Array,
             required: true,
         },

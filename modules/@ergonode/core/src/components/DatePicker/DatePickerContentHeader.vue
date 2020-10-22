@@ -17,6 +17,9 @@
 export default {
     name: 'DatePickerContentHeader',
     props: {
+        /**
+         *
+         */
         headers: {
             type: Array,
             required: true,

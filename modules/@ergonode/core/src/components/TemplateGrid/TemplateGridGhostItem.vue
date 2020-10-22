@@ -14,11 +14,12 @@
 import {
     WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import IconAddFilter from '@Core/components/Icons/Actions/IconAddFilter';
 
 export default {
     name: 'TemplateGridGhostItem',
     components: {
-        IconAddFilter: () => import('@Core/components/Icons/Actions/IconAddFilter'),
+        IconAddFilter,
     },
     props: {
         contextName: {

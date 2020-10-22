@@ -5,7 +5,6 @@
 import {
     create,
     get,
-    getAll,
     remove,
     update,
 } from '@Attributes/services/attributeGroup';
@@ -80,26 +79,6 @@ export default {
         dispatch('tab/setTranslations', translations, {
             root: true,
         });
-    },
-    getAttributeGroupsOptions({
-        rootState,
-    }) {
-        const {
-            language,
-        } = rootState.authentication.user;
-
-        return getAll({
-            $axios: this.app.$axios,
-        }).then(({
-            collection,
-        }) => ({
-            options: collection.map(element => ({
-                id: element.id,
-                key: element.code,
-                value: element.name,
-                hint: element.name ? `#${element.code} ${language}` : '',
-            })),
-        }));
     },
     async updateAttributeGroup(
         {

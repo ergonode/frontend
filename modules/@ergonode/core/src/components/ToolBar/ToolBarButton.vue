@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <button :class="['tool-bar-button', {'tool-bar-button--selected': isSelected}]">
+    <button :class="classes">
         <slot />
     </button>
 </template>
@@ -12,9 +12,22 @@
 export default {
     name: 'ToolBarButton',
     props: {
-        isSelected: {
+        /**
+         * Determines if component is selected
+         */
+        selected: {
             type: Boolean,
             default: false,
+        },
+    },
+    computed: {
+        classes() {
+            return [
+                'tool-bar-button',
+                {
+                    'tool-bar-button--selected': this.selected,
+                },
+            ];
         },
     },
 };

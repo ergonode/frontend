@@ -4,8 +4,8 @@
  */
 <template>
     <ListDraggableElement
-        :is-draggable="!disabled"
-        :is-disabled="disabled"
+        :draggable="!disabled"
+        :disabled="disabled"
         :draggable-id="item.id"
         :label="item.name"
         @drag="onDrag">

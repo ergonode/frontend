@@ -112,6 +112,9 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if the given field is required
+         */
         required: {
             type: Boolean,
             default: false,

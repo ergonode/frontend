@@ -62,6 +62,9 @@
 export default {
     name: 'IconLoader',
     props: {
+        /**
+         * Width of the component
+         */
         width: {
             type: [
                 Number,
@@ -69,6 +72,9 @@ export default {
             ],
             default: 24,
         },
+        /**
+         * Height of the component
+         */
         height: {
             type: [
                 Number,

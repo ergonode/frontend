@@ -40,9 +40,6 @@ import ActionButton from '@Core/components/ActionButton/ActionButton';
 import Preloader from '@Core/components/Preloader/Preloader';
 import Widget from '@Core/components/Widget/Widget';
 import {
-    COLORS,
-} from '@Core/defaults/colors';
-import {
     SIZE,
 } from '@Core/defaults/theme';
 import {
@@ -69,7 +66,6 @@ export default {
         return {
             workflowLanguage: '',
             statuses: [],
-            colors: {},
             isPrefetchingData: true,
         };
     },
@@ -118,15 +114,12 @@ export default {
                     status_id,
                     value,
                     label,
+                    color,
                 } = status;
-
-                if (typeof this.colors[status_id] === 'undefined') {
-                    this.colors[status_id] = COLORS[Math.floor(Math.random() * COLORS.length)];
-                }
 
                 return {
                     id: status_id,
-                    color: this.colors[status_id],
+                    color,
                     label,
                     value: `${value} products`,
                 };

@@ -22,6 +22,7 @@
 import {
     GRAPHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import UserFabAvatar from '@Core/components/Multimedia/UserFabAvatar';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -35,7 +36,7 @@ import {
 export default {
     name: 'ToolBarUserSelectContentHeader',
     components: {
-        UserFabAvatar: () => import('@Core/components/Multimedia/UserFabAvatar'),
+        UserFabAvatar,
     },
     computed: {
         ...mapState('authentication', [

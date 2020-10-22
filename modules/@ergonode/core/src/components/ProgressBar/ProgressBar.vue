@@ -12,11 +12,17 @@
 export default {
     name: 'ProgressBar',
     props: {
+        /**
+         * Color of progress bar
+         */
         color: {
             type: String,
             required: true,
             validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
         },
+        /**
+         * Component value
+         */
         value: {
             type: Number,
             required: true,

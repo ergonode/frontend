@@ -12,6 +12,9 @@
 export default {
     name: 'FormErrorLabel',
     props: {
+        /**
+         * The error messages are messages which comes from validation process
+         */
         errorMessages: {
             type: String,
             default: '',

@@ -6,26 +6,25 @@
     <div :class="classes">
         <slot />
         <GridColumnResizer
-            v-if="!isDragged"
             @width-change="onUpdateWidth"
             @resize="onResize" />
     </div>
 </template>
 <script>
+import GridColumnResizer from '@Core/components/Grid/Layout/Table/Columns/Resizer/GridColumnResizer';
 
 export default {
-    name: 'GridDraggableColumn',
+    name: 'GridColumn',
     components: {
-        GridColumnResizer: () => import('@Core/components/Grid/Layout/Table/Columns/Resizer/GridColumnResizer'),
+        GridColumnResizer,
     },
     props: {
+        /**
+         * Index of given component at the loop
+         */
         index: {
             type: Number,
             required: true,
-        },
-        isDragged: {
-            type: Boolean,
-            default: false,
         },
     },
     data() {
@@ -37,9 +36,6 @@ export default {
         classes() {
             return [
                 'grid-column',
-                {
-                    'grid-column--dragged': this.isDragged,
-                },
             ];
         },
     },

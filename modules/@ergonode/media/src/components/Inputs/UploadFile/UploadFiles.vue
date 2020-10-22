@@ -133,6 +133,9 @@ export default {
             type: String,
             default: '',
         },
+        /**
+         * Determines if the given field is required
+         */
         required: {
             type: Boolean,
             default: false,

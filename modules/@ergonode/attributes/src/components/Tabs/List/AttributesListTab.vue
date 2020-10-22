@@ -6,7 +6,7 @@
     <VerticalTabBarList>
         <ListSearchSelectHeader
             v-if="isSelectLanguage"
-            header="Attributes"
+            title="Attributes"
             @search-result="onSearch">
             <template #select>
                 <TreeSelect
@@ -18,7 +18,7 @@
         </ListSearchSelectHeader>
         <ListSearchHeader
             v-else
-            header="Attributes"
+            title="Attributes"
             @search-result="onSearch" />
         <List>
             <ListScrollableContainer>
@@ -166,7 +166,9 @@ export default {
         },
         onCreatedAttribute() {
             this.onCloseModal();
-            this.fetchListData(this.language.code);
+            this.fetchListData({
+                languageCode: this.language.code,
+            });
         },
         onSearch(value) {
             this.codeFilter = value;

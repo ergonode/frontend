@@ -16,6 +16,9 @@
 export default {
     name: 'LinkButton',
     props: {
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             required: true,

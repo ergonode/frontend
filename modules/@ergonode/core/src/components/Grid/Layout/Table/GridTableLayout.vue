@@ -217,54 +217,93 @@ export default {
         gridResizerCellMixin,
     ],
     props: {
+        /**
+         * List of columns presented at Grid
+         */
         columns: {
             type: Array,
             default: () => [],
         },
+        /**
+         * List of action columns presented in sticky right panel of columns
+         */
         actionColumns: {
             type: Array,
             default: () => [],
         },
+        /**
+         * List of rows presented at Grid
+         */
         rows: {
             type: Array,
             default: () => [],
         },
+        /**
+         * List of rows ids
+         */
         rowIds: {
             type: Array,
             default: () => [],
         },
+        /**
+         * The drafts are unsaved changes, cached changed data at given time
+         */
         drafts: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * The validation errors
+         */
         errors: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Selected filter values
+         */
         filters: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Current visible page at Grid
+         */
         currentPage: {
             type: Number,
             default: 1,
         },
+        /**
+         * Max visible rows for *currentPage* at Grid
+         */
         maxRows: {
             type: Number,
             default: 1,
         },
+        /**
+         * Determines the size of row height
+         */
         rowHeight: {
             type: Number,
             default: ROW_HEIGHT.SMALL,
         },
+        /**
+         * Determinate if the component is being able to edit
+         */
         isEditable: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if selecting row column is visible
+         */
         isSelectColumn: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if filters are visible
+         */
         isBasicFilter: {
             type: Boolean,
             default: false,
@@ -335,8 +374,8 @@ export default {
 
             const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Table/Cells/Edit');
 
-            if (extendedComponents && extendedComponents[type]) {
-                return extendedComponents[type];
+            if (extendedComponents && extendedComponents[this.editCell.type]) {
+                return extendedComponents[this.editCell.type];
             }
 
             return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Grid${type}EditCell`)
@@ -347,8 +386,8 @@ export default {
 
             const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Table/Cells/Edit/Filter');
 
-            if (extendedComponents && extendedComponents[type]) {
-                return extendedComponents[type];
+            if (extendedComponents && extendedComponents[this.editFilterCell.type]) {
+                return extendedComponents[this.editFilterCell.type];
             }
 
             return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Filter/Grid${type}EditFilterCell`)
@@ -499,7 +538,8 @@ export default {
             this.$emit('filter', filters);
         },
         onResizeColumn({
-            index, width,
+            index,
+            width,
         }) {
             if (this.hasInitialWidths) {
                 this.initialColumnWidths();

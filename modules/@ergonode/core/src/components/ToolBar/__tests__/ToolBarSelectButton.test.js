@@ -27,13 +27,4 @@ describe('/ToolBar/ToolBarSelectButton', () => {
     it('Check no title exception', () => {
         expect(wrapper.vm.title).toBeFalsy();
     });
-
-    it('Check click', () => {
-        const onClickStub = jest.fn();
-        wrapper.setMethods({
-            onClick: onClickStub,
-        });
-        wrapper.find('.tool-bar-button').trigger('click');
-        expect(onClickStub).toHaveBeenCalled();
-    });
 });

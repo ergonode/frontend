@@ -5,7 +5,6 @@
 import {
     create,
     get,
-    getAll,
     remove,
     update,
 } from '@Categories/services/index';
@@ -118,26 +117,6 @@ export default {
         } catch (e) {
             onError(e);
         }
-    },
-    getCategoriesOptions({
-        rootState,
-    }) {
-        const {
-            language,
-        } = rootState.authentication.user;
-
-        return getAll({
-            $axios: this.app.$axios,
-        }).then(({
-            collection,
-        }) => ({
-            options: collection.map(element => ({
-                id: element.id,
-                key: element.code,
-                value: element.name,
-                hint: element.name ? `#${element.code} ${language}` : '',
-            })),
-        }));
     },
     async updateCategory(
         {

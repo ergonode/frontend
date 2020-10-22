@@ -17,6 +17,9 @@
 export default {
     name: 'Tile',
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: [
                 String,
@@ -24,6 +27,9 @@ export default {
             ],
             default: '',
         },
+        /**
+         * The label is a text caption or description for the component
+         */
         label: {
             type: String,
             default: '',

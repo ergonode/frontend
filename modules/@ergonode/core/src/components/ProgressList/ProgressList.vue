@@ -10,8 +10,7 @@
                 :value="item.value"
                 :max-value="maxValue"
                 :color="item.color"
-                :label="item.label"
-                :label-value="item.labelValue" />
+                :label="item.label" />
             <span
                 :key="`divider-${index}`"
                 class="progress-list__data-label"
@@ -29,14 +28,23 @@ export default {
         ComplexProgressBar,
     },
     props: {
+        /**
+         * List of data
+         */
         datasets: {
             type: Array,
             default: () => [],
         },
+        /**
+         * List of labels connected with *datasets*
+         */
         labels: {
             type: Array,
             default: () => [],
         },
+        /**
+         * Max value for given value from *datasets*
+         */
         maxValue: {
             type: Number,
             default: 100,

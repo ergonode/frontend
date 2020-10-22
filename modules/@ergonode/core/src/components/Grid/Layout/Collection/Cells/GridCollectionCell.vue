@@ -17,14 +17,23 @@
 export default {
     name: 'GridCollectionCell',
     props: {
+        /**
+         * Component data used for filling cell
+         */
         data: {
             type: Object,
             required: true,
         },
+        /**
+         * The drafts are unsaved changes, cached changed data at given time
+         */
         drafts: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Determines image objectFit property
+         */
         objectFit: {
             type: String,
             default: '',

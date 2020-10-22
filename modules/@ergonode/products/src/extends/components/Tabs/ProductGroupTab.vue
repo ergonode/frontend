@@ -11,14 +11,17 @@
                 :data-count="filtered"
                 :rows="rows"
                 :drafts="drafts"
+                :filters="filterValues"
                 :collection-cell-binding="collectionCellBinding"
                 :is-prefetching-data="isPrefetchingData"
                 :is-collection-layout="true"
                 :is-basic-filter="true"
                 :is-header-visible="true"
                 :is-border="true"
-                @delete-row="onFetchData"
-                @fetch-data="onFetchData">
+                @delete-row="onRemoveProduct"
+                @fetch-data="onFetchData"
+                @remove-all-filter="onRemoveAllFilters"
+                @filter="onFilterChange">
                 <template #headerActions>
                     <ActionButton
                         title="ADD PRODUCTS"
@@ -89,6 +92,7 @@ export default {
             columns: [],
             rows: [],
             filtered: 0,
+            filterValues: {},
             selectedAppModalOption: null,
             isPrefetchingData: false,
             localParams: DEFAULT_GRID_FETCH_PARAMS,
@@ -149,6 +153,22 @@ export default {
         this.isPrefetchingData = false;
     },
     methods: {
+        onFilterChange(filters) {
+            this.filterValues = filters;
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: this.filterValues,
+            });
+        },
+        onRemoveAllFilters() {
+            this.filterValues = {};
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: {},
+            });
+        },
         onSelectAddProductOption(option) {
             this.selectedAppModalOption = option;
         },
@@ -161,6 +181,9 @@ export default {
             await this.onFetchData(this.localParams);
 
             this.isPrefetchingData = false;
+        },
+        onRemoveProduct() {
+            this.onFetchData();
         },
         async onFetchData({
             offset,

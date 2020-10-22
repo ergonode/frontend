@@ -12,6 +12,7 @@
                 :data-count="filtered"
                 :rows="rows"
                 :drafts="drafts"
+                :filters="filterValues"
                 :is-prefetching-data="isPrefetchingData"
                 :collection-cell-binding="collectionCellBinding"
                 :is-collection-layout="true"
@@ -19,7 +20,9 @@
                 :is-header-visible="true"
                 :is-basic-filter="true"
                 @cell-value="onCellValueChange"
-                @fetch-data="onFetchData">
+                @fetch-data="onFetchData"
+                @remove-all-filter="onRemoveAllFilters"
+                @filter="onFilterChange">
                 <template #headerActions>
                     <slot name="headerActions" />
                 </template>
@@ -82,6 +85,7 @@ export default {
             columns: [],
             rows: [],
             filtered: 0,
+            filterValues: {},
             isPrefetchingData: true,
             skus: {},
             isSubmitting: false,
@@ -105,11 +109,28 @@ export default {
     methods: {
         ...mapActions('feedback', [
             'onScopeValueChange',
+            'markChangeValuesAsSaved',
         ]),
         ...mapActions('product', [
             'addBySku',
             'removeProductChildren',
         ]),
+        onFilterChange(filters) {
+            this.filterValues = filters;
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: this.filterValues,
+            });
+        },
+        onRemoveAllFilters() {
+            this.filterValues = {};
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: {},
+            });
+        },
         async onFetchData(params = DEFAULT_GRID_FETCH_PARAMS) {
             const {
                 columns,
@@ -214,6 +235,8 @@ export default {
             if (skusKeys.length) {
                 this.$emit('submitted');
             }
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onCellValueChange(cellValues) {
             const drafts = {};

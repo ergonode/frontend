@@ -14,6 +14,9 @@
 export default {
     name: 'VerticalTabContent',
     props: {
+        /**
+         * Item data model
+         */
         item: {
             type: Object,
             required: true,

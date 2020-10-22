@@ -12,10 +12,16 @@
 export default {
     name: 'TemplateGridShadowItem',
     props: {
+        /**
+         * Determines whether is last row or not
+         */
         lastRow: {
             type: Boolean,
             required: true,
         },
+        /**
+         * Unique item identifier
+         */
         itemId: {
             type: Number,
             required: true,

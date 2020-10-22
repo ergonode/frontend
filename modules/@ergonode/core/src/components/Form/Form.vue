@@ -94,14 +94,23 @@ export default {
         formActionsMixin,
     ],
     props: {
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             default: '',
         },
+        /**
+         * The validation errors
+         */
         errors: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * The function which is parsing validation errors to custom presentation format
+         */
         errorsPresentationMapper: {
             type: Function,
             default: null,

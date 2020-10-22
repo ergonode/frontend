@@ -71,10 +71,16 @@ export default {
         IconDots,
     },
     props: {
+        /**
+         * The label is a text caption or description for the component
+         */
         label: {
             type: String,
             default: 'Header',
         },
+        /**
+         * Unique column identifier
+         */
         columnId: {
             type: [
                 String,
@@ -82,18 +88,30 @@ export default {
             ],
             required: true,
         },
+        /**
+         * Data about order of sorted column
+         */
         sortedColumn: {
             type: Object,
             required: true,
         },
+        /**
+         * Column index of given component at the loop
+         */
         columnIndex: {
             type: Number,
             required: true,
         },
+        /**
+         * Row index of given component at the loop
+         */
         rowIndex: {
             type: Number,
             required: true,
         },
+        /**
+         * Determines whether column is deletable or not
+         */
         deletable: {
             type: Boolean,
             default: false,
@@ -114,7 +132,7 @@ export default {
             return [
                 'grid-header-cell',
                 {
-                    'grid-header-cell--exists': this.isColumnExists,
+                    'grid-header-cell--exists': this.isColumnExist,
                 },
             ];
         },
@@ -140,7 +158,7 @@ export default {
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
         },
-        isColumnExists() {
+        isColumnExist() {
             return (isObject(this.draggedElement) && this.draggedElement.id === this.columnId)
                 || this.draggedElement === this.columnId;
         },
@@ -153,7 +171,7 @@ export default {
             return this.sortedColumn.orderState;
         },
         isActionsVisible() {
-            return !this.isColumnExists
+            return !this.isColumnExist
                 && (this.isSorted || this.isMenuSelected || this.isHovered);
         },
         title() {

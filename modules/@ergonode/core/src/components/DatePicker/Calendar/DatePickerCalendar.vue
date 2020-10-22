@@ -31,29 +31,48 @@ export default {
         DatePickerYears,
     },
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: Date,
             default: null,
         },
+        /**
+         * The value from/to which is selection - displayed as lighted color between range to - from
+         */
         rangeValue: {
             type: Date,
             default: null,
         },
+        /**
+         * Chosen year
+         */
         year: {
             type: Number,
             required: true,
         },
+        /**
+         * Displaying years
+         */
         years: {
             type: Array,
             required: true,
         },
+        /**
+         * Chosen month
+         */
         month: {
             type: Number,
             required: true,
         },
+        /**
+         * Type of calendar view
+         */
         calendarType: {
             type: String,
             required: true,
+            validator: value => Object.values(CALENDAR_TYPE).indexOf(value) !== -1,
         },
     },
     computed: {

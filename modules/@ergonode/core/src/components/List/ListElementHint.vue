@@ -13,10 +13,16 @@
 export default {
     name: 'ListElementHint',
     props: {
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             required: true,
         },
+        /**
+         *  The hint is a tip for the component
+         */
         hint: {
             type: [
                 String,

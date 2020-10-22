@@ -64,8 +64,7 @@ export default {
             required: true,
         },
         /**
-         * The type of alert
-         * @values success, info, warning, error
+         * Determines style of component based on type
          */
         type: {
             type: String,

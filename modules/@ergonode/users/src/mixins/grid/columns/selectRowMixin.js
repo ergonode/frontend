@@ -23,6 +23,9 @@ export default {
             type: Object,
             required: true,
         },
+        /**
+         * List of rows presented at Grid
+         */
         rows: {
             type: Array,
             default: () => [],

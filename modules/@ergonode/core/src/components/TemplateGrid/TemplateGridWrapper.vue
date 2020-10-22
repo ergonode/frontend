@@ -99,26 +99,44 @@ export default {
         TemplateGridItem,
     },
     props: {
+        /**
+         * Scope of context
+         */
         scope: {
             type: String,
             default: '',
         },
+        /**
+         * Values that have been changes at given context
+         */
         changeValues: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * The validation errors
+         */
         errors: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Determines state of draggable attribute
+         */
         isDraggingEnabled: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if the component might be dragged twice
+         */
         isMultiDraggable: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Space between each item
+         */
         gridGap: {
             type: Number,
             default: 8,
@@ -135,10 +153,16 @@ export default {
             type: String,
             default: '',
         },
+        /**
+         * Number of visible columns
+         */
         columns: {
             type: Number,
             required: true,
         },
+        /**
+         * Determines the size of row height
+         */
         rowHeight: {
             type: Number,
             required: true,

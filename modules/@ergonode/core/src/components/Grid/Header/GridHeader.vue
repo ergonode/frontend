@@ -4,33 +4,9 @@
  */
 <template>
     <div :class="classes">
-        <DropZone
-            v-show="isListElementDragging && !isFilterExists"
-            :orientation="horizontalOrientation"
-            title="ADD FILTER"
-            @drop="onDropFilter">
-            <template #icon="{ color }">
-                <IconAddFilter :fill-color="color" />
-            </template>
-        </DropZone>
+        <slot name="prepend" />
         <GridHeaderSettings>
             <template #actions>
-                <!-- TODO: Uncomment when mass actions are implemented-->
-                <!-- <ActionButton
-                    title="ACTIONS"
-                    :theme="isActionsSelected ? theme.PRIMARY : theme.SECONDARY"
-                    :size="smallSize"
-                    :options="[]">
-                    <template #prepend="{ color }">
-                        <IconArrowDropDown :fill-color="color" />
-                    </template>
-                </ActionButton> -->
-                <ExpandNumericButton
-                    v-if="isAdvancedFilters"
-                    title="FILTERS"
-                    :number="filtersCount"
-                    :is-expanded="isFiltersExpanded"
-                    @click.native="onFiltersExpand" />
                 <slot name="actions" />
             </template>
             <template #configuration>
@@ -60,41 +36,22 @@
             :is-collection-layout="isCollectionLayout"
             @close="onCloseModal"
             @apply="onApplySettings" />
-        <GridAdvancedFilters
-            v-show="isFiltersExpanded && isAdvancedFilters"
-            :filters="filters"
-            :filter-values="filterValues"
-            @remove="onRemoveFilter"
-            @remove-all="onRemoveAllFilters"
-            @filter="onFilter"
-            @exists="onFilterExists" />
-        <slot name="panel" />
+        <slot name="append" />
     </div>
 </template>
 
 <script>
-import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
-import DropZone from '@Core/components/DropZone/DropZone';
 import Fab from '@Core/components/Fab/Fab';
-import GridAdvancedFilters from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilters';
 import GridHeaderSettings from '@Core/components/Grid/Header/GridHeaderSettings';
 import GridCollectionLayoutActivator from '@Core/components/Grid/Layout/Collection/GridCollectionLayoutActivator';
 import GridTableLayoutActivator from '@Core/components/Grid/Layout/Table/GridTableLayoutActivator';
-import IconAddFilter from '@Core/components/Icons/Actions/IconAddFilter';
 import IconSettings from '@Core/components/Icons/Actions/IconSettings';
 import {
-    DRAGGED_ELEMENT,
     GRID_LAYOUT,
 } from '@Core/defaults/grid';
 import {
-    LAYOUT_ORIENTATION,
-} from '@Core/defaults/layout';
-import {
     THEME,
 } from '@Core/defaults/theme';
-import {
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'GridHeader',
@@ -102,45 +59,35 @@ export default {
         GridTableLayoutActivator,
         GridCollectionLayoutActivator,
         GridHeaderSettings,
-        GridAdvancedFilters,
-        DropZone,
-        IconAddFilter,
-        ExpandNumericButton,
         Fab,
         IconSettings,
-        // ActionButton: () => import('@Core/components/ActionButton/ActionButton'),
-        // IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
         GridSettingsModalForm: () => import('@Core/components/Grid/Modals/GridSettingsModalForm'),
     },
     props: {
+        /**
+         * Configuration of table layout
+         */
         tableLayoutConfig: {
             type: Object,
             required: true,
         },
+        /**
+         * Configuration of collection layout
+         */
         collectionLayoutConfig: {
             type: Object,
             required: true,
         },
+        /**
+         * Current selected grid layout
+         */
         layout: {
             type: String,
             default: GRID_LAYOUT.TABLE,
         },
-        filters: {
-            type: Array,
-            default: () => [],
-        },
-        filterValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        isActionsSelected: {
-            type: Boolean,
-            default: false,
-        },
-        isAdvancedFilters: {
-            type: Boolean,
-            default: false,
-        },
+        /**
+         * Determines if collection layout might be chosen
+         */
         isCollectionLayout: {
             type: Boolean,
             default: false,
@@ -148,32 +95,14 @@ export default {
     },
     data() {
         return {
-            isFiltersExpanded: false,
-            isFilterExists: false,
             isSettingsModal: false,
         };
     },
     computed: {
-        ...mapState('draggable', [
-            'isElementDragging',
-            'draggedElement',
-        ]),
         classes() {
             return [
                 'grid-header',
-                {
-                    'grid-header--disabled': this.isFilterExists && this.isListElementDragging,
-                },
             ];
-        },
-        filtersCount() {
-            return this.filters.length;
-        },
-        isListElementDragging() {
-            return this.isElementDragging === DRAGGED_ELEMENT.LIST;
-        },
-        horizontalOrientation() {
-            return LAYOUT_ORIENTATION.HORIZONTAL;
         },
         theme() {
             return THEME;
@@ -186,12 +115,6 @@ export default {
         onLayoutActivate(layout) {
             this.$emit('layout-change', layout);
         },
-        onFilterExists(isExist) {
-            this.isFilterExists = isExist;
-        },
-        onFiltersExpand() {
-            this.isFiltersExpanded = !this.isFiltersExpanded;
-        },
         onShowModal() {
             this.isSettingsModal = true;
         },
@@ -202,18 +125,6 @@ export default {
             this.isSettingsModal = false;
 
             this.$emit('apply-settings', payload);
-        },
-        onDropFilter(id) {
-            this.$emit('drop-filter', id);
-        },
-        onFilter(filters) {
-            this.$emit('filter', filters);
-        },
-        onRemoveFilter(payload) {
-            this.$emit('remove-filter', payload);
-        },
-        onRemoveAllFilters() {
-            this.$emit('remove-all-filter');
         },
     },
 };
@@ -227,9 +138,5 @@ export default {
         padding-bottom: 16px;
         box-sizing: border-box;
         background-color: $WHITE;
-
-        &--disabled {
-            pointer-events: none;
-        }
     }
 </style>

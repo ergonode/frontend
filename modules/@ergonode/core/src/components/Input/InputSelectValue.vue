@@ -19,6 +19,9 @@ import {
 export default {
     name: 'InputSelectValue',
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: [
                 Object,
@@ -27,10 +30,16 @@ export default {
             ],
             default: '',
         },
+        /**
+         * Determinate if the component is disabled
+         */
         disabled: {
             type: Boolean,
             default: false,
         },
+        /**
+         * The size of the component
+         */
         size: {
             type: String,
             default: SIZE.REGULAR,
@@ -39,6 +48,9 @@ export default {
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
         },
+        /**
+         * Alignment of selected value, might be centered or from left
+         */
         alignment: {
             type: String,
             default: ALIGNMENT.LEFT,

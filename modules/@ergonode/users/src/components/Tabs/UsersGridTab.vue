@@ -10,14 +10,17 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
-                :placeholder="noRecordsPlaceholder"
+                :filters="filterValues"
+                :placeholder="noDataPlaceholder"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
                 @edit-row="onEditRow"
                 @preview-row="onEditRow"
                 @delete-row="onRemoveRow"
-                @fetch-data="onFetchData" />
+                @fetch-data="onFetchData"
+                @remove-all-filters="onRemoveAllFilters"
+                @filter="onFilterChange" />
         </template>
     </CenterViewTemplate>
 </template>
@@ -50,7 +53,7 @@ export default {
         };
     },
     computed: {
-        noRecordsPlaceholder() {
+        noDataPlaceholder() {
             return {
                 title: 'No users',
                 subtitle: 'There are no users in the system, you can create the first one.',

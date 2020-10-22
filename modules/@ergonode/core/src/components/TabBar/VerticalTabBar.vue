@@ -52,6 +52,9 @@ export default {
         IconArrowDouble,
     },
     props: {
+        /**
+         * List of items
+         */
         items: {
             type: Array,
             required: true,

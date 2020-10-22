@@ -35,15 +35,17 @@
                     :label="$t('attribute.form.nameLabel')"
                     :hint="$t('attribute.form.nameHint')"
                     @input="setCodeValue" />
-                <TranslationLazySelect
+                <Autocomplete
                     :data-cy="dataCyGenerator(groupsFieldKey)"
                     :value="groups"
                     :label="$t('attribute.form.groupLabel')"
                     :multiselect="true"
+                    :searchable="true"
                     :clearable="true"
+                    :sticky-search="true"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[groupsFieldKey]"
-                    :fetch-options-request="getAttributeGroupsOptions"
+                    href="attributes/groups/autocomplete"
                     @input="setGroupsValue" />
                 <Divider />
             </FormSection>
@@ -79,12 +81,12 @@ import PRIVILEGES from '@Attributes/config/privileges';
 import {
     SCOPE,
 } from '@Attributes/defaults/attributes';
+import Autocomplete from '@Core/components/Autocomplete/Autocomplete';
 import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import InfoHint from '@Core/components/Hints/InfoHint';
 import Select from '@Core/components/Select/Select';
-import TranslationLazySelect from '@Core/components/Select/TranslationLazySelect';
 import TextField from '@Core/components/TextField/TextField';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
@@ -106,7 +108,7 @@ export default {
         InfoHint,
         TextField,
         Select,
-        TranslationLazySelect,
+        Autocomplete,
         Divider,
     },
     mixins: [
@@ -173,9 +175,6 @@ export default {
     methods: {
         ...mapActions('attribute', [
             '__setState',
-        ]),
-        ...mapActions('attributeGroup', [
-            'getAttributeGroupsOptions',
         ]),
         bindingProps({
             props = {},

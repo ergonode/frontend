@@ -44,19 +44,12 @@ export function getParsedFilter({
         .join(';');
 }
 
-export function getMergedFilters({
-    basic, advanced,
-}) {
-    const merged = {
-        ...basic,
-        ...advanced,
-    };
-
+export function getParsedFilters(filters) {
     return Object
-        .keys(merged)
+        .keys(filters)
         .map(key => getParsedFilter({
             id: key,
-            filter: merged[key],
+            filter: filters[key],
         }))
         .join(';');
 }

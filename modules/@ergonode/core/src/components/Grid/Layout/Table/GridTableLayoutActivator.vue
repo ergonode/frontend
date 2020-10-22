@@ -33,6 +33,9 @@ export default {
         IconListMedium,
     },
     props: {
+        /**
+         * Determines if component is selected
+         */
         isSelected: {
             type: Boolean,
             default: false,

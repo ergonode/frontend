@@ -11,6 +11,7 @@
                 :data-count="filtered"
                 :rows="rows"
                 :drafts="drafts"
+                :filters="filterValues"
                 :collection-cell-binding="collectionCellBinding"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
@@ -19,7 +20,9 @@
                 :is-border="true"
                 @cell-value="onCellValueChange"
                 @delete-row="onRemoveRow"
-                @fetch-data="onFetchData">
+                @fetch-data="onFetchData"
+                @filter="onFilterChange"
+                @remove-all-filters="onRemoveAllFilters">
                 <template #headerActions>
                     <ActionButton
                         title="ADD PRODUCTS"

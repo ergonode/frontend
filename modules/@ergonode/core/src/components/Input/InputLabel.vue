@@ -16,6 +16,9 @@ import {
 export default {
     name: 'InputLabel',
     props: {
+        /**
+         * The size of the component
+         */
         size: {
             type: String,
             default: SIZE.REGULAR,
@@ -24,26 +27,45 @@ export default {
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
         },
+        /**
+         * Determines if the given component is required
+         */
         required: {
             type: Boolean,
             default: false,
         },
+        /**
+         * The floating state, absolute position relative to parent
+         * @values top, left, bottom, right
+         */
         floating: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines state of focused component
+         */
         focused: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if the component is disabled
+         */
         disabled: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if the component has error
+         */
         error: {
             type: Boolean,
             default: false,
         },
+        /**
+         * The label is a text caption or description for the component
+         */
         label: {
             type: String,
             default: '',

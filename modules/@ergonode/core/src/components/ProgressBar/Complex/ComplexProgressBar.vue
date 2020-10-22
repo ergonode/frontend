@@ -31,23 +31,31 @@ import {
 export default {
     name: 'ComplexProgressBar',
     props: {
+        /**
+         * Color of progress bar
+         */
         color: {
             type: String,
             default: GRAPHITE_DARK,
             validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
         },
+        /**
+         * The label is a text caption or description for the component
+         */
         label: {
             type: String,
             default: '',
         },
-        labelValue: {
-            type: String,
-            default: '',
-        },
+        /**
+         * Component value
+         */
         value: {
             type: Number,
             default: 0,
         },
+        /**
+         * Max value of possible given *value*
+         */
         maxValue: {
             type: Number,
             default: 100,

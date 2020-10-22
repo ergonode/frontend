@@ -30,12 +30,18 @@ export default {
         DateRangePickerContent,
     },
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: Object,
             default: () => ({
                 isEmptyRecord: false,
             }),
         },
+        /**
+         * Date format used for parsing value
+         */
         format: {
             type: String,
             default: DEFAULT_FORMAT,

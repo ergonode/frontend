@@ -35,14 +35,16 @@
             </FormSection>
             <Divider />
             <FormSection title="Send notification to">
-                <TranslationLazySelect
+                <Autocomplete
                     :value="roles"
                     :clearable="true"
                     :multiselect="true"
+                    :searchable="true"
+                    :sticky-search="true"
                     label="Role"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[roleFieldKey]"
-                    :fetch-options-request="getRoleOptions"
+                    href="roles/autocomplete"
                     @input="setRolesValue" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
@@ -56,10 +58,10 @@
 </template>
 
 <script>
+import Autocomplete from '@Core/components/Autocomplete/Autocomplete';
 import Divider from '@Core/components/Dividers/Divider';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import TranslationLazySelect from '@Core/components/Select/TranslationLazySelect';
 import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
@@ -78,7 +80,7 @@ export default {
         Form,
         FormSection,
         Divider,
-        TranslationLazySelect,
+        Autocomplete,
         TranslationSelect,
     },
     mixins: [
@@ -139,9 +141,6 @@ export default {
     methods: {
         ...mapActions('statusTransition', [
             '__setState',
-        ]),
-        ...mapActions('role', [
-            'getRoleOptions',
         ]),
         bindingProps({
             props,
