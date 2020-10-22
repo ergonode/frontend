@@ -8,6 +8,7 @@ export default {
     relations: [
         '@ergonode/attributes',
         '@ergonode/product-templates',
+        '@ergonode/segments',
     ],
     aliases: {
         '@Products': '/',

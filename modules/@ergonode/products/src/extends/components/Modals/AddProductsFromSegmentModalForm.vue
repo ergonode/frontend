@@ -30,7 +30,7 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
-import AddProductsFromSegmentForm from '@Segments/components/Forms/Product/AddProductsFromSegmentForm';
+import AddProductsFromSegmentForm from '@Segments/components/Forms/AddProductsFromSegmentForm';
 import {
     mapActions,
 } from 'vuex';
@@ -90,7 +90,7 @@ export default {
         onSubmitSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Products have been added to collection',
+                message: 'Products have been added to product group',
             });
 
             this.isAdding = false;

@@ -24,7 +24,7 @@
                 @fetch-data="onFetchData"
                 @remove-all-filters="onRemoveAllFilters"
                 @filter="onFilterChange">
-                <template #headerActions>
+                <template #actionsHeader>
                     <ExpandNumericButton
                         title="BINDING ATTRIBUTES"
                         :number="bindings.length"

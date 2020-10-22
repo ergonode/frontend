@@ -22,7 +22,7 @@
                 @fetch-data="onFetchData"
                 @filter="onFilterChange"
                 @remove-all-filters="onRemoveAllFilters">
-                <template #headerActions>
+                <template #actionsHeader>
                     <Button
                         data-cy="new-unit"
                         title="NEW UNIT"

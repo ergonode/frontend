@@ -27,12 +27,12 @@
 </template>
 
 <script>
-import PRIVILEGES from '@Collections/config/privileges';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
 import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import PRIVILEGES from '@Segments/config/privileges';
 
 export default {
     name: 'AddProductsFromSegmentForm',
@@ -60,13 +60,13 @@ export default {
         },
     },
     computed: {
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.PRODUCT_COLLECTION.update,
-            ]);
-        },
         segmentsFieldKey() {
             return 'segments';
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.SEGMENT.update,
+            ]);
         },
     },
     methods: {

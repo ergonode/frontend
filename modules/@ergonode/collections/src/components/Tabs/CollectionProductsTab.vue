@@ -23,7 +23,7 @@
                 @fetch-data="onFetchData"
                 @filter="onFilterChange"
                 @remove-all-filters="onRemoveAllFilters">
-                <template #headerActions>
+                <template #actionsHeader>
                     <ActionButton
                         title="ADD PRODUCTS"
                         :theme="secondaryTheme"
@@ -132,21 +132,34 @@ export default {
         addProductOptions() {
             const options = Object.values(ADD_PRODUCT);
 
-            this.extendedComponents.forEach((option) => {
-                options.push(option.name);
-            });
+            if (this.extendedComponents.length) {
+                this.extendedComponents.forEach((option) => {
+                    options.push(option.name);
+                });
+            }
+
             return options;
         },
         extendedComponents() {
-            return this.$getExtendedComponents('@Collections/components/Tabs/collectionProductsTab/addFromSegment');
+            return this.$getExtendedComponents('@Collections/components/Tabs/CollectionProductsTab/addProductFrom');
         },
         modalComponent() {
+            let extendedOptions = [];
+
+            if (this.extendedComponents.length) {
+                extendedOptions = this.extendedComponents;
+            }
+
             const modals = [
                 {
                     component: () => import('@Collections/components/Modals/AddProductsBySKUModalForm'),
-                    name: ADD_PRODUCT.BY_SKU,
+                    name: ADD_PRODUCT.FROM_LIST,
                 },
-                ...this.extendedComponents,
+                {
+                    component: () => import('@Collections/components/Modals/AddProductsFromSegmentModalForm'),
+                    name: ADD_PRODUCT.FROM_SEGMENT,
+                },
+                ...extendedOptions,
             ];
 
             return modals.find(modal => modal.name === this.selectedAppModalOption).component;

@@ -445,13 +445,11 @@ export default {
             const {
                 id,
                 template,
-                categories,
                 type,
             } = state;
             const typeKey = getKeyByValue(productTypes, type);
             let data = {
                 templateId: template,
-                categoryIds: categories,
             };
 
             // EXTENDED BEFORE METHOD
@@ -517,14 +515,12 @@ export default {
                 sku,
                 type,
                 template,
-                categories,
             } = state;
             const typeKey = getKeyByValue(productTypes, type);
             let data = {
                 sku,
                 type: typeKey,
                 templateId: template,
-                categoryIds: categories,
             };
 
             // EXTENDED BEFORE METHOD
