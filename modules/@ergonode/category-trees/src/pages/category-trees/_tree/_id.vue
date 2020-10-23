@@ -36,9 +36,21 @@ export default {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
-        store, params,
+        app,
+        store,
+        params,
     }) {
-        await store.dispatch('categoryTree/getCategoryTree', params);
+        await store.dispatch('categoryTree/getCategoryTree', {
+            id: params.id,
+            onError: () => {
+                if (process.client) {
+                    app.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Category tree hasn`t been fetched properly',
+                    });
+                }
+            },
+        });
     },
     computed: {
         ...mapState('categoryTree', [
@@ -71,6 +83,7 @@ export default {
                 message: 'Are you sure you want to delete this tree?',
                 confirmCallback: () => this.removeCategoryTree({
                     onSuccess: this.onRemoveSuccess,
+                    onError: this.onRemoveError,
                 }),
             });
         },
@@ -81,6 +94,12 @@ export default {
             });
             this.$router.push({
                 name: 'category-trees-grid',
+            });
+        },
+        onRemoveError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Catgory tree hasn`t been deleted',
             });
         },
     },

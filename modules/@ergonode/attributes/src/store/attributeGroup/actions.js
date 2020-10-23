@@ -187,13 +187,14 @@ export default {
     async removeAttributeGroup({
         state,
     }, {
-        onSuccess,
-        onError,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
         try {
+            const {
+                id,
+            } = state;
+
             // EXTENDED BEFORE METHOD
             await this.$extendMethods('@Attributes/store/attributeGroup/action/removeAttributeGroup/__before', {
                 $this: this,
@@ -210,6 +211,7 @@ export default {
                 $this: this,
             });
             // EXTENDED AFTER METHOD
+
             onSuccess();
         } catch (e) {
             onError(e);

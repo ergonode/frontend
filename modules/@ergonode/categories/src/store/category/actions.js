@@ -186,11 +186,11 @@ export default {
         onSuccess = () => {},
         onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
-
         try {
+            const {
+                id,
+            } = state;
+
             // EXTENDED BEFORE METHOD
             await this.$extendMethods('@Categories/store/category/action/removeCategory/__before', {
                 $this: this,
