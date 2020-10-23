@@ -23,9 +23,6 @@
 <script>
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/Section/FormSection';
-import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
 import UploadAvatar from '@Users/components/Inputs/UploadAvatar';
 import PRIVILEGES from '@Users/config/privileges';
 import {
