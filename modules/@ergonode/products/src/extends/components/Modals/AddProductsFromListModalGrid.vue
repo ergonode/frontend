@@ -23,8 +23,8 @@
                 @fetch-data="onFetchData"
                 @remove-all-filter="onRemoveAllFilters"
                 @filter="onFilterChange">
-                <template #headerActions>
-                    <slot name="headerActions" />
+                <template #actionsHeader>
+                    <slot name="actionsHeader" />
                 </template>
                 <template #appendFooter>
                     <Button

@@ -18,12 +18,14 @@
 </template>
 
 <script>
+import {
+    GREEN,
+    RED,
+    YELLOW,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import Preloader from '@Core/components/Preloader/Preloader';
 import ProgressList from '@Core/components/ProgressList/ProgressList';
 import Widget from '@Core/components/Widget/Widget';
-import {
-    COLORS,
-} from '@Core/defaults/colors';
 import {
     getCompletenessCount,
 } from '@Dashboard/services';
@@ -45,17 +47,18 @@ export default {
 
         completenessCount.forEach((product) => {
             const {
-                code,
                 value,
                 label,
             } = product;
 
-            if (typeof this.colors[code] === 'undefined') {
-                this.colors[code] = COLORS[Math.floor(Math.random() * COLORS.length)];
-            }
+            const color = [
+                RED,
+                YELLOW,
+                GREEN,
+            ][Math.floor(value / 40)];
 
             progressListDatasets.push({
-                color: this.colors[code],
+                color,
                 label,
                 value,
             });

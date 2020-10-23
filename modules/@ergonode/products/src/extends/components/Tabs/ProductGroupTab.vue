@@ -22,7 +22,7 @@
                 @fetch-data="onFetchData"
                 @remove-all-filter="onRemoveAllFilters"
                 @filter="onFilterChange">
-                <template #headerActions>
+                <template #actionsHeader>
                     <ActionButton
                         title="ADD PRODUCTS"
                         :theme="secondaryTheme"

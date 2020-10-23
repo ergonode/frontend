@@ -18,7 +18,7 @@
                 @fetch-data="onFetchData"
                 @filter="onFilterChange"
                 @remove-all-filters="onRemoveAllFilters">
-                <template #headerActions>
+                <template #actionsHeader>
                     <div class="import-details-tiles">
                         <Tile
                             v-for="(detail, index) in details"
