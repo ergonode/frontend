@@ -4,7 +4,6 @@
  */
 <template>
     <Component
-        v-if="filterCellComponent"
         :is="filterCellComponent"
         :value="value"
         :row-index="rowIndex"
@@ -14,21 +13,11 @@
         :data="filter"
         @edit-filter-cell="onEditFilterCell"
         @filter-value="onFilterValueChange" />
-    <GridTableCell
-        v-else
-        :locked="true"
-        :row="rowIndex"
-        :column="columnIndex" />
 </template>
 
 <script>
-import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
-
 export default {
     name: 'GridFilterDataCell',
-    components: {
-        GridTableCell,
-    },
     props: {
         /**
          * Row index of given component at the loop
@@ -82,6 +71,13 @@ export default {
             type: String,
             default: '',
         },
+        /**
+         * The model of extended data column type filter cell component
+         */
+        extendedDataFilterCell: {
+            type: Object,
+            default: null,
+        },
     },
     computed: {
         filterCellComponent() {
@@ -89,10 +85,8 @@ export default {
                 return null;
             }
 
-            const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Table/Cells/Data/Filter');
-
-            if (extendedComponents && extendedComponents[this.filter.type]) {
-                return extendedComponents[this.filter.type];
+            if (this.extendedDataFilterCell) {
+                return this.extendedDataFilterCell;
             }
 
             return () => import(`@Core/components/Grid/Layout/Table/Cells/Data/Filter/Grid${this.type}FilterDataCell`)

@@ -21,12 +21,14 @@
 </template>
 
 <script>
+import AttributesListElement from '@Attributes/components/Lists/AttributesListElement';
+import ListGroupElement from '@Core/components/List/ListGroupElement';
 
 export default {
     name: 'AttributesListGroup',
     components: {
-        ListGroupElement: () => import('@Core/components/List/ListGroupElement'),
-        AttributesListElement: () => import('@Attributes/components/Lists/AttributesListElement'),
+        ListGroupElement,
+        AttributesListElement,
     },
     props: {
         group: {

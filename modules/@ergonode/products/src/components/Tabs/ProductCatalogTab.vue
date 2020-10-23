@@ -11,7 +11,6 @@
         </template>
         <template #grid>
             <Grid
-                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :rows="rows"
                 :placeholder="noDataPlaceholder"
@@ -20,6 +19,12 @@
                 :errors="errors"
                 :data-count="filtered"
                 :collection-cell-binding="collectionCellBinding"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :is-editable="isAllowedToUpdate"
                 :is-prefetching-data="isPrefetchingData"
                 :is-header-visible="true"
                 :is-basic-filter="true"
@@ -90,6 +95,7 @@ import VerticalTabBar from '@Core/components/TabBar/VerticalTabBar';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchAdvancedFiltersDataMixin from '@Core/mixins/grid/fetchAdvancedFiltersDataMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
@@ -126,6 +132,7 @@ export default {
             path: 'products',
         }),
         gridDraftMixin,
+        extendedGridComponentsMixin,
         tabFeedbackMixin,
     ],
     async fetch() {

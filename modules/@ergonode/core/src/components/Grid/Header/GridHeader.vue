@@ -12,12 +12,12 @@
             <template #configuration>
                 <GridTableLayoutActivator
                     data-cy="grid-table-view"
-                    :is-selected="layout === gridLayouts.TABLE"
+                    :is-selected="isSelectedTableLayout"
                     @active="onLayoutActivate" />
                 <GridCollectionLayoutActivator
-                    data-cy="grid-collection-view"
                     v-if="isCollectionLayout"
-                    :is-selected="layout === gridLayouts.COLLECTION"
+                    data-cy="grid-collection-view"
+                    :is-selected="isSelectedCollectionLayout"
                     @active="onLayoutActivate" />
                 <Fab
                     :theme="theme.SECONDARY"
@@ -107,8 +107,11 @@ export default {
         theme() {
             return THEME;
         },
-        gridLayouts() {
-            return GRID_LAYOUT;
+        isSelectedTableLayout() {
+            return this.layout === GRID_LAYOUT.TABLE;
+        },
+        isSelectedCollectionLayout() {
+            return this.layout === GRID_LAYOUT.COLLECTION;
         },
     },
     methods: {

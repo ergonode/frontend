@@ -10,7 +10,7 @@
         :edit-key-code="32"
         @mousedown.native="onPreview"
         @edit="onPreview">
-        <IconPreview />
+        <IconPreview v-once />
     </GridTableCell>
 </template>
 

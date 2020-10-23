@@ -12,6 +12,7 @@
             :data="element"
             :drafts="drafts"
             :object-fit="objectFit"
+            :extended-data-cell="extendedDataCells[element.type]"
             @row-action="onRowAction"
             @cell-value="onCellValueChange" />
     </div>
@@ -67,6 +68,13 @@ export default {
         objectFit: {
             type: String,
             required: true,
+        },
+        /**
+         * The model of extended data column type cells components
+         */
+        extendedDataCells: {
+            type: Object,
+            default: () => ({}),
         },
     },
     computed: {

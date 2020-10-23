@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
+<template functional>
     <div class="grid-header-settings">
         <div class="grid-header-settings__actions">
             <slot name="actions" />

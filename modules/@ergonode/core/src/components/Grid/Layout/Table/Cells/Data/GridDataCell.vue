@@ -105,13 +105,18 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * The model of extended data column type cell component
+         */
+        extendedDataCell: {
+            type: Function,
+            default: null,
+        },
     },
     computed: {
         dataCellComponent() {
-            const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Table/Cells/Data');
-
-            if (extendedComponents && extendedComponents[this.column.type]) {
-                return extendedComponents[this.column.type];
+            if (this.extendedDataCell) {
+                return this.extendedDataCell;
             }
 
             return () => import(`@Core/components/Grid/Layout/Table/Cells/Data/Grid${this.type}DataCell`)

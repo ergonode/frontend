@@ -71,15 +71,24 @@
                             @remove="onRemoveColumn" />
                         <template v-if="isBasicFilter">
                             <GridFilterDataCell
+                                v-if="column.filter"
                                 :row-index="rowsOffset + basicFiltersOffset"
                                 :value="filters[column.id]"
-                                :type="column.filter ? filterTypes[column.filter.type] : ''"
+                                :type="filterTypes[column.filter.type]"
+                                :extended-data-filter-cell="extendedDataFilterCells[
+                                    column.filter.type
+                                ]"
                                 :column-index="columnIndex + columnsOffset"
                                 :language-code="column.language"
                                 :column-id="column.id"
                                 :filter="column.filter"
                                 @edit-filter-cell="onEditFilterCell"
                                 @filter-value="onFilterValueChange" />
+                            <GridTableCell
+                                v-else
+                                :locked="true"
+                                :row="rowsOffset + basicFiltersOffset"
+                                :column="columnIndex + columnsOffset" />
                         </template>
                         <GridDataCell
                             v-for="(row, rowIndex) in rows"
@@ -88,6 +97,7 @@
                             :drafts="drafts"
                             :column="column"
                             :type="columnTypes[column.type]"
+                            :extended-data-cell="extendedDataCells[column.type]"
                             :error-messages="errors[`${rowIds[rowIndex]}/${column.id}`]"
                             :row-id="rowIds[rowIndex]"
                             :column-index="columnIndex + columnsOffset"
@@ -171,6 +181,7 @@ import GridActionColumn from '@Core/components/Grid/Layout/Table/Columns/GridAct
 import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
 import GridDraggableColumn from '@Core/components/Grid/Layout/Table/Columns/GridDraggableColumn';
 import GridTableLayoutColumnsSection from '@Core/components/Grid/Layout/Table/Sections/GridTableLayoutColumnsSection';
+import GridTableLayoutPinnedSection from '@Core/components/Grid/Layout/Table/Sections/GridTableLayoutPinnedSection';
 import {
     COLUMN_WIDTH,
     PINNED_COLUMN_STATE,
@@ -209,7 +220,7 @@ export default {
         GridActionCell,
         GridDataCell,
         GridHeaderCell,
-        GridTableLayoutPinnedSection: () => import('@Core/components/Grid/Layout/Table/Sections/GridTableLayoutPinnedSection'),
+        GridTableLayoutPinnedSection,
         GridSentinelColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridSentinelColumn'),
         GridSelectRowColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridSelectRowColumn'),
     },
@@ -308,6 +319,41 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * The model of extended data column type filter cells components
+         */
+        extendedDataFilterCells: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
+         * The model of extended edit column type filter cells components
+         */
+        extendedDataEditFilterCells: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
+         * The model of extended data column type cells components
+         */
+        extendedDataCells: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
+         * The model of extended edit column type cells components
+         */
+        extendedDataEditCells: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
+         * The model of extended type columns components
+         */
+        extendedColumns: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     data() {
         return {
@@ -315,7 +361,6 @@ export default {
             isSelectedAllRows: false,
             selectedRows: {},
             orderedColumns: [],
-            extendedColumns: {},
             columnWidths: [],
             sortedColumn: {},
             pinnedSections: {},
@@ -372,10 +417,8 @@ export default {
         editCellComponent() {
             const type = this.columnTypes[this.editCell.type];
 
-            const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Table/Cells/Edit');
-
-            if (extendedComponents && extendedComponents[this.editCell.type]) {
-                return extendedComponents[this.editCell.type];
+            if (this.extendedDataEditCells[this.editCell.type]) {
+                return this.extendedDataEditCells[this.editCell.type];
             }
 
             return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Grid${type}EditCell`)
@@ -384,10 +427,8 @@ export default {
         editFilterCellComponent() {
             const type = this.filterTypes[this.editFilterCell.type];
 
-            const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Table/Cells/Edit/Filter');
-
-            if (extendedComponents && extendedComponents[this.editFilterCell.type]) {
-                return extendedComponents[this.editFilterCell.type];
+            if (this.extendedDataEditFilterCells[this.editFilterCell.type]) {
+                return this.extendedDataEditFilterCells[this.editFilterCell.type];
             }
 
             return () => import(`@Core/components/Grid/Layout/Table/Cells/Edit/Filter/Grid${type}EditFilterCell`)
@@ -410,17 +451,18 @@ export default {
                 gridTemplateColumns: this.columnWidths.join(' '),
             };
         },
+        headerRowsTemplate() {
+            return this.isBasicFilter ? `${ROW_HEIGHT.SMALL}px ${ROW_HEIGHT.SMALL}px` : `${ROW_HEIGHT.SMALL}px`;
+        },
         templateRows() {
-            const headerRowsTemplate = this.isBasicFilter ? `${ROW_HEIGHT.SMALL}px ${ROW_HEIGHT.SMALL}px` : `${ROW_HEIGHT.SMALL}px`;
-
             if (this.dataCount) {
                 return {
-                    gridTemplateRows: `${headerRowsTemplate} repeat(${this.dataCount}, ${this.rowHeight}px)`,
+                    gridTemplateRows: `${this.headerRowsTemplate} repeat(${this.dataCount}, ${this.rowHeight}px)`,
                 };
             }
 
             return {
-                gridTemplateRows: headerRowsTemplate,
+                gridTemplateRows: this.headerRowsTemplate,
             };
         },
         pinnedState() {
@@ -551,7 +593,8 @@ export default {
             ];
         },
         onSwapColumns({
-            from, to,
+            from,
+            to,
         }) {
             this.columnWidths = [
                 ...swapItemPosition(
@@ -623,12 +666,6 @@ export default {
 
                 orderedColumns.push(column);
                 columnWidths.push(column.width || COLUMN_WIDTH.DEFAULT);
-
-                const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Table/Columns');
-
-                if (extendedComponents && extendedComponents[column.type]) {
-                    this.extendedColumns[column.id] = extendedComponents[column.type];
-                }
             }
 
             this.orderedColumns = orderedColumns;

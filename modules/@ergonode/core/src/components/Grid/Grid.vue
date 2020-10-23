@@ -48,6 +48,11 @@
                     :current-page="currentPage"
                     :max-rows="maxRows"
                     :row-height="tableLayoutConfig.rowHeight"
+                    :extended-columns="extendedColumns[gridLayout.TABLE]"
+                    :extended-data-cells="extendedDataCells[gridLayout.TABLE]"
+                    :extended-data-filter-cells="extendedDataFilterCells[gridLayout.TABLE]"
+                    :extended-data-edit-cells="extendedDataEditCells[gridLayout.TABLE]"
+                    :extended-edit-filter-cells="extendedDataEditFilterCells[gridLayout.TABLE]"
                     :is-editable="isEditable"
                     :is-select-column="isSelectColumn"
                     :is-basic-filter="isBasicFilter"
@@ -64,6 +69,7 @@
                     :drafts="drafts"
                     :columns-number="collectionLayoutConfig.columnsNumber"
                     :object-fit="collectionLayoutConfig.scaling"
+                    :extended-data-cells="extendedDataCells[gridLayout.COLLECTION]"
                     @row-action="onRowAction"
                     @cell-value="onCellValueChange" />
             </KeepAlive>
@@ -102,6 +108,7 @@ import {
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import RemoveFiltersButton from '@Core/components/Grid/Buttons/RemoveFiltersButton';
 import AddGridColumnDropZone from '@Core/components/Grid/DropZone/AddGridColumnDropZone';
+import GridPageSelector from '@Core/components/Grid/Footer/GridPageSelector';
 import GridPagination from '@Core/components/Grid/Footer/GridPagination';
 import GridBody from '@Core/components/Grid/GridBody';
 import GridFooter from '@Core/components/Grid/GridFooter';
@@ -137,8 +144,8 @@ export default {
         GridFooter,
         GridTableLayout,
         GridCollectionLayout,
+        GridPageSelector,
         GridPlaceholder: () => import('@Core/components/Grid/GridPlaceholder'),
-        GridPageSelector: () => import('@Core/components/Grid/Footer/GridPageSelector'),
     },
     props: {
         /**
@@ -266,6 +273,41 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * The model of extended data column type filter cells components
+         */
+        extendedDataFilterCells: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
+         * The model of extended edit column type filter cells components
+         */
+        extendedDataEditFilterCells: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
+         * The model of extended data column type cells components
+         */
+        extendedDataCells: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
+         * The model of extended edit column type cells components
+         */
+        extendedDataEditCells: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
+         * The model of extended type columns components
+         */
+        extendedColumns: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     data() {
         return {
@@ -352,6 +394,9 @@ export default {
                 column => column.id === this.draggedElement,
             );
         },
+        gridLayout() {
+            return GRID_LAYOUT;
+        },
         isTableLayout() {
             return this.layout === GRID_LAYOUT.TABLE;
         },
@@ -378,7 +423,8 @@ export default {
             this.$emit('remove-all-filters');
         },
         onApplySettings({
-            tableConfig, collectionConfig,
+            tableConfig,
+            collectionConfig,
         }) {
             this.tableLayoutConfig = tableConfig;
             this.collectionLayoutConfig = collectionConfig;

@@ -4,13 +4,18 @@
  */
 <template>
     <Grid
-        :is-editable="isAllowedToUpdate"
         :columns="columnsWithAttachColumn"
         :data-count="filtered"
         :drafts="drafts"
         :filters="filterValues"
         :rows="rowsWithAttachValues"
         :collection-cell-binding="collectionCellBinding"
+        :extended-columns="extendedColumns"
+        :extended-data-cells="extendedDataCells"
+        :extended-data-filter-cells="extendedDataFilterCells"
+        :extended-data-edit-cells="extendedDataEditCells"
+        :extended-edit-filter-cells="extendedDataEditFilterCells"
+        :is-editable="isAllowedToUpdate"
         :is-prefetching-data="isPrefetchingData"
         :is-basic-filter="true"
         :is-header-visible="true"
@@ -47,6 +52,7 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
     getGridData,
@@ -67,6 +73,7 @@ export default {
     },
     mixins: [
         gridDraftMixin,
+        extendedGridComponentsMixin,
     ],
     props: {
         multiple: {
