@@ -59,6 +59,8 @@ export const getGridData = async ({
 };
 
 export const getAdvancedFiltersData = async ({
+    $route,
+    $cookies,
     $axios,
     $addAlert,
     path,
@@ -109,6 +111,17 @@ export const getAdvancedFiltersData = async ({
                 message: 'Attribute has no filter',
             });
         }
+    }
+
+    if (!$cookies.get(`GRID_ADV_FILTERS_CONFIG:${$route.name}`)) {
+        $cookies.set(
+            `GRID_ADV_FILTERS_CONFIG:${$route.name}`,
+            advancedFilters
+                .map(({
+                    id,
+                }) => id)
+                .join(','),
+        );
     }
 
     return advancedFilters;

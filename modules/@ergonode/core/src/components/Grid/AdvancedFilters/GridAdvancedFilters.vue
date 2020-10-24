@@ -79,19 +79,6 @@ export default {
     },
     methods: {
         initializeFilters() {
-            const config = this.$cookies.get(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
-
-            if (!config) {
-                this.$cookies.set(
-                    `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
-                    this.filters
-                        .map(({
-                            id,
-                        }) => id)
-                        .join(','),
-                );
-            }
-
             const orderedFilters = [];
             const filterComponents = [];
             const {
