@@ -43,6 +43,9 @@ export default function ({
             };
         },
         computed: {
+            ...mapState('authentication', {
+                userLanguageCode: state => state.user.language,
+            }),
             ...mapState('list', [
                 'disabledElements',
             ]),
@@ -77,7 +80,7 @@ export default function ({
 
                 if (column.element_id) {
                     const {
-                        language: languageCode,
+                        language: languageCode = this.userLanguageCode,
                         element_id: elementId,
                     } = column;
 

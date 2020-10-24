@@ -163,6 +163,9 @@ export default {
         };
     },
     computed: {
+        ...mapState('authentication', {
+            userLanguageCode: state => state.user.language,
+        }),
         ...mapState('draggable', [
             'isElementDragging',
             'draggedElement',
@@ -446,12 +449,12 @@ export default {
             ];
 
             elements.forEach((element) => {
-                const {
-                    attributeId,
-                    languageCode,
-                } = element;
+                if (element.attributeId) {
+                    const {
+                        attributeId,
+                        languageCode = this.userLanguageCode,
+                    } = element;
 
-                if (attributeId && languageCode) {
                     if (typeof disabledElements[languageCode] === 'undefined') {
                         disabledElements[languageCode] = {};
                     }
