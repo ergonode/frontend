@@ -74,7 +74,10 @@
                                 v-if="column.filter"
                                 :row-index="rowsOffset + basicFiltersOffset"
                                 :value="filters[column.id]"
-                                :component="dataFilterCellComponents[column.filter.type]"
+                                :type="filterTypes[column.filter.type]"
+                                :extended-data-filter-cell="extendedDataFilterCells[
+                                    column.filter.type
+                                ]"
                                 :column-index="columnIndex + columnsOffset"
                                 :language-code="column.language"
                                 :column-id="column.id"
@@ -90,10 +93,11 @@
                         <GridDataCell
                             v-for="(row, rowIndex) in rows"
                             :key="`${rowIds[rowIndex]}|${column.id}`"
-                            :component="dataCellComponents[column.type]"
                             :data="row[column.id]"
                             :drafts="drafts"
                             :column="column"
+                            :type="columnTypes[column.type]"
+                            :extended-data-cell="extendedDataCells[column.type]"
                             :error-messages="errors[`${rowIds[rowIndex]}/${column.id}`]"
                             :row-id="rowIds[rowIndex]"
                             :column-index="columnIndex + columnsOffset"
@@ -132,9 +136,9 @@
                 <template v-for="(row, rowIndex) in rows">
                     <GridActionCell
                         :key="`${rowIds[rowIndex]}|${column.id}`"
-                        :component="actionCellComponents[column.id]"
                         :column-index="orderedColumns.length + columnIndex + columnsOffset"
                         :column="column"
+                        :type="columnActionTypes[column.id]"
                         :action="row._links.value[column.id]"
                         :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
                         :is-selected="isSelectedAllRows
@@ -180,7 +184,6 @@ import GridTableLayoutColumnsSection from '@Core/components/Grid/Layout/Table/Se
 import GridTableLayoutPinnedSection from '@Core/components/Grid/Layout/Table/Sections/GridTableLayoutPinnedSection';
 import {
     COLUMN_WIDTH,
-    GRID_ACTION,
     PINNED_COLUMN_STATE,
     ROW_HEIGHT,
 } from '@Core/defaults/grid';
@@ -229,6 +232,13 @@ export default {
          * List of columns presented at Grid
          */
         columns: {
+            type: Array,
+            default: () => [],
+        },
+        /**
+         * List of action columns presented in sticky right panel of columns
+         */
+        actionColumns: {
             type: Array,
             default: () => [],
         },
@@ -351,13 +361,9 @@ export default {
             isSelectedAllRows: false,
             selectedRows: {},
             orderedColumns: [],
-            actionColumns: [],
             columnWidths: [],
-            dataCellComponents: {},
-            actionCellComponents: {},
-            dataFilterCellComponents: {},
-            filterTypes: {},
             columnTypes: {},
+            filterTypes: {},
             sortedColumn: {},
             pinnedSections: {},
             editCell: null,
@@ -379,8 +385,14 @@ export default {
         visibleColumns() {
             return this.columns.filter(column => column.visible);
         },
-        gridActions() {
-            return Object.values(GRID_ACTION);
+        columnActionTypes() {
+            return this.actionColumns.reduce((acc, current) => {
+                const tmp = acc;
+
+                tmp[current.id] = capitalizeAndConcatenationArray(current.id.split('_'));
+
+                return tmp;
+            }, {});
         },
         editCellComponent() {
             const type = this.columnTypes[this.editCell.type];
@@ -442,6 +454,7 @@ export default {
             immediate: true,
             handler() {
                 if (this.orderedColumns.length !== this.visibleColumns.length) {
+                    // Columns might be lazy loaded - we need to handle that
                     this.initializeColumns();
                 }
             },
@@ -542,16 +555,16 @@ export default {
             removeCookieAtIndex({
                 cookies: this.$cookies,
                 cookieName: `GRID_CONFIG:${this.$route.name}`,
-                index: index - this.columnsOffset,
+                index: this.isSelectColumn ? index - 1 : index,
             });
             this.$emit('filter', filters);
 
             // TODO
 
-            this.$emit('remove-column', {
-                id,
-                index: index - this.columnsOffset,
-            });
+            // this.$emit('remove-column', {
+            //     id,
+            //     index: this.isSelectColumn ? index - 1 : index,
+            // });
         },
         onResizeColumn({
             index,
@@ -587,8 +600,8 @@ export default {
             changeCookiePosition({
                 cookies: this.$cookies,
                 cookieName: `GRID_CONFIG:${this.$route.name}`,
-                from: from - this.columnsOffset,
-                to: to - this.columnsOffset,
+                from: this.isSelectColumn ? from - 1 : from,
+                to: this.isSelectColumn ? to - 1 : to,
             });
         },
         onStickyChange({
@@ -615,7 +628,7 @@ export default {
         onRowAction(payload) {
             this.$emit('row-action', payload);
         },
-        async initializeColumns() {
+        initializeColumns() {
             const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
 
             if (!config) {
@@ -629,35 +642,22 @@ export default {
                 );
             }
 
-            const actionColumns = this.actionColumns.length === 0 ? this.getActionColumns() : [];
             const orderedColumns = [];
             const columnWidths = [];
             const {
                 length,
             } = this.visibleColumns;
 
-            const request = [];
-
             for (let i = 0; i < length; i += 1) {
                 const column = this.visibleColumns[i];
 
                 if (typeof this.columnTypes[column.type] === 'undefined') {
-                    this.columnTypes[column.type] = this.getColumnTypeName(column);
+                    const type = capitalizeAndConcatenationArray(column.type.split('_'));
 
-                    if (this.extendedDataCells[column.type]) {
-                        this.setExtendedDataCell(column);
-                    } else {
-                        request.push(this.setDataCell(column.type));
-                    }
-                }
+                    this.columnTypes[column.type] = type;
 
-                if (column.filter && typeof this.filterTypes[column.filter.type] === 'undefined') {
-                    this.filterTypes[column.filter.type] = this.getColumnFilterTypeName(column);
-
-                    if (this.extendedDataFilterCells[column.filter.type]) {
-                        this.setExtendedFilterDataCell(column);
-                    } else {
-                        request.push(this.setDataFilterCell(column.filter.type));
+                    if (column.filter) {
+                        this.filterTypes[column.filter.type] = type;
                     }
                 }
 
@@ -665,19 +665,8 @@ export default {
                 columnWidths.push(column.width || COLUMN_WIDTH.DEFAULT);
             }
 
-            for (let i = 0; i < actionColumns.length; i += 1) {
-                const {
-                    id,
-                } = actionColumns[i];
+            console.log(this.columnTypes, this.filterTypes);
 
-                if (typeof this.actionCellComponents[id] === 'undefined') {
-                    request.push(this.setActionCell(id));
-                }
-            }
-
-            await Promise.all(request);
-
-            this.actionColumns = actionColumns;
             this.orderedColumns = orderedColumns;
             this.columnWidths = columnWidths;
         },
@@ -698,86 +687,6 @@ export default {
             }
 
             this.hasInitialWidths = false;
-        },
-        getActionColumns() {
-            const {
-                length: dataLength,
-            } = this.rows;
-            const {
-                length: actionsLength,
-            } = this.gridActions;
-            const actionColumns = [];
-            const tmp = {};
-
-            for (let i = 0; i < dataLength; i += 1) {
-                const row = this.rows[i];
-
-                for (let j = 0; j < actionsLength; j += 1) {
-                    const action = this.gridActions[j];
-
-                    if (!tmp[action]
-                        && row._links
-                        && row._links.value[action]) {
-                        tmp[action] = true;
-
-                        if ((action === GRID_ACTION.GET && !tmp[GRID_ACTION.EDIT])
-                            || action !== GRID_ACTION.GET) {
-                            actionColumns.push({
-                                id: action,
-                            });
-                        }
-                    }
-                }
-            }
-
-            return actionColumns;
-        },
-        getColumnFilterTypeName(column) {
-            return this.columnTypes[column.filter.type] || capitalizeAndConcatenationArray(column.filter.type.split('_'));
-        },
-        getColumnTypeName(column) {
-            return capitalizeAndConcatenationArray(column.type.split('_'));
-        },
-        setExtendedFilterDataCell(column) {
-            this.dataFilterCellComponents[
-                column.filter.type
-            ] = this.extendedDataFilterCells[column.filter.type];
-        },
-        setExtendedDataCell(column) {
-            this.dataCellComponents[
-                column.type
-            ] = this.extendedDataCells[column.type];
-        },
-        setDataCell(type) {
-            return import(`@Core/components/Grid/Layout/Table/Cells/Data/Grid${this.columnTypes[type]}DataCell`)
-                .then((response) => {
-                    this.dataCellComponents[type] = response.default;
-                })
-                .catch(() => import('@Core/components/Grid/Layout/Table/Cells/Data/GridTextDataCell')
-                    .then((response) => {
-                        this.dataCellComponents[type] = response.default;
-                    }));
-        },
-        setDataFilterCell(type) {
-            return import(`@Core/components/Grid/Layout/Table/Cells/Data/Filter/Grid${this.filterTypes[type]}FilterDataCell`)
-                .then((response) => {
-                    this.dataFilterCellComponents[type] = response.default;
-                }).catch(() => import('@Core/components/Grid/Layout/Table/Cells/Data/Filter/GridDefaultFilterDataCell')
-                    .then((response) => {
-                        this.dataFilterCellComponents[type] = response.default;
-                    }));
-        },
-        setActionCell(id) {
-            const type = capitalizeAndConcatenationArray(id.split('_'));
-
-            return import(`@Core/components/Grid/Layout/Table/Cells/Action/Grid${type}ActionCell`)
-                .then((response) => {
-                    this.actionCellComponents[id] = response.default;
-                })
-                .catch(() => import('@Core/components/Grid/Layout/Table/Cells/GridTableCell')
-                    .then((response) => {
-                        this.actionCellComponents[id] = response.default;
-                    }));
         },
         disableListElement({
             languageCode,

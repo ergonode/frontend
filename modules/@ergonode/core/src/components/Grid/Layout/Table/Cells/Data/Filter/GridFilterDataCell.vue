@@ -4,7 +4,7 @@
  */
 <template>
     <Component
-        :is="filterCellComponent"
+        :is="component"
         :value="value"
         :row-index="rowIndex"
         :column-index="columnIndex"
@@ -19,6 +19,16 @@
 export default {
     name: 'GridFilterDataCell',
     props: {
+        /**
+         * The component of data cell
+         */
+        component: {
+            type: [
+                Object,
+                Function,
+            ],
+            required: true,
+        },
         /**
          * Row index of given component at the loop
          */
@@ -51,13 +61,6 @@ export default {
             default: () => ({}),
         },
         /**
-         * Determines which component will be loaded
-         */
-        type: {
-            type: String,
-            default: '',
-        },
-        /**
          * Filter data model
          */
         filter: {
@@ -70,27 +73,6 @@ export default {
         languageCode: {
             type: String,
             default: '',
-        },
-        /**
-         * The model of extended data column type filter cell component
-         */
-        extendedDataFilterCell: {
-            type: Object,
-            default: null,
-        },
-    },
-    computed: {
-        filterCellComponent() {
-            if (!this.type || !this.filter) {
-                return null;
-            }
-
-            if (this.extendedDataFilterCell) {
-                return this.extendedDataFilterCell;
-            }
-
-            return () => import(`@Core/components/Grid/Layout/Table/Cells/Data/Filter/Grid${this.type}FilterDataCell`)
-                .catch(() => () => import('@Core/components/Grid/Layout/Table/Cells/Data/Filter/GridDefaultFilterDataCell'));
         },
     },
     methods: {

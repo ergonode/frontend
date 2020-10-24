@@ -65,6 +65,11 @@ export default function ({
                     filter: {},
                 });
             },
+            onRemoveColumn(id) {
+                delete this.filterValues[id];
+
+                // TODO
+            },
             onFilterChange(filters) {
                 this.filterValues = filters;
 

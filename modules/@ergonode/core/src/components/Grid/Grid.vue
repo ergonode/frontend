@@ -39,7 +39,6 @@
                 <GridTableLayout
                     v-if="isTableLayout && !isPrefetchingData"
                     :columns="columns"
-                    :action-columns="actionColumns"
                     :rows="rows"
                     :row-ids="rowIds"
                     :drafts="drafts"
@@ -352,40 +351,6 @@ export default {
                 },
             ];
         },
-        actionColumns() {
-            const {
-                length: dataLength,
-            } = this.rows;
-            const gridActions = Object.values(GRID_ACTION);
-            const {
-                length: actionsLength,
-            } = gridActions;
-            const actionColumns = [];
-            const tmp = {};
-
-            for (let i = 0; i < dataLength; i += 1) {
-                const row = this.rows[i];
-
-                for (let j = 0; j < actionsLength; j += 1) {
-                    const action = gridActions[j];
-
-                    if (!tmp[action]
-                        && row._links
-                        && row._links.value[action]) {
-                        tmp[action] = true;
-
-                        if ((action === GRID_ACTION.GET && !tmp[GRID_ACTION.EDIT])
-                            || action !== GRID_ACTION.GET) {
-                            actionColumns.push({
-                                id: action,
-                            });
-                        }
-                    }
-                }
-            }
-
-            return actionColumns;
-        },
         isListElementDragging() {
             return this.isElementDragging === DRAGGED_ELEMENT.LIST;
         },
@@ -443,6 +408,9 @@ export default {
             value,
         }) {
             this.$emit(`${key}-row`, value);
+        },
+        onRemoveColumn(id) {
+            this.$emit('remove-column', id);
         },
         onDropColumn(payload) {
             this.$emit('drop-column', payload);
