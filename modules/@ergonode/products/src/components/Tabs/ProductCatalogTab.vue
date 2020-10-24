@@ -35,6 +35,8 @@
                 @filter="onFilterChange"
                 @delete-row="onRemoveRow"
                 @drop-column="onDropColumn"
+                @remove-column="onRemoveColumn"
+                @swap-columns="onSwapColumns"
                 @fetch-data="onFetchData"
                 @remove-all-filter="onRemoveAllFilters">
                 <template #actionsHeader>

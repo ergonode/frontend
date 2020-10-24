@@ -14,6 +14,8 @@ import {
 } from '@Core/models/mappers/translationsMapper';
 
 export const getGridData = async ({
+    $route,
+    $cookies,
     $axios,
     path,
     params,
@@ -37,6 +39,17 @@ export const getGridData = async ({
     const sortedColumns = params.columns
         ? getSortedColumnsByIDs(columns, params.columns)
         : columns;
+
+    if (!$cookies.get(`GRID_CONFIG:${$route.name}`)) {
+        $cookies.set(
+            `GRID_CONFIG:${$route.name}`,
+            sortedColumns
+                .map(({
+                    id,
+                }) => id)
+                .join(','),
+        );
+    }
 
     return {
         columns: sortedColumns,

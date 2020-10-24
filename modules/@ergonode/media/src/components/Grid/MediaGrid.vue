@@ -223,6 +223,8 @@ export default {
             }
 
             return getGridData({
+                $route: this.$route,
+                $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: 'multimedia',
                 params,

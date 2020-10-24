@@ -226,6 +226,8 @@ export default {
                 rows,
                 filtered,
             } = await getGridData({
+                $route: this.$route,
+                $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: `products/${this.id}/children-and-available-products`,
                 params: this.localParams,

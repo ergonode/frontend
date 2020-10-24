@@ -59,7 +59,9 @@
                     @filter="onFilterChange"
                     @cell-value="onCellValueChange"
                     @focus-cell="onFocusCell"
-                    @row-action="onRowAction" />
+                    @row-action="onRowAction"
+                    @remove-column="onRemoveColumn"
+                    @swap-columns="onSwapColumns" />
                 <GridCollectionLayout
                     v-else-if="isCollectionLayout && !isPrefetchingData && !isPlaceholderVisible"
                     :rows="rows"
@@ -409,8 +411,11 @@ export default {
         }) {
             this.$emit(`${key}-row`, value);
         },
-        onRemoveColumn(id) {
-            this.$emit('remove-column', id);
+        onRemoveColumn(payload) {
+            this.$emit('remove-column', payload);
+        },
+        onSwapColumns(payload) {
+            this.$emit('swap-columns', payload);
         },
         onDropColumn(payload) {
             this.$emit('drop-column', payload);
@@ -435,9 +440,6 @@ export default {
 
                 this.emitFetchData();
             }
-        },
-        onDropFilter(payload) {
-            this.$emit('drop-filter', payload);
         },
         emitFetchData() {
             this.$emit('fetch-data', {

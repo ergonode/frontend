@@ -189,20 +189,12 @@ import {
     swapItemPosition,
 } from '@Core/models/arrayWrapper';
 import {
-    changeCookiePosition,
-    removeCookieAtIndex,
-} from '@Core/models/cookies';
-import {
     getPositionForBrowser,
     isMouseInsideElement,
 } from '@Core/models/drag_and_drop/helpers';
 import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';
-import {
-    mapActions,
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'GridTableLayout',
@@ -365,9 +357,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('list', [
-            'disabledElements',
-        ]),
         classes() {
             return [
                 'grid-table-layout',
@@ -448,10 +437,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('list', [
-            'setDisabledElement',
-            'removeDisabledElement',
-        ]),
         onMouseDown(event) {
             if (this.$refs.editCell) {
                 const {
@@ -516,41 +501,14 @@ export default {
             });
         },
         onRemoveColumn(index) {
-            const {
-                id,
-            } = this.orderedColumns[index];
-
-            if (this.orderedColumns[index].element_id) {
-                const {
-                    language: languageCode, element_id,
-                } = this.orderedColumns[index];
-
-                this.disableListElement({
-                    languageCode,
-                    attributeId: element_id,
-                });
-            }
-
-            const filters = {
-                ...this.filters,
-            };
-
-            delete filters[id];
+            const column = this.orderedColumns[index];
 
             this.orderedColumns.splice(index, 1);
             this.columnWidths.splice(index, 1);
-            removeCookieAtIndex({
-                cookies: this.$cookies,
-                cookieName: `GRID_CONFIG:${this.$route.name}`,
-                index: index - this.columnsOffset,
-            });
-            this.$emit('filter', filters);
-
-            // TODO
 
             this.$emit('remove-column', {
-                id,
                 index: index - this.columnsOffset,
+                column,
             });
         },
         onResizeColumn({
@@ -570,23 +528,15 @@ export default {
             from,
             to,
         }) {
-            this.columnWidths = [
-                ...swapItemPosition(
-                    this.columnWidths,
-                    from,
-                    to,
-                ),
-            ];
-            this.orderedColumns = [
-                ...swapItemPosition(
-                    this.orderedColumns,
-                    from,
-                    to,
-                ),
-            ];
-            changeCookiePosition({
-                cookies: this.$cookies,
-                cookieName: `GRID_CONFIG:${this.$route.name}`,
+            this.swapColumnWidths({
+                from,
+                to,
+            });
+            this.swapColumnsOrder({
+                from,
+                to,
+            });
+            this.$emit('swap-columns', {
                 from: from - this.columnsOffset,
                 to: to - this.columnsOffset,
             });
@@ -616,19 +566,6 @@ export default {
             this.$emit('row-action', payload);
         },
         async initializeColumns() {
-            const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
-
-            if (!config) {
-                this.$cookies.set(
-                    `GRID_CONFIG:${this.$route.name}`,
-                    this.columns
-                        .map(({
-                            id,
-                        }) => id)
-                        .join(','),
-                );
-            }
-
             const actionColumns = this.actionColumns.length === 0 ? this.getActionColumns() : [];
             const orderedColumns = [];
             const columnWidths = [];
@@ -698,6 +635,30 @@ export default {
             }
 
             this.hasInitialWidths = false;
+        },
+        swapColumnWidths({
+            from,
+            to,
+        }) {
+            this.columnWidths = [
+                ...swapItemPosition(
+                    this.columnWidths,
+                    from,
+                    to,
+                ),
+            ];
+        },
+        swapColumnsOrder({
+            from,
+            to,
+        }) {
+            this.orderedColumns = [
+                ...swapItemPosition(
+                    this.orderedColumns,
+                    from,
+                    to,
+                ),
+            ];
         },
         getActionColumns() {
             const {
@@ -778,23 +739,6 @@ export default {
                     .then((response) => {
                         this.actionCellComponents[id] = response.default;
                     }));
-        },
-        disableListElement({
-            languageCode,
-            attributeId,
-        }) {
-            if (this.disabledElements[languageCode][attributeId]) {
-                this.setDisabledElement({
-                    languageCode,
-                    elementId: attributeId,
-                    disabled: false,
-                });
-            } else {
-                this.removeDisabledElement({
-                    languageCode,
-                    elementId: attributeId,
-                });
-            }
         },
         getGridTableLayoutReference() {
             return this.$refs.gridTableLayout;

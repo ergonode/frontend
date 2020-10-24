@@ -164,6 +164,8 @@ export default {
                 rows,
                 filtered,
             } = await getGridData({
+                $route: this.$route,
+                $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: `channels/${this.channelId}/exports/${this.exportId}/errors`,
                 params: {
