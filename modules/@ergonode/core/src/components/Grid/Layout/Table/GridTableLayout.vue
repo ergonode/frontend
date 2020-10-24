@@ -617,6 +617,10 @@ export default {
             this.actionColumns = actionColumns;
             this.orderedColumns = orderedColumns;
             this.columnWidths = columnWidths;
+
+            if (request.length) {
+                this.$emit('rendered');
+            }
         },
         initialColumnWidths() {
             const {

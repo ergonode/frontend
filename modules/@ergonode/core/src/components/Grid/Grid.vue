@@ -34,7 +34,7 @@
             <AddGridColumnDropZone
                 :column-exist="isColumnExist"
                 @drop="onDropColumn" />
-            <Preloader v-show="isPrefetchingData" />
+            <Preloader v-show="isPrefetchingData || isRenderingTableLayout" />
             <KeepAlive>
                 <GridTableLayout
                     v-if="isTableLayout && !isPrefetchingData"
@@ -61,7 +61,8 @@
                     @focus-cell="onFocusCell"
                     @row-action="onRowAction"
                     @remove-column="onRemoveColumn"
-                    @swap-columns="onSwapColumns" />
+                    @swap-columns="onSwapColumns"
+                    @rendered="onRenderedTableLayout" />
                 <GridCollectionLayout
                     v-else-if="isCollectionLayout && !isPrefetchingData && !isPlaceholderVisible"
                     :rows="rows"
@@ -121,7 +122,6 @@ import {
     COLUMNS_NUMBER,
     DATA_LIMIT,
     DRAGGED_ELEMENT,
-    GRID_ACTION,
     GRID_LAYOUT,
     IMAGE_SCALING,
     ROW_HEIGHT,
@@ -313,6 +313,7 @@ export default {
     data() {
         return {
             layout: this.defaultLayout,
+            isRenderingTableLayout: this.defaultLayout === GRID_LAYOUT.TABLE,
             maxRows: DATA_LIMIT,
             currentPage: 1,
             sortedColumn: {},
@@ -423,6 +424,9 @@ export default {
         onSortColumn(sortedColumn) {
             this.sortedColumn = sortedColumn;
             this.emitFetchData();
+        },
+        onRenderedTableLayout() {
+            this.isRenderingTableLayout = false;
         },
         onFilterChange(filters) {
             this.$emit('filter', filters);

@@ -8,6 +8,7 @@
         :subtitle="itemsCountDescription"
         :hint="group.hint"
         :is-expanded="isExpanded"
+        :is-prefetching-data="isPrefetchingData"
         @expand="onGroupExpand">
         <template #item>
             <AttributesListElement
@@ -54,6 +55,10 @@ export default {
         isDraggable: {
             type: Boolean,
             default: true,
+        },
+        isPrefetchingData: {
+            type: Boolean,
+            default: false,
         },
     },
     computed: {

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="grid-preloader">
+    <div class="preloader">
         <IconLoader
             :width="48"
             :height="48" />
@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .grid-preloader {
+    .preloader {
         display: flex;
         flex: 1;
         justify-content: center;
