@@ -45,37 +45,59 @@ export default {
         dispatch,
     }, {
         id,
+        onError = () => {},
     }) {
-        const {
-            code,
-            color,
-            name,
-            description,
-        } = await get({
-            $axios: this.app.$axios,
-            id,
-        });
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Statuses/store/productStatus/action/getProductStatus/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
 
-        const translations = {
-            name,
-            description,
-        };
+            const data = await get({
+                $axios: this.app.$axios,
+                id,
+            });
+            const {
+                code,
+                color,
+                name,
+                description,
+            } = data;
 
-        commit('__SET_STATE', {
-            key: 'id',
-            value: id,
-        });
-        commit('__SET_STATE', {
-            key: 'code',
-            value: code,
-        });
-        commit('__SET_STATE', {
-            key: 'color',
-            value: color,
-        });
-        dispatch('tab/setTranslations', translations, {
-            root: true,
-        });
+            const translations = {
+                name,
+                description,
+            };
+
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'code',
+                value: code,
+            });
+            commit('__SET_STATE', {
+                key: 'color',
+                value: color,
+            });
+            dispatch('tab/setTranslations', translations, {
+                root: true,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Statuses/store/productStatus/action/getProductStatus/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            onError(e);
+        }
     },
     async getDefaultStatus({
         commit,
@@ -117,11 +139,27 @@ export default {
                 color,
                 isDefaultStatus,
             } = state;
-            const data = {
+            let data = {
                 color,
                 name,
                 description,
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Statuses/store/productStatus/action/updateProductStatus/__before', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             const requests = [
                 update({
@@ -139,6 +177,13 @@ export default {
             }
 
             await Promise.all(requests);
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Statuses/store/productStatus/action/updateProductStatus/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
 
             onSuccess();
         } catch (e) {
@@ -163,11 +208,23 @@ export default {
                 code,
                 color,
             } = state;
-
-            const data = {
+            let data = {
                 code,
                 color,
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Statuses/store/productStatus/action/updateProductStatus/__before', {
+                $this: this,
+                data,
+            });
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             const {
                 id,
@@ -175,6 +232,16 @@ export default {
                 $axios: this.app.$axios,
                 data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Statuses/store/productStatus/action/updateProductStatus/__after', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
 
             onSuccess(id);
         } catch (e) {
@@ -185,19 +252,38 @@ export default {
         }
     },
     async removeProductStatus({
-        commit, state,
+        state,
     }, {
-        onSuccess,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
+        try {
+            const {
+                id,
+            } = state;
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Statuses/store/productStatus/action/removeProductStatus/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
 
-        await remove({
-            $axios: this.app.$axios,
-            id,
-        });
+            await remove({
+                $axios: this.app.$axios,
+                id,
+            });
 
-        onSuccess();
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Statuses/store/productStatus/action/removeProductStatus/__after', {
+                $this: this,
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess();
+        } catch (e) {
+            onError(e);
+        }
     },
 };
