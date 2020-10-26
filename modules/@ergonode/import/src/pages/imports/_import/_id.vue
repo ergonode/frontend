@@ -36,9 +36,21 @@ export default {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
-        store, params,
+        app,
+        store,
+        params,
     }) {
-        await store.dispatch('import/getImportProfile', params);
+        await store.dispatch('import/getImportProfile', {
+            id: params.id,
+            onError: () => {
+                if (process.client) {
+                    app.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Import profile hasn`t been fetched properly',
+                    });
+                }
+            },
+        });
     },
     computed: {
         ...mapState('import', [
@@ -70,6 +82,7 @@ export default {
                 message: 'Are you sure you want to delete this import?',
                 confirmCallback: () => this.removeImport({
                     onSuccess: this.onRemoveSuccess,
+                    onError: this.onRemoveError,
                 }),
             });
         },
@@ -80,6 +93,12 @@ export default {
             });
             this.$router.push({
                 name: 'import-grid',
+            });
+        },
+        onRemoveError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Import hasn`t been deleted',
             });
         },
     },
