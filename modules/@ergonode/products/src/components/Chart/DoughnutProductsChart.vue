@@ -84,6 +84,7 @@ export default {
     .products-doughnut-chart {
         position: relative;
         display: flex;
+        flex: 0 0 auto;
         justify-content: center;
         align-items: center;
         border-radius: 999px;

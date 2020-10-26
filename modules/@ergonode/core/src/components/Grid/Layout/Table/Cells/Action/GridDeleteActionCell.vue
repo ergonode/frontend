@@ -10,7 +10,7 @@
         :edit-key-code="32"
         @mousedown.native="onDelete"
         @edit="onDelete">
-        <IconDelete />
+        <IconDelete v-once />
     </GridTableCell>
 </template>
 

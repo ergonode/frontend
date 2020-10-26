@@ -12,13 +12,18 @@
                 :data-count="filtered"
                 :rows="rows"
                 :filters="filterValues"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
                 :is-prefetching-data="isPrefetchingData"
                 :is-header-visible="true"
                 :is-basic-filter="true"
                 @fetch-data="onFetchData"
                 @filter="onFilterChange"
                 @remove-all-filters="onRemoveAllFilters">
-                <template #headerActions>
+                <template #actionsHeader>
                     <div class="export-details-tiles">
                         <Tile
                             v-for="(detail, index) in details"
@@ -52,6 +57,7 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
@@ -68,6 +74,9 @@ export default {
         Button,
         Grid,
     },
+    mixins: [
+        extendedGridComponentsMixin,
+    ],
     props: {
         channelId: {
             type: String,
@@ -155,6 +164,8 @@ export default {
                 rows,
                 filtered,
             } = await getGridData({
+                $route: this.$route,
+                $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: `channels/${this.channelId}/exports/${this.exportId}/errors`,
                 params: {

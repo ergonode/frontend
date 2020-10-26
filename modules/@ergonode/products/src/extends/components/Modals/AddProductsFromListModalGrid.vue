@@ -13,8 +13,13 @@
                 :rows="rows"
                 :drafts="drafts"
                 :filters="filterValues"
-                :is-prefetching-data="isPrefetchingData"
                 :collection-cell-binding="collectionCellBinding"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :is-prefetching-data="isPrefetchingData"
                 :is-collection-layout="true"
                 :is-editable="true"
                 :is-header-visible="true"
@@ -23,8 +28,8 @@
                 @fetch-data="onFetchData"
                 @remove-all-filter="onRemoveAllFilters"
                 @filter="onFilterChange">
-                <template #headerActions>
-                    <slot name="headerActions" />
+                <template #actionsHeader>
+                    <slot name="actionsHeader" />
                 </template>
                 <template #appendFooter>
                     <Button
@@ -54,6 +59,7 @@ import {
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
     getGridData,
@@ -73,6 +79,7 @@ export default {
     },
     mixins: [
         gridDraftMixin,
+        extendedGridComponentsMixin,
         scopeErrorsMixin,
     ],
     async fetch() {
@@ -137,6 +144,8 @@ export default {
                 rows,
                 filtered,
             } = await getGridData({
+                $route: this.$route,
+                $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: `products/${this.id}/children-and-available-products`,
                 params: {

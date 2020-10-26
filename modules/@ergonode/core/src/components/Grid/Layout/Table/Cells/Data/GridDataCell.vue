@@ -4,7 +4,7 @@
  */
 <template>
     <Component
-        :is="dataCellComponent"
+        :is="component"
         :data="data"
         :column="column"
         :draft="draft"
@@ -26,6 +26,16 @@ export default {
     name: 'GridDataCell',
     props: {
         /**
+         * The component of data cell
+         */
+        component: {
+            type: [
+                Object,
+                Function,
+            ],
+            required: true,
+        },
+        /**
          * Component data used for filling table cell
          */
         data: {
@@ -43,13 +53,6 @@ export default {
          * The error messages are messages which comes from validation process
          */
         errorMessages: {
-            type: String,
-            default: '',
-        },
-        /**
-         * Determines which component will be loaded
-         */
-        type: {
             type: String,
             default: '',
         },
@@ -107,16 +110,6 @@ export default {
         },
     },
     computed: {
-        dataCellComponent() {
-            const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Table/Cells/Data');
-
-            if (extendedComponents && extendedComponents[this.column.type]) {
-                return extendedComponents[this.column.type];
-            }
-
-            return () => import(`@Core/components/Grid/Layout/Table/Cells/Data/Grid${this.type}DataCell`)
-                .catch(() => import('@Core/components/Grid/Layout/Table/Cells/Data/GridTextDataCell'));
-        },
         draft() {
             return this.drafts[`${this.rowId}/${this.column.id}`];
         },

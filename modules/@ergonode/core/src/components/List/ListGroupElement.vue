@@ -17,11 +17,12 @@
                 <IconArrowSingle :state="iconState" />
             </ListElementAction>
         </ListElement>
-        <FadeTransition>
-            <ul v-if="isExpanded">
+        <Preloader v-if="isPrefetchingData" />
+        <li v-else-if="isExpanded && !isPrefetchingData">
+            <ul>
                 <slot name="item" />
             </ul>
-        </FadeTransition>
+        </li>
     </ul>
 </template>
 
@@ -32,7 +33,7 @@ import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementHint from '@Core/components/List/ListElementHint';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
-import FadeTransition from '@Core/components/Transitions/FadeTransition';
+import Preloader from '@Core/components/Preloader/Preloader';
 import {
     ARROW,
 } from '@Core/defaults/icons';
@@ -43,13 +44,13 @@ import {
 export default {
     name: 'ListGroupElement',
     components: {
+        Preloader,
         ListElementDescription,
         ListElementTitle,
         ListElementHint,
         ListElementAction,
         ListElement,
         IconArrowSingle,
-        FadeTransition,
     },
     props: {
         /**
@@ -77,6 +78,13 @@ export default {
          * Determines state of expanded component
          */
         isExpanded: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * Determines if data is loaded asynchronously
+         */
+        isPrefetchingData: {
             type: Boolean,
             default: false,
         },

@@ -18,6 +18,11 @@
 
 <script>
 
+import List from '@Core/components/List/List';
+import ListHeader from '@Core/components/List/ListHeader';
+import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
+import VerticalTabBarList from '@Core/components/TabBar/VerticalTabBarList';
+import WidgetsListElement from '@Templates/components/Lists/Widgets/WidgetsListElement';
 import {
     mapState,
 } from 'vuex';
@@ -25,11 +30,11 @@ import {
 export default {
     name: 'WidgetsListTab',
     components: {
-        VerticalTabBarList: () => import('@Core/components/TabBar/VerticalTabBarList'),
-        List: () => import('@Core/components/List/List'),
-        ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
-        WidgetsListElement: () => import('@Templates/components/Lists/Widgets/WidgetsListElement'),
-        ListHeader: () => import('@Core/components/List/ListHeader'),
+        VerticalTabBarList,
+        List,
+        ListScrollableContainer,
+        WidgetsListElement,
+        ListHeader,
     },
     computed: {
         ...mapState('productTemplate', [

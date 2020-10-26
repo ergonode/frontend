@@ -4,21 +4,18 @@
  */
 <template>
     <div class="grid-page-selector">
-        <span class="grid-page-selector__text">
-            Show
-        </span>
+        <GridFooterText title="Show" />
         <Select
             :value="value"
             :options="rowIntervalOptions"
             :size="smallSize"
             @input="onValueChange" />
-        <span
-            class="grid-page-selector__text"
-            v-text="infoText" />
+        <GridFooterText :title="infoText" />
     </div>
 </template>
 
 <script>
+import GridFooterText from '@Core/components/Grid/Footer/GridFooterText';
 import Select from '@Core/components/Select/Select';
 import {
     ROW_INTERVALS,
@@ -31,6 +28,7 @@ export default {
     name: 'GridPageSelector',
     components: {
         Select,
+        GridFooterText,
     },
     props: {
         /**
@@ -75,10 +73,5 @@ export default {
         grid-auto-flow: column;
         column-gap: 8px;
         margin-left: 8px;
-
-        &__text {
-            color: $GRAPHITE_DARK;
-            font: $FONT_MEDIUM_12_16;
-        }
     }
 </style>

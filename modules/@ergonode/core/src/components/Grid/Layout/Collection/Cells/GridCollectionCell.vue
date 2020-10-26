@@ -38,13 +38,18 @@ export default {
             type: String,
             default: '',
         },
+        /**
+         * The model of extended data column type cell component
+         */
+        extendedDataCell: {
+            type: Function,
+            default: null,
+        },
     },
     computed: {
         collectionCellComponent() {
-            const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Collection/Cells');
-
-            if (extendedComponents && extendedComponents[this.data.type]) {
-                return extendedComponents[this.data.type];
+            if (this.extendedDataCell) {
+                return this.extendedDataCell;
             }
 
             return () => import('@Core/components/Grid/Layout/Collection/Cells/GridCollectionDefaultCell');

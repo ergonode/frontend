@@ -9,6 +9,11 @@
                 :columns="columns"
                 :rows="rows"
                 :data-count="dataCount"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
                 :is-editable="false"
                 :is-border="true"
                 :is-footer-visible="false" />
@@ -19,6 +24,7 @@
 <script>
 import Grid from '@Core/components/Grid/Grid';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
@@ -33,8 +39,13 @@ export default {
         CenterViewTemplate,
         Grid,
     },
+    mixins: [
+        extendedGridComponentsMixin,
+    ],
     asyncData({
-        app, store, route,
+        app,
+        store,
+        route,
     }) {
         const {
             privileges: privilegesDictionary,

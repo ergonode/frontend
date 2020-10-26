@@ -7,7 +7,6 @@
         <template #content>
             <Grid
                 v-if="bindings.length || isPrefetchingData"
-                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
@@ -15,6 +14,12 @@
                 :filters="filterValues"
                 :collection-cell-binding="collectionCellBinding"
                 :placeholder="gridPlaceholder"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :is-editable="isAllowedToUpdate"
                 :is-prefetching-data="isPrefetchingData"
                 :is-collection-layout="true"
                 :is-basic-filter="true"
@@ -24,7 +29,7 @@
                 @fetch-data="onFetchData"
                 @remove-all-filters="onRemoveAllFilters"
                 @filter="onFilterChange">
-                <template #headerActions>
+                <template #actionsHeader>
                     <ExpandNumericButton
                         title="BINDING ATTRIBUTES"
                         :number="bindings.length"
@@ -98,6 +103,7 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
@@ -125,6 +131,7 @@ export default {
     },
     mixins: [
         gridDraftMixin,
+        extendedGridComponentsMixin,
         tabFeedbackMixin,
     ],
     data() {
@@ -324,6 +331,8 @@ export default {
                 rows,
                 filtered,
             } = await getGridData({
+                $route: this.$route,
+                $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: `products/${this.id}/children-and-available-products`,
                 params: this.localParams,

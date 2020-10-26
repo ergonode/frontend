@@ -45,6 +45,8 @@ export default function ({
                 };
 
                 this.advancedFilters = await getAdvancedFiltersData({
+                    $route: this.$route,
+                    $cookies: this.$cookies,
                     $axios: this.$axios,
                     $addAlert: this.$addAlert,
                     path: this.getPath(),
@@ -68,6 +70,8 @@ export default function ({
                     });
 
                     const advancedFilters = await getAdvancedFiltersData({
+                        $route: this.$route,
+                        $cookies: this.$cookies,
                         $axios: this.$axios,
                         $addAlert: this.$addAlert,
                         path,

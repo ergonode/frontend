@@ -8,6 +8,7 @@
         :subtitle="itemsCountDescription"
         :hint="group.hint"
         :is-expanded="isExpanded"
+        :is-prefetching-data="isPrefetchingData"
         @expand="onGroupExpand">
         <template #item>
             <AttributesListElement
@@ -21,12 +22,14 @@
 </template>
 
 <script>
+import AttributesListElement from '@Attributes/components/Lists/AttributesListElement';
+import ListGroupElement from '@Core/components/List/ListGroupElement';
 
 export default {
     name: 'AttributesListGroup',
     components: {
-        ListGroupElement: () => import('@Core/components/List/ListGroupElement'),
-        AttributesListElement: () => import('@Attributes/components/Lists/AttributesListElement'),
+        ListGroupElement,
+        AttributesListElement,
     },
     props: {
         group: {
@@ -52,6 +55,10 @@ export default {
         isDraggable: {
             type: Boolean,
             default: true,
+        },
+        isPrefetchingData: {
+            type: Boolean,
+            default: false,
         },
     },
     computed: {

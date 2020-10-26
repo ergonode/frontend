@@ -9,9 +9,14 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :filters="filterValues"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
-                :filters="filterValues"
                 :is-border="true"
                 @preview-row="onPreviewRow"
                 @fetch-data="onFetchData"
@@ -28,6 +33,7 @@
 
 <script>
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
 export default {
@@ -40,6 +46,7 @@ export default {
         fetchGridDataMixin({
             path: 'channels/_id/exports',
         }),
+        extendedGridComponentsMixin,
     ],
     async fetch() {
         await this.onFetchData();
