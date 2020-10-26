@@ -16,6 +16,9 @@
 import ProductCommentsForm from '@Comments/components/Forms/ProductCommentsForm';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
 
@@ -36,21 +39,34 @@ export default {
         },
     },
     async fetch({
+        app,
         store,
         params,
     }) {
         const {
             id,
         } = params;
+        const requestParams = {
+            limit: DATA_LIMIT,
+            offset: 0,
+            filter: `object_id=${id}`,
+            field: 'created_at',
+        };
+
         await store.dispatch('comment/__setState', {
             key: 'objectId',
             value: id,
         });
         await store.dispatch('comment/getComments', {
-            limit: DATA_LIMIT,
-            offset: 0,
-            filter: `object_id=${id}`,
-            field: 'created_at',
+            params: requestParams,
+            onError: () => {
+                if (process.client) {
+                    app.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Comments hasn`t been fetched properly',
+                    });
+                }
+            },
         });
     },
 };

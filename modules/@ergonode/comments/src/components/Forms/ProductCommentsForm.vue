@@ -63,6 +63,9 @@ import Button from '@Core/components/Button/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
 import {
@@ -161,6 +164,14 @@ export default {
 
             await this.getMoreComments({
                 params,
+                onError: () => {
+                    if (process.client) {
+                        this.$addAlert({
+                            type: ALERT_TYPE.ERROR,
+                            message: 'Comments hasn`t been fetched properly',
+                        });
+                    }
+                },
             });
 
             this.isFetchingData = false;
