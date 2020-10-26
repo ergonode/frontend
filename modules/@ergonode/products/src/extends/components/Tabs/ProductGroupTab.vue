@@ -62,6 +62,9 @@ import {
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
+import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
@@ -198,10 +201,12 @@ export default {
             filter,
             sortedColumn,
         } = this.localParams) {
-            let filtersWithAttached = filter;
+            const filtersWithAttached = filter;
 
-            if (!filter.includes('attached=true')) {
-                filtersWithAttached = 'attached=true';
+            if (typeof filter.attached === 'undefined') {
+                filtersWithAttached.attached = {
+                    [FILTER_OPERATOR.EQUAL]: true,
+                };
             }
 
             this.localParams = {
