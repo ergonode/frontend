@@ -6,13 +6,18 @@
     <CenterViewTemplate>
         <template #content>
             <Grid
-                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
                 :drafts="drafts"
                 :filters="filterValues"
                 :collection-cell-binding="collectionCellBinding"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :is-editable="isAllowedToUpdate"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-collection-layout="true"
@@ -75,6 +80,7 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
@@ -95,6 +101,7 @@ export default {
         fetchGridDataMixin({
             path: 'collections/_id/elements',
         }),
+        extendedGridComponentsMixin,
         tabFeedbackMixin,
     ],
     async fetch() {

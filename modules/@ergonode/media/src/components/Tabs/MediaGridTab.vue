@@ -6,12 +6,17 @@
     <CenterViewTemplate>
         <template #content>
             <Grid
-                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
                 :filters="filterValues"
                 :collection-cell-binding="collectionCellBinding"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :is-editable="isAllowedToUpdate"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-header-visible="true"
@@ -29,6 +34,7 @@
 
 <script>
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import PRIVILEGES from '@Media/config/privileges';
 
@@ -41,6 +47,7 @@ export default {
         fetchGridDataMixin({
             path: 'multimedia',
         }),
+        extendedGridComponentsMixin,
     ],
     async fetch() {
         await this.onFetchData();

@@ -5,9 +5,7 @@
 <template>
     <div class="grid-pagination">
         <FadeTransition>
-            <div
-                class="grid-pagination__decrease"
-                v-show="isLeftArrowVisible">
+            <GridPageSelectorArrowsPanel v-if="isLeftArrowVisible">
                 <Fab
                     :theme="secondaryTheme"
                     @click.native="toFirstPage">
@@ -24,11 +22,9 @@
                             :state="arrow.LEFT" />
                     </template>
                 </Fab>
-            </div>
+            </GridPageSelectorArrowsPanel>
         </FadeTransition>
-        <span class="grid-pagination__text">
-            Page
-        </span>
+        <GridFooterText title="Page" />
         <TextField
             :value="value"
             style="width: 64px;"
@@ -36,16 +32,10 @@
             :alignment="centerAlignment"
             :input="inputNumberType"
             @input="onValueChange" />
-        <span class="grid-pagination__text">
-            of
-        </span>
-        <span
-            class="grid-pagination__number"
-            v-text="maxPage" />
+        <GridFooterText title="of" />
+        <GridFooterText :title="maxPage" />
         <FadeTransition>
-            <div
-                class="grid-pagination__increase"
-                v-show="isRightArrowVisible">
+            <GridPageSelectorArrowsPanel v-if="isRightArrowVisible">
                 <Fab
                     :theme="secondaryTheme"
                     @click.native="incrementPage">
@@ -64,13 +54,15 @@
                             :state="arrow.RIGHT" />
                     </template>
                 </Fab>
-            </div>
+            </GridPageSelectorArrowsPanel>
         </FadeTransition>
     </div>
 </template>
 
 <script>
 import Fab from '@Core/components/Fab/Fab';
+import GridFooterText from '@Core/components/Grid/Footer/GridFooterText';
+import GridPageSelectorArrowsPanel from '@Core/components/Grid/Footer/GridPageSelectorArrowsPanel';
 import IconArrowPointerBlock from '@Core/components/Icons/Arrows/IconArrowPointerBlock';
 import IconArrowSingle from '@Core/components/Icons/Arrows/IconArrowSingle';
 import TextField from '@Core/components/TextField/TextField';
@@ -87,6 +79,8 @@ import {
 export default {
     name: 'GridPagination',
     components: {
+        GridPageSelectorArrowsPanel,
+        GridFooterText,
         TextField,
         Fab,
         IconArrowSingle,
@@ -168,15 +162,5 @@ export default {
         grid-auto-flow: column;
         column-gap: 8px;
         margin-right: 8px;
-
-        &__text, &__number {
-            color: $GRAPHITE_DARK;
-            font: $FONT_MEDIUM_12_16;
-        }
-
-        &__increase, &__decrease {
-            display: flex;
-            align-items: center;
-        }
     }
 </style>

@@ -8,7 +8,8 @@
             title="Categories"
             @search-result="onSearch" />
         <List>
-            <ListScrollableContainer>
+            <Preloader v-if="isPrefetchingData" />
+            <ListScrollableContainer v-else>
                 <CategoriesListElement
                     v-for="item in items[userLanguageCode]"
                     :key="item.id"
@@ -38,6 +39,7 @@ import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import List from '@Core/components/List/List';
 import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
 import ListSearchHeader from '@Core/components/List/ListSearchHeader';
+import Preloader from '@Core/components/Preloader/Preloader';
 import VerticalTabBarList from '@Core/components/TabBar/VerticalTabBarList';
 import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
 import CategoriesListElement from '@Trees/components/Lists/CategoriesListElement';
@@ -50,6 +52,7 @@ import {
 export default {
     name: 'CategoriesListTab',
     components: {
+        Preloader,
         List,
         ListScrollableContainer,
         CategoriesListElement,

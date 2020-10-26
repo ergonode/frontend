@@ -7,9 +7,7 @@
         <span
             class="complex-progress-bar__label"
             v-text="label" />
-        <div
-            class="complex-progress-bar__progress"
-            v-show="value > 0">
+        <div class="complex-progress-bar__progress">
             <div
                 class="complex-progress-bar__value"
                 ref="value"
@@ -80,9 +78,10 @@ export default {
         },
     },
     mounted() {
-        this.observer = new IntersectionObserver((entries) => {
+        this.observer = new ResizeObserver((entries) => {
             const progressBar = entries[0];
-            if (progressBar.isIntersecting) {
+
+            if (progressBar) {
                 const {
                     offsetWidth,
                 } = this.$el;
@@ -95,7 +94,6 @@ export default {
                         this.$refs.progressDivider.style.transform = `translateX(${progressWidth - 1}px)`;
                     }
                 });
-                this.observer.disconnect();
             }
         });
 

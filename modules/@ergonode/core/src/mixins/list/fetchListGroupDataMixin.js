@@ -27,6 +27,8 @@ export default function ({
                 items: {},
                 codeFilter: '',
                 expandedGroupId: '',
+                prefetchingGroupItemsId: '',
+                isPrefetchingData: true,
             };
         },
         async fetch() {
@@ -38,6 +40,8 @@ export default function ({
                 languageCode,
                 limit: 0,
             });
+
+            this.isPrefetchingData = false;
         },
         computed: {
             unassignedGroup() {
@@ -119,20 +123,6 @@ export default function ({
                 };
                 this.groupItemsCount = groupItemsCount;
             },
-            async getUnassignedGroupItems(languageCode) {
-                this.groups[languageCode].push(this.unassignedGroup);
-                this.items[languageCode][UNASSIGNED_GROUP_ID] = [];
-
-                await this.getGroupItems({
-                    groupId: UNASSIGNED_GROUP_ID,
-                    languageCode,
-                });
-
-                this.groupItemsCount = {
-                    ...this.groupItemsCount,
-                    [UNASSIGNED_GROUP_ID]: this.items[languageCode][UNASSIGNED_GROUP_ID].length,
-                };
-            },
             async getGroupItems({
                 groupId,
                 languageCode,
@@ -145,6 +135,8 @@ export default function ({
                     const filter = this.codeFilter
                         ? `groups=${groupId || ''};code=${this.codeFilter}`
                         : `groups=${groupId || ''}`;
+
+                    this.prefetchingGroupItemsId = this.expandedGroupId;
 
                     const {
                         items,
@@ -165,6 +157,8 @@ export default function ({
                         ...this.items[languageCode],
                         [groupId]: items,
                     };
+
+                    this.prefetchingGroupItemsId = '';
                 }
             },
             async getAllGroupsItems({
@@ -210,14 +204,14 @@ export default function ({
                 languageCode,
                 isExpanded,
             }) {
+                this.expandedGroupId = isExpanded ? group.id : '';
+
                 if (isExpanded) {
                     await this.getGroupItems({
                         groupId: group.id,
                         languageCode,
                     });
                 }
-
-                this.expandedGroupId = isExpanded ? group.id : '';
             },
         },
     };

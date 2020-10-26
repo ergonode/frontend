@@ -7,13 +7,15 @@ import {
 } from '@Core/services/list/getList.service';
 
 export default function ({
-    namespace, extraFilters = null,
+    namespace,
+    extraFilters = null,
 }) {
     return {
         data() {
             return {
                 items: {},
                 codeFilter: '',
+                isPrefetchingData: true,
             };
         },
         async fetch() {
@@ -22,6 +24,8 @@ export default function ({
             } = this.$store.state.core;
 
             await this.getItems(defaultLanguageCode);
+
+            this.isPrefetchingData = false;
         },
         methods: {
             async getItems(languageCode) {
