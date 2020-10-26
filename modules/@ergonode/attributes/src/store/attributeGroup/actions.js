@@ -198,6 +198,9 @@ export default {
             // EXTENDED BEFORE METHOD
             await this.$extendMethods('@Attributes/store/attributeGroup/action/removeAttributeGroup/__before', {
                 $this: this,
+                data: {
+                    id,
+                },
             });
             // EXTENDED BEFORE METHOD
 
