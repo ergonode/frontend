@@ -566,7 +566,7 @@ export default {
             this.$emit('row-action', payload);
         },
         async initializeColumns() {
-            const actionColumns = this.actionColumns.length === 0 ? this.getActionColumns() : [];
+            const actionColumns = this.getActionColumns();
             const orderedColumns = [];
             const columnWidths = [];
             const {
