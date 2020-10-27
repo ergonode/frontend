@@ -21,57 +21,78 @@ export default {
         },
         {
             id,
+            onError,
         },
     ) {
-        const {
-            statuses: statusOptions,
-        } = rootState.productStatus;
-        const [
-            source,
-            destination,
-        ] = id.split('--');
+        try {
+            const {
+                statuses: statusOptions,
+            } = rootState.productStatus;
+            const [
+                source,
+                destination,
+            ] = id.split('--');
 
-        const {
-            condition_set_id: conditionSetId,
-            role_ids: rolesIds,
-        } = await get({
-            $axios: this.app.$axios,
-            source,
-            destination,
-        });
-
-        const regex = /%20/g;
-
-        const sourceOption = statusOptions.find(
-            status => status.id === source.replace(regex, ' '),
-        );
-        const destinationOption = statusOptions.find(
-            status => status.id === destination.replace(regex, ' '),
-        );
-
-        commit('__SET_STATE', {
-            key: 'source',
-            value: sourceOption,
-        });
-        commit('__SET_STATE', {
-            key: 'destination',
-            value: destinationOption,
-        });
-        commit('__SET_STATE', {
-            key: 'roles',
-            value: rolesIds,
-        });
-        commit('__SET_STATE', {
-            key: 'conditionSetId',
-            value: conditionSetId,
-        });
-
-        if (conditionSetId) {
-            await dispatch('condition/getConditionSet', {
-                id: conditionSetId,
-            }, {
-                root: true,
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Transitions/store/statusTransition/action/getStatusTransition/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
             });
+            // EXTENDED BEFORE METHOD
+
+            const data = await get({
+                $axios: this.app.$axios,
+                source,
+                destination,
+            });
+            const {
+                condition_set_id: conditionSetId,
+                role_ids: rolesIds,
+            } = data;
+
+            const regex = /%20/g;
+
+            const sourceOption = statusOptions.find(
+                status => status.id === source.replace(regex, ' '),
+            );
+            const destinationOption = statusOptions.find(
+                status => status.id === destination.replace(regex, ' '),
+            );
+
+            commit('__SET_STATE', {
+                key: 'source',
+                value: sourceOption,
+            });
+            commit('__SET_STATE', {
+                key: 'destination',
+                value: destinationOption,
+            });
+            commit('__SET_STATE', {
+                key: 'roles',
+                value: rolesIds,
+            });
+            commit('__SET_STATE', {
+                key: 'conditionSetId',
+                value: conditionSetId,
+            });
+
+            if (conditionSetId) {
+                await dispatch('condition/getConditionSet', {
+                    id: conditionSetId,
+                }, {
+                    root: true,
+                });
+            }
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Transitions/store/statusTransition/action/getStatusTransition/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            onError(e);
         }
     },
     async updateStatusTransition(
@@ -84,27 +105,51 @@ export default {
             onError = () => {},
         },
     ) {
-        const {
-            source,
-            destination,
-            conditionSetId,
-            roles,
-        } = state;
-        const data = {
-            roles,
-        };
-
-        if (conditionSetId) {
-            data.condition_set = conditionSetId;
-        }
-
         try {
+            const {
+                source,
+                destination,
+                conditionSetId,
+                roles,
+            } = state;
+            let data = {
+                roles,
+            };
+
+            if (conditionSetId) {
+                data.condition_set = conditionSetId;
+            }
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Transitions/store/statusTransition/action/updateStatusTransition/__before', {
+                $this: this,
+                data: {
+                    source,
+                    destination,
+                    ...data,
+                },
+            });
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+            // EXTENDED BEFORE METHOD
+
             await update({
                 $axios: this.app.$axios,
                 source: source.id,
                 destination: destination.id,
                 data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Transitions/store/statusTransition/action/updateStatusTransition/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
             onSuccess();
         } catch (e) {
             onError({
@@ -129,12 +174,23 @@ export default {
                 destination,
                 roles,
             } = state;
-
-            const data = {
+            let data = {
                 source: isObject(source) ? source.id : null,
                 destination: isObject(destination) ? destination.id : null,
                 roles,
             };
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Transitions/store/statusTransition/action/createStatusTransition/__before', {
+                $this: this,
+                data,
+            });
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             const {
                 id,
@@ -142,6 +198,16 @@ export default {
                 $axios: this.app.$axios,
                 data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Transitions/store/statusTransition/action/createStatusTransition/__after', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
 
             onSuccess(id);
         } catch (e) {
@@ -154,24 +220,44 @@ export default {
     async removeStatusTransition({
         state,
     }, {
-        onSuccess,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            source,
-            destination,
-            conditionSetId,
-        } = state;
+        try {
+            const {
+                source,
+                destination,
+                conditionSetId,
+            } = state;
 
-        await remove({
-            $axios: this.app.$axios,
-            source: source.id,
-            destination: destination.id,
-        });
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Transitions/store/statusTransition/action/removeStatusTransition/__before', {
+                $this: this,
+                data: {
+                    source,
+                    destination,
+                },
+            });
+            // EXTENDED BEFORE METHOD
 
-        if (conditionSetId) {
-            await this.app.$axios.$delete(`conditionsets/${conditionSetId}`);
+            await remove({
+                $axios: this.app.$axios,
+                source: source.id,
+                destination: destination.id,
+            });
+
+            if (conditionSetId) {
+                await this.app.$axios.$delete(`conditionsets/${conditionSetId}`);
+            }
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Transitions/store/statusTransition/action/removeStatusTransition/__after', {
+                $this: this,
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess();
+        } catch (e) {
+            onError(e);
         }
-
-        onSuccess();
     },
 };
