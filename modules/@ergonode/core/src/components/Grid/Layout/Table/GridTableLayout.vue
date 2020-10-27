@@ -113,9 +113,7 @@
                 :pinned-state="pinnedState.RIGHT"
                 @sticky="onStickyChange" />
         </GridTableLayoutColumnsSection>
-        <GridTableLayoutPinnedSection
-            v-if="actionColumns.length"
-            :is-pinned="pinnedSections[pinnedState.RIGHT]">
+        <GridTableLayoutPinnedSection :is-pinned="pinnedSections[pinnedState.RIGHT]">
             <GridActionColumn
                 v-for="(column, columnIndex) in actionColumns"
                 :style="templateRows"
@@ -430,7 +428,8 @@ export default {
         columns: {
             immediate: true,
             handler() {
-                if (this.orderedColumns.length !== this.visibleColumns.length) {
+                if (this.orderedColumns.length !== this.visibleColumns.length
+                    || (this.rows.length && !Object.keys(this.actionCellComponents).length)) {
                     this.initializeColumns();
                 }
             },

@@ -102,9 +102,11 @@ export default {
             return components;
         },
         onValueChange({
-            key, value,
+            key,
+            value,
         }) {
             this.model[key] = value;
+
             this.$emit('input', JSON.stringify(this.model));
         },
     },

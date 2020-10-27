@@ -133,7 +133,8 @@ export default {
             return components;
         },
         onValueChange({
-            key, value,
+            key,
+            value,
         }) {
             this.$emit('input', {
                 index: this.index,
