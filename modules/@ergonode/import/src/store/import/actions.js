@@ -24,32 +24,54 @@ export default {
         },
         {
             id,
+            onError,
         },
     ) {
-        const {
-            sources,
-        } = rootState.dictionaries;
+        try {
+            const {
+                sources,
+            } = rootState.dictionaries;
 
-        const {
-            type,
-            ...rest
-        } = await get({
-            $axios: this.app.$axios,
-            id,
-        });
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Import/store/import/action/getImportProfile/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
 
-        commit('__SET_STATE', {
-            key: 'id',
-            value: id,
-        });
-        commit('__SET_STATE', {
-            key: 'type',
-            value: sources[type],
-        });
-        commit('__SET_STATE', {
-            key: 'configuration',
-            value: JSON.stringify(rest),
-        });
+            const data = await get({
+                $axios: this.app.$axios,
+                id,
+            });
+            const {
+                type,
+                ...rest
+            } = data;
+
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'type',
+                value: sources[type],
+            });
+            commit('__SET_STATE', {
+                key: 'configuration',
+                value: JSON.stringify(rest),
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Import/store/import/action/getImportProfile/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            onError(e);
+        }
     },
     async getImportDetails({}, {
         sourceId,
@@ -124,16 +146,39 @@ export default {
                 type,
                 configuration,
             } = state;
-            const data = {
+            let data = {
                 type,
                 ...JSON.parse(configuration),
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Import/store/import/action/updateImportProfile/__before', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             await update({
                 $axios: this.app.$axios,
                 id,
                 data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Import/store/import/action/updateImportProfile/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
 
             onSuccess();
         } catch (e) {
@@ -172,11 +217,33 @@ export default {
                 };
             }
 
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Import/store/import/action/createImportProfile/__before', {
+                $this: this,
+                data,
+            });
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
+            // EXTENDED BEFORE METHOD
+
             const {
                 id,
             } = await create({
                 $axios: this.app.$axios,
                 data,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Import/store/import/action/createImportProfile/__after', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
             });
 
             onSuccess(id);
@@ -190,16 +257,37 @@ export default {
     async removeImport({
         state,
     }, {
-        onSuccess,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
+        try {
+            const {
+                id,
+            } = state;
 
-        await remove({
-            $axios: this.app.$axios,
-            id,
-        });
-        onSuccess();
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Import/store/import/action/removeImport/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+
+            await remove({
+                $axios: this.app.$axios,
+                id,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Import/store/import/action/removeImport/__after', {
+                $this: this,
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess();
+        } catch (e) {
+            onError(e);
+        }
     },
 };

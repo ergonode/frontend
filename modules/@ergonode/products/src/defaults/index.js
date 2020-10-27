@@ -4,6 +4,7 @@
  */
 export const ADD_PRODUCT = {
     FROM_LIST: 'Select from list',
+    FROM_SEGMENT: 'Add from segment',
 };
 
 export const PRODUCT_TYPE = {

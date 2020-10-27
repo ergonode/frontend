@@ -52,24 +52,43 @@ export default {
 
         return configuration;
     },
-    async getSchedulerConfiguration(
-        {
-            commit, state,
-        },
-    ) {
-        const {
-            id,
-        } = state;
-        const scheduler = await getSchedulerConfiguration({
-            $axios: this.app.$axios,
-            id,
-        });
-
-        if (scheduler) {
-            commit('__SET_STATE', {
-                key: 'scheduler',
-                value: JSON.stringify(scheduler),
+    async getSchedulerConfiguration({
+        commit, state,
+    }, {
+        onError = () => {},
+    }) {
+        try {
+            const {
+                id,
+            } = state;
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Channels/store/channel/action/getSchedulerConfiguration/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
             });
+            // EXTENDED BEFORE METHOD
+
+            const scheduler = await getSchedulerConfiguration({
+                $axios: this.app.$axios,
+                id,
+            });
+
+            if (scheduler) {
+                commit('__SET_STATE', {
+                    key: 'scheduler',
+                    value: JSON.stringify(scheduler),
+                });
+            }
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Channels/store/channel/action/getChannel/__after', {
+                $this: this,
+                data: scheduler,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            onError(e);
         }
     },
     async getExportDetails({}, {
@@ -115,33 +134,54 @@ export default {
         },
         {
             id,
+            onError = () => {},
         },
     ) {
-        const {
-            channels,
-        } = rootState.dictionaries;
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Channels/store/channel/action/getChannel/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
 
-        const {
-            id: channelId,
-            type,
-            ...rest
-        } = await get({
-            $axios: this.app.$axios,
-            id,
-        });
+            const {
+                channels,
+            } = rootState.dictionaries;
+            const data = await get({
+                $axios: this.app.$axios,
+                id,
+            });
+            const {
+                id: channelId,
+                type,
+                ...rest
+            } = data;
 
-        commit('__SET_STATE', {
-            key: 'id',
-            value: channelId,
-        });
-        commit('__SET_STATE', {
-            key: 'type',
-            value: channels[type],
-        });
-        commit('__SET_STATE', {
-            key: 'configuration',
-            value: JSON.stringify(rest),
-        });
+            commit('__SET_STATE', {
+                key: 'id',
+                value: channelId,
+            });
+            commit('__SET_STATE', {
+                key: 'type',
+                value: channels[type],
+            });
+            commit('__SET_STATE', {
+                key: 'configuration',
+                value: JSON.stringify(rest),
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Channels/store/channel/action/getChannel/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            onError(e);
+        }
     },
     async createChannel({
         state,
@@ -165,6 +205,19 @@ export default {
                 type: typeId,
             };
 
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Channels/store/channel/action/createChannel/__before', {
+                $this: this,
+                data,
+            });
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
+            // EXTENDED BEFORE METHOD
+
             if (configuration) {
                 data = {
                     ...data,
@@ -178,6 +231,16 @@ export default {
                 $axios: this.app.$axios,
                 data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Channels/store/channel/action/createChannel/__after', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
 
             onSuccess(id);
         } catch (e) {
@@ -198,11 +261,36 @@ export default {
             const {
                 id,
             } = state;
+            let data = {};
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Channels/store/channel/action/createChannelExport/__before', {
+                $this: this,
+                data,
+            });
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             await createExport({
                 $axios: this.app.$axios,
                 id,
+                data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Channels/store/channel/action/createChannelExport/__after', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
 
             onSuccess();
         } catch (e) {
@@ -228,17 +316,40 @@ export default {
                 type,
                 configuration,
             } = state;
-
-            const data = {
+            let data = {
                 type,
                 ...JSON.parse(configuration),
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Channels/store/channel/action/updateChannel/__before', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             await update({
                 $axios: this.app.$axios,
                 id,
                 data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Channels/store/channel/action/updateChannel/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+
             onSuccess();
         } catch (e) {
             onError({
@@ -262,16 +373,37 @@ export default {
                 id,
                 scheduler,
             } = state;
+            const tmpData = JSON.parse(scheduler);
+            let data = removeObjectProperty(tmpData, 'id');
 
-            const tmp = JSON.parse(scheduler);
-
-            const data = removeObjectProperty(tmp, 'id');
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Channels/store/channel/action/updateScheduler/__before', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             await updateScheduler({
                 $axios: this.app.$axios,
                 id,
                 data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Channels/store/channel/action/updateScheduler/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
 
             onSuccess();
         } catch (e) {
@@ -285,15 +417,33 @@ export default {
         state,
     }, {
         onSuccess,
+        onError,
     }) {
-        const {
-            id,
-        } = state;
+        try {
+            const {
+                id,
+            } = state;
 
-        await remove({
-            $axios: this.app.$axios,
-            id,
-        });
-        onSuccess();
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Channels/store/channel/action/removeChannel/__before', {
+                $this: this,
+            });
+            // EXTENDED BEFORE METHOD
+
+            await remove({
+                $axios: this.app.$axios,
+                id,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Channels/store/channel/action/removeChannel/__after', {
+                $this: this,
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess();
+        } catch (e) {
+            onError(e);
+        }
     },
 };

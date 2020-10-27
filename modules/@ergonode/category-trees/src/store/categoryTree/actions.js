@@ -28,16 +28,39 @@ export default {
             const {
                 code,
             } = state;
-
-            const data = {
+            let data = {
                 code,
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Trees/store/categoryTree/action/createCategoryTree/__before', {
+                $this: this,
+                data,
+            });
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
+            // EXTENDED BEFORE METHOD
+
             const {
                 id,
             } = await create({
                 $axios: this.app.$axios,
                 data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Trees/store/categoryTree/action/createCategoryTree/__after', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
 
             onSuccess(id);
         } catch (e) {
@@ -55,70 +78,91 @@ export default {
         },
         {
             id,
+            onError = () => {},
         },
     ) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
-
-        const {
-            code,
-            name = '',
-            categories,
-        } = await get({
-            $axios: this.app.$axios,
-            id,
-        });
-
-        if (categories.length) {
-            const {
-                items,
-            } = await getListItems({
-                $axios: this.app.$axios,
-                path: `${userLanguageCode}/categories`,
-                params: {
-                    limit: 99999,
-                    offset: 0,
-                    // TODO: BE has no filter via ID's - we gonna wait for them
-                    // filter: `category_id=${categories.map(category => category.id).join(',')}`,
-                    view: 'list',
-                    field: 'code',
-                    order: 'ASC',
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Trees/store/categoryTree/action/getCategoryTree/__before', {
+                $this: this,
+                data: {
+                    id,
                 },
             });
+            // EXTENDED BEFORE METHOD
 
-            const treeToSet = getParsedTreeData(categories, items);
+            const {
+                language: userLanguageCode,
+            } = rootState.authentication.user;
+            const data = await get({
+                $axios: this.app.$axios,
+                id,
+            });
+            const {
+                code,
+                name = '',
+                categories,
+            } = data;
 
-            treeToSet.forEach(e => dispatch('list/setDisabledElement', {
-                languageCode: userLanguageCode,
-                elementId: e.id,
-                disabled: true,
-            }, {
-                root: true,
-            }));
-            dispatch('gridDesigner/setGridData', treeToSet, {
+            if (categories.length) {
+                const {
+                    items,
+                } = await getListItems({
+                    $axios: this.app.$axios,
+                    path: `${userLanguageCode}/categories`,
+                    params: {
+                        limit: 99999,
+                        offset: 0,
+                        // TODO: BE has no filter via ID's - we gonna wait for them
+                        // filter: `category_id=${categories.map(category => category.id).join(',')}`,
+                        view: 'list',
+                        field: 'code',
+                        order: 'ASC',
+                    },
+                });
+
+                const treeToSet = getParsedTreeData(categories, items);
+
+                treeToSet.forEach(e => dispatch('list/setDisabledElement', {
+                    languageCode: userLanguageCode,
+                    elementId: e.id,
+                    disabled: true,
+                }, {
+                    root: true,
+                }));
+                dispatch('gridDesigner/setGridData', treeToSet, {
+                    root: true,
+                });
+                dispatch('gridDesigner/setFullGridData', treeToSet, {
+                    root: true,
+                });
+            }
+
+            const translations = {
+                name,
+            };
+
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'code',
+                value: code,
+            });
+            dispatch('tab/setTranslations', translations, {
                 root: true,
             });
-            dispatch('gridDesigner/setFullGridData', treeToSet, {
-                root: true,
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Trees/store/categoryTree/action/getCategoryTree/__after', {
+                $this: this,
+                data,
             });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            onError(e);
         }
-
-        const translations = {
-            name,
-        };
-
-        commit('__SET_STATE', {
-            key: 'id',
-            value: id,
-        });
-        commit('__SET_STATE', {
-            key: 'code',
-            value: code,
-        });
-        dispatch('tab/setTranslations', translations, {
-            root: true,
-        });
     },
     async updateCategoryTree(
         {
@@ -135,7 +179,6 @@ export default {
             const {
                 id,
             } = state;
-
             const {
                 translations: {
                     name,
@@ -144,15 +187,40 @@ export default {
             const {
                 fullGridData,
             } = rootState.gridDesigner;
-            const data = {
+            let data = {
                 name,
                 categories: getMappedTreeData(fullGridData),
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Trees/store/categoryTree/action/updateCategoryTree/__before', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+            // EXTENDED BEFORE METHOD
+
             await update({
                 $axios: this.app.$axios,
                 id,
                 data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Trees/store/categoryTree/action/updateCategoryTree/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
 
             onSuccess();
         } catch (e) {
@@ -165,16 +233,33 @@ export default {
     async removeCategoryTree({
         state,
     }, {
-        onSuccess,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
+        try {
+            const {
+                id,
+            } = state;
 
-        await remove({
-            $axios: this.app.$axios,
-            id,
-        });
-        onSuccess();
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Trees/store/categoryTree/action/removeCategoryTree/__before', {
+                $this: this,
+            });
+            // EXTENDED BEFORE METHOD
+            await remove({
+                $axios: this.app.$axios,
+                id,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Trees/store/categoryTree/action/removeCategoryTree/__after', {
+                $this: this,
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess();
+        } catch (e) {
+            onError(e);
+        }
     },
 };

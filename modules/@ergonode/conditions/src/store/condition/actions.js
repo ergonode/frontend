@@ -114,10 +114,21 @@ export default {
                 conditions,
                 conditionsValues,
             } = state;
-
-            const data = {
+            let data = {
                 conditions: getMappedConditionSetData(conditionsValues, conditions),
             };
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Conditions/store/condition/action/createConditionSet/__before', {
+                $this: this,
+                data,
+            });
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             const {
                 id,
@@ -130,6 +141,17 @@ export default {
                 key: 'id',
                 value: id,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Conditions/store/condition/action/createConditionSet/__after', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
+
             onSuccess(id);
         } catch (e) {
             onError({
@@ -154,16 +176,38 @@ export default {
                 conditions,
                 conditionsValues,
             } = state;
-
-            const data = {
+            let data = {
                 conditions: getMappedConditionSetData(conditionsValues, conditions),
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Conditions/store/condition/action/updateConditionSet/__before', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             await updateSet({
                 $axios: this.app.$axios,
                 id,
                 data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Conditions/store/condition/action/updateConditionSet/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
 
             onSuccess(id);
         } catch (e) {

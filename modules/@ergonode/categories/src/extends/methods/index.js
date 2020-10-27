@@ -16,3 +16,15 @@ export const setCategory = ({
         });
     }
 };
+
+export const getCategory = ({
+    $this,
+}) => {
+    const {
+        categories,
+    } = $this.state.product;
+
+    return {
+        categoryIds: categories,
+    };
+};
