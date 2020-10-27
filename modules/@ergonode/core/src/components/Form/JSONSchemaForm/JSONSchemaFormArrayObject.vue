@@ -92,9 +92,14 @@ export default {
             this.$emit('input', this.rowValues);
         },
         onValueChangeAtIndex({
-            index, value,
+            index,
+            value,
         }) {
             this.rowValues[index] = value;
+            this.rowValues = [
+                ...this.rowValues,
+            ];
+
             this.$emit('input', this.rowValues);
         },
     },
