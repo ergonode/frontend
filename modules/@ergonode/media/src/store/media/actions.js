@@ -16,35 +16,55 @@ export default {
         commit,
     }, {
         id,
+        onError = () => {},
     }) {
-        const {
-            name,
-            extension,
-            alt,
-        } = await get({
-            $axios: this.app.$axios,
-            id,
-        });
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Media/store/media/action/getResource/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+            const data = await get({
+                $axios: this.app.$axios,
+                id,
+            });
+            const {
+                name,
+                extension,
+                alt,
+            } = data;
+            const translations = {
+                alt: Array.isArray(alt) ? {} : alt,
+            };
 
-        const translations = {
-            alt: Array.isArray(alt) ? {} : alt,
-        };
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'name',
+                value: name.replace(`.${extension}`, ''),
+            });
+            commit('__SET_STATE', {
+                key: 'extension',
+                value: extension,
+            });
+            dispatch('tab/setTranslations', translations, {
+                root: true,
+            });
 
-        commit('__SET_STATE', {
-            key: 'id',
-            value: id,
-        });
-        commit('__SET_STATE', {
-            key: 'name',
-            value: name.replace(`.${extension}`, ''),
-        });
-        commit('__SET_STATE', {
-            key: 'extension',
-            value: extension,
-        });
-        dispatch('tab/setTranslations', translations, {
-            root: true,
-        });
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Media/store/media/action/getResource/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            onError(e);
+        }
     },
     async getResourceMetadata({
         state,
@@ -84,7 +104,6 @@ export default {
         return relations.filter(row => row.relations.length > 0);
     },
     async updateResource({
-        commit,
         state,
         rootState,
     }, {
@@ -103,16 +122,39 @@ export default {
                     alt,
                 },
             } = rootState.tab;
-            const data = {
+            let data = {
                 name: `${name}.${extension}`,
                 alt,
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Media/store/media/action/updateResource/__before', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             await update({
                 $axios: this.app.$axios,
                 id,
                 data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Media/store/media/action/updateResource/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
 
             onSuccess();
         } catch (e) {
@@ -124,18 +166,38 @@ export default {
     },
     async removeResource({
         state,
-        commit,
     }, {
         onSuccess,
+        onError,
     }) {
-        const {
-            id,
-        } = state;
+        try {
+            const {
+                id,
+            } = state;
 
-        await remove({
-            $axios: this.app.$axios,
-            id,
-        });
-        onSuccess();
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Media/store/media/action/removeResource/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+
+            await remove({
+                $axios: this.app.$axios,
+                id,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Media/store/media/action/removeResource/__after', {
+                $this: this,
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess();
+        } catch (e) {
+            onError(e);
+        }
     },
 };

@@ -16,28 +16,50 @@ export default {
         },
         {
             id,
+            onError = () => {},
         },
     ) {
-        const {
-            name,
-            symbol,
-        } = await get({
-            $axios: this.app.$axios,
-            id,
-        });
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Core/store/unit/action/getUnit/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
 
-        commit('__SET_STATE', {
-            key: 'id',
-            value: id,
-        });
-        commit('__SET_STATE', {
-            key: 'name',
-            value: name,
-        });
-        commit('__SET_STATE', {
-            key: 'symbol',
-            value: symbol,
-        });
+            const data = await get({
+                $axios: this.app.$axios,
+                id,
+            });
+            const {
+                name,
+                symbol,
+            } = data;
+
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'name',
+                value: name,
+            });
+            commit('__SET_STATE', {
+                key: 'symbol',
+                value: symbol,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Core/store/unit/action/getUnit/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            onError(e);
+        }
     },
     async updateUnit(
         {
@@ -49,20 +71,44 @@ export default {
             onError = () => {},
         },
     ) {
-        const {
-            id, name, symbol,
-        } = state;
-        const data = {
-            name,
-            symbol,
-        };
-
         try {
+            const {
+                id, name, symbol,
+            } = state;
+            let data = {
+                name,
+                symbol,
+            };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Core/store/unit/action/updateUnit/__before', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+            // EXTENDED BEFORE METHOD
+
             await update({
                 $axios: this.app.$axios,
                 id,
                 data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Core/store/unit/action/updateUnit/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+
             onSuccess();
         } catch (e) {
             onError({
@@ -83,11 +129,23 @@ export default {
                 name,
                 symbol,
             } = state;
-
-            const data = {
+            let data = {
                 name,
                 symbol,
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Core/store/unit/action/createUnit/__before', {
+                $this: this,
+                data,
+            });
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             const {
                 id,
@@ -95,6 +153,17 @@ export default {
                 $axios: this.app.$axios,
                 data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Core/store/unit/action/createUnit/__after', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
+
             await onSuccess(id);
         } catch (e) {
             onError({
@@ -107,15 +176,35 @@ export default {
         state,
     }, {
         onSuccess,
+        onError,
     }) {
-        const {
-            id,
-        } = state;
+        try {
+            const {
+                id,
+            } = state;
 
-        await remove({
-            $axios: this.app.$axios,
-            id,
-        });
-        await onSuccess();
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Core/store/unit/action/removeUnit/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+
+            await remove({
+                $axios: this.app.$axios,
+                id,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Core/store/unit/action/removeUnit/__after', {
+                $this: this,
+            });
+            // EXTENDED AFTER METHOD
+            await onSuccess();
+        } catch (e) {
+            onError(e);
+        }
     },
 };

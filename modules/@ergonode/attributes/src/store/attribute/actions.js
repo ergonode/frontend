@@ -202,6 +202,10 @@ export default {
                 groups: groupIds,
                 scope,
             } = data;
+            const translations = {
+                hint,
+                label,
+            };
 
             commit('__SET_STATE', {
                 key: 'id',
@@ -224,16 +228,9 @@ export default {
                 value: attrTypes[type],
             });
 
-            dispatch(
-                'tab/setTranslations',
-                {
-                    hint,
-                    label,
-                },
-                {
-                    root: true,
-                },
-            );
+            dispatch('tab/setTranslations', translations, {
+                root: true,
+            });
 
             // EXTENDED AFTER METHOD
             await this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__after', {

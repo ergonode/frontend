@@ -3,7 +3,6 @@
  * See LICENSE for license details.
  */
 export const ADD_PRODUCT = {
-    BY_SKU: 'Add by SKU',
-    // TODO: Uncomment when planned
-    // FROM_LIST: 'Select from list',
+    FROM_LIST: 'Select from list',
+    FROM_SEGMENT: 'Add from segment',
 };

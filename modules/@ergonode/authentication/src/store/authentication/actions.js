@@ -12,6 +12,9 @@ import {
     create,
     get,
 } from '@Authentication/services/index';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import camelcaseKeys from 'camelcase-keys';
 
 export default {
@@ -72,20 +75,40 @@ export default {
     async getUser({
         commit,
     }) {
-        const user = await get({
-            $axios: this.app.$axios,
-        });
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Authentication/store/authentication/action/getUser/__before', {
+                $this: this,
+            });
+            // EXTENDED BEFORE METHOD
 
-        const transformedUserData = camelcaseKeys(user);
+            const user = await get({
+                $axios: this.app.$axios,
+            });
 
-        transformedUserData.privileges = getMappedPrivileges(transformedUserData.privileges);
-        commit('__SET_STATE', {
-            key: 'user',
-            value: transformedUserData,
-        });
-        commit('__SET_STATE', {
-            key: 'isLogged',
-            value: true,
-        });
+            const transformedUserData = camelcaseKeys(user);
+
+            transformedUserData.privileges = getMappedPrivileges(transformedUserData.privileges);
+            commit('__SET_STATE', {
+                key: 'user',
+                value: transformedUserData,
+            });
+            commit('__SET_STATE', {
+                key: 'isLogged',
+                value: true,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Authentication/store/authentication/action/getUser/__after', {
+                $this: this,
+                data: transformedUserData,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'User data hasn`t been fetched properly',
+            });
+        }
     },
 };

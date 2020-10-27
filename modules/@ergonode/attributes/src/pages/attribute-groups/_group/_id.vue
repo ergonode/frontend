@@ -36,9 +36,21 @@ export default {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
-        store, params,
+        app,
+        store,
+        params,
     }) {
-        await store.dispatch('attributeGroup/getAttributeGroup', params);
+        await store.dispatch('attributeGroup/getAttributeGroup', {
+            id: params.id,
+            onError: () => {
+                if (process.client) {
+                    app.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Attribute group hasn`t been fetched properly',
+                    });
+                }
+            },
+        });
     },
     computed: {
         ...mapState('attributeGroup', [
@@ -67,16 +79,23 @@ export default {
                 message: 'Are you sure you want to delete this group?',
                 confirmCallback: () => this.removeAttributeGroup({
                     onSuccess: this.onRemoveSuccess,
+                    onError: this.onRemoveError,
                 }),
             });
         },
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Attribute Group removed',
+                message: 'Attribute group removed',
             });
             this.$router.push({
                 name: 'attribute-groups-grid',
+            });
+        },
+        onRemoveError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Attribute group hasn`t been deleted',
             });
         },
     },
