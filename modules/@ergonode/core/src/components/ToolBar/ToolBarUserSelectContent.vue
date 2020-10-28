@@ -44,13 +44,41 @@ export default {
         MenuList,
         Button,
     },
+    data() {
+        return {
+            extendMenu: null,
+        };
+    },
     computed: {
         navigationBarUserMenu() {
-            return navigationBarUserMenu;
+            let extendedMenu = navigationBarUserMenu;
+
+            if (this.extendMenu) {
+                this.extendMenu.forEach((extend) => {
+                    extendedMenu = extendedMenu.concat(extend);
+                });
+                extendedMenu = extendedMenu.reduce((acc, current) => {
+                    const tmpArray = acc;
+                    const index = tmpArray.findIndex(c => c.title === current.title);
+
+                    if (index !== -1) {
+                        tmpArray[index].menu.push(...current.menu);
+                    } else {
+                        tmpArray.push(current);
+                    }
+                    return tmpArray;
+                }, []);
+            }
+            return extendedMenu;
         },
         secondaryTheme() {
             return THEME.SECONDARY;
         },
+    },
+    async mounted() {
+        this.extendMenu = await this.$extendMethods('@Core/components/ToolBar/ToolBarMenu', {
+            $this: this,
+        });
     },
     methods: {
         ...mapActions('authentication', [
