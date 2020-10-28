@@ -9,7 +9,8 @@ exports[`Errors/404 Component is named well 1`] = `
       </h1>
       <p class="navigation-section__description">
         The link you clicked may be broken or the page may have been removed.
-      </p> <button type="button" aria-label="Go to dashboard" class="button button--primary button--regular"> <span class="button__title">Go to dashboard</span> </button>
+      </p>
+      <button-stub theme="primary" size="regular" title="Go to dashboard"></button-stub>
     </div>
   </div> <span class="error-section section__quotation">
         The page you were looking for doesn’t exist. If you think this is an

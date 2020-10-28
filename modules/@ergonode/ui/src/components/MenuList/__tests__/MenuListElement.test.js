@@ -58,7 +58,7 @@ describe('Navigation/MenuListElement', () => {
             wrapper.setMethods({
                 onMouseOver,
             });
-            wrapper.find('.list-element').trigger('mouseover');
+            wrapper.find('.menu-list-element').trigger('mouseover');
         });
 
         it('Element is not selected', () => {
@@ -86,7 +86,7 @@ describe('Navigation/MenuListElement', () => {
         wrapper.setMethods({
             onMouseOut,
         });
-        wrapper.find('.list-element').trigger('mouseout');
+        wrapper.find('.menu-list-element').trigger('mouseout');
         expect(onMouseOut).toHaveBeenCalled();
         expect(wrapper.vm.isHover).toBeFalsy();
     });
