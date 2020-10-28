@@ -16,8 +16,8 @@
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
-import TextArea from '@Core/components/TextArea/TextArea';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
+import TextArea from '@UI/components/TextArea/TextArea';
 
 export default {
     name: 'AttributeTranslationFormPlaceholder',

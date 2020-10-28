@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import IconCancel from '@Core/components/Icons/Actions/IconCancel';
+import IconCancel from '@UI/components/Icons/Actions/IconCancel';
 
 export default {
     name: 'BindingAttribute',

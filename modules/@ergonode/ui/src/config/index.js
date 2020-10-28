@@ -4,9 +4,16 @@
  */
 export default {
     name: '@ergonode/ui',
-    order: 30,
+    order: 20,
     aliases: {
         '@UI': '/',
     },
     plugins: [],
+    css: [
+        './assets/scss/reset.scss',
+        './assets/scss/font-inter-ui.scss',
+    ],
+    styleResources: {
+        scss: './assets/scss/main.scss',
+    },
 };

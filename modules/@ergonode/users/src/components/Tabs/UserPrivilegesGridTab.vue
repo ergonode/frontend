@@ -22,12 +22,12 @@
 </template>
 
 <script>
-import Grid from '@Core/components/Grid/Grid';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
+import Grid from '@UI/components/Grid/Grid';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import privilegesDefaults from '@Users/defaults/privileges';
 import {
     getMappedGridData,

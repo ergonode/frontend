@@ -24,7 +24,7 @@
 export default {
     name: 'ProductCollectionItem',
     components: {
-        Picture: () => import('@Core/components/Multimedia/Picture'),
+        Picture: () => import('@UI/components/Picture/Picture'),
     },
     props: {
         item: {
@@ -34,7 +34,7 @@ export default {
     },
     computed: {
         placeholderImage() {
-            return require('@Core/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
+            return require('@UI/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
         },
     },
 };

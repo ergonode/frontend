@@ -50,14 +50,6 @@
 </template>
 <script>
 import Comment from '@Comments/components/Comments/Comment';
-import {
-    GREEN,
-    RED,
-    WHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Fab from '@Core/components/Fab/Fab';
-import IconDelete from '@Core/components/Icons/Actions/IconDelete';
-import IconEdit from '@Core/components/Icons/Actions/IconEdit';
 import UserFabAvatar from '@Core/components/Multimedia/UserFabAvatar';
 import {
     ALERT_TYPE,
@@ -72,6 +64,14 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import {
+    GREEN,
+    RED,
+    WHITE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Fab from '@UI/components/Fab/Fab';
+import IconDelete from '@UI/components/Icons/Actions/IconDelete';
+import IconEdit from '@UI/components/Icons/Actions/IconEdit';
 import {
     format as formatDate,
 } from 'date-fns';

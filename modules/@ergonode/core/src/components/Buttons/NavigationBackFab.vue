@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import Fab from '@Core/components/Fab/Fab';
-import IconArrowPointer from '@Core/components/Icons/Arrows/IconArrowPointer';
+import Fab from '@UI/components/Fab/Fab';
+import IconArrowPointer from '@UI/components/Icons/Arrows/IconArrowPointer';
 
 export default {
     name: 'NavigationBackFab',

@@ -14,13 +14,13 @@
 
 <script>
 import ProductCommentsForm from '@Comments/components/Forms/ProductCommentsForm';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'ProductCommentsTab',

@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Icon from '@Core/components/Icons/Icon';
+import Icon from '@UI/components/Icons/Icon';
 
 export default {
     name: 'IconDashboard',

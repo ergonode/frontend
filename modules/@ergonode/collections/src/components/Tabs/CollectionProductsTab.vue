@@ -68,11 +68,6 @@ import PRIVILEGES from '@Collections/config/privileges';
 import {
     ADD_PRODUCT,
 } from '@Collections/defaults';
-import ActionButton from '@Core/components/ActionButton/ActionButton';
-import Button from '@Core/components/Button/Button';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -83,6 +78,11 @@ import {
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import ActionButton from '@UI/components/ActionButton/ActionButton';
+import Button from '@UI/components/Button/Button';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
     mapState,

@@ -37,17 +37,17 @@
 <script>
 import AttributesListElement from '@Attributes/components/Lists/AttributesListElement';
 import PRIVILEGES from '@Attributes/config/privileges';
-import List from '@Core/components/List/List';
-import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
-import ListSearchHeader from '@Core/components/List/ListSearchHeader';
-import ListSearchSelectHeader from '@Core/components/List/ListSearchSelectHeader';
-import Preloader from '@Core/components/Preloader/Preloader';
-import TreeSelect from '@Core/components/Select/Tree/TreeSelect';
-import VerticalTabBarList from '@Core/components/TabBar/VerticalTabBarList';
 import {
     SIZE,
 } from '@Core/defaults/theme';
 import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
+import List from '@UI/components/List/List';
+import ListScrollableContainer from '@UI/components/List/ListScrollableContainer';
+import ListSearchHeader from '@UI/components/List/ListSearchHeader';
+import ListSearchSelectHeader from '@UI/components/List/ListSearchSelectHeader';
+import Preloader from '@UI/components/Preloader/Preloader';
+import TreeSelect from '@UI/components/Select/Tree/TreeSelect';
+import VerticalTabBarList from '@UI/components/TabBar/VerticalTabBarList';
 import {
     mapState,
 } from 'vuex';

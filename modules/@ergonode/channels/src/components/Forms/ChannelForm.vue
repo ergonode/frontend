@@ -52,18 +52,18 @@
 
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
-import {
-    GRAPHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Divider from '@Core/components/Dividers/Divider';
-import Form from '@Core/components/Form/Form';
-import JSONSchemaForm from '@Core/components/Form/JSONSchemaForm/JSONSchemaForm';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import Select from '@Core/components/Select/Select';
-import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import {
+    GRAPHITE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Divider from '@UI/components/Dividers/Divider';
+import Form from '@UI/components/Form/Form';
+import JSONSchemaForm from '@UI/components/Form/JSONSchemaForm/JSONSchemaForm';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import Select from '@UI/components/Select/Select';
+import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
     mapActions,
     mapState,

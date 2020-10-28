@@ -48,10 +48,6 @@
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
-import Grid from '@Core/components/Grid/Grid';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import ModalGrid from '@Core/components/Modal/ModalGrid';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -64,6 +60,10 @@ import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import Button from '@UI/components/Button/Button';
+import Grid from '@UI/components/Grid/Grid';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import ModalGrid from '@UI/components/Modal/ModalGrid';
 import {
     mapActions,
     mapState,

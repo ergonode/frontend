@@ -27,7 +27,7 @@ import {
 export default {
     name: 'UserFabAvatar',
     components: {
-        Picture: () => import('@Core/components/Multimedia/Picture'),
+        Picture: () => import('@UI/components/Picture/Picture'),
     },
     props: {
         /**

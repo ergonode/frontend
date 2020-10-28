@@ -18,11 +18,11 @@
 </template>
 
 <script>
-import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 import WelcomeUser from '@Dashboard/components/WelcomeUser/WelcomeUser';
 import CompletenessWidget from '@Products/components/Widgets/CompletenessWidget';
 import ProductsWidget from '@Products/components/Widgets/ProductsWidget';
 import StatusesWidget from '@Statuses/components/Widgets/StatusesWidget';
+import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
     name: 'DashboardPage',

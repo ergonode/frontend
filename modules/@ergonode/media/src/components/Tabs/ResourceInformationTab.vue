@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import ResourceInformationForm from '@Media/components/Forms/ResourceInformationForm';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'ResourceInformationTab',

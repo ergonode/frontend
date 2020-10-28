@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import ResourceRelationsForm from '@Media/components/Forms/ResourceRelationsForm';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'ResourceRelationsTab',

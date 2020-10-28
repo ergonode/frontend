@@ -38,12 +38,6 @@
 
 <script>
 import {
-    GRAPHITE,
-    GREEN,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Button/Button';
-import Grid from '@Core/components/Grid/Grid';
-import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
@@ -61,6 +55,12 @@ import PRIVILEGES from '@Media/config/privileges';
 import {
     MEDIA_TYPE,
 } from '@Media/defaults';
+import {
+    GRAPHITE,
+    GREEN,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Button from '@UI/components/Button/Button';
+import Grid from '@UI/components/Grid/Grid';
 import {
     debounce,
 } from 'debounce';

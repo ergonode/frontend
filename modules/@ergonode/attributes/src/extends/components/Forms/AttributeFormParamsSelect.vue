@@ -17,10 +17,10 @@
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
-import Select from '@Core/components/Select/Select';
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
+import Select from '@UI/components/Select/Select';
 import {
     mapActions,
 } from 'vuex';

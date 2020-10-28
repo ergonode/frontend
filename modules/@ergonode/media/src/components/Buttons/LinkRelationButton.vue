@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import LinkButton from '@Core/components/LinkButton/LinkButton';
+import LinkButton from '@UI/components/LinkButton/LinkButton';
 
 export default {
     name: 'LinkRelationButton',

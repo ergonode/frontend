@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import Page from '@Core/components/Layout/Page';
-import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
-import TitleBar from '@Core/components/TitleBar/TitleBar';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import Page from '@UI/components/Layout/Page';
+import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@UI/components/TitleBar/TitleBar';
 
 export default {
     name: 'NotificationTabs',

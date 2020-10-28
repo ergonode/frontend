@@ -31,8 +31,6 @@
 </template>
 
 <script>
-import InfoHint from '@Core/components/Hints/InfoHint';
-import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import {
     arraysAreEqual,
 } from '@Core/models/arrayWrapper';
@@ -41,6 +39,8 @@ import {
     getMappedObjectOptions,
 } from '@Core/models/mappers/translationsMapper';
 import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
+import InfoHint from '@UI/components/Hints/InfoHint';
+import TranslationSelect from '@UI/components/Select/TranslationSelect';
 import {
     mapState,
 } from 'vuex';

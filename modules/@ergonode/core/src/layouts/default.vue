@@ -33,11 +33,6 @@
 </template>
 
 <script>
-import App from '@Core/components/Layout/App';
-import AppMain from '@Core/components/Layout/AppMain';
-import SideBar from '@Core/components/SideBar/SideBar';
-import ToolBar from '@Core/components/ToolBar/ToolBar';
-import ToolBarBreadcrumb from '@Core/components/ToolBar/ToolBarBreadcrumb';
 import ToolBarUserButton from '@Core/components/ToolBar/ToolBarUserButton';
 import {
     COMPONENTS,
@@ -45,6 +40,11 @@ import {
 import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
+import App from '@UI/components/Layout/App';
+import AppMain from '@UI/components/Layout/AppMain';
+import SideBar from '@UI/components/SideBar/SideBar';
+import ToolBar from '@UI/components/ToolBar/ToolBar';
+import ToolBarBreadcrumb from '@UI/components/ToolBar/ToolBarBreadcrumb';
 import {
     mapActions,
 } from 'vuex';
@@ -58,8 +58,8 @@ export default {
         ToolBar,
         ToolBarUserButton,
         ToolBarBreadcrumb,
-        FlashMessages: () => import('@Core/components/Alerts/FlashMessages'),
-        ConfirmModal: () => import('@Core/components/Modals/ConfirmModal'),
+        FlashMessages: () => import('@Core/components/FlashMessages/FlashMessages'),
+        ConfirmModal: () => import('@UI/components/ConfirmModal/ConfirmModal'),
     },
     data() {
         return {

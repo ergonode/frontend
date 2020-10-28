@@ -25,9 +25,6 @@
 </template>
 
 <script>
-import Preloader from '@Core/components/Preloader/Preloader';
-import ProgressList from '@Core/components/ProgressList/ProgressList';
-import Widget from '@Core/components/Widget/Widget';
 import {
     COLORS,
 } from '@Core/defaults/colors';
@@ -35,6 +32,9 @@ import {
     getProductsCount,
 } from '@Dashboard/services';
 import DoughnutProductsChart from '@Products/components/Chart/DoughnutProductsChart';
+import Preloader from '@UI/components/Preloader/Preloader';
+import ProgressList from '@UI/components/ProgressList/ProgressList';
+import Widget from '@UI/components/Widget/Widget';
 
 export default {
     name: 'ProductsWidget',

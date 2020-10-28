@@ -23,8 +23,8 @@
 <script>
 import {
     GRAPHITE_COAL,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import DoughnutChart from '@Core/components/Chart/DoughnatChart';
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import DoughnutChart from '@UI/components/Charts/DoughnatChart';
 
 export default {
     name: 'DoughnutProductsChart',

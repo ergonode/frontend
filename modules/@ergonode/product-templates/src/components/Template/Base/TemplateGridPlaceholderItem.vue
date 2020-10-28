@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import IconDragDrop from '@Core/components/Icons/Actions/IconDragDrop';
+import IconDragDrop from '@UI/components/Icons/Actions/IconDragDrop';
 
 export default {
     name: 'TemplateGridPlaceholderItem',

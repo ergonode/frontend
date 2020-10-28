@@ -15,5 +15,5 @@ export const Tabs = {
 };
 
 export const Icons = {
-    Product: () => import('@Core/components/Icons/Menu/IconProduct'),
+    Product: () => import('@Products/components/Icons/IconProduct'),
 };

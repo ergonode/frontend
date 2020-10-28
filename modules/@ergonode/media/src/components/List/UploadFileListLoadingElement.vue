@@ -31,9 +31,9 @@
 import {
     GRAPHITE,
     GREEN,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import IconCheck from '@Core/components/Icons/Feedback/IconCheck';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import IconCheck from '@UI/components/Icons/Feedback/IconCheck';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 
 export default {
     name: 'UploadFileListLoadingElement',
