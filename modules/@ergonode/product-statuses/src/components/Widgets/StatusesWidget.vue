@@ -112,6 +112,7 @@ export default {
             this.statuses = statusesCount.map((status) => {
                 const {
                     status_id,
+                    code,
                     value,
                     label,
                     color,
@@ -120,7 +121,7 @@ export default {
                 return {
                     id: status_id,
                     color,
-                    label,
+                    label: label || `#${code}`,
                     value: `${value} products`,
                 };
             });

@@ -17,7 +17,7 @@
             <Picture
                 :use-cache="false"
                 :value="value"
-                :api-path="`${languageCode}/accounts/${value}/avatar`" />
+                :href="`${languageCode}/accounts/${value}/avatar`" />
         </template>
     </UploadFile>
 </template>

@@ -185,6 +185,14 @@ export default {
         this.observer.disconnect();
     },
     methods: {
+        onFilterChange(filters) {
+            this.filterValues = filters;
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: this.filterValues,
+            });
+        },
         onRemoveAllFilters() {
             this.filterValues = {};
 
