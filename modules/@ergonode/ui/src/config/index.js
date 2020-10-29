@@ -4,7 +4,7 @@
  */
 export default {
     name: '@ergonode/ui',
-    order: 20,
+    order: 5,
     aliases: {
         '@UI': '/',
     },

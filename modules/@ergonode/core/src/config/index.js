@@ -9,6 +9,7 @@ export default {
         '@Core': '/',
     },
     relations: [
+        '@ergonode/ui',
         '@ergonode/attributes',
         '@ergonode/media',
     ],
