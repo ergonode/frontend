@@ -39,9 +39,18 @@ export default {
     },
     computed: {
         color() {
+            // TODO: Add support for dynamic filter options
+            if (!this.options[this.value]) {
+                return '';
+            }
+
             return this.options[this.value].color;
         },
         label() {
+            // TODO: Add support for dynamic filter options
+            if (!this.options[this.value]) {
+                return '';
+            }
             return this.options[this.value].label;
         },
     },

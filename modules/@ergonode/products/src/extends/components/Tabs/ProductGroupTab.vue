@@ -213,7 +213,9 @@ export default {
             filter,
             sortedColumn,
         } = this.localParams) {
-            const filtersWithAttached = filter;
+            const filtersWithAttached = {
+                ...filter,
+            };
 
             if (typeof filter.attached === 'undefined') {
                 filtersWithAttached.attached = {
@@ -250,20 +252,12 @@ export default {
                 params: this.localParams,
             });
 
-            this.columns = columns.map((column) => {
-                if (column.id === 'attached') {
-                    return {
-                        ...column,
-                        filter: null,
-                        editable: false,
-                    };
-                }
-
-                return {
+            this.columns = columns
+                .filter(column => column.id !== 'attached')
+                .map(column => ({
                     ...column,
                     editable: false,
-                };
-            });
+                }));
             this.filtered = filtered;
             this.rows = rows;
         },

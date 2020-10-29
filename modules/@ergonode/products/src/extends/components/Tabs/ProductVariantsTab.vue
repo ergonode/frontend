@@ -62,7 +62,7 @@
                         title="CHOOSE VARIANTS"
                         :size="smallSize"
                         :disabled="!isAllowedToUpdate"
-                        @click.native="onChooseVariants" />
+                        @click.native="onShowProductsModal" />
                 </template>
             </Grid>
             <ListPlaceholder
@@ -294,9 +294,6 @@ export default {
         onBindingAttributesExpand() {
             this.isBindingAttributesExpanded = !this.isBindingAttributesExpanded;
         },
-        onChooseVariants() {
-            this.isBindingAttributesExpanded = true;
-        },
         onRemoveProduct() {
             this.onFetchData();
         },
@@ -345,10 +342,12 @@ export default {
                 params: this.localParams,
             });
 
-            this.columns = columns.map(column => ({
-                ...column,
-                editable: false,
-            }));
+            this.columns = columns
+                .filter(column => column.id !== 'attached')
+                .map(column => ({
+                    ...column,
+                    editable: false,
+                }));
             this.filtered = filtered;
             this.rows = rows;
         },

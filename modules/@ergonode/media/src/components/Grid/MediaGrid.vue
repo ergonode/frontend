@@ -25,7 +25,8 @@
         @cell-value="onCellValueChange"
         @delete-row="onRemoveRow"
         @fetch-data="onFetchData"
-        @remove-all-filter="onRemoveAllFilters">
+        @remove-all-filter="onRemoveAllFilters"
+        @filter="onFilterChange">
         <template #appendFooter>
             <Button
                 title="SAVE MEDIA"
@@ -184,6 +185,14 @@ export default {
         this.observer.disconnect();
     },
     methods: {
+        onFilterChange(filters) {
+            this.filterValues = filters;
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: this.filterValues,
+            });
+        },
         onRemoveAllFilters() {
             this.filterValues = {};
 
