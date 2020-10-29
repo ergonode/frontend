@@ -121,6 +121,7 @@
         "@ergonode/users"
     ],
     "_availableModules": {
+        "@ergonode/ui": "local",
         "@ergonode/activity-logs": "local",
         "@ergonode/attributes": "local",
         "@ergonode/authentication": "local",

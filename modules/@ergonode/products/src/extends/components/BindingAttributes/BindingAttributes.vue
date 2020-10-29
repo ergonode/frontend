@@ -19,13 +19,13 @@
 </template>
 
 <script>
-import GridPanelHeader from '@Core/components/Grid/Header/GridPanelHeader';
 import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
 import AddBindingAttributes from '@Products/extends/components/BindingAttributes/AddBindingAttributes';
 import BindingAttribute from '@Products/extends/components/BindingAttributes/BindingAttribute';
+import GridPanelHeader from '@UI/components/Grid/Header/GridPanelHeader';
 
 export default {
     name: 'BindingAttributes',

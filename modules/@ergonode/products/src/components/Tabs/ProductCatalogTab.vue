@@ -85,16 +85,6 @@
 
 <script>
 import {
-    WHITESMOKE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Button/Button';
-import RemoveFiltersButton from '@Core/components/Grid/Buttons/RemoveFiltersButton';
-import AddFilterDropZone from '@Core/components/Grid/DropZone/AddFilterDropZone';
-import RemoveFilterAndColumnDropZone from '@Core/components/Grid/DropZone/RemoveFilterAndColumnDropZone';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
-import VerticalTabBar from '@Core/components/TabBar/VerticalTabBar';
-import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
@@ -108,6 +98,16 @@ import {
     removeCookieAtIndex,
 } from '@Core/models/cookies';
 import PRIVILEGES from '@Products/config/privileges';
+import {
+    WHITESMOKE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Button from '@UI/components/Button/Button';
+import RemoveFiltersButton from '@UI/components/Grid/Buttons/RemoveFiltersButton';
+import AddFilterDropZone from '@UI/components/Grid/DropZone/AddFilterDropZone';
+import RemoveFilterAndColumnDropZone from '@UI/components/Grid/DropZone/RemoveFilterAndColumnDropZone';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
+import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import {
     mapActions,
     mapState,
@@ -180,7 +180,7 @@ export default {
                 return {
                     title: 'No results',
                     subtitle: 'There are no results that meet the conditions for the selected filters.',
-                    bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                    bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
                     color: WHITESMOKE,
                 };
             }
@@ -188,7 +188,7 @@ export default {
             return {
                 title: 'No products',
                 subtitle: 'There are no products in the system, you can create the first one.',
-                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
                 color: WHITESMOKE,
             };
         },
@@ -203,7 +203,7 @@ export default {
                 {
                     title: 'Product attributes',
                     component: () => import('@Attributes/components/Tabs/List/AttributesListTab'),
-                    iconComponent: () => import('@Core/components/Icons/Menu/IconAttributes'),
+                    iconComponent: () => import('@Attributes/components/Icons/IconAttributes'),
                     props: {},
                 },
                 {

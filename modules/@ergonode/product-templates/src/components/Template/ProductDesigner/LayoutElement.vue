@@ -22,19 +22,8 @@
 
 <script>
 import {
-    GREEN,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import {
-    ELEVATOR_HOLE,
-} from '@Core/assets/scss/_js-variables/elevators.scss';
-import IconResize from '@Core/components/Icons/Others/IconResize';
-import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
-import {
-    getPositionForBrowser,
-    isMouseInsideElement,
-} from '@Core/models/drag_and_drop/helpers';
 import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
@@ -54,12 +43,23 @@ import {
     getRowBasedOnHeight,
 } from '@Templates/models/layout/LayoutCalculations';
 import {
+    GREEN,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import {
+    ELEVATOR_HOLE,
+} from '@UI/assets/scss/_js-variables/elevators.scss';
+import IconResize from '@UI/components/Icons/Others/IconResize';
+import {
+    getPositionForBrowser,
+    isMouseInsideElement,
+} from '@UI/models/dragAndDrop/helpers';
+import {
     mapActions,
     mapState,
 } from 'vuex';
 
-const registerResizeEventListeners = () => import('@Core/models/resize/registerResizeEventListeners');
-const unregisterResizeEventListeners = () => import('@Core/models/resize/unregisterResizeEventListeners');
+const registerResizeEventListeners = () => import('@UI/models/resize/registerResizeEventListeners');
+const unregisterResizeEventListeners = () => import('@UI/models/resize/unregisterResizeEventListeners');
 
 export default {
     name: 'LayoutElement',

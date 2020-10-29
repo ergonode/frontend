@@ -27,12 +27,12 @@
 </template>
 
 <script>
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Segments/config/privileges';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import TranslationSelect from '@UI/components/Select/TranslationSelect';
 
 export default {
     name: 'AddProductsFromSegmentForm',

@@ -17,8 +17,8 @@
     </GridTableCell>
 </template>
 <script>
-import GridHintPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridHintPresentationCell';
-import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
+import GridHintPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridHintPresentationCell';
+import gridDataCellMixin from '@UI/mixins/grid/gridDataCellMixin';
 
 export default {
     name: 'GridPrivilegeNameHintDataCell',

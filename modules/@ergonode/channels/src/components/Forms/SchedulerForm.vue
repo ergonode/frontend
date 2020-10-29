@@ -50,19 +50,19 @@
 
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
-import DatePicker from '@Core/components/DatePicker/DatePicker';
-import Divider from '@Core/components/Dividers/Divider';
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import TextField from '@Core/components/TextField/TextField';
-import Toggler from '@Core/components/Toggler/Toggler';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import DatePicker from '@UI/components/DatePicker/DatePicker';
+import Divider from '@UI/components/Dividers/Divider';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import TextField from '@UI/components/TextField/TextField';
+import Toggler from '@UI/components/Toggler/Toggler';
 import {
     DEFAULT_DATE_TIME_FORMAT,
     DEFAULT_FORMAT,
     DEFAULT_HOUR_FORMAT,
-} from '@Core/models/calendar/calendar';
+} from '@UI/models/calendar';
 import {
     format as formatDate,
     formatISO,

@@ -46,17 +46,6 @@
 
 <script>
 import {
-    GREEN,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Button/Button';
-import Form from '@Core/components/Form/Form';
-import FormParagraph from '@Core/components/Form/FormParagraph';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import IconFile from '@Core/components/Icons/Others/IconFile';
-import LinkButton from '@Core/components/LinkButton/LinkButton';
-import ModalForm from '@Core/components/Modal/ModalForm';
-import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
@@ -64,6 +53,17 @@ import {
 } from '@Core/defaults/theme';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import UploadFile from '@Media/components/Inputs/UploadFile/UploadFile';
+import {
+    GREEN,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Button from '@UI/components/Button/Button';
+import Form from '@UI/components/Form/Form';
+import FormParagraph from '@UI/components/Form/FormParagraph';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import IconFile from '@UI/components/Icons/Others/IconFile';
+import LinkButton from '@UI/components/LinkButton/LinkButton';
+import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
 } from 'vuex';

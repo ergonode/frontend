@@ -70,11 +70,11 @@ export default {
             switch (this.parameter.type) {
             case TYPES.SELECT:
             case TYPES.MULTI_SELECT:
-                return () => import('@Core/components/Select/TranslationSelect');
+                return () => import('@UI/components/Select/TranslationSelect');
             case TYPES.TEXT:
             case TYPES.UNIT:
             case TYPES.NUMERIC:
-                return () => import('@Core/components/TextField/TextField');
+                return () => import('@UI/components/TextField/TextField');
             default:
                 return null;
             }

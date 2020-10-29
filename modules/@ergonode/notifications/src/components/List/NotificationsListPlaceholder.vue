@@ -17,12 +17,12 @@
 
 <script>
 import {
-    WHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Placeholder from '@Core/components/Placeholder/Placeholder';
-import {
     LAYOUT_ORIENTATION,
 } from '@Core/defaults/layout';
+import {
+    WHITE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Placeholder from '@UI/components/Placeholder/Placeholder';
 
 export default {
     name: 'NotificationsListPlaceholder',

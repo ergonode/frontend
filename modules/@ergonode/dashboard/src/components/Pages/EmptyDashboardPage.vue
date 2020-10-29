@@ -92,12 +92,6 @@
 <script>
 import ATTRIBUTE_PRIVILEGES from '@Attributes/config/privileges';
 import {
-    GREY,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Button/Button';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
-import {
     SIZE,
 } from '@Core/defaults/theme';
 import CreateProductStepList from '@Dashboard/components/CreateProductStepList/CreateProductStepList';
@@ -105,6 +99,12 @@ import CreateProductStepListElement from '@Dashboard/components/CreateProductSte
 import DoughnutProductsChart from '@Products/components/Chart/DoughnutProductsChart';
 import PRODUCT_PRIVILEGES from '@Products/config/privileges';
 import TEMPLATE_PRIVILEGES from '@Templates/config/privileges';
+import {
+    GREY,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Button from '@UI/components/Button/Button';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
     name: 'EmptyDashboardPage',

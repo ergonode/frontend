@@ -17,7 +17,7 @@
 
 <script>
 import AttributeOptionValue from '@Attributes/extends/components/Forms/Sections/AttributeOptionValue';
-import FormSection from '@Core/components/Form/Section/FormSection';
+import FormSection from '@UI/components/Form/Section/FormSection';
 import {
     mapState,
 } from 'vuex';

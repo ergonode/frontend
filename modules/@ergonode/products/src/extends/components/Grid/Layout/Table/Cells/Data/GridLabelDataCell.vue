@@ -31,16 +31,16 @@
 </template>
 
 <script>
-import GridSuffixPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
-import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 import GridLabelPresentationCell from '@Products/extends/components/Grid/Layout/Table/Cells/Presentation/GridLabelPresentationCell';
+import GridSuffixPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
+import gridDataCellMixin from '@UI/mixins/grid/gridDataCellMixin';
 
 export default {
     name: 'GridLabelDataCell',
     components: {
         GridLabelPresentationCell,
         GridSuffixPresentationCell,
-        IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
+        IconArrowDropDown: () => import('@UI/components/Icons/Arrows/IconArrowDropDown'),
     },
     mixins: [
         gridDataCellMixin,

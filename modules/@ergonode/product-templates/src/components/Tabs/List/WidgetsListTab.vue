@@ -18,11 +18,11 @@
 
 <script>
 
-import List from '@Core/components/List/List';
-import ListHeader from '@Core/components/List/ListHeader';
-import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
-import VerticalTabBarList from '@Core/components/TabBar/VerticalTabBarList';
 import WidgetsListElement from '@Templates/components/Lists/Widgets/WidgetsListElement';
+import List from '@UI/components/List/List';
+import ListHeader from '@UI/components/List/ListHeader';
+import ListScrollableContainer from '@UI/components/List/ListScrollableContainer';
+import VerticalTabBarList from '@UI/components/TabBar/VerticalTabBarList';
 import {
     mapState,
 } from 'vuex';

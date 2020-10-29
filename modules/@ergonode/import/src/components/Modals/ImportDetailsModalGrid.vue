@@ -38,9 +38,6 @@
 </template>
 
 <script>
-import Grid from '@Core/components/Grid/Grid';
-import ModalGrid from '@Core/components/Modal/ModalGrid';
-import Tile from '@Core/components/Tile/Tile';
 import {
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
@@ -48,6 +45,9 @@ import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponent
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import Grid from '@UI/components/Grid/Grid';
+import ModalGrid from '@UI/components/Modal/ModalGrid';
+import Tile from '@UI/components/Tile/Tile';
 import {
     mapActions,
 } from 'vuex';

@@ -3,7 +3,6 @@
  * See LICENSE for license details.
  */
 import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
-import GridAdvancedFilters from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilters';
 import {
     insertCookieAtIndex,
     removeCookieAtIndex,
@@ -11,6 +10,7 @@ import {
 import {
     getAdvancedFiltersData,
 } from '@Core/services/grid/getGridData.service';
+import GridAdvancedFilters from '@UI/components/Grid/AdvancedFilters/GridAdvancedFilters';
 import {
     mapActions,
 } from 'vuex';

@@ -68,19 +68,19 @@
 
 <script>
 import {
+    THEME,
+} from '@Core/defaults/theme';
+import {
     GRAPHITE,
     GREEN,
     RED,
     WHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Fab from '@Core/components/Fab/Fab';
-import IconDelete from '@Core/components/Icons/Actions/IconDelete';
-import IconRefresh from '@Core/components/Icons/Actions/IconRefresh';
-import IconUploadCloudFile from '@Core/components/Icons/Actions/IconUploadCloudFile';
-import {
-    THEME,
-} from '@Core/defaults/theme';
-import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Fab from '@UI/components/Fab/Fab';
+import IconDelete from '@UI/components/Icons/Actions/IconDelete';
+import IconRefresh from '@UI/components/Icons/Actions/IconRefresh';
+import IconUploadCloudFile from '@UI/components/Icons/Actions/IconUploadCloudFile';
+import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'UploadFile',

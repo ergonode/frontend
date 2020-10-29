@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import Autocomplete from '@Core/components/Autocomplete/Autocomplete';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import {
     mapActions,
     mapState,

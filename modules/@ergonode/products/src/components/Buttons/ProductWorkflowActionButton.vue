@@ -32,11 +32,6 @@
 </template>
 
 <script>
-import ActionButton from '@Core/components/ActionButton/ActionButton';
-import PointBadge from '@Core/components/Badges/PointBadge';
-import ListElementAction from '@Core/components/List/ListElementAction';
-import ListElementDescription from '@Core/components/List/ListElementDescription';
-import ListElementTitle from '@Core/components/List/ListElementTitle';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -48,6 +43,11 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Products/config/privileges';
+import ActionButton from '@UI/components/ActionButton/ActionButton';
+import PointBadge from '@UI/components/Badges/PointBadge';
+import ListElementAction from '@UI/components/List/ListElementAction';
+import ListElementDescription from '@UI/components/List/ListElementDescription';
+import ListElementTitle from '@UI/components/List/ListElementTitle';
 import {
     mapActions,
     mapState,

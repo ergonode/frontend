@@ -23,9 +23,9 @@
 </template>
 
 <script>
-import FormSection from '@Core/components/Form/Section/FormSection';
-import TranslationLazySelect from '@Core/components/Select/TranslationLazySelect';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import TranslationLazySelect from '@UI/components/Select/TranslationLazySelect';
 import {
     mapActions,
     mapState,

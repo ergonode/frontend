@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
 import UploadAvatar from '@Users/components/Inputs/UploadAvatar';
 import PRIVILEGES from '@Users/config/privileges';
 import {

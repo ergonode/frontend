@@ -40,9 +40,6 @@
     </div>
 </template>
 <script>
-import ActionIconButton from '@Core/components/ActionIconButton/ActionIconButton';
-import IconArrowDouble from '@Core/components/Icons/Arrows/IconArrowDouble';
-import IconDots from '@Core/components/Icons/Others/IconDots';
 import {
     ARROW,
 } from '@Core/defaults/icons';
@@ -50,6 +47,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import ActionIconButton from '@UI/components/ActionIconButton/ActionIconButton';
+import IconArrowDouble from '@UI/components/Icons/Arrows/IconArrowDouble';
+import IconDots from '@UI/components/Icons/Others/IconDots';
 
 export default {
     name: 'TemplateGridItem',

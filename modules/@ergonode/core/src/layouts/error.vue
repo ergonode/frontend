@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import Page from '@Core/components/Layout/Page';
+import Page from '@UI/components/Layout/Page';
 
 export default {
     name: 'ErrorLayout',
@@ -35,11 +35,11 @@ export default {
         errorPage() {
             switch (this.error.statusCode) {
             case 403:
-                return () => import('@Core/components/Layout/Errors/403');
+                return () => import('@UI/components/Layout/Errors/403');
             case 404:
-                return () => import('@Core/components/Layout/Errors/404');
+                return () => import('@UI/components/Layout/Errors/404');
             default:
-                return () => import('@Core/components/Layout/Errors/500');
+                return () => import('@UI/components/Layout/Errors/500');
             }
         },
     },

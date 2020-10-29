@@ -27,12 +27,7 @@
 </template>
 
 <script>
-import {
-    WHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 import UserFabAvatar from '@Core/components/Multimedia/UserFabAvatar';
-import ToolBarSelectButton from '@Core/components/ToolBar/ToolBarSelectButton';
 import ToolBarUserSelectContent from '@Core/components/ToolBar/ToolBarUserSelectContent';
 import {
     ARROW,
@@ -40,6 +35,11 @@ import {
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
+import {
+    WHITE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import IconArrowDropDown from '@UI/components/Icons/Arrows/IconArrowDropDown';
+import ToolBarSelectButton from '@UI/components/ToolBar/ToolBarSelectButton';
 import {
     mapState,
 } from 'vuex';

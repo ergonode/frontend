@@ -31,12 +31,12 @@
 </template>
 
 <script>
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
-import ModalForm from '@Core/components/Modal/ModalForm';
-import TextField from '@Core/components/TextField/TextField';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import IconFontSize from '@UI/components/Icons/Editor/IconFontSize';
+import ModalForm from '@UI/components/Modal/ModalForm';
+import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
 } from 'vuex';

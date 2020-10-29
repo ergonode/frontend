@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import DraggedElement from '@Core/components/DraggedElement/DraggedElement';
+import DraggedElement from '@UI/components/DraggedElement/DraggedElement';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Vue from 'vue';
 

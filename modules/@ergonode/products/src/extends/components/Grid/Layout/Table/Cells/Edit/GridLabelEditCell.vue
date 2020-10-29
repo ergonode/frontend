@@ -40,16 +40,16 @@
 </template>
 
 <script>
-import PointBadge from '@Core/components/Badges/PointBadge';
-import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
-import ListElementAction from '@Core/components/List/ListElementAction';
-import ListElementDescription from '@Core/components/List/ListElementDescription';
-import ListElementTitle from '@Core/components/List/ListElementTitle';
-import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import gridEditCellMixin from '@Core/mixins/grid/cell/gridEditCellMixin';
+import PointBadge from '@UI/components/Badges/PointBadge';
+import GridSelectEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
+import ListElementAction from '@UI/components/List/ListElementAction';
+import ListElementDescription from '@UI/components/List/ListElementDescription';
+import ListElementTitle from '@UI/components/List/ListElementTitle';
+import TranslationSelect from '@UI/components/Select/TranslationSelect';
+import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
 import {
     mapActions,
 } from 'vuex';

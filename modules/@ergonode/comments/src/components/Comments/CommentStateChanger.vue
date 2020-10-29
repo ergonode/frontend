@@ -22,7 +22,7 @@
 <script>
 import CommentEdit from '@Comments/components/Comments/CommentEdit';
 import CommentPresentation from '@Comments/components/Comments/CommentPresentation';
-import FadeTransition from '@Core/components/Transitions/FadeTransition';
+import FadeTransition from '@UI/components/Transitions/FadeTransition';
 
 export default {
     name: 'CommentStateChanger',

@@ -2,7 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import Grid from '@Core/components/Grid/Grid';
 import {
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
@@ -14,6 +13,7 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import Grid from '@UI/components/Grid/Grid';
 import {
     mapActions,
     mapState,

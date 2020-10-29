@@ -31,11 +31,11 @@
 </template>
 
 <script>
-import Picture from '@Core/components/Multimedia/Picture';
-import Toggler from '@Core/components/Toggler/Toggler';
 import {
     THEME,
 } from '@Core/defaults/theme';
+import Picture from '@UI/components/Picture/Picture';
+import Toggler from '@UI/components/Toggler/Toggler';
 
 export default {
     name: 'GridProductAttachCollectionCell',
@@ -77,7 +77,7 @@ export default {
             return this.data.attached;
         },
         placeholderImage() {
-            return require('@Core/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
+            return require('@UI/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
         },
         secondaryTheme() {
             return THEME.SECONDARY;

@@ -11,9 +11,9 @@
 <script>
 import {
     WHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import IconProcessing from '@Core/components/Icons/Others/IconProcessing';
-import ToolBarButton from '@Core/components/ToolBar/ToolBarButton';
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import IconProcessing from '@UI/components/Icons/Others/IconProcessing';
+import ToolBarButton from '@UI/components/ToolBar/ToolBarButton';
 
 export default {
     name: 'ToolBarSynchronizationButton',

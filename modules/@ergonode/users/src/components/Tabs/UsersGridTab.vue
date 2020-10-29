@@ -31,12 +31,12 @@
 </template>
 
 <script>
-import {
-    WHITESMOKE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import {
+    WHITESMOKE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import PRIVILEGES from '@Users/config/privileges';
 
 export default {
@@ -64,7 +64,7 @@ export default {
             return {
                 title: 'No users',
                 subtitle: 'There are no users in the system, you can create the first one.',
-                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
                 color: WHITESMOKE,
             };
         },

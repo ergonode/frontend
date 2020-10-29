@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import List from '@Core/components/List/List';
-import FadeTransition from '@Core/components/Transitions/FadeTransition';
+import List from '@UI/components/List/List';
+import FadeTransition from '@UI/components/Transitions/FadeTransition';
 
 export default {
     name: 'CommentsList',
