@@ -6,7 +6,7 @@
     <div class="product-collection-item">
         <Picture
             v-if="item.image"
-            :api-path="`multimedia/${item.image}/download/default`"
+            :href="`multimedia/${item.image}/download/default`"
             :value="item.image" />
         <img
             v-else

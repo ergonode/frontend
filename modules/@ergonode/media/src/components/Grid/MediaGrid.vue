@@ -25,8 +25,7 @@
         @cell-value="onCellValueChange"
         @delete-row="onRemoveRow"
         @fetch-data="onFetchData"
-        @remove-all-filter="onRemoveAllFilters"
-        @filter="onFilterChange">
+        @remove-all-filter="onRemoveAllFilters">
         <template #appendFooter>
             <Button
                 title="SAVE MEDIA"
