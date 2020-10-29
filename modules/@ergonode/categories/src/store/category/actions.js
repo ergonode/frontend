@@ -5,7 +5,6 @@
 import {
     create,
     get,
-    getAll,
     remove,
     update,
 } from '@Categories/services/index';
@@ -119,26 +118,6 @@ export default {
             onError(e);
         }
     },
-    getCategoriesOptions({
-        rootState,
-    }) {
-        const {
-            language,
-        } = rootState.authentication.user;
-
-        return getAll({
-            $axios: this.app.$axios,
-        }).then(({
-            collection,
-        }) => ({
-            options: collection.map(element => ({
-                id: element.id,
-                key: element.code,
-                value: element.name,
-                hint: element.name ? `#${element.code} ${language}` : '',
-            })),
-        }));
-    },
     async updateCategory(
         {
             state,
@@ -207,11 +186,11 @@ export default {
         onSuccess = () => {},
         onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
-
         try {
+            const {
+                id,
+            } = state;
+
             // EXTENDED BEFORE METHOD
             await this.$extendMethods('@Categories/store/category/action/removeCategory/__before', {
                 $this: this,

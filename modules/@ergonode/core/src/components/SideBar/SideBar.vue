@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <aside :class="['side-bar', {'side-bar--expanded': isExpanded}]">
+    <aside :class="classes">
         <ol class="side-bar__menu">
             <li>
                 <NuxtLink to="/dashboard">
@@ -75,6 +75,14 @@ export default {
         };
     },
     computed: {
+        classes() {
+            return [
+                'side-bar',
+                {
+                    'side-bar--expanded': this.isExpanded,
+                },
+            ];
+        },
         expendStateIcon() {
             return this.isExpanded ? ARROW.LEFT : ARROW.RIGHT;
         },

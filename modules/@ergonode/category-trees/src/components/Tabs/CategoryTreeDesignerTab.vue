@@ -25,7 +25,7 @@
                 :errors="errors" />
             <Button
                 title="SAVE CHANGES"
-                :floating="{ bottom: '24px', right: '24px' }"
+                :floating="saveChangesButtonFloatingStyle"
                 @click.native="onSubmit">
                 <template
                     v-if="isSubmitting"
@@ -41,6 +41,9 @@
 import {
     GRAPHITE_LIGHT,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    Z_INDEX_LVL_2,
+} from '@Core/assets/scss/_js-variables/indexes.scss';
 import Button from '@Core/components/Button/Button';
 import DropZone from '@Core/components/DropZone/DropZone';
 import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
@@ -96,6 +99,13 @@ export default {
         },
         isDropZoneVisible() {
             return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
+        },
+        saveChangesButtonFloatingStyle() {
+            return {
+                bottom: '24px',
+                right: '24px',
+                zIndex: Z_INDEX_LVL_2,
+            };
         },
         graphiteLightColor() {
             return GRAPHITE_LIGHT;

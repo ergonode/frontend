@@ -23,22 +23,30 @@
         <CenterViewTemplate>
             <template #content>
                 <Grid
-                    :is-editable="isAllowedToUpdate"
                     :columns="columns"
                     :data-count="filtered"
                     :rows="rows"
-                    :placeholder="noRecordsPlaceholder"
-                    :is-prefetching-data="isPrefetchingData"
+                    :filters="filterValues"
+                    :placeholder="noDataPlaceholder"
                     :default-layout="gridLayout.COLLECTION"
+                    :extended-columns="extendedColumns"
+                    :extended-data-cells="extendedDataCells"
+                    :extended-data-filter-cells="extendedDataFilterCells"
+                    :extended-data-edit-cells="extendedDataEditCells"
+                    :extended-edit-filter-cells="extendedDataEditFilterCells"
+                    :is-editable="isAllowedToUpdate"
                     :is-collection-layout="true"
                     :is-header-visible="true"
                     :is-basic-filter="true"
                     :is-border="true"
+                    :is-prefetching-data="isPrefetchingData"
                     :collection-cell-binding="collectionCellBinding"
                     @edit-row="onEditRow"
                     @preview-row="onEditRow"
                     @delete-row="onRemoveRow"
-                    @fetch-data="onFetchData" />
+                    @fetch-data="onFetchData"
+                    @remove-all-filter="onRemoveAllFilters"
+                    @filter="onFilterChange" />
             </template>
         </CenterViewTemplate>
         <CreateProductTemplateModalForm
@@ -63,6 +71,7 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import PRIVILEGES from '@Templates/config/privileges';
@@ -81,6 +90,7 @@ export default {
         fetchGridDataMixin({
             path: 'templates',
         }),
+        extendedGridComponentsMixin,
         beforeLeavePageMixin,
     ],
     async fetch() {
@@ -94,7 +104,7 @@ export default {
         };
     },
     computed: {
-        noRecordsPlaceholder() {
+        noDataPlaceholder() {
             return {
                 title: 'No product templates',
                 subtitle: 'There are no product templates in the system, you can create the first one.',

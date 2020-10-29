@@ -36,6 +36,9 @@ export default {
             type: Array,
             default: () => [],
         },
+        /**
+         * Number of visible data
+         */
         dataCount: {
             type: Number,
             default: 0,
@@ -81,6 +84,7 @@ export default {
     .products-doughnut-chart {
         position: relative;
         display: flex;
+        flex: 0 0 auto;
         justify-content: center;
         align-items: center;
         border-radius: 999px;

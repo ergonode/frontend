@@ -12,16 +12,24 @@
                 :data-count="filtered"
                 :rows="rows"
                 :drafts="drafts"
-                :is-prefetching-data="isPrefetchingData"
+                :filters="filterValues"
                 :collection-cell-binding="collectionCellBinding"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :is-prefetching-data="isPrefetchingData"
                 :is-collection-layout="true"
                 :is-editable="true"
                 :is-header-visible="true"
                 :is-basic-filter="true"
                 @cell-value="onCellValueChange"
-                @fetch-data="onFetchData">
-                <template #headerActions>
-                    <slot name="headerActions" />
+                @fetch-data="onFetchData"
+                @remove-all-filter="onRemoveAllFilters"
+                @filter="onFilterChange">
+                <template #actionsHeader>
+                    <slot name="actionsHeader" />
                 </template>
                 <template #appendFooter>
                     <Button
@@ -51,6 +59,7 @@ import {
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
     getGridData,
@@ -70,6 +79,7 @@ export default {
     },
     mixins: [
         gridDraftMixin,
+        extendedGridComponentsMixin,
         scopeErrorsMixin,
     ],
     async fetch() {
@@ -82,6 +92,7 @@ export default {
             columns: [],
             rows: [],
             filtered: 0,
+            filterValues: {},
             isPrefetchingData: true,
             skus: {},
             isSubmitting: false,
@@ -105,17 +116,36 @@ export default {
     methods: {
         ...mapActions('feedback', [
             'onScopeValueChange',
+            'markChangeValuesAsSaved',
         ]),
         ...mapActions('product', [
             'addBySku',
             'removeProductChildren',
         ]),
+        onFilterChange(filters) {
+            this.filterValues = filters;
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: this.filterValues,
+            });
+        },
+        onRemoveAllFilters() {
+            this.filterValues = {};
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: {},
+            });
+        },
         async onFetchData(params = DEFAULT_GRID_FETCH_PARAMS) {
             const {
                 columns,
                 rows,
                 filtered,
             } = await getGridData({
+                $route: this.$route,
+                $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: `products/${this.id}/children-and-available-products`,
                 params: {
@@ -214,6 +244,8 @@ export default {
             if (skusKeys.length) {
                 this.$emit('submitted');
             }
+
+            this.markChangeValuesAsSaved(this.scope);
         },
         onCellValueChange(cellValues) {
             const drafts = {};

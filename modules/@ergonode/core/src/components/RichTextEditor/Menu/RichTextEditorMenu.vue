@@ -46,14 +46,23 @@ export default {
         EditorMenuBar,
     },
     props: {
+        /**
+         * RTE data model
+         */
         editor: {
             type: Object,
             default: null,
         },
+        /**
+         * Width of editor
+         */
         editorWidth: {
             type: Number,
             default: 0,
         },
+        /**
+         * Determines style of component based on type
+         */
         type: {
             type: String,
             default: INPUT_TYPE.UNDERLINE,

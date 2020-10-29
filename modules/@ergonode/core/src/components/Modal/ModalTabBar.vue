@@ -42,10 +42,16 @@ export default {
         IconClose,
     },
     props: {
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             default: '',
         },
+        /**
+         * List of items
+         */
         items: {
             type: Array,
             default: () => [],

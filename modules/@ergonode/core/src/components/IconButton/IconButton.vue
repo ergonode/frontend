@@ -32,8 +32,7 @@ export default {
     name: 'IconButton',
     props: {
         /**
-         * The theme of the button
-         * @values primary, secondary
+         * The theme of the component
          */
         theme: {
             type: String,
@@ -41,8 +40,7 @@ export default {
             validator: value => Object.values(THEME).indexOf(value) !== -1,
         },
         /**
-         * The size of the button
-         * @values regular, small, tiny
+         * The size of the component
          */
         size: {
             type: String,
@@ -50,16 +48,14 @@ export default {
             validator: value => Object.values(SIZE).indexOf(value) !== -1,
         },
         /**
-         * The title of the button
-         * @values primary, secondary
+         * The title of the component
          */
         title: {
             type: String,
             default: '',
         },
         /**
-         * The disabled state of the button
-         * @values primary, secondary
+         * Determinate if the component is disabled
          */
         disabled: {
             type: Boolean,

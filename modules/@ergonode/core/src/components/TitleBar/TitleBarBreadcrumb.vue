@@ -25,6 +25,9 @@ import {
 export default {
     name: 'TitleBarBreadcrumb',
     props: {
+        /**
+         * Breadcrumb data model
+         */
         breadcrumb: {
             type: Object,
             required: true,

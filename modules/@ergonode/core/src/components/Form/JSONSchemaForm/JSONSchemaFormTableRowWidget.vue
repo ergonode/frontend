@@ -46,18 +46,30 @@ export default {
         JSONSchemaFormTableRowArrowWidget,
     },
     props: {
+        /**
+         * JSON schema
+         */
         schema: {
             type: Object,
             required: true,
         },
+        /**
+         * Index of given component at the loop
+         */
         index: {
             type: Number,
             required: true,
         },
+        /**
+         * Component value
+         */
         value: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * The validation errors
+         */
         errors: {
             type: Object,
             default: () => ({}),
@@ -121,7 +133,8 @@ export default {
             return components;
         },
         onValueChange({
-            key, value,
+            key,
+            value,
         }) {
             this.$emit('input', {
                 index: this.index,

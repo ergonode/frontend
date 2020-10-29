@@ -6,12 +6,18 @@
     <CenterViewTemplate>
         <template #content>
             <Grid
-                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
                 :drafts="drafts"
+                :filters="filterValues"
                 :collection-cell-binding="collectionCellBinding"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :is-editable="isAllowedToUpdate"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-collection-layout="true"
@@ -19,8 +25,10 @@
                 :is-border="true"
                 @cell-value="onCellValueChange"
                 @delete-row="onRemoveRow"
-                @fetch-data="onFetchData">
-                <template #headerActions>
+                @fetch-data="onFetchData"
+                @filter="onFilterChange"
+                @remove-all-filters="onRemoveAllFilters">
+                <template #actionsHeader>
                     <ActionButton
                         title="ADD PRODUCTS"
                         :theme="secondaryTheme"
@@ -72,6 +80,7 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
@@ -92,6 +101,7 @@ export default {
         fetchGridDataMixin({
             path: 'collections/_id/elements',
         }),
+        extendedGridComponentsMixin,
         tabFeedbackMixin,
     ],
     async fetch() {
@@ -129,21 +139,34 @@ export default {
         addProductOptions() {
             const options = Object.values(ADD_PRODUCT);
 
-            this.extendedComponents.forEach((option) => {
-                options.push(option.name);
-            });
+            if (this.extendedComponents.length) {
+                this.extendedComponents.forEach((option) => {
+                    options.push(option.name);
+                });
+            }
+
             return options;
         },
         extendedComponents() {
-            return this.$getExtendedComponents('@Collections/components/Tabs/collectionProductsTab/addFromSegment');
+            return this.$getExtendedComponents('@Collections/components/Tabs/CollectionProductsTab/addProductFrom');
         },
         modalComponent() {
+            let extendedOptions = [];
+
+            if (this.extendedComponents.length) {
+                extendedOptions = this.extendedComponents;
+            }
+
             const modals = [
                 {
                     component: () => import('@Collections/components/Modals/AddProductsBySKUModalForm'),
-                    name: ADD_PRODUCT.BY_SKU,
+                    name: ADD_PRODUCT.FROM_LIST,
                 },
-                ...this.extendedComponents,
+                {
+                    component: () => import('@Collections/components/Modals/AddProductsFromSegmentModalForm'),
+                    name: ADD_PRODUCT.FROM_SEGMENT,
+                },
+                ...extendedOptions,
             ];
 
             return modals.find(modal => modal.name === this.selectedAppModalOption).component;

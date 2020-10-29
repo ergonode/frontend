@@ -20,6 +20,9 @@ export default {
         IconDragDrop,
     },
     props: {
+        /**
+         * The label is a text caption or description for the component
+         */
         label: {
             type: String,
             default: '',

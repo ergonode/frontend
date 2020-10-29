@@ -18,10 +18,16 @@ import {
 export default {
     name: 'DropDownFooter',
     props: {
+        /**
+         * Equal space between each component
+         */
         spaceBetween: {
             type: Boolean,
             default: false,
         },
+        /**
+         * The size of the component
+         */
         size: {
             type: String,
             default: SIZE.REGULAR,

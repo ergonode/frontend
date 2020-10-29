@@ -6,7 +6,7 @@
     <VerticalTabBarList>
         <ListSearchSelectHeader
             v-if="isSelectLanguage"
-            header="Attributes"
+            title="Attributes"
             @search-result="onSearch">
             <template #select>
                 <TreeSelect
@@ -18,10 +18,11 @@
         </ListSearchSelectHeader>
         <ListSearchHeader
             v-else
-            header="Attributes"
+            title="Attributes"
             @search-result="onSearch" />
         <List>
-            <ListScrollableContainer>
+            <Preloader v-if="isPrefetchingData" />
+            <ListScrollableContainer v-else>
                 <AttributesListGroup
                     v-for="(group, index) in languageGroups"
                     :key="index"
@@ -31,6 +32,7 @@
                     :language-code="language.code"
                     :is-expanded="expandedGroupId === group.id"
                     :is-draggable="!disabled"
+                    :is-prefetching-data="prefetchingGroupItemsId === group.id"
                     @expand="onGroupExpand" />
             </ListScrollableContainer>
         </List>
@@ -58,11 +60,9 @@ import List from '@Core/components/List/List';
 import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
 import ListSearchHeader from '@Core/components/List/ListSearchHeader';
 import ListSearchSelectHeader from '@Core/components/List/ListSearchSelectHeader';
+import Preloader from '@Core/components/Preloader/Preloader';
 import TreeSelect from '@Core/components/Select/Tree/TreeSelect';
 import VerticalTabBarList from '@Core/components/TabBar/VerticalTabBarList';
-import {
-    UNASSIGNED_GROUP_ID,
-} from '@Core/defaults/list';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -84,6 +84,7 @@ export default {
         Fab,
         IconAdd,
         TreeSelect,
+        Preloader,
         CreateAttributeModalForm: () => import('@Attributes/components/Modals/CreateAttributeModalForm'),
     },
     mixins: [
@@ -166,7 +167,9 @@ export default {
         },
         onCreatedAttribute() {
             this.onCloseModal();
-            this.fetchListData(this.language.code);
+            this.fetchListData({
+                languageCode: this.language.code,
+            });
         },
         onSearch(value) {
             this.codeFilter = value;
@@ -180,37 +183,23 @@ export default {
             } = value;
 
             if (typeof this.groups[languageCode] === 'undefined') {
-                await this.getGroups(value.code);
+                this.isPrefetchingData = true;
+
+                await this.fetchListData({
+                    languageCode,
+                    limit: 0,
+                });
             }
 
-            const requests = [];
-
-            if (!this.groups[languageCode].find(({
-                id,
-            }) => id === UNASSIGNED_GROUP_ID)) {
-                requests.push(
-                    this.getUnassignedGroupItems(languageCode),
-                );
+            if (this.expandedGroupId !== '') {
+                await this.getGroupItems({
+                    groupId: this.expandedGroupId,
+                    languageCode,
+                });
             }
-
-            if (this.expandedGroupId) {
-                const {
-                    id: groupId,
-                } = this.groups[languageCode].find(({
-                    id,
-                }) => id === this.expandedGroupId);
-
-                requests.push(
-                    this.getGroupItems({
-                        groupId,
-                        languageCode,
-                    }),
-                );
-            }
-
-            await Promise.all(requests);
 
             this.language = value;
+            this.isPrefetchingData = false;
         },
     },
 };

@@ -106,8 +106,7 @@ export default {
             }),
         },
         /**
-         * The size of the input
-         * @values small, regular
+         * The size of the component
          */
         size: {
             type: String,
@@ -118,7 +117,7 @@ export default {
             ].indexOf(value) !== -1,
         },
         /**
-         * The alignment of text inside input
+         * Alignment of selected value, might be centered or from left
          */
         alignment: {
             type: String,
@@ -126,8 +125,7 @@ export default {
             validator: value => Object.values(ALIGNMENT).indexOf(value) !== -1,
         },
         /**
-         * The style type
-         * @values solid, underline
+         * Determines style of component based on type
          */
         type: {
             type: String,
@@ -135,7 +133,7 @@ export default {
             validator: value => Object.values(INPUT_TYPE).indexOf(value) !== -1,
         },
         /**
-         * The value of the input
+         * Component value
          */
         value: {
             type: [
@@ -145,54 +143,57 @@ export default {
             default: null,
         },
         /**
-         * The floating label
+         * The label is a text caption or description for the component
          */
         label: {
             type: String,
             default: null,
         },
         /**
-         * The placeholder
+         * The placeholder is a helper text for the component
          */
         placeholder: {
             type: String,
             default: null,
         },
         /**
-         * The error messages
+         * The error messages are messages which comes from validation process
          */
         errorMessages: {
             type: String,
             default: '',
         },
         /**
-         * The hint
+         *  The hint is a tip for the component
          */
         hint: {
             type: String,
             default: '',
         },
         /**
-         * The required flag
+         * Determines if the given component is required
          */
         required: {
             type: Boolean,
             default: false,
         },
         /**
-         * The autofocus flag
+         * Determines if component should be focused as it's initialised
          */
         autofocus: {
             type: Boolean,
             default: false,
         },
         /**
-         * The disabled flag
+         * Determinate if the component is disabled
          */
         disabled: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Unique identifier for cypress
+         */
         dataCy: {
             type: String,
             default: '',

@@ -10,7 +10,7 @@
         :edit-key-code="32"
         @mousedown.native="onDelete"
         @edit="onDelete">
-        <IconDelete />
+        <IconDelete v-once />
     </GridTableCell>
 </template>
 
@@ -28,18 +28,30 @@ export default {
         IconDelete,
     },
     props: {
+        /**
+         * Determines if component is selected
+         */
         isSelected: {
             type: Boolean,
             default: false,
         },
+        /**
+         * URL of backend endpoint
+         */
         href: {
             type: String,
             required: true,
         },
+        /**
+         * Index of the column
+         */
         column: {
             type: Number,
             required: true,
         },
+        /**
+         * Index of the row
+         */
         row: {
             type: Number,
             required: true,

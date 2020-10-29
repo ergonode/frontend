@@ -13,6 +13,9 @@
 export default {
     name: 'GridPresentationCell',
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: [
                 String,

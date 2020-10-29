@@ -4,7 +4,7 @@
  */
 <template>
     <ListDraggableElement
-        :is-draggable="isAllowedToUpdate"
+        :draggable="isAllowedToUpdate"
         :draggable-id="item.type"
         :label="item.label"
         @drag="onDrag">

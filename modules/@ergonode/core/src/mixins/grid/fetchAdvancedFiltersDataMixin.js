@@ -2,6 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
+import GridAdvancedFilters from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilters';
 import {
     insertCookieAtIndex,
     removeCookieAtIndex,
@@ -17,15 +19,24 @@ export default function ({
     path,
 }) {
     return {
+        components: {
+            ExpandNumericButton,
+            GridAdvancedFilters,
+        },
         data() {
             return {
+                isFiltersExpanded: false,
                 advancedFilters: [],
+                advancedFilterValues: {},
             };
         },
         methods: {
             ...mapActions('list', [
                 'setDisabledElement',
             ]),
+            onFiltersExpand() {
+                this.isFiltersExpanded = !this.isFiltersExpanded;
+            },
             async onFetchAdvancedFilters(ids) {
                 const filtersParams = {
                     offset: 0,
@@ -34,6 +45,8 @@ export default function ({
                 };
 
                 this.advancedFilters = await getAdvancedFiltersData({
+                    $route: this.$route,
+                    $cookies: this.$cookies,
                     $axios: this.$axios,
                     $addAlert: this.$addAlert,
                     path: this.getPath(),
@@ -57,6 +70,8 @@ export default function ({
                     });
 
                     const advancedFilters = await getAdvancedFiltersData({
+                        $route: this.$route,
+                        $cookies: this.$cookies,
                         $axios: this.$axios,
                         $addAlert: this.$addAlert,
                         path,

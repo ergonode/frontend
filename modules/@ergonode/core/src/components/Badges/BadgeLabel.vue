@@ -12,6 +12,9 @@
 export default {
     name: 'BadgeLabel',
     props: {
+        /**
+         * The label is a text caption or description for the component
+         */
         label: {
             type: [
                 String,

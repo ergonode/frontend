@@ -13,10 +13,16 @@
 export default {
     name: 'GridFilterPresentationCell',
     props: {
+        /**
+         * The placeholder is a helper text for the component
+         */
         placeholder: {
             type: String,
             default: 'Search...',
         },
+        /**
+         * Component value
+         */
         value: {
             type: [
                 String,

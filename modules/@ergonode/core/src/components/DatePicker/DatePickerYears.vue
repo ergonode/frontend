@@ -29,18 +29,30 @@ export default {
         DatePickerNode,
     },
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: Date,
             default: null,
         },
+        /**
+         * The value from/to which is selection - displayed as lighted color between range to - from
+         */
         rangeValue: {
             type: Date,
             default: null,
         },
+        /**
+         * List of nodes described as day, week, month, year
+         */
         nodes: {
             type: Array,
             required: true,
         },
+        /**
+         * Chosen year
+         */
         year: {
             type: Number,
             required: true,

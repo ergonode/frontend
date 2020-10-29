@@ -48,6 +48,7 @@ export default {
     computed: {
         ...mapState('core', [
             'languagesTree',
+            'languages',
         ]),
     },
     methods: {
@@ -69,11 +70,10 @@ export default {
                 return;
             }
 
-            const languageKeys = selectedLanguages.map(language => language.key);
             const isUsedOnTree = this.languagesTree.find(
                 ({
-                    code,
-                }) => languageKeys.indexOf(code) === -1,
+                    id,
+                }) => selectedLanguages.indexOf(id) === -1,
             );
 
             if (isUsedOnTree) {
@@ -88,7 +88,11 @@ export default {
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Changes in language settings will affect the entire application.',
-                confirmCallback: () => this.onConfirm(languageKeys),
+                confirmCallback: () => this.onConfirm(this.languages
+                    .filter(language => selectedLanguages.some(id => language.id === id))
+                    .map(({
+                        code,
+                    }) => code)),
             });
         },
         async onConfirm(selectedLanguages) {

@@ -14,6 +14,9 @@ import {
 export default {
     name: 'GridSentinelColumn',
     props: {
+        /**
+         * The state of column. Columns might be pinned to the right or left side
+         */
         pinnedState: {
             type: String,
             required: true,

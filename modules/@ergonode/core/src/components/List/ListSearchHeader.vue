@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ListHeader :header="header">
+    <ListHeader :title="title">
         <TextField
             v-show="isSearchButtonClicked"
             :value="searchResult"
@@ -55,10 +55,16 @@ export default {
         IconSearch,
     },
     props: {
-        header: {
+        /**
+         * The title of the component
+         */
+        title: {
             type: String,
             required: true,
         },
+        /**
+         * Determines if component has search
+         */
         isSearch: {
             type: Boolean,
             default: false,

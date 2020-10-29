@@ -41,10 +41,16 @@ export default {
         gridEditFilterCellMixin,
     ],
     props: {
+        /**
+         * Component variances that user can choose from
+         */
         options: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Code of the language
+         */
         languageCode: {
             type: String,
             default: 'EN',

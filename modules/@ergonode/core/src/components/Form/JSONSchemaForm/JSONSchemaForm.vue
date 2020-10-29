@@ -32,6 +32,9 @@ export default {
         Form,
     },
     props: {
+        /**
+         * JSON schema
+         */
         schema: {
             type: Object,
             default: () => ({
@@ -39,10 +42,16 @@ export default {
                 required: [],
             }),
         },
+        /**
+         * The validation errors
+         */
         errors: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Component value
+         */
         value: {
             type: String,
             default: '',
@@ -93,9 +102,11 @@ export default {
             return components;
         },
         onValueChange({
-            key, value,
+            key,
+            value,
         }) {
             this.model[key] = value;
+
             this.$emit('input', JSON.stringify(this.model));
         },
     },

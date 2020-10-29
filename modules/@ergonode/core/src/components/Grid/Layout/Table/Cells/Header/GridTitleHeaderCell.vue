@@ -13,10 +13,16 @@
 export default {
     name: 'GridTitleHeaderCell',
     props: {
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             default: 'Header',
         },
+        /**
+         *  The hint is a tip for the component
+         */
         hint: {
             type: String,
             default: '',

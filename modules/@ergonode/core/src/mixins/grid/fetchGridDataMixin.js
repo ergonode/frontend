@@ -7,6 +7,7 @@ import {
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 import {
+    changeCookiePosition,
     insertCookieAtIndex,
     removeCookieAtIndex,
 } from '@Core/models/cookies';
@@ -36,11 +37,15 @@ export default function ({
             return {
                 rows: [],
                 columns: [],
+                filterValues: {},
                 filtered: 0,
                 localParams: DEFAULT_GRID_FETCH_PARAMS,
             };
         },
         computed: {
+            ...mapState('authentication', {
+                userLanguageCode: state => state.user.language,
+            }),
             ...mapState('list', [
                 'disabledElements',
             ]),
@@ -55,7 +60,74 @@ export default function ({
         methods: {
             ...mapActions('list', [
                 'setDisabledElement',
+                'removeDisabledElement',
             ]),
+            onRemoveAllFilters() {
+                this.filterValues = {};
+
+                this.onFetchData({
+                    ...this.localParams,
+                    filter: {},
+                });
+            },
+            onRemoveColumn({
+                index,
+                column,
+            }) {
+                const {
+                    id,
+                } = column;
+
+                if (column.element_id) {
+                    const {
+                        language: languageCode = this.userLanguageCode,
+                        element_id: elementId,
+                    } = column;
+
+                    if (this.disabledElements[languageCode][elementId]) {
+                        this.setDisabledElement({
+                            languageCode,
+                            elementId,
+                            disabled: false,
+                        });
+                    } else {
+                        this.removeDisabledElement({
+                            languageCode,
+                            elementId,
+                        });
+                    }
+                }
+
+                delete this.filterValues[id];
+                delete this.localParams.filter[id];
+
+                removeCookieAtIndex({
+                    cookies: this.$cookies,
+                    cookieName: `GRID_CONFIG:${this.$route.name}`,
+                    index,
+                });
+
+                this.onFetchData();
+            },
+            onFilterChange(filters) {
+                this.filterValues = filters;
+
+                this.onFetchData({
+                    ...this.localParams,
+                    filter: this.filterValues,
+                });
+            },
+            onSwapColumns({
+                from,
+                to,
+            }) {
+                changeCookiePosition({
+                    cookies: this.$cookies,
+                    cookieName: `GRID_CONFIG:${this.$route.name}`,
+                    from,
+                    to,
+                });
+            },
             async onFetchData({
                 offset,
                 limit,
@@ -91,6 +163,8 @@ export default function ({
                     rows,
                     filtered,
                 } = await getGridData({
+                    $route: this.$route,
+                    $cookies: this.$cookies,
                     $axios: this.$axios,
                     path: this.getPath(),
                     params,

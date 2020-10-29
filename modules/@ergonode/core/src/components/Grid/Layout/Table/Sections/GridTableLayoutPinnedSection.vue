@@ -2,10 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
+<template functional>
     <div
         data-cy="pinned-section"
-        :class="['pinned-section', { 'pinned-section--pinned': isPinned }]">
+        :class="['pinned-section', { 'pinned-section--pinned': props.isPinned }]">
         <slot />
     </div>
 </template>
@@ -14,6 +14,9 @@
 export default {
     name: 'GridTableLayoutPinnedSection',
     props: {
+        /**
+         * Determines the pinned state of section
+         */
         isPinned: {
             type: Boolean,
             default: false,

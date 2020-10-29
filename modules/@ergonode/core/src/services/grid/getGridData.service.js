@@ -6,6 +6,7 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
+    getParsedFilters,
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
 import {
@@ -13,23 +14,42 @@ import {
 } from '@Core/models/mappers/translationsMapper';
 
 export const getGridData = async ({
+    $route,
+    $cookies,
     $axios,
     path,
     params,
 }) => {
+    const config = {
+        params,
+    };
+
+    if (params.filter) {
+        config.params.filter = getParsedFilters(params.filter);
+    }
+
     const {
         collection,
         columns,
         info: {
             filtered,
         },
-    } = await $axios.$get(path, {
-        params,
-    });
+    } = await $axios.$get(path, config);
 
     const sortedColumns = params.columns
         ? getSortedColumnsByIDs(columns, params.columns)
         : columns;
+
+    if (!$cookies.get(`GRID_CONFIG:${$route.name}`)) {
+        $cookies.set(
+            `GRID_CONFIG:${$route.name}`,
+            sortedColumns
+                .map(({
+                    id,
+                }) => id)
+                .join(','),
+        );
+    }
 
     return {
         columns: sortedColumns,
@@ -39,6 +59,8 @@ export const getGridData = async ({
 };
 
 export const getAdvancedFiltersData = async ({
+    $route,
+    $cookies,
     $axios,
     $addAlert,
     path,
@@ -89,6 +111,17 @@ export const getAdvancedFiltersData = async ({
                 message: 'Attribute has no filter',
             });
         }
+    }
+
+    if (!$cookies.get(`GRID_ADV_FILTERS_CONFIG:${$route.name}`)) {
+        $cookies.set(
+            `GRID_ADV_FILTERS_CONFIG:${$route.name}`,
+            advancedFilters
+                .map(({
+                    id,
+                }) => id)
+                .join(','),
+        );
     }
 
     return advancedFilters;

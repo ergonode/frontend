@@ -10,6 +10,11 @@
                 :rows="rows"
                 :drafts="drafts"
                 :data-count="dataCount"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
                 :is-editable="isAllowedToUpdate"
                 :is-border="true"
                 @cell-value="onCellValueChange">
@@ -39,6 +44,7 @@ import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemp
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
@@ -66,6 +72,7 @@ export default {
     },
     mixins: [
         gridDraftMixin,
+        extendedGridComponentsMixin,
         tabFeedbackMixin,
     ],
     data() {

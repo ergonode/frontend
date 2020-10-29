@@ -6,18 +6,26 @@
     <CenterViewTemplate>
         <template #content>
             <Grid
-                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
-                :placeholder="noRecordsPlaceholder"
+                :filters="filterValues"
+                :placeholder="noDataPlaceholder"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :is-editable="isAllowedToUpdate"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
                 @edit-row="onEditRow"
                 @preview-row="onEditRow"
                 @delete-row="onRemoveRow"
-                @fetch-data="onFetchData" />
+                @fetch-data="onFetchData"
+                @filter="onFilterChange"
+                @remove-all-filters="onRemoveAllFilters" />
         </template>
     </CenterViewTemplate>
 </template>
@@ -28,6 +36,7 @@ import {
     WHITESMOKE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
 export default {
@@ -39,6 +48,7 @@ export default {
         fetchGridDataMixin({
             path: 'attributes',
         }),
+        extendedGridComponentsMixin,
     ],
     async fetch() {
         await this.onFetchData();
@@ -50,7 +60,7 @@ export default {
         };
     },
     computed: {
-        noRecordsPlaceholder() {
+        noDataPlaceholder() {
             return {
                 title: this.$t('attribute.grid.placeholderTitle'),
                 subtitle: this.$t('attribute.grid.placeholderSubtitle'),

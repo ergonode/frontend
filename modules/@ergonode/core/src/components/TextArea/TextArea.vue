@@ -85,6 +85,9 @@ export default {
         associatedLabelMixin,
     ],
     props: {
+        /**
+         * The size of the component
+         */
         size: {
             type: String,
             default: SIZE.REGULAR,
@@ -93,20 +96,32 @@ export default {
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
         },
+        /**
+         * Height of the component
+         */
         height: {
             type: String,
             default: 'unset',
         },
+        /**
+         * Alignment of selected value, might be centered or from left
+         */
         alignment: {
             type: String,
             default: ALIGNMENT.LEFT,
             validator: value => Object.values(ALIGNMENT).indexOf(value) !== -1,
         },
+        /**
+         * Determines style of component based on type
+         */
         type: {
             type: String,
             default: INPUT_TYPE.SOLID,
             validator: value => Object.values(INPUT_TYPE).indexOf(value) !== -1,
         },
+        /**
+         * Component value
+         */
         value: {
             type: [
                 String,
@@ -114,38 +129,65 @@ export default {
             ],
             default: null,
         },
+        /**
+         * The label is a text caption or description for the component
+         */
         label: {
             type: String,
             default: null,
         },
+        /**
+         * The placeholder is a helper text for the component
+         */
         placeholder: {
             type: String,
             default: null,
         },
+        /**
+         * The error messages are messages which comes from validation process
+         */
         errorMessages: {
             type: String,
             default: '',
         },
+        /**
+         *  The hint is a tip for the component
+         */
         hint: {
             type: String,
             default: '',
         },
+        /**
+         * Determines if the given component is required
+         */
         required: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if component should be focused as it's initialised
+         */
         autofocus: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determinate if the component is disabled
+         */
         disabled: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines whether textarea is being able to resize
+         */
         resize: {
             type: String,
             default: 'auto',
         },
+        /**
+         * Unique identifier for cypress
+         */
         dataCy: {
             type: String,
             default: '',

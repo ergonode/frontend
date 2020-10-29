@@ -10,6 +10,9 @@
 export default {
     name: 'Divider',
     props: {
+        /**
+         * Determines vertical line direction
+         */
         vertical: {
             type: Boolean,
             default: false,

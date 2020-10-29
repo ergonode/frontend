@@ -4,12 +4,18 @@
  */
 <template>
     <Grid
-        :is-editable="isAllowedToUpdate"
         :columns="columnsWithAttachColumn"
         :data-count="filtered"
         :drafts="drafts"
+        :filters="filterValues"
         :rows="rowsWithAttachValues"
         :collection-cell-binding="collectionCellBinding"
+        :extended-columns="extendedColumns"
+        :extended-data-cells="extendedDataCells"
+        :extended-data-filter-cells="extendedDataFilterCells"
+        :extended-data-edit-cells="extendedDataEditCells"
+        :extended-edit-filter-cells="extendedDataEditFilterCells"
+        :is-editable="isAllowedToUpdate"
         :is-prefetching-data="isPrefetchingData"
         :is-basic-filter="true"
         :is-header-visible="true"
@@ -18,20 +24,9 @@
         @preview-row="onEditRow"
         @cell-value="onCellValueChange"
         @delete-row="onRemoveRow"
-        @fetch-data="onFetchData">
-        <!--  TODO: Uncomment when we have global search      -->
-        <!--        <template #headerActions>-->
-        <!--            <TextField-->
-        <!--                :value="searchResult"-->
-        <!--                :size="smallSize"-->
-        <!--                placeholder="Search..."-->
-        <!--                @input="debouncedSearch"-->
-        <!--                @focus="onSearchFocus">-->
-        <!--                <template #append>-->
-        <!--                    <IconSearch :fill-color="searchIconFillColor" />-->
-        <!--                </template>-->
-        <!--            </TextField>-->
-        <!--        </template>-->
+        @fetch-data="onFetchData"
+        @remove-all-filter="onRemoveAllFilters"
+        @filter="onFilterChange">
         <template #appendFooter>
             <Button
                 title="SAVE MEDIA"
@@ -54,12 +49,10 @@ import {
 import {
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
-// TODO: Uncomment when we have global search
-// import IconSearch from '@Core/components/Icons/Actions/IconSearch';
-// import TextField from '@Core/components/TextField/TextField';
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
     getGridData,
@@ -77,12 +70,10 @@ export default {
     components: {
         Grid,
         Button,
-        // TODO: Uncomment when we have global search
-        // TextField,
-        // IconSearch,
     },
     mixins: [
         gridDraftMixin,
+        extendedGridComponentsMixin,
     ],
     props: {
         multiple: {
@@ -107,6 +98,7 @@ export default {
             isSearchFocused: false,
             observer: null,
             isPrefetchingData: true,
+            filterValues: {},
             rows: [],
             columns: [],
             filtered: 0,
@@ -193,6 +185,22 @@ export default {
         this.observer.disconnect();
     },
     methods: {
+        onFilterChange(filters) {
+            this.filterValues = filters;
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: this.filterValues,
+            });
+        },
+        onRemoveAllFilters() {
+            this.filterValues = {};
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: {},
+            });
+        },
         onFetchData({
             offset,
             limit,
@@ -223,6 +231,8 @@ export default {
             }
 
             return getGridData({
+                $route: this.$route,
+                $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: 'multimedia',
                 params,

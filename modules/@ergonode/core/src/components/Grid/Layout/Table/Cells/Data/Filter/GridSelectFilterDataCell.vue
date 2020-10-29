@@ -34,6 +34,9 @@ export default {
         gridDataFilterCellMixin,
     ],
     props: {
+        /**
+         * Code of the language
+         */
         languageCode: {
             type: String,
             default: 'EN',

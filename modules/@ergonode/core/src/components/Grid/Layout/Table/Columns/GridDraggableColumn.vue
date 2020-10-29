@@ -25,10 +25,16 @@ const updateColumnsTransform = () => import('@Core/models/drag_and_drop/updateCo
 export default {
     name: 'GridDraggableColumn',
     props: {
+        /**
+         * Index of given component at the loop
+         */
         index: {
             type: Number,
             required: true,
         },
+        /**
+         * Data of the column
+         */
         column: {
             type: Object,
             required: true,

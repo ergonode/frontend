@@ -7,21 +7,29 @@
         <template #content>
             <Grid
                 v-if="bindings.length || isPrefetchingData"
-                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
                 :drafts="drafts"
+                :filters="filterValues"
                 :collection-cell-binding="collectionCellBinding"
                 :placeholder="gridPlaceholder"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :is-editable="isAllowedToUpdate"
                 :is-prefetching-data="isPrefetchingData"
                 :is-collection-layout="true"
                 :is-basic-filter="true"
                 :is-header-visible="true"
                 :is-border="true"
                 @delete-row="onRemoveProduct"
-                @fetch-data="onFetchData">
-                <template #headerActions>
+                @fetch-data="onFetchData"
+                @remove-all-filters="onRemoveAllFilters"
+                @filter="onFilterChange">
+                <template #actionsHeader>
                     <ExpandNumericButton
                         title="BINDING ATTRIBUTES"
                         :number="bindings.length"
@@ -42,19 +50,19 @@
                         @close="onCloseProductsModal"
                         @submitted="onSubmittedProductVariants" />
                 </template>
-                <template #headerPanel>
+                <template #appendHeader>
                     <BindingAttributes
                         v-if="isBindingAttributesExpanded"
                         :attributes="bindingAttributes"
                         @remove-binding="onRemoveBinding"
                         @added="onAddedBinding" />
                 </template>
-                <template #placeholderNoRecordsAction>
+                <template #actionPlaceholder>
                     <Button
                         title="CHOOSE VARIANTS"
                         :size="smallSize"
                         :disabled="!isAllowedToUpdate"
-                        @click.native="onChooseVariants" />
+                        @click.native="onShowProductsModal" />
                 </template>
             </Grid>
             <ListPlaceholder
@@ -92,9 +100,13 @@ import {
     LAYOUT_ORIENTATION,
 } from '@Core/defaults/layout';
 import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
+import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
@@ -106,9 +118,6 @@ import {
     mapActions,
     mapState,
 } from 'vuex';
-
-// TODO:
-// custom filter for attached
 
 export default {
     name: 'ProductVariantsTab',
@@ -125,6 +134,7 @@ export default {
     },
     mixins: [
         gridDraftMixin,
+        extendedGridComponentsMixin,
         tabFeedbackMixin,
     ],
     data() {
@@ -134,6 +144,7 @@ export default {
             columns: [],
             rows: [],
             filtered: 0,
+            filterValues: {},
             localParams: DEFAULT_GRID_FETCH_PARAMS,
             isPrefetchingData: false,
             isBindingAttributesExpanded: false,
@@ -218,6 +229,22 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
+        onFilterChange(filters) {
+            this.filterValues = filters;
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: this.filterValues,
+            });
+        },
+        onRemoveAllFilters() {
+            this.filterValues = {};
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: {},
+            });
+        },
         onShowBindingAttributesModal() {
             this.isAddBindingModalVisible = true;
         },
@@ -267,9 +294,6 @@ export default {
         onBindingAttributesExpand() {
             this.isBindingAttributesExpanded = !this.isBindingAttributesExpanded;
         },
-        onChooseVariants() {
-            this.isBindingAttributesExpanded = true;
-        },
         onRemoveProduct() {
             this.onFetchData();
         },
@@ -279,10 +303,14 @@ export default {
             filter,
             sortedColumn,
         } = this.localParams) {
-            let filtersWithAttached = filter;
+            const filtersWithAttached = {
+                ...filter,
+            };
 
-            if (!filter.includes('attached=true')) {
-                filtersWithAttached = 'attached=true';
+            if (typeof filter.attached === 'undefined') {
+                filtersWithAttached.attached = {
+                    [FILTER_OPERATOR.EQUAL]: true,
+                };
             }
 
             this.localParams = {
@@ -307,15 +335,19 @@ export default {
                 rows,
                 filtered,
             } = await getGridData({
+                $route: this.$route,
+                $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: `products/${this.id}/children-and-available-products`,
                 params: this.localParams,
             });
 
-            this.columns = columns.map(column => ({
-                ...column,
-                editable: false,
-            }));
+            this.columns = columns
+                .filter(column => column.id !== 'attached')
+                .map(column => ({
+                    ...column,
+                    editable: false,
+                }));
             this.filtered = filtered;
             this.rows = rows;
         },

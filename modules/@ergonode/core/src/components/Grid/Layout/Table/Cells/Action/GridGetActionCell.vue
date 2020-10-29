@@ -10,7 +10,7 @@
         :edit-key-code="32"
         @mousedown.native="onPreview"
         @edit="onPreview">
-        <IconPreview />
+        <IconPreview v-once />
     </GridTableCell>
 </template>
 
@@ -25,18 +25,30 @@ export default {
         IconPreview,
     },
     props: {
+        /**
+         * Determines if component is selected
+         */
         isSelected: {
             type: Boolean,
             default: false,
         },
+        /**
+         * URL of backend endpoint
+         */
         href: {
             type: String,
             required: true,
         },
+        /**
+         * Index of the column
+         */
         column: {
             type: Number,
             required: true,
         },
+        /**
+         * Index of the row
+         */
         row: {
             type: Number,
             required: true,

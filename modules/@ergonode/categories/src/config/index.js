@@ -8,7 +8,4 @@ export default {
     aliases: {
         '@Categories': '/',
     },
-    relations: [
-        '@ergonode/products',
-    ],
 };

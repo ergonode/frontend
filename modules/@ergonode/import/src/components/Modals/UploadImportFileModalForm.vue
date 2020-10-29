@@ -11,18 +11,33 @@
                 <template #body>
                     <FormSection>
                         <FormParagraph :text="paragraphText" />
-                        <UploadCSVFile
+                        <UploadFile
+                            :value="Boolean(csvFile)"
+                            accept-files="csv/*"
                             label="Upload file"
+                            :scope="scope"
+                            :error-messages="scopeErrors.upload"
                             required
-                            :source-id="$route.params.id"
-                            @progress="onUploadingCSVFile" />
+                            @remove="onRemoveFile"
+                            @upload="onFileUpload">
+                            <template #file>
+                                <IconFile :fill-color="greenColor" />
+                                <LinkButton :title="csvFile.name" />
+                            </template>
+                        </UploadFile>
                     </FormSection>
                 </template>
                 <template #submit>
                     <Button
                         title="IMPORT NOW"
-                        :disabled="isCSVUploading"
-                        @click.native="onImportNow" />
+                        :disabled="isSubmitting"
+                        @click.native="onSubmit">
+                        <template
+                            v-if="isSubmitting"
+                            #prepend="{ color }">
+                            <IconSpinner :fill-color="color" />
+                        </template>
+                    </Button>
                 </template>
             </Form>
         </template>
@@ -30,32 +45,55 @@
 </template>
 
 <script>
+import {
+    GREEN,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import Button from '@Core/components/Button/Button';
 import Form from '@Core/components/Form/Form';
 import FormParagraph from '@Core/components/Form/FormParagraph';
 import FormSection from '@Core/components/Form/Section/FormSection';
+import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import IconFile from '@Core/components/Icons/Others/IconFile';
+import LinkButton from '@Core/components/LinkButton/LinkButton';
 import ModalForm from '@Core/components/Modal/ModalForm';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     THEME,
 } from '@Core/defaults/theme';
-import UploadCSVFile from '@Media/components/Inputs/UploadFile/UploadCSVFile';
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import UploadFile from '@Media/components/Inputs/UploadFile/UploadFile';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
     name: 'UploadImportFileModalForm',
     components: {
+        IconSpinner,
+        UploadFile,
+        LinkButton,
+        IconFile,
         Form,
         FormSection,
         FormParagraph,
         ModalForm,
-        UploadCSVFile,
         Button,
     },
+    mixins: [
+        scopeErrorsMixin,
+    ],
     data() {
         return {
-            isCSVUploading: false,
+            isSubmitting: false,
+            csvFile: null,
         };
     },
     computed: {
+        greenColor() {
+            return GREEN;
+        },
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -64,14 +102,48 @@ export default {
         },
     },
     methods: {
+        ...mapActions('import', [
+            'uploadImportFile',
+        ]),
+        onRemoveFile() {
+            this.csvFile = null;
+        },
+        onFileUpload(file) {
+            this.csvFile = file;
+        },
         onClose() {
+            this.removeScopeErrors(this.scope);
+
             this.$emit('close');
         },
-        onImportNow() {
-            this.$emit('import');
+        onSubmit() {
+            if (this.isSubmitting) {
+                return;
+            }
+            this.isSubmitting = true;
+
+            this.uploadImportFile({
+                scope: this.scope,
+                file: this.csvFile,
+                onSuccess: this.onCreateSuccess,
+                onError: this.onCreateError,
+            });
         },
-        onUploadingCSVFile(progress) {
-            this.isCSVUploading = progress;
+        onCreateSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'File uploaded',
+            });
+
+            this.isSubmitting = false;
+
+            this.$emit('created');
+            this.onClose();
+        },
+        onCreateError(errors) {
+            this.onError(errors);
+
+            this.isSubmitting = false;
         },
     },
 };

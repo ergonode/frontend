@@ -21,11 +21,12 @@ import {
     RED,
     YELLOW,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import ProgressBar from '@Core/components/ProgressBar/ProgressBar';
 
 export default {
     name: 'ProductCompleteness',
     components: {
-        ProgressBar: () => import('@Core/components/ProgressBar/ProgressBar'),
+        ProgressBar,
     },
     props: {
         completeness: {

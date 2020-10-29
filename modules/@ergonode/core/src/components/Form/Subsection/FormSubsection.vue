@@ -22,10 +22,16 @@
 export default {
     name: 'FormSubsection',
     props: {
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             default: '',
         },
+        /**
+         * Determines if the given component is required
+         */
         required: {
             type: Boolean,
             default: false,

@@ -12,6 +12,7 @@
             :data="element"
             :drafts="drafts"
             :object-fit="objectFit"
+            :extended-data-cell="extendedDataCells[element.type]"
             @row-action="onRowAction"
             @cell-value="onCellValueChange" />
     </div>
@@ -26,29 +27,54 @@ export default {
         GridCollectionCell,
     },
     props: {
+        /**
+         * List of rows presented at Grid
+         */
         rows: {
             type: Array,
             default: () => [],
         },
+        /**
+         * List of rows ids
+         */
         rowIds: {
             type: Array,
             default: () => [],
         },
+        /**
+         * The drafts are unsaved changes, cached changed data at given time
+         */
         drafts: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Number of columns
+         */
         columnsNumber: {
             type: Number,
             required: true,
         },
+        /**
+         * The model of data at which collection layout cells are going to be binded with data of Grid
+         */
         collectionCellBinding: {
             type: Object,
             required: true,
         },
+        /**
+        * Determines image objectFit property
+        */
         objectFit: {
             type: String,
             required: true,
+        },
+        /**
+         * The model of extended data column type cells components
+         */
+        extendedDataCells: {
+            type: Object,
+            default: () => ({}),
         },
     },
     computed: {

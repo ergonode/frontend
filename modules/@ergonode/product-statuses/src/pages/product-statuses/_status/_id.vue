@@ -37,9 +37,21 @@ export default {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
-        store, params,
+        app,
+        store,
+        params,
     }) {
-        await store.dispatch('productStatus/getProductStatus', params);
+        await store.dispatch('productStatus/getProductStatus', {
+            id: params.id,
+            onError: () => {
+                if (process.client) {
+                    app.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Product status hasn`t been fetched properly',
+                    });
+                }
+            },
+        });
         await store.dispatch('productStatus/getDefaultStatus');
     },
     computed: {
@@ -69,17 +81,24 @@ export default {
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Are you sure you want to delete this product status?',
                 confirmCallback: () => this.removeProductStatus({
-                    onSuccess: this.onRemoveProductStatusSuccess,
+                    onSuccess: this.onRemoveSuccess,
+                    onError: this.onRemoveError,
                 }),
             });
         },
-        onRemoveProductStatusSuccess() {
+        onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Product status removed',
             });
             this.$router.push({
                 name: 'product-statuses-grid',
+            });
+        },
+        onRemoveError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Product status hasn`t been deleted',
             });
         },
     },

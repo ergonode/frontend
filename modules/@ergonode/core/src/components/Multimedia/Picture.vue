@@ -19,22 +19,37 @@ import {
 export default {
     name: 'Picture',
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: String,
             required: true,
         },
-        apiPath: {
+        /**
+         * URL of backend endpoint
+         */
+        href: {
             type: String,
             required: true,
         },
+        /**
+         * Determines if the component is of fab style
+         */
         fab: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if the result of api request should be cached
+         */
         useCache: {
             type: Boolean,
             default: true,
         },
+        /**
+         * Determines image objectFit property
+         */
         objectFit: {
             type: String,
             default: 'cover',
@@ -88,7 +103,7 @@ export default {
         getImage() {
             this.cancelToken = this.$axios.CancelToken.source();
 
-            this.$axios.$get(this.apiPath, {
+            this.$axios.$get(this.href, {
                 useCache: this.useCache,
                 cancelToken: this.cancelToken.token,
                 responseType: 'arraybuffer',

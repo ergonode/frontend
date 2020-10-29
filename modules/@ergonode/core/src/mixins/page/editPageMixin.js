@@ -28,6 +28,9 @@ export default {
         NavigationBackFab,
     },
     props: {
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             required: true,

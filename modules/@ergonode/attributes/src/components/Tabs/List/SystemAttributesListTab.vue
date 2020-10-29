@@ -6,7 +6,7 @@
     <VerticalTabBarList>
         <ListSearchSelectHeader
             v-if="isSelectLanguage"
-            header="System attributes"
+            title="System attributes"
             @search-result="onSearch">
             <template #select>
                 <TreeSelect
@@ -18,10 +18,11 @@
         </ListSearchSelectHeader>
         <ListSearchHeader
             v-else
-            header="System attributes"
+            title="System attributes"
             @search-result="onSearch" />
         <List>
-            <ListScrollableContainer>
+            <Preloader v-if="isPrefetchingData" />
+            <ListScrollableContainer v-else>
                 <AttributesListElement
                     v-for="item in items[language.code]"
                     :key="item.id"
@@ -40,6 +41,7 @@ import List from '@Core/components/List/List';
 import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
 import ListSearchHeader from '@Core/components/List/ListSearchHeader';
 import ListSearchSelectHeader from '@Core/components/List/ListSearchSelectHeader';
+import Preloader from '@Core/components/Preloader/Preloader';
 import TreeSelect from '@Core/components/Select/Tree/TreeSelect';
 import VerticalTabBarList from '@Core/components/TabBar/VerticalTabBarList';
 import {
@@ -53,6 +55,7 @@ import {
 export default {
     name: 'SystemAttributesListTab',
     components: {
+        Preloader,
         VerticalTabBarList,
         ListSearchSelectHeader,
         ListSearchHeader,

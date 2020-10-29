@@ -65,6 +65,7 @@ export const getListItems = async ({
 }) => {
     const {
         collection,
+        info,
     } = await $axios.$get(path, {
         params,
         withLanguage: false,
@@ -72,5 +73,6 @@ export const getListItems = async ({
 
     return {
         items: collection,
+        info,
     };
 };

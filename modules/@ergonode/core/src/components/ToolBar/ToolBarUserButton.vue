@@ -30,6 +30,10 @@
 import {
     WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
+import UserFabAvatar from '@Core/components/Multimedia/UserFabAvatar';
+import ToolBarSelectButton from '@Core/components/ToolBar/ToolBarSelectButton';
+import ToolBarUserSelectContent from '@Core/components/ToolBar/ToolBarUserSelectContent';
 import {
     ARROW,
 } from '@Core/defaults/icons';
@@ -43,10 +47,10 @@ import {
 export default {
     name: 'ToolBarUserButton',
     components: {
-        ToolBarSelectButton: () => import('@Core/components/ToolBar/ToolBarSelectButton'),
-        ToolBarUserSelectContent: () => import('@Core/components/ToolBar/ToolBarUserSelectContent'),
-        IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
-        UserFabAvatar: () => import('@Core/components/Multimedia/UserFabAvatar'),
+        ToolBarSelectButton,
+        ToolBarUserSelectContent,
+        IconArrowDropDown,
+        UserFabAvatar,
     },
     data() {
         return {

@@ -5,7 +5,6 @@
 import {
     create,
     get,
-    getAll,
     remove,
     update,
 } from '@Attributes/services/attributeGroup';
@@ -23,10 +22,22 @@ export default {
             const {
                 code,
             } = state;
-
-            const data = {
+            let data = {
                 code,
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Attributes/store/attributeGroup/action/createAttributeGroup/__before', {
+                $this: this,
+                data,
+            });
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             const {
                 id,
@@ -34,6 +45,16 @@ export default {
                 $axios: this.app.$axios,
                 data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Attributes/store/attributeGroup/action/createAttributeGroup/__after', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
 
             onSuccess(id);
         } catch (e) {
@@ -50,56 +71,58 @@ export default {
         },
         {
             id,
+            onError,
         },
     ) {
-        const {
-            code,
-            name = '',
-        } = await get({
-            $axios: this.app.$axios,
-            id,
-        });
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Attributes/store/attributeGroup/action/getAttributeGroup/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
 
-        const translations = {
-            name,
-        };
+            const data = await get({
+                $axios: this.app.$axios,
+                id,
+            });
+            const {
+                code,
+                name = '',
+            } = data;
 
-        commit('__SET_STATE', {
-            key: 'id',
-            value: id,
-        });
-        commit('__SET_STATE', {
-            key: 'code',
-            value: code,
-        });
-        commit('__SET_STATE', {
-            key: 'name',
-            value: name,
-        });
+            const translations = {
+                name,
+            };
 
-        dispatch('tab/setTranslations', translations, {
-            root: true,
-        });
-    },
-    getAttributeGroupsOptions({
-        rootState,
-    }) {
-        const {
-            language,
-        } = rootState.authentication.user;
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'code',
+                value: code,
+            });
+            commit('__SET_STATE', {
+                key: 'name',
+                value: name,
+            });
 
-        return getAll({
-            $axios: this.app.$axios,
-        }).then(({
-            collection,
-        }) => ({
-            options: collection.map(element => ({
-                id: element.id,
-                key: element.code,
-                value: element.name,
-                hint: element.name ? `#${element.code} ${language}` : '',
-            })),
-        }));
+            dispatch('tab/setTranslations', translations, {
+                root: true,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Attributes/store/attributeGroup/action/getAttributeGroup/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            onError(e);
+        }
     },
     async updateAttributeGroup(
         {
@@ -121,15 +144,38 @@ export default {
                     name,
                 },
             } = rootState.tab;
-            const data = {
+            let data = {
                 name,
             };
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Attributes/store/attributeGroup/action/updateAttributeGroup/__before', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             await update({
                 $axios: this.app.$axios,
                 id,
                 data,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Attributes/store/attributeGroup/action/updateAttributeGroup/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+
             onSuccess();
         } catch (e) {
             onError({
@@ -141,16 +187,37 @@ export default {
     async removeAttributeGroup({
         state,
     }, {
-        onSuccess,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
+        try {
+            const {
+                id,
+            } = state;
 
-        await remove({
-            $axios: this.app.$axios,
-            id,
-        });
-        onSuccess();
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Attributes/store/attributeGroup/action/removeAttributeGroup/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+
+            await remove({
+                $axios: this.app.$axios,
+                id,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Attributes/store/attributeGroup/action/removeAttributeGroup/__after', {
+                $this: this,
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess();
+        } catch (e) {
+            onError(e);
+        }
     },
 };

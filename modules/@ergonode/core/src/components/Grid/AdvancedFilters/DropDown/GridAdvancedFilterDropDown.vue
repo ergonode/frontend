@@ -29,10 +29,16 @@ export default {
         DropDown,
     },
     props: {
+        /**
+         * Determines position where component will be anchored
+         */
         offset: {
             type: Object,
             required: true,
         },
+        /**
+         * Determines visibility of component
+         */
         isVisible: {
             type: Boolean,
             default: false,

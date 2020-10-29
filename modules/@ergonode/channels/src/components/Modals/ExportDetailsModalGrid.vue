@@ -11,11 +11,19 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :filters="filterValues"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
                 :is-prefetching-data="isPrefetchingData"
                 :is-header-visible="true"
                 :is-basic-filter="true"
-                @fetch-data="onFetchData">
-                <template #headerActions>
+                @fetch-data="onFetchData"
+                @filter="onFilterChange"
+                @remove-all-filters="onRemoveAllFilters">
+                <template #actionsHeader>
                     <div class="export-details-tiles">
                         <Tile
                             v-for="(detail, index) in details"
@@ -49,6 +57,7 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
@@ -65,6 +74,9 @@ export default {
         Button,
         Grid,
     },
+    mixins: [
+        extendedGridComponentsMixin,
+    ],
     props: {
         channelId: {
             type: String,
@@ -104,6 +116,7 @@ export default {
             columns: [],
             rows: [],
             filtered: 0,
+            filterValues: {},
             isPrefetchingData: true,
             details: [],
             downloadLink: '',
@@ -129,12 +142,30 @@ export default {
         ...mapActions('channel', [
             'getExportDetails',
         ]),
+        onRemoveAllFilters() {
+            this.filterValues = {};
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: {},
+            });
+        },
+        onFilterChange(filters) {
+            this.filterValues = filters;
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: this.filterValues,
+            });
+        },
         async onFetchData(params = DEFAULT_GRID_FETCH_PARAMS) {
             const {
                 columns,
                 rows,
                 filtered,
             } = await getGridData({
+                $route: this.$route,
+                $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: `channels/${this.channelId}/exports/${this.exportId}/errors`,
                 params: {

@@ -6,18 +6,26 @@
     <CenterViewTemplate>
         <template #content>
             <Grid
-                :is-editable="isAllowedToDelete"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
-                :placeholder="noRecordsPlaceholder"
+                :filters="filterValues"
+                :placeholder="noDataPlaceholder"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :is-editable="isAllowedToDelete"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
                 @edit-row="onEditRow"
                 @preview-row="onEditRow"
                 @delete-row="onRemoveRow"
-                @fetch-data="onFetchData" />
+                @fetch-data="onFetchData"
+                @filter="onFilterChange"
+                @remove-all-filters="onRemoveAllFilters" />
         </template>
     </CenterViewTemplate>
 </template>
@@ -27,6 +35,7 @@ import {
     WHITESMOKE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import PRIVILEGES from '@Trees/config/privileges';
 
@@ -39,6 +48,7 @@ export default {
         fetchGridDataMixin({
             path: 'trees',
         }),
+        extendedGridComponentsMixin,
     ],
     async fetch() {
         await this.onFetchData();
@@ -50,7 +60,7 @@ export default {
         };
     },
     computed: {
-        noRecordsPlaceholder() {
+        noDataPlaceholder() {
             return {
                 title: 'No category trees',
                 subtitle: 'There are no category trees in the system, you can create the first one.',

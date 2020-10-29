@@ -27,14 +27,23 @@ export default {
         FormSection,
     },
     props: {
+        /**
+         * Component value
+         */
         value: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * JSON schema
+         */
         schema: {
             type: Object,
             required: true,
         },
+        /**
+         * The validation errors
+         */
         errors: {
             type: Object,
             default: () => ({}),

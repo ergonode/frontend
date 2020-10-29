@@ -46,6 +46,9 @@ export default {
         Button,
     },
     props: {
+        /**
+         * Determines which component will be loaded
+         */
         type: {
             type: String,
             default: '',

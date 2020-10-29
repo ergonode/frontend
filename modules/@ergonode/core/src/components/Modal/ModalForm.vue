@@ -34,6 +34,9 @@ export default {
         ModalOverlay,
     },
     props: {
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             default: '',

@@ -4,7 +4,7 @@
  */
 <template>
     <Component
-        :is="actionCellComponent"
+        :is="component"
         :data-cy="dataCyGenerator"
         :column="columnIndex"
         :row="rowIndex"
@@ -17,36 +17,53 @@
 export default {
     name: 'GridActionCell',
     props: {
+        /**
+         * The component of action cell
+         */
+        component: {
+            type: [
+                Object,
+                Function,
+            ],
+            required: true,
+        },
+        /**
+         * The model of action cell
+         */
         action: {
             type: Object,
             required: true,
         },
+        /**
+         * Data of the column
+         */
         column: {
             type: Object,
             required: true,
         },
-        type: {
-            type: String,
-            default: '',
-        },
+        /**
+         * Row index of given component at the loop
+         */
         rowIndex: {
             type: Number,
             required: true,
         },
+        /**
+         * Column index of given component at the loop
+         */
         columnIndex: {
             type: Number,
             required: true,
         },
+        /**
+         * Determines if component is selected
+         */
         isSelected: {
             type: Boolean,
-            required: false,
+            default: false,
         },
     },
     computed: {
-        actionCellComponent() {
-            return () => import(`@Core/components/Grid/Layout/Table/Cells/Action/Grid${this.type}ActionCell`)
-                .catch(() => import('@Core/components/Grid/Layout/Table/Cells/GridTableCell'));
-        },
         dataCyGenerator() {
             return `action-${this.column.id}-${this.rowIndex}`;
         },

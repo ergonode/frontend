@@ -5,14 +5,17 @@
 <template functional>
     <span
         class="header"
-        v-text="props.header" />
+        v-text="props.title" />
 </template>
 
 <script>
 export default {
     name: 'DatePickerHeader',
     props: {
-        header: {
+        /**
+         * The title of the component
+         */
+        title: {
             type: [
                 String,
                 Number,

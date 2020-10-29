@@ -4,14 +4,7 @@
  */
 <template>
     <div
-        :class="[
-            'upload-file',
-            {
-                'upload-file--required': required,
-                'upload-file--floating-label': Boolean(label),
-                'upload-file--disabled': disabled,
-            },
-        ]">
+        :class="classes">
         <fieldset
             class="upload-file__activator"
             :style="{ height: height }">
@@ -67,9 +60,9 @@
             </div>
         </fieldset>
         <span
-            v-if="uploadError"
+            v-if="errorMessages"
             class="upload-file__error-label"
-            v-text="uploadError" />
+            v-text="errorMessages" />
     </div>
 </template>
 
@@ -80,27 +73,32 @@ import {
     RED,
     WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import Fab from '@Core/components/Fab/Fab';
+import IconDelete from '@Core/components/Icons/Actions/IconDelete';
+import IconRefresh from '@Core/components/Icons/Actions/IconRefresh';
+import IconUploadCloudFile from '@Core/components/Icons/Actions/IconUploadCloudFile';
 import {
     THEME,
 } from '@Core/defaults/theme';
 import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
-import {
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'UploadFile',
     components: {
-        Fab: () => import('@Core/components/Fab/Fab'),
-        IconDelete: () => import('@Core/components/Icons/Actions/IconDelete'),
-        IconRefresh: () => import('@Core/components/Icons/Actions/IconRefresh'),
-        IconUploadCloudFile: () => import('@Core/components/Icons/Actions/IconUploadCloudFile'),
+        Fab,
+        IconDelete,
+        IconRefresh,
+        IconUploadCloudFile,
     },
     mixins: [
         associatedLabelMixin,
     ],
     props: {
         label: {
+            type: String,
+            default: '',
+        },
+        errorMessages: {
             type: String,
             default: '',
         },
@@ -112,6 +110,9 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if the given field is required
+         */
         required: {
             type: Boolean,
             default: false,
@@ -139,9 +140,17 @@ export default {
         };
     },
     computed: {
-        ...mapState('feedback', {
-            uploadError: state => state.errors.upload,
-        }),
+        classes() {
+            return [
+                'upload-file',
+                {
+                    'upload-file--required': this.required,
+                    'upload-file--floating-label': Boolean(this.label),
+                    'upload-file--disabled': this.disabled,
+                    'upload-file--error': this.errorMessages !== '',
+                },
+            ];
+        },
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -262,12 +271,6 @@ export default {
             font: $FONT_MEDIUM_12_16;
         }
 
-        &--floating-label {
-            #{$upload}__content {
-                height: calc(100% - 10px);
-            }
-        }
-
         &--disabled {
             #{$upload}__content, input {
                 background-color: $WHITESMOKE;
@@ -280,6 +283,16 @@ export default {
                 position: absolute;
                 color: $RED;
                 content: "*";
+            }
+        }
+
+        &--error {
+            #{$upload}__activator {
+                border-color: $RED;
+            }
+
+            #{$upload}__label {
+                color: $RED;
             }
         }
     }

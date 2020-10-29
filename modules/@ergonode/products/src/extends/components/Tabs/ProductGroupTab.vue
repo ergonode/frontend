@@ -6,20 +6,28 @@
     <CenterViewTemplate>
         <template #content>
             <Grid
-                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
                 :drafts="drafts"
+                :filters="filterValues"
                 :collection-cell-binding="collectionCellBinding"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :is-editable="isAllowedToUpdate"
                 :is-prefetching-data="isPrefetchingData"
                 :is-collection-layout="true"
                 :is-basic-filter="true"
                 :is-header-visible="true"
                 :is-border="true"
-                @delete-row="onFetchData"
-                @fetch-data="onFetchData">
-                <template #headerActions>
+                @delete-row="onRemoveProduct"
+                @fetch-data="onFetchData"
+                @remove-all-filter="onRemoveAllFilters"
+                @filter="onFilterChange">
+                <template #actionsHeader>
                     <ActionButton
                         title="ADD PRODUCTS"
                         :theme="secondaryTheme"
@@ -54,9 +62,13 @@ import {
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
+import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
@@ -82,6 +94,7 @@ export default {
     },
     mixins: [
         gridDraftMixin,
+        extendedGridComponentsMixin,
         tabFeedbackMixin,
     ],
     data() {
@@ -89,6 +102,7 @@ export default {
             columns: [],
             rows: [],
             filtered: 0,
+            filterValues: {},
             selectedAppModalOption: null,
             isPrefetchingData: false,
             localParams: DEFAULT_GRID_FETCH_PARAMS,
@@ -121,21 +135,33 @@ export default {
         addProductOptions() {
             const options = Object.values(ADD_PRODUCT);
 
-            this.extendedComponents.forEach((option) => {
-                options.push(option.name);
-            });
+            if (this.extendedComponents.length) {
+                this.extendedComponents.forEach((option) => {
+                    options.push(option.name);
+                });
+            }
+
             return options;
         },
         extendedComponents() {
-            return this.$getExtendedComponents('@Products/components/Tabs/ProductGroupTab/addFromSegment');
+            return this.$getExtendedComponents('@Products/components/Tabs/ProductGroupTab/addProductFrom') || [];
         },
         modalComponent() {
+            let extendedOptions = [];
+
+            if (this.extendedComponents.length) {
+                extendedOptions = this.extendedComponents;
+            }
             const modals = [
                 {
                     component: () => import('@Products/extends/components/Modals/AddProductsFromListModalGrid'),
                     name: ADD_PRODUCT.FROM_LIST,
                 },
-                ...this.extendedComponents,
+                {
+                    component: () => import('@Products/extends/components/Modals/AddProductsFromSegmentModalForm'),
+                    name: ADD_PRODUCT.FROM_SEGMENT,
+                },
+                ...extendedOptions,
             ];
 
             return modals.find(modal => modal.name === this.selectedAppModalOption).component;
@@ -149,6 +175,22 @@ export default {
         this.isPrefetchingData = false;
     },
     methods: {
+        onFilterChange(filters) {
+            this.filterValues = filters;
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: this.filterValues,
+            });
+        },
+        onRemoveAllFilters() {
+            this.filterValues = {};
+
+            this.onFetchData({
+                ...this.localParams,
+                filter: {},
+            });
+        },
         onSelectAddProductOption(option) {
             this.selectedAppModalOption = option;
         },
@@ -162,16 +204,23 @@ export default {
 
             this.isPrefetchingData = false;
         },
+        onRemoveProduct() {
+            this.onFetchData();
+        },
         async onFetchData({
             offset,
             limit,
             filter,
             sortedColumn,
         } = this.localParams) {
-            let filtersWithAttached = filter;
+            const filtersWithAttached = {
+                ...filter,
+            };
 
-            if (!filter.includes('attached=true')) {
-                filtersWithAttached = 'attached=true';
+            if (typeof filter.attached === 'undefined') {
+                filtersWithAttached.attached = {
+                    [FILTER_OPERATOR.EQUAL]: true,
+                };
             }
 
             this.localParams = {
@@ -196,25 +245,19 @@ export default {
                 rows,
                 filtered,
             } = await getGridData({
+                $route: this.$route,
+                $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: `products/${this.id}/children-and-available-products`,
                 params: this.localParams,
             });
 
-            this.columns = columns.map((column) => {
-                if (column.id === 'attached') {
-                    return {
-                        ...column,
-                        filter: null,
-                        editable: false,
-                    };
-                }
-
-                return {
+            this.columns = columns
+                .filter(column => column.id !== 'attached')
+                .map(column => ({
                     ...column,
                     editable: false,
-                };
-            });
+                }));
             this.filtered = filtered;
             this.rows = rows;
         },

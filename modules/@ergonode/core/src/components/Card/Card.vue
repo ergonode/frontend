@@ -19,6 +19,9 @@
 export default {
     name: 'Card',
     props: {
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             default: '',

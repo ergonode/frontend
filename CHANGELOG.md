@@ -1,22 +1,29 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [1.0.0-beta.2](https://github.com/derpdead/frontend/compare/v1.0.0-beta...v1.0.0-beta.2) (2020-10-29)
+
+**Note:** Version bump only for package ergonode-front
+
+
+
+
+
 # CHANGELOG
 This changelog references the relevant changes.
 
-## CHANGELOG FOR v1.0.0-beta
-- feature [#463](https://github.com/ergonode/frontend/issues/463) New dashboard
-- feature [#468](https://github.com/ergonode/frontend/issues/468) Product with variants
-- feature [#327](https://github.com/ergonode/frontend/issues/327) Multi save button
-- feature - multilingual workflow
-- refactor - extend attribute types
-- refactor - extend product types
-- refactor - extend Vuex actions
-- refactor - validations improvement
-- refactor - new format for date
-- refactor - remove language from url
-- refactor - services isolation
-- refactor - vuex clean architecture
-- bugfix - advanced filter stabilization
-- bugfix - e2e tests bugfix
-
+## CHANGELOG FOR v1.0.0-beta.2
+- feature - integrate lighter version of lazy loaded dropdowns
+- refactor - improve performance of loading data for attributes list 
+- refactor - exclude VueMS configuration from Grid
+- refactor - improve performance of Grid
+- refactor - exclude AdvancedFilters from GridHeader
+- refactor - add support for Vuex actions for extending by module
+- refactor - improve product types
+- bugfix - product types
+- bugfix - media
 
 ## CHANGELOG FOR v0.10.0
  - feature [#474](https://github.com/ergonode/frontend/issues/474) Channels & exports
@@ -40,7 +47,6 @@ This changelog references the relevant changes.
  - bugfix - workflow
  - bugfix - select/multiselect filter selection, range filters
 
-
 ## CHANGELOG FOR v0.9.0
  - feature [#384](https://github.com/ergonode/frontend/issues/384) Product variants
  - feature [#418](https://github.com/ergonode/frontend/issues/418) GridCollectionLayout for product related Grid's
@@ -58,7 +64,6 @@ This changelog references the relevant changes.
  - feature [#405](https://github.com/ergonode/frontend/issues/405) Lazy loading for Select options
  - perf [#396](https://github.com/ergonode/frontend/issues/396) Non dismissible dropdown menu for action buttons
 
-
 ## CHANGELOG FOR v0.7.0
  - feature - Change of architecture to the micro frontend approach
  - feature - Add unit management
@@ -69,7 +74,6 @@ This changelog references the relevant changes.
  - feature - Implementation storybook library
  - perf - Performance improvement in grid
  - perf - Performance improvement in UI elements
-
 
 ## CHANGELOG FOR v0.6.1
 - bugfix - Vuex store for Grid crashed after f5 - store had been removed

@@ -4,7 +4,7 @@
  */
 <template>
     <Component
-        :is="dataCellComponent"
+        :is="component"
         :data="data"
         :column="column"
         :draft="draft"
@@ -25,26 +25,47 @@
 export default {
     name: 'GridDataCell',
     props: {
+        /**
+         * The component of data cell
+         */
+        component: {
+            type: [
+                Object,
+                Function,
+            ],
+            required: true,
+        },
+        /**
+         * Component data used for filling table cell
+         */
         data: {
             type: Object,
             required: true,
         },
+        /**
+         * Data of the column
+         */
         column: {
             type: Object,
             required: true,
         },
+        /**
+         * The error messages are messages which comes from validation process
+         */
         errorMessages: {
             type: String,
             default: '',
         },
-        type: {
-            type: String,
-            default: '',
-        },
+        /**
+         * The drafts are unsaved changes, cached changed data at given time
+         */
         drafts: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Unique row identifier
+         */
         rowId: {
             type: [
                 String,
@@ -52,38 +73,43 @@ export default {
             ],
             required: true,
         },
+        /**
+         * Row index of given component at the loop
+         */
         rowIndex: {
             type: Number,
             required: true,
         },
+        /**
+         * Column index of given component at the loop
+         */
         columnIndex: {
             type: Number,
             required: true,
         },
+        /**
+         * Determinate if the component is not being able to edit
+         */
         isLocked: {
             type: Boolean,
-            required: false,
+            default: false,
         },
+        /**
+         * Determinate if the component is being able to copy value by mass action
+         */
         isCopyable: {
             type: Boolean,
-            required: false,
+            default: false,
         },
+        /**
+         * Determines if component is selected
+         */
         isSelected: {
             type: Boolean,
-            required: false,
+            default: false,
         },
     },
     computed: {
-        dataCellComponent() {
-            const extendedComponents = this.$getExtendedComponents('@Core/components/Grid/Layout/Table/Cells/Data');
-
-            if (extendedComponents && extendedComponents[this.column.type]) {
-                return extendedComponents[this.column.type];
-            }
-
-            return () => import(`@Core/components/Grid/Layout/Table/Cells/Data/Grid${this.type}DataCell`)
-                .catch(() => import('@Core/components/Grid/Layout/Table/Cells/Data/GridTextDataCell'));
-        },
         draft() {
             return this.drafts[`${this.rowId}/${this.column.id}`];
         },

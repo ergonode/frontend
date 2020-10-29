@@ -24,10 +24,16 @@ import {
 
 export default {
     props: {
+        /**
+         * Arial label of the svg
+         */
         iconName: {
             type: String,
             default: 'box',
         },
+        /**
+         * Width of the component
+         */
         width: {
             type: [
                 Number,
@@ -35,6 +41,9 @@ export default {
             ],
             default: 24,
         },
+        /**
+         * Height of the component
+         */
         height: {
             type: [
                 Number,
@@ -42,10 +51,16 @@ export default {
             ],
             default: 24,
         },
+        /**
+         * Svg viewBox attribute
+         */
         viewBox: {
             type: String,
             default: '0 0 24 24',
         },
+        /**
+         * Color of the component
+         */
         fillColor: {
             type: String,
             default: GRAPHITE,

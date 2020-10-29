@@ -17,7 +17,7 @@
                             class="upload-image-file__image"
                             v-if="!multiple">
                             <Picture
-                                :api-path="`multimedia/${value}/download/default`"
+                                :href="`multimedia/${value}/download/default`"
                                 :value="value"
                                 :object-fit="objectFit" />
                         </div>
@@ -136,6 +136,9 @@ export default {
             type: String,
             default: '',
         },
+        /**
+         * Determines if the given field is required
+         */
         required: {
             type: Boolean,
             default: false,

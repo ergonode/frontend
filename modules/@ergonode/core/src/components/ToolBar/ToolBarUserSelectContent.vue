@@ -11,8 +11,8 @@
         <MenuList
             v-for="(item, index) in navigationBarUserMenu"
             :key="index"
-            :section-title="item.title"
-            :section-menu="item.menu" />
+            :title="item.title"
+            :menu="item.menu" />
         <div class="footer">
             <Button
                 data-cy="logout-button"
@@ -24,6 +24,10 @@
 </template>
 
 <script>
+import Button from '@Core/components/Button/Button';
+import Divider from '@Core/components/Dividers/Divider';
+import MenuList from '@Core/components/MenuList/MenuList';
+import ToolBarUserSelectContentHeader from '@Core/components/ToolBar/ToolBarUserSelectContentHeader';
 import {
     THEME,
 } from '@Core/defaults/theme';
@@ -35,10 +39,10 @@ import {
 export default {
     name: 'ToolBarUserSelectContent',
     components: {
-        Divider: () => import('@Core/components/Dividers/Divider'),
-        ToolBarUserSelectContentHeader: () => import('@Core/components/ToolBar/ToolBarUserSelectContentHeader'),
-        MenuList: () => import('@Core/components/MenuList/MenuList'),
-        Button: () => import('@Core/components/Button/Button'),
+        Divider,
+        ToolBarUserSelectContentHeader,
+        MenuList,
+        Button,
     },
     computed: {
         navigationBarUserMenu() {

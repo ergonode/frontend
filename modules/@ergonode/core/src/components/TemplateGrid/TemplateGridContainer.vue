@@ -47,26 +47,44 @@ import {
 export default {
     name: 'TemplateGridContainer',
     props: {
+        /**
+         * Grid data model
+         */
         gridData: {
             type: Array,
             required: true,
         },
+        /**
+         * Number of visible columns
+         */
         columns: {
             type: Number,
             required: true,
         },
+        /**
+         * Number of visible rows
+         */
         rows: {
             type: Number,
             required: true,
         },
+        /**
+         * Determines the size of row height
+         */
         rowHeight: {
             type: Number,
             required: true,
         },
+        /**
+         * Determines state of draggable attribute
+         */
         isDraggingEnabled: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if the component might be dragged twice
+         */
         isMultiDraggable: {
             type: Boolean,
             default: false,

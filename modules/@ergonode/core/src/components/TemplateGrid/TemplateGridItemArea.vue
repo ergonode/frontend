@@ -15,14 +15,23 @@
 export default {
     name: 'TemplateGridItemArea',
     props: {
+        /**
+         * Item data model
+         */
         item: {
             type: Object,
             required: true,
         },
+        /**
+         * Number of visible columns
+         */
         columns: {
             type: Number,
             required: true,
         },
+        /**
+         * Space between each item
+         */
         gridGap: {
             type: Number,
             default: 0,

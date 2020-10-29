@@ -25,6 +25,12 @@ export const update = ({
     data,
 }) => $axios.$put(`sources/${id}`, data);
 
+export const uploadFile = ({
+    $axios,
+    id,
+    data,
+}) => $axios.$post(`sources/${id}/upload`, data);
+
 export const create = ({
     $axios,
     data,

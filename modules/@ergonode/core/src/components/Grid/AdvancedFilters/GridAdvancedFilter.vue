@@ -4,13 +4,7 @@
  */
 <template>
     <div
-        :class="[
-            'advanced-filter',
-            {
-                'advanced-filter--selected': isFocused,
-                'advanced-filter--exists': isFilterExists,
-            }
-        ]"
+        :class="classes"
         :draggable="!isFocused"
         @dragover="onDragOver"
         @dragstart="onDragStart"
@@ -108,10 +102,16 @@ export default {
         associatedLabelMixin,
     ],
     props: {
+        /**
+         * Index of given component at the loop
+         */
         index: {
             type: Number,
             required: true,
         },
+        /**
+         * Filter unique identifier
+         */
         filterId: {
             type: [
                 String,
@@ -119,18 +119,30 @@ export default {
             ],
             required: true,
         },
+        /**
+         *  The hint is a tip for the component
+         */
         hint: {
             type: String,
             default: '',
         },
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             default: '',
         },
+        /**
+         * Filter might have parameters which are used for describing field
+         */
         parameters: {
             type: String,
             default: '',
         },
+        /**
+         * Component value
+         */
         value: {
             type: [
                 String,
@@ -154,6 +166,15 @@ export default {
             'isElementDragging',
             'draggedElement',
         ]),
+        classes() {
+            return [
+                'advanced-filter',
+                {
+                    'advanced-filter--selected': this.isFocused,
+                    'advanced-filter--exists': this.isFilterExists,
+                },
+            ];
+        },
         isFilterExists() {
             return this.draggedElement === this.filterId;
         },

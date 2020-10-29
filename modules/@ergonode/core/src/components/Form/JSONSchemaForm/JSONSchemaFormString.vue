@@ -15,14 +15,23 @@
 export default {
     name: 'JSONSchemaFormString',
     props: {
+        /**
+         * JSON schema
+         */
         schema: {
             type: Object,
             required: true,
         },
+        /**
+         * The validation errors
+         */
         errors: {
             type: String,
             default: '',
         },
+        /**
+         * Component value
+         */
         value: {
             type: String,
             default: '',

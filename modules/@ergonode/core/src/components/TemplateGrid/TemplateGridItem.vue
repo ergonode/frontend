@@ -59,14 +59,23 @@ export default {
         ActionIconButton,
     },
     props: {
+        /**
+         * Determines state of expanded component
+         */
         isExpanded: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines state of draggable attribute
+         */
         isDraggingEnabled: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Item data model
+         */
         item: {
             type: Object,
             required: true,
@@ -75,6 +84,9 @@ export default {
             type: String,
             default: '',
         },
+        /**
+         * Number of children elements
+         */
         numberOfChildren: {
             type: Number,
             default: 0,

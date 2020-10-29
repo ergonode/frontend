@@ -30,7 +30,7 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
-import AddProductsFromSegmentForm from '@Segments/components/Forms/Collection/AddProductsFromSegmentForm';
+import AddProductsFromSegmentForm from '@Segments/components/Forms/AddProductsFromSegmentForm';
 import {
     mapActions,
 } from 'vuex';

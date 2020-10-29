@@ -14,13 +14,17 @@
 import {
     WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
 
 export default {
     name: 'SideBarLogo',
     components: {
-        IconLogoName: () => import('@Core/components/Icons/Logo/IconLogoName'),
+        IconLogoName,
     },
     props: {
+        /**
+         * Determines state of expanded component
+         */
         isExpanded: {
             type: Boolean,
             required: true,

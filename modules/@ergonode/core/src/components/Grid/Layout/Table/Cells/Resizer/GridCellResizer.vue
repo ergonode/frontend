@@ -29,6 +29,9 @@ const unregisterResizeEventListeners = () => import('@Core/models/resize/unregis
 export default {
     name: 'GridCellResizer',
     props: {
+        /**
+         * The size of the component
+         */
         size: {
             type: Object,
             default: () => ({
@@ -38,6 +41,9 @@ export default {
                 maxHeight: 1,
             }),
         },
+        /**
+         * Position at which cell resizer will be rendered
+         */
         position: {
             type: Object,
             default: () => ({

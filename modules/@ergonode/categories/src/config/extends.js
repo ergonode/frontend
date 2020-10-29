@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import {
+    getCategory,
     setCategory,
 } from '@Categories/extends/methods';
 
@@ -34,5 +35,15 @@ export default {
                 data,
             });
         },
+        '@Products/store/product/action/updateProduct/__before': ({
+            $this,
+        }) => getCategory({
+            $this,
+        }),
+        '@Products/store/product/action/createProduct/__before': ({
+            $this,
+        }) => getCategory({
+            $this,
+        }),
     },
 };
