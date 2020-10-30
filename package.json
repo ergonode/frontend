@@ -116,6 +116,7 @@
         "vuex-mock-store": "^0.0.8"
     },
     "_requiredModules": [
+        "@ergonode/ui",
         "@ergonode/core",
         "@ergonode/authentication",
         "@ergonode/users"
