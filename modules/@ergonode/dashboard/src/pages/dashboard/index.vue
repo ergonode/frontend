@@ -28,9 +28,19 @@ export default {
     async asyncData({
         app,
     }) {
-        const productsCount = await getProductsCount({
-            $axios: app.$axios,
-        });
+        let productsCount = 0;
+
+        try {
+            productsCount = await getProductsCount({
+                $axios: app.$axios,
+            });
+        } catch (e) {
+            if (app.$axios.isCancel(e)) {
+                return {
+                    productsCount,
+                };
+            }
+        }
 
         return {
             productsCount,

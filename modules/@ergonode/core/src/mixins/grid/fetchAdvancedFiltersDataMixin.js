@@ -4,6 +4,9 @@
  */
 import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     insertCookieAtIndex,
     removeCookieAtIndex,
 } from '@Core/models/cookies';
@@ -44,68 +47,81 @@ export default function ({
                     columns: ids,
                 };
 
-                this.advancedFilters = await getAdvancedFiltersData({
+                await getAdvancedFiltersData({
+                    $route: this.$route,
+                    $cookies: this.$cookies,
+                    $axios: this.$axios,
+                    path: this.getPath(),
+                    params: filtersParams,
+                    onSuccess: (({
+                        advancedFilters,
+                    }) => {
+                        this.advancedFilters = advancedFilters;
+                    }),
+                });
+            },
+            async onDropFilter(payload) {
+                const filterCode = payload.split('/')[1];
+                const params = {
+                    limit: 0,
+                    offset: 0,
+                    columns: filterCode,
+                };
+
+                insertCookieAtIndex({
+                    cookies: this.$cookies,
+                    cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
+                    index: 0,
+                    data: filterCode,
+                });
+
+                await getAdvancedFiltersData({
                     $route: this.$route,
                     $cookies: this.$cookies,
                     $axios: this.$axios,
                     $addAlert: this.$addAlert,
-                    path: this.getPath(),
-                    params: filtersParams,
-                });
-            },
-            async onDropFilter(payload) {
-                try {
-                    const filterCode = payload.split('/')[1];
-                    const params = {
-                        limit: 0,
-                        offset: 0,
-                        columns: filterCode,
-                    };
+                    path,
+                    params,
+                    onSuccess: (({
+                        advancedFilters,
+                    }) => {
+                        this.advancedFilters = advancedFilters;
 
-                    insertCookieAtIndex({
-                        cookies: this.$cookies,
-                        cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
-                        index: 0,
-                        data: filterCode,
-                    });
+                        if (advancedFilters.length) {
+                            const filter = advancedFilters.find(({
+                                id,
+                            }) => id === filterCode);
 
-                    const advancedFilters = await getAdvancedFiltersData({
-                        $route: this.$route,
-                        $cookies: this.$cookies,
-                        $axios: this.$axios,
-                        $addAlert: this.$addAlert,
-                        path,
-                        params,
-                    });
+                            if (filter.attributeId) {
+                                this.setDisabledElement(this.getDisabledListElement({
+                                    languageCode: filter.languageCode,
+                                    attributeId: filter.attributeId,
+                                    disabledElements: this.disabledElements,
+                                }));
+                            }
 
-                    if (advancedFilters.length) {
-                        const filter = advancedFilters.find(({
-                            id,
-                        }) => id === filterCode);
+                            this.advancedFilters.unshift(filter);
+                        } else {
+                            removeCookieAtIndex({
+                                cookies: this.$cookies,
+                                cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
+                                index: 0,
+                            });
 
-                        if (filter.attributeId) {
-                            this.setDisabledElement(this.getDisabledListElement({
-                                languageCode: filter.languageCode,
-                                attributeId: filter.attributeId,
-                                disabledElements: this.disabledElements,
-                            }));
+                            this.$addAlert({
+                                type: ALERT_TYPE.ERROR,
+                                message: 'Attribute has no filter',
+                            });
                         }
-
-                        this.advancedFilters.unshift(filter);
-                    } else {
+                    }),
+                    onError: () => {
                         removeCookieAtIndex({
                             cookies: this.$cookies,
                             cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
                             index: 0,
                         });
-                    }
-                } catch {
-                    removeCookieAtIndex({
-                        cookies: this.$cookies,
-                        cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
-                        index: 0,
-                    });
-                }
+                    },
+                });
             },
             getDisabledListElement({
                 languageCode,
