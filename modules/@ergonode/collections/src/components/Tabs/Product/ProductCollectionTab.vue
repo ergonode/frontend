@@ -104,8 +104,7 @@ export default {
                 elements_count,
                 type_id,
             }) => {
-                const collectionType = productCollectionTypes.options
-                    .find(type => type.id === type_id);
+                const collectionType = productCollectionTypes.find(type => type.id === type_id);
 
                 return {
                     id,

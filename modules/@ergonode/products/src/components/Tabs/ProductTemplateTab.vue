@@ -310,7 +310,7 @@ export default {
                 scope: this.scope,
             });
 
-            this.completeness = await this.getProductCompleteness({
+            await this.getProductCompleteness({
                 languageCode: this.language.code,
                 id: this.id,
                 onSuccess: (({

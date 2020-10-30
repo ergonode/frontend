@@ -380,7 +380,7 @@ export default {
                 id,
             } = state;
             const data = {
-                segments: segments.map(segment => segment.id),
+                segments,
             };
 
             if (!data.segments.length) {

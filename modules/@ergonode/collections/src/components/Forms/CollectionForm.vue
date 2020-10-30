@@ -27,6 +27,7 @@
                     :data-cy="dataCyGenerator(typeIdFieldKey)"
                     :value="type"
                     required
+                    searchable
                     label="Type"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errors[typeIdFieldKey]"

@@ -8,7 +8,6 @@
         @close="onClose">
         <template #body>
             <AddProductsFromSegmentForm
-                :segment-options="segmentOptions"
                 :segments="segments"
                 submit-title="ADD TO PRODUCT"
                 proceed-title="CANCEL"
@@ -46,7 +45,6 @@ export default {
     ],
     data() {
         return {
-            segmentOptions: [],
             segments: [],
             isAdding: false,
         };
@@ -56,13 +54,7 @@ export default {
             return THEME.SECONDARY;
         },
     },
-    async created() {
-        this.segmentOptions = await this.getSegmentOptions();
-    },
     methods: {
-        ...mapActions('segment', [
-            'getSegmentOptions',
-        ]),
         ...mapActions('product', [
             'addBySegment',
         ]),
