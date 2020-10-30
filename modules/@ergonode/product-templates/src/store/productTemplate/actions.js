@@ -365,7 +365,7 @@ export default {
         },
         {
             scope,
-            onSuccess,
+            onSuccess = () => {},
             onError = () => {},
         },
     ) {

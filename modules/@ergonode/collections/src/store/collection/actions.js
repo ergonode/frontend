@@ -85,38 +85,26 @@ export default {
             onError(e);
         }
     },
-    async getCollectionTypeOptions({
-        rootState,
+    async getCollectionTypeOptions({}, {
+        onSuccess = () => {},
+        onError = () => {},
     }) {
         try {
-            const {
-                language,
-            } = rootState.authentication.user;
-
             const {
                 collection,
             } = await getTypes({
                 $axios: this.app.$axios,
             });
 
-            return {
-                options: collection.map(element => ({
-                    id: element.id,
-                    key: element.code,
-                    value: element.name,
-                    hint: element.name ? `#${element.code} ${language}` : '',
-                })),
-            };
+            onSuccess({
+                types: collection,
+            });
         } catch (e) {
             if (this.app.$axios.isCancel(e)) {
-                return {
-                    options: [],
-                };
+                return;
             }
 
-            return {
-                options: [],
-            };
+            onError(e);
         }
     },
     async updateCollectionProductsVisibility({
@@ -360,7 +348,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Adding product by sku to collection has been canceled',
+                    message: 'Adding product by skus to collection has been canceled',
                 });
 
                 return;

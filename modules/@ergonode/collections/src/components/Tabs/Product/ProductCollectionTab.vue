@@ -75,12 +75,24 @@ export default {
         },
     },
     async created() {
-        const [
-            collectionTypeOptionsResponse,
-            productCollections,
-        ] = await Promise.all([
-            this.getCollectionTypeOptions(),
-            this.getProductCollections(),
+        let productCollections = [];
+        let productCollectionTypes = [];
+
+        await Promise.all([
+            this.getCollectionTypeOptions({
+                onSuccess: (({
+                    types,
+                }) => {
+                    productCollectionTypes = types;
+                }),
+            }),
+            this.getProductCollections({
+                onSuccess: (({
+                    collections,
+                }) => {
+                    productCollections = collections;
+                }),
+            }),
         ]);
 
         this.collections = productCollections
@@ -92,7 +104,7 @@ export default {
                 elements_count,
                 type_id,
             }) => {
-                const collectionType = collectionTypeOptionsResponse.options
+                const collectionType = productCollectionTypes.options
                     .find(type => type.id === type_id);
 
                 return {

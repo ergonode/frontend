@@ -4,9 +4,6 @@
  */
 
 import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import {
     check,
     getAll,
     update,
