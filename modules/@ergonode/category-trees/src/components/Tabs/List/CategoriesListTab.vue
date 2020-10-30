@@ -34,16 +34,16 @@
 </template>
 
 <script>
-import Fab from '@Core/components/Fab/Fab';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import List from '@Core/components/List/List';
-import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
-import ListSearchHeader from '@Core/components/List/ListSearchHeader';
-import Preloader from '@Core/components/Preloader/Preloader';
-import VerticalTabBarList from '@Core/components/TabBar/VerticalTabBarList';
 import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
 import CategoriesListElement from '@Trees/components/Lists/CategoriesListElement';
 import PRIVILEGES from '@Trees/config/privileges';
+import Fab from '@UI/components/Fab/Fab';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import List from '@UI/components/List/List';
+import ListScrollableContainer from '@UI/components/List/ListScrollableContainer';
+import ListSearchHeader from '@UI/components/List/ListSearchHeader';
+import Preloader from '@UI/components/Preloader/Preloader';
+import VerticalTabBarList from '@UI/components/TabBar/VerticalTabBarList';
 import {
     mapActions,
     mapState,

@@ -34,16 +34,16 @@
 </template>
 
 <script>
-import FormListElementField from '@Core/components/Form/Field/FormListElementField';
-import FormListSection from '@Core/components/Form/Section/FormListSection';
-import FormListSubsection from '@Core/components/Form/Subsection/FormListSubsection';
-import TextField from '@Core/components/TextField/TextField';
 import {
     SIZE,
 } from '@Core/defaults/theme';
 import {
     getUUID,
 } from '@Core/models/stringWrapper';
+import FormListElementField from '@UI/components/Form/Field/FormListElementField';
+import FormListSection from '@UI/components/Form/Section/FormListSection';
+import FormListSubsection from '@UI/components/Form/Subsection/FormListSubsection';
+import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
     mapState,

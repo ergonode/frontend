@@ -36,9 +36,6 @@
 </template>
 
 <script>
-import ActionButton from '@Core/components/ActionButton/ActionButton';
-import Preloader from '@Core/components/Preloader/Preloader';
-import Widget from '@Core/components/Widget/Widget';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -46,6 +43,9 @@ import {
     getStatusesCount,
 } from '@Dashboard/services';
 import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
+import ActionButton from '@UI/components/ActionButton/ActionButton';
+import Preloader from '@UI/components/Preloader/Preloader';
+import Widget from '@UI/components/Widget/Widget';
 import {
     mapGetters,
     mapState,
@@ -112,6 +112,7 @@ export default {
             this.statuses = statusesCount.map((status) => {
                 const {
                     status_id,
+                    code,
                     value,
                     label,
                     color,
@@ -120,7 +121,7 @@ export default {
                 return {
                     id: status_id,
                     color,
-                    label,
+                    label: label || `#${code}`,
                     value: `${value} products`,
                 };
             });

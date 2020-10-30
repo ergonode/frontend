@@ -34,12 +34,12 @@
 </template>
 
 <script>
-import Form from '@Core/components/Form/Form';
-import FormListSection from '@Core/components/Form/Section/FormListSection';
-import FormListSubsection from '@Core/components/Form/Subsection/FormListSubsection';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import ProductAttributeBindingField from '@Products/extends/components/Forms/Field/ProductAttributeBindingField';
+import Form from '@UI/components/Form/Form';
+import FormListSection from '@UI/components/Form/Section/FormListSection';
+import FormListSubsection from '@UI/components/Form/Subsection/FormListSubsection';
 import {
     mapState,
 } from 'vuex';

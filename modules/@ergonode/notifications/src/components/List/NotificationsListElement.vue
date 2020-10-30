@@ -25,14 +25,14 @@
 
 <script>
 import {
-    GRAPHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import {
     SIZE,
 } from '@Core/defaults/theme';
 import {
+    GRAPHITE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import {
     DEFAULT_DATE_TIME_FORMAT,
-} from '@Core/models/calendar/calendar';
+} from '@UI/models/calendar';
 import {
     format as formatDate,
     parseISO,

@@ -16,11 +16,11 @@
 </template>
 
 <script>
-import ListElementDescription from '@Core/components/List/ListElementDescription';
-import ListElementTitle from '@Core/components/List/ListElementTitle';
 import {
     getUUID,
 } from '@Core/models/stringWrapper';
+import ListElementDescription from '@UI/components/List/ListElementDescription';
+import ListElementTitle from '@UI/components/List/ListElementTitle';
 import {
     mapActions,
 } from 'vuex';
@@ -30,7 +30,7 @@ export default {
     components: {
         ListElementDescription,
         ListElementTitle,
-        ListDraggableElement: () => import('@Core/components/List/ListDraggableElement'),
+        ListDraggableElement: () => import('@UI/components/List/ListDraggableElement'),
     },
     props: {
         item: {

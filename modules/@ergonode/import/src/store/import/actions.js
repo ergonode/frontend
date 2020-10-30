@@ -15,6 +15,7 @@ import {
     getDetails,
     remove,
     update,
+    uploadFile,
 } from '@Import/services/index';
 
 export default {
@@ -179,6 +180,42 @@ export default {
                 data,
             });
             // EXTENDED AFTER METHOD
+
+            onSuccess();
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
+    },
+    async uploadImportFile(
+        {
+            state,
+        },
+        {
+            scope,
+            file,
+            onSuccess = () => {},
+            onError = () => {},
+        },
+    ) {
+        try {
+            const {
+                id,
+            } = state;
+            const {
+                name,
+            } = file;
+
+            const data = new FormData();
+            data.append('upload', file, name);
+
+            await uploadFile({
+                $axios: this.app.$axios,
+                id,
+                data,
+            });
 
             onSuccess();
         } catch (e) {

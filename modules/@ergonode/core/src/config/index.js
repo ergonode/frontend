@@ -9,6 +9,7 @@ export default {
         '@Core': '/',
     },
     relations: [
+        '@ergonode/ui',
         '@ergonode/attributes',
         '@ergonode/media',
     ],
@@ -30,11 +31,4 @@ export default {
             src: './plugins/alerts',
         },
     ],
-    css: [
-        './assets/scss/reset.scss',
-        './assets/scss/font-inter-ui.scss',
-    ],
-    styleResources: {
-        scss: './assets/scss/main.scss',
-    },
 };

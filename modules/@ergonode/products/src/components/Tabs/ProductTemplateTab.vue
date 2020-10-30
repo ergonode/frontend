@@ -62,12 +62,6 @@
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
-import IconRestore from '@Core/components/Icons/Actions/IconRestore';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
-import TreeSelect from '@Core/components/Select/Tree/TreeSelect';
-import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -81,6 +75,12 @@ import ProductWorkflowActionButton from '@Products/components/Buttons/ProductWor
 import ProductTemplateForm from '@Products/components/Forms/ProductTemplateForm';
 import ProductCompleteness from '@Products/components/Progress/ProductCompleteness';
 import PRIVILEGES from '@Products/config/privileges';
+import Button from '@UI/components/Button/Button';
+import IconRestore from '@UI/components/Icons/Actions/IconRestore';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
+import TreeSelect from '@UI/components/Select/Tree/TreeSelect';
+import TitleBarSubActions from '@UI/components/TitleBar/TitleBarSubActions';
 import {
     mapActions,
     mapGetters,

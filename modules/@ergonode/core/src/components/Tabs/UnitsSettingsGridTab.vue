@@ -46,12 +46,6 @@
 </template>
 
 <script>
-import {
-    WHITESMOKE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Button/Button';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import PRIVILEGES from '@Core/config/privileges';
 import {
     SIZE,
@@ -59,6 +53,12 @@ import {
 } from '@Core/defaults/theme';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import {
+    WHITESMOKE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Button from '@UI/components/Button/Button';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
 } from 'vuex';
@@ -90,7 +90,7 @@ export default {
             return {
                 title: 'No units',
                 subtitle: 'There are no units in the system, you can create the first one.',
-                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
                 color: WHITESMOKE,
             };
         },

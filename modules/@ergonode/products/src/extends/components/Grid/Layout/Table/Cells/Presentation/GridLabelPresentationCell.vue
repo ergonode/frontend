@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import PointBadge from '@Core/components/Badges/PointBadge';
-import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
+import PointBadge from '@UI/components/Badges/PointBadge';
+import GridPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
 
 export default {
     name: 'GridLabelPresentationCell',
@@ -39,9 +39,18 @@ export default {
     },
     computed: {
         color() {
+            // TODO: Add support for dynamic filter options
+            if (!this.options[this.value]) {
+                return '';
+            }
+
             return this.options[this.value].color;
         },
         label() {
+            // TODO: Add support for dynamic filter options
+            if (!this.options[this.value]) {
+                return '';
+            }
             return this.options[this.value].label;
         },
     },

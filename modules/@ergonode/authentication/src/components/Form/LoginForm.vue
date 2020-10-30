@@ -31,9 +31,9 @@
 </template>
 
 <script>
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
 
 export default {
     name: 'LoginForm',

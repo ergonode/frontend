@@ -22,9 +22,9 @@
 </template>
 
 <script>
-import ListElementDescription from '@Core/components/List/ListElementDescription';
-import ListElementHint from '@Core/components/List/ListElementHint';
-import ListElementTitle from '@Core/components/List/ListElementTitle';
+import ListElementDescription from '@UI/components/List/ListElementDescription';
+import ListElementHint from '@UI/components/List/ListElementHint';
+import ListElementTitle from '@UI/components/List/ListElementTitle';
 import {
     mapActions,
     mapState,
@@ -33,7 +33,7 @@ import {
 export default {
     name: 'CategoriesListElement',
     components: {
-        ListDraggableElement: () => import('@Core/components/List/ListDraggableElement'),
+        ListDraggableElement: () => import('@UI/components/List/ListDraggableElement'),
         ListElementDescription,
         ListElementTitle,
         ListElementHint,

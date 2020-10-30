@@ -25,7 +25,7 @@
                 :errors="errors" />
             <Button
                 title="SAVE CHANGES"
-                :floating="{ bottom: '24px', right: '24px' }"
+                :floating="saveChangesButtonFloatingStyle"
                 @click.native="onSubmit">
                 <template
                     v-if="isSubmitting"
@@ -39,16 +39,6 @@
 
 <script>
 import {
-    GRAPHITE_LIGHT,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Button/Button';
-import DropZone from '@Core/components/DropZone/DropZone';
-import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
-import VerticalTabBar from '@Core/components/TabBar/VerticalTabBar';
-import FadeTransition from '@Core/components/Transitions/FadeTransition';
-import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
@@ -56,6 +46,19 @@ import {
 } from '@Core/defaults/grid';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import CategoryTreeWrapper from '@Trees/components/CategoryTreeDesigner/CategoryTreeWrapper';
+import {
+    GRAPHITE_LIGHT,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import {
+    Z_INDEX_LVL_2,
+} from '@UI/assets/scss/_js-variables/indexes.scss';
+import Button from '@UI/components/Button/Button';
+import DropZone from '@UI/components/DropZone/DropZone';
+import IconRemoveFilter from '@UI/components/Icons/Actions/IconRemoveFilter';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
+import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
+import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
     mapActions,
     mapState,
@@ -90,12 +93,19 @@ export default {
                 {
                     title: 'Categories',
                     component: () => import('@Trees/components/Tabs/List/CategoriesListTab'),
-                    iconComponent: () => import('@Core/components/Icons/Menu/IconCategory'),
+                    iconComponent: () => import('@Trees/components/Icons/IconTree'),
                 },
             ];
         },
         isDropZoneVisible() {
             return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
+        },
+        saveChangesButtonFloatingStyle() {
+            return {
+                bottom: '24px',
+                right: '24px',
+                zIndex: Z_INDEX_LVL_2,
+            };
         },
         graphiteLightColor() {
             return GRAPHITE_LIGHT;

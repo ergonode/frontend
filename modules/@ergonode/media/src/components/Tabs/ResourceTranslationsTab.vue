@@ -29,14 +29,14 @@
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
-import TranslationsTab from '@Core/components/Card/Tabs/TranslationsTab';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import TranslationsTab from '@Core/components/Tabs/TranslationsTab';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import ResourceTranslationForm from '@Media/components/Forms/ResourceTranslationForm';
+import Button from '@UI/components/Button/Button';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import {
     mapActions,
 } from 'vuex';

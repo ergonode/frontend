@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import UserAvatarForm from '@Users/components/Forms/UserAvatarForm';
 
 export default {

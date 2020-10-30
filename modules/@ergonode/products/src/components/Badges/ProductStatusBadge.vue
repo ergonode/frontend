@@ -13,13 +13,13 @@
 import {
     GRAPHITE_DARK,
     WHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import InformationBadge from '@Core/components/Badges/InformationBadge';
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import InformationBadge from '@UI/components/Badges/InformationBadge';
 import {
     calculateContrastRatio,
     calculateRelativeLuminance,
     hexToRGB,
-} from '@Core/models/color/ColorContrast';
+} from '@UI/models/color';
 
 export default {
     name: 'ProductStatusBadge',

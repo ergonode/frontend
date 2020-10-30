@@ -21,10 +21,10 @@
 
 <script>
 import ConditionsListElement from '@Conditions/components/Lists/ConditionsListElement';
-import List from '@Core/components/List/List';
-import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
-import ListSearchHeader from '@Core/components/List/ListSearchHeader';
-import VerticalTabBarList from '@Core/components/TabBar/VerticalTabBarList';
+import List from '@UI/components/List/List';
+import ListScrollableContainer from '@UI/components/List/ListScrollableContainer';
+import ListSearchHeader from '@UI/components/List/ListSearchHeader';
+import VerticalTabBarList from '@UI/components/TabBar/VerticalTabBarList';
 import {
     mapState,
 } from 'vuex';

@@ -24,14 +24,14 @@
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
-import Divider from '@Core/components/Dividers/Divider';
-import MenuList from '@Core/components/MenuList/MenuList';
 import ToolBarUserSelectContentHeader from '@Core/components/ToolBar/ToolBarUserSelectContentHeader';
 import {
     THEME,
 } from '@Core/defaults/theme';
 import navigationBarUserMenu from '@Core/models/navigation/navigationBarUserMenu';
+import Button from '@UI/components/Button/Button';
+import Divider from '@UI/components/Dividers/Divider';
+import MenuList from '@UI/components/MenuList/MenuList';
 import {
     mapActions,
 } from 'vuex';

@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Errors/403 Component is named well 1`] = `
+<div class="placeholder">
+  <div class="horizontal-wrapper"><img src="@UI/assets/images/placeholders/error-pages/404.svg" class="image">
+    <div class="navigation-section">
+      <h1 class="navigation-section__header">
+        Access denied
+      </h1>
+      <p class="navigation-section__description">
+        You do not have permission to view this page.
+      </p>
+    </div>
+  </div>
+</div>
+`;

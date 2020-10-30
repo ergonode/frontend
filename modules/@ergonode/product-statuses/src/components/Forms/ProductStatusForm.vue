@@ -58,19 +58,19 @@
 </template>
 
 <script>
-import CheckBox from '@Core/components/CheckBox/CheckBox';
-import ColorPicker from '@Core/components/ColorPicker/ColorPicker';
-import Divider from '@Core/components/Dividers/Divider';
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import InfoHint from '@Core/components/Hints/InfoHint';
-import TextField from '@Core/components/TextField/TextField';
 import {
     COLORS,
 } from '@Core/defaults/colors';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Statuses/config/privileges';
+import CheckBox from '@UI/components/CheckBox/CheckBox';
+import ColorPicker from '@UI/components/ColorPicker/ColorPicker';
+import Divider from '@UI/components/Dividers/Divider';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import InfoHint from '@UI/components/Hints/InfoHint';
+import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
     mapState,

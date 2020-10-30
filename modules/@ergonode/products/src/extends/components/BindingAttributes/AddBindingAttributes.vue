@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
     name: 'AddBindingAttributes',

@@ -8,7 +8,7 @@
         @click="onClick">
         <Picture
             v-if="data.image"
-            :api-path="`multimedia/${data.image}/download/default`"
+            :href="`multimedia/${data.image}/download/default`"
             :value="data.image"
             :object-fit="objectFit"
             :height="157" />
@@ -31,11 +31,11 @@
 </template>
 
 <script>
-import Picture from '@Core/components/Multimedia/Picture';
-import Toggler from '@Core/components/Toggler/Toggler';
 import {
     THEME,
 } from '@Core/defaults/theme';
+import Picture from '@UI/components/Picture/Picture';
+import Toggler from '@UI/components/Toggler/Toggler';
 
 export default {
     name: 'GridMediaAttachCollectionCell',
@@ -74,7 +74,7 @@ export default {
             return this.data.esa_attached;
         },
         placeholderImage() {
-            return require('@Core/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
+            return require('@UI/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
         },
         secondaryTheme() {
             return THEME.SECONDARY;

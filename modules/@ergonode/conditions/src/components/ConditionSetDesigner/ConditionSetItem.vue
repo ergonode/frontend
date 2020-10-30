@@ -51,8 +51,6 @@ import ConditionSetParameters from '@Conditions/components/ConditionSetDesigner/
 import {
     hasOptions,
 } from '@Conditions/models/conditionTypes';
-import ActionIconButton from '@Core/components/ActionIconButton/ActionIconButton';
-import IconDots from '@Core/components/Icons/Others/IconDots';
 import {
     SIZE,
     THEME,
@@ -60,6 +58,8 @@ import {
 import {
     isEmpty,
 } from '@Core/models/objectWrapper';
+import ActionIconButton from '@UI/components/ActionIconButton/ActionIconButton';
+import IconDots from '@UI/components/Icons/Others/IconDots';
 import {
     mapState,
 } from 'vuex';

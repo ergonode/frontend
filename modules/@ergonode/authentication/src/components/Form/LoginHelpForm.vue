@@ -38,11 +38,11 @@ import LoginForm from '@Authentication/components/Form/LoginForm';
 import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
-import Button from '@Core/components/Button/Button';
-import Fab from '@Core/components/Fab/Fab';
-import IconArrowPointer from '@Core/components/Icons/Arrows/IconArrowPointer';
-import IconEmail from '@Core/components/Icons/Others/IconEmail';
-import LinkButton from '@Core/components/LinkButton/LinkButton';
+import Button from '@UI/components/Button/Button';
+import Fab from '@UI/components/Fab/Fab';
+import IconArrowPointer from '@UI/components/Icons/Arrows/IconArrowPointer';
+import IconEmail from '@UI/components/Icons/Others/IconEmail';
+import LinkButton from '@UI/components/LinkButton/LinkButton';
 
 export default {
     name: 'LoginHelpForm',

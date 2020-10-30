@@ -53,7 +53,6 @@
 
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
-import HorizontalRoutingTabBarContent from '@Core/components/TabBar/Routing/HorizontalRoutingTabBarContent';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -62,6 +61,7 @@ import {
 } from '@Core/defaults/modals';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import HorizontalRoutingTabBarContent from '@UI/components/TabBar/Routing/HorizontalRoutingTabBarContent';
 import {
     mapActions,
     mapState,

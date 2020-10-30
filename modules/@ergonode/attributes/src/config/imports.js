@@ -29,15 +29,15 @@ export const Components = {
 
 export const Icons = {
     Templates: () => import('@Core/components/Icons/Menu/IconTemplates').then(m => m.default || m),
-    IconTextArea: () => import('@Core/components/Icons/Attributes/IconTextArea').then(m => m.default || m),
-    IconText: () => import('@Core/components/Icons/Attributes/IconText').then(m => m.default || m),
-    IconDate: () => import('@Core/components/Icons/Attributes/IconDate').then(m => m.default || m),
-    IconImage: () => import('@Core/components/Icons/Attributes/IconImage').then(m => m.default || m),
-    IconMultiSelect: () => import('@Core/components/Icons/Attributes/IconMultiSelect').then(m => m.default || m),
-    IconSelect: () => import('@Core/components/Icons/Attributes/IconSelect').then(m => m.default || m),
-    IconNumeric: () => import('@Core/components/Icons/Attributes/IconNumeric').then(m => m.default || m),
-    IconPrice: () => import('@Core/components/Icons/Attributes/IconPrice').then(m => m.default || m),
-    IconUnit: () => import('@Core/components/Icons/Attributes/IconMultiSelect').then(m => m.default || m),
+    IconTextArea: () => import('@Attributes/components/Icons/IconTextArea').then(m => m.default || m),
+    IconText: () => import('@Attributes/components/Icons/IconText').then(m => m.default || m),
+    IconDate: () => import('@Attributes/components/Icons/IconDate').then(m => m.default || m),
+    IconImage: () => import('@Attributes/components/Icons/IconImage').then(m => m.default || m),
+    IconMultiSelect: () => import('@Attributes/components/Icons/IconMultiSelect').then(m => m.default || m),
+    IconSelect: () => import('@Attributes/components/Icons/IconSelect').then(m => m.default || m),
+    IconNumeric: () => import('@Attributes/components/Icons/IconNumeric').then(m => m.default || m),
+    IconPrice: () => import('@Attributes/components/Icons/IconPrice').then(m => m.default || m),
+    IconUnit: () => import('@Attributes/components/Icons/IconMultiSelect').then(m => m.default || m),
 };
 
 export const Store = {

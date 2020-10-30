@@ -56,18 +56,18 @@
 </template>
 
 <script>
-import Autocomplete from '@Core/components/Autocomplete/Autocomplete';
-import Divider from '@Core/components/Dividers/Divider';
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import Select from '@Core/components/Select/Select';
-import TextField from '@Core/components/TextField/TextField';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
 import PRIVILEGES from '@Products/config/privileges';
+import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
+import Divider from '@UI/components/Dividers/Divider';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import Select from '@UI/components/Select/Select';
+import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
     mapState,

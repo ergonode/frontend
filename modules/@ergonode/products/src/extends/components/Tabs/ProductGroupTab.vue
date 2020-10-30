@@ -52,12 +52,6 @@
 </template>
 
 <script>
-import ActionButton from '@Core/components/ActionButton/ActionButton';
-import Button from '@Core/components/Button/Button';
-import Grid from '@Core/components/Grid/Grid';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
@@ -78,6 +72,12 @@ import PRIVILEGES from '@Products/config/privileges';
 import {
     ADD_PRODUCT,
 } from '@Products/defaults';
+import ActionButton from '@UI/components/ActionButton/ActionButton';
+import Button from '@UI/components/Button/Button';
+import Grid from '@UI/components/Grid/Grid';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapState,
 } from 'vuex';
@@ -213,7 +213,9 @@ export default {
             filter,
             sortedColumn,
         } = this.localParams) {
-            const filtersWithAttached = filter;
+            const filtersWithAttached = {
+                ...filter,
+            };
 
             if (typeof filter.attached === 'undefined') {
                 filtersWithAttached.attached = {
@@ -250,20 +252,12 @@ export default {
                 params: this.localParams,
             });
 
-            this.columns = columns.map((column) => {
-                if (column.id === 'attached') {
-                    return {
-                        ...column,
-                        filter: null,
-                        editable: false,
-                    };
-                }
-
-                return {
+            this.columns = columns
+                .filter(column => column.id !== 'attached')
+                .map(column => ({
                     ...column,
                     editable: false,
-                };
-            });
+                }));
             this.filtered = filtered;
             this.rows = rows;
         },

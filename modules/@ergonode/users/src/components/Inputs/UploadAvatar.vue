@@ -17,17 +17,17 @@
             <Picture
                 :use-cache="false"
                 :value="value"
-                :api-path="`${languageCode}/accounts/${value}/avatar`" />
+                :href="`${languageCode}/accounts/${value}/avatar`" />
         </template>
     </UploadFile>
 </template>
 
 <script>
-import Picture from '@Core/components/Multimedia/Picture';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import UploadFile from '@Media/components/Inputs/UploadFile/UploadFile';
+import Picture from '@UI/components/Picture/Picture';
 import {
     mapActions,
 } from 'vuex';

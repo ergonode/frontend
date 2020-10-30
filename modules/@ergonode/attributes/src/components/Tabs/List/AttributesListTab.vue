@@ -54,19 +54,19 @@
 <script>
 import AttributesListGroup from '@Attributes/components/Lists/AttributesListGroup';
 import PRIVILEGES from '@Attributes/config/privileges';
-import Fab from '@Core/components/Fab/Fab';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import List from '@Core/components/List/List';
-import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
-import ListSearchHeader from '@Core/components/List/ListSearchHeader';
-import ListSearchSelectHeader from '@Core/components/List/ListSearchSelectHeader';
-import Preloader from '@Core/components/Preloader/Preloader';
-import TreeSelect from '@Core/components/Select/Tree/TreeSelect';
-import VerticalTabBarList from '@Core/components/TabBar/VerticalTabBarList';
 import {
     SIZE,
 } from '@Core/defaults/theme';
 import fetchListGroupDataMixin from '@Core/mixins/list/fetchListGroupDataMixin';
+import Fab from '@UI/components/Fab/Fab';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import List from '@UI/components/List/List';
+import ListScrollableContainer from '@UI/components/List/ListScrollableContainer';
+import ListSearchHeader from '@UI/components/List/ListSearchHeader';
+import ListSearchSelectHeader from '@UI/components/List/ListSearchSelectHeader';
+import Preloader from '@UI/components/Preloader/Preloader';
+import TreeSelect from '@UI/components/Select/Tree/TreeSelect';
+import VerticalTabBarList from '@UI/components/TabBar/VerticalTabBarList';
 import {
     mapActions,
     mapState,

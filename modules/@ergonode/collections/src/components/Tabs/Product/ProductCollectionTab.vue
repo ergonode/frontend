@@ -24,7 +24,7 @@
                     title="Nothing to see here"
                     subtitle="This product has not been added to any collection"
                     :layout-orientation="horizontalOrientation"
-                    :bg-url="require('@Core/assets/images/placeholders/comments.svg')">
+                    :bg-url="require('@UI/assets/images/placeholders/comments.svg')">
                     <template #action>
                         <Button
                             title="GO TO COLLECTIONS"
@@ -40,13 +40,13 @@
 <script>
 import ProductCollection from '@Collections/components/ProductCollection/ProductCollection';
 import ProductCollectionItem from '@Collections/components/ProductCollection/ProductCollectionItem';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     LAYOUT_ORIENTATION,
 } from '@Core/defaults/layout';
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
 } from 'vuex';
@@ -58,8 +58,8 @@ export default {
         ProductCollection,
         ProductCollectionItem,
         ExpandingCollection: () => import('@Core/components/ExpandingCollection/ExpandingCollection'),
-        ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
-        Button: () => import('@Core/components/Button/Button'),
+        ListPlaceholder: () => import('@UI/components/List/ListPlaceholder'),
+        Button: () => import('@UI/components/Button/Button'),
     },
     data() {
         return {

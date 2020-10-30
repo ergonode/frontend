@@ -23,7 +23,7 @@
 
 <script>
 import AttributesListElement from '@Attributes/components/Lists/AttributesListElement';
-import ListGroupElement from '@Core/components/List/ListGroupElement';
+import ListGroupElement from '@UI/components/List/ListGroupElement';
 
 export default {
     name: 'AttributesListGroup',

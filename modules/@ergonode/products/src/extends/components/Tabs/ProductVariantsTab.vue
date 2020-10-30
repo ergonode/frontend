@@ -62,7 +62,7 @@
                         title="CHOOSE VARIANTS"
                         :size="smallSize"
                         :disabled="!isAllowedToUpdate"
-                        @click.native="onChooseVariants" />
+                        @click.native="onShowProductsModal" />
                 </template>
             </Grid>
             <ListPlaceholder
@@ -84,15 +84,7 @@
 </template>
 
 <script>
-import {
-    WHITESMOKE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Button/Button';
 import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
-import Grid from '@Core/components/Grid/Grid';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
-import ListPlaceholder from '@Core/components/List/ListPlaceholder';
 import {
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
@@ -114,6 +106,14 @@ import {
 } from '@Core/services/grid/getGridData.service';
 import PRIVILEGES from '@Products/config/privileges';
 import BindingAttributes from '@Products/extends/components/BindingAttributes/BindingAttributes';
+import {
+    WHITESMOKE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Button from '@UI/components/Button/Button';
+import Grid from '@UI/components/Grid/Grid';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
+import ListPlaceholder from '@UI/components/List/ListPlaceholder';
 import {
     mapActions,
     mapState,
@@ -163,7 +163,7 @@ export default {
             return {
                 title: 'No product variants',
                 subtitle: 'Choose products which together will create a product with variants. You can choose between products which contain selected binding attributes.',
-                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
                 color: WHITESMOKE,
             };
         },
@@ -173,7 +173,7 @@ export default {
                 layoutOrientation: this.horizontalOrientation,
                 title: 'No binding attributes',
                 subtitle: 'Binding attribute is the common attribute of the products, which link products together into the product with variants.',
-                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
             };
         },
         horizontalOrientation() {
@@ -294,9 +294,6 @@ export default {
         onBindingAttributesExpand() {
             this.isBindingAttributesExpanded = !this.isBindingAttributesExpanded;
         },
-        onChooseVariants() {
-            this.isBindingAttributesExpanded = true;
-        },
         onRemoveProduct() {
             this.onFetchData();
         },
@@ -345,10 +342,12 @@ export default {
                 params: this.localParams,
             });
 
-            this.columns = columns.map(column => ({
-                ...column,
-                editable: false,
-            }));
+            this.columns = columns
+                .filter(column => column.id !== 'attached')
+                .map(column => ({
+                    ...column,
+                    editable: false,
+                }));
             this.filtered = filtered;
             this.rows = rows;
         },
