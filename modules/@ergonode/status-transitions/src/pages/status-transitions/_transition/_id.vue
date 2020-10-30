@@ -31,7 +31,7 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('productStatus/getProductStatuses');
+        await store.dispatch('productStatus/getProductStatuses', {});
         await store.dispatch('statusTransition/getStatusTransition', {
             id: params.id,
             onError: () => {

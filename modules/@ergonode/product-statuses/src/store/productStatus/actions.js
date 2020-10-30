@@ -4,6 +4,9 @@
  */
 
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     create,
     get,
     getAll,
@@ -17,28 +20,41 @@ export default {
     async getProductStatuses({
         commit,
         rootState,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
+        try {
+            const {
+                language: userLanguageCode,
+            } = rootState.authentication.user;
 
-        const {
-            collection,
-        } = await getAll({
-            $axios: this.app.$axios,
-        });
+            const {
+                collection,
+            } = await getAll({
+                $axios: this.app.$axios,
+            });
 
-        commit('__SET_STATE', {
-            key: 'statuses',
-            value: collection.map(status => ({
-                id: status.id,
-                key: status.code,
-                value: status.name,
-                hint: status.name
-                    ? `#${status.code} ${userLanguageCode}`
-                    : '',
-            })),
-        });
+            commit('__SET_STATE', {
+                key: 'statuses',
+                value: collection.map(status => ({
+                    id: status.id,
+                    key: status.code,
+                    value: status.name,
+                    hint: status.name
+                        ? `#${status.code} ${userLanguageCode}`
+                        : '',
+                })),
+            });
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async getProductStatus({
         commit,
@@ -96,28 +112,44 @@ export default {
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
             onError(e);
         }
     },
     async getDefaultStatus({
         commit,
         state,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            code,
-        } = state;
+        try {
+            const {
+                code,
+            } = state;
 
-        const {
-            default_status: defaultStatus,
-        } = await getDefault({
-            $axios: this.app.$axios,
-        });
-
-        if (defaultStatus === code) {
-            commit('__SET_STATE', {
-                key: 'isDefaultStatus',
-                value: true,
+            const {
+                default_status: defaultStatus,
+            } = await getDefault({
+                $axios: this.app.$axios,
             });
+
+            if (defaultStatus === code) {
+                commit('__SET_STATE', {
+                    key: 'isDefaultStatus',
+                    value: true,
+                });
+            }
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
         }
     },
     async updateProductStatus({
@@ -187,6 +219,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating product status has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -214,7 +255,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Statuses/store/productStatus/action/updateProductStatus/__before', {
+            const extendedData = await this.$extendMethods('@Statuses/store/productStatus/action/createProductStatus/__before', {
                 $this: this,
                 data,
             });
@@ -234,7 +275,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Statuses/store/productStatus/action/updateProductStatus/__after', {
+            await this.$extendMethods('@Statuses/store/productStatus/action/createProductStatus/__after', {
                 $this: this,
                 data: {
                     id,
@@ -245,6 +286,15 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating product status has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -283,6 +333,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing product status has been canceled',
+                });
+
+                return;
+            }
+
             onError(e);
         }
     },

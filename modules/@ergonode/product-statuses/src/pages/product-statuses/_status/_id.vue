@@ -52,7 +52,7 @@ export default {
                 }
             },
         });
-        await store.dispatch('productStatus/getDefaultStatus');
+        await store.dispatch('productStatus/getDefaultStatus', {});
     },
     computed: {
         ...mapState('productStatus', [
