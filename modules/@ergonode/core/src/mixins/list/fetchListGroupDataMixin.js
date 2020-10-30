@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     UNASSIGNED_GROUP_ID,
 } from '@Core/defaults/list';
 import {
@@ -32,16 +35,29 @@ export default function ({
             };
         },
         async fetch() {
-            const {
-                defaultLanguageCode: languageCode,
-            } = this.$store.state.core;
+            try {
+                const {
+                    defaultLanguageCode: languageCode,
+                } = this.$store.state.core;
 
-            await this.fetchListData({
-                languageCode,
-                limit: 0,
-            });
+                await this.fetchListData({
+                    languageCode,
+                    limit: 0,
+                });
 
-            this.isPrefetchingData = false;
+                this.isPrefetchingData = false;
+            } catch (e) {
+                if (this.$axios.isCancel(e)) {
+                    return;
+                }
+
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'List hasn’t been fetched properly',
+                });
+
+                this.isPrefetchingData = false;
+            }
         },
         computed: {
             unassignedGroup() {
@@ -58,14 +74,29 @@ export default function ({
                 languageCode,
                 limit = 99999,
             }) {
-                const [
-                    groupItems,
-                    listItems,
-                ] = await Promise.all([
+                await Promise.all([
                     getListGroups({
                         $axios: this.$axios,
                         path: `${languageCode}/${namespace}/groups`,
                         languageCode,
+                        onSuccess: (({
+                            groups,
+                            items,
+                            groupItemsCount,
+                        }) => {
+                            if (typeof this.items[languageCode] === 'undefined') {
+                                this.items[languageCode] = {};
+                            }
+
+                            this.groups[languageCode] = [
+                                ...groups,
+                                this.unassignedGroup,
+                            ];
+
+                            this.items[languageCode] = items;
+
+                            this.groupItemsCount = groupItemsCount;
+                        }),
                     }),
                     getListItems({
                         $axios: this.$axios,
@@ -78,50 +109,41 @@ export default function ({
                             field: 'code',
                             order: 'ASC',
                         },
+                        onSuccess: (({
+                            items,
+                            info,
+                        }) => {
+                            if (typeof this.items[languageCode] === 'undefined') {
+                                this.items[languageCode] = {};
+                            }
+
+                            this.items[languageCode][UNASSIGNED_GROUP_ID] = items;
+                            this.groupItemsCount[UNASSIGNED_GROUP_ID] = info.filtered;
+                        }),
                     }),
                 ]);
-
-                this.groups = {
-                    ...this.groups,
-                    [languageCode]: [
-                        ...groupItems.groups,
-                        this.unassignedGroup,
-                    ],
-                };
-
-                this.items = {
-                    ...this.items,
-                    [languageCode]: {
-                        ...groupItems.items,
-                        [UNASSIGNED_GROUP_ID]: listItems.items,
-                    },
-                };
-
-                this.groupItemsCount = {
-                    ...groupItems.groupItemsCount,
-                    [UNASSIGNED_GROUP_ID]: listItems.info.filtered,
-                };
             },
             async getGroups(languageCode) {
-                const {
-                    groups,
-                    items,
-                    groupItemsCount,
-                } = await getListGroups({
+                await getListGroups({
                     $axios: this.$axios,
                     path: `${languageCode}/${namespace}/groups`,
                     languageCode,
+                    onSuccess: (({
+                        groups,
+                        items,
+                        groupItemsCount,
+                    }) => {
+                        this.groups = {
+                            ...this.groups,
+                            [languageCode]: groups,
+                        };
+                        this.items = {
+                            ...this.items,
+                            [languageCode]: items,
+                        };
+                        this.groupItemsCount = groupItemsCount;
+                    }),
                 });
-
-                this.groups = {
-                    ...this.groups,
-                    [languageCode]: groups,
-                };
-                this.items = {
-                    ...this.items,
-                    [languageCode]: items,
-                };
-                this.groupItemsCount = groupItemsCount;
             },
             async getGroupItems({
                 groupId,
@@ -138,9 +160,7 @@ export default function ({
 
                     this.prefetchingGroupItemsId = this.expandedGroupId;
 
-                    const {
-                        items,
-                    } = await getListItems({
+                    await getListItems({
                         $axios: this.$axios,
                         path: `${languageCode}/${namespace}`,
                         params: {
@@ -151,14 +171,17 @@ export default function ({
                             field: 'code',
                             order: 'ASC',
                         },
+                        onSuccess: (({
+                            items,
+                        }) => {
+                            this.items[languageCode] = {
+                                ...this.items[languageCode],
+                                [groupId]: items,
+                            };
+
+                            this.prefetchingGroupItemsId = '';
+                        }),
                     });
-
-                    this.items[languageCode] = {
-                        ...this.items[languageCode],
-                        [groupId]: items,
-                    };
-
-                    this.prefetchingGroupItemsId = '';
                 }
             },
             async getAllGroupsItems({
@@ -166,9 +189,7 @@ export default function ({
             }) {
                 const filter = this.codeFilter ? `code=${this.codeFilter}` : '';
 
-                const {
-                    items,
-                } = await getListItems({
+                await getListItems({
                     $axios: this.$axios,
                     path: `${languageCode}/${namespace}`,
                     params: {
@@ -179,25 +200,28 @@ export default function ({
                         field: 'code',
                         order: 'ASC',
                     },
+                    onSuccess: (({
+                        items,
+                    }) => {
+                        if (this.expandedGroupId !== '') {
+                            const isAnyGroupInsideGroups = groups => groups.some(
+                                grp => grp === this.expandedGroupId,
+                            );
+                            const isGroupUnassigned = this.expandedGroupId === UNASSIGNED_GROUP_ID;
+                            const groupItems = items.filter(({
+                                groups,
+                            }) => (groups.length === 0 && isGroupUnassigned)
+                                || isAnyGroupInsideGroups(groups));
+
+                            this.items[languageCode] = {
+                                ...this.items[languageCode],
+                                [this.expandedGroupId]: groupItems,
+                            };
+                        }
+
+                        this.groupItemsCount = getMappedGroupItemsCount(items);
+                    }),
                 });
-
-                if (this.expandedGroupId !== '') {
-                    const isAnyGroupInsideGroups = groups => groups.some(
-                        grp => grp === this.expandedGroupId,
-                    );
-                    const isGroupUnassigned = this.expandedGroupId === UNASSIGNED_GROUP_ID;
-                    const groupItems = items.filter(({
-                        groups,
-                    }) => (groups.length === 0 && isGroupUnassigned)
-                        || isAnyGroupInsideGroups(groups));
-
-                    this.items[languageCode] = {
-                        ...this.items[languageCode],
-                        [this.expandedGroupId]: groupItems,
-                    };
-                }
-
-                this.groupItemsCount = getMappedGroupItemsCount(items);
             },
             async onGroupExpand({
                 group,

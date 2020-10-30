@@ -139,11 +139,7 @@ export default {
             });
         },
         async onFetchData(params = DEFAULT_GRID_FETCH_PARAMS) {
-            const {
-                columns,
-                rows,
-                filtered,
-            } = await getGridData({
+            await getGridData({
                 $route: this.$route,
                 $cookies: this.$cookies,
                 $axios: this.$axios,
@@ -152,38 +148,49 @@ export default {
                     ...params,
                     extended: true,
                 },
-            });
-
-            this.columns = columns.map((column) => {
-                if (column.id === 'attached') {
-                    return {
-                        ...column,
-                        filter: {
-                            type: 'SELECT',
-                            options: {
-                                false: {
-                                    label: 'Not attached',
+                onSuccess: (({
+                    columns,
+                    rows,
+                    filtered,
+                }) => {
+                    this.columns = columns.map((column) => {
+                        if (column.id === 'attached') {
+                            return {
+                                ...column,
+                                filter: {
+                                    type: 'SELECT',
+                                    options: {
+                                        false: {
+                                            label: 'Not attached',
+                                        },
+                                        true: {
+                                            label: 'Attached',
+                                        },
+                                    },
                                 },
-                                true: {
-                                    label: 'Attached',
-                                },
-                            },
-                        },
-                    };
-                }
+                            };
+                        }
 
-                return {
-                    ...column,
-                    editable: false,
-                };
+                        return {
+                            ...column,
+                            editable: false,
+                        };
+                    });
+                    this.rows = rows.map(({
+                        // eslint-disable-next-line no-unused-vars
+                        _links, ...rest
+                    }) => ({
+                        ...rest,
+                    }));
+                    this.filtered = filtered;
+                }),
+                onError: () => {
+                    this.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Grid data haven’t been fetched properly',
+                    });
+                },
             });
-            this.rows = rows.map(({
-                // eslint-disable-next-line no-unused-vars
-                _links, ...rest
-            }) => ({
-                ...rest,
-            }));
-            this.filtered = filtered;
         },
         onClose() {
             this.removeScopeErrors(this.scope);

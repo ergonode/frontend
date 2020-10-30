@@ -38,6 +38,9 @@
 import AttributesListElement from '@Attributes/components/Lists/AttributesListElement';
 import PRIVILEGES from '@Attributes/config/privileges';
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     SIZE,
 } from '@Core/defaults/theme';
 import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
@@ -117,14 +120,36 @@ export default {
     },
     methods: {
         onSearch(value) {
-            this.codeFilter = value;
-            this.getItems(this.language.code);
+            try {
+                this.codeFilter = value;
+                this.getItems(this.language.code);
+            } catch (e) {
+                if (this.$axios.isCancel(e)) {
+                    return;
+                }
+
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'List hasn’t been fetched properly',
+                });
+            }
         },
         onSelect(value) {
-            this.language = value;
+            try {
+                this.language = value;
 
-            if (typeof this.items[value.code] === 'undefined') {
-                this.getItems(value.code);
+                if (typeof this.items[value.code] === 'undefined') {
+                    this.getItems(value.code);
+                }
+            } catch (e) {
+                if (this.$axios.isCancel(e)) {
+                    return;
+                }
+
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'List hasn’t been fetched properly',
+                });
             }
         },
     },

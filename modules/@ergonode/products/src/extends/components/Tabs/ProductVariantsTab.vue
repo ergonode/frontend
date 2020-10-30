@@ -86,6 +86,9 @@
 <script>
 import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 import {
@@ -330,26 +333,33 @@ export default {
                 this.localParams.order = orderState;
             }
 
-            const {
-                columns,
-                rows,
-                filtered,
-            } = await getGridData({
+            const {} = await getGridData({
                 $route: this.$route,
                 $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: `products/${this.id}/children-and-available-products`,
                 params: this.localParams,
+                onSuccess: (({
+                    columns,
+                    rows,
+                    filtered,
+                }) => {
+                    this.columns = columns
+                        .filter(column => column.id !== 'attached')
+                        .map(column => ({
+                            ...column,
+                            editable: false,
+                        }));
+                    this.filtered = filtered;
+                    this.rows = rows;
+                }),
+                onError: () => {
+                    this.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Grid data haven’t been fetched properly',
+                    });
+                },
             });
-
-            this.columns = columns
-                .filter(column => column.id !== 'attached')
-                .map(column => ({
-                    ...column,
-                    editable: false,
-                }));
-            this.filtered = filtered;
-            this.rows = rows;
         },
     },
 };

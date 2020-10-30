@@ -301,15 +301,25 @@ export default {
             }
         },
         async getOptions() {
-            this.isFetchingRequest = true;
+            try {
+                this.isFetchingRequest = true;
 
-            this.options = await this.$axios.$get(this.href, {
-                params: {
-                    search: this.searchValue,
-                },
-            });
+                this.options = await this.$axios.$get(this.href, {
+                    params: {
+                        search: this.searchValue,
+                    },
+                });
 
-            this.isFetchingRequest = false;
+                this.isFetchingRequest = false;
+            } catch (e) {
+                if (this.$axios.isCancel(e)) {
+                    return;
+                }
+
+                this.isFetchingRequest = false;
+
+                this.$emit('fetch-error');
+            }
         },
     },
 };

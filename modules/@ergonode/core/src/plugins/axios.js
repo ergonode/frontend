@@ -6,6 +6,18 @@ import {
     cacheAdapterEnhancer,
 } from 'axios-extensions';
 
+let cancelTokens = [];
+
+const clearCancelTokens = () => {
+    cancelTokens.forEach((request) => {
+        if (request.cancel) {
+            request.cancel();
+        }
+    });
+
+    cancelTokens = [];
+};
+
 export default function ({
     $axios,
     store,
@@ -28,6 +40,14 @@ export default function ({
 
     axios.onRequest((config) => {
         const configLocal = config;
+
+        if (!configLocal.cancelToken) {
+            const source = $axios.CancelToken.source();
+
+            configLocal.cancelToken = source.token;
+
+            cancelTokens.push(source);
+        }
 
         if (configLocal.withLanguage) {
             const {
@@ -115,4 +135,5 @@ export default function ({
     });
 
     inject('axios', axios);
+    inject('clearCancelTokens', clearCancelTokens);
 }

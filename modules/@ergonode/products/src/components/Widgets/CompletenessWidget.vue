@@ -19,6 +19,9 @@
 
 <script>
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     getCompletenessCount,
 } from '@Dashboard/services';
 import {
@@ -38,36 +41,49 @@ export default {
         Preloader,
     },
     async fetch() {
-        const completenessCount = await getCompletenessCount({
-            $axios: this.$axios,
-        });
-
-        const progressListDatasets = [];
-        const progressListLabels = [];
-
-        completenessCount.forEach((product) => {
-            const {
-                value,
-                label,
-            } = product;
-
-            const color = [
-                RED,
-                YELLOW,
-                GREEN,
-            ][Math.floor(value / 40)];
-
-            progressListDatasets.push({
-                color,
-                label,
-                value,
+        try {
+            const completenessCount = await getCompletenessCount({
+                $axios: this.$axios,
             });
-            progressListLabels.push(`${value}%`);
-        });
 
-        this.progressListDatasets = progressListDatasets;
-        this.progressListLabels = progressListLabels;
-        this.isPrefetchingData = false;
+            const progressListDatasets = [];
+            const progressListLabels = [];
+
+            completenessCount.forEach((product) => {
+                const {
+                    value,
+                    label,
+                } = product;
+
+                const color = [
+                    RED,
+                    YELLOW,
+                    GREEN,
+                ][Math.floor(value / 40)];
+
+                progressListDatasets.push({
+                    color,
+                    label,
+                    value,
+                });
+                progressListLabels.push(`${value}%`);
+            });
+
+            this.progressListDatasets = progressListDatasets;
+            this.progressListLabels = progressListLabels;
+            this.isPrefetchingData = false;
+        } catch (e) {
+            if (this.$axios.isCancel(e)) {
+                return;
+            }
+
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Products completeness haven’t been fetched properly',
+            });
+
+            this.isPrefetchingData = false;
+        }
     },
     data() {
         return {

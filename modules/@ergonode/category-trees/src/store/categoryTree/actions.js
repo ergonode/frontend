@@ -105,9 +105,7 @@ export default {
             } = data;
 
             if (categories.length) {
-                const {
-                    items,
-                } = await getListItems({
+                await getListItems({
                     $axios: this.app.$axios,
                     path: `${userLanguageCode}/categories`,
                     params: {
@@ -119,22 +117,25 @@ export default {
                         field: 'code',
                         order: 'ASC',
                     },
-                });
+                    onSuccess: (({
+                        items,
+                    }) => {
+                        const treeToSet = getParsedTreeData(categories, items);
 
-                const treeToSet = getParsedTreeData(categories, items);
-
-                treeToSet.forEach(e => dispatch('list/setDisabledElement', {
-                    languageCode: userLanguageCode,
-                    elementId: e.id,
-                    disabled: true,
-                }, {
-                    root: true,
-                }));
-                dispatch('gridDesigner/setGridData', treeToSet, {
-                    root: true,
-                });
-                dispatch('gridDesigner/setFullGridData', treeToSet, {
-                    root: true,
+                        treeToSet.forEach(e => dispatch('list/setDisabledElement', {
+                            languageCode: userLanguageCode,
+                            elementId: e.id,
+                            disabled: true,
+                        }, {
+                            root: true,
+                        }));
+                        dispatch('gridDesigner/setGridData', treeToSet, {
+                            root: true,
+                        });
+                        dispatch('gridDesigner/setFullGridData', treeToSet, {
+                            root: true,
+                        });
+                    }),
                 });
             }
 

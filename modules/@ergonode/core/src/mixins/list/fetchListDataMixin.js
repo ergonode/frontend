@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     getListItems,
 } from '@Core/services/list/getList.service';
 
@@ -19,13 +22,24 @@ export default function ({
             };
         },
         async fetch() {
-            const {
-                defaultLanguageCode,
-            } = this.$store.state.core;
+            try {
+                const {
+                    defaultLanguageCode,
+                } = this.$store.state.core;
 
-            await this.getItems(defaultLanguageCode);
+                await this.getItems(defaultLanguageCode);
 
-            this.isPrefetchingData = false;
+                this.isPrefetchingData = false;
+            } catch (e) {
+                if (this.$axios.isCancel(e)) {
+                    return;
+                }
+
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'List hasn’t been fetched properly',
+                });
+            }
         },
         methods: {
             async getItems(languageCode) {
@@ -33,9 +47,7 @@ export default function ({
                     ? `code=${this.codeFilter};${extraFilters}`
                     : extraFilters;
 
-                const {
-                    items,
-                } = await getListItems({
+                await getListItems({
                     $axios: this.$axios,
                     path: `${languageCode}/${namespace}`,
                     params: {
@@ -46,12 +58,15 @@ export default function ({
                         field: 'code',
                         order: 'ASC',
                     },
+                    onSuccess: (({
+                        items,
+                    }) => {
+                        this.items = {
+                            ...this.items,
+                            [languageCode]: items,
+                        };
+                    }),
                 });
-
-                this.items = {
-                    ...this.items,
-                    [languageCode]: items,
-                };
             },
         },
     };

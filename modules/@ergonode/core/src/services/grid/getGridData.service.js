@@ -19,43 +19,53 @@ export const getGridData = async ({
     $axios,
     path,
     params,
+    onSuccess = () => {},
+    onError = () => {},
 }) => {
-    const config = {
-        params,
-    };
+    try {
+        const config = {
+            params,
+        };
 
-    if (params.filter) {
-        config.params.filter = getParsedFilters(params.filter);
-    }
+        if (params.filter) {
+            config.params.filter = getParsedFilters(params.filter);
+        }
 
-    const {
-        collection,
-        columns,
-        info: {
+        const {
+            collection,
+            columns,
+            info: {
+                filtered,
+            },
+        } = await $axios.$get(path, config);
+
+        const sortedColumns = params.columns
+            ? getSortedColumnsByIDs(columns, params.columns)
+            : columns;
+
+        if (!$cookies.get(`GRID_CONFIG:${$route.name}`)) {
+            $cookies.set(
+                `GRID_CONFIG:${$route.name}`,
+                sortedColumns
+                    .map(({
+                        id,
+                    }) => id)
+                    .join(','),
+            );
+        }
+
+        onSuccess({
+            columns: sortedColumns,
+            rows: collection,
             filtered,
-        },
-    } = await $axios.$get(path, config);
+        });
+    } catch (e) {
+        if ($axios.isCancel(e)) {
+            return;
+        }
 
-    const sortedColumns = params.columns
-        ? getSortedColumnsByIDs(columns, params.columns)
-        : columns;
-
-    if (!$cookies.get(`GRID_CONFIG:${$route.name}`)) {
-        $cookies.set(
-            `GRID_CONFIG:${$route.name}`,
-            sortedColumns
-                .map(({
-                    id,
-                }) => id)
-                .join(','),
-        );
+        onError(e);
     }
-
-    return {
-        columns: sortedColumns,
-        rows: collection,
-        filtered,
-    };
 };
 
 export const getAdvancedFiltersData = async ({

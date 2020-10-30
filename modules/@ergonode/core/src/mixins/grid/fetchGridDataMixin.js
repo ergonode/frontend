@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 import {
@@ -158,23 +161,30 @@ export default function ({
                     params.order = orderState;
                 }
 
-                const {
-                    columns,
-                    rows,
-                    filtered,
-                } = await getGridData({
+                await getGridData({
                     $route: this.$route,
                     $cookies: this.$cookies,
                     $axios: this.$axios,
                     path: this.getPath(),
                     params,
+                    onSuccess: (({
+                        columns,
+                        rows,
+                        filtered,
+                    }) => {
+                        this.columns = columns;
+                        this.rows = rows;
+                        this.filtered = filtered;
+
+                        this.$emit('fetched');
+                    }),
+                    onError: () => {
+                        this.$addAlert({
+                            type: ALERT_TYPE.ERROR,
+                            message: 'Grid data haven’t been fetched properly',
+                        });
+                    },
                 });
-
-                this.columns = columns;
-                this.rows = rows;
-                this.filtered = filtered;
-
-                this.$emit('fetched');
             },
             onRemoveRow() {
                 this.onFetchData();

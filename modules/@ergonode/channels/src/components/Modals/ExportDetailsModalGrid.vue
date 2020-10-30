@@ -48,6 +48,9 @@
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 import {
@@ -159,11 +162,7 @@ export default {
             });
         },
         async onFetchData(params = DEFAULT_GRID_FETCH_PARAMS) {
-            const {
-                columns,
-                rows,
-                filtered,
-            } = await getGridData({
+            await getGridData({
                 $route: this.$route,
                 $cookies: this.$cookies,
                 $axios: this.$axios,
@@ -172,11 +171,22 @@ export default {
                     ...params,
                     extended: true,
                 },
+                onSuccess: (({
+                    columns,
+                    rows,
+                    filtered,
+                }) => {
+                    this.columns = columns;
+                    this.rows = rows;
+                    this.filtered = filtered;
+                }),
+                onError: () => {
+                    this.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Grid data haven’t been fetched properly',
+                    });
+                },
             });
-
-            this.columns = columns;
-            this.rows = rows;
-            this.filtered = filtered;
         },
         async onDownloadExportFile() {
             const response = await this.$axios.$get(this.downloadLink, {

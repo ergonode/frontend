@@ -26,6 +26,9 @@
 
 <script>
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     COLORS,
 } from '@Core/defaults/colors';
 import {
@@ -45,49 +48,62 @@ export default {
         Preloader,
     },
     async fetch() {
-        const productsCount = await getProductsCount({
-            $axios: this.$axios,
-        });
+        try {
+            const productsCount = await getProductsCount({
+                $axios: this.$axios,
+            });
 
-        const doughnutDatasets = [];
-        const progressListDatasets = [];
-        const progressListLabels = [];
-        let maxValue = 0;
+            const doughnutDatasets = [];
+            const progressListDatasets = [];
+            const progressListLabels = [];
+            let maxValue = 0;
 
-        const dataset = {
-            data: [],
-            backgroundColor: [],
-            borderWidth: 0,
-        };
+            const dataset = {
+                data: [],
+                backgroundColor: [],
+                borderWidth: 0,
+            };
 
-        productsCount.forEach((product) => {
-            const {
-                count, label,
-            } = product;
+            productsCount.forEach((product) => {
+                const {
+                    count, label,
+                } = product;
 
-            if (count > 0) {
-                const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+                if (count > 0) {
+                    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
 
-                progressListDatasets.push({
-                    color,
-                    label,
-                    value: count,
-                });
-                progressListLabels.push(count);
-                dataset.data.push(count);
-                dataset.backgroundColor.push(color);
+                    progressListDatasets.push({
+                        color,
+                        label,
+                        value: count,
+                    });
+                    progressListLabels.push(count);
+                    dataset.data.push(count);
+                    dataset.backgroundColor.push(color);
 
-                maxValue += count;
+                    maxValue += count;
+                }
+            });
+
+            doughnutDatasets.push(dataset);
+
+            this.doughnutDatasets = doughnutDatasets;
+            this.progressListDatasets = progressListDatasets;
+            this.progressListLabels = progressListLabels;
+            this.maxValue = maxValue;
+            this.isPrefetchingData = false;
+        } catch (e) {
+            if (this.$axios.isCancel(e)) {
+                return;
             }
-        });
 
-        doughnutDatasets.push(dataset);
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Product haven’t been fetched properly',
+            });
 
-        this.doughnutDatasets = doughnutDatasets;
-        this.progressListDatasets = progressListDatasets;
-        this.progressListLabels = progressListLabels;
-        this.maxValue = maxValue;
-        this.isPrefetchingData = false;
+            this.isPrefetchingData = false;
+        }
     },
     data() {
         return {

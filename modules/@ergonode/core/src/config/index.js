@@ -24,6 +24,10 @@ export default {
         },
         {
             ssr: true,
+            src: './plugins/route',
+        },
+        {
+            ssr: true,
             src: './plugins/core',
         },
         {
