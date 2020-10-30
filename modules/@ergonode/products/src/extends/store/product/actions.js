@@ -67,7 +67,10 @@ export default {
         state,
         commit,
     }, {
-        scope, bindings, onSuccess, onError,
+        scope,
+        bindings,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
         const errors = {};
         let isAnyError = false;

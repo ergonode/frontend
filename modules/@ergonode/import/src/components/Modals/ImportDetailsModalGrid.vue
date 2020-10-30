@@ -76,17 +76,18 @@ export default {
         },
     },
     async fetch() {
-        const [
-            importDetails,
-        ] = await Promise.all([
+        await Promise.all([
             this.getImportDetails({
                 sourceId: this.sourceId,
                 importId: this.importId,
+                onSuccess: (({
+                    details,
+                }) => {
+                    this.details = details;
+                }),
             }),
             this.onFetchData(),
         ]);
-
-        this.details = importDetails;
 
         this.isPrefetchingData = false;
     },

@@ -3,9 +3,6 @@
  * See LICENSE for license details.
  */
 import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import {
     getParsedFilters,
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';

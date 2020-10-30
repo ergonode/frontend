@@ -167,8 +167,8 @@ export default {
     async removeResource({
         state,
     }, {
-        onSuccess,
-        onError,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
         try {
             const {

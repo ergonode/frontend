@@ -31,6 +31,10 @@ export default {
             state,
             rootState,
         },
+        {
+            onSuccess = () => {},
+            onError = () => {},
+        },
     ) {
         try {
             const {
@@ -54,13 +58,15 @@ export default {
                 });
             }
 
-            return configuration;
+            onSuccess({
+                configuration,
+            });
         } catch (e) {
             if (this.app.$axios.isCancel(e)) {
-                return {};
+                return;
             }
 
-            return {};
+            onError(e);
         }
     },
     async getSchedulerConfiguration({
@@ -110,6 +116,8 @@ export default {
     async getExportDetails({}, {
         channelId,
         exportId,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
         try {
             const details = await getDetails({
@@ -118,7 +126,7 @@ export default {
                 exportId,
             });
 
-            return {
+            onSuccess({
                 details: [
                     {
                         label: 'Date of start',
@@ -142,13 +150,13 @@ export default {
                     },
                 ],
                 links: details._links,
-            };
+            });
         } catch (e) {
             if (this.app.$axios.isCancel(e)) {
-                return [];
+                return;
             }
 
-            return [];
+            onError(e);
         }
     },
     async getChannel(

@@ -154,12 +154,18 @@ export default {
         async setSchema(type) {
             this.isFetchingConfiguration = true;
 
-            this.schemas = {
-                ...this.schemas,
-                [type]: await this.getConfiguration(),
-            };
+            await this.getConfiguration({
+                onSuccess: (({
+                    configuration,
+                }) => {
+                    this.schemas = {
+                        ...this.schemas,
+                        [type]: configuration,
+                    };
 
-            this.isFetchingConfiguration = false;
+                    this.isFetchingConfiguration = false;
+                }),
+            });
         },
         setConfigurationValue(value) {
             this.__setState({

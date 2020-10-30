@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     create,
     get,
     remove,
@@ -58,6 +61,10 @@ export default {
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError(e);
         }
     },
@@ -111,6 +118,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating unit has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -166,6 +182,15 @@ export default {
 
             await onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating unit has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -175,8 +200,8 @@ export default {
     async removeUnit({
         state,
     }, {
-        onSuccess,
-        onError,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
         try {
             const {
@@ -204,6 +229,15 @@ export default {
             // EXTENDED AFTER METHOD
             await onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing unit has been canceled',
+                });
+
+                return;
+            }
+
             onError(e);
         }
     },

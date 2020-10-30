@@ -91,28 +91,25 @@ export default {
         },
     },
     async fetch() {
-        const [
-            exportDetailsResponse,
-        ] = await Promise.all([
+        await Promise.all([
             this.getExportDetails({
                 channelId: this.channelId,
                 exportId: this.exportId,
+                onSuccess: (({
+                    details,
+                    links,
+                }) => {
+                    this.details = details;
+
+                    if (links && links.attachment) {
+                        this.downloadLink = links.attachment.href;
+                    }
+
+                    this.isPrefetchingData = false;
+                }),
             }),
             this.onFetchData(),
         ]);
-
-        const {
-            details,
-            links,
-        } = exportDetailsResponse;
-
-        this.details = details;
-
-        if (links && links.attachment) {
-            this.downloadLink = links.attachment.href;
-        }
-
-        this.isPrefetchingData = false;
     },
     data() {
         return {

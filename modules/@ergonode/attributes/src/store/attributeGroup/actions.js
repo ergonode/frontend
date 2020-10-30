@@ -83,7 +83,7 @@ export default {
         },
         {
             id,
-            onError,
+            onError = () => {},
         },
     ) {
         try {
