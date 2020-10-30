@@ -14,6 +14,9 @@ import {
     updateScheduler,
 } from '@Channels/services/index';
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     getDefaultJsonSchemaTypes,
 } from '@Core/models/jsonSchema';
 import {
@@ -29,31 +32,40 @@ export default {
             rootState,
         },
     ) {
-        const {
-            id,
-            type,
-        } = state;
-        const {
-            channels,
-        } = rootState.dictionaries;
-        const configuration = await getConfiguration({
-            $axios: this.app.$axios,
-            id: getKeyByValue(channels, type),
-        });
-
-        if (!id) {
-            const defaultConfiguration = getDefaultJsonSchemaTypes(configuration.properties);
-
-            commit('__SET_STATE', {
-                key: 'configuration',
-                value: JSON.stringify(defaultConfiguration),
+        try {
+            const {
+                id,
+                type,
+            } = state;
+            const {
+                channels,
+            } = rootState.dictionaries;
+            const configuration = await getConfiguration({
+                $axios: this.app.$axios,
+                id: getKeyByValue(channels, type),
             });
-        }
 
-        return configuration;
+            if (!id) {
+                const defaultConfiguration = getDefaultJsonSchemaTypes(configuration.properties);
+
+                commit('__SET_STATE', {
+                    key: 'configuration',
+                    value: JSON.stringify(defaultConfiguration),
+                });
+            }
+
+            return configuration;
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return {};
+            }
+
+            return {};
+        }
     },
     async getSchedulerConfiguration({
-        commit, state,
+        commit,
+        state,
     }, {
         onError = () => {},
     }) {
@@ -88,6 +100,10 @@ export default {
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError(e);
         }
     },
@@ -95,37 +111,45 @@ export default {
         channelId,
         exportId,
     }) {
-        const details = await getDetails({
-            $axios: this.app.$axios,
-            channelId,
-            exportId,
-        });
+        try {
+            const details = await getDetails({
+                $axios: this.app.$axios,
+                channelId,
+                exportId,
+            });
 
-        return {
-            details: [
-                {
-                    label: 'Date of start',
-                    value: details.started_at,
-                },
-                {
-                    label: 'Date of finish',
-                    value: details.ended_at,
-                },
-                {
-                    label: 'Status',
-                    value: details.status,
-                },
-                {
-                    label: 'Processed',
-                    value: details.processed || '0',
-                },
-                {
-                    label: 'Errors',
-                    value: details.errors || '0',
-                },
-            ],
-            links: details._links,
-        };
+            return {
+                details: [
+                    {
+                        label: 'Date of start',
+                        value: details.started_at,
+                    },
+                    {
+                        label: 'Date of finish',
+                        value: details.ended_at,
+                    },
+                    {
+                        label: 'Status',
+                        value: details.status,
+                    },
+                    {
+                        label: 'Processed',
+                        value: details.processed || '0',
+                    },
+                    {
+                        label: 'Errors',
+                        value: details.errors || '0',
+                    },
+                ],
+                links: details._links,
+            };
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return [];
+            }
+
+            return [];
+        }
     },
     async getChannel(
         {
@@ -134,6 +158,7 @@ export default {
         },
         {
             id,
+            onSuccess = () => {},
             onError = () => {},
         },
     ) {
@@ -179,6 +204,8 @@ export default {
                 data,
             });
             // EXTENDED AFTER METHOD
+
+            onSuccess();
         } catch (e) {
             onError(e);
         }
@@ -244,6 +271,15 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating channel has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -294,6 +330,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating channel export has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -352,6 +397,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating channel has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -407,6 +461,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating channel scheduler has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -416,8 +479,8 @@ export default {
     async removeChannel({
         state,
     }, {
-        onSuccess,
-        onError,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
         try {
             const {
@@ -443,6 +506,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing channel has been canceled',
+                });
+
+                return;
+            }
+
             onError(e);
         }
     },
