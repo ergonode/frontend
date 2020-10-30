@@ -11,6 +11,13 @@
                 <NavigationBackFab />
             </template>
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
@@ -63,6 +70,9 @@ export default {
         ...mapState('dictionaries', [
             'productTypes',
         ]),
+        extendedMainAction() {
+            return this.$getExtendedComponents('@Products/components/Pages/ProductPage/mainAction');
+        },
         smallSize() {
             return SIZE.SMALL;
         },
@@ -93,6 +103,16 @@ export default {
 
                 this.asyncTabs = tabs.length ? Array.from(new Set([].concat(...tabs))) : tmpTabs;
             },
+        },
+    },
+    methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.PRODUCT,
+                ...props,
+            };
         },
     },
 };

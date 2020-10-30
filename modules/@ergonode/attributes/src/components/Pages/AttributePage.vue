@@ -11,6 +11,13 @@
                 <NavigationBackFab />
             </template>
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <Button
                     data-cy="delete-attribute"
                     :theme="secondaryTheme"
@@ -62,6 +69,9 @@ export default {
         ...mapState('dictionaries', [
             'attrTypes',
         ]),
+        extendedMainAction() {
+            return this.$getExtendedComponents('@Attributes/components/Pages/AttributePage/mainAction');
+        },
         isAllowedToDelete() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.delete,
@@ -89,6 +99,16 @@ export default {
 
                 this.asyncTabs = tabs.length ? Array.from(new Set([].concat(...tabs))) : tmpTabs;
             },
+        },
+    },
+    methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.ATTRIBUTE,
+                ...props,
+            };
         },
     },
 };

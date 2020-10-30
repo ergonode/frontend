@@ -11,6 +11,13 @@
                 <NavigationBackFab />
             </template>
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <Button
                     data-cy="delete-attribute-group"
                     :theme="secondaryTheme"
@@ -44,6 +51,9 @@ export default {
         asyncTabsMixin,
     ],
     computed: {
+        extendedMainAction() {
+            return this.$getExtendedComponents('@Attributes/components/Pages/AttributeGroupPage/mainAction');
+        },
         isAllowedToDelete() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE_GROUP.delete,
@@ -51,6 +61,16 @@ export default {
         },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.ATTRIBUTE_GROUP.namespace);
+        },
+    },
+    methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.ATTRIBUTE_GROUP,
+                ...props,
+            };
         },
     },
 };
