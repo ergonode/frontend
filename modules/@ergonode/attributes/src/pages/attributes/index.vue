@@ -8,6 +8,13 @@
             :title="$t('attribute.page.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <Button
                     data-cy="new-attribute"
                     :title="$t('attribute.page.addButton')"
@@ -33,6 +40,13 @@
             v-if="isModalVisible"
             @close="onCloseModal"
             @created="onCreatedData" />
+        <template
+            v-for="(modal, index) in extendedModals">
+            <Component
+                :is="modal.component"
+                :key="index"
+                v-bind="bindingProps(modal)" />
+        </template>
     </Page>
 </template>
 
@@ -66,6 +80,12 @@ export default {
         asyncTabsMixin,
     ],
     computed: {
+        extendedMainAction() {
+            return this.$getExtendedComponents('@Attributes/pages/attributes/mainAction');
+        },
+        extendedModals() {
+            return this.$getExtendedComponents('@Attributes/pages/attributes/injectModal');
+        },
         isAllowedToCreate() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.create,
@@ -78,6 +98,16 @@ export default {
         },
         smallSize() {
             return SIZE.SMALL;
+        },
+    },
+    methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.ATTRIBUTE,
+                ...props,
+            };
         },
     },
     head() {

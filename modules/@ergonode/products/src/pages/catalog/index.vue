@@ -8,6 +8,13 @@
             title="Catalog"
             :is-read-only="isReadOnly">
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <Button
                     title="NEW PRODUCT"
                     :size="smallSize"
@@ -42,6 +49,13 @@
             v-if="isModalVisible"
             @close="onCloseModal"
             @created="onCreatedData" />
+        <template
+            v-for="(modal, index) in extendedModals">
+            <Component
+                :is="modal.component"
+                :key="index"
+                v-bind="bindingProps(modal)" />
+        </template>
     </Page>
 </template>
 
@@ -83,6 +97,12 @@ export default {
             'errors',
             'changeValues',
         ]),
+        extendedMainAction() {
+            return this.$getExtendedComponents('@Products/pages/catalog/mainAction');
+        },
+        extendedModals() {
+            return this.$getExtendedComponents('@Products/pages/catalog/injectModal');
+        },
         smallSize() {
             return SIZE.SMALL;
         },
@@ -102,6 +122,14 @@ export default {
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.PRODUCT,
+                ...props,
+            };
+        },
     },
     head() {
         return {

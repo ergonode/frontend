@@ -45,6 +45,13 @@
                         :number="advancedFilters.length"
                         :is-expanded="isFiltersExpanded"
                         @click.native="onFiltersExpand" />
+                    <template
+                        v-for="(headerItem, index) in extendedActionHeader">
+                        <Component
+                            :is="headerItem.component"
+                            :key="index"
+                            v-bind="bindingProps(headerItem)" />
+                    </template>
                 </template>
                 <template #prependHeader>
                     <AddFilterDropZone
@@ -67,6 +74,13 @@
                         @click.native="onRemoveAllFilters" />
                 </template>
                 <template #appendFooter>
+                    <template
+                        v-for="(footerItem, index) in extendedFooter">
+                        <Component
+                            :is="footerItem.component"
+                            :key="index"
+                            v-bind="bindingProps(footerItem)" />
+                    </template>
                     <Button
                         title="SAVE CHANGES"
                         :disabled="!isAllowedToUpdate"
@@ -160,6 +174,7 @@ export default {
         return {
             isPrefetchingData: true,
             isSubmitting: false,
+            extendVerticalTabs: [],
         };
     },
     computed: {
@@ -170,6 +185,12 @@ export default {
             'isElementDragging',
             'draggedElement',
         ]),
+        extendedActionHeader() {
+            return this.$getExtendedComponents('@Products/components/Tabs/ProductCatalogTab/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendedComponents('@Products/components/Tabs/ProductCatalogTab/footer');
+        },
         isAnyFilter() {
             return this.filtered === 0
                 && (Object.keys(this.filterValues).length > 0
@@ -212,6 +233,7 @@ export default {
                     iconComponent: () => import('@Core/components/Icons/Menu/IconSettings'),
                     props: {},
                 },
+                ...this.extendVerticalTabs,
             ];
         },
         isAllowedToUpdate() {
@@ -219,6 +241,15 @@ export default {
                 PRIVILEGES.PRODUCT.update,
             ]);
         },
+    },
+    async mounted() {
+        const extendVerticalTabs = await this.$extendMethods('@Products/components/Tabs/ProductCatalogTab/verticalTabs', {
+            $this: this,
+        });
+
+        extendVerticalTabs.forEach((extend) => {
+            this.extendVerticalTabs.push(...extend);
+        });
     },
     methods: {
         ...mapActions('list', [
@@ -467,6 +498,14 @@ export default {
             });
 
             return disabledElements;
+        },
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                disabled: !this.isAllowedToUpdate,
+                ...props,
+            };
         },
     },
 };

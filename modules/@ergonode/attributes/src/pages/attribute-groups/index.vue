@@ -8,6 +8,13 @@
             title="Attribute groups"
             :is-read-only="isReadOnly">
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <Button
                     data-cy="new-attribute-group"
                     title="NEW ATTRIBUTE GROUP"
@@ -33,6 +40,13 @@
             v-if="isModalVisible"
             @close="onCloseModal"
             @created="onCreatedData" />
+        <template
+            v-for="(modal, index) in extendedModals">
+            <Component
+                :is="modal.component"
+                :key="index"
+                v-bind="bindingProps(modal)" />
+        </template>
     </Page>
 </template>
 
@@ -66,18 +80,34 @@ export default {
         asyncTabsMixin,
     ],
     computed: {
+        extendedMainAction() {
+            return this.$getExtendedComponents('@Attributes/pages/attribute-groups/mainAction');
+        },
+        extendedModals() {
+            return this.$getExtendedComponents('@Attributes/pages/attribute-groups/injectModal');
+        },
         isAllowedToCreate() {
             return this.$hasAccess([
-                PRIVILEGES.ATTRIBUTE.create,
+                PRIVILEGES.ATTRIBUTE_GROUP.create,
             ]);
         },
         isReadOnly() {
             return this.$isReadOnly(
-                PRIVILEGES.ATTRIBUTE.namespace,
+                PRIVILEGES.ATTRIBUTE_GROUP.namespace,
             );
         },
         smallSize() {
             return SIZE.SMALL;
+        },
+    },
+    methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.ATTRIBUTE_GROUP,
+                ...props,
+            };
         },
     },
     head() {
