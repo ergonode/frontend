@@ -79,9 +79,14 @@ export default {
         },
     },
     async created() {
-        this.rows = await this.getResourceRelation();
-
-        this.isPrefetchingData = false;
+        await this.getResourceRelation({
+            onSuccess: (({
+                rows,
+            }) => {
+                this.rows = rows;
+                this.isPrefetchingData = false;
+            }),
+        });
     },
     methods: {
         ...mapActions('media', [
