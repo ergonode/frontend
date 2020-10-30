@@ -64,7 +64,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Creating new attribute group has been canceled',
+                    message: 'Creating attribute group has been canceled',
                 });
 
                 return;

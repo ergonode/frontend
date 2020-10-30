@@ -85,7 +85,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Creating new attribute has been canceled',
+                    message: 'Creating attribute has been canceled',
                 });
 
                 return;
