@@ -120,37 +120,12 @@ export default {
     },
     methods: {
         onSearch(value) {
-            try {
-                this.codeFilter = value;
-                this.getItems(this.language.code);
-            } catch (e) {
-                if (this.$axios.isCancel(e)) {
-                    return;
-                }
-
-                this.$addAlert({
-                    type: ALERT_TYPE.ERROR,
-                    message: 'List hasn’t been fetched properly',
-                });
-            }
+            this.codeFilter = value;
+            this.getItems(this.language.code);
         },
         onSelect(value) {
-            try {
-                this.language = value;
-
-                if (typeof this.items[value.code] === 'undefined') {
-                    this.getItems(value.code);
-                }
-            } catch (e) {
-                if (this.$axios.isCancel(e)) {
-                    return;
-                }
-
-                this.$addAlert({
-                    type: ALERT_TYPE.ERROR,
-                    message: 'List hasn’t been fetched properly',
-                });
-            }
+            this.language = value;
+            this.getItems(value.code);
         },
     },
 };

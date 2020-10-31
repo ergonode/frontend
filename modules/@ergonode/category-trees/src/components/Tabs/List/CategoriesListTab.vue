@@ -120,19 +120,8 @@ export default {
             }
         },
         onSearch(value) {
-            try {
-                this.codeFilter = value;
-                this.getItems(this.userLanguageCode);
-            } catch (e) {
-                if (this.$axios.isCancel(e)) {
-                    return;
-                }
-
-                this.$addAlert({
-                    type: ALERT_TYPE.ERROR,
-                    message: 'List hasn’t been fetched properly',
-                });
-            }
+            this.codeFilter = value;
+            this.getItems(this.userLanguageCode);
         },
     },
 };
