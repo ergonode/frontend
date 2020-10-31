@@ -14,6 +14,9 @@ export default [
         name: 'category-trees',
         path: '/category-trees',
         component: Pages.CategoryTrees,
+        redirect: {
+            name: 'category-trees-grid',
+        },
         meta: {
             access: true,
             title: 'Category trees',
@@ -28,7 +31,6 @@ export default [
                 namespace: Privileges.CATEGORY_TREE.namespace,
                 read: Privileges.CATEGORY_TREE.read,
             },
-            redirectTo: 'category-trees-grid',
         },
         children: [
             {
@@ -52,9 +54,11 @@ export default [
         name: 'category-tree-id',
         path: '/category-trees/tree/:id',
         component: Pages.CategoryTreesEdit,
+        redirect: {
+            name: 'category-tree-id-general',
+        },
         meta: {
             isMenu: false,
-            redirectTo: 'category-tree-id-general',
         },
         children: [
             {

@@ -14,6 +14,9 @@ export default [
         name: 'channels',
         path: '/channels',
         component: Pages.Channels,
+        redirect: {
+            name: 'channel-grid',
+        },
         meta: {
             access: true,
             title: 'Channels',
@@ -28,7 +31,6 @@ export default [
                 namespace: Privileges.CHANNEL.namespace,
                 read: Privileges.CHANNEL.read,
             },
-            redirectTo: 'channel-grid',
         },
         children: [
             {
@@ -52,9 +54,11 @@ export default [
         name: 'channel-id',
         path: '/channels/channel/:id',
         component: Pages.ChannelEdit,
+        redirect: {
+            name: 'channel-id-general',
+        },
         meta: {
             isMenu: false,
-            redirectTo: 'channel-id-general',
         },
         children: [
             {

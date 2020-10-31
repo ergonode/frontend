@@ -14,6 +14,9 @@ export default [
         name: 'imports',
         path: '/imports',
         component: Pages.Imports,
+        redirect: {
+            name: 'import-grid',
+        },
         meta: {
             access: true,
             title: 'Imports',
@@ -28,7 +31,6 @@ export default [
                 namespace: Privileges.IMPORT.namespace,
                 read: Privileges.IMPORT.read,
             },
-            redirectTo: 'import-grid',
         },
         children: [
             {
@@ -52,9 +54,11 @@ export default [
         name: 'import-id',
         path: '/imports/import/:id',
         component: Pages.ImportProfileEdit,
+        redirect: {
+            name: 'import-id-general',
+        },
         meta: {
             isMenu: false,
-            redirectTo: 'import-id-general',
         },
         children: [
             {
