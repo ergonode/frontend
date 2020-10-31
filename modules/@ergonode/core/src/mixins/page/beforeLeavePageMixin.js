@@ -12,6 +12,8 @@ import {
 
 export default {
     beforeRouteLeave(to, from, next) {
+        this.$clearCancelTokens();
+
         const changeValuesKeys = Object.keys(this.changeValues);
         const hasError = Object.keys(this.errors).length > 0;
         const hasChange = changeValuesKeys.length > 0

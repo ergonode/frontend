@@ -221,16 +221,18 @@ export default {
             return GRAPHITE;
         },
     },
-    created() {
+    async created() {
         if (this.fetchOptionsRequest) {
             this.isFetchingOptions = true;
-            this.fetchOptionsRequest().then(({
-                options,
-            }) => {
-                this.options = options;
-                this.isFetchingOptions = false;
-                this.$emit('fetched-options', options);
-            });
+
+            const {
+                options = [],
+            } = await this.fetchOptionsRequest();
+
+            this.options = options;
+            this.isFetchingOptions = false;
+
+            this.$emit('fetched-options', options);
         }
     },
     methods: {
