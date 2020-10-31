@@ -12,8 +12,6 @@ import {
 
 export default {
     beforeRouteLeave(to, from, next) {
-        this.$clearCancelTokens();
-
         const changeValuesKeys = Object.keys(this.changeValues);
         const hasError = Object.keys(this.errors).length > 0;
         const hasChange = changeValuesKeys.length > 0
@@ -26,10 +24,14 @@ export default {
                 applyTitle: 'YES, I\'M SURE',
                 message: 'Are you sure you want to leave page without saving the data?',
                 confirmCallback: () => {
+                    this.$clearCancelTokens();
+
                     next();
                 },
             });
         } else {
+            this.$clearCancelTokens();
+
             next();
         }
     },
