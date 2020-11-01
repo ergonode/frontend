@@ -167,23 +167,25 @@ export default function ({
                     $axios: this.$axios,
                     path: this.getPath(),
                     params,
-                    onSuccess: (({
-                        columns,
-                        rows,
-                        filtered,
-                    }) => {
-                        this.columns = columns;
-                        this.rows = rows;
-                        this.filtered = filtered;
+                    onSuccess: this.onFetchDataSuccess,
+                    onError: this.onFetchDataError,
+                });
+            },
+            onFetchDataSuccess({
+                columns,
+                rows,
+                filtered,
+            }) {
+                this.columns = columns;
+                this.rows = rows;
+                this.filtered = filtered;
 
-                        this.$emit('fetched');
-                    }),
-                    onError: () => {
-                        this.$addAlert({
-                            type: ALERT_TYPE.ERROR,
-                            message: 'Grid data haven’t been fetched properly',
-                        });
-                    },
+                this.$emit('fetched');
+            },
+            onFetchDataError() {
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Grid data haven’t been fetched properly',
                 });
             },
             onRemoveRow() {

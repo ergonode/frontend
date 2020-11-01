@@ -148,49 +148,51 @@ export default {
                     ...params,
                     extended: true,
                 },
-                onSuccess: (({
-                    columns,
-                    rows,
-                    filtered,
-                }) => {
-                    this.columns = columns.map((column) => {
-                        if (column.id === 'attached') {
-                            return {
-                                ...column,
-                                filter: {
-                                    type: 'SELECT',
-                                    options: {
-                                        false: {
-                                            label: 'Not attached',
-                                        },
-                                        true: {
-                                            label: 'Attached',
-                                        },
-                                    },
-                                },
-                            };
-                        }
-
-                        return {
-                            ...column,
-                            editable: false,
-                        };
-                    });
-                    this.rows = rows.map(({
-                        // eslint-disable-next-line no-unused-vars
-                        _links, ...rest
-                    }) => ({
-                        ...rest,
-                    }));
-                    this.filtered = filtered;
-                }),
-                onError: () => {
-                    this.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: 'Grid data haven’t been fetched properly',
-                    });
-                },
+                onSuccess: this.onFetchGridDataSuccess,
+                onError: this.onFetchGridDataError,
             });
+        },
+        onFetchGridDataError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Grid data haven’t been fetched properly',
+            });
+        },
+        onFetchGridDataSuccess({
+            columns,
+            rows,
+            filtered,
+        }) {
+            this.columns = columns.map((column) => {
+                if (column.id === 'attached') {
+                    return {
+                        ...column,
+                        filter: {
+                            type: 'SELECT',
+                            options: {
+                                false: {
+                                    label: 'Not attached',
+                                },
+                                true: {
+                                    label: 'Attached',
+                                },
+                            },
+                        },
+                    };
+                }
+
+                return {
+                    ...column,
+                    editable: false,
+                };
+            });
+            this.rows = rows.map(({
+                // eslint-disable-next-line no-unused-vars
+                _links, ...rest
+            }) => ({
+                ...rest,
+            }));
+            this.filtered = filtered;
         },
         onClose() {
             this.removeScopeErrors(this.scope);

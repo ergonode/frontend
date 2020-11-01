@@ -79,23 +79,9 @@ export default function ({
                         $axios: this.$axios,
                         path: `${languageCode}/${namespace}/groups`,
                         languageCode,
-                        onSuccess: (({
-                            groups,
-                            items,
-                            groupItemsCount,
-                        }) => {
-                            if (typeof this.items[languageCode] === 'undefined') {
-                                this.items[languageCode] = {};
-                            }
-
-                            this.groups[languageCode] = [
-                                ...groups,
-                                this.unassignedGroup,
-                            ];
-
-                            this.items[languageCode] = items;
-
-                            this.groupItemsCount = groupItemsCount;
+                        onSuccess: payload => this.onFetchListGroupsSuccess({
+                            ...payload,
+                            languageCode,
                         }),
                     }),
                     getListItems({
@@ -109,41 +95,70 @@ export default function ({
                             field: 'code',
                             order: 'ASC',
                         },
-                        onSuccess: (({
-                            items,
-                            info,
-                        }) => {
-                            if (typeof this.items[languageCode] === 'undefined') {
-                                this.items[languageCode] = {};
-                            }
-
-                            this.items[languageCode][UNASSIGNED_GROUP_ID] = items;
-                            this.groupItemsCount[UNASSIGNED_GROUP_ID] = info.filtered;
+                        onSuccess: payload => this.onFetchListItemsSuccess({
+                            ...payload,
+                            languageCode,
                         }),
                     }),
                 ]);
+            },
+            onFetchListGroupsSuccess({
+                groups,
+                items,
+                groupItemsCount,
+                languageCode,
+            }) {
+                if (typeof this.items[languageCode] === 'undefined') {
+                    this.items[languageCode] = {};
+                }
+
+                this.groups[languageCode] = [
+                    ...groups,
+                    this.unassignedGroup,
+                ];
+
+                this.items[languageCode] = items;
+
+                this.groupItemsCount = groupItemsCount;
+            },
+            onFetchListItemsSuccess({
+                items,
+                info,
+                languageCode,
+            }) {
+                if (typeof this.items[languageCode] === 'undefined') {
+                    this.items[languageCode] = {};
+                }
+
+                this.items[languageCode][UNASSIGNED_GROUP_ID] = items;
+                this.groupItemsCount[UNASSIGNED_GROUP_ID] = info.filtered;
             },
             async getGroups(languageCode) {
                 await getListGroups({
                     $axios: this.$axios,
                     path: `${languageCode}/${namespace}/groups`,
                     languageCode,
-                    onSuccess: (({
-                        groups,
-                        items,
-                        groupItemsCount,
-                    }) => {
-                        this.groups = {
-                            ...this.groups,
-                            [languageCode]: groups,
-                        };
-                        this.items = {
-                            ...this.items,
-                            [languageCode]: items,
-                        };
-                        this.groupItemsCount = groupItemsCount;
+                    onSuccess: payload => this.getGroupsSuccess({
+                        ...payload,
+                        languageCode,
                     }),
                 });
+            },
+            getGroupsSuccess({
+                groups,
+                items,
+                groupItemsCount,
+                languageCode,
+            }) {
+                this.groups = {
+                    ...this.groups,
+                    [languageCode]: groups,
+                };
+                this.items = {
+                    ...this.items,
+                    [languageCode]: items,
+                };
+                this.groupItemsCount = groupItemsCount;
             },
             async getGroupItems({
                 groupId,
@@ -171,18 +186,25 @@ export default function ({
                             field: 'code',
                             order: 'ASC',
                         },
-                        onSuccess: (({
-                            items,
-                        }) => {
-                            this.items[languageCode] = {
-                                ...this.items[languageCode],
-                                [groupId]: items,
-                            };
-
-                            this.prefetchingGroupItemsId = '';
+                        onSuccess: payload => this.getGroupItemsSuccess({
+                            ...payload,
+                            languageCode,
+                            groupId,
                         }),
                     });
                 }
+            },
+            getGroupItemsSuccess({
+                items,
+                languageCode,
+                groupId,
+            }) {
+                this.items[languageCode] = {
+                    ...this.items[languageCode],
+                    [groupId]: items,
+                };
+
+                this.prefetchingGroupItemsId = '';
             },
             async getAllGroupsItems({
                 languageCode,
@@ -200,28 +222,33 @@ export default function ({
                         field: 'code',
                         order: 'ASC',
                     },
-                    onSuccess: (({
-                        items,
-                    }) => {
-                        if (this.expandedGroupId !== '') {
-                            const isAnyGroupInsideGroups = groups => groups.some(
-                                grp => grp === this.expandedGroupId,
-                            );
-                            const isGroupUnassigned = this.expandedGroupId === UNASSIGNED_GROUP_ID;
-                            const groupItems = items.filter(({
-                                groups,
-                            }) => (groups.length === 0 && isGroupUnassigned)
-                                || isAnyGroupInsideGroups(groups));
-
-                            this.items[languageCode] = {
-                                ...this.items[languageCode],
-                                [this.expandedGroupId]: groupItems,
-                            };
-                        }
-
-                        this.groupItemsCount = getMappedGroupItemsCount(items);
+                    onSuccess: payload => this.getAllGroupsItemsSuccess({
+                        ...payload,
+                        languageCode,
                     }),
                 });
+            },
+            getAllGroupsItemsSuccess({
+                items,
+                languageCode,
+            }) {
+                if (this.expandedGroupId !== '') {
+                    const isAnyGroupInsideGroups = groups => groups.some(
+                        grp => grp === this.expandedGroupId,
+                    );
+                    const isGroupUnassigned = this.expandedGroupId === UNASSIGNED_GROUP_ID;
+                    const groupItems = items.filter(({
+                        groups,
+                    }) => (groups.length === 0 && isGroupUnassigned)
+                        || isAnyGroupInsideGroups(groups));
+
+                    this.items[languageCode] = {
+                        ...this.items[languageCode],
+                        [this.expandedGroupId]: groupItems,
+                    };
+                }
+
+                this.groupItemsCount = getMappedGroupItemsCount(items);
             },
             async onGroupExpand({
                 group,
