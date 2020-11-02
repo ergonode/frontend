@@ -14,6 +14,9 @@ export default [
         name: 'catalog',
         path: '/catalog',
         component: Pages.Products,
+        redirect: {
+            name: 'catalog-products',
+        },
         meta: {
             access: true,
             title: 'Catalog',
@@ -28,7 +31,6 @@ export default [
                 namespace: PRIVILEGES.PRODUCT.namespace,
                 read: PRIVILEGES.PRODUCT.read,
             },
-            redirectTo: 'catalog-products',
         },
         children: [
             {
@@ -52,9 +54,11 @@ export default [
         name: 'product-id',
         path: '/catalog/products/product/:id',
         component: Pages.ProductEdit,
+        redirect: {
+            name: 'product-id-general',
+        },
         meta: {
             isMenu: false,
-            redirectTo: 'product-id-general',
         },
         children: [
             {

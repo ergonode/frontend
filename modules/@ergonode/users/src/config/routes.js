@@ -14,6 +14,9 @@ export default [
         name: 'users',
         path: '/users',
         component: Pages.Users,
+        redirect: {
+            name: 'users-grid',
+        },
         meta: {
             access: true,
             title: 'Users',
@@ -28,7 +31,6 @@ export default [
                 namespace: Privileges.USER.namespace,
                 read: Privileges.USER.read,
             },
-            redirectTo: 'users-grid',
         },
         children: [
             {
@@ -52,9 +54,11 @@ export default [
         name: 'user-id',
         path: '/users/user/:id',
         component: Pages.UserEdit,
+        redirect: {
+            name: 'user-id-general',
+        },
         meta: {
             isMenu: false,
-            redirectTo: 'user-id-general',
         },
         children: [
             {
@@ -120,6 +124,9 @@ export default [
         name: 'user-roles',
         path: '/user-roles',
         component: Pages.Roles,
+        redirect: {
+            name: 'user-rile-grid',
+        },
         meta: {
             access: true,
             title: 'User roles',
@@ -134,7 +141,6 @@ export default [
                 namespace: Privileges.USER_ROLE.namespace,
                 read: Privileges.USER_ROLE.read,
             },
-            redirectTo: 'user-roles-grid',
         },
         children: [
             {
@@ -158,9 +164,11 @@ export default [
         name: 'user-role-id',
         path: '/user-roles/role/:id',
         component: Pages.RoleEdit,
+        redirect: {
+            name: 'user-role-id-general',
+        },
         meta: {
             isMenu: false,
-            redirectTo: 'user-role-id-general',
         },
         children: [
             {
@@ -207,9 +215,11 @@ export default [
         name: 'profile',
         path: '/profile',
         component: Pages.Profile,
+        redirect: {
+            name: 'profile-activity-log-grid',
+        },
         meta: {
             isMenu: false,
-            redirectTo: 'profile-activity-log-grid',
         },
         children: [
             {

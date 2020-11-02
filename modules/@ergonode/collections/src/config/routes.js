@@ -14,6 +14,9 @@ export default [
         name: 'collections',
         path: '/collections',
         component: Pages.Collections,
+        redirect: {
+            name: 'collections-grid',
+        },
         meta: {
             title: 'Collections',
             group: {
@@ -27,7 +30,6 @@ export default [
                 namespace: PRIVILEGES.PRODUCT_COLLECTION.namespace,
                 read: PRIVILEGES.PRODUCT_COLLECTION.read,
             },
-            redirectTo: 'collections-grid',
         },
         children: [
             {
@@ -51,9 +53,11 @@ export default [
         name: 'collection-id',
         path: '/collections/collection/:id',
         component: Pages.CollectionEdit,
+        redirect: {
+            name: 'collection-id-general',
+        },
         meta: {
             isMenu: false,
-            redirectTo: 'collection-id-general',
         },
         children: [
             {
