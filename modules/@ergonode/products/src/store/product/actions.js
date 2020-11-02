@@ -197,7 +197,7 @@ export default {
         try {
             const {
                 workflow = [],
-            } = getWorkflow({
+            } = await getWorkflow({
                 $axios: this.app.$axios,
                 id,
                 languageCode,

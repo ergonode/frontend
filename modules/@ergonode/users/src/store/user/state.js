@@ -5,6 +5,7 @@
 export default () => ({
     id: null,
     avatarId: null,
+    avatarFile: null,
     email: '',
     firstName: '',
     lastName: '',

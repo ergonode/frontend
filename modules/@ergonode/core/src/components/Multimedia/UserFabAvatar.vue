@@ -4,7 +4,7 @@
  */
 <template>
     <div :class="avatarClasses">
-        <Picture
+        <LazyImage
             v-if="avatarId"
             :value="avatarId"
             :href="avatarPath"
@@ -27,7 +27,7 @@ import {
 export default {
     name: 'UserFabAvatar',
     components: {
-        Picture: () => import('@UI/components/Picture/Picture'),
+        LazyImage: () => import('@UI/components/LazyImage/LazyImage'),
     },
     props: {
         /**

@@ -4,9 +4,7 @@
  */
 <template>
     <li
-        :class="['notification-element', {
-            'notification-element--unread': notification.read_at === null,
-        }]"
+        :class="classes"
         @click="markAsRead">
         <UserFabAvatar
             :avatar-id="avatarId"
@@ -24,6 +22,7 @@
 </template>
 
 <script>
+import UserFabAvatar from '@Core/components/Multimedia/UserFabAvatar';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -44,7 +43,7 @@ import {
 export default {
     name: 'NotificationsListElement',
     components: {
-        UserFabAvatar: () => import('@Core/components/Multimedia/UserFabAvatar'),
+        UserFabAvatar,
     },
     props: {
         notification: {
@@ -53,6 +52,16 @@ export default {
         },
     },
     computed: {
+        classes() {
+            return [
+                [
+                    'notification-element',
+                    {
+                        'notification-element--unread': this.notification.read_at === null,
+                    },
+                ],
+            ];
+        },
         regularSize() {
             return SIZE.REGULAR;
         },

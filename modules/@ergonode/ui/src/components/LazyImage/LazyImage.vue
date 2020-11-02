@@ -8,7 +8,7 @@
         :style="styles"
         :class="classes"
         :src="require('@UI/assets/images/placeholders/no_image.svg')"
-        alt="picture">
+        alt="Image loaded asynchronously">
 </template>
 
 <script>
@@ -17,7 +17,7 @@ import {
 } from '@Core/models/multimedia';
 
 export default {
-    name: 'Picture',
+    name: 'LazyImage',
     props: {
         /**
          * Component value
@@ -64,9 +64,9 @@ export default {
     computed: {
         classes() {
             return [
-                'picture',
+                'lazy-image',
                 {
-                    'picture--fab': this.fab,
+                    'lazy-image--fab': this.fab,
                 },
             ];
         },
@@ -128,7 +128,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .picture {
+    .lazy-image {
         width: 100%;
         max-height: 100%;
 

@@ -82,7 +82,7 @@ export default {
         },
         onFocus(isFocused) {
             if (isFocused) {
-                this.requestForNotifications();
+                this.requestForNotifications({});
             }
         },
     },
