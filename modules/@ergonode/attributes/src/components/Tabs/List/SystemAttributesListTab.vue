@@ -38,9 +38,6 @@
 import AttributesListElement from '@Attributes/components/Lists/AttributesListElement';
 import PRIVILEGES from '@Attributes/config/privileges';
 import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import {
     SIZE,
 } from '@Core/defaults/theme';
 import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
