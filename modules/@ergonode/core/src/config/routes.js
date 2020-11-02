@@ -29,6 +29,9 @@ export default [
     {
         name: 'settings',
         path: '/settings',
+        redirect: {
+            name: 'settings-languages',
+        },
         component: Pages.Settings,
         meta: {
             access: true,
@@ -46,7 +49,6 @@ export default [
             ],
             isMenu: true,
             menuPosition: 1000,
-            redirectTo: 'settings-languages',
             privileges: {
                 namespace: Privileges.SETTINGS.namespace,
                 read: Privileges.SETTINGS.read,
@@ -104,9 +106,11 @@ export default [
         name: 'unit-id',
         path: '/settings/units/unit/:id',
         component: Pages.UnitEdit,
+        redirect: {
+            name: 'unit-id-general',
+        },
         meta: {
             isMenu: false,
-            redirectTo: 'unit-id-general',
         },
         children: [
             {

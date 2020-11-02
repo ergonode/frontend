@@ -40,9 +40,11 @@ export default [
         name: 'product-template-id',
         path: '/product-templates/template/:id',
         component: Pages.ProductTemplateEdit,
+        redirect: {
+            name: 'product-template-id-general',
+        },
         meta: {
             isMenu: false,
-            redirectTo: 'product-template-id-general',
         },
         children: [
             {

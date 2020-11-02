@@ -14,6 +14,9 @@ export default [
         name: 'attributes',
         path: '/attributes',
         component: Pages.Attributes,
+        redirect: {
+            name: 'attributes-grid',
+        },
         meta: {
             access: true,
             title: 'Attributes',
@@ -28,7 +31,6 @@ export default [
                 namespace: Privileges.ATTRIBUTE.namespace,
                 read: Privileges.ATTRIBUTE.read,
             },
-            redirectTo: 'attributes-grid',
         },
         children: [
             {
@@ -52,9 +54,11 @@ export default [
         name: 'attribute-id',
         path: '/attributes/attribute/:id',
         component: Pages.AttributeEdit,
+        redirect: {
+            name: 'attribute-id-general',
+        },
         meta: {
             isMenu: false,
-            redirectTo: 'attribute-id-general',
         },
         children: [
             {
@@ -101,6 +105,9 @@ export default [
         name: 'attribute-groups',
         path: '/attribute-groups',
         component: Pages.AttributeGroups,
+        redirect: {
+            name: 'attribute-groups-grid',
+        },
         meta: {
             access: true,
             title: 'Attribute groups',
@@ -115,7 +122,6 @@ export default [
                 namespace: Privileges.ATTRIBUTE_GROUP.namespace,
                 read: Privileges.ATTRIBUTE_GROUP.read,
             },
-            redirectTo: 'attribute-groups-grid',
         },
         children: [
             {
@@ -139,9 +145,11 @@ export default [
         name: 'attribute-group-id',
         path: '/attribute-groups/group/:id',
         component: Pages.AttributeGroupEdit,
+        redirect: {
+            name: 'attribute-group-id-general',
+        },
         meta: {
             isMenu: false,
-            redirectTo: 'attribute-group-id-general',
         },
         children: [
             {
