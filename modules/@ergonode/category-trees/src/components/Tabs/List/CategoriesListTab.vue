@@ -34,6 +34,9 @@
 </template>
 
 <script>
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
 import CategoriesListElement from '@Trees/components/Lists/CategoriesListElement';
 import PRIVILEGES from '@Trees/config/privileges';
@@ -102,7 +105,19 @@ export default {
         },
         onCreatedCategory() {
             this.onCloseModal();
-            this.getItems(this.userLanguageCode);
+
+            try {
+                this.getItems(this.userLanguageCode);
+            } catch (e) {
+                if (this.$axios.isCancel(e)) {
+                    return;
+                }
+
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'List hasn’t been fetched properly',
+                });
+            }
         },
         onSearch(value) {
             this.codeFilter = value;

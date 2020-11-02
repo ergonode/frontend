@@ -23,14 +23,15 @@
                     label="System name"
                     hint="System name must be unique"
                     @input="setCodeValue" />
-                <TranslationLazySelect
+                <Autocomplete
                     :data-cy="dataCyGenerator(typeIdFieldKey)"
                     :value="type"
                     required
+                    searchable
                     label="Type"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errors[typeIdFieldKey]"
-                    :fetch-options-request="getCollectionTypeOptions"
+                    href="collections/type/autocomplete"
                     @input="setTypeValue" />
                 <Divider v-if="extendedForm.length" />
                 <template v-for="(field, index) in extendedForm">
@@ -48,10 +49,10 @@
 import PRIVILEGES from '@Collections/config/privileges';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
-import TranslationLazySelect from '@UI/components/Select/TranslationLazySelect';
 import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
@@ -65,7 +66,7 @@ export default {
         Form,
         FormSection,
         TextField,
-        TranslationLazySelect,
+        Autocomplete,
     },
     mixins: [
         formActionsMixin,
@@ -104,7 +105,6 @@ export default {
     methods: {
         ...mapActions('collection', [
             '__setState',
-            'getCollectionTypeOptions',
         ]),
         setCodeValue(value) {
             this.__setState({

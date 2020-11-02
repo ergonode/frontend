@@ -58,7 +58,6 @@ export default {
     data() {
         return {
             observer: null,
-            cancelToken: null,
             isLoading: true,
         };
     },
@@ -94,18 +93,12 @@ export default {
         this.observer.observe(this.$el);
     },
     beforeDestroy() {
-        if (this.cancelToken) {
-            this.cancelToken.cancel();
-        }
         this.observer.disconnect();
     },
     methods: {
         getImage() {
-            this.cancelToken = this.$axios.CancelToken.source();
-
             this.$axios.$get(this.href, {
                 useCache: this.useCache,
-                cancelToken: this.cancelToken.token,
                 responseType: 'arraybuffer',
                 withLanguage: false,
             })
@@ -120,7 +113,11 @@ export default {
             this.isLoading = false;
         },
         imageLoadOnError(error) {
-            if (this.$refs.img && !this.$axios.isCancel(error)) {
+            if (this.$axios.isCancel(error)) {
+                return;
+            }
+
+            if (this.$refs.img) {
                 this.$refs.img.src = require('@UI/assets/images/placeholders/image_error.svg'); // eslint-disable-line global-require, import/no-dynamic-require
             }
 

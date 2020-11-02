@@ -13,6 +13,9 @@ import {
     update,
     updateDraftValue,
 } from '@Collections/services/index';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 
 export default {
     async getCollection(
@@ -75,28 +78,34 @@ export default {
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError(e);
         }
     },
-    getCollectionTypeOptions({
-        rootState,
+    async getCollectionTypeOptions({}, {
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            language,
-        } = rootState.authentication.user;
+        try {
+            const {
+                collection,
+            } = await getTypes({
+                $axios: this.app.$axios,
+            });
 
-        return getTypes({
-            $axios: this.app.$axios,
-        }).then(({
-            collection,
-        }) => ({
-            options: collection.map(element => ({
-                id: element.id,
-                key: element.code,
-                value: element.name,
-                hint: element.name ? `#${element.code} ${language}` : '',
-            })),
-        }));
+            onSuccess({
+                types: collection,
+            });
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async updateCollectionProductsVisibility({
         state,
@@ -142,6 +151,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating product visibility in collection has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -207,6 +225,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating collection has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -262,6 +289,15 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating collection has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -306,8 +342,18 @@ export default {
                 id,
                 data,
             });
+
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Adding product by skus to collection has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -334,7 +380,7 @@ export default {
                 id,
             } = state;
             const data = {
-                segments: segments.map(segment => segment.id),
+                segments,
             };
 
             if (!data.segments.length) {
@@ -358,6 +404,15 @@ export default {
             });
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Adding products from segment to collection has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -397,6 +452,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing collection has been canceled',
+                });
+
+                return;
+            }
+
             onError(e);
         }
     },

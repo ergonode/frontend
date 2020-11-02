@@ -201,7 +201,7 @@ export default {
                 filter: {},
             });
         },
-        onFetchData({
+        async onFetchData({
             offset,
             limit,
             filter,
@@ -230,20 +230,29 @@ export default {
                 params.order = orderState;
             }
 
-            return getGridData({
+            await getGridData({
                 $route: this.$route,
                 $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: 'multimedia',
                 params,
-            }).then(({
-                columns,
-                rows,
-                filtered,
-            }) => {
-                this.columns = columns;
-                this.rows = rows;
-                this.filtered = filtered;
+                onSuccess: this.onFetchDataSuccess,
+                onError: this.onFetchDataError,
+            });
+        },
+        onFetchDataSuccess({
+            columns,
+            rows,
+            filtered,
+        }) {
+            this.columns = columns;
+            this.rows = rows;
+            this.filtered = filtered;
+        },
+        onFetchDataError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Grid data haven’t been fetched properly',
             });
         },
         onRemoveRow() {

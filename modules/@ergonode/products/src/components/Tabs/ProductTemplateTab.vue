@@ -115,17 +115,27 @@ export default {
             defaultLanguageCode,
         } = store.state.core;
 
-        const [
-            templateResponse,
-            completenessResponse,
-        ] = await Promise.all([
+        let templateElements = [];
+        let productCompleteness = [];
+
+        await Promise.all([
             store.dispatch('product/getProductTemplate', {
                 languageCode: defaultLanguageCode,
                 id,
+                onSuccess: (({
+                    elements,
+                }) => {
+                    templateElements = elements;
+                }),
             }),
             store.dispatch('product/getProductCompleteness', {
                 languageCode: defaultLanguageCode,
                 id,
+                onSuccess: (({
+                    completeness,
+                }) => {
+                    productCompleteness = completeness;
+                }),
             }),
             store.dispatch('product/getProductDraft', {
                 languageCode: defaultLanguageCode,
@@ -138,8 +148,8 @@ export default {
         ]);
 
         return {
-            elements: templateResponse,
-            completeness: completenessResponse,
+            elements: templateElements,
+            completeness: productCompleteness,
         };
     },
     data() {
@@ -236,17 +246,24 @@ export default {
         async onLanguageChange(value) {
             const languageCode = value.code;
 
-            const [
-                templateResponse,
-                completenessResponse,
-            ] = await Promise.all([
+            await Promise.all([
                 this.getProductTemplate({
                     languageCode,
                     id: this.id,
+                    onSuccess: (({
+                        elements,
+                    }) => {
+                        this.elements = elements;
+                    }),
                 }),
                 this.getProductCompleteness({
                     languageCode,
                     id: this.id,
+                    onSuccess: (({
+                        completeness,
+                    }) => {
+                        this.completeness = completeness;
+                    }),
                 }),
                 this.getProductDraft({
                     languageCode,
@@ -258,8 +275,6 @@ export default {
                 }),
             ]);
 
-            this.elements = templateResponse;
-            this.completeness = completenessResponse;
             this.language = value;
         },
         async onRestoreDraftValues() {
@@ -267,20 +282,21 @@ export default {
                 code: languageCode,
             } = this.language;
 
-            const [
-                completeness,
-            ] = await Promise.all([
+            await Promise.all([
                 this.getProductCompleteness({
                     languageCode,
                     id: this.id,
+                    onSuccess: (({
+                        completeness,
+                    }) => {
+                        this.completeness = completeness;
+                    }),
                 }),
                 this.getProductDraft({
                     languageCode,
                     id: this.id,
                 }),
             ]);
-
-            this.completeness = completeness;
         },
         async onValueChange(payload) {
             this.setDraftValue({
@@ -294,9 +310,14 @@ export default {
                 scope: this.scope,
             });
 
-            this.completeness = await this.getProductCompleteness({
+            await this.getProductCompleteness({
                 languageCode: this.language.code,
                 id: this.id,
+                onSuccess: (({
+                    completeness,
+                }) => {
+                    this.completeness = completeness;
+                }),
             });
         },
     },

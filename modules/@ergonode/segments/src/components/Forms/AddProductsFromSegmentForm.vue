@@ -13,13 +13,14 @@
         @submit="onSubmit">
         <template #body>
             <FormSection>
-                <TranslationSelect
+                <Autocomplete
                     :value="segments"
                     :multiselect="true"
+                    :searchable="true"
                     label="From segmentation rules"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[segmentsFieldKey]"
-                    :options="segmentOptions"
+                    href="segments/autocomplete"
                     @input="onSegmentChange" />
             </FormSection>
         </template>
@@ -30,16 +31,16 @@
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Segments/config/privileges';
+import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
-import TranslationSelect from '@UI/components/Select/TranslationSelect';
 
 export default {
     name: 'AddProductsFromSegmentForm',
     components: {
         Form,
         FormSection,
-        TranslationSelect,
+        Autocomplete,
     },
     mixins: [
         formActionsMixin,
@@ -51,10 +52,6 @@ export default {
             default: () => ({}),
         },
         segments: {
-            type: Array,
-            default: () => [],
-        },
-        segmentOptions: {
             type: Array,
             default: () => [],
         },

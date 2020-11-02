@@ -139,11 +139,7 @@ export default {
             });
         },
         async onFetchData(params = DEFAULT_GRID_FETCH_PARAMS) {
-            const {
-                columns,
-                rows,
-                filtered,
-            } = await getGridData({
+            await getGridData({
                 $route: this.$route,
                 $cookies: this.$cookies,
                 $axios: this.$axios,
@@ -152,8 +148,21 @@ export default {
                     ...params,
                     extended: true,
                 },
+                onSuccess: this.onFetchGridDataSuccess,
+                onError: this.onFetchGridDataError,
             });
-
+        },
+        onFetchGridDataError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Grid data haven’t been fetched properly',
+            });
+        },
+        onFetchGridDataSuccess({
+            columns,
+            rows,
+            filtered,
+        }) {
             this.columns = columns.map((column) => {
                 if (column.id === 'attached') {
                     return {

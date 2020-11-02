@@ -10,6 +10,9 @@ import {
     update,
 } from '@Attributes/services/attribute';
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     getMappedTranslationArrayOptions,
 } from '@Core/models/mappers/translationsMapper';
 import {
@@ -79,68 +82,89 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating attribute has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
             });
         }
     },
-    getAttributesByFilter({
+    async getAttributesByFilter({
         rootState,
     }, {
         filter,
     }) {
-        const {
-            language,
-        } = rootState.authentication.user;
+        try {
+            const {
+                language,
+            } = rootState.authentication.user;
 
-        return getAll({
-            $axios: this.app.$axios,
-            params: {
-                limit: 9999,
-                offset: 0,
-                filter,
-                view: 'list',
-                field: 'name',
-                order: 'ASC',
-            },
-        }).then(({
-            collection,
-        }) => getMappedTranslationArrayOptions({
-            options: collection,
-            languageCode: language,
-        }));
+            const {
+                collection,
+            } = await getAll({
+                $axios: this.app.$axios,
+                params: {
+                    limit: 9999,
+                    offset: 0,
+                    filter,
+                    view: 'list',
+                    field: 'name',
+                    order: 'ASC',
+                },
+            });
+
+            return getMappedTranslationArrayOptions({
+                options: collection,
+                languageCode: language,
+            });
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return [];
+            }
+
+            return [];
+        }
     },
     async getAttributesOptionsByType({
         rootState,
     }, {
         type,
     }) {
-        const {
-            language,
-        } = rootState.authentication.user;
-        const filter = `type=${type}`;
+        try {
+            const {
+                language,
+            } = rootState.authentication.user;
+            const filter = `type=${type}`;
 
-        // EXTENDED BEFORE METHOD
-        await this.$extendMethods('@Attributes/store/attribute/action/getAttributesOptionsByType/__before', {
-            $this: this,
-            type,
-        });
-        // EXTENDED BEFORE METHOD
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Attributes/store/attribute/action/getAttributesOptionsByType/__before', {
+                $this: this,
+                type,
+            });
+            // EXTENDED BEFORE METHOD
 
-        return getAll({
-            $axios: this.app.$axios,
-            params: {
-                limit: 9999,
-                offset: 0,
-                filter,
-                view: 'list',
-                field: 'name',
-                order: 'ASC',
-            },
-        }).then(async ({
-            collection,
-        }) => {
+            const {
+                collection,
+            } = await getAll({
+                $axios: this.app.$axios,
+                params: {
+                    limit: 9999,
+                    offset: 0,
+                    filter,
+                    view: 'list',
+                    field: 'name',
+                    order: 'ASC',
+                },
+            });
+
             let options = collection.map(element => ({
                 id: element.id,
                 key: element.code,
@@ -166,7 +190,13 @@ export default {
             return {
                 options,
             };
-        });
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return {};
+            }
+
+            return {};
+        }
     },
     async getAttribute({
         dispatch,
@@ -240,6 +270,10 @@ export default {
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError(e);
         }
     },
@@ -311,6 +345,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating attribute has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -353,6 +396,15 @@ export default {
             // EXTENDED AFTER METHOD
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing attribute has been canceled',
+                });
+
+                return;
+            }
+
             onError(e);
         }
     },

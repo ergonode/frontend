@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     getListItems,
 } from '@Core/services/list/getList.service';
 import {
@@ -64,6 +67,15 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating category tree has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -105,9 +117,7 @@ export default {
             } = data;
 
             if (categories.length) {
-                const {
-                    items,
-                } = await getListItems({
+                await getListItems({
                     $axios: this.app.$axios,
                     path: `${userLanguageCode}/categories`,
                     params: {
@@ -119,22 +129,25 @@ export default {
                         field: 'code',
                         order: 'ASC',
                     },
-                });
+                    onSuccess: (({
+                        items,
+                    }) => {
+                        const treeToSet = getParsedTreeData(categories, items);
 
-                const treeToSet = getParsedTreeData(categories, items);
-
-                treeToSet.forEach(e => dispatch('list/setDisabledElement', {
-                    languageCode: userLanguageCode,
-                    elementId: e.id,
-                    disabled: true,
-                }, {
-                    root: true,
-                }));
-                dispatch('gridDesigner/setGridData', treeToSet, {
-                    root: true,
-                });
-                dispatch('gridDesigner/setFullGridData', treeToSet, {
-                    root: true,
+                        treeToSet.forEach(e => dispatch('list/setDisabledElement', {
+                            languageCode: userLanguageCode,
+                            elementId: e.id,
+                            disabled: true,
+                        }, {
+                            root: true,
+                        }));
+                        dispatch('gridDesigner/setGridData', treeToSet, {
+                            root: true,
+                        });
+                        dispatch('gridDesigner/setFullGridData', treeToSet, {
+                            root: true,
+                        });
+                    }),
                 });
             }
 
@@ -161,6 +174,10 @@ export default {
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError(e);
         }
     },
@@ -224,6 +241,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating category tree has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -259,6 +285,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing category tree has been canceled',
+                });
+
+                return;
+            }
+
             onError(e);
         }
     },

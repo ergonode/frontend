@@ -24,10 +24,14 @@ export default {
                 applyTitle: 'YES, I\'M SURE',
                 message: 'Are you sure you want to leave page without saving the data?',
                 confirmCallback: () => {
+                    this.$clearCancelTokens();
+
                     next();
                 },
             });
         } else {
+            this.$clearCancelTokens();
+
             next();
         }
     },

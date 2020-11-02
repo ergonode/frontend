@@ -122,10 +122,7 @@ export default {
         },
         onSelect(value) {
             this.language = value;
-
-            if (typeof this.items[value.code] === 'undefined') {
-                this.getItems(value.code);
-            }
+            this.getItems(value.code);
         },
     },
 };

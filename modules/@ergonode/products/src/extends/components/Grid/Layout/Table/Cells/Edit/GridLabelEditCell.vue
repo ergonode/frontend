@@ -74,12 +74,11 @@ export default {
         },
     },
     async fetch() {
-        this.options = await this.getProductWorkflowOptions({
+        await this.getProductWorkflowOptions({
             id: this.rowId,
             languageCode: this.languageCode,
+            onSuccess: this.onGetProductWorkflowOptionsSuccess,
         });
-
-        this.localValue = this.options.find(option => option.id === this.value);
     },
     data() {
         return {
@@ -118,6 +117,13 @@ export default {
         ...mapActions('product', [
             'getProductWorkflowOptions',
         ]),
+        onGetProductWorkflowOptionsSuccess({
+            workflow,
+        }) {
+            this.options = workflow;
+
+            this.localValue = this.options.find(option => option.id === this.value);
+        },
         onFocus(isFocused) {
             if (!isFocused) {
                 this.onEditCell();

@@ -48,6 +48,9 @@
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
 import {
@@ -88,28 +91,14 @@ export default {
         },
     },
     async fetch() {
-        const [
-            exportDetailsResponse,
-        ] = await Promise.all([
+        await Promise.all([
             this.getExportDetails({
                 channelId: this.channelId,
                 exportId: this.exportId,
+                onSuccess: this.onGetExportDetailsSuccess,
             }),
             this.onFetchData(),
         ]);
-
-        const {
-            details,
-            links,
-        } = exportDetailsResponse;
-
-        this.details = details;
-
-        if (links && links.attachment) {
-            this.downloadLink = links.attachment.href;
-        }
-
-        this.isPrefetchingData = false;
     },
     data() {
         return {
@@ -142,6 +131,18 @@ export default {
         ...mapActions('channel', [
             'getExportDetails',
         ]),
+        onGetExportDetailsSuccess({
+            details,
+            links,
+        }) {
+            this.details = details;
+
+            if (links && links.attachment) {
+                this.downloadLink = links.attachment.href;
+            }
+
+            this.isPrefetchingData = false;
+        },
         onRemoveAllFilters() {
             this.filterValues = {};
 
@@ -159,11 +160,7 @@ export default {
             });
         },
         async onFetchData(params = DEFAULT_GRID_FETCH_PARAMS) {
-            const {
-                columns,
-                rows,
-                filtered,
-            } = await getGridData({
+            await getGridData({
                 $route: this.$route,
                 $cookies: this.$cookies,
                 $axios: this.$axios,
@@ -172,8 +169,21 @@ export default {
                     ...params,
                     extended: true,
                 },
+                onSuccess: this.onFetchGridDataSuccess,
+                onError: this.onFetchGridDataError,
             });
-
+        },
+        onFetchGridDataError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Grid data haven’t been fetched properly',
+            });
+        },
+        onFetchGridDataSuccess({
+            columns,
+            rows,
+            filtered,
+        }) {
             this.columns = columns;
             this.rows = rows;
             this.filtered = filtered;

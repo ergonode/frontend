@@ -16,7 +16,8 @@ import {
 
 export default {
     addAlert({
-        commit, dispatch,
+        commit,
+        dispatch,
     }, alert) {
         const id = getUUID();
         const {
@@ -39,7 +40,8 @@ export default {
         });
     },
     removeAlert({
-        commit, state,
+        commit,
+        state,
     }, {
         id,
     }) {

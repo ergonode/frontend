@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     getFlattenedTreeData,
 } from '@Core/models/mappers/treeMapper';
 import {
@@ -21,28 +24,48 @@ import {
 export default {
     async getLanguages({
         commit,
+    }, {
+        onError = () => {},
     }) {
-        const {
-            collection,
-        } = await getAllLanguages({
-            $axios: this.app.$axios,
-        });
+        try {
+            const {
+                collection,
+            } = await getAllLanguages({
+                $axios: this.app.$axios,
+            });
 
-        commit('__SET_STATE', {
-            key: 'languages',
-            value: collection,
-        });
+            commit('__SET_STATE', {
+                key: 'languages',
+                value: collection,
+            });
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async getLanguageTree({
         dispatch,
+    }, {
+        onError = () => {},
     }) {
-        const {
-            languages,
-        } = await getLanguageTree({
-            $axios: this.app.$axios,
-        });
+        try {
+            const {
+                languages,
+            } = await getLanguageTree({
+                $axios: this.app.$axios,
+            });
 
-        dispatch('setLanguageTree', languages);
+            dispatch('setLanguageTree', languages);
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async updateLanguages({}, {
         languages = [],
@@ -62,6 +85,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating languages has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -86,6 +118,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating languages tree has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,

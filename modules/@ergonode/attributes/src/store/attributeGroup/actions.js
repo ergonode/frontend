@@ -8,6 +8,9 @@ import {
     remove,
     update,
 } from '@Attributes/services/attributeGroup';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 
 export default {
     async createAttributeGroup({
@@ -58,6 +61,15 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating attribute group has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -71,7 +83,7 @@ export default {
         },
         {
             id,
-            onError,
+            onError = () => {},
         },
     ) {
         try {
@@ -121,6 +133,10 @@ export default {
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError(e);
         }
     },
@@ -178,6 +194,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating attribute group has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -217,6 +242,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing attribute group has been canceled',
+                });
+
+                return;
+            }
+
             onError(e);
         }
     },

@@ -53,9 +53,14 @@ export default {
         };
     },
     async created() {
-        this.rows = await this.getResourceMetadata();
-
-        this.isPrefetchingData = false;
+        await this.getResourceMetadata({
+            onSuccess: (({
+                rows,
+            }) => {
+                this.rows = rows;
+                this.isPrefetchingData = false;
+            }),
+        });
     },
     methods: {
         ...mapActions('media', [
