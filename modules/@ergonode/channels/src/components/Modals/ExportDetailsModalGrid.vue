@@ -95,18 +95,7 @@ export default {
             this.getExportDetails({
                 channelId: this.channelId,
                 exportId: this.exportId,
-                onSuccess: (({
-                    details,
-                    links,
-                }) => {
-                    this.details = details;
-
-                    if (links && links.attachment) {
-                        this.downloadLink = links.attachment.href;
-                    }
-
-                    this.isPrefetchingData = false;
-                }),
+                onSuccess: this.onGetExportDetailsSuccess,
             }),
             this.onFetchData(),
         ]);
@@ -142,6 +131,18 @@ export default {
         ...mapActions('channel', [
             'getExportDetails',
         ]),
+        onGetExportDetailsSuccess({
+            details,
+            links,
+        }) {
+            this.details = details;
+
+            if (links && links.attachment) {
+                this.downloadLink = links.attachment.href;
+            }
+
+            this.isPrefetchingData = false;
+        },
         onRemoveAllFilters() {
             this.filterValues = {};
 
@@ -168,22 +169,24 @@ export default {
                     ...params,
                     extended: true,
                 },
-                onSuccess: (({
-                    columns,
-                    rows,
-                    filtered,
-                }) => {
-                    this.columns = columns;
-                    this.rows = rows;
-                    this.filtered = filtered;
-                }),
-                onError: () => {
-                    this.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: 'Grid data haven’t been fetched properly',
-                    });
-                },
+                onSuccess: this.onFetchGridDataSuccess,
+                onError: this.onFetchGridDataError,
             });
+        },
+        onFetchGridDataError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Grid data haven’t been fetched properly',
+            });
+        },
+        onFetchGridDataSuccess({
+            columns,
+            rows,
+            filtered,
+        }) {
+            this.columns = columns;
+            this.rows = rows;
+            this.filtered = filtered;
         },
         async onDownloadExportFile() {
             const response = await this.$axios.$get(this.downloadLink, {

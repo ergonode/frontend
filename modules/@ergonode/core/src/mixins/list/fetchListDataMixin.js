@@ -58,15 +58,20 @@ export default function ({
                         field: 'code',
                         order: 'ASC',
                     },
-                    onSuccess: (({
-                        items,
-                    }) => {
-                        this.items = {
-                            ...this.items,
-                            [languageCode]: items,
-                        };
+                    onSuccess: payload => this.onGetItemsSuccess({
+                        ...payload,
+                        languageCode,
                     }),
                 });
+            },
+            onGetItemsSuccess({
+                items,
+                languageCode,
+            }) {
+                this.items = {
+                    ...this.items,
+                    [languageCode]: items,
+                };
             },
         },
     };

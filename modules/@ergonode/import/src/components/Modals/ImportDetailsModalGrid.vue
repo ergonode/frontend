@@ -131,24 +131,26 @@ export default {
                     ...params,
                     extended: true,
                 },
-                onSuccess: (({
-                    columns,
-                    rows,
-                    filtered,
-                }) => {
-                    this.columns = columns;
-                    this.rows = rows;
-                    this.filtered = filtered;
-                    this.isPrefetchingData = false;
-                }),
-                onError: () => {
-                    this.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: 'Grid data haven’t been fetched properly',
-                    });
-                    this.isPrefetchingData = false;
-                },
+                onSuccess: this.onFetchGridDataSuccess,
+                onError: this.onFetchGridDataError,
             });
+        },
+        onFetchGridDataError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Grid data haven’t been fetched properly',
+            });
+            this.isPrefetchingData = false;
+        },
+        onFetchGridDataSuccess({
+            columns,
+            rows,
+            filtered,
+        }) {
+            this.columns = columns;
+            this.rows = rows;
+            this.filtered = filtered;
+            this.isPrefetchingData = false;
         },
         onClose() {
             this.$emit('close');

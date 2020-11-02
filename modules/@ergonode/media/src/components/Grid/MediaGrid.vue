@@ -236,21 +236,23 @@ export default {
                 $axios: this.$axios,
                 path: 'multimedia',
                 params,
-                onSuccess: (({
-                    columns,
-                    rows,
-                    filtered,
-                }) => {
-                    this.columns = columns;
-                    this.rows = rows;
-                    this.filtered = filtered;
-                }),
-                onError: () => {
-                    this.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: 'Grid data haven’t been fetched properly',
-                    });
-                },
+                onSuccess: this.onFetchDataSuccess,
+                onError: this.onFetchDataError,
+            });
+        },
+        onFetchDataSuccess({
+            columns,
+            rows,
+            filtered,
+        }) {
+            this.columns = columns;
+            this.rows = rows;
+            this.filtered = filtered;
+        },
+        onFetchDataError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Grid data haven’t been fetched properly',
             });
         },
         onRemoveRow() {

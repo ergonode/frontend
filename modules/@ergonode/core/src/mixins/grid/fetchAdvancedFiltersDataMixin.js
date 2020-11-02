@@ -53,15 +53,16 @@ export default function ({
                     $axios: this.$axios,
                     path: this.getPath(),
                     params: filtersParams,
-                    onSuccess: (({
-                        advancedFilters,
-                    }) => {
-                        this.advancedFilters = advancedFilters;
-                    }),
+                    onSuccess: this.onFetchAdvancedFiltersSuccess,
                 });
             },
-            async onDropFilter(payload) {
-                const filterCode = payload.split('/')[1];
+            onFetchAdvancedFiltersSuccess({
+                advancedFilters,
+            }) {
+                this.advancedFilters = advancedFilters;
+            },
+            async onDropFilter(filterId) {
+                const filterCode = filterId.split('/')[1];
                 const params = {
                     limit: 0,
                     offset: 0,
@@ -82,45 +83,51 @@ export default function ({
                     $addAlert: this.$addAlert,
                     path,
                     params,
-                    onSuccess: (({
-                        advancedFilters,
-                    }) => {
-                        this.advancedFilters = advancedFilters;
-
-                        if (advancedFilters.length) {
-                            const filter = advancedFilters.find(({
-                                id,
-                            }) => id === filterCode);
-
-                            if (filter.attributeId) {
-                                this.setDisabledElement(this.getDisabledListElement({
-                                    languageCode: filter.languageCode,
-                                    attributeId: filter.attributeId,
-                                    disabledElements: this.disabledElements,
-                                }));
-                            }
-
-                            this.advancedFilters.unshift(filter);
-                        } else {
-                            removeCookieAtIndex({
-                                cookies: this.$cookies,
-                                cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
-                                index: 0,
-                            });
-
-                            this.$addAlert({
-                                type: ALERT_TYPE.ERROR,
-                                message: 'Attribute has no filter',
-                            });
-                        }
+                    onSuccess: payload => this.onGetDroppedAdvancedFilterSuccess({
+                        ...payload,
+                        filterCode,
                     }),
-                    onError: () => {
-                        removeCookieAtIndex({
-                            cookies: this.$cookies,
-                            cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
-                            index: 0,
-                        });
-                    },
+                    onError: this.onGetDroppedAdvancedFilterError,
+                });
+            },
+            onGetDroppedAdvancedFilterSuccess({
+                advancedFilters,
+                filterCode,
+            }) {
+                this.advancedFilters = advancedFilters;
+
+                if (advancedFilters.length) {
+                    const filter = advancedFilters.find(({
+                        id,
+                    }) => id === filterCode);
+
+                    if (filter.attributeId) {
+                        this.setDisabledElement(this.getDisabledListElement({
+                            languageCode: filter.languageCode,
+                            attributeId: filter.attributeId,
+                            disabledElements: this.disabledElements,
+                        }));
+                    }
+
+                    this.advancedFilters.unshift(filter);
+                } else {
+                    removeCookieAtIndex({
+                        cookies: this.$cookies,
+                        cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
+                        index: 0,
+                    });
+
+                    this.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Attribute has no filter',
+                    });
+                }
+            },
+            onGetDroppedAdvancedFilterError() {
+                removeCookieAtIndex({
+                    cookies: this.$cookies,
+                    cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
+                    index: 0,
                 });
             },
             getDisabledListElement({
