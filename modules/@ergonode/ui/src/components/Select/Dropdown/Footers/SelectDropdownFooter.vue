@@ -3,13 +3,15 @@
  * See LICENSE for license details.
  */
 <template>
-    <DropDownFooter :size="smallSize">
+    <DropdownFooter
+        :size="size"
+        :space-between="spaceBetween">
         <Button
             :theme="secondaryTheme"
             :size="tinySize"
             title="CLEAR"
             @click.native="onClear" />
-    </DropDownFooter>
+    </DropdownFooter>
 </template>
 
 <script>
@@ -18,20 +20,37 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import Button from '@UI/components/Button/Button';
-import DropDownFooter from '@UI/components/Select/DropDown/Footers/DropDownFooter';
+import DropdownFooter from '@UI/components/Select/Dropdown/Footers/DropdownFooter';
 
 export default {
     name: 'SelectDropdownFooter',
     components: {
-        DropDownFooter,
+        DropdownFooter,
         Button,
+    },
+    props: {
+        /**
+         * The size of the component
+         */
+        size: {
+            type: String,
+            default: SIZE.SMALL,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
+        },
+        /**
+         * Equal space between each component
+         */
+        spaceBetween: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         tinySize() {
             return SIZE.TINY;
-        },
-        smallSize() {
-            return SIZE.SMALL;
         },
         secondaryTheme() {
             return THEME.SECONDARY;

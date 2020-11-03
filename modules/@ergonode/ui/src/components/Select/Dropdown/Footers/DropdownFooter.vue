@@ -16,7 +16,7 @@ import {
 } from '@Core/defaults/theme';
 
 export default {
-    name: 'DropDownFooter',
+    name: 'DropdownFooter',
     props: {
         /**
          * Equal space between each component

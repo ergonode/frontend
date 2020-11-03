@@ -8,8 +8,7 @@
             class="dropdown"
             :style="positionStyle"
             ref="dropdown">
-            <slot name="body" />
-            <slot name="footer" />
+            <slot />
         </div>
     </ClickOutsideGlobalEvent>
 </template>
@@ -18,7 +17,7 @@
 import ClickOutsideGlobalEvent from '@UI/components/Events/ClickOutsideGlobalEvent';
 
 export default {
-    name: 'DropDown',
+    name: 'Dropdown',
     components: {
         ClickOutsideGlobalEvent,
     },

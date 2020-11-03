@@ -34,7 +34,7 @@
                     <slot
                         name="append"
                         :color="color">
-                        <IconArrowDropDown
+                        <IconArrowDropdown
                             :fill-color="color"
                             :state="iconArrowState" />
                     </slot>
@@ -63,7 +63,7 @@ import {
 } from '@Core/defaults/theme';
 import ActionBaseButton from '@UI/components/ActionButton/ActionBaseButton';
 import Button from '@UI/components/Button/Button';
-import IconArrowDropDown from '@UI/components/Icons/Arrows/IconArrowDropDown';
+import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 
 /**
  * `ActionButton` is an `ActionBaseButton` with a `Button` inside named slot `button`.
@@ -74,7 +74,7 @@ export default {
     components: {
         ActionBaseButton,
         Button,
-        IconArrowDropDown,
+        IconArrowDropdown,
     },
     props: {
         /**

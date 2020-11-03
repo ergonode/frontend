@@ -59,12 +59,12 @@
                     <ErrorHint
                         v-if="isError"
                         :hint="errorMessages" />
-                    <IconArrowDropDown :state="dropDownState" />
+                    <IconArrowDropdown :state="dropDownState" />
                 </template>
             </InputController>
         </template>
         <FadeTransition>
-            <SelectDropDown
+            <SelectDropdown
                 v-if="needsToRender"
                 :data-cy="`${dataCy}-drop-down`"
                 ref="menu"
@@ -85,6 +85,11 @@
                 @search="onSearch"
                 @input="onSelectValue"
                 @click-outside="onClickOutside">
+                <template #placeholder="{ isVisible }">
+                    <slot
+                        name="placeholder"
+                        :is-visible="isVisible" />
+                </template>
                 <template #dropdown>
                     <slot
                         name="dropdown"
@@ -104,7 +109,7 @@
                         :clear="onClear"
                         :apply="onDismiss" />
                 </template>
-            </SelectDropDown>
+            </SelectDropdown>
         </FadeTransition>
         <template #details>
             <slot name="details" />
@@ -124,11 +129,11 @@ import {
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
-import IconArrowDropDown from '@UI/components/Icons/Arrows/IconArrowDropDown';
+import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 import InputController from '@UI/components/Input/InputController';
 import InputLabel from '@UI/components/Input/InputLabel';
 import InputSelectValue from '@UI/components/Input/InputSelectValue';
-import SelectDropDown from '@UI/components/Select/DropDown/SelectDropDown';
+import SelectDropdown from '@UI/components/Select/Dropdown/SelectDropdown';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
 
@@ -136,8 +141,8 @@ export default {
     name: 'Select',
     components: {
         FadeTransition,
-        SelectDropDown,
-        IconArrowDropDown,
+        SelectDropdown,
+        IconArrowDropdown,
         InputController,
         InputLabel,
         InputSelectValue,
@@ -278,6 +283,13 @@ export default {
             default: false,
         },
         /**
+         * Search result
+         */
+        searchResult: {
+            type: String,
+            default: '',
+        },
+        /**
          * Determines stickiness of search
          */
         stickySearch: {
@@ -295,7 +307,6 @@ export default {
     data() {
         return {
             selectedOptions: {},
-            searchResult: '',
             isBlurringNeeded: false,
             isMouseMoving: false,
             isFocused: false,
@@ -384,9 +395,8 @@ export default {
         },
         blur() {
             this.isFocused = false;
-            this.searchResult = '';
 
-            this.onSearch(this.searchResult);
+            this.onSearch('');
             this.$emit('focus', false);
         },
         onSearch(value) {

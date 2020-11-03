@@ -4,29 +4,24 @@
  */
 <template>
     <FadeTransition>
-        <DropDown
+        <Dropdown
             v-show="isVisible"
             :offset="offset"
             @click-outside="onClickOutside">
-            <template #body>
-                <slot name="body" />
-            </template>
-            <template #footer>
-                <slot name="footer" />
-            </template>
-        </DropDown>
+            <slot />
+        </Dropdown>
     </FadeTransition>
 </template>
 
 <script>
-import DropDown from '@UI/components/Select/DropDown/DropDown';
+import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
 
 export default {
-    name: 'GridAdvancedFilterDropDown',
+    name: 'GridAdvancedFilterDropdown',
     components: {
         FadeTransition,
-        DropDown,
+        Dropdown,
     },
     props: {
         /**

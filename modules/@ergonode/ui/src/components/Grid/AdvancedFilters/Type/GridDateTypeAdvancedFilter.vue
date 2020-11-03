@@ -32,7 +32,7 @@ import {
 } from '@Core/defaults/operators';
 import GridAdvancedFilterDateContent from '@UI/components/Grid/AdvancedFilters/Content/GridAdvancedFilterDateContent';
 import GridAdvancedFilter from '@UI/components/Grid/AdvancedFilters/GridAdvancedFilter';
-import SelectDropdownApplyFooter from '@UI/components/Select/DropDown/Footers/SelectDropdownApplyFooter';
+import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
 import {
     DEFAULT_FORMAT,
 } from '@UI/models/calendar';

@@ -4,110 +4,95 @@
  */
 <template>
     <FadeTransition>
-        <DropDown
+        <Dropdown
             v-show="isVisible"
             :offset="offset"
             :fixed="fixedContent"
             @click-outside="onClickOutside">
-            <template #body>
+            <slot
+                name="placeholder"
+                :is-visible="isPlaceholderVisible">
+                <DropdownPlaceholder v-if="isPlaceholderVisible" />
+            </slot>
+            <template v-if="isDropdownContentVisible">
                 <slot name="dropdown">
                     <List>
-                        <DropDownListSearch
+                        <DropdownListSearch
                             v-if="searchable"
                             :value="searchResult"
                             :sticky="stickySearch"
                             @input="onSearch" />
-                        <ListElement
+                        <DropdownListElement
                             v-for="(option, index) in options"
                             :key="index"
+                            :index="index"
                             :size="size"
-                            :disabled="option.disabled"
+                            :value="option"
                             :selected="isOptionSelected(index)"
-                            @click.native.prevent="onSelectValue(option, index)">
-                            <template #default="{ isSelected }">
+                            @input="onSelectValue">
+                            <template #option="{ isSelected }">
                                 <slot
                                     name="option"
                                     :option="option"
                                     :is-selected="isSelected"
-                                    :index="index">
-                                    <template v-if="isOptionsValid">
-                                        <ListElementAction
-                                            v-if="multiselect"
-                                            :size="size">
-                                            <CheckBox
-                                                :value="isSelected" />
-                                        </ListElementAction>
-                                        <ListElementDescription>
-                                            <ListElementTitle
-                                                :size="size"
-                                                :title="option" />
-                                        </ListElementDescription>
-                                    </template>
-                                </slot>
+                                    :index="index" />
                             </template>
-                        </ListElement>
+                        </DropdownListElement>
+                        <DropdownPlaceholder
+                            v-if="isSearchPlaceholderVisible"
+                            title="No results"
+                            subtitle="Clear the search and try with another phrase.">
+                            <template #action>
+                                <ClearSearchButton @click.native.stop="onClearSearch" />
+                            </template>
+                        </DropdownPlaceholder>
                     </List>
                 </slot>
-            </template>
-            <template
-                v-if="clearable"
-                #footer>
                 <slot
+                    v-if="isFooterVisible"
                     name="footer"
                     :clear="onClear"
                     :apply="onDismiss">
-                    <DropDownFooter
+                    <MultiselectDropdownFooter
+                        v-if="multiselect"
                         :size="size"
-                        :space-between="multiselect">
-                        <Button
-                            v-if="multiselect"
-                            :size="tinySize"
-                            title="OK"
-                            @click.native="onDismiss" />
-                        <Button
-                            :size="tinySize"
-                            :title="multiselect ? 'CLEAR ALL' : 'CLEAR'"
-                            :theme="secondaryTheme"
-                            @click.native="onClear" />
-                    </DropDownFooter>
+                        @clear="onClear"
+                        @apply="onDismiss" />
+                    <SelectDropdownApplyFooter
+                        v-else
+                        :size="size"
+                        @clear="onClear" />
                 </slot>
             </template>
-        </DropDown>
+        </Dropdown>
     </FadeTransition>
 </template>
 
 <script>
 import {
     SIZE,
-    THEME,
 } from '@Core/defaults/theme';
-import {
-    isObject,
-} from '@Core/models/objectWrapper';
-import CheckBox from '@UI/components/CheckBox/CheckBox';
 import List from '@UI/components/List/List';
-import ListElement from '@UI/components/List/ListElement';
-import ListElementAction from '@UI/components/List/ListElementAction';
-import ListElementDescription from '@UI/components/List/ListElementDescription';
-import ListElementTitle from '@UI/components/List/ListElementTitle';
-import DropDown from '@UI/components/Select/DropDown/DropDown';
-import DropDownFooter from '@UI/components/Select/DropDown/Footers/DropDownFooter';
+import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
+import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
+import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
+import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
+import DropdownListElement from '@UI/components/Select/Dropdown/List/DropdownListElement';
+import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
 
 export default {
-    name: 'SelectDropDown',
+    name: 'SelectDropdown',
     components: {
+        ClearSearchButton,
+        MultiselectDropdownFooter,
+        SelectDropdownApplyFooter,
         FadeTransition,
-        DropDown,
-        DropDownFooter,
+        Dropdown,
         List,
-        ListElement,
-        ListElementAction,
-        ListElementDescription,
-        ListElementTitle,
-        CheckBox,
-        Button: () => import('@UI/components/Button/Button'),
-        DropDownListSearch: () => import('@UI/components/Select/DropDown/DropDownListSearch'),
+        DropdownListElement,
+        DropdownPlaceholder,
+        DropdownListSearch: () => import('@UI/components/Select/Dropdown/List/DropdownListSearch'),
     },
     props: {
         /**
@@ -193,17 +178,26 @@ export default {
         },
     },
     computed: {
-        tinySize() {
-            return SIZE.TINY;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
         stringifiedOptions() {
             return this.options.map(option => JSON.stringify(option));
         },
-        isOptionsValid() {
-            return this.options.length && !isObject(this.options[0]);
+        isAnyOption() {
+            return this.options.length > 0;
+        },
+        isAnySearchPhrase() {
+            return this.searchResult !== '';
+        },
+        isPlaceholderVisible() {
+            return !this.isAnyOption && !this.isAnySearchPhrase;
+        },
+        isSearchPlaceholderVisible() {
+            return !this.isAnyOption && this.isAnySearchPhrase;
+        },
+        isDropdownContentVisible() {
+            return this.isAnyOption || this.isAnySearchPhrase;
+        },
+        isFooterVisible() {
+            return this.clearable && this.isAnyOption;
         },
     },
     methods: {
@@ -219,7 +213,12 @@ export default {
         onSearch(value) {
             this.$emit('search', value);
         },
-        onSelectValue(value, index) {
+        onClearSearch() {
+            this.onSearch('');
+        },
+        onSelectValue(index) {
+            const value = this.options[index];
+
             if (this.multiselect) {
                 const selectedOptions = {
                     ...this.selectedOptions,
@@ -235,7 +234,6 @@ export default {
             } else {
                 this.$emit('input', value);
             }
-            return true;
         },
         isOptionSelected(index) {
             return typeof this.selectedOptions[this.stringifiedOptions[index]] !== 'undefined';

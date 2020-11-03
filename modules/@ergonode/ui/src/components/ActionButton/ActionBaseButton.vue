@@ -13,31 +13,29 @@
             <slot name="button" />
         </div>
         <FadeTransition>
-            <DropDown
+            <Dropdown
                 v-if="isFocused"
                 :offset="getDropDownOffset()"
                 :fixed="fixedContent"
                 @click-outside="onClickOutside">
-                <template #body>
-                    <List>
-                        <ListElement
-                            v-for="(option, index) in options"
-                            :key="index"
-                            :size="smallSize"
-                            @click.native.prevent="onSelectedValue(index)">
-                            <slot
-                                name="option"
-                                :option="option">
-                                <ListElementDescription v-if="isOptionsValid">
-                                    <ListElementTitle
-                                        :title="option"
-                                        :size="smallSize" />
-                                </ListElementDescription>
-                            </slot>
-                        </ListElement>
-                    </List>
-                </template>
-            </DropDown>
+                <List>
+                    <ListElement
+                        v-for="(option, index) in options"
+                        :key="index"
+                        :size="smallSize"
+                        @click.native.prevent="onSelectedValue(index)">
+                        <slot
+                            name="option"
+                            :option="option">
+                            <ListElementDescription v-if="isOptionsValid">
+                                <ListElementTitle
+                                    :title="option"
+                                    :size="smallSize" />
+                            </ListElementDescription>
+                        </slot>
+                    </ListElement>
+                </List>
+            </Dropdown>
         </FadeTransition>
     </div>
 </template>
@@ -53,13 +51,13 @@ import List from '@UI/components/List/List';
 import ListElement from '@UI/components/List/ListElement';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
-import DropDown from '@UI/components/Select/DropDown/DropDown';
+import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
 
 export default {
     name: 'ActionBaseButton',
     components: {
-        DropDown,
+        Dropdown,
         List,
         ListElement,
         ListElementDescription,

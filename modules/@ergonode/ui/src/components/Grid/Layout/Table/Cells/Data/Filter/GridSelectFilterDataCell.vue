@@ -10,7 +10,7 @@
         <GridFilterPresentationCell
             placeholder="Select..."
             :value="presentationValue" />
-        <IconArrowDropDown
+        <IconArrowDropdown
             view-box="0 0 24 24"
             :width="32" />
     </GridTableCell>
@@ -21,14 +21,14 @@ import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
 import GridFilterPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridFilterPresentationCell';
-import IconArrowDropDown from '@UI/components/Icons/Arrows/IconArrowDropDown';
+import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 import gridDataFilterCellMixin from '@UI/mixins/grid/gridDataFilterCellMixin';
 
 export default {
     name: 'GridSelectFilterDataCell',
     components: {
         GridFilterPresentationCell,
-        IconArrowDropDown,
+        IconArrowDropdown,
     },
     mixins: [
         gridDataFilterCellMixin,

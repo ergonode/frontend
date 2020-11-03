@@ -4,17 +4,17 @@
  */
 <template>
     <div class="check-placeholder-cell">
-        <IconArrowDropDown />
+        <IconArrowDropdown />
     </div>
 </template>
 
 <script>
-import IconArrowDropDown from '@UI/components/Icons/Arrows/IconArrowDropDown';
+import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 
 export default {
     name: 'GridCheckPlaceholderCell',
     components: {
-        IconArrowDropDown,
+        IconArrowDropdown,
     },
 };
 </script>

@@ -19,7 +19,7 @@
                 @input="onSelectValueCallback" />
         </template>
         <template #footer="{ clear, apply }">
-            <DropDownFooter
+            <DropdownFooter
                 :size="$attrs.size"
                 :space-between="true">
                 <Button
@@ -31,7 +31,7 @@
                     title="CLEAR"
                     :theme="secondaryTheme"
                     @click.native="clear" />
-            </DropDownFooter>
+            </DropdownFooter>
         </template>
     </Select>
 </template>
@@ -43,7 +43,7 @@ import {
 } from '@Core/defaults/theme';
 import Button from '@UI/components/Button/Button';
 import ColorPickerContent from '@UI/components/ColorPicker/ColorPickerContent';
-import DropDownFooter from '@UI/components/Select/DropDown/Footers/DropDownFooter';
+import DropdownFooter from '@UI/components/Select/Dropdown/Footers/DropdownFooter';
 import Select from '@UI/components/Select/Select';
 
 export default {
@@ -51,7 +51,7 @@ export default {
     components: {
         Select,
         ColorPickerContent,
-        DropDownFooter,
+        DropdownFooter,
         Button,
     },
     computed: {

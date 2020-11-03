@@ -9,7 +9,7 @@
         :dismissible="false"
         :theme="secondaryTheme">
         <template #icon="{ color }">
-            <IconArrowDropDown :fill-color="color" />
+            <IconArrowDropdown :fill-color="color" />
         </template>
         <template #option="{ option }">
             <RichTextEditorButton
@@ -26,14 +26,14 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import ActionIconButton from '@UI/components/ActionIconButton/ActionIconButton';
-import IconArrowDropDown from '@UI/components/Icons/Arrows/IconArrowDropDown';
+import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 import RichTextEditorButton from '@UI/components/RichTextEditor/Button/RichTextEditorButton';
 
 export default {
     name: 'RichTextEditorActionIconButton',
     components: {
         ActionIconButton,
-        IconArrowDropDown,
+        IconArrowDropdown,
         RichTextEditorButton,
     },
     props: {

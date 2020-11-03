@@ -17,7 +17,7 @@ import {
 import Icon from '@UI/components/Icons/Icon';
 
 export default {
-    name: 'IconArrowDropDown',
+    name: 'IconArrowDropdown',
     components: {
         Icon,
     },

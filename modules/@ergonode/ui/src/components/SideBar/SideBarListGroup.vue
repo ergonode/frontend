@@ -20,7 +20,7 @@
                     class="side-bar-list-group__title"
                     v-text="route.group.title" />
             </FadeSideBarTextTransition>
-            <IconArrowDropDown
+            <IconArrowDropdown
                 v-if="isExpanded"
                 :state="dropDownState"
                 :fill-color="dropdownIconFillColor" />
@@ -66,7 +66,7 @@ import {
     GREY_DARK,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconArrowDropDown from '@UI/components/Icons/Arrows/IconArrowDropDown';
+import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 import SideBarListGroupElement from '@UI/components/SideBar/SideBarListGroupElement';
 import AutoHeightTransition from '@UI/components/Transitions/AutoHeightTransition';
 import FadeSideBarTextTransition from '@UI/components/Transitions/FadeSideBarTextTransition';
@@ -77,7 +77,7 @@ export default {
         AutoHeightTransition,
         FadeSideBarTextTransition,
         SideBarListGroupElement,
-        IconArrowDropDown,
+        IconArrowDropdown,
     },
     props: {
         /**
