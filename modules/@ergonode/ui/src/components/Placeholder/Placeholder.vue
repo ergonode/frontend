@@ -115,7 +115,7 @@ export default {
         }
 
         &__subtitle {
-            font: $FONT_MEDIUM_12_16;
+            font: $FONT_MEDIUM_14_20;
         }
 
         &__description {
