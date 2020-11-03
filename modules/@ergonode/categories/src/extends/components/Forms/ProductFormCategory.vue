@@ -17,6 +17,10 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Categories/config/privileges';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import {
@@ -44,6 +48,20 @@ export default {
         ]),
         categoryFieldKey() {
             return 'categories';
+        },
+        placeholder() {
+            return {
+                title: 'No categories',
+                subtitle: 'There are no categories in the system, so you can create the first one.',
+            };
+        },
+        isAllowedToCreate() {
+            return this.$hasAccess([
+                PRIVILEGES.CATEGORY.create,
+            ]);
+        },
+        smallSize() {
+            return SIZE.SMALL;
         },
     },
     methods: {

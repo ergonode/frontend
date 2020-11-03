@@ -83,7 +83,6 @@ import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import ListElementAction from '@UI/components/List/ListElementAction';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import Select from '@UI/components/Select/Select';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
 
@@ -97,7 +96,6 @@ export default {
         ListElementTitle,
         ListElementAction,
         CheckBox,
-        DropdownPlaceholder,
     },
     props: {
         /**
