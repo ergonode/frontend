@@ -10,7 +10,7 @@
                     v-model="localValue"
                     :disabled="disabled"
                     object-fit="contain"
-                    height="181px" />
+                    :height="`${cellHeight}px`" />
             </GridImageEditContentCell>
         </GridSelectEditContentCell>
     </GridEditNavigationCell>
@@ -29,18 +29,34 @@ export default {
         GridSelectEditContentCell,
         GridImageEditContentCell,
     },
+    inject: [
+        'getGridTableLayoutReference',
+    ],
     mixins: [
         gridEditCellMixin,
     ],
     computed: {
+        cellHeight() {
+            return 181;
+        },
         positionStyle() {
             const {
                 x,
                 y,
+                height,
             } = this.bounds;
 
+            const {
+                scrollTop,
+                offsetHeight,
+            } = this.getGridTableLayoutReference();
+
+            const yPos = offsetHeight + scrollTop - y - height > this.cellHeight
+                ? y
+                : y - this.cellHeight + height;
+
             return {
-                top: `${y}px`,
+                top: `${yPos}px`,
                 left: `${x}px`,
                 width: '304px',
             };
