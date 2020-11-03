@@ -7,6 +7,7 @@
         :class="classes"
         @click="onClick">
         <Component
+            v-if="isIcon"
             :is="tabIconComponent"
             :fill-color="tabIconFillColor" />
         <span
@@ -46,14 +47,13 @@ export default {
                 },
             ];
         },
+        isIcon() {
+            return Boolean(this.item.icon);
+        },
         tabIconComponent() {
-            return this.item.iconComponent || null;
+            return this.item.icon;
         },
         tabIconFillColor() {
-            if (!this.item.iconComponent) {
-                return null;
-            }
-
             return this.isSelected
                 ? GREEN
                 : GRAPHITE;

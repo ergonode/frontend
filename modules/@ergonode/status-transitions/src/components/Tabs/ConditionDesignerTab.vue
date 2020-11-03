@@ -110,7 +110,7 @@ export default {
                 {
                     title: 'Conditions',
                     component: () => import('@Conditions/components/Tabs/Lists/ConditionsListTab'),
-                    iconComponent: () => import('@Categories/components/Icons/IconCategory'),
+                    icon: () => import('@Categories/components/Icons/IconCategory'),
                     props: {
                         disabled: !this.isAllowedToUpdate,
                     },

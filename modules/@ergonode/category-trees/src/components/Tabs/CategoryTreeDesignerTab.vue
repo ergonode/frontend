@@ -93,7 +93,7 @@ export default {
                 {
                     title: 'Categories',
                     component: () => import('@Trees/components/Tabs/List/CategoriesListTab'),
-                    iconComponent: () => import('@Trees/components/Icons/IconTree'),
+                    icon: () => import('@Trees/components/Icons/IconTree'),
                 },
             ];
         },
