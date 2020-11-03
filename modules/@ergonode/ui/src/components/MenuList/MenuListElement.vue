@@ -11,7 +11,7 @@
             class="menu-list-element__link"
             :to="{ path: item.routing }">
             <Component
-                :is="iconComponent"
+                :is="item.icon"
                 :fill-color="iconFillColor" />
             <span
                 class="link-text"
@@ -58,9 +58,6 @@ export default {
             if (this.isSelected) iconColor = WHITE;
 
             return iconColor;
-        },
-        iconComponent() {
-            return () => import(`@Core/components/Icons/Menu/Icon${this.item.icon}`);
         },
         isSelected() {
             return this.$route.path.includes(this.item.routing);

@@ -125,7 +125,7 @@ export default [
         path: '/user-roles',
         component: Pages.Roles,
         redirect: {
-            name: 'user-rile-grid',
+            name: 'user-roles-grid',
         },
         meta: {
             access: true,

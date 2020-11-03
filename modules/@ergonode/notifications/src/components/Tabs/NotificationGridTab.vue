@@ -108,8 +108,15 @@ export default {
                 value: this.limit + DATA_LIMIT,
             });
 
-            await this.requestForNotifications();
-
+            await this.requestForNotifications({
+                onSuccess: this.onLoadMoreNotificationsSuccess,
+                onError: this.onLoadMoreNotificationsError,
+            });
+        },
+        onLoadMoreNotificationsSuccess() {
+            this.isFetchingData = false;
+        },
+        onLoadMoreNotificationsError() {
             this.isFetchingData = false;
         },
     },

@@ -3,21 +3,21 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="picture-carousel">
-        <Picture
+    <div class="image-carousel">
+        <LazyImage
             v-for="(id, index) in imageIds"
             :class="currentIndex === index ? 'visible' : 'non-visible'"
             :href="`multimedia/${id}/download/default`"
             :value="id"
             :key="id"
             object-fit="none" />
-        <div class="picture-carousel__panel">
+        <div class="image-carousel__panel">
             <div
                 class="image-white-theme"
                 v-show="currentIndex > 0">
                 <Fab
                     :theme="secondaryTheme"
-                    @click.native="onPreviousPicture">
+                    @click.native="onPreviousImage">
                     <template #icon="{ color }">
                         <IconArrowSingle
                             :state="arrowLeft"
@@ -26,14 +26,14 @@
                 </Fab>
             </div>
             <span
-                class="picture-carousel__pagination"
+                class="image-carousel__pagination"
                 v-text="pagination" />
             <div
                 class="image-white-theme"
                 v-show="currentIndex < imageIds.length - 1">
                 <Fab
                     :theme="secondaryTheme"
-                    @click.native="onNextPicture">
+                    @click.native="onNextImage">
                     <template #icon="{ color }">
                         <IconArrowSingle
                             :state="arrowRight"
@@ -55,18 +55,18 @@ import {
 } from '@Core/defaults/theme';
 import Fab from '@UI/components/Fab/Fab';
 import IconArrowSingle from '@UI/components/Icons/Arrows/IconArrowSingle';
-import Picture from '@UI/components/Picture/Picture';
+import LazyImage from '@UI/components/LazyImage/LazyImage';
 
 export default {
-    name: 'PictureCarousel',
+    name: 'ImageCarousel',
     components: {
-        Picture,
+        LazyImage,
         IconArrowSingle,
         Fab,
     },
     props: {
         /**
-         * Index of presented picture
+         * Index of presented image
          */
         currentIndex: {
             type: Number,
@@ -101,10 +101,10 @@ export default {
         },
     },
     methods: {
-        onPreviousPicture() {
+        onPreviousImage() {
             this.$emit('current', this.currentIndex - 1);
         },
-        onNextPicture() {
+        onNextImage() {
             this.$emit('current', this.currentIndex + 1);
         },
     },
@@ -112,7 +112,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .picture-carousel {
+    .image-carousel {
         position: relative;
         display: flex;
         flex: 1;

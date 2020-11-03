@@ -94,8 +94,6 @@ export default function ({
                 advancedFilters,
                 filterCode,
             }) {
-                this.advancedFilters = advancedFilters;
-
                 if (advancedFilters.length) {
                     const filter = advancedFilters.find(({
                         id,

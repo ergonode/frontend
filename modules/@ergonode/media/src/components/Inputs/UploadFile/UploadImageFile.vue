@@ -16,12 +16,12 @@
                         <div
                             class="upload-image-file__image"
                             v-if="!multiple">
-                            <Picture
+                            <LazyImage
                                 :href="`multimedia/${value}/download/default`"
                                 :value="value"
                                 :object-fit="objectFit" />
                         </div>
-                        <PictureCarousel
+                        <ImageCarousel
                             v-else
                             :image-ids="value"
                             :current-index="currentIndex"
@@ -101,8 +101,8 @@ export default {
         Button,
         IconAdd,
         IconDots: () => import('@UI/components/Icons/Others/IconDots'),
-        Picture: () => import('@UI/components/Picture/Picture'),
-        PictureCarousel: () => import('@UI/components/PictureCarousel/PictureCarousel'),
+        LazyImage: () => import('@UI/components/LazyImage/LazyImage'),
+        ImageCarousel: () => import('@UI/components/ImageCarousel/ImageCarousel'),
         ModalMediaTabBar: () => import('@Media/components/Modal/ModalMediaTabBar'),
         ActionIconButton: () => import('@UI/components/ActionIconButton/ActionIconButton'),
         ListElementDescription: () => import('@UI/components/List/ListElementDescription'),

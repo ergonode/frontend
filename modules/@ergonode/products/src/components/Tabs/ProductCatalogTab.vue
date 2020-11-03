@@ -224,13 +224,13 @@ export default {
                 {
                     title: 'Product attributes',
                     component: () => import('@Attributes/components/Tabs/List/AttributesListTab'),
-                    iconComponent: () => import('@Attributes/components/Icons/IconAttributes'),
+                    icon: () => import('@Attributes/components/Icons/IconAttributes'),
                     props: {},
                 },
                 {
                     title: 'System attributes',
                     component: () => import('@Attributes/components/Tabs/List/SystemAttributesListTab'),
-                    iconComponent: () => import('@Core/components/Icons/Menu/IconSettings'),
+                    icon: () => import('@Core/components/Icons/Menu/IconSettings'),
                     props: {},
                 },
                 ...this.extendVerticalTabs,

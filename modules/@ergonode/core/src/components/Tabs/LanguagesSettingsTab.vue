@@ -123,7 +123,7 @@ export default {
                 {
                     title: 'System languages',
                     component: () => import('@Core/components/Tabs/List/LanguagesListTab'),
-                    iconComponent: () => import('@UI/components/Icons/Others/IconTranslate'),
+                    icon: () => import('@UI/components/Icons/Others/IconTranslate'),
                 },
             ];
         },

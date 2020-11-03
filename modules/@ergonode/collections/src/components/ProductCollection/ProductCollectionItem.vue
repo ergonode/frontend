@@ -4,7 +4,7 @@
  */
 <template>
     <div class="product-collection-item">
-        <Picture
+        <LazyImage
             v-if="item.image"
             :href="`multimedia/${item.image}/download/default`"
             :value="item.image" />
@@ -24,7 +24,7 @@
 export default {
     name: 'ProductCollectionItem',
     components: {
-        Picture: () => import('@UI/components/Picture/Picture'),
+        LazyImage: () => import('@UI/components/LazyImage/LazyImage'),
     },
     props: {
         item: {
