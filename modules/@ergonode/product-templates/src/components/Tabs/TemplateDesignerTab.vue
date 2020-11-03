@@ -187,12 +187,12 @@ export default {
                             PRIVILEGES.TEMPLATE_DESIGNER.update,
                         ]),
                     },
-                    iconComponent: () => import('@Attributes/components/Icons/IconAttributes'),
+                    icon: () => import('@Attributes/components/Icons/IconAttributes'),
                 },
                 {
                     title: 'Widgets',
                     component: () => import('@Templates/components/Tabs/List/WidgetsListTab'),
-                    iconComponent: () => import('@Core/components/Icons/Widgets/IconWidget'),
+                    icon: () => import('@Core/components/Icons/Widgets/IconWidget'),
                 },
             ];
         },

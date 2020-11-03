@@ -12,7 +12,9 @@ import {
     create,
     get,
     remove,
+    removeAvatar,
     update,
+    uploadAvatar,
 } from '@Users/services/user/index';
 import deepmerge from 'deepmerge';
 
@@ -238,6 +240,63 @@ export default {
                 });
 
                 return;
+            }
+
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
+    },
+    async updateUserAvatar(
+        {
+            state,
+            commit,
+        },
+        {
+            scope,
+            onSuccess = () => {},
+            onError = () => {},
+        },
+    ) {
+        try {
+            const {
+                id,
+                avatarFile,
+            } = state;
+
+            if (avatarFile) {
+                const {
+                    name,
+                } = avatarFile;
+
+                const data = new FormData();
+                data.append('upload', avatarFile, name);
+
+                await uploadAvatar({
+                    $axios: this.app.$axios,
+                    id,
+                    data,
+                });
+
+                commit('__SET_STATE', {
+                    key: 'avatarId',
+                    value: id,
+                });
+            } else {
+                await removeAvatar({
+                    $axios: this.app.$axios,
+                    id,
+                });
+            }
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating user avatar has been canceled',
+                });
             }
 
             onError({

@@ -14,6 +14,12 @@ export const update = ({
     data,
 }) => $axios.$put(`accounts/${id}`, data);
 
+export const uploadAvatar = ({
+    $axios,
+    id,
+    data,
+}) => $axios.$post(`accounts/${id}/avatar`, data);
+
 export const create = ({
     $axios,
     data,
@@ -23,3 +29,8 @@ export const remove = ({
     $axios,
     id,
 }) => $axios.$delete(`accounts/${id}`);
+
+export const removeAvatar = ({
+    $axios,
+    id,
+}) => $axios.$delete(`accounts/${id}/avatar`);

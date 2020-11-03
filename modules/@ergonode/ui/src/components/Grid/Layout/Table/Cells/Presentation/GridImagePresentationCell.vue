@@ -4,7 +4,7 @@
  */
 <template>
     <div class="grid-image-presentation-cell">
-        <Picture
+        <LazyImage
             v-if="value"
             :href="`multimedia/${value}/download/default`"
             :value="value" />
@@ -15,7 +15,7 @@
 export default {
     name: 'GridImagePresentationCell',
     components: {
-        Picture: () => import('@UI/components/Picture/Picture'),
+        LazyImage: () => import('@UI/components/LazyImage/LazyImage'),
     },
     props: {
         /**

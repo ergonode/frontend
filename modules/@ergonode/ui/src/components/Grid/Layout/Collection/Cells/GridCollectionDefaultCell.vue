@@ -6,7 +6,7 @@
     <div
         class="collection-cell"
         @click="onClick">
-        <Picture
+        <LazyImage
             v-if="data.image"
             :href="`multimedia/${data.image}/download/default`"
             :value="data.image"
@@ -31,12 +31,12 @@
 import {
     THEME,
 } from '@Core/defaults/theme';
-import Picture from '@UI/components/Picture/Picture';
+import LazyImage from '@UI/components/LazyImage/LazyImage';
 
 export default {
     name: 'GridCollectionDefaultCell',
     components: {
-        Picture,
+        LazyImage,
     },
     props: {
         /**

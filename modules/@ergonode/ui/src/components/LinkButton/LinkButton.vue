@@ -45,5 +45,6 @@ export default {
         font: $FONT_MEDIUM_12_16;
         text-align: left;
         cursor: pointer;
+        word-break: break-word;
     }
 </style>
