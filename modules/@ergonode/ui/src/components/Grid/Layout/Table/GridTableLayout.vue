@@ -271,6 +271,20 @@ export default {
             default: ROW_HEIGHT.SMALL,
         },
         /**
+         * The flag which determines the state of selected each row
+         */
+        isSelectedAllRows: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * The map of selected rows
+         */
+        selectedRows: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
          * Determinate if the component is being able to edit
          */
         isEditable: {
@@ -330,8 +344,6 @@ export default {
     data() {
         return {
             hasInitialWidths: true,
-            isSelectedAllRows: false,
-            selectedRows: {},
             orderedColumns: [],
             actionColumns: [],
             columnWidths: [],
@@ -541,14 +553,10 @@ export default {
             };
         },
         onRowSelect(selectedRows) {
-            this.selectedRows = selectedRows;
-
-            this.$emit('row-select', this.selectedRows);
+            this.$emit('row-select', selectedRows);
         },
         onRowsSelect(isSelectedAllRows) {
-            this.isSelectedAllRows = isSelectedAllRows;
-
-            this.$emit('rows-select', this.isSelectedAllRows);
+            this.$emit('rows-select', isSelectedAllRows);
         },
         onCellValueChange(value) {
             this.$emit('cell-value', value);

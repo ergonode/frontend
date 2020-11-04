@@ -19,6 +19,10 @@
                 <slot name="prependHeader" />
             </template>
             <template #actions>
+                <MassActionButton
+                    v-if="isMassActionVisible"
+                    :options="massActions"
+                    @action="onMassActionSelect" />
                 <slot name="actionsHeader" />
             </template>
             <template #configuration>
@@ -52,6 +56,8 @@
                     :extended-data-filter-cells="extendedDataFilterCells[gridLayout.TABLE]"
                     :extended-data-edit-cells="extendedDataEditCells[gridLayout.TABLE]"
                     :extended-edit-filter-cells="extendedDataEditFilterCells[gridLayout.TABLE]"
+                    :selected-rows="selectedRows"
+                    :is-selected-all-rows="isSelectedAllRows"
                     :is-editable="isEditable"
                     :is-select-column="isSelectColumn"
                     :is-basic-filter="isBasicFilter"
@@ -62,6 +68,8 @@
                     @row-action="onRowAction"
                     @remove-column="onRemoveColumn"
                     @swap-columns="onSwapColumns"
+                    @row-select="onRowSelect"
+                    @rows-select="onRowsSelect"
                     @rendered="onRenderedTableLayout" />
                 <GridCollectionLayout
                     v-else-if="isCollectionLayout && !isPrefetchingData && !isPlaceholderVisible"
@@ -119,12 +127,14 @@ import {
 import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
+import MassActionButton from '@UI/components/Grid/Buttons/MassActionButton';
 import RemoveFiltersButton from '@UI/components/Grid/Buttons/RemoveFiltersButton';
 import AddGridColumnDropZone from '@UI/components/Grid/DropZone/AddGridColumnDropZone';
 import GridPageSelector from '@UI/components/Grid/Footer/GridPageSelector';
 import GridPagination from '@UI/components/Grid/Footer/GridPagination';
 import GridBody from '@UI/components/Grid/GridBody';
 import GridFooter from '@UI/components/Grid/GridFooter';
+import GridPlaceholder from '@UI/components/Grid/GridPlaceholder';
 import GridHeader from '@UI/components/Grid/Header/GridHeader';
 import GridCollectionLayout from '@UI/components/Grid/Layout/Collection/GridCollectionLayout';
 import GridTableLayout from '@UI/components/Grid/Layout/Table/GridTableLayout';
@@ -146,7 +156,8 @@ export default {
         GridTableLayout,
         GridCollectionLayout,
         GridPageSelector,
-        GridPlaceholder: () => import('@UI/components/Grid/GridPlaceholder'),
+        MassActionButton,
+        GridPlaceholder,
     },
     props: {
         /**
@@ -190,6 +201,10 @@ export default {
         collectionCellBinding: {
             type: Object,
             default: null,
+        },
+        massActions: {
+            type: Array,
+            default: () => [],
         },
         /**
          * The placeholder is a helper text for the component
@@ -324,6 +339,8 @@ export default {
             tableLayoutConfig: {
                 rowHeight: ROW_HEIGHT.SMALL,
             },
+            isSelectedAllRows: false,
+            selectedRows: {},
         };
     },
     computed: {
@@ -353,6 +370,9 @@ export default {
                     'grid--border': this.isBorder,
                 },
             ];
+        },
+        isMassActionVisible() {
+            return this.massActions.length > 0;
         },
         isListElementDragging() {
             return this.isElementDragging === DRAGGED_ELEMENT.LIST;
@@ -389,6 +409,22 @@ export default {
     methods: {
         onRemoveAllFilters() {
             this.$emit('remove-all-filters');
+        },
+        async onMassActionSelect(option) {
+            try {
+                await option.action();
+
+                this.selectedRows = {};
+                this.isSelectedAllRows = false;
+            } catch {
+                throw new Error('Mass action is either does\'t have an action assigned not is not valid');
+            }
+        },
+        onRowSelect(selectedRows) {
+            this.selectedRows = selectedRows;
+        },
+        onRowsSelect(isSelectedAllRows) {
+            this.isSelectedAllRows = isSelectedAllRows;
         },
         onApplySettings({
             tableConfig,
