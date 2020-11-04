@@ -26,7 +26,7 @@
                 :is-basic-filter="true"
                 @cell-value="onCellValueChange"
                 @fetch-data="onFetchData"
-                @remove-all-filter="onRemoveAllFilters"
+                @remove-all-filters="onRemoveAllFilters"
                 @filter="onFilterChange">
                 <template #actionsHeader>
                     <slot name="actionsHeader" />

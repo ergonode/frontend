@@ -25,7 +25,7 @@
         @cell-value="onCellValueChange"
         @delete-row="onRemoveRow"
         @fetch-data="onFetchData"
-        @remove-all-filter="onRemoveAllFilters"
+        @remove-all-filters="onRemoveAllFilters"
         @filter="onFilterChange">
         <template #appendFooter>
             <Button

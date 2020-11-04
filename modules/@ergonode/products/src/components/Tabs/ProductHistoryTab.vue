@@ -19,7 +19,7 @@
                 :is-basic-filter="true"
                 :is-border="true"
                 @fetch-data="onFetchData"
-                @remove-all-filter="onRemoveAllFilters"
+                @remove-all-filters="onRemoveAllFilters"
                 @filter="onFilterChange" />
         </template>
     </CenterViewTemplate>

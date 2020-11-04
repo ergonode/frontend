@@ -22,7 +22,7 @@
             <GridSuffixPresentationCell
                 v-if="data.suffix"
                 :suffix="data.suffix" />
-            <IconArrowDropDown
+            <IconArrowDropdown
                 v-if="!isLocked"
                 view-box="0 0 24 24"
                 :width="32" />
@@ -40,7 +40,7 @@ export default {
     components: {
         GridLabelPresentationCell,
         GridSuffixPresentationCell,
-        IconArrowDropDown: () => import('@UI/components/Icons/Arrows/IconArrowDropDown'),
+        IconArrowDropdown: () => import('@UI/components/Icons/Arrows/IconArrowDropdown'),
     },
     mixins: [
         gridDataCellMixin,

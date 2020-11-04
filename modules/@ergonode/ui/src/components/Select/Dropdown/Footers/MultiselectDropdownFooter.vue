@@ -3,9 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <DropDownFooter
-        :size="smallSize"
-        :space-between="true">
+    <DropdownFooter
+        :size="size"
+        :space-between="spaceBetween">
         <Button
             :size="tinySize"
             title="OK"
@@ -15,7 +15,7 @@
             :size="tinySize"
             title="CLEAR ALL"
             @click.native="onClear" />
-    </DropDownFooter>
+    </DropdownFooter>
 </template>
 
 <script>
@@ -24,18 +24,35 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import Button from '@UI/components/Button/Button';
-import DropDownFooter from '@UI/components/Select/DropDown/Footers/DropDownFooter';
+import DropdownFooter from '@UI/components/Select/Dropdown/Footers/DropdownFooter';
 
 export default {
     name: 'MultiselectDropdownFooter',
     components: {
-        DropDownFooter,
+        DropdownFooter,
         Button,
     },
-    computed: {
-        smallSize() {
-            return SIZE.SMALL;
+    props: {
+        /**
+         * The size of the component
+         */
+        size: {
+            type: String,
+            default: SIZE.SMALL,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
         },
+        /**
+         * Equal space between each component
+         */
+        spaceBetween: {
+            type: Boolean,
+            default: true,
+        },
+    },
+    computed: {
         tinySize() {
             return SIZE.TINY;
         },

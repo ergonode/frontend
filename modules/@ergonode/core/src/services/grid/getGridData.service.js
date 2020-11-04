@@ -21,7 +21,9 @@ export const getGridData = async ({
 }) => {
     try {
         const config = {
-            params,
+            params: {
+                ...params,
+            },
         };
 
         if (params.filter) {

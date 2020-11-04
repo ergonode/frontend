@@ -32,7 +32,7 @@ import {
 } from '@Core/defaults/operators';
 import GridAdvancedFilterRangeContent from '@UI/components/Grid/AdvancedFilters/Content/GridAdvancedFilterRangeContent';
 import GridAdvancedFilter from '@UI/components/Grid/AdvancedFilters/GridAdvancedFilter';
-import MultiselectDropdownFooter from '@UI/components/Select/DropDown/Footers/MultiselectDropdownFooter';
+import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
 
 export default {
     name: 'GridNumericTypeAdvancedFilter',

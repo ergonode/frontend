@@ -46,7 +46,22 @@
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[groupsFieldKey]"
                     href="attributes/groups/autocomplete"
-                    @input="setGroupsValue" />
+                    @input="setGroupsValue">
+                    <template #placeholder="{ isVisible }">
+                        <DropdownPlaceholder
+                            v-if="isVisible"
+                            :title="placeholder.title"
+                            :subtitle="placeholder.subtitle">
+                            <template #action>
+                                <Button
+                                    title="GO TO ATTRIBUTE GROUPS"
+                                    :size="smallSize"
+                                    :disabled="!isAllowedToUpdate"
+                                    @click.native="onNavigateToAttributeGroups" />
+                            </template>
+                        </DropdownPlaceholder>
+                    </template>
+                </Autocomplete>
                 <Divider />
             </FormSection>
             <FormSection
@@ -81,6 +96,9 @@ import PRIVILEGES from '@Attributes/config/privileges';
 import {
     SCOPE,
 } from '@Attributes/defaults/attributes';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
@@ -92,6 +110,7 @@ import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import InfoHint from '@UI/components/Hints/InfoHint';
+import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import Select from '@UI/components/Select/Select';
 import TextField from '@UI/components/TextField/TextField';
 import {
@@ -103,6 +122,7 @@ import {
 export default {
     name: 'AttributeForm',
     components: {
+        DropdownPlaceholder,
         Form,
         FormSection,
         InfoHint,
@@ -131,6 +151,15 @@ export default {
         ...mapGetters('core', [
             'rootLanguage',
         ]),
+        smallSize() {
+            return SIZE.SMALL;
+        },
+        placeholder() {
+            return {
+                title: 'No attribute groups',
+                subtitle: 'There are no attribute groups in the system, so you can create the first one.',
+            };
+        },
         extendedForm() {
             return this.$extendedForm({
                 key: '@Attributes/components/Forms/AttributeForm',
@@ -176,6 +205,11 @@ export default {
         ...mapActions('attribute', [
             '__setState',
         ]),
+        onNavigateToAttributeGroups() {
+            this.$router.push({
+                name: 'attribute-groups-grid',
+            });
+        },
         bindingProps({
             props = {},
         }) {

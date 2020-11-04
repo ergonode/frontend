@@ -46,7 +46,7 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import DatePickerContent from '@UI/components/DatePicker/DatePickerContent';
-import SelectDropdownApplyFooter from '@UI/components/Select/DropDown/Footers/SelectDropdownApplyFooter';
+import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
 import Select from '@UI/components/Select/Select';
 import {
     DEFAULT_FORMAT,

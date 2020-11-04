@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <DropDownFooter
+    <DropdownFooter
         :size="smallSize"
         :space-between="true">
         <Button
@@ -15,7 +15,7 @@
             :size="tinySize"
             title="CLEAR"
             @click.native="onClear" />
-    </DropDownFooter>
+    </DropdownFooter>
 </template>
 
 <script>
@@ -24,12 +24,12 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import Button from '@UI/components/Button/Button';
-import DropDownFooter from '@UI/components/Select/DropDown/Footers/DropDownFooter';
+import DropdownFooter from '@UI/components/Select/Dropdown/Footers/DropdownFooter';
 
 export default {
     name: 'SelectDropdownApplyFooter',
     components: {
-        DropDownFooter,
+        DropdownFooter,
         Button,
     },
     computed: {

@@ -15,7 +15,7 @@
                 class="title"
                 v-text="capitalizedUserFirstName || capitalizedUserLastName" />
             <div class="icon-wrapper">
-                <IconArrowDropDown
+                <IconArrowDropdown
                     :fill-color="whiteColor"
                     :state="arrowIconState" />
             </div>
@@ -38,7 +38,7 @@ import {
 import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconArrowDropDown from '@UI/components/Icons/Arrows/IconArrowDropDown';
+import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 import ToolBarSelectButton from '@UI/components/ToolBar/ToolBarSelectButton';
 import {
     mapState,
@@ -49,7 +49,7 @@ export default {
     components: {
         ToolBarSelectButton,
         ToolBarUserSelectContent,
-        IconArrowDropDown,
+        IconArrowDropdown,
         UserFabAvatar,
     },
     data() {

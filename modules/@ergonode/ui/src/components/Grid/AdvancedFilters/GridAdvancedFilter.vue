@@ -41,27 +41,23 @@
                         class="advanced-filter__parameter"
                         v-text="parameters" />
                 </template>
-                <IconArrowDropDown
+                <IconArrowDropdown
                     class="advanced-filter__icon"
                     :state="arrowIconState"
                     :fill-color="arrowIconFillColor" />
             </div>
         </div>
-        <GridAdvancedFilterDropDown
+        <GridAdvancedFilterDropdown
             v-if="needsToRender"
             ref="menu"
             :offset="offset"
             :is-visible="isFocused"
             @click-outside="onClickOutside">
-            <template #body>
-                <slot name="body" />
-            </template>
-            <template #footer>
-                <slot
-                    name="footer"
-                    :on-apply="onApply" />
-            </template>
-        </GridAdvancedFilterDropDown>
+            <slot name="body" />
+            <slot
+                name="footer"
+                :on-apply="onApply" />
+        </GridAdvancedFilterDropdown>
     </div>
 </template>
 
@@ -80,7 +76,7 @@ import {
     GRAPHITE_DARK,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import GridAdvancedFilterDropDown from '@UI/components/Grid/AdvancedFilters/DropDown/GridAdvancedFilterDropDown';
+import GridAdvancedFilterDropdown from '@UI/components/Grid/AdvancedFilters/Dropdown/GridAdvancedFilterDropdown';
 import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
 import {
     getDraggedColumnPositionState,
@@ -95,8 +91,8 @@ import {
 export default {
     name: 'GridAdvancedFilter',
     components: {
-        GridAdvancedFilterDropDown,
-        IconArrowDropDown: () => import('@UI/components/Icons/Arrows/IconArrowDropDown'),
+        GridAdvancedFilterDropdown,
+        IconArrowDropdown: () => import('@UI/components/Icons/Arrows/IconArrowDropdown'),
     },
     mixins: [
         associatedLabelMixin,

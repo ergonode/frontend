@@ -3,7 +3,6 @@
  * See LICENSE for license details.
  */
 import {
-    SKU_MODEL,
     TYPES,
 } from '@Attributes/defaults/attributes';
 import {
@@ -205,19 +204,6 @@ export default {
                 break;
             default:
                 break;
-            }
-        },
-        '@Attributes/store/attribute/action/getAttributesOptionsByType/__after': ({
-            type,
-        }) => {
-            switch (type) {
-            case TYPES.TEXT:
-                // TODO: Temporary till BE will create SKU as an attribute
-                return [
-                    SKU_MODEL,
-                ];
-            default:
-                return [];
             }
         },
         '@Attributes/store/attribute/action/getAttribute/__after': async ({

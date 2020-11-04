@@ -34,7 +34,7 @@ import {
 } from '@Core/defaults/operators';
 import GridAdvancedFilterSelectContent from '@UI/components/Grid/AdvancedFilters/Content/GridAdvancedFilterTextContent';
 import GridAdvancedFilter from '@UI/components/Grid/AdvancedFilters/GridAdvancedFilter';
-import SelectDropdownFooter from '@UI/components/Select/DropDown/Footers/SelectDropdownFooter';
+import SelectDropdownFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownFooter';
 
 export default {
     name: 'GridSelectTypeAdvancedFilter',

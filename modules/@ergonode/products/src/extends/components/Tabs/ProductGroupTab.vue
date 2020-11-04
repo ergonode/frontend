@@ -25,7 +25,7 @@
                 :is-border="true"
                 @delete-row="onRemoveProduct"
                 @fetch-data="onFetchData"
-                @remove-all-filter="onRemoveAllFilters"
+                @remove-all-filters="onRemoveAllFilters"
                 @filter="onFilterChange">
                 <template #actionsHeader>
                     <ActionButton

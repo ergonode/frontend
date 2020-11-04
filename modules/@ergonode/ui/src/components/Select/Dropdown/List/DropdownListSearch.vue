@@ -3,11 +3,10 @@
  * See LICENSE for license details.
  */
 <template>
-    <li
-        :class="classes">
+    <li :class="classes">
         <input
             class="search-element__input"
-            :input="value"
+            :value="value"
             type="text"
             placeholder="Search..."
             @focus="onSearchFocus"
@@ -29,7 +28,7 @@ import {
 } from 'debounce';
 
 export default {
-    name: 'DropDownListSearch',
+    name: 'DropdownListSearch',
     components: {
         IconSearch,
     },

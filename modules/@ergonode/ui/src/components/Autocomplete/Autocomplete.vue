@@ -15,6 +15,7 @@
         :label="label"
         :placeholder="placeholder"
         :error-messages="errorMessages"
+        :search-result="searchValue"
         :hint="hint"
         :required="required"
         :autofocus="autofocus"
@@ -36,9 +37,14 @@
             <slot name="append" />
             <FadeTransition>
                 <IconSpinner
-                    v-if="isFetchingRequest"
+                    v-if="isFetchingData"
                     :color="graphiteColor" />
             </FadeTransition>
+        </template>
+        <template #placeholder="{ isVisible }">
+            <slot
+                name="placeholder"
+                :is-visible="isVisible" />
         </template>
         <template #details>
             <slot name="details" />
@@ -228,6 +234,20 @@ export default {
             default: false,
         },
         /**
+         * The type of filter at which options will be narrowed
+         */
+        filterType: {
+            type: String,
+            default: '',
+        },
+        /**
+         * Array of the static options which are not coming from options request
+         */
+        additionalStaticOptions: {
+            type: Array,
+            default: () => [],
+        },
+        /**
          * Unique identifier for cypress
          */
         dataCy: {
@@ -240,7 +260,7 @@ export default {
             options: [],
             allOptions: [],
             searchValue: '',
-            isFetchingRequest: false,
+            isFetchingData: false,
         };
     },
     computed: {
@@ -281,7 +301,11 @@ export default {
             if (this.searchValue !== value) {
                 this.searchValue = value;
 
-                this.getOptions();
+                if (this.searchValue === '') {
+                    this.options = this.allOptions;
+                } else {
+                    this.getOptions();
+                }
             }
         },
         onFocus(isFocused) {
@@ -302,21 +326,31 @@ export default {
         },
         async getOptions() {
             try {
-                this.isFetchingRequest = true;
+                this.isFetchingData = true;
 
-                this.options = await this.$axios.$get(this.href, {
+                const options = await this.$axios.$get(this.href, {
                     params: {
                         search: this.searchValue,
+                        type: this.filterType,
                     },
                 });
 
-                this.isFetchingRequest = false;
+                const lowerCaseSearchValue = this.searchValue.toLowerCase();
+
+                this.options = [
+                    ...options,
+                    ...this.additionalStaticOptions.filter(({
+                        code,
+                    }) => code.toLowerCase().includes(lowerCaseSearchValue)),
+                ];
+
+                this.isFetchingData = false;
             } catch (e) {
                 if (this.$axios.isCancel(e)) {
                     return;
                 }
 
-                this.isFetchingRequest = false;
+                this.isFetchingData = false;
 
                 this.$emit('fetch-error');
             }
