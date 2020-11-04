@@ -18,8 +18,8 @@
             <template #placeholder="{ isVisible }">
                 <DropdownPlaceholder
                     v-if="isVisible"
-                    :title="imageAttributesPlaceholder.title"
-                    :subtitle="imageAttributesPlaceholder.subtitle">
+                    :title="textAttributesPlaceholder.title"
+                    :subtitle="textAttributesPlaceholder.subtitle">
                     <template #action>
                         <Button
                             title="GO TO ATTRIBUTES"
