@@ -57,11 +57,11 @@ export default {
 .dropdown-placeholder {
     display: flex;
     flex-direction: column;
+    padding: 24px;
     box-sizing: border-box;
     background-color: $WHITESMOKE;
     color: $GRAPHITE_DARK;
     overflow: hidden;
-    padding: 24px;
 
     &__title {
         font: $FONT_SEMI_BOLD_20_24;
