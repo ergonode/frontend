@@ -73,10 +73,11 @@ export default {
             });
         },
         onRemove() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this template?',
-                confirmCallback: () => {
+            this.$confirm({
+                type: MODAL_TYPE.DESTRUCTIVE,
+                title: 'Are you sure you want to delete this template?',
+                applyTitle: 'YES, I\'M SURE',
+                action: () => {
                     this.removeTemplate({
                         scope: this.scope,
                         onSuccess: this.onRemoveSuccess,

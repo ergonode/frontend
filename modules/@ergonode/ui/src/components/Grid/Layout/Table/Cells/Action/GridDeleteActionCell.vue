@@ -60,10 +60,11 @@ export default {
     methods: {
         onDelete() {
             // TODO: Migrate it to Core and propagate action outside
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to remove this row?',
-                confirmCallback: async () => {
+            this.$confirm({
+                type: MODAL_TYPE.DESTRUCTIVE,
+                title: 'Are you sure you want to remove this row?',
+                applyTitle: 'YES, I\'M SURE',
+                action: async () => {
                     try {
                         await this.$axios.$delete(this.href, {
                             baseURL: '',

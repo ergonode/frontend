@@ -6,11 +6,13 @@
     <ModalOverlay @close="onClose">
         <Modal data-cy="modal">
             <ConfirmModalHeader
-                :title="modalData.message"
+                :title="title"
+                :subtitle="subtitle"
                 @close="onClose" />
             <ModalFooter>
                 <Button
                     data-cy="modal-confirm"
+                    :theme="applyActionTheme"
                     :title="applyTitle"
                     :size="smallSize"
                     @click.native="onAgree" />
@@ -26,6 +28,9 @@
 </template>
 
 <script>
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
 import {
     SIZE,
     THEME,
@@ -46,37 +51,66 @@ export default {
         Button,
     },
     props: {
+        index: {
+            type: Number,
+            required: true,
+        },
         /**
-         * Determines which component will be loaded
+         * The title of the component
          */
-        type: {
+        title: {
+            type: String,
+            default: 'Confirm',
+        },
+        /**
+         * The subtitle of the component
+         */
+        subtitle: {
             type: String,
             default: '',
         },
+        /**
+         * The title of apply button
+         */
+        applyTitle: {
+            type: String,
+            default: 'OK',
+        },
+        /**
+         * The title of cancel button
+         */
+        cancelTitle: {
+            type: String,
+            default: 'CANCEL',
+        },
+        /**
+         * The method executed in apply click event
+         */
+        action: {
+            type: Function,
+            default: () => {},
+        },
     },
     computed: {
+        applyActionTheme() {
+            return this.type === MODAL_TYPE.POSITIVE
+                ? THEME.PRIMARY
+                : THEME.DESTRUCTIVE;
+        },
         secondaryTheme() {
             return THEME.SECONDARY;
         },
         smallSize() {
             return SIZE.SMALL;
         },
-        modalData() {
-            return this.$getModal(this.type);
-        },
-        applyTitle() {
-            return this.modalData.applyTitle || 'OK';
-        },
-        cancelTitle() {
-            return this.modalData.cancelTitle || 'CANCEL';
-        },
     },
     methods: {
         onClose() {
-            this.$closeModal(this.type);
+            this.$emit('close', this.index);
         },
-        onAgree() {
-            this.modalData.confirmCallback();
+        async onAgree() {
+            await this.action();
+
             this.onClose();
         },
     },

@@ -6,7 +6,6 @@
     <ActionButton
         :title="actionButtonTitle"
         :size="smallSize"
-        :fixed-content="true"
         :theme="secondaryTheme"
         :options="options"
         @input="onSelectMassAction">

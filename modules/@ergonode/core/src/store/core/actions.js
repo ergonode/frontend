@@ -173,14 +173,14 @@ export default {
             value: defaultLanguage.code,
         });
     },
-    openModal({
+    addModal({
         commit,
     }, payload) {
-        commit(types.OPEN_MODAL, payload);
+        commit(types.ADD_MODAL, payload);
     },
-    closeModal({
+    removeModal({
         commit,
-    }, key) {
-        commit(types.CLOSE_MODAL, key);
+    }, index) {
+        commit(types.REMOVE_MODAL, index);
     },
 };

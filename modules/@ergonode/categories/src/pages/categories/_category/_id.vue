@@ -74,10 +74,11 @@ export default {
             __clearTranslationsStorage: '__clearStorage',
         }),
         onRemove() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: this.$t('category.messages.deleteConfirm'),
-                confirmCallback: () => {
+            this.$confirm({
+                type: MODAL_TYPE.DESTRUCTIVE,
+                title: this.$t('category.messages.deleteConfirm'),
+                applyTitle: 'YES, I\'M SURE',
+                action: () => {
                     this.removeCategory({
                         onSuccess: this.onRemoveSuccess,
                         onError: this.onRemoveError,

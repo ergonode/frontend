@@ -19,6 +19,7 @@
                 :errors="errors"
                 :data-count="filtered"
                 :collection-cell-binding="collectionCellBinding"
+                :mass-actions="massActions"
                 :extended-columns="extendedColumns"
                 :extended-data-cells="extendedDataCells"
                 :extended-data-filter-cells="extendedDataFilterCells"
@@ -101,6 +102,9 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchAdvancedFiltersDataMixin from '@Core/mixins/grid/fetchAdvancedFiltersDataMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
@@ -174,7 +178,24 @@ export default {
         return {
             isPrefetchingData: true,
             isSubmitting: false,
+            isDeleteModalVisible: false,
             extendVerticalTabs: [],
+            massActions: [
+                {
+                    label: 'Delete selected rows',
+                    action: (ids) => {
+                        this.$confirm({
+                            type: MODAL_TYPE.DESTRUCTIVE,
+                            title: `Are you sure you want to permanently delete ${ids.length} products?`,
+                            subtitle: 'The products will be deleted from the system forever and cannot be restored.',
+                            applyTitle: `DELETE ${ids.length} PRODUCTS`,
+                            action: () => {
+                                console.log('CANCEL');
+                            },
+                        });
+                    },
+                },
+            ],
         };
     },
     computed: {
@@ -247,9 +268,10 @@ export default {
             $this: this,
         });
 
-        extendVerticalTabs.forEach((extend) => {
-            this.extendVerticalTabs.push(...extend);
-        });
+        this.extendVerticalTabs = [
+            ...this.extendVerticalTabs,
+            ...extendVerticalTabs,
+        ];
     },
     methods: {
         ...mapActions('list', [
@@ -264,6 +286,12 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
+        onShowMassActionDeleteModal() {
+            this.isDeleteModalVisible = true;
+        },
+        onHideMassActionDeleteModal() {
+            this.isDeleteModalVisible = false;
+        },
         onRemoveAllFilters() {
             this.filterValues = {};
             this.advancedFilterValues = {};

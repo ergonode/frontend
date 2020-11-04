@@ -69,10 +69,11 @@ export default {
             'getDictionary',
         ]),
         onRemove() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this unit?',
-                confirmCallback: () => this.removeUnit({
+            this.$confirm({
+                type: MODAL_TYPE.DESTRUCTIVE,
+                title: 'Are you sure you want to delete this unit?',
+                applyTitle: 'YES, I\'M SURE',
+                action: () => this.removeUnit({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
                 }),

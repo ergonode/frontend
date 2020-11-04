@@ -4,16 +4,14 @@
  */
 <template>
     <div :class="classes">
-        <div class="header-container">
-            <h2
-                v-if="title"
-                class="modal-confirm-header__title"
-                v-text="title" />
-            <span
-                v-if="subtitle"
-                class="modal-confirm-header__subtitle"
-                v-text="subtitle" />
-        </div>
+        <h2
+            v-if="title"
+            class="modal-confirm-header__title"
+            v-text="title" />
+        <span
+            v-if="subtitle"
+            class="modal-confirm-header__subtitle"
+            v-text="subtitle" />
         <Fab
             data-cy="modal-close"
             :floating="{ top: '16px', right: '16px' }"
@@ -77,7 +75,7 @@ export default {
     .modal-confirm-header {
         position: relative;
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
         align-items: center;
         padding: 24px 48px 24px 24px;
         box-sizing: border-box;
@@ -90,13 +88,7 @@ export default {
         &__subtitle {
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_14_20;
+            margin-top: 8px;
         }
-    }
-
-    .header-container {
-        display: grid;
-        grid-auto-flow: row;
-        grid-row-gap: 8px;
-        align-items: center;
     }
 </style>

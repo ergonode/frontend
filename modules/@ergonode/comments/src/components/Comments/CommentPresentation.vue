@@ -130,10 +130,11 @@ export default {
             this.$emit('edit');
         },
         onRemove() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this comment?',
-                confirmCallback: () => {
+            this.$confirm({
+                type: MODAL_TYPE.DESTRUCTIVE,
+                title: 'Are you sure you want to delete this comment?',
+                applyTitle: 'YES, I\'M SURE',
+                action: () => {
                     const {
                         id,
                     } = this.comment;

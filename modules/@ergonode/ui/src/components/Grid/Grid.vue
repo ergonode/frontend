@@ -421,7 +421,7 @@ export default {
                 this.selectedRows = {};
                 this.isSelectedAllRows = false;
             } catch {
-                throw new Error('Mass action is either does\'t have an action assigned not is not valid');
+                throw new Error('Mass action is either without defined an action nor not valid');
             }
         },
         onRowSelect(selectedRows) {
