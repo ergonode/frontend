@@ -412,7 +412,9 @@ export default {
         },
         async onMassActionSelect(option) {
             try {
-                await option.action();
+                const rowIds = Object.keys(this.selectedRows);
+
+                await option.action(rowIds);
 
                 this.selectedRows = {};
                 this.isSelectedAllRows = false;
