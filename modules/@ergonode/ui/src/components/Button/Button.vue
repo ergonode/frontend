@@ -155,7 +155,7 @@ export default {
             }
         }
 
-        &--error {
+        &--destructive {
             background-color: $RED;
 
             &:hover:not(:disabled), &:focus {
@@ -163,7 +163,7 @@ export default {
             }
         }
 
-        &--primary, &--error {
+        &--primary, &--destructive {
             color: $WHITE;
 
             &:disabled {

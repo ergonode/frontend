@@ -50,7 +50,7 @@
                         v-if="!disabled"
                         :style="{ backgroundColor: whiteColor }"
                         :floating="{ top: '20px', right: '20px'}"
-                        :theme="errorTheme"
+                        :theme="destructiveTheme"
                         @click.native="onRemove">
                         <template #icon="{ color }">
                             <IconDelete :fill-color="color" />
@@ -153,8 +153,8 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        errorTheme() {
-            return THEME.ERROR;
+        destructiveTheme() {
+            return THEME.DESTRUCTIVE;
         },
         greenColor() {
             return GREEN;

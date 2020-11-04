@@ -24,7 +24,7 @@
                 </Fab>
                 <Fab
                     v-if="isAbleToDelete"
-                    :theme="errorTheme"
+                    :theme="destructiveTheme"
                     @click.native="onRemove">
                     <template #icon="{ color }">
                         <IconDelete :fill-color="color" />
@@ -105,8 +105,8 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        errorTheme() {
-            return THEME.ERROR;
+        destructiveTheme() {
+            return THEME.DESTRUCTIVE;
         },
         colorGreen() {
             return GREEN;

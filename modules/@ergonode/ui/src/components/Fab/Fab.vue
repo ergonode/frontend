@@ -81,7 +81,7 @@ export default {
     },
     computed: {
         iconFillColor() {
-            if (this.theme === THEME.ERROR) {
+            if (this.theme === THEME.DESTRUCTIVE) {
                 if (this.disabled) {
                     return GREY_DARK;
                 }
@@ -162,7 +162,7 @@ export default {
             }
         }
 
-        &--error {
+        &--destructive {
             &:hover:not(:disabled), &:focus {
                 box-shadow: $ELEVATOR_DESTRUCTIVE_HOVER_FOCUS;
             }
@@ -175,7 +175,7 @@ export default {
             }
         }
 
-        &--error, &--secondary, &--secondary-plain {
+        &--destructive, &--secondary, &--secondary-plain {
             background-color: transparent;
         }
 
