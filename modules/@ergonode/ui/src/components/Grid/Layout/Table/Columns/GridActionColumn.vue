@@ -17,9 +17,10 @@ export default {
 
 <style lang="scss" scoped>
     .action-column {
+        flex-shrink: 0;
         display: grid;
         background-color: $WHITE;
-        min-width: 32px;
+        width: 32px;
 
         & > .grid-table-cell:nth-child(1) {
             position: sticky;

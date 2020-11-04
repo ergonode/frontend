@@ -21,17 +21,18 @@
             <GridCheckPlaceholderCell />
         </GridTableCell>
         <GridSelectRowEditCell
-            v-for="(key, index) in dataCount"
-            :key="key"
+            v-for="row in dataCount"
+            :key="row"
             :column="0"
-            :row="rowsOffset + index + basicFiltersOffset + 1"
-            :is="isSelectedAllRows
-                || selectedRows[rowsOffset + index + basicFiltersOffset + 1]"
+            :row="rowsOffset + row + basicFiltersOffset"
+            :selected="isSelectedAllRows
+                || selectedRows[rowsOffset + row + basicFiltersOffset]"
             @select="onSelectRow" />
     </GridActionColumn>
 </template>
 
 <script>
+import GridCheckPlaceholderCell from '@UI/components/Grid/GridCheckPlaceholderCell';
 import GridCheckEditCell from '@UI/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell';
 import GridSelectRowEditCell from '@UI/components/Grid/Layout/Table/Cells/Edit/GridSelectRowEditCell';
 import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
@@ -44,7 +45,7 @@ export default {
         GridTableCell,
         GridCheckEditCell,
         GridSelectRowEditCell,
-        GridCheckPlaceholderCell: () => import('@UI/components/Grid/GridCheckPlaceholderCell'),
+        GridCheckPlaceholderCell,
     },
     props: {
         /**
@@ -60,6 +61,20 @@ export default {
         dataCount: {
             type: Number,
             default: 0,
+        },
+        /**
+         * The flag which determines the state of selected each row
+         */
+        isSelectedAllRows: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * The map of selected rows
+         */
+        selectedRows: {
+            type: Object,
+            default: () => ({}),
         },
         /**
          * The number from which rows are enumerated
@@ -83,12 +98,6 @@ export default {
             default: false,
         },
     },
-    data() {
-        return {
-            selectedRows: {},
-            isSelectedAllRows: false,
-        };
-    },
     computed: {
         rowsSelectionState() {
             const rowsAreSelected = Boolean(Object.keys(this.selectedRows).length);
@@ -108,23 +117,23 @@ export default {
             const anyRowsSelected = Object.entries(this.selectedRows).length;
 
             if (anyRowsSelected) {
-                this.selectedRows = {};
-
-                this.$emit('row-select', this.selectedRows);
+                this.$emit('row-select', {});
             } else {
-                this.isSelectedAllRows = !this.isSelectedAllRows;
-
-                this.$emit('rows-select', this.isSelectedAllRows);
+                this.$emit('rows-select', !this.isSelectedAllRows);
             }
         },
         onSelectRow({
             row,
             selected,
         }) {
+            const selectedRows = {
+                ...this.selectedRows,
+            };
+
             if (selected) {
-                this.selectedRows[row] = true;
+                selectedRows[row] = true;
             } else {
-                delete this.selectedRows[row];
+                delete selectedRows[row];
 
                 if (this.isSelectedAllRows) {
                     // If we had chosen option with selected all of the options, we need to remove it
@@ -133,21 +142,15 @@ export default {
 
                     for (let i = fixedIndex; i < this.dataCount + fixedIndex; i += 1) {
                         if (i !== row) {
-                            this.selectedRows[i] = true;
+                            selectedRows[i] = true;
                         }
                     }
 
-                    this.isSelectedAllRows = false;
-
-                    this.$emit('rows-select', this.isSelectedAllRows);
+                    this.$emit('rows-select', false);
                 }
             }
 
-            this.selectedRows = {
-                ...this.selectedRows,
-            };
-
-            this.$emit('row-select', this.selectedRows);
+            this.$emit('row-select', selectedRows);
         },
     },
 };

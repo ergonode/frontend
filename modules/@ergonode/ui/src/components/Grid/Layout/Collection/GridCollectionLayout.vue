@@ -35,7 +35,7 @@ export default {
             default: () => [],
         },
         /**
-         * List of rows ids
+         * List of row ids
          */
         rowIds: {
             type: Array,
