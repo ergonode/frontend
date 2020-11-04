@@ -13,6 +13,7 @@
             :disabled="disabled"
             filter-type="TEXT"
             href="attributes/autocomplete"
+            :error-messages="errors.defaultLabel"
             :additional-static-options="additionalStaticTextOptions"
             @input="setDefaultTextAttributeValue">
             <template #placeholder="{ isVisible }">
@@ -39,6 +40,7 @@
             :sticky-search="true"
             :disabled="disabled"
             filter-type="IMAGE"
+            :error-messages="errors.defaultImage"
             href="attributes/autocomplete"
             @input="setDefaultImageAttributeValue">
             <template #placeholder="{ isVisible }">
