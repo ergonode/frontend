@@ -77,18 +77,18 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 24px 48px 24px 24px;
+        padding: 24px 48px 16px 24px;
         box-sizing: border-box;
 
         &__title {
             color: $GRAPHITE_DARK;
             font: $FONT_SEMI_BOLD_16_24;
+            margin-bottom: 8px;
         }
 
         &__subtitle {
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_14_20;
-            margin-top: 8px;
         }
     }
 </style>

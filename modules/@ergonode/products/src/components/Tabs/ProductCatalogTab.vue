@@ -30,6 +30,7 @@
                 :is-header-visible="true"
                 :is-basic-filter="true"
                 :is-collection-layout="true"
+                :is-select-column="true"
                 @edit-row="onEditRow"
                 @preview-row="onEditRow"
                 @cell-value="onCellValueChange"
@@ -183,14 +184,22 @@ export default {
             massActions: [
                 {
                     label: 'Delete selected rows',
-                    action: (ids) => {
+                    action: ({
+                        payload,
+                        onSuccess,
+                    }) => {
+                        const {
+                            rowIds,
+                        } = payload;
+
                         this.$confirm({
                             type: MODAL_TYPE.DESTRUCTIVE,
-                            title: `Are you sure you want to permanently delete ${ids.length} products?`,
+                            title: `Are you sure you want to permanently delete ${rowIds.length} products?`,
                             subtitle: 'The products will be deleted from the system forever and cannot be restored.',
-                            applyTitle: `DELETE ${ids.length} PRODUCTS`,
+                            applyTitle: `DELETE ${rowIds.length} PRODUCTS`,
                             action: () => {
                                 console.log('CANCEL');
+                                onSuccess();
                             },
                         });
                     },
@@ -286,12 +295,6 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
-        onShowMassActionDeleteModal() {
-            this.isDeleteModalVisible = true;
-        },
-        onHideMassActionDeleteModal() {
-            this.isDeleteModalVisible = false;
-        },
         onRemoveAllFilters() {
             this.filterValues = {};
             this.advancedFilterValues = {};

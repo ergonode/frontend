@@ -410,19 +410,23 @@ export default {
         onRemoveAllFilters() {
             this.$emit('remove-all-filters');
         },
-        async onMassActionSelect(option) {
-            try {
-                const rowIds = this.isSelectedAllRows
-                    ? this.rowIds
-                    : Object.keys(this.selectedRows);
+        onMassActionSelect(option) {
+            const rowIds = this.isSelectedAllRows
+                ? this.rowIds
+                : Object.keys(this.selectedRows);
 
-                await option.action(rowIds);
-
-                this.selectedRows = {};
-                this.isSelectedAllRows = false;
-            } catch {
-                throw new Error('Mass action is either without defined an action nor not valid');
-            }
+            option.action({
+                payload: {
+                    rowIds,
+                },
+                onSuccess: () => {
+                    this.selectedRows = {};
+                    this.isSelectedAllRows = false;
+                },
+                onError: () => {
+                    throw new Error('Mass action is either without defined an action nor is not valid');
+                },
+            });
         },
         onRowSelect(selectedRows) {
             this.selectedRows = selectedRows;
