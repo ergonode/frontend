@@ -24,7 +24,7 @@ import {
 } from '@Core/defaults/theme';
 import {
     GRAPHITE,
-    GREY_DARK, RED,
+    GREY_DARK,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 
