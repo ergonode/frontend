@@ -38,7 +38,7 @@
                 @remove-column="onRemoveColumn"
                 @swap-columns="onSwapColumns"
                 @fetch-data="onFetchData"
-                @remove-all-filter="onRemoveAllFilters">
+                @remove-all-filters="onRemoveAllFilters">
                 <template #actionsHeader>
                     <ExpandNumericButton
                         title="FILTERS"
