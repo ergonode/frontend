@@ -3,7 +3,6 @@
  * See LICENSE for license details.
  */
 import {
-    SKU_MODEL,
     TYPES,
 } from '@Attributes/defaults/attributes';
 import {
