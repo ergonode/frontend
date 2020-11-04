@@ -4,6 +4,7 @@
  */
 export const THEME = {
     PRIMARY: 'primary',
+    ERROR: 'error',
     SECONDARY: 'secondary',
     SECONDARY_PLAIN: 'secondary-plain',
 };

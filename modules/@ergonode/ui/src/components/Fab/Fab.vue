@@ -31,6 +31,7 @@ import {
     GRAPHITE,
     GREEN,
     GREY_DARK,
+    RED,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 
@@ -80,10 +81,23 @@ export default {
     },
     computed: {
         iconFillColor() {
+            if (this.theme === THEME.ERROR) {
+                if (this.disabled) {
+                    return GREY_DARK;
+                }
+
+                if (this.isHovered) {
+                    return RED;
+                }
+
+                return GRAPHITE;
+            }
+
             if (this.theme !== THEME.PRIMARY) {
                 if (this.disabled) {
                     return GREY_DARK;
                 }
+
                 if (this.isHovered) {
                     return GREEN;
                 }
@@ -136,27 +150,32 @@ export default {
             cursor: not-allowed;
         }
 
-        &:hover:not(:disabled):not(&--secondary-plain), &:focus:not(&--secondary-plain) {
-            box-shadow: $ELEVATOR_HOVER_FOCUS;
-        }
-
         &--primary {
             background-color: $GREEN;
 
             &:disabled {
                 background-color: $GREY;
             }
-        }
 
-        &--secondary {
-            background-color: transparent;
-
-            &:hover:not(:disabled) {
-                background-color: $WHITE;
+            &:hover:not(:disabled), &:focus {
+                box-shadow: $ELEVATOR_HOVER_FOCUS;
             }
         }
 
-        &--secondary-plain {
+        &--error {
+            &:hover:not(:disabled), &:focus {
+                box-shadow: $ELEVATOR_DESTRUCTIVE_HOVER_FOCUS;
+            }
+        }
+
+        &--secondary {
+            &:hover:not(:disabled), &:focus {
+                background-color: $WHITE;
+                box-shadow: $ELEVATOR_HOVER_FOCUS;
+            }
+        }
+
+        &--error, &--secondary, &--secondary-plain {
             background-color: transparent;
         }
 

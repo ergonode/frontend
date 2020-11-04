@@ -24,7 +24,7 @@ import {
 } from '@Core/defaults/theme';
 import {
     GRAPHITE,
-    GREY_DARK,
+    GREY_DARK, RED,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 
@@ -105,13 +105,23 @@ export default {
             cursor: not-allowed;
         }
 
-        &:hover:not(:disabled):not(&--secondary-plain), &:focus:not(&--secondary-plain) {
-            box-shadow: $ELEVATOR_HOVER_FOCUS;
-        }
-
         &--primary {
             background-color: $GREEN;
 
+            &:hover:not(:disabled), &:focus {
+                box-shadow: $ELEVATOR_HOVER_FOCUS;
+            }
+        }
+
+        &--error {
+            background-color: $RED;
+
+            &:hover:not(:disabled), &:focus {
+                box-shadow: $ELEVATOR_DESTRUCTIVE_HOVER_FOCUS;
+            }
+        }
+
+        &--primary, &--error {
             &:disabled {
                 background-color: $GREY;
             }
@@ -122,6 +132,7 @@ export default {
 
             &:hover:not(:disabled), &:focus {
                 background-color: $WHITE;
+                box-shadow: $ELEVATOR_HOVER_FOCUS;
             }
         }
 
