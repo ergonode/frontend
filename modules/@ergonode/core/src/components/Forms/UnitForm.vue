@@ -106,12 +106,6 @@ export default {
                 ...props,
             };
         },
-        onSubmit() {
-            this.$emit('submit');
-        },
-        onProceed() {
-            this.$emit('proceed');
-        },
         setNameValue(value) {
             this.__setState({
                 key: this.nameFieldKey,

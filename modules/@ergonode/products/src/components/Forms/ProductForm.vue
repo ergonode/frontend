@@ -41,7 +41,21 @@
                     :error-messages="errors[templateIdFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     href="templates/autocomplete"
-                    @input="setTemplateValue" />
+                    @input="setTemplateValue">
+                    <template #placeholder>
+                        <DropdownPlaceholder
+                            :title="placeholder.title"
+                            :subtitle="placeholder.subtitle">
+                            <template #action>
+                                <Button
+                                    title="GO TO PRODUCT TEMPLATES"
+                                    :size="smallSize"
+                                    :disabled="!isAllowedToUpdate"
+                                    @click.native="onNavigateToProductTemplates" />
+                            </template>
+                        </DropdownPlaceholder>
+                    </template>
+                </Autocomplete>
                 <Divider v-if="extendedForm.length" />
                 <template
                     v-for="(formComponent, index) in extendedForm">
@@ -56,6 +70,9 @@
 </template>
 
 <script>
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
@@ -66,6 +83,7 @@ import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
+import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import Select from '@UI/components/Select/Select';
 import TextField from '@UI/components/TextField/TextField';
 import {
@@ -77,6 +95,7 @@ export default {
     name: 'ProductForm',
     components: {
         Divider,
+        DropdownPlaceholder,
         Form,
         FormSection,
         Select,
@@ -97,6 +116,15 @@ export default {
             'type',
             'template',
         ]),
+        smallSize() {
+            return SIZE.SMALL;
+        },
+        placeholder() {
+            return {
+                title: 'No product templates',
+                subtitle: 'There are no product templates in the system, so you can create the first one.',
+            };
+        },
         extendedForm() {
             return this.$extendedForm({
                 key: '@Products/components/Forms/ProductForm',
@@ -131,8 +159,10 @@ export default {
         ...mapActions('product', [
             '__setState',
         ]),
-        onSubmit() {
-            this.$emit('submit');
+        onNavigateToProductTemplates() {
+            this.$router.push({
+                name: 'product-templates',
+            });
         },
         setTypeValue(value) {
             this.__setState({

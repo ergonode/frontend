@@ -13,7 +13,21 @@
         :disabled="disabled"
         :error-messages="errors[categoryFieldKey]"
         href="categories/autocomplete"
-        @input="setCategoriesValue" />
+        @input="onCategoriesValueChange">
+        <template #placeholder>
+            <DropdownPlaceholder
+                :title="placeholder.title"
+                :subtitle="placeholder.subtitle">
+                <template #action>
+                    <Button
+                        title="GO TO CATEGORIES"
+                        :size="smallSize"
+                        :disabled="!isAllowedToCreate"
+                        @click.native="onNavigateToCategories" />
+                </template>
+            </DropdownPlaceholder>
+        </template>
+    </Autocomplete>
 </template>
 
 <script>
@@ -23,6 +37,8 @@ import {
 } from '@Core/defaults/theme';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
+import Button from '@UI/components/Button/Button';
+import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import {
     mapActions,
     mapState,
@@ -32,6 +48,8 @@ export default {
     name: 'ProductFormCategory',
     components: {
         Autocomplete,
+        Button,
+        DropdownPlaceholder,
     },
     mixins: [
         formFeedbackMixin,
@@ -68,7 +86,12 @@ export default {
         ...mapActions('product', [
             '__setState',
         ]),
-        setCategoriesValue(value) {
+        onNavigateToCategories() {
+            this.$router.push({
+                name: 'categories-grid',
+            });
+        },
+        onCategoriesValueChange(value) {
             this.__setState({
                 key: this.categoryFieldKey,
                 value,

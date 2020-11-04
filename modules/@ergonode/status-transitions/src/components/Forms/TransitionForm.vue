@@ -45,7 +45,19 @@
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[roleFieldKey]"
                     href="roles/autocomplete"
-                    @input="setRolesValue" />
+                    @input="setRolesValue">
+                    <DropdownPlaceholder
+                        :title="placeholder.title"
+                        :subtitle="placeholder.subtitle">
+                        <template #action>
+                            <Button
+                                title="GO TO USER ROLES"
+                                :size="smallSize"
+                                :disabled="!isAllowedToUpdate"
+                                @click.native="onNavigateToUserRoles" />
+                        </template>
+                    </DropdownPlaceholder>
+                </Autocomplete>
                 <template v-for="(field, index) in extendedForm">
                     <Component
                         :is="field.component"
@@ -58,6 +70,9 @@
 </template>
 
 <script>
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
@@ -68,6 +83,7 @@ import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
+import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import TranslationSelect from '@UI/components/Select/TranslationSelect';
 import {
     mapActions,
@@ -82,6 +98,7 @@ export default {
         Divider,
         Autocomplete,
         TranslationSelect,
+        DropdownPlaceholder,
     },
     mixins: [
         formActionsMixin,
@@ -96,6 +113,15 @@ export default {
         ...mapState('productStatus', [
             'statuses',
         ]),
+        smallSize() {
+            return SIZE.SMALL;
+        },
+        placeholder() {
+            return {
+                title: 'No user roles',
+                subtitle: 'There are no user roles in the system, so you can create the first one.',
+            };
+        },
         extendedForm() {
             return this.$extendedForm({
                 key: '@Transitions/components/Forms/TransitionForm',
@@ -152,6 +178,11 @@ export default {
                 disabled: !this.isAllowedToUpdate,
                 ...props,
             };
+        },
+        onNavigateToUserRoles() {
+            this.$router.push({
+                name: 'user-roles-grid',
+            });
         },
         setSourceValue(value) {
             this.__setState({
