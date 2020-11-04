@@ -28,7 +28,6 @@
                 :is-prefetching-data="isPrefetchingData"
                 :is-header-visible="true"
                 :is-basic-filter="true"
-                :is-select-column="true"
                 :is-collection-layout="true"
                 @edit-row="onEditRow"
                 @preview-row="onEditRow"
