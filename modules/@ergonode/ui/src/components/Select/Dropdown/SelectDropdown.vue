@@ -182,7 +182,7 @@ export default {
             return {
                 title: 'No results',
                 subtitle: 'Clear the search and try with another phrase.',
-            }
+            };
         },
         stringifiedOptions() {
             return this.options.map(option => JSON.stringify(option));
