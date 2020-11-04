@@ -19,8 +19,8 @@ export default {
     .action-column {
         flex-shrink: 0;
         display: grid;
-        background-color: $WHITE;
         width: 32px;
+        background-color: $WHITE;
 
         & > .grid-table-cell:nth-child(1) {
             position: sticky;
