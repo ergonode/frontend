@@ -40,8 +40,8 @@
                         </DropdownListElement>
                         <DropdownPlaceholder
                             v-if="isSearchPlaceholderVisible"
-                            title="No results"
-                            subtitle="Clear the search and try with another phrase.">
+                            :title="placeholder.title"
+                            :subtitle="placeholder.subtitle">
                             <template #action>
                                 <ClearSearchButton @click.native.stop="onClearSearch" />
                             </template>
@@ -178,6 +178,12 @@ export default {
         },
     },
     computed: {
+        placeholder() {
+            return {
+                title: 'No results',
+                subtitle: 'Clear the search and try with another phrase.',
+            }
+        },
         stringifiedOptions() {
             return this.options.map(option => JSON.stringify(option));
         },
