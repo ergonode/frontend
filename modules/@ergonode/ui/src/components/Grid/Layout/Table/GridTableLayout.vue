@@ -52,63 +52,34 @@
                         @cell-value="onCellValueChange"
                         @edit-cell="onEditCell"
                     />
-                    <GridDraggableColumn
+                    <GridDraggableDataColumn
                         v-else
                         :style="templateRows"
-                        :index="columnIndex + columnsOffset"
-                        :column="column"
                         :key="column.id"
+                        :column-index="columnIndex + columnsOffset"
+                        :column="column"
+                        :rows="rows"
+                        :rows-offset="rowsOffset"
+                        :sorted-column="sortedColumn"
+                        :filters="filters"
+                        :data-filter-cell-components="dataFilterCellComponents"
+                        :data-cell-components="dataCellComponents"
+                        :row-ids="rowIds"
+                        :errors="errors"
+                        :drafts="drafts"
+                        :selected-rows="selectedRows"
+                        :is-selected-all-rows="isSelectedAllRows"
+                        :is-basic-filter="isBasicFilter"
+                        :is-editable="isEditable"
                         @remove="onRemoveColumn"
-                        @swap="onSwapColumns">
-                        <GridColumn
-                            :index="columnIndex + columnsOffset"
-                            @resize="onResizeColumn">
-                            <GridHeaderCell
-                                :row-index="rowsOffset"
-                                :column-index="columnIndex + columnsOffset"
-                                :column-id="column.id"
-                                :label="column.label"
-                                :deletable="column.deletable"
-                                :sorted-column="sortedColumn"
-                                @sort="onSortColumn"
-                                @remove="onRemoveColumn" />
-                            <template v-if="isBasicFilter">
-                                <GridFilterDataCell
-                                    v-if="column.filter"
-                                    :row-index="rowsOffset + basicFiltersOffset"
-                                    :value="filters[column.id]"
-                                    :component="dataFilterCellComponents[column.filter.type]"
-                                    :column-index="columnIndex + columnsOffset"
-                                    :language-code="column.language"
-                                    :column-id="column.id"
-                                    :filter="column.filter"
-                                    @edit-filter-cell="onEditFilterCell"
-                                    @filter-value="onFilterValueChange" />
-                                <GridTableCell
-                                    v-else
-                                    :locked="true"
-                                    :row="rowsOffset + basicFiltersOffset"
-                                    :column="columnIndex + columnsOffset" />
-                            </template>
-                            <GridDataCell
-                                v-for="(row, rowIndex) in rows"
-                                :key="`${rowIds[rowIndex]}|${column.id}`"
-                                :component="dataCellComponents[column.type]"
-                                :data="row[column.id]"
-                                :drafts="drafts"
-                                :column="column"
-                                :error-messages="errors[`${rowIds[rowIndex]}/${column.id}`]"
-                                :row-id="rowIds[rowIndex]"
-                                :column-index="columnIndex + columnsOffset"
-                                :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
-                                :is-locked="!(column.editable && isEditable)"
-                                :is-copyable="column.editable && isEditable"
-                                :is-selected="isSelectedAllRows
-                                    || selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
-                                @cell-value="onCellValueChange"
-                                @edit-cell="onEditCell" />
-                        </GridColumn>
-                    </GridDraggableColumn>
+                        @swap="onSwapColumns"
+                        @resize="onResizeColumn"
+                        @sort="onSortColumn"
+                        @edit-filter-cell="onEditFilterCell"
+                        @filter-value="onFilterValueChange"
+                        @cell-value="onCellValueChange"
+                        @edit-cell="onEditCell"
+                    />
                 </template>
                 <GridSentinelColumn
                     v-if="actionColumns.length"
@@ -170,12 +141,7 @@ import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';
 import DropZone from '@UI/components/DropZone/DropZone';
-import GridFilterDataCell from '@UI/components/Grid/Layout/Table/Cells/Data/Filter/GridFilterDataCell';
-import GridDataCell from '@UI/components/Grid/Layout/Table/Cells/Data/GridDataCell';
-import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
-import GridHeaderCell from '@UI/components/Grid/Layout/Table/Cells/Header/GridHeaderCell';
-import GridColumn from '@UI/components/Grid/Layout/Table/Columns/GridColumn';
-import GridDraggableColumn from '@UI/components/Grid/Layout/Table/Columns/GridDraggableColumn';
+import GridDraggableDataColumn from '@UI/components/Grid/Layout/Table/Columns/GridDraggableDataColumn';
 import GridRowActionColumn from '@UI/components/Grid/Layout/Table/Columns/GridRowActionColumn';
 import GridSelectRowColumn from '@UI/components/Grid/Layout/Table/Columns/GridSelectRowColumn';
 import GridSentinelColumn from '@UI/components/Grid/Layout/Table/Columns/GridSentinelColumn';
@@ -191,14 +157,9 @@ export default {
     name: 'GridTableLayout',
     components: {
         DropZone,
-        GridDraggableColumn,
+        GridDraggableDataColumn,
         GridRowActionColumn,
         GridTableLayoutColumnsSection,
-        GridColumn,
-        GridTableCell,
-        GridFilterDataCell,
-        GridDataCell,
-        GridHeaderCell,
         GridTableLayoutPinnedSection,
         GridSelectRowColumn,
         GridSentinelColumn,
@@ -271,6 +232,20 @@ export default {
             default: ROW_HEIGHT.SMALL,
         },
         /**
+         * The flag which determines the state of selected each row
+         */
+        isSelectedAllRows: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * The map of selected rows
+         */
+        selectedRows: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
          * Determinate if the component is being able to edit
          */
         isEditable: {
@@ -330,8 +305,6 @@ export default {
     data() {
         return {
             hasInitialWidths: true,
-            isSelectedAllRows: false,
-            selectedRows: {},
             orderedColumns: [],
             actionColumns: [],
             columnWidths: [],
@@ -389,9 +362,6 @@ export default {
         },
         columnsOffset() {
             return this.isSelectColumn ? 1 : 0;
-        },
-        basicFiltersOffset() {
-            return this.isBasicFilter ? 1 : 0;
         },
         templateColumns() {
             return {
@@ -541,14 +511,10 @@ export default {
             };
         },
         onRowSelect(selectedRows) {
-            this.selectedRows = selectedRows;
-
-            this.$emit('row-select', this.selectedRows);
+            this.$emit('row-select', selectedRows);
         },
         onRowsSelect(isSelectedAllRows) {
-            this.isSelectedAllRows = isSelectedAllRows;
-
-            this.$emit('rows-select', this.isSelectedAllRows);
+            this.$emit('rows-select', isSelectedAllRows);
         },
         onCellValueChange(value) {
             this.$emit('cell-value', value);
