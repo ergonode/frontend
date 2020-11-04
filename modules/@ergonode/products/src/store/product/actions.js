@@ -143,7 +143,7 @@ export default {
             });
 
             const {
-                design_template_id: templateId,
+                template_id: templateId,
                 attributes,
                 sku,
                 type,
