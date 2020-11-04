@@ -14,8 +14,9 @@
         :error-messages="errors[categoryFieldKey]"
         href="categories/autocomplete"
         @input="onCategoriesValueChange">
-        <template #placeholder>
+        <template #placeholder="{ isVisible }">
             <DropdownPlaceholder
+                v-if="isVisible"
                 :title="placeholder.title"
                 :subtitle="placeholder.subtitle">
                 <template #action>

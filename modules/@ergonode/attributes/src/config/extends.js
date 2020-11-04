@@ -207,19 +207,6 @@ export default {
                 break;
             }
         },
-        '@Attributes/store/attribute/action/getAttributesOptionsByType/__after': ({
-            type,
-        }) => {
-            switch (type) {
-            case TYPES.TEXT:
-                // TODO: Temporary till BE will create SKU as an attribute
-                return [
-                    SKU_MODEL,
-                ];
-            default:
-                return [];
-            }
-        },
         '@Attributes/store/attribute/action/getAttribute/__after': async ({
             $this, data, type,
         }) => {

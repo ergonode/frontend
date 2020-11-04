@@ -234,6 +234,20 @@ export default {
             default: false,
         },
         /**
+         * The type of filter at which options will be narrowed
+         */
+        filterType: {
+            type: String,
+            default: '',
+        },
+        /**
+         * Array of the static options which are not coming from options request
+         */
+        additionalStaticOptions: {
+            type: Array,
+            default: () => [],
+        },
+        /**
          * Unique identifier for cypress
          */
         dataCy: {
@@ -314,11 +328,21 @@ export default {
             try {
                 this.isFetchingData = true;
 
-                this.options = await this.$axios.$get(this.href, {
+                const options = await this.$axios.$get(this.href, {
                     params: {
                         search: this.searchValue,
+                        type: this.filterType,
                     },
                 });
+
+                const lowerCaseSearchValue = this.searchValue.toLowerCase();
+
+                this.options = [
+                    ...options,
+                    ...this.additionalStaticOptions.filter(({
+                        code,
+                    }) => code.toLowerCase().includes(lowerCaseSearchValue)),
+                ];
 
                 this.isFetchingData = false;
             } catch (e) {

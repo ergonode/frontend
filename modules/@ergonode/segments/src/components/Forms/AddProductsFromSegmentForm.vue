@@ -22,8 +22,9 @@
                     :error-messages="errors[segmentsFieldKey]"
                     href="segments/autocomplete"
                     @input="onSegmentChange">
-                    <template #placeholder>
+                    <template #placeholder="{ isVisible }">
                         <DropdownPlaceholder
+                            v-if="isVisible"
                             :title="placeholder.title"
                             :subtitle="placeholder.subtitle">
                             <template #action>

@@ -42,8 +42,9 @@
                     :disabled="isDisabled || !isAllowedToUpdate"
                     href="templates/autocomplete"
                     @input="setTemplateValue">
-                    <template #placeholder>
+                    <template #placeholder="{ isVisible }">
                         <DropdownPlaceholder
+                            v-if="isVisible"
                             :title="placeholder.title"
                             :subtitle="placeholder.subtitle">
                             <template #action>

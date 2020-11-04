@@ -4,28 +4,72 @@
  */
 <template>
     <FormSection title="Presentation product">
-        <TranslationLazySelect
+        <Autocomplete
             :data-cy="dataCyGenerator('default-label')"
             :value="defaultTextAttribute"
             label="Default label attribute"
-            :fetch-options-request="getDefaultTextAttributeOptionsRequest"
+            :searchable="true"
+            :sticky-search="true"
             :disabled="disabled"
-            @input="setDefaultTextAttributeValue" />
-        <TranslationLazySelect
+            filter-type="TEXT"
+            href="attributes/autocomplete"
+            :additional-static-options="additionalStaticTextOptions"
+            @input="setDefaultTextAttributeValue">
+            <template #placeholder="{ isVisible }">
+                <DropdownPlaceholder
+                    v-if="isVisible"
+                    :title="imageAttributesPlaceholder.title"
+                    :subtitle="imageAttributesPlaceholder.subtitle">
+                    <template #action>
+                        <Button
+                            title="GO TO ATTRIBUTES"
+                            :size="smallSize"
+                            :disabled="disabled"
+                            @click.native="onNavigateToAttributes" />
+                    </template>
+                </DropdownPlaceholder>
+            </template>
+        </Autocomplete>
+        <Autocomplete
             :data-cy="dataCyGenerator('default-image')"
             :value="defaultImageAttribute"
-            clearable
             label="Default image attribute"
-            :fetch-options-request="getDefaultImageAttributeOptionsRequest"
+            :searchable="true"
+            :clearable="true"
+            :sticky-search="true"
             :disabled="disabled"
-            @input="setDefaultImageAttributeValue" />
+            filter-type="IMAGE"
+            href="attributes/autocomplete"
+            @input="setDefaultImageAttributeValue">
+            <template #placeholder="{ isVisible }">
+                <DropdownPlaceholder
+                    v-if="isVisible"
+                    :title="imageAttributesPlaceholder.title"
+                    :subtitle="imageAttributesPlaceholder.subtitle">
+                    <template #action>
+                        <Button
+                            title="GO TO ATTRIBUTES"
+                            :size="smallSize"
+                            :disabled="disabled"
+                            @click.native="onNavigateToAttributes" />
+                    </template>
+                </DropdownPlaceholder>
+            </template>
+        </Autocomplete>
     </FormSection>
 </template>
 
 <script>
+import {
+    SKU_MODEL,
+} from '@Attributes/defaults/attributes';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import FormSection from '@UI/components/Form/Section/FormSection';
-import TranslationLazySelect from '@UI/components/Select/TranslationLazySelect';
+import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import {
     mapActions,
     mapState,
@@ -34,8 +78,9 @@ import {
 export default {
     name: 'ProductTemplateFormPresentation',
     components: {
+        DropdownPlaceholder,
+        Autocomplete,
         FormSection,
-        TranslationLazySelect,
     },
     mixins: [
         formFeedbackMixin,
@@ -51,14 +96,36 @@ export default {
             'defaultTextAttribute',
             'defaultImageAttribute',
         ]),
+        smallSize() {
+            return SIZE.SMALL;
+        },
+        imageAttributesPlaceholder() {
+            return {
+                title: 'No image attributes',
+                subtitle: 'There are no image attributes in the system, so you can create the first one.',
+            };
+        },
+        textAttributesPlaceholder() {
+            return {
+                title: 'No text attributes',
+                subtitle: 'There are no text attributes in the system, so you can create the first one.',
+            };
+        },
+        additionalStaticTextOptions() {
+            return [
+                SKU_MODEL,
+            ];
+        },
     },
     methods: {
         ...mapActions('productTemplate', [
             '__setState',
         ]),
-        ...mapActions('attribute', [
-            'getAttributesOptionsByType',
-        ]),
+        onNavigateToAttributes() {
+            this.$router.push({
+                name: 'attributes-grid',
+            });
+        },
         setDefaultTextAttributeValue(value) {
             this.__setState({
                 key: 'defaultTextAttribute',
@@ -81,16 +148,6 @@ export default {
                 scope: this.scope,
                 fieldKey: 'defaultImageAttribute',
                 value,
-            });
-        },
-        getDefaultTextAttributeOptionsRequest() {
-            return this.getAttributesOptionsByType({
-                type: 'TEXT',
-            });
-        },
-        getDefaultImageAttributeOptionsRequest() {
-            return this.getAttributesOptionsByType({
-                type: 'IMAGE',
             });
         },
         dataCyGenerator(key) {
