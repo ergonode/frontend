@@ -19,7 +19,8 @@
                 :errors="errors"
                 :data-count="filtered"
                 :collection-cell-binding="collectionCellBinding"
-                :bulk-actions="bulkActions"
+                :bulk-actions="productsBulkActions"
+                :disabled-rows="disabledProducts"
                 :extended-columns="extendedColumns"
                 :extended-data-cells="extendedDataCells"
                 :extended-data-filter-cells="extendedDataFilterCells"
@@ -121,6 +122,9 @@ import {
 } from '@Core/models/stringWrapper';
 import PRIVILEGES from '@Products/config/privileges';
 import {
+    BULK_ACTION_TYPE,
+} from '@Products/models/bulkActions';
+import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Button from '@UI/components/Button/Button';
@@ -184,11 +188,18 @@ export default {
             isSubmitting: false,
             isDeleteModalVisible: false,
             extendVerticalTabs: [],
+            disabledProducts: {},
         };
     },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
+        }),
+        ...mapState('bulkAction', {
+            bulkActions: state => state.bulkActions,
+            removeProductsBulkActions: state => state.bulkActions.filter(
+                bulkAction => bulkAction.type === BULK_ACTION_TYPE.REMOVE_PRODUCTS,
+            ),
         }),
         ...mapState('draggable', [
             'isElementDragging',
@@ -200,7 +211,7 @@ export default {
         extendedFooter() {
             return this.$getExtendedComponents('@Products/components/Tabs/ProductCatalogTab/footer');
         },
-        bulkActions() {
+        productsBulkActions() {
             return [
                 {
                     label: 'Delete selected rows',
@@ -218,20 +229,31 @@ export default {
                             subtitle: 'The products will be deleted from the system forever and cannot be restored.',
                             applyTitle: `DELETE ${rowIds.length} PRODUCTS`,
                             action: () => {
-                                this.addBulkAction({
-                                    id: getUUID(),
-                                    href: 'test',
-                                    onSuccess: () => {
-                                        console.log('DUPA');
-                                        onSuccess();
-                                    },
-                                    onError: () => {
-                                        this.$addAlert({
-                                            type: ALERT_TYPE.ERROR,
-                                            message: 'Products haven\'t been removed',
-                                        });
-                                    },
+                                const uuid = getUUID();
+
+                                rowIds.forEach((rowId) => {
+                                    this.disabledProducts[rowId] = true;
                                 });
+
+                                this.disabledProducts = {
+                                    ...this.disabledProducts,
+                                };
+
+                                // TODO: Integrate when BE is rdy
+
+                                this.addBulkAction({
+                                    id: uuid,
+                                    type: BULK_ACTION_TYPE.REMOVE_PRODUCTS,
+                                    href: '',
+                                    payload,
+                                });
+
+                                document
+                                    .documentElement
+                                    .addEventListener(
+                                        uuid,
+                                        this.onRemoveProductsBulkAction.bind(null, onSuccess),
+                                    );
                             },
                         });
                     },
@@ -298,10 +320,28 @@ export default {
             ...this.extendVerticalTabs,
             ...extendVerticalTabs,
         ];
+
+        this.removeProductsBulkActions.forEach(({
+            id,
+        }) => {
+            document
+                .documentElement
+                .addEventListener(id, this.onRemoveProductsBulkAction);
+        });
+    },
+    beforeDestroy() {
+        this.removeProductsBulkActions.forEach(({
+            id,
+        }) => {
+            document
+                .documentElement
+                .removeEventListener(id, this.onRemoveProductsBulkAction);
+        });
     },
     methods: {
         ...mapActions('bulkAction', [
             'addBulkAction',
+            'removeBulkAction',
         ]),
         ...mapActions('list', [
             'setDisabledElement',
@@ -315,6 +355,36 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
+        async onRemoveProductsBulkAction(onSuccess = () => {}, event) {
+            await onSuccess();
+
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Products have been removed',
+            });
+
+            const {
+                id,
+                payload: {
+                    rowIds,
+                },
+            } = event.detail;
+
+            const bulkActionIndex = this.bulkActions.findIndex(bulkAction => bulkAction.id === id);
+
+            rowIds.forEach((rowId) => {
+                delete this.disabledProducts[rowId];
+            });
+
+            this.disabledProducts = {
+                ...this.disabledProducts,
+            };
+
+            document
+                .documentElement
+                .removeEventListener(id, this.onRemoveProductsBulkAction);
+            this.removeBulkAction(bulkActionIndex);
+        },
         onRemoveAllFilters() {
             this.filterValues = {};
             this.advancedFilterValues = {};
@@ -393,9 +463,6 @@ export default {
             });
         },
         onAdvancedFilterRemoveAll() {
-            this.advancedFilterValues = {};
-            this.advancedFilters = [];
-
             this.$cookies.remove(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
 
             this.advancedFilters.forEach(({
@@ -407,6 +474,9 @@ export default {
                     attributeId,
                 });
             });
+
+            this.advancedFilterValues = {};
+            this.advancedFilters = [];
 
             this.onFetchData({
                 ...this.localParams,

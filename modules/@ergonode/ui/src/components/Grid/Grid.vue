@@ -47,6 +47,7 @@
                     :row-ids="rowIds"
                     :drafts="drafts"
                     :errors="errors"
+                    :disabled-rows="disabledRows"
                     :filters="filters"
                     :current-page="currentPage"
                     :max-rows="maxRows"
@@ -77,6 +78,7 @@
                     :row-ids="rowIds"
                     :collection-cell-binding="collectionCellBinding"
                     :drafts="drafts"
+                    :disabled-rows="disabledRows"
                     :columns-number="collectionLayoutConfig.columnsNumber"
                     :object-fit="collectionLayoutConfig.scaling"
                     :extended-data-cells="extendedDataCells[gridLayout.COLLECTION]"
@@ -178,6 +180,13 @@ export default {
          * The drafts are unsaved changes, cached changed data at given time
          */
         drafts: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
+         * The disabled rows are defining which rows are not being able to interact with
+         */
+        disabledRows: {
             type: Object,
             default: () => ({}),
         },

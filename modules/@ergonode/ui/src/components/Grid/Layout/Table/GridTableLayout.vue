@@ -16,7 +16,9 @@
                     :style="templateRows"
                     :column-index="0"
                     :data-count="dataCount"
+                    :disabled-rows="disabledRows"
                     :rows-offset="rowsOffset"
+                    :row-ids="rowIds"
                     :is-basic-filter="isBasicFilter"
                     :is-selected-all-rows="isSelectedAllRows"
                     :selected-rows="selectedRows"
@@ -41,6 +43,10 @@
                         :rows="rows"
                         :row-ids="rowIds"
                         :drafts="drafts"
+                        :filters="filters"
+                        :disabled-rows="disabledRows"
+                        :selected-rows="selectedRows"
+                        :is-selected-all-rows="isSelectedAllRows"
                         :rows-offset="rowsOffset"
                         :is-basic-filter="isBasicFilter"
                         @remove="onRemoveColumn"
@@ -66,6 +72,7 @@
                         :data-cell-components="dataCellComponents"
                         :row-ids="rowIds"
                         :errors="errors"
+                        :disabled-rows="disabledRows"
                         :drafts="drafts"
                         :selected-rows="selectedRows"
                         :is-selected-all-rows="isSelectedAllRows"
@@ -96,6 +103,7 @@
                     :action-cell-components="actionCellComponents"
                     :columns="actionColumns"
                     :rows="rows"
+                    :disabled-rows="disabledRows"
                     :row-ids="rowIds"
                     :rows-offset="rowsOffset"
                     :is-basic-filter="isBasicFilter"
@@ -207,6 +215,13 @@ export default {
          * Selected filter values
          */
         filters: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
+         * The disabled rows are defining which rows are not being able to interact with
+         */
+        disabledRows: {
             type: Object,
             default: () => ({}),
         },

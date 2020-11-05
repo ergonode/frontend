@@ -14,6 +14,32 @@ export default {
         };
     },
     methods: {
+        getMappedValues({
+            startIndex,
+            endIndex,
+            columnId,
+            value,
+        }) {
+            const values = [];
+
+            for (let i = startIndex; i <= endIndex; i += 1) {
+                const row = this.rows[i];
+                const rowId = this.rowIds[i];
+
+                if (row
+            && row[columnId]
+            && row[columnId].value !== value
+            && !this.disabledRows[rowId]) {
+                    values.push({
+                        rowId: this.rowIds[i],
+                        columnId,
+                        value,
+                    });
+                }
+            }
+
+            return values;
+        },
         onCellResize(isResizing) {
             this.isCellResizing = isResizing;
 
@@ -45,35 +71,18 @@ export default {
                 ? this.rows[fixedRow][columnId].value
                 : this.drafts[`${rowId}/${columnId}`];
 
-            const getMappedValues = ({
-                startIndex,
-                endIndex,
-            }) => {
-                const values = [];
-
-                for (let i = startIndex; i <= endIndex; i += 1) {
-                    if (this.rows[i]
-                        && this.rows[i][columnId]
-                        && this.rows[i][columnId].value !== value) {
-                        values.push({
-                            rowId: this.rowIds[i],
-                            columnId,
-                            value,
-                        });
-                    }
-                }
-
-                return values;
-            };
-
-            const values = getMappedValues(fixedRow < fixedRow + factor
+            const values = this.getMappedValues(fixedRow < fixedRow + factor
                 ? {
                     startIndex: fixedRow,
                     endIndex: fixedRow + factor,
+                    columnId,
+                    value,
                 }
                 : {
                     startIndex: fixedRow + factor,
                     endIndex: fixedRow,
+                    columnId,
+                    value,
                 });
 
             this.$emit('cell-value', values);

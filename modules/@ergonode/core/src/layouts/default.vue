@@ -64,6 +64,7 @@ export default {
     },
     data() {
         return {
+            executingBulkActions: {},
             breadcrumbs: [],
             isExpandedSideBar: true,
         };
@@ -92,11 +93,25 @@ export default {
         },
         bulkActions() {
             this.bulkActions.forEach(({
-                onSuccess,
+                id,
+                payload,
             }) => {
-                setTimeout(() => {
-                    onSuccess();
-                }, 10000);
+                // TODO: Add support for axios request
+
+                if (!this.executingBulkActions[id]) {
+                    setTimeout(() => {
+                        const event = new CustomEvent(id, {
+                            detail: {
+                                id,
+                                payload,
+                            },
+                        });
+
+                        this.executingBulkActions[id] = true;
+
+                        document.documentElement.dispatchEvent(event);
+                    }, 5000);
+                }
             });
         },
     },

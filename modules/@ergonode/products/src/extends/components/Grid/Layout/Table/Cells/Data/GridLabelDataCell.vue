@@ -33,6 +33,7 @@
 <script>
 import GridLabelPresentationCell from '@Products/extends/components/Grid/Layout/Table/Cells/Presentation/GridLabelPresentationCell';
 import GridSuffixPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
+import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 import gridDataCellMixin from '@UI/mixins/grid/gridDataCellMixin';
 
 export default {
@@ -40,7 +41,7 @@ export default {
     components: {
         GridLabelPresentationCell,
         GridSuffixPresentationCell,
-        IconArrowDropdown: () => import('@UI/components/Icons/Arrows/IconArrowDropdown'),
+        IconArrowDropdown,
     },
     mixins: [
         gridDataCellMixin,

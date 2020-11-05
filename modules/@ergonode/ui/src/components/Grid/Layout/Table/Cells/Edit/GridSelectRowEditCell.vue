@@ -9,9 +9,12 @@
         editing-allowed
         :edit-key-code="32"
         :selected="selected"
+        :disabled="disabled"
         @mousedown.native="onSelect"
         @edit="onSelect">
-        <GridCheckEditCell :value="selected" />
+        <GridCheckEditCell
+            :value="selected"
+            :disabled="disabled" />
     </GridTableCell>
 </template>
 
@@ -40,13 +43,22 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if component is disabled
+         */
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
     methods: {
         onSelect() {
-            this.$emit('select', {
-                row: this.row,
-                selected: !this.selected,
-            });
+            if (!this.disabled) {
+                this.$emit('select', {
+                    row: this.row,
+                    selected: !this.selected,
+                });
+            }
         },
     },
 };
