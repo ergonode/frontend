@@ -132,7 +132,7 @@ export default {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
                 title: 'Are you sure you want to delete this comment?',
-                applyTitle: 'YES, I\'M SURE',
+                applyTitle: 'YES, REMOVE',
                 action: () => {
                     const {
                         id,

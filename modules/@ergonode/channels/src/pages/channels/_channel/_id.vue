@@ -80,7 +80,7 @@ export default {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
                 title: 'Are you sure you want to delete this channel?',
-                applyTitle: 'YES, I\'M SURE',
+                applyTitle: 'YES, REMOVE',
                 action: () => this.removeChannel({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,

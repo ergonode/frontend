@@ -77,7 +77,7 @@ export default {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
                 title: 'Are you sure you want to delete this group?',
-                applyTitle: 'YES, I\'M SURE',
+                applyTitle: 'YES, REMOVE',
                 action: () => this.removeAttributeGroup({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,

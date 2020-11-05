@@ -96,7 +96,7 @@ export default {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
                 title: 'Are you sure you want to delete this product?',
-                applyTitle: 'YES, I\'M SURE',
+                applyTitle: 'YES, REMOVE',
                 action: () => this.removeProduct({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,

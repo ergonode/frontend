@@ -80,7 +80,7 @@ export default {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
                 title: 'Are you sure you want to delete this import?',
-                applyTitle: 'YES, I\'M SURE',
+                applyTitle: 'YES, REMOVE',
                 action: () => this.removeImport({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,

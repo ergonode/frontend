@@ -77,7 +77,7 @@ export default {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
                 title: this.$t('attribute.messages.deleteConfirm'),
-                applyTitle: 'YES, I\'M SURE',
+                applyTitle: 'YES, REMOVE',
                 action: () => {
                     this.removeAttribute({
                         onSuccess: this.onRemoveSuccess,

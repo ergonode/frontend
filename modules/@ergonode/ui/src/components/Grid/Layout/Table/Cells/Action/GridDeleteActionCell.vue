@@ -72,7 +72,7 @@ export default {
                 this.$confirm({
                     type: MODAL_TYPE.DESTRUCTIVE,
                     title: 'Are you sure you want to remove this row?',
-                    applyTitle: 'YES, I\'M SURE',
+                    applyTitle: 'YES, REMOVE',
                     action: async () => {
                         try {
                             await this.$axios.$delete(this.href, {

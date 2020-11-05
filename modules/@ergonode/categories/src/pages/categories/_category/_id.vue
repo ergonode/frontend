@@ -77,7 +77,7 @@ export default {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
                 title: this.$t('category.messages.deleteConfirm'),
-                applyTitle: 'YES, I\'M SURE',
+                applyTitle: 'YES, REMOVE',
                 action: () => {
                     this.removeCategory({
                         onSuccess: this.onRemoveSuccess,

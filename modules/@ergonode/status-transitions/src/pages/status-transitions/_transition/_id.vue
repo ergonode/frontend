@@ -76,7 +76,7 @@ export default {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
                 title: 'Are you sure you want to delete this transition?',
-                applyTitle: 'YES, I\'M SURE',
+                applyTitle: 'YES, REMOVE',
                 action: () => this.removeStatusTransition({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,

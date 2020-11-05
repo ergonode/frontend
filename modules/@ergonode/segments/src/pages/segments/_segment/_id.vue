@@ -81,7 +81,7 @@ export default {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
                 title: 'Are you sure you want to delete this segment?',
-                applyTitle: 'YES, I\'M SURE',
+                applyTitle: 'YES, REMOVE',
                 action: () => this.removeSegment({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,

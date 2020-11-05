@@ -73,7 +73,7 @@ export default {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
                 title: 'Are you sure you want to delete this resource?',
-                applyTitle: 'YES, I\'M SURE',
+                applyTitle: 'YES, REMOVE',
                 action: () => this.removeResource({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
