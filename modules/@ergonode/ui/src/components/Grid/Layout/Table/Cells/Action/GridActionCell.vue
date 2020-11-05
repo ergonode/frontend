@@ -9,6 +9,7 @@
         :column="columnIndex"
         :row="rowIndex"
         :href="action.href"
+        :is-disabled="isDisabled"
         :is-selected="isSelected"
         @action="onAction" />
 </template>
@@ -59,6 +60,13 @@ export default {
          * Determines if component is selected
          */
         isSelected: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * Determinate if the component is disabled
+         */
+        isDisabled: {
             type: Boolean,
             default: false,
         },

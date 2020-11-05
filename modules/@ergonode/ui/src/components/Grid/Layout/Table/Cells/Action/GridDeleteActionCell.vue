@@ -7,6 +7,7 @@
         :column="column"
         :row="row"
         :selected="isSelected"
+        :disabled="isDisabled"
         :edit-key-code="32"
         @mousedown.native="onDelete"
         @edit="onDelete">
@@ -36,6 +37,13 @@ export default {
             default: false,
         },
         /**
+         * Determinate if the component is disabled
+         */
+        isDisabled: {
+            type: Boolean,
+            default: false,
+        },
+        /**
          * URL of backend endpoint
          */
         href: {
@@ -59,36 +67,38 @@ export default {
     },
     methods: {
         onDelete() {
-            // TODO: Migrate it to Core and propagate action outside
-            this.$confirm({
-                type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to remove this row?',
-                applyTitle: 'YES, I\'M SURE',
-                action: async () => {
-                    try {
-                        await this.$axios.$delete(this.href, {
-                            baseURL: '',
-                        });
+            if (!this.isDisabled) {
+                // TODO: Migrate it to Core and propagate action outside
+                this.$confirm({
+                    type: MODAL_TYPE.DESTRUCTIVE,
+                    title: 'Are you sure you want to remove this row?',
+                    applyTitle: 'YES, I\'M SURE',
+                    action: async () => {
+                        try {
+                            await this.$axios.$delete(this.href, {
+                                baseURL: '',
+                            });
 
-                        const element = document.documentElement.querySelector(`.coordinates-${this.column}-${this.row - 1}`);
+                            const element = document.documentElement.querySelector(`.coordinates-${this.column}-${this.row - 1}`);
 
-                        if (element) {
-                            element.focus();
+                            if (element) {
+                                element.focus();
+                            }
+
+                            this.$emit('action', {
+                                key: 'delete',
+                                value: null,
+                            });
+                        } catch (e) {
+                            if (this.$axios.isCancel(e)) {
+                                return;
+                            }
+
+                            this.$emit('error');
                         }
-
-                        this.$emit('action', {
-                            key: 'delete',
-                            value: null,
-                        });
-                    } catch (e) {
-                        if (this.$axios.isCancel(e)) {
-                            return;
-                        }
-
-                        this.$emit('error');
-                    }
-                },
-            });
+                    },
+                });
+            }
         },
     },
 };
