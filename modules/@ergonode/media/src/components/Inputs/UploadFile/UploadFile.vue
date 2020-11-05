@@ -50,10 +50,10 @@
                         v-if="!disabled"
                         :style="{ backgroundColor: whiteColor }"
                         :floating="{ top: '20px', right: '20px'}"
-                        :theme="secondaryTheme"
+                        :theme="destructiveTheme"
                         @click.native="onRemove">
-                        <template #icon="{ color, isHovered }">
-                            <IconDelete :fill-color="isHovered ? redColor : color" />
+                        <template #icon="{ color }">
+                            <IconDelete :fill-color="color" />
                         </template>
                     </Fab>
                 </template>
@@ -73,7 +73,6 @@ import {
 import {
     GRAPHITE,
     GREEN,
-    RED,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Fab from '@UI/components/Fab/Fab';
@@ -154,8 +153,8 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        redColor() {
-            return RED;
+        destructiveTheme() {
+            return THEME.DESTRUCTIVE;
         },
         greenColor() {
             return GREEN;

@@ -105,13 +105,23 @@ export default {
             cursor: not-allowed;
         }
 
-        &:hover:not(:disabled):not(&--secondary-plain), &:focus:not(&--secondary-plain) {
-            box-shadow: $ELEVATOR_HOVER_FOCUS;
-        }
-
         &--primary {
             background-color: $GREEN;
 
+            &:hover:not(:disabled), &:focus {
+                box-shadow: $ELEVATOR_HOVER_FOCUS;
+            }
+        }
+
+        &--destructive {
+            background-color: $RED;
+
+            &:hover:not(:disabled), &:focus {
+                box-shadow: $ELEVATOR_DESTRUCTIVE_HOVER_FOCUS;
+            }
+        }
+
+        &--primary, &--destructive {
             &:disabled {
                 background-color: $GREY;
             }
@@ -122,6 +132,7 @@ export default {
 
             &:hover:not(:disabled), &:focus {
                 background-color: $WHITE;
+                box-shadow: $ELEVATOR_HOVER_FOCUS;
             }
         }
 

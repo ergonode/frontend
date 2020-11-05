@@ -24,10 +24,10 @@
                 </Fab>
                 <Fab
                     v-if="isAbleToDelete"
-                    :theme="secondaryTheme"
+                    :theme="destructiveTheme"
                     @click.native="onRemove">
-                    <template #icon="{ color, isHovered }">
-                        <IconDelete :fill-color="isHovered ? colorRed : color" />
+                    <template #icon="{ color }">
+                        <IconDelete :fill-color="color" />
                     </template>
                 </Fab>
             </div>
@@ -66,7 +66,6 @@ import {
 } from '@Core/defaults/theme';
 import {
     GREEN,
-    RED,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Fab from '@UI/components/Fab/Fab';
@@ -106,11 +105,11 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
+        destructiveTheme() {
+            return THEME.DESTRUCTIVE;
+        },
         colorGreen() {
             return GREEN;
-        },
-        colorRed() {
-            return RED;
         },
         whiteColor() {
             return WHITE;
