@@ -8,6 +8,7 @@
         :row="row"
         :selected="isSelected"
         :edit-key-code="32"
+        :disabled="isDisabled"
         @mousedown.native="onPreview"
         @edit="onPreview">
         <IconPreview v-once />
@@ -29,6 +30,13 @@ export default {
          * Determines if component is selected
          */
         isSelected: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * Determinate if the component is disabled
+         */
+        isDisabled: {
             type: Boolean,
             default: false,
         },
@@ -56,12 +64,14 @@ export default {
     },
     methods: {
         onPreview() {
-            const args = this.href.split('/');
+            if (!this.isDisabled) {
+                const args = this.href.split('/');
 
-            this.$emit('action', {
-                key: 'preview',
-                value: args,
-            });
+                this.$emit('action', {
+                    key: 'preview',
+                    value: args,
+                });
+            }
         },
     },
 };

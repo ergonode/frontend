@@ -68,9 +68,19 @@ export default {
         gridEditCellMixin,
     ],
     props: {
+        /**
+         * The available colors of statuses
+         */
         colors: {
             type: Object,
             default: () => ({}),
+        },
+        /**
+         * Code of the language
+         */
+        languageCode: {
+            type: String,
+            required: true,
         },
     },
     async fetch() {
@@ -87,15 +97,6 @@ export default {
         };
     },
     computed: {
-        languageCode() {
-            const columnIdParts = this.columnId.split(':');
-
-            if (columnIdParts.length < 1) {
-                return '';
-            }
-
-            return columnIdParts[1];
-        },
         smallSize() {
             return SIZE.SMALL;
         },

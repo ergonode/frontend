@@ -6,10 +6,9 @@
     <ActionButton
         :title="actionButtonTitle"
         :size="smallSize"
-        :fixed-content="true"
         :theme="secondaryTheme"
         :options="options"
-        @input="onSelectMassAction">
+        @input="onSelectBatchAction">
         <template #option="{ option }">
             <ListElementDescription>
                 <ListElementTitle
@@ -30,7 +29,7 @@ import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
 
 export default {
-    name: 'MassActionButton',
+    name: 'BatchActionButton',
     components: {
         ListElementTitle,
         ListElementDescription,
@@ -54,7 +53,7 @@ export default {
         },
     },
     methods: {
-        onSelectMassAction(option) {
+        onSelectBatchAction(option) {
             this.$emit('action', option);
         },
     },

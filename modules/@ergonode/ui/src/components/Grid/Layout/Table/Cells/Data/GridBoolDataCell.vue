@@ -54,7 +54,7 @@ export default {
     },
     methods: {
         onBoolValueChange() {
-            if (!this.isLocked) {
+            if (!this.isLocked && !this.isDisabled) {
                 this.onValueChange(!this.cellData.value);
             }
         },

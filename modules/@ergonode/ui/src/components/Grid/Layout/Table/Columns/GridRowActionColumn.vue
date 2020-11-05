@@ -21,6 +21,7 @@
             :column="column"
             :action="row._links.value[column.id]"
             :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
+            :is-disabled="disabledRows[rowIds[rowIndex]]"
             :is-selected="isSelectedAllRows
                 || selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
             @action="onRowAction" />
@@ -95,6 +96,13 @@ export default {
         rowsOffset: {
             type: Number,
             default: 0,
+        },
+        /**
+         * The disabled rows are defining which rows are not being able to interact with
+         */
+        disabledRows: {
+            type: Object,
+            default: () => ({}),
         },
         /**
          * The number from which columns are enumerated

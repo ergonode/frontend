@@ -8,11 +8,12 @@
         :data="data"
         :column="column"
         :draft="draft"
-        :is-draft="isDraft"
         :row-id="rowId"
         :error-messages="errorMessages"
         :column-index="columnIndex"
         :row-index="rowIndex"
+        :is-disabled="isDisabled"
+        :is-draft="isDraft"
         :is-locked="isLocked"
         :is-copyable="isCopyable"
         :is-selected="isSelected"
@@ -91,6 +92,13 @@ export default {
          * Determinate if the component is not being able to edit
          */
         isLocked: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * Determinate if the component is disabled
+         */
+        isDisabled: {
             type: Boolean,
             default: false,
         },

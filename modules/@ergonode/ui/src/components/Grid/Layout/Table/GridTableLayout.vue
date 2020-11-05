@@ -16,7 +16,9 @@
                     :style="templateRows"
                     :column-index="0"
                     :data-count="dataCount"
+                    :disabled-rows="disabledRows"
                     :rows-offset="rowsOffset"
+                    :row-ids="rowIds"
                     :is-basic-filter="isBasicFilter"
                     :is-selected-all-rows="isSelectedAllRows"
                     :selected-rows="selectedRows"
@@ -41,6 +43,10 @@
                         :rows="rows"
                         :row-ids="rowIds"
                         :drafts="drafts"
+                        :filters="filters"
+                        :disabled-rows="disabledRows"
+                        :selected-rows="selectedRows"
+                        :is-selected-all-rows="isSelectedAllRows"
                         :rows-offset="rowsOffset"
                         :is-basic-filter="isBasicFilter"
                         @remove="onRemoveColumn"
@@ -66,6 +72,7 @@
                         :data-cell-components="dataCellComponents"
                         :row-ids="rowIds"
                         :errors="errors"
+                        :disabled-rows="disabledRows"
                         :drafts="drafts"
                         :selected-rows="selectedRows"
                         :is-selected-all-rows="isSelectedAllRows"
@@ -96,6 +103,7 @@
                     :action-cell-components="actionCellComponents"
                     :columns="actionColumns"
                     :rows="rows"
+                    :disabled-rows="disabledRows"
                     :row-ids="rowIds"
                     :rows-offset="rowsOffset"
                     :is-basic-filter="isBasicFilter"
@@ -207,6 +215,13 @@ export default {
          * Selected filter values
          */
         filters: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
+         * The disabled rows are defining which rows are not being able to interact with
+         */
+        disabledRows: {
             type: Object,
             default: () => ({}),
         },
@@ -462,13 +477,14 @@ export default {
             });
         },
         onRemoveColumn(index) {
-            const column = this.orderedColumns[index];
+            const fixedIndex = index - this.columnsOffset;
+            const column = this.orderedColumns[fixedIndex];
 
-            this.orderedColumns.splice(index, 1);
-            this.columnWidths.splice(index, 1);
+            this.orderedColumns.splice(fixedIndex, 1);
+            this.columnWidths.splice(fixedIndex, 1);
 
             this.$emit('remove-column', {
-                index: index - this.columnsOffset,
+                index: fixedIndex,
                 column,
             });
         },
@@ -480,7 +496,7 @@ export default {
                 this.initialColumnWidths();
             }
 
-            this.columnWidths[index] = width;
+            this.columnWidths[index - this.columnsOffset] = width;
             this.columnWidths = [
                 ...this.columnWidths,
             ];
@@ -489,17 +505,20 @@ export default {
             from,
             to,
         }) {
+            const fixedFromIndex = from - this.columnsOffset;
+            const fixedToIndex = to - this.columnsOffset;
+
             this.swapColumnWidths({
-                from,
-                to,
+                from: fixedFromIndex,
+                to: fixedToIndex,
             });
             this.swapColumnsOrder({
-                from,
-                to,
+                from: fixedFromIndex,
+                to: fixedToIndex,
             });
             this.$emit('swap-columns', {
-                from: from - this.columnsOffset,
-                to: to - this.columnsOffset,
+                from: fixedFromIndex,
+                to: fixedToIndex,
             });
         },
         onStickyChange({

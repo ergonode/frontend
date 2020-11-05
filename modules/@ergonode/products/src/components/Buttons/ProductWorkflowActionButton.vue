@@ -109,10 +109,10 @@ export default {
                 code: workflowCode,
             }) => code === workflowCode);
 
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: `Are you sure you want to change status to ${code}?`,
-                confirmCallback: () => this.updateProductStatus({
+            this.$confirm({
+                type: MODAL_TYPE.POSITIVE,
+                title: `Are you sure you want to change status to ${code}?`,
+                action: () => this.updateProductStatus({
                     value: statusId,
                     languageCode: this.language.code,
                     attributeId: this.status.attribute_id,

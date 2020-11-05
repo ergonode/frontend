@@ -38,8 +38,5 @@ export default {
     .list-element-hint {
         color: $GRAPHITE;
         font: $FONT_SEMI_BOLD_10_12;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
     }
 </style>

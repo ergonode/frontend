@@ -77,10 +77,11 @@ export default {
             __clearFeedbackStorage: '__clearStorage',
         }),
         onRemove() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this channel?',
-                confirmCallback: () => this.removeChannel({
+            this.$confirm({
+                type: MODAL_TYPE.DESTRUCTIVE,
+                title: 'Are you sure you want to delete this channel?',
+                applyTitle: 'YES, REMOVE',
+                action: () => this.removeChannel({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
                 }),

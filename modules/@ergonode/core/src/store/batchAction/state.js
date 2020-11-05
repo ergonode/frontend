@@ -3,8 +3,5 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    modals: [],
-    languagesTree: [],
-    languages: [],
-    defaultLanguageCode: null,
+    batchActions: [],
 });

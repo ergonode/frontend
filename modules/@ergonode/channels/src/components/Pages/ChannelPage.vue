@@ -107,10 +107,10 @@ export default {
             this.fetchGridData = false;
         },
         onCreateExport() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to start export?',
-                confirmCallback: () => this.createChannelExport({
+            this.$confirm({
+                type: MODAL_TYPE.POSITIVE,
+                title: 'Are you sure you want to start export?',
+                action: () => this.createChannelExport({
                     onSuccess: this.onExportSuccess,
                 }),
             });

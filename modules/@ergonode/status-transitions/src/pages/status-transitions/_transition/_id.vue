@@ -73,10 +73,11 @@ export default {
             __clearFeedbackStorage: '__clearStorage',
         }),
         onRemove() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this transition?',
-                confirmCallback: () => this.removeStatusTransition({
+            this.$confirm({
+                type: MODAL_TYPE.DESTRUCTIVE,
+                title: 'Are you sure you want to delete this transition?',
+                applyTitle: 'YES, REMOVE',
+                action: () => this.removeStatusTransition({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
                 }),

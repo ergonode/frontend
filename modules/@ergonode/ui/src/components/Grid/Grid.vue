@@ -19,10 +19,10 @@
                 <slot name="prependHeader" />
             </template>
             <template #actions>
-                <MassActionButton
-                    v-if="isMassActionVisible"
-                    :options="massActions"
-                    @action="onMassActionSelect" />
+                <BatchActionButton
+                    v-if="isBatchActionVisible"
+                    :options="batchActions"
+                    @action="onBatchActionSelect" />
                 <slot name="actionsHeader" />
             </template>
             <template #configuration>
@@ -47,6 +47,7 @@
                     :row-ids="rowIds"
                     :drafts="drafts"
                     :errors="errors"
+                    :disabled-rows="disabledRows"
                     :filters="filters"
                     :current-page="currentPage"
                     :max-rows="maxRows"
@@ -57,7 +58,7 @@
                     :extended-data-edit-cells="extendedDataEditCells[gridLayout.TABLE]"
                     :extended-edit-filter-cells="extendedDataEditFilterCells[gridLayout.TABLE]"
                     :selected-rows="selectedRows"
-                    :is-selected-all-rows="isSelectedAllRows"
+                    :is-selected-all-rows="isSelectedAllRows[currentPage]"
                     :is-editable="isEditable"
                     :is-select-column="isSelectColumn"
                     :is-basic-filter="isBasicFilter"
@@ -77,6 +78,7 @@
                     :row-ids="rowIds"
                     :collection-cell-binding="collectionCellBinding"
                     :drafts="drafts"
+                    :disabled-rows="disabledRows"
                     :columns-number="collectionLayoutConfig.columnsNumber"
                     :object-fit="collectionLayoutConfig.scaling"
                     :extended-data-cells="extendedDataCells[gridLayout.COLLECTION]"
@@ -127,7 +129,7 @@ import {
 import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import MassActionButton from '@UI/components/Grid/Buttons/MassActionButton';
+import BatchActionButton from '@UI/components/Grid/Buttons/BatchActionButton';
 import RemoveFiltersButton from '@UI/components/Grid/Buttons/RemoveFiltersButton';
 import AddGridColumnDropZone from '@UI/components/Grid/DropZone/AddGridColumnDropZone';
 import GridPageSelector from '@UI/components/Grid/Footer/GridPageSelector';
@@ -156,7 +158,7 @@ export default {
         GridTableLayout,
         GridCollectionLayout,
         GridPageSelector,
-        MassActionButton,
+        BatchActionButton,
         GridPlaceholder,
     },
     props: {
@@ -182,6 +184,13 @@ export default {
             default: () => ({}),
         },
         /**
+         * The disabled rows are defining which rows are not being able to interact with
+         */
+        disabledRows: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
          * The filter values
          */
         filters: {
@@ -202,7 +211,10 @@ export default {
             type: Object,
             default: null,
         },
-        massActions: {
+        /**
+         * The list of batch actions
+         */
+        batchActions: {
             type: Array,
             default: () => [],
         },
@@ -339,7 +351,7 @@ export default {
             tableLayoutConfig: {
                 rowHeight: ROW_HEIGHT.SMALL,
             },
-            isSelectedAllRows: false,
+            isSelectedAllRows: {},
             selectedRows: {},
         };
     },
@@ -371,8 +383,8 @@ export default {
                 },
             ];
         },
-        isMassActionVisible() {
-            return this.massActions.length > 0;
+        isBatchActionVisible() {
+            return this.batchActions.length > 0;
         },
         isListElementDragging() {
             return this.isElementDragging === DRAGGED_ELEMENT.LIST;
@@ -410,25 +422,49 @@ export default {
         onRemoveAllFilters() {
             this.$emit('remove-all-filters');
         },
-        async onMassActionSelect(option) {
-            try {
-                const rowIds = this.isSelectedAllRows
-                    ? this.rowIds
-                    : Object.keys(this.selectedRows);
+        onBatchActionSelect(option) {
+            if (this.isSelectedAllRows[this.currentPage]
+                || Object.keys(this.selectedRows).length > 0) {
+                let {
+                    rowIds,
+                } = this;
 
-                await option.action(rowIds);
+                if (!this.isSelectedAllRows[this.currentPage]) {
+                    const fixedIndex = this.isBasicFilter ? 2 : 1;
 
-                this.selectedRows = {};
-                this.isSelectedAllRows = false;
-            } catch {
-                throw new Error('Mass action is either does\'t have an action assigned not is not valid');
+                    rowIds = [];
+
+                    Object.keys(this.selectedRows).forEach((key) => {
+                        rowIds.push(this.rowIds[key - fixedIndex]);
+                    });
+                }
+
+                option.action({
+                    payload: {
+                        rowIds,
+                    },
+                    onSuccess: () => {
+                        this.selectedRows = {};
+
+                        this.isSelectedAllRows = {
+                            ...this.isSelectedAllRows,
+                            [this.currentPage]: false,
+                        };
+                    },
+                    onError: () => {
+                        throw new Error('Mass action is either without defined an action nor is not valid');
+                    },
+                });
             }
         },
         onRowSelect(selectedRows) {
             this.selectedRows = selectedRows;
         },
         onRowsSelect(isSelectedAllRows) {
-            this.isSelectedAllRows = isSelectedAllRows;
+            this.isSelectedAllRows = {
+                ...this.isSelectedAllRows,
+                [this.currentPage]: isSelectedAllRows,
+            };
         },
         onApplySettings({
             tableConfig,
@@ -473,6 +509,7 @@ export default {
         },
         onCurrentPageChange(page) {
             this.currentPage = page;
+
             this.emitFetchData();
         },
         onMaxRowsChange(maxRows) {

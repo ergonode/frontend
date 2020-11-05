@@ -21,9 +21,10 @@
             <GridCheckPlaceholderCell />
         </GridTableCell>
         <GridSelectRowEditCell
-            v-for="row in dataCount"
+            v-for="(row, rowIndex) in dataCount"
             :key="row"
             :column="0"
+            :disabled="disabledRows[rowIds[rowIndex]]"
             :row="rowsOffset + row + basicFiltersOffset"
             :selected="isSelectedAllRows
                 || selectedRows[rowsOffset + row + basicFiltersOffset]"
@@ -63,11 +64,25 @@ export default {
             default: 0,
         },
         /**
+         * List of row ids
+         */
+        rowIds: {
+            type: Array,
+            default: () => [],
+        },
+        /**
          * The flag which determines the state of selected each row
          */
         isSelectedAllRows: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * The disabled rows are defining which rows are not being able to interact with
+         */
+        disabledRows: {
+            type: Object,
+            default: () => ({}),
         },
         /**
          * The map of selected rows
@@ -82,13 +97,6 @@ export default {
         rowsOffset: {
             type: Number,
             default: 0,
-        },
-        /**
-         * The drafts are unsaved changes, cached changed data at given time
-         */
-        drafts: {
-            type: Object,
-            default: () => ({}),
         },
         /**
          * Determines if filters are visible
