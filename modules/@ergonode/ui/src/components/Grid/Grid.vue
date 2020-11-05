@@ -19,10 +19,10 @@
                 <slot name="prependHeader" />
             </template>
             <template #actions>
-                <MassActionButton
-                    v-if="isMassActionVisible"
-                    :options="massActions"
-                    @action="onMassActionSelect" />
+                <BulkActionButton
+                    v-if="isBulkActionVisible"
+                    :options="bulkActions"
+                    @action="onBulkActionSelect" />
                 <slot name="actionsHeader" />
             </template>
             <template #configuration>
@@ -127,7 +127,7 @@ import {
 import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import MassActionButton from '@UI/components/Grid/Buttons/MassActionButton';
+import BulkActionButton from '@UI/components/Grid/Buttons/BulkActionButton';
 import RemoveFiltersButton from '@UI/components/Grid/Buttons/RemoveFiltersButton';
 import AddGridColumnDropZone from '@UI/components/Grid/DropZone/AddGridColumnDropZone';
 import GridPageSelector from '@UI/components/Grid/Footer/GridPageSelector';
@@ -156,7 +156,7 @@ export default {
         GridTableLayout,
         GridCollectionLayout,
         GridPageSelector,
-        MassActionButton,
+        BulkActionButton,
         GridPlaceholder,
     },
     props: {
@@ -202,7 +202,7 @@ export default {
             type: Object,
             default: null,
         },
-        massActions: {
+        bulkActions: {
             type: Array,
             default: () => [],
         },
@@ -371,8 +371,8 @@ export default {
                 },
             ];
         },
-        isMassActionVisible() {
-            return this.massActions.length > 0;
+        isBulkActionVisible() {
+            return this.bulkActions.length > 0;
         },
         isListElementDragging() {
             return this.isElementDragging === DRAGGED_ELEMENT.LIST;
@@ -410,7 +410,7 @@ export default {
         onRemoveAllFilters() {
             this.$emit('remove-all-filters');
         },
-        onMassActionSelect(option) {
+        onBulkActionSelect(option) {
             const rowIds = this.isSelectedAllRows
                 ? this.rowIds
                 : Object.keys(this.selectedRows);

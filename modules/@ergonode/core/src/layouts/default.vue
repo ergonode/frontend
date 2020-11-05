@@ -72,6 +72,9 @@ export default {
         ...mapState('core', [
             'modals',
         ]),
+        ...mapState('bulkAction', [
+            'bulkActions',
+        ]),
         navigationBarPosition() {
             return {
                 top: 0,
@@ -86,6 +89,15 @@ export default {
     watch: {
         $route() {
             this.breadcrumbs = this.$route.meta.breadcrumbs || [];
+        },
+        bulkActions() {
+            this.bulkActions.forEach(({
+                onSuccess,
+            }) => {
+                setTimeout(() => {
+                    onSuccess();
+                }, 10000);
+            });
         },
     },
     created() {

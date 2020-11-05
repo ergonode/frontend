@@ -19,7 +19,7 @@
                 :errors="errors"
                 :data-count="filtered"
                 :collection-cell-binding="collectionCellBinding"
-                :mass-actions="massActions"
+                :bulk-actions="bulkActions"
                 :extended-columns="extendedColumns"
                 :extended-data-cells="extendedDataCells"
                 :extended-data-filter-cells="extendedDataFilterCells"
@@ -116,6 +116,9 @@ import {
     changeCookiePosition,
     removeCookieAtIndex,
 } from '@Core/models/cookies';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     WHITESMOKE,
@@ -181,7 +184,24 @@ export default {
             isSubmitting: false,
             isDeleteModalVisible: false,
             extendVerticalTabs: [],
-            massActions: [
+        };
+    },
+    computed: {
+        ...mapState('authentication', {
+            userLanguageCode: state => state.user.language,
+        }),
+        ...mapState('draggable', [
+            'isElementDragging',
+            'draggedElement',
+        ]),
+        extendedActionHeader() {
+            return this.$getExtendedComponents('@Products/components/Tabs/ProductCatalogTab/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendedComponents('@Products/components/Tabs/ProductCatalogTab/footer');
+        },
+        bulkActions() {
+            return [
                 {
                     label: 'Delete selected rows',
                     action: ({
@@ -198,28 +218,25 @@ export default {
                             subtitle: 'The products will be deleted from the system forever and cannot be restored.',
                             applyTitle: `DELETE ${rowIds.length} PRODUCTS`,
                             action: () => {
-                                console.log('CANCEL');
-                                onSuccess();
+                                this.addBulkAction({
+                                    id: getUUID(),
+                                    href: 'test',
+                                    onSuccess: () => {
+                                        console.log('DUPA');
+                                        onSuccess();
+                                    },
+                                    onError: () => {
+                                        this.$addAlert({
+                                            type: ALERT_TYPE.ERROR,
+                                            message: 'Products haven\'t been removed',
+                                        });
+                                    },
+                                });
                             },
                         });
                     },
                 },
-            ],
-        };
-    },
-    computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
-        ...mapState('draggable', [
-            'isElementDragging',
-            'draggedElement',
-        ]),
-        extendedActionHeader() {
-            return this.$getExtendedComponents('@Products/components/Tabs/ProductCatalogTab/actionHeader');
-        },
-        extendedFooter() {
-            return this.$getExtendedComponents('@Products/components/Tabs/ProductCatalogTab/footer');
+            ];
         },
         isAnyFilter() {
             return this.filtered === 0
@@ -283,6 +300,9 @@ export default {
         ];
     },
     methods: {
+        ...mapActions('bulkAction', [
+            'addBulkAction',
+        ]),
         ...mapActions('list', [
             'setDisabledElement',
             'setDisabledElements',
