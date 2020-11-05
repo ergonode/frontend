@@ -22,8 +22,6 @@ export default {
         flex-direction: column;
         justify-content: center;
         margin: 0 4px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        word-break: break-all;
+        word-break: break-word;
     }
 </style>

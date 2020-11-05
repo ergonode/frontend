@@ -3,6 +3,6 @@
  * See LICENSE for license details.
  */
 
-export const BULK_ACTION_TYPE = {
-    REMOVE_PRODUCTS: 'REMOVE_PRODUCTS',
+export const BATCH_ACTION_TYPE = {
+    REMOVE_PRODUCTS: 'product_delete',
 };

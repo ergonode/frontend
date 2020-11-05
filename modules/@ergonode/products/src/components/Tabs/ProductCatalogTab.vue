@@ -19,7 +19,7 @@
                 :errors="errors"
                 :data-count="filtered"
                 :collection-cell-binding="collectionCellBinding"
-                :bulk-actions="productsBulkActions"
+                :batch-actions="productsBatchActions"
                 :disabled-rows="disabledProducts"
                 :extended-columns="extendedColumns"
                 :extended-data-cells="extendedDataCells"
@@ -122,8 +122,8 @@ import {
 } from '@Core/models/stringWrapper';
 import PRIVILEGES from '@Products/config/privileges';
 import {
-    BULK_ACTION_TYPE,
-} from '@Products/models/bulkActions';
+    BATCH_ACTION_TYPE,
+} from '@Products/models/batchActions';
 import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
@@ -195,10 +195,10 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapState('bulkAction', {
-            bulkActions: state => state.bulkActions,
-            removeProductsBulkActions: state => state.bulkActions.filter(
-                bulkAction => bulkAction.type === BULK_ACTION_TYPE.REMOVE_PRODUCTS,
+        ...mapState('batchAction', {
+            batchActions: state => state.batchActions,
+            removeProductsBatchActions: state => state.batchActions.filter(
+                batchAction => batchAction.type === BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
             ),
         }),
         ...mapState('draggable', [
@@ -211,7 +211,7 @@ export default {
         extendedFooter() {
             return this.$getExtendedComponents('@Products/components/Tabs/ProductCatalogTab/footer');
         },
-        productsBulkActions() {
+        productsBatchActions() {
             return [
                 {
                     label: 'Delete selected rows',
@@ -239,20 +239,20 @@ export default {
                                     ...this.disabledProducts,
                                 };
 
-                                // TODO: Integrate when BE is rdy
-
-                                this.addBulkAction({
+                                this.addBatchAction({
                                     id: uuid,
-                                    type: BULK_ACTION_TYPE.REMOVE_PRODUCTS,
-                                    href: '',
-                                    payload,
+                                    type: BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
+                                    href: 'batch-action',
+                                    payload: {
+                                        ids: rowIds,
+                                    },
                                 });
 
                                 document
                                     .documentElement
                                     .addEventListener(
                                         uuid,
-                                        this.onRemoveProductsBulkAction.bind(null, onSuccess),
+                                        this.onRemoveProductsBatchAction.bind(null, onSuccess),
                                     );
                             },
                         });
@@ -321,27 +321,27 @@ export default {
             ...extendVerticalTabs,
         ];
 
-        this.removeProductsBulkActions.forEach(({
+        this.removeProductsBatchActions.forEach(({
             id,
         }) => {
             document
                 .documentElement
-                .addEventListener(id, this.onRemoveProductsBulkAction);
+                .addEventListener(id, this.onRemoveProductsBatchAction);
         });
     },
     beforeDestroy() {
-        this.removeProductsBulkActions.forEach(({
+        this.removeProductsBatchActions.forEach(({
             id,
         }) => {
             document
                 .documentElement
-                .removeEventListener(id, this.onRemoveProductsBulkAction);
+                .removeEventListener(id, this.onRemoveProductsBatchAction);
         });
     },
     methods: {
-        ...mapActions('bulkAction', [
-            'addBulkAction',
-            'removeBulkAction',
+        ...mapActions('batchAction', [
+            'addBatchAction',
+            'removeBatchAction',
         ]),
         ...mapActions('list', [
             'setDisabledElement',
@@ -355,7 +355,7 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
-        async onRemoveProductsBulkAction(onSuccess = () => {}, event) {
+        async onRemoveProductsBatchAction(onSuccess = () => {}, event) {
             await onSuccess();
 
             this.$addAlert({
@@ -366,13 +366,14 @@ export default {
             const {
                 id,
                 payload: {
-                    rowIds,
+                    ids,
                 },
             } = event.detail;
 
-            const bulkActionIndex = this.bulkActions.findIndex(bulkAction => bulkAction.id === id);
+            const batchActionIndex = this.batchActions
+                .findIndex(batchAction => batchAction.id === id);
 
-            rowIds.forEach((rowId) => {
+            ids.forEach((rowId) => {
                 delete this.disabledProducts[rowId];
             });
 
@@ -382,8 +383,10 @@ export default {
 
             document
                 .documentElement
-                .removeEventListener(id, this.onRemoveProductsBulkAction);
-            this.removeBulkAction(bulkActionIndex);
+                .removeEventListener(id, this.onRemoveProductsBatchAction);
+            this.removeBatchAction(batchActionIndex);
+
+            await this.onFetchData();
         },
         onRemoveAllFilters() {
             this.filterValues = {};

@@ -95,6 +95,7 @@ export default {
                     rowId: this.rowId,
                     columnId: this.column.id,
                     errorMessages: this.errorMessages,
+                    languageCode: this.column.language,
                 },
             });
         },

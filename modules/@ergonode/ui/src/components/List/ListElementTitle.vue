@@ -64,9 +64,6 @@ export default {
     .list-element-title {
         width: 100%;
         text-align: left;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
 
         &--small {
             font: $FONT_MEDIUM_12_16;

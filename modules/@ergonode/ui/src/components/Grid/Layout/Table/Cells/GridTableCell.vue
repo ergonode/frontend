@@ -200,6 +200,10 @@ export default {
 
         &--disabled {
             background-color: $WHITESMOKE;
+
+            & > * {
+                color: $GREY_DARK !important;
+            }
         }
     }
 </style>

@@ -19,10 +19,10 @@
                 <slot name="prependHeader" />
             </template>
             <template #actions>
-                <BulkActionButton
-                    v-if="isBulkActionVisible"
-                    :options="bulkActions"
-                    @action="onBulkActionSelect" />
+                <BatchActionButton
+                    v-if="isBatchActionVisible"
+                    :options="batchActions"
+                    @action="onBatchActionSelect" />
                 <slot name="actionsHeader" />
             </template>
             <template #configuration>
@@ -58,7 +58,7 @@
                     :extended-data-edit-cells="extendedDataEditCells[gridLayout.TABLE]"
                     :extended-edit-filter-cells="extendedDataEditFilterCells[gridLayout.TABLE]"
                     :selected-rows="selectedRows"
-                    :is-selected-all-rows="isSelectedAllRows"
+                    :is-selected-all-rows="isSelectedAllRows[currentPage]"
                     :is-editable="isEditable"
                     :is-select-column="isSelectColumn"
                     :is-basic-filter="isBasicFilter"
@@ -129,7 +129,7 @@ import {
 import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import BulkActionButton from '@UI/components/Grid/Buttons/BulkActionButton';
+import BatchActionButton from '@UI/components/Grid/Buttons/BatchActionButton';
 import RemoveFiltersButton from '@UI/components/Grid/Buttons/RemoveFiltersButton';
 import AddGridColumnDropZone from '@UI/components/Grid/DropZone/AddGridColumnDropZone';
 import GridPageSelector from '@UI/components/Grid/Footer/GridPageSelector';
@@ -158,7 +158,7 @@ export default {
         GridTableLayout,
         GridCollectionLayout,
         GridPageSelector,
-        BulkActionButton,
+        BatchActionButton,
         GridPlaceholder,
     },
     props: {
@@ -211,7 +211,10 @@ export default {
             type: Object,
             default: null,
         },
-        bulkActions: {
+        /**
+         * The list of batch actions
+         */
+        batchActions: {
             type: Array,
             default: () => [],
         },
@@ -348,7 +351,7 @@ export default {
             tableLayoutConfig: {
                 rowHeight: ROW_HEIGHT.SMALL,
             },
-            isSelectedAllRows: false,
+            isSelectedAllRows: {},
             selectedRows: {},
         };
     },
@@ -380,8 +383,8 @@ export default {
                 },
             ];
         },
-        isBulkActionVisible() {
-            return this.bulkActions.length > 0;
+        isBatchActionVisible() {
+            return this.batchActions.length > 0;
         },
         isListElementDragging() {
             return this.isElementDragging === DRAGGED_ELEMENT.LIST;
@@ -419,29 +422,49 @@ export default {
         onRemoveAllFilters() {
             this.$emit('remove-all-filters');
         },
-        onBulkActionSelect(option) {
-            const rowIds = this.isSelectedAllRows
-                ? this.rowIds
-                : Object.keys(this.selectedRows);
-
-            option.action({
-                payload: {
+        onBatchActionSelect(option) {
+            if (this.isSelectedAllRows[this.currentPage]
+                || Object.keys(this.selectedRows).length > 0) {
+                let {
                     rowIds,
-                },
-                onSuccess: () => {
-                    this.selectedRows = {};
-                    this.isSelectedAllRows = false;
-                },
-                onError: () => {
-                    throw new Error('Mass action is either without defined an action nor is not valid');
-                },
-            });
+                } = this;
+
+                if (!this.isSelectedAllRows[this.currentPage]) {
+                    const fixedIndex = this.isBasicFilter ? 2 : 1;
+
+                    rowIds = [];
+
+                    Object.keys(this.selectedRows).forEach((key) => {
+                        rowIds.push(this.rowIds[key - fixedIndex]);
+                    });
+                }
+
+                option.action({
+                    payload: {
+                        rowIds,
+                    },
+                    onSuccess: () => {
+                        this.selectedRows = {};
+
+                        this.isSelectedAllRows = {
+                            ...this.isSelectedAllRows,
+                            [this.currentPage]: false,
+                        };
+                    },
+                    onError: () => {
+                        throw new Error('Mass action is either without defined an action nor is not valid');
+                    },
+                });
+            }
         },
         onRowSelect(selectedRows) {
             this.selectedRows = selectedRows;
         },
         onRowsSelect(isSelectedAllRows) {
-            this.isSelectedAllRows = isSelectedAllRows;
+            this.isSelectedAllRows = {
+                ...this.isSelectedAllRows,
+                [this.currentPage]: isSelectedAllRows,
+            };
         },
         onApplySettings({
             tableConfig,
@@ -485,7 +508,12 @@ export default {
             this.$emit('filter', filters);
         },
         onCurrentPageChange(page) {
+            this.isSelectedAllRows = {
+                ...this.isSelectedAllRows,
+                [page]: false,
+            };
             this.currentPage = page;
+
             this.emitFetchData();
         },
         onMaxRowsChange(maxRows) {

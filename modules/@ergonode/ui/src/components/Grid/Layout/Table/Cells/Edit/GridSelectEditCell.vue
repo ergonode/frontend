@@ -47,6 +47,13 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Code of the language
+         */
+        languageCode: {
+            type: String,
+            required: true,
+        },
     },
     data() {
         let localValue = null;
@@ -66,15 +73,6 @@ export default {
         };
     },
     computed: {
-        languageCode() {
-            const columnIdParts = this.columnId.split(':');
-
-            if (columnIdParts.length < 1) {
-                return '';
-            }
-
-            return columnIdParts[1];
-        },
         smallSize() {
             return SIZE.SMALL;
         },

@@ -7,14 +7,14 @@ import {
 } from './mutations';
 
 export default {
-    addBulkAction({
+    addBatchAction({
         commit,
     }, payload) {
-        commit(types.ADD_BULK_ACTION, payload);
+        commit(types.ADD_BATCH_ACTION, payload);
     },
-    removeBulkAction({
+    removeBatchAction({
         commit,
     }, index) {
-        commit(types.REMOVE_BULK_ACTION, index);
+        commit(types.REMOVE_BATCH_ACTION, index);
     },
 };

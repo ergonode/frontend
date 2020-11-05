@@ -8,7 +8,7 @@
         :size="smallSize"
         :theme="secondaryTheme"
         :options="options"
-        @input="onSelectBulkAction">
+        @input="onSelectBatchAction">
         <template #option="{ option }">
             <ListElementDescription>
                 <ListElementTitle
@@ -29,7 +29,7 @@ import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
 
 export default {
-    name: 'BulkActionButton',
+    name: 'BatchActionButton',
     components: {
         ListElementTitle,
         ListElementDescription,
@@ -53,7 +53,7 @@ export default {
         },
     },
     methods: {
-        onSelectBulkAction(option) {
+        onSelectBatchAction(option) {
             this.$emit('action', option);
         },
     },

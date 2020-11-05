@@ -64,7 +64,7 @@ export default {
     },
     data() {
         return {
-            executingBulkActions: {},
+            executingBatchActions: {},
             breadcrumbs: [],
             isExpandedSideBar: true,
         };
@@ -73,8 +73,8 @@ export default {
         ...mapState('core', [
             'modals',
         ]),
-        ...mapState('bulkAction', [
-            'bulkActions',
+        ...mapState('batchAction', [
+            'batchActions',
         ]),
         navigationBarPosition() {
             return {
@@ -91,28 +91,48 @@ export default {
         $route() {
             this.breadcrumbs = this.$route.meta.breadcrumbs || [];
         },
-        bulkActions() {
-            this.bulkActions.forEach(({
+        batchActions() {
+            const request = [];
+
+            this.batchActions.forEach(({
                 id,
+                href,
+                type,
                 payload,
             }) => {
-                // TODO: Add support for axios request
+                if (!this.executingBatchActions[id]) {
+                    let event = null;
 
-                if (!this.executingBulkActions[id]) {
-                    setTimeout(() => {
-                        const event = new CustomEvent(id, {
-                            detail: {
-                                id,
-                                payload,
-                            },
-                        });
+                    this.executingBatchActions[id] = true;
 
-                        this.executingBulkActions[id] = true;
+                    request.push(
+                        this.$axios.$post(href, {
+                            type,
+                            ...payload,
+                        }).then(() => {
+                            event = new CustomEvent(id, {
+                                detail: {
+                                    id,
+                                    payload,
+                                },
+                            });
+                        }).catch((error) => {
+                            event = new CustomEvent(id, {
+                                detail: {
+                                    id,
+                                    error,
+                                },
+                            });
+                        }).finally(() => {
+                            delete this.executingBatchActions[id];
 
-                        document.documentElement.dispatchEvent(event);
-                    }, 5000);
+                            document.documentElement.dispatchEvent(event);
+                        }),
+                    );
                 }
             });
+
+            Promise.all(request);
         },
     },
     created() {
