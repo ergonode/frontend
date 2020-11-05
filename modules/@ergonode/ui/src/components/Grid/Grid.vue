@@ -508,10 +508,6 @@ export default {
             this.$emit('filter', filters);
         },
         onCurrentPageChange(page) {
-            this.isSelectedAllRows = {
-                ...this.isSelectedAllRows,
-                [page]: false,
-            };
             this.currentPage = page;
 
             this.emitFetchData();
