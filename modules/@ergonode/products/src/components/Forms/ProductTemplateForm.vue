@@ -10,10 +10,10 @@
             class="product-template-grid"
             :style="gridTemplateRows">
             <Component
-                v-for="(formField, index) in formFieldComponents"
-                :is="formField"
+                v-for="(element, index) in elements"
+                :is="formComponents[element.type]"
                 :key="index"
-                :disabled="!isAllowedToUpdate(elements[index].properties.scope)"
+                :disabled="!isAllowedToUpdate(element.properties.scope)"
                 :language-code="language.code"
                 :errors="errors"
                 v-bind="elements[index]"
@@ -58,6 +58,7 @@ export default {
     data() {
         return {
             formFieldComponents: [],
+            formComponents: {},
         };
     },
     computed: {
@@ -87,10 +88,20 @@ export default {
             };
         },
     },
-    created() {
-        this.formFieldComponents = this.elements.map(({
-            type,
-        }) => () => import(`@Products/components/Forms/Field/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`));
+    watch: {
+        elements: {
+            immediate: true,
+            handler() {
+                this.elements.forEach((element) => {
+                    const {
+                        type,
+                    } = element;
+                    if (typeof this.formComponents[type] === 'undefined') {
+                        this.formComponents[type] = () => import(`@Products/components/Forms/Field/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`);
+                    }
+                });
+            },
+        },
     },
     methods: {
         isAllowedToUpdate(scope) {

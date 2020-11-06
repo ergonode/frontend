@@ -171,7 +171,7 @@ export default {
             }
         }
 
-        &--primary, &--secondary {
+        &--primary, &--destructive {
             &:disabled {
                 background-color: $GREY;
             }

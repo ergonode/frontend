@@ -17,7 +17,9 @@
             <div class="view-template-header__section">
                 <ProductCompleteness :completeness="completeness" />
                 <TitleBarSubActions>
-                    <ProductWorkflowActionButton :language="language" />
+                    <ProductWorkflowActionButton
+                        v-if="status"
+                        :language="language" />
                 </TitleBarSubActions>
                 <Button
                     :theme="secondaryTheme"
@@ -38,7 +40,9 @@
                 @close="onCloseModal" />
         </template>
         <template #centeredContent>
+            <Preloader v-if="isFetchingData" />
             <ProductTemplateForm
+                v-else
                 :language="language"
                 :elements="elements"
                 :scope="scope"
@@ -79,6 +83,7 @@ import Button from '@UI/components/Button/Button';
 import IconRestore from '@UI/components/Icons/Actions/IconRestore';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
+import Preloader from '@UI/components/Preloader/Preloader';
 import TreeSelect from '@UI/components/Select/Tree/TreeSelect';
 import TitleBarSubActions from '@UI/components/TitleBar/TitleBarSubActions';
 import {
@@ -90,6 +95,7 @@ import {
 export default {
     name: 'ProductTemplateTab',
     components: {
+        Preloader,
         IconSpinner,
         Button,
         IconRestore,
@@ -105,55 +111,17 @@ export default {
         gridModalMixin,
         tabFeedbackMixin,
     ],
-    async asyncData({
-        store,
-        params: {
-            id,
-        },
-    }) {
-        const {
-            defaultLanguageCode,
-        } = store.state.core;
-
-        let templateElements = [];
-        let productCompleteness = [];
-
-        await Promise.all([
-            store.dispatch('product/getProductTemplate', {
-                languageCode: defaultLanguageCode,
-                id,
-                onSuccess: (({
-                    elements,
-                }) => {
-                    templateElements = elements;
-                }),
-            }),
-            store.dispatch('product/getProductCompleteness', {
-                languageCode: defaultLanguageCode,
-                id,
-                onSuccess: (({
-                    completeness,
-                }) => {
-                    productCompleteness = completeness;
-                }),
-            }),
-            store.dispatch('product/getProductDraft', {
-                languageCode: defaultLanguageCode,
-                id,
-            }),
-            store.dispatch('product/getProductWorkflow', {
-                languageCode: defaultLanguageCode,
-                id,
-            }),
-        ]);
-
-        return {
-            elements: templateElements,
-            completeness: productCompleteness,
-        };
-    },
     data() {
         return {
+            elements: [],
+            completeness: {
+                missing: [],
+                filled: 0,
+                required: 0,
+            },
+            observer: null,
+            prevTemplateId: null,
+            isFetchingData: false,
             language: {},
             isSubmitting: false,
         };
@@ -168,6 +136,8 @@ export default {
         ]),
         ...mapState('product', [
             'id',
+            'template',
+            'status',
         ]),
         ...mapGetters('core', [
             'rootLanguage',
@@ -203,6 +173,30 @@ export default {
     created() {
         this.language = this.languageOptions
             .find(languageCode => languageCode.code === this.defaultLanguageCode);
+    },
+    mounted() {
+        this.observer = new IntersectionObserver(async (entries) => {
+            if (entries[0].isIntersecting) {
+                if (this.template !== this.prevTemplateId) {
+                    this.isFetchingData = true;
+
+                    const languageCode = this.prevTemplateId === null
+                        ? this.defaultLanguageCode
+                        : this.language.code;
+
+                    await this.getProductTemplateData(languageCode);
+
+                    this.isFetchingData = false;
+                }
+            } else {
+                this.prevTemplateId = this.template;
+            }
+        });
+
+        this.observer.observe(this.$el);
+    },
+    beforeDestroy() {
+        this.observer.disconnect();
     },
     methods: {
         ...mapActions('product', [
@@ -243,9 +237,7 @@ export default {
 
             this.isSubmitting = false;
         },
-        async onLanguageChange(value) {
-            const languageCode = value.code;
-
+        async getProductTemplateData(languageCode) {
             await Promise.all([
                 this.getProductTemplate({
                     languageCode,
@@ -274,6 +266,11 @@ export default {
                     id: this.id,
                 }),
             ]);
+        },
+        async onLanguageChange(value) {
+            const languageCode = value.code;
+
+            await this.getProductTemplateData(languageCode);
 
             this.language = value;
         },

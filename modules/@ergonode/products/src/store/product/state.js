@@ -11,5 +11,4 @@ export default () => ({
     type: '',
     workflow: [],
     template: null,
-    templates: [],
 });
