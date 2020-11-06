@@ -31,7 +31,11 @@ export default {
     props: {
         completeness: {
             type: Object,
-            required: true,
+            default: () => ({
+                missing: [],
+                filled: 0,
+                required: 0,
+            }),
         },
     },
     computed: {

@@ -39,7 +39,7 @@
                     :sticky-search="true"
                     label="Product template"
                     :error-messages="errors[templateIdFieldKey]"
-                    :disabled="isDisabled || !isAllowedToUpdate"
+                    :disabled="!isAllowedToUpdate"
                     href="templates/autocomplete"
                     @input="setTemplateValue">
                     <template #placeholder="{ isVisible }">
