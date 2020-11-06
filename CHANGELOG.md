@@ -64,9 +64,6 @@ This changelog references the relevant changes.
 - feature - remove products from Grid batch/bulk/mass action
 - bugfix - Grid stabilisation
 
-# CHANGELOG
-This changelog references the relevant changes.
-
 ## CHANGELOG FOR v1.0.0-beta.2
 - feature - integrate lighter version of lazy loaded dropdowns
 - refactor - improve performance of loading data for attributes list 
