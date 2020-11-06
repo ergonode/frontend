@@ -11,6 +11,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+
+
+**Note:** Version bump only for package ergonode-front
+
+
+
+
+
 # [1.0.0-beta.3](https://github.com/derpdead/frontend/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2020-11-06)
 
 **Note:** Version bump only for package ergonode-front
