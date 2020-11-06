@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+
+
+**Note:** Version bump only for package @ergonode/ui
+
+
+
+
+
+
+
+**Note:** Version bump only for package @ergonode/ui
+
+
+
+
+
+
+
+**Note:** Version bump only for package @ergonode/ui
+
+
+
+
+
+
+
+**Note:** Version bump only for package @ergonode/ui
+
+
+
+
+
+# [1.0.0-beta.3](https://github.com/ergonode/frontend/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2020-11-06)
+
+**Note:** Version bump only for package @ergonode/ui
+
+
+
+
+
 # [1.0.0-beta](https://github.com/ergonode/frontend/compare/v0.10.0...v1.0.0-beta) (2020-10-14)
 
 **Note:** Version bump only for package @ergonode/ui
