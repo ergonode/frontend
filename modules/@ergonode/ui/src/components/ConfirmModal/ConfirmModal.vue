@@ -51,6 +51,9 @@ export default {
         Button,
     },
     props: {
+        /**
+         * Index of given component at the loop
+         */
         index: {
             type: Number,
             required: true,
@@ -89,6 +92,14 @@ export default {
         action: {
             type: Function,
             default: () => {},
+        },
+        /**
+         * The type of modal
+         */
+        type: {
+            type: String,
+            default: MODAL_TYPE.POSITIVE,
+            validator: value => Object.values(MODAL_TYPE).indexOf(value) !== -1,
         },
     },
     computed: {

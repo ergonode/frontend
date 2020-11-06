@@ -76,7 +76,6 @@ export default {
         position: relative;
         display: flex;
         flex-direction: column;
-        align-items: center;
         padding: 24px 48px 16px 24px;
         box-sizing: border-box;
 
