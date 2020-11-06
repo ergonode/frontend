@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-beta.3](https://github.com/derpdead/frontend/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2020-11-06)
+
+**Note:** Version bump only for package ergonode-front
+
+
+
+
+
 # [1.0.0-beta.2](https://github.com/derpdead/frontend/compare/v1.0.0-beta...v1.0.0-beta.2) (2020-10-29)
 
 **Note:** Version bump only for package ergonode-front
@@ -10,6 +18,19 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+
+# CHANGELOG
+This changelog references the relevant changes.
+
+## CHANGELOG FOR v1.0.0-beta.3
+- feature - add axios cancel request support for each request
+- feature - replace a custom redirect with native Vue router redirect
+- feature - placeholders for Selects
+- feature - select column for Grid
+- feature - destructive theme for buttons
+- feature - possibility of changing template from product page
+- feature - remove products from Grid batch/bulk/mass action
+- bugfix - Grid stabilisation
 
 # CHANGELOG
 This changelog references the relevant changes.
