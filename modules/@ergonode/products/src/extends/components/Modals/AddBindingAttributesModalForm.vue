@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -31,6 +30,7 @@ import {
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import ProductAttributesBindingForm
     from '@Products/extends/components/Forms/ProductAttributesBindingForm';
+import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
     mapState,

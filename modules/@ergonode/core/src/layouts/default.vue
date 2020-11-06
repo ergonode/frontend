@@ -26,27 +26,29 @@
             <slot />
             <FlashMessages />
         </AppMain>
-        <ConfirmModal
-            v-if="$getModal(modalConfirmType)"
-            :type="modalConfirmType" />
+        <Component
+            v-for="(modal, index) in modals"
+            :key="index"
+            :is="modal.component"
+            :index="index"
+            v-bind="modal.props"
+            @close="onCloseModal" />
     </App>
 </template>
 
 <script>
-import App from '@Core/components/Layout/App';
-import AppMain from '@Core/components/Layout/AppMain';
-import SideBar from '@Core/components/SideBar/SideBar';
-import ToolBar from '@Core/components/ToolBar/ToolBar';
-import ToolBarBreadcrumb from '@Core/components/ToolBar/ToolBarBreadcrumb';
 import ToolBarUserButton from '@Core/components/ToolBar/ToolBarUserButton';
 import {
     COMPONENTS,
 } from '@Core/defaults/extends';
-import {
-    MODAL_TYPE,
-} from '@Core/defaults/modals';
+import App from '@UI/components/Layout/App';
+import AppMain from '@UI/components/Layout/AppMain';
+import SideBar from '@UI/components/SideBar/SideBar';
+import ToolBar from '@UI/components/ToolBar/ToolBar';
+import ToolBarBreadcrumb from '@UI/components/ToolBar/ToolBarBreadcrumb';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -58,16 +60,22 @@ export default {
         ToolBar,
         ToolBarUserButton,
         ToolBarBreadcrumb,
-        FlashMessages: () => import('@Core/components/Alerts/FlashMessages'),
-        ConfirmModal: () => import('@Core/components/Modals/ConfirmModal'),
+        FlashMessages: () => import('@Core/components/FlashMessages/FlashMessages'),
     },
     data() {
         return {
+            executingBatchActions: {},
             breadcrumbs: [],
             isExpandedSideBar: true,
         };
     },
     computed: {
+        ...mapState('core', [
+            'modals',
+        ]),
+        ...mapState('batchAction', [
+            'batchActions',
+        ]),
         navigationBarPosition() {
             return {
                 top: 0,
@@ -78,13 +86,53 @@ export default {
         extendedComponents() {
             return this.$getExtendedComponents(COMPONENTS.NAVIGATION_BAR);
         },
-        modalConfirmType() {
-            return MODAL_TYPE.GLOBAL_CONFIRM_MODAL;
-        },
     },
     watch: {
         $route() {
             this.breadcrumbs = this.$route.meta.breadcrumbs || [];
+        },
+        batchActions() {
+            const request = [];
+
+            this.batchActions.forEach(({
+                id,
+                href,
+                type,
+                payload,
+            }) => {
+                if (!this.executingBatchActions[id]) {
+                    let event = null;
+
+                    this.executingBatchActions[id] = true;
+
+                    request.push(
+                        this.$axios.$post(href, {
+                            type,
+                            ...payload,
+                        }).then(() => {
+                            event = new CustomEvent(id, {
+                                detail: {
+                                    id,
+                                    payload,
+                                },
+                            });
+                        }).catch((error) => {
+                            event = new CustomEvent(id, {
+                                detail: {
+                                    id,
+                                    error,
+                                },
+                            });
+                        }).finally(() => {
+                            delete this.executingBatchActions[id];
+
+                            document.documentElement.dispatchEvent(event);
+                        }),
+                    );
+                }
+            });
+
+            Promise.all(request);
         },
     },
     created() {
@@ -97,10 +145,16 @@ export default {
         this.invalidateRequestTimeout();
     },
     methods: {
+        ...mapActions('core', [
+            'removeModal',
+        ]),
         ...mapActions('notification', [
             'setRequestTimeout',
             'invalidateRequestTimeout',
         ]),
+        onCloseModal(index) {
+            this.removeModal(index);
+        },
         onExpandSideBar(isExpanded) {
             this.isExpandedSideBar = isExpanded;
         },

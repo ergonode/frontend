@@ -19,6 +19,8 @@
                 :errors="errors"
                 :data-count="filtered"
                 :collection-cell-binding="collectionCellBinding"
+                :batch-actions="productsBatchActions"
+                :disabled-rows="disabledProducts"
                 :extended-columns="extendedColumns"
                 :extended-data-cells="extendedDataCells"
                 :extended-data-filter-cells="extendedDataFilterCells"
@@ -29,6 +31,7 @@
                 :is-header-visible="true"
                 :is-basic-filter="true"
                 :is-collection-layout="true"
+                :is-select-column="true"
                 @edit-row="onEditRow"
                 @preview-row="onEditRow"
                 @cell-value="onCellValueChange"
@@ -38,13 +41,20 @@
                 @remove-column="onRemoveColumn"
                 @swap-columns="onSwapColumns"
                 @fetch-data="onFetchData"
-                @remove-all-filter="onRemoveAllFilters">
+                @remove-all-filters="onRemoveAllFilters">
                 <template #actionsHeader>
                     <ExpandNumericButton
                         title="FILTERS"
                         :number="advancedFilters.length"
                         :is-expanded="isFiltersExpanded"
                         @click.native="onFiltersExpand" />
+                    <template
+                        v-for="(headerItem, index) in extendedActionHeader">
+                        <Component
+                            :is="headerItem.component"
+                            :key="index"
+                            v-bind="bindingProps(headerItem)" />
+                    </template>
                 </template>
                 <template #prependHeader>
                     <AddFilterDropZone
@@ -67,6 +77,13 @@
                         @click.native="onRemoveAllFilters" />
                 </template>
                 <template #appendFooter>
+                    <template
+                        v-for="(footerItem, index) in extendedFooter">
+                        <Component
+                            :is="footerItem.component"
+                            :key="index"
+                            v-bind="bindingProps(footerItem)" />
+                    </template>
                     <Button
                         title="SAVE CHANGES"
                         :disabled="!isAllowedToUpdate"
@@ -85,18 +102,11 @@
 
 <script>
 import {
-    WHITESMOKE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Button/Button';
-import RemoveFiltersButton from '@Core/components/Grid/Buttons/RemoveFiltersButton';
-import AddFilterDropZone from '@Core/components/Grid/DropZone/AddFilterDropZone';
-import RemoveFilterAndColumnDropZone from '@Core/components/Grid/DropZone/RemoveFilterAndColumnDropZone';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
-import VerticalTabBar from '@Core/components/TabBar/VerticalTabBar';
-import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchAdvancedFiltersDataMixin from '@Core/mixins/grid/fetchAdvancedFiltersDataMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
@@ -107,7 +117,23 @@ import {
     changeCookiePosition,
     removeCookieAtIndex,
 } from '@Core/models/cookies';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
 import PRIVILEGES from '@Products/config/privileges';
+import {
+    BATCH_ACTION_TYPE,
+} from '@Products/models/batchActions';
+import {
+    WHITESMOKE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Button from '@UI/components/Button/Button';
+import RemoveFiltersButton from '@UI/components/Grid/Buttons/RemoveFiltersButton';
+import AddFilterDropZone from '@UI/components/Grid/DropZone/AddFilterDropZone';
+import RemoveFilterAndColumnDropZone from '@UI/components/Grid/DropZone/RemoveFilterAndColumnDropZone';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
+import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import {
     mapActions,
     mapState,
@@ -160,16 +186,80 @@ export default {
         return {
             isPrefetchingData: true,
             isSubmitting: false,
+            isDeleteModalVisible: false,
+            extendVerticalTabs: [],
+            disabledProducts: {},
         };
     },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
+        ...mapState('batchAction', {
+            batchActions: state => state.batchActions,
+            removeProductsBatchActions: state => state.batchActions.filter(
+                batchAction => batchAction.type === BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
+            ),
+        }),
         ...mapState('draggable', [
             'isElementDragging',
             'draggedElement',
         ]),
+        extendedActionHeader() {
+            return this.$getExtendedComponents('@Products/components/Tabs/ProductCatalogTab/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendedComponents('@Products/components/Tabs/ProductCatalogTab/footer');
+        },
+        productsBatchActions() {
+            return [
+                {
+                    label: 'Delete selected rows',
+                    action: ({
+                        payload,
+                        onSuccess,
+                    }) => {
+                        const {
+                            rowIds,
+                        } = payload;
+
+                        this.$confirm({
+                            type: MODAL_TYPE.DESTRUCTIVE,
+                            title: `Are you sure you want to permanently delete ${rowIds.length} products?`,
+                            subtitle: 'The products will be deleted from the system forever and cannot be restored.',
+                            applyTitle: `DELETE ${rowIds.length} PRODUCTS`,
+                            action: () => {
+                                const uuid = getUUID();
+
+                                rowIds.forEach((rowId) => {
+                                    this.disabledProducts[rowId] = true;
+                                });
+
+                                this.disabledProducts = {
+                                    ...this.disabledProducts,
+                                };
+
+                                this.addBatchAction({
+                                    id: uuid,
+                                    type: BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
+                                    href: 'batch-action',
+                                    payload: {
+                                        ids: rowIds,
+                                    },
+                                });
+
+                                document
+                                    .documentElement
+                                    .addEventListener(
+                                        uuid,
+                                        this.onRemoveProductsBatchAction.bind(null, onSuccess),
+                                    );
+                            },
+                        });
+                    },
+                },
+            ];
+        },
         isAnyFilter() {
             return this.filtered === 0
                 && (Object.keys(this.filterValues).length > 0
@@ -180,7 +270,7 @@ export default {
                 return {
                     title: 'No results',
                     subtitle: 'There are no results that meet the conditions for the selected filters.',
-                    bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                    bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
                     color: WHITESMOKE,
                 };
             }
@@ -188,7 +278,7 @@ export default {
             return {
                 title: 'No products',
                 subtitle: 'There are no products in the system, you can create the first one.',
-                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
                 color: WHITESMOKE,
             };
         },
@@ -203,15 +293,16 @@ export default {
                 {
                     title: 'Product attributes',
                     component: () => import('@Attributes/components/Tabs/List/AttributesListTab'),
-                    iconComponent: () => import('@Core/components/Icons/Menu/IconAttributes'),
+                    icon: () => import('@Attributes/components/Icons/IconAttributes'),
                     props: {},
                 },
                 {
                     title: 'System attributes',
                     component: () => import('@Attributes/components/Tabs/List/SystemAttributesListTab'),
-                    iconComponent: () => import('@Core/components/Icons/Menu/IconSettings'),
+                    icon: () => import('@Core/components/Icons/Menu/IconSettings'),
                     props: {},
                 },
+                ...this.extendVerticalTabs,
             ];
         },
         isAllowedToUpdate() {
@@ -220,7 +311,38 @@ export default {
             ]);
         },
     },
+    async mounted() {
+        const extendVerticalTabs = await this.$extendMethods('@Products/components/Tabs/ProductCatalogTab/verticalTabs', {
+            $this: this,
+        });
+
+        this.extendVerticalTabs = [
+            ...this.extendVerticalTabs,
+            ...extendVerticalTabs,
+        ];
+
+        this.removeProductsBatchActions.forEach(({
+            id,
+        }) => {
+            document
+                .documentElement
+                .addEventListener(id, this.onRemoveProductsBatchAction);
+        });
+    },
+    beforeDestroy() {
+        this.removeProductsBatchActions.forEach(({
+            id,
+        }) => {
+            document
+                .documentElement
+                .removeEventListener(id, this.onRemoveProductsBatchAction);
+        });
+    },
     methods: {
+        ...mapActions('batchAction', [
+            'addBatchAction',
+            'removeBatchAction',
+        ]),
         ...mapActions('list', [
             'setDisabledElement',
             'setDisabledElements',
@@ -233,6 +355,39 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
+        async onRemoveProductsBatchAction(onSuccess = () => {}, event) {
+            await onSuccess();
+
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Products have been removed',
+            });
+
+            const {
+                id,
+                payload: {
+                    ids,
+                },
+            } = event.detail;
+
+            const batchActionIndex = this.batchActions
+                .findIndex(batchAction => batchAction.id === id);
+
+            ids.forEach((rowId) => {
+                delete this.disabledProducts[rowId];
+            });
+
+            this.disabledProducts = {
+                ...this.disabledProducts,
+            };
+
+            document
+                .documentElement
+                .removeEventListener(id, this.onRemoveProductsBatchAction);
+            this.removeBatchAction(batchActionIndex);
+
+            await this.onFetchData();
+        },
         onRemoveAllFilters() {
             this.filterValues = {};
             this.advancedFilterValues = {};
@@ -311,9 +466,6 @@ export default {
             });
         },
         onAdvancedFilterRemoveAll() {
-            this.advancedFilterValues = {};
-            this.advancedFilters = [];
-
             this.$cookies.remove(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
 
             this.advancedFilters.forEach(({
@@ -325,6 +477,9 @@ export default {
                     attributeId,
                 });
             });
+
+            this.advancedFilterValues = {};
+            this.advancedFilters = [];
 
             this.onFetchData({
                 ...this.localParams,
@@ -467,6 +622,14 @@ export default {
             });
 
             return disabledElements;
+        },
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                disabled: !this.isAllowedToUpdate,
+                ...props,
+            };
         },
     },
 };

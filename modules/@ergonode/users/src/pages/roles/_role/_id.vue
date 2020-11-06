@@ -70,10 +70,11 @@ export default {
             __clearFeedbackStorage: '__clearStorage',
         }),
         onRemove() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this role?',
-                confirmCallback: () => this.removeRole({
+            this.$confirm({
+                type: MODAL_TYPE.DESTRUCTIVE,
+                title: 'Are you sure you want to delete this role?',
+                applyTitle: 'YES, REMOVE',
+                action: () => this.removeRole({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
                 }),

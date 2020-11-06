@@ -9,6 +9,9 @@ import {
     remove,
     update,
 } from '@Comments/services/index';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 
 import {
     types,
@@ -53,6 +56,10 @@ export default {
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError(e);
         }
     },
@@ -101,6 +108,10 @@ export default {
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError(e);
         }
     },
@@ -185,6 +196,15 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating comment has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -259,6 +279,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating comment has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -309,6 +338,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing comment has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
             });

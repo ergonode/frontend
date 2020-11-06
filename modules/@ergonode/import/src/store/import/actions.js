@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     getDefaultJsonSchemaTypes,
 } from '@Core/models/jsonSchema';
 import {
@@ -25,7 +28,7 @@ export default {
         },
         {
             id,
-            onError,
+            onError = () => {},
         },
     ) {
         try {
@@ -71,65 +74,94 @@ export default {
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError(e);
         }
     },
     async getImportDetails({}, {
         sourceId,
         importId,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const details = await getDetails({
-            $axios: this.app.$axios,
-            sourceId,
-            importId,
-        });
+        try {
+            const details = await getDetails({
+                $axios: this.app.$axios,
+                sourceId,
+                importId,
+            });
 
-        return [
-            {
-                label: 'Date of start',
-                value: details.started_at,
-            },
-            {
-                label: 'Status',
-                value: details.status,
-            },
-            {
-                label: 'Records',
-                value: details.records || '0',
-            },
-            {
-                label: 'Errors',
-                value: details.errors || '0',
-            },
-        ];
+            onSuccess({
+                details: [
+                    {
+                        label: 'Date of start',
+                        value: details.started_at,
+                    },
+                    {
+                        label: 'Status',
+                        value: details.status,
+                    },
+                    {
+                        label: 'Records',
+                        value: details.records || '0',
+                    },
+                    {
+                        label: 'Errors',
+                        value: details.errors || '0',
+                    },
+                ],
+            });
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async getConfiguration({
         commit,
         state,
         rootState,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-            type,
-        } = state;
-        const {
-            sources,
-        } = rootState.dictionaries;
-        const configuration = await getConfiguration({
-            $axios: this.app.$axios,
-            id: getKeyByValue(sources, type),
-        });
-
-        if (!id) {
-            const defaultConfiguration = getDefaultJsonSchemaTypes(configuration.properties);
-
-            commit('__SET_STATE', {
-                key: 'configuration',
-                value: JSON.stringify(defaultConfiguration),
+        try {
+            const {
+                id,
+                type,
+            } = state;
+            const {
+                sources,
+            } = rootState.dictionaries;
+            const configuration = await getConfiguration({
+                $axios: this.app.$axios,
+                id: getKeyByValue(sources, type),
             });
-        }
 
-        return configuration;
+            if (!id) {
+                const defaultConfiguration = getDefaultJsonSchemaTypes(configuration.properties);
+
+                commit('__SET_STATE', {
+                    key: 'configuration',
+                    value: JSON.stringify(defaultConfiguration),
+                });
+            }
+
+            onSuccess({
+                configuration,
+            });
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async updateImportProfile(
         {
@@ -183,6 +215,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating import profile has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -219,6 +260,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Uploading import file has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -285,6 +335,15 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating import profile has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -324,6 +383,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing import profile has been canceled',
+                });
+
+                return;
+            }
+
             onError(e);
         }
     },

@@ -38,9 +38,9 @@
 </template>
 
 <script>
-import Grid from '@Core/components/Grid/Grid';
-import ModalGrid from '@Core/components/Modal/ModalGrid';
-import Tile from '@Core/components/Tile/Tile';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
@@ -48,6 +48,9 @@ import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponent
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import Grid from '@UI/components/Grid/Grid';
+import ModalGrid from '@UI/components/Modal/ModalGrid';
+import Tile from '@UI/components/Tile/Tile';
 import {
     mapActions,
 } from 'vuex';
@@ -73,17 +76,18 @@ export default {
         },
     },
     async fetch() {
-        const [
-            importDetails,
-        ] = await Promise.all([
+        await Promise.all([
             this.getImportDetails({
                 sourceId: this.sourceId,
                 importId: this.importId,
+                onSuccess: (({
+                    details,
+                }) => {
+                    this.details = details;
+                }),
             }),
             this.onFetchData(),
         ]);
-
-        this.details = importDetails;
 
         this.isPrefetchingData = false;
     },
@@ -118,11 +122,7 @@ export default {
             });
         },
         async onFetchData(params = DEFAULT_GRID_FETCH_PARAMS) {
-            const {
-                columns,
-                rows,
-                filtered,
-            } = await getGridData({
+            await getGridData({
                 $route: this.$route,
                 $cookies: this.$cookies,
                 $axios: this.$axios,
@@ -131,8 +131,22 @@ export default {
                     ...params,
                     extended: true,
                 },
+                onSuccess: this.onFetchGridDataSuccess,
+                onError: this.onFetchGridDataError,
             });
-
+        },
+        onFetchGridDataError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Grid data haven’t been fetched properly',
+            });
+            this.isPrefetchingData = false;
+        },
+        onFetchGridDataSuccess({
+            columns,
+            rows,
+            filtered,
+        }) {
             this.columns = columns;
             this.rows = rows;
             this.filtered = filtered;

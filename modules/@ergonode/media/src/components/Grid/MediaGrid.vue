@@ -25,7 +25,7 @@
         @cell-value="onCellValueChange"
         @delete-row="onRemoveRow"
         @fetch-data="onFetchData"
-        @remove-all-filter="onRemoveAllFilters"
+        @remove-all-filters="onRemoveAllFilters"
         @filter="onFilterChange">
         <template #appendFooter>
             <Button
@@ -37,12 +37,6 @@
 </template>
 
 <script>
-import {
-    GRAPHITE,
-    GREEN,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Button/Button';
-import Grid from '@Core/components/Grid/Grid';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -61,6 +55,12 @@ import PRIVILEGES from '@Media/config/privileges';
 import {
     MEDIA_TYPE,
 } from '@Media/defaults';
+import {
+    GRAPHITE,
+    GREEN,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Button from '@UI/components/Button/Button';
+import Grid from '@UI/components/Grid/Grid';
 import {
     debounce,
 } from 'debounce';
@@ -201,7 +201,7 @@ export default {
                 filter: {},
             });
         },
-        onFetchData({
+        async onFetchData({
             offset,
             limit,
             filter,
@@ -230,20 +230,29 @@ export default {
                 params.order = orderState;
             }
 
-            return getGridData({
+            await getGridData({
                 $route: this.$route,
                 $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: 'multimedia',
                 params,
-            }).then(({
-                columns,
-                rows,
-                filtered,
-            }) => {
-                this.columns = columns;
-                this.rows = rows;
-                this.filtered = filtered;
+                onSuccess: this.onFetchDataSuccess,
+                onError: this.onFetchDataError,
+            });
+        },
+        onFetchDataSuccess({
+            columns,
+            rows,
+            filtered,
+        }) {
+            this.columns = columns;
+            this.rows = rows;
+            this.filtered = filtered;
+        },
+        onFetchDataError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Grid data haven’t been fetched properly',
             });
         },
         onRemoveRow() {

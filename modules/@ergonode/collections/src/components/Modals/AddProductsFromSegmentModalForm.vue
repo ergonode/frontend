@@ -8,7 +8,6 @@
         @close="onClose">
         <template #body>
             <AddProductsFromSegmentForm
-                :segment-options="segmentOptions"
                 :segments="segments"
                 submit-title="ADD TO COLLECTION"
                 proceed-title="CANCEL"
@@ -22,7 +21,6 @@
 </template>
 
 <script>
-import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -31,6 +29,7 @@ import {
 } from '@Core/defaults/theme';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import AddProductsFromSegmentForm from '@Segments/components/Forms/AddProductsFromSegmentForm';
+import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
 } from 'vuex';
@@ -46,7 +45,6 @@ export default {
     ],
     data() {
         return {
-            segmentOptions: [],
             segments: [],
             isAdding: false,
         };
@@ -56,13 +54,7 @@ export default {
             return THEME.SECONDARY;
         },
     },
-    async created() {
-        this.segmentOptions = await this.getSegmentOptions();
-    },
     methods: {
-        ...mapActions('segment', [
-            'getSegmentOptions',
-        ]),
         ...mapActions('collection', [
             'addBySegment',
         ]),
@@ -95,7 +87,7 @@ export default {
 
             this.isAdding = false;
 
-            this.$emit('submited');
+            this.$emit('submitted');
         },
         onAddError(errors) {
             this.onError(errors);

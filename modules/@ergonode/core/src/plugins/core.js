@@ -9,18 +9,11 @@ import {
 export default ({
     app,
 }, inject) => {
-    inject('openModal', (payload) => {
-        app.store.dispatch('core/openModal', payload);
-    });
-    inject('getModal', (key) => {
-        const {
-            modals,
-        } = app.store.state.core;
-
-        return modals[key];
-    });
-    inject('closeModal', (key) => {
-        app.store.dispatch('core/closeModal', key);
+    inject('confirm', (payload) => {
+        app.store.dispatch('core/addModal', {
+            component: () => import('@UI/components/ConfirmModal/ConfirmModal'),
+            props: payload,
+        });
     });
     inject('extendedForm', ({
         key, type = null,

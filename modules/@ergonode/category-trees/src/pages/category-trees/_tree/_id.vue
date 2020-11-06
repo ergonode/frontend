@@ -78,10 +78,11 @@ export default {
             __clearGridDesignerStorage: '__clearStorage',
         }),
         onRemove() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this tree?',
-                confirmCallback: () => this.removeCategoryTree({
+            this.$confirm({
+                type: MODAL_TYPE.DESTRUCTIVE,
+                title: 'Are you sure you want to delete this tree?',
+                applyTitle: 'YES, REMOVE',
+                action: () => this.removeCategoryTree({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
                 }),

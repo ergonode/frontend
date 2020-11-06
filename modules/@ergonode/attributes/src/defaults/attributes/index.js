@@ -6,9 +6,8 @@ export const SKU_MODEL_ID = 'SKU';
 
 export const SKU_MODEL = {
     id: SKU_MODEL_ID,
-    key: SKU_MODEL_ID,
-    value: SKU_MODEL_ID,
-    hint: SKU_MODEL_ID,
+    code: SKU_MODEL_ID,
+    label: SKU_MODEL_ID,
 };
 
 export const TYPES = {

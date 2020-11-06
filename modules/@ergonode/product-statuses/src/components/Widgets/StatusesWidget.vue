@@ -36,9 +36,9 @@
 </template>
 
 <script>
-import ActionButton from '@Core/components/ActionButton/ActionButton';
-import Preloader from '@Core/components/Preloader/Preloader';
-import Widget from '@Core/components/Widget/Widget';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -46,6 +46,9 @@ import {
     getStatusesCount,
 } from '@Dashboard/services';
 import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
+import ActionButton from '@UI/components/ActionButton/ActionButton';
+import Preloader from '@UI/components/Preloader/Preloader';
+import Widget from '@UI/components/Widget/Widget';
 import {
     mapGetters,
     mapState,
@@ -100,33 +103,46 @@ export default {
             }) => name === this.workflowLanguage).code;
         },
         async getStatusesCount() {
-            this.isPrefetchingData = true;
+            try {
+                this.isPrefetchingData = true;
 
-            const workflowLanguageCode = this.getWorkflowLanguageCode();
+                const workflowLanguageCode = this.getWorkflowLanguageCode();
 
-            const statusesCount = await getStatusesCount({
-                $axios: this.$axios,
-                workflowLanguage: workflowLanguageCode,
-            });
+                const statusesCount = await getStatusesCount({
+                    $axios: this.$axios,
+                    workflowLanguage: workflowLanguageCode,
+                });
 
-            this.statuses = statusesCount.map((status) => {
-                const {
-                    status_id,
-                    code,
-                    value,
-                    label,
-                    color,
-                } = status;
+                this.statuses = statusesCount.map((status) => {
+                    const {
+                        status_id,
+                        code,
+                        value,
+                        label,
+                        color,
+                    } = status;
 
-                return {
-                    id: status_id,
-                    color,
-                    label: label || `#${code}`,
-                    value: `${value} products`,
-                };
-            });
+                    return {
+                        id: status_id,
+                        color,
+                        label: label || `#${code}`,
+                        value: `${value} products`,
+                    };
+                });
 
-            this.isPrefetchingData = false;
+                this.isPrefetchingData = false;
+            } catch (e) {
+                if (this.$axios.isCancel(e)) {
+                    return;
+                }
+
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Product statuses haven’t been fetched properly',
+                });
+
+                this.isPrefetchingData = false;
+            }
         },
         async onValueChange(value) {
             this.workflowLanguage = value;

@@ -90,16 +90,6 @@ import {
     SYSTEM_TYPES,
 } from '@Attributes/defaults/attributes';
 import {
-    GRAPHITE_LIGHT,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Button/Button';
-import DropZone from '@Core/components/DropZone/DropZone';
-import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
-import VerticalTabBar from '@Core/components/TabBar/VerticalTabBar';
-import FadeTransition from '@Core/components/Transitions/FadeTransition';
-import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
@@ -122,6 +112,16 @@ import PRIVILEGES from '@Templates/config/privileges';
 import {
     getHighlightingLayoutDropPositions,
 } from '@Templates/models/layout/LayoutCalculations';
+import {
+    GRAPHITE_LIGHT,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Button from '@UI/components/Button/Button';
+import DropZone from '@UI/components/DropZone/DropZone';
+import IconRemoveFilter from '@UI/components/Icons/Actions/IconRemoveFilter';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
+import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
+import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
     mapActions,
     mapState,
@@ -187,12 +187,12 @@ export default {
                             PRIVILEGES.TEMPLATE_DESIGNER.update,
                         ]),
                     },
-                    iconComponent: () => import('@Core/components/Icons/Menu/IconAttributes'),
+                    icon: () => import('@Attributes/components/Icons/IconAttributes'),
                 },
                 {
                     title: 'Widgets',
                     component: () => import('@Templates/components/Tabs/List/WidgetsListTab'),
-                    iconComponent: () => import('@Core/components/Icons/Widgets/IconWidget'),
+                    icon: () => import('@Core/components/Icons/Widgets/IconWidget'),
                 },
             ];
         },

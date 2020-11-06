@@ -18,10 +18,10 @@
 </template>
 
 <script>
-import ListDraggableElement from '@Core/components/List/ListDraggableElement';
-import ListElementDescription from '@Core/components/List/ListElementDescription';
-import ListElementHint from '@Core/components/List/ListElementHint';
-import ListElementTitle from '@Core/components/List/ListElementTitle';
+import ListDraggableElement from '@UI/components/List/ListDraggableElement';
+import ListElementDescription from '@UI/components/List/ListElementDescription';
+import ListElementHint from '@UI/components/List/ListElementHint';
+import ListElementTitle from '@UI/components/List/ListElementTitle';
 import {
     mapActions,
     mapState,

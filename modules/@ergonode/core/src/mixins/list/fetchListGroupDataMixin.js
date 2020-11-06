@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     UNASSIGNED_GROUP_ID,
 } from '@Core/defaults/list';
 import {
@@ -32,16 +35,29 @@ export default function ({
             };
         },
         async fetch() {
-            const {
-                defaultLanguageCode: languageCode,
-            } = this.$store.state.core;
+            try {
+                const {
+                    defaultLanguageCode: languageCode,
+                } = this.$store.state.core;
 
-            await this.fetchListData({
-                languageCode,
-                limit: 0,
-            });
+                await this.fetchListData({
+                    languageCode,
+                    limit: 0,
+                });
 
-            this.isPrefetchingData = false;
+                this.isPrefetchingData = false;
+            } catch (e) {
+                if (this.$axios.isCancel(e)) {
+                    return;
+                }
+
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'List hasn’t been fetched properly',
+                });
+
+                this.isPrefetchingData = false;
+            }
         },
         computed: {
             unassignedGroup() {
@@ -58,14 +74,15 @@ export default function ({
                 languageCode,
                 limit = 99999,
             }) {
-                const [
-                    groupItems,
-                    listItems,
-                ] = await Promise.all([
+                await Promise.all([
                     getListGroups({
                         $axios: this.$axios,
                         path: `${languageCode}/${namespace}/groups`,
                         languageCode,
+                        onSuccess: payload => this.onFetchListGroupsSuccess({
+                            ...payload,
+                            languageCode,
+                        }),
                     }),
                     getListItems({
                         $axios: this.$axios,
@@ -78,41 +95,61 @@ export default function ({
                             field: 'code',
                             order: 'ASC',
                         },
+                        onSuccess: payload => this.onFetchListItemsSuccess({
+                            ...payload,
+                            languageCode,
+                        }),
                     }),
                 ]);
+            },
+            onFetchListGroupsSuccess({
+                groups,
+                items,
+                groupItemsCount,
+                languageCode,
+            }) {
+                if (typeof this.items[languageCode] === 'undefined') {
+                    this.items[languageCode] = {};
+                }
 
-                this.groups = {
-                    ...this.groups,
-                    [languageCode]: [
-                        ...groupItems.groups,
-                        this.unassignedGroup,
-                    ],
-                };
+                this.groups[languageCode] = [
+                    ...groups,
+                    this.unassignedGroup,
+                ];
 
-                this.items = {
-                    ...this.items,
-                    [languageCode]: {
-                        ...groupItems.items,
-                        [UNASSIGNED_GROUP_ID]: listItems.items,
-                    },
-                };
+                this.items[languageCode] = items;
 
-                this.groupItemsCount = {
-                    ...groupItems.groupItemsCount,
-                    [UNASSIGNED_GROUP_ID]: listItems.info.filtered,
-                };
+                this.groupItemsCount = groupItemsCount;
+            },
+            onFetchListItemsSuccess({
+                items,
+                info,
+                languageCode,
+            }) {
+                if (typeof this.items[languageCode] === 'undefined') {
+                    this.items[languageCode] = {};
+                }
+
+                this.items[languageCode][UNASSIGNED_GROUP_ID] = items;
+                this.groupItemsCount[UNASSIGNED_GROUP_ID] = info.filtered;
             },
             async getGroups(languageCode) {
-                const {
-                    groups,
-                    items,
-                    groupItemsCount,
-                } = await getListGroups({
+                await getListGroups({
                     $axios: this.$axios,
                     path: `${languageCode}/${namespace}/groups`,
                     languageCode,
+                    onSuccess: payload => this.getGroupsSuccess({
+                        ...payload,
+                        languageCode,
+                    }),
                 });
-
+            },
+            getGroupsSuccess({
+                groups,
+                items,
+                groupItemsCount,
+                languageCode,
+            }) {
                 this.groups = {
                     ...this.groups,
                     [languageCode]: groups,
@@ -138,9 +175,7 @@ export default function ({
 
                     this.prefetchingGroupItemsId = this.expandedGroupId;
 
-                    const {
-                        items,
-                    } = await getListItems({
+                    await getListItems({
                         $axios: this.$axios,
                         path: `${languageCode}/${namespace}`,
                         params: {
@@ -151,24 +186,32 @@ export default function ({
                             field: 'code',
                             order: 'ASC',
                         },
+                        onSuccess: payload => this.getGroupItemsSuccess({
+                            ...payload,
+                            languageCode,
+                            groupId,
+                        }),
                     });
-
-                    this.items[languageCode] = {
-                        ...this.items[languageCode],
-                        [groupId]: items,
-                    };
-
-                    this.prefetchingGroupItemsId = '';
                 }
+            },
+            getGroupItemsSuccess({
+                items,
+                languageCode,
+                groupId,
+            }) {
+                this.items[languageCode] = {
+                    ...this.items[languageCode],
+                    [groupId]: items,
+                };
+
+                this.prefetchingGroupItemsId = '';
             },
             async getAllGroupsItems({
                 languageCode,
             }) {
                 const filter = this.codeFilter ? `code=${this.codeFilter}` : '';
 
-                const {
-                    items,
-                } = await getListItems({
+                await getListItems({
                     $axios: this.$axios,
                     path: `${languageCode}/${namespace}`,
                     params: {
@@ -179,8 +222,16 @@ export default function ({
                         field: 'code',
                         order: 'ASC',
                     },
+                    onSuccess: payload => this.getAllGroupsItemsSuccess({
+                        ...payload,
+                        languageCode,
+                    }),
                 });
-
+            },
+            getAllGroupsItemsSuccess({
+                items,
+                languageCode,
+            }) {
                 if (this.expandedGroupId !== '') {
                     const isAnyGroupInsideGroups = groups => groups.some(
                         grp => grp === this.expandedGroupId,

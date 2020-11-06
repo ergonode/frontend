@@ -28,18 +28,13 @@
                     :layout-orientation="horizontalOrientation"
                     title="Nothing to see here"
                     subtitle="Here you can see important notifications of product update"
-                    :bg-url="require('@Core/assets/images/placeholders/notify.svg')" />
+                    :bg-url="require('@UI/assets/images/placeholders/notify.svg')" />
             </div>
         </template>
     </CenterViewTemplate>
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
-import List from '@Core/components/List/List';
-import ListPlaceholder from '@Core/components/List/ListPlaceholder';
 import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
@@ -48,6 +43,11 @@ import {
 } from '@Core/defaults/layout';
 import NotificationsListElement from '@Notifications/components/List/NotificationsListElement';
 import NotificationsListFooter from '@Notifications/components/List/NotificationsListFooter';
+import Button from '@UI/components/Button/Button';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
+import List from '@UI/components/List/List';
+import ListPlaceholder from '@UI/components/List/ListPlaceholder';
 import {
     mapActions,
     mapState,
@@ -108,8 +108,15 @@ export default {
                 value: this.limit + DATA_LIMIT,
             });
 
-            await this.requestForNotifications();
-
+            await this.requestForNotifications({
+                onSuccess: this.onLoadMoreNotificationsSuccess,
+                onError: this.onLoadMoreNotificationsError,
+            });
+        },
+        onLoadMoreNotificationsSuccess() {
+            this.isFetchingData = false;
+        },
+        onLoadMoreNotificationsError() {
             this.isFetchingData = false;
         },
     },

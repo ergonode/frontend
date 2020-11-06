@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -29,6 +28,7 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import RestoreForm from '@Products/components/Forms/RestoreForm';
+import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
 } from 'vuex';

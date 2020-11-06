@@ -14,6 +14,9 @@ export default [
         name: 'categories',
         path: '/categories',
         component: Pages.Categories,
+        redirect: {
+            name: 'categories-grid',
+        },
         meta: {
             access: true,
             title: 'Categories',
@@ -28,7 +31,6 @@ export default [
                 namespace: Privileges.CATEGORY.namespace,
                 read: Privileges.CATEGORY.read,
             },
-            redirectTo: 'categories-grid',
         },
         children: [
             {
@@ -52,9 +54,11 @@ export default [
         name: 'category-id',
         path: '/categories/category/:id',
         component: Pages.CategoryEdit,
+        redirect: {
+            name: 'category-id-general',
+        },
         meta: {
             isMenu: false,
-            redirectTo: 'category-id-general',
         },
         children: [
             {

@@ -10,7 +10,7 @@ import {
     Store,
 } from 'vuex-mock-store';
 
-import ProductCompleteness from '../ProductCompleteness.vue';
+import ProductCompleteness from '../ProductCompleteness';
 
 const localVue = createLocalVue();
 const store = new Store({

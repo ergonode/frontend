@@ -32,10 +32,10 @@
 </template>
 
 <script>
-import InfoHint from '@Core/components/Hints/InfoHint';
-import TextField from '@Core/components/TextField/TextField';
-import TextFieldSuffix from '@Core/components/TextField/TextFieldSuffix';
 import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
+import InfoHint from '@UI/components/Hints/InfoHint';
+import TextField from '@UI/components/TextField/TextField';
+import TextFieldSuffix from '@UI/components/TextField/TextFieldSuffix';
 import {
     mapState,
 } from 'vuex';

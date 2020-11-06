@@ -50,10 +50,10 @@
                         v-if="!disabled"
                         :style="{ backgroundColor: whiteColor }"
                         :floating="{ top: '20px', right: '20px'}"
-                        :theme="secondaryTheme"
+                        :theme="destructiveTheme"
                         @click.native="onRemove">
-                        <template #icon="{ color, isHovered }">
-                            <IconDelete :fill-color="isHovered ? redColor : color" />
+                        <template #icon="{ color }">
+                            <IconDelete :fill-color="color" />
                         </template>
                     </Fab>
                 </template>
@@ -68,19 +68,18 @@
 
 <script>
 import {
-    GRAPHITE,
-    GREEN,
-    RED,
-    WHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Fab from '@Core/components/Fab/Fab';
-import IconDelete from '@Core/components/Icons/Actions/IconDelete';
-import IconRefresh from '@Core/components/Icons/Actions/IconRefresh';
-import IconUploadCloudFile from '@Core/components/Icons/Actions/IconUploadCloudFile';
-import {
     THEME,
 } from '@Core/defaults/theme';
-import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
+import {
+    GRAPHITE,
+    GREEN,
+    WHITE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Fab from '@UI/components/Fab/Fab';
+import IconDelete from '@UI/components/Icons/Actions/IconDelete';
+import IconRefresh from '@UI/components/Icons/Actions/IconRefresh';
+import IconUploadCloudFile from '@UI/components/Icons/Actions/IconUploadCloudFile';
+import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'UploadFile',
@@ -154,8 +153,8 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        redColor() {
-            return RED;
+        destructiveTheme() {
+            return THEME.DESTRUCTIVE;
         },
         greenColor() {
             return GREEN;

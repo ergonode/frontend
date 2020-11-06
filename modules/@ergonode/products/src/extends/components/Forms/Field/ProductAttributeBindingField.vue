@@ -18,11 +18,11 @@
 </template>
 
 <script>
-import FormListElementField from '@Core/components/Form/Field/FormListElementField';
-import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import FormListElementField from '@UI/components/Form/Field/FormListElementField';
+import TranslationSelect from '@UI/components/Select/TranslationSelect';
 
 export default {
     name: 'ProductAttributeBindingField',

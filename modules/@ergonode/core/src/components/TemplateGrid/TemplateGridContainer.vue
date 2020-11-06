@@ -23,11 +23,6 @@ import {
     getObjectWithMaxValueInArrayByObjectKey,
 } from '@Core/models/arrayWrapper';
 import {
-    getPositionForBrowser,
-    isMouseInsideElement,
-    isMouseOutOfBoundsElement,
-} from '@Core/models/drag_and_drop/helpers';
-import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
@@ -35,6 +30,11 @@ import {
     getRowBellowMouse,
     getRowBounds,
 } from '@Core/models/template_grid/TreeCalculations';
+import {
+    getPositionForBrowser,
+    isMouseInsideElement,
+    isMouseOutOfBoundsElement,
+} from '@UI/models/dragAndDrop/helpers';
 import {
     debounce,
 } from 'debounce';

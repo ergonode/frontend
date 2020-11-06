@@ -24,10 +24,10 @@
                 </Fab>
                 <Fab
                     v-if="isAbleToDelete"
-                    :theme="secondaryTheme"
+                    :theme="destructiveTheme"
                     @click.native="onRemove">
-                    <template #icon="{ color, isHovered }">
-                        <IconDelete :fill-color="isHovered ? colorRed : color" />
+                    <template #icon="{ color }">
+                        <IconDelete :fill-color="color" />
                     </template>
                 </Fab>
             </div>
@@ -50,14 +50,6 @@
 </template>
 <script>
 import Comment from '@Comments/components/Comments/Comment';
-import {
-    GREEN,
-    RED,
-    WHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Fab from '@Core/components/Fab/Fab';
-import IconDelete from '@Core/components/Icons/Actions/IconDelete';
-import IconEdit from '@Core/components/Icons/Actions/IconEdit';
 import UserFabAvatar from '@Core/components/Multimedia/UserFabAvatar';
 import {
     ALERT_TYPE,
@@ -72,6 +64,13 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import {
+    GREEN,
+    WHITE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Fab from '@UI/components/Fab/Fab';
+import IconDelete from '@UI/components/Icons/Actions/IconDelete';
+import IconEdit from '@UI/components/Icons/Actions/IconEdit';
 import {
     format as formatDate,
 } from 'date-fns';
@@ -106,11 +105,11 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
+        destructiveTheme() {
+            return THEME.DESTRUCTIVE;
+        },
         colorGreen() {
             return GREEN;
-        },
-        colorRed() {
-            return RED;
         },
         whiteColor() {
             return WHITE;
@@ -130,10 +129,11 @@ export default {
             this.$emit('edit');
         },
         onRemove() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this comment?',
-                confirmCallback: () => {
+            this.$confirm({
+                type: MODAL_TYPE.DESTRUCTIVE,
+                title: 'Are you sure you want to delete this comment?',
+                applyTitle: 'YES, REMOVE',
+                action: () => {
                     const {
                         id,
                     } = this.comment;

@@ -37,7 +37,7 @@
                 :layout-orientation="horizontalOrientation"
                 title="No results"
                 subtitle="Here you can share information about the product with other people."
-                :bg-url="require('@Core/assets/images/placeholders/comments.svg')" />
+                :bg-url="require('@UI/assets/images/placeholders/comments.svg')" />
         </template>
         <template
             v-if="isMoreButtonVisible"
@@ -59,9 +59,6 @@
 import CommentEdit from '@Comments/components/Comments/CommentEdit';
 import CommentStateChanger from '@Comments/components/Comments/CommentStateChanger';
 import CommentsList from '@Comments/components/List/CommentsList';
-import Button from '@Core/components/Button/Button';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -75,6 +72,9 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Products/config/privileges';
+import Button from '@UI/components/Button/Button';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import {
     mapActions,
     mapState,
@@ -89,7 +89,7 @@ export default {
         CommentsList,
         CommentStateChanger,
         CommentEdit,
-        ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
+        ListPlaceholder: () => import('@UI/components/List/ListPlaceholder'),
     },
     props: {
         scope: {

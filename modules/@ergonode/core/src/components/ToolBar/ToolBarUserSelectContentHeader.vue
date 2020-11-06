@@ -19,9 +19,6 @@
 </template>
 
 <script>
-import {
-    GRAPHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
 import UserFabAvatar from '@Core/components/Multimedia/UserFabAvatar';
 import {
     SIZE,
@@ -29,6 +26,9 @@ import {
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
+import {
+    GRAPHITE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
 import {
     mapState,
 } from 'vuex';

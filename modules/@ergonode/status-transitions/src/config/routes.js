@@ -14,6 +14,9 @@ export default [
         name: 'status-transitions',
         path: '/status-transitions',
         component: Pages.StatusTransitions,
+        redirect: {
+            name: 'status-transitions-grid',
+        },
         meta: {
             access: true,
             title: 'Status transitions',
@@ -28,7 +31,6 @@ export default [
                 namespace: Privileges.WORKFLOW.namespace,
                 read: Privileges.WORKFLOW.read,
             },
-            redirectTo: 'status-transitions-grid',
         },
         children: [
             {
@@ -52,9 +54,11 @@ export default [
         name: 'transition-source-destination',
         path: '/status-transitions/transition/:id',
         component: Pages.StatusTransitionEdit,
+        redirect: {
+            name: 'transition-id-general',
+        },
         meta: {
             isMenu: false,
-            redirectTo: 'transition-id-general',
         },
         children: [
             {

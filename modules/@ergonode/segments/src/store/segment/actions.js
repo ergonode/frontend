@@ -3,9 +3,11 @@
  * See LICENSE for license details.
  */
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     create,
     get,
-    getAll,
     remove,
     update,
 } from '@Segments/services/index';
@@ -75,22 +77,12 @@ export default {
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError(e);
         }
-    },
-    getSegmentOptions() {
-        return getAll({
-            $axios: this.app.$axios,
-        }).then(({
-            collection,
-        }) => collection.map(({
-            id, code, name,
-        }) => ({
-            id,
-            key: code,
-            value: name,
-            hint: name ? `#${code}` : '',
-        })));
     },
     async updateSegment(
         {
@@ -151,6 +143,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating segment has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -208,6 +209,15 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating segment has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -250,6 +260,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing segment has been canceled',
+                });
+
+                return;
+            }
+
             onError(e);
         }
     },

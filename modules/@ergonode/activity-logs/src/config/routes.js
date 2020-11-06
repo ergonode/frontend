@@ -14,6 +14,9 @@ export default [
         name: 'activity-logs',
         path: '/activity-logs',
         component: Pages.UsersActivityLogs,
+        redirect: {
+            name: 'activity-logs-grid',
+        },
         meta: {
             access: true,
             title: 'Activity logs',
@@ -28,7 +31,6 @@ export default [
                 namespace: Privileges.USER.namespace,
                 read: Privileges.USER.read,
             },
-            redirectTo: 'activity-logs-grid',
         },
         children: [
             {

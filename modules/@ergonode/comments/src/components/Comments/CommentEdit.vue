@@ -40,9 +40,6 @@
 </template>
 <script>
 import Comment from '@Comments/components/Comments/Comment';
-import Button from '@Core/components/Button/Button';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import TextArea from '@Core/components/TextArea/TextArea';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -50,6 +47,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import Button from '@UI/components/Button/Button';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import TextArea from '@UI/components/TextArea/TextArea';
 import {
     mapActions,
 } from 'vuex';

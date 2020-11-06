@@ -3,27 +3,51 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form>
+    <Form
+        title="User avatar"
+        :submit-title="submitTitle"
+        :proceed-title="proceedTitle"
+        :is-submitting="isSubmitting"
+        :is-proceeding="isProceeding"
+        :errors="errors"
+        @proceed="onProceed"
+        @submit="onSubmit">
         <template #body>
             <FormSection>
-                <UploadAvatar
-                    :value="avatarId"
-                    :user-id="userId"
-                    :language-code="languageCode"
+                <UploadFile
+                    :value="Boolean(avatarId) || Boolean(avatarFile)"
+                    accept-files="image/*"
                     label="Profile picture"
-                    height="152px"
                     :disabled="!isAllowedToUpdate"
-                    @upload="uploadValue"
-                    @remove="uploadValue" />
+                    :error-messages="errors.upload"
+                    height="152px"
+                    @remove="onRemoveAvatar"
+                    @upload="onUploadAvatarFile">
+                    <template #file>
+                        <StaticImage
+                            v-if="avatarFile"
+                            :src="avatarFileSource"
+                            alt="User avatar" />
+                        <LazyImage
+                            v-else
+                            :use-cache="false"
+                            :value="avatarId"
+                            :href="`${languageCode}/accounts/${avatarId}/avatar`" />
+                    </template>
+                </UploadFile>
             </FormSection>
         </template>
     </Form>
 </template>
 
 <script>
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import UploadAvatar from '@Users/components/Inputs/UploadAvatar';
+import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import UploadFile from '@Media/components/Inputs/UploadFile/UploadFile';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import LazyImage from '@UI/components/LazyImage/LazyImage';
+import StaticImage from '@UI/components/StaticImage/StaticImage';
 import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
@@ -33,14 +57,20 @@ import {
 export default {
     name: 'UserAvatarForm',
     components: {
-        UploadAvatar,
+        UploadFile,
+        LazyImage,
+        StaticImage,
         Form,
         FormSection,
     },
+    mixins: [
+        formActionsMixin,
+        formFeedbackMixin,
+    ],
     computed: {
         ...mapState('user', {
             avatarId: state => state.avatarId,
-            userId: state => state.id,
+            avatarFile: state => state.avatarFile,
             languageCode: state => state.languageCode,
         }),
         isAllowedToUpdate() {
@@ -48,21 +78,46 @@ export default {
                 PRIVILEGES.USER.update,
             ]);
         },
+        avatarFileSource() {
+            return URL.createObjectURL(this.avatarFile);
+        },
     },
     methods: {
         ...mapActions('user', [
             '__setState',
         ]),
-        ...mapActions('authentication', [
-            'getUser',
-        ]),
-        uploadValue(value = '') {
+        onRemoveAvatar() {
             this.__setState({
                 key: 'avatarId',
+                value: null,
+            });
+            this.__setState({
+                key: 'avatarFile',
+                value: null,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'avatarFile',
+                value: null,
+            });
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'avatarId',
+                value: null,
+            });
+        },
+        onUploadAvatarFile(value) {
+            this.__setState({
+                key: 'avatarFile',
                 value,
             });
 
-            this.getUser();
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'avatarFile',
+                value,
+            });
         },
     },
 };

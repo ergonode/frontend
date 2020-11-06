@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -29,6 +28,7 @@ import {
 } from '@Core/defaults/theme';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import TransitionForm from '@Transitions/components/Forms/TransitionForm';
+import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
     mapState,

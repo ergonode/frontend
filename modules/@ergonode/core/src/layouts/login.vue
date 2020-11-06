@@ -10,11 +10,13 @@
 </template>
 
 <script>
+import App from '@UI/components/Layout/App';
+
 export default {
     name: 'LoginLayout',
     components: {
-        App: () => import('@Core/components/Layout/App'),
-        FlashMessages: () => import('@Core/components/Alerts/FlashMessages'),
+        App,
+        FlashMessages: () => import('@Core/components/FlashMessages/FlashMessages'),
     },
 };
 </script>

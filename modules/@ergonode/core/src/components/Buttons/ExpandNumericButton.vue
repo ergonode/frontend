@@ -22,9 +22,6 @@
 </template>
 
 <script>
-import NumericBadge from '@Core/components/Badges/NumericBadge';
-import Button from '@Core/components/Button/Button';
-import IconArrowDouble from '@Core/components/Icons/Arrows/IconArrowDouble';
 import {
     ARROW,
 } from '@Core/defaults/icons';
@@ -32,6 +29,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import NumericBadge from '@UI/components/Badges/NumericBadge';
+import Button from '@UI/components/Button/Button';
+import IconArrowDouble from '@UI/components/Icons/Arrows/IconArrowDouble';
 
 export default {
     name: 'ExpandNumericButton',

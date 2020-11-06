@@ -9,7 +9,7 @@ import {
 
 export default {
     extendComponents: {
-        '@Core/components/Grid/Layout/Collection/Cells': {
+        '@UI/components/Grid/Layout/Collection/Cells': {
             MEDIA_ATTACH: Components.GridMediaAttachCollectionCell,
         },
     },

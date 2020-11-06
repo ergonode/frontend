@@ -31,12 +31,6 @@
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import Modal from '@Core/components/Modal/Modal';
-import ModalFooter from '@Core/components/Modal/ModalFooter';
-import ModalOverlay from '@Core/components/Modal/ModalOverlay';
-import ConfirmModalHeader from '@Core/components/Modals/ConfirmModalHeader';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -44,6 +38,12 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import Button from '@UI/components/Button/Button';
+import ConfirmModalHeader from '@UI/components/ConfirmModal/ConfirmModalHeader';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import Modal from '@UI/components/Modal/Modal';
+import ModalFooter from '@UI/components/Modal/ModalFooter';
+import ModalOverlay from '@UI/components/Modal/ModalOverlay';
 import {
     mapActions,
 } from 'vuex';

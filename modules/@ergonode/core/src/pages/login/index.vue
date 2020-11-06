@@ -33,13 +33,13 @@ import {
 import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
-import FluidBlob from '@Core/components/Blob/FluidBlob';
 import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
-import Footer from '@Core/components/Layout/Footer/Footer';
-import LinkButton from '@Core/components/LinkButton/LinkButton';
 import {
     DEFAULT_DATA_HOUR_FORMAT,
 } from '@Core/defaults/date';
+import FluidBlob from '@UI/components/FluidBlob/FluidBlob';
+import Footer from '@UI/components/Layout/Footer/Footer';
+import LinkButton from '@UI/components/LinkButton/LinkButton';
 import {
     format as formatDate,
 } from 'date-fns';

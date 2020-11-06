@@ -40,16 +40,16 @@
 </template>
 
 <script>
-import PointBadge from '@Core/components/Badges/PointBadge';
-import GridSelectEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
-import ListElementAction from '@Core/components/List/ListElementAction';
-import ListElementDescription from '@Core/components/List/ListElementDescription';
-import ListElementTitle from '@Core/components/List/ListElementTitle';
-import TranslationSelect from '@Core/components/Select/TranslationSelect';
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import gridEditCellMixin from '@Core/mixins/grid/cell/gridEditCellMixin';
+import PointBadge from '@UI/components/Badges/PointBadge';
+import GridSelectEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
+import ListElementAction from '@UI/components/List/ListElementAction';
+import ListElementDescription from '@UI/components/List/ListElementDescription';
+import ListElementTitle from '@UI/components/List/ListElementTitle';
+import TranslationSelect from '@UI/components/Select/TranslationSelect';
+import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
 import {
     mapActions,
 } from 'vuex';
@@ -68,18 +68,27 @@ export default {
         gridEditCellMixin,
     ],
     props: {
+        /**
+         * The available colors of statuses
+         */
         colors: {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Code of the language
+         */
+        languageCode: {
+            type: String,
+            required: true,
+        },
     },
     async fetch() {
-        this.options = await this.getProductWorkflowOptions({
+        await this.getProductWorkflowOptions({
             id: this.rowId,
             languageCode: this.languageCode,
+            onSuccess: this.onGetProductWorkflowOptionsSuccess,
         });
-
-        this.localValue = this.options.find(option => option.id === this.value);
     },
     data() {
         return {
@@ -88,15 +97,6 @@ export default {
         };
     },
     computed: {
-        languageCode() {
-            const columnIdParts = this.columnId.split(':');
-
-            if (columnIdParts.length < 1) {
-                return '';
-            }
-
-            return columnIdParts[1];
-        },
         smallSize() {
             return SIZE.SMALL;
         },
@@ -118,6 +118,13 @@ export default {
         ...mapActions('product', [
             'getProductWorkflowOptions',
         ]),
+        onGetProductWorkflowOptionsSuccess({
+            workflow,
+        }) {
+            this.options = workflow;
+
+            this.localValue = this.options.find(option => option.id === this.value);
+        },
         onFocus(isFocused) {
             if (!isFocused) {
                 this.onEditCell();

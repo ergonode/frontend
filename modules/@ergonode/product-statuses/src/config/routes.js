@@ -14,6 +14,9 @@ export default [
         name: 'product-statuses',
         path: '/product-statuses',
         component: Pages.ProductStatuses,
+        redirect: {
+            name: 'product-statuses-grid',
+        },
         meta: {
             title: 'Product statuses',
             group: {
@@ -27,7 +30,6 @@ export default [
                 namespace: Privileges.WORKFLOW.namespace,
                 read: Privileges.WORKFLOW.read,
             },
-            redirectTo: 'product-statuses-grid',
         },
         children: [
             {
@@ -51,9 +53,11 @@ export default [
         name: 'product-status-id',
         path: '/product-statuses/status/:id',
         component: Pages.ProductStatusEdit,
+        redirect: {
+            name: 'product-status-id-general',
+        },
         meta: {
             isMenu: false,
-            redirectTo: 'product-status-id-general',
         },
         children: [
             {

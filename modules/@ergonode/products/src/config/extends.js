@@ -101,13 +101,13 @@ export default {
         ],
     },
     extendComponents: {
-        '@Core/components/Grid/Layout/Collection/Cells': {
+        '@UI/components/Grid/Layout/Collection/Cells': {
             PRODUCT_ATTACH: Components.GridProductAttachCollectionCell,
         },
-        '@Core/components/Grid/Layout/Table/Cells/Data': {
+        '@UI/components/Grid/Layout/Table/Cells/Data': {
             LABEL: Components.GridLabelDataCell,
         },
-        '@Core/components/Grid/Layout/Table/Cells/Edit': {
+        '@UI/components/Grid/Layout/Table/Cells/Edit': {
             LABEL: Components.GridLabelEditCell,
         },
     },

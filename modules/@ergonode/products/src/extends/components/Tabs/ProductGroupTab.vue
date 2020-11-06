@@ -25,7 +25,7 @@
                 :is-border="true"
                 @delete-row="onRemoveProduct"
                 @fetch-data="onFetchData"
-                @remove-all-filter="onRemoveAllFilters"
+                @remove-all-filters="onRemoveAllFilters"
                 @filter="onFilterChange">
                 <template #actionsHeader>
                     <ActionButton
@@ -52,12 +52,9 @@
 </template>
 
 <script>
-import ActionButton from '@Core/components/ActionButton/ActionButton';
-import Button from '@Core/components/Button/Button';
-import Grid from '@Core/components/Grid/Grid';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     DEFAULT_GRID_FETCH_PARAMS,
 } from '@Core/defaults/grid';
@@ -78,6 +75,12 @@ import PRIVILEGES from '@Products/config/privileges';
 import {
     ADD_PRODUCT,
 } from '@Products/defaults';
+import ActionButton from '@UI/components/ActionButton/ActionButton';
+import Button from '@UI/components/Button/Button';
+import Grid from '@UI/components/Grid/Grid';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapState,
 } from 'vuex';
@@ -240,18 +243,27 @@ export default {
                 this.localParams.order = orderState;
             }
 
-            const {
-                columns,
-                rows,
-                filtered,
-            } = await getGridData({
+            await getGridData({
                 $route: this.$route,
                 $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: `products/${this.id}/children-and-available-products`,
                 params: this.localParams,
+                onSuccess: this.onFetchGridDataSuccess,
+                onError: this.onFetchGridDataError,
             });
-
+        },
+        onFetchGridDataError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Grid data haven’t been fetched properly',
+            });
+        },
+        onFetchGridDataSuccess({
+            columns,
+            rows,
+            filtered,
+        }) {
             this.columns = columns
                 .filter(column => column.id !== 'attached')
                 .map(column => ({

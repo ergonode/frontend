@@ -15,10 +15,10 @@ export default {
         },
     ],
     extendComponents: {
-        '@Core/components/Grid/Layout/Table/Cells/Data': {
+        '@UI/components/Grid/Layout/Table/Cells/Data': {
             PRIVILEGE_NAME_HINT: Components.GridPrivilegeNameHintDataCell,
         },
-        '@Core/components/Grid/Layout/Table/Columns': {
+        '@UI/components/Grid/Layout/Table/Columns': {
             PRIVILEGE_ROW_CHECK: Components.GridPrivilegeRowCheckColumn,
             LANGUAGE_ROW_CHECK: Components.GridLanguageRowCheckColumn,
         },

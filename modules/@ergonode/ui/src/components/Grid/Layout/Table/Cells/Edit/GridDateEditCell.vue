@@ -1,0 +1,93 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+<template>
+    <GridEditNavigationCell @edit="onEditCell">
+        <GridSelectEditContentCell :style="positionStyle">
+            <DatePicker
+                v-model="localValue"
+                :size="smallSize"
+                autofocus
+                :placeholder="format"
+                :disabled="disabled"
+                :format="format"
+                :error-messages="errorMessages"
+                @focus="onFocus" />
+        </GridSelectEditContentCell>
+    </GridEditNavigationCell>
+</template>
+
+<script>
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import DatePicker from '@UI/components/DatePicker/DatePicker';
+import GridSelectEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
+import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
+import {
+    DEFAULT_FORMAT,
+} from '@UI/models/calendar';
+import {
+    format as formatDate,
+    parse as parseDate,
+} from 'date-fns';
+
+export default {
+    name: 'GridDateEditCell',
+    components: {
+        GridSelectEditContentCell,
+        DatePicker,
+    },
+    mixins: [
+        gridEditCellMixin,
+    ],
+    props: {
+        /**
+         * Date format used for parsing value
+         */
+        format: {
+            type: String,
+            default: DEFAULT_FORMAT,
+        },
+    },
+    data() {
+        let localValue = null;
+
+        if (this.value) {
+            localValue = parseDate(this.value, this.format, new Date());
+        }
+
+        return {
+            localValue,
+        };
+    },
+    computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
+    },
+    beforeDestroy() {
+        const localValue = this.localValue ? formatDate(this.localValue, DEFAULT_FORMAT) : '';
+
+        if (localValue !== this.value) {
+            this.$emit('cell-value', [
+                {
+                    value: localValue,
+                    rowId: this.rowId,
+                    columnId: this.columnId,
+                    row: this.row,
+                    column: this.column,
+                },
+            ]);
+        }
+    },
+    methods: {
+        onFocus(isFocused) {
+            if (!isFocused) {
+                this.onEditCell();
+            }
+        },
+    },
+};
+</script>

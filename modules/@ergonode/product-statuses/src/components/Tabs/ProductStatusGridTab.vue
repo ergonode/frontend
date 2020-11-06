@@ -24,20 +24,20 @@
                 @preview-row="onEditRow"
                 @delete-row="onRemoveRow"
                 @fetch-data="onFetchData"
-                @remove-all-filter="onRemoveAllFilters"
+                @remove-all-filters="onRemoveAllFilters"
                 @filter="onFilterChange" />
         </template>
     </CenterViewTemplate>
 </template>
 
 <script>
-import {
-    WHITESMOKE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import PRIVILEGES from '@Transitions/config/privileges';
+import {
+    WHITESMOKE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'ProductStatusGridTab',
@@ -64,7 +64,7 @@ export default {
             return {
                 title: 'No product statuses',
                 subtitle: 'There are no product statuses in the system, you can create the first one.',
-                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
                 color: WHITESMOKE,
             };
         },

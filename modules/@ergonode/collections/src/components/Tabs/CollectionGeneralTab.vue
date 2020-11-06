@@ -18,11 +18,11 @@
 
 <script>
 import CollectionForm from '@Collections/components/Forms/CollectionForm';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
 } from 'vuex';

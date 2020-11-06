@@ -38,16 +38,16 @@
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
-import Card from '@Core/components/Card/Card';
-import Divider from '@Core/components/Dividers/Divider';
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import TextArea from '@Core/components/TextArea/TextArea';
-import TextField from '@Core/components/TextField/TextField';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
+import Card from '@UI/components/Card/Card';
+import Divider from '@UI/components/Dividers/Divider';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import TextArea from '@UI/components/TextArea/TextArea';
+import TextField from '@UI/components/TextField/TextField';
 import {
     mapState,
 } from 'vuex';

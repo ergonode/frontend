@@ -52,7 +52,7 @@ export default {
                 }
             },
         });
-        await store.dispatch('productStatus/getDefaultStatus');
+        await store.dispatch('productStatus/getDefaultStatus', {});
     },
     computed: {
         ...mapState('productStatus', [
@@ -77,10 +77,11 @@ export default {
             __clearTranslationsStorage: '__clearStorage',
         }),
         onRemove() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this product status?',
-                confirmCallback: () => this.removeProductStatus({
+            this.$confirm({
+                type: MODAL_TYPE.DESTRUCTIVE,
+                title: 'Are you sure you want to delete this product status?',
+                applyTitle: 'YES, REMOVE',
+                action: () => this.removeProductStatus({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
                 }),

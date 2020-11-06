@@ -27,16 +27,24 @@
                     v-else
                     title="Nothing to see here"
                     subtitle="Here you can see important notifications of product update"
-                    :bg-url="require('@Core/assets/images/placeholders/notify.svg')" />
+                    :bg-url="require('@UI/assets/images/placeholders/notify.svg')" />
             </div>
         </template>
     </ToolBarSelectButton>
 </template>
 
 <script>
+import IconBell from '@Notifications/components/Icons/IconBell';
+import NotificationsListElement from '@Notifications/components/List/NotificationsListElement';
+import NotificationsListFooter from '@Notifications/components/List/NotificationsListFooter';
+import NotificationsListPlaceholder from '@Notifications/components/List/NotificationsListPlaceholder';
 import {
     WHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import NotificationBadge from '@UI/components/Badges/NotificationBadge';
+import Button from '@UI/components/Button/Button';
+import List from '@UI/components/List/List';
+import ToolBarSelectButton from '@UI/components/ToolBar/ToolBarSelectButton';
 import {
     mapActions,
     mapState,
@@ -45,14 +53,14 @@ import {
 export default {
     name: 'ToolBarNotificationButton',
     components: {
-        ToolBarSelectButton: () => import('@Core/components/ToolBar/ToolBarSelectButton'),
-        IconBell: () => import('@Core/components/Icons/Menu/IconBell'),
-        NotificationBadge: () => import('@Core/components/Badges/NotificationBadge'),
-        Button: () => import('@Core/components/Button/Button'),
-        List: () => import('@Core/components/List/List'),
-        NotificationsListElement: () => import('@Notifications/components/List/NotificationsListElement'),
-        NotificationsListFooter: () => import('@Notifications/components/List/NotificationsListFooter'),
-        NotificationsListPlaceholder: () => import('@Notifications/components/List/NotificationsListPlaceholder'),
+        ToolBarSelectButton,
+        IconBell,
+        NotificationBadge,
+        Button,
+        List,
+        NotificationsListElement,
+        NotificationsListFooter,
+        NotificationsListPlaceholder,
     },
     computed: {
         ...mapState('notification', {
@@ -74,7 +82,7 @@ export default {
         },
         onFocus(isFocused) {
             if (isFocused) {
-                this.requestForNotifications();
+                this.requestForNotifications({});
             }
         },
     },

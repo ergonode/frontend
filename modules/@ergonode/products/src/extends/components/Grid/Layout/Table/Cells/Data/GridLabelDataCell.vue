@@ -22,7 +22,7 @@
             <GridSuffixPresentationCell
                 v-if="data.suffix"
                 :suffix="data.suffix" />
-            <IconArrowDropDown
+            <IconArrowDropdown
                 v-if="!isLocked"
                 view-box="0 0 24 24"
                 :width="32" />
@@ -31,16 +31,17 @@
 </template>
 
 <script>
-import GridSuffixPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
-import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 import GridLabelPresentationCell from '@Products/extends/components/Grid/Layout/Table/Cells/Presentation/GridLabelPresentationCell';
+import GridSuffixPresentationCell from '@UI/components/Grid/Layout/Table/Cells/Presentation/GridSuffixPresentationCell';
+import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
+import gridDataCellMixin from '@UI/mixins/grid/gridDataCellMixin';
 
 export default {
     name: 'GridLabelDataCell',
     components: {
         GridLabelPresentationCell,
         GridSuffixPresentationCell,
-        IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
+        IconArrowDropdown,
     },
     mixins: [
         gridDataCellMixin,
@@ -70,6 +71,7 @@ export default {
                     rowId: this.rowId,
                     columnId: this.column.id,
                     errorMessages: this.errorMessages,
+                    languageCode: this.column.language,
                 },
             });
         },

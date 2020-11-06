@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     get,
     getMetadata,
     getRelation,
@@ -63,45 +66,75 @@ export default {
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError(e);
         }
     },
     async getResourceMetadata({
         state,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
+        try {
+            const {
+                id,
+            } = state;
 
-        const metadata = await getMetadata({
-            $axios: this.app.$axios,
-            id,
-        });
-
-        return Object.keys(metadata).reduce((acc, current) => {
-            const tmpArray = acc;
-
-            tmpArray.push({
-                name: current,
-                value: metadata[current].toString(),
+            const metadata = await getMetadata({
+                $axios: this.app.$axios,
+                id,
             });
 
-            return tmpArray;
-        }, []);
+            onSuccess({
+                rows: Object.keys(metadata).reduce((acc, current) => {
+                    const tmpArray = acc;
+
+                    tmpArray.push({
+                        name: current,
+                        value: metadata[current].toString(),
+                    });
+
+                    return tmpArray;
+                }, []),
+            });
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async getResourceRelation({
         state,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
+        try {
+            const {
+                id,
+            } = state;
 
-        const relations = await getRelation({
-            $axios: this.app.$axios,
-            id,
-        });
+            const relations = await getRelation({
+                $axios: this.app.$axios,
+                id,
+            });
 
-        return relations.filter(row => row.relations.length > 0);
+            onSuccess({
+                rows: relations.filter(row => row.relations.length > 0),
+            });
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async updateResource({
         state,
@@ -158,6 +191,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating resource has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -167,8 +209,8 @@ export default {
     async removeResource({
         state,
     }, {
-        onSuccess,
-        onError,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
         try {
             const {
@@ -197,6 +239,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing resource has been canceled',
+                });
+
+                return;
+            }
+
             onError(e);
         }
     },

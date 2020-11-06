@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Errors/500 Component is named well 1`] = `
+<div class="placeholder">
+  <div class="horizontal-wrapper"><img src="@UI/assets/images/placeholders/error-pages/socket.svg" class="image">
+    <div class="navigation-section">
+      <h1 class="navigation-section__header">
+        Error
+      </h1>
+      <p class="navigation-section__description">
+        Internal server error. Please contact with the system administrator.
+      </p>
+    </div>
+  </div>
+  <div class="plug-wrapper"><img src="@UI/assets/images/placeholders/error-pages/plug.svg" class="plug">
+    <div class="cable"></div>
+  </div>
+</div>
+`;

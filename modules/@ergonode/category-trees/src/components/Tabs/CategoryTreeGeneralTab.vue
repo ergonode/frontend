@@ -17,12 +17,12 @@
 </template>
 
 <script>
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import CategoryTreeForm from '@Trees/components/Forms/CategoryTreeForm';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
 } from 'vuex';

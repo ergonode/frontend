@@ -18,7 +18,6 @@
 
 <script>
 import MainSettingsForm from '@Core/components/Forms/MainSettingsForm';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -26,6 +25,7 @@ import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
     mapState,
@@ -85,10 +85,10 @@ export default {
                 return;
             }
 
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Changes in language settings will affect the entire application.',
-                confirmCallback: () => this.onConfirm(this.languages
+            this.$confirm({
+                type: MODAL_TYPE.POSITIVE,
+                title: 'Changes in language settings will affect the entire application.',
+                action: () => this.onConfirm(this.languages
                     .filter(language => selectedLanguages.some(id => language.id === id))
                     .map(({
                         code,

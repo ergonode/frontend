@@ -32,11 +32,6 @@
 </template>
 
 <script>
-import ActionButton from '@Core/components/ActionButton/ActionButton';
-import PointBadge from '@Core/components/Badges/PointBadge';
-import ListElementAction from '@Core/components/List/ListElementAction';
-import ListElementDescription from '@Core/components/List/ListElementDescription';
-import ListElementTitle from '@Core/components/List/ListElementTitle';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -48,6 +43,11 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Products/config/privileges';
+import ActionButton from '@UI/components/ActionButton/ActionButton';
+import PointBadge from '@UI/components/Badges/PointBadge';
+import ListElementAction from '@UI/components/List/ListElementAction';
+import ListElementDescription from '@UI/components/List/ListElementDescription';
+import ListElementTitle from '@UI/components/List/ListElementTitle';
 import {
     mapActions,
     mapState,
@@ -109,10 +109,10 @@ export default {
                 code: workflowCode,
             }) => code === workflowCode);
 
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: `Are you sure you want to change status to ${code}?`,
-                confirmCallback: () => this.updateProductStatus({
+            this.$confirm({
+                type: MODAL_TYPE.POSITIVE,
+                title: `Are you sure you want to change status to ${code}?`,
+                action: () => this.updateProductStatus({
                     value: statusId,
                     languageCode: this.language.code,
                     attributeId: this.status.attribute_id,

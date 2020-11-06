@@ -8,6 +8,13 @@
             title="Catalog"
             :is-read-only="isReadOnly">
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <Button
                     title="NEW PRODUCT"
                     :size="smallSize"
@@ -42,15 +49,17 @@
             v-if="isModalVisible"
             @close="onCloseModal"
             @created="onCreatedData" />
+        <template
+            v-for="(modal, index) in extendedModals">
+            <Component
+                :is="modal.component"
+                :key="index"
+                v-bind="bindingProps(modal)" />
+        </template>
     </Page>
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import Page from '@Core/components/Layout/Page';
-import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
-import TitleBar from '@Core/components/TitleBar/TitleBar';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -58,6 +67,11 @@ import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import PRIVILEGES from '@Products/config/privileges';
+import Button from '@UI/components/Button/Button';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import Page from '@UI/components/Layout/Page';
+import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapActions,
     mapState,
@@ -83,6 +97,12 @@ export default {
             'errors',
             'changeValues',
         ]),
+        extendedMainAction() {
+            return this.$getExtendedComponents('@Products/pages/catalog/mainAction');
+        },
+        extendedModals() {
+            return this.$getExtendedComponents('@Products/pages/catalog/injectModal');
+        },
         smallSize() {
             return SIZE.SMALL;
         },
@@ -102,6 +122,14 @@ export default {
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.PRODUCT,
+                ...props,
+            };
+        },
     },
     head() {
         return {

@@ -8,6 +8,9 @@ import {
     remove,
     update,
 } from '@Categories/services/index';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 
 export default {
     async createCategory({
@@ -58,6 +61,15 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating category has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -115,6 +127,10 @@ export default {
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError(e);
         }
     },
@@ -174,6 +190,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating category has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -210,6 +235,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing category has been canceled',
+                });
+
+                return;
+            }
+
             onError(e);
         }
     },

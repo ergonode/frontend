@@ -4,9 +4,7 @@
  */
 <template>
     <li
-        :class="['notification-element', {
-            'notification-element--unread': notification.read_at === null,
-        }]"
+        :class="classes"
         @click="markAsRead">
         <UserFabAvatar
             :avatar-id="avatarId"
@@ -24,15 +22,16 @@
 </template>
 
 <script>
-import {
-    GRAPHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
+import UserFabAvatar from '@Core/components/Multimedia/UserFabAvatar';
 import {
     SIZE,
 } from '@Core/defaults/theme';
 import {
+    GRAPHITE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import {
     DEFAULT_DATE_TIME_FORMAT,
-} from '@Core/models/calendar/calendar';
+} from '@UI/models/calendar';
 import {
     format as formatDate,
     parseISO,
@@ -44,7 +43,7 @@ import {
 export default {
     name: 'NotificationsListElement',
     components: {
-        UserFabAvatar: () => import('@Core/components/Multimedia/UserFabAvatar'),
+        UserFabAvatar,
     },
     props: {
         notification: {
@@ -53,6 +52,16 @@ export default {
         },
     },
     computed: {
+        classes() {
+            return [
+                [
+                    'notification-element',
+                    {
+                        'notification-element--unread': this.notification.read_at === null,
+                    },
+                ],
+            ];
+        },
         regularSize() {
             return SIZE.REGULAR;
         },

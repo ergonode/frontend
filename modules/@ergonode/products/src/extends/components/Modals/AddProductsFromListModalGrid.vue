@@ -26,7 +26,7 @@
                 :is-basic-filter="true"
                 @cell-value="onCellValueChange"
                 @fetch-data="onFetchData"
-                @remove-all-filter="onRemoveAllFilters"
+                @remove-all-filters="onRemoveAllFilters"
                 @filter="onFilterChange">
                 <template #actionsHeader>
                     <slot name="actionsHeader" />
@@ -48,10 +48,6 @@
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
-import Grid from '@Core/components/Grid/Grid';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import ModalGrid from '@Core/components/Modal/ModalGrid';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -64,6 +60,10 @@ import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import Button from '@UI/components/Button/Button';
+import Grid from '@UI/components/Grid/Grid';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import ModalGrid from '@UI/components/Modal/ModalGrid';
 import {
     mapActions,
     mapState,
@@ -139,11 +139,7 @@ export default {
             });
         },
         async onFetchData(params = DEFAULT_GRID_FETCH_PARAMS) {
-            const {
-                columns,
-                rows,
-                filtered,
-            } = await getGridData({
+            await getGridData({
                 $route: this.$route,
                 $cookies: this.$cookies,
                 $axios: this.$axios,
@@ -152,8 +148,21 @@ export default {
                     ...params,
                     extended: true,
                 },
+                onSuccess: this.onFetchGridDataSuccess,
+                onError: this.onFetchGridDataError,
             });
-
+        },
+        onFetchGridDataError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Grid data haven’t been fetched properly',
+            });
+        },
+        onFetchGridDataSuccess({
+            columns,
+            rows,
+            filtered,
+        }) {
             this.columns = columns.map((column) => {
                 if (column.id === 'attached') {
                     return {
