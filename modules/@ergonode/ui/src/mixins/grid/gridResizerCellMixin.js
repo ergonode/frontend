@@ -13,6 +13,11 @@ export default {
             cellResizer: null,
         };
     },
+    computed: {
+        basicFiltersOffset() {
+            return this.isBasicFilter ? 1 : 0;
+        },
+    },
     methods: {
         getMappedValues({
             startIndex,
@@ -66,7 +71,6 @@ export default {
             const {
                 id: columnId,
             } = this.orderedColumns[fixedColumn];
-
             const value = typeof this.drafts[`${rowId}/${columnId}`] === 'undefined'
                 ? this.rows[fixedRow][columnId].value
                 : this.drafts[`${rowId}/${columnId}`];
