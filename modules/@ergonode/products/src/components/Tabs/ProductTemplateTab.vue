@@ -3,66 +3,68 @@
  * See LICENSE for license details.
  */
 <template>
-    <CenterViewTemplate :fixed="true">
-        <template #header>
-            <div class="view-template-header__section">
-                <TreeSelect
-                    :style="{ flex: '0 0 192px' }"
-                    :value="language"
-                    :size="smallSize"
-                    label="Edit language"
-                    :options="languageOptions"
-                    @input="onLanguageChange" />
-            </div>
-            <div class="view-template-header__section">
-                <ProductCompleteness :completeness="completeness" />
-                <TitleBarSubActions>
-                    <ProductWorkflowActionButton
-                        v-if="status"
-                        :language="language" />
-                </TitleBarSubActions>
+    <IntersectionObserver @intersect="onIntersect">
+        <CenterViewTemplate :fixed="true">
+            <template #header>
+                <div class="view-template-header__section">
+                    <TreeSelect
+                        :style="{ flex: '0 0 192px' }"
+                        :value="language"
+                        :size="smallSize"
+                        label="Edit language"
+                        :options="languageOptions"
+                        @input="onLanguageChange" />
+                </div>
+                <div class="view-template-header__section">
+                    <ProductCompleteness :completeness="completeness" />
+                    <TitleBarSubActions>
+                        <ProductWorkflowActionButton
+                            v-if="status"
+                            :language="language" />
+                    </TitleBarSubActions>
+                    <Button
+                        :theme="secondaryTheme"
+                        :size="smallSize"
+                        title="RESTORE"
+                        :disabled="!isAllowedToRestore"
+                        @click.native="onShowModal">
+                        <template #prepend="{ color }">
+                            <IconRestore :fill-color="color" />
+                        </template>
+                    </Button>
+                </div>
+                <RestoreAttributeParentModalForm
+                    v-if="isModalVisible"
+                    :language="language"
+                    :elements="elements"
+                    @restore="onRestoreDraftValues"
+                    @close="onCloseModal" />
+            </template>
+            <template #centeredContent>
+                <Preloader v-if="isFetchingData" />
+                <ProductTemplateForm
+                    v-else
+                    :language="language"
+                    :elements="elements"
+                    :scope="scope"
+                    :change-values="changeValues"
+                    :errors="errors"
+                    @input="onValueChange" />
+            </template>
+            <template #default>
                 <Button
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    title="RESTORE"
-                    :disabled="!isAllowedToRestore"
-                    @click.native="onShowModal">
-                    <template #prepend="{ color }">
-                        <IconRestore :fill-color="color" />
+                    title="SAVE CHANGES"
+                    :floating="{ bottom: '24px', right: '24px' }"
+                    @click.native="onSubmit">
+                    <template
+                        v-if="isSubmitting"
+                        #prepend="{ color }">
+                        <IconSpinner :fill-color="color" />
                     </template>
                 </Button>
-            </div>
-            <RestoreAttributeParentModalForm
-                v-if="isModalVisible"
-                :language="language"
-                :elements="elements"
-                @restore="onRestoreDraftValues"
-                @close="onCloseModal" />
-        </template>
-        <template #centeredContent>
-            <Preloader v-if="isFetchingData" />
-            <ProductTemplateForm
-                v-else
-                :language="language"
-                :elements="elements"
-                :scope="scope"
-                :change-values="changeValues"
-                :errors="errors"
-                @input="onValueChange" />
-        </template>
-        <template #default>
-            <Button
-                title="SAVE CHANGES"
-                :floating="{ bottom: '24px', right: '24px' }"
-                @click.native="onSubmit">
-                <template
-                    v-if="isSubmitting"
-                    #prepend="{ color }">
-                    <IconSpinner :fill-color="color" />
-                </template>
-            </Button>
-        </template>
-    </CenterViewTemplate>
+            </template>
+        </CenterViewTemplate>
+    </IntersectionObserver>
 </template>
 
 <script>
@@ -80,6 +82,7 @@ import ProductTemplateForm from '@Products/components/Forms/ProductTemplateForm'
 import ProductCompleteness from '@Products/components/Progress/ProductCompleteness';
 import PRIVILEGES from '@Products/config/privileges';
 import Button from '@UI/components/Button/Button';
+import IntersectionObserver from '@UI/components/Events/IntersectionObserver';
 import IconRestore from '@UI/components/Icons/Actions/IconRestore';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
@@ -95,6 +98,7 @@ import {
 export default {
     name: 'ProductTemplateTab',
     components: {
+        IntersectionObserver,
         Preloader,
         IconSpinner,
         Button,
@@ -119,7 +123,6 @@ export default {
                 filled: 0,
                 required: 0,
             },
-            observer: null,
             prevTemplateId: null,
             isFetchingData: false,
             language: {},
@@ -174,9 +177,18 @@ export default {
         this.language = this.languageOptions
             .find(languageCode => languageCode.code === this.defaultLanguageCode);
     },
-    mounted() {
-        this.observer = new IntersectionObserver(async (entries) => {
-            if (entries[0].isIntersecting) {
+    methods: {
+        ...mapActions('product', [
+            'updateProductDraft',
+            'setDraftValue',
+            'getProductWorkflow',
+            'getProductDraft',
+            'getProductTemplate',
+            'getProductCompleteness',
+            'applyProductDraft',
+        ]),
+        async onIntersect(isIntersecting) {
+            if (isIntersecting) {
                 if (this.template !== this.prevTemplateId) {
                     this.isFetchingData = true;
 
@@ -191,23 +203,7 @@ export default {
             } else {
                 this.prevTemplateId = this.template;
             }
-        });
-
-        this.observer.observe(this.$el);
-    },
-    beforeDestroy() {
-        this.observer.disconnect();
-    },
-    methods: {
-        ...mapActions('product', [
-            'updateProductDraft',
-            'setDraftValue',
-            'getProductWorkflow',
-            'getProductDraft',
-            'getProductTemplate',
-            'getProductCompleteness',
-            'applyProductDraft',
-        ]),
+        },
         onSubmit() {
             if (this.isSubmitting) {
                 return;
