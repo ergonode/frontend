@@ -9,8 +9,16 @@
         <template #prepend>
             <slot name="prepend" />
         </template>
+        <template #append>
+            <slot name="append" />
+        </template>
         <template #value>
             <span v-text="parsedValue" />
+        </template>
+        <template #placeholder="{ isVisible }">
+            <slot
+                name="placeholder"
+                :is-visible="isVisible" />
         </template>
         <template #details>
             <slot name="details" />

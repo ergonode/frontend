@@ -33,7 +33,7 @@
                             :editor="editor" />
                     </VerticalFixedScroll>
                     <RichTextEditorMenu
-                        v-if="isSolidType && isFocused"
+                        v-if="isSolidType && isFocused && editorWidth !== 0"
                         :type="type"
                         :editor-width="editorWidth"
                         :editor="editor" />
@@ -306,6 +306,7 @@ export default {
         },
         onBlur() {
             this.isFocused = false;
+            this.editorWidth = 0;
 
             if (!this.disabled) {
                 this.$emit('blur', this.editor.getHTML());

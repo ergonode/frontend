@@ -17,7 +17,7 @@
             </template>
         </TextField>
         <Fab
-            v-if="isSearch"
+            v-if="searchable"
             class="search-button"
             @click.native="onSearchButtonClick">
             <template #icon="{ color }">
@@ -63,9 +63,9 @@ export default {
             required: true,
         },
         /**
-         * Determines if component has search
+         * Determines if the component has possibility of search for value
          */
-        isSearch: {
+        searchable: {
             type: Boolean,
             default: false,
         },

@@ -607,11 +607,15 @@ export default {
             } = columnsSection.$el.children;
 
             for (let i = 0; i < length; i += 1) {
-                const {
-                    width,
-                } = columnsSection.$el.children[i].getBoundingClientRect();
+                const child = columnsSection.$el.children[i];
 
-                this.columnWidths[i] = `${width}px`;
+                if (!child.classList.contains('column-sentinel')) {
+                    const {
+                        width,
+                    } = child.getBoundingClientRect();
+
+                    this.columnWidths[i - this.columnsOffset] = `${width}px`;
+                }
             }
 
             this.hasInitialWidths = false;

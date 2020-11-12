@@ -14,12 +14,23 @@
                 :options="options"
                 :error-messages="errorMessages"
                 @focus="onFocus">
+                <template #placeholder="{ isVisible }">
+                    <div v-if="isFetchingData" />
+                    <DropdownPlaceholder v-else-if="isVisible" />
+                </template>
                 <template #prepend>
                     <div
                         v-if="localValue"
                         class="presentation-badge">
                         <PointBadge :color="colors[localValue.id].color" />
                     </div>
+                </template>
+                <template #append>
+                    <FadeTransition>
+                        <IconSpinner
+                            v-if="isFetchingData"
+                            :color="graphiteColor" />
+                    </FadeTransition>
                 </template>
                 <template #option="{ option }">
                     <ListElementAction :size="smallSize">
@@ -43,12 +54,18 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import {
+    GRAPHITE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
 import PointBadge from '@UI/components/Badges/PointBadge';
 import GridSelectEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridSelectEditContentCell';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import ListElementAction from '@UI/components/List/ListElementAction';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
+import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import TranslationSelect from '@UI/components/Select/TranslationSelect';
+import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
 import {
     mapActions,
@@ -57,6 +74,9 @@ import {
 export default {
     name: 'GridLabelEditCell',
     components: {
+        FadeTransition,
+        IconSpinner,
+        DropdownPlaceholder,
         GridSelectEditContentCell,
         TranslationSelect,
         ListElementDescription,
@@ -84,6 +104,8 @@ export default {
         },
     },
     async fetch() {
+        this.isFetchingData = true;
+
         await this.getProductWorkflowOptions({
             id: this.rowId,
             languageCode: this.languageCode,
@@ -94,9 +116,13 @@ export default {
         return {
             options: [],
             localValue: null,
+            isFetchingData: false,
         };
     },
     computed: {
+        graphiteColor() {
+            return GRAPHITE;
+        },
         smallSize() {
             return SIZE.SMALL;
         },
@@ -124,6 +150,8 @@ export default {
             this.options = workflow;
 
             this.localValue = this.options.find(option => option.id === this.value);
+
+            this.isFetchingData = false;
         },
         onFocus(isFocused) {
             if (!isFocused) {

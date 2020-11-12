@@ -6,19 +6,10 @@
     <ModalOverlay @close="onClose">
         <div class="modal-tab-bar">
             <div class="fixed-width-container">
-                <HorizontalTabBar :items="items">
-                    <template #appendItems>
-                        <Fab
-                            data-cy="modalClose"
-                            :floating="{ right: '8px' }"
-                            :theme="secondaryTheme"
-                            @click.native="onClose">
-                            <template #icon="{ color }">
-                                <IconClose :fill-color="color" />
-                            </template>
-                        </Fab>
-                    </template>
-                </HorizontalTabBar>
+                <ModalHeader
+                    :title="title"
+                    @close="onClose" />
+                <HorizontalTabBar :items="items" />
             </div>
         </div>
     </ModalOverlay>
@@ -28,18 +19,16 @@
 import {
     THEME,
 } from '@Core/defaults/theme';
-import Fab from '@UI/components/Fab/Fab';
-import IconClose from '@UI/components/Icons/Window/IconClose';
+import ModalHeader from '@UI/components/Modal/ModalHeader';
 import ModalOverlay from '@UI/components/Modal/ModalOverlay';
 import HorizontalTabBar from '@UI/components/TabBar/HorizontalTabBar';
 
 export default {
     name: 'ModalTabBar',
     components: {
+        ModalHeader,
         ModalOverlay,
         HorizontalTabBar,
-        Fab,
-        IconClose,
     },
     props: {
         /**
@@ -74,7 +63,6 @@ export default {
     .modal-tab-bar {
         display: flex;
         width: 960px;
-        padding-top: 8px;
         height: 80%;
         box-sizing: border-box;
         background-color: $WHITE;
@@ -86,5 +74,9 @@ export default {
         flex: 1 1 auto;
         flex-direction: column;
         width: 0;
+    }
+
+    .modal-header {
+        border-bottom: none;
     }
 </style>
