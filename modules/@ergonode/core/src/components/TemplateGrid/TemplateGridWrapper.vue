@@ -27,46 +27,53 @@
             </slot>
             <TemplateGridItemsContainer
                 :style="gridStyles">
-                <TemplateGridItemArea
-                    v-for="(item, index) in filteredGridData"
-                    :key="item.id"
-                    :item="item"
-                    :columns="columns"
-                    :grid-gap="gridGap">
-                    <slot
-                        name="gridGhostItem"
+                <!--                <TemplateGridItemArea-->
+                <!--                    v-for="(item, index) in gridData"-->
+                <!--                    :key="item.id"-->
+                <!--                    :item="item"-->
+                <!--                    :columns="columns"-->
+                <!--                    :grid-gap="gridGap">-->
+                <!--                    <slot-->
+                <!--                        name="gridGhostItem"-->
+                <!--                        v-if="item.id === 'ghost_item'"-->
+                <!--                        :grid-item-styles="gridItemStyles">-->
+                <!--                    </slot>-->
+                <!--                    <slot-->
+                <!--                        v-else-->
+                <!--                        name="gridItem"-->
+                <!--                        :item="item"-->
+                <!--                        :index="index"-->
+                <!--                        :grid-item-styles="gridItemStyles"-->
+                <!--                        :toggle-item="toggleItem"-->
+                <!--                        :remove-item="removeItem">-->
+                <!--                        -->
+                <!--                    </slot>-->
+                <!--                    <template-->
+                <!--                        v-if="isConnectionsVisible"-->
+                <!--                        #connection>-->
+                <!--                        <div-->
+                <!--                            class="item-area__line"-->
+                <!--                            :style="connectionLineStyle(item)" />-->
+                <!--                    </template>-->
+                <!--                </TemplateGridItemArea>-->
+                <template v-for="(item, index) in gridData">
+                    <TemplateGridGhostItem
                         v-if="item.id === 'ghost_item'"
-                        :grid-item-styles="gridItemStyles">
-                        <TemplateGridGhostItem
-                            :style="gridItemStyles"
-                            :context-name="contextName" />
-                    </slot>
-                    <slot
+                        :key="item.id"
+                        :style="getItemPosition(item)"
+                        :context-name="contextName" />
+                    <TemplateGridItem
                         v-else
-                        name="gridItem"
+                        :style="getItemPosition(item)"
+                        :row-index="item.row"
+                        :column-index="item.column"
+                        :key="item.id"
+                        :is-dragging-enabled="isDraggingEnabled"
                         :item="item"
-                        :index="index"
-                        :grid-item-styles="gridItemStyles"
-                        :toggle-item="toggleItem"
-                        :remove-item="removeItem">
-                        <TemplateGridItem
-                            :style="gridItemStyles"
-                            :number-of-children="getChildrenLength(item.id)"
-                            :is-expanded="getExpandState(item.id)"
-                            :is-dragging-enabled="isDraggingEnabled"
-                            :item="item"
-                            :context-name="contextName"
-                            @toggle-item="toggleItem(item)"
-                            @remove-item="removeItem(item)" />
-                    </slot>
-                    <template
-                        v-if="isConnectionsVisible"
-                        #connection>
-                        <div
-                            class="item-area__line"
-                            :style="connectionLineStyle(item)" />
-                    </template>
-                </TemplateGridItemArea>
+                        :context-name="contextName"
+                        @toggle-item="toggleItem(item)"
+                        @remove-item="removeItem(item)" />
+                </template>
             </TemplateGridItemsContainer>
         </TemplateGridContainer>
     </div>
@@ -84,7 +91,6 @@ import {
 } from '@Core/models/template_grid/TreeCalculations';
 import {
     mapActions,
-    mapGetters,
     mapState,
 } from 'vuex';
 
@@ -180,10 +186,6 @@ export default {
             'gridData',
             'hiddenItems',
         ]),
-        ...mapGetters('gridDesigner', [
-            'getChildrenLength',
-            'getExpandState',
-        ]),
         filteredGridData() {
             return this.gridData.filter(
                 item => item.column < this.columns,
@@ -217,6 +219,12 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
+        getItemPosition(item) {
+            return {
+                gridArea: `${item.row + 1} / ${item.column + 1} / ${item.row + 2} / ${item.column + 3}`,
+                margin: `${this.gridGap}px`,
+            };
+        },
         toggleItem({
             id, row, column, expanded,
         }) {

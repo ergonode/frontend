@@ -3,13 +3,12 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        :class="['presentation-layer', {'presentation-layer__border-top': !isHeader}]">
+    <div :class="classes">
         <TemplateGridShadowItem
-            v-for="index in numberOfItems"
-            :key="index"
-            :item-id="index"
-            :last-row="markLastRow(index)" />
+            v-for="(item, index) in numberOfItems"
+            :key="item"
+            :column-index="index % columns"
+            :row-index="Math.floor(index / columns)" />
     </div>
 </template>
 
@@ -45,13 +44,16 @@ export default {
         },
     },
     computed: {
+        classes() {
+            return [
+                'presentation-layer',
+                {
+                    'presentation-layer__border-top': !this.isHeader,
+                },
+            ];
+        },
         numberOfItems() {
             return this.columns * this.rows;
-        },
-    },
-    methods: {
-        markLastRow(index) {
-            return (index - 1) >= this.numberOfItems - this.columns;
         },
     },
 };

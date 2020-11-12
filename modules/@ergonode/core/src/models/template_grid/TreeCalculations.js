@@ -115,7 +115,9 @@ export function getRowBounds(elements) {
 }
 
 export function getRowBellowMouse({
-    pageY, elements, elementBounds,
+    pageY,
+    elements,
+    elementBounds,
 }, completion) {
     for (let i = 0; i < elements.length; i += 1) {
         const {
@@ -125,12 +127,33 @@ export function getRowBellowMouse({
         if (y <= pageY && y + height >= pageY) {
             return completion({
                 index: i,
+                column: '',
                 element: elements[i],
             });
         }
     }
     return null;
 }
+
+// export function getColumnBellowMouse({
+//     pageY,
+//     elements,
+//     elementBounds,
+// }, completion) {
+//     for (let i = 0; i < elements.length; i += 1) {
+//         const {
+//             y, height,
+//         } = elementBounds[i];
+//
+//         if (y <= pageY && y + height >= pageY) {
+//             return completion({
+//                 index: i,
+//                 element: elements[i],
+//             });
+//         }
+//     }
+//     return null;
+// }
 
 export function getFullTree(hiddenChildren, oldTree) {
     let newTree = oldTree.filter(el => el.id !== 'ghost_item');

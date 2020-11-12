@@ -42,7 +42,6 @@ export default {
         grid-column: 1 / 3;
         justify-content: flex-start;
         align-items: center;
-        height: 100%;
         padding-left: 12px;
         background-color: $GREEN;
         box-shadow: $ELEVATOR_HOLE;

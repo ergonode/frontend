@@ -87,6 +87,21 @@ export default {
             value,
         });
     },
+    setItemAtIndex({
+        commit,
+    }, payload) {
+        commit(types.SET_GRID_ITEM, payload);
+    },
+    swapItemsPosition({
+        commit,
+    }, payload) {
+        commit(types.SWAP_GRID_ITEMS, payload);
+    },
+    insertItemAtIndex({
+        commit,
+    }, payload) {
+        commit(types.INSERT_GRID_ITEM, payload);
+    },
     addGridItem: ({
         commit, getters,
     }, item) => {

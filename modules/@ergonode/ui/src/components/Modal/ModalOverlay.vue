@@ -6,7 +6,7 @@
     <FadeTransition>
         <div
             v-if="isMounted"
-            class="dialog-overlay"
+            class="modal-overlay"
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">
             <slot />
@@ -46,12 +46,12 @@ export default {
     },
     methods: {
         onMouseDown(event) {
-            if (event.target.classList.contains('dialog-overlay')) {
+            if (event.target.classList.contains('modal-overlay')) {
                 this.isClosed.mouseDown = true;
             }
         },
         onMouseUp(event) {
-            if (event.target.classList.contains('dialog-overlay')) {
+            if (event.target.classList.contains('modal-overlay')) {
                 this.isClosed.mouseUp = true;
             }
         },
@@ -60,7 +60,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .dialog-overlay {
+    .modal-overlay {
         position: fixed;
         top: 0;
         left: 0;

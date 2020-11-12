@@ -154,7 +154,6 @@ export default {
         justify-content: flex-start;
         align-items: center;
         grid-column: 1 / 3;
-        height: 100%;
         border: 1px solid $GREY;
         padding: 0 12px 0 10px;
         box-sizing: border-box;

@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    insertValueAtIndex,
+} from '@Core/models/arrayWrapper';
+import {
     removeObjectProperty,
 } from '@Core/models/objectWrapper';
 
@@ -12,6 +15,9 @@ export const types = {
     SET_GRID_DATA: 'SET_GRID_DATA',
     SET_FULL_GRID_DATA: 'SET_FULL_GRID_DATA',
     SET_GRID_ITEM: 'SET_GRID_ITEM',
+    SWAP_GRID_ITEMS: 'SWAP_GRID_ITEMS',
+    UPDATE_GRID_ITEM: 'UPDATE_GRID_ITEM',
+    INSERT_GRID_ITEM: 'INSERT_GRID_ITEM',
     SET_HIDDEN_ITEM: 'SET_HIDDEN_ITEM',
     SET_EXPAND_ITEM: 'SET_EXPAND_ITEM',
     SET_CHILDREN_LENGTH: 'SET_CHILDREN_LENGTH',
@@ -33,10 +39,19 @@ export default {
         state.fullGridData = value;
     },
     [types.SET_GRID_ITEM](state, {
-        index, item,
+        index,
+        item,
     }) {
         state.gridData[index] = item;
-        state.gridData.sort((a, b) => a.row - b.row);
+        state.gridData = [
+            ...state.gridData,
+        ];
+    },
+    [types.INSERT_GRID_ITEM](state, {
+        index,
+        item,
+    }) {
+        state.gridData = insertValueAtIndex(state.gridData, item, index);
     },
     [types.SET_HIDDEN_ITEM](state, {
         key, value,

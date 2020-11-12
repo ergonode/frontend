@@ -5,7 +5,7 @@
 <template>
     <div
         class="template-grid-container"
-        :draggable="isDraggingEnabled && gridData.length"
+        :draggable="isDraggingEnabled && gridData.length > 0"
         @dragstart="onDragStart"
         @dragend="onDragEnd"
         @dragover="onDragOver"
@@ -31,6 +31,7 @@ import {
     getRowBounds,
 } from '@Core/models/template_grid/TreeCalculations';
 import {
+    getDraggedColumnPositionState,
     getPositionForBrowser,
     isMouseInsideElement,
     isMouseOutOfBoundsElement,
@@ -40,7 +41,6 @@ import {
 } from 'debounce';
 import {
     mapActions,
-    mapGetters,
     mapState,
 } from 'vuex';
 
@@ -109,6 +109,7 @@ export default {
             directionOfCollision: null,
             shadowItem: null,
         },
+        rowBounds: {},
         debounceFunc: null,
     }),
     computed: {
@@ -121,9 +122,8 @@ export default {
         }),
         ...mapState('draggable', [
             'draggedElement',
-        ]),
-        ...mapGetters('gridDesigner', [
-            'getItem',
+            'draggedElIndex',
+            'ghostIndex',
         ]),
         dataWithoutGhostElement() {
             return this.gridData.filter(element => element.id !== this.ghostElement.id);
@@ -137,6 +137,14 @@ export default {
     },
     mounted() {
         this.calculateRowsCount();
+
+        const itemsContainer = this.$el.querySelector('.grid-items-container');
+        const {
+            children: elements,
+        } = itemsContainer;
+
+        this.rowBounds = getRowBounds(elements);
+
         window.addEventListener('resize', this.debounceFunc);
     },
     beforeDestroy() {
@@ -155,6 +163,9 @@ export default {
             'addGridItem',
             'removeGridItem',
             'rebuildGrid',
+            '',
+            'setItemAtIndex',
+            'insertItemAtIndex',
         ]),
         calculateRowsCount() {
             const {
@@ -166,76 +177,85 @@ export default {
             this.setRowsCount(totalRows);
         },
         onDragStart(event) {
-            if (this.gridData.length === 0) {
-                event.preventDefault();
-                return false;
+            const position = this.getPosition(event);
+
+            console.log(position);
+
+            if (position) {
+                const {
+                    row,
+                    column,
+                } = position;
+                const item = this.gridData[row];
+                const {
+                    id,
+                    children,
+                    parent,
+                    expanded,
+                    code,
+                } = item;
+
+                // if (children && !expanded) {
+                //     this.$emit('toggle-item', item);
+                // }
+
+                this.__setState({
+                    key: 'draggedElement',
+                    value: item,
+                });
+                this.__setState({
+                    key: 'draggedElIndex',
+                    value: row,
+                });
+                this.__setState({
+                    key: 'ghostIndex',
+                    value: {
+                        row,
+                        column,
+                    },
+                });
+                this.__setState({
+                    key: 'isElementDragging',
+                    value: DRAGGED_ELEMENT.TEMPLATE,
+                });
+
+                addElementCopyToDocumentBody({
+                    event,
+                    id,
+                    label: code,
+                });
+
+                this.setChildrenLength({
+                    id: parent,
+                    value: -1,
+                });
+
+                this.setItemAtIndex({
+                    index: row,
+                    item: {
+                        id: 'ghost_item',
+                        row,
+                        column,
+                        parent: this.getParentId(row, column),
+                    },
+                });
             }
-
-            const {
-                pageY,
-            } = event;
-
-            const itemsContainer = this.$el.querySelector('.grid-items-container');
-            const {
-                children: elements,
-            } = itemsContainer;
-            getRowBellowMouse({
-                pageY,
-                elements,
-                elementBounds: getRowBounds(elements),
-            }, ({
-                index, element,
-            }) => {
-                if (element) {
-                    const itemId = element.getAttribute('item-id');
-                    const item = this.getItem(itemId);
-                    const {
-                        children, parent, expanded,
-                    } = item;
-
-                    if (children && !expanded) {
-                        this.$emit('toggle-item', item);
-                    }
-
-                    this.__setState({
-                        key: 'draggedElement',
-                        value: item,
-                    });
-                    this.__setState({
-                        key: 'isElementDragging',
-                        value: DRAGGED_ELEMENT.TEMPLATE,
-                    });
-                    addElementCopyToDocumentBody({
-                        event,
-                        id: itemId,
-                        label: item.code,
-                    });
-
-                    this.setChildrenLength({
-                        id: parent,
-                        value: -1,
-                    });
-                    this.removeGridItem(index);
-                } else {
-                    event.preventDefault();
-                }
-            });
-            return true;
         },
         onDrop(event) {
-            const {
-                row, column,
-            } = this.ghostElement;
+            console.log('drop');
+            if (this.ghostIndex !== -1) {
+                this.setItemAtIndex({
+                    index: this.ghostIndex.row,
+                    item: this.draggedElement,
+                });
+            }
 
             event.preventDefault();
-            if (row !== null && column !== null) this.insertElementIntoGrid();
         },
         onDragEnd(event) {
+            console.log('end');
             removeElementCopyFromDocumentBody(event);
 
-            const {
-                isOutOfBounds,
-            } = this.getElementBelowMouse(event);
             const {
                 xPos,
                 yPos,
@@ -245,8 +265,25 @@ export default {
 
             if (isDroppedToTrash) {
                 this.$emit('remove', this.draggedElement);
-            } else if (isOutOfBounds) {
-                this.insertElementIntoGrid();
+            } else {
+                const {
+                    isOutOfBounds,
+                } = this.getElementBelowMouse(event);
+
+                if (isOutOfBounds) {
+                    this.insertItemAtIndex({
+                        index: this.draggedElIndex,
+                        item: this.draggedElement,
+                    });
+
+                    if (!this.isMultiDraggable) {
+                        this.setDisabledElement({
+                            languageCode: this.language,
+                            elementId: this.draggedElement.id,
+                            disabled: true,
+                        });
+                    }
+                }
             }
 
             this.__setState({
@@ -256,6 +293,14 @@ export default {
             this.__setState({
                 key: 'isElementDragging',
                 value: null,
+            });
+            this.__setState({
+                key: 'draggedElIndex',
+                value: -1,
+            });
+            this.__setState({
+                key: 'ghostIndex',
+                value: -1,
             });
         },
         onDragLeave(event) {
@@ -269,37 +314,97 @@ export default {
         },
         onDragOver(event) {
             event.preventDefault();
-            if (this.onDragFirstItem()) return false;
-            const {
-                pageX, pageY,
-            } = event;
-            const {
-                overRow, directionOfCollision,
-            } = this.mousePosition;
-            const localDirectionOfCollision = this.getMouseOverProps(pageX, pageY);
-            const collidingItem = this.getCollidingItemAtRow(overRow);
-            const isElementHasCollision = collidingItem !== null
-                && directionOfCollision !== localDirectionOfCollision;
-            const isElementBeyondCollision = collidingItem === null && overRow > this.maxRow;
 
-            if (isElementHasCollision) {
-                this.setGhostItemPosition(this.getCollidingPosition(collidingItem));
-            } else if (isElementBeyondCollision) {
-                let coordinates = {
-                    column: null,
-                    row: null,
-                };
-                const allowedColumn = this.getAllowedColumn();
+            const position = this.getPosition(event);
 
-                if ((this.constantRoot && allowedColumn !== 0) || !this.constantRoot) {
-                    coordinates = {
-                        column: allowedColumn,
-                        row: this.maxRow + this.positionBetweenRows,
-                    };
+            if (position && position.row <= this.gridData.length) {
+                const {
+                    row,
+                    column,
+                } = position;
+
+                if (this.ghostIndex === -1
+                    || (row === this.ghostIndex.row && column === this.ghostIndex.column)) {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    return;
                 }
-                this.setGhostItemPosition(coordinates);
+
+                this.setItemAtIndex({
+                    index: this.draggedElIndex,
+                    item: {
+                        id: 'ghost_item',
+                        row,
+                        column,
+                        parent: this.getParentId(row, column),
+                    },
+                });
+
+                this.__setState({
+                    key: 'ghostIndex',
+                    value: {
+                        row,
+                        column,
+                    },
+                });
+
+                // const {
+                //     x: columnXPos, width: columnWidth,
+                // } = this.$el.getBoundingClientRect();
+                // const isBefore = getDraggedColumnPositionState(
+                //     pageX,
+                //     columnXPos,
+                //     columnWidth,
+                // );
             }
-            return true;
+
+            // const {
+            //     pageX, pageY,
+            // } = event;
+            // const {
+            //     overRow, directionOfCollision,
+            // } = this.mousePosition;
+            // const localDirectionOfCollision = this.getMouseOverProps(pageX, pageY);
+            // const collidingItem = this.getCollidingItemAtRow(overRow);
+            // const isElementHasCollision = collidingItem !== null
+            //     && directionOfCollision !== localDirectionOfCollision;
+            // const isElementBeyondCollision = collidingItem === null && overRow > this.maxRow;
+            //
+            // if (isElementHasCollision) {
+            //     this.setGhostItemPosition(this.getCollidingPosition(collidingItem));
+            // } else if (isElementBeyondCollision) {
+            //     let coordinates = {
+            //         column: null,
+            //         row: null,
+            //     };
+            //     const allowedColumn = this.getAllowedColumn();
+            //
+            //     if ((this.constantRoot && allowedColumn !== 0) || !this.constantRoot) {
+            //         coordinates = {
+            //             column: allowedColumn,
+            //             row: this.maxRow + this.positionBetweenRows,
+            //         };
+            //     }
+            //     this.setGhostItemPosition(coordinates);
+            // }
+            // return true;
+        },
+        getPosition({
+            pageX,
+            pageY,
+        }) {
+            const elements = document.elementsFromPoint(pageX, pageY);
+            const shadowItem = elements.find(element => element.classList.contains('shadow-grid-item'));
+
+            if (shadowItem) {
+                return {
+                    row: +shadowItem.getAttribute('row-index'),
+                    column: +shadowItem.getAttribute('column-index'),
+                };
+            }
+
+            return null;
         },
         insertElementIntoGrid() {
             const {
@@ -476,27 +581,20 @@ export default {
                 row: (isTop ? collidingElRow - 1 : collidingElRow) + this.positionBetweenRows,
             };
         },
-        onDragFirstItem() {
-            if (this.dataWithoutGhostElement.length) return false;
-            this.setGhostItemPosition({
-                column: 0,
-                row: 0,
-            });
-
-            return true;
-        },
         getParentId(row, column) {
-            let parentId = 'root';
-
             if (column > 0) {
-                const findElements = this.dataWithoutGhostElement.filter(
-                    e => (e.column === column - 1 && e.row < row),
+                const possibleParents = this.gridData.filter(
+                    element => element.column === column - 1 && element.row < row,
                 );
-                const parent = Math.floor(getObjectWithMaxValueInArrayByObjectKey(findElements, 'row').row);
 
-                parentId = this.dataWithoutGhostElement[parent].id;
+                const closestParent = getObjectWithMaxValueInArrayByObjectKey(possibleParents, 'row');
+
+                if (closestParent) {
+                    return this.gridData[closestParent.row].id;
+                }
             }
-            return parentId;
+
+            return 'root';
         },
         setGhostItemPosition({
             column, row,
