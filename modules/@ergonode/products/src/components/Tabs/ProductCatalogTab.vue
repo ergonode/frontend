@@ -214,7 +214,7 @@ export default {
         productsBatchActions() {
             return [
                 {
-                    label: 'Delete selected rows',
+                    label: 'Delete selected products',
                     action: ({
                         payload,
                         onSuccess,

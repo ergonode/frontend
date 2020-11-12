@@ -6,7 +6,7 @@
     <VerticalTabBarList>
         <ListSearchHeader
             title="System languages"
-            is-search
+            searchable
             @search-result="onSearch" />
         <List>
             <ListScrollableContainer>

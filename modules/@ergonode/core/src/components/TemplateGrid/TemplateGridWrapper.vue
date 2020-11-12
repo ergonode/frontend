@@ -319,6 +319,8 @@ export default {
                 fieldKey: 'designer',
                 value: true,
             });
+
+            this.$emit('remove', item);
         },
         removeItem(item) {
             const {

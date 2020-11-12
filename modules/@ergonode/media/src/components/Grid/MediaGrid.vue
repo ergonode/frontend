@@ -134,18 +134,27 @@ export default {
                 return [];
             }
 
-            return [
-                ...this.columns.filter(column => column.id !== 'type'),
-                {
-                    id: 'esa_attached',
-                    type: 'BOOL',
-                    label: 'Attached',
-                    visible: true,
-                    editable: true,
-                    deletable: false,
-                    parameters: [],
-                },
-            ];
+            const columns = [];
+
+            for (let i = 0; i < this.columns.length; i += 1) {
+                if (this.columns[i].id !== 'type') {
+                    if (i === 3) {
+                        columns.push({
+                            id: 'esa_attached',
+                            type: 'BOOL',
+                            label: 'Attached',
+                            visible: true,
+                            editable: true,
+                            deletable: false,
+                            parameters: [],
+                        });
+                    } else {
+                        columns.push(this.columns[i]);
+                    }
+                }
+            }
+
+            return columns;
         },
         rowsWithAttachValues() {
             const rows = [
