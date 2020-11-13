@@ -37,8 +37,8 @@
                     v-for="(parameter, index) in condition.parameters"
                     :key="index"
                     :parameter="parameter"
-                    :item-id="itemId"
-                    :item-row="itemRow"
+                    :item-id="item.id"
+                    :item-row="item.row"
                     :scope="scope"
                     :error-messages="errors[parameter.name]"
                     :disabled="disabled" />
@@ -76,12 +76,8 @@ export default {
             type: Object,
             required: true,
         },
-        itemId: {
-            type: String,
-            required: true,
-        },
-        itemRow: {
-            type: Number,
+        item: {
+            type: Object,
             required: true,
         },
         scope: {
@@ -150,7 +146,7 @@ export default {
         onSelectValue(value) {
             switch (value) {
             case 'Remove':
-                this.$emit('remove', this.itemRow, this.itemId);
+                this.$emit('remove', this.item);
                 break;
             default: break;
             }

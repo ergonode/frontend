@@ -21,7 +21,7 @@ export default {
         flex: 1;
         flex-direction: column;
         justify-content: center;
-        margin: 0 4px;
+        margin: 4px;
         word-break: break-word;
     }
 </style>

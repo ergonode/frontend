@@ -10,7 +10,7 @@
             :href="`multimedia/${id}/download/default`"
             :value="id"
             :key="id"
-            object-fit="none" />
+            object-fit="contain" />
         <div class="image-carousel__panel">
             <div
                 class="image-white-theme"

@@ -74,6 +74,8 @@ export default {
             position: relative;
             display: flex;
             height: 40px;
+            flex-shrink: 0;
+            background-image: linear-gradient($WHITESMOKE, $WHITE);
             overflow: auto;
             border-bottom: $BORDER_1_GREY;
         }
