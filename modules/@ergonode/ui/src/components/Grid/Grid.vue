@@ -49,8 +49,7 @@
                     :errors="errors"
                     :disabled-rows="disabledRows"
                     :filters="filters"
-                    :current-page="currentPage"
-                    :max-rows="maxRows"
+                    :pagination="pagination"
                     :row-height="tableLayoutConfig.rowHeight"
                     :extended-columns="extendedColumns[gridLayout.TABLE]"
                     :extended-data-cells="extendedDataCells[gridLayout.TABLE]"
@@ -58,7 +57,7 @@
                     :extended-data-edit-cells="extendedDataEditCells[gridLayout.TABLE]"
                     :extended-edit-filter-cells="extendedDataEditFilterCells[gridLayout.TABLE]"
                     :selected-rows="selectedRows"
-                    :is-selected-all-rows="isSelectedAllRows[currentPage]"
+                    :is-selected-all-rows="isSelectedAllRows[pagination.page]"
                     :is-editable="isEditable"
                     :is-select-column="isSelectColumn"
                     :is-basic-filter="isBasicFilter"
@@ -101,13 +100,13 @@
         <GridFooter v-if="isFooterVisible">
             <slot name="footer">
                 <GridPageSelector
-                    :value="maxRows"
-                    :max-rows="dataCount"
-                    @input="onMaxRowsChange" />
+                    :value="pagination.itemsPerPage"
+                    :data-count="dataCount"
+                    @input="onItemsPerPageChange" />
                 <GridPagination
-                    :value="currentPage"
+                    :value="pagination.page"
                     :max-page="maxPage"
-                    @input="onCurrentPageChange" />
+                    @input="onPageChange" />
                 <slot name="appendFooter" />
             </slot>
         </GridFooter>
@@ -117,7 +116,7 @@
 <script>
 import {
     COLUMNS_NUMBER,
-    DATA_LIMIT,
+    DEFAULT_GRID_PAGINATION,
     DRAGGED_ELEMENT,
     GRID_LAYOUT,
     IMAGE_SCALING,
@@ -212,6 +211,15 @@ export default {
             default: null,
         },
         /**
+         * Data model of pagination
+         */
+        pagination: {
+            type: Object,
+            default: () => ({
+                ...DEFAULT_GRID_PAGINATION,
+            }),
+        },
+        /**
          * The list of batch actions
          */
         batchActions: {
@@ -239,7 +247,7 @@ export default {
             validator: value => Object.values(GRID_LAYOUT).indexOf(value) !== -1,
         },
         /**
-         * Number of visible data
+         * Number of all data
          */
         dataCount: {
             type: Number,
@@ -341,8 +349,6 @@ export default {
         return {
             layout: this.defaultLayout,
             isRenderingTableLayout: this.defaultLayout === GRID_LAYOUT.TABLE,
-            maxRows: DATA_LIMIT,
-            currentPage: 1,
             sortedColumn: {},
             collectionLayoutConfig: {
                 columnsNumber: COLUMNS_NUMBER.FOURTH_COLUMNS.value,
@@ -404,7 +410,7 @@ export default {
             return this.dataCount === 0 && !this.isPrefetchingData;
         },
         maxPage() {
-            return Math.ceil(this.dataCount / this.maxRows) || 1;
+            return Math.ceil(this.dataCount / this.pagination.itemsPerPage) || 1;
         },
         rowIds() {
             return this.rows.map(({
@@ -423,13 +429,13 @@ export default {
             this.$emit('remove-all-filters');
         },
         onBatchActionSelect(option) {
-            if (this.isSelectedAllRows[this.currentPage]
+            if (this.isSelectedAllRows[this.pagination.page]
                 || Object.keys(this.selectedRows).length > 0) {
                 let {
                     rowIds,
                 } = this;
 
-                if (!this.isSelectedAllRows[this.currentPage]) {
+                if (!this.isSelectedAllRows[this.pagination.page]) {
                     const fixedIndex = this.isBasicFilter ? 2 : 1;
 
                     rowIds = [];
@@ -448,7 +454,7 @@ export default {
 
                         this.isSelectedAllRows = {
                             ...this.isSelectedAllRows,
-                            [this.currentPage]: false,
+                            [this.pagination.page]: false,
                         };
                     },
                     onError: () => {
@@ -463,7 +469,7 @@ export default {
         onRowsSelect(isSelectedAllRows) {
             this.isSelectedAllRows = {
                 ...this.isSelectedAllRows,
-                [this.currentPage]: isSelectedAllRows,
+                [this.pagination.page]: isSelectedAllRows,
             };
         },
         onApplySettings({
@@ -499,7 +505,8 @@ export default {
         },
         onSortColumn(sortedColumn) {
             this.sortedColumn = sortedColumn;
-            this.emitFetchData();
+
+            this.$emit('column-sort', sortedColumn);
         },
         onRenderedTableLayout() {
             this.isRenderingTableLayout = false;
@@ -507,28 +514,22 @@ export default {
         onFilterChange(filters) {
             this.$emit('filter', filters);
         },
-        onCurrentPageChange(page) {
-            this.currentPage = page;
-
-            this.emitFetchData();
-        },
-        onMaxRowsChange(maxRows) {
-            const number = Math.trunc(maxRows);
-
-            if (number !== this.maxRows) {
-                this.currentPage = 1;
-                this.maxRows = number;
-
-                this.emitFetchData();
-            }
-        },
-        emitFetchData() {
-            this.$emit('fetch-data', {
-                sortedColumn: this.sortedColumn,
-                filter: this.filters,
-                offset: (this.currentPage - 1) * this.maxRows,
-                limit: this.maxRows,
+        onPageChange(page) {
+            this.$emit('pagination', {
+                ...this.pagination,
+                page,
             });
+        },
+        onItemsPerPageChange(itemsPerPage) {
+            const number = Math.trunc(itemsPerPage);
+
+            if (number !== this.pagination.itemsPerPage) {
+                this.$emit('pagination', {
+                    ...this.pagination,
+                    page: 1,
+                    itemsPerPage: number,
+                });
+            }
         },
     },
 };

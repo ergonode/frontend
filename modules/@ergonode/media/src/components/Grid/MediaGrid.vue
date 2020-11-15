@@ -7,6 +7,7 @@
         :columns="columnsWithAttachColumn"
         :data-count="filtered"
         :drafts="drafts"
+        :pagination="pagination"
         :filters="filterValues"
         :rows="rowsWithAttachValues"
         :collection-cell-binding="collectionCellBinding"
@@ -24,7 +25,8 @@
         @preview-row="onEditRow"
         @cell-value="onCellValueChange"
         @delete-row="onRemoveRow"
-        @fetch-data="onFetchData"
+        @pagination="onPaginationChange"
+        @column-sort="onColumnSortChange"
         @remove-all-filters="onRemoveAllFilters"
         @filter="onFilterChange">
         <template #appendFooter>
@@ -42,7 +44,11 @@ import {
 } from '@Core/defaults/alerts';
 import {
     DEFAULT_GRID_FETCH_PARAMS,
+    DEFAULT_GRID_PAGINATION,
 } from '@Core/defaults/grid';
+import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -103,6 +109,7 @@ export default {
             columns: [],
             filtered: 0,
             localParams: DEFAULT_GRID_FETCH_PARAMS,
+            pagination: DEFAULT_GRID_PAGINATION,
         };
     },
     computed: {
@@ -194,32 +201,54 @@ export default {
         this.observer.disconnect();
     },
     methods: {
+        onPaginationChange(pagination) {
+            this.pagination = pagination;
+
+            this.localParams.offset = (pagination.page - 1) * pagination.itemsPerPage;
+
+            this.onFetchData();
+        },
         onFilterChange(filters) {
             this.filterValues = filters;
+            this.pagination.page = 1;
+            this.localParams.filter = filters;
+            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
-            this.onFetchData({
-                ...this.localParams,
-                filter: this.filterValues,
-            });
+            this.onFetchData();
         },
         onRemoveAllFilters() {
             this.filterValues = {};
+            this.pagination.page = 1;
+            this.localParams.filter = {};
+            this.localParams.offset = 0;
 
-            this.onFetchData({
-                ...this.localParams,
-                filter: {},
-            });
+            this.onFetchData();
+        },
+        onColumnSortChange(sortedColumn) {
+            this.localParams.sortedColumn = sortedColumn;
+
+            this.onFetchData();
         },
         async onFetchData({
             offset,
             limit,
             filter,
             sortedColumn,
-        } = DEFAULT_GRID_FETCH_PARAMS) {
+        } = this.localParams) {
+            const filtersWithType = {
+                ...filter,
+            };
+
+            if (typeof filter.type === 'undefined') {
+                filtersWithType.type = {
+                    [FILTER_OPERATOR.EQUAL]: this.type,
+                };
+            }
+
             this.localParams = {
                 offset,
                 limit,
-                filter: `type=${this.type}${filter ? `;${filter}` : ''}`,
+                filter: filtersWithType,
                 sortedColumn,
             };
 
@@ -227,7 +256,7 @@ export default {
                 offset,
                 limit,
                 extended: true,
-                filter: this.localParams.filters,
+                filter: this.localParams.filter,
             };
 
             if (Object.keys(sortedColumn).length) {
