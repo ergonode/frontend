@@ -13,7 +13,7 @@
             :grid-data="filteredGridData"
             :is-dragging-enabled="isDraggingEnabled"
             :is-multi-draggable="isMultiDraggable"
-            @toggle-item="toggleItem"
+            @expand="onExpandItem"
             @after-drop="id => $emit('after-drop', id)"
             @after-remove="id => $emit('after-remove', id)"
             @remove="removeItemOnDrop">
@@ -44,7 +44,7 @@
                 <!--                        :item="item"-->
                 <!--                        :index="index"-->
                 <!--                        :grid-item-styles="gridItemStyles"-->
-                <!--                        :toggle-item="toggleItem"-->
+                <!--                        :toggle-item="onExpandItem"-->
                 <!--                        :remove-item="removeItem">-->
                 <!--                        -->
                 <!--                    </slot>-->
@@ -60,18 +60,17 @@
                     <TemplateGridGhostItem
                         v-if="item.id === 'ghost_item'"
                         :key="item.id"
+                        :item="item"
                         :style="getItemPosition(item)"
                         :context-name="contextName" />
                     <TemplateGridItem
                         v-else
                         :style="getItemPosition(item)"
-                        :row-index="item.row"
-                        :column-index="item.column"
                         :key="item.id"
                         :is-dragging-enabled="isDraggingEnabled"
                         :item="item"
                         :context-name="contextName"
-                        @toggle-item="toggleItem(item)"
+                        @expand="onExpandItem"
                         @remove-item="removeItem(item)" />
                 </template>
             </TemplateGridItemsContainer>
@@ -225,22 +224,23 @@ export default {
                 margin: `${this.gridGap}px`,
             };
         },
-        toggleItem({
-            id, row, column, expanded,
+        onExpandItem({
+            id,
+            row,
+            column,
+            expanded,
         }) {
-            const rowValue = Math.floor(row);
-
             if (!expanded) {
                 const maxChildRow = getNearestNeighborRowId(
                     this.filteredGridData,
                     column,
-                    rowValue,
+                    row,
                 );
                 const {
                     hiddenCategories,
                     visibleCategories,
                 } = this.filteredGridData.reduce((acc, e, idx) => {
-                    if (idx > rowValue && idx < maxChildRow) {
+                    if (idx > row && idx < maxChildRow) {
                         acc.hiddenCategories.push(e);
                     } else {
                         acc.visibleCategories.push(e);
@@ -257,20 +257,20 @@ export default {
                 });
                 this.setGridWhenCollapse({
                     data: visibleCategories,
-                    index: rowValue,
+                    index: row,
                 });
                 this.setExpandItem({
-                    index: rowValue,
+                    index: row,
                     value: true,
                 });
             } else {
                 this.setGridWhenExpand({
                     id,
-                    index: rowValue,
+                    index: row,
                 });
                 this.removeHiddenItem(id);
                 this.setExpandItem({
-                    index: rowValue,
+                    index: row,
                     value: false,
                 });
             }
@@ -327,7 +327,7 @@ export default {
                 id, row, parent,
             } = item;
 
-            this.toggleItem(item);
+            this.onExpandItem(item);
             this.removeDisabledElementsOnList(id);
             this.removeHiddenItem(id);
             this.setChildrenLength({

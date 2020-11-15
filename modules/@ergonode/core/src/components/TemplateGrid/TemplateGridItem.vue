@@ -11,17 +11,14 @@
             v-if="hasChildren"
             class="grid-item__icon"
             :state="buttonExpanderIconState"
-            @click.native="toggleItemExpand" />
-        <div
-            class="grid-item__title"
-            :title="item.name ? `#${item.code}`: ''">
+            @click.native="onExpandItem" />
+        <div class="grid-item__title">
             <span
                 class="grid-item__name"
-                v-text="item.name || `#${item.code}`" />
+                v-text="`ROW: ${item.row}`" />
             <span
-                v-if="hasChildren"
                 class="grid-item__code"
-                v-text="`Inherited ${contextName.toLowerCase()}: ${numberOfChildren}`" />
+                v-text="`COLUMN: ${item.column}`" />
         </div>
         <div
             :class="['grid-item__contextual-menu', contextualMenuHoveStateClasses]">
@@ -60,13 +57,6 @@ export default {
     },
     props: {
         /**
-         * Determines state of expanded component
-         */
-        isExpanded: {
-            type: Boolean,
-            default: false,
-        },
-        /**
          * Determines state of draggable attribute
          */
         isDraggingEnabled: {
@@ -83,13 +73,6 @@ export default {
         contextName: {
             type: String,
             default: '',
-        },
-        /**
-         * Number of children elements
-         */
-        numberOfChildren: {
-            type: Number,
-            default: 0,
         },
     },
     data() {
@@ -108,10 +91,10 @@ export default {
             return THEME.SECONDARY;
         },
         hasChildren() {
-            return this.numberOfChildren > 0;
+            return this.item.children > 0;
         },
         buttonExpanderIconState() {
-            return this.isExpanded ? ARROW.DOWN : ARROW.UP;
+            return this.item.expanded ? ARROW.DOWN : ARROW.UP;
         },
         contextualMenuHoveStateClasses() {
             return {
@@ -120,8 +103,8 @@ export default {
         },
     },
     methods: {
-        toggleItemExpand() {
-            this.$emit('toggle-item');
+        onExpandItem() {
+            this.$emit('expand', this.item);
         },
         onSelectFocus(isFocused) {
             if (!isFocused) this.isHovered = false;

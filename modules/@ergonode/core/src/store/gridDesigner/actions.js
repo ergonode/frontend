@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    swapItemPosition,
+} from '@Core/models/arrayWrapper';
+import {
     getFullTree,
     getTreeWhenElementCollapse,
     getTreeWhenElementExpand,
@@ -32,14 +35,18 @@ export default {
 
         commit(types.SET_FULL_GRID_DATA, newFullGridData);
     },
+    setHiddenElementsForParent({
+        commit,
+    }, parent) {
+
+    },
     setGridWhenCollapse: ({
         commit,
     }, {
-        data, index,
+        data,
+        index,
     }) => {
-        const newGrid = getTreeWhenElementCollapse(data, index);
-
-        commit(types.SET_GRID_DATA, newGrid);
+        commit(types.SET_GRID_DATA, getTreeWhenElementCollapse(data, index));
     },
     setGridWhenExpand: ({
         commit, state,
@@ -53,7 +60,8 @@ export default {
     setExpandItem: ({
         commit,
     }, {
-        index, value,
+        index,
+        value,
     }) => {
         commit(types.SET_EXPAND_ITEM, {
             index,
@@ -80,7 +88,8 @@ export default {
     setHiddenItem: ({
         commit,
     }, {
-        key, value,
+        key,
+        value,
     }) => {
         commit(types.SET_HIDDEN_ITEM, {
             key,
@@ -93,9 +102,23 @@ export default {
         commit(types.SET_GRID_ITEM, payload);
     },
     swapItemsPosition({
+        state,
         commit,
-    }, payload) {
-        commit(types.SWAP_GRID_ITEMS, payload);
+    }, {
+        fromRow,
+        toRow,
+        fromColumn,
+        toColumn,
+    }) {
+        const gridData = JSON.parse(JSON.stringify(state.gridData));
+
+        gridData[fromRow].row = toRow;
+        gridData[fromRow].column = toColumn;
+
+        gridData[toRow].row = fromRow;
+        gridData[toRow].column = fromColumn;
+
+        commit(types.SET_GRID_DATA, swapItemPosition(gridData, fromRow, toRow));
     },
     insertItemAtIndex({
         commit,

@@ -54,7 +54,8 @@ export default {
         state.gridData = insertValueAtIndex(state.gridData, item, index);
     },
     [types.SET_HIDDEN_ITEM](state, {
-        key, value,
+        key,
+        value,
     }) {
         state.hiddenItems = {
             ...state.hiddenItems,
@@ -62,7 +63,8 @@ export default {
         };
     },
     [types.SET_EXPAND_ITEM](state, {
-        index, value,
+        index,
+        value,
     }) {
         state.gridData[index] = {
             ...state.gridData[index],

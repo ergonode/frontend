@@ -38,6 +38,12 @@ export function getDraggedColumnPositionState(pageX, elXPos, width) {
     return (pageX - elXPos) / width < normalizedHalfWidthFactor;
 }
 
+export function getDraggedRowPositionState(pageY, elYPos, height) {
+    const normalizedHalfWidthFactor = 0.5;
+
+    return (pageY - elYPos) / height < normalizedHalfWidthFactor;
+}
+
 export function getPositionForBrowser(event) {
     let xPos = null;
     let yPos = null;
