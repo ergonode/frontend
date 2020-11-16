@@ -1,7 +1,7 @@
 name: Tests
 on:
   pull_request:
-    branches: [ master, develop, test-github-ci-3 ]
+    branches: [ master, develop ]
 jobs:
   test_pull_request:
     runs-on: ubuntu-latest
