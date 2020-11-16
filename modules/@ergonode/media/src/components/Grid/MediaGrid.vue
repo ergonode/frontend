@@ -3,37 +3,39 @@
  * See LICENSE for license details.
  */
 <template>
-    <Grid
-        :columns="columnsWithAttachColumn"
-        :data-count="filtered"
-        :drafts="drafts"
-        :filters="filterValues"
-        :rows="rowsWithAttachValues"
-        :collection-cell-binding="collectionCellBinding"
-        :extended-columns="extendedColumns"
-        :extended-data-cells="extendedDataCells"
-        :extended-data-filter-cells="extendedDataFilterCells"
-        :extended-data-edit-cells="extendedDataEditCells"
-        :extended-edit-filter-cells="extendedDataEditFilterCells"
-        :is-editable="isAllowedToUpdate"
-        :is-prefetching-data="isPrefetchingData"
-        :is-basic-filter="true"
-        :is-header-visible="true"
-        :is-collection-layout="true"
-        @edit-row="onEditRow"
-        @preview-row="onEditRow"
-        @cell-value="onCellValueChange"
-        @delete-row="onRemoveRow"
-        @fetch-data="onFetchData"
-        @remove-all-filters="onRemoveAllFilters"
-        @filter="onFilterChange">
-        <template #appendFooter>
-            <Button
-                title="SAVE MEDIA"
-                :size="smallSize"
-                @click.native="onSaveMedia" />
-        </template>
-    </Grid>
+    <Observer @intersect="onIntersect">
+        <Grid
+            :columns="columnsWithAttachColumn"
+            :data-count="filtered"
+            :drafts="drafts"
+            :filters="filterValues"
+            :rows="rowsWithAttachValues"
+            :collection-cell-binding="collectionCellBinding"
+            :extended-columns="extendedColumns"
+            :extended-data-cells="extendedDataCells"
+            :extended-data-filter-cells="extendedDataFilterCells"
+            :extended-data-edit-cells="extendedDataEditCells"
+            :extended-edit-filter-cells="extendedDataEditFilterCells"
+            :is-editable="isAllowedToUpdate"
+            :is-prefetching-data="isPrefetchingData"
+            :is-basic-filter="true"
+            :is-header-visible="true"
+            :is-collection-layout="true"
+            @edit-row="onEditRow"
+            @preview-row="onEditRow"
+            @cell-value="onCellValueChange"
+            @delete-row="onRemoveRow"
+            @fetch-data="onFetchData"
+            @remove-all-filters="onRemoveAllFilters"
+            @filter="onFilterChange">
+            <template #appendFooter>
+                <Button
+                    title="SAVE MEDIA"
+                    :size="smallSize"
+                    @click.native="onSaveMedia" />
+            </template>
+        </Grid>
+    </Observer>
 </template>
 
 <script>
@@ -60,6 +62,7 @@ import {
     GREEN,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Button from '@UI/components/Button/Button';
+import Observer from '@UI/components/Events/Observer';
 import Grid from '@UI/components/Grid/Grid';
 import {
     debounce,
@@ -70,6 +73,7 @@ export default {
     components: {
         Grid,
         Button,
+        Observer,
     },
     mixins: [
         gridDraftMixin,
@@ -96,7 +100,6 @@ export default {
         return {
             searchResult: null,
             isSearchFocused: false,
-            observer: null,
             isPrefetchingData: true,
             filterValues: {},
             rows: [],
@@ -173,27 +176,22 @@ export default {
             return rows;
         },
     },
-    mounted() {
-        this.observer = new IntersectionObserver(async (entries) => {
-            if (entries[0].isIntersecting) {
+    created() {
+        this.debouncedSearch = debounce(this.onSearch, 500);
+    },
+    beforeDestroy() {
+        delete this.debouncedSearch;
+    },
+    methods: {
+        async onIntersect(isIntersecting) {
+            if (isIntersecting) {
                 this.isPrefetchingData = true;
 
                 await this.onFetchData(this.localParams);
 
                 this.isPrefetchingData = false;
             }
-        });
-
-        this.observer.observe(this.$el);
-    },
-    created() {
-        this.debouncedSearch = debounce(this.onSearch, 500);
-    },
-    beforeDestroy() {
-        delete this.debouncedSearch;
-        this.observer.disconnect();
-    },
-    methods: {
+        },
         onFilterChange(filters) {
             this.filterValues = filters;
 

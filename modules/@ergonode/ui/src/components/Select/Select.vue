@@ -75,7 +75,6 @@
                 :clearable="clearable"
                 :fixed-content="fixedContent"
                 :searchable="searchable"
-                :sticky-search="stickySearch"
                 :options="options"
                 :selected-options="selectedOptions"
                 :search-result="searchResult"
@@ -288,13 +287,6 @@ export default {
         searchResult: {
             type: String,
             default: '',
-        },
-        /**
-         * Determines stickiness of search
-         */
-        stickySearch: {
-            type: Boolean,
-            default: false,
         },
         /**
          * Unique identifier for cypress

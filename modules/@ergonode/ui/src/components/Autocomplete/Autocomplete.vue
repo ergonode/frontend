@@ -9,7 +9,6 @@
         :type="type"
         :alignment="alignment"
         :size="size"
-        :sticky-search="stickySearch"
         :fixed-content="fixedContent"
         :dismissible="dismissible"
         :label="label"
@@ -225,13 +224,6 @@ export default {
         href: {
             type: String,
             required: true,
-        },
-        /**
-         * Determines stickiness of search
-         */
-        stickySearch: {
-            type: Boolean,
-            default: false,
         },
         /**
          * The type of filter at which options will be narrowed

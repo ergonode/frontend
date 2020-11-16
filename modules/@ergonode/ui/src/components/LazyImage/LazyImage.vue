@@ -3,21 +3,29 @@
  * See LICENSE for license details.
  */
 <template>
-    <img
-        ref="img"
-        :style="styles"
-        :class="classes"
-        :src="require('@UI/assets/images/placeholders/no_image.svg')"
-        alt="Image loaded asynchronously">
+    <Observer
+        observe-once
+        @intersect="onIntersect">
+        <img
+            ref="img"
+            :style="styles"
+            :class="classes"
+            :src="require('@UI/assets/images/placeholders/no_image.svg')"
+            alt="Image loaded asynchronously">
+    </Observer>
 </template>
 
 <script>
 import {
     getImageData,
 } from '@Core/models/multimedia';
+import Observer from '@UI/components/Events/Observer';
 
 export default {
     name: 'LazyImage',
+    components: {
+        Observer,
+    },
     props: {
         /**
          * Component value
@@ -57,7 +65,6 @@ export default {
     },
     data() {
         return {
-            observer: null,
             isLoading: true,
         };
     },
@@ -81,21 +88,12 @@ export default {
             this.getImage();
         },
     },
-    mounted() {
-        this.observer = new IntersectionObserver((entries) => {
-            const image = entries[0];
-            if (image.isIntersecting) {
-                this.getImage();
-                this.observer.disconnect();
-            }
-        });
-
-        this.observer.observe(this.$el);
-    },
-    beforeDestroy() {
-        this.observer.disconnect();
-    },
     methods: {
+        onIntersect(isIntersecting) {
+            if (isIntersecting) {
+                this.getImage();
+            }
+        },
         getImage() {
             this.$axios.$get(this.href, {
                 useCache: this.useCache,

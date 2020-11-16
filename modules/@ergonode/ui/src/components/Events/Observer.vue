@@ -5,7 +5,7 @@
 
 <script>
 export default {
-    name: 'IntersectionObserver',
+    name: 'Observer',
     props: {
         options: {
             type: Object,
@@ -42,6 +42,7 @@ export default {
     beforeDestroy() {
         if (this.observer) {
             this.observer.disconnect();
+            this.observer = null;
         }
     },
     render() {

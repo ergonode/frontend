@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <IntersectionObserver @intersect="onIntersect">
+    <Observer @intersect="onIntersect">
         <CenterViewTemplate :fixed="true">
             <template #header>
                 <div class="view-template-header__section">
@@ -64,7 +64,7 @@
                 </Button>
             </template>
         </CenterViewTemplate>
-    </IntersectionObserver>
+    </Observer>
 </template>
 
 <script>
@@ -82,7 +82,7 @@ import ProductTemplateForm from '@Products/components/Forms/ProductTemplateForm'
 import ProductCompleteness from '@Products/components/Progress/ProductCompleteness';
 import PRIVILEGES from '@Products/config/privileges';
 import Button from '@UI/components/Button/Button';
-import IntersectionObserver from '@UI/components/Events/IntersectionObserver';
+import Observer from '@UI/components/Events/Observer';
 import IconRestore from '@UI/components/Icons/Actions/IconRestore';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';

@@ -16,37 +16,43 @@
             </slot>
             <template v-if="isDropdownContentVisible">
                 <slot name="dropdown">
-                    <List>
-                        <DropdownListSearch
-                            v-if="searchable"
-                            :value="searchResult"
-                            :sticky="stickySearch"
-                            @input="onSearch" />
-                        <DropdownListElement
-                            v-for="(option, index) in options"
-                            :key="index"
-                            :index="index"
-                            :size="size"
-                            :value="option"
-                            :selected="isOptionSelected(index)"
-                            @input="onSelectValue">
-                            <template #option="{ isSelected }">
-                                <slot
-                                    name="option"
-                                    :option="option"
-                                    :is-selected="isSelected"
-                                    :index="index" />
-                            </template>
-                        </DropdownListElement>
-                        <DropdownPlaceholder
-                            v-if="isSearchPlaceholderVisible"
-                            :title="placeholder.title"
-                            :subtitle="placeholder.subtitle">
-                            <template #action>
-                                <ClearSearchButton @click.native.stop="onClearSearch" />
-                            </template>
-                        </DropdownPlaceholder>
-                    </List>
+                    <DropdownListSearch
+                        v-if="searchable"
+                        :value="searchResult"
+                        :size="size"
+                        @input="onSearch" />
+                    <VirtualScroll
+                        v-if="options.length"
+                        :items="options"
+                        :root-height="dropdownHeight"
+                        :render-ahead="2"
+                        :estimated-height="20">
+                        <template #item="{ item, index}">
+                            <DropdownListElement
+                                :key="index"
+                                :index="index"
+                                :size="size"
+                                :value="item"
+                                :selected="isOptionSelected(index)"
+                                @input="onSelectValue">
+                                <template #option="{ isSelected }">
+                                    <slot
+                                        name="option"
+                                        :option="item"
+                                        :is-selected="isSelected"
+                                        :index="index" />
+                                </template>
+                            </DropdownListElement>
+                        </template>
+                    </VirtualScroll>
+                    <DropdownPlaceholder
+                        v-if="isSearchPlaceholderVisible"
+                        :title="placeholder.title"
+                        :subtitle="placeholder.subtitle">
+                        <template #action>
+                            <ClearSearchButton @click.native.stop="onClearSearch" />
+                        </template>
+                    </DropdownPlaceholder>
                 </slot>
                 <slot
                     v-if="isFooterVisible"
@@ -72,7 +78,6 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import List from '@UI/components/List/List';
 import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
 import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
 import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
@@ -80,16 +85,23 @@ import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/Se
 import DropdownListElement from '@UI/components/Select/Dropdown/List/DropdownListElement';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
+// import {
+//     VirtualScroll,
+// } from 'vue-windowing';
+import Vue from 'vue';
+import ViewWindowing from 'vue-windowing';
+
+Vue.use(ViewWindowing);
 
 export default {
     name: 'SelectDropdown',
     components: {
+        // VirtualScroll,
         ClearSearchButton,
         MultiselectDropdownFooter,
         SelectDropdownApplyFooter,
         FadeTransition,
         Dropdown,
-        List,
         DropdownListElement,
         DropdownPlaceholder,
         DropdownListSearch: () => import('@UI/components/Select/Dropdown/List/DropdownListSearch'),
@@ -135,13 +147,6 @@ export default {
             default: false,
         },
         /**
-         * Determines stickiness of search
-         */
-        stickySearch: {
-            type: Boolean,
-            default: false,
-        },
-        /**
          * Component variances that user can choose from
          */
         options: {
@@ -177,6 +182,12 @@ export default {
             default: false,
         },
     },
+    data() {
+        return {
+            dropdownHeight: 400,
+            resizeObserver: null,
+        };
+    },
     computed: {
         placeholder() {
             return {
@@ -205,6 +216,24 @@ export default {
         isFooterVisible() {
             return this.clearable && this.isAnyOption;
         },
+    },
+    mounted() {
+        this.resizeObserver = new ResizeObserver((entries) => {
+            const dropdown = entries[0];
+
+            if (dropdown) {
+                this.dropdownHeight = dropdown.contentRect.height;
+
+                this.resizeObserver.disconnect();
+                this.resizeObserver = null;
+            }
+        });
+
+        this.resizeObserver.observe(this.$el);
+    },
+    beforeDestroy() {
+        this.resizeObserver.disconnect();
+        this.resizeObserver = null;
     },
     methods: {
         onClickOutside(payload) {
