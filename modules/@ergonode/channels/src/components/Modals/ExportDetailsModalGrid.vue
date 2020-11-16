@@ -11,6 +11,7 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :pagination="pagination"
                 :filters="filterValues"
                 :extended-columns="extendedColumns"
                 :extended-data-cells="extendedDataCells"
@@ -20,7 +21,8 @@
                 :is-prefetching-data="isPrefetchingData"
                 :is-header-visible="true"
                 :is-basic-filter="true"
-                @fetch-data="onFetchData"
+                @pagination="onPaginationChange"
+                @column-sort="onColumnSortChange"
                 @filter="onFilterChange"
                 @remove-all-filters="onRemoveAllFilters">
                 <template #actionsHeader>
@@ -52,6 +54,7 @@ import {
 } from '@Core/defaults/alerts';
 import {
     DEFAULT_GRID_FETCH_PARAMS,
+    DEFAULT_GRID_PAGINATION,
 } from '@Core/defaults/grid';
 import {
     SIZE,
@@ -109,6 +112,8 @@ export default {
             isPrefetchingData: true,
             details: [],
             downloadLink: '',
+            localParams: DEFAULT_GRID_FETCH_PARAMS,
+            pagination: DEFAULT_GRID_PAGINATION,
         };
     },
     computed: {
@@ -131,6 +136,13 @@ export default {
         ...mapActions('channel', [
             'getExportDetails',
         ]),
+        onPaginationChange(pagination) {
+            this.pagination = pagination;
+
+            this.localParams.offset = (pagination.page - 1) * pagination.itemsPerPage;
+
+            this.onFetchData();
+        },
         onGetExportDetailsSuccess({
             details,
             links,
@@ -145,21 +157,28 @@ export default {
         },
         onRemoveAllFilters() {
             this.filterValues = {};
+            this.pagination.page = 1;
+            this.localParams.filter = {};
+            this.localParams.offset = 0;
 
-            this.onFetchData({
-                ...this.localParams,
-                filter: {},
-            });
+            this.onFetchData();
         },
         onFilterChange(filters) {
             this.filterValues = filters;
+            this.pagination.page = 1;
+            this.localParams.filter = filters;
+            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
-            this.onFetchData({
-                ...this.localParams,
-                filter: this.filterValues,
-            });
+            this.onFetchData();
         },
-        async onFetchData(params = DEFAULT_GRID_FETCH_PARAMS) {
+        onColumnSortChange(sortedColumn) {
+            this.localParams.sortedColumn = sortedColumn;
+
+            this.onFetchData();
+        },
+        async onFetchData(params = this.localParams) {
+            this.localParams = params;
+
             await getGridData({
                 $route: this.$route,
                 $cookies: this.$cookies,

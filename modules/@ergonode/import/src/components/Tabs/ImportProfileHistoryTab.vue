@@ -9,6 +9,7 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :pagination="pagination"
                 :filters="filterValues"
                 :extended-columns="extendedColumns"
                 :extended-data-cells="extendedDataCells"
@@ -19,7 +20,8 @@
                 :is-basic-filter="true"
                 :is-border="true"
                 @preview-row="onPreviewRow"
-                @fetch-data="onFetchData"
+                @pagination="onPaginationChange"
+                @column-sort="onColumnSortChange"
                 @remove-all-filters="onRemoveAllFilters"
                 @filter="onFilterChange" />
             <ImportDetailsModalGrid

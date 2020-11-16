@@ -31,6 +31,7 @@
         </HorizontalRoutingTabBar>
         <ModalTabBar
             v-if="isModalVisible"
+            title="Add resources"
             :items="modalTabs"
             @close="onCreatedData" />
     </Page>

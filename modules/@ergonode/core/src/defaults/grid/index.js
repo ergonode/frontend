@@ -88,3 +88,8 @@ export const DEFAULT_GRID_FETCH_PARAMS = {
     filter: {},
     sortedColumn: {},
 };
+
+export const DEFAULT_GRID_PAGINATION = {
+    page: 1,
+    itemsPerPage: DATA_LIMIT,
+};

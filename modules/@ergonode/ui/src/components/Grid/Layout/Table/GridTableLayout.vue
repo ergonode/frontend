@@ -138,6 +138,7 @@
 <script>
 import {
     COLUMN_WIDTH,
+    DEFAULT_GRID_PAGINATION,
     GRID_ACTION,
     PINNED_COLUMN_STATE,
     ROW_HEIGHT,
@@ -226,18 +227,13 @@ export default {
             default: () => ({}),
         },
         /**
-         * Current visible page at Grid
+         * Data model of pagination
          */
-        currentPage: {
-            type: Number,
-            default: 1,
-        },
-        /**
-         * Max visible rows for *currentPage* at Grid
-         */
-        maxRows: {
-            type: Number,
-            default: 1,
+        pagination: {
+            type: Object,
+            default: () => ({
+                ...DEFAULT_GRID_PAGINATION,
+            }),
         },
         /**
          * Determines the size of row height
@@ -373,7 +369,7 @@ export default {
             return this.rows.length;
         },
         rowsOffset() {
-            return (this.currentPage - 1) * this.maxRows;
+            return (this.pagination.page - 1) * this.pagination.itemsPerPage;
         },
         columnsOffset() {
             return this.isSelectColumn ? 1 : 0;
