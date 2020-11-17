@@ -89,9 +89,10 @@
                         name="placeholder"
                         :is-visible="isVisible" />
                 </template>
-                <template #dropdown>
+                <template #dropdown="{ isVisible }">
                     <slot
                         name="dropdown"
+                        :is-visible="isVisible"
                         :on-select-value-callback="onSelectValue" />
                 </template>
                 <template #option="{ index, option, isSelected, isSmallSize }">
@@ -300,7 +301,6 @@ export default {
         return {
             selectedOptions: {},
             isBlurringNeeded: false,
-            isMouseMoving: false,
             isFocused: false,
             hasAnyValueSelected: false,
             needsToRender: false,
@@ -410,7 +410,9 @@ export default {
                 this.blur();
             }
         },
-        onFocus() {
+        onFocus(event) {
+            event.preventDefault();
+
             this.isBlurringNeeded = false;
             this.offset = this.getDropDownOffset();
             this.isFocused = true;
@@ -434,16 +436,9 @@ export default {
             }
         },
         onMouseDown(event) {
-            this.$refs.activator.$el.addEventListener('mousemove', this.onMouseMove);
-
             event.preventDefault();
-            event.stopPropagation();
-
-            this.isMouseMoving = false;
         },
         onMouseUp() {
-            this.$refs.activator.$el.removeEventListener('mousemove', this.onMouseMove);
-
             if (this.dismissible) {
                 if (this.isFocused) {
                     this.isBlurringNeeded = true;
@@ -454,14 +449,10 @@ export default {
             } else {
                 this.$refs.input.focus();
             }
-
-            this.isMouseMoving = false;
-        },
-        onMouseMove() {
-            this.isMouseMoving = true;
         },
         onClickOutside({
-            event, isClickedOutside,
+            event,
+            isClickedOutside,
         }) {
             const isClickedInsideActivator = this.$refs.activator.$el.contains(event.target);
 

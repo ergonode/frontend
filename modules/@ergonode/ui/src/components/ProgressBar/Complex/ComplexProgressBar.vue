@@ -3,31 +3,37 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="complex-progress-bar">
-        <span
-            class="complex-progress-bar__label"
-            v-text="label" />
-        <div class="complex-progress-bar__progress">
-            <div
-                class="complex-progress-bar__value"
-                ref="value"
-                :style="valueStyles" />
-            <div
-                v-if="value < maxValue && value > 0"
-                ref="progressDivider"
-                class="complex-progress-bar__progress-divider"
-            />
+    <ResizeObserver @resize="onResize">
+        <div class="complex-progress-bar">
+            <span
+                class="complex-progress-bar__label"
+                v-text="label" />
+            <div class="complex-progress-bar__progress">
+                <div
+                    class="complex-progress-bar__value"
+                    ref="value"
+                    :style="valueStyles" />
+                <div
+                    v-if="value < maxValue && value > 0"
+                    ref="progressDivider"
+                    class="complex-progress-bar__progress-divider"
+                />
+            </div>
         </div>
-    </div>
+    </ResizeObserver>
 </template>
 
 <script>
 import {
     GRAPHITE_DARK,
 } from '@UI/assets/scss/_js-variables/colors.scss';
+import ResizeObserver from '@UI/components/Observers/ResizeObserver';
 
 export default {
     name: 'ComplexProgressBar',
+    components: {
+        ResizeObserver,
+    },
     props: {
         /**
          * Color of progress bar
@@ -59,11 +65,6 @@ export default {
             default: 100,
         },
     },
-    data() {
-        return {
-            observer: null,
-        };
-    },
     computed: {
         progressStyle() {
             return {
@@ -77,29 +78,20 @@ export default {
             };
         },
     },
-    mounted() {
-        this.observer = new ResizeObserver((entries) => {
-            const progressBar = entries[0];
+    methods: {
+        onResize(entry) {
+            const {
+                width,
+            } = entry.contentRect;
+            const progressWidth = (this.value / this.maxValue) * width;
 
-            if (progressBar) {
-                const {
-                    offsetWidth,
-                } = this.$el;
-                const progressWidth = (this.value / this.maxValue) * offsetWidth;
-
-                window.requestAnimationFrame(() => {
-                    if (this.$refs.value && this.$refs.progressDivider) {
-                        this.$refs.value.style.transform = `scaleX(${progressWidth})`;
-                        this.$refs.progressDivider.style.transform = `translateX(${progressWidth - 1}px)`;
-                    }
-                });
-            }
-        });
-
-        this.observer.observe(this.$el);
-    },
-    beforeDestroy() {
-        this.observer.disconnect();
+            window.requestAnimationFrame(() => {
+                if (this.$refs.value && this.$refs.progressDivider) {
+                    this.$refs.value.style.transform = `scaleX(${progressWidth})`;
+                    this.$refs.progressDivider.style.transform = `translateX(${progressWidth - 1}px)`;
+                }
+            });
+        },
     },
 };
 </script>

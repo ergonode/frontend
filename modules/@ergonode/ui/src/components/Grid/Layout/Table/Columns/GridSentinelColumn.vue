@@ -3,23 +3,23 @@
  * See LICENSE for license details.
  */
 <template>
-    <Observer
+    <IntersectionObserver
         :options="observerOptions"
         @intersect="onIntersect">
         <div :class="classes" />
-    </Observer>
+    </IntersectionObserver>
 </template>
 
 <script>
 import {
     PINNED_COLUMN_STATE,
 } from '@Core/defaults/grid';
-import Observer from '@UI/components/Events/Observer';
+import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 
 export default {
     name: 'GridSentinelColumn',
     components: {
-        Observer,
+        IntersectionObserver,
     },
     props: {
         /**

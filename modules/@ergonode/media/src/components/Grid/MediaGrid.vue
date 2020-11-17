@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <Observer @intersect="onIntersect">
+    <IntersectionObserver @intersect="onIntersect">
         <Grid
             :columns="columnsWithAttachColumn"
             :data-count="filtered"
@@ -35,7 +35,7 @@
                     @click.native="onSaveMedia" />
             </template>
         </Grid>
-    </Observer>
+    </IntersectionObserver>
 </template>
 
 <script>
@@ -62,7 +62,7 @@ import {
     GREEN,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Button from '@UI/components/Button/Button';
-import Observer from '@UI/components/Events/Observer';
+import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import Grid from '@UI/components/Grid/Grid';
 import {
     debounce,
@@ -73,7 +73,7 @@ export default {
     components: {
         Grid,
         Button,
-        Observer,
+        IntersectionObserver,
     },
     mixins: [
         gridDraftMixin,

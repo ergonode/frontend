@@ -82,7 +82,7 @@ import ProductTemplateForm from '@Products/components/Forms/ProductTemplateForm'
 import ProductCompleteness from '@Products/components/Progress/ProductCompleteness';
 import PRIVILEGES from '@Products/config/privileges';
 import Button from '@UI/components/Button/Button';
-import Observer from '@UI/components/Events/Observer';
+import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import IconRestore from '@UI/components/Icons/Actions/IconRestore';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';

@@ -5,7 +5,7 @@
 <template>
     <ClickOutsideGlobalEvent @click-outside="onClickOutside">
         <div
-            class="dropdown"
+            :class="classes"
             :style="positionStyle"
             ref="dropdown">
             <slot />
@@ -29,6 +29,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        visible: {
+            type: Boolean,
+            default: false,
+        },
         /**
          * Determines position where component will be anchored
          */
@@ -47,45 +51,53 @@ export default {
             positionStyle: null,
         };
     },
+    computed: {
+        classes() {
+            return [
+                'dropdown',
+                {
+                    'dropdown--visible': this.visible,
+                },
+            ];
+        },
+    },
     watch: {
         offset: {
             immediate: true,
             handler() {
-                this.$nextTick(() => {
-                    window.requestAnimationFrame(() => {
-                        const {
-                            innerHeight,
-                        } = window;
-                        const position = {};
-                        let maxHeight = 200;
+                window.requestAnimationFrame(() => {
+                    const {
+                        innerHeight,
+                    } = window;
+                    const position = {};
+                    let maxHeight = 200;
 
-                        if (this.fixed) {
-                            position.maxHeight = `${maxHeight}px`;
-                            position.width = `${this.offset.width}px`;
-                        } else {
-                            maxHeight = this.$el.clientHeight;
-                        }
+                    if (this.fixed) {
+                        position.maxHeight = `${maxHeight}px`;
+                        position.width = `${this.offset.width}px`;
+                    } else {
+                        maxHeight = this.$el.clientHeight;
+                    }
 
-                        const yPos = innerHeight - this.offset.y;
+                    const yPos = innerHeight - this.offset.y;
 
-                        if (this.$el.offsetWidth + this.offset.x > window.innerWidth) {
-                            position.right = 0;
-                        } else {
-                            position.left = `${this.offset.x}px`;
-                        }
+                    if (this.$el.offsetWidth + this.offset.x > window.innerWidth) {
+                        position.right = 0;
+                    } else {
+                        position.left = `${this.offset.x}px`;
+                    }
 
-                        if (yPos < maxHeight
-                            && this.offset.y >= maxHeight) {
-                            position.bottom = `${yPos}px`;
-                        } else if (this.offset.y < maxHeight
-                            && yPos <= maxHeight) {
-                            position.top = 0;
-                        } else {
-                            position.top = `${this.offset.y + this.offset.height}px`;
-                        }
+                    if (yPos < maxHeight
+                        && this.offset.y >= maxHeight) {
+                        position.bottom = `${yPos}px`;
+                    } else if (this.offset.y < maxHeight
+                        && yPos <= maxHeight) {
+                        position.top = 0;
+                    } else {
+                        position.top = `${this.offset.y + this.offset.height}px`;
+                    }
 
-                        this.positionStyle = position;
-                    });
+                    this.positionStyle = position;
                 });
             },
         },
@@ -113,10 +125,14 @@ export default {
 <style lang="scss" scoped>
     .dropdown {
         position: absolute;
+        display: none;
         z-index: $Z_INDEX_MAX;
-        display: flex;
         flex-direction: column;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_2_DP;
+
+        &--visible {
+            display: flex;
+        }
     }
 </style>

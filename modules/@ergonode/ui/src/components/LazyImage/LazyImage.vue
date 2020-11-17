@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <Observer
+    <IntersectionObserver
         observe-once
         @intersect="onIntersect">
         <img
@@ -12,19 +12,19 @@
             :class="classes"
             :src="require('@UI/assets/images/placeholders/no_image.svg')"
             alt="Image loaded asynchronously">
-    </Observer>
+    </IntersectionObserver>
 </template>
 
 <script>
 import {
     getImageData,
 } from '@Core/models/multimedia';
-import Observer from '@UI/components/Events/Observer';
+import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 
 export default {
     name: 'LazyImage',
     components: {
-        Observer,
+        IntersectionObserver,
     },
     props: {
         /**

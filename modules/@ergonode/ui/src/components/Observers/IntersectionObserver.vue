@@ -5,7 +5,7 @@
 
 <script>
 export default {
-    name: 'Observer',
+    name: 'IntersectionObserver',
     props: {
         options: {
             type: Object,
