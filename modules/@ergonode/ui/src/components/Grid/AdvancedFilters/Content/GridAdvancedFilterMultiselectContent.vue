@@ -8,6 +8,7 @@
         :fixed="true"
         @input="onEmptyRecordChange">
         <VirtualScroll
+            v-if="options.length"
             :items="options"
             :root-height="200"
             :render-ahead="4"
@@ -32,6 +33,7 @@
                 </ListElement>
             </template>
         </VirtualScroll>
+        <DropdownPlaceholder v-else />
     </GridAdvancedFilterContent>
 </template>
 
@@ -48,6 +50,7 @@ import ListElement from '@UI/components/List/ListElement';
 import ListElementAction from '@UI/components/List/ListElementAction';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
+import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import {
     VirtualScroll,
 } from 'vue-windowing';
@@ -61,6 +64,7 @@ export default {
         ListElementAction,
         ListElementDescription,
         ListElementTitle,
+        DropdownPlaceholder,
         CheckBox,
     },
     props: {
