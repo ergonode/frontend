@@ -7,7 +7,7 @@
         observe-once
         @resize="onResize">
         <Dropdown
-            :offset="offset"
+            :parent-reference="parentReference"
             :visible="isVisible"
             :fixed="fixedContent"
             @click-outside="onClickOutside">
@@ -154,13 +154,6 @@ export default {
             default: () => [],
         },
         /**
-         * Determines position where component will be anchored
-         */
-        offset: {
-            type: Object,
-            required: true,
-        },
-        /**
          * Map of selected option values
          */
         selectedOptions: {
@@ -180,6 +173,12 @@ export default {
         isVisible: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * The vue component reference to which dropdown is hooked
+         */
+        parentReference: {
+            required: true,
         },
     },
     data() {

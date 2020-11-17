@@ -14,7 +14,7 @@
         </div>
         <Dropdown
             v-if="isReadyToRender"
-            :offset="offset"
+            :parent-reference="$refs.activator"
             :fixed="fixedContent"
             :visible="isFocused"
             @click-outside="onClickOutside">
@@ -96,7 +96,6 @@ export default {
             isFocused: false,
             isHovered: false,
             isReadyToRender: false,
-            offset: {},
         };
     },
     computed: {
@@ -117,8 +116,6 @@ export default {
     },
     watch: {
         isFocused() {
-            this.offset = this.getDropDownOffset();
-
             if (!this.isReadyToRender) {
                 this.isReadyToRender = true;
             }
@@ -127,18 +124,6 @@ export default {
         },
     },
     methods: {
-        getDropDownOffset() {
-            const {
-                x, y, width, height,
-            } = this.$refs.activator.getBoundingClientRect();
-
-            return {
-                x,
-                y,
-                width,
-                height: height + 1,
-            };
-        },
         onMouseEnter() {
             this.isHovered = true;
             this.$emit('hover', true);

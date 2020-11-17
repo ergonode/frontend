@@ -66,9 +66,9 @@
         <FadeTransition>
             <SelectDropdown
                 v-if="isReadyToRender"
-                :data-cy="`${dataCy}-drop-down`"
                 ref="menu"
-                :offset="offset"
+                :parent-reference="$refs.activator"
+                :data-cy="`${dataCy}-drop-down`"
                 :fixed="fixedContent"
                 :size="size"
                 :multiselect="multiselect"
@@ -304,7 +304,6 @@ export default {
             isFocused: false,
             isReadyToRender: false,
             hasAnyValueSelected: false,
-            offset: {},
         };
     },
     computed: {
@@ -373,18 +372,6 @@ export default {
                 });
             }
         },
-        getDropDownOffset() {
-            const {
-                x, y, width, height,
-            } = this.$refs.activator.$el.getBoundingClientRect();
-
-            return {
-                x,
-                y,
-                width,
-                height,
-            };
-        },
         blur() {
             this.isFocused = false;
 
@@ -414,7 +401,6 @@ export default {
             event.preventDefault();
 
             this.isBlurringNeeded = false;
-            this.offset = this.getDropDownOffset();
             this.isFocused = true;
 
             if (!this.isReadyToRender) {

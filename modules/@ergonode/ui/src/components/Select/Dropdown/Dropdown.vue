@@ -36,16 +36,10 @@ export default {
             default: false,
         },
         /**
-         * Determines position where component will be anchored
+         * The vue component reference to which dropdown is hooked
          */
-        offset: {
-            type: Object,
-            default: () => ({
-                x: 0,
-                y: 0,
-                width: 0,
-                height: 0,
-            }),
+        parentReference: {
+            required: true,
         },
     },
     computed: {
@@ -59,10 +53,19 @@ export default {
         },
     },
     watch: {
-        offset: {
+        visible: {
             immediate: true,
             handler() {
+                if (!this.parentReference) {
+                    return;
+                }
+
+                const parentElement = typeof this.parentReference.$el === 'undefined'
+                    ? this.parentReference
+                    : this.parentReference.$el;
+
                 requestAnimationFrame(() => {
+                    const parentOffset = parentElement.getBoundingClientRect();
                     const {
                         innerHeight,
                     } = window;
@@ -70,27 +73,27 @@ export default {
 
                     if (this.fixed) {
                         this.$refs.dropdown.style.maxHeight = `${maxHeight}px`;
-                        this.$refs.dropdown.style.width = `${this.offset.width}px`;
+                        this.$refs.dropdown.style.width = `${parentOffset.width}px`;
                     } else {
                         maxHeight = this.$refs.dropdown.clientHeight;
                     }
 
-                    const yPos = innerHeight - this.offset.y;
+                    const yPos = innerHeight - parentOffset.y;
 
-                    if (this.$el.offsetWidth + this.offset.x > window.innerWidth) {
+                    if (this.$el.offsetWidth + parentOffset.x > window.innerWidth) {
                         this.$refs.dropdown.style.right = 0;
                     } else {
-                        this.$refs.dropdown.style.left = `${this.offset.x}px`;
+                        this.$refs.dropdown.style.left = `${parentOffset.x}px`;
                     }
 
                     if (yPos < maxHeight
-                        && this.offset.y >= maxHeight) {
+                        && parentOffset.y >= maxHeight) {
                         this.$refs.dropdown.style.bottom = `${yPos}px`;
-                    } else if (this.offset.y < maxHeight
+                    } else if (parentOffset.y < maxHeight
                         && yPos <= maxHeight) {
                         this.$refs.dropdown.style.top = 0;
                     } else {
-                        this.$refs.dropdown.style.top = `${this.offset.y + this.offset.height}px`;
+                        this.$refs.dropdown.style.top = `${parentOffset.y + parentOffset.height}px`;
                     }
                 });
             },
