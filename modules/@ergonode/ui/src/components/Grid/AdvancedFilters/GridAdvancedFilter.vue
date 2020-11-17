@@ -215,7 +215,7 @@ export default {
                 value: DRAGGED_ELEMENT.FILTER,
             });
 
-            window.requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
                 this.__setState({
                     key: 'ghostIndex',
                     value: this.index,

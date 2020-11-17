@@ -2,15 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-
-<template>
-    <IntersectionObserver @intersect="onIntersect">
-        <slot />
-    </IntersectionObserver>
-</template>
-
 <script>
-import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import {
     getPositionForBrowser,
     isMouseInsideElement,
@@ -18,22 +10,29 @@ import {
 
 export default {
     name: 'ClickOutsideGlobalEvent',
-    components: {
-        IntersectionObserver,
+    data() {
+        return {
+            observer: null,
+        };
     },
-    beforeDestroy() {
-        window.removeEventListener('click', this.onClickOutside);
-    },
-    methods: {
-        onIntersect(isIntersecting) {
-            this.$nextTick(() => {
-                if (isIntersecting) {
+    mounted() {
+        this.$nextTick(() => {
+            this.observer = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
                     window.addEventListener('click', this.onClickOutside);
                 } else {
                     window.removeEventListener('click', this.onClickOutside);
                 }
             });
-        },
+
+            this.observer.observe(this.$el);
+        });
+    },
+    beforeDestroy() {
+        window.removeEventListener('click', this.onClickOutside);
+        this.observer.disconnect();
+    },
+    methods: {
         onClickOutside(event) {
             const {
                 xPos,
@@ -46,6 +45,9 @@ export default {
                 isClickedOutside,
             });
         },
+    },
+    render() {
+        return this.$scopedSlots.default();
     },
 };
 </script>

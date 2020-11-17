@@ -317,7 +317,7 @@ export default {
                 return;
             }
 
-            window.requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
                 this.editorWidth = this.$refs.editorContent.$el.offsetWidth;
             });
 

@@ -79,7 +79,7 @@ export default {
             } = entry.contentRect;
             const progressWidth = (this.value / this.maxValue) * width;
 
-            window.requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
                 if (this.$refs.value && this.$refs.progressDivider) {
                     this.$refs.value.style.transform = `scaleX(${progressWidth})`;
                     this.$refs.progressDivider.style.transform = `translateX(${progressWidth - 1}px)`;

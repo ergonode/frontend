@@ -234,7 +234,7 @@ export default {
         onMounted() {
             if (this.autofocus) {
                 this.$nextTick(() => {
-                    window.requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
                         this.$refs.input.focus();
                     });
                 });

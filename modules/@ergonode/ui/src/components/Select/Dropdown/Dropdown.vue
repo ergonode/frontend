@@ -68,7 +68,7 @@ export default {
         offset: {
             immediate: true,
             handler() {
-                window.requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
                     const {
                         innerHeight,
                     } = window;
