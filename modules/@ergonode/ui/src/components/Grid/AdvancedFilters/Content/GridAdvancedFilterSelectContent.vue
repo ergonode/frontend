@@ -7,21 +7,26 @@
         :value="value.isEmptyRecord"
         :fixed="true"
         @input="onEmptyRecordChange">
-        <List>
-            <ListElement
-                v-for="(option, index) in options"
-                :key="index"
-                :size="smallSize"
-                :selected="index === selectedOptionIndex"
-                @click.native="onSelectValue(option, index)">
-                <ListElementDescription>
-                    <ListElementTitle
-                        :size="smallSize"
-                        :hint="option.value ? `#${option.key} ${languageCode}` : ''"
-                        :title="option.value || `#${option.key}`" />
-                </ListElementDescription>
-            </ListElement>
-        </List>
+        <VirtualScroll
+            :items="options"
+            :root-height="200"
+            :render-ahead="4"
+            :estimated-height="20">
+            <template #item="{ item, index}">
+                <ListElement
+                    :key="index"
+                    :selected="typeof selectedOptions[index] !== 'undefined'"
+                    :size="smallSize"
+                    @click.native.prevent="onSelectValue(item, index)">
+                    <ListElementDescription>
+                        <ListElementTitle
+                            :size="smallSize"
+                            :hint="item.value ? `#${item.key} ${languageCode}` : ''"
+                            :title="item.value || `#${item.key}`" />
+                    </ListElementDescription>
+                </ListElement>
+            </template>
+        </VirtualScroll>
     </GridAdvancedFilterContent>
 </template>
 
@@ -33,16 +38,18 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import GridAdvancedFilterContent from '@UI/components/Grid/AdvancedFilters/Content/GridAdvancedFilterContent';
-import List from '@UI/components/List/List';
 import ListElement from '@UI/components/List/ListElement';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
+import {
+    VirtualScroll,
+} from 'vue-windowing';
 
 export default {
     name: 'GridAdvancedFilterSelectContent',
     components: {
         GridAdvancedFilterContent,
-        List,
+        VirtualScroll,
         ListElement,
         ListElementDescription,
         ListElementTitle,

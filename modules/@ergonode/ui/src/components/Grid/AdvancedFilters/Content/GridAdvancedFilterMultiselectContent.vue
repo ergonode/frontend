@@ -7,26 +7,31 @@
         :value="value.isEmptyRecord"
         :fixed="true"
         @input="onEmptyRecordChange">
-        <List>
-            <ListElement
-                v-for="(option, index) in options"
-                :key="index"
-                :selected="typeof selectedOptions[index] !== 'undefined'"
-                :size="smallSize"
-                @click.native.prevent="onSelectValue(option, index)">
-                <template #default="{ isSelected }">
-                    <ListElementAction :size="smallSize">
-                        <CheckBox :value="isSelected" />
-                    </ListElementAction>
-                    <ListElementDescription>
-                        <ListElementTitle
-                            :size="smallSize"
-                            :hint="option.value ? `#${option.key} ${languageCode}` : ''"
-                            :title="option.value || `#${option.key}`" />
-                    </ListElementDescription>
-                </template>
-            </ListElement>
-        </List>
+        <VirtualScroll
+            :items="options"
+            :root-height="200"
+            :render-ahead="4"
+            :estimated-height="20">
+            <template #item="{ item, index}">
+                <ListElement
+                    :key="index"
+                    :selected="typeof selectedOptions[index] !== 'undefined'"
+                    :size="smallSize"
+                    @click.native.prevent="onSelectValue(item, index)">
+                    <template #default="{ isSelected }">
+                        <ListElementAction :size="smallSize">
+                            <CheckBox :value="isSelected" />
+                        </ListElementAction>
+                        <ListElementDescription>
+                            <ListElementTitle
+                                :size="smallSize"
+                                :hint="item.value ? `#${item.key} ${languageCode}` : ''"
+                                :title="item.value || `#${item.key}`" />
+                        </ListElementDescription>
+                    </template>
+                </ListElement>
+            </template>
+        </VirtualScroll>
     </GridAdvancedFilterContent>
 </template>
 
@@ -39,17 +44,19 @@ import {
 } from '@Core/defaults/theme';
 import CheckBox from '@UI/components/CheckBox/CheckBox';
 import GridAdvancedFilterContent from '@UI/components/Grid/AdvancedFilters/Content/GridAdvancedFilterContent';
-import List from '@UI/components/List/List';
 import ListElement from '@UI/components/List/ListElement';
 import ListElementAction from '@UI/components/List/ListElementAction';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
+import {
+    VirtualScroll,
+} from 'vue-windowing';
 
 export default {
     name: 'GridAdvancedFilterMultiselectContent',
     components: {
         GridAdvancedFilterContent,
-        List,
+        VirtualScroll,
         ListElement,
         ListElementAction,
         ListElementDescription,

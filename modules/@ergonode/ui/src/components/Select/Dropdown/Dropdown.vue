@@ -56,7 +56,7 @@ export default {
         visible: {
             immediate: true,
             handler() {
-                if (!this.parentReference) {
+                if (!this.parentReference || !this.visible) {
                     return;
                 }
 
@@ -66,6 +66,7 @@ export default {
 
                 requestAnimationFrame(() => {
                     const parentOffset = parentElement.getBoundingClientRect();
+                    const offset = 2;
                     const {
                         innerHeight,
                     } = window;
@@ -93,7 +94,7 @@ export default {
                         && yPos <= maxHeight) {
                         this.$refs.dropdown.style.top = 0;
                     } else {
-                        this.$refs.dropdown.style.top = `${parentOffset.y + parentOffset.height}px`;
+                        this.$refs.dropdown.style.top = `${parentOffset.y + parentOffset.height + offset}px`;
                     }
                 });
             },
@@ -127,6 +128,13 @@ export default {
         flex-direction: column;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_2_DP;
+        will-change:
+            top,
+            left,
+            bottom,
+            right,
+            height,
+            width;
 
         &--visible {
             display: flex;
