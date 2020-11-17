@@ -6,7 +6,6 @@
     <ClickOutsideGlobalEvent @click-outside="onClickOutside">
         <div
             :class="classes"
-            :style="positionStyle"
             ref="dropdown">
             <slot />
         </div>
@@ -49,11 +48,6 @@ export default {
             }),
         },
     },
-    data() {
-        return {
-            positionStyle: null,
-        };
-    },
     computed: {
         classes() {
             return [
@@ -72,35 +66,32 @@ export default {
                     const {
                         innerHeight,
                     } = window;
-                    const position = {};
                     let maxHeight = 200;
 
                     if (this.fixed) {
-                        position.maxHeight = `${maxHeight}px`;
-                        position.width = `${this.offset.width}px`;
+                        this.$refs.dropdown.style.maxHeight = `${maxHeight}px`;
+                        this.$refs.dropdown.style.width = `${this.offset.width}px`;
                     } else {
-                        maxHeight = this.$el.clientHeight;
+                        maxHeight = this.$refs.dropdown.clientHeight;
                     }
 
                     const yPos = innerHeight - this.offset.y;
 
                     if (this.$el.offsetWidth + this.offset.x > window.innerWidth) {
-                        position.right = 0;
+                        this.$refs.dropdown.style.right = 0;
                     } else {
-                        position.left = `${this.offset.x}px`;
+                        this.$refs.dropdown.style.left = `${this.offset.x}px`;
                     }
 
                     if (yPos < maxHeight
                         && this.offset.y >= maxHeight) {
-                        position.bottom = `${yPos}px`;
+                        this.$refs.dropdown.style.bottom = `${yPos}px`;
                     } else if (this.offset.y < maxHeight
                         && yPos <= maxHeight) {
-                        position.top = 0;
+                        this.$refs.dropdown.style.top = 0;
                     } else {
-                        position.top = `${this.offset.y + this.offset.height}px`;
+                        this.$refs.dropdown.style.top = `${this.offset.y + this.offset.height}px`;
                     }
-
-                    this.positionStyle = position;
                 });
             },
         },
