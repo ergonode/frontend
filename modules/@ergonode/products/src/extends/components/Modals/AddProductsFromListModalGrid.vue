@@ -12,6 +12,7 @@
                 :data-count="filtered"
                 :rows="rows"
                 :drafts="drafts"
+                :pagination="pagination"
                 :filters="filterValues"
                 :collection-cell-binding="collectionCellBinding"
                 :extended-columns="extendedColumns"
@@ -25,7 +26,8 @@
                 :is-header-visible="true"
                 :is-basic-filter="true"
                 @cell-value="onCellValueChange"
-                @fetch-data="onFetchData"
+                @pagination="onPaginationChange"
+                @column-sort="onColumnSortChange"
                 @remove-all-filters="onRemoveAllFilters"
                 @filter="onFilterChange">
                 <template #actionsHeader>
@@ -96,6 +98,7 @@ export default {
             isPrefetchingData: true,
             skus: {},
             isSubmitting: false,
+            localParams: DEFAULT_GRID_FETCH_PARAMS,
         };
     },
     computed: {
@@ -124,21 +127,28 @@ export default {
         ]),
         onFilterChange(filters) {
             this.filterValues = filters;
+            this.pagination.page = 1;
+            this.localParams.filter = filters;
+            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
-            this.onFetchData({
-                ...this.localParams,
-                filter: this.filterValues,
-            });
+            this.onFetchData();
         },
         onRemoveAllFilters() {
             this.filterValues = {};
+            this.pagination.page = 1;
+            this.localParams.filter = {};
+            this.localParams.offset = 0;
 
-            this.onFetchData({
-                ...this.localParams,
-                filter: {},
-            });
+            this.onFetchData();
         },
-        async onFetchData(params = DEFAULT_GRID_FETCH_PARAMS) {
+        onColumnSortChange(sortedColumn) {
+            this.localParams.sortedColumn = sortedColumn;
+
+            this.onFetchData();
+        },
+        async onFetchData(params = this.localParams) {
+            this.localParams = params;
+
             await getGridData({
                 $route: this.$route,
                 $cookies: this.$cookies,

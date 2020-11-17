@@ -48,7 +48,7 @@
             </div>
         </div>
         <GridAdvancedFilterDropdown
-            v-if="needsToRender"
+            v-if="isReadyToRender"
             ref="menu"
             :offset="offset"
             :is-visible="isFocused"
@@ -152,7 +152,7 @@ export default {
             mouseUpTime: 0,
             isFocused: false,
             isClickedOutside: false,
-            needsToRender: false,
+            isReadyToRender: false,
             offset: {},
         };
     },
@@ -290,8 +290,8 @@ export default {
                 this.isFocused = true;
                 this.offset = this.getDropDownOffset();
 
-                if (!this.needsToRender) {
-                    this.needsToRender = true;
+                if (!this.isReadyToRender) {
+                    this.isReadyToRender = true;
                 }
             }
         },

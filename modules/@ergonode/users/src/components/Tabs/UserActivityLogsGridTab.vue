@@ -8,6 +8,7 @@
             <Grid
                 :columns="columns"
                 :data-count="filtered"
+                :pagination="pagination"
                 :rows="rows"
                 :extended-columns="extendedColumns"
                 :extended-data-cells="extendedDataCells"
@@ -16,7 +17,8 @@
                 :extended-edit-filter-cells="extendedDataEditFilterCells"
                 :is-prefetching-data="isPrefetchingData"
                 :is-border="true"
-                @fetch-data="onFetchData" />
+                @pagination="onPaginationChange"
+                @column-sort="onColumnSortChange" />
         </template>
     </CenterViewTemplate>
 </template>

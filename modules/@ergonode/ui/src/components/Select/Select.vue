@@ -65,7 +65,7 @@
         </template>
         <FadeTransition>
             <SelectDropdown
-                v-if="needsToRender"
+                v-if="isReadyToRender"
                 :data-cy="`${dataCy}-drop-down`"
                 ref="menu"
                 :offset="offset"
@@ -302,8 +302,8 @@ export default {
             selectedOptions: {},
             isBlurringNeeded: false,
             isFocused: false,
+            isReadyToRender: false,
             hasAnyValueSelected: false,
-            needsToRender: false,
             offset: {},
         };
     },
@@ -417,8 +417,8 @@ export default {
             this.offset = this.getDropDownOffset();
             this.isFocused = true;
 
-            if (!this.needsToRender) {
-                this.needsToRender = true;
+            if (!this.isReadyToRender) {
+                this.isReadyToRender = true;
             }
 
             this.$emit('focus', true);

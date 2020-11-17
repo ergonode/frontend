@@ -9,6 +9,7 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :pagination="pagination"
                 :filters="filterValues"
                 :placeholder="noDataPlaceholder"
                 :extended-columns="extendedColumns"
@@ -23,7 +24,8 @@
                 @edit-row="onEditRow"
                 @preview-row="onEditRow"
                 @delete-row="onRemoveRow"
-                @fetch-data="onFetchData"
+                @pagination="onPaginationChange"
+                @column-sort="onColumnSortChange"
                 @remove-all-filters="onRemoveAllFilters"
                 @filter="onFilterChange" />
         </template>

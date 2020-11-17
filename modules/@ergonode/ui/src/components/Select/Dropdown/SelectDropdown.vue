@@ -29,7 +29,7 @@
                         v-if="options.length"
                         :items="options"
                         :root-height="dropdownHeight"
-                        :render-ahead="2"
+                        :render-ahead="4"
                         :estimated-height="20">
                         <template #item="{ item, index}">
                             <DropdownListElement

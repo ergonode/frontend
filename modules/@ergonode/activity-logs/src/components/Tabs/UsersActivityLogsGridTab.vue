@@ -10,6 +10,7 @@
                 :data-count="filtered"
                 :rows="rows"
                 :filters="filterValues"
+                :pagination="pagination"
                 :extended-columns="extendedColumns"
                 :extended-data-cells="extendedDataCells"
                 :extended-data-filter-cells="extendedDataFilterCells"
@@ -18,7 +19,8 @@
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
-                @fetch-data="onFetchData"
+                @pagination="onPaginationChange"
+                @column-sort="onColumnSortChange"
                 @filter="onFilterChange"
                 @remove-all-filters="onRemoveAllFilters" />
         </template>

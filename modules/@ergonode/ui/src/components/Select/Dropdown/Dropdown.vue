@@ -29,6 +29,9 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines visibility of component
+         */
         visible: {
             type: Boolean,
             default: false,
@@ -125,8 +128,8 @@ export default {
 <style lang="scss" scoped>
     .dropdown {
         position: absolute;
-        display: none;
         z-index: $Z_INDEX_MAX;
+        display: none;
         flex-direction: column;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_2_DP;

@@ -35,7 +35,8 @@ export default {
     methods: {
         onClickOutside(event) {
             const {
-                xPos, yPos,
+                xPos,
+                yPos,
             } = getPositionForBrowser(event);
             const isClickedOutside = !isMouseInsideElement(this.$el, xPos, yPos);
 

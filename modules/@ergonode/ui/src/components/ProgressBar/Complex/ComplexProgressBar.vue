@@ -14,7 +14,7 @@
                     ref="value"
                     :style="valueStyles" />
                 <div
-                    v-if="value < maxValue && value > 0"
+                    v-if="value <= maxValue && value > 0 || value > maxValue"
                     ref="progressDivider"
                     class="complex-progress-bar__progress-divider"
                 />
@@ -66,12 +66,6 @@ export default {
         },
     },
     computed: {
-        progressStyle() {
-            return {
-                width: `${this.value}%`,
-                backgroundColor: this.color,
-            };
-        },
         valueStyles() {
             return {
                 backgroundColor: this.color,

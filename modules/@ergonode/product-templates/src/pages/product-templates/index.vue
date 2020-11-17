@@ -27,6 +27,7 @@
                     :data-count="filtered"
                     :rows="rows"
                     :filters="filterValues"
+                    :pagination="pagination"
                     :placeholder="noDataPlaceholder"
                     :default-layout="gridLayout.COLLECTION"
                     :extended-columns="extendedColumns"
@@ -44,7 +45,8 @@
                     @edit-row="onEditRow"
                     @preview-row="onEditRow"
                     @delete-row="onRemoveRow"
-                    @fetch-data="onFetchData"
+                    @pagination="onPaginationChange"
+                    @column-sort="onColumnSortChange"
                     @remove-all-filters="onRemoveAllFilters"
                     @filter="onFilterChange" />
             </template>
