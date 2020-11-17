@@ -12,31 +12,30 @@
             @mouseleave="onMouseLeave">
             <slot name="button" />
         </div>
-        <FadeTransition>
-            <Dropdown
-                v-if="isFocused"
-                :offset="getDropDownOffset()"
-                :fixed="fixedContent"
-                @click-outside="onClickOutside">
-                <List>
-                    <ListElement
-                        v-for="(option, index) in options"
-                        :key="index"
-                        :size="smallSize"
-                        @click.native.prevent="onSelectedValue(index)">
-                        <slot
-                            name="option"
-                            :option="option">
-                            <ListElementDescription v-if="isOptionsValid">
-                                <ListElementTitle
-                                    :title="option"
-                                    :size="smallSize" />
-                            </ListElementDescription>
-                        </slot>
-                    </ListElement>
-                </List>
-            </Dropdown>
-        </FadeTransition>
+        <Dropdown
+            v-if="isReadyToRender"
+            :parent-reference="$refs.activator"
+            :fixed="fixedContent"
+            :visible="isFocused"
+            @click-outside="onClickOutside">
+            <List>
+                <ListElement
+                    v-for="(option, index) in options"
+                    :key="index"
+                    :size="smallSize"
+                    @click.native.prevent="onSelectedValue(index)">
+                    <slot
+                        name="option"
+                        :option="option">
+                        <ListElementDescription v-if="isOptionsValid">
+                            <ListElementTitle
+                                :title="option"
+                                :size="smallSize" />
+                        </ListElementDescription>
+                    </slot>
+                </ListElement>
+            </List>
+        </Dropdown>
     </div>
 </template>
 
@@ -52,7 +51,6 @@ import ListElement from '@UI/components/List/ListElement';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
 import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
 
 export default {
     name: 'ActionBaseButton',
@@ -62,7 +60,6 @@ export default {
         ListElement,
         ListElementDescription,
         ListElementTitle,
-        FadeTransition,
     },
     props: {
         /**
@@ -98,6 +95,7 @@ export default {
         return {
             isFocused: false,
             isHovered: false,
+            isReadyToRender: false,
         };
     },
     computed: {
@@ -118,22 +116,14 @@ export default {
     },
     watch: {
         isFocused() {
+            if (!this.isReadyToRender) {
+                this.isReadyToRender = true;
+            }
+
             this.$emit('focus', this.isFocused);
         },
     },
     methods: {
-        getDropDownOffset() {
-            const {
-                x, y, width, height,
-            } = this.$refs.activator.getBoundingClientRect();
-
-            return {
-                x,
-                y,
-                width,
-                height: height + 1,
-            };
-        },
         onMouseEnter() {
             this.isHovered = true;
             this.$emit('hover', true);

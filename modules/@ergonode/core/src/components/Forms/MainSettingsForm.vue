@@ -20,7 +20,6 @@
                     :multiselect="true"
                     :clearable="true"
                     :searchable="true"
-                    :sticky-search="true"
                     :disabled="!isAllowedToUpdate"
                     href="languages/autocomplete"
                     @input="setSelectedLanguages" />

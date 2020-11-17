@@ -65,17 +65,16 @@
         </template>
         <FadeTransition>
             <SelectDropdown
-                v-if="needsToRender"
-                :data-cy="`${dataCy}-drop-down`"
+                v-if="isReadyToRender"
                 ref="menu"
-                :offset="offset"
+                :parent-reference="$refs.activator"
+                :data-cy="`${dataCy}-drop-down`"
                 :fixed="fixedContent"
                 :size="size"
                 :multiselect="multiselect"
                 :clearable="clearable"
                 :fixed-content="fixedContent"
                 :searchable="searchable"
-                :sticky-search="stickySearch"
                 :options="options"
                 :selected-options="selectedOptions"
                 :search-result="searchResult"
@@ -90,9 +89,10 @@
                         name="placeholder"
                         :is-visible="isVisible" />
                 </template>
-                <template #dropdown>
+                <template #dropdown="{ isVisible }">
                     <slot
                         name="dropdown"
+                        :is-visible="isVisible"
                         :on-select-value-callback="onSelectValue" />
                 </template>
                 <template #option="{ index, option, isSelected, isSmallSize }">
@@ -290,13 +290,6 @@ export default {
             default: '',
         },
         /**
-         * Determines stickiness of search
-         */
-        stickySearch: {
-            type: Boolean,
-            default: false,
-        },
-        /**
          * Unique identifier for cypress
          */
         dataCy: {
@@ -308,11 +301,9 @@ export default {
         return {
             selectedOptions: {},
             isBlurringNeeded: false,
-            isMouseMoving: false,
             isFocused: false,
+            isReadyToRender: false,
             hasAnyValueSelected: false,
-            needsToRender: false,
-            offset: {},
         };
     },
     computed: {
@@ -375,23 +366,11 @@ export default {
         onMounted() {
             if (this.autofocus) {
                 this.$nextTick(() => {
-                    window.requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
                         this.$refs.input.focus();
                     });
                 });
             }
-        },
-        getDropDownOffset() {
-            const {
-                x, y, width, height,
-            } = this.$refs.activator.$el.getBoundingClientRect();
-
-            return {
-                x,
-                y,
-                width,
-                height,
-            };
         },
         blur() {
             this.isFocused = false;
@@ -418,13 +397,14 @@ export default {
                 this.blur();
             }
         },
-        onFocus() {
+        onFocus(event) {
+            event.preventDefault();
+
             this.isBlurringNeeded = false;
-            this.offset = this.getDropDownOffset();
             this.isFocused = true;
 
-            if (!this.needsToRender) {
-                this.needsToRender = true;
+            if (!this.isReadyToRender) {
+                this.isReadyToRender = true;
             }
 
             this.$emit('focus', true);
@@ -442,16 +422,9 @@ export default {
             }
         },
         onMouseDown(event) {
-            this.$refs.activator.$el.addEventListener('mousemove', this.onMouseMove);
-
             event.preventDefault();
-            event.stopPropagation();
-
-            this.isMouseMoving = false;
         },
         onMouseUp() {
-            this.$refs.activator.$el.removeEventListener('mousemove', this.onMouseMove);
-
             if (this.dismissible) {
                 if (this.isFocused) {
                     this.isBlurringNeeded = true;
@@ -462,14 +435,10 @@ export default {
             } else {
                 this.$refs.input.focus();
             }
-
-            this.isMouseMoving = false;
-        },
-        onMouseMove() {
-            this.isMouseMoving = true;
         },
         onClickOutside({
-            event, isClickedOutside,
+            event,
+            isClickedOutside,
         }) {
             const isClickedInsideActivator = this.$refs.activator.$el.contains(event.target);
 

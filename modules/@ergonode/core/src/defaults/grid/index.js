@@ -24,8 +24,8 @@ export const COLUMN_WIDTH = {
 };
 
 export const PINNED_COLUMN_STATE = {
-    LEFT: 'LEFT',
-    RIGHT: 'RIGHT',
+    LEFT: 'left',
+    RIGHT: 'right',
 };
 
 export const ROW_HEIGHT = {

@@ -8,6 +8,7 @@
         :is-placeholder-visible="!isPrefetchingData && statuses.length === 0">
         <template #appendHeader>
             <ActionButton
+                :fixed-content="true"
                 :size="tinySize"
                 :title="workflowLanguage"
                 :disabled="isPrefetchingData"

@@ -11,7 +11,8 @@
         <template v-if="orderedColumns.length">
             <GridTableLayoutPinnedSection
                 v-if="isSelectColumn"
-                :is-pinned="pinnedSections[pinnedState.LEFT]">
+                :pinned-state="pinnedState.LEFT"
+                :sections="pinnedSections">
                 <GridSelectRowColumn
                     :style="templateRows"
                     :column-index="0"
@@ -94,7 +95,9 @@
                     :pinned-state="pinnedState.RIGHT"
                     @sticky="onStickyChange" />
             </GridTableLayoutColumnsSection>
-            <GridTableLayoutPinnedSection :is-pinned="pinnedSections[pinnedState.RIGHT]">
+            <GridTableLayoutPinnedSection
+                :pinned-state="pinnedState.RIGHT"
+                :sections="pinnedSections">
                 <GridRowActionColumn
                     v-for="(column, columnIndex) in actionColumns"
                     :style="templateRows"
@@ -518,7 +521,8 @@ export default {
             });
         },
         onStickyChange({
-            isSticky, state,
+            isSticky,
+            state,
         }) {
             this.pinnedSections = {
                 ...this.pinnedSections,

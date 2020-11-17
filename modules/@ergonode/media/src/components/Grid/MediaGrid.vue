@@ -3,39 +3,41 @@
  * See LICENSE for license details.
  */
 <template>
-    <Grid
-        :columns="columnsWithAttachColumn"
-        :data-count="filtered"
-        :drafts="drafts"
-        :pagination="pagination"
-        :filters="filterValues"
-        :rows="rowsWithAttachValues"
-        :collection-cell-binding="collectionCellBinding"
-        :extended-columns="extendedColumns"
-        :extended-data-cells="extendedDataCells"
-        :extended-data-filter-cells="extendedDataFilterCells"
-        :extended-data-edit-cells="extendedDataEditCells"
-        :extended-edit-filter-cells="extendedDataEditFilterCells"
-        :is-editable="isAllowedToUpdate"
-        :is-prefetching-data="isPrefetchingData"
-        :is-basic-filter="true"
-        :is-header-visible="true"
-        :is-collection-layout="true"
-        @edit-row="onEditRow"
-        @preview-row="onEditRow"
-        @cell-value="onCellValueChange"
-        @delete-row="onRemoveRow"
-        @pagination="onPaginationChange"
-        @column-sort="onColumnSortChange"
-        @remove-all-filters="onRemoveAllFilters"
-        @filter="onFilterChange">
-        <template #appendFooter>
-            <Button
-                title="SAVE MEDIA"
-                :size="smallSize"
-                @click.native="onSaveMedia" />
-        </template>
-    </Grid>
+    <IntersectionObserver @intersect="onIntersect">
+        <Grid
+            :columns="columnsWithAttachColumn"
+            :data-count="filtered"
+            :drafts="drafts"
+            :pagination="pagination"
+            :filters="filterValues"
+            :rows="rowsWithAttachValues"
+            :collection-cell-binding="collectionCellBinding"
+            :extended-columns="extendedColumns"
+            :extended-data-cells="extendedDataCells"
+            :extended-data-filter-cells="extendedDataFilterCells"
+            :extended-data-edit-cells="extendedDataEditCells"
+            :extended-edit-filter-cells="extendedDataEditFilterCells"
+            :is-editable="isAllowedToUpdate"
+            :is-prefetching-data="isPrefetchingData"
+            :is-basic-filter="true"
+            :is-header-visible="true"
+            :is-collection-layout="true"
+            @edit-row="onEditRow"
+            @preview-row="onEditRow"
+            @cell-value="onCellValueChange"
+            @delete-row="onRemoveRow"
+            @pagination="onPaginationChange"
+            @column-sort="onColumnSortChange"
+            @remove-all-filters="onRemoveAllFilters"
+            @filter="onFilterChange">
+            <template #appendFooter>
+                <Button
+                    title="SAVE MEDIA"
+                    :size="smallSize"
+                    @click.native="onSaveMedia" />
+            </template>
+        </Grid>
+    </IntersectionObserver>
 </template>
 
 <script>
@@ -67,6 +69,7 @@ import {
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Button from '@UI/components/Button/Button';
 import Grid from '@UI/components/Grid/Grid';
+import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import {
     debounce,
 } from 'debounce';
@@ -76,6 +79,7 @@ export default {
     components: {
         Grid,
         Button,
+        IntersectionObserver,
     },
     mixins: [
         gridDraftMixin,
@@ -102,7 +106,6 @@ export default {
         return {
             searchResult: null,
             isSearchFocused: false,
-            observer: null,
             isPrefetchingData: true,
             filterValues: {},
             rows: [],
@@ -180,27 +183,22 @@ export default {
             return rows;
         },
     },
-    mounted() {
-        this.observer = new IntersectionObserver(async (entries) => {
-            if (entries[0].isIntersecting) {
+    created() {
+        this.debouncedSearch = debounce(this.onSearch, 500);
+    },
+    beforeDestroy() {
+        delete this.debouncedSearch;
+    },
+    methods: {
+        async onIntersect(isIntersecting) {
+            if (isIntersecting) {
                 this.isPrefetchingData = true;
 
                 await this.onFetchData(this.localParams);
 
                 this.isPrefetchingData = false;
             }
-        });
-
-        this.observer.observe(this.$el);
-    },
-    created() {
-        this.debouncedSearch = debounce(this.onSearch, 500);
-    },
-    beforeDestroy() {
-        delete this.debouncedSearch;
-        this.observer.disconnect();
-    },
-    methods: {
+        },
         onPaginationChange(pagination) {
             this.pagination = pagination;
 

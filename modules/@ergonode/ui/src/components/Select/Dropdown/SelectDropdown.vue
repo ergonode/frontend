@@ -3,10 +3,12 @@
  * See LICENSE for license details.
  */
 <template>
-    <FadeTransition>
+    <ResizeObserver
+        observe-once
+        @resize="onResize">
         <Dropdown
-            v-show="isVisible"
-            :offset="offset"
+            :parent-reference="parentReference"
+            :visible="isVisible"
             :fixed="fixedContent"
             @click-outside="onClickOutside">
             <slot
@@ -14,82 +16,92 @@
                 :is-visible="isPlaceholderVisible">
                 <DropdownPlaceholder v-if="isPlaceholderVisible" />
             </slot>
-            <template v-if="isDropdownContentVisible">
-                <slot name="dropdown">
-                    <List>
-                        <DropdownListSearch
-                            v-if="searchable"
-                            :value="searchResult"
-                            :sticky="stickySearch"
-                            @input="onSearch" />
-                        <DropdownListElement
-                            v-for="(option, index) in options"
-                            :key="index"
-                            :index="index"
-                            :size="size"
-                            :value="option"
-                            :selected="isOptionSelected(index)"
-                            @input="onSelectValue">
-                            <template #option="{ isSelected }">
-                                <slot
-                                    name="option"
-                                    :option="option"
-                                    :is-selected="isSelected"
-                                    :index="index" />
-                            </template>
-                        </DropdownListElement>
-                        <DropdownPlaceholder
-                            v-if="isSearchPlaceholderVisible"
-                            :title="placeholder.title"
-                            :subtitle="placeholder.subtitle">
-                            <template #action>
-                                <ClearSearchButton @click.native.stop="onClearSearch" />
-                            </template>
-                        </DropdownPlaceholder>
-                    </List>
-                </slot>
-                <slot
-                    v-if="isFooterVisible"
-                    name="footer"
-                    :clear="onClear"
-                    :apply="onDismiss">
-                    <MultiselectDropdownFooter
-                        v-if="multiselect"
+            <slot
+                :is-visible="isDropdownContentVisible"
+                name="dropdown">
+                <template v-if="isDropdownContentVisible">
+                    <DropdownListSearch
+                        v-if="searchable"
+                        :value="searchResult"
                         :size="size"
-                        @clear="onClear"
-                        @apply="onDismiss" />
-                    <SelectDropdownApplyFooter
-                        v-else
-                        :size="size"
-                        @clear="onClear" />
-                </slot>
-            </template>
+                        @input="onSearch" />
+                    <VirtualScroll
+                        v-if="options.length"
+                        :items="options"
+                        :root-height="dropdownHeight"
+                        :render-ahead="4"
+                        :estimated-height="20">
+                        <template #item="{ item, index}">
+                            <DropdownListElement
+                                :key="index"
+                                :index="index"
+                                :size="size"
+                                :value="item"
+                                :selected="isOptionSelected(index)"
+                                @input="onSelectValue">
+                                <template #option="{ isSelected }">
+                                    <slot
+                                        name="option"
+                                        :option="item"
+                                        :is-selected="isSelected"
+                                        :index="index" />
+                                </template>
+                            </DropdownListElement>
+                        </template>
+                    </VirtualScroll>
+                </template>
+                <DropdownPlaceholder
+                    v-if="isSearchPlaceholderVisible"
+                    :title="placeholder.title"
+                    :subtitle="placeholder.subtitle">
+                    <template #action>
+                        <ClearSearchButton @click.native.stop="onClearSearch" />
+                    </template>
+                </DropdownPlaceholder>
+            </slot>
+            <slot
+                v-if="isFooterVisible"
+                name="footer"
+                :clear="onClear"
+                :apply="onDismiss">
+                <MultiselectDropdownFooter
+                    v-if="multiselect"
+                    :size="size"
+                    @clear="onClear"
+                    @apply="onDismiss" />
+                <SelectDropdownApplyFooter
+                    v-else
+                    :size="size"
+                    @clear="onClear" />
+            </slot>
         </Dropdown>
-    </FadeTransition>
+    </ResizeObserver>
 </template>
 
 <script>
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import List from '@UI/components/List/List';
+import ResizeObserver from '@UI/components/Observers/ResizeObserver';
 import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
 import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
 import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
 import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
 import DropdownListElement from '@UI/components/Select/Dropdown/List/DropdownListElement';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
+import {
+    VirtualScroll,
+} from 'vue-windowing';
 
 export default {
     name: 'SelectDropdown',
     components: {
+        VirtualScroll,
         ClearSearchButton,
         MultiselectDropdownFooter,
         SelectDropdownApplyFooter,
-        FadeTransition,
+        ResizeObserver,
         Dropdown,
-        List,
         DropdownListElement,
         DropdownPlaceholder,
         DropdownListSearch: () => import('@UI/components/Select/Dropdown/List/DropdownListSearch'),
@@ -135,25 +147,11 @@ export default {
             default: false,
         },
         /**
-         * Determines stickiness of search
-         */
-        stickySearch: {
-            type: Boolean,
-            default: false,
-        },
-        /**
          * Component variances that user can choose from
          */
         options: {
             type: Array,
             default: () => [],
-        },
-        /**
-         * Determines position where component will be anchored
-         */
-        offset: {
-            type: Object,
-            required: true,
         },
         /**
          * Map of selected option values
@@ -176,6 +174,17 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * The vue component reference to which dropdown is hooked
+         */
+        parentReference: {
+            required: true,
+        },
+    },
+    data() {
+        return {
+            dropdownHeight: 400,
+        };
     },
     computed: {
         placeholder() {
@@ -207,6 +216,9 @@ export default {
         },
     },
     methods: {
+        onResize(entry) {
+            this.dropdownHeight = entry.contentRect.height;
+        },
         onClickOutside(payload) {
             this.$emit('click-outside', payload);
         },

@@ -68,7 +68,6 @@
                     :value="role"
                     :required="true"
                     :searchable="true"
-                    :sticky-search="true"
                     label="Role"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[roleIdFieldKey]"
