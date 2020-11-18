@@ -150,7 +150,7 @@ export default {
 
                     for (let i = fixedIndex; i < this.dataCount + fixedIndex; i += 1) {
                         if (i !== row) {
-                            selectedRows[i] = true;
+                            selectedRows[i + this.rowsOffset] = true;
                         }
                     }
 

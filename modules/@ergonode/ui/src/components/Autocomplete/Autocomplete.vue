@@ -327,14 +327,18 @@ export default {
                     },
                 });
 
-                const lowerCaseSearchValue = this.searchValue.toLowerCase();
+                if (this.additionalStaticOptions.length) {
+                    const lowerCaseSearchValue = this.searchValue.toLowerCase();
 
-                this.options = [
-                    ...options,
-                    ...this.additionalStaticOptions.filter(({
-                        code,
-                    }) => code.toLowerCase().includes(lowerCaseSearchValue)),
-                ];
+                    this.options = [
+                        ...options,
+                        ...this.additionalStaticOptions.filter(({
+                            code,
+                        }) => code.toLowerCase().includes(lowerCaseSearchValue)),
+                    ];
+                } else {
+                    this.options = options;
+                }
 
                 this.isFetchingData = false;
             } catch (e) {

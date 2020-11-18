@@ -56,7 +56,7 @@
                     :extended-data-filter-cells="extendedDataFilterCells[gridLayout.TABLE]"
                     :extended-data-edit-cells="extendedDataEditCells[gridLayout.TABLE]"
                     :extended-edit-filter-cells="extendedDataEditFilterCells[gridLayout.TABLE]"
-                    :selected-rows="selectedRows"
+                    :selected-rows="selectedRows[pagination.page]"
                     :is-selected-all-rows="isSelectedAllRows[pagination.page]"
                     :is-editable="isEditable"
                     :is-select-column="isSelectColumn"
@@ -430,7 +430,7 @@ export default {
         },
         onBatchActionSelect(option) {
             if (this.isSelectedAllRows[this.pagination.page]
-                || Object.keys(this.selectedRows).length > 0) {
+                || Object.keys(this.selectedRows[this.pagination.page]).length > 0) {
                 let {
                     rowIds,
                 } = this;
@@ -440,7 +440,7 @@ export default {
 
                     rowIds = [];
 
-                    Object.keys(this.selectedRows).forEach((key) => {
+                    Object.keys(this.selectedRows[this.pagination.page]).forEach((key) => {
                         rowIds.push(this.rowIds[key - fixedIndex]);
                     });
                 }
@@ -450,7 +450,10 @@ export default {
                         rowIds,
                     },
                     onSuccess: () => {
-                        this.selectedRows = {};
+                        this.selectedRows = {
+                            ...this.selectedRows,
+                            [this.pagination.page]: {},
+                        };
 
                         this.isSelectedAllRows = {
                             ...this.isSelectedAllRows,
@@ -464,7 +467,10 @@ export default {
             }
         },
         onRowSelect(selectedRows) {
-            this.selectedRows = selectedRows;
+            this.selectedRows = {
+                ...this.selectedRows,
+                [this.pagination.page]: selectedRows,
+            };
         },
         onRowsSelect(isSelectedAllRows) {
             this.isSelectedAllRows = {
