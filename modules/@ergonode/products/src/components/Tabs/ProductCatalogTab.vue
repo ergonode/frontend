@@ -388,6 +388,10 @@ export default {
                 .removeEventListener(id, this.onRemoveProductsBatchAction);
             this.removeBatchAction(batchActionIndex);
 
+            if (this.localParams.offset + ids.length === this.filtered) {
+                this.localParams.offset -= ids.length;
+            }
+
             await this.onFetchData();
         },
         onRemoveAllFilters() {
