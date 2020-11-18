@@ -85,6 +85,8 @@ import ListElementTitle from '@UI/components/List/ListElementTitle';
 import Select from '@UI/components/Select/Select';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
 
+import data from './data';
+
 export default {
     name: 'Autocomplete',
     components: {
@@ -327,14 +329,16 @@ export default {
                     },
                 });
 
-                const lowerCaseSearchValue = this.searchValue.toLowerCase();
+                if (this.additionalStaticOptions.length) {
+                    const lowerCaseSearchValue = this.searchValue.toLowerCase();
 
-                this.options = [
-                    ...options,
-                    ...this.additionalStaticOptions.filter(({
-                        code,
-                    }) => code.toLowerCase().includes(lowerCaseSearchValue)),
-                ];
+                    this.options = [
+                        ...options,
+                        ...this.additionalStaticOptions.filter(({
+                            code,
+                        }) => code.toLowerCase().includes(lowerCaseSearchValue)),
+                    ];
+                }
 
                 this.isFetchingData = false;
             } catch (e) {
