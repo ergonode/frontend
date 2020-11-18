@@ -6,16 +6,17 @@
     <VerticalTabBarList>
         <ListSearchHeader
             title="Categories"
+            searchable
             @search-result="onSearch" />
         <List>
             <Preloader v-if="isPrefetchingData" />
             <ListScrollableContainer v-else>
                 <CategoriesListElement
-                    v-for="item in items[userLanguageCode]"
+                    v-for="item in items[defaultLanguageCode]"
                     :key="item.id"
                     :item="item"
                     :is-draggable="isAllowedToUpdate"
-                    :language-code="userLanguageCode" />
+                    :language-code="defaultLanguageCode" />
             </ListScrollableContainer>
         </List>
         <Fab
@@ -76,9 +77,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
+        ...mapState('core', [
+            'defaultLanguageCode',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.CATEGORY_TREE.update,
@@ -107,7 +108,7 @@ export default {
             this.onCloseModal();
 
             try {
-                this.getItems(this.userLanguageCode);
+                this.getItems(this.defaultLanguageCode);
             } catch (e) {
                 if (this.$axios.isCancel(e)) {
                     return;
@@ -121,7 +122,7 @@ export default {
         },
         onSearch(value) {
             this.codeFilter = value;
-            this.getItems(this.userLanguageCode);
+            this.getItems(this.defaultLanguageCode);
         },
     },
 };

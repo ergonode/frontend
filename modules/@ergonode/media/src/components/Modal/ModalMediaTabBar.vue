@@ -5,6 +5,7 @@
 <template>
     <ModalTabBar
         class="modal-media-tab-bar"
+        title="Add resources"
         :items="tabs"
         @close="onCloseModal" />
 </template>

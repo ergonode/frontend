@@ -38,7 +38,7 @@ export default {
         justify-content: center;
         padding-top: 6px;
         border: none;
-        background-color: $WHITE;
+        background-color: transparent;
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_14_20;
         text-align: center;

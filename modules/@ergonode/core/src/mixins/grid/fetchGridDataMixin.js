@@ -7,6 +7,7 @@ import {
 } from '@Core/defaults/alerts';
 import {
     DEFAULT_GRID_FETCH_PARAMS,
+    DEFAULT_GRID_PAGINATION,
 } from '@Core/defaults/grid';
 import {
     changeCookiePosition,
@@ -43,6 +44,7 @@ export default function ({
                 filterValues: {},
                 filtered: 0,
                 localParams: DEFAULT_GRID_FETCH_PARAMS,
+                pagination: DEFAULT_GRID_PAGINATION,
             };
         },
         computed: {
@@ -65,13 +67,20 @@ export default function ({
                 'setDisabledElement',
                 'removeDisabledElement',
             ]),
+            onPaginationChange(pagination) {
+                this.pagination = pagination;
+                this.localParams.limit = pagination.itemsPerPage;
+                this.localParams.offset = (pagination.page - 1) * pagination.itemsPerPage;
+
+                this.onFetchData();
+            },
             onRemoveAllFilters() {
                 this.filterValues = {};
+                this.pagination.page = 1;
+                this.localParams.filter = {};
+                this.localParams.offset = 0;
 
-                this.onFetchData({
-                    ...this.localParams,
-                    filter: {},
-                });
+                this.onFetchData();
             },
             onRemoveColumn({
                 index,
@@ -114,11 +123,11 @@ export default function ({
             },
             onFilterChange(filters) {
                 this.filterValues = filters;
+                this.pagination.page = 1;
+                this.localParams.filter = filters;
+                this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
-                this.onFetchData({
-                    ...this.localParams,
-                    filter: this.filterValues,
-                });
+                this.onFetchData();
             },
             onSwapColumns({
                 from,
@@ -130,6 +139,11 @@ export default function ({
                     from,
                     to,
                 });
+            },
+            onColumnSortChange(sortedColumn) {
+                this.localParams.sortedColumn = sortedColumn;
+
+                this.onFetchData();
             },
             async onFetchData({
                 offset,

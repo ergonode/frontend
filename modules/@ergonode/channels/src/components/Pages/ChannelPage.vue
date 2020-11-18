@@ -119,7 +119,7 @@ export default {
             this.fetchGridData = true;
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Completed generating export file',
+                message: 'Export has been finished',
             });
         },
     },

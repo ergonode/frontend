@@ -24,8 +24,8 @@ export const COLUMN_WIDTH = {
 };
 
 export const PINNED_COLUMN_STATE = {
-    LEFT: 'LEFT',
-    RIGHT: 'RIGHT',
+    LEFT: 'left',
+    RIGHT: 'right',
 };
 
 export const ROW_HEIGHT = {
@@ -87,4 +87,9 @@ export const DEFAULT_GRID_FETCH_PARAMS = {
     limit: DATA_LIMIT,
     filter: {},
     sortedColumn: {},
+};
+
+export const DEFAULT_GRID_PAGINATION = {
+    page: 1,
+    itemsPerPage: DATA_LIMIT,
 };

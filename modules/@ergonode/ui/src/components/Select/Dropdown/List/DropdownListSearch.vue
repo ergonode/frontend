@@ -19,6 +19,9 @@
 
 <script>
 import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
     GRAPHITE,
     GREEN,
 } from '@UI/assets/scss/_js-variables/colors.scss';
@@ -41,18 +44,15 @@ export default {
             default: '',
         },
         /**
-         * Determines small size of search
+         * The size of the component
          */
-        small: {
-            type: Boolean,
-            default: false,
-        },
-        /**
-         * Determines stickiness of search
-         */
-        sticky: {
-            type: Boolean,
-            default: false,
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
         },
     },
     data() {
@@ -64,10 +64,7 @@ export default {
         classes() {
             return [
                 'search-element',
-                {
-                    'search-element--small': this.small,
-                    'search-element--sticky': this.sticky,
-                },
+                `search-element--${this.size}`,
             ];
         },
         searchIconFillColor() {
@@ -105,17 +102,9 @@ export default {
         box-sizing: border-box;
         cursor: pointer;
 
-        &--sticky {
-            position: sticky;
-            top: 0;
-            left: 0;
-            z-index: $Z_INDEX_LVL_1;
-            background: $WHITE;
-        }
-
         &--small {
             height: 32px;
-            padding: 0 4px 0 6px;
+            padding: 8px;
 
             #{$element}__input {
                 font: $FONT_MEDIUM_12_16;
@@ -126,9 +115,9 @@ export default {
             }
         }
 
-        &:not(&--small) {
+        &--regular {
             height: 40px;
-            padding: 0 6px 0 8px;
+            padding: 12px 10px;
 
             #{$element}__input {
                 font: $FONT_MEDIUM_14_20;

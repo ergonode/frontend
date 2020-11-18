@@ -3,37 +3,41 @@
  * See LICENSE for license details.
  */
 <template>
-    <Grid
-        :columns="columnsWithAttachColumn"
-        :data-count="filtered"
-        :drafts="drafts"
-        :filters="filterValues"
-        :rows="rowsWithAttachValues"
-        :collection-cell-binding="collectionCellBinding"
-        :extended-columns="extendedColumns"
-        :extended-data-cells="extendedDataCells"
-        :extended-data-filter-cells="extendedDataFilterCells"
-        :extended-data-edit-cells="extendedDataEditCells"
-        :extended-edit-filter-cells="extendedDataEditFilterCells"
-        :is-editable="isAllowedToUpdate"
-        :is-prefetching-data="isPrefetchingData"
-        :is-basic-filter="true"
-        :is-header-visible="true"
-        :is-collection-layout="true"
-        @edit-row="onEditRow"
-        @preview-row="onEditRow"
-        @cell-value="onCellValueChange"
-        @delete-row="onRemoveRow"
-        @fetch-data="onFetchData"
-        @remove-all-filters="onRemoveAllFilters"
-        @filter="onFilterChange">
-        <template #appendFooter>
-            <Button
-                title="SAVE MEDIA"
-                :size="smallSize"
-                @click.native="onSaveMedia" />
-        </template>
-    </Grid>
+    <IntersectionObserver @intersect="onIntersect">
+        <Grid
+            :columns="columnsWithAttachColumn"
+            :data-count="filtered"
+            :drafts="drafts"
+            :pagination="pagination"
+            :filters="filterValues"
+            :rows="rowsWithAttachValues"
+            :collection-cell-binding="collectionCellBinding"
+            :extended-columns="extendedColumns"
+            :extended-data-cells="extendedDataCells"
+            :extended-data-filter-cells="extendedDataFilterCells"
+            :extended-data-edit-cells="extendedDataEditCells"
+            :extended-edit-filter-cells="extendedDataEditFilterCells"
+            :is-editable="isAllowedToUpdate"
+            :is-prefetching-data="isPrefetchingData"
+            :is-basic-filter="true"
+            :is-header-visible="true"
+            :is-collection-layout="true"
+            @edit-row="onEditRow"
+            @preview-row="onEditRow"
+            @cell-value="onCellValueChange"
+            @delete-row="onRemoveRow"
+            @pagination="onPaginationChange"
+            @column-sort="onColumnSortChange"
+            @remove-all-filters="onRemoveAllFilters"
+            @filter="onFilterChange">
+            <template #appendFooter>
+                <Button
+                    title="SAVE MEDIA"
+                    :size="smallSize"
+                    @click.native="onSaveMedia" />
+            </template>
+        </Grid>
+    </IntersectionObserver>
 </template>
 
 <script>
@@ -42,7 +46,11 @@ import {
 } from '@Core/defaults/alerts';
 import {
     DEFAULT_GRID_FETCH_PARAMS,
+    DEFAULT_GRID_PAGINATION,
 } from '@Core/defaults/grid';
+import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -61,6 +69,7 @@ import {
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Button from '@UI/components/Button/Button';
 import Grid from '@UI/components/Grid/Grid';
+import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import {
     debounce,
 } from 'debounce';
@@ -70,6 +79,7 @@ export default {
     components: {
         Grid,
         Button,
+        IntersectionObserver,
     },
     mixins: [
         gridDraftMixin,
@@ -96,13 +106,13 @@ export default {
         return {
             searchResult: null,
             isSearchFocused: false,
-            observer: null,
             isPrefetchingData: true,
             filterValues: {},
             rows: [],
             columns: [],
             filtered: 0,
             localParams: DEFAULT_GRID_FETCH_PARAMS,
+            pagination: DEFAULT_GRID_PAGINATION,
         };
     },
     computed: {
@@ -134,18 +144,27 @@ export default {
                 return [];
             }
 
-            return [
-                ...this.columns.filter(column => column.id !== 'type'),
-                {
-                    id: 'esa_attached',
-                    type: 'BOOL',
-                    label: 'Attached',
-                    visible: true,
-                    editable: true,
-                    deletable: false,
-                    parameters: [],
-                },
-            ];
+            const columns = [];
+
+            for (let i = 0; i < this.columns.length; i += 1) {
+                if (this.columns[i].id !== 'type') {
+                    if (i === 3) {
+                        columns.push({
+                            id: 'esa_attached',
+                            type: 'BOOL',
+                            label: 'Attached',
+                            visible: true,
+                            editable: true,
+                            deletable: false,
+                            parameters: [],
+                        });
+                    } else {
+                        columns.push(this.columns[i]);
+                    }
+                }
+            }
+
+            return columns;
         },
         rowsWithAttachValues() {
             const rows = [
@@ -164,53 +183,70 @@ export default {
             return rows;
         },
     },
-    mounted() {
-        this.observer = new IntersectionObserver(async (entries) => {
-            if (entries[0].isIntersecting) {
+    created() {
+        this.debouncedSearch = debounce(this.onSearch, 500);
+    },
+    beforeDestroy() {
+        delete this.debouncedSearch;
+    },
+    methods: {
+        async onIntersect(isIntersecting) {
+            if (isIntersecting) {
                 this.isPrefetchingData = true;
 
                 await this.onFetchData(this.localParams);
 
                 this.isPrefetchingData = false;
             }
-        });
+        },
+        onPaginationChange(pagination) {
+            this.pagination = pagination;
+            this.localParams.limit = pagination.itemsPerPage;
+            this.localParams.offset = (pagination.page - 1) * pagination.itemsPerPage;
 
-        this.observer.observe(this.$el);
-    },
-    created() {
-        this.debouncedSearch = debounce(this.onSearch, 500);
-    },
-    beforeDestroy() {
-        delete this.debouncedSearch;
-        this.observer.disconnect();
-    },
-    methods: {
+            this.onFetchData();
+        },
         onFilterChange(filters) {
             this.filterValues = filters;
+            this.pagination.page = 1;
+            this.localParams.filter = filters;
+            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
-            this.onFetchData({
-                ...this.localParams,
-                filter: this.filterValues,
-            });
+            this.onFetchData();
         },
         onRemoveAllFilters() {
             this.filterValues = {};
+            this.pagination.page = 1;
+            this.localParams.filter = {};
+            this.localParams.offset = 0;
 
-            this.onFetchData({
-                ...this.localParams,
-                filter: {},
-            });
+            this.onFetchData();
+        },
+        onColumnSortChange(sortedColumn) {
+            this.localParams.sortedColumn = sortedColumn;
+
+            this.onFetchData();
         },
         async onFetchData({
             offset,
             limit,
             filter,
             sortedColumn,
-        } = DEFAULT_GRID_FETCH_PARAMS) {
+        } = this.localParams) {
+            const filtersWithType = {
+                ...filter,
+            };
+
+            if (typeof filter.type === 'undefined') {
+                filtersWithType.type = {
+                    [FILTER_OPERATOR.EQUAL]: this.type,
+                };
+            }
+
             this.localParams = {
                 offset,
                 limit,
-                filter: `type=${this.type}${filter ? `;${filter}` : ''}`,
+                filter: filtersWithType,
                 sortedColumn,
             };
 
@@ -218,7 +254,7 @@ export default {
                 offset,
                 limit,
                 extended: true,
-                filter: this.localParams.filters,
+                filter: this.localParams.filter,
             };
 
             if (Object.keys(sortedColumn).length) {

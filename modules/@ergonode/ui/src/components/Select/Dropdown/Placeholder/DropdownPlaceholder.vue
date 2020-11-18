@@ -22,7 +22,7 @@
 
 <script>
 export default {
-    name: 'Placeholder',
+    name: 'DropdownPlaceholder',
     props: {
         /**
          * The title of the component

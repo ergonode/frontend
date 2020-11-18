@@ -4,9 +4,7 @@
  */
 <template>
     <VerticalTabBarList>
-        <ListSearchHeader
-            title="Conditions"
-            :is-search="false" />
+        <ListSearchHeader title="Conditions" />
         <List>
             <ListScrollableContainer>
                 <ConditionsListElement

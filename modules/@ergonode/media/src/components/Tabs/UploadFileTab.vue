@@ -21,16 +21,18 @@
                 class="upload-file-tab__label"
                 :for="associatedLabel">
                 <IconUploadCloudFile
-                    :fill-color="greenColor"
+                    :fill-color="uploadCloudFileIconColor"
                     view-box="0 0 48 32"
                     width="48"
                     height="32" />
                 <span class="information-label">Drag and drop files</span>
-                <span class="information-label-logic-operator">or</span>
-                <Button
-                    :size="smallSize"
-                    title="BROWSE FILE"
-                    @click.native="onBrowseFile" />
+                <template v-if="!isDraggedFileOver">
+                    <span class="information-label-logic-operator">or</span>
+                    <Button
+                        :size="smallSize"
+                        title="BROWSE FILE"
+                        @click.native="onBrowseFile" />
+                </template>
             </label>
         </div>
         <div
@@ -67,6 +69,7 @@ import UploadFileListElement from '@Media/components/List/UploadFileListElement'
 import UploadFileListLoadingElement from '@Media/components/List/UploadFileListLoadingElement';
 import {
     GREEN,
+    WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Button from '@UI/components/Button/Button';
 import IconUploadCloudFile from '@UI/components/Icons/Actions/IconUploadCloudFile';
@@ -93,8 +96,8 @@ export default {
         };
     },
     computed: {
-        greenColor() {
-            return GREEN;
+        uploadCloudFileIconColor() {
+            return this.isDraggedFileOver ? WHITE : GREEN;
         },
         smallSize() {
             return SIZE.SMALL;
@@ -188,20 +191,21 @@ export default {
 
 <style lang="scss" scoped>
     .upload-file-tab {
+        $upload-file-tab: &;
+
         display: flex;
         flex: 1;
         padding: 24px;
 
         &__activator {
-            $activator: &;
-
             position: relative;
             display: flex;
             flex: 1;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            border: $BORDER_DASHED_GREY;
+            background-color: $WHITESMOKE;
+            box-shadow: $ELEVATOR_HOLE;
 
             input {
                 position: absolute;
@@ -218,8 +222,11 @@ export default {
             }
 
             &--hovered {
-                background-color: $GREEN_LIGHT;
-                border-color: $GREEN;
+                background-color: $GREEN;
+
+                #{$upload-file-tab}__label .information-label {
+                    color: $WHITE;
+                }
             }
         }
 

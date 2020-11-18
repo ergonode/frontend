@@ -32,16 +32,16 @@ export default {
     },
     props: {
         /**
-         * Max visible rows for *currentPage* at Grid
+         * Component value
          */
-        maxRows: {
+        value: {
             type: Number,
             required: true,
         },
         /**
-         * Component value
+         * Number of all data
          */
-        value: {
+        dataCount: {
             type: Number,
             required: true,
         },
@@ -51,7 +51,7 @@ export default {
             return SIZE.SMALL;
         },
         infoText() {
-            return `of ${this.maxRows}`;
+            return `of ${this.dataCount}`;
         },
         rowIntervalOptions() {
             return ROW_INTERVALS;

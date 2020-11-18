@@ -63,54 +63,52 @@
                 </template>
             </InputController>
         </template>
-        <FadeTransition>
-            <SelectDropdown
-                v-if="needsToRender"
-                :data-cy="`${dataCy}-drop-down`"
-                ref="menu"
-                :offset="offset"
-                :fixed="fixedContent"
-                :size="size"
-                :multiselect="multiselect"
-                :clearable="clearable"
-                :fixed-content="fixedContent"
-                :searchable="searchable"
-                :sticky-search="stickySearch"
-                :options="options"
-                :selected-options="selectedOptions"
-                :search-result="searchResult"
-                :is-visible="isFocused"
-                @dismiss="onDismiss"
-                @clear="onClear"
-                @search="onSearch"
-                @input="onSelectValue"
-                @click-outside="onClickOutside">
-                <template #placeholder="{ isVisible }">
-                    <slot
-                        name="placeholder"
-                        :is-visible="isVisible" />
-                </template>
-                <template #dropdown>
-                    <slot
-                        name="dropdown"
-                        :on-select-value-callback="onSelectValue" />
-                </template>
-                <template #option="{ index, option, isSelected, isSmallSize }">
-                    <slot
-                        name="option"
-                        :option="option"
-                        :is-selected="isSelected"
-                        :is-small-size="isSmallSize"
-                        :index="index" />
-                </template>
-                <template #footer>
-                    <slot
-                        name="footer"
-                        :clear="onClear"
-                        :apply="onDismiss" />
-                </template>
-            </SelectDropdown>
-        </FadeTransition>
+        <SelectDropdown
+            v-if="isReadyToRender"
+            ref="menu"
+            :parent-reference="$refs.activator"
+            :data-cy="`${dataCy}-drop-down`"
+            :fixed="fixedContent"
+            :size="size"
+            :multiselect="multiselect"
+            :clearable="clearable"
+            :fixed-content="fixedContent"
+            :searchable="searchable"
+            :options="options"
+            :selected-options="selectedOptions"
+            :search-result="searchResult"
+            :is-visible="isFocused"
+            @dismiss="onDismiss"
+            @clear="onClear"
+            @search="onSearch"
+            @input="onSelectValue"
+            @click-outside="onClickOutside">
+            <template #placeholder="{ isVisible }">
+                <slot
+                    name="placeholder"
+                    :is-visible="isVisible" />
+            </template>
+            <template #dropdown="{ isVisible }">
+                <slot
+                    name="dropdown"
+                    :is-visible="isVisible"
+                    :on-select-value-callback="onSelectValue" />
+            </template>
+            <template #option="{ index, option, isSelected, isSmallSize }">
+                <slot
+                    name="option"
+                    :option="option"
+                    :is-selected="isSelected"
+                    :is-small-size="isSmallSize"
+                    :index="index" />
+            </template>
+            <template #footer>
+                <slot
+                    name="footer"
+                    :clear="onClear"
+                    :apply="onDismiss" />
+            </template>
+        </SelectDropdown>
         <template #details>
             <slot name="details" />
         </template>
@@ -290,13 +288,6 @@ export default {
             default: '',
         },
         /**
-         * Determines stickiness of search
-         */
-        stickySearch: {
-            type: Boolean,
-            default: false,
-        },
-        /**
          * Unique identifier for cypress
          */
         dataCy: {
@@ -308,11 +299,9 @@ export default {
         return {
             selectedOptions: {},
             isBlurringNeeded: false,
-            isMouseMoving: false,
             isFocused: false,
+            isReadyToRender: false,
             hasAnyValueSelected: false,
-            needsToRender: false,
-            offset: {},
         };
     },
     computed: {
@@ -375,23 +364,11 @@ export default {
         onMounted() {
             if (this.autofocus) {
                 this.$nextTick(() => {
-                    window.requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
                         this.$refs.input.focus();
                     });
                 });
             }
-        },
-        getDropDownOffset() {
-            const {
-                x, y, width, height,
-            } = this.$refs.activator.$el.getBoundingClientRect();
-
-            return {
-                x,
-                y,
-                width,
-                height,
-            };
         },
         blur() {
             this.isFocused = false;
@@ -418,13 +395,14 @@ export default {
                 this.blur();
             }
         },
-        onFocus() {
+        onFocus(event) {
+            event.preventDefault();
+
             this.isBlurringNeeded = false;
-            this.offset = this.getDropDownOffset();
             this.isFocused = true;
 
-            if (!this.needsToRender) {
-                this.needsToRender = true;
+            if (!this.isReadyToRender) {
+                this.isReadyToRender = true;
             }
 
             this.$emit('focus', true);
@@ -442,16 +420,9 @@ export default {
             }
         },
         onMouseDown(event) {
-            this.$refs.activator.$el.addEventListener('mousemove', this.onMouseMove);
-
             event.preventDefault();
-            event.stopPropagation();
-
-            this.isMouseMoving = false;
         },
         onMouseUp() {
-            this.$refs.activator.$el.removeEventListener('mousemove', this.onMouseMove);
-
             if (this.dismissible) {
                 if (this.isFocused) {
                     this.isBlurringNeeded = true;
@@ -462,14 +433,10 @@ export default {
             } else {
                 this.$refs.input.focus();
             }
-
-            this.isMouseMoving = false;
-        },
-        onMouseMove() {
-            this.isMouseMoving = true;
         },
         onClickOutside({
-            event, isClickedOutside,
+            event,
+            isClickedOutside,
         }) {
             const isClickedInsideActivator = this.$refs.activator.$el.contains(event.target);
 

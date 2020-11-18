@@ -11,7 +11,8 @@
         <template v-if="orderedColumns.length">
             <GridTableLayoutPinnedSection
                 v-if="isSelectColumn"
-                :is-pinned="pinnedSections[pinnedState.LEFT]">
+                :pinned-state="pinnedState.LEFT"
+                :sections="pinnedSections">
                 <GridSelectRowColumn
                     :style="templateRows"
                     :column-index="0"
@@ -94,7 +95,9 @@
                     :pinned-state="pinnedState.RIGHT"
                     @sticky="onStickyChange" />
             </GridTableLayoutColumnsSection>
-            <GridTableLayoutPinnedSection :is-pinned="pinnedSections[pinnedState.RIGHT]">
+            <GridTableLayoutPinnedSection
+                :pinned-state="pinnedState.RIGHT"
+                :sections="pinnedSections">
                 <GridRowActionColumn
                     v-for="(column, columnIndex) in actionColumns"
                     :style="templateRows"
@@ -138,6 +141,7 @@
 <script>
 import {
     COLUMN_WIDTH,
+    DEFAULT_GRID_PAGINATION,
     GRID_ACTION,
     PINNED_COLUMN_STATE,
     ROW_HEIGHT,
@@ -226,18 +230,13 @@ export default {
             default: () => ({}),
         },
         /**
-         * Current visible page at Grid
+         * Data model of pagination
          */
-        currentPage: {
-            type: Number,
-            default: 1,
-        },
-        /**
-         * Max visible rows for *currentPage* at Grid
-         */
-        maxRows: {
-            type: Number,
-            default: 1,
+        pagination: {
+            type: Object,
+            default: () => ({
+                ...DEFAULT_GRID_PAGINATION,
+            }),
         },
         /**
          * Determines the size of row height
@@ -373,7 +372,7 @@ export default {
             return this.rows.length;
         },
         rowsOffset() {
-            return (this.currentPage - 1) * this.maxRows;
+            return (this.pagination.page - 1) * this.pagination.itemsPerPage;
         },
         columnsOffset() {
             return this.isSelectColumn ? 1 : 0;
@@ -522,7 +521,8 @@ export default {
             });
         },
         onStickyChange({
-            isSticky, state,
+            isSticky,
+            state,
         }) {
             this.pinnedSections = {
                 ...this.pinnedSections,
@@ -607,11 +607,15 @@ export default {
             } = columnsSection.$el.children;
 
             for (let i = 0; i < length; i += 1) {
-                const {
-                    width,
-                } = columnsSection.$el.children[i].getBoundingClientRect();
+                const child = columnsSection.$el.children[i];
 
-                this.columnWidths[i] = `${width}px`;
+                if (!child.classList.contains('column-sentinel')) {
+                    const {
+                        width,
+                    } = child.getBoundingClientRect();
+
+                    this.columnWidths[i - this.columnsOffset] = `${width}px`;
+                }
             }
 
             this.hasInitialWidths = false;

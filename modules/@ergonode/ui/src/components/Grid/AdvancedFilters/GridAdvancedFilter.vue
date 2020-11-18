@@ -48,9 +48,9 @@
             </div>
         </div>
         <GridAdvancedFilterDropdown
-            v-if="needsToRender"
+            v-if="isReadyToRender"
             ref="menu"
-            :offset="offset"
+            :parent-reference="$refs.activator"
             :is-visible="isFocused"
             @click-outside="onClickOutside">
             <slot name="body" />
@@ -77,6 +77,7 @@ import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import GridAdvancedFilterDropdown from '@UI/components/Grid/AdvancedFilters/Dropdown/GridAdvancedFilterDropdown';
+import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
 import {
     getDraggedColumnPositionState,
@@ -92,7 +93,7 @@ export default {
     name: 'GridAdvancedFilter',
     components: {
         GridAdvancedFilterDropdown,
-        IconArrowDropdown: () => import('@UI/components/Icons/Arrows/IconArrowDropdown'),
+        IconArrowDropdown,
     },
     mixins: [
         associatedLabelMixin,
@@ -152,8 +153,7 @@ export default {
             mouseUpTime: 0,
             isFocused: false,
             isClickedOutside: false,
-            needsToRender: false,
-            offset: {},
+            isReadyToRender: false,
         };
     },
     computed: {
@@ -188,18 +188,6 @@ export default {
         ...mapActions('list', [
             'setDisabledElement',
         ]),
-        getDropDownOffset() {
-            const {
-                x, y, width, height,
-            } = this.$refs.activator.getBoundingClientRect();
-
-            return {
-                x,
-                y,
-                width,
-                height,
-            };
-        },
         onDragStart(event) {
             addElementCopyToDocumentBody({
                 event,
@@ -215,7 +203,7 @@ export default {
                 value: DRAGGED_ELEMENT.FILTER,
             });
 
-            window.requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
                 this.__setState({
                     key: 'ghostIndex',
                     value: this.index,
@@ -288,10 +276,9 @@ export default {
         onFocus() {
             if (!this.isFocused && this.mouseUpTime > 0) {
                 this.isFocused = true;
-                this.offset = this.getDropDownOffset();
 
-                if (!this.needsToRender) {
-                    this.needsToRender = true;
+                if (!this.isReadyToRender) {
+                    this.isReadyToRender = true;
                 }
             }
         },

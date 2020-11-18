@@ -18,6 +18,7 @@
                 :filters="filterValues"
                 :errors="errors"
                 :data-count="filtered"
+                :pagination="pagination"
                 :collection-cell-binding="collectionCellBinding"
                 :batch-actions="productsBatchActions"
                 :disabled-rows="disabledProducts"
@@ -40,7 +41,8 @@
                 @drop-column="onDropColumn"
                 @remove-column="onRemoveColumn"
                 @swap-columns="onSwapColumns"
-                @fetch-data="onFetchData"
+                @pagination="onPaginationChange"
+                @column-sort="onColumnSortChange"
                 @remove-all-filters="onRemoveAllFilters">
                 <template #actionsHeader>
                     <ExpandNumericButton
@@ -214,7 +216,7 @@ export default {
         productsBatchActions() {
             return [
                 {
-                    label: 'Delete selected rows',
+                    label: 'Delete selected products',
                     action: ({
                         payload,
                         onSuccess,
@@ -386,16 +388,20 @@ export default {
                 .removeEventListener(id, this.onRemoveProductsBatchAction);
             this.removeBatchAction(batchActionIndex);
 
+            if (this.localParams.offset + ids.length === this.filtered) {
+                this.localParams.offset -= ids.length;
+            }
+
             await this.onFetchData();
         },
         onRemoveAllFilters() {
             this.filterValues = {};
             this.advancedFilterValues = {};
+            this.pagination.page = 1;
+            this.localParams.filter = {};
+            this.localParams.offset = 0;
 
-            this.onFetchData({
-                ...this.localParams,
-                filter: {},
-            });
+            this.onFetchData();
         },
         onAdvancedFilterPositionChange({
             from,
@@ -408,16 +414,16 @@ export default {
                 to,
             });
         },
-        onAdvancedFilterChange(payload) {
-            this.advancedFilterValues = payload;
+        onAdvancedFilterChange(filters) {
+            this.advancedFilterValues = filters;
+            this.pagination.page = 1;
+            this.localParams.filter = {
+                ...this.filterValues,
+                ...this.advancedFilterValues,
+            };
+            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
-            this.onFetchData({
-                ...this.localParams,
-                filter: {
-                    ...this.filterValues,
-                    ...this.advancedFilterValues,
-                },
-            });
+            this.onFetchData();
         },
         disableListElement({
             languageCode,
@@ -457,13 +463,14 @@ export default {
                 id,
             }) => id !== filter.id);
 
-            this.onFetchData({
-                ...this.localParams,
-                filter: {
-                    ...this.filterValues,
-                    ...this.advancedFilterValues,
-                },
-            });
+            this.pagination.page = 1;
+            this.localParams.filter = {
+                ...this.filterValues,
+                ...this.advancedFilterValues,
+            };
+            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
+
+            this.onFetchData();
         },
         onAdvancedFilterRemoveAll() {
             this.$cookies.remove(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
@@ -480,22 +487,25 @@ export default {
 
             this.advancedFilterValues = {};
             this.advancedFilters = [];
+            this.pagination.page = 1;
+            this.localParams.filter = this.filterValues;
+            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
-            this.onFetchData({
-                ...this.localParams,
-                filter: this.filterValues,
-            });
+            this.onFetchData();
+        },
+        onFetchGridData() {
+            this.onFetchData();
         },
         onFilterChange(filters) {
             this.filterValues = filters;
+            this.pagination.page = 1;
+            this.localParams.filter = {
+                ...this.filterValues,
+                ...this.advancedFilterValues,
+            };
+            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
-            this.onFetchData({
-                ...this.localParams,
-                filter: {
-                    ...this.filterValues,
-                    ...this.advancedFilterValues,
-                },
-            });
+            this.onFetchData();
         },
         async onCellValueChange(cellValues) {
             const cachedElementIds = {};

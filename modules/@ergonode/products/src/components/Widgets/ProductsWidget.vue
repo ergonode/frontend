@@ -29,12 +29,12 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
-    COLORS,
-} from '@Core/defaults/colors';
-import {
     getProductsCount,
 } from '@Dashboard/services';
 import DoughnutProductsChart from '@Products/components/Chart/DoughnutProductsChart';
+import {
+    PRODUCT_TYPE_COLOR,
+} from '@Products/defaults';
 import Preloader from '@UI/components/Preloader/Preloader';
 import ProgressList from '@UI/components/ProgressList/ProgressList';
 import Widget from '@UI/components/Widget/Widget';
@@ -66,20 +66,20 @@ export default {
 
             productsCount.forEach((product) => {
                 const {
-                    count, label,
+                    count,
+                    label,
+                    type,
                 } = product;
 
                 if (count > 0) {
-                    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
-
                     progressListDatasets.push({
-                        color,
+                        color: PRODUCT_TYPE_COLOR[type],
                         label,
                         value: count,
                     });
                     progressListLabels.push(count);
                     dataset.data.push(count);
-                    dataset.backgroundColor.push(color);
+                    dataset.backgroundColor.push(PRODUCT_TYPE_COLOR[type]);
 
                     maxValue += count;
                 }

@@ -11,6 +11,7 @@
                 :data-count="filtered"
                 :rows="rows"
                 :drafts="drafts"
+                :pagination="pagination"
                 :filters="filterValues"
                 :collection-cell-binding="collectionCellBinding"
                 :placeholder="gridPlaceholder"
@@ -26,7 +27,8 @@
                 :is-header-visible="true"
                 :is-border="true"
                 @delete-row="onRemoveProduct"
-                @fetch-data="onFetchData"
+                @pagination="onPaginationChange"
+                @column-sort="onColumnSortChange"
                 @remove-all-filters="onRemoveAllFilters"
                 @filter="onFilterChange">
                 <template #actionsHeader>
@@ -90,6 +92,7 @@ import {
 } from '@Core/defaults/alerts';
 import {
     DEFAULT_GRID_FETCH_PARAMS,
+    DEFAULT_GRID_PAGINATION,
 } from '@Core/defaults/grid';
 import {
     LAYOUT_ORIENTATION,
@@ -149,6 +152,7 @@ export default {
             filtered: 0,
             filterValues: {},
             localParams: DEFAULT_GRID_FETCH_PARAMS,
+            pagination: DEFAULT_GRID_PAGINATION,
             isPrefetchingData: false,
             isBindingAttributesExpanded: false,
         };
@@ -232,21 +236,33 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
+        onPaginationChange(pagination) {
+            this.pagination = pagination;
+            this.localParams.limit = pagination.itemsPerPage;
+            this.localParams.offset = (pagination.page - 1) * pagination.itemsPerPage;
+
+            this.onFetchData();
+        },
         onFilterChange(filters) {
             this.filterValues = filters;
+            this.pagination.page = 1;
+            this.localParams.filter = filters;
+            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
-            this.onFetchData({
-                ...this.localParams,
-                filter: this.filterValues,
-            });
+            this.onFetchData();
         },
         onRemoveAllFilters() {
             this.filterValues = {};
+            this.pagination.page = 1;
+            this.localParams.filter = {};
+            this.localParams.offset = 0;
 
-            this.onFetchData({
-                ...this.localParams,
-                filter: {},
-            });
+            this.onFetchData();
+        },
+        onColumnSortChange(sortedColumn) {
+            this.localParams.sortedColumn = sortedColumn;
+
+            this.onFetchData();
         },
         onShowBindingAttributesModal() {
             this.isAddBindingModalVisible = true;
