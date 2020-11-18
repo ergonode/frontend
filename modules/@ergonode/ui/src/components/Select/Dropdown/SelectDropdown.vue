@@ -217,7 +217,9 @@ export default {
     },
     methods: {
         onResize(entry) {
-            this.dropdownHeight = entry.contentRect.height || 200;
+            if (entry.contentRect.height > 0) {
+                this.dropdownHeight = entry.contentRect.height;
+            }
         },
         onClickOutside(payload) {
             this.$emit('click-outside', payload);
