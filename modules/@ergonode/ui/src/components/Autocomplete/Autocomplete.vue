@@ -85,8 +85,6 @@ import ListElementTitle from '@UI/components/List/ListElementTitle';
 import Select from '@UI/components/Select/Select';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
 
-import data from './data';
-
 export default {
     name: 'Autocomplete',
     components: {
@@ -338,6 +336,8 @@ export default {
                             code,
                         }) => code.toLowerCase().includes(lowerCaseSearchValue)),
                     ];
+                } else {
+                    this.options = options;
                 }
 
                 this.isFetchingData = false;

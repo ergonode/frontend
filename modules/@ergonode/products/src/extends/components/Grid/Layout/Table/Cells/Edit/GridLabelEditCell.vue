@@ -147,6 +147,7 @@ export default {
         onGetProductWorkflowOptionsSuccess({
             workflow,
         }) {
+            console.log(workflow);
             this.options = workflow;
 
             this.localValue = this.options.find(option => option.id === this.value);
