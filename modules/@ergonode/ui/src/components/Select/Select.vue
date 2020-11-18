@@ -63,54 +63,52 @@
                 </template>
             </InputController>
         </template>
-        <FadeTransition>
-            <SelectDropdown
-                v-if="isReadyToRender"
-                ref="menu"
-                :parent-reference="$refs.activator"
-                :data-cy="`${dataCy}-drop-down`"
-                :fixed="fixedContent"
-                :size="size"
-                :multiselect="multiselect"
-                :clearable="clearable"
-                :fixed-content="fixedContent"
-                :searchable="searchable"
-                :options="options"
-                :selected-options="selectedOptions"
-                :search-result="searchResult"
-                :is-visible="isFocused"
-                @dismiss="onDismiss"
-                @clear="onClear"
-                @search="onSearch"
-                @input="onSelectValue"
-                @click-outside="onClickOutside">
-                <template #placeholder="{ isVisible }">
-                    <slot
-                        name="placeholder"
-                        :is-visible="isVisible" />
-                </template>
-                <template #dropdown="{ isVisible }">
-                    <slot
-                        name="dropdown"
-                        :is-visible="isVisible"
-                        :on-select-value-callback="onSelectValue" />
-                </template>
-                <template #option="{ index, option, isSelected, isSmallSize }">
-                    <slot
-                        name="option"
-                        :option="option"
-                        :is-selected="isSelected"
-                        :is-small-size="isSmallSize"
-                        :index="index" />
-                </template>
-                <template #footer>
-                    <slot
-                        name="footer"
-                        :clear="onClear"
-                        :apply="onDismiss" />
-                </template>
-            </SelectDropdown>
-        </FadeTransition>
+        <SelectDropdown
+            v-if="isReadyToRender"
+            ref="menu"
+            :parent-reference="$refs.activator"
+            :data-cy="`${dataCy}-drop-down`"
+            :fixed="fixedContent"
+            :size="size"
+            :multiselect="multiselect"
+            :clearable="clearable"
+            :fixed-content="fixedContent"
+            :searchable="searchable"
+            :options="options"
+            :selected-options="selectedOptions"
+            :search-result="searchResult"
+            :is-visible="isFocused"
+            @dismiss="onDismiss"
+            @clear="onClear"
+            @search="onSearch"
+            @input="onSelectValue"
+            @click-outside="onClickOutside">
+            <template #placeholder="{ isVisible }">
+                <slot
+                    name="placeholder"
+                    :is-visible="isVisible" />
+            </template>
+            <template #dropdown="{ isVisible }">
+                <slot
+                    name="dropdown"
+                    :is-visible="isVisible"
+                    :on-select-value-callback="onSelectValue" />
+            </template>
+            <template #option="{ index, option, isSelected, isSmallSize }">
+                <slot
+                    name="option"
+                    :option="option"
+                    :is-selected="isSelected"
+                    :is-small-size="isSmallSize"
+                    :index="index" />
+            </template>
+            <template #footer>
+                <slot
+                    name="footer"
+                    :clear="onClear"
+                    :apply="onDismiss" />
+            </template>
+        </SelectDropdown>
         <template #details>
             <slot name="details" />
         </template>

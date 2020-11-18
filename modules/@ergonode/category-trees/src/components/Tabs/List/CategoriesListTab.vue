@@ -108,7 +108,7 @@ export default {
             this.onCloseModal();
 
             try {
-                this.getItems(this.userLanguageCode);
+                this.getItems(this.defaultLanguageCode);
             } catch (e) {
                 if (this.$axios.isCancel(e)) {
                     return;
@@ -122,7 +122,7 @@ export default {
         },
         onSearch(value) {
             this.codeFilter = value;
-            this.getItems(this.userLanguageCode);
+            this.getItems(this.defaultLanguageCode);
         },
     },
 };
