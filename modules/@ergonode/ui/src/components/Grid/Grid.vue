@@ -436,12 +436,13 @@ export default {
                 } = this;
 
                 if (!this.isSelectedAllRows[this.pagination.page]) {
-                    const fixedIndex = this.isBasicFilter ? 2 : 1;
+                    const rowsOffset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
+                    const fixedIndex = rowsOffset + (this.isBasicFilter ? 2 : 1);
 
                     rowIds = [];
 
                     Object.keys(this.selectedRows[this.pagination.page]).forEach((key) => {
-                        rowIds.push(this.rowIds[key - fixedIndex]);
+                        rowIds.push(this.rowIds[+key - fixedIndex]);
                     });
                 }
 

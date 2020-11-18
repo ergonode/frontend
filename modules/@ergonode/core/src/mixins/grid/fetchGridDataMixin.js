@@ -69,7 +69,7 @@ export default function ({
             ]),
             onPaginationChange(pagination) {
                 this.pagination = pagination;
-
+                this.localParams.limit = pagination.itemsPerPage;
                 this.localParams.offset = (pagination.page - 1) * pagination.itemsPerPage;
 
                 this.onFetchData();
