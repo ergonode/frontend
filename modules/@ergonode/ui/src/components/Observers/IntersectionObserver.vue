@@ -42,6 +42,7 @@ export default {
     beforeDestroy() {
         if (this.observer) {
             this.observer.disconnect();
+            this.observer = null;
         }
     },
     render() {

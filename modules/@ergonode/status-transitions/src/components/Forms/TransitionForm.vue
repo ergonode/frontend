@@ -40,7 +40,6 @@
                     :clearable="true"
                     :multiselect="true"
                     :searchable="true"
-                    :sticky-search="true"
                     label="Role"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[roleFieldKey]"

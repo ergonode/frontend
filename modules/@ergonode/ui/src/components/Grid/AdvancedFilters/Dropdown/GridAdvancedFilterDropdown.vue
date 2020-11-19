@@ -3,40 +3,35 @@
  * See LICENSE for license details.
  */
 <template>
-    <FadeTransition>
-        <Dropdown
-            v-show="isVisible"
-            :offset="offset"
-            @click-outside="onClickOutside">
-            <slot />
-        </Dropdown>
-    </FadeTransition>
+    <Dropdown
+        :visible="isVisible"
+        :parent-reference="parentReference"
+        @click-outside="onClickOutside">
+        <slot />
+    </Dropdown>
 </template>
 
 <script>
 import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
 
 export default {
     name: 'GridAdvancedFilterDropdown',
     components: {
-        FadeTransition,
         Dropdown,
     },
     props: {
-        /**
-         * Determines position where component will be anchored
-         */
-        offset: {
-            type: Object,
-            required: true,
-        },
         /**
          * Determines visibility of component
          */
         isVisible: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * The vue component reference to which dropdown is hooked
+         */
+        parentReference: {
+            required: true,
         },
     },
     methods: {

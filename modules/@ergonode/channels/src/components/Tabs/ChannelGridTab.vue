@@ -10,6 +10,7 @@
                 :data-count="filtered"
                 :rows="rows"
                 :filters="filterValues"
+                :pagination="pagination"
                 :extended-columns="extendedColumns"
                 :extended-data-cells="extendedDataCells"
                 :extended-data-filter-cells="extendedDataFilterCells"
@@ -22,7 +23,8 @@
                 @edit-row="onEditRow"
                 @preview-row="onEditRow"
                 @delete-row="onRemoveRow"
-                @fetch-data="onFetchData"
+                @pagination="onPaginationChange"
+                @column-sort="onColumnSortChange"
                 @filter="onFilterChange"
                 @remove-all-filters="onRemoveAllFilters" />
         </template>

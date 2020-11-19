@@ -1,6 +1,6 @@
 {
     "name": "ergonode-front",
-    "version": "1.0.0-beta.3",
+    "version": "1.0.0-beta.4",
     "description": "Ergonode - Desktop PWA Ready Product Information Management Platform",
     "keywords": [
         "ergonode",
@@ -65,6 +65,7 @@
         "tiptap": "^1.30.0",
         "tiptap-extensions": "^1.33.2",
         "vue-chartjs": "^3.5.1",
+        "vue-windowing": "^0.5.5",
         "vuex": "^3.5.1"
     },
     "devDependencies": {

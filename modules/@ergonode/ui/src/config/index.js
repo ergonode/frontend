@@ -8,7 +8,6 @@ export default {
     aliases: {
         '@UI': '/',
     },
-    plugins: [],
     css: [
         './assets/scss/reset.scss',
         './assets/scss/font-inter-ui.scss',

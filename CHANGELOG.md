@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## CHANGELOG FOR v1.0.0-beta.4
+- feature - add DOM virtualization to select kind components
+- feature - add github actions
+- feature - search for sidebar list with categories
+- refactor - expose Grid pagination
+- bugfix - Grid filtering 
+- bugfix - sidebar list languages
+
 ## CHANGELOG FOR v1.0.0-beta.3
 - feature - add axios cancel request support for each request
 - feature - replace a custom redirect with native Vue router redirect

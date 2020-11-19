@@ -150,7 +150,7 @@ export default {
                 key: 'isElementDragging',
                 value: DRAGGED_ELEMENT.TEMPLATE,
             });
-            window.requestAnimationFrame(() => { this.isDragged = true; });
+            requestAnimationFrame(() => { this.isDragged = true; });
             addElementCopyToDocumentBody({
                 event,
                 id: 'layoutElement',
@@ -309,7 +309,7 @@ export default {
                     updateResizablePlaceholderWidth(ghostElementWidth);
                 }
 
-                window.requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
                     this.$el.style.width = `${width}px`;
                 });
 
@@ -339,7 +339,7 @@ export default {
                     updateResizablePlaceholderHeight(ghostElementHeight);
                 }
 
-                window.requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
                     this.$el.style.height = `${height}px`;
                 });
 
@@ -382,13 +382,13 @@ export default {
             this.newHeight = height;
         },
         initElementStyleForResizeState() {
-            window.requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
                 this.$el.style.width = `${this.startWidth}px`;
                 this.$el.style.height = `${this.startHeight}px`;
             });
         },
         resetElementStyleForEndResizeInteraction() {
-            window.requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
                 this.$el.style.width = null;
                 this.$el.style.height = null;
             });

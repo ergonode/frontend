@@ -73,7 +73,7 @@ export default {
             const width = this.startWidth + pageX - this.startX;
 
             if (width > this.minWidth) {
-                window.requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
                     this.$emit('width-change', `${width}px`);
                 });
             }

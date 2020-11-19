@@ -3,16 +3,24 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="classes" />
+    <IntersectionObserver
+        :options="observerOptions"
+        @intersect="onIntersect">
+        <div :class="classes" />
+    </IntersectionObserver>
 </template>
 
 <script>
 import {
     PINNED_COLUMN_STATE,
 } from '@Core/defaults/grid';
+import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 
 export default {
     name: 'GridSentinelColumn',
+    components: {
+        IntersectionObserver,
+    },
     props: {
         /**
          * The state of column. Columns might be pinned to the right or left side
@@ -22,11 +30,6 @@ export default {
             required: true,
             validator: value => Object.values(PINNED_COLUMN_STATE).indexOf(value) !== -1,
         },
-    },
-    data() {
-        return {
-            observer: null,
-        };
     },
     computed: {
         classes() {
@@ -38,32 +41,19 @@ export default {
                 },
             ];
         },
-    },
-    mounted() {
-        this.initializeObserver();
-
-        this.observer.observe(this.$el);
-    },
-    beforeDestroy() {
-        this.observer.unobserve(this.$el);
-    },
-    methods: {
-        initializeObserver() {
-            this.observer = new IntersectionObserver(((entries) => {
-                const {
-                    length,
-                } = entries;
-                for (let i = length - 1; i > -1; i -= 1) {
-                    const entry = entries[i];
-                    this.$emit('sticky', {
-                        isSticky: !entry.isIntersecting,
-                        state: this.pinnedState,
-                    });
-                }
-            }), {
+        observerOptions() {
+            return {
                 threshold: [
                     0.0,
                 ],
+            };
+        },
+    },
+    methods: {
+        onIntersect(isIntersecting) {
+            this.$emit('sticky', {
+                isSticky: !isIntersecting,
+                state: this.pinnedState,
             });
         },
     },

@@ -9,7 +9,6 @@
         :type="type"
         :alignment="alignment"
         :size="size"
-        :sticky-search="stickySearch"
         :fixed-content="fixedContent"
         :dismissible="dismissible"
         :label="label"
@@ -227,13 +226,6 @@ export default {
             required: true,
         },
         /**
-         * Determines stickiness of search
-         */
-        stickySearch: {
-            type: Boolean,
-            default: false,
-        },
-        /**
          * The type of filter at which options will be narrowed
          */
         filterType: {
@@ -335,14 +327,18 @@ export default {
                     },
                 });
 
-                const lowerCaseSearchValue = this.searchValue.toLowerCase();
+                if (this.additionalStaticOptions.length) {
+                    const lowerCaseSearchValue = this.searchValue.toLowerCase();
 
-                this.options = [
-                    ...options,
-                    ...this.additionalStaticOptions.filter(({
-                        code,
-                    }) => code.toLowerCase().includes(lowerCaseSearchValue)),
-                ];
+                    this.options = [
+                        ...options,
+                        ...this.additionalStaticOptions.filter(({
+                            code,
+                        }) => code.toLowerCase().includes(lowerCaseSearchValue)),
+                    ];
+                } else {
+                    this.options = options;
+                }
 
                 this.isFetchingData = false;
             } catch (e) {

@@ -108,7 +108,7 @@ export default {
             });
         },
         async onUpdateSuccess() {
-            await this.getLanguages();
+            await this.getLanguages({});
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,

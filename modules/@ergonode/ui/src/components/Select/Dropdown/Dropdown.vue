@@ -5,8 +5,7 @@
 <template>
     <ClickOutsideGlobalEvent @click-outside="onClickOutside">
         <div
-            class="dropdown"
-            :style="positionStyle"
+            :class="classes"
             ref="dropdown">
             <slot />
         </div>
@@ -30,62 +29,73 @@ export default {
             default: false,
         },
         /**
-         * Determines position where component will be anchored
+         * Determines visibility of component
          */
-        offset: {
-            type: Object,
-            default: () => ({
-                x: 0,
-                y: 0,
-                width: 0,
-                height: 0,
-            }),
+        visible: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * The vue component reference to which dropdown is hooked
+         */
+        parentReference: {
+            required: true,
         },
     },
-    data() {
-        return {
-            positionStyle: null,
-        };
+    computed: {
+        classes() {
+            return [
+                'dropdown',
+                {
+                    'dropdown--visible': this.visible,
+                },
+            ];
+        },
     },
     watch: {
-        offset: {
+        visible: {
             immediate: true,
             handler() {
-                this.$nextTick(() => {
-                    window.requestAnimationFrame(() => {
-                        const {
-                            innerHeight,
-                        } = window;
-                        const position = {};
-                        let maxHeight = 200;
+                if (!this.parentReference || !this.visible) {
+                    return;
+                }
 
-                        if (this.fixed) {
-                            position.maxHeight = `${maxHeight}px`;
-                            position.width = `${this.offset.width}px`;
-                        } else {
-                            maxHeight = this.$el.clientHeight;
-                        }
+                const parentElement = typeof this.parentReference.$el === 'undefined'
+                    ? this.parentReference
+                    : this.parentReference.$el;
 
-                        const yPos = innerHeight - this.offset.y;
+                requestAnimationFrame(() => {
+                    const parentOffset = parentElement.getBoundingClientRect();
+                    const offset = 2;
+                    const {
+                        innerHeight,
+                    } = window;
+                    let maxHeight = 200;
 
-                        if (this.$el.offsetWidth + this.offset.x > window.innerWidth) {
-                            position.right = 0;
-                        } else {
-                            position.left = `${this.offset.x}px`;
-                        }
+                    if (this.fixed) {
+                        this.$refs.dropdown.style.maxHeight = `${maxHeight}px`;
+                        this.$refs.dropdown.style.width = `${parentOffset.width}px`;
+                    } else {
+                        maxHeight = this.$refs.dropdown.clientHeight;
+                    }
 
-                        if (yPos < maxHeight
-                            && this.offset.y >= maxHeight) {
-                            position.bottom = `${yPos}px`;
-                        } else if (this.offset.y < maxHeight
-                            && yPos <= maxHeight) {
-                            position.top = 0;
-                        } else {
-                            position.top = `${this.offset.y + this.offset.height}px`;
-                        }
+                    const yPos = innerHeight - parentOffset.y;
 
-                        this.positionStyle = position;
-                    });
+                    if (this.$el.offsetWidth + parentOffset.x > window.innerWidth) {
+                        this.$refs.dropdown.style.right = 0;
+                    } else {
+                        this.$refs.dropdown.style.left = `${parentOffset.x}px`;
+                    }
+
+                    if (yPos < maxHeight
+                        && parentOffset.y >= maxHeight) {
+                        this.$refs.dropdown.style.bottom = `${yPos}px`;
+                    } else if (parentOffset.y < maxHeight
+                        && yPos <= maxHeight) {
+                        this.$refs.dropdown.style.top = 0;
+                    } else {
+                        this.$refs.dropdown.style.top = `${parentOffset.y + parentOffset.height + offset}px`;
+                    }
                 });
             },
         },
@@ -114,9 +124,20 @@ export default {
     .dropdown {
         position: absolute;
         z-index: $Z_INDEX_MAX;
-        display: flex;
+        display: none;
         flex-direction: column;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_2_DP;
+        will-change:
+            top,
+            left,
+            bottom,
+            right,
+            height,
+            width;
+
+        &--visible {
+            display: flex;
+        }
     }
 </style>
