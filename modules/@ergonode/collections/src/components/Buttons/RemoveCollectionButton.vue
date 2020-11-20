@@ -19,6 +19,9 @@
 <script>
 import PRIVILEGES from '@Collections/config/privileges';
 import {
+    ROUTE_NAME,
+} from '@Collections/config/routes';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
@@ -74,7 +77,7 @@ export default {
                 message: 'Product collection removed',
             });
             this.$router.push({
-                name: 'collections-grid',
+                name: ROUTE_NAME.COLLECTIONS_GRID,
             });
         },
         onRemoveError() {

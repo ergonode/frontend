@@ -41,6 +41,9 @@
 import ProductCollection from '@Collections/components/ProductCollection/ProductCollection';
 import ProductCollectionItem from '@Collections/components/ProductCollection/ProductCollectionItem';
 import {
+    ROUTE_NAME,
+} from '@Collections/config/routes';
+import {
     LAYOUT_ORIENTATION,
 } from '@Core/defaults/layout';
 import {
@@ -125,7 +128,7 @@ export default {
         ]),
         onNavigateToCollections() {
             this.$router.push({
-                name: 'collections-grid',
+                name: ROUTE_NAME.COLLECTIONS_GRID,
             });
         },
         fetchCollectionItems({
