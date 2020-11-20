@@ -9,7 +9,7 @@
             :is-navigation-back="true"
             :is-read-only="isReadOnly">
             <template #prependHeader>
-                <NavigationBackFab />
+                <NavigateBackFab />
             </template>
             <template #mainAction>
                 <RemoveRoleButton />

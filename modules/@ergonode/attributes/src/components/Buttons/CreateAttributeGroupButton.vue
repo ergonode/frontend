@@ -5,7 +5,7 @@
 <template>
     <Button
         data-cy="new-attribute-group"
-        title="NEW ATTRIBUTE GROUP"
+        :title="$t('attributeGroup.page.addButton')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">

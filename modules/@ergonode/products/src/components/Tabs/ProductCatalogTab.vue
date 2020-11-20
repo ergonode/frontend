@@ -87,7 +87,7 @@
                             v-bind="bindingProps(footerItem)" />
                     </template>
                     <Button
-                        title="SAVE CHANGES"
+                        :title="$t('core.buttons.submit')"
                         :disabled="!isAllowedToUpdate"
                         @click.native="onSubmit">
                         <template

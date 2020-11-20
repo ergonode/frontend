@@ -6,7 +6,7 @@
     <Page>
         <TitleBar :title="title">
             <template #prependHeader>
-                <NavigationBackFab />
+                <NavigateBackFab />
             </template>
             <template #mainAction>
                 <RemoveResourceButton />

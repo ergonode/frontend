@@ -60,8 +60,8 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: this.$t('category.messages.deleteConfirm'),
-                applyTitle: 'YES, REMOVE',
+                title: this.$t('category.messages.deleteTitle'),
+                applyTitle: this.$t('category.messages.deleteConfirm'),
                 action: () => {
                     this.removeCategory({
                         onSuccess: this.onRemoveSuccess,

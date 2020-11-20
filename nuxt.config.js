@@ -119,6 +119,7 @@ module.exports = {
         vueI18n: {
             fallbackLocale: 'en_GB',
         },
+        objectNotation: true,
         lazy: true,
         langDir: '.nuxt/locales/',
         strategy: 'no_prefix',

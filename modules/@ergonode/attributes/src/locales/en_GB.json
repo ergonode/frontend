@@ -29,10 +29,14 @@
             "placeholderSubtitle": "There are no attributes in the system, you can create the first one."
         },
         "messages": {
-            "deleteConfirm": "Are you sure you want to delete this attribute?",
+            "deleteTitle": "Are you sure you want to delete this attribute?",
+            "deleteConfirm": "YES, REMOVE",
             "deleteSuccess": "Attribute removed",
+            "deleteCancel": "Removing attribute has been canceled",
             "createSuccess": "Attribute created",
+            "createCancel": "Creating attribute has been canceled",
             "updateSuccess": "Attribute has been updated",
+            "updateCancel": "Updating attribute has been canceled",
             "updateTranslationSuccess": "Attribute translations have been updated"
         },
         "errors": {
@@ -41,6 +45,40 @@
             "deleteRequest": "Attribute hasn’t been deleted",
             "optionUniq": "Option code must be unique",
             "optionEmpty": "Option cannot be empty"
+        }
+    },
+    "attributeGroup": {
+        "page": {
+            "title": "Attribute groups",
+            "head": "Attribute groups - Ergonode",
+            "addButton": "NEW ATTRIBUTE GROUP",
+            "removeButton": "REMOVE ATTRIBUTE GROUP"
+        },
+        "form":{
+            "createTitle": "Create attribute group"
+        },
+        "translation": {
+            "nameLabel": "Attribute name",
+            "hintLabel": "Tooltip for writers"
+        },
+        "grid": {
+            "placeholderTitle": "No attribute groups",
+            "placeholderSubtitle": "There are no attribute groups in the system, you can create the first one."
+        },
+        "messages": {
+            "deleteTitle": "Are you sure you want to delete this attribute group?",
+            "deleteConfirm": "YES, REMOVE",
+            "deleteSuccess": "Attribute group removed",
+            "deleteCancel": "Removing attribute group has been canceled",
+            "createSuccess": "Attribute group created",
+            "createCancel": "Creating attribute group has been canceled",
+            "updateSuccess": "Attribute group has been updated",
+            "updateCancel": "Updating attribute group has been canceled",
+            "updateTranslationSuccess": "Attribute group translations have been updated"
+        },
+        "errors": {
+            "getRequest": "Attribute group hasn’t been fetched properly",
+            "deleteRequest": "Attribute group hasn’t been deleted"
         }
     }
 }

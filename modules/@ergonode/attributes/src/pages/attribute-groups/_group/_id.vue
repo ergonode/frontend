@@ -70,7 +70,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.code} - Attribute groups - Ergonode`,
+            title: `${this.code} - ${this.$t('attributeGroup.page.head')}`,
         };
     },
 };

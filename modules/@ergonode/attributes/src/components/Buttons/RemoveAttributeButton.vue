@@ -19,6 +19,9 @@
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
 import {
+    ROUTE_NAMES,
+} from '@Attributes/config/routes';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
@@ -60,8 +63,8 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: this.$t('attribute.messages.deleteConfirm'),
-                applyTitle: 'YES, REMOVE',
+                title: this.$t('attribute.messages.deleteTitle'),
+                applyTitle: this.$t('attribute.messages.deleteConfirm'),
                 action: () => {
                     this.removeAttribute({
                         onSuccess: this.onRemoveSuccess,
@@ -76,7 +79,7 @@ export default {
                 message: this.$t('attribute.messages.deleteSuccess'),
             });
             this.$router.push({
-                name: 'attributes-grid',
+                name: ROUTE_NAMES.ATTRIBUTES_GRID,
             });
         },
         onRemoveError() {

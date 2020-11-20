@@ -7,7 +7,7 @@
         data-cy="delete-attribute-group"
         :theme="secondaryTheme"
         :size="smallSize"
-        title="REMOVE GROUP"
+        :title="$t('attributeGroup.page.removeButton')"
         :disabled="!isAllowedToDelete"
         @click.native="onRemove">
         <template #prepend="{ color }">
@@ -18,6 +18,9 @@
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
+import {
+    ROUTE_NAMES,
+} from '@Attributes/config/routes';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -60,8 +63,8 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this group?',
-                applyTitle: 'YES, REMOVE',
+                title: this.$t('attributeGroup.messages.deleteTitle'),
+                applyTitle: this.$t('attributeGroup.messages.deleteConfirm'),
                 action: () => this.removeAttributeGroup({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
@@ -71,16 +74,16 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Attribute group removed',
+                message: this.$t('attributeGroup.messages.deleteSuccess'),
             });
             this.$router.push({
-                name: 'attribute-groups-grid',
+                name: ROUTE_NAMES.ATTRIBUTE_GROUPS_GRID,
             });
         },
         onRemoveError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Attribute group hasn`t been deleted',
+                message: this.$t('attributeGroup.errors.deleteRequest'),
             });
         },
     },

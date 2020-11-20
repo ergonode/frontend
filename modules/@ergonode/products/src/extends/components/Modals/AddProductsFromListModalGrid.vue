@@ -35,7 +35,7 @@
                 </template>
                 <template #appendFooter>
                     <Button
-                        title="SAVE CHANGES"
+                        :title="$t('core.buttons.submit')"
                         @click.native="onSubmit">
                         <template
                             v-if="isSubmitting"

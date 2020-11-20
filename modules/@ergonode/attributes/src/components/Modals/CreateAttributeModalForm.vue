@@ -22,6 +22,9 @@
 <script>
 import AttributeForm from '@Attributes/components/Forms/AttributeForm';
 import {
+    ROUTE_NAMES,
+} from '@Attributes/config/routes';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
@@ -105,7 +108,7 @@ export default {
             this.isProceeding = false;
 
             this.$router.push({
-                name: 'attribute-id-general',
+                name: ROUTE_NAMES.ATTRIBUTE_EDIT_GENERAL,
                 params: {
                     id,
                 },

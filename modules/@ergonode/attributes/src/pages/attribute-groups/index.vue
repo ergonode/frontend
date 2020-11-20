@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            title="Attribute groups"
+            :title="$t('attributeGroup.page.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <template
@@ -85,7 +85,7 @@ export default {
     },
     head() {
         return {
-            title: 'Attribute groups - Ergonode',
+            title: this.$t('attributeGroup.page.head'),
         };
     },
 };

@@ -2,12 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import NavigationBackFab from '@Core/components/Buttons/NavigationBackFab';
-import {
-    SIZE,
-    THEME,
-} from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
+import NavigateBackFab from '@Core/components/Buttons/NavigateBackFab';
 import Footer from '@UI/components/Layout/Footer/Footer';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
@@ -22,8 +17,7 @@ export default {
         TitleBar,
         HorizontalRoutingTabBar,
         Footer,
-        Button,
-        NavigationBackFab,
+        NavigateBackFab,
     },
     props: {
         /**
@@ -39,11 +33,5 @@ export default {
             'errors',
             'changeValues',
         ]),
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
     },
 };

@@ -9,6 +9,9 @@
 </template>
 
 <script>
+import {
+    ROUTE_NAMES,
+} from '@Attributes/config/routes';
 import LinkButton from '@UI/components/LinkButton/LinkButton';
 
 export default {
@@ -69,7 +72,7 @@ export default {
                 break;
             default:
                 this.$router.push({
-                    name: 'attribute-id-general',
+                    name: ROUTE_NAMES.ATTRIBUTE_EDIT_GENERAL,
                     params: {
                         id,
                     },
