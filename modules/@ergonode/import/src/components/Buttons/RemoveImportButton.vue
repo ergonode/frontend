@@ -27,6 +27,9 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Import/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Import/config/routes';
 import Button from '@UI/components/Button/Button';
 import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 import {
@@ -73,7 +76,7 @@ export default {
                 message: 'Import profiles removed',
             });
             this.$router.push({
-                name: 'import-grid',
+                name: ROUTE_NAME.IMPORTS_GRID,
             });
         },
         onRemoveError() {

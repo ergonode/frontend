@@ -9,13 +9,21 @@ import {
 } from './imports';
 import Privileges from './privileges';
 
+export const ROUTE_NAME = {
+    IMPORTS: 'imports',
+    IMPORTS_GRID: 'imports-grid',
+    IMPORT_EDIT: 'import-id',
+    IMPORT_EDIT_GENERAL: 'import-id-general',
+    IMPORT_EDIT_HISTORY: 'import-id-history',
+};
+
 export default [
     {
-        name: 'imports',
+        name: ROUTE_NAME.IMPORTS,
         path: '/imports',
         component: Pages.Imports,
         redirect: {
-            name: 'import-grid',
+            name: ROUTE_NAME.IMPORTS_GRID,
         },
         meta: {
             access: true,
@@ -34,7 +42,7 @@ export default [
         },
         children: [
             {
-                name: 'import-grid',
+                name: ROUTE_NAME.IMPORTS_GRID,
                 path: 'grid',
                 component: Tabs.ImportProfileGridTab,
                 meta: {
@@ -51,18 +59,18 @@ export default [
         ],
     },
     {
-        name: 'import-id',
+        name: ROUTE_NAME.IMPORT_EDIT,
         path: '/imports/import/:id',
         component: Pages.ImportProfileEdit,
         redirect: {
-            name: 'import-id-general',
+            name: ROUTE_NAME.IMPORT_EDIT_GENERAL,
         },
         meta: {
             isMenu: false,
         },
         children: [
             {
-                name: 'import-id-general',
+                name: ROUTE_NAME.IMPORT_EDIT_GENERAL,
                 path: 'general',
                 component: Tabs.ImportProfileGeneralTab,
                 meta: {
@@ -74,14 +82,14 @@ export default [
                         },
                         {
                             title: 'Import profiles',
-                            routeName: 'import-grid',
+                            routeName: ROUTE_NAME.IMPORTS_GRID,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'import-id-history',
+                name: ROUTE_NAME.IMPORT_EDIT_HISTORY,
                 path: 'history',
                 component: Tabs.ImportProfileHistoryTab,
                 meta: {
@@ -93,7 +101,7 @@ export default [
                         },
                         {
                             title: 'Import profiles',
-                            routeName: 'import-grid',
+                            routeName: ROUTE_NAME.IMPORTS_GRID,
                         },
                     ],
                     privileges: [],

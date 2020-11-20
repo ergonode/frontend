@@ -28,6 +28,9 @@ import {
 } from '@Core/defaults/theme';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import ImportProfileForm from '@Import/components/Forms/ImportProfileForm';
+import {
+    ROUTE_NAME,
+} from '@Import/config/routes';
 import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
@@ -106,7 +109,7 @@ export default {
             this.removeScopeErrors(this.scope);
 
             this.$router.push({
-                name: 'import-id-general',
+                name: ROUTE_NAME.IMPORT_EDIT_GENERAL,
                 params: {
                     id,
                 },
