@@ -18,7 +18,7 @@
                         :key="index"
                         v-bind="bindingProps(actionItem)" />
                 </template>
-                <RemoveAttributeButton />
+                <RemoveAttributeGroupButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import RemoveAttributeButton from '@Attributes/components/Buttons/RemoveAttributeButton';
+import RemoveAttributeGroupButton from '@Attributes/components/Buttons/RemoveAttributeGroupButton';
 import PRIVILEGES from '@Attributes/config/privileges';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
@@ -38,7 +38,7 @@ import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 export default {
     name: 'AttributeGroupPage',
     components: {
-        RemoveAttributeButton,
+        RemoveAttributeGroupButton,
     },
     mixins: [
         editPageMixin,

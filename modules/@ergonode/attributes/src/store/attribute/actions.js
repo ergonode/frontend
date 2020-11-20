@@ -296,7 +296,8 @@ export default {
         }
     },
     async removeAttribute({
-        state, rootState,
+        state,
+        rootState,
     }, {
         onSuccess = () => {},
         onError = () => {},

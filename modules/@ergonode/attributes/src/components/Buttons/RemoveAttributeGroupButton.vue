@@ -38,7 +38,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'RemoveAttributeButton',
+    name: 'RemoveAttributeGroupButton',
     components: {
         Button,
         IconDelete,
