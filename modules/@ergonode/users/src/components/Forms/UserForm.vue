@@ -113,6 +113,9 @@ import TextField from '@UI/components/TextField/TextField';
 import Toggler from '@UI/components/Toggler/Toggler';
 import PRIVILEGES from '@Users/config/privileges';
 import {
+    ROUTE_NAME,
+} from '@Users/config/routes';
+import {
     mapActions,
     mapGetters,
     mapState,
@@ -235,7 +238,7 @@ export default {
         },
         onNavigateToUserRoles() {
             this.$router.push({
-                name: 'user-roles-grid',
+                name: ROUTE_NAME.USER_ROLES_GRID,
             });
         },
         setEmailValue(value) {

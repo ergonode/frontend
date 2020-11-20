@@ -31,6 +31,9 @@ import Button from '@UI/components/Button/Button';
 import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 import PRIVILEGES from '@Users/config/privileges';
 import {
+    ROUTE_NAME,
+} from '@Users/config/routes';
+import {
     mapActions,
 } from 'vuex';
 
@@ -74,7 +77,7 @@ export default {
                 message: 'User removed',
             });
             this.$router.push({
-                name: 'users-grid',
+                name: ROUTE_NAME.USERS_GRID,
             });
         },
         onRemoveError() {

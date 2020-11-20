@@ -40,6 +40,9 @@ import {
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import PRIVILEGES from '@Users/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Users/config/routes';
 
 export default {
     name: 'RolesGridTab',
@@ -81,7 +84,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'user-role-id-general',
+                name: ROUTE_NAME.USER_ROLE_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },
