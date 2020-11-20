@@ -27,6 +27,9 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Media/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Media/config/routes';
 import Button from '@UI/components/Button/Button';
 import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 import {
@@ -73,7 +76,7 @@ export default {
                 message: 'Resource removed',
             });
             this.$router.push({
-                name: 'media-grid',
+                name: ROUTE_NAME.MEDIA_GRID,
             });
         },
         onRemoveError() {

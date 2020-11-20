@@ -38,6 +38,9 @@
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import PRIVILEGES from '@Media/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Media/config/routes';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
@@ -78,7 +81,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'media-id-general',
+                name: ROUTE_NAME.MEDIA_RESOURCE_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },

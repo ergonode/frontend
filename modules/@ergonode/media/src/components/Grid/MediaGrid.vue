@@ -61,6 +61,9 @@ import {
 } from '@Core/services/grid/getGridData.service';
 import PRIVILEGES from '@Media/config/privileges';
 import {
+    ROUTE_NAME,
+} from '@Media/config/routes';
+import {
     MEDIA_TYPE,
 } from '@Media/defaults';
 import {
@@ -374,7 +377,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'media-id-general',
+                name: ROUTE_NAME.MEDIA_RESOURCE_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },
