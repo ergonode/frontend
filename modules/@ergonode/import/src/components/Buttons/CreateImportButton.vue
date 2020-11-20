@@ -21,10 +21,10 @@
 </template>
 
 <script>
-import PRIVILEGES from '@Import/config/privileges';
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import PRIVILEGES from '@Import/config/privileges';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 

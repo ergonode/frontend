@@ -8,7 +8,6 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import Button from '@UI/components/Button/Button';
-import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 import Footer from '@UI/components/Layout/Footer/Footer';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
@@ -24,7 +23,6 @@ export default {
         HorizontalRoutingTabBar,
         Footer,
         Button,
-        IconDelete,
         NavigationBackFab,
     },
     props: {
