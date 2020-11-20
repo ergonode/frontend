@@ -17,5 +17,8 @@ export default {
         onFetchedGridData() {
             this.fetchGridData = false;
         },
+        onCreatedData() {
+            this.fetchGridData = true;
+        },
     },
 };

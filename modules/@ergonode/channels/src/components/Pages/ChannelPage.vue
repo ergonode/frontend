@@ -12,12 +12,7 @@
             </template>
             <template #mainAction>
                 <RemoveChannelButton />
-                <Button
-                    title="EXPORT NOW"
-                    :size="smallSize"
-                    :theme="secondaryTheme"
-                    :disabled="!isAllowedToUpdate"
-                    @click.native="onCreateExport" />
+                <CreateExportButton @created="onCreatedData" />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -43,25 +38,17 @@
 </template>
 
 <script>
+import CreateExportButton from '@Channels/components/Buttons/CreateExportButton';
 import RemoveChannelButton from '@Channels/components/Buttons/RemoveChannelButton';
 import PRIVILEGES from '@Channels/config/privileges';
-import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import {
-    MODAL_TYPE,
-} from '@Core/defaults/modals';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import HorizontalRoutingTabBarContent from '@UI/components/TabBar/Routing/HorizontalRoutingTabBarContent';
-import {
-    mapActions,
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'ChannelPage',
     components: {
+        CreateExportButton,
         RemoveChannelButton,
         HorizontalRoutingTabBarContent,
     },
@@ -75,40 +62,16 @@ export default {
         };
     },
     computed: {
-        ...mapState('channel', [
-            'id',
-        ]),
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.CHANNEL.update,
-            ]);
-        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.CHANNEL.namespace);
         },
     },
     methods: {
-        ...mapActions('channel', [
-            'createChannelExport',
-        ]),
         onFetchedGridData() {
             this.fetchGridData = false;
         },
-        onCreateExport() {
-            this.$confirm({
-                type: MODAL_TYPE.POSITIVE,
-                title: 'Are you sure you want to start export?',
-                action: () => this.createChannelExport({
-                    onSuccess: this.onExportSuccess,
-                }),
-            });
-        },
-        onExportSuccess() {
+        onCreatedData() {
             this.fetchGridData = true;
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Export has been finished',
-            });
         },
     },
 };

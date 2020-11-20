@@ -8,7 +8,7 @@
             title="Import profiles"
             :is-read-only="isReadOnly">
             <template #mainAction>
-                <CreateImportButton @created="onCreatedData" />
+                <CreateImportProfileButton @created="onCreatedData" />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -26,7 +26,7 @@
 <script>
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
-import CreateImportButton from '@Import/components/Buttons/CreateImportButton';
+import CreateImportProfileButton from '@Import/components/Buttons/CreateImportProfileButton';
 import PRIVILEGES from '@Import/config/privileges';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
@@ -35,7 +35,7 @@ import TitleBar from '@UI/components/TitleBar/TitleBar';
 export default {
     name: 'Imports',
     components: {
-        CreateImportButton,
+        CreateImportProfileButton,
         TitleBar,
         Page,
         HorizontalRoutingTabBar,

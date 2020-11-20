@@ -12,12 +12,7 @@
             </template>
             <template #mainAction>
                 <RemoveImportButton />
-                <Button
-                    title="IMPORT NOW"
-                    :size="smallSize"
-                    :theme="secondaryTheme"
-                    :disabled="!isAllowedToUpdate"
-                    @click.native="onShowModal" />
+                <CreateImportButton @created="onCreatedData" />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -39,10 +34,6 @@
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
-        <UploadImportFileModalForm
-            v-if="isModalVisible"
-            @close="onCloseModal"
-            @created="onCreatedData" />
     </Page>
 </template>
 
@@ -50,14 +41,15 @@
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import CreateImportButton from '@Import/components/Buttons/CreateImportButton';
 import RemoveImportButton from '@Import/components/Buttons/RemoveImportButton';
 import PRIVILEGES from '@Import/config/privileges';
 
 export default {
     name: 'ImportProfilePage',
     components: {
+        CreateImportButton,
         RemoveImportButton,
-        UploadImportFileModalForm: () => import('@Import/components/Modals/UploadImportFileModalForm'),
     },
     mixins: [
         editPageMixin,
@@ -67,11 +59,6 @@ export default {
     computed: {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.IMPORT.namespace);
-        },
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.IMPORT.update,
-            ]);
         },
     },
 };

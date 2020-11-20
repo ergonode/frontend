@@ -8,7 +8,7 @@
             title="Channel"
             :is-read-only="isReadOnly">
             <template #mainAction>
-                <CreateChannelButton />
+                <CreateChannelButton @created="onCreatedData" />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar

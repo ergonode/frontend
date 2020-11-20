@@ -4,38 +4,40 @@
  */
 <template>
     <Button
-        title="IMPORT NOW"
+        title="EXPORT NOW"
         :size="smallSize"
         :theme="secondaryTheme"
         :disabled="!isAllowedToUpdate"
-        @click.native="onShowModal">
+        @click.native="onCreateExport">
         <template #prepend="{ color }">
             <IconAdd :fill-color="color" />
-        </template>
-        <template #default>
-            <UploadImportFileModalForm
-                v-if="isModalVisible"
-                @close="onCloseModal"
-                @created="onCreatedData" />
         </template>
     </Button>
 </template>
 
 <script>
+import PRIVILEGES from '@Channels/config/privileges';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
 import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import PRIVILEGES from '@Import/config/privileges';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import {
+    mapActions,
+} from 'vuex';
 
 export default {
-    name: 'CreateImportButton',
+    name: 'CreateExportButton',
     components: {
         Button,
         IconAdd,
-        UploadImportFileModalForm: () => import('@Import/components/Modals/UploadImportFileModalForm'),
     },
     data() {
         return {
@@ -45,7 +47,7 @@ export default {
     computed: {
         isAllowedToUpdate() {
             return this.$hasAccess([
-                PRIVILEGES.IMPORT.update,
+                PRIVILEGES.CHANNEL.update,
             ]);
         },
         smallSize() {
@@ -56,14 +58,24 @@ export default {
         },
     },
     methods: {
-        onShowModal() {
-            this.isModalVisible = true;
+        ...mapActions('channel', [
+            'createChannelExport',
+        ]),
+        onCreateExport() {
+            this.$confirm({
+                type: MODAL_TYPE.POSITIVE,
+                title: 'Are you sure you want to start export?',
+                action: () => this.createChannelExport({
+                    onSuccess: this.onExportSuccess,
+                }),
+            });
         },
-        onCloseModal() {
-            this.isModalVisible = false;
-        },
-        onCreatedData() {
-            this.onCloseModal();
+        onExportSuccess() {
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Export has been finished',
+            });
+
             this.$emit('created');
         },
     },

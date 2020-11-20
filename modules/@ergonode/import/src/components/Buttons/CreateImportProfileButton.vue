@@ -4,7 +4,7 @@
  */
 <template>
     <Button
-        title="NEW USER"
+        title="NEW IMPORT PROFILE"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">
@@ -12,7 +12,7 @@
             <IconAdd :fill-color="color" />
         </template>
         <template #default>
-            <CreateUserModalForm
+            <CreateImportProfileModalForm
                 v-if="isModalVisible"
                 @close="onCloseModal"
                 @created="onCreatedData" />
@@ -24,16 +24,16 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import PRIVILEGES from '@Import/config/privileges';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
-import PRIVILEGES from '@Users/config/privileges';
 
 export default {
-    name: 'CreateUserButton',
+    name: 'CreateImportProfileButton',
     components: {
         Button,
         IconAdd,
-        CreateUserModalForm: () => import('@Users/components/Modals/CreateUserModalForm'),
+        CreateImportProfileModalForm: () => import('@Import/components/Modals/CreateImportProfileModalForm'),
     },
     data() {
         return {
@@ -43,7 +43,7 @@ export default {
     computed: {
         isAllowedToCreate() {
             return this.$hasAccess([
-                PRIVILEGES.USER.create,
+                PRIVILEGES.IMPORT.create,
             ]);
         },
         smallSize() {

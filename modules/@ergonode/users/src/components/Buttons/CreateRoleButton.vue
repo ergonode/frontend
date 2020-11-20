@@ -21,12 +21,12 @@
 </template>
 
 <script>
-import PRIVILEGES from '@Collections/config/privileges';
 import {
     SIZE,
 } from '@Core/defaults/theme';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import PRIVILEGES from '@Users/config/privileges';
 
 export default {
     name: 'CreateRoleButton',
