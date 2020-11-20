@@ -37,6 +37,9 @@ import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponent
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import PRIVILEGES from '@Transitions/config/privileges';
 import {
+    ROUTE_NAME,
+} from '@Transitions/config/routes';
+import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
@@ -82,7 +85,7 @@ export default {
             const id = `${args[lastIndex - 1].replace(/%20/g, ' ')}--${args[lastIndex].replace(/%20/g, ' ')}`;
 
             this.$router.push({
-                name: 'transition-id-general',
+                name: ROUTE_NAME.STATUS_TRANSITION_EDIT_GENERAL,
                 params: {
                     id,
                 },

@@ -28,6 +28,9 @@ import {
 } from '@Core/defaults/theme';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import TransitionForm from '@Transitions/components/Forms/TransitionForm';
+import {
+    ROUTE_NAME,
+} from '@Transitions/config/routes';
 import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
@@ -120,7 +123,7 @@ export default {
             this.isProceeding = false;
 
             this.$router.push({
-                name: 'transition-id-general',
+                name: ROUTE_NAME.STATUS_TRANSITION_EDIT_GENERAL,
                 params: {
                     id: `${this.source.key}--${this.destination.key}`,
                 },

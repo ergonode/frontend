@@ -27,6 +27,9 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Transitions/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Transitions/config/routes';
 import Button from '@UI/components/Button/Button';
 import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 import {
@@ -73,7 +76,7 @@ export default {
                 message: 'Transition removed',
             });
             this.$router.push({
-                name: 'status-transitions-grid',
+                name: ROUTE_NAME.STATUS_TRANSITIONS_GRID,
             });
         },
         onRemoveError() {
