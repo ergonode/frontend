@@ -28,6 +28,9 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Segments/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Segments/config/routes';
 import Button from '@UI/components/Button/Button';
 import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 import {
@@ -74,7 +77,7 @@ export default {
                 message: 'Segment removed',
             });
             this.$router.push({
-                name: 'segments-grid',
+                name: ROUTE_NAME.SEGMENTS_GRID,
             });
         },
         onRemoveError() {

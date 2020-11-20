@@ -9,13 +9,22 @@ import {
 } from './imports';
 import Privileges from './privileges';
 
+export const ROUTE_NAME = {
+    SEGMENTS: 'segments',
+    SEGMENTS_GRID: 'segments-grid',
+    SEGMENT_EDIT: 'segment-id',
+    SEGMENT_EDIT_GENERAL: 'segment-id-general',
+    SEGMENT_EDIT_TRANSLATIONS: 'segment-id-translations',
+    SEGMENT_EDIT_DESIGNER: 'segment-id-designer',
+};
+
 export default [
     {
-        name: 'segments',
+        name: ROUTE_NAME.SEGMENTS,
         path: '/segments',
         component: Pages.Segments,
         redirect: {
-            name: 'segments-grid',
+            name: ROUTE_NAME.SEGMENTS_GRID,
         },
         meta: {
             access: true,
@@ -34,7 +43,7 @@ export default [
         },
         children: [
             {
-                name: 'segments-grid',
+                name: ROUTE_NAME.SEGMENTS_GRID,
                 path: 'grid',
                 component: Tabs.SegmentsGridTab,
                 meta: {
@@ -51,18 +60,18 @@ export default [
         ],
     },
     {
-        name: 'segment-id',
+        name: ROUTE_NAME.SEGMENT_EDIT,
         path: '/segments/segment/:id',
         component: Pages.SegmentEdit,
         redirect: {
-            name: 'segment-id-general',
+            name: ROUTE_NAME.SEGMENT_EDIT_GENERAL,
         },
         meta: {
             isMenu: false,
         },
         children: [
             {
-                name: 'segment-id-general',
+                name: ROUTE_NAME.SEGMENT_EDIT_GENERAL,
                 path: 'general',
                 component: Tabs.SegmentGeneralTab,
                 meta: {
@@ -74,14 +83,14 @@ export default [
                         },
                         {
                             title: 'Segments',
-                            routeName: 'segments-grid',
+                            routeName: ROUTE_NAME.SEGMENTS_GRID,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'segment-id-translations',
+                name: ROUTE_NAME.SEGMENT_EDIT_TRANSLATIONS,
                 path: 'translations',
                 component: Tabs.SegmentTranslationsTab,
                 meta: {
@@ -93,14 +102,14 @@ export default [
                         },
                         {
                             title: 'Segments',
-                            routeName: 'segments-grid',
+                            routeName: ROUTE_NAME.SEGMENTS_GRID,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'segment-id-designer',
+                name: ROUTE_NAME.SEGMENT_EDIT_DESIGNER,
                 path: 'designer',
                 component: Tabs.ConditionDesignerTab,
                 meta: {
@@ -112,7 +121,7 @@ export default [
                         },
                         {
                             title: 'Segments',
-                            routeName: 'segments-grid',
+                            routeName: ROUTE_NAME.SEGMENTS_GRID,
                         },
                     ],
                     privileges: [],
