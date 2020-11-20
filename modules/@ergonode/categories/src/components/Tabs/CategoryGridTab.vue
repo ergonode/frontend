@@ -33,6 +33,9 @@
 
 <script>
 import PRIVILEGES from '@Categories/config/privileges';
+import {
+    ROUTE_NAMES,
+} from '@Categories/config/routes';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
@@ -69,7 +72,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'category-id-general',
+                name: ROUTE_NAMES.CATEGORY_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },

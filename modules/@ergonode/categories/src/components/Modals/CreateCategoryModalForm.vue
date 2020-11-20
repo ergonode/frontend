@@ -22,6 +22,9 @@
 <script>
 import CategoryForm from '@Categories/components/Forms/CategoryForm';
 import {
+    ROUTE_NAMES,
+} from '@Categories/config/routes';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
@@ -106,7 +109,7 @@ export default {
             this.isProceeding = false;
 
             this.$router.push({
-                name: 'category-id-general',
+                name: ROUTE_NAMES.CATEGORY_EDIT_GENERAL,
                 params: {
                     id,
                 },

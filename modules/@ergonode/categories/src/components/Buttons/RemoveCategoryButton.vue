@@ -19,6 +19,9 @@
 <script>
 import PRIVILEGES from '@Categories/config/privileges';
 import {
+    ROUTE_NAMES,
+} from '@Categories/config/routes';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
@@ -76,7 +79,7 @@ export default {
                 message: this.$t('category.messages.deleteSuccess'),
             });
             this.$router.push({
-                name: 'categories-grid',
+                name: ROUTE_NAMES.CATEGORIES_GRID,
             });
         },
         onRemoveError() {
