@@ -19,6 +19,9 @@
 <script>
 import PRIVILEGES from '@Core/config/privileges';
 import {
+    ROUTE_NAME,
+} from '@Core/config/routes';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
@@ -80,7 +83,7 @@ export default {
                 message: 'Unit removed',
             });
             await this.$router.push({
-                name: 'settings-units',
+                name: ROUTE_NAME.SETTINGS_UNITS,
             });
         },
         onRemoveError() {

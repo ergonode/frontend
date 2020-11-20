@@ -22,6 +22,9 @@
 <script>
 import UnitForm from '@Core/components/Forms/UnitForm';
 import {
+    ROUTE_NAME,
+} from '@Core/config/routes';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
@@ -122,7 +125,7 @@ export default {
             this.isProceeding = false;
 
             await this.$router.push({
-                name: 'unit-id-general',
+                name: ROUTE_NAME.SETTINGS_UNIT_EDIT_GENERAL,
                 params: {
                     id,
                 },

@@ -40,6 +40,9 @@
 <script>
 import CreateUnitButton from '@Core/components/Buttons/CreateUnitButton';
 import PRIVILEGES from '@Core/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Core/config/routes';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import {
@@ -105,7 +108,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'unit-id-general',
+                name: ROUTE_NAME.SETTINGS_UNIT_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },
