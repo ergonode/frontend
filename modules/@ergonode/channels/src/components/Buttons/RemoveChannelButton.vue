@@ -18,6 +18,9 @@
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
 import {
+    ROUTE_NAME,
+} from '@Channels/config/routes';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
@@ -73,7 +76,7 @@ export default {
                 message: 'Channel removed',
             });
             this.$router.push({
-                name: 'channel-grid',
+                name: ROUTE_NAME.CHANNELS_GRID,
             });
         },
         onRemoveError() {

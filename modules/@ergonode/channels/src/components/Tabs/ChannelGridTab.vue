@@ -33,6 +33,9 @@
 
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Channels/config/routes';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
@@ -69,7 +72,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'channel-id-general',
+                name: ROUTE_NAME.CHANNEL_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },
