@@ -124,6 +124,9 @@ import {
 } from '@Core/models/stringWrapper';
 import PRIVILEGES from '@Products/config/privileges';
 import {
+    ROUTE_NAME,
+} from '@Products/config/routes';
+import {
     BATCH_ACTION_TYPE,
 } from '@Products/models/batchActions';
 import {
@@ -556,7 +559,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'product-id-general',
+                name: ROUTE_NAME.PRODUCT_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },

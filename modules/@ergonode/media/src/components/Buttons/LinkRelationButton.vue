@@ -10,8 +10,11 @@
 
 <script>
 import {
-    ROUTE_NAME,
+    ROUTE_NAME as ATTRIBUTES_ROUTE_NAME,
 } from '@Attributes/config/routes';
+import {
+    ROUTE_NAME as PRODUCTS_ROUTE_NAME,
+} from '@Products/config/routes';
 import LinkButton from '@UI/components/LinkButton/LinkButton';
 
 export default {
@@ -56,7 +59,7 @@ export default {
             switch (this.namespace) {
             case this.namespaces.PRODUCT:
                 this.$router.push({
-                    name: 'product-id-general',
+                    name: PRODUCTS_ROUTE_NAME.PRODUCT_EDIT_GENERAL,
                     params: {
                         id,
                     },
@@ -72,7 +75,7 @@ export default {
                 break;
             default:
                 this.$router.push({
-                    name: ROUTE_NAME.ATTRIBUTE_EDIT_GENERAL,
+                    name: ATTRIBUTES_ROUTE_NAME.ATTRIBUTE_EDIT_GENERAL,
                     params: {
                         id,
                     },

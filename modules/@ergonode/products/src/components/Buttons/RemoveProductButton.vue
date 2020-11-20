@@ -27,6 +27,9 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Products/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Products/config/routes';
 import Button from '@UI/components/Button/Button';
 import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 import {
@@ -73,7 +76,7 @@ export default {
                 message: 'Product removed',
             });
             this.$router.push({
-                name: 'catalog-products',
+                name: ROUTE_NAME.PRODUCTS_CATALOG,
             });
         },
         onRemoveError() {

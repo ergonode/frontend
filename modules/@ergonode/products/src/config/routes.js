@@ -9,13 +9,22 @@ import {
 } from './imports';
 import PRIVILEGES from './privileges';
 
+export const ROUTE_NAME = {
+    CATALOG: 'catalog',
+    PRODUCTS_CATALOG: 'catalog-products',
+    PRODUCT_EDIT: 'product-id',
+    PRODUCT_EDIT_GENERAL: 'product-id-general',
+    PRODUCT_EDIT_TEMPLATE: 'product-id-template',
+    PRODUCT_EDIT_HISTORY: 'product-id-history',
+};
+
 export default [
     {
-        name: 'catalog',
+        name: ROUTE_NAME.CATALOG,
         path: '/catalog',
         component: Pages.Products,
         redirect: {
-            name: 'catalog-products',
+            name: ROUTE_NAME.PRODUCTS_CATALOG,
         },
         meta: {
             access: true,
@@ -34,7 +43,7 @@ export default [
         },
         children: [
             {
-                name: 'catalog-products',
+                name: ROUTE_NAME.PRODUCTS_CATALOG,
                 path: 'products',
                 component: Tabs.ProductCatalogTab,
                 meta: {
@@ -51,18 +60,18 @@ export default [
         ],
     },
     {
-        name: 'product-id',
+        name: ROUTE_NAME.PRODUCT_EDIT,
         path: '/catalog/products/product/:id',
         component: Pages.ProductEdit,
         redirect: {
-            name: 'product-id-general',
+            name: ROUTE_NAME.PRODUCT_EDIT_GENERAL,
         },
         meta: {
             isMenu: false,
         },
         children: [
             {
-                name: 'product-id-general',
+                name: ROUTE_NAME.PRODUCT_EDIT_GENERAL,
                 path: 'general',
                 component: Tabs.ProductGeneralTab,
                 meta: {
@@ -74,14 +83,14 @@ export default [
                         },
                         {
                             title: 'Catalog',
-                            routeName: 'catalog-products',
+                            routeName: ROUTE_NAME.PRODUCTS_CATALOG,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'product-id-template',
+                name: ROUTE_NAME.PRODUCT_EDIT_TEMPLATE,
                 path: 'template',
                 component: Tabs.ProductTemplateTab,
                 meta: {
@@ -93,14 +102,14 @@ export default [
                         },
                         {
                             title: 'Catalog',
-                            routeName: 'catalog-products',
+                            routeName: ROUTE_NAME.PRODUCTS_CATALOG,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'product-id-history',
+                name: ROUTE_NAME.PRODUCT_EDIT_HISTORY,
                 path: 'history',
                 component: Tabs.ProductHistoryTab,
                 meta: {
@@ -112,7 +121,7 @@ export default [
                         },
                         {
                             title: 'Catalog',
-                            routeName: 'catalog-products',
+                            routeName: ROUTE_NAME.PRODUCTS_CATALOG,
                         },
                     ],
                     privileges: [],

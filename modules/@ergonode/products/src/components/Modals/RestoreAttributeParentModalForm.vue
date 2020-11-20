@@ -98,8 +98,7 @@ export default {
                     type: ALERT_TYPE.SUCCESS,
                     message: `${this.restoredElement} value restored`,
                 });
-                this.$emit('restore');
-                this.$emit('close');
+                this.$emit('restored');
             }).catch((e) => {
                 this.isSubmitting = false;
                 this.onError({
