@@ -35,6 +35,9 @@
 <script>
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import {
+    ROUTE_NAME,
+} from '@Statuses/config/routes';
 import PRIVILEGES from '@Transitions/config/privileges';
 import {
     WHITESMOKE,
@@ -81,7 +84,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'product-status-id-general',
+                name: ROUTE_NAME.PRODUCT_STATUS_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },

@@ -28,6 +28,9 @@ import {
 } from '@Core/defaults/theme';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import ProductStatusForm from '@Statuses/components/Forms/ProductStatusForm';
+import {
+    ROUTE_NAME,
+} from '@Statuses/config/routes';
 import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
@@ -106,7 +109,7 @@ export default {
             this.isProceeding = false;
 
             this.$router.push({
-                name: 'product-status-id-general',
+                name: ROUTE_NAME.PRODUCT_STATUS_EDIT_GENERAL,
                 params: {
                     id,
                 },
