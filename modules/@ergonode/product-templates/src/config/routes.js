@@ -9,9 +9,17 @@ import {
 } from './imports';
 import Privileges from './privileges';
 
+export const ROUTE_NAME = {
+    PRODUCT_TEMPLATES: 'product-templates',
+    PRODUCT_TEMPLATE_EDIT: 'product-template-id',
+    PRODUCT_TEMPLATE_EDIT_GENERAL: 'product-template-id-general',
+    PRODUCT_TEMPLATE_EDIT_TRANSLATIONS: 'product-template-id-translations',
+    PRODUCT_TEMPLATE_EDIT_DESIGNER: 'product-template-id-designer',
+};
+
 export default [
     {
-        name: 'product-templates',
+        name: ROUTE_NAME.PRODUCT_TEMPLATES,
         path: '/product-templates',
         component: Pages.ProductTemplates,
         meta: {
@@ -37,18 +45,18 @@ export default [
         },
     },
     {
-        name: 'product-template-id',
+        name: ROUTE_NAME.PRODUCT_TEMPLATE_EDIT,
         path: '/product-templates/template/:id',
         component: Pages.ProductTemplateEdit,
         redirect: {
-            name: 'product-template-id-general',
+            name: ROUTE_NAME.PRODUCT_TEMPLATE_EDIT_GENERAL,
         },
         meta: {
             isMenu: false,
         },
         children: [
             {
-                name: 'product-template-id-general',
+                name: ROUTE_NAME.PRODUCT_TEMPLATE_EDIT_GENERAL,
                 path: 'general',
                 component: Tabs.ProductTemplateGeneralTab,
                 meta: {
@@ -60,14 +68,14 @@ export default [
                         },
                         {
                             title: 'Product templates',
-                            routeName: 'product-templates',
+                            routeName: ROUTE_NAME.PRODUCT_TEMPLATES,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'product-template-id-template',
+                name: ROUTE_NAME.PRODUCT_TEMPLATE_EDIT_DESIGNER,
                 path: 'template',
                 component: Tabs.TemplateDesignerTab,
                 meta: {
@@ -79,7 +87,7 @@ export default [
                         },
                         {
                             title: 'Product templates',
-                            routeName: 'product-templates',
+                            routeName: ROUTE_NAME.PRODUCT_TEMPLATES,
                         },
                     ],
                     privileges: [],

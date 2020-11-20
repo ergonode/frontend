@@ -15,6 +15,9 @@ import {
 import {
     ROUTE_NAME as PRODUCTS_ROUTE_NAME,
 } from '@Products/config/routes';
+import {
+    ROUTE_NAME as PRODUCT_TEMPLATE_ROUTE_NAME,
+} from '@Templates/config/routes';
 import LinkButton from '@UI/components/LinkButton/LinkButton';
 
 export default {
@@ -67,7 +70,7 @@ export default {
                 break;
             case this.namespaces.TEMPLATE:
                 this.$router.push({
-                    name: 'product-template-id-general',
+                    name: PRODUCT_TEMPLATE_ROUTE_NAME.PRODUCT_TEMPLATE_EDIT_GENERAL,
                     params: {
                         id,
                     },

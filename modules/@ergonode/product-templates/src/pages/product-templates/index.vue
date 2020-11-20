@@ -55,6 +55,9 @@ import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import CreateProductTemplateButton from '@Templates/components/Buttons/CreateProductTemplateButton';
 import PRIVILEGES from '@Templates/config/privileges';
 import {
+    ROUTE_NAME,
+} from '@Templates/config/routes';
+import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Page from '@UI/components/Layout/Page';
@@ -120,7 +123,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'product-template-id-general',
+                name: ROUTE_NAME.PRODUCT_TEMPLATE_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },

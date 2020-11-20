@@ -79,6 +79,9 @@ import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
 import PRIVILEGES from '@Products/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Templates/config/routes';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
@@ -161,7 +164,7 @@ export default {
         ]),
         onNavigateToProductTemplates() {
             this.$router.push({
-                name: 'product-templates',
+                name: ROUTE_NAME.PRODUCT_TEMPLATES,
             });
         },
         setTypeValue(value) {

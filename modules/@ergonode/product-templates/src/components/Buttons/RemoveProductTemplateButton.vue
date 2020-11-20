@@ -29,6 +29,9 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Templates/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Templates/config/routes';
 import Button from '@UI/components/Button/Button';
 import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 import {
@@ -64,7 +67,7 @@ export default {
                 message: 'Template removed',
             });
             this.$router.push({
-                name: 'product-templates',
+                name: ROUTE_NAME.PRODUCT_TEMPLATES,
             });
         },
         onRemove() {
