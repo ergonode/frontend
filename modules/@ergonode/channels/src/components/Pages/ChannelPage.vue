@@ -11,16 +11,7 @@
                 <NavigationBackFab />
             </template>
             <template #mainAction>
-                <Button
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    title="REMOVE CHANNEL"
-                    :disabled="!isAllowedToDelete"
-                    @click.native="onRemove">
-                    <template #prepend="{ color }">
-                        <IconDelete :fill-color="color" />
-                    </template>
-                </Button>
+                <RemoveChannelButton />
                 <Button
                     title="EXPORT NOW"
                     :size="smallSize"
@@ -52,6 +43,7 @@
 </template>
 
 <script>
+import RemoveChannelButton from '@Channels/components/Buttons/RemoveChannelButton';
 import PRIVILEGES from '@Channels/config/privileges';
 import {
     ALERT_TYPE,
@@ -70,6 +62,7 @@ import {
 export default {
     name: 'ChannelPage',
     components: {
+        RemoveChannelButton,
         HorizontalRoutingTabBarContent,
     },
     mixins: [
@@ -88,11 +81,6 @@ export default {
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.CHANNEL.update,
-            ]);
-        },
-        isAllowedToDelete() {
-            return this.$hasAccess([
-                PRIVILEGES.CHANNEL.delete,
             ]);
         },
         isReadOnly() {

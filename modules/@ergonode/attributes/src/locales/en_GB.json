@@ -1,46 +1,46 @@
 {
-  "attribute": {
-    "page": {
-      "title": "Attributes",
-      "head": "Attributes - Ergonode",
-      "addButton": "NEW ATTRIBUTE",
-      "removeButton": "REMOVE ATTRIBUTE"
-    },
-    "form":{
-        "createTitle": "Create attribute",
-        "title": "Options",
-        "sectionTitle": "Configuration",
-        "optionTitle": "Option values",
-        "nameLabel": "System name",
-        "nameHint": "System name must be unique",
-        "groupLabel": "Groups",
-        "typeLabel": "Type",
-        "optionLabel": "Option code",
-        "scopeLabel": "Scope",
-        "scopeHint": "Global means the same attribute values for each language, inherited from the root language ({lang}). Option values can be translated, but cannot be changed in the product template.",
-        "addOption": "ADD OPTION"
-      },
-    "translation": {
-        "nameLabel": "Attribute name",
-        "hintLabel": "Tooltip for writers"
-    },
-    "grid": {
-        "placeholderTitle": "No attributes",
-        "placeholderSubtitle": "There are no attributes in the system, you can create the first one."
-    },
-    "messages": {
-        "deleteConfirm": "Are you sure you want to delete this attribute?",
-        "deleteSuccess": "Attribute removed",
-        "createSuccess": "Attribute created",
-        "updateSuccess": "Attribute has been updated",
-        "updateTranslationSuccess": "Attribute translations have been updated"
-    },
-    "errors": {
-        "getRequest": "Attribute hasn’t been fetched properly",
-        "getOptionRequest": "Attribute options hasn’t been fetched properly",
-        "deleteRequest": "Attribute hasn’t been deleted",
-        "optionUniq": "Option code must be unique",
-        "optionEmpty": "Option cannot be empty"
+    "attribute": {
+        "page": {
+            "title": "Attributes",
+            "head": "Attributes - Ergonode",
+            "addButton": "NEW ATTRIBUTE",
+            "removeButton": "REMOVE ATTRIBUTE"
+        },
+        "form":{
+            "createTitle": "Create attribute",
+            "title": "Options",
+            "sectionTitle": "Configuration",
+            "optionTitle": "Option values",
+            "nameLabel": "System name",
+            "nameHint": "System name must be unique",
+            "groupLabel": "Groups",
+            "typeLabel": "Type",
+            "optionLabel": "Option code",
+            "scopeLabel": "Scope",
+            "scopeHint": "Global means the same attribute values for each language, inherited from the root language ({lang}). Option values can be translated, but cannot be changed in the product template.",
+            "addOption": "ADD OPTION"
+        },
+        "translation": {
+            "nameLabel": "Attribute name",
+            "hintLabel": "Tooltip for writers"
+        },
+        "grid": {
+            "placeholderTitle": "No attributes",
+            "placeholderSubtitle": "There are no attributes in the system, you can create the first one."
+        },
+        "messages": {
+            "deleteConfirm": "Are you sure you want to delete this attribute?",
+            "deleteSuccess": "Attribute removed",
+            "createSuccess": "Attribute created",
+            "updateSuccess": "Attribute has been updated",
+            "updateTranslationSuccess": "Attribute translations have been updated"
+        },
+        "errors": {
+            "getRequest": "Attribute hasn’t been fetched properly",
+            "getOptionRequest": "Attribute options hasn’t been fetched properly",
+            "deleteRequest": "Attribute hasn’t been deleted",
+            "optionUniq": "Option code must be unique",
+            "optionEmpty": "Option cannot be empty"
+        }
     }
-  }
 }

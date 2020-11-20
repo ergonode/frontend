@@ -11,18 +11,7 @@
                 <NavigationBackFab />
             </template>
             <template #mainAction>
-                <Button
-                    data-cy="delete-status"
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    title="REMOVE STATUS"
-                    :disabled="!isAllowedToDelete"
-                    @click.native="onRemove">
-                    <template #prepend="{ color }">
-                        <IconDelete
-                            :fill-color="color" />
-                    </template>
-                </Button>
+                <RemoveProductStatusButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -36,10 +25,14 @@
 <script>
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import RemoveProductStatusButton from '@Statuses/components/Buttons/RemoveProductStatusButton';
 import PRIVILEGES from '@Transitions/config/privileges';
 
 export default {
     name: 'ProductStatusPage',
+    components: {
+        RemoveProductStatusButton,
+    },
     mixins: [
         editPageMixin,
         asyncTabsMixin,
@@ -47,11 +40,6 @@ export default {
     computed: {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.WORKFLOW.namespace);
-        },
-        isAllowedToDelete() {
-            return this.$hasAccess([
-                PRIVILEGES.WORKFLOW.delete,
-            ]);
         },
     },
 };

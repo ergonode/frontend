@@ -18,17 +18,7 @@
                         :key="index"
                         v-bind="bindingProps(actionItem)" />
                 </template>
-                <Button
-                    data-cy="delete-attribute-group"
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    title="REMOVE GROUP"
-                    :disabled="!isAllowedToDelete"
-                    @click.native="onRemove">
-                    <template #prepend="{ color }">
-                        <IconDelete :fill-color="color" />
-                    </template>
-                </Button>
+                <RemoveAttributeButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -40,12 +30,16 @@
 </template>
 
 <script>
+import RemoveAttributeButton from '@Attributes/components/Buttons/RemoveAttributeButton';
 import PRIVILEGES from '@Attributes/config/privileges';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 
 export default {
     name: 'AttributeGroupPage',
+    components: {
+        RemoveAttributeButton,
+    },
     mixins: [
         editPageMixin,
         asyncTabsMixin,
@@ -53,11 +47,6 @@ export default {
     computed: {
         extendedMainAction() {
             return this.$getExtendedComponents('@Attributes/components/Pages/AttributeGroupPage/mainAction');
-        },
-        isAllowedToDelete() {
-            return this.$hasAccess([
-                PRIVILEGES.ATTRIBUTE_GROUP.delete,
-            ]);
         },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.ATTRIBUTE_GROUP.namespace);

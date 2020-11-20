@@ -18,16 +18,7 @@
                         :key="index"
                         v-bind="bindingProps(actionItem)" />
                 </template>
-                <Button
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    title="REMOVE PRODUCT"
-                    :disabled="!isAllowedToDelete"
-                    @click.native="onRemove">
-                    <template #prepend="{ color }">
-                        <IconDelete :fill-color="color" />
-                    </template>
-                </Button>
+                <RemoveProductButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -48,6 +39,7 @@ import {
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
+import RemoveProductButton from '@Products/components/Buttons/RemoveProductButton';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     mapState,
@@ -55,6 +47,9 @@ import {
 
 export default {
     name: 'ProductPage',
+    components: {
+        RemoveProductButton,
+    },
     mixins: [
         editPageMixin,
     ],
@@ -75,11 +70,6 @@ export default {
         },
         smallSize() {
             return SIZE.SMALL;
-        },
-        isAllowedToDelete() {
-            return this.$hasAccess([
-                PRIVILEGES.PRODUCT.delete,
-            ]);
         },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.PRODUCT.namespace);

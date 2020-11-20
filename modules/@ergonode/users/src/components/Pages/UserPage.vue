@@ -12,17 +12,7 @@
                 <NavigationBackFab />
             </template>
             <!-- <template #mainAction>
-                <Button
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    title="REMOVE USER"
-                    :disabled="!isAllowedToDelete"
-                    @click.native="onRemove">
-                    <template #prepend="{ color }">
-                        <IconDelete
-                            :fill-color="color" />
-                    </template>
-                </Button>
+                <RemoveUserButton />
             </template> -->
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -36,10 +26,14 @@
 <script>
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+// import RemoveUserButton from '@Users/components/Buttons/RemoveUserButton';
 import PRIVILEGES from '@Users/config/privileges';
 
 export default {
     name: 'UserPage',
+    // components: {
+    // RemoveUserButton,
+    // },
     mixins: [
         editPageMixin,
         asyncTabsMixin,
@@ -47,11 +41,6 @@ export default {
     computed: {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.USER.namespace);
-        },
-        isAllowedToDelete() {
-            return this.$hasAccess([
-                PRIVILEGES.USER.delete,
-            ]);
         },
     },
 };

@@ -11,17 +11,7 @@
                 <NavigationBackFab />
             </template>
             <template #mainAction>
-                <Button
-                    data-cy="delete-collection"
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    title="REMOVE COLLECTION"
-                    :disabled="!isAllowedToDelete"
-                    @click.native="onRemove">
-                    <template #prepend="{ color }">
-                        <IconDelete :fill-color="color" />
-                    </template>
-                </Button>
+                <RemoveCollectionButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -33,22 +23,21 @@
 </template>
 
 <script>
+import RemoveCollectionButton from '@Collections/components/Buttons/RemoveCollectionButton';
 import PRIVILEGES from '@Collections/config/privileges';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 
 export default {
     name: 'CollectionPage',
+    components: {
+        RemoveCollectionButton,
+    },
     mixins: [
         editPageMixin,
         asyncTabsMixin,
     ],
     computed: {
-        isAllowedToDelete() {
-            return this.$hasAccess([
-                PRIVILEGES.PRODUCT_COLLECTION.delete,
-            ]);
-        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.PRODUCT_COLLECTION.namespace);
         },

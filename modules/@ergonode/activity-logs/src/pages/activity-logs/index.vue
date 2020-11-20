@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            title="Users activity logs"
+            :title="$t('activityLogs.page.title')"
             :is-read-only="$isReadOnly('USER')" />
         <HorizontalRoutingTabBar
             v-if="asyncTabs"

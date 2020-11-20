@@ -11,16 +11,7 @@
                 <NavigationBackFab />
             </template>
             <template #mainAction>
-                <Button
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    title="REMOVE IMPORT"
-                    :disabled="!isAllowedToDelete"
-                    @click.native="onRemove">
-                    <template #prepend="{ color }">
-                        <IconDelete :fill-color="color" />
-                    </template>
-                </Button>
+                <RemoveImportButton />
                 <Button
                     title="IMPORT NOW"
                     :size="smallSize"
@@ -59,11 +50,13 @@
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import RemoveImportButton from '@Import/components/Buttons/RemoveImportButton';
 import PRIVILEGES from '@Import/config/privileges';
 
 export default {
     name: 'ImportProfilePage',
     components: {
+        RemoveImportButton,
         UploadImportFileModalForm: () => import('@Import/components/Modals/UploadImportFileModalForm'),
     },
     mixins: [
@@ -78,11 +71,6 @@ export default {
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.IMPORT.update,
-            ]);
-        },
-        isAllowedToDelete() {
-            return this.$hasAccess([
-                PRIVILEGES.IMPORT.delete,
             ]);
         },
     },

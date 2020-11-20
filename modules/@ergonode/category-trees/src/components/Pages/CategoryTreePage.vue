@@ -11,17 +11,7 @@
                 <NavigationBackFab />
             </template>
             <template #mainAction>
-                <Button
-                    data-cy="delete-category-tree"
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    title="REMOVE CATEGORY TREE"
-                    :disabled="!isAllowedToDelete"
-                    @click.native="onRemove">
-                    <template #prepend="{ color }">
-                        <IconDelete :fill-color="color" />
-                    </template>
-                </Button>
+                <RemoveCategoryTreeButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -35,10 +25,14 @@
 <script>
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import RemoveCategoryTreeButton from '@Trees/components/Buttons/RemoveCategoryTreeButton';
 import PRIVILEGES from '@Trees/config/privileges';
 
 export default {
     name: 'CategoryTreePage',
+    components: {
+        RemoveCategoryTreeButton,
+    },
     mixins: [
         editPageMixin,
         asyncTabsMixin,
@@ -46,11 +40,6 @@ export default {
     computed: {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.CATEGORY_TREE.namespace);
-        },
-        isAllowedToDelete() {
-            return this.$hasAccess([
-                PRIVILEGES.CATEGORY_TREE.delete,
-            ]);
         },
     },
 };

@@ -9,17 +9,7 @@
                 <NavigationBackFab />
             </template>
             <template #mainAction>
-                <!-- TODO: Uncomment when API endpoint is ready -->
-                <!--                <Button-->
-                <!--                    :theme="secondaryTheme"-->
-                <!--                    :size="smallSize"-->
-                <!--                    title="REMOVE RESOURCE"-->
-                <!--                    :disabled="!isAllowedToDelete"-->
-                <!--                    @click.native="onRemove">-->
-                <!--                    <template #prepend="{ color }">-->
-                <!--                        <IconDelete :fill-color="color" />-->
-                <!--                    </template>-->
-                <!--                </Button>-->
+                <RemoveResourceButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -33,10 +23,14 @@
 <script>
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import RemoveResourceButton from '@Media/components/Buttons/RemoveResourceButton';
 import PRIVILEGES from '@Media/config/privileges';
 
 export default {
     name: 'ResourcePage',
+    components: {
+        RemoveResourceButton,
+    },
     mixins: [
         editPageMixin,
         asyncTabsMixin,
@@ -44,11 +38,6 @@ export default {
     computed: {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.MULTIMEDIA.namespace);
-        },
-        isAllowedToDelete() {
-            return this.$hasAccess([
-                PRIVILEGES.MULTIMEDIA.delete,
-            ]);
         },
     },
 };
