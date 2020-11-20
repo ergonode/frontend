@@ -28,6 +28,9 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Trees/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Trees/config/routes';
 import Button from '@UI/components/Button/Button';
 import IconDelete from '@UI/components/Icons/Actions/IconDelete';
 import {
@@ -74,7 +77,7 @@ export default {
                 message: 'Category tree removed',
             });
             this.$router.push({
-                name: 'category-trees-grid',
+                name: ROUTE_NAME.CATEGORY_TREES_GRID,
             });
         },
         onRemoveError() {

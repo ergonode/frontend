@@ -9,7 +9,7 @@ import {
 } from './imports';
 import Privileges from './privileges';
 
-export const ROUTE_NAMES = {
+export const ROUTE_NAME = {
     CATEGORIES: 'categories',
     CATEGORIES_GRID: 'categories-grid',
     CATEGORY_EDIT: 'category-id',
@@ -19,11 +19,11 @@ export const ROUTE_NAMES = {
 
 export default [
     {
-        name: ROUTE_NAMES.CATEGORIES,
+        name: ROUTE_NAME.CATEGORIES,
         path: '/categories',
         component: Pages.Categories,
         redirect: {
-            name: ROUTE_NAMES.CATEGORIES_GRID,
+            name: ROUTE_NAME.CATEGORIES_GRID,
         },
         meta: {
             access: true,
@@ -42,7 +42,7 @@ export default [
         },
         children: [
             {
-                name: ROUTE_NAMES.CATEGORIES_GRID,
+                name: ROUTE_NAME.CATEGORIES_GRID,
                 path: 'grid',
                 component: Tabs.CategoryGridTab,
                 meta: {
@@ -59,18 +59,18 @@ export default [
         ],
     },
     {
-        name: ROUTE_NAMES.CATEGORY_EDIT,
+        name: ROUTE_NAME.CATEGORY_EDIT,
         path: '/categories/category/:id',
         component: Pages.CategoryEdit,
         redirect: {
-            name: ROUTE_NAMES.CATEGORY_EDIT_GENERAL,
+            name: ROUTE_NAME.CATEGORY_EDIT_GENERAL,
         },
         meta: {
             isMenu: false,
         },
         children: [
             {
-                name: ROUTE_NAMES.CATEGORY_EDIT_GENERAL,
+                name: ROUTE_NAME.CATEGORY_EDIT_GENERAL,
                 path: 'general',
                 component: Tabs.CategoryGeneralTab,
                 meta: {
@@ -82,14 +82,14 @@ export default [
                         },
                         {
                             title: 'Categories',
-                            routeName: ROUTE_NAMES.CATEGORIES_GRID,
+                            routeName: ROUTE_NAME.CATEGORIES_GRID,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: ROUTE_NAMES.CATEGORY_EDIT_TRANSLATIONS,
+                name: ROUTE_NAME.CATEGORY_EDIT_TRANSLATIONS,
                 path: 'translations',
                 component: Tabs.CategoryTranslationsTab,
                 meta: {
@@ -101,7 +101,7 @@ export default [
                         },
                         {
                             title: 'Categories',
-                            routeName: ROUTE_NAMES.CATEGORIES_GRID,
+                            routeName: ROUTE_NAME.CATEGORIES_GRID,
                         },
                     ],
                     privileges: [],

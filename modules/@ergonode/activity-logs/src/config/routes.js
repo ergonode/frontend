@@ -9,18 +9,18 @@ import {
 } from './imports';
 import Privileges from './privileges';
 
-export const ROUTE_NAMES = {
+export const ROUTE_NAME = {
     ACTIVITY_LOGS: 'activity-logs',
     ACTIVITY_LOGS_GRID: 'activity-logs-grid',
 };
 
 export default [
     {
-        name: ROUTE_NAMES.ACTIVITY_LOGS,
+        name: ROUTE_NAME.ACTIVITY_LOGS,
         path: '/activity-logs',
         component: Pages.UsersActivityLogs,
         redirect: {
-            name: ROUTE_NAMES.ACTIVITY_LOGS_GRID,
+            name: ROUTE_NAME.ACTIVITY_LOGS_GRID,
         },
         meta: {
             access: true,
@@ -39,7 +39,7 @@ export default [
         },
         children: [
             {
-                name: ROUTE_NAMES.ACTIVITY_LOGS_GRID,
+                name: ROUTE_NAME.ACTIVITY_LOGS_GRID,
                 path: 'grid',
                 component: Tabs.UsersActivityLogsGridTab,
                 meta: {

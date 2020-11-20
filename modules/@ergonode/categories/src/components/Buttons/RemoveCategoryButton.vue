@@ -19,7 +19,7 @@
 <script>
 import PRIVILEGES from '@Categories/config/privileges';
 import {
-    ROUTE_NAMES,
+    ROUTE_NAME,
 } from '@Categories/config/routes';
 import {
     ALERT_TYPE,
@@ -79,7 +79,7 @@ export default {
                 message: this.$t('category.messages.deleteSuccess'),
             });
             this.$router.push({
-                name: ROUTE_NAMES.CATEGORIES_GRID,
+                name: ROUTE_NAME.CATEGORIES_GRID,
             });
         },
         onRemoveError() {

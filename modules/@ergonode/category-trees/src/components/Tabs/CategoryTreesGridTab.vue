@@ -37,6 +37,9 @@ import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponent
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import PRIVILEGES from '@Trees/config/privileges';
 import {
+    ROUTE_NAME,
+} from '@Trees/config/routes';
+import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
@@ -81,7 +84,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'category-tree-id-general',
+                name: ROUTE_NAME.CATEGORY_TREE_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },

@@ -93,7 +93,7 @@
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
 import {
-    ROUTE_NAMES,
+    ROUTE_NAME,
 } from '@Attributes/config/routes';
 import {
     SCOPE,
@@ -209,7 +209,7 @@ export default {
         ]),
         onNavigateToAttributeGroups() {
             this.$router.push({
-                name: ROUTE_NAMES.ATTRIBUTE_GROUPS_GRID,
+                name: ROUTE_NAME.ATTRIBUTE_GROUPS_GRID,
             });
         },
         bindingProps({

@@ -9,13 +9,22 @@ import {
 } from './imports';
 import Privileges from './privileges';
 
+export const ROUTE_NAME = {
+    CATEGORY_TREES: 'category-trees',
+    CATEGORY_TREES_GRID: 'category-trees-grid',
+    CATEGORY_TREE_EDIT: 'category-tree-id',
+    CATEGORY_TREE_EDIT_GENERAL: 'category-tree-id-general',
+    CATEGORY_TREE_EDIT_TRANSLATIONS: 'category-tree-id-translations',
+    CATEGORY_TREE_EDIT_DESIGNER: 'category-tree-id-designer',
+};
+
 export default [
     {
-        name: 'category-trees',
+        name: ROUTE_NAME.CATEGORY_TREES,
         path: '/category-trees',
         component: Pages.CategoryTrees,
         redirect: {
-            name: 'category-trees-grid',
+            name: ROUTE_NAME.CATEGORY_TREES_GRID,
         },
         meta: {
             access: true,
@@ -34,7 +43,7 @@ export default [
         },
         children: [
             {
-                name: 'category-trees-grid',
+                name: ROUTE_NAME.CATEGORY_TREES_GRID,
                 path: 'grid',
                 component: Tabs.CategoryTreesGridTab,
                 meta: {
@@ -51,18 +60,18 @@ export default [
         ],
     },
     {
-        name: 'category-tree-id',
+        name: ROUTE_NAME.CATEGORY_TREE_EDIT,
         path: '/category-trees/tree/:id',
         component: Pages.CategoryTreesEdit,
         redirect: {
-            name: 'category-tree-id-general',
+            name: ROUTE_NAME.CATEGORY_TREE_EDIT_GENERAL,
         },
         meta: {
             isMenu: false,
         },
         children: [
             {
-                name: 'category-tree-id-general',
+                name: ROUTE_NAME.CATEGORY_TREE_EDIT_GENERAL,
                 path: 'general',
                 component: Tabs.CategoryTreeGeneralTab,
                 meta: {
@@ -74,14 +83,14 @@ export default [
                         },
                         {
                             title: 'Category trees',
-                            routeName: 'category-trees-grid',
+                            routeName: ROUTE_NAME.CATEGORY_TREES_GRID,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'category-tree-id-translations',
+                name: ROUTE_NAME.CATEGORY_TREE_EDIT_TRANSLATIONS,
                 path: 'translations',
                 component: Tabs.CategoryTreeTranslationsTab,
                 meta: {
@@ -93,14 +102,14 @@ export default [
                         },
                         {
                             title: 'Category trees',
-                            routeName: 'category-trees-grid',
+                            routeName: ROUTE_NAME.CATEGORY_TREES_GRID,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'category-tree-id-designer',
+                name: ROUTE_NAME.CATEGORY_TREE_EDIT_DESIGNER,
                 path: 'designer',
                 component: Tabs.CategoryTreeDesignerTab,
                 meta: {
@@ -112,7 +121,7 @@ export default [
                         },
                         {
                             title: 'Category trees',
-                            routeName: 'category-trees-grid',
+                            routeName: ROUTE_NAME.CATEGORY_TREES_GRID,
                         },
                     ],
                     privileges: [],

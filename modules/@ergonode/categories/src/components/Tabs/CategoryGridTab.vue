@@ -34,7 +34,7 @@
 <script>
 import PRIVILEGES from '@Categories/config/privileges';
 import {
-    ROUTE_NAMES,
+    ROUTE_NAME,
 } from '@Categories/config/routes';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
@@ -72,7 +72,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: ROUTE_NAMES.CATEGORY_EDIT_GENERAL,
+                name: ROUTE_NAME.CATEGORY_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },

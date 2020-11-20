@@ -22,7 +22,7 @@
 <script>
 import AttributeGroupForm from '@Attributes/components/Forms/AttributeGroupForm';
 import {
-    ROUTE_NAMES,
+    ROUTE_NAME,
 } from '@Attributes/config/routes';
 import {
     ALERT_TYPE,
@@ -109,7 +109,7 @@ export default {
             this.isProceeding = false;
 
             this.$router.push({
-                name: ROUTE_NAMES.ATTRIBUTE_GROUPS_EDIT_GENERAL,
+                name: ROUTE_NAME.ATTRIBUTE_GROUPS_EDIT_GENERAL,
                 params: {
                     id,
                 },

@@ -28,6 +28,9 @@ import {
 } from '@Core/defaults/theme';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import CategoryTreeForm from '@Trees/components/Forms/CategoryTreeForm';
+import {
+    ROUTE_NAME,
+} from '@Trees/config/routes';
 import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
@@ -106,7 +109,7 @@ export default {
             this.isProceeding = false;
 
             this.$router.push({
-                name: 'category-tree-id-general',
+                name: ROUTE_NAME.CATEGORY_TREE_EDIT_GENERAL,
                 params: {
                     id,
                 },

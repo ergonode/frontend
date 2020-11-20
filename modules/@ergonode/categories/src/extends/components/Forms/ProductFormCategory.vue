@@ -33,7 +33,7 @@
 <script>
 import PRIVILEGES from '@Categories/config/privileges';
 import {
-    ROUTE_NAMES,
+    ROUTE_NAME,
 } from '@Categories/config/routes';
 import {
     SIZE,
@@ -91,7 +91,7 @@ export default {
         ]),
         onNavigateToCategories() {
             this.$router.push({
-                name: ROUTE_NAMES.CATEGORIES_GRID,
+                name: ROUTE_NAME.CATEGORIES_GRID,
             });
         },
         onCategoriesValueChange(value) {

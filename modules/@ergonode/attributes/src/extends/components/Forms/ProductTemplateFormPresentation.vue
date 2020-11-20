@@ -61,7 +61,7 @@
 
 <script>
 import {
-    ROUTE_NAMES,
+    ROUTE_NAME,
 } from '@Attributes/config/routes';
 import {
     SKU_MODEL,
@@ -126,7 +126,7 @@ export default {
         ]),
         onNavigateToAttributes() {
             this.$router.push({
-                name: ROUTE_NAMES.ATTRIBUTES_GRID,
+                name: ROUTE_NAME.ATTRIBUTES_GRID,
             });
         },
         setDefaultTextAttributeValue(value) {
