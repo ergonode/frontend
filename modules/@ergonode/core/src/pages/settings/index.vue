@@ -6,37 +6,17 @@
     <Page>
         <TitleBar
             title="Settings"
-            :is-read-only="$isReadOnly('SETTINGS')" />
+            :is-read-only="isReadOnly" />
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
             :items="asyncTabs"
             :change-values="changeValues"
-            :errors="errors">
-            <template
-                #content="{
-                    item,
-                    errors: tabErrors,
-                    changeValues: tabChangeValues,
-                }">
-                <HorizontalRoutingTabBarContent
-                    :is-fetching-needed="fetchGridData"
-                    :scope="item.scope"
-                    :change-values="tabChangeValues"
-                    :errors="tabErrors"
-                    @fetched="onFetchedGridData"
-                    @show-modal="onShowModalByType" />
-            </template>
-        </HorizontalRoutingTabBar>
-        <Component
-            :is="getModalComponentViaType"
-            v-if="isModalVisible"
-            @close="onCloseModal"
-            @created="onCreatedData" />
+            :errors="errors" />
     </Page>
 </template>
 
 <script>
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import PRIVILEGES from '@Core/config/privileges';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import Page from '@UI/components/Layout/Page';
@@ -54,33 +34,16 @@ export default {
         HorizontalRoutingTabBar,
     },
     mixins: [
-        gridModalMixin,
         beforeLeavePageMixin,
         asyncTabsMixin,
     ],
-    data() {
-        return {
-            modalType: null,
-        };
-    },
     computed: {
         ...mapState('feedback', [
             'changeValues',
             'errors',
         ]),
-        getModalComponentViaType() {
-            switch (this.modalType) {
-            case 'units':
-                return () => import('@Core/components/Modals/CreateUnitModalForm');
-            default:
-                return null;
-            }
-        },
-    },
-    methods: {
-        onShowModalByType(type) {
-            this.modalType = type;
-            this.onShowModal();
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.SETTINGS.namespace);
         },
     },
     head() {

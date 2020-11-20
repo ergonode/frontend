@@ -48,9 +48,4 @@ export default {
             return THEME.SECONDARY;
         },
     },
-    methods: {
-        onRemove() {
-            this.$emit('remove');
-        },
-    },
 };

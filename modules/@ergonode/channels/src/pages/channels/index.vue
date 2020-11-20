@@ -8,15 +8,7 @@
             title="Channel"
             :is-read-only="isReadOnly">
             <template #mainAction>
-                <Button
-                    title="NEW CHANNEL"
-                    :size="smallSize"
-                    :disabled="!isAllowedToCreate"
-                    @click.native="onShowModal">
-                    <template #prepend="{ color }">
-                        <IconAdd :fill-color="color" />
-                    </template>
-                </Button>
+                <CreateChannelButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -28,23 +20,15 @@
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
-        <CreateChannelModalForm
-            v-if="isModalVisible"
-            @close="onCloseModal"
-            @created="onCreatedData" />
     </Page>
 </template>
 
 <script>
+import CreateChannelButton from '@Channels/components/Buttons/CreateChannelButton';
 import PRIVILEGES from '@Channels/config/privileges';
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@UI/components/TitleBar/TitleBar';
@@ -52,12 +36,10 @@ import TitleBar from '@UI/components/TitleBar/TitleBar';
 export default {
     name: 'Channels',
     components: {
+        CreateChannelButton,
         TitleBar,
         Page,
         HorizontalRoutingTabBar,
-        Button,
-        IconAdd,
-        CreateChannelModalForm: () => import('@Channels/components/Modals/CreateChannelModalForm'),
     },
     mixins: [
         gridModalMixin,
@@ -65,14 +47,6 @@ export default {
         asyncTabsMixin,
     ],
     computed: {
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        isAllowedToCreate() {
-            return this.$hasAccess([
-                PRIVILEGES.CHANNEL.create,
-            ]);
-        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.CHANNEL.namespace);
         },

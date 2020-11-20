@@ -43,6 +43,17 @@ export default {
     },
     mounted() {
         this.isMounted = true;
+
+        const app = document.documentElement.querySelector('.app');
+
+        app.appendChild(this.$el);
+    },
+    beforeDestroy() {
+        const app = document.documentElement.querySelector('.app');
+
+        if (app.contains(this.$el)) {
+            app.removeChild(this.$el);
+        }
     },
     methods: {
         onMouseDown(event) {
