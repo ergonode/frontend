@@ -10,6 +10,9 @@ import {
     update,
 } from '@Attributes/services/attribute';
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     getMappedTranslationArrayOptions,
 } from '@Core/models/mappers/translationsMapper';
 import {
@@ -79,94 +82,56 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating attribute has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
             });
         }
     },
-    getAttributesByFilter({
+    async getAttributesByFilter({
         rootState,
     }, {
         filter,
     }) {
-        const {
-            language,
-        } = rootState.authentication.user;
+        try {
+            const {
+                language,
+            } = rootState.authentication.user;
 
-        return getAll({
-            $axios: this.app.$axios,
-            params: {
-                limit: 9999,
-                offset: 0,
-                filter,
-                view: 'list',
-                field: 'name',
-                order: 'ASC',
-            },
-        }).then(({
-            collection,
-        }) => getMappedTranslationArrayOptions({
-            options: collection,
-            languageCode: language,
-        }));
-    },
-    async getAttributesOptionsByType({
-        rootState,
-    }, {
-        type,
-    }) {
-        const {
-            language,
-        } = rootState.authentication.user;
-        const filter = `type=${type}`;
-
-        // EXTENDED BEFORE METHOD
-        await this.$extendMethods('@Attributes/store/attribute/action/getAttributesOptionsByType/__before', {
-            $this: this,
-            type,
-        });
-        // EXTENDED BEFORE METHOD
-
-        return getAll({
-            $axios: this.app.$axios,
-            params: {
-                limit: 9999,
-                offset: 0,
-                filter,
-                view: 'list',
-                field: 'name',
-                order: 'ASC',
-            },
-        }).then(async ({
-            collection,
-        }) => {
-            let options = collection.map(element => ({
-                id: element.id,
-                key: element.code,
-                value: element.name,
-                hint: element.name ? `#${element.code} ${language}` : '',
-            }));
-
-            // EXTENDED AFTER METHOD
-            const extendedData = await this.$extendMethods('@Attributes/store/attribute/action/getAttributesOptionsByType/__after', {
-                $this: this,
-                type,
-                data: options,
-            });
-            // EXTENDED AFTER METHOD
-
-            extendedData.forEach((extended) => {
-                options = [
-                    ...options,
-                    ...extended,
-                ];
+            const {
+                collection,
+            } = await getAll({
+                $axios: this.app.$axios,
+                params: {
+                    limit: 9999,
+                    offset: 0,
+                    filter,
+                    view: 'list',
+                    field: 'name',
+                    order: 'ASC',
+                },
             });
 
-            return {
-                options,
-            };
-        });
+            return getMappedTranslationArrayOptions({
+                options: collection,
+                languageCode: language,
+            });
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return [];
+            }
+
+            return [];
+        }
     },
     async getAttribute({
         dispatch,
@@ -202,6 +167,10 @@ export default {
                 groups: groupIds,
                 scope,
             } = data;
+            const translations = {
+                hint,
+                label,
+            };
 
             commit('__SET_STATE', {
                 key: 'id',
@@ -224,16 +193,9 @@ export default {
                 value: attrTypes[type],
             });
 
-            dispatch(
-                'tab/setTranslations',
-                {
-                    hint,
-                    label,
-                },
-                {
-                    root: true,
-                },
-            );
+            dispatch('tab/setTranslations', translations, {
+                root: true,
+            });
 
             // EXTENDED AFTER METHOD
             await this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__after', {
@@ -243,6 +205,10 @@ export default {
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError(e);
         }
     },
@@ -314,6 +280,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating attribute has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -356,6 +331,15 @@ export default {
             // EXTENDED AFTER METHOD
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing attribute has been canceled',
+                });
+
+                return;
+            }
+
             onError(e);
         }
     },

@@ -3,11 +3,6 @@
  * See LICENSE for license details.
  */
 
-export const get = ({
-    $axios,
-    id,
-}) => $axios.$get(`roles/${id}`);
-
 export const getAll = ({
     $axios,
     params,
@@ -19,7 +14,7 @@ export const getAll = ({
 export const update = ({
     $axios,
     id,
-}) => $axios.$post(`profile/notifications/${id}/mark`, {
+}) => $axios.$post(`profile/notifications/${id}/mark`, {}, {
     withLanguage: false,
 });
 

@@ -14,6 +14,9 @@ export default [
         name: 'media',
         path: '/media',
         component: Pages.Media,
+        redirect: {
+            name: 'media-grid',
+        },
         meta: {
             access: true,
             title: 'Media',
@@ -28,7 +31,6 @@ export default [
                 namespace: Privileges.MULTIMEDIA.namespace,
                 read: Privileges.MULTIMEDIA.read,
             },
-            redirectTo: 'media-grid',
         },
         children: [
             {
@@ -52,9 +54,11 @@ export default [
         name: 'media-id',
         path: '/media/resource/:id',
         component: Pages.ResourceEdit,
+        redirect: {
+            name: 'media-id-general',
+        },
         meta: {
             isMenu: false,
-            redirectTo: 'media-id-general',
         },
         children: [
             {

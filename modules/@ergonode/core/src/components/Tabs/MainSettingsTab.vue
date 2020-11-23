@@ -18,7 +18,6 @@
 
 <script>
 import MainSettingsForm from '@Core/components/Forms/MainSettingsForm';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -26,6 +25,7 @@ import {
     MODAL_TYPE,
 } from '@Core/defaults/modals';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
     mapState,
@@ -48,6 +48,7 @@ export default {
     computed: {
         ...mapState('core', [
             'languagesTree',
+            'languages',
         ]),
     },
     methods: {
@@ -69,11 +70,10 @@ export default {
                 return;
             }
 
-            const languageKeys = selectedLanguages.map(language => language.key);
             const isUsedOnTree = this.languagesTree.find(
                 ({
-                    code,
-                }) => languageKeys.indexOf(code) === -1,
+                    id,
+                }) => selectedLanguages.indexOf(id) === -1,
             );
 
             if (isUsedOnTree) {
@@ -85,10 +85,14 @@ export default {
                 return;
             }
 
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Changes in language settings will affect the entire application.',
-                confirmCallback: () => this.onConfirm(languageKeys),
+            this.$confirm({
+                type: MODAL_TYPE.POSITIVE,
+                title: 'Changes in language settings will affect the entire application.',
+                action: () => this.onConfirm(this.languages
+                    .filter(language => selectedLanguages.some(id => language.id === id))
+                    .map(({
+                        code,
+                    }) => code)),
             });
         },
         async onConfirm(selectedLanguages) {
@@ -104,7 +108,7 @@ export default {
             });
         },
         async onUpdateSuccess() {
-            await this.getLanguages();
+            await this.getLanguages({});
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,

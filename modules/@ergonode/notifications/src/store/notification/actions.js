@@ -13,43 +13,69 @@ export default {
     async checkNotificationCount({
         commit,
         dispatch,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            unread,
-        } = await check({
-            $axios: this.app.$axios,
-        });
+        try {
+            const {
+                unread,
+            } = await check({
+                $axios: this.app.$axios,
+            });
 
-        dispatch('increaseRequestTimeInterval');
-        dispatch('setRequestTimeout');
+            dispatch('increaseRequestTimeInterval');
+            dispatch('setRequestTimeout');
 
-        commit('__SET_STATE', {
-            key: 'count',
-            value: unread,
-        });
+            commit('__SET_STATE', {
+                key: 'count',
+                value: unread,
+            });
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async requestForNotifications({
         commit,
         state,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const params = {
-            limit: state.limit,
-            offset: 0,
-            order: 'DESC',
-            field: 'created_at',
-        };
+        try {
+            const params = {
+                limit: state.limit,
+                offset: 0,
+                order: 'DESC',
+                field: 'created_at',
+            };
 
-        const {
-            collection,
-        } = await getAll({
-            $axios: this.app.$axios,
-            params,
-        });
+            const {
+                collection,
+            } = await getAll({
+                $axios: this.app.$axios,
+                params,
+            });
 
-        commit('__SET_STATE', {
-            key: 'notifications',
-            value: collection,
-        });
+            commit('__SET_STATE', {
+                key: 'notifications',
+                value: collection,
+            });
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async markNotificationAsRead({
         dispatch,
@@ -61,8 +87,8 @@ export default {
             id,
         });
 
-        dispatch('checkNotificationCount');
-        dispatch('requestForNotifications');
+        dispatch('checkNotificationCount', {});
+        dispatch('requestForNotifications', {});
     },
     increaseRequestTimeInterval({
         commit, state,
@@ -88,7 +114,7 @@ export default {
         dispatch('invalidateRequestTimeout');
 
         const timeout = setTimeout(() => {
-            dispatch('checkNotificationCount');
+            dispatch('checkNotificationCount', {});
         }, state.requestTimeInterval);
 
         commit('__SET_STATE', {

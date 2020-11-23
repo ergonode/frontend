@@ -4,9 +4,9 @@
  */
 <template>
     <div class="product-collection-item">
-        <Picture
+        <LazyImage
             v-if="item.image"
-            :api-path="`multimedia/${item.image}/download/default`"
+            :href="`multimedia/${item.image}/download/default`"
             :value="item.image" />
         <img
             v-else
@@ -24,7 +24,7 @@
 export default {
     name: 'ProductCollectionItem',
     components: {
-        Picture: () => import('@Core/components/Multimedia/Picture'),
+        LazyImage: () => import('@UI/components/LazyImage/LazyImage'),
     },
     props: {
         item: {
@@ -34,7 +34,7 @@ export default {
     },
     computed: {
         placeholderImage() {
-            return require('@Core/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
+            return require('@UI/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
         },
     },
 };

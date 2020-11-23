@@ -4,9 +4,7 @@
  */
 <template>
     <VerticalTabBarList>
-        <ListSearchHeader
-            header="Conditions"
-            :is-search="false" />
+        <ListSearchHeader title="Conditions" />
         <List>
             <ListScrollableContainer>
                 <ConditionsListElement
@@ -20,6 +18,11 @@
 </template>
 
 <script>
+import ConditionsListElement from '@Conditions/components/Lists/ConditionsListElement';
+import List from '@UI/components/List/List';
+import ListScrollableContainer from '@UI/components/List/ListScrollableContainer';
+import ListSearchHeader from '@UI/components/List/ListSearchHeader';
+import VerticalTabBarList from '@UI/components/TabBar/VerticalTabBarList';
 import {
     mapState,
 } from 'vuex';
@@ -27,11 +30,11 @@ import {
 export default {
     name: 'ConditionsListTab',
     components: {
-        VerticalTabBarList: () => import('@Core/components/TabBar/VerticalTabBarList'),
-        List: () => import('@Core/components/List/List'),
-        ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
-        ConditionsListElement: () => import('@Conditions/components/Lists/ConditionsListElement'),
-        ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
+        VerticalTabBarList,
+        List,
+        ListScrollableContainer,
+        ConditionsListElement,
+        ListSearchHeader,
     },
     props: {
         disabled: {

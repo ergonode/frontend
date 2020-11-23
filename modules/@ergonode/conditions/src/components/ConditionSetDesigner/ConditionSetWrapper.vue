@@ -4,6 +4,9 @@
  */
 <template>
     <TemplateGridWrapper
+        :scope="scope"
+        :change-values="changeValues"
+        :errors="errors"
         :columns="columns"
         :row-height="rowHeight"
         :is-connections-visible="false"
@@ -11,7 +14,8 @@
         :is-dragging-enabled="!disabled"
         :is-multi-draggable="true"
         :context-name="contextName"
-        @afterDrop="onGetConditionConfiguration">
+        @after-drop="onGetConditionConfiguration"
+        @remove="onRemoveCondition">
         <template
             #gridItem="{
                 item,
@@ -21,13 +25,12 @@
             <ConditionSetItem
                 :style="gridItemStyles"
                 :condition="getCondition(item.id)"
-                :item-id="item.id"
-                :item-row="item.row"
+                :item="item"
                 :scope="scope"
                 :change-values="changeValues"
                 :errors="conditionErrors[`element-${index}`]"
                 :disabled="disabled"
-                @remove="removeCondition" />
+                @remove="onRemoveCondition" />
         </template>
     </TemplateGridWrapper>
 </template>
@@ -117,9 +120,9 @@ export default {
                 parameterValue: null,
             });
         },
-        removeCondition(row, id) {
-            this.removeConditionValue(id);
-            this.removeGridItem(row);
+        onRemoveCondition(item) {
+            this.removeConditionValue(item.id);
+            this.removeGridItem(item.row);
         },
     },
 };

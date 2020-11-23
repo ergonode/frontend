@@ -6,8 +6,12 @@ import {
     SYSTEM_TYPES,
 } from '@Attributes/defaults/attributes';
 import {
+    get as getAttribute,
     getAll as getAllAttributes,
 } from '@Attributes/services/attribute/index';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     getUUID,
 } from '@Core/models/stringWrapper';
@@ -19,7 +23,6 @@ import {
 import {
     create,
     get,
-    getAll,
     getTypes,
     remove,
     update,
@@ -38,99 +41,110 @@ export default {
         },
         {
             id,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        const {
-            user: {
-                language: languageCode,
-            },
-        } = rootState.authentication;
+        try {
+            const {
+                user: {
+                    language: languageCode,
+                },
+            } = rootState.authentication;
 
-        // EXTENDED BEFORE METHOD
-        await this.$extendMethods('@Templates/store/productTemplate/action/getTemplate/__before', {
-            $this: this,
-            data: {
-                id,
-            },
-        });
-        // EXTENDED BEFORE METHOD
-
-        const [
-            template,
-            templateTypes,
-            attributes,
-        ] = await Promise.all([
-            get({
-                $axios: this.app.$axios,
-                id,
-            }),
-            getTypes({
-                $axios: this.app.$axios,
-            }),
-            getAllAttributes({
-                $axios: this.app.$axios,
-            }),
-        ]);
-
-        const {
-            name,
-            image_id: imageID,
-            elements,
-        } = template;
-
-        commit('__SET_STATE', {
-            key: 'types',
-            value: templateTypes.collection,
-        });
-        commit('__SET_STATE', {
-            key: 'title',
-            value: name,
-        });
-        commit('__SET_STATE', {
-            key: 'id',
-            value: id,
-        });
-        commit('__SET_STATE', {
-            key: 'image',
-            value: imageID,
-        });
-
-        const elementDescriptions = attributes.collection
-            .reduce((prev, curr) => {
-                const tmp = prev;
-
-                tmp[curr.id] = curr.label || curr.code;
-
-                return tmp;
-            }, {});
-
-        const layoutElements = getMappedLayoutElements(
-            elements,
-            elementDescriptions,
-            templateTypes.collection,
-        );
-
-        for (let i = layoutElements.length - 1; i > -1; i -= 1) {
-            dispatch('list/setDisabledElement', {
-                languageCode,
-                elementId: layoutElements[i].id,
-                disabled: true,
-            }, {
-                root: true,
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Templates/store/productTemplate/action/getTemplate/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
             });
+            // EXTENDED BEFORE METHOD
+
+            const [
+                template,
+                templateTypes,
+                attributes,
+            ] = await Promise.all([
+                get({
+                    $axios: this.app.$axios,
+                    id,
+                }),
+                getTypes({
+                    $axios: this.app.$axios,
+                }),
+                getAllAttributes({
+                    $axios: this.app.$axios,
+                }),
+            ]);
+
+            const {
+                name,
+                image_id: imageID,
+                elements,
+            } = template;
+
+            commit('__SET_STATE', {
+                key: 'types',
+                value: templateTypes.collection,
+            });
+            commit('__SET_STATE', {
+                key: 'title',
+                value: name,
+            });
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'image',
+                value: imageID,
+            });
+
+            const elementDescriptions = attributes.collection
+                .reduce((prev, curr) => {
+                    const tmp = prev;
+
+                    tmp[curr.id] = curr.label || curr.code;
+
+                    return tmp;
+                }, {});
+
+            const layoutElements = getMappedLayoutElements(
+                elements,
+                elementDescriptions,
+                templateTypes.collection,
+            );
+
+            for (let i = layoutElements.length - 1; i > -1; i -= 1) {
+                dispatch('list/setDisabledElement', {
+                    languageCode,
+                    elementId: layoutElements[i].id,
+                    disabled: true,
+                }, {
+                    root: true,
+                });
+            }
+
+            commit('__SET_STATE', {
+                key: 'layoutElements',
+                value: layoutElements,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Templates/store/productTemplate/action/getTemplate/__after', {
+                $this: this,
+                data: template,
+            });
+            // EXTENDED AFTER METHOD
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
         }
-
-        commit('__SET_STATE', {
-            key: 'layoutElements',
-            value: layoutElements,
-        });
-
-        // EXTENDED AFTER METHOD
-        await this.$extendMethods('@Templates/store/productTemplate/action/getTemplate/__after', {
-            $this: this,
-            data: template,
-        });
-        // EXTENDED AFTER METHOD
     },
     async updateTemplate(
         {
@@ -187,6 +201,14 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating product template has been canceled',
+                });
+
+                return;
+            }
             onError({
                 errors: e.data.errors,
                 scope,
@@ -194,66 +216,41 @@ export default {
         }
     },
     async addListElementToLayout({
-        commit, dispatch, rootState, state,
-    }, position) {
-        const {
-            draggedElement,
-        } = rootState.draggable;
+        commit,
+        dispatch,
+        state,
+    }, {
+        draggableId,
+        position,
+    }) {
         const [
+            id,
             value,
+        ] = draggableId.split('/');
+        const [
+            code,
             languageCode,
-        ] = draggedElement.split(':');
-        const params = {
-            limit: 1,
-            offset: 0,
-            filter: `code=${value}`,
-            field: 'code',
-            view: 'list',
-            order: 'ASC',
-        };
-
-        const {
-            collection,
-        } = await getAllAttributes({
+        ] = value.split(':');
+        const attribute = await getAttribute({
             $axios: this.app.$axios,
-            params,
+            id,
         });
 
-        const [
-            element,
-        ] = collection;
-
         const layoutElement = getMappedLayoutElement({
-            id: element.id,
-            bounds: state.types.find(attributeType => attributeType.type === element.type),
-            label: element.label || element.code,
+            id: attribute.id,
+            bounds: state.types.find(attributeType => attributeType.type === attribute.type),
+            label: attribute.label[languageCode] || code,
             position,
         });
 
         dispatch('list/setDisabledElement', {
             languageCode,
-            elementId: element.id,
+            elementId: attribute.id,
             disabled: true,
         }, {
             root: true,
         });
         commit(types.ADD_ELEMENT_TO_LAYOUT, layoutElement);
-    },
-    getTemplateOptions() {
-        return getAll({
-            $axios: this.app.$axios,
-        }).then(({
-            collection,
-        }) => ({
-            options: collection.map(({
-                id, name,
-            }) => ({
-                id,
-                key: '',
-                value: name,
-                hint: '',
-            })),
-        }));
     },
     addSectionElementToLayout: ({
         commit, state,
@@ -347,6 +344,15 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating product template has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -359,7 +365,7 @@ export default {
         },
         {
             scope,
-            onSuccess,
+            onSuccess = () => {},
             onError = () => {},
         },
     ) {
@@ -386,6 +392,15 @@ export default {
             // EXTENDED BEFORE METHOD
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing product template has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,

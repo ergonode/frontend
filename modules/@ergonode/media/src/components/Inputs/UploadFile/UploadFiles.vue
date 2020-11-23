@@ -71,16 +71,6 @@
 
 <script>
 import {
-    GREEN,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Button/Button';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import InputController from '@Core/components/Inputs/InputController';
-import InputLabel from '@Core/components/Inputs/InputLabel';
-import InputSolidStyle from '@Core/components/Inputs/InputSolidStyle';
-import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
-import Preloader from '@Core/components/Preloader/Preloader';
-import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
@@ -90,6 +80,16 @@ import {
 import {
     get,
 } from '@Media/services/index';
+import {
+    GREEN,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Button from '@UI/components/Button/Button';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import InputController from '@UI/components/Input/InputController';
+import InputLabel from '@UI/components/Input/InputLabel';
+import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
+import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
+import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'UploadFiles',
@@ -102,15 +102,15 @@ export default {
         InputSolidStyle,
         VerticalFixedScroll,
         ModalMediaTabBar: () => import('@Media/components/Modal/ModalMediaTabBar'),
-        IconFile: () => import('@Core/components/Icons/Others/IconFile'),
-        IconFilledClose: () => import('@Core/components/Icons/Window/IconFilledClose'),
-        IconButton: () => import('@Core/components/IconButton/IconButton'),
-        ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
-        ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
-        ListElementIcon: () => import('@Core/components/List/ListElementIcon'),
-        ListElement: () => import('@Core/components/List/ListElement'),
-        ListElementAction: () => import('@Core/components/List/ListElementAction'),
-        List: () => import('@Core/components/List/List'),
+        IconFile: () => import('@UI/components/Icons/Others/IconFile'),
+        IconFilledClose: () => import('@UI/components/Icons/Window/IconFilledClose'),
+        IconButton: () => import('@UI/components/IconButton/IconButton'),
+        ListElementDescription: () => import('@UI/components/List/ListElementDescription'),
+        ListElementTitle: () => import('@UI/components/List/ListElementTitle'),
+        ListElementIcon: () => import('@UI/components/List/ListElementIcon'),
+        ListElement: () => import('@UI/components/List/ListElement'),
+        ListElementAction: () => import('@UI/components/List/ListElementAction'),
+        List: () => import('@UI/components/List/List'),
     },
     props: {
         value: {
@@ -133,6 +133,9 @@ export default {
             type: String,
             default: '',
         },
+        /**
+         * Determines if the given field is required
+         */
         required: {
             type: Boolean,
             default: false,

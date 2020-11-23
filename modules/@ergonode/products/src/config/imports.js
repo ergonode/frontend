@@ -17,11 +17,13 @@ export const Tabs = {
 };
 
 export const Icons = {
-    Product: () => import('@Core/components/Icons/Menu/IconProduct'),
+    Product: () => import('@Products/components/Icons/IconProduct'),
 };
 
 export const Components = {
-    ProductFormAttributeBinding: () => import('@Products/extends/components/Forms/ProductFormAttributeBinding'),
+    GridProductAttachCollectionCell: () => import('@Products/extends/components/Grid/Layout/Collection/Cells/GridProductAttachCollectionCell').then(m => m.default || m),
+    GridLabelDataCell: () => import('@Products/extends/components/Grid/Layout/Table/Cells/Data/GridLabelDataCell').then(m => m.default || m),
+    GridLabelEditCell: () => import('@Products/extends/components/Grid/Layout/Table/Cells/Edit/GridLabelEditCell').then(m => m.default || m),
 };
 
 export const Store = {

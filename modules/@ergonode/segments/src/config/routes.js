@@ -14,6 +14,9 @@ export default [
         name: 'segments',
         path: '/segments',
         component: Pages.Segments,
+        redirect: {
+            name: 'segments-grid',
+        },
         meta: {
             access: true,
             title: 'Segments',
@@ -28,7 +31,6 @@ export default [
                 namespace: Privileges.SEGMENT.namespace,
                 read: Privileges.SEGMENT.read,
             },
-            redirectTo: 'segments-grid',
         },
         children: [
             {
@@ -52,9 +54,11 @@ export default [
         name: 'segment-id',
         path: '/segments/segment/:id',
         component: Pages.SegmentEdit,
+        redirect: {
+            name: 'segment-id-general',
+        },
         meta: {
             isMenu: false,
-            redirectTo: 'segment-id-general',
         },
         children: [
             {

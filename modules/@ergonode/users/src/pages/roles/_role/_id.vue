@@ -36,10 +36,21 @@ export default {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
+        app,
         store,
         params,
     }) {
-        await store.dispatch('role/getRole', params);
+        await store.dispatch('role/getRole', {
+            id: params.id,
+            onError: () => {
+                if (process.client) {
+                    app.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Role hasn`t been fetched properly',
+                    });
+                }
+            },
+        });
     },
     computed: {
         ...mapState('role', [
@@ -58,7 +69,18 @@ export default {
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
-        onRemoveRoleSuccess() {
+        onRemove() {
+            this.$confirm({
+                type: MODAL_TYPE.DESTRUCTIVE,
+                title: 'Are you sure you want to delete this role?',
+                applyTitle: 'YES, REMOVE',
+                action: () => this.removeRole({
+                    onSuccess: this.onRemoveSuccess,
+                    onError: this.onRemoveError,
+                }),
+            });
+        },
+        onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Role removed',
@@ -67,22 +89,10 @@ export default {
                 name: 'user-roles-grid',
             });
         },
-        onRemoveRoleError({
-            message,
-        }) {
+        onRemoveError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message,
-            });
-        },
-        onRemove() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this role?',
-                confirmCallback: () => this.removeRole({
-                    onSuccess: this.onRemoveRoleSuccess,
-                    onError: this.onRemoveRoleError,
-                }),
+                message: 'Role hasn`t been deleted',
             });
         },
     },

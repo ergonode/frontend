@@ -45,13 +45,13 @@
 </template>
 
 <script>
-import Divider from '@Core/components/Dividers/Divider';
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import TextField from '@Core/components/Inputs/TextField';
 import PRIVILEGES from '@Core/config/privileges';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import Divider from '@UI/components/Dividers/Divider';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
     mapState,
@@ -75,7 +75,7 @@ export default {
             'symbol',
         ]),
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Core/components/Forms/UnitForm',
             });
         },
@@ -105,12 +105,6 @@ export default {
                 disabled: !this.isAllowedToUpdate,
                 ...props,
             };
-        },
-        onSubmit() {
-            this.$emit('submit');
-        },
-        onProceed() {
-            this.$emit('proceed');
         },
         setNameValue(value) {
             this.__setState({

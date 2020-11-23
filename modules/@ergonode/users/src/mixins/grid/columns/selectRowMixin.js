@@ -2,11 +2,11 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import GridCheckEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell';
-import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 import {
     STATE,
 } from '@Core/defaults/inputs/checkbox';
+import GridCheckEditCell from '@UI/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell';
+import GridTableCell from '@UI/components/Grid/Layout/Table/Cells/GridTableCell';
 import deepmerge from 'deepmerge';
 
 export default {
@@ -23,6 +23,9 @@ export default {
             type: Object,
             required: true,
         },
+        /**
+         * List of rows presented at Grid
+         */
         rows: {
             type: Array,
             default: () => [],

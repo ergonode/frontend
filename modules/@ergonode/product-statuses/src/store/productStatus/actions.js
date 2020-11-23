@@ -4,6 +4,9 @@
  */
 
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     create,
     get,
     getAll,
@@ -17,85 +20,136 @@ export default {
     async getProductStatuses({
         commit,
         rootState,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            language: userLanguageCode,
-        } = rootState.authentication.user;
+        try {
+            const {
+                language: userLanguageCode,
+            } = rootState.authentication.user;
 
-        const {
-            collection,
-        } = await getAll({
-            $axios: this.app.$axios,
-        });
+            const {
+                collection,
+            } = await getAll({
+                $axios: this.app.$axios,
+            });
 
-        commit('__SET_STATE', {
-            key: 'statuses',
-            value: collection.map(status => ({
-                id: status.id,
-                key: status.code,
-                value: status.name,
-                hint: status.name
-                    ? `#${status.code} ${userLanguageCode}`
-                    : '',
-            })),
-        });
+            commit('__SET_STATE', {
+                key: 'statuses',
+                value: collection.map(status => ({
+                    id: status.id,
+                    key: status.code,
+                    value: status.name,
+                    hint: status.name
+                        ? `#${status.code} ${userLanguageCode}`
+                        : '',
+                })),
+            });
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async getProductStatus({
         commit,
         dispatch,
     }, {
         id,
+        onError = () => {},
     }) {
-        const {
-            code,
-            color,
-            name,
-            description,
-        } = await get({
-            $axios: this.app.$axios,
-            id,
-        });
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Statuses/store/productStatus/action/getProductStatus/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
 
-        const translations = {
-            name,
-            description,
-        };
+            const data = await get({
+                $axios: this.app.$axios,
+                id,
+            });
+            const {
+                code,
+                color,
+                name,
+                description,
+            } = data;
 
-        commit('__SET_STATE', {
-            key: 'id',
-            value: id,
-        });
-        commit('__SET_STATE', {
-            key: 'code',
-            value: code,
-        });
-        commit('__SET_STATE', {
-            key: 'color',
-            value: color,
-        });
-        dispatch('tab/setTranslations', translations, {
-            root: true,
-        });
+            const translations = {
+                name,
+                description,
+            };
+
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'code',
+                value: code,
+            });
+            commit('__SET_STATE', {
+                key: 'color',
+                value: color,
+            });
+            dispatch('tab/setTranslations', translations, {
+                root: true,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Statuses/store/productStatus/action/getProductStatus/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+            onError(e);
+        }
     },
     async getDefaultStatus({
         commit,
         state,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            code,
-        } = state;
+        try {
+            const {
+                code,
+            } = state;
 
-        const {
-            default_status: defaultStatus,
-        } = await getDefault({
-            $axios: this.app.$axios,
-        });
-
-        if (defaultStatus === code) {
-            commit('__SET_STATE', {
-                key: 'isDefaultStatus',
-                value: true,
+            const {
+                default_status: defaultStatus,
+            } = await getDefault({
+                $axios: this.app.$axios,
             });
+
+            if (defaultStatus === code) {
+                commit('__SET_STATE', {
+                    key: 'isDefaultStatus',
+                    value: true,
+                });
+            }
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
         }
     },
     async updateProductStatus({
@@ -117,11 +171,27 @@ export default {
                 color,
                 isDefaultStatus,
             } = state;
-            const data = {
+            let data = {
                 color,
                 name,
                 description,
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Statuses/store/productStatus/action/updateProductStatus/__before', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             const requests = [
                 update({
@@ -140,8 +210,24 @@ export default {
 
             await Promise.all(requests);
 
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Statuses/store/productStatus/action/updateProductStatus/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating product status has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -163,11 +249,23 @@ export default {
                 code,
                 color,
             } = state;
-
-            const data = {
+            let data = {
                 code,
                 color,
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Statuses/store/productStatus/action/createProductStatus/__before', {
+                $this: this,
+                data,
+            });
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             const {
                 id,
@@ -176,8 +274,27 @@ export default {
                 data,
             });
 
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Statuses/store/productStatus/action/createProductStatus/__after', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
+
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating product status has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -185,19 +302,47 @@ export default {
         }
     },
     async removeProductStatus({
-        commit, state,
+        state,
     }, {
-        onSuccess,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
+        try {
+            const {
+                id,
+            } = state;
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Statuses/store/productStatus/action/removeProductStatus/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
 
-        await remove({
-            $axios: this.app.$axios,
-            id,
-        });
+            await remove({
+                $axios: this.app.$axios,
+                id,
+            });
 
-        onSuccess();
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Statuses/store/productStatus/action/removeProductStatus/__after', {
+                $this: this,
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing product status has been canceled',
+                });
+
+                return;
+            }
+
+            onError(e);
+        }
     },
 };

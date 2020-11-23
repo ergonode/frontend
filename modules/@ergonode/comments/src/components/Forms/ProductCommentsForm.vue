@@ -8,7 +8,7 @@
             <Button
                 v-if="!showForm"
                 title="NEW COMMENT"
-                :disabled="!isUserAllowedToUpdate"
+                :disabled="!isAllowedToUpdate"
                 :size="smallSize"
                 @click.native="openForm">
                 <template #prepend="{ color }">
@@ -37,7 +37,7 @@
                 :layout-orientation="horizontalOrientation"
                 title="No results"
                 subtitle="Here you can share information about the product with other people."
-                :bg-url="require('@Core/assets/images/placeholders/comments.svg')" />
+                :bg-url="require('@UI/assets/images/placeholders/comments.svg')" />
         </template>
         <template
             v-if="isMoreButtonVisible"
@@ -59,9 +59,9 @@
 import CommentEdit from '@Comments/components/Comments/CommentEdit';
 import CommentStateChanger from '@Comments/components/Comments/CommentStateChanger';
 import CommentsList from '@Comments/components/List/CommentsList';
-import Button from '@Core/components/Button/Button';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
@@ -72,6 +72,9 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Products/config/privileges';
+import Button from '@UI/components/Button/Button';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import {
     mapActions,
     mapState,
@@ -86,7 +89,7 @@ export default {
         CommentsList,
         CommentStateChanger,
         CommentEdit,
-        ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
+        ListPlaceholder: () => import('@UI/components/List/ListPlaceholder'),
     },
     props: {
         scope: {
@@ -133,7 +136,7 @@ export default {
                 && listLength < this.fullListCount
                 && this.fullListCount > DATA_LIMIT;
         },
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ]);
@@ -161,6 +164,14 @@ export default {
 
             await this.getMoreComments({
                 params,
+                onError: () => {
+                    if (process.client) {
+                        this.$addAlert({
+                            type: ALERT_TYPE.ERROR,
+                            message: 'Comments hasn`t been fetched properly',
+                        });
+                    }
+                },
             });
 
             this.isFetchingData = false;

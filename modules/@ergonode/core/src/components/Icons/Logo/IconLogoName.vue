@@ -22,7 +22,7 @@
 import {
     GRAPHITE_DARK,
     GREEN,
-} from '@Core/assets/scss/_js-variables/colors.scss';
+} from '@UI/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'IconLogoName',

@@ -9,11 +9,21 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :pagination="pagination"
+                :filters="filterValues"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
-                @previewRow="onPreviewRow"
-                @fetchData="onFetchData" />
+                @preview-row="onPreviewRow"
+                @pagination="onPaginationChange"
+                @column-sort="onColumnSortChange"
+                @remove-all-filters="onRemoveAllFilters"
+                @filter="onFilterChange" />
             <ImportDetailsModalGrid
                 v-if="isImportDetailsModalVisible"
                 :import-id="selectedRow.importId"
@@ -24,8 +34,9 @@
 </template>
 
 <script>
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'CollectionProductsTab',
@@ -37,6 +48,7 @@ export default {
         fetchGridDataMixin({
             path: 'sources/_id/imports',
         }),
+        extendedGridComponentsMixin,
     ],
     async fetch() {
         await this.onFetchData();

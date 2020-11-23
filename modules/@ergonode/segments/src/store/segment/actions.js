@@ -3,9 +3,11 @@
  * See LICENSE for license details.
  */
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     create,
     get,
-    getAll,
     remove,
     update,
 } from '@Segments/services/index';
@@ -18,60 +20,69 @@ export default {
         },
         {
             id,
+            onError = () => {},
         },
     ) {
-        const {
-            code,
-            condition_set_id: conditionSetId,
-            name = '',
-            description = '',
-        } = await get({
-            $axios: this.app.$axios,
-            id,
-        });
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Segments/store/segment/action/getSegment/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+            const data = await get({
+                $axios: this.app.$axios,
+                id,
+            });
+            const {
+                code,
+                condition_set_id: conditionSetId,
+                name = '',
+                description = '',
+            } = data;
+            const translations = {
+                name,
+                description,
+            };
 
-        const translations = {
-            name,
-            description,
-        };
-
-        commit('__SET_STATE', {
-            key: 'id',
-            value: id,
-        });
-        commit('__SET_STATE', {
-            key: 'code',
-            value: code,
-        });
-        commit('__SET_STATE', {
-            key: 'conditionSetId',
-            value: conditionSetId,
-        });
-        dispatch('tab/setTranslations', translations, {
-            root: true,
-        });
-
-        if (conditionSetId) {
-            await dispatch('condition/getConditionSet', {
-                id: conditionSetId,
-            }, {
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'code',
+                value: code,
+            });
+            commit('__SET_STATE', {
+                key: 'conditionSetId',
+                value: conditionSetId,
+            });
+            dispatch('tab/setTranslations', translations, {
                 root: true,
             });
+
+            if (conditionSetId) {
+                await dispatch('condition/getConditionSet', {
+                    id: conditionSetId,
+                }, {
+                    root: true,
+                });
+            }
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Segments/store/segment/action/getSegment/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
         }
-    },
-    getSegmentOptions() {
-        return getAll({
-            $axios: this.app.$axios,
-        }).then(({
-            collection,
-        }) => collection.map(({
-            id, code, name,
-        }) => ({
-            id,
-            key: code,
-            value: name,
-            hint: name ? `#${code}` : '',
-        })));
     },
     async updateSegment(
         {
@@ -84,33 +95,63 @@ export default {
             onError = () => {},
         },
     ) {
-        const {
-            translations: {
+        try {
+            const {
+                translations: {
+                    name,
+                    description,
+                },
+            } = rootState.tab;
+            const {
+                id,
+                conditionSetId,
+            } = state;
+            let data = {
                 name,
                 description,
-            },
-        } = rootState.tab;
+                condition_set_id: conditionSetId,
+            };
 
-        const {
-            id,
-            conditionSetId,
-        } = state;
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Segments/store/segment/action/updateSegment/__before', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
-        const data = {
-            name,
-            description,
-            condition_set_id: conditionSetId,
-        };
-
-        try {
             await update({
                 $axios: this.app.$axios,
                 id,
                 data,
             });
 
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Segments/store/segment/action/updateSegment/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating segment has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -132,10 +173,22 @@ export default {
             const {
                 code,
             } = state;
-
-            const data = {
+            let data = {
                 code,
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Segments/store/segment/action/createSegment/__before', {
+                $this: this,
+                data,
+            });
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             const {
                 id,
@@ -144,8 +197,27 @@ export default {
                 data,
             });
 
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Segments/store/segment/action/createSegment/__after', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
+
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating segment has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -155,21 +227,49 @@ export default {
     async removeSegment({
         state,
     }, {
-        onSuccess,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id, conditionSetId,
-        } = state;
+        try {
+            const {
+                id, conditionSetId,
+            } = state;
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Segments/store/segment/action/removeSegment/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
 
-        await remove({
-            $axios: this.app.$axios,
-            id,
-        });
+            await remove({
+                $axios: this.app.$axios,
+                id,
+            });
 
-        if (conditionSetId) {
-            this.app.$axios.$delete(`conditionsets/${conditionSetId}`);
+            if (conditionSetId) {
+                this.app.$axios.$delete(`conditionsets/${conditionSetId}`);
+            }
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Segments/store/segment/action/removeSegment/__after', {
+                $this: this,
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing segment has been canceled',
+                });
+
+                return;
+            }
+
+            onError(e);
         }
-
-        onSuccess();
     },
 };

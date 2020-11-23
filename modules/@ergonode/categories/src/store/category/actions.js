@@ -5,10 +5,12 @@
 import {
     create,
     get,
-    getAll,
     remove,
     update,
 } from '@Categories/services/index';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 
 export default {
     async createCategory({
@@ -59,6 +61,15 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating category has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -116,28 +127,12 @@ export default {
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError(e);
         }
-    },
-    getCategoriesOptions({
-        rootState,
-    }) {
-        const {
-            language,
-        } = rootState.authentication.user;
-
-        return getAll({
-            $axios: this.app.$axios,
-        }).then(({
-            collection,
-        }) => ({
-            options: collection.map(element => ({
-                id: element.id,
-                key: element.code,
-                value: element.name,
-                hint: element.name ? `#${element.code} ${language}` : '',
-            })),
-        }));
     },
     async updateCategory(
         {
@@ -195,6 +190,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating category has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -207,11 +211,11 @@ export default {
         onSuccess = () => {},
         onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
-
         try {
+            const {
+                id,
+            } = state;
+
             // EXTENDED BEFORE METHOD
             await this.$extendMethods('@Categories/store/category/action/removeCategory/__before', {
                 $this: this,
@@ -231,6 +235,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing category has been canceled',
+                });
+
+                return;
+            }
+
             onError(e);
         }
     },

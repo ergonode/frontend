@@ -27,10 +27,22 @@ export default {
         TransitionPage,
     },
     async fetch({
-        store, params,
+        app,
+        store,
+        params,
     }) {
-        await store.dispatch('productStatus/getProductStatuses');
-        await store.dispatch('statusTransition/getStatusTransition', params);
+        await store.dispatch('productStatus/getProductStatuses', {});
+        await store.dispatch('statusTransition/getStatusTransition', {
+            id: params.id,
+            onError: () => {
+                if (process.client) {
+                    app.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Transition hasn`t been fetched properly',
+                    });
+                }
+            },
+        });
     },
     computed: {
         ...mapState('statusTransition', [
@@ -61,21 +73,29 @@ export default {
             __clearFeedbackStorage: '__clearStorage',
         }),
         onRemove() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this transition?',
-                confirmCallback: () => this.removeStatusTransition({
-                    onSuccess: this.onRemoveStatusTransitionSuccess,
+            this.$confirm({
+                type: MODAL_TYPE.DESTRUCTIVE,
+                title: 'Are you sure you want to delete this transition?',
+                applyTitle: 'YES, REMOVE',
+                action: () => this.removeStatusTransition({
+                    onSuccess: this.onRemoveSuccess,
+                    onError: this.onRemoveError,
                 }),
             });
         },
-        onRemoveStatusTransitionSuccess() {
+        onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Transition removed',
             });
             this.$router.push({
                 name: 'status-transitions-grid',
+            });
+        },
+        onRemoveError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Transition hasn`t been deleted',
             });
         },
     },

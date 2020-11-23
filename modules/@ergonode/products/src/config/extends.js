@@ -3,15 +3,13 @@
  * See LICENSE for license details.
  */
 import {
+    Components,
+} from '@Products/config/imports';
+import {
     PRODUCT_TYPE,
 } from '@Products/defaults';
-import {
-    prepareProductVariantData,
-    setBindingAttributes,
-} from '@Products/extends/methods';
 
 import {
-    Components,
     Icons,
     Store,
     Tabs,
@@ -57,7 +55,7 @@ export default {
                     path: 'group',
                     component: Tabs.ProductGroupTab,
                     meta: {
-                        title: 'Group',
+                        title: 'Groups',
                         visible: false,
                         breadcrumbs: [
                             {
@@ -85,51 +83,13 @@ export default {
                 case PRODUCT_TYPE.WITH_VARIANTS:
                     return tabs.filter(tab => tab.visible || tab.title === 'Variants');
                 case PRODUCT_TYPE.GROUPING:
-                    return tabs.filter(tab => tab.visible || tab.title === 'Group');
+                    return tabs.filter(tab => tab.visible || tab.title === 'Groups');
                 default:
                     return tabs.filter(tab => tab.visible);
                 }
             }
             default:
                 return tabs.filter(tab => tab.visible);
-            }
-        },
-        '@Products/store/product/action/getProduct/__after': async ({
-            $this, data, type,
-        }) => {
-            switch (type) {
-            case PRODUCT_TYPE.WITH_VARIANTS:
-                await setBindingAttributes({
-                    $this,
-                    data,
-                });
-                break;
-            default:
-                break;
-            }
-        },
-        '@Products/store/product/action/createProduct/__before': ({
-            $this, type,
-        }) => {
-            switch (type) {
-            case PRODUCT_TYPE.WITH_VARIANTS:
-                return prepareProductVariantData({
-                    $this,
-                });
-            default:
-                return {};
-            }
-        },
-        '@Products/store/product/action/updateProduct/__before': ({
-            $this, type,
-        }) => {
-            switch (type) {
-            case PRODUCT_TYPE.WITH_VARIANTS:
-                return prepareProductVariantData({
-                    $this,
-                });
-            default:
-                return {};
             }
         },
         '@Products/components/Tabs/ProductGroupTab/filteredProductTypes': () => [
@@ -141,13 +101,14 @@ export default {
         ],
     },
     extendComponents: {
-        '@Products/components/Forms/ProductForm': {
-            [PRODUCT_TYPE.WITH_VARIANTS]: [
-                {
-                    component: Components.ProductFormAttributeBinding,
-                    props: {},
-                },
-            ],
+        '@UI/components/Grid/Layout/Collection/Cells': {
+            PRODUCT_ATTACH: Components.GridProductAttachCollectionCell,
+        },
+        '@UI/components/Grid/Layout/Table/Cells/Data': {
+            LABEL: Components.GridLabelDataCell,
+        },
+        '@UI/components/Grid/Layout/Table/Cells/Edit': {
+            LABEL: Components.GridLabelEditCell,
         },
     },
 };

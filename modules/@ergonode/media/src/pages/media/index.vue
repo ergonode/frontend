@@ -31,17 +31,13 @@
         </HorizontalRoutingTabBar>
         <ModalTabBar
             v-if="isModalVisible"
+            title="Add resources"
             :items="modalTabs"
             @close="onCreatedData" />
     </Page>
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
-import IconUploadFile from '@Core/components/Icons/Actions/IconUploadFile';
-import Page from '@Core/components/Layout/Page';
-import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
-import TitleBar from '@Core/components/TitleBar/TitleBar';
 import {
     SIZE,
     THEME,
@@ -50,6 +46,11 @@ import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import PRIVILEGES from '@Media/config/privileges';
+import Button from '@UI/components/Button/Button';
+import IconUploadFile from '@UI/components/Icons/Actions/IconUploadFile';
+import Page from '@UI/components/Layout/Page';
+import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@UI/components/TitleBar/TitleBar';
 
 export default {
     name: 'Media',
@@ -59,7 +60,7 @@ export default {
         HorizontalRoutingTabBar,
         Button,
         IconUploadFile,
-        ModalTabBar: () => import('@Core/components/Modal/ModalTabBar'),
+        ModalTabBar: () => import('@UI/components/Modal/ModalTabBar'),
     },
     mixins: [
         gridModalMixin,

@@ -47,10 +47,10 @@
 </template>
 
 <script>
-import InfoHint from '@Core/components/Hints/InfoHint';
-import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
-import TextArea from '@Core/components/Inputs/TextArea';
 import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
+import InfoHint from '@UI/components/Hints/InfoHint';
+import RichTextEditor from '@UI/components/RichTextEditor/RichTextEditor';
+import TextArea from '@UI/components/TextArea/TextArea';
 import {
     mapState,
 } from 'vuex';
@@ -117,7 +117,7 @@ export default {
         },
     },
     watch: {
-        languageCode: {
+        fieldData: {
             immediate: true,
             handler() {
                 this.localValue = this.fieldData;

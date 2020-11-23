@@ -35,22 +35,22 @@
             :layout-orientation="horizontalOrientation"
             title="Nothing to see here"
             subtitle="Here you can see information about relations in products"
-            :bg-url="require('@Core/assets/images/placeholders/comments.svg')" />
+            :bg-url="require('@UI/assets/images/placeholders/comments.svg')" />
     </div>
 </template>
 
 <script>
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import ListPlaceholder from '@Core/components/List/ListPlaceholder';
-import Table from '@Core/components/Table/Table';
-import TableRow from '@Core/components/Table/TableRow';
-import TableRowCell from '@Core/components/Table/TableRowCell';
-import TableRowHeader from '@Core/components/Table/TableRowHeader';
 import {
     LAYOUT_ORIENTATION,
 } from '@Core/defaults/layout';
 import LinkRelationButton from '@Media/components/Buttons/LinkRelationButton';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import ListPlaceholder from '@UI/components/List/ListPlaceholder';
+import Table from '@UI/components/Table/Table';
+import TableRow from '@UI/components/Table/TableRow';
+import TableRowCell from '@UI/components/Table/TableRowCell';
+import TableRowHeader from '@UI/components/Table/TableRowHeader';
 import {
     mapActions,
 } from 'vuex';
@@ -79,9 +79,14 @@ export default {
         },
     },
     async created() {
-        this.rows = await this.getResourceRelation();
-
-        this.isPrefetchingData = false;
+        await this.getResourceRelation({
+            onSuccess: (({
+                rows,
+            }) => {
+                this.rows = rows;
+                this.isPrefetchingData = false;
+            }),
+        });
     },
     methods: {
         ...mapActions('media', [

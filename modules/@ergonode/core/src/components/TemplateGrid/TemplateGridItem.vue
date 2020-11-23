@@ -40,9 +40,6 @@
     </div>
 </template>
 <script>
-import ActionIconButton from '@Core/components/ActionIconButton/ActionIconButton';
-import IconArrowDouble from '@Core/components/Icons/Arrows/IconArrowDouble';
-import IconDots from '@Core/components/Icons/Others/IconDots';
 import {
     ARROW,
 } from '@Core/defaults/icons';
@@ -50,6 +47,9 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import ActionIconButton from '@UI/components/ActionIconButton/ActionIconButton';
+import IconArrowDouble from '@UI/components/Icons/Arrows/IconArrowDouble';
+import IconDots from '@UI/components/Icons/Others/IconDots';
 
 export default {
     name: 'TemplateGridItem',
@@ -59,14 +59,23 @@ export default {
         ActionIconButton,
     },
     props: {
+        /**
+         * Determines state of expanded component
+         */
         isExpanded: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines state of draggable attribute
+         */
         isDraggingEnabled: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Item data model
+         */
         item: {
             type: Object,
             required: true,
@@ -75,6 +84,9 @@ export default {
             type: String,
             default: '',
         },
+        /**
+         * Number of children elements
+         */
         numberOfChildren: {
             type: Number,
             default: 0,
@@ -109,7 +121,7 @@ export default {
     },
     methods: {
         toggleItemExpand() {
-            this.$emit('toggleItem');
+            this.$emit('toggle-item');
         },
         onSelectFocus(isFocused) {
             if (!isFocused) this.isHovered = false;
@@ -119,7 +131,7 @@ export default {
         onSelectValue(option) {
             switch (option) {
             case 'Remove':
-                this.$emit('removeItem');
+                this.$emit('remove-item');
                 break;
             default: break;
             }

@@ -32,13 +32,13 @@
 </template>
 
 <script>
-import InfoHint from '@Core/components/Hints/InfoHint';
-import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
-import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
+import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
+import DatePicker from '@UI/components/DatePicker/DatePicker';
+import InfoHint from '@UI/components/Hints/InfoHint';
+import TextFieldSuffix from '@UI/components/TextField/TextFieldSuffix';
 import {
     DEFAULT_FORMAT,
-} from '@Core/models/calendar/calendar';
-import ProductTemplateFormField from '@Products/components/Forms/Field/ProductTemplateFormField';
+} from '@UI/models/calendar';
 import {
     format as formatDate,
     isEqual,
@@ -116,7 +116,7 @@ export default {
         },
     },
     watch: {
-        languageCode: {
+        fieldData: {
             immediate: true,
             handler() {
                 this.localValue = this.fieldData;

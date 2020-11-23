@@ -43,13 +43,13 @@
 </template>
 
 <script>
-import Divider from '@Core/components/Dividers/Divider';
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import TextArea from '@Core/components/Inputs/TextArea';
-import TextField from '@Core/components/Inputs/TextField';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import Divider from '@UI/components/Dividers/Divider';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import TextArea from '@UI/components/TextArea/TextArea';
+import TextField from '@UI/components/TextField/TextField';
 import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
@@ -75,7 +75,7 @@ export default {
             'description',
         ]),
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Users/components/Forms/UserRoleForm',
             });
         },

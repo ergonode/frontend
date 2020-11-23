@@ -16,12 +16,12 @@
                         <div
                             class="upload-image-file__image"
                             v-if="!multiple">
-                            <Picture
-                                :api-path="`multimedia/${value}/download/default`"
+                            <LazyImage
+                                :href="`multimedia/${value}/download/default`"
                                 :value="value"
                                 :object-fit="objectFit" />
                         </div>
-                        <PictureCarousel
+                        <ImageCarousel
                             v-else
                             :image-ids="value"
                             :current-index="currentIndex"
@@ -79,11 +79,6 @@
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import InputController from '@Core/components/Inputs/InputController';
-import InputLabel from '@Core/components/Inputs/InputLabel';
-import InputSolidStyle from '@Core/components/Inputs/InputSolidStyle';
 import {
     SIZE,
     THEME,
@@ -91,6 +86,11 @@ import {
 import {
     MEDIA_TYPE,
 } from '@Media/defaults';
+import Button from '@UI/components/Button/Button';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import InputController from '@UI/components/Input/InputController';
+import InputLabel from '@UI/components/Input/InputLabel';
+import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 
 export default {
     name: 'UploadImageFile',
@@ -100,13 +100,13 @@ export default {
         InputLabel,
         Button,
         IconAdd,
-        IconDots: () => import('@Core/components/Icons/Others/IconDots'),
-        Picture: () => import('@Core/components/Multimedia/Picture'),
-        PictureCarousel: () => import('@Core/components/Multimedia/PictureCarousel'),
+        IconDots: () => import('@UI/components/Icons/Others/IconDots'),
+        LazyImage: () => import('@UI/components/LazyImage/LazyImage'),
+        ImageCarousel: () => import('@UI/components/ImageCarousel/ImageCarousel'),
         ModalMediaTabBar: () => import('@Media/components/Modal/ModalMediaTabBar'),
-        ActionIconButton: () => import('@Core/components/ActionIconButton/ActionIconButton'),
-        ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
-        ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
+        ActionIconButton: () => import('@UI/components/ActionIconButton/ActionIconButton'),
+        ListElementDescription: () => import('@UI/components/List/ListElementDescription'),
+        ListElementTitle: () => import('@UI/components/List/ListElementTitle'),
     },
     props: {
         value: {
@@ -136,6 +136,9 @@ export default {
             type: String,
             default: '',
         },
+        /**
+         * Determines if the given field is required
+         */
         required: {
             type: Boolean,
             default: false,

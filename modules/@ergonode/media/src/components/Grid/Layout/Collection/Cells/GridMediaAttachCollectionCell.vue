@@ -6,9 +6,9 @@
     <div
         class="collection-cell"
         @click="onClick">
-        <Picture
+        <LazyImage
             v-if="data.image"
-            :api-path="`multimedia/${data.image}/download/default`"
+            :href="`multimedia/${data.image}/download/default`"
             :value="data.image"
             :object-fit="objectFit"
             :height="157" />
@@ -31,16 +31,16 @@
 </template>
 
 <script>
-import Toggler from '@Core/components/Inputs/Toggler/Toggler';
-import Picture from '@Core/components/Multimedia/Picture';
 import {
     THEME,
 } from '@Core/defaults/theme';
+import LazyImage from '@UI/components/LazyImage/LazyImage';
+import Toggler from '@UI/components/Toggler/Toggler';
 
 export default {
     name: 'GridMediaAttachCollectionCell',
     components: {
-        Picture,
+        LazyImage,
         Toggler,
     },
     props: {
@@ -74,27 +74,29 @@ export default {
             return this.data.esa_attached;
         },
         placeholderImage() {
-            return require('@Core/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
+            return require('@UI/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
         },
         secondaryTheme() {
             return THEME.SECONDARY;
         },
     },
     methods: {
-        onClick() {
-            if (this.data.actions.edit) {
-                const args = this.data.actions.edit.href.split('/');
-
-                this.$emit('rowAction', {
-                    key: 'edit',
-                    value: args,
-                });
+        onClick(event) {
+            if (event.target.closest('.toggler') || !this.data.actions.edit) {
+                return;
             }
+
+            const args = this.data.actions.edit.href.split('/');
+
+            this.$emit('row-action', {
+                key: 'edit',
+                value: args,
+            });
         },
         onCellValueChange(value) {
             this.localValue = value;
 
-            this.$emit('cellValue', [
+            this.$emit('cell-value', [
                 {
                     rowId: this.data.id,
                     columnId: 'esa_attached',

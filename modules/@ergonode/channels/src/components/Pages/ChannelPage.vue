@@ -15,7 +15,7 @@
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE CHANNEL"
-                    :disabled="!isUserAllowedToDelete"
+                    :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete :fill-color="color" />
@@ -25,7 +25,7 @@
                     title="EXPORT NOW"
                     :size="smallSize"
                     :theme="secondaryTheme"
-                    :disabled="!isUserAllowedToUpdate"
+                    :disabled="!isAllowedToUpdate"
                     @click.native="onCreateExport" />
             </template>
         </TitleBar>
@@ -53,7 +53,6 @@
 
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
-import HorizontalRoutingTabBarContent from '@Core/components/TabBar/Routing/HorizontalRoutingTabBarContent';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -62,6 +61,7 @@ import {
 } from '@Core/defaults/modals';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import HorizontalRoutingTabBarContent from '@UI/components/TabBar/Routing/HorizontalRoutingTabBarContent';
 import {
     mapActions,
     mapState,
@@ -85,12 +85,12 @@ export default {
         ...mapState('channel', [
             'id',
         ]),
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.CHANNEL.update,
             ]);
         },
-        isUserAllowedToDelete() {
+        isAllowedToDelete() {
             return this.$hasAccess([
                 PRIVILEGES.CHANNEL.delete,
             ]);
@@ -107,10 +107,10 @@ export default {
             this.fetchGridData = false;
         },
         onCreateExport() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to start export?',
-                confirmCallback: () => this.createChannelExport({
+            this.$confirm({
+                type: MODAL_TYPE.POSITIVE,
+                title: 'Are you sure you want to start export?',
+                action: () => this.createChannelExport({
                     onSuccess: this.onExportSuccess,
                 }),
             });
@@ -119,7 +119,7 @@ export default {
             this.fetchGridData = true;
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Completed generating export file',
+                message: 'Export has been finished',
             });
         },
     },

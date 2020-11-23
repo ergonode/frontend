@@ -3,15 +3,29 @@
  * See LICENSE for license details.
  */
 <template>
-    <Widget title="Statuses">
+    <Widget
+        title="Statuses"
+        :is-placeholder-visible="!isPrefetchingData && statuses.length === 0">
+        <template #appendHeader>
+            <ActionButton
+                :fixed-content="true"
+                :size="tinySize"
+                :title="workflowLanguage"
+                :disabled="isPrefetchingData"
+                :options="languageOptions"
+                @input="onValueChange" />
+        </template>
         <template #body>
-            <ul class="list-status">
+            <Preloader v-if="isPrefetchingData" />
+            <ul
+                class="list-status"
+                v-else>
                 <template v-for="(status, index) in statuses">
                     <li
                         class="list-status-element"
                         :key="status.id">
                         <ProductStatusBadge :status="status" />
-                        <span v-text="productsInStatus" />
+                        <span v-text="status.value" />
                     </li>
                     <div
                         class="list-status-element-divider"
@@ -23,58 +37,119 @@
 </template>
 
 <script>
-import Widget from '@Core/components/Widget/Widget';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
+    getStatusesCount,
+} from '@Dashboard/services';
 import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
+import ActionButton from '@UI/components/ActionButton/ActionButton';
+import Preloader from '@UI/components/Preloader/Preloader';
+import Widget from '@UI/components/Widget/Widget';
+import {
+    mapGetters,
+    mapState,
+} from 'vuex';
 
 export default {
     name: 'StatusesWidget',
     components: {
         Widget,
         ProductStatusBadge,
+        ActionButton,
+        Preloader,
+    },
+    async fetch() {
+        await this.getStatusesCount();
     },
     data() {
         return {
+            workflowLanguage: '',
             statuses: [],
+            isPrefetchingData: true,
         };
     },
     computed: {
-        productsInStatus() {
-            return '0 products';
+        ...mapState('core', [
+            'defaultLanguageCode',
+        ]),
+        ...mapGetters('core', [
+            'activeLanguages',
+        ]),
+        tinySize() {
+            return SIZE.TINY;
+        },
+        languageOptions() {
+            return this.activeLanguages.map(({
+                name,
+            }) => name);
         },
     },
     created() {
-        const params = {
-            limit: 99999,
-            offset: 0,
-            field: 'code',
-            order: 'ASC',
-        };
+        this.workflowLanguage = this.getWorkflowLanguageName();
+    },
+    methods: {
+        getWorkflowLanguageName() {
+            return this.activeLanguages.find(({
+                code,
+            }) => code === this.defaultLanguageCode).name;
+        },
+        getWorkflowLanguageCode() {
+            return this.activeLanguages.find(({
+                name,
+            }) => name === this.workflowLanguage).code;
+        },
+        async getStatusesCount() {
+            try {
+                this.isPrefetchingData = true;
 
-        this.$axios
-            .get('status', {
-                params,
-            })
-            .then(({
-                data: {
-                    columns,
-                    collection,
-                },
-            }) => {
-                const colorColumn = columns.find(({
-                    id,
-                }) => id === 'status');
+                const workflowLanguageCode = this.getWorkflowLanguageCode();
 
-                this.statuses = collection.map(({
-                    id,
-                    code,
-                    name,
-                }) => ({
-                    id,
-                    name,
-                    code,
-                    color: colorColumn.colors[code],
-                }));
-            });
+                const statusesCount = await getStatusesCount({
+                    $axios: this.$axios,
+                    workflowLanguage: workflowLanguageCode,
+                });
+
+                this.statuses = statusesCount.map((status) => {
+                    const {
+                        status_id,
+                        code,
+                        value,
+                        label,
+                        color,
+                    } = status;
+
+                    return {
+                        id: status_id,
+                        color,
+                        label: label || `#${code}`,
+                        value: `${value} products`,
+                    };
+                });
+
+                this.isPrefetchingData = false;
+            } catch (e) {
+                if (this.$axios.isCancel(e)) {
+                    return;
+                }
+
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Product statuses haven’t been fetched properly',
+                });
+
+                this.isPrefetchingData = false;
+            }
+        },
+        async onValueChange(value) {
+            this.workflowLanguage = value;
+
+            await this.getStatusesCount();
+        },
     },
 };
 </script>

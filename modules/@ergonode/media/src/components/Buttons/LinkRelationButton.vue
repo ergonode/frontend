@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import LinkButton from '@Core/components/LinkButton/LinkButton';
+import LinkButton from '@UI/components/LinkButton/LinkButton';
 
 export default {
     name: 'LinkRelationButton',
@@ -17,6 +17,9 @@ export default {
         LinkButton,
     },
     props: {
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             required: true,

@@ -8,17 +8,25 @@
             <Grid
                 :columns="columns"
                 :data-count="filtered"
+                :pagination="pagination"
                 :rows="rows"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
                 :is-prefetching-data="isPrefetchingData"
                 :is-border="true"
-                @fetchData="onFetchData" />
+                @pagination="onPaginationChange"
+                @column-sort="onColumnSortChange" />
         </template>
     </CenterViewTemplate>
 </template>
 
 <script>
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'UserActivityLogsGridTab',
@@ -29,6 +37,7 @@ export default {
         fetchGridDataMixin({
             path: 'profile/log',
         }),
+        extendedGridComponentsMixin,
     ],
     async fetch() {
         await this.onFetchData();

@@ -1,5 +1,36 @@
-# CHANGELOG
-This changelog references the relevant changes.
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## CHANGELOG FOR v1.0.0-beta.4
+- feature - add DOM virtualization to select kind components
+- feature - add github actions
+- feature - search for sidebar list with categories
+- refactor - expose Grid pagination
+- bugfix - Grid filtering 
+- bugfix - sidebar list languages
+
+## CHANGELOG FOR v1.0.0-beta.3
+- feature - add axios cancel request support for each request
+- feature - replace a custom redirect with native Vue router redirect
+- feature - placeholders for Selects
+- feature - select column for Grid
+- feature - destructive theme for buttons
+- feature - possibility of changing template from product page
+- feature - remove products from Grid batch/bulk/mass action
+- bugfix - Grid stabilisation
+
+## CHANGELOG FOR v1.0.0-beta.2
+- feature - integrate lighter version of lazy loaded dropdowns
+- refactor - improve performance of loading data for attributes list 
+- refactor - exclude VueMS configuration from Grid
+- refactor - improve performance of Grid
+- refactor - exclude AdvancedFilters from GridHeader
+- refactor - add support for Vuex actions for extending by module
+- refactor - improve product types
+- bugfix - product types
+- bugfix - media
 
 ## CHANGELOG FOR v0.10.0
  - feature [#474](https://github.com/ergonode/frontend/issues/474) Channels & exports
@@ -23,7 +54,6 @@ This changelog references the relevant changes.
  - bugfix - workflow
  - bugfix - select/multiselect filter selection, range filters
 
-
 ## CHANGELOG FOR v0.9.0
  - feature [#384](https://github.com/ergonode/frontend/issues/384) Product variants
  - feature [#418](https://github.com/ergonode/frontend/issues/418) GridCollectionLayout for product related Grid's
@@ -41,7 +71,6 @@ This changelog references the relevant changes.
  - feature [#405](https://github.com/ergonode/frontend/issues/405) Lazy loading for Select options
  - perf [#396](https://github.com/ergonode/frontend/issues/396) Non dismissible dropdown menu for action buttons
 
-
 ## CHANGELOG FOR v0.7.0
  - feature - Change of architecture to the micro frontend approach
  - feature - Add unit management
@@ -52,7 +81,6 @@ This changelog references the relevant changes.
  - feature - Implementation storybook library
  - perf - Performance improvement in grid
  - perf - Performance improvement in UI elements
-
 
 ## CHANGELOG FOR v0.6.1
 - bugfix - Vuex store for Grid crashed after f5 - store had been removed

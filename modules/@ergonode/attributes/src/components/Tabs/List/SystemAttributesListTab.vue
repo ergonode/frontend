@@ -6,8 +6,8 @@
     <VerticalTabBarList>
         <ListSearchSelectHeader
             v-if="isSelectLanguage"
-            header="System attributes"
-            @searchResult="onSearch">
+            title="System attributes"
+            @search-result="onSearch">
             <template #select>
                 <TreeSelect
                     :value="language"
@@ -18,10 +18,11 @@
         </ListSearchSelectHeader>
         <ListSearchHeader
             v-else
-            header="System attributes"
-            @searchResult="onSearch" />
+            title="System attributes"
+            @search-result="onSearch" />
         <List>
-            <ListScrollableContainer>
+            <Preloader v-if="isPrefetchingData" />
+            <ListScrollableContainer v-else>
                 <AttributesListElement
                     v-for="item in items[language.code]"
                     :key="item.id"
@@ -36,16 +37,17 @@
 <script>
 import AttributesListElement from '@Attributes/components/Lists/AttributesListElement';
 import PRIVILEGES from '@Attributes/config/privileges';
-import TreeSelect from '@Core/components/Inputs/Select/Tree/TreeSelect';
-import List from '@Core/components/List/List';
-import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
-import ListSearchHeader from '@Core/components/List/ListSearchHeader';
-import ListSearchSelectHeader from '@Core/components/List/ListSearchSelectHeader';
-import VerticalTabBarList from '@Core/components/TabBar/VerticalTabBarList';
 import {
     SIZE,
 } from '@Core/defaults/theme';
 import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
+import List from '@UI/components/List/List';
+import ListScrollableContainer from '@UI/components/List/ListScrollableContainer';
+import ListSearchHeader from '@UI/components/List/ListSearchHeader';
+import ListSearchSelectHeader from '@UI/components/List/ListSearchSelectHeader';
+import Preloader from '@UI/components/Preloader/Preloader';
+import TreeSelect from '@UI/components/Select/Tree/TreeSelect';
+import VerticalTabBarList from '@UI/components/TabBar/VerticalTabBarList';
 import {
     mapState,
 } from 'vuex';
@@ -53,6 +55,7 @@ import {
 export default {
     name: 'SystemAttributesListTab',
     components: {
+        Preloader,
         VerticalTabBarList,
         ListSearchSelectHeader,
         ListSearchHeader,
@@ -102,7 +105,9 @@ export default {
                 ...language,
                 key: language.code,
                 value: language.name,
-                disabled: !this.languagePrivileges[language.code].read,
+                disabled: this.languagePrivileges[language.code]
+                    ? !this.languagePrivileges[language.code].read
+                    : true,
             }));
         },
     },
@@ -117,10 +122,7 @@ export default {
         },
         onSelect(value) {
             this.language = value;
-
-            if (typeof this.items[value.code] === 'undefined') {
-                this.getItems(value.code);
-            }
+            this.getItems(value.code);
         },
     },
 };

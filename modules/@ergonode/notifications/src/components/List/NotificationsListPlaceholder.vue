@@ -17,12 +17,12 @@
 
 <script>
 import {
-    WHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Placeholder from '@Core/components/Placeholder/Placeholder';
-import {
     LAYOUT_ORIENTATION,
 } from '@Core/defaults/layout';
+import {
+    WHITE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Placeholder from '@UI/components/Placeholder/Placeholder';
 
 export default {
     name: 'NotificationsListPlaceholder',
@@ -30,19 +30,31 @@ export default {
         Placeholder,
     },
     props: {
+        /**
+         * Determines position of body components; vertical / horizontal
+         */
         layoutOrientation: {
             type: String,
             default: LAYOUT_ORIENTATION.VERTICAL,
             validator: value => Object.values(LAYOUT_ORIENTATION).indexOf(value) !== -1,
         },
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             default: '',
         },
+        /**
+         * The subtitle of the component
+         */
         subtitle: {
             type: String,
             default: '',
         },
+        /**
+         * The url to background image of placeholder
+         */
         bgUrl: {
             type: String,
             required: true,

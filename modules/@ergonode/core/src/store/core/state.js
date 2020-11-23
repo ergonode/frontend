@@ -3,8 +3,7 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    loaders: {},
-    modals: {},
+    modals: [],
     languagesTree: [],
     languages: [],
     defaultLanguageCode: null,

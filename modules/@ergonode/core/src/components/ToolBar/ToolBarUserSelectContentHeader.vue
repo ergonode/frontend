@@ -19,9 +19,7 @@
 </template>
 
 <script>
-import {
-    GRAPHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
+import UserFabAvatar from '@Core/components/Multimedia/UserFabAvatar';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -29,13 +27,16 @@ import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
 import {
+    GRAPHITE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import {
     mapState,
 } from 'vuex';
 
 export default {
     name: 'ToolBarUserSelectContentHeader',
     components: {
-        UserFabAvatar: () => import('@Core/components/Multimedia/UserFabAvatar'),
+        UserFabAvatar,
     },
     computed: {
         ...mapState('authentication', [

@@ -14,11 +14,6 @@ export const Tabs = {
     ConditionDesignerTab: () => import('@Segments/components/Tabs/ConditionDesignerTab').then(m => m.default || m),
 };
 
-export const Components = {
-    AddProductsFromSegmentToProductGroupModalForm: () => import('@Segments/components/Modals/Product/AddProductsFromSegmentModalForm'),
-    AddProductsFromSegmentToCollectioModalForm: () => import('@Segments/components/Modals/Collection/AddProductsFromSegmentModalForm'),
-};
-
 export const Icons = {
-    Product: () => import('@Core/components/Icons/Menu/IconProduct'),
+    Product: () => import('@Products/components/Icons/IconProduct'),
 };

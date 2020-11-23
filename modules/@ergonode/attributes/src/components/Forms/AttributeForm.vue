@@ -10,29 +10,11 @@
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
         :errors="errors"
+        :errors-presentation-mapper="errorMapper"
         @proceed="onProceed"
         @submit="onSubmit">
         <template #body>
             <FormSection>
-                <TextField
-                    :data-cy="dataCyGenerator(codeFieldKey)"
-                    :value="code"
-                    required
-                    :error-messages="errors[codeFieldKey]"
-                    :disabled="isDisabled || !isAllowedToUpdate"
-                    :label="$t('attribute.form.nameLabel')"
-                    :hint="$t('attribute.form.nameHint')"
-                    @input="setCodeValue" />
-                <TranslationLazySelect
-                    :data-cy="dataCyGenerator(groupsFieldKey)"
-                    :value="groups"
-                    :label="$t('attribute.form.groupLabel')"
-                    :multiselect="true"
-                    :clearable="true"
-                    :disabled="!isAllowedToUpdate"
-                    :error-messages="errors[groupsFieldKey]"
-                    :fetch-options-request="getAttributeGroupsOptions"
-                    @input="setGroupsValue" />
                 <Select
                     :data-cy="dataCyGenerator(typeFieldKey)"
                     :value="type"
@@ -43,8 +25,47 @@
                     :error-messages="errors[typeFieldKey]"
                     @input="onTypeChange" />
             </FormSection>
-            <Divider />
-            <FormSection :title="$t('attribute.form.sectionTitle')">
+            <FormSection v-if="type">
+                <TextField
+                    :data-cy="dataCyGenerator(codeFieldKey)"
+                    :value="code"
+                    required
+                    :error-messages="errors[codeFieldKey]"
+                    :disabled="isDisabled || !isAllowedToUpdate"
+                    :label="$t('attribute.form.nameLabel')"
+                    :hint="$t('attribute.form.nameHint')"
+                    @input="setCodeValue" />
+                <Autocomplete
+                    :data-cy="dataCyGenerator(groupsFieldKey)"
+                    :value="groups"
+                    :label="$t('attribute.form.groupLabel')"
+                    :multiselect="true"
+                    :searchable="true"
+                    :clearable="true"
+                    :disabled="!isAllowedToUpdate"
+                    :error-messages="errors[groupsFieldKey]"
+                    href="attributes/groups/autocomplete"
+                    @input="setGroupsValue">
+                    <template #placeholder="{ isVisible }">
+                        <DropdownPlaceholder
+                            v-if="isVisible"
+                            :title="placeholder.title"
+                            :subtitle="placeholder.subtitle">
+                            <template #action>
+                                <Button
+                                    title="GO TO ATTRIBUTE GROUPS"
+                                    :size="smallSize"
+                                    :disabled="!isAllowedToUpdate"
+                                    @click.native="onNavigateToAttributeGroups" />
+                            </template>
+                        </DropdownPlaceholder>
+                    </template>
+                </Autocomplete>
+                <Divider />
+            </FormSection>
+            <FormSection
+                v-if="type"
+                :title="$t('attribute.form.sectionTitle')">
                 <Select
                     :data-cy="dataCyGenerator(scopeFieldKey)"
                     :value="attributeScope"
@@ -74,18 +95,23 @@ import PRIVILEGES from '@Attributes/config/privileges';
 import {
     SCOPE,
 } from '@Attributes/defaults/attributes';
-import Divider from '@Core/components/Dividers/Divider';
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import InfoHint from '@Core/components/Hints/InfoHint';
-import Select from '@Core/components/Inputs/Select/Select';
-import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
-import TextField from '@Core/components/Inputs/TextField';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     getKeyByValue,
+    isObject,
 } from '@Core/models/objectWrapper';
+import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
+import Divider from '@UI/components/Dividers/Divider';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import InfoHint from '@UI/components/Hints/InfoHint';
+import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
+import Select from '@UI/components/Select/Select';
+import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
     mapGetters,
@@ -95,12 +121,13 @@ import {
 export default {
     name: 'AttributeForm',
     components: {
+        DropdownPlaceholder,
         Form,
         FormSection,
         InfoHint,
         TextField,
         Select,
-        TranslationLazySelect,
+        Autocomplete,
         Divider,
     },
     mixins: [
@@ -123,8 +150,17 @@ export default {
         ...mapGetters('core', [
             'rootLanguage',
         ]),
+        smallSize() {
+            return SIZE.SMALL;
+        },
+        placeholder() {
+            return {
+                title: 'No attribute groups',
+                subtitle: 'There are no attribute groups in the system, so you can create the first one.',
+            };
+        },
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Attributes/components/Forms/AttributeForm',
                 type: this.typeKey,
             });
@@ -168,9 +204,11 @@ export default {
         ...mapActions('attribute', [
             '__setState',
         ]),
-        ...mapActions('attributeGroup', [
-            'getAttributeGroupsOptions',
-        ]),
+        onNavigateToAttributeGroups() {
+            this.$router.push({
+                name: 'attribute-groups-grid',
+            });
+        },
         bindingProps({
             props = {},
         }) {
@@ -182,6 +220,19 @@ export default {
                 errors: this.errors,
                 ...props,
             };
+        },
+        errorMapper(errors) {
+            return Object.keys(errors).reduce((acc, key) => {
+                const tmpObject = acc;
+
+                if (isObject(errors[key])) {
+                    tmpObject[key] = Object.values(errors[key]).join(', ');
+                } else {
+                    tmpObject[key] = errors[key];
+                }
+
+                return tmpObject;
+            }, {});
         },
         setCodeValue(value) {
             this.__setState({

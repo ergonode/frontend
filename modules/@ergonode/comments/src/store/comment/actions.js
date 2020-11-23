@@ -9,6 +9,9 @@ import {
     remove,
     update,
 } from '@Comments/services/index';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 
 import {
     types,
@@ -17,22 +20,48 @@ import {
 export default {
     async getComments({
         commit,
-    }, params) {
-        const {
-            collection: comments, info,
-        } = await getAll({
-            $axios: this.app.$axios,
-            params,
-        });
+    }, {
+        params,
+        onError = () => {},
+    }) {
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Comments/store/comment/action/getComments/__before', {
+                $this: this,
+            });
+            // EXTENDED BEFORE METHOD
 
-        commit('__SET_STATE', {
-            key: 'comments',
-            value: comments,
-        });
-        commit('__SET_STATE', {
-            key: 'count',
-            value: info.filtered,
-        });
+            const data = await getAll({
+                $axios: this.app.$axios,
+                params,
+            });
+            const {
+                collection: comments,
+                info,
+            } = data;
+
+            commit('__SET_STATE', {
+                key: 'comments',
+                value: comments,
+            });
+            commit('__SET_STATE', {
+                key: 'count',
+                value: info.filtered,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Comments/store/comment/action/getComments/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async getMoreComments(
         {
@@ -40,28 +69,51 @@ export default {
         },
         {
             params,
+            onError = () => {},
         },
     ) {
-        let {
-            currentPage,
-        } = state;
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Comments/store/comment/action/getMoreComments/__before', {
+                $this: this,
+            });
+            // EXTENDED BEFORE METHOD
 
-        const {
-            collection: comments, info,
-        } = await getAll({
-            $axios: this.app.$axios,
-            params,
-        });
+            let {
+                currentPage,
+            } = state;
+            const data = await getAll({
+                $axios: this.app.$axios,
+                params,
+            });
+            const {
+                collection: comments,
+                info,
+            } = data;
 
-        commit('__SET_STATE', {
-            key: 'currentPage',
-            value: currentPage += 1,
-        });
-        commit('__SET_STATE', {
-            key: 'count',
-            value: info.filtered,
-        });
-        commit(types.INSERT_MORE_COMMENTS, comments);
+            commit('__SET_STATE', {
+                key: 'currentPage',
+                value: currentPage += 1,
+            });
+            commit('__SET_STATE', {
+                key: 'count',
+                value: info.filtered,
+            });
+            commit(types.INSERT_MORE_COMMENTS, comments);
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Comments/store/comment/action/getMoreComments/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async createComment(
         {
@@ -88,10 +140,23 @@ export default {
             const {
                 count,
             } = state;
-            const data = {
+            let data = {
                 content,
                 object_id: objectId,
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Comments/store/comment/action/createComment/__before', {
+                $this: this,
+                data,
+            });
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             const {
                 id,
@@ -118,8 +183,28 @@ export default {
                 key: 'count',
                 value: count + 1,
             });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Comments/store/comment/action/createComment/__after', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
+
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating comment has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -140,14 +225,30 @@ export default {
         },
     ) {
         try {
-            const data = {
-                content,
-            };
             const {
                 firstName,
                 lastName,
                 avatarFilename,
             } = rootState.authentication.user;
+            let data = {
+                content,
+            };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Comments/store/comment/action/updateComment/__before', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             await update({
                 $axios: this.app.$axios,
@@ -169,8 +270,24 @@ export default {
                 author: `${firstName} ${lastName}`,
             });
 
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Comments/store/comment/action/updateComment/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating comment has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -193,6 +310,15 @@ export default {
                 count,
             } = state;
 
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Comments/store/comment/action/removeComment/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+
             await remove({
                 $axios: this.app.$axios,
                 id,
@@ -204,8 +330,23 @@ export default {
                 value: count - 1,
             });
 
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Comments/store/comment/action/removeComment/__after', {
+                $this: this,
+            });
+            // EXTENDED AFTER METHOD
+
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing comment has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
             });

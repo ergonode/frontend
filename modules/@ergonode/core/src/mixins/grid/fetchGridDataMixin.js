@@ -2,18 +2,22 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import Grid from '@Core/components/Grid/Grid';
 import {
-    DATA_LIMIT,
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     DEFAULT_GRID_FETCH_PARAMS,
+    DEFAULT_GRID_PAGINATION,
 } from '@Core/defaults/grid';
 import {
+    changeCookiePosition,
     insertCookieAtIndex,
     removeCookieAtIndex,
 } from '@Core/models/cookies';
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import Grid from '@UI/components/Grid/Grid';
 import {
     mapActions,
     mapState,
@@ -37,16 +41,16 @@ export default function ({
             return {
                 rows: [],
                 columns: [],
+                filterValues: {},
                 filtered: 0,
-                localParams: {
-                    offset: 0,
-                    limit: DATA_LIMIT,
-                    filters: {},
-                    sortedColumn: {},
-                },
+                localParams: DEFAULT_GRID_FETCH_PARAMS,
+                pagination: DEFAULT_GRID_PAGINATION,
             };
         },
         computed: {
+            ...mapState('authentication', {
+                userLanguageCode: state => state.user.language,
+            }),
             ...mapState('list', [
                 'disabledElements',
             ]),
@@ -54,24 +58,103 @@ export default function ({
         watch: {
             isFetchingNeeded() {
                 if (this.isFetchingNeeded) {
-                    this.onFetchData(this.localParams);
+                    this.onFetchData();
                 }
             },
         },
         methods: {
             ...mapActions('list', [
                 'setDisabledElement',
+                'removeDisabledElement',
             ]),
+            onPaginationChange(pagination) {
+                this.pagination = pagination;
+                this.localParams.limit = pagination.itemsPerPage;
+                this.localParams.offset = (pagination.page - 1) * pagination.itemsPerPage;
+
+                this.onFetchData();
+            },
+            onRemoveAllFilters() {
+                this.filterValues = {};
+                this.pagination.page = 1;
+                this.localParams.filter = {};
+                this.localParams.offset = 0;
+
+                this.onFetchData();
+            },
+            onRemoveColumn({
+                index,
+                column,
+            }) {
+                const {
+                    id,
+                } = column;
+
+                if (column.element_id) {
+                    const {
+                        language: languageCode = this.userLanguageCode,
+                        element_id: elementId,
+                    } = column;
+
+                    if (this.disabledElements[languageCode][elementId]) {
+                        this.setDisabledElement({
+                            languageCode,
+                            elementId,
+                            disabled: false,
+                        });
+                    } else {
+                        this.removeDisabledElement({
+                            languageCode,
+                            elementId,
+                        });
+                    }
+                }
+
+                delete this.filterValues[id];
+                delete this.localParams.filter[id];
+
+                removeCookieAtIndex({
+                    cookies: this.$cookies,
+                    cookieName: `GRID_CONFIG:${this.$route.name}`,
+                    index,
+                });
+
+                this.onFetchData();
+            },
+            onFilterChange(filters) {
+                this.filterValues = filters;
+                this.pagination.page = 1;
+                this.localParams.filter = filters;
+                this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
+
+                this.onFetchData();
+            },
+            onSwapColumns({
+                from,
+                to,
+            }) {
+                changeCookiePosition({
+                    cookies: this.$cookies,
+                    cookieName: `GRID_CONFIG:${this.$route.name}`,
+                    from,
+                    to,
+                });
+            },
+            onColumnSortChange(sortedColumn) {
+                this.localParams.sortedColumn = sortedColumn;
+
+                this.onFetchData();
+            },
             async onFetchData({
                 offset,
                 limit,
-                filters,
+                filter,
                 sortedColumn,
-            } = DEFAULT_GRID_FETCH_PARAMS) {
+            } = this.localParams) {
                 this.localParams = {
                     offset,
                     limit,
-                    filters,
+                    filter,
                     sortedColumn,
                 };
 
@@ -79,7 +162,7 @@ export default function ({
                     offset,
                     limit,
                     extended: true,
-                    filter: filters,
+                    filter,
                     columns: this.getGridColumnParams(),
                 };
 
@@ -92,37 +175,52 @@ export default function ({
                     params.order = orderState;
                 }
 
-                const {
-                    columns,
-                    rows,
-                    filtered,
-                } = await getGridData({
+                await getGridData({
+                    $route: this.$route,
+                    $cookies: this.$cookies,
                     $axios: this.$axios,
                     path: this.getPath(),
                     params,
+                    onSuccess: this.onFetchDataSuccess,
+                    onError: this.onFetchDataError,
                 });
-
+            },
+            onFetchDataSuccess({
+                columns,
+                rows,
+                filtered,
+            }) {
                 this.columns = columns;
                 this.rows = rows;
                 this.filtered = filtered;
 
                 this.$emit('fetched');
             },
-            onRemoveRow() {
-                this.onFetchData(this.localParams);
-            },
-            onDropColumn(columnId) {
-                insertCookieAtIndex({
-                    cookies: this.$cookies,
-                    cookieName: `GRID_CONFIG:${this.$route.name}`,
-                    index: 0,
-                    data: columnId,
+            onFetchDataError() {
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Grid data haven’t been fetched properly',
                 });
+            },
+            onRemoveRow() {
+                this.onFetchData();
+            },
+            async onDropColumn(payload) {
+                try {
+                    const columnCode = payload.split('/')[1];
 
-                this.onFetchData(this.localParams).then(() => {
+                    insertCookieAtIndex({
+                        cookies: this.$cookies,
+                        cookieName: `GRID_CONFIG:${this.$route.name}`,
+                        index: 0,
+                        data: columnCode,
+                    });
+
+                    await this.onFetchData();
+
                     const column = this.columns.find(({
                         id,
-                    }) => id === columnId);
+                    }) => id === columnCode);
 
                     if (column && column.element_id) {
                         this.setDisabledElement(this.getDisabledListElement({
@@ -131,13 +229,13 @@ export default function ({
                             disabledElements: this.disabledElements,
                         }));
                     }
-                }).catch(() => {
+                } catch {
                     removeCookieAtIndex({
                         cookies: this.$cookies,
-                        cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
+                        cookieName: `GRID_CONFIG:${this.$route.name}`,
                         index: 0,
                     });
-                });
+                }
             },
             getDisabledListElement({
                 languageCode,

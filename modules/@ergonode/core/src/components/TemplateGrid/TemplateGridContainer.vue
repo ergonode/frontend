@@ -23,11 +23,6 @@ import {
     getObjectWithMaxValueInArrayByObjectKey,
 } from '@Core/models/arrayWrapper';
 import {
-    getPositionForBrowser,
-    isMouseInsideElement,
-    isMouseOutOfBoundsElement,
-} from '@Core/models/drag_and_drop/helpers';
-import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
@@ -35,6 +30,11 @@ import {
     getRowBellowMouse,
     getRowBounds,
 } from '@Core/models/template_grid/TreeCalculations';
+import {
+    getPositionForBrowser,
+    isMouseInsideElement,
+    isMouseOutOfBoundsElement,
+} from '@UI/models/dragAndDrop/helpers';
 import {
     debounce,
 } from 'debounce';
@@ -47,26 +47,44 @@ import {
 export default {
     name: 'TemplateGridContainer',
     props: {
+        /**
+         * Grid data model
+         */
         gridData: {
             type: Array,
             required: true,
         },
+        /**
+         * Number of visible columns
+         */
         columns: {
             type: Number,
             required: true,
         },
+        /**
+         * Number of visible rows
+         */
         rows: {
             type: Number,
             required: true,
         },
+        /**
+         * Determines the size of row height
+         */
         rowHeight: {
             type: Number,
             required: true,
         },
+        /**
+         * Determines state of draggable attribute
+         */
         isDraggingEnabled: {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if the component might be dragged twice
+         */
         isMultiDraggable: {
             type: Boolean,
             default: false,
@@ -176,7 +194,7 @@ export default {
                     } = item;
 
                     if (children && !expanded) {
-                        this.$emit('toggleItem', item);
+                        this.$emit('toggle-item', item);
                     }
 
                     this.__setState({
@@ -322,13 +340,13 @@ export default {
             });
             this.rebuildGrid(id);
             if (childrenLength > 0) {
-                this.$emit('toggleItem', {
+                this.$emit('toggle-item', {
                     ...droppedItem,
                     row: rowToInsert + this.positionBetweenRows,
                 });
             }
             this.calculateRowsCount();
-            this.$emit('afterDrop', id);
+            this.$emit('after-drop', id);
         },
         getElementBelowMouse(event) {
             const {

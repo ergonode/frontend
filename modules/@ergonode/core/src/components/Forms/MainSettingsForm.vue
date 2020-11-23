@@ -14,23 +14,15 @@
         @submit="onSubmitForm">
         <template #body>
             <FormSection>
-                <TranslationSelect
-                    v-model="activeLanguages"
-                    :options="languageOptions"
+                <Autocomplete
+                    :value="activeLanguages"
                     label="Languages"
                     :multiselect="true"
                     :clearable="true"
                     :searchable="true"
-                    :sticky-search="true"
                     :disabled="!isAllowedToUpdate"
-                    @input="setSelectedLanguages"
-                    @search="onSearch">
-                    <template #append>
-                        <InfoHint
-                            v-if="hint"
-                            :hint="hint" />
-                    </template>
-                </TranslationSelect>
+                    href="languages/autocomplete"
+                    @input="setSelectedLanguages" />
                 <Divider v-if="extendedForm.length" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
@@ -44,14 +36,13 @@
 </template>
 
 <script>
-import Divider from '@Core/components/Dividers/Divider';
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import InfoHint from '@Core/components/Hints/InfoHint';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import PRIVILEGES from '@Core/config/privileges';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
+import Divider from '@UI/components/Dividers/Divider';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
 import {
     mapState,
 } from 'vuex';
@@ -60,10 +51,9 @@ export default {
     name: 'MainSettingsForm',
     components: {
         Divider,
-        InfoHint,
         Form,
         FormSection,
-        TranslationSelect,
+        Autocomplete,
     },
     mixins: [
         formActionsMixin,
@@ -71,7 +61,6 @@ export default {
     ],
     data() {
         return {
-            filteredValue: '',
             activeLanguages: [],
         };
     },
@@ -80,35 +69,9 @@ export default {
             'languages',
         ]),
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Core/components/Forms/MainSettingsForm',
             });
-        },
-        mappedLanguages() {
-            return this.languages.map(({
-                id, name, code,
-            }) => ({
-                id,
-                key: code,
-                value: name,
-            }));
-        },
-        languageOptions() {
-            if (this.filteredValue) {
-                const rgx = new RegExp(this.filteredValue, 'i');
-
-                return this.mappedLanguages.filter(
-                    ({
-                        key, value,
-                    }) => key.match(rgx) || value.match(rgx),
-                );
-            }
-            return this.mappedLanguages;
-        },
-        hint() {
-            return this.activeLanguages.map(({
-                value,
-            }) => value).join(', ');
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
@@ -125,12 +88,8 @@ export default {
                 active,
             }) => active)
             .map(({
-                id, name, code,
-            }) => ({
                 id,
-                key: code,
-                value: name,
-            }));
+            }) => id);
     },
     methods: {
         bindingProps({
@@ -144,22 +103,17 @@ export default {
                 ...props,
             };
         },
-        setSelectedLanguages(selectedLanguages) {
-            this.activeLanguages = selectedLanguages;
+        setSelectedLanguages(value) {
+            this.activeLanguages = value;
 
             this.onScopeValueChange({
                 scope: this.scope,
                 fieldKey: this.languagesFieldKey,
-                value: selectedLanguages,
+                value,
             });
-
-            this.$emit('selectedLanguages', selectedLanguages);
         },
         onSubmitForm() {
             this.$emit('submit', this.activeLanguages);
-        },
-        onSearch(value) {
-            this.filteredValue = value;
         },
     },
 };

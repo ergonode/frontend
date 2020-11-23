@@ -35,15 +35,28 @@
             </FormSection>
             <Divider />
             <FormSection title="Send notification to">
-                <TranslationLazySelect
+                <Autocomplete
                     :value="roles"
                     :clearable="true"
                     :multiselect="true"
+                    :searchable="true"
                     label="Role"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[roleFieldKey]"
-                    :fetch-options-request="getRoleOptions"
-                    @input="setRolesValue" />
+                    href="roles/autocomplete"
+                    @input="setRolesValue">
+                    <DropdownPlaceholder
+                        :title="placeholder.title"
+                        :subtitle="placeholder.subtitle">
+                        <template #action>
+                            <Button
+                                title="GO TO USER ROLES"
+                                :size="smallSize"
+                                :disabled="!isAllowedToUpdate"
+                                @click.native="onNavigateToUserRoles" />
+                        </template>
+                    </DropdownPlaceholder>
+                </Autocomplete>
                 <template v-for="(field, index) in extendedForm">
                     <Component
                         :is="field.component"
@@ -56,17 +69,21 @@
 </template>
 
 <script>
-import Divider from '@Core/components/Dividers/Divider';
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     isEmpty,
 } from '@Core/models/objectWrapper';
 import PRIVILEGES from '@Transitions/config/privileges';
+import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
+import Divider from '@UI/components/Dividers/Divider';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
+import TranslationSelect from '@UI/components/Select/TranslationSelect';
 import {
     mapActions,
     mapState,
@@ -78,8 +95,9 @@ export default {
         Form,
         FormSection,
         Divider,
-        TranslationLazySelect,
+        Autocomplete,
         TranslationSelect,
+        DropdownPlaceholder,
     },
     mixins: [
         formActionsMixin,
@@ -94,8 +112,17 @@ export default {
         ...mapState('productStatus', [
             'statuses',
         ]),
+        smallSize() {
+            return SIZE.SMALL;
+        },
+        placeholder() {
+            return {
+                title: 'No user roles',
+                subtitle: 'There are no user roles in the system, so you can create the first one.',
+            };
+        },
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Transitions/components/Forms/TransitionForm',
             });
         },
@@ -140,9 +167,6 @@ export default {
         ...mapActions('statusTransition', [
             '__setState',
         ]),
-        ...mapActions('role', [
-            'getRoleOptions',
-        ]),
         bindingProps({
             props,
         }) {
@@ -153,6 +177,11 @@ export default {
                 disabled: !this.isAllowedToUpdate,
                 ...props,
             };
+        },
+        onNavigateToUserRoles() {
+            this.$router.push({
+                name: 'user-roles-grid',
+            });
         },
         setSourceValue(value) {
             this.__setState({

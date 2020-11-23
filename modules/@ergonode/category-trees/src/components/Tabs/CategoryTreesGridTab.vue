@@ -6,29 +6,40 @@
     <CenterViewTemplate>
         <template #content>
             <Grid
-                :is-editable="isAllowedToDelete"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
-                :placeholder="noRecordsPlaceholder"
+                :filters="filterValues"
+                :pagination="pagination"
+                :placeholder="noDataPlaceholder"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :is-editable="isAllowedToDelete"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
-                @editRow="onEditRow"
-                @previewRow="onEditRow"
-                @deleteRow="onRemoveRow"
-                @fetchData="onFetchData" />
+                @edit-row="onEditRow"
+                @preview-row="onEditRow"
+                @delete-row="onRemoveRow"
+                @pagination="onPaginationChange"
+                @column-sort="onColumnSortChange"
+                @filter="onFilterChange"
+                @remove-all-filters="onRemoveAllFilters" />
         </template>
     </CenterViewTemplate>
 </template>
 
 <script>
-import {
-    WHITESMOKE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import PRIVILEGES from '@Trees/config/privileges';
+import {
+    WHITESMOKE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
     name: 'CategoryTreesGridTab',
@@ -39,6 +50,7 @@ export default {
         fetchGridDataMixin({
             path: 'trees',
         }),
+        extendedGridComponentsMixin,
     ],
     async fetch() {
         await this.onFetchData();
@@ -50,11 +62,11 @@ export default {
         };
     },
     computed: {
-        noRecordsPlaceholder() {
+        noDataPlaceholder() {
             return {
                 title: 'No category trees',
                 subtitle: 'There are no category trees in the system, you can create the first one.',
-                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
                 color: WHITESMOKE,
             };
         },

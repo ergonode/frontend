@@ -21,16 +21,18 @@
                 class="upload-file-tab__label"
                 :for="associatedLabel">
                 <IconUploadCloudFile
-                    :fill-color="greenColor"
+                    :fill-color="uploadCloudFileIconColor"
                     view-box="0 0 48 32"
                     width="48"
                     height="32" />
                 <span class="information-label">Drag and drop files</span>
-                <span class="information-label-logic-operator">or</span>
-                <Button
-                    :size="smallSize"
-                    title="BROWSE FILE"
-                    @click.native="onBrowseFile" />
+                <template v-if="!isDraggedFileOver">
+                    <span class="information-label-logic-operator">or</span>
+                    <Button
+                        :size="smallSize"
+                        title="BROWSE FILE"
+                        @click.native="onBrowseFile" />
+                </template>
             </label>
         </div>
         <div
@@ -51,18 +53,11 @@
 
 <script>
 import {
-    GREEN,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Button/Button';
-import IconUploadCloudFile from '@Core/components/Icons/Actions/IconUploadCloudFile';
-import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
-import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
 import {
     getMappedErrors,
 } from '@Core/models/mappers/errorsMapper';
@@ -72,6 +67,14 @@ import {
 import UploadFileList from '@Media/components/List/UploadFileList';
 import UploadFileListElement from '@Media/components/List/UploadFileListElement';
 import UploadFileListLoadingElement from '@Media/components/List/UploadFileListLoadingElement';
+import {
+    GREEN,
+    WHITE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Button from '@UI/components/Button/Button';
+import IconUploadCloudFile from '@UI/components/Icons/Actions/IconUploadCloudFile';
+import ListScrollableContainer from '@UI/components/List/ListScrollableContainer';
+import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'UploadFileTab',
@@ -93,8 +96,8 @@ export default {
         };
     },
     computed: {
-        greenColor() {
-            return GREEN;
+        uploadCloudFileIconColor() {
+            return this.isDraggedFileOver ? WHITE : GREEN;
         },
         smallSize() {
             return SIZE.SMALL;
@@ -158,7 +161,7 @@ export default {
                         message: 'File uploaded',
                     });
                     this.isRequestPending = false;
-                    this.$emit('uploadedFile', id);
+                    this.$emit('uploaded-file', id);
                 }).catch((e) => {
                     if (this.$axios.isCancel(e)) {
                         this.$addAlert({
@@ -188,20 +191,21 @@ export default {
 
 <style lang="scss" scoped>
     .upload-file-tab {
+        $upload-file-tab: &;
+
         display: flex;
         flex: 1;
         padding: 24px;
 
         &__activator {
-            $activator: &;
-
             position: relative;
             display: flex;
             flex: 1;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            border: $BORDER_DASHED_GREY;
+            background-color: $WHITESMOKE;
+            box-shadow: $ELEVATOR_HOLE;
 
             input {
                 position: absolute;
@@ -218,8 +222,11 @@ export default {
             }
 
             &--hovered {
-                background-color: $GREEN_LIGHT;
-                border-color: $GREEN;
+                background-color: $GREEN;
+
+                #{$upload-file-tab}__label .information-label {
+                    color: $WHITE;
+                }
             }
         }
 

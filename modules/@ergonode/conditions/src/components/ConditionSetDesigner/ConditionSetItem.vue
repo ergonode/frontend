@@ -37,8 +37,8 @@
                     v-for="(parameter, index) in condition.parameters"
                     :key="index"
                     :parameter="parameter"
-                    :item-id="itemId"
-                    :item-row="itemRow"
+                    :item-id="item.id"
+                    :item-row="item.row"
                     :scope="scope"
                     :error-messages="errors[parameter.name]"
                     :disabled="disabled" />
@@ -51,8 +51,6 @@ import ConditionSetParameters from '@Conditions/components/ConditionSetDesigner/
 import {
     hasOptions,
 } from '@Conditions/models/conditionTypes';
-import ActionIconButton from '@Core/components/ActionIconButton/ActionIconButton';
-import IconDots from '@Core/components/Icons/Others/IconDots';
 import {
     SIZE,
     THEME,
@@ -60,6 +58,8 @@ import {
 import {
     isEmpty,
 } from '@Core/models/objectWrapper';
+import ActionIconButton from '@UI/components/ActionIconButton/ActionIconButton';
+import IconDots from '@UI/components/Icons/Others/IconDots';
 import {
     mapState,
 } from 'vuex';
@@ -76,12 +76,8 @@ export default {
             type: Object,
             required: true,
         },
-        itemId: {
-            type: String,
-            required: true,
-        },
-        itemRow: {
-            type: Number,
+        item: {
+            type: Object,
             required: true,
         },
         scope: {
@@ -150,7 +146,7 @@ export default {
         onSelectValue(value) {
             switch (value) {
             case 'Remove':
-                this.$emit('remove', this.itemRow, this.itemId);
+                this.$emit('remove', this.item);
                 break;
             default: break;
             }

@@ -1,9 +1,12 @@
+/* eslint-disable no-throw-literal */
 /*
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 import {
+    createBinding,
     getBindings,
+    removeBinding,
 } from '@Products/extends/services';
 
 import {
@@ -11,22 +14,39 @@ import {
 } from './mutations';
 
 export default {
-    setBindingAttributeId: ({
+    addBinding: ({
         commit,
-    }, payload) => commit(types.SET_BINDING_ATTRIBUTE_ID, payload),
-    addBindingAttribute: ({
+    }) => commit(types.ADD_BINDING),
+    setBinding: ({
         commit,
-    }) => commit(types.ADD_BINDING_ATTRIBUTE),
-    removeBindingAttribute: ({
+    }, payload) => commit(types.SET_BINDING, payload),
+    async removeBinding({
+        state,
         commit,
-    }, index) => commit(types.REMOVE_BINDING_ATTRIBUTE, index),
-    async getProductBindings({}, id) {
+    }, index) {
+        const {
+            id,
+            bindings,
+        } = state;
+
+        await removeBinding({
+            $axios: this.app.$axios,
+            productId: id,
+            bindingId: bindings[index],
+        });
+    },
+    async getProductBindings({
+        commit,
+    }, id) {
         const bindings = await getBindings({
             $axios: this.app.$axios,
             id,
         });
 
-        return bindings;
+        commit('__SET_STATE', {
+            key: 'bindings',
+            value: bindings,
+        });
     },
     async getSelectAttributes({
         commit,
@@ -42,5 +62,78 @@ export default {
             key: 'selectAttributes',
             value: selectAttributes,
         });
+    },
+    async addProductBindings({
+        state,
+        commit,
+    }, {
+        scope,
+        bindings,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        const errors = {};
+        let isAnyError = false;
+
+        try {
+            const {
+                id, bindings: stateBindings,
+            } = state;
+
+            const removeBindingRequests = [];
+            const createBindingRequests = [];
+
+            stateBindings.forEach((stateBindingId) => {
+                if (bindings.indexOf(stateBindingId) === -1) {
+                    removeBindingRequests.push(removeBinding({
+                        $axios: this.app.$axios,
+                        productId: id,
+                        bindingId: stateBindingId,
+                    }));
+                }
+            });
+
+            bindings.forEach((bindingId, index) => {
+                if (bindingId === null) {
+                    errors[`${bindingId}/${index}`] = [
+                        'Binding attribute is required',
+                    ];
+                    isAnyError = true;
+                } else if (stateBindings.indexOf(bindingId) === -1) {
+                    createBindingRequests.push(createBinding({
+                        $axios: this.app.$axios,
+                        id,
+                        data: {
+                            bind_id: bindingId,
+                        },
+                    }));
+                }
+            });
+
+            if (isAnyError) {
+                throw {
+                    data: {
+                        errors,
+                    },
+                };
+            }
+
+            await Promise.all([
+                ...removeBindingRequests,
+                ...createBindingRequests,
+            ]);
+
+            commit('__SET_STATE', {
+                key: 'bindings',
+                value: bindings,
+            });
+
+            onSuccess();
+        } catch (e) {
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
     },
 };

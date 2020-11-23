@@ -13,6 +13,9 @@ import {
     update,
     updateDraftValue,
 } from '@Collections/services/index';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 
 export default {
     async getCollection(
@@ -22,59 +25,87 @@ export default {
         },
         {
             id,
+            onError = () => {},
         },
     ) {
-        const {
-            code,
-            type_id,
-            name = {},
-            description = {},
-        } = await get({
-            $axios: this.app.$axios,
-            id,
-        });
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Collections/store/collection/action/getCollection/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
 
-        const translations = {
-            name,
-            description,
-        };
+            const data = await get({
+                $axios: this.app.$axios,
+                id,
+            });
+            const {
+                code,
+                type_id,
+                name = {},
+                description = {},
+            } = data;
 
-        commit('__SET_STATE', {
-            key: 'id',
-            value: id,
-        });
-        commit('__SET_STATE', {
-            key: 'code',
-            value: code,
-        });
-        commit('__SET_STATE', {
-            key: 'type',
-            value: type_id,
-        });
+            const translations = {
+                name,
+                description,
+            };
 
-        dispatch('tab/setTranslations', translations, {
-            root: true,
-        });
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'code',
+                value: code,
+            });
+            commit('__SET_STATE', {
+                key: 'type',
+                value: type_id,
+            });
+
+            dispatch('tab/setTranslations', translations, {
+                root: true,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Collections/store/collection/action/getCollection/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
-    getCollectionTypeOptions({
-        rootState,
+    async getCollectionTypeOptions({}, {
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            language,
-        } = rootState.authentication.user;
+        try {
+            const {
+                collection,
+            } = await getTypes({
+                $axios: this.app.$axios,
+            });
 
-        return getTypes({
-            $axios: this.app.$axios,
-        }).then(({
-            collection,
-        }) => ({
-            options: collection.map(element => ({
-                id: element.id,
-                key: element.code,
-                value: element.name,
-                hint: element.name ? `#${element.code} ${language}` : '',
-            })),
-        }));
+            onSuccess({
+                types: collection,
+            });
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async updateCollectionProductsVisibility({
         state,
@@ -120,6 +151,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating product visibility in collection has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -148,12 +188,27 @@ export default {
                     description,
                 },
             } = rootState.tab;
-
-            const data = {
+            let data = {
                 typeId: type,
                 name,
                 description,
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Collections/store/collection/action/updateCollection/__before', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             await update({
                 $axios: this.app.$axios,
@@ -161,8 +216,24 @@ export default {
                 data,
             });
 
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Collections/store/collection/action/updateCollection/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating collection has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -181,10 +252,23 @@ export default {
                 code,
                 type,
             } = state;
-            const data = {
+            let data = {
                 code,
                 typeId: type,
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Collections/store/collection/action/createCollection/__before', {
+                $this: this,
+                data,
+            });
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             const {
                 id,
@@ -193,8 +277,27 @@ export default {
                 data,
             });
 
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Collections/store/collection/action/createCollection/__after', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
+
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating collection has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -239,8 +342,18 @@ export default {
                 id,
                 data,
             });
+
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Adding product by skus to collection has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -267,7 +380,7 @@ export default {
                 id,
             } = state;
             const data = {
-                segments: segments.map(segment => segment.id),
+                segments,
             };
 
             if (!data.segments.length) {
@@ -291,6 +404,15 @@ export default {
             });
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Adding products from segment to collection has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -300,16 +422,46 @@ export default {
     async removeCollection({
         state,
     }, {
-        onSuccess,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
+        try {
+            const {
+                id,
+            } = state;
 
-        await remove({
-            $axios: this.app.$axios,
-            id,
-        });
-        onSuccess();
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Collections/store/collection/action/removeCollection/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+
+            await remove({
+                $axios: this.app.$axios,
+                id,
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Collections/store/collection/action/removeCollection/__after', {
+                $this: this,
+            });
+            // EXTENDED AFTER METHOD
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing collection has been canceled',
+                });
+
+                return;
+            }
+
+            onError(e);
+        }
     },
 };

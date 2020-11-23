@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -29,6 +28,7 @@ import {
 } from '@Core/defaults/theme';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import ProductForm from '@Products/components/Forms/ProductForm';
+import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
 } from 'vuex';
@@ -42,9 +42,6 @@ export default {
     mixins: [
         scopeErrorsMixin,
     ],
-    async fetch() {
-        await this.getSelectAttributes();
-    },
     data() {
         return {
             isSubmitting: false,
@@ -58,7 +55,6 @@ export default {
     },
     methods: {
         ...mapActions('product', [
-            'getSelectAttributes',
             'createProduct',
             '__clearStorage',
         ]),

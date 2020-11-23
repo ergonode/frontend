@@ -35,12 +35,12 @@
 <script>
 import LoginForm from '@Authentication/components/Form/LoginForm';
 import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
-import TextField from '@Core/components/Inputs/TextField';
-import Toggler from '@Core/components/Inputs/Toggler/Toggler';
 import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import TextField from '@UI/components/TextField/TextField';
+import Toggler from '@UI/components/Toggler/Toggler';
 import {
     mapActions,
 } from 'vuex';

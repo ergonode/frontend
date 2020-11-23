@@ -4,6 +4,9 @@
  * See LICENSE for license details.
  */
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
 import {
@@ -12,7 +15,6 @@ import {
     applyDraft,
     create,
     get,
-    getChildren,
     getCollections,
     getCompleteness,
     getDraft,
@@ -70,6 +72,10 @@ export default {
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError(e);
         }
     },
@@ -78,25 +84,37 @@ export default {
     }, {
         id,
         languageCode,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            status = {},
-            workflow = [],
-        } = await getWorkflow({
-            $axios: this.app.$axios,
-            id,
-            languageCode,
-        });
+        try {
+            const {
+                status = {},
+                workflow = [],
+            } = await getWorkflow({
+                $axios: this.app.$axios,
+                id,
+                languageCode,
+            });
 
-        commit('__SET_STATE', {
-            key: 'status',
-            value: status,
-        });
+            commit('__SET_STATE', {
+                key: 'status',
+                value: status,
+            });
 
-        commit('__SET_STATE', {
-            key: 'workflow',
-            value: workflow,
-        });
+            commit('__SET_STATE', {
+                key: 'workflow',
+                value: workflow,
+            });
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async getProduct({
         commit,
@@ -125,7 +143,7 @@ export default {
             });
 
             const {
-                design_template_id: templateId,
+                template_id: templateId,
                 attributes,
                 sku,
                 type,
@@ -163,27 +181,45 @@ export default {
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError(e);
         }
     },
-    getProductWorkflowOptions({}, {
+    async getProductWorkflowOptions({}, {
         id,
         languageCode,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        return getWorkflow({
-            $axios: this.app.$axios,
-            id,
-            languageCode,
-        }).then(({
-            workflow = [],
-        }) => workflow.map(e => ({
-            id: e.id,
-            key: e.code,
-            value: e.name,
-            hint: e.name
-                ? `#${e.code} ${languageCode}`
-                : '',
-        })));
+        try {
+            const {
+                workflow = [],
+            } = await getWorkflow({
+                $axios: this.app.$axios,
+                id,
+                languageCode,
+            });
+
+            onSuccess({
+                workflow: workflow.map(e => ({
+                    id: e.id,
+                    key: e.code,
+                    value: e.name,
+                    hint: e.name
+                        ? `#${e.code} ${languageCode}`
+                        : '',
+                })),
+            });
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async addBySku({
         state,
@@ -193,46 +229,34 @@ export default {
         onSuccess = () => {},
         onError = () => {},
     }) {
-        const errors = {};
-        let isAnyError = false;
         const {
             id,
         } = state;
-        const mappedSkus = skus.replace(/\n/g, ',');
         const data = {
-            skus: mappedSkus !== '' ? mappedSkus.split(',') : [],
+            skus,
         };
 
         try {
-            if (!mappedSkus.length) {
-                errors.skus = [
-                    'Sku is required',
-                ];
-                isAnyError = true;
-            }
-
-            if (isAnyError) {
-                throw {
-                    data: {
-                        errors,
-                    },
-                };
-            }
             await addBySku({
                 $axios: this.app.$axios,
                 id,
                 data,
             });
+
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Adding product by skus has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
-                fieldKeys: data.skus.reduce((prev, curr, index) => {
-                    const tmp = prev;
-                    tmp[`element-${index}`] = curr;
-                    return tmp;
-                }, {}),
             });
         }
     },
@@ -251,7 +275,7 @@ export default {
                 id,
             } = state;
             const data = {
-                segments: segments.map(segment => segment.id),
+                segments,
             };
 
             if (!data.segments.length) {
@@ -276,6 +300,15 @@ export default {
             });
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Adding products from segment has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -285,54 +318,80 @@ export default {
     async getProductTemplate({}, {
         languageCode,
         id,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            elements,
-        } = await getTemplate({
-            $axios: this.app.$axios,
-            languageCode,
-            id,
-        });
+        try {
+            const {
+                elements,
+            } = await getTemplate({
+                $axios: this.app.$axios,
+                languageCode,
+                id,
+            });
 
-        return elements;
-    },
-    async getProductChildren({}, id) {
-        const {
-            collection,
-        } = await getChildren({
-            $axios: this.app.$axios,
-            id,
-        });
+            onSuccess({
+                elements,
+            });
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
 
-        return collection;
+            onError(e);
+        }
     },
     async getProductCollections({
         state,
+    }, {
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
+        try {
+            const {
+                id,
+            } = state;
 
-        const {
-            collection,
-        } = await getCollections({
-            $axios: this.app.$axios,
-            id,
-        });
+            const {
+                collection,
+            } = await getCollections({
+                $axios: this.app.$axios,
+                id,
+            });
+            onSuccess({
+                collections: collection,
+            });
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
 
-        return collection;
+            onError(e);
+        }
     },
     async getProductCompleteness({}, {
         languageCode,
         id,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const completeness = await getCompleteness({
-            $axios: this.app.$axios,
-            languageCode,
-            id,
-        });
+        try {
+            const completeness = await getCompleteness({
+                $axios: this.app.$axios,
+                languageCode,
+                id,
+            });
 
-        return completeness;
+            onSuccess({
+                completeness,
+            });
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async updateProductStatus({
         state,
@@ -340,28 +399,42 @@ export default {
         attributeId,
         value,
         languageCode,
-        onSuccess,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
-        const data = {
-            value,
-        };
+        try {
+            const {
+                id,
+            } = state;
+            const data = {
+                value,
+            };
 
-        await updateDraftValue({
-            $axios: this.app.$axios,
-            id,
-            attributeId,
-            languageCode,
-            data,
-        });
-        await applyDraft({
-            $axios: this.app.$axios,
-            id,
-        });
+            await updateDraftValue({
+                $axios: this.app.$axios,
+                id,
+                attributeId,
+                languageCode,
+                data,
+            });
+            await applyDraft({
+                $axios: this.app.$axios,
+                id,
+            });
 
-        onSuccess();
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating product status has been canceled',
+                });
+
+                return;
+            }
+
+            onError(e);
+        }
     },
     async applyProductDraft({}, {
         id,
@@ -376,6 +449,15 @@ export default {
             });
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Applying product draft has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -419,6 +501,15 @@ export default {
                 );
             }
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating product draft has been canceled',
+                });
+
+                return;
+            }
+
             const {
                 errors,
             } = e.data;
@@ -478,13 +569,11 @@ export default {
             const {
                 id,
                 template,
-                categories,
                 type,
             } = state;
             const typeKey = getKeyByValue(productTypes, type);
             let data = {
                 templateId: template,
-                categoryIds: categories,
             };
 
             // EXTENDED BEFORE METHOD
@@ -525,6 +614,15 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating product has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -550,14 +648,12 @@ export default {
                 sku,
                 type,
                 template,
-                categories,
             } = state;
             const typeKey = getKeyByValue(productTypes, type);
             let data = {
                 sku,
                 type: typeKey,
                 templateId: template,
-                categoryIds: categories,
             };
 
             // EXTENDED BEFORE METHOD
@@ -595,6 +691,15 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Creating product has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -639,48 +744,88 @@ export default {
 
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing product draft has been canceled',
+                });
+
+                return;
+            }
+
             onError(e);
         }
     },
-    removeProductChildren({
+    async removeProductChildren({
         state,
     }, {
         childrenId,
         skus,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
-        const mappedSkus = skus.replace(/\n/g, ',');
-        const data = {
-            skus: mappedSkus !== '' ? mappedSkus.split(',') : [],
-        };
+        try {
+            const {
+                id,
+            } = state;
+            const mappedSkus = skus.replace(/\n/g, ',');
+            const data = {
+                skus: mappedSkus !== '' ? mappedSkus.split(',') : [],
+            };
 
-        return removeChildren({
-            $axios: this.app.$axios,
-            id,
-            childrenId,
-            data,
-        });
+            await removeChildren({
+                $axios: this.app.$axios,
+                id,
+                childrenId,
+                data,
+            });
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing product children has been canceled',
+                });
+
+                return;
+            }
+
+            onError(e);
+        }
     },
     async removeProductDraft({
         state,
     }, {
         languageCode,
         attributeId,
-        onSuccess,
+        onSuccess = () => {},
+        onError = () => {},
     }) {
-        const {
-            id,
-        } = state;
+        try {
+            const {
+                id,
+            } = state;
 
-        await removeDraftValue({
-            $axios: this.app.$axios,
-            id,
-            languageCode,
-            attributeId,
-        });
+            await removeDraftValue({
+                $axios: this.app.$axios,
+                id,
+                languageCode,
+                attributeId,
+            });
 
-        onSuccess();
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing product draft has been canceled',
+                });
+
+                return;
+            }
+
+            onError(e);
+        }
     },
 };

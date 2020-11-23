@@ -3,9 +3,7 @@
  * See LICENSE for license details.
  */
 import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import {
+    getParsedFilters,
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
 import {
@@ -13,83 +11,133 @@ import {
 } from '@Core/models/mappers/translationsMapper';
 
 export const getGridData = async ({
+    $route,
+    $cookies,
     $axios,
     path,
     params,
+    onSuccess = () => {},
+    onError = () => {},
 }) => {
-    const {
-        collection,
-        columns,
-        info: {
+    try {
+        const config = {
+            params: {
+                ...params,
+            },
+        };
+
+        if (params.filter) {
+            config.params.filter = getParsedFilters(params.filter);
+        }
+
+        const {
+            collection,
+            columns,
+            info: {
+                filtered,
+            },
+        } = await $axios.$get(path, config);
+
+        const sortedColumns = params.columns
+            ? getSortedColumnsByIDs(columns, params.columns)
+            : columns;
+
+        if (!$cookies.get(`GRID_CONFIG:${$route.name}`)) {
+            $cookies.set(
+                `GRID_CONFIG:${$route.name}`,
+                sortedColumns
+                    .map(({
+                        id,
+                    }) => id)
+                    .join(','),
+            );
+        }
+
+        onSuccess({
+            columns: sortedColumns,
+            rows: collection,
             filtered,
-        },
-    } = await $axios.$get(path, {
-        params,
-    });
+        });
+    } catch (e) {
+        if ($axios.isCancel(e)) {
+            return;
+        }
 
-    const sortedColumns = params.columns
-        ? getSortedColumnsByIDs(columns, params.columns)
-        : columns;
-
-    return {
-        columns: sortedColumns,
-        rows: collection,
-        filtered,
-    };
+        onError(e);
+    }
 };
 
 export const getAdvancedFiltersData = async ({
+    $route,
+    $cookies,
     $axios,
-    $addAlert,
     path,
     params,
+    onSuccess = () => {},
+    onError = () => {},
 }) => {
-    const {
-        columns,
-    } = await $axios.$get(path, {
-        params,
-    });
-
-    const {
-        length,
-    } = columns;
-    const advancedFilters = [];
-
-    for (let i = 0; i < length; i += 1) {
+    try {
         const {
-            id,
-            element_id,
-            language,
-            filter,
-            label,
-            parameters,
-        } = columns[i];
+            columns,
+        } = await $axios.$get(path, {
+            params,
+        });
 
-        if (filter) {
-            const mappedFilter = {
+        const {
+            length,
+        } = columns;
+        const advancedFilters = [];
+
+        for (let i = 0; i < length; i += 1) {
+            const {
                 id,
-                attributeId: element_id || '',
-                languageCode: language,
-                type: filter.type,
+                element_id,
+                language,
+                filter,
                 label,
                 parameters,
-            };
+            } = columns[i];
 
-            if (filter.options) {
-                mappedFilter.options = getMappedObjectOptions({
-                    options: filter.options,
+            if (filter) {
+                const mappedFilter = {
+                    id,
+                    attributeId: element_id || '',
                     languageCode: language,
-                });
+                    type: filter.type,
+                    label,
+                    parameters,
+                };
+
+                if (filter.options) {
+                    mappedFilter.options = getMappedObjectOptions({
+                        options: filter.options,
+                        languageCode: language,
+                    });
+                }
+
+                advancedFilters.push(mappedFilter);
             }
-
-            advancedFilters.push(mappedFilter);
-        } else {
-            $addAlert({
-                type: ALERT_TYPE.ERROR,
-                message: 'Attribute has no filter',
-            });
         }
-    }
 
-    return advancedFilters;
+        if (!$cookies.get(`GRID_ADV_FILTERS_CONFIG:${$route.name}`)) {
+            $cookies.set(
+                `GRID_ADV_FILTERS_CONFIG:${$route.name}`,
+                advancedFilters
+                    .map(({
+                        id,
+                    }) => id)
+                    .join(','),
+            );
+        }
+
+        onSuccess({
+            advancedFilters,
+        });
+    } catch (e) {
+        if ($axios.isCancel(e)) {
+            return;
+        }
+
+        onError(e);
+    }
 };

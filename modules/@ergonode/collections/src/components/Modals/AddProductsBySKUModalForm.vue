@@ -22,7 +22,6 @@
 
 <script>
 import AddProductsBySKUForm from '@Collections/components/Forms/AddProductsBySKUForm';
-import ModalForm from '@Core/components/Modal/ModalForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -30,6 +29,7 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
 } from 'vuex';
@@ -76,11 +76,11 @@ export default {
             this.addBySku({
                 scope: this.scope,
                 skus: this.productSkus,
-                onSuccess: this.onAddSuccess,
+                onSuccess: this.onSubmitSuccess,
                 onError: this.onAddError,
             });
         },
-        onAddSuccess() {
+        onSubmitSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Products have been added to collection',
@@ -88,7 +88,7 @@ export default {
 
             this.isAdding = false;
 
-            this.$emit('added');
+            this.$emit('submitted');
         },
         onAddError(errors) {
             this.onError(errors);

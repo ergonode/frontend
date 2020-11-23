@@ -4,10 +4,10 @@
  */
 <template>
     <div :class="avatarClasses">
-        <Picture
+        <LazyImage
             v-if="avatarId"
             :value="avatarId"
-            :api-path="avatarPath"
+            :href="avatarPath"
             :use-cache="false"
             fab />
         <span
@@ -27,21 +27,33 @@ import {
 export default {
     name: 'UserFabAvatar',
     components: {
-        Picture: () => import('@Core/components/Multimedia/Picture'),
+        LazyImage: () => import('@UI/components/LazyImage/LazyImage'),
     },
     props: {
+        /**
+         * Unique identifier of user avatar
+         */
         avatarId: {
             type: String,
             default: '',
         },
+        /**
+         * Unique identifier of user
+         */
         userId: {
             type: String,
             default: '',
         },
+        /**
+         * Name of user
+         */
         name: {
             type: String,
             default: '',
         },
+        /**
+         * The size of the component
+         */
         size: {
             type: String,
             default: SIZE.TINY,

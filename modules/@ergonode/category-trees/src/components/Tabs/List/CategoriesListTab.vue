@@ -5,16 +5,18 @@
 <template>
     <VerticalTabBarList>
         <ListSearchHeader
-            header="Categories"
-            @searchResult="onSearch" />
+            title="Categories"
+            searchable
+            @search-result="onSearch" />
         <List>
-            <ListScrollableContainer>
+            <Preloader v-if="isPrefetchingData" />
+            <ListScrollableContainer v-else>
                 <CategoriesListElement
-                    v-for="item in items[userLanguageCode]"
+                    v-for="item in items[defaultLanguageCode]"
                     :key="item.id"
                     :item="item"
                     :is-draggable="isAllowedToUpdate"
-                    :language-code="userLanguageCode" />
+                    :language-code="defaultLanguageCode" />
             </ListScrollableContainer>
         </List>
         <Fab
@@ -33,15 +35,19 @@
 </template>
 
 <script>
-import Fab from '@Core/components/Fab/Fab';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import List from '@Core/components/List/List';
-import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
-import ListSearchHeader from '@Core/components/List/ListSearchHeader';
-import VerticalTabBarList from '@Core/components/TabBar/VerticalTabBarList';
+import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
 import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
 import CategoriesListElement from '@Trees/components/Lists/CategoriesListElement';
 import PRIVILEGES from '@Trees/config/privileges';
+import Fab from '@UI/components/Fab/Fab';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import List from '@UI/components/List/List';
+import ListScrollableContainer from '@UI/components/List/ListScrollableContainer';
+import ListSearchHeader from '@UI/components/List/ListSearchHeader';
+import Preloader from '@UI/components/Preloader/Preloader';
+import VerticalTabBarList from '@UI/components/TabBar/VerticalTabBarList';
 import {
     mapActions,
     mapState,
@@ -50,6 +56,7 @@ import {
 export default {
     name: 'CategoriesListTab',
     components: {
+        Preloader,
         List,
         ListScrollableContainer,
         CategoriesListElement,
@@ -70,9 +77,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
+        ...mapState('core', [
+            'defaultLanguageCode',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.CATEGORY_TREE.update,
@@ -99,11 +106,23 @@ export default {
         },
         onCreatedCategory() {
             this.onCloseModal();
-            this.getItems(this.userLanguageCode);
+
+            try {
+                this.getItems(this.defaultLanguageCode);
+            } catch (e) {
+                if (this.$axios.isCancel(e)) {
+                    return;
+                }
+
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'List hasn’t been fetched properly',
+                });
+            }
         },
         onSearch(value) {
             this.codeFilter = value;
-            this.getItems(this.userLanguageCode);
+            this.getItems(this.defaultLanguageCode);
         },
     },
 };

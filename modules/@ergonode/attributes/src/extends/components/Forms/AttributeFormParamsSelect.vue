@@ -10,17 +10,17 @@
         required
         :label="paramsLabel"
         :options="attributeParametersOptions"
-        :error-messages="errors[paramsFieldKey]"
+        :error-messages="errorMessage"
         :disabled="!isAllowedToUpdate"
         @input="setParameterValue" />
 </template>
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
-import Select from '@Core/components/Inputs/Select/Select';
 import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
+import Select from '@UI/components/Select/Select';
 import {
     mapActions,
 } from 'vuex';
@@ -72,7 +72,12 @@ export default {
             return Object.values(this.params);
         },
         paramsFieldKey() {
-            return `parameters_${this.paramsLabel.toLowerCase()}`;
+            return 'parameters';
+        },
+        errorMessage() {
+            const error = this.errors[this.paramsFieldKey];
+
+            return error ? error[this.parameterData.key] : null;
         },
     },
     watch: {

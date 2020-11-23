@@ -14,10 +14,10 @@
 </template>
 
 <script>
-import TextField from '@Core/components/Inputs/TextField';
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
 } from 'vuex';

@@ -6,8 +6,8 @@
     <VerticalTabBarList>
         <ListSearchSelectHeader
             v-if="isSelectLanguage"
-            header="Attributes"
-            @searchResult="onSearch">
+            title="Attributes"
+            @search-result="onSearch">
             <template #select>
                 <TreeSelect
                     :value="language"
@@ -18,10 +18,11 @@
         </ListSearchSelectHeader>
         <ListSearchHeader
             v-else
-            header="Attributes"
-            @searchResult="onSearch" />
+            title="Attributes"
+            @search-result="onSearch" />
         <List>
-            <ListScrollableContainer>
+            <Preloader v-if="isPrefetchingData" />
+            <ListScrollableContainer v-else>
                 <AttributesListGroup
                     v-for="(group, index) in languageGroups"
                     :key="index"
@@ -31,6 +32,7 @@
                     :language-code="language.code"
                     :is-expanded="expandedGroupId === group.id"
                     :is-draggable="!disabled"
+                    :is-prefetching-data="prefetchingGroupItemsId === group.id"
                     @expand="onGroupExpand" />
             </ListScrollableContainer>
         </List>
@@ -52,21 +54,19 @@
 <script>
 import AttributesListGroup from '@Attributes/components/Lists/AttributesListGroup';
 import PRIVILEGES from '@Attributes/config/privileges';
-import Fab from '@Core/components/Fab/Fab';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import TreeSelect from '@Core/components/Inputs/Select/Tree/TreeSelect';
-import List from '@Core/components/List/List';
-import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
-import ListSearchHeader from '@Core/components/List/ListSearchHeader';
-import ListSearchSelectHeader from '@Core/components/List/ListSearchSelectHeader';
-import VerticalTabBarList from '@Core/components/TabBar/VerticalTabBarList';
-import {
-    UNASSIGNED_GROUP_ID,
-} from '@Core/defaults/list';
 import {
     SIZE,
 } from '@Core/defaults/theme';
 import fetchListGroupDataMixin from '@Core/mixins/list/fetchListGroupDataMixin';
+import Fab from '@UI/components/Fab/Fab';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import List from '@UI/components/List/List';
+import ListScrollableContainer from '@UI/components/List/ListScrollableContainer';
+import ListSearchHeader from '@UI/components/List/ListSearchHeader';
+import ListSearchSelectHeader from '@UI/components/List/ListSearchSelectHeader';
+import Preloader from '@UI/components/Preloader/Preloader';
+import TreeSelect from '@UI/components/Select/Tree/TreeSelect';
+import VerticalTabBarList from '@UI/components/TabBar/VerticalTabBarList';
 import {
     mapActions,
     mapState,
@@ -84,6 +84,7 @@ export default {
         Fab,
         IconAdd,
         TreeSelect,
+        Preloader,
         CreateAttributeModalForm: () => import('@Attributes/components/Modals/CreateAttributeModalForm'),
     },
     mixins: [
@@ -166,7 +167,9 @@ export default {
         },
         onCreatedAttribute() {
             this.onCloseModal();
-            this.fetchListData(this.language.code);
+            this.fetchListData({
+                languageCode: this.language.code,
+            });
         },
         onSearch(value) {
             this.codeFilter = value;
@@ -180,37 +183,23 @@ export default {
             } = value;
 
             if (typeof this.groups[languageCode] === 'undefined') {
-                await this.getGroups(value.code);
+                this.isPrefetchingData = true;
+
+                await this.fetchListData({
+                    languageCode,
+                    limit: 0,
+                });
             }
 
-            const requests = [];
-
-            if (!this.groups[languageCode].find(({
-                id,
-            }) => id === UNASSIGNED_GROUP_ID)) {
-                requests.push(
-                    this.getUnassignedGroupItems(languageCode),
-                );
+            if (this.expandedGroupId !== '') {
+                await this.getGroupItems({
+                    groupId: this.expandedGroupId,
+                    languageCode,
+                });
             }
-
-            if (this.expandedGroupId) {
-                const {
-                    id: groupId,
-                } = this.groups[languageCode].find(({
-                    id,
-                }) => id === this.expandedGroupId);
-
-                requests.push(
-                    this.getGroupItems({
-                        groupId,
-                        languageCode,
-                    }),
-                );
-            }
-
-            await Promise.all(requests);
 
             this.language = value;
+            this.isPrefetchingData = false;
         },
     },
 };

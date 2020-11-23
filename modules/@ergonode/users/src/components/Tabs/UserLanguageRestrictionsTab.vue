@@ -10,9 +10,14 @@
                 :rows="rows"
                 :drafts="drafts"
                 :data-count="dataCount"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
                 :is-editable="isAllowedToUpdate"
                 :is-border="true"
-                @cellValue="onCellValueChange">
+                @cell-value="onCellValueChange">
                 <template #footer>
                     <div class="language-privileges-footer">
                         <Button
@@ -32,18 +37,19 @@
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
-import Grid from '@Core/components/Grid/Grid';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
+import Button from '@UI/components/Button/Button';
+import Grid from '@UI/components/Grid/Grid';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import PRIVILEGES from '@Users/config/privileges';
 import privilegeDefaults from '@Users/defaults/languages';
 import {
@@ -66,6 +72,7 @@ export default {
     },
     mixins: [
         gridDraftMixin,
+        extendedGridComponentsMixin,
         tabFeedbackMixin,
     ],
     data() {

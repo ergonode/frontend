@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Toggler from '@Core/components/Inputs/Toggler/Toggler';
+import Toggler from '@UI/components/Toggler/Toggler';
 import {
     mapActions,
 } from 'vuex';

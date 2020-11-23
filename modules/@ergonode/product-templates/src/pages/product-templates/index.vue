@@ -23,22 +23,32 @@
         <CenterViewTemplate>
             <template #content>
                 <Grid
-                    :is-editable="isAllowedToUpdate"
                     :columns="columns"
                     :data-count="filtered"
                     :rows="rows"
-                    :placeholder="noRecordsPlaceholder"
-                    :is-prefetching-data="isPrefetchingData"
+                    :filters="filterValues"
+                    :pagination="pagination"
+                    :placeholder="noDataPlaceholder"
                     :default-layout="gridLayout.COLLECTION"
+                    :extended-columns="extendedColumns"
+                    :extended-data-cells="extendedDataCells"
+                    :extended-data-filter-cells="extendedDataFilterCells"
+                    :extended-data-edit-cells="extendedDataEditCells"
+                    :extended-edit-filter-cells="extendedDataEditFilterCells"
+                    :is-editable="isAllowedToUpdate"
                     :is-collection-layout="true"
                     :is-header-visible="true"
                     :is-basic-filter="true"
                     :is-border="true"
+                    :is-prefetching-data="isPrefetchingData"
                     :collection-cell-binding="collectionCellBinding"
-                    @editRow="onEditRow"
-                    @previewRow="onEditRow"
-                    @deleteRow="onRemoveRow"
-                    @fetchData="onFetchData" />
+                    @edit-row="onEditRow"
+                    @preview-row="onEditRow"
+                    @delete-row="onRemoveRow"
+                    @pagination="onPaginationChange"
+                    @column-sort="onColumnSortChange"
+                    @remove-all-filters="onRemoveAllFilters"
+                    @filter="onFilterChange" />
             </template>
         </CenterViewTemplate>
         <CreateProductTemplateModalForm
@@ -50,22 +60,23 @@
 
 <script>
 import {
-    WHITESMOKE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Button/Button';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import Page from '@Core/components/Layout/Page';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
-import TitleBar from '@Core/components/TitleBar/TitleBar';
-import {
     GRID_LAYOUT,
 } from '@Core/defaults/grid';
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import PRIVILEGES from '@Templates/config/privileges';
+import {
+    WHITESMOKE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Button from '@UI/components/Button/Button';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import Page from '@UI/components/Layout/Page';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
+import TitleBar from '@UI/components/TitleBar/TitleBar';
 
 export default {
     name: 'Templates',
@@ -81,6 +92,7 @@ export default {
         fetchGridDataMixin({
             path: 'templates',
         }),
+        extendedGridComponentsMixin,
         beforeLeavePageMixin,
     ],
     async fetch() {
@@ -94,11 +106,11 @@ export default {
         };
     },
     computed: {
-        noRecordsPlaceholder() {
+        noDataPlaceholder() {
             return {
                 title: 'No product templates',
                 subtitle: 'There are no product templates in the system, you can create the first one.',
-                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
                 color: WHITESMOKE,
             };
         },

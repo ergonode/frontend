@@ -6,7 +6,6 @@ export default {
     name: '@ergonode/collections',
     order: 130,
     relations: [
-        '@ergonode/products',
         '@ergonode/segments',
     ],
     aliases: {

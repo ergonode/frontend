@@ -4,9 +4,9 @@
  */
 <template>
     <ListDraggableElement
-        :draggable-id="`${item.code}:${languageCode}`"
-        :is-draggable="isDraggable"
-        :is-disabled="isDisabled"
+        :draggable-id="`${item.id}/${item.code}:${languageCode}`"
+        :draggable="isDraggable"
+        :disabled="isDisabled"
         :hint="hint"
         :label="title"
         @drag="onDrag">
@@ -32,17 +32,17 @@
 
 <script>
 import {
-    GRAPHITE,
-    GREY,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import ListDraggableElement from '@Core/components/List/ListDraggableElement';
-import ListElementDescription from '@Core/components/List/ListElementDescription';
-import ListElementHint from '@Core/components/List/ListElementHint';
-import ListElementIcon from '@Core/components/List/ListElementIcon';
-import ListElementTitle from '@Core/components/List/ListElementTitle';
-import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';
+import {
+    GRAPHITE,
+    GREY,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import ListDraggableElement from '@UI/components/List/ListDraggableElement';
+import ListElementDescription from '@UI/components/List/ListElementDescription';
+import ListElementHint from '@UI/components/List/ListElementHint';
+import ListElementIcon from '@UI/components/List/ListElementIcon';
+import ListElementTitle from '@UI/components/List/ListElementTitle';
 import {
     mapActions,
     mapState,
@@ -86,7 +86,7 @@ export default {
             return this.item.label || `#${this.item.code}`;
         },
         typeIconComponent() {
-            const icon = this.$getExtendedFormByType({
+            const icon = this.$extendedForm({
                 key: '@Attributes/components/Lists/AttributeListElement/Icon',
                 type: this.item.type,
             });
@@ -94,7 +94,7 @@ export default {
             if (!icon.length) {
                 return [
                     {
-                        component: () => import('@Core/components/Icons/Menu/IconAttributes'),
+                        component: () => import('@Attributes/components/Icons/IconAttributes'),
                     },
                 ];
             }

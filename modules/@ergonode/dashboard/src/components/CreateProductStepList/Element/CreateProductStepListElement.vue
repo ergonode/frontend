@@ -23,14 +23,23 @@
 export default {
     name: 'CreateProductStepListElement',
     props: {
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             default: '',
         },
+        /**
+         * The subtitle of the component
+         */
         subtitle: {
             type: String,
             default: '',
         },
+        /**
+         * The description of the component
+         */
         description: {
             type: String,
             default: '',

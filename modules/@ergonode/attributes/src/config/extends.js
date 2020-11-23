@@ -3,12 +3,12 @@
  * See LICENSE for license details.
  */
 import {
-    SKU_MODEL,
     TYPES,
 } from '@Attributes/defaults/attributes';
 import {
     createOptionsData,
     getAttributeOptions,
+    getTranslation,
     prepareOptionsData,
     prepareParametersData,
     prepareTextAreaData,
@@ -16,7 +16,6 @@ import {
     setTextAreaData,
     setTranslation,
     updateOptionsData,
-    updateTranslation,
 } from '@Attributes/extends/methods/attribute';
 import {
     prepareTemplateData,
@@ -176,10 +175,19 @@ export default {
                 });
 
                 return {};
+            case TYPES.TEXT_AREA:
+                return {
+                    ...prepareTextAreaData({
+                        $this,
+                        typeConfig,
+                    }),
+                    ...getTranslation({
+                        $this,
+                    }),
+                };
             case TYPES.NUMERIC:
             case TYPES.TEXT:
-            case TYPES.TEXT_AREA:
-                return updateTranslation({
+                return getTranslation({
                     $this,
                 });
             default:
@@ -196,19 +204,6 @@ export default {
                 break;
             default:
                 break;
-            }
-        },
-        '@Attributes/store/attribute/action/getAttributesOptionsByType/__after': ({
-            type,
-        }) => {
-            switch (type) {
-            case TYPES.TEXT:
-                // TODO: Temporary till BE will create SKU as an attribute
-                return [
-                    SKU_MODEL,
-                ];
-            default:
-                return [];
             }
         },
         '@Attributes/store/attribute/action/getAttribute/__after': async ({
@@ -407,10 +402,12 @@ export default {
                 },
             ],
         },
-        '@Templates/components/Forms/ProductTemplateForm': [
-            {
-                component: Components.ProductTemplateFormPresentation,
-            },
-        ],
+        '@Templates/components/Forms/ProductTemplateForm': {
+            __ALL: [
+                {
+                    component: Components.ProductTemplateFormPresentation,
+                },
+            ],
+        },
     },
 };

@@ -54,18 +54,18 @@
 </template>
 
 <script>
-import ActionIconButton from '@Core/components/ActionIconButton/ActionIconButton';
-import IconDots from '@Core/components/Icons/Others/IconDots';
-import CheckBox from '@Core/components/Inputs/CheckBox';
-import ListElement from '@Core/components/List/ListElement';
-import ListElementAction from '@Core/components/List/ListElementAction';
-import ListElementDescription from '@Core/components/List/ListElementDescription';
-import ListElementTitle from '@Core/components/List/ListElementTitle';
 import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
 import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
+import ActionIconButton from '@UI/components/ActionIconButton/ActionIconButton';
+import CheckBox from '@UI/components/CheckBox/CheckBox';
+import IconDots from '@UI/components/Icons/Others/IconDots';
+import ListElement from '@UI/components/List/ListElement';
+import ListElementAction from '@UI/components/List/ListElementAction';
+import ListElementDescription from '@UI/components/List/ListElementDescription';
+import ListElementTitle from '@UI/components/List/ListElementTitle';
 import {
     mapActions,
 } from 'vuex';
@@ -137,7 +137,7 @@ export default {
             return 'element-content__header';
         },
         typeIconComponent() {
-            const icon = this.$getExtendedFormByType({
+            const icon = this.$extendedForm({
                 key: '@Attributes/components/Lists/AttributeListElement/Icon',
                 type: this.element.type,
             });
@@ -145,7 +145,7 @@ export default {
             if (!icon.length) {
                 return [
                     {
-                        component: () => import('@Core/components/Icons/Menu/IconAttributes'),
+                        component: () => import('@Attributes/components/Icons/IconAttributes'),
                     },
                 ];
             }

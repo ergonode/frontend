@@ -22,6 +22,8 @@
                     :error-messages="errors[typeFieldKey]"
                     :options="productTypesValues"
                     @input="setTypeValue" />
+            </FormSection>
+            <FormSection v-if="type">
                 <TextField
                     :value="sku"
                     hint="Products SKU must be unique"
@@ -30,16 +32,33 @@
                     :error-messages="errors[skuFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setSkuValue" />
-                <TranslationLazySelect
+                <Autocomplete
                     :value="template"
                     :required="true"
+                    :searchable="true"
                     label="Product template"
                     :error-messages="errors[templateIdFieldKey]"
-                    :disabled="isDisabled || !isAllowedToUpdate"
-                    :fetch-options-request="getTemplateOptions"
-                    @input="setTemplateValue" />
+                    :disabled="!isAllowedToUpdate"
+                    href="templates/autocomplete"
+                    @input="setTemplateValue">
+                    <template #placeholder="{ isVisible }">
+                        <DropdownPlaceholder
+                            v-if="isVisible"
+                            :title="placeholder.title"
+                            :subtitle="placeholder.subtitle">
+                            <template #action>
+                                <Button
+                                    title="GO TO PRODUCT TEMPLATES"
+                                    :size="smallSize"
+                                    :disabled="!isAllowedToUpdate"
+                                    @click.native="onNavigateToProductTemplates" />
+                            </template>
+                        </DropdownPlaceholder>
+                    </template>
+                </Autocomplete>
                 <Divider v-if="extendedForm.length" />
-                <template v-for="(formComponent, index) in extendedForm">
+                <template
+                    v-for="(formComponent, index) in extendedForm">
                     <Component
                         :is="formComponent.component"
                         :key="index"
@@ -51,18 +70,22 @@
 </template>
 
 <script>
-import Divider from '@Core/components/Dividers/Divider';
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import Select from '@Core/components/Inputs/Select/Select';
-import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
-import TextField from '@Core/components/Inputs/TextField';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
 import PRIVILEGES from '@Products/config/privileges';
+import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
+import Divider from '@UI/components/Dividers/Divider';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
+import Select from '@UI/components/Select/Select';
+import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
     mapState,
@@ -72,11 +95,12 @@ export default {
     name: 'ProductForm',
     components: {
         Divider,
+        DropdownPlaceholder,
         Form,
         FormSection,
         Select,
         TextField,
-        TranslationLazySelect,
+        Autocomplete,
     },
     mixins: [
         formActionsMixin,
@@ -92,8 +116,17 @@ export default {
             'type',
             'template',
         ]),
+        smallSize() {
+            return SIZE.SMALL;
+        },
+        placeholder() {
+            return {
+                title: 'No product templates',
+                subtitle: 'There are no product templates in the system, so you can create the first one.',
+            };
+        },
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Products/components/Forms/ProductForm',
                 type: this.productTypeKey,
             });
@@ -126,11 +159,10 @@ export default {
         ...mapActions('product', [
             '__setState',
         ]),
-        ...mapActions('productTemplate', [
-            'getTemplateOptions',
-        ]),
-        onSubmit() {
-            this.$emit('submit');
+        onNavigateToProductTemplates() {
+            this.$router.push({
+                name: 'product-templates',
+            });
         },
         setTypeValue(value) {
             this.__setState({

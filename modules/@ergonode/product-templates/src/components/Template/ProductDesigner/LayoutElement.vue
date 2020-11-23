@@ -22,19 +22,8 @@
 
 <script>
 import {
-    GREEN,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import {
-    ELEVATOR_HOLE,
-} from '@Core/assets/scss/_js-variables/elevators.scss';
-import IconResize from '@Core/components/Icons/Others/IconResize';
-import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
-import {
-    getPositionForBrowser,
-    isMouseInsideElement,
-} from '@Core/models/drag_and_drop/helpers';
 import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
@@ -54,12 +43,23 @@ import {
     getRowBasedOnHeight,
 } from '@Templates/models/layout/LayoutCalculations';
 import {
+    GREEN,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import {
+    ELEVATOR_HOLE,
+} from '@UI/assets/scss/_js-variables/elevators.scss';
+import IconResize from '@UI/components/Icons/Others/IconResize';
+import {
+    getPositionForBrowser,
+    isMouseInsideElement,
+} from '@UI/models/dragAndDrop/helpers';
+import {
     mapActions,
     mapState,
 } from 'vuex';
 
-const registerResizeEventListeners = () => import('@Core/models/resize/registerResizeEventListeners');
-const unregisterResizeEventListeners = () => import('@Core/models/resize/unregisterResizeEventListeners');
+const registerResizeEventListeners = () => import('@UI/models/resize/registerResizeEventListeners');
+const unregisterResizeEventListeners = () => import('@UI/models/resize/unregisterResizeEventListeners');
 
 export default {
     name: 'LayoutElement',
@@ -150,7 +150,7 @@ export default {
                 key: 'isElementDragging',
                 value: DRAGGED_ELEMENT.TEMPLATE,
             });
-            window.requestAnimationFrame(() => { this.isDragged = true; });
+            requestAnimationFrame(() => { this.isDragged = true; });
             addElementCopyToDocumentBody({
                 event,
                 id: 'layoutElement',
@@ -165,7 +165,7 @@ export default {
                 layoutElements: this.layoutElements.filter(el => el.id !== id),
             });
 
-            this.$emit('highlightedPositionChange', this.highlightingPositions);
+            this.$emit('highlighted-position-change', this.highlightingPositions);
         },
         onDragEnd(event) {
             removeElementCopyFromDocumentBody(event);
@@ -192,7 +192,7 @@ export default {
                 this.$emit('remove', this.index);
             }
 
-            this.$emit('highlightedPositionChange', []);
+            this.$emit('highlighted-position-change', []);
         },
         onInitResize(event) {
             this.highlightingPositions = getHighlightingPositions(
@@ -223,7 +223,7 @@ export default {
                 response.default(this.onResize, this.onStopResizing);
             });
 
-            this.$emit('highlightedPositionChange', this.highlightingPositions);
+            this.$emit('highlighted-position-change', this.highlightingPositions);
         },
         onResize(event) {
             const {
@@ -254,7 +254,7 @@ export default {
                 response.default(this.onResize, this.onStopResizing);
             });
 
-            this.$emit('highlightedPositionChange', []);
+            this.$emit('highlighted-position-change', []);
         },
         getElementWidthBasedOnMouseXPosition(xPos) {
             return this.startWidth + xPos - this.startX;
@@ -309,7 +309,7 @@ export default {
                     updateResizablePlaceholderWidth(ghostElementWidth);
                 }
 
-                window.requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
                     this.$el.style.width = `${width}px`;
                 });
 
@@ -339,12 +339,12 @@ export default {
                     updateResizablePlaceholderHeight(ghostElementHeight);
                 }
 
-                window.requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
                     this.$el.style.height = `${height}px`;
                 });
 
                 this.actualElementRow = rowBellowMouse;
-                this.$emit('resizingElMaxRow', this.newHeight + row);
+                this.$emit('resizing-el-max-row', this.newHeight + row);
             }
         },
         blockOtherInteractionsOnResizeEvent() {
@@ -382,13 +382,13 @@ export default {
             this.newHeight = height;
         },
         initElementStyleForResizeState() {
-            window.requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
                 this.$el.style.width = `${this.startWidth}px`;
                 this.$el.style.height = `${this.startHeight}px`;
             });
         },
         resetElementStyleForEndResizeInteraction() {
-            window.requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
                 this.$el.style.width = null;
                 this.$el.style.height = null;
             });

@@ -11,13 +11,18 @@
             <ModalFooter>
                 <Button
                     title="YES, RESTORE"
-                    :disabled="isRequestPending"
                     :size="smallSize"
-                    @click.native="onRestore" />
+                    @click.native="onRestore">
+                    <template
+                        v-if="isSubmitting"
+                        #prepend="{ color }">
+                        <IconSpinner :fill-color="color" />
+                    </template>
+                </Button>
                 <Button
                     title="CANCEL"
                     :theme="secondaryTheme"
-                    :disabled="isRequestPending"
+                    :disabled="isSubmitting"
                     :size="smallSize"
                     @click.native="onClose" />
             </ModalFooter>
@@ -26,11 +31,6 @@
 </template>
 
 <script>
-import Button from '@Core/components/Button/Button';
-import Modal from '@Core/components/Modal/Modal';
-import ModalFooter from '@Core/components/Modal/ModalFooter';
-import ModalOverlay from '@Core/components/Modal/ModalOverlay';
-import ConfirmModalHeader from '@Core/components/Modals/ConfirmModalHeader';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -38,6 +38,12 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import Button from '@UI/components/Button/Button';
+import ConfirmModalHeader from '@UI/components/ConfirmModal/ConfirmModalHeader';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import Modal from '@UI/components/Modal/Modal';
+import ModalFooter from '@UI/components/Modal/ModalFooter';
+import ModalOverlay from '@UI/components/Modal/ModalOverlay';
 import {
     mapActions,
 } from 'vuex';
@@ -50,6 +56,7 @@ export default {
         Modal,
         ModalFooter,
         Button,
+        IconSpinner,
     },
     props: {
         element: {
@@ -59,7 +66,7 @@ export default {
     },
     data() {
         return {
-            isRequestPending: false,
+            isSubmitting: false,
         };
     },
     computed: {
@@ -78,32 +85,51 @@ export default {
             this.$emit('close');
         },
         onRestore() {
+            if (this.isSubmitting) {
+                return;
+            }
+
+            this.isSubmitting = true;
+
             const {
-                languageCode, productId, attribute,
+                languageCode,
+                attribute,
             } = this.element;
 
             this.removeProductDraft({
                 languageCode,
                 attributeId: attribute.element_id,
-            }).then(() => {
-                this.isRequestPending = false;
-                this.$addAlert({
-                    type: ALERT_TYPE.SUCCESS,
-                    message: 'Value restored',
-                });
-                this.$emit('restore', {
-                    languageCode,
-                    productId,
-                    attribute,
-                });
-                this.$emit('close');
-            }).catch(() => {
-                this.isRequestPending = false;
-                this.$addAlert({
-                    type: ALERT_TYPE.ERROR,
-                    message: 'Restore error',
-                });
+                onSuccess: this.onRestoreProductDraftSuccess,
+                onError: this.onRestoreProductDraftError,
             });
+        },
+        onRestoreProductDraftSuccess() {
+            const {
+                languageCode,
+                productId,
+                attribute,
+            } = this.element;
+
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Value restored',
+            });
+            this.$emit('restore', {
+                languageCode,
+                productId,
+                attribute,
+            });
+            this.$emit('close');
+
+            this.isSubmitting = false;
+        },
+        onRestoreProductDraftError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Restore error',
+            });
+
+            this.isSubmitting = false;
         },
     },
 };

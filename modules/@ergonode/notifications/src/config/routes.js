@@ -12,9 +12,11 @@ export default [
         name: 'notifications',
         path: '/notifications',
         component: Pages.Notifications,
+        redirect: {
+            name: 'notifications-grid',
+        },
         meta: {
             isMenu: false,
-            redirectTo: 'notifications-grid',
         },
         children: [
             {

@@ -36,9 +36,21 @@ export default {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
-        store, params,
+        app,
+        store,
+        params,
     }) {
-        await store.dispatch('channel/getChannel', params);
+        await store.dispatch('channel/getChannel', {
+            id: params.id,
+            onError: () => {
+                if (process.client) {
+                    app.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Channel hasn`t been fetched properly',
+                    });
+                }
+            },
+        });
     },
     computed: {
         ...mapState('channel', [
@@ -65,11 +77,13 @@ export default {
             __clearFeedbackStorage: '__clearStorage',
         }),
         onRemove() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this channel?',
-                confirmCallback: () => this.removeChannel({
+            this.$confirm({
+                type: MODAL_TYPE.DESTRUCTIVE,
+                title: 'Are you sure you want to delete this channel?',
+                applyTitle: 'YES, REMOVE',
+                action: () => this.removeChannel({
                     onSuccess: this.onRemoveSuccess,
+                    onError: this.onRemoveError,
                 }),
             });
         },
@@ -80,6 +94,12 @@ export default {
             });
             this.$router.push({
                 name: 'channel-grid',
+            });
+        },
+        onRemoveError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Channel hasn`t been deleted',
             });
         },
     },

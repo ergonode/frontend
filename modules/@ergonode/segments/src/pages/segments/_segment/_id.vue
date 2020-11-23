@@ -36,10 +36,21 @@ export default {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
+        app,
         store,
         params,
     }) {
-        await store.dispatch('segment/getSegment', params);
+        await store.dispatch('segment/getSegment', {
+            id: params.id,
+            onError: () => {
+                if (process.client) {
+                    app.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Segment hasn`t been fetched properly',
+                    });
+                }
+            },
+        });
     },
     computed: {
         ...mapState('segment', [
@@ -67,21 +78,29 @@ export default {
             __clearGridDesignerStorage: '__clearStorage',
         }),
         onRemove() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this segment?',
-                confirmCallback: () => this.removeSegment({
-                    onSuccess: this.onRemoveSegmentSuccess,
+            this.$confirm({
+                type: MODAL_TYPE.DESTRUCTIVE,
+                title: 'Are you sure you want to delete this segment?',
+                applyTitle: 'YES, REMOVE',
+                action: () => this.removeSegment({
+                    onSuccess: this.onRemoveSuccess,
+                    onError: this.onRemoveError,
                 }),
             });
         },
-        onRemoveSegmentSuccess() {
+        onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Segment removed',
             });
             this.$router.push({
                 name: 'segments-grid',
+            });
+        },
+        onRemoveError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Segmet hasn`t been deleted',
             });
         },
     },

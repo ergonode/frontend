@@ -6,67 +6,89 @@
     <GridViewTemplate>
         <template #sidebar>
             <VerticalTabBar :items="verticalTabs">
-                <FadeTransition>
-                    <DropZone
-                        v-show="isDropZoneVisible"
-                        :hover-background-color="graphiteLightColor"
-                        :title="dropZoneTitle">
-                        <template #icon="{ color }">
-                            <Component
-                                :is="dropZoneIconComponent"
-                                :fill-color="color" />
-                        </template>
-                    </DropZone>
-                </FadeTransition>
+                <RemoveFilterAndColumnDropZone />
             </VerticalTabBar>
         </template>
         <template #grid>
             <Grid
-                :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
                 :rows="rows"
-                :placeholder="noRecordsPlaceholder"
+                :placeholder="noDataPlaceholder"
                 :drafts="drafts"
+                :filters="filterValues"
                 :errors="errors"
-                :advanced-filters="advancedFilters"
                 :data-count="filtered"
+                :pagination="pagination"
                 :collection-cell-binding="collectionCellBinding"
+                :batch-actions="productsBatchActions"
+                :disabled-rows="disabledProducts"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :is-editable="isAllowedToUpdate"
                 :is-prefetching-data="isPrefetchingData"
-                :is-advanced-filters="true"
                 :is-header-visible="true"
                 :is-basic-filter="true"
                 :is-collection-layout="true"
-                @editRow="onEditRow"
-                @previewRow="onEditRow"
-                @cellValue="onCellValueChange"
-                @focusCell="onFocusCell"
-                @deleteRow="onRemoveRow"
-                @dropColumn="onDropColumn"
-                @dropFilter="onDropFilter"
-                @fetchData="onFetchData">
-                <!--                <template #headerActions>-->
-                <!--
-                                  Uncomment when product draft will be change on grid
-                                  <Button
-                                    :theme="secondaryTheme"
-                                    :size="smallSize"
-                                    title="RESTORE"
-                                    :disabled="!isUserAllowedToRestore"
-                                    @click.native="onShowModal">
-                                    <template #prepend="{ color }">
-                                        <IconRestore :fill-color="color" />
-                                    </template>
-                                </Button> -->
-                <!-- <RestoreAttributeParentConfirmModal
-                                    v-if="isModalVisible"
-                                    :element="focusedCellToRestore"
-                                    @close="onCloseConfirmModal"
-                                    @restore="onRestoreDraftSuccess" /> -->
-                <!--                </template>-->
+                :is-select-column="true"
+                @edit-row="onEditRow"
+                @preview-row="onEditRow"
+                @cell-value="onCellValueChange"
+                @filter="onFilterChange"
+                @delete-row="onRemoveRow"
+                @drop-column="onDropColumn"
+                @remove-column="onRemoveColumn"
+                @swap-columns="onSwapColumns"
+                @pagination="onPaginationChange"
+                @column-sort="onColumnSortChange"
+                @remove-all-filters="onRemoveAllFilters">
+                <template #actionsHeader>
+                    <ExpandNumericButton
+                        title="FILTERS"
+                        :number="advancedFilters.length"
+                        :is-expanded="isFiltersExpanded"
+                        @click.native="onFiltersExpand" />
+                    <template
+                        v-for="(headerItem, index) in extendedActionHeader">
+                        <Component
+                            :is="headerItem.component"
+                            :key="index"
+                            v-bind="bindingProps(headerItem)" />
+                    </template>
+                </template>
+                <template #prependHeader>
+                    <AddFilterDropZone
+                        :filters="advancedFilters"
+                        @drop="onDropFilter" />
+                </template>
+                <template #appendHeader>
+                    <GridAdvancedFilters
+                        v-show="isFiltersExpanded"
+                        :value="advancedFilterValues"
+                        :filters="advancedFilters"
+                        @swap="onAdvancedFilterPositionChange"
+                        @remove="onAdvancedFilterRemove"
+                        @remove-all="onAdvancedFilterRemoveAll"
+                        @input="onAdvancedFilterChange" />
+                </template>
+                <template #filterActionPlaceholder>
+                    <RemoveFiltersButton
+                        v-if="isAnyFilter"
+                        @click.native="onRemoveAllFilters" />
+                </template>
                 <template #appendFooter>
+                    <template
+                        v-for="(footerItem, index) in extendedFooter">
+                        <Component
+                            :is="footerItem.component"
+                            :key="index"
+                            v-bind="bindingProps(footerItem)" />
+                    </template>
                     <Button
                         title="SAVE CHANGES"
-                        :disabled="!isUserAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate"
                         @click.native="onSubmit">
                         <template
                             v-if="isSubmitting"
@@ -82,33 +104,38 @@
 
 <script>
 import {
-    GRAPHITE_LIGHT,
-    WHITESMOKE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Button/Button';
-import DropZone from '@Core/components/DropZone/DropZone';
-import IconRemoveColumn from '@Core/components/Icons/Actions/IconRemoveColumn';
-import IconRemoveFilter from '@Core/components/Icons/Actions/IconRemoveFilter';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
-import VerticalTabBar from '@Core/components/TabBar/VerticalTabBar';
-import FadeTransition from '@Core/components/Transitions/FadeTransition';
-import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
-    DRAGGED_ELEMENT,
-} from '@Core/defaults/grid';
-import {
-    SIZE,
-    THEME,
-} from '@Core/defaults/theme';
+    MODAL_TYPE,
+} from '@Core/defaults/modals';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchAdvancedFiltersDataMixin from '@Core/mixins/grid/fetchAdvancedFiltersDataMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import {
+    changeCookiePosition,
+    removeCookieAtIndex,
+} from '@Core/models/cookies';
+import {
+    getUUID,
+} from '@Core/models/stringWrapper';
 import PRIVILEGES from '@Products/config/privileges';
+import {
+    BATCH_ACTION_TYPE,
+} from '@Products/models/batchActions';
+import {
+    WHITESMOKE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Button from '@UI/components/Button/Button';
+import RemoveFiltersButton from '@UI/components/Grid/Buttons/RemoveFiltersButton';
+import AddFilterDropZone from '@UI/components/Grid/DropZone/AddFilterDropZone';
+import RemoveFilterAndColumnDropZone from '@UI/components/Grid/DropZone/RemoveFilterAndColumnDropZone';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
+import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import {
     mapActions,
     mapState,
@@ -117,16 +144,13 @@ import {
 export default {
     name: 'ProductCatalogTab',
     components: {
+        AddFilterDropZone,
+        RemoveFilterAndColumnDropZone,
         GridViewTemplate,
         Button,
-        DropZone,
         VerticalTabBar,
-        IconRemoveFilter,
-        IconRemoveColumn,
-        FadeTransition,
         IconSpinner,
-        // RestoreAttributeParentConfirmModal: () => import('@Products/components/Modals/RestoreAttributeParentConfirmModal'),
-        // IconRestore: () => import('@Core/components/Icons/Actions/IconRestore'),
+        RemoveFiltersButton,
     },
     mixins: [
         gridModalMixin,
@@ -138,6 +162,7 @@ export default {
             path: 'products',
         }),
         gridDraftMixin,
+        extendedGridComponentsMixin,
         tabFeedbackMixin,
     ],
     async fetch() {
@@ -163,52 +188,101 @@ export default {
         return {
             isPrefetchingData: true,
             isSubmitting: false,
-            focusedCellToRestore: null,
+            isDeleteModalVisible: false,
+            extendVerticalTabs: [],
+            disabledProducts: {},
         };
     },
     computed: {
+        ...mapState('authentication', {
+            userLanguageCode: state => state.user.language,
+        }),
+        ...mapState('batchAction', {
+            batchActions: state => state.batchActions,
+            removeProductsBatchActions: state => state.batchActions.filter(
+                batchAction => batchAction.type === BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
+            ),
+        }),
         ...mapState('draggable', [
             'isElementDragging',
             'draggedElement',
         ]),
-        noRecordsPlaceholder() {
+        extendedActionHeader() {
+            return this.$getExtendedComponents('@Products/components/Tabs/ProductCatalogTab/actionHeader');
+        },
+        extendedFooter() {
+            return this.$getExtendedComponents('@Products/components/Tabs/ProductCatalogTab/footer');
+        },
+        productsBatchActions() {
+            return [
+                {
+                    label: 'Delete selected products',
+                    action: ({
+                        payload,
+                        onSuccess,
+                    }) => {
+                        const {
+                            rowIds,
+                        } = payload;
+
+                        this.$confirm({
+                            type: MODAL_TYPE.DESTRUCTIVE,
+                            title: `Are you sure you want to permanently delete ${rowIds.length} products?`,
+                            subtitle: 'The products will be deleted from the system forever and cannot be restored.',
+                            applyTitle: `DELETE ${rowIds.length} PRODUCTS`,
+                            action: () => {
+                                const uuid = getUUID();
+
+                                rowIds.forEach((rowId) => {
+                                    this.disabledProducts[rowId] = true;
+                                });
+
+                                this.disabledProducts = {
+                                    ...this.disabledProducts,
+                                };
+
+                                this.addBatchAction({
+                                    id: uuid,
+                                    type: BATCH_ACTION_TYPE.REMOVE_PRODUCTS,
+                                    href: 'batch-action',
+                                    payload: {
+                                        ids: rowIds,
+                                    },
+                                });
+
+                                document
+                                    .documentElement
+                                    .addEventListener(
+                                        uuid,
+                                        this.onRemoveProductsBatchAction.bind(null, onSuccess),
+                                    );
+                            },
+                        });
+                    },
+                },
+            ];
+        },
+        isAnyFilter() {
+            return this.filtered === 0
+                && (Object.keys(this.filterValues).length > 0
+                    || Object.keys(this.advancedFilterValues).length > 0);
+        },
+        noDataPlaceholder() {
+            if (this.filtered === 0 && this.isAnyFilter) {
+                return {
+                    title: 'No results',
+                    subtitle: 'There are no results that meet the conditions for the selected filters.',
+                    bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
+                    color: WHITESMOKE,
+                };
+            }
+
             return {
                 title: 'No products',
                 subtitle: 'There are no products in the system, you can create the first one.',
-                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
                 color: WHITESMOKE,
             };
-        },
-        graphiteLightColor() {
-            return GRAPHITE_LIGHT;
-        },
-        isDropZoneVisible() {
-            if (this.draggedElement
-                && typeof this.draggedElement.deletable !== 'undefined'
-                && !this.draggedElement.deletable) {
-                return false;
-            }
-
-            return this.isElementDragging === DRAGGED_ELEMENT.COLUMN
-                || this.isElementDragging === DRAGGED_ELEMENT.FILTER;
-        },
-        dropZoneTitle() {
-            if (!this.isElementDragging) {
-                return '';
-            }
-
-            return this.isElementDragging === DRAGGED_ELEMENT.COLUMN
-                ? 'REMOVE COLUMN'
-                : 'REMOVE FILTER';
-        },
-        dropZoneIconComponent() {
-            if (!this.isElementDragging) {
-                return null;
-            }
-
-            return this.isElementDragging === DRAGGED_ELEMENT.COLUMN
-                ? IconRemoveColumn
-                : IconRemoveFilter;
         },
         collectionCellBinding() {
             return {
@@ -216,43 +290,65 @@ export default {
                 descriptionColumn: 'esa_default_label',
             };
         },
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
         verticalTabs() {
             return [
                 {
                     title: 'Product attributes',
                     component: () => import('@Attributes/components/Tabs/List/AttributesListTab'),
-                    iconComponent: () => import('@Core/components/Icons/Menu/IconAttributes'),
+                    icon: () => import('@Attributes/components/Icons/IconAttributes'),
                     props: {},
                 },
                 {
                     title: 'System attributes',
                     component: () => import('@Attributes/components/Tabs/List/SystemAttributesListTab'),
-                    iconComponent: () => import('@Core/components/Icons/Menu/IconSettings'),
+                    icon: () => import('@Core/components/Icons/Menu/IconSettings'),
                     props: {},
                 },
+                ...this.extendVerticalTabs,
             ];
         },
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ]);
         },
-        isUserAllowedToRestore() {
-            return this.$hasAccess([
-                PRIVILEGES.PRODUCT.update,
-            ]) && this.focusedCellToRestore;
-        },
+    },
+    async mounted() {
+        const extendVerticalTabs = await this.$extendMethods('@Products/components/Tabs/ProductCatalogTab/verticalTabs', {
+            $this: this,
+        });
+
+        this.extendVerticalTabs = [
+            ...this.extendVerticalTabs,
+            ...extendVerticalTabs,
+        ];
+
+        this.removeProductsBatchActions.forEach(({
+            id,
+        }) => {
+            document
+                .documentElement
+                .addEventListener(id, this.onRemoveProductsBatchAction);
+        });
+    },
+    beforeDestroy() {
+        this.removeProductsBatchActions.forEach(({
+            id,
+        }) => {
+            document
+                .documentElement
+                .removeEventListener(id, this.onRemoveProductsBatchAction);
+        });
     },
     methods: {
+        ...mapActions('batchAction', [
+            'addBatchAction',
+            'removeBatchAction',
+        ]),
         ...mapActions('list', [
             'setDisabledElement',
             'setDisabledElements',
+            'removeDisabledElement',
         ]),
         ...mapActions('product', [
             'updateProductDraft',
@@ -261,6 +357,156 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
+        async onRemoveProductsBatchAction(onSuccess = () => {}, event) {
+            await onSuccess();
+
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Products have been removed',
+            });
+
+            const {
+                id,
+                payload: {
+                    ids,
+                },
+            } = event.detail;
+
+            const batchActionIndex = this.batchActions
+                .findIndex(batchAction => batchAction.id === id);
+
+            ids.forEach((rowId) => {
+                delete this.disabledProducts[rowId];
+            });
+
+            this.disabledProducts = {
+                ...this.disabledProducts,
+            };
+
+            document
+                .documentElement
+                .removeEventListener(id, this.onRemoveProductsBatchAction);
+            this.removeBatchAction(batchActionIndex);
+
+            if (this.localParams.offset + ids.length === this.filtered) {
+                this.localParams.offset -= ids.length;
+            }
+
+            await this.onFetchData();
+        },
+        onRemoveAllFilters() {
+            this.filterValues = {};
+            this.advancedFilterValues = {};
+            this.pagination.page = 1;
+            this.localParams.filter = {};
+            this.localParams.offset = 0;
+
+            this.onFetchData();
+        },
+        onAdvancedFilterPositionChange({
+            from,
+            to,
+        }) {
+            changeCookiePosition({
+                cookies: this.$cookies,
+                cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
+                from,
+                to,
+            });
+        },
+        onAdvancedFilterChange(filters) {
+            this.advancedFilterValues = filters;
+            this.pagination.page = 1;
+            this.localParams.filter = {
+                ...this.filterValues,
+                ...this.advancedFilterValues,
+            };
+            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
+
+            this.onFetchData();
+        },
+        disableListElement({
+            languageCode,
+            attributeId,
+        }) {
+            if (this.disabledElements[languageCode][attributeId]) {
+                this.setDisabledElement({
+                    languageCode,
+                    elementId: attributeId,
+                    disabled: false,
+                });
+            } else {
+                this.removeDisabledElement({
+                    languageCode,
+                    elementId: attributeId,
+                });
+            }
+        },
+        onAdvancedFilterRemove({
+            index,
+            filter,
+        }) {
+            delete this.advancedFilterValues[filter.id];
+
+            removeCookieAtIndex({
+                cookies: this.$cookies,
+                cookieName: `GRID_ADV_FILTERS_CONFIG:${this.$route.name}`,
+                index,
+            });
+
+            this.disableListElement({
+                languageCode: filter.languageCode,
+                attributeId: filter.attributeId,
+            });
+
+            this.advancedFilters = this.advancedFilters.filter(({
+                id,
+            }) => id !== filter.id);
+
+            this.pagination.page = 1;
+            this.localParams.filter = {
+                ...this.filterValues,
+                ...this.advancedFilterValues,
+            };
+            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
+
+            this.onFetchData();
+        },
+        onAdvancedFilterRemoveAll() {
+            this.$cookies.remove(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
+
+            this.advancedFilters.forEach(({
+                attributeId,
+                languageCode,
+            }) => {
+                this.disableListElement({
+                    languageCode,
+                    attributeId,
+                });
+            });
+
+            this.advancedFilterValues = {};
+            this.advancedFilters = [];
+            this.pagination.page = 1;
+            this.localParams.filter = this.filterValues;
+            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
+
+            this.onFetchData();
+        },
+        onFetchGridData() {
+            this.onFetchData();
+        },
+        onFilterChange(filters) {
+            this.filterValues = filters;
+            this.pagination.page = 1;
+            this.localParams.filter = {
+                ...this.filterValues,
+                ...this.advancedFilterValues,
+            };
+            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
+
+            this.onFetchData();
+        },
         async onCellValueChange(cellValues) {
             const cachedElementIds = {};
 
@@ -306,36 +552,6 @@ export default {
 
             await Promise.all(requests);
         },
-        onFocusCell({
-            column, rowId,
-        }) {
-            if (column) {
-                if (rowId && column.element_id) {
-                    this.focusedCellToRestore = {
-                        languageCode: column.language,
-                        attribute: column,
-                        productId: rowId,
-                    };
-                } else {
-                    this.focusedCellToRestore = null;
-                }
-            } else {
-                this.focusedCellToRestore = null;
-            }
-        },
-        onCloseConfirmModal() {
-            this.focusedCellToRestore = null;
-            this.onCloseModal();
-        },
-        // async onRestoreDraftSuccess({ languageCode, productId, attribute }) {
-        //     const { attributes } = await getProductDraft({
-        //         $axios: this.$axios,
-        //         languageCode,
-        //         id: productId,
-        //     });
-        //     const [attributeKey] = attribute.id.split(':');
-        //     const restoredValue = attributes[attributeKey] || null;
-        // },
         onEditRow(args) {
             const lastIndex = args.length - 1;
 
@@ -351,19 +567,26 @@ export default {
 
             const promises = [];
 
+            const cachedRows = {};
+
             Object.keys(this.drafts).forEach((key) => {
                 const [
                     rowId,
                 ] = key.split('/');
 
-                promises.push(this.applyProductDraft({
-                    id: rowId,
-                }).then(() => this.removeDraftRow(rowId)));
+                if (typeof cachedRows[rowId] === 'undefined') {
+                    cachedRows[rowId] = true;
+
+                    promises.push(this.applyProductDraft({
+                        id: rowId,
+                    }).then(() => this.removeDraftRow(rowId)));
+                }
             });
 
             await Promise.all(promises);
 
-            this.onFetchData(this.localParams);
+            await this.onFetchData(this.localParams);
+
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Products have been updated',
@@ -374,7 +597,8 @@ export default {
             this.markChangeValuesAsSaved(this.scope);
         },
         getDisabledElements({
-            columns, filters,
+            columns,
+            filters,
         }) {
             const disabledElements = {};
 
@@ -390,12 +614,12 @@ export default {
             ];
 
             elements.forEach((element) => {
-                const {
-                    attributeId,
-                    languageCode,
-                } = element;
+                if (element.attributeId) {
+                    const {
+                        attributeId,
+                        languageCode = this.userLanguageCode,
+                    } = element;
 
-                if (attributeId && languageCode) {
                     if (typeof disabledElements[languageCode] === 'undefined') {
                         disabledElements[languageCode] = {};
                     }
@@ -408,6 +632,14 @@ export default {
             });
 
             return disabledElements;
+        },
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                disabled: !this.isAllowedToUpdate,
+                ...props,
+            };
         },
     },
 };

@@ -6,25 +6,35 @@
     <CenterViewTemplate>
         <template #content>
             <Grid
-                :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
                 :drafts="drafts"
+                :pagination="pagination"
+                :filters="filterValues"
                 :collection-cell-binding="collectionCellBinding"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :is-editable="isAllowedToUpdate"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-collection-layout="true"
                 :is-header-visible="true"
                 :is-border="true"
-                @cellValue="onCellValueChange"
-                @deleteRow="onRemoveRow"
-                @fetchData="onFetchData">
-                <template #headerActions>
+                @cell-value="onCellValueChange"
+                @delete-row="onRemoveRow"
+                @pagination="onPaginationChange"
+                @column-sort="onColumnSortChange"
+                @filter="onFilterChange"
+                @remove-all-filters="onRemoveAllFilters">
+                <template #actionsHeader>
                     <ActionButton
                         title="ADD PRODUCTS"
                         :theme="secondaryTheme"
-                        :disabled="!isUserAllowedToUpdate"
+                        :disabled="!isAllowedToUpdate"
                         :size="smallSize"
                         :options="addProductOptions"
                         :fixed-content="true"
@@ -50,7 +60,7 @@
                 v-if="selectedAppModalOption"
                 :is="modalComponent"
                 @close="onCloseModal"
-                @added="onCreatedData" />
+                @submitted="onCreatedData" />
         </template>
     </CenterViewTemplate>
 </template>
@@ -60,11 +70,6 @@ import PRIVILEGES from '@Collections/config/privileges';
 import {
     ADD_PRODUCT,
 } from '@Collections/defaults';
-import ActionButton from '@Core/components/ActionButton/ActionButton';
-import Button from '@Core/components/Button/Button';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import IconSpinner from '@Core/components/Icons/Feedback/IconSpinner';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -72,8 +77,14 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import ActionButton from '@UI/components/ActionButton/ActionButton';
+import Button from '@UI/components/Button/Button';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
     mapState,
@@ -92,6 +103,7 @@ export default {
         fetchGridDataMixin({
             path: 'collections/_id/elements',
         }),
+        extendedGridComponentsMixin,
         tabFeedbackMixin,
     ],
     async fetch() {
@@ -109,7 +121,7 @@ export default {
         ...mapState('grid', [
             'drafts',
         ]),
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT_COLLECTION.update,
             ]);
@@ -129,21 +141,34 @@ export default {
         addProductOptions() {
             const options = Object.values(ADD_PRODUCT);
 
-            this.extendedComponents.forEach((option) => {
-                options.push(option.name);
-            });
+            if (this.extendedComponents.length) {
+                this.extendedComponents.forEach((option) => {
+                    options.push(option.name);
+                });
+            }
+
             return options;
         },
         extendedComponents() {
-            return this.$getExtendedComponents('@Collections/components/Tabs/collectionProductsTab/addFromSegment');
+            return this.$getExtendedComponents('@Collections/components/Tabs/CollectionProductsTab/addProductFrom');
         },
         modalComponent() {
+            let extendedOptions = [];
+
+            if (this.extendedComponents.length) {
+                extendedOptions = this.extendedComponents;
+            }
+
             const modals = [
                 {
                     component: () => import('@Collections/components/Modals/AddProductsBySKUModalForm'),
-                    name: ADD_PRODUCT.BY_SKU,
+                    name: ADD_PRODUCT.FROM_LIST,
                 },
-                ...this.extendedComponents,
+                {
+                    component: () => import('@Collections/components/Modals/AddProductsFromSegmentModalForm'),
+                    name: ADD_PRODUCT.FROM_SEGMENT,
+                },
+                ...extendedOptions,
             ];
 
             return modals.find(modal => modal.name === this.selectedAppModalOption).component;
@@ -229,9 +254,13 @@ export default {
         onCloseModal() {
             this.selectedAppModalOption = null;
         },
-        onCreatedData() {
-            this.onFetchData(this.localParams);
+        async onCreatedData() {
+            this.isPrefetchingData = true;
+
+            await this.onFetchData(this.localParams);
+
             this.selectedAppModalOption = null;
+            this.isPrefetchingData = false;
         },
     },
 };

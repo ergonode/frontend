@@ -3,31 +3,51 @@
  * See LICENSE for license details.
  */
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     getListItems,
 } from '@Core/services/list/getList.service';
 
 export default function ({
-    namespace, extraFilters = null,
+    namespace,
+    extraFilters = null,
 }) {
     return {
         data() {
             return {
                 items: {},
                 codeFilter: '',
+                isPrefetchingData: true,
             };
         },
         async fetch() {
-            const {
-                language: languageCode,
-            } = this.$store.state.authentication.user;
+            try {
+                const {
+                    defaultLanguageCode,
+                } = this.$store.state.core;
 
-            await this.getItems(languageCode);
+                await this.getItems(defaultLanguageCode);
+
+                this.isPrefetchingData = false;
+            } catch (e) {
+                if (this.$axios.isCancel(e)) {
+                    return;
+                }
+
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'List hasn’t been fetched properly',
+                });
+            }
         },
         methods: {
-            getItems(languageCode) {
-                const filter = this.codeFilter ? `code=${this.codeFilter};${extraFilters}` : extraFilters;
+            async getItems(languageCode) {
+                const filter = this.codeFilter
+                    ? `code=${this.codeFilter};${extraFilters}`
+                    : extraFilters;
 
-                return getListItems({
+                await getListItems({
                     $axios: this.$axios,
                     path: `${languageCode}/${namespace}`,
                     params: {
@@ -38,14 +58,20 @@ export default function ({
                         field: 'code',
                         order: 'ASC',
                     },
-                }).then(({
-                    items,
-                }) => {
-                    this.items = {
-                        ...this.items,
-                        [languageCode]: items,
-                    };
+                    onSuccess: payload => this.onGetItemsSuccess({
+                        ...payload,
+                        languageCode,
+                    }),
                 });
+            },
+            onGetItemsSuccess({
+                items,
+                languageCode,
+            }) {
+                this.items = {
+                    ...this.items,
+                    [languageCode]: items,
+                };
             },
         },
     };

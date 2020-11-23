@@ -6,12 +6,14 @@ import {
     getMappedPrivileges,
 } from '@Authentication/models/userMapper';
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     isObject,
 } from '@Core/models/objectWrapper';
 import {
     create,
     get,
-    getAll,
     remove,
     update,
 } from '@Users/services/role/index';
@@ -23,47 +25,59 @@ export default {
         },
         {
             id,
+            onError = () => {},
         },
     ) {
-        const {
-            name,
-            description,
-            privileges,
-        } = await get({
-            $axios: this.app.$axios,
-            id,
-        });
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Users/store/role/action/getRole/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
 
-        commit('__SET_STATE', {
-            key: 'id',
-            value: id,
-        });
-        commit('__SET_STATE', {
-            key: 'name',
-            value: name,
-        });
-        commit('__SET_STATE', {
-            key: 'description',
-            value: description,
-        });
-        commit('__SET_STATE', {
-            key: 'privileges',
-            value: getMappedPrivileges(privileges),
-        });
-    },
-    getRoleOptions() {
-        return getAll({
-            $axios: this.app.$axios,
-        }).then(({
-            collection,
-        }) => ({
-            options: collection.map(element => ({
-                id: element.id,
-                key: element.id,
-                value: element.name,
-                hint: element.description,
-            })),
-        }));
+            const data = await get({
+                $axios: this.app.$axios,
+                id,
+            });
+            const {
+                name,
+                description,
+                privileges,
+            } = data;
+
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'name',
+                value: name,
+            });
+            commit('__SET_STATE', {
+                key: 'description',
+                value: description,
+            });
+            commit('__SET_STATE', {
+                key: 'privileges',
+                value: getMappedPrivileges(privileges),
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Users/store/role/action/getRole/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async updateRole(
         {
@@ -102,11 +116,27 @@ export default {
                 }
             });
 
-            const data = {
+            let data = {
                 name,
                 description,
                 privileges: Object.keys(tmpPrivileges),
             };
+
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Users/store/role/action/updateRole/__before', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            extendedData.forEach((extend) => {
+                data = {
+                    ...data,
+                    ...extend,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             await update({
                 $axios: this.app.$axios,
@@ -127,8 +157,24 @@ export default {
                 value: {},
             });
 
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Users/store/role/action/updateRole/__after', {
+                $this: this,
+                data,
+            });
+            // EXTENDED AFTER METHOD
+
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating role has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -150,11 +196,22 @@ export default {
                 name,
                 description,
             } = state;
-
-            const data = {
+            let data = {
                 name,
                 description,
             };
+            // EXTENDED BEFORE METHOD
+            const extendedData = await this.$extendMethods('@Users/store/role/action/updateRole/__before', {
+                $this: this,
+                data,
+            });
+            extendedData.forEach((extended) => {
+                data = {
+                    ...data,
+                    ...extended,
+                };
+            });
+            // EXTENDED BEFORE METHOD
 
             const {
                 id,
@@ -163,8 +220,27 @@ export default {
                 data,
             });
 
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Users/store/role/action/updateRole/__after', {
+                $this: this,
+                data: {
+                    id,
+                    ...data,
+                },
+            });
+            // EXTENDED AFTER METHOD
+
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Updating role has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -180,18 +256,42 @@ export default {
             onError = () => {},
         },
     ) {
-        const {
-            id,
-        } = state;
-
         try {
+            const {
+                id,
+            } = state;
+
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Users/store/role/action/removeRole/__before', {
+                $this: this,
+                data: {
+                    id,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+
             await remove({
                 $axios: this.app.$axios,
                 id,
             });
 
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Users/store/role/action/removeRole/__after', {
+                $this: this,
+            });
+            // EXTENDED AFTER METHOD
+
             onSuccess();
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Removing role has been canceled',
+                });
+
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
             });

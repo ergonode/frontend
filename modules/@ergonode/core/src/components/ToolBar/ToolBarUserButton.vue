@@ -15,7 +15,7 @@
                 class="title"
                 v-text="capitalizedUserFirstName || capitalizedUserLastName" />
             <div class="icon-wrapper">
-                <IconArrowDropDown
+                <IconArrowDropdown
                     :fill-color="whiteColor"
                     :state="arrowIconState" />
             </div>
@@ -27,9 +27,8 @@
 </template>
 
 <script>
-import {
-    WHITE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
+import UserFabAvatar from '@Core/components/Multimedia/UserFabAvatar';
+import ToolBarUserSelectContent from '@Core/components/ToolBar/ToolBarUserSelectContent';
 import {
     ARROW,
 } from '@Core/defaults/icons';
@@ -37,16 +36,21 @@ import {
     toCapitalize,
 } from '@Core/models/stringWrapper';
 import {
+    WHITE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
+import ToolBarSelectButton from '@UI/components/ToolBar/ToolBarSelectButton';
+import {
     mapState,
 } from 'vuex';
 
 export default {
     name: 'ToolBarUserButton',
     components: {
-        ToolBarSelectButton: () => import('@Core/components/ToolBar/ToolBarSelectButton'),
-        ToolBarUserSelectContent: () => import('@Core/components/ToolBar/ToolBarUserSelectContent'),
-        IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
-        UserFabAvatar: () => import('@Core/components/Multimedia/UserFabAvatar'),
+        ToolBarSelectButton,
+        ToolBarUserSelectContent,
+        IconArrowDropdown,
+        UserFabAvatar,
     },
     data() {
         return {

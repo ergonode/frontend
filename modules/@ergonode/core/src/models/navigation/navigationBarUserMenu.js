@@ -9,17 +9,12 @@ export default [
             {
                 title: 'My profile',
                 routing: '/profile/activity-log-grid',
-                icon: 'User',
-            },
-            {
-                title: 'Work schedule',
-                routing: '/placeholder/schedule',
-                icon: 'Flow',
+                icon: () => import('@Core/components/Icons/Menu/IconUser'),
             },
             {
                 title: 'Settings',
                 routing: '/settings',
-                icon: 'Settings',
+                icon: () => import('@Core/components/Icons/Menu/IconSettings'),
             },
         ],
     },

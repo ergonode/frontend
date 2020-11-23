@@ -17,11 +17,11 @@
 </template>
 
 <script>
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import UserRoleForm from '@Users/components/Forms/UserRoleForm';
 import {
     mapActions,

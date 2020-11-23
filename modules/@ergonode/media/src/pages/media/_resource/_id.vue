@@ -31,9 +31,21 @@ export default {
         beforeLeavePageMixin,
     ],
     asyncData({
-        store, params,
+        app,
+        store,
+        params,
     }) {
-        return store.dispatch('media/getResource', params);
+        return store.dispatch('media/getResource', {
+            id: params.id,
+            onError: () => {
+                if (process.client) {
+                    app.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Media hasn`t been fetched properly',
+                    });
+                }
+            },
+        });
     },
     computed: {
         ...mapState('media', [
@@ -58,21 +70,29 @@ export default {
             __clearTranslationsStorage: '__clearStorage',
         }),
         onRemove() {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                message: 'Are you sure you want to delete this resource?',
-                confirmCallback: () => this.removeResource({
-                    onSuccess: this.onRemoveResourceSuccess,
+            this.$confirm({
+                type: MODAL_TYPE.DESTRUCTIVE,
+                title: 'Are you sure you want to delete this resource?',
+                applyTitle: 'YES, REMOVE',
+                action: () => this.removeResource({
+                    onSuccess: this.onRemoveSuccess,
+                    onError: this.onRemoveError,
                 }),
             });
         },
-        onRemoveResourceSuccess() {
+        onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Resource removed',
             });
             this.$router.push({
                 name: 'media-grid',
+            });
+        },
+        onRemoveError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Resource hasn`t been deleted',
             });
         },
     },

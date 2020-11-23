@@ -11,7 +11,7 @@
                 <Button
                     title="NEW CHANNEL"
                     :size="smallSize"
-                    :disabled="!isUserAllowedToCreate"
+                    :disabled="!isAllowedToCreate"
                     @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
@@ -37,17 +37,17 @@
 
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
-import Button from '@Core/components/Button/Button';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import Page from '@Core/components/Layout/Page';
-import HorizontalRoutingTabBar from '@Core/components/TabBar/Routing/HorizontalRoutingTabBar';
-import TitleBar from '@Core/components/TitleBar/TitleBar';
 import {
     SIZE,
 } from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import Button from '@UI/components/Button/Button';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import Page from '@UI/components/Layout/Page';
+import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@UI/components/TitleBar/TitleBar';
 
 export default {
     name: 'Channels',
@@ -68,7 +68,7 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-        isUserAllowedToCreate() {
+        isAllowedToCreate() {
             return this.$hasAccess([
                 PRIVILEGES.CHANNEL.create,
             ]);

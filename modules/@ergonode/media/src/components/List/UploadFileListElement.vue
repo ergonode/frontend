@@ -49,18 +49,18 @@
 
 <script>
 import {
-    GREEN,
-    RED,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import IconButton from '@Core/components/IconButton/IconButton';
-import IconCheck from '@Core/components/Icons/Feedback/IconCheck';
-import IconError from '@Core/components/Icons/Feedback/IconError';
-import IconFilledClose from '@Core/components/Icons/Window/IconFilledClose';
-import ProgressBar from '@Core/components/ProgressBar/ProgressBar';
-import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import {
+    GREEN,
+    RED,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import IconButton from '@UI/components/IconButton/IconButton';
+import IconCheck from '@UI/components/Icons/Feedback/IconCheck';
+import IconError from '@UI/components/Icons/Feedback/IconError';
+import IconFilledClose from '@UI/components/Icons/Window/IconFilledClose';
+import ProgressBar from '@UI/components/ProgressBar/ProgressBar';
 
 export default {
     name: 'UploadFileListElement',

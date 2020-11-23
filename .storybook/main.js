@@ -15,10 +15,11 @@ module.exports = {
         '@storybook/addon-essentials',
         '@storybook/preset-scss',
     ],
-    webpack: async (config) => {
+    webpack: async (config) => {s
         config.resolve.alias = {
             ...config.resolve.alias,
             '@Core': path.resolve(__dirname, '../modules/@ergonode/core/src'),
+            '@UI': path.resolve(__dirname, '../modules/@ergonode/ui/src'),
         };
 
         config.module.rules.push({
@@ -30,7 +31,7 @@ module.exports = {
                 {
                     loader: 'sass-resources-loader',
                     options: {
-                        resources: path.resolve(__dirname, '../modules/@ergonode/core/src/assets/scss/main.scss'),
+                        resources: path.resolve(__dirname, '../modules/@ergonode/ui/src/assets/scss/main.scss'),
                     },
                 },
             ],

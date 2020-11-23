@@ -10,14 +10,14 @@
         resize="none"
         height="150px"
         :error-messages="errors[placeholderFieldKey]"
-        :disabled="!isUserAllowedToUpdate"
+        :disabled="!isAllowedToUpdate"
         @input="(value) => setTranslationPropertyValue(value, placeholderFieldKey)" />
 </template>
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
-import TextArea from '@Core/components/Inputs/TextArea';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
+import TextArea from '@UI/components/TextArea/TextArea';
 
 export default {
     name: 'AttributeTranslationFormPlaceholder',
@@ -28,7 +28,7 @@ export default {
         translationCardMixin,
     ],
     computed: {
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,
             ]);

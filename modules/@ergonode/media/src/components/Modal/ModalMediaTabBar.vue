@@ -5,12 +5,13 @@
 <template>
     <ModalTabBar
         class="modal-media-tab-bar"
+        title="Add resources"
         :items="tabs"
         @close="onCloseModal" />
 </template>
 
 <script>
-import ModalTabBar from '@Core/components/Modal/ModalTabBar';
+import ModalTabBar from '@UI/components/Modal/ModalTabBar';
 
 export default {
     name: 'ModalMediaTabBar',

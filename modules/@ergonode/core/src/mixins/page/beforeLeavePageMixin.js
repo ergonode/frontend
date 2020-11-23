@@ -19,15 +19,19 @@ export default {
                 && !this.changeValues[key].saved);
 
         if (hasError || hasChange) {
-            this.$openModal({
-                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
-                applyTitle: 'YES, I AM',
-                message: 'Are you sure you want to leave page without saving the data?',
-                confirmCallback: () => {
+            this.$confirm({
+                type: MODAL_TYPE.POSITIVE,
+                applyTitle: 'YES, I\'M SURE',
+                title: 'Are you sure you want to leave page without saving the data?',
+                action: () => {
+                    this.$clearCancelTokens();
+
                     next();
                 },
             });
         } else {
+            this.$clearCancelTokens();
+
             next();
         }
     },

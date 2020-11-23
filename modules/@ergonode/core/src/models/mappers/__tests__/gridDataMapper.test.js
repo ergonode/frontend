@@ -6,8 +6,8 @@ import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
 import {
-    getMergedFilters,
     getParsedFilter,
+    getParsedFilters,
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
 
@@ -104,7 +104,7 @@ describe('gridDataMapper/getParsedFilter', () => {
     });
 });
 
-describe('gridDataMapper/getMergedFilters', () => {
+describe('gridDataMapper/getParsedFilters', () => {
     describe('Validate merged basic with advanced filters', () => {
         it('Only basic filters', () => {
             const filterId = 123;
@@ -116,9 +116,9 @@ describe('gridDataMapper/getMergedFilters', () => {
             const advanced = {};
             const result = `${filterId}${FILTER_OPERATOR.EQUAL}Test`;
 
-            expect(getMergedFilters({
-                basic,
-                advanced,
+            expect(getParsedFilters({
+                ...basic,
+                ...advanced,
             })).toStrictEqual(result);
         });
 
@@ -132,9 +132,9 @@ describe('gridDataMapper/getMergedFilters', () => {
             const basic = {};
             const result = `${filterId}${FILTER_OPERATOR.EQUAL}Test`;
 
-            expect(getMergedFilters({
-                basic,
-                advanced,
+            expect(getParsedFilters({
+                ...basic,
+                ...advanced,
             })).toStrictEqual(result);
         });
 
@@ -154,9 +154,9 @@ describe('gridDataMapper/getMergedFilters', () => {
             };
             const result = `${filterId}${FILTER_OPERATOR.GREATER_OR_EQUAL}1;${filterId}${FILTER_OPERATOR.SMALLER_OR_EQUAL}3;${advFilterId}${FILTER_OPERATOR.EQUAL}Test`;
 
-            expect(getMergedFilters({
-                basic,
-                advanced,
+            expect(getParsedFilters({
+                ...basic,
+                ...advanced,
             })).toStrictEqual(result);
         });
 
@@ -175,9 +175,9 @@ describe('gridDataMapper/getMergedFilters', () => {
             };
             const result = `${advFilterId}${FILTER_OPERATOR.EQUAL}Test`;
 
-            expect(getMergedFilters({
-                basic,
-                advanced,
+            expect(getParsedFilters({
+                ...basic,
+                ...advanced,
             })).toStrictEqual(result);
         });
     });

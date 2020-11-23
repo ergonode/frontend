@@ -24,13 +24,13 @@
 </template>
 
 <script>
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import Table from '@Core/components/Table/Table';
-import TableRow from '@Core/components/Table/TableRow';
-import TableRowCell from '@Core/components/Table/TableRowCell';
-import TableRowHeader from '@Core/components/Table/TableRowHeader';
-import TableRowInfoCell from '@Core/components/Table/TableRowInfoCell';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import Table from '@UI/components/Table/Table';
+import TableRow from '@UI/components/Table/TableRow';
+import TableRowCell from '@UI/components/Table/TableRowCell';
+import TableRowHeader from '@UI/components/Table/TableRowHeader';
+import TableRowInfoCell from '@UI/components/Table/TableRowInfoCell';
 import {
     mapActions,
 } from 'vuex';
@@ -53,9 +53,14 @@ export default {
         };
     },
     async created() {
-        this.rows = await this.getResourceMetadata();
-
-        this.isPrefetchingData = false;
+        await this.getResourceMetadata({
+            onSuccess: (({
+                rows,
+            }) => {
+                this.rows = rows;
+                this.isPrefetchingData = false;
+            }),
+        });
     },
     methods: {
         ...mapActions('media', [

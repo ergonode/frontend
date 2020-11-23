@@ -6,71 +6,93 @@ export const getListGroups = async ({
     $axios,
     path,
     languageCode,
+    onSuccess = () => {},
+    onError = () => {},
 }) => {
-    const params = {
-        limit: 9999,
-        offset: 0,
-        view: 'list',
-        order: 'ASC',
-        field: 'name',
-        columns: 'id,code,name,elements_count',
-    };
-    const {
-        collection,
-    } = await $axios.$get(path, {
-        params,
-        withLanguage: false,
-    });
-    const groups = [];
-    const items = {};
-    const groupItemsCount = {};
-    const {
-        length,
-    } = collection;
-
-    for (let i = 0; i < length; i += 1) {
+    try {
+        const params = {
+            limit: 9999,
+            offset: 0,
+            view: 'list',
+            order: 'ASC',
+            field: 'name',
+            columns: 'id,code,name,elements_count',
+        };
         const {
-            id,
-            code,
-            name,
-        } = collection[i];
+            collection,
+        } = await $axios.$get(path, {
+            params,
+            withLanguage: false,
+        });
+        const groups = [];
+        const items = {};
+        const groupItemsCount = {};
+        const {
+            length,
+        } = collection;
 
-        if (collection[i].elements_count > 0) {
-            const value = name || `#${code}`;
-            const hint = name ? `#${code} ${languageCode}` : '';
-
-            groups.push({
+        for (let i = 0; i < length; i += 1) {
+            const {
                 id,
-                key: code,
-                value,
-                hint,
-            });
+                code,
+                name,
+            } = collection[i];
 
-            groupItemsCount[id] = collection[i].elements_count;
-            items[id] = [];
+            if (collection[i].elements_count > 0) {
+                const value = name || `#${code}`;
+                const hint = name ? `#${code} ${languageCode}` : '';
+
+                groups.push({
+                    id,
+                    key: code,
+                    value,
+                    hint,
+                });
+
+                groupItemsCount[id] = collection[i].elements_count;
+                items[id] = [];
+            }
         }
-    }
 
-    return {
-        groups,
-        items,
-        groupItemsCount,
-    };
+        onSuccess({
+            groups,
+            items,
+            groupItemsCount,
+        });
+    } catch (e) {
+        if ($axios.isCancel(e)) {
+            return;
+        }
+
+        onError(e);
+    }
 };
 
 export const getListItems = async ({
     $axios,
     path,
     params,
+    onSuccess = () => {},
+    onError = () => {},
 }) => {
-    const {
-        collection,
-    } = await $axios.$get(path, {
-        params,
-        withLanguage: false,
-    });
+    try {
+        const {
+            collection,
+            info,
+        } = await $axios.$get(path, {
+            params,
+            withLanguage: false,
+        });
 
-    return {
-        items: collection,
-    };
+        onSuccess({
+            items: collection,
+            info,
+        });
+    } catch (e) {
+        if ($axios.isCancel(e)) {
+            return;
+        }
+
+        onError(e);
+    }
 };

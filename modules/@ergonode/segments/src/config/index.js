@@ -7,8 +7,6 @@ export default {
     order: 140,
     relations: [
         '@ergonode/conditions',
-        '@ergonode/products',
-        '@ergonode/collections',
     ],
     aliases: {
         '@Segments': '/',

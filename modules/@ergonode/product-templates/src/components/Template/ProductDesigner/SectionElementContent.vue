@@ -36,14 +36,14 @@
 </template>
 
 <script>
-import ActionIconButton from '@Core/components/ActionIconButton/ActionIconButton';
-import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
-import IconDots from '@Core/components/Icons/Others/IconDots';
 import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
 import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
+import ActionIconButton from '@UI/components/ActionIconButton/ActionIconButton';
+import IconFontSize from '@UI/components/Icons/Editor/IconFontSize';
+import IconDots from '@UI/components/Icons/Others/IconDots';
 import {
     mapActions,
 } from 'vuex';
@@ -129,7 +129,7 @@ export default {
                 });
                 break;
             case 'Edit title':
-                this.$emit('editTitle', this.index);
+                this.$emit('edit-title', this.index);
                 break;
             default: break;
             }

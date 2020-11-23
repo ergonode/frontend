@@ -30,13 +30,13 @@
 </template>
 
 <script>
-import Card from '@Core/components/Card/Card';
-import Divider from '@Core/components/Dividers/Divider';
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import TextArea from '@Core/components/Inputs/TextArea';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import PRIVILEGES from '@Media/config/privileges';
+import Card from '@UI/components/Card/Card';
+import Divider from '@UI/components/Dividers/Divider';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import TextArea from '@UI/components/TextArea/TextArea';
 
 export default {
     name: 'ResourceTranslationForm',
@@ -57,7 +57,7 @@ export default {
             ]);
         },
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Media/components/Forms/ResourceTranslationForm',
             });
         },

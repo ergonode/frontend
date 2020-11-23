@@ -6,28 +6,39 @@
     <CenterViewTemplate>
         <template #content>
             <Grid
-                :is-editable="isAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
-                :placeholder="noRecordsPlaceholder"
+                :filters="filterValues"
+                :pagination="pagination"
+                :placeholder="noDataPlaceholder"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :is-editable="isAllowedToUpdate"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
                 :is-border="true"
-                @editRow="onEditRow"
-                @previewRow="onEditRow"
-                @deleteRow="onRemoveRow"
-                @fetchData="onFetchData" />
+                @edit-row="onEditRow"
+                @preview-row="onEditRow"
+                @delete-row="onRemoveRow"
+                @pagination="onPaginationChange"
+                @column-sort="onColumnSortChange"
+                @remove-all-filters="onRemoveAllFilters"
+                @filter="onFilterChange" />
         </template>
     </CenterViewTemplate>
 </template>
 
 <script>
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import {
     WHITESMOKE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
-import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import PRIVILEGES from '@Users/config/privileges';
 
 export default {
@@ -39,6 +50,7 @@ export default {
         fetchGridDataMixin({
             path: 'accounts',
         }),
+        extendedGridComponentsMixin,
     ],
     async fetch() {
         await this.onFetchData();
@@ -50,11 +62,11 @@ export default {
         };
     },
     computed: {
-        noRecordsPlaceholder() {
+        noDataPlaceholder() {
             return {
                 title: 'No users',
                 subtitle: 'There are no users in the system, you can create the first one.',
-                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
                 color: WHITESMOKE,
             };
         },

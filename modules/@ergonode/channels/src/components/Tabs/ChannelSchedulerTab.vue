@@ -18,11 +18,11 @@
 
 <script>
 import SchedulerForm from '@Channels/components/Forms/SchedulerForm';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
 } from 'vuex';
@@ -37,7 +37,14 @@ export default {
         tabFeedbackMixin,
     ],
     async fetch() {
-        await this.getSchedulerConfiguration();
+        await this.getSchedulerConfiguration({
+            onError: () => {
+                this.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Scheduler configuration hasn`t been fetched properly',
+                });
+            },
+        });
     },
     data() {
         return {

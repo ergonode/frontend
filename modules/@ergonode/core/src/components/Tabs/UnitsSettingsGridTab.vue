@@ -6,25 +6,35 @@
     <CenterViewTemplate>
         <template #content>
             <Grid
-                :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
-                :placeholder="noRecordsPlaceholder"
+                :pagination="pagination"
+                :filters="filterValues"
+                :placeholder="noDataPlaceholder"
+                :extended-columns="extendedColumns"
+                :extended-data-cells="extendedDataCells"
+                :extended-data-filter-cells="extendedDataFilterCells"
+                :extended-data-edit-cells="extendedDataEditCells"
+                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :is-editable="isAllowedToUpdate"
                 :is-prefetching-data="isPrefetchingData"
                 :is-header-visible="true"
                 :is-border="true"
                 :is-basic-filter="true"
-                @editRow="onEditRow"
-                @previewRow="onEditRow"
-                @deleteRow="onRemoveUnit"
-                @fetchData="onFetchData">
-                <template #headerActions>
+                @edit-row="onEditRow"
+                @preview-row="onEditRow"
+                @delete-row="onRemoveUnit"
+                @pagination="onPaginationChange"
+                @column-sort="onColumnSortChange"
+                @filter="onFilterChange"
+                @remove-all-filters="onRemoveAllFilters">
+                <template #actionsHeader>
                     <Button
                         data-cy="new-unit"
                         title="NEW UNIT"
                         :theme="secondaryTheme"
-                        :disabled="!isUserAllowedToCreate"
+                        :disabled="!isAllowedToCreate"
                         :size="smallSize"
                         @click.native="onShowModal">
                         <template #prepend="{ color }">
@@ -38,18 +48,19 @@
 </template>
 
 <script>
-import {
-    WHITESMOKE,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Button/Button';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import CenterViewTemplate from '@Core/components/Layout/Templates/CenterViewTemplate';
 import PRIVILEGES from '@Core/config/privileges';
 import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import {
+    WHITESMOKE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import Button from '@UI/components/Button/Button';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
+import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
 } from 'vuex';
@@ -65,6 +76,7 @@ export default {
         fetchGridDataMixin({
             path: 'units',
         }),
+        extendedGridComponentsMixin,
     ],
     async fetch() {
         await this.onFetchData();
@@ -76,11 +88,11 @@ export default {
         };
     },
     computed: {
-        noRecordsPlaceholder() {
+        noDataPlaceholder() {
             return {
                 title: 'No units',
                 subtitle: 'There are no units in the system, you can create the first one.',
-                bgUrl: require('@Core/assets/images/placeholders/comments.svg'),
+                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
                 color: WHITESMOKE,
             };
         },
@@ -90,12 +102,12 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        isUserAllowedToCreate() {
+        isAllowedToCreate() {
             return this.$hasAccess([
                 PRIVILEGES.SETTINGS.create,
             ]);
         },
-        isUserAllowedToUpdate() {
+        isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.SETTINGS.update,
             ]);
@@ -124,7 +136,7 @@ export default {
             });
         },
         onShowModal() {
-            this.$emit('showModal', 'units');
+            this.$emit('show-modal', 'units');
         },
     },
 };

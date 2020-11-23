@@ -11,11 +11,18 @@
                 <NavigationBackFab />
             </template>
             <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
                 <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE PRODUCT"
-                    :disabled="!isUserAllowedToDelete"
+                    :disabled="!isAllowedToDelete"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete :fill-color="color" />
@@ -63,10 +70,13 @@ export default {
         ...mapState('dictionaries', [
             'productTypes',
         ]),
+        extendedMainAction() {
+            return this.$getExtendedComponents('@Products/components/Pages/ProductPage/mainAction');
+        },
         smallSize() {
             return SIZE.SMALL;
         },
-        isUserAllowedToDelete() {
+        isAllowedToDelete() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.delete,
             ]);
@@ -93,6 +103,16 @@ export default {
 
                 this.asyncTabs = tabs.length ? Array.from(new Set([].concat(...tabs))) : tmpTabs;
             },
+        },
+    },
+    methods: {
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.PRODUCT,
+                ...props,
+            };
         },
     },
 };

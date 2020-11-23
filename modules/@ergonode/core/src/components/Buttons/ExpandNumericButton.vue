@@ -14,11 +14,7 @@
                 :state="iconExpandedState" />
         </template>
         <template #append>
-            <div
-                :class="[
-                    'expand-number',
-                    { 'expand-number--selected': isExpanded },
-                ]">
+            <div :class="expandNumberClasses">
                 <NumericBadge :number="number" />
             </div>
         </template>
@@ -33,29 +29,49 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
+import NumericBadge from '@UI/components/Badges/NumericBadge';
+import Button from '@UI/components/Button/Button';
+import IconArrowDouble from '@UI/components/Icons/Arrows/IconArrowDouble';
 
 export default {
     name: 'ExpandNumericButton',
     components: {
-        Button: () => import('@Core/components/Button/Button'),
-        NumericBadge: () => import('@Core/components/Badges/NumericBadge'),
-        IconArrowDouble: () => import('@Core/components/Icons/Arrows/IconArrowDouble'),
+        Button,
+        NumericBadge,
+        IconArrowDouble,
     },
     props: {
+        /**
+         * Determines state of expanded component
+         */
         isExpanded: {
             type: Boolean,
             default: false,
         },
+        /**
+         * The title of the component
+         */
         title: {
             type: String,
             required: true,
         },
+        /**
+         * Number of elements hidden in panel connected to expanded button
+         */
         number: {
             type: Number,
             default: 0,
         },
     },
     computed: {
+        expandNumberClasses() {
+            return [
+                'expand-number',
+                {
+                    'expand-number--selected': this.isExpanded,
+                },
+            ];
+        },
         theme() {
             return this.isExpanded ? THEME.PRIMARY : THEME.SECONDARY;
         },

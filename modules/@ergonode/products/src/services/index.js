@@ -27,20 +27,6 @@ export const getCollections = ({
     id,
 }) => $axios.$get(`products/${id}/collections`);
 
-export const getChildren = ({
-    $axios,
-    id,
-    params = {
-        limit: 9999,
-        offset: 0,
-        view: 'list',
-        field: 'name',
-        order: 'ASC',
-    },
-}) => $axios.$get(`products/${id}/children`, {
-    params,
-});
-
 export const getTemplate = ({
     $axios,
     id,
@@ -100,7 +86,7 @@ export const removeDraftValue = ({
     id,
     languageCode,
     attributeId,
-}) => $axios.$delete(`${languageCode}products/${id}/draft/${attributeId}/value`, {
+}) => $axios.$delete(`${languageCode}/products/${id}/draft/${attributeId}/value`, {
     withLanguage: false,
 });
 

@@ -64,14 +64,27 @@
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[languageFieldKey]"
                     @input="setLanguageValue" />
-                <TranslationLazySelect
+                <Autocomplete
                     :value="role"
                     :required="true"
+                    :searchable="true"
                     label="Role"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[roleIdFieldKey]"
-                    :fetch-options-request="getRoleOptions"
-                    @input="setRoleValue" />
+                    href="roles/autocomplete"
+                    @input="setRoleValue">
+                    <DropdownPlaceholder
+                        :title="placeholder.title"
+                        :subtitle="placeholder.subtitle">
+                        <template #action>
+                            <Button
+                                title="GO TO USER ROLES"
+                                :size="smallSize"
+                                :disabled="!isAllowedToUpdate"
+                                @click.native="onNavigateToUserRoles" />
+                        </template>
+                    </DropdownPlaceholder>
+                </Autocomplete>
                 <Divider v-if="extendedForm.length" />
                 <template v-for="(field, index) in extendedForm">
                     <Component
@@ -85,15 +98,19 @@
 </template>
 
 <script>
-import Divider from '@Core/components/Dividers/Divider';
-import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/Section/FormSection';
-import Select from '@Core/components/Inputs/Select/Select';
-import TranslationLazySelect from '@Core/components/Inputs/Select/TranslationLazySelect';
-import TextField from '@Core/components/Inputs/TextField';
-import Toggler from '@Core/components/Inputs/Toggler/Toggler';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
+import Divider from '@UI/components/Dividers/Divider';
+import Form from '@UI/components/Form/Form';
+import FormSection from '@UI/components/Form/Section/FormSection';
+import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
+import Select from '@UI/components/Select/Select';
+import TextField from '@UI/components/TextField/TextField';
+import Toggler from '@UI/components/Toggler/Toggler';
 import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
@@ -104,13 +121,14 @@ import {
 export default {
     name: 'UserForm',
     components: {
+        DropdownPlaceholder,
         Divider,
         Form,
         FormSection,
         TextField,
         Toggler,
         Select,
-        TranslationLazySelect,
+        Autocomplete,
     },
     mixins: [
         formActionsMixin,
@@ -145,8 +163,17 @@ export default {
             'isActive',
             'role',
         ]),
+        smallSize() {
+            return SIZE.SMALL;
+        },
+        placeholder() {
+            return {
+                title: 'No user roles',
+                subtitle: 'There are no user roles in the system, so you can create the first one.',
+            };
+        },
         extendedForm() {
-            return this.$getExtendedFormByType({
+            return this.$extendedForm({
                 key: '@Users/components/Forms/UserForm',
             });
         },
@@ -195,9 +222,6 @@ export default {
         ...mapActions('user', [
             '__setState',
         ]),
-        ...mapActions('role', [
-            'getRoleOptions',
-        ]),
         bindingProps({
             props,
         }) {
@@ -208,6 +232,11 @@ export default {
                 disabled: !this.isAllowedToUpdate,
                 ...props,
             };
+        },
+        onNavigateToUserRoles() {
+            this.$router.push({
+                name: 'user-roles-grid',
+            });
         },
         setEmailValue(value) {
             this.__setState({
