@@ -2,25 +2,38 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+// import Button from '@UI/components/Button/Button';
+import {
+    SIZE,
+    THEME,
+} from '@Core/defaults/theme';
 import Button from '@UI/components/Button/Button';
 
-import MyButton from './Button.vue';
-
 export default {
-    title: 'Example/Button',
+    title: 'Components API/Button',
     component: Button,
     argTypes: {
-        backgroundColor: {
-            control: 'color',
+        theme: {
+            control: {
+                type: 'select',
+                options: Object.values(THEME),
+            },
         },
         size: {
             control: {
                 type: 'select',
                 options: [
-                    'small',
-                    'medium',
-                    'large',
+                    SIZE.TINY,
+                    SIZE.SMALL,
+                    SIZE.REGULAR,
                 ],
+            },
+        },
+        title: '',
+        disabled: false,
+        floating: {
+            control: {
+                type: 'object',
             },
         },
     },
@@ -31,30 +44,56 @@ const Template = (args, {
 }) => ({
     props: Object.keys(argTypes),
     components: {
-        MyButton,
+        Button,
     },
-    template: '<my-button @onClick="onClick" v-bind="$props" />',
+    template: '<Button v-bind="$props" />',
 });
 
 export const Primary = Template.bind({});
 Primary.args = {
-    primary: true,
-    label: 'Button',
+    theme: THEME.PRIMARY,
+    size: SIZE.REGULAR,
+    title: 'Button',
 };
 
 export const Secondary = Template.bind({});
 Secondary.args = {
-    label: 'Button',
+    theme: THEME.SECONDARY,
+    size: SIZE.REGULAR,
+    title: 'Button',
 };
 
-export const Large = Template.bind({});
-Large.args = {
-    size: 'large',
-    label: 'Button',
+export const SecondaryPlain = Template.bind({});
+SecondaryPlain.args = {
+    theme: THEME.SECONDARY_PLAIN,
+    size: SIZE.REGULAR,
+    title: 'Button',
+};
+
+export const Destructive = Template.bind({});
+Destructive.args = {
+    theme: THEME.DESTRUCTIVE,
+    size: SIZE.REGULAR,
+    title: 'Button',
+};
+
+export const Tiny = Template.bind({});
+Tiny.args = {
+    theme: THEME.PRIMARY,
+    size: SIZE.TINY,
+    title: 'Button',
 };
 
 export const Small = Template.bind({});
 Small.args = {
-    size: 'small',
-    label: 'Button',
+    theme: THEME.PRIMARY,
+    size: SIZE.SMALL,
+    title: 'Button',
+};
+
+export const Regular = Template.bind({});
+Regular.args = {
+    theme: THEME.PRIMARY,
+    size: SIZE.REGULAR,
+    title: 'Button',
 };

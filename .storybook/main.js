@@ -6,16 +6,16 @@
 const path = require('path');
 
 module.exports = {
-    stories: [
-        '../stories/**/*.stories.mdx',
-        '../stories/**/*.stories.@(js|jsx|ts|tsx)',
+    "stories": [
+        "../stories/**/*.stories.mdx",
+        "../stories/**/*.stories.@(js|jsx|ts|tsx)"
     ],
-    addons: [
-        '@storybook/addon-links',
-        '@storybook/addon-essentials',
-        '@storybook/preset-scss',
+    "addons": [
+        "@storybook/addon-links",
+        "@storybook/addon-essentials"
     ],
-    webpack: async (config) => {s
+
+    webpackFinal: async (config) => {
         config.resolve.alias = {
             ...config.resolve.alias,
             '@Core': path.resolve(__dirname, '../modules/@ergonode/core/src'),
@@ -59,4 +59,4 @@ module.exports = {
 
         return config;
     },
-};
+}
