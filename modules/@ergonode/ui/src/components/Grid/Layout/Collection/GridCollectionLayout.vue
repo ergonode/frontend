@@ -12,7 +12,8 @@
             :data="element"
             :drafts="drafts"
             :object-fit="objectFit"
-            :extended-data-cell="extendedDataCells[element.type]"
+            :extended-data-cell="extendedComponents.dataCells
+                && extendedComponents.dataCells[element.type]"
             @row-action="onRowAction"
             @cell-value="onCellValueChange" />
     </div>
@@ -70,9 +71,9 @@ export default {
             required: true,
         },
         /**
-         * The model of extended data column type cells components
+         * The data model of extended collection layout components
          */
-        extendedDataCells: {
+        extendedComponents: {
             type: Object,
             default: () => ({}),
         },

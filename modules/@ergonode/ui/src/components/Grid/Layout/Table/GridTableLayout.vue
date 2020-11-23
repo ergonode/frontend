@@ -35,8 +35,8 @@
                     @sticky="onStickyChange" />
                 <template v-for="(column, columnIndex) in orderedColumns">
                     <Component
-                        v-if="extendedColumns[column.type]"
-                        :is="extendedColumns[column.type]"
+                        v-if="extendedComponents.columns[column.type]"
+                        :is="extendedComponents.columns[column.type]"
                         :style="templateRows"
                         :key="column.id"
                         :index="columnIndex"
@@ -281,37 +281,9 @@ export default {
             default: false,
         },
         /**
-         * The model of extended data column type filter cells components
+         * The data model of extended table layout components
          */
-        extendedDataFilterCells: {
-            type: Object,
-            default: () => ({}),
-        },
-        /**
-         * The model of extended edit column type filter cells components
-         */
-        extendedDataEditFilterCells: {
-            type: Object,
-            default: () => ({}),
-        },
-        /**
-         * The model of extended data column type cells components
-         */
-        extendedDataCells: {
-            type: Object,
-            default: () => ({}),
-        },
-        /**
-         * The model of extended edit column type cells components
-         */
-        extendedDataEditCells: {
-            type: Object,
-            default: () => ({}),
-        },
-        /**
-         * The model of extended type columns components
-         */
-        extendedColumns: {
+        extendedComponents: {
             type: Object,
             default: () => ({}),
         },
@@ -351,8 +323,9 @@ export default {
         editCellComponent() {
             const type = this.columnTypes[this.editCell.type];
 
-            if (this.extendedDataEditCells[this.editCell.type]) {
-                return this.extendedDataEditCells[this.editCell.type];
+            if (this.extendedComponents.dataEditCells
+                && this.extendedComponents.dataEditCells[this.editCell.type]) {
+                return this.extendedComponents.dataEditCells[this.editCell.type];
             }
 
             return () => import(`@UI/components/Grid/Layout/Table/Cells/Edit/Grid${type}EditCell`)
@@ -361,8 +334,9 @@ export default {
         editFilterCellComponent() {
             const type = this.filterTypes[this.editFilterCell.type];
 
-            if (this.extendedDataEditFilterCells[this.editFilterCell.type]) {
-                return this.extendedDataEditFilterCells[this.editFilterCell.type];
+            if (this.extendedComponents.dataEditFilterCells
+                && this.extendedComponents.dataEditFilterCells[this.editFilterCell.type]) {
+                return this.extendedComponents.dataEditFilterCells[this.editFilterCell.type];
             }
 
             return () => import(`@UI/components/Grid/Layout/Table/Cells/Edit/Filter/Grid${type}EditFilterCell`)
@@ -557,7 +531,8 @@ export default {
                 if (typeof this.columnTypes[column.type] === 'undefined') {
                     this.columnTypes[column.type] = this.getColumnTypeName(column);
 
-                    if (this.extendedDataCells[column.type]) {
+                    if (this.extendedComponents.dataCells
+                        && this.extendedComponents.dataCells[column.type]) {
                         this.setExtendedDataCell(column);
                     } else {
                         request.push(this.setDataCell(column.type));
@@ -567,7 +542,8 @@ export default {
                 if (column.filter && typeof this.filterTypes[column.filter.type] === 'undefined') {
                     this.filterTypes[column.filter.type] = this.getColumnFilterTypeName(column);
 
-                    if (this.extendedDataFilterCells[column.filter.type]) {
+                    if (this.extendedComponents.dataFilterCells
+                        && this.extendedComponents.dataFilterCells[column.filter.type]) {
                         this.setExtendedFilterDataCell(column);
                     } else {
                         request.push(this.setDataFilterCell(column.filter.type));
@@ -686,12 +662,12 @@ export default {
         setExtendedFilterDataCell(column) {
             this.dataFilterCellComponents[
                 column.filter.type
-            ] = this.extendedDataFilterCells[column.filter.type];
+            ] = this.extendedComponents.dataFilterCells[column.filter.type];
         },
         setExtendedDataCell(column) {
             this.dataCellComponents[
                 column.type
-            ] = this.extendedDataCells[column.type];
+            ] = this.extendedComponents.dataCells[column.type];
         },
         setDataCell(type) {
             return import(`@UI/components/Grid/Layout/Table/Cells/Data/Grid${this.columnTypes[type]}DataCell`)
