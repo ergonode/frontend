@@ -35,8 +35,8 @@
                     @sticky="onStickyChange" />
                 <template v-for="(column, columnIndex) in orderedColumns">
                     <Component
-                        v-if="extendedColumns[column.id]"
-                        :is="extendedColumns[column.id]"
+                        v-if="extendedColumns[column.type]"
+                        :is="extendedColumns[column.type]"
                         :style="templateRows"
                         :key="column.id"
                         :index="columnIndex"

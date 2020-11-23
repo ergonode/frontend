@@ -55,11 +55,12 @@
             "removeButton": "REMOVE ATTRIBUTE GROUP"
         },
         "form":{
-            "createTitle": "Create attribute group"
+            "createTitle": "Create attribute group",
+            "nameLabel": "System name",
+            "nameHint": "System name must be unique"
         },
         "translation": {
-            "nameLabel": "Attribute name",
-            "hintLabel": "Tooltip for writers"
+            "nameLabel": "Group name",
         },
         "grid": {
             "placeholderTitle": "No attribute groups",
