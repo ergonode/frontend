@@ -6,11 +6,12 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
+import Fab from '@UI/components/Fab/Fab';
+import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
-    title: 'Components API/Button',
-    component: Button,
+    title: 'Components API/Fab',
+    component: Fab,
     argTypes: {
         theme: {
             control: {
@@ -30,7 +31,6 @@ export default {
             },
             defaultValue: SIZE.REGULAR,
         },
-        title: '',
         disabled: false,
         floating: {
             control: {
@@ -43,11 +43,18 @@ export default {
 const Template = (args, {
     argTypes,
 }) => ({
-    props: Object.keys(argTypes),
+    template: `
+        <Fab v-bind="$props">
+            <template #icon="{ color }">
+                <IconAdd :fill-color="color" />
+            </template>
+        </Fab>
+    `,
     components: {
-        Button,
+        Fab,
+        IconAdd,
     },
-    template: '<Button v-bind="$props" />',
+    props: Object.keys(argTypes),
 });
 
 export const Primary = Template.bind({});

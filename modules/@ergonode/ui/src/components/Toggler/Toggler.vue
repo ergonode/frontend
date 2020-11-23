@@ -27,6 +27,9 @@
 <script>
 import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
 
+/**
+ * `Toggler` is a default component to determinate true / false action.
+ */
 export default {
     name: 'Toggler',
     mixins: [

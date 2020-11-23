@@ -6,11 +6,11 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import Button from '@UI/components/Button/Button';
+import ActionButton from '@UI/components/ActionButton/ActionButton';
 
 export default {
-    title: 'Components API/Button',
-    component: Button,
+    title: 'Components API/ActionButton',
+    component: ActionButton,
     argTypes: {
         theme: {
             control: {
@@ -32,69 +32,102 @@ export default {
         },
         title: '',
         disabled: false,
-        floating: {
-            control: {
-                type: 'object',
-            },
-        },
+        dismissible: true,
+        options: [],
+        fixedContent: false,
     },
 };
 
 const Template = (args, {
     argTypes,
 }) => ({
-    props: Object.keys(argTypes),
+    template: '<ActionButton v-bind="$props" />',
     components: {
-        Button,
+        ActionButton,
     },
-    template: '<Button v-bind="$props" />',
+    props: Object.keys(argTypes),
 });
 
 export const Primary = Template.bind({});
 Primary.args = {
     theme: THEME.PRIMARY,
     size: SIZE.REGULAR,
-    title: 'Button',
+    title: 'Take an action',
+    options: [
+        'First option',
+        'Second option',
+        'Third option',
+    ],
 };
 
 export const Secondary = Template.bind({});
 Secondary.args = {
     theme: THEME.SECONDARY,
     size: SIZE.REGULAR,
-    title: 'Button',
+    title: 'Take an action',
+    options: [
+        'First option',
+        'Second option',
+        'Third option',
+    ],
 };
 
 export const SecondaryPlain = Template.bind({});
 SecondaryPlain.args = {
     theme: THEME.SECONDARY_PLAIN,
     size: SIZE.REGULAR,
-    title: 'Button',
+    title: 'Take an action',
+    options: [
+        'First option',
+        'Second option',
+        'Third option',
+    ],
 };
 
 export const Destructive = Template.bind({});
 Destructive.args = {
     theme: THEME.DESTRUCTIVE,
     size: SIZE.REGULAR,
-    title: 'Button',
+    title: 'Take an action',
+    options: [
+        'First option',
+        'Second option',
+        'Third option',
+    ],
 };
 
 export const Tiny = Template.bind({});
 Tiny.args = {
     theme: THEME.PRIMARY,
     size: SIZE.TINY,
-    title: 'Button',
+    title: 'Take an action',
+    options: [
+        'First option',
+        'Second option',
+        'Third option',
+    ],
 };
 
 export const Small = Template.bind({});
 Small.args = {
     theme: THEME.PRIMARY,
     size: SIZE.SMALL,
-    title: 'Button',
+    title: 'Take an action',
+    options: [
+        'First option',
+        'Second option',
+        'Third option',
+    ],
 };
 
 export const Regular = Template.bind({});
 Regular.args = {
     theme: THEME.PRIMARY,
     size: SIZE.REGULAR,
-    title: 'Button',
+    title: 'Take an action',
+    options: [
+        'First option',
+        'Second option',
+        'Third option',
+    ],
 };

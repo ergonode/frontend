@@ -3,6 +3,8 @@
  * See LICENSE for license details.
  */
 
+import '!style-loader!css-loader!sass-loader!./reset-storybook.scss';
+
 import {
     addDecorator,
 } from '@storybook/vue';
@@ -15,4 +17,5 @@ addDecorator((story) => {
 
 export const parameters = {
     actions: { argTypesRegex: "^on[A-Z].*" },
+    controls: { expanded: true },
 }
