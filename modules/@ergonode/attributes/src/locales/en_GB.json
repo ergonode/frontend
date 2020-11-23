@@ -60,7 +60,7 @@
             "nameHint": "System name must be unique"
         },
         "translation": {
-            "nameLabel": "Group name",
+            "nameLabel": "Group name"
         },
         "grid": {
             "placeholderTitle": "No attribute groups",
