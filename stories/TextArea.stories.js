@@ -8,20 +8,12 @@ import {
     INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
-import TextField from '@UI/components/TextField/TextField';
+import TextArea from '@UI/components/TextArea/TextArea';
 
 export default {
-    title: 'Components API/TextField',
-    component: TextField,
+    title: 'Components API/TextArea',
+    component: TextArea,
     argTypes: {
-        input: {
-            control: {
-                type: 'object',
-            },
-            defaultValue: {
-                type: 'text',
-            },
-        },
         size: {
             control: {
                 type: 'select',
@@ -54,6 +46,7 @@ export default {
         autofocus: false,
         disabled: false,
         placeholder: '',
+        resize: 'auto',
         dataCy: '',
     },
 };
@@ -61,9 +54,9 @@ export default {
 const Template = (args, {
     argTypes,
 }) => ({
-    template: '<TextField v-bind="$props" />',
+    template: '<TextArea v-bind="$props" />',
     components: {
-        TextField,
+        TextArea,
     },
     props: Object.keys(argTypes),
 });
@@ -72,6 +65,7 @@ export const Primary = Template.bind({});
 Primary.arrgs = {
     value: '',
     size: SIZE.REGULAR,
+    height: '200px',
     alignment: ALIGNMENT.LEFT,
     type: INPUT_TYPE.SOLID,
     label: '',
@@ -80,5 +74,6 @@ Primary.arrgs = {
     required: false,
     autofocus: false,
     placeholder: '',
+    resize: 'auto',
     dataCy: '',
 };

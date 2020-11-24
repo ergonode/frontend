@@ -8,20 +8,12 @@ import {
     INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
-import TextField from '@UI/components/TextField/TextField';
+import Select from '@UI/components/Select/Select';
 
 export default {
-    title: 'Components API/TextField',
-    component: TextField,
+    title: 'Components API/Select',
+    component: Select,
     argTypes: {
-        input: {
-            control: {
-                type: 'object',
-            },
-            defaultValue: {
-                type: 'text',
-            },
-        },
         size: {
             control: {
                 type: 'select',
@@ -52,18 +44,24 @@ export default {
         errorMessages: '',
         required: false,
         autofocus: false,
+        fixedContent: true,
+        clearable: true,
+        multiselect: false,
+        searchable: false,
         disabled: false,
+        searchResult: '',
         placeholder: '',
         dataCy: '',
+        options: [],
     },
 };
 
 const Template = (args, {
     argTypes,
 }) => ({
-    template: '<TextField v-bind="$props" />',
+    template: '<Select v-bind="$props" />',
     components: {
-        TextField,
+        Select,
     },
     props: Object.keys(argTypes),
 });
@@ -79,6 +77,12 @@ Primary.arrgs = {
     errorMessages: '',
     required: false,
     autofocus: false,
+    fixedContent: true,
     placeholder: '',
     dataCy: '',
+    options: [
+        1,
+        2,
+        3,
+    ],
 };

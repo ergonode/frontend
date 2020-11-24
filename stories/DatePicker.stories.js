@@ -8,20 +8,15 @@ import {
     INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
-import TextField from '@UI/components/TextField/TextField';
+import DatePicker from '@UI/components/DatePicker/DatePicker';
+import {
+    DEFAULT_FORMAT,
+} from '@UI/models/calendar';
 
 export default {
-    title: 'Components API/TextField',
-    component: TextField,
+    title: 'Components API/DatePicker',
+    component: DatePicker,
     argTypes: {
-        input: {
-            control: {
-                type: 'object',
-            },
-            defaultValue: {
-                type: 'text',
-            },
-        },
         size: {
             control: {
                 type: 'select',
@@ -49,6 +44,7 @@ export default {
         value: '',
         label: '',
         hint: '',
+        format: DEFAULT_FORMAT,
         errorMessages: '',
         required: false,
         autofocus: false,
@@ -61,24 +57,12 @@ export default {
 const Template = (args, {
     argTypes,
 }) => ({
-    template: '<TextField v-bind="$props" />',
+    template: '<DatePicker v-bind="$props" />',
     components: {
-        TextField,
+        DatePicker,
     },
     props: Object.keys(argTypes),
 });
 
 export const Primary = Template.bind({});
-Primary.arrgs = {
-    value: '',
-    size: SIZE.REGULAR,
-    alignment: ALIGNMENT.LEFT,
-    type: INPUT_TYPE.SOLID,
-    label: '',
-    hint: '',
-    errorMessages: '',
-    required: false,
-    autofocus: false,
-    placeholder: '',
-    dataCy: '',
-};
+Primary.arrgs = {};
