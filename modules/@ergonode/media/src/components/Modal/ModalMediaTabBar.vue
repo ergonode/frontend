@@ -24,19 +24,6 @@ export default {
             default: () => [],
         },
     },
-    mounted() {
-        const app = document.documentElement.querySelector('.app-main');
-
-        app.appendChild(this.$el);
-    },
-    beforeDestroy() {
-        const app = document.documentElement.querySelector('.app-main');
-        const element = document.documentElement.querySelector('.modal-media-tab-bar');
-
-        if (element && app.contains(element)) {
-            app.removeChild(element);
-        }
-    },
     methods: {
         onCloseModal() {
             this.$emit('close');

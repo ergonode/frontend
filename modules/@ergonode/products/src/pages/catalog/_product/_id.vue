@@ -3,18 +3,13 @@
  * See LICENSE for license details.
  */
 <template>
-    <ProductPage
-        :title="sku"
-        @remove="onRemove" />
+    <ProductPage :title="sku" />
 </template>
 
 <script>
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    MODAL_TYPE,
-} from '@Core/defaults/modals';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import ProductPage from '@Products/components/Pages/ProductPage';
 import {
@@ -84,7 +79,6 @@ export default {
     },
     methods: {
         ...mapActions('product', [
-            'removeProduct',
             '__clearStorage',
             'getProductDraft',
             'getProduct',
@@ -92,32 +86,6 @@ export default {
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
-        onRemove() {
-            this.$confirm({
-                type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this product?',
-                applyTitle: 'YES, REMOVE',
-                action: () => this.removeProduct({
-                    onSuccess: this.onRemoveSuccess,
-                    onError: this.onRemoveError,
-                }),
-            });
-        },
-        onRemoveSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Product removed',
-            });
-            this.$router.push({
-                name: 'catalog-products',
-            });
-        },
-        onRemoveError() {
-            this.$addAlert({
-                type: ALERT_TYPE.ERROR,
-                message: 'Product hasn’t been deleted',
-            });
-        },
     },
     head() {
         return {

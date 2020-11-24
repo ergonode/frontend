@@ -12,11 +12,7 @@
                 :filters="filterValues"
                 :pagination="pagination"
                 :placeholder="noDataPlaceholder"
-                :extended-columns="extendedColumns"
-                :extended-data-cells="extendedDataCells"
-                :extended-data-filter-cells="extendedDataFilterCells"
-                :extended-data-edit-cells="extendedDataEditCells"
-                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :extended-components="extendedGridComponents"
                 :is-editable="isAllowedToDelete"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
@@ -36,6 +32,9 @@
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import PRIVILEGES from '@Trees/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Trees/config/routes';
 import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
@@ -81,7 +80,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'category-tree-id-general',
+                name: ROUTE_NAME.CATEGORY_TREE_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },

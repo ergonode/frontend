@@ -6,7 +6,7 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <MainSettingsForm
-                submit-title="SAVE CHANGES"
+                :submit-title="$t('core.buttons.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :change-values="changeValues"

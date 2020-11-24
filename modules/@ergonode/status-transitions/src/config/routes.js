@@ -9,13 +9,21 @@ import {
 } from './imports';
 import Privileges from './privileges';
 
+export const ROUTE_NAME = {
+    STATUS_TRANSITIONS: 'status-transitions',
+    STATUS_TRANSITIONS_GRID: 'status-transitions-grid',
+    STATUS_TRANSITION_EDIT: 'status-transition-id',
+    STATUS_TRANSITION_EDIT_GENERAL: 'status-transition-id-general',
+    STATUS_TRANSITION_EDIT_DESIGNER: 'status-transition-id-designer',
+};
+
 export default [
     {
-        name: 'status-transitions',
+        name: ROUTE_NAME.STATUS_TRANSITIONS,
         path: '/status-transitions',
         component: Pages.StatusTransitions,
         redirect: {
-            name: 'status-transitions-grid',
+            name: ROUTE_NAME.STATUS_TRANSITIONS_GRID,
         },
         meta: {
             access: true,
@@ -34,7 +42,7 @@ export default [
         },
         children: [
             {
-                name: 'status-transitions-grid',
+                name: ROUTE_NAME.STATUS_TRANSITIONS_GRID,
                 path: 'grid',
                 component: Tabs.TransitionsGridTab,
                 meta: {
@@ -51,18 +59,18 @@ export default [
         ],
     },
     {
-        name: 'transition-source-destination',
+        name: ROUTE_NAME.STATUS_TRANSITION_EDIT,
         path: '/status-transitions/transition/:id',
         component: Pages.StatusTransitionEdit,
         redirect: {
-            name: 'transition-id-general',
+            name: ROUTE_NAME.STATUS_TRANSITION_EDIT_GENERAL,
         },
         meta: {
             isMenu: false,
         },
         children: [
             {
-                name: 'transition-id-general',
+                name: ROUTE_NAME.STATUS_TRANSITION_EDIT_GENERAL,
                 path: 'general',
                 component: Tabs.StatusTransitionGeneralTab,
                 meta: {
@@ -74,14 +82,14 @@ export default [
                         },
                         {
                             title: 'Status transitions',
-                            routeName: 'status-transitions-grid',
+                            routeName: ROUTE_NAME.STATUS_TRANSITIONS_GRID,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'transition-id-designer',
+                name: ROUTE_NAME.STATUS_TRANSITION_EDIT_DESIGNER,
                 path: 'designer',
                 component: Tabs.ConditionDesignerTab,
                 meta: {
@@ -93,7 +101,7 @@ export default [
                         },
                         {
                             title: 'Status transitions',
-                            routeName: 'status-transitions-grid',
+                            routeName: ROUTE_NAME.STATUS_TRANSITIONS_GRID,
                         },
                     ],
                     privileges: [],

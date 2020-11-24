@@ -8,8 +8,8 @@
         @close="onClose">
         <template #body>
             <UnitForm
-                submit-title="CREATE"
-                proceed-title="CREATE & EDIT"
+                :submit-title="$t('core.buttons.create')"
+                :proceed-title="$t('core.buttons.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :errors="scopeErrors"
@@ -21,6 +21,9 @@
 
 <script>
 import UnitForm from '@Core/components/Forms/UnitForm';
+import {
+    ROUTE_NAME,
+} from '@Core/config/routes';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -122,7 +125,7 @@ export default {
             this.isProceeding = false;
 
             await this.$router.push({
-                name: 'unit-id-general',
+                name: ROUTE_NAME.SETTINGS_UNIT_EDIT_GENERAL,
                 params: {
                     id,
                 },

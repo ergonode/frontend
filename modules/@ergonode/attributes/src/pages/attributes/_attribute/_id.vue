@@ -3,9 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <AttributePage
-        :title="code"
-        @remove="onRemove" />
+    <AttributePage :title="code" />
 </template>
 
 <script>
@@ -13,9 +11,6 @@ import AttributePage from '@Attributes/components/Pages/AttributePage';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    MODAL_TYPE,
-} from '@Core/defaults/modals';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import {
     mapActions,
@@ -64,7 +59,6 @@ export default {
     },
     methods: {
         ...mapActions('attribute', [
-            'removeAttribute',
             '__clearStorage',
         ]),
         ...mapActions('feedback', {
@@ -73,34 +67,6 @@ export default {
         ...mapActions('tab', {
             __clearTranslationsStorage: '__clearStorage',
         }),
-        onRemove() {
-            this.$confirm({
-                type: MODAL_TYPE.DESTRUCTIVE,
-                title: this.$t('attribute.messages.deleteConfirm'),
-                applyTitle: 'YES, REMOVE',
-                action: () => {
-                    this.removeAttribute({
-                        onSuccess: this.onRemoveSuccess,
-                        onError: this.onRemoveError,
-                    });
-                },
-            });
-        },
-        onRemoveSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: this.$t('attribute.messages.deleteSuccess'),
-            });
-            this.$router.push({
-                name: 'attributes-grid',
-            });
-        },
-        onRemoveError() {
-            this.$addAlert({
-                type: ALERT_TYPE.ERROR,
-                message: this.$t('attribute.errors.deleteRequest'),
-            });
-        },
     },
     head() {
         return {

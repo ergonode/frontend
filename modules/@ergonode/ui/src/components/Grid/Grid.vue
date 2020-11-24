@@ -51,11 +51,7 @@
                     :filters="filters"
                     :pagination="pagination"
                     :row-height="tableLayoutConfig.rowHeight"
-                    :extended-columns="extendedColumns[gridLayout.TABLE]"
-                    :extended-data-cells="extendedDataCells[gridLayout.TABLE]"
-                    :extended-data-filter-cells="extendedDataFilterCells[gridLayout.TABLE]"
-                    :extended-data-edit-cells="extendedDataEditCells[gridLayout.TABLE]"
-                    :extended-edit-filter-cells="extendedDataEditFilterCells[gridLayout.TABLE]"
+                    :extended-components="extendedComponents[gridLayout.TABLE]"
                     :selected-rows="selectedRows[pagination.page]"
                     :is-selected-all-rows="isSelectedAllRows[pagination.page]"
                     :is-editable="isEditable"
@@ -80,7 +76,7 @@
                     :disabled-rows="disabledRows"
                     :columns-number="collectionLayoutConfig.columnsNumber"
                     :object-fit="collectionLayoutConfig.scaling"
-                    :extended-data-cells="extendedDataCells[gridLayout.COLLECTION]"
+                    :extended-components="extendedComponents[gridLayout.COLLECTION]"
                     @row-action="onRowAction"
                     @cell-value="onCellValueChange" />
             </KeepAlive>
@@ -310,39 +306,14 @@ export default {
             default: false,
         },
         /**
-         * The model of extended data column type filter cells components
+         * The data model of extended Grid components
          */
-        extendedDataFilterCells: {
+        extendedComponents: {
             type: Object,
-            default: () => ({}),
-        },
-        /**
-         * The model of extended edit column type filter cells components
-         */
-        extendedDataEditFilterCells: {
-            type: Object,
-            default: () => ({}),
-        },
-        /**
-         * The model of extended data column type cells components
-         */
-        extendedDataCells: {
-            type: Object,
-            default: () => ({}),
-        },
-        /**
-         * The model of extended edit column type cells components
-         */
-        extendedDataEditCells: {
-            type: Object,
-            default: () => ({}),
-        },
-        /**
-         * The model of extended type columns components
-         */
-        extendedColumns: {
-            type: Object,
-            default: () => ({}),
+            default: () => ({
+                [GRID_LAYOUT.TABLE]: {},
+                [GRID_LAYOUT.COLLECTION]: {},
+            }),
         },
     },
     data() {

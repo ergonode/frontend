@@ -12,11 +12,7 @@
                 :filters="filterValues"
                 :pagination="pagination"
                 :placeholder="noDataPlaceholder"
-                :extended-columns="extendedColumns"
-                :extended-data-cells="extendedDataCells"
-                :extended-data-filter-cells="extendedDataFilterCells"
-                :extended-data-edit-cells="extendedDataEditCells"
-                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :extended-components="extendedGridComponents"
                 :is-editable="isAllowedToUpdate"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
@@ -40,6 +36,9 @@ import {
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import PRIVILEGES from '@Users/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Users/config/routes';
 
 export default {
     name: 'UsersGridTab',
@@ -81,7 +80,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'user-id-general',
+                name: ROUTE_NAME.USER_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },

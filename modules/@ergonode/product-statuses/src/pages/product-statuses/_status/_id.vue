@@ -3,9 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ProductStatusPage
-        :title="code"
-        @remove="onRemove" />
+    <ProductStatusPage :title="code" />
 </template>
 
 <script>
@@ -13,9 +11,6 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    MODAL_TYPE,
-} from '@Core/defaults/modals';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import ProductStatusPage from '@Statuses/components/Pages/ProductStatusPage';
 import {
@@ -67,7 +62,6 @@ export default {
     },
     methods: {
         ...mapActions('productStatus', [
-            'removeProductStatus',
             '__clearStorage',
         ]),
         ...mapActions('feedback', {
@@ -76,32 +70,6 @@ export default {
         ...mapActions('tab', {
             __clearTranslationsStorage: '__clearStorage',
         }),
-        onRemove() {
-            this.$confirm({
-                type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this product status?',
-                applyTitle: 'YES, REMOVE',
-                action: () => this.removeProductStatus({
-                    onSuccess: this.onRemoveSuccess,
-                    onError: this.onRemoveError,
-                }),
-            });
-        },
-        onRemoveSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Product status removed',
-            });
-            this.$router.push({
-                name: 'product-statuses-grid',
-            });
-        },
-        onRemoveError() {
-            this.$addAlert({
-                type: ALERT_TYPE.ERROR,
-                message: 'Product status hasn`t been deleted',
-            });
-        },
     },
     head() {
         return {

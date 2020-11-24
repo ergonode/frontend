@@ -9,13 +9,23 @@ import {
 } from './imports';
 import Privileges from './privileges';
 
+export const ROUTE_NAME = {
+    MEDIA: 'media',
+    MEDIA_GRID: 'media-grid',
+    MEDIA_RESOURCE_EDIT: 'media-resource-id',
+    MEDIA_RESOURCE_EDIT_GENERAL: 'media-resource-id-general',
+    MEDIA_RESOURCE_EDIT_TRANSLATIONS: 'media-resource-id-translations',
+    MEDIA_RESOURCE_EDIT_INFORMATION: 'media-resource-id-information',
+    MEDIA_RESOURCE_EDIT_RELATIONS: 'media-resource-id-relations',
+};
+
 export default [
     {
-        name: 'media',
+        name: ROUTE_NAME.MEDIA,
         path: '/media',
         component: Pages.Media,
         redirect: {
-            name: 'media-grid',
+            name: ROUTE_NAME.MEDIA_GRID,
         },
         meta: {
             access: true,
@@ -34,7 +44,7 @@ export default [
         },
         children: [
             {
-                name: 'media-grid',
+                name: ROUTE_NAME.MEDIA_GRID,
                 path: 'grid',
                 component: Tabs.MediaGridTab,
                 meta: {
@@ -51,18 +61,18 @@ export default [
         ],
     },
     {
-        name: 'media-id',
+        name: ROUTE_NAME.MEDIA_RESOURCE_EDIT,
         path: '/media/resource/:id',
         component: Pages.ResourceEdit,
         redirect: {
-            name: 'media-id-general',
+            name: ROUTE_NAME.MEDIA_RESOURCE_EDIT_GENERAL,
         },
         meta: {
             isMenu: false,
         },
         children: [
             {
-                name: 'media-id-general',
+                name: ROUTE_NAME.MEDIA_RESOURCE_EDIT_GENERAL,
                 path: 'general',
                 component: Tabs.ResourceGeneralTab,
                 meta: {
@@ -74,14 +84,14 @@ export default [
                         },
                         {
                             title: 'Media',
-                            routeName: 'media-grid',
+                            routeName: ROUTE_NAME.MEDIA_GRID,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'media-id-translations',
+                name: ROUTE_NAME.MEDIA_RESOURCE_EDIT_TRANSLATIONS,
                 path: 'translations',
                 component: Tabs.ResourceTranslationsTab,
                 meta: {
@@ -93,14 +103,14 @@ export default [
                         },
                         {
                             title: 'Media',
-                            routeName: 'media-grid',
+                            routeName: ROUTE_NAME.MEDIA_GRID,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'import-id-information',
+                name: ROUTE_NAME.MEDIA_RESOURCE_EDIT_INFORMATION,
                 path: 'information',
                 component: Tabs.ResourceInformationTab,
                 meta: {
@@ -112,14 +122,14 @@ export default [
                         },
                         {
                             title: 'Media',
-                            routeName: 'media-grid',
+                            routeName: ROUTE_NAME.MEDIA_GRID,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'import-id-Relations',
+                name: ROUTE_NAME.MEDIA_RESOURCE_EDIT_RELATIONS,
                 path: 'relations',
                 component: Tabs.ResourceRelationsTab,
                 meta: {
@@ -131,7 +141,7 @@ export default [
                         },
                         {
                             title: 'Media',
-                            routeName: 'media-grid',
+                            routeName: ROUTE_NAME.MEDIA_GRID,
                         },
                     ],
                     privileges: [],

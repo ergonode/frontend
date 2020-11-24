@@ -3,18 +3,13 @@
  * See LICENSE for license details.
  */
 <template>
-    <UserRolesPage
-        :title="name"
-        @remove="onRemove" />
+    <UserRolesPage :title="name" />
 </template>
 
 <script>
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    MODAL_TYPE,
-} from '@Core/defaults/modals';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import UserRolesPage from '@Users/components/Pages/UserRolesPage';
 import {
@@ -64,37 +59,10 @@ export default {
     methods: {
         ...mapActions('role', [
             '__clearStorage',
-            'removeRole',
         ]),
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
-        onRemove() {
-            this.$confirm({
-                type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this role?',
-                applyTitle: 'YES, REMOVE',
-                action: () => this.removeRole({
-                    onSuccess: this.onRemoveSuccess,
-                    onError: this.onRemoveError,
-                }),
-            });
-        },
-        onRemoveSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Role removed',
-            });
-            this.$router.push({
-                name: 'user-roles-grid',
-            });
-        },
-        onRemoveError() {
-            this.$addAlert({
-                type: ALERT_TYPE.ERROR,
-                message: 'Role hasn`t been deleted',
-            });
-        },
     },
 };
 </script>

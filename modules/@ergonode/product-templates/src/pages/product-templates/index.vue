@@ -8,16 +8,7 @@
             title="Templates"
             :is-read-only="isReadOnly">
             <template #mainAction>
-                <Button
-                    data-cy="new-template"
-                    title="NEW TEMPLATE"
-                    :size="smallSize"
-                    :disabled="!isAllowedToCreate"
-                    @click.native="onCreate">
-                    <template #prepend="{ color }">
-                        <IconAdd :fill-color="color" />
-                    </template>
-                </Button>
+                <CreateProductTemplateButton @created="onCreatedData" />
             </template>
         </TitleBar>
         <CenterViewTemplate>
@@ -30,11 +21,7 @@
                     :pagination="pagination"
                     :placeholder="noDataPlaceholder"
                     :default-layout="gridLayout.COLLECTION"
-                    :extended-columns="extendedColumns"
-                    :extended-data-cells="extendedDataCells"
-                    :extended-data-filter-cells="extendedDataFilterCells"
-                    :extended-data-edit-cells="extendedDataEditCells"
-                    :extended-edit-filter-cells="extendedDataEditFilterCells"
+                    :extended-components="extendedGridComponents"
                     :is-editable="isAllowedToUpdate"
                     :is-collection-layout="true"
                     :is-header-visible="true"
@@ -51,10 +38,6 @@
                     @filter="onFilterChange" />
             </template>
         </CenterViewTemplate>
-        <CreateProductTemplateModalForm
-            v-if="isCreateProductTemplateVisible"
-            @close="onCloseModal"
-            @created="onCreatedProductTemplate" />
     </Page>
 </template>
 
@@ -62,18 +45,17 @@
 import {
     GRID_LAYOUT,
 } from '@Core/defaults/grid';
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import CreateProductTemplateButton from '@Templates/components/Buttons/CreateProductTemplateButton';
 import PRIVILEGES from '@Templates/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Templates/config/routes';
 import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import Page from '@UI/components/Layout/Page';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import TitleBar from '@UI/components/TitleBar/TitleBar';
@@ -81,12 +63,10 @@ import TitleBar from '@UI/components/TitleBar/TitleBar';
 export default {
     name: 'Templates',
     components: {
+        CreateProductTemplateButton,
         CenterViewTemplate,
         TitleBar,
         Page,
-        IconAdd,
-        Button,
-        CreateProductTemplateModalForm: () => import('@Templates/components/Modals/CreateProductTemplateModalForm'),
     },
     mixins: [
         fetchGridDataMixin({
@@ -102,7 +82,6 @@ export default {
     data() {
         return {
             isPrefetchingData: true,
-            isCreateProductTemplateVisible: false,
         };
     },
     computed: {
@@ -119,11 +98,6 @@ export default {
                 PRIVILEGES.TEMPLATE_DESIGNER.update,
             ]);
         },
-        isAllowedToCreate() {
-            return this.$hasAccess([
-                PRIVILEGES.TEMPLATE_DESIGNER.create,
-            ]);
-        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.TEMPLATE_DESIGNER.namespace);
         },
@@ -133,29 +107,19 @@ export default {
                 descriptionColumn: 'name',
             };
         },
-        smallSize() {
-            return SIZE.SMALL;
-        },
         gridLayout() {
             return GRID_LAYOUT;
         },
     },
     methods: {
-        onCreate() {
-            this.isCreateProductTemplateVisible = true;
-        },
-        onCloseModal() {
-            this.isCreateProductTemplateVisible = false;
-        },
-        onCreatedProductTemplate() {
-            this.isCreateProductTemplateVisible = false;
-            this.onFetchData(this.localParams);
+        onCreatedData() {
+            this.onFetchData();
         },
         onEditRow(args) {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'product-template-id-general',
+                name: ROUTE_NAME.PRODUCT_TEMPLATE_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },

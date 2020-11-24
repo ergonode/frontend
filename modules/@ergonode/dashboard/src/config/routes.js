@@ -7,9 +7,13 @@ import {
     Pages,
 } from './imports';
 
+export const ROUTE_NAME = {
+    DASHBOARD: 'dashboard',
+};
+
 export default [
     {
-        name: 'dashboard',
+        name: ROUTE_NAME.DASHBOARD,
         path: '/dashboard',
         component: Pages.Dashboard,
         meta: {

@@ -6,7 +6,7 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <ImportProfileForm
-                submit-title="SAVE CHANGES"
+                :submit-title="$t('core.buttons.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"

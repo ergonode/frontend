@@ -3,18 +3,13 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResourcePage
-        :title="`${name}.${extension}`"
-        @remove="onRemove" />
+    <ResourcePage :title="`${name}.${extension}`" />
 </template>
 
 <script>
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    MODAL_TYPE,
-} from '@Core/defaults/modals';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import ResourcePage from '@Media/components/Pages/ResourcePage';
 import {
@@ -60,7 +55,6 @@ export default {
     },
     methods: {
         ...mapActions('media', [
-            'removeResource',
             '__clearStorage',
         ]),
         ...mapActions('feedback', {
@@ -69,32 +63,6 @@ export default {
         ...mapActions('tab', {
             __clearTranslationsStorage: '__clearStorage',
         }),
-        onRemove() {
-            this.$confirm({
-                type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this resource?',
-                applyTitle: 'YES, REMOVE',
-                action: () => this.removeResource({
-                    onSuccess: this.onRemoveSuccess,
-                    onError: this.onRemoveError,
-                }),
-            });
-        },
-        onRemoveSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Resource removed',
-            });
-            this.$router.push({
-                name: 'media-grid',
-            });
-        },
-        onRemoveError() {
-            this.$addAlert({
-                type: ALERT_TYPE.ERROR,
-                message: 'Resource hasn`t been deleted',
-            });
-        },
     },
     head() {
         return {

@@ -9,9 +9,20 @@ import {
 } from './imports';
 import Privileges from './privileges';
 
+export const ROUTE_NAME = {
+    INDEX: 'index',
+    PLACEHOLDER: 'placeholder',
+    SETTINGS: 'settings',
+    SETTINGS_LANGUAGES: 'settings-languages',
+    SETTINGS_LANGUAGES_INHERITANCE: 'settings-languages-inheritance',
+    SETTINGS_UNITS: 'settings-units',
+    SETTINGS_UNIT_EDIT: 'unit-id',
+    SETTINGS_UNIT_EDIT_GENERAL: 'unit-id-general',
+};
+
 export default [
     {
-        name: 'index',
+        name: ROUTE_NAME.INDEX,
         path: '/',
         component: Pages.Login,
         meta: {
@@ -19,7 +30,7 @@ export default [
         },
     },
     {
-        name: 'placeholder',
+        name: ROUTE_NAME.PLACEHOLDER,
         path: '/placeholder/:placeholder',
         component: Pages.Placeholder,
         meta: {
@@ -27,10 +38,10 @@ export default [
         },
     },
     {
-        name: 'settings',
+        name: ROUTE_NAME.SETTINGS,
         path: '/settings',
         redirect: {
-            name: 'settings-languages',
+            name: ROUTE_NAME.SETTINGS_LANGUAGES,
         },
         component: Pages.Settings,
         meta: {
@@ -56,7 +67,7 @@ export default [
         },
         children: [
             {
-                name: 'settings-languages',
+                name: ROUTE_NAME.SETTINGS_LANGUAGES,
                 path: 'languages',
                 component: Tabs.MainSettingsTab,
                 meta: {
@@ -71,7 +82,7 @@ export default [
                 },
             },
             {
-                name: 'settings-languages-inheritance',
+                name: ROUTE_NAME.SETTINGS_LANGUAGES_INHERITANCE,
                 path: 'languages-inheritance',
                 component: Tabs.LanguagesSettingsTab,
                 meta: {
@@ -86,7 +97,7 @@ export default [
                 },
             },
             {
-                name: 'settings-units',
+                name: ROUTE_NAME.SETTINGS_UNITS,
                 path: 'units',
                 component: Tabs.UnitsSettingsGridTab,
                 meta: {
@@ -103,18 +114,18 @@ export default [
         ],
     },
     {
-        name: 'unit-id',
+        name: ROUTE_NAME.SETTINGS_UNIT_EDIT,
         path: '/settings/units/unit/:id',
         component: Pages.UnitEdit,
         redirect: {
-            name: 'unit-id-general',
+            name: ROUTE_NAME.SETTINGS_UNIT_EDIT_GENERAL,
         },
         meta: {
             isMenu: false,
         },
         children: [
             {
-                name: 'unit-id-general',
+                name: ROUTE_NAME.SETTINGS_UNIT_EDIT_GENERAL,
                 path: 'general',
                 component: Tabs.UnitGeneralTab,
                 meta: {
@@ -126,7 +137,7 @@ export default [
                         },
                         {
                             title: 'Units',
-                            routeName: 'settings-units',
+                            routeName: ROUTE_NAME.SETTINGS_UNITS,
                         },
                     ],
                     privileges: [],

@@ -10,18 +10,14 @@
                 :rows="rows"
                 :drafts="drafts"
                 :data-count="dataCount"
-                :extended-columns="extendedColumns"
-                :extended-data-cells="extendedDataCells"
-                :extended-data-filter-cells="extendedDataFilterCells"
-                :extended-data-edit-cells="extendedDataEditCells"
-                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :extended-components="extendedGridComponents"
                 :is-editable="isAllowedToUpdate"
                 :is-border="true"
                 @cell-value="onCellValueChange">
                 <template #footer>
                     <div class="role-privileges-footer">
                         <Button
-                            title="SAVE CHANGES"
+                            :title="$t('core.buttons.submit')"
                             @click.native="onSubmit">
                             <template
                                 v-if="isSubmitting"

@@ -145,42 +145,15 @@ export default function ({
 
                 this.onFetchData();
             },
-            async onFetchData({
-                offset,
-                limit,
-                filter,
-                sortedColumn,
-            } = this.localParams) {
-                this.localParams = {
-                    offset,
-                    limit,
-                    filter,
-                    sortedColumn,
-                };
-
-                const params = {
-                    offset,
-                    limit,
-                    extended: true,
-                    filter,
-                    columns: this.getGridColumnParams(),
-                };
-
-                if (Object.keys(sortedColumn).length) {
-                    const {
-                        index: colSortID, orderState,
-                    } = sortedColumn;
-
-                    params.field = colSortID;
-                    params.order = orderState;
-                }
+            async onFetchData(localParams = this.localParams) {
+                this.localParams = localParams;
 
                 await getGridData({
                     $route: this.$route,
                     $cookies: this.$cookies,
                     $axios: this.$axios,
                     path: this.getPath(),
-                    params,
+                    params: this.getParams(),
                     onSuccess: this.onFetchDataSuccess,
                     onError: this.onFetchDataError,
                 });
@@ -249,6 +222,27 @@ export default function ({
                         && typeof disabledElements[languageCode][attributeId] !== 'undefined'),
                 };
             },
+            getParams() {
+                const params = {
+                    offset: this.localParams.offset,
+                    limit: this.localParams.limit,
+                    extended: true,
+                    filter: this.localParams.filter,
+                    columns: this.$cookies.get(`GRID_CONFIG:${this.$route.name}`) || defaultColumns,
+                };
+
+                if (Object.keys(this.localParams.sortedColumn).length) {
+                    const {
+                        index: colSortID,
+                        orderState,
+                    } = this.localParams.sortedColumn;
+
+                    params.field = colSortID;
+                    params.order = orderState;
+                }
+
+                return params;
+            },
             getPath() {
                 let mappedPath = path;
 
@@ -259,11 +253,6 @@ export default function ({
                 });
 
                 return mappedPath;
-            },
-            getGridColumnParams() {
-                const columnsConfig = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
-
-                return columnsConfig || defaultColumns;
             },
         },
     };

@@ -72,7 +72,7 @@
                     @close="onCloseSectionModal" />
             </TemplateGridDesigner>
             <Button
-                title="SAVE CHANGES"
+                :title="$t('core.buttons.submit')"
                 :floating="{ bottom: '24px', right: '24px' }"
                 @click.native="onSubmit">
                 <template

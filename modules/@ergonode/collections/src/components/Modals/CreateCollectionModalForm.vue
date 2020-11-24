@@ -8,8 +8,8 @@
         @close="onClose">
         <template #body>
             <CollectionForm
-                submit-title="CREATE"
-                proceed-title="CREATE & EDIT"
+                :submit-title="$t('core.buttons.create')"
+                :proceed-title="$t('core.buttons.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :errors="scopeErrors"
@@ -21,6 +21,9 @@
 
 <script>
 import CollectionForm from '@Collections/components/Forms/CollectionForm';
+import {
+    ROUTE_NAME,
+} from '@Collections/config/routes';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -106,7 +109,7 @@ export default {
             this.isProceeding = false;
 
             this.$router.push({
-                name: 'collection-id-general',
+                name: ROUTE_NAME.COLLECTION_EDIT_GENERAL,
                 params: {
                     id,
                 },

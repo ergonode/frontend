@@ -16,8 +16,7 @@
                 <div
                     v-if="value <= maxValue && value > 0 || value > maxValue"
                     ref="progressDivider"
-                    class="complex-progress-bar__progress-divider"
-                />
+                    class="complex-progress-bar__progress-divider" />
             </div>
         </div>
     </ResizeObserver>
@@ -77,7 +76,10 @@ export default {
             const {
                 width,
             } = entry.contentRect;
-            const progressWidth = (this.value / this.maxValue) * width;
+            const value = this.value > this.maxValue
+                ? this.maxValue
+                : this.value;
+            const progressWidth = (value / this.maxValue) * width;
 
             requestAnimationFrame(() => {
                 if (this.$refs.value && this.$refs.progressDivider) {

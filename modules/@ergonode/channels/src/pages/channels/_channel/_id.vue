@@ -3,9 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ChannelPage
-        :title="name"
-        @remove="onRemove" />
+    <ChannelPage :title="name" />
 </template>
 
 <script>
@@ -13,9 +11,6 @@ import ChannelPage from '@Channels/components/Pages/ChannelPage';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    MODAL_TYPE,
-} from '@Core/defaults/modals';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import {
     mapActions,
@@ -71,37 +66,10 @@ export default {
     methods: {
         ...mapActions('channel', [
             '__clearStorage',
-            'removeChannel',
         ]),
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
-        onRemove() {
-            this.$confirm({
-                type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this channel?',
-                applyTitle: 'YES, REMOVE',
-                action: () => this.removeChannel({
-                    onSuccess: this.onRemoveSuccess,
-                    onError: this.onRemoveError,
-                }),
-            });
-        },
-        onRemoveSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Channel removed',
-            });
-            this.$router.push({
-                name: 'channel-grid',
-            });
-        },
-        onRemoveError() {
-            this.$addAlert({
-                type: ALERT_TYPE.ERROR,
-                message: 'Channel hasn`t been deleted',
-            });
-        },
     },
     head() {
         return {

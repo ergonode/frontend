@@ -11,6 +11,9 @@
 
 <script>
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import {
+    ROUTE_NAME,
+} from '@Notifications/config/routes';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@UI/components/TitleBar/TitleBar';
@@ -36,7 +39,7 @@ export default {
                 {
                     title: 'Notifications',
                     route: {
-                        name: 'notifications-grid',
+                        name: ROUTE_NAME.NOTIFICATIONS_GRID,
                     },
                 },
             ];

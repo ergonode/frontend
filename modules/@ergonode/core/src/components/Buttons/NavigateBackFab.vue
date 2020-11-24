@@ -15,7 +15,7 @@ import Fab from '@UI/components/Fab/Fab';
 import IconArrowPointer from '@UI/components/Icons/Arrows/IconArrowPointer';
 
 export default {
-    name: 'NavigationBackFab',
+    name: 'NavigateBackFab',
     components: {
         IconArrowPointer,
         Fab,

@@ -9,20 +9,10 @@
             :is-navigation-back="true"
             :is-read-only="isReadOnly">
             <template #prependHeader>
-                <NavigationBackFab />
+                <NavigateBackFab />
             </template>
             <template #mainAction>
-                <Button
-                    data-cy="delete-segment"
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    title="REMOVE SEGMENT"
-                    :disabled="!isAllowedToDelete"
-                    @click.native="onRemove">
-                    <template #prepend="{ color }">
-                        <IconDelete :fill-color="color" />
-                    </template>
-                </Button>
+                <RemoveSegmentButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -36,10 +26,14 @@
 <script>
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import RemoveSegmentButton from '@Segments/components/Buttons/RemoveSegmentButton';
 import PRIVILEGES from '@Segments/config/privileges';
 
 export default {
     name: 'SegmentPage',
+    components: {
+        RemoveSegmentButton,
+    },
     mixins: [
         editPageMixin,
         asyncTabsMixin,
@@ -47,11 +41,6 @@ export default {
     computed: {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.SEGMENT.namespace);
-        },
-        isAllowedToDelete() {
-            return this.$hasAccess([
-                PRIVILEGES.SEGMENT.delete,
-            ]);
         },
     },
 };

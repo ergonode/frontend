@@ -8,7 +8,7 @@
             :title="title"
             :is-read-only="isReadOnly">
             <template #prependHeader>
-                <NavigationBackFab />
+                <NavigateBackFab />
             </template>
             <template #mainAction>
                 <template
@@ -18,17 +18,7 @@
                         :key="index"
                         v-bind="bindingProps(actionItem)" />
                 </template>
-                <Button
-                    data-cy="delete-attribute"
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    :title="$t('attribute.page.removeButton')"
-                    :disabled="!isAllowedToDelete"
-                    @click.native="onRemove">
-                    <template #prepend="{ color }">
-                        <IconDelete :fill-color="color" />
-                    </template>
-                </Button>
+                <RemoveAttributeButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -40,6 +30,7 @@
 </template>
 
 <script>
+import RemoveAttributeButton from '@Attributes/components/Buttons/RemoveAttributeButton';
 import PRIVILEGES from '@Attributes/config/privileges';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import {
@@ -54,6 +45,9 @@ import {
 
 export default {
     name: 'AttributePage',
+    components: {
+        RemoveAttributeButton,
+    },
     mixins: [
         editPageMixin,
     ],
@@ -71,11 +65,6 @@ export default {
         ]),
         extendedMainAction() {
             return this.$getExtendedComponents('@Attributes/components/Pages/AttributePage/mainAction');
-        },
-        isAllowedToDelete() {
-            return this.$hasAccess([
-                PRIVILEGES.ATTRIBUTE.delete,
-            ]);
         },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.ATTRIBUTE.namespace);

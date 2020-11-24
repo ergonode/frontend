@@ -4,12 +4,12 @@
  */
 <template>
     <ModalForm
-        title="Create attribute group"
+        :title="$t('attributeGroup.form.createTitle')"
         @close="onClose">
         <template #body>
             <AttributeGroupForm
-                submit-title="CREATE"
-                proceed-title="CREATE & EDIT"
+                :submit-title="$t('core.buttons.create')"
+                :proceed-title="$t('core.buttons.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :errors="scopeErrors"
@@ -21,6 +21,9 @@
 
 <script>
 import AttributeGroupForm from '@Attributes/components/Forms/AttributeGroupForm';
+import {
+    ROUTE_NAME,
+} from '@Attributes/config/routes';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -94,7 +97,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Attribute group created',
+                message: this.$t('attributeGroup.messages.createSuccess'),
             });
 
             this.isSubmitting = false;
@@ -106,7 +109,7 @@ export default {
             this.isProceeding = false;
 
             this.$router.push({
-                name: 'attribute-group-id-general',
+                name: ROUTE_NAME.ATTRIBUTE_GROUPS_EDIT_GENERAL,
                 params: {
                     id,
                 },
