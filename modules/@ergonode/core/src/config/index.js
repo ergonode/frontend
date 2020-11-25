@@ -27,7 +27,7 @@ export default {
             src: './plugins/core',
         },
         {
-            ssr: false,
+            ssr: true,
             src: './plugins/alerts',
         },
     ],

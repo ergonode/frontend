@@ -3,10 +3,27 @@
  * See LICENSE for license details.
  */
 import {
+    refresh,
+} from '@Authentication/services';
+import {
     cacheAdapterEnhancer,
 } from 'axios-extensions';
 
 let cancelTokens = [];
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error) => {
+    failedQueue.forEach((prom) => {
+        if (error) {
+            prom.reject(error);
+        } else {
+            prom.resolve();
+        }
+    });
+
+    failedQueue = [];
+};
 
 const clearCancelTokens = () => {
     cancelTokens.forEach((request) => {
@@ -57,12 +74,14 @@ export default function ({
             configLocal.baseURL = `${process.env.baseURL}${language}/`;
         }
 
-        configLocal.headers.JWTAuthorization = `Bearer ${store.state.authentication.jwt}`;
+        if (!config.url.includes('token/refresh')) {
+            configLocal.headers.JWTAuthorization = `Bearer ${store.state.authentication.token}`;
+        }
 
         return configLocal;
     });
 
-    axios.onError((errorResponse) => {
+    axios.onError(async (errorResponse) => {
         let msg = '';
         const dev = process.env.NODE_ENV === 'development';
         const regExp = {
@@ -83,7 +102,9 @@ export default function ({
             response: {
                 data: {
                     message,
-                }, status, config,
+                },
+                status,
+                config,
             },
         } = errorResponse;
 
@@ -91,16 +112,58 @@ export default function ({
         case regExp.errors.test(status):
             msg = 'Internal Server Error';
             break;
-        case regExp.auth.test(status):
+        case regExp.auth.test(status): {
             msg = 'Authentication needed';
-            if (store.state.authentication.isLogged) {
-                store.dispatch('authentication/__setState', {
-                    key: 'isLogged',
-                    value: false,
-                });
-                redirect('/');
+
+            const originalRequest = config;
+
+            if (!originalRequest._retry) {
+                if (isRefreshing) {
+                    return new Promise((resolve, reject) => {
+                        failedQueue.push({
+                            resolve,
+                            reject,
+                        });
+                    })
+                        .then(() => axios(originalRequest))
+                        .catch(Promise.reject);
+                }
+
+                originalRequest._retry = true;
+                isRefreshing = true;
+
+                return new Promise((resolve, reject) => refresh({
+                    $axios,
+                    data: {
+                        refresh_token: store.state.authentication.refreshToken,
+                    },
+                })
+                    .then(({
+                        token,
+                        refresh_token: refreshToken,
+                    }) => {
+                        store.dispatch('authentication/setTokens', {
+                            token,
+                            refreshToken,
+                        });
+                        processQueue(null);
+                        resolve(axios(originalRequest));
+                    })
+                    .catch((err) => {
+                        processQueue(err);
+                        reject(err);
+
+                        store.dispatch('authentication/__setState', {
+                            key: 'isLogged',
+                            value: false,
+                        });
+                        redirect('/');
+                    })
+                    .finally(() => { isRefreshing = false; }));
             }
+
             break;
+        }
         case regExp.access.test(status):
             msg = 'Access denied';
             error({
@@ -123,12 +186,11 @@ export default function ({
             msg = message || 'Unsupported message, please contact support with reproduction steps';
         }
 
-        if (process.client) {
-            store.dispatch('alert/addAlert', {
-                type: 'error',
-                message: msg,
-            });
-        }
+        store.dispatch('alert/addAlert', {
+            type: 'error',
+            message: msg,
+        });
+
         if (dev) console.error(errorResponse.response);
 
         return Promise.reject(errorResponse.response);

@@ -23,7 +23,7 @@ export const removeRequest = ({
 }) => {
     const fullPath = `${Cypress.env('defaultLanguage')}/${path}/${responseID}`;
 
-    cy.getCookie('jwt')
+    cy.getCookie('token')
         .should('exist')
         .then((c) => {
             const token = c.value;

@@ -4,6 +4,7 @@
  */
 export default () => ({
     user: null,
-    jwt: null,
+    token: null,
+    refreshToken: null,
     isLogged: false,
 });

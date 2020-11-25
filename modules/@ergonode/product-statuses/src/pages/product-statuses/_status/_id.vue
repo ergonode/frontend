@@ -39,12 +39,10 @@ export default {
         await store.dispatch('productStatus/getProductStatus', {
             id: params.id,
             onError: () => {
-                if (process.client) {
-                    app.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: 'Product status hasn`t been fetched properly',
-                    });
-                }
+                app.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Product status hasn`t been fetched properly',
+                });
             },
         });
         await store.dispatch('productStatus/getDefaultStatus', {});

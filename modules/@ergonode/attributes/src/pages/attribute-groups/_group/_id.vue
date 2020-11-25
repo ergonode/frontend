@@ -38,12 +38,10 @@ export default {
         await store.dispatch('attributeGroup/getAttributeGroup', {
             id: params.id,
             onError: () => {
-                if (process.client) {
-                    app.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: 'Attribute group hasn`t been fetched properly',
-                    });
-                }
+                app.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Attribute group hasn`t been fetched properly',
+                });
             },
         });
     },

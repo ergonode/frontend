@@ -38,12 +38,10 @@ export default {
         await store.dispatch('categoryTree/getCategoryTree', {
             id: params.id,
             onError: () => {
-                if (process.client) {
-                    app.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: 'Category tree hasn`t been fetched properly',
-                    });
-                }
+                app.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Category tree hasn`t been fetched properly',
+                });
             },
         });
     },

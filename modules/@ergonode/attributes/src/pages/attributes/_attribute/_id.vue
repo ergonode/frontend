@@ -38,12 +38,10 @@ export default {
         await store.dispatch('attribute/getAttribute', {
             id: params.id,
             onError: () => {
-                if (process.client) {
-                    app.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: app.i18n.t('attribute.errors.getRequest'),
-                    });
-                }
+                app.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: app.i18n.t('attribute.errors.getRequest'),
+                });
             },
         });
     },
