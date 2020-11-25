@@ -149,9 +149,10 @@ export default {
         display: flex;
         flex-direction: column;
         background-color: $WHITE;
+        box-shadow: $ELEVATOR_2_DP;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         opacity: 0;
         visibility: hidden;
-        box-shadow: $ELEVATOR_2_DP;
         will-change:
             visibility,
             opacity,
@@ -161,6 +162,5 @@ export default {
             right,
             height,
             width;
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
     }
 </style>
