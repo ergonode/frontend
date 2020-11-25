@@ -19,25 +19,27 @@ export default {
         commit,
         dispatch,
     }, alert) {
-        const id = getUUID();
-        const {
-            message = '',
-            type = SUCCESS,
-            duration = ALERT_TIME_TO_LEAVE,
-        } = alert;
+        if (process.client) {
+            const id = getUUID();
+            const {
+                message = '',
+                type = SUCCESS,
+                duration = ALERT_TIME_TO_LEAVE,
+            } = alert;
 
-        const timeOut = setTimeout(() => {
-            dispatch('removeAlert', {
+            const timeOut = setTimeout(() => {
+                dispatch('removeAlert', {
+                    id,
+                });
+            }, duration);
+
+            commit(types.ADD_ALERT, {
                 id,
+                type,
+                message,
+                timeOut,
             });
-        }, duration);
-
-        commit(types.ADD_ALERT, {
-            id,
-            type,
-            message,
-            timeOut,
-        });
+        }
     },
     removeAlert({
         commit,

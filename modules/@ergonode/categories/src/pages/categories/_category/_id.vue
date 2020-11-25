@@ -38,12 +38,10 @@ export default {
         await store.dispatch('category/getCategory', {
             id: params.id,
             onError: () => {
-                if (process.client) {
-                    app.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: app.i18n.t('category.errors.getRequest'),
-                    });
-                }
+                app.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: app.i18n.t('category.errors.getRequest'),
+                });
             },
         });
     },

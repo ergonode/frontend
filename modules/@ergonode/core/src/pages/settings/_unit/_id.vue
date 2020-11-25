@@ -38,12 +38,10 @@ export default {
         await store.dispatch('unit/getUnit', {
             id: params.id,
             onError: () => {
-                if (process.client) {
-                    app.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: 'Unit hasn`t been fetched properly',
-                    });
-                }
+                app.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Unit hasn`t been fetched properly',
+                });
             },
         });
     },

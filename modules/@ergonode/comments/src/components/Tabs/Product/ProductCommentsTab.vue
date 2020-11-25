@@ -60,12 +60,10 @@ export default {
         await store.dispatch('comment/getComments', {
             params: requestParams,
             onError: () => {
-                if (process.client) {
-                    app.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: 'Comments hasn`t been fetched properly',
-                    });
-                }
+                app.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Comments hasn`t been fetched properly',
+                });
             },
         });
     },

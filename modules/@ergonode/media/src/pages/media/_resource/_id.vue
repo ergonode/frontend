@@ -33,12 +33,10 @@ export default {
         return store.dispatch('media/getResource', {
             id: params.id,
             onError: () => {
-                if (process.client) {
-                    app.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: 'Media hasn`t been fetched properly',
-                    });
-                }
+                app.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Media hasn`t been fetched properly',
+                });
             },
         });
     },
