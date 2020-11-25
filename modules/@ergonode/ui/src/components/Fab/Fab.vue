@@ -56,7 +56,11 @@ export default {
         size: {
             type: String,
             default: SIZE.SMALL,
-            validator: value => Object.values(SIZE).indexOf(value) !== -1,
+            validator: value => [
+                SIZE.TINY,
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
         },
         /**
          * Determinate if the component is disabled
