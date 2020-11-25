@@ -229,8 +229,6 @@ export default {
             });
             // EXTENDED BEFORE METHOD
 
-            console.log(id);
-
             await remove({
                 $axios: this.app.$axios,
                 id,

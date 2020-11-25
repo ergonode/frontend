@@ -3,23 +3,21 @@
  * See LICENSE for license details.
  */
 <template>
-    <ClickOutsideGlobalEvent @click-outside="onClickOutside">
-        <div
-            :class="classes"
-            ref="dropdown">
-            <slot />
-        </div>
-    </ClickOutsideGlobalEvent>
+    <div
+        :class="classes"
+        ref="dropdown">
+        <slot />
+    </div>
 </template>
 
 <script>
-import ClickOutsideGlobalEvent from '@UI/components/Events/ClickOutsideGlobalEvent';
+import {
+    getPositionForBrowser,
+    isMouseInsideElement,
+} from '@UI/models/dragAndDrop/helpers';
 
 export default {
     name: 'Dropdown',
-    components: {
-        ClickOutsideGlobalEvent,
-    },
     props: {
         /**
          * Determines whether content of dropdown has fixed height and width or not
@@ -46,9 +44,6 @@ export default {
         classes() {
             return [
                 'dropdown',
-                {
-                    'dropdown--visible': this.visible,
-                },
             ];
         },
     },
@@ -57,6 +52,14 @@ export default {
             immediate: true,
             handler() {
                 if (!this.parentReference || !this.visible) {
+                    if (!this.visible) {
+                        requestAnimationFrame(() => {
+                            this.$refs.dropdown.style.visibility = 'hidden';
+                        });
+
+                        window.removeEventListener('click', this.onClickOutside);
+                    }
+
                     return;
                 }
 
@@ -65,6 +68,8 @@ export default {
                     : this.parentReference.$el;
 
                 requestAnimationFrame(() => {
+                    this.$refs.dropdown.style.visibility = 'initial';
+
                     const parentOffset = parentElement.getBoundingClientRect();
                     const offset = 2;
                     const {
@@ -96,6 +101,12 @@ export default {
                     } else {
                         this.$refs.dropdown.style.top = `${parentOffset.y + parentOffset.height + offset}px`;
                     }
+
+                    this.$emit('height', this.$refs.dropdown.offsetHeight);
+                });
+
+                setTimeout(() => {
+                    window.addEventListener('click', this.onClickOutside);
                 });
             },
         },
@@ -113,8 +124,17 @@ export default {
         }
     },
     methods: {
-        onClickOutside(payload) {
-            this.$emit('click-outside', payload);
+        onClickOutside(event) {
+            const {
+                xPos,
+                yPos,
+            } = getPositionForBrowser(event);
+            const isClickedOutside = !isMouseInsideElement(this.$refs.dropdown, xPos, yPos);
+
+            this.$emit('click-outside', {
+                event,
+                isClickedOutside,
+            });
         },
     },
 };
@@ -124,20 +144,18 @@ export default {
     .dropdown {
         position: absolute;
         z-index: $Z_INDEX_MAX;
-        display: none;
+        display: flex;
         flex-direction: column;
+        visibility: hidden;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_2_DP;
         will-change:
+            visibility,
             top,
             left,
             bottom,
             right,
             height,
             width;
-
-        &--visible {
-            display: flex;
-        }
     }
 </style>
