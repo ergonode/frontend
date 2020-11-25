@@ -34,6 +34,7 @@ export default {
         value: {
             type: Number,
             default: 0,
+            validator: value => value <= 100,
         },
     },
     data() {
@@ -46,9 +47,11 @@ export default {
     },
     computed: {
         transformValue() {
-            return this.value === this.maxValue
-                ? this.width - this.sphereSize
-                : this.width * (this.value / this.maxValue);
+            if (this.value >= this.maxValue) {
+                return this.width - this.sphereSize;
+            }
+
+            return this.width * (this.value / this.maxValue);
         },
         progressStyle() {
             return {

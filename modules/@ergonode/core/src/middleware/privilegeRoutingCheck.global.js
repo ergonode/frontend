@@ -11,7 +11,7 @@ export default ({
         },
     } = route;
 
-    if (store.state.authentication.jwt && store.state.authentication.user) {
+    if (store.state.authentication.token && store.state.authentication.user) {
         if (privileges.length
             && !app.$hasAccess(privileges)) {
             error({

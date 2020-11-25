@@ -47,23 +47,19 @@ export default {
                 languageCode: defaultLanguageCode,
                 id,
                 onError: () => {
-                    if (process.client) {
-                        app.$addAlert({
-                            type: ALERT_TYPE.ERROR,
-                            message: 'Product draft hasn’t been fetched properly',
-                        });
-                    }
+                    app.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Product draft hasn’t been fetched properly',
+                    });
                 },
             }),
             store.dispatch('product/getProduct', {
                 id,
                 onError: () => {
-                    if (process.client) {
-                        app.$addAlert({
-                            type: ALERT_TYPE.ERROR,
-                            message: 'Product hasn’t been fetched properly',
-                        });
-                    }
+                    app.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Product hasn’t been fetched properly',
+                    });
                 },
             }),
         ]);

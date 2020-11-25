@@ -24,7 +24,7 @@ before(() => {
 });
 
 beforeEach(() => {
-    Cypress.Cookies.preserveOnce('jwt');
+    Cypress.Cookies.preserveOnce('token');
     cy.apiRequest({
         method: 'POST',
         url,
