@@ -148,9 +148,9 @@ export default {
         z-index: $Z_INDEX_MAX;
         display: flex;
         flex-direction: column;
-        visibility: hidden;
-        opacity: 0;
         background-color: $WHITE;
+        opacity: 0;
+        visibility: hidden;
         box-shadow: $ELEVATOR_2_DP;
         will-change:
             visibility,
