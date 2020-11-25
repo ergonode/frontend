@@ -55,6 +55,7 @@ export default {
                     if (!this.visible) {
                         requestAnimationFrame(() => {
                             this.$refs.dropdown.style.visibility = 'hidden';
+                            this.$refs.dropdown.style.opacity = '0';
                         });
 
                         window.removeEventListener('click', this.onClickOutside);
@@ -69,6 +70,7 @@ export default {
 
                 requestAnimationFrame(() => {
                     this.$refs.dropdown.style.visibility = 'initial';
+                    this.$refs.dropdown.style.opacity = '1';
 
                     const parentOffset = parentElement.getBoundingClientRect();
                     const offset = 2;
@@ -147,15 +149,18 @@ export default {
         display: flex;
         flex-direction: column;
         visibility: hidden;
+        opacity: 0;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_2_DP;
         will-change:
             visibility,
+            opacity,
             top,
             left,
             bottom,
             right,
             height,
             width;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
     }
 </style>
