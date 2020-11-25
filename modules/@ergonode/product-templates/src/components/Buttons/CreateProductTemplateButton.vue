@@ -8,7 +8,7 @@
         title="NEW TEMPLATE"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
-        @click.native="onCreate">
+        @click.native="onShowModal">
         <template #prepend="{ color }">
             <IconAdd :fill-color="color" />
         </template>

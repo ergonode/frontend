@@ -21,9 +21,6 @@
                     </h3>
                     <div class="errors-list__links">
                         <LinkButton
-                            v-if="formGlobalError"
-                            :title="formGlobalError" />
-                        <LinkButton
                             v-for="(error, index) in presentationErrors"
                             :title="error"
                             :key="index" />

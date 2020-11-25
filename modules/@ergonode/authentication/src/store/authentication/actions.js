@@ -64,7 +64,14 @@ export default {
 
                 onSuccess();
             } catch (e) {
-                onError(e);
+                onError({
+                    errors: {
+                        __form: [
+                            e.data.message,
+                        ],
+                    },
+                    scope,
+                });
             }
         } else {
             onError({

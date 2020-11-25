@@ -37,6 +37,7 @@ const clearCancelTokens = () => {
 
 export default function ({
     $axios,
+    app,
     store,
     error,
     redirect,
@@ -96,7 +97,7 @@ export default function ({
         }
 
         if (!errorResponse || !errorResponse.response) {
-            return Promise.reject(new Error('Network Error'));
+            return Promise.reject(new Error(app.i18n.t('core.errors.network')));
         }
         const {
             response: {
@@ -110,10 +111,15 @@ export default function ({
 
         switch (true) {
         case regExp.errors.test(status):
-            msg = 'Internal Server Error';
+            msg = app.i18n.t('core.errors.internal');
             break;
         case regExp.auth.test(status): {
-            msg = 'Authentication needed';
+            if (config.url.includes('login')) {
+                msg = app.i18n.t('core.errors.wrongCredentials');
+                break;
+            }
+
+            msg = app.i18n.t('core.errors.nonAuthorized');
 
             const originalRequest = config;
 
@@ -165,7 +171,7 @@ export default function ({
             break;
         }
         case regExp.access.test(status):
-            msg = 'Access denied';
+            msg = app.i18n.t('core.errors.accessDenied');
             error({
                 statusCode: 403,
                 message: msg,
@@ -173,17 +179,17 @@ export default function ({
             break;
         case regExp.notFound.test(status):
             if (config.url.includes('multimedia')) {
-                msg = 'Media not found';
+                msg = app.i18n.t('core.errors.mediaNotFound');
                 break;
             }
-            msg = 'Page not found';
+            msg = app.i18n.t('core.errors.pageNotFound');
             error({
                 statusCode: 404,
                 message: msg,
             });
             break;
         default:
-            msg = message || 'Unsupported message, please contact support with reproduction steps';
+            msg = message || app.i18n.t('core.errors.unsupportedMessage');
         }
 
         store.dispatch('alert/addAlert', {
