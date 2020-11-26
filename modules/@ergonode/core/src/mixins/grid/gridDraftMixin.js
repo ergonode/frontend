@@ -13,18 +13,5 @@ export default {
         setDrafts(drafts = {}) {
             this.drafts = drafts;
         },
-        removeDraftRows(rowIds) {
-            const tmpDrafts = {
-                ...this.drafts,
-            };
-
-            Object.keys(tmpDrafts).forEach((key) => {
-                rowIds.forEach((rowId) => {
-                    if (key.includes(rowId)) {
-                        delete this.drafts[key];
-                    }
-                });
-            });
-        },
     },
 };

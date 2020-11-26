@@ -4,7 +4,6 @@
  */
 export const types = {
     SET_DRAFT_VALUE: 'SET_DRAFT_VALUE',
-    SET_PRODUCT_DRAFT: 'SET_PRODUCT_DRAFT',
 };
 
 export default {
