@@ -394,6 +394,7 @@ export default {
     async updateProductsValues({}, {
         scope,
         drafts,
+        columns,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -401,6 +402,7 @@ export default {
             const data = [];
             const cachedProducts = {};
             const cachedAttributes = {};
+            const cachedElementIds = {};
 
             Object.keys(drafts).forEach((key) => {
                 const [
@@ -408,9 +410,17 @@ export default {
                     columnId,
                 ] = key.split('/');
                 const [
-                    attributeId,
+                    attributeCode,
                     languageCode,
                 ] = columnId.split(':');
+
+                if (!cachedElementIds[columnId]) {
+                    const {
+                        element_id,
+                    } = columns.find(column => column.id === columnId);
+
+                    cachedElementIds[columnId] = element_id;
+                }
 
                 if (typeof cachedProducts[rowId] === 'undefined') {
                     cachedProducts[rowId] = data.length;
@@ -422,16 +432,16 @@ export default {
 
                 const index = cachedProducts[rowId];
 
-                if (typeof cachedAttributes[`${rowId}/${attributeId}`] === 'undefined') {
-                    cachedAttributes[`${rowId}/${attributeId}`] = data[index].payload.length;
+                if (typeof cachedAttributes[`${rowId}/${attributeCode}`] === 'undefined') {
+                    cachedAttributes[`${rowId}/${attributeCode}`] = data[index].payload.length;
 
                     data[index].payload.push({
-                        id: attributeId,
+                        id: cachedElementIds[columnId] || attributeCode,
                         values: [],
                     });
                 }
 
-                const attributeIndex = cachedAttributes[`${rowId}/${attributeId}`];
+                const attributeIndex = cachedAttributes[`${rowId}/${attributeCode}`];
 
                 data[index].payload[attributeIndex].values.push({
                     language: languageCode,

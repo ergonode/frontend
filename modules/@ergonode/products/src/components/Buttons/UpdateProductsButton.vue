@@ -41,6 +41,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        columns: {
+            type: Array,
+            default: () => [],
+        },
     },
     data() {
         return {
@@ -74,6 +78,7 @@ export default {
             this.updateProductsValues({
                 scope: this.scope,
                 drafts: this.drafts,
+                columns: this.columns,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

@@ -82,6 +82,7 @@
                     </template>
                     <UpdateProductsButton
                         :scope="scope"
+                        :columns="columns"
                         :drafts="drafts"
                         @updated="onProductsUpdated" />
                 </template>
