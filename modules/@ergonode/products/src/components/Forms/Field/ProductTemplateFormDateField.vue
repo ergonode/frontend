@@ -92,13 +92,18 @@ export default {
     },
     computed: {
         ...mapState('product', [
-            'draft',
+            'drafts',
         ]),
         fieldData() {
             const {
                 attribute_code,
             } = this.properties;
-            const value = this.draft[this.languageCode][attribute_code];
+
+            if (typeof this.drafts[attribute_code] === 'undefined') {
+                return null;
+            }
+
+            const value = this.drafts[attribute_code][this.languageCode];
 
             return value ? new Date(value) : null;
         },

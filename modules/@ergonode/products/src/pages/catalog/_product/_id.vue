@@ -36,33 +36,18 @@ export default {
         params,
     }) {
         const {
-            defaultLanguageCode,
-        } = store.state.core;
-        const {
             id,
         } = params;
 
-        await Promise.all([
-            store.dispatch('product/getProductDraft', {
-                languageCode: defaultLanguageCode,
-                id,
-                onError: () => {
-                    app.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: 'Product draft hasn’t been fetched properly',
-                    });
-                },
-            }),
-            store.dispatch('product/getProduct', {
-                id,
-                onError: () => {
-                    app.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: 'Product hasn’t been fetched properly',
-                    });
-                },
-            }),
-        ]);
+        await store.dispatch('product/getProduct', {
+            id,
+            onError: () => {
+                app.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Product hasn’t been fetched properly',
+                });
+            },
+        });
     },
     computed: {
         ...mapState('product', [

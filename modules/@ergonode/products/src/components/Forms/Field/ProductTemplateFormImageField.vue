@@ -59,14 +59,18 @@ export default {
     },
     computed: {
         ...mapState('product', [
-            'draft',
+            'drafts',
         ]),
         fieldData() {
             const {
                 attribute_code,
             } = this.properties;
 
-            return this.draft[this.languageCode][attribute_code] || null;
+            if (typeof this.drafts[attribute_code] === 'undefined') {
+                return null;
+            }
+
+            return this.drafts[attribute_code][this.languageCode];
         },
         parameter() {
             if (!this.properties.parameters) return null;

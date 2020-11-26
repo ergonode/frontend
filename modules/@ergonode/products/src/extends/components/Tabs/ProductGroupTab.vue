@@ -215,7 +215,7 @@ export default {
         async onCreatedData() {
             this.isPrefetchingData = true;
 
-            await this.onFetchData(this.localParams);
+            await this.onFetchData();
 
             this.isPrefetchingData = false;
         },

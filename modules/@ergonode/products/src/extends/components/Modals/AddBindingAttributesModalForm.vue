@@ -9,7 +9,7 @@
         <template #body>
             <ProductAttributesBindingForm
                 submit-title="ADD ATTRIBUTES"
-                proceed-title="CANCEL"
+                :proceed-title="$t('core.buttons.cancel')"
                 :is-submitting="isSubmitting"
                 :errors="scopeErrors"
                 :bindings="localBindings"

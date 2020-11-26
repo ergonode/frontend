@@ -11,7 +11,7 @@ import {
     getTypes,
     remove,
     update,
-    updateDraftValue,
+    validateValue,
 } from '@Collections/services/index';
 import {
     ALERT_TYPE,
@@ -137,7 +137,7 @@ export default {
                         visible: drafts[key],
                     };
 
-                    await updateDraftValue({
+                    await validateValue({
                         $axios: this.app.$axios,
                         id,
                         productId,

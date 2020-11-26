@@ -46,8 +46,7 @@
                         :number="advancedFilters.length"
                         :is-expanded="isFiltersExpanded"
                         @click.native="onFiltersExpand" />
-                    <template
-                        v-for="(headerItem, index) in extendedActionHeader">
+                    <template v-for="(headerItem, index) in extendedActionHeader">
                         <Component
                             :is="headerItem.component"
                             :key="index"
@@ -75,23 +74,16 @@
                         @click.native="onRemoveAllFilters" />
                 </template>
                 <template #appendFooter>
-                    <template
-                        v-for="(footerItem, index) in extendedFooter">
+                    <template v-for="(footerItem, index) in extendedFooter">
                         <Component
                             :is="footerItem.component"
                             :key="index"
                             v-bind="bindingProps(footerItem)" />
                     </template>
-                    <Button
-                        :title="$t('core.buttons.submit')"
-                        :disabled="!isAllowedToUpdate"
-                        @click.native="onSubmit">
-                        <template
-                            v-if="isSubmitting"
-                            #prepend="{ color }">
-                            <IconSpinner :fill-color="color" />
-                        </template>
-                    </Button>
+                    <UpdateProductsButton
+                        :scope="scope"
+                        :drafts="drafts"
+                        @updated="onProductsUpdated" />
                 </template>
             </Grid>
         </template>
@@ -118,6 +110,7 @@ import {
 import {
     getUUID,
 } from '@Core/models/stringWrapper';
+import UpdateProductsButton from '@Products/components/Buttons/UpdateProductsButton';
 import PRIVILEGES from '@Products/config/privileges';
 import {
     ROUTE_NAME,
@@ -128,11 +121,9 @@ import {
 import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Button from '@UI/components/Button/Button';
 import RemoveFiltersButton from '@UI/components/Grid/Buttons/RemoveFiltersButton';
 import AddFilterDropZone from '@UI/components/Grid/DropZone/AddFilterDropZone';
 import RemoveFilterAndColumnDropZone from '@UI/components/Grid/DropZone/RemoveFilterAndColumnDropZone';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
 import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import {
@@ -143,12 +134,11 @@ import {
 export default {
     name: 'ProductCatalogTab',
     components: {
+        UpdateProductsButton,
         AddFilterDropZone,
         RemoveFilterAndColumnDropZone,
         GridViewTemplate,
-        Button,
         VerticalTabBar,
-        IconSpinner,
         RemoveFiltersButton,
     },
     mixins: [
@@ -186,7 +176,6 @@ export default {
     data() {
         return {
             isPrefetchingData: true,
-            isSubmitting: false,
             isDeleteModalVisible: false,
             extendVerticalTabs: [],
             disabledProducts: {},
@@ -340,6 +329,9 @@ export default {
         });
     },
     methods: {
+        ...mapActions('product', [
+            'validateProduct',
+        ]),
         ...mapActions('batchAction', [
             'addBatchAction',
             'removeBatchAction',
@@ -349,13 +341,14 @@ export default {
             'setDisabledElements',
             'removeDisabledElement',
         ]),
-        ...mapActions('product', [
-            'updateProductDraft',
-            'applyProductDraft',
-        ]),
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
+        async onProductsUpdated() {
+            await this.onFetchData();
+
+            this.setDrafts();
+        },
         async onRemoveProductsBatchAction(onSuccess = () => {}, event) {
             await onSuccess();
 
@@ -492,9 +485,6 @@ export default {
 
             this.onFetchData();
         },
-        onFetchGridData() {
-            this.onFetchData();
-        },
         onFilterChange(filters) {
             this.filterValues = filters;
             this.pagination.page = 1;
@@ -523,7 +513,9 @@ export default {
             });
 
             const requests = cellValues.map(async ({
-                rowId, columnId, value,
+                rowId,
+                columnId,
+                value,
             }) => {
                 if (!cachedElementIds[columnId]) {
                     const {
@@ -533,7 +525,7 @@ export default {
                     cachedElementIds[columnId] = element_id;
                 }
 
-                await this.updateProductDraft({
+                await this.validateProduct({
                     fieldKey: `${rowId}/${columnId}`,
                     languageCode: columnId.split(':')[1],
                     productId: rowId,
@@ -560,40 +552,6 @@ export default {
                     id: args[lastIndex],
                 },
             });
-        },
-        async onSubmit() {
-            this.isSubmitting = true;
-
-            const promises = [];
-
-            const cachedRows = {};
-
-            Object.keys(this.drafts).forEach((key) => {
-                const [
-                    rowId,
-                ] = key.split('/');
-
-                if (typeof cachedRows[rowId] === 'undefined') {
-                    cachedRows[rowId] = true;
-
-                    promises.push(this.applyProductDraft({
-                        id: rowId,
-                    }).then(() => this.removeDraftRow(rowId)));
-                }
-            });
-
-            await Promise.all(promises);
-
-            await this.onFetchData(this.localParams);
-
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Products have been updated',
-            });
-
-            this.isSubmitting = false;
-
-            this.markChangeValuesAsSaved(this.scope);
         },
         getDisabledElements({
             columns,

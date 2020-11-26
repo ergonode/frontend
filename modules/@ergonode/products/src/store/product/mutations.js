@@ -8,20 +8,14 @@ export const types = {
 };
 
 export default {
-    [types.SET_PRODUCT_DRAFT](state, {
-        languageCode, draft,
-    }) {
-        state.draft = {
-            ...state.draft,
-            [languageCode]: draft,
-        };
-    },
     [types.SET_DRAFT_VALUE](state, {
-        languageCode, key, value,
+        languageCode,
+        key,
+        value,
     }) {
-        state.draft[languageCode] = {
-            ...state.draft[languageCode],
-            [key]: value,
+        state.drafts[key] = {
+            ...state.drafts[key],
+            [languageCode]: value,
         };
     },
 };

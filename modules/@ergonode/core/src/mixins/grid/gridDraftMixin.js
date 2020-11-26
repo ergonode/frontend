@@ -13,15 +13,17 @@ export default {
         setDrafts(drafts = {}) {
             this.drafts = drafts;
         },
-        removeDraftRow(rowId) {
+        removeDraftRows(rowIds) {
             const tmpDrafts = {
                 ...this.drafts,
             };
 
             Object.keys(tmpDrafts).forEach((key) => {
-                if (key.includes(rowId)) {
-                    delete this.drafts[key];
-                }
+                rowIds.forEach((rowId) => {
+                    if (key.includes(rowId)) {
+                        delete this.drafts[key];
+                    }
+                });
             });
         },
     },

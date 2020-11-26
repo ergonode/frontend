@@ -8,14 +8,6 @@ export const get = ({
     id,
 }) => $axios.$get(`products/${id}`);
 
-export const getDraft = ({
-    $axios,
-    id,
-    languageCode,
-}) => $axios.$get(`${languageCode}/products/${id}/draft`, {
-    withLanguage: false,
-});
-
 export const getWorkflow = ({
     $axios,
     id,
@@ -39,7 +31,7 @@ export const getCompleteness = ({
     $axios,
     id,
     languageCode,
-}) => $axios.$get(`${languageCode}/products/${id}/draft/completeness`, {
+}) => $axios.$get(`${languageCode}/products/${id}/completeness`, {
     withLanguage: false,
 });
 
@@ -49,7 +41,7 @@ export const update = ({
     data,
 }) => $axios.$put(`products/${id}`, data);
 
-export const updateDraftValue = ({
+export const validateValue = ({
     $axios,
     id,
     attributeId,
@@ -59,10 +51,10 @@ export const updateDraftValue = ({
     withLanguage: false,
 });
 
-export const applyDraft = ({
+export const updateValues = ({
     $axios,
-    id,
-}) => $axios.$put(`products/${id}/draft/persist`, {});
+    data,
+}) => $axios.$patch('products/attributes', data);
 
 export const create = ({
     $axios,
@@ -81,14 +73,10 @@ export const removeChildren = ({
     data,
 }) => $axios.$delete(`products/${id}/children/${childrenId}`, data);
 
-export const removeDraftValue = ({
+export const removeValues = ({
     $axios,
-    id,
-    languageCode,
-    attributeId,
-}) => $axios.$delete(`${languageCode}/products/${id}/draft/${attributeId}/value`, {
-    withLanguage: false,
-});
+    data,
+}) => $axios.$delete('products/attributes', data);
 
 export const addBySku = ({
     $axios,

@@ -193,7 +193,7 @@ export default {
             if (isIntersecting) {
                 this.isPrefetchingData = true;
 
-                await this.onFetchData(this.localParams);
+                await this.onFetchData();
 
                 this.isPrefetchingData = false;
             }
@@ -291,7 +291,7 @@ export default {
             });
         },
         onRemoveRow() {
-            this.onFetchData(this.localParams);
+            this.onFetchData();
         },
         onCellValueChange(cellValues) {
             const drafts = this.multiple

@@ -12,19 +12,18 @@ import {
 import {
     addBySegment,
     addBySku,
-    applyDraft,
     create,
     get,
     getCollections,
     getCompleteness,
-    getDraft,
     getTemplate,
     getWorkflow,
     remove,
     removeChildren,
-    removeDraftValue,
+    removeValues,
     update,
-    updateDraftValue,
+    updateValues,
+    validateValue,
 } from '@Products/services/index';
 
 import {
@@ -35,50 +34,6 @@ export default {
     setDraftValue: ({
         commit,
     }, payload) => commit(types.SET_DRAFT_VALUE, payload),
-    async getProductDraft({
-        commit,
-    }, {
-        id,
-        onError = () => {},
-        languageCode,
-    }) {
-        try {
-            // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Products/store/product/action/getProductDraft/__before', {
-                $this: this,
-                data: {
-                    id,
-                },
-            });
-            // EXTENDED BEFORE METHOD
-            const {
-                attributes,
-            } = await getDraft({
-                $axios: this.app.$axios,
-                id,
-                languageCode,
-            });
-
-            commit(types.SET_PRODUCT_DRAFT, {
-                languageCode,
-                draft: attributes,
-            });
-            // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Products/store/product/action/getProductDraft/__after', {
-                $this: this,
-                data: {
-                    attributes,
-                },
-            });
-            // EXTENDED AFTER METHOD
-        } catch (e) {
-            if (this.app.$axios.isCancel(e)) {
-                return;
-            }
-
-            onError(e);
-        }
-    },
     async getProductWorkflow({
         commit,
     }, {
@@ -167,6 +122,10 @@ export default {
             commit('__SET_STATE', {
                 key: 'type',
                 value: productTypes[type],
+            });
+            commit('__SET_STATE', {
+                key: 'drafts',
+                value: attributes,
             });
             commit('__SET_STATE', {
                 key: 'data',
@@ -410,16 +369,12 @@ export default {
                 value,
             };
 
-            await updateDraftValue({
+            await validateValue({
                 $axios: this.app.$axios,
                 id,
                 attributeId,
                 languageCode,
                 data,
-            });
-            await applyDraft({
-                $axios: this.app.$axios,
-                id,
             });
 
             onSuccess();
@@ -436,16 +391,59 @@ export default {
             onError(e);
         }
     },
-    async applyProductDraft({}, {
-        id,
+    async updateProductsValues({}, {
         scope,
+        drafts,
         onSuccess = () => {},
         onError = () => {},
     }) {
         try {
-            await applyDraft({
+            const data = [];
+            const cachedProducts = {};
+            const cachedAttributes = {};
+
+            Object.keys(drafts).forEach((key) => {
+                const [
+                    rowId,
+                    columnId,
+                ] = key.split('/');
+                const [
+                    attributeId,
+                    languageCode,
+                ] = columnId.split(':');
+
+                if (typeof cachedProducts[rowId] === 'undefined') {
+                    cachedProducts[rowId] = data.length;
+                    data[data.length] = {
+                        id: rowId,
+                        payload: [],
+                    };
+                }
+
+                const index = cachedProducts[rowId];
+
+                if (typeof cachedAttributes[`${rowId}/${attributeId}`] === 'undefined') {
+                    cachedAttributes[`${rowId}/${attributeId}`] = data[index].payload.length;
+
+                    data[index].payload.push({
+                        id: attributeId,
+                        values: [],
+                    });
+                }
+
+                const attributeIndex = cachedAttributes[`${rowId}/${attributeId}`];
+
+                data[index].payload[attributeIndex].values.push({
+                    language: languageCode,
+                    value: drafts[key],
+                });
+            });
+
+            await updateValues({
                 $axios: this.app.$axios,
-                id,
+                data: {
+                    data,
+                },
             });
             onSuccess();
         } catch (e) {
@@ -464,7 +462,7 @@ export default {
             });
         }
     },
-    async updateProductDraft({
+    async validateProduct({
         dispatch,
         rootState,
     }, {
@@ -480,7 +478,7 @@ export default {
                 value,
             };
 
-            await updateDraftValue({
+            await validateValue({
                 $axios: this.app.$axios,
                 id: productId,
                 attributeId: elementId,
@@ -599,7 +597,7 @@ export default {
                 id,
                 data,
             });
-            await applyDraft({
+            await updateValues({
                 $axios: this.app.$axios,
                 id,
             });
@@ -794,11 +792,11 @@ export default {
             onError(e);
         }
     },
-    async removeProductDraft({
+    async removeProductValues({
         state,
     }, {
         languageCode,
-        attributeId,
+        attributes,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -806,12 +804,27 @@ export default {
             const {
                 id,
             } = state;
+            const data = [
+                {
+                    id,
+                    payload: [],
+                },
+            ];
 
-            await removeDraftValue({
+            attributes.forEach((attribute) => {
+                data[0].payload.push({
+                    id: attribute.id,
+                    languages: [
+                        languageCode,
+                    ],
+                });
+            });
+
+            await removeValues({
                 $axios: this.app.$axios,
-                id,
-                languageCode,
-                attributeId,
+                data: {
+                    data,
+                },
             });
 
             onSuccess();

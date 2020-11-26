@@ -85,17 +85,18 @@ export default {
     },
     computed: {
         ...mapState('product', [
-            'draft',
+            'drafts',
         ]),
         fieldData() {
             const {
                 attribute_code,
             } = this.properties;
-            const value = this.draft[this.languageCode][attribute_code];
 
-            if (!this.hasOptions || !value) {
+            if (typeof this.drafts[attribute_code] === 'undefined' || !this.hasOptions) {
                 return '';
             }
+
+            const value = this.drafts[attribute_code][this.languageCode];
 
             return getMappedObjectOption({
                 option: {

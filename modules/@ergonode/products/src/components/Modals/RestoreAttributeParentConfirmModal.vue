@@ -20,7 +20,7 @@
                     </template>
                 </Button>
                 <Button
-                    title="CANCEL"
+                    :title="$t('core.buttons.cancel')"
                     :theme="secondaryTheme"
                     :disabled="isSubmitting"
                     :size="smallSize"
@@ -79,7 +79,7 @@ export default {
     },
     methods: {
         ...mapActions('product', [
-            'removeProductDraft',
+            'removeProductValues',
         ]),
         onClose() {
             this.$emit('close');
@@ -96,7 +96,7 @@ export default {
                 attribute,
             } = this.element;
 
-            this.removeProductDraft({
+            this.removeProductValues({
                 languageCode,
                 attributeId: attribute.element_id,
                 onSuccess: this.onRestoreProductDraftSuccess,
