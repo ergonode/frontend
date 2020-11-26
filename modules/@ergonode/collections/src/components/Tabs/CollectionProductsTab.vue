@@ -267,7 +267,7 @@ export default {
         async onCreatedData() {
             this.isPrefetchingData = true;
 
-            await this.onFetchData(this.localParams);
+            await this.onFetchData();
 
             this.selectedAppModalOption = null;
             this.isPrefetchingData = false;

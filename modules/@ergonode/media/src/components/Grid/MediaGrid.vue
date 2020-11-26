@@ -110,8 +110,8 @@ export default {
             rows: [],
             columns: [],
             filtered: 0,
-            localParams: DEFAULT_GRID_FETCH_PARAMS,
-            pagination: DEFAULT_GRID_PAGINATION,
+            localParams: DEFAULT_GRID_FETCH_PARAMS(),
+            pagination: DEFAULT_GRID_PAGINATION(),
         };
     },
     computed: {
@@ -193,7 +193,7 @@ export default {
             if (isIntersecting) {
                 this.isPrefetchingData = true;
 
-                await this.onFetchData(this.localParams);
+                await this.onFetchData();
 
                 this.isPrefetchingData = false;
             }
@@ -291,7 +291,7 @@ export default {
             });
         },
         onRemoveRow() {
-            this.onFetchData(this.localParams);
+            this.onFetchData();
         },
         onCellValueChange(cellValues) {
             const drafts = this.multiple

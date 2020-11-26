@@ -95,8 +95,8 @@ export default {
             isPrefetchingData: true,
             skus: {},
             isSubmitting: false,
-            localParams: DEFAULT_GRID_FETCH_PARAMS,
-            pagination: DEFAULT_GRID_PAGINATION,
+            localParams: DEFAULT_GRID_FETCH_PARAMS(),
+            pagination: DEFAULT_GRID_PAGINATION(),
         };
     },
     computed: {
@@ -151,16 +151,14 @@ export default {
 
             this.onFetchData();
         },
-        async onFetchData(params = this.localParams) {
-            this.localParams = params;
-
+        async onFetchData() {
             await getGridData({
                 $route: this.$route,
                 $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: `products/${this.id}/children-and-available-products`,
                 params: {
-                    ...params,
+                    ...this.localParams,
                     extended: true,
                 },
                 onSuccess: this.onFetchGridDataSuccess,

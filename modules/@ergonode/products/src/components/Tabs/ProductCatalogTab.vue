@@ -584,7 +584,7 @@ export default {
 
             await Promise.all(promises);
 
-            await this.onFetchData(this.localParams);
+            await this.onFetchData();
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
