@@ -31,6 +31,10 @@ export const getAll = ({
     params,
 });
 
+export const getAutocomplete = ({
+    $axios,
+}) => $axios.$get('attributes/autocomplete');
+
 export const getOption = ({
     $axios,
     id,
