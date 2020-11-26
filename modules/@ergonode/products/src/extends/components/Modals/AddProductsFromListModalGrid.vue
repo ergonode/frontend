@@ -51,6 +51,7 @@ import {
 } from '@Core/defaults/alerts';
 import {
     DEFAULT_GRID_FETCH_PARAMS,
+    DEFAULT_GRID_PAGINATION,
 } from '@Core/defaults/grid';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
@@ -95,6 +96,7 @@ export default {
             skus: {},
             isSubmitting: false,
             localParams: DEFAULT_GRID_FETCH_PARAMS,
+            pagination: DEFAULT_GRID_PAGINATION,
         };
     },
     computed: {
@@ -121,6 +123,13 @@ export default {
             'addBySku',
             'removeProductChildren',
         ]),
+        onPaginationChange(pagination) {
+            this.pagination = pagination;
+            this.localParams.limit = pagination.itemsPerPage;
+            this.localParams.offset = (pagination.page - 1) * pagination.itemsPerPage;
+
+            this.onFetchData();
+        },
         onFilterChange(filters) {
             this.filterValues = filters;
             this.pagination.page = 1;

@@ -123,7 +123,7 @@ export default {
             const {
                 phrase,
             } = this.condition;
-            const placeholders = this.conditionsValues[this.itemId];
+            const placeholders = this.conditionsValues[this.item.id];
 
             if (!placeholders) return phrase;
             return this.replacePlaceholderOnPhrase(placeholders);
