@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     get,
 } from '@Core/services/dictionary/index';
 
@@ -28,29 +31,35 @@ export default {
     }, {
         key,
     }) {
-        const modulesDictionary = modulesDictionaries.find(
-            dictionary => dictionary.stateProp === key,
-        );
+        try {
+            const modulesDictionary = modulesDictionaries.find(
+                dictionary => dictionary.stateProp === key,
+            );
 
-        if (modulesDictionary
-            && JSON.stringify(state[key]) === JSON.stringify(modulesDictionary.defaultValue)) {
-            const {
-                request: {
+            if (JSON.stringify(state[key]) === JSON.stringify(modulesDictionary.defaultValue)) {
+                const {
+                    request: {
+                        path,
+                        config,
+                    },
+                    dataMapper = response => response,
+                } = modulesDictionary;
+
+                const response = await get({
+                    $axios: this.app.$axios,
                     path,
                     config,
-                },
-                dataMapper = response => response,
-            } = modulesDictionary;
+                });
 
-            const response = await get({
-                $axios: this.app.$axios,
-                path,
-                config,
-            });
-
-            commit('__SET_STATE', {
-                key,
-                value: dataMapper(response),
+                commit('__SET_STATE', {
+                    key,
+                    value: dataMapper(response),
+                });
+            }
+        } catch (e) {
+            this.app.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Dictionary couldn\'t be fetched',
             });
         }
     },
@@ -59,11 +68,11 @@ export default {
     }, {
         key,
     }) {
-        const modulesDictionary = modulesDictionaries.find(
-            dictionary => dictionary.stateProp === key,
-        );
+        try {
+            const modulesDictionary = modulesDictionaries.find(
+                dictionary => dictionary.stateProp === key,
+            );
 
-        if (modulesDictionary) {
             const {
                 request: {
                     path,
@@ -81,6 +90,11 @@ export default {
             commit('__SET_STATE', {
                 key,
                 value: dataMapper(response),
+            });
+        } catch (e) {
+            this.app.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Dictionary couldn\'t be fetched',
             });
         }
     },
