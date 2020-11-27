@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## CHANGELOG FOR v1.0.0-beta.5
+- feature [#596](https://github.com/ergonode/frontend/pull/596) Migrate storybook from v5 to v6 (derpdead)
+- feature [#597](https://github.com/ergonode/frontend/pull/597) Add refresh token support (derpdead)
+- perf [#595](https://github.com/ergonode/frontend/pull/595) Isolated actions along with buttons, improved routing names (derpdead)
+- perf [#598](https://github.com/ergonode/frontend/pull/598) Dropdown improvement (derpdead)
+- bugfix [#599](https://github.com/ergonode/frontend/pull/599) Grid memory leaks (derpdead)
+
 ## CHANGELOG FOR v1.0.0-beta.4
 - feature - add DOM virtualization to select kind components
 - feature - add github actions
