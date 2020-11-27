@@ -6,8 +6,12 @@ export default {
     dictionaries: [
         {
             stateProp: 'channels',
-            dataFormat: {},
-            requestPath: '/dictionary/channels',
+            defaultValue: {},
+            request: {
+                path: '/dictionary/channels',
+                config: {},
+            },
+            dataMapper: response => response,
         },
     ],
 };

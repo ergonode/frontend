@@ -22,52 +22,66 @@ const modulesDictionaries = Object.values(extendsModules)
     }, []);
 
 export default {
-    async getDictionaries({
+    async getInitialDictionary({
         commit,
+        state,
+    }, {
+        key,
     }) {
-        const promises = modulesDictionaries.map(async ({
-            stateProp, requestPath, isGrid = false,
-        }) => {
-            const path = `${requestPath}${isGrid ? '?view=list' : ''}`;
+        const modulesDictionary = modulesDictionaries.find(
+            dictionary => dictionary.stateProp === key,
+        );
+
+        if (modulesDictionary
+            && JSON.stringify(state[key]) === JSON.stringify(modulesDictionary.defaultValue)) {
+            const {
+                request: {
+                    path,
+                    config,
+                },
+                dataMapper = response => response,
+            } = modulesDictionary;
 
             const response = await get({
                 $axios: this.app.$axios,
                 path,
-                useCache: isGrid,
+                config,
             });
-
-            const value = isGrid ? response.collection : response;
 
             commit('__SET_STATE', {
-                key: stateProp,
-                value,
+                key,
+                value: dataMapper(response),
             });
-        });
-
-        await Promise.all(promises);
+        }
     },
     async getDictionary({
         commit,
     }, {
-        dictionaryName,
+        key,
     }) {
-        const {
-            stateProp,
-            requestPath,
-            isGrid = false,
-        } = modulesDictionaries.find(({
-            stateProp: name,
-        }) => name === dictionaryName);
-        const path = `${requestPath}${isGrid ? '?view=list' : ''}`;
-        const response = await get({
-            $axios: this.app.$axios,
-            path,
-        });
-        const value = isGrid ? response.collection : response;
+        const modulesDictionary = modulesDictionaries.find(
+            dictionary => dictionary.stateProp === key,
+        );
 
-        commit('__SET_STATE', {
-            key: stateProp,
-            value,
-        });
+        if (modulesDictionary) {
+            const {
+                request: {
+                    path,
+                    config,
+                },
+                dataMapper = response => response,
+            } = modulesDictionary;
+
+            const response = await get({
+                $axios: this.app.$axios,
+                path,
+                config,
+            });
+
+            commit('__SET_STATE', {
+                key,
+                value: dataMapper(response),
+            });
+        }
     },
 };

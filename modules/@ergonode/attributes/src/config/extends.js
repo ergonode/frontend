@@ -84,8 +84,12 @@ export default {
     dictionaries: [
         {
             stateProp: 'attrTypes',
-            dataFormat: {},
-            requestPath: '/dictionary/attributes/types',
+            defaultValue: {},
+            request: {
+                path: '/dictionary/attributes/types',
+                config: {},
+            },
+            dataMapper: response => response,
         },
     ],
     extendStore: {

@@ -42,6 +42,10 @@ export default {
             id,
         } = params;
 
+        await store.dispatch('dictionaries/getInitialDictionary', {
+            key: 'productTypes',
+        });
+
         await Promise.all([
             store.dispatch('product/getProductDraft', {
                 languageCode: defaultLanguageCode,
@@ -76,8 +80,6 @@ export default {
     methods: {
         ...mapActions('product', [
             '__clearStorage',
-            'getProductDraft',
-            'getProduct',
         ]),
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',

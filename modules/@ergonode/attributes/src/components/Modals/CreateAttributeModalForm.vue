@@ -45,6 +45,22 @@ export default {
     mixins: [
         scopeErrorsMixin,
     ],
+    async fetch() {
+        await Promise.all([
+            this.getInitialDictionary({
+                key: 'attrTypes',
+            }),
+            this.getInitialDictionary({
+                key: 'dateFormats',
+            }),
+            this.getInitialDictionary({
+                key: 'units',
+            }),
+            this.getInitialDictionary({
+                key: 'currencies',
+            }),
+        ]);
+    },
     data() {
         return {
             isSubmitting: false,
@@ -60,6 +76,9 @@ export default {
         ...mapActions('attribute', [
             'createAttribute',
             '__clearStorage',
+        ]),
+        ...mapActions('dictionaries', [
+            'getInitialDictionary',
         ]),
         onClose() {
             this.__clearStorage();

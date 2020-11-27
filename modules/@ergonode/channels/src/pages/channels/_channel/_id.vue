@@ -35,6 +35,9 @@ export default {
         store,
         params,
     }) {
+        await store.dispatch('dictionaries/getInitialDictionary', {
+            key: 'channels',
+        });
         await store.dispatch('channel/getChannel', {
             id: params.id,
             onError: () => {
