@@ -98,8 +98,8 @@ export default {
             filterValues: {},
             filtered: 0,
             isPrefetchingData: true,
-            localParams: DEFAULT_GRID_FETCH_PARAMS,
-            pagination: DEFAULT_GRID_PAGINATION,
+            localParams: DEFAULT_GRID_FETCH_PARAMS(),
+            pagination: DEFAULT_GRID_PAGINATION(),
         };
     },
     methods: {
@@ -134,16 +134,14 @@ export default {
 
             this.onFetchData();
         },
-        async onFetchData(params = this.localParams) {
-            this.localParams = params;
-
+        async onFetchData() {
             await getGridData({
                 $route: this.$route,
                 $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: `sources/${this.sourceId}/imports/${this.importId}/errors`,
                 params: {
-                    ...params,
+                    ...this.localParams,
                     extended: true,
                 },
                 onSuccess: this.onFetchGridDataSuccess,
