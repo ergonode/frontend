@@ -24,7 +24,7 @@
                 :change-values="changeValues"
                 :errors="errors" />
             <Button
-                title="SAVE CHANGES"
+                :title="$t('core.buttons.submit')"
                 :floating="saveChangesButtonFloatingStyle"
                 @click.native="onSubmit">
                 <template

@@ -1,46 +1,85 @@
 {
-  "attribute": {
-    "page": {
-      "title": "Attributes",
-      "head": "Attributes - Ergonode",
-      "addButton": "NEW ATTRIBUTE",
-      "removeButton": "REMOVE ATTRIBUTE"
+    "attribute": {
+        "page": {
+            "title": "Attributes",
+            "head": "Attributes - Ergonode",
+            "addButton": "NEW ATTRIBUTE",
+            "removeButton": "REMOVE ATTRIBUTE"
+        },
+        "form":{
+            "createTitle": "Create attribute",
+            "title": "Options",
+            "sectionTitle": "Configuration",
+            "optionTitle": "Option values",
+            "nameLabel": "System name",
+            "nameHint": "System name must be unique",
+            "groupLabel": "Groups",
+            "typeLabel": "Type",
+            "optionLabel": "Option code",
+            "scopeLabel": "Scope",
+            "scopeHint": "Global means the same attribute values for each language, inherited from the root language ({lang}). Option values can be translated, but cannot be changed in the product template.",
+            "addOption": "ADD OPTION"
+        },
+        "translation": {
+            "nameLabel": "Attribute name",
+            "hintLabel": "Tooltip for writers"
+        },
+        "grid": {
+            "placeholderTitle": "No attributes",
+            "placeholderSubtitle": "There are no attributes in the system, you can create the first one."
+        },
+        "messages": {
+            "deleteTitle": "Are you sure you want to delete this attribute?",
+            "deleteConfirm": "YES, REMOVE",
+            "deleteSuccess": "Attribute removed",
+            "deleteCancel": "Removing attribute has been canceled",
+            "createSuccess": "Attribute created",
+            "createCancel": "Creating attribute has been canceled",
+            "updateSuccess": "Attribute has been updated",
+            "updateCancel": "Updating attribute has been canceled",
+            "updateTranslationSuccess": "Attribute translations have been updated"
+        },
+        "errors": {
+            "getRequest": "Attribute hasn’t been fetched properly",
+            "getOptionRequest": "Attribute options hasn’t been fetched properly",
+            "deleteRequest": "Attribute hasn’t been deleted",
+            "optionUniq": "Option code must be unique",
+            "optionEmpty": "Option cannot be empty"
+        }
     },
-    "form":{
-        "createTitle": "Create attribute",
-        "title": "Options",
-        "sectionTitle": "Configuration",
-        "optionTitle": "Option values",
-        "nameLabel": "System name",
-        "nameHint": "System name must be unique",
-        "groupLabel": "Groups",
-        "typeLabel": "Type",
-        "optionLabel": "Option code",
-        "scopeLabel": "Scope",
-        "scopeHint": "Global means the same attribute values for each language, inherited from the root language ({lang}). Option values can be translated, but cannot be changed in the product template.",
-        "addOption": "ADD OPTION"
-      },
-    "translation": {
-        "nameLabel": "Attribute name",
-        "hintLabel": "Tooltip for writers"
-    },
-    "grid": {
-        "placeholderTitle": "No attributes",
-        "placeholderSubtitle": "There are no attributes in the system, you can create the first one."
-    },
-    "messages": {
-        "deleteConfirm": "Are you sure you want to delete this attribute?",
-        "deleteSuccess": "Attribute removed",
-        "createSuccess": "Attribute created",
-        "updateSuccess": "Attribute has been updated",
-        "updateTranslationSuccess": "Attribute translations have been updated"
-    },
-    "errors": {
-        "getRequest": "Attribute hasn’t been fetched properly",
-        "getOptionRequest": "Attribute options hasn’t been fetched properly",
-        "deleteRequest": "Attribute hasn’t been deleted",
-        "optionUniq": "Option code must be unique",
-        "optionEmpty": "Option cannot be empty"
+    "attributeGroup": {
+        "page": {
+            "title": "Attribute groups",
+            "head": "Attribute groups - Ergonode",
+            "addButton": "NEW ATTRIBUTE GROUP",
+            "removeButton": "REMOVE ATTRIBUTE GROUP"
+        },
+        "form":{
+            "createTitle": "Create attribute group",
+            "nameLabel": "System name",
+            "nameHint": "System name must be unique"
+        },
+        "translation": {
+            "nameLabel": "Group name"
+        },
+        "grid": {
+            "placeholderTitle": "No attribute groups",
+            "placeholderSubtitle": "There are no attribute groups in the system, you can create the first one."
+        },
+        "messages": {
+            "deleteTitle": "Are you sure you want to delete this attribute group?",
+            "deleteConfirm": "YES, REMOVE",
+            "deleteSuccess": "Attribute group removed",
+            "deleteCancel": "Removing attribute group has been canceled",
+            "createSuccess": "Attribute group created",
+            "createCancel": "Creating attribute group has been canceled",
+            "updateSuccess": "Attribute group has been updated",
+            "updateCancel": "Updating attribute group has been canceled",
+            "updateTranslationSuccess": "Attribute group translations have been updated"
+        },
+        "errors": {
+            "getRequest": "Attribute group hasn’t been fetched properly",
+            "deleteRequest": "Attribute group hasn’t been deleted"
+        }
     }
-  }
 }

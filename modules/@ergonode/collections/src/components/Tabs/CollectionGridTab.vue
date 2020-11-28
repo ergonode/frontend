@@ -11,11 +11,7 @@
                 :rows="rows"
                 :filters="filterValues"
                 :pagination="pagination"
-                :extended-columns="extendedColumns"
-                :extended-data-cells="extendedDataCells"
-                :extended-data-filter-cells="extendedDataFilterCells"
-                :extended-data-edit-cells="extendedDataEditCells"
-                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :extended-components="extendedGridComponents"
                 :is-editable="isAllowedToUpdate"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
@@ -33,6 +29,9 @@
 
 <script>
 import PRIVILEGES from '@Collections/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Collections/config/routes';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
@@ -69,7 +68,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'collection-id-general',
+                name: ROUTE_NAME.COLLECTION_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },

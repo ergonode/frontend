@@ -49,6 +49,9 @@ import {
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Segments/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Segments/config/routes';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
@@ -98,7 +101,7 @@ export default {
     methods: {
         onNavigateToSegments() {
             this.$router.push({
-                name: 'segments-grid',
+                name: ROUTE_NAME.SEGMENTS_GRID,
             });
         },
         onSegmentChange(value) {

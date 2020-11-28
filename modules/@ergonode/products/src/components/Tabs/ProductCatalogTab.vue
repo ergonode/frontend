@@ -22,11 +22,7 @@
                 :collection-cell-binding="collectionCellBinding"
                 :batch-actions="productsBatchActions"
                 :disabled-rows="disabledProducts"
-                :extended-columns="extendedColumns"
-                :extended-data-cells="extendedDataCells"
-                :extended-data-filter-cells="extendedDataFilterCells"
-                :extended-data-edit-cells="extendedDataEditCells"
-                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :extended-components="extendedGridComponents"
                 :is-editable="isAllowedToUpdate"
                 :is-prefetching-data="isPrefetchingData"
                 :is-header-visible="true"
@@ -87,7 +83,7 @@
                             v-bind="bindingProps(footerItem)" />
                     </template>
                     <Button
-                        title="SAVE CHANGES"
+                        :title="$t('core.buttons.submit')"
                         :disabled="!isAllowedToUpdate"
                         @click.native="onSubmit">
                         <template
@@ -123,6 +119,9 @@ import {
     getUUID,
 } from '@Core/models/stringWrapper';
 import PRIVILEGES from '@Products/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Products/config/routes';
 import {
     BATCH_ACTION_TYPE,
 } from '@Products/models/batchActions';
@@ -556,7 +555,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'product-id-general',
+                name: ROUTE_NAME.PRODUCT_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },

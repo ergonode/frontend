@@ -20,10 +20,6 @@ export default {
         },
         {
             ssr: true,
-            src: './plugins/register-store',
-        },
-        {
-            ssr: true,
             src: './plugins/core',
         },
         {

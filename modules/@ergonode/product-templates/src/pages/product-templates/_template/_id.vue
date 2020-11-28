@@ -3,18 +3,10 @@
  * See LICENSE for license details.
  */
 <template>
-    <TemplatePage
-        :title="templateTitle"
-        @remove="onRemove" />
+    <TemplatePage :title="templateTitle" />
 </template>
 
 <script>
-import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import {
-    MODAL_TYPE,
-} from '@Core/defaults/modals';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import TemplatePage from '@Templates/components/Pages/TemplatePage';
@@ -54,7 +46,6 @@ export default {
     },
     methods: {
         ...mapActions('productTemplate', [
-            'removeTemplate',
             '__clearStorage',
         ]),
         ...mapActions('list', {
@@ -63,28 +54,6 @@ export default {
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
-        onRemoveSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Template removed',
-            });
-            this.$router.push({
-                name: 'product-templates',
-            });
-        },
-        onRemove() {
-            this.$confirm({
-                type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this template?',
-                applyTitle: 'YES, REMOVE',
-                action: () => {
-                    this.removeTemplate({
-                        scope: this.scope,
-                        onSuccess: this.onRemoveSuccess,
-                    });
-                },
-            });
-        },
     },
     head() {
         return {

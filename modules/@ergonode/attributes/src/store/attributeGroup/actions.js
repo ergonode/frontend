@@ -64,7 +64,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Creating attribute group has been canceled',
+                    message: this.app.i18n.t('attributeGroup.messages.createCancel'),
                 });
 
                 return;
@@ -197,7 +197,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating attribute group has been canceled',
+                    message: this.app.i18n.t('attributeGroup.messages.updateCancel'),
                 });
 
                 return;
@@ -245,7 +245,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Removing attribute group has been canceled',
+                    message: this.app.i18n.t('attributeGroup.messages.removeCancel'),
                 });
 
                 return;

@@ -39,6 +39,9 @@ import NotificationsListElement from '@Notifications/components/List/Notificatio
 import NotificationsListFooter from '@Notifications/components/List/NotificationsListFooter';
 import NotificationsListPlaceholder from '@Notifications/components/List/NotificationsListPlaceholder';
 import {
+    ROUTE_NAME,
+} from '@Notifications/config/routes';
+import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import NotificationBadge from '@UI/components/Badges/NotificationBadge';
@@ -77,7 +80,7 @@ export default {
         ]),
         navigateToAllNotifications() {
             this.$router.push({
-                name: 'notifications-grid',
+                name: ROUTE_NAME.NOTIFICATIONS_GRID,
             });
         },
         onFocus(isFocused) {

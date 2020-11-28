@@ -85,7 +85,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Creating attribute has been canceled',
+                    message: this.app.i18n.t('attribute.messages.createCancel'),
                 });
 
                 return;
@@ -283,7 +283,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating attribute has been canceled',
+                    message: this.app.i18n.t('attribute.messages.updateCancel'),
                 });
 
                 return;
@@ -296,7 +296,8 @@ export default {
         }
     },
     async removeAttribute({
-        state, rootState,
+        state,
+        rootState,
     }, {
         onSuccess = () => {},
         onError = () => {},
@@ -334,7 +335,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Removing attribute has been canceled',
+                    message: this.app.i18n.t('attribute.messages.deleteCancel'),
                 });
 
                 return;

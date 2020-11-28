@@ -3,14 +3,15 @@
  * See LICENSE for license details.
  */
 import {
-    JWT_KEY,
+    REFRESH_TOKEN_KEY,
+    TOKEN_KEY,
 } from '@Authentication/defaults/cookies';
 import {
     getMappedPrivileges,
 } from '@Authentication/models/userMapper';
 import {
-    create,
     get,
+    login,
 } from '@Authentication/services/index';
 import {
     ALERT_TYPE,
@@ -48,22 +49,29 @@ export default {
             try {
                 const {
                     token,
-                } = await create({
+                    refresh_token: refreshToken,
+                } = await login({
                     $axios: this.app.$axios,
                     data,
                 });
 
-                this.$cookies.set(JWT_KEY, token);
-                commit('__SET_STATE', {
-                    key: 'jwt',
-                    value: token,
+                dispatch('setTokens', {
+                    token,
+                    refreshToken,
                 });
 
                 await dispatch('getUser');
 
                 onSuccess();
             } catch (e) {
-                onError(e);
+                onError({
+                    errors: {
+                        __form: [
+                            e.data.message,
+                        ],
+                    },
+                    scope,
+                });
             }
         } else {
             onError({
@@ -110,5 +118,23 @@ export default {
                 message: 'User data hasn`t been fetched properly',
             });
         }
+    },
+    setTokens({
+        commit,
+    }, {
+        token,
+        refreshToken,
+    }) {
+        this.$cookies.set(TOKEN_KEY, token);
+        this.$cookies.set(REFRESH_TOKEN_KEY, refreshToken);
+
+        commit('__SET_STATE', {
+            key: 'token',
+            value: token,
+        });
+        commit('__SET_STATE', {
+            key: 'refreshToken',
+            value: refreshToken,
+        });
     },
 };

@@ -9,13 +9,30 @@ import {
 } from './imports';
 import Privileges from './privileges';
 
+export const ROUTE_NAME = {
+    USERS: 'users',
+    USERS_GRID: 'users-grid',
+    USER_EDIT: 'user-id',
+    USER_EDIT_GENERAL: 'user-id-general',
+    USER_EDIT_AVATAR: 'user-id-avatar',
+    USER_EDIT_LANGUAGE_RESTRICTIONS: 'user-id-language-restrictions',
+    USER_ROLES: 'user-roles',
+    USER_ROLES_GRID: 'user-roles-grid',
+    USER_ROLE_EDIT: 'user-role-id',
+    USER_ROLE_EDIT_GENERAL: 'user-role-id-general',
+    USER_ROLE_EDIT_PRIVILEGES: 'user-role-id-privileges',
+    USER_PROFILE: 'user-profile',
+    USER_PROFILE_ACTIVITY_LOGS_GRID: 'user-profile-activity-logs-grid',
+    USER_PROFILE_PRIVILEGES_GRID: 'user-profile-privileges-grid',
+};
+
 export default [
     {
-        name: 'users',
+        name: ROUTE_NAME.USERS,
         path: '/users',
         component: Pages.Users,
         redirect: {
-            name: 'users-grid',
+            name: ROUTE_NAME.USERS_GRID,
         },
         meta: {
             access: true,
@@ -34,7 +51,7 @@ export default [
         },
         children: [
             {
-                name: 'users-grid',
+                name: ROUTE_NAME.USERS_GRID,
                 path: 'grid',
                 component: Tabs.UsersGridTab,
                 meta: {
@@ -51,18 +68,18 @@ export default [
         ],
     },
     {
-        name: 'user-id',
+        name: ROUTE_NAME.USER_EDIT,
         path: '/users/user/:id',
         component: Pages.UserEdit,
         redirect: {
-            name: 'user-id-general',
+            name: ROUTE_NAME.USER_EDIT_GENERAL,
         },
         meta: {
             isMenu: false,
         },
         children: [
             {
-                name: 'user-id-general',
+                name: ROUTE_NAME.USER_EDIT_GENERAL,
                 path: 'general',
                 component: Tabs.UserGeneralTab,
                 meta: {
@@ -74,14 +91,14 @@ export default [
                         },
                         {
                             title: 'Users',
-                            routeName: 'users-grid',
+                            name: ROUTE_NAME.USERS_GRID,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'user-id-avatar',
+                name: ROUTE_NAME.USER_EDIT_AVATAR,
                 path: 'avatar',
                 component: Tabs.UserAvatarTab,
                 meta: {
@@ -93,14 +110,14 @@ export default [
                         },
                         {
                             title: 'Users',
-                            routeName: 'users-grid',
+                            name: ROUTE_NAME.USERS_GRID,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'user-id-language-restrictions',
+                name: ROUTE_NAME.USER_EDIT_LANGUAGE_RESTRICTIONS,
                 path: 'language-restrictions',
                 component: Tabs.UserLanguageRestrictionsTab,
                 meta: {
@@ -112,7 +129,7 @@ export default [
                         },
                         {
                             title: 'Users',
-                            routeName: 'users-grid',
+                            name: ROUTE_NAME.USERS_GRID,
                         },
                     ],
                     privileges: [],
@@ -121,11 +138,11 @@ export default [
         ],
     },
     {
-        name: 'user-roles',
+        name: ROUTE_NAME.USER_ROLES,
         path: '/user-roles',
         component: Pages.Roles,
         redirect: {
-            name: 'user-roles-grid',
+            name: ROUTE_NAME.USER_ROLES_GRID,
         },
         meta: {
             access: true,
@@ -144,7 +161,7 @@ export default [
         },
         children: [
             {
-                name: 'user-roles-grid',
+                name: ROUTE_NAME.USER_ROLES_GRID,
                 path: 'grid',
                 component: Tabs.RolesGridTab,
                 meta: {
@@ -161,18 +178,18 @@ export default [
         ],
     },
     {
-        name: 'user-role-id',
+        name: ROUTE_NAME.USER_ROLE_EDIT,
         path: '/user-roles/role/:id',
         component: Pages.RoleEdit,
         redirect: {
-            name: 'user-role-id-general',
+            name: ROUTE_NAME.USER_ROLE_EDIT_GENERAL,
         },
         meta: {
             isMenu: false,
         },
         children: [
             {
-                name: 'user-role-id-general',
+                name: ROUTE_NAME.USER_ROLE_EDIT_GENERAL,
                 path: 'general',
                 component: Tabs.RoleGeneralTab,
                 meta: {
@@ -184,14 +201,14 @@ export default [
                         },
                         {
                             title: 'User roles',
-                            routeName: 'user-roles-grid',
+                            routeName: ROUTE_NAME.USER_ROLES_GRID,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'user-role-id-privileges',
+                name: ROUTE_NAME.USER_ROLE_EDIT_PRIVILEGES,
                 path: 'privileges',
                 component: Tabs.RolePrivilegesTab,
                 meta: {
@@ -203,7 +220,7 @@ export default [
                         },
                         {
                             title: 'User roles',
-                            routeName: 'user-roles-grid',
+                            routeName: ROUTE_NAME.USER_ROLES_GRID,
                         },
                     ],
                     privileges: [],
@@ -212,18 +229,18 @@ export default [
         ],
     },
     {
-        name: 'profile',
+        name: ROUTE_NAME.USER_PROFILE,
         path: '/profile',
         component: Pages.Profile,
         redirect: {
-            name: 'profile-activity-log-grid',
+            name: ROUTE_NAME.USER_PROFILE_ACTIVITY_LOGS_GRID,
         },
         meta: {
             isMenu: false,
         },
         children: [
             {
-                name: 'profile-activity-log-grid',
+                name: ROUTE_NAME.USER_PROFILE_ACTIVITY_LOGS_GRID,
                 path: 'activity-log-grid',
                 component: Tabs.UserActivityLogsGridTab,
                 meta: {
@@ -232,7 +249,7 @@ export default [
                 },
             },
             {
-                name: 'profile-privileges-grid',
+                name: ROUTE_NAME.USER_PROFILE_PRIVILEGES_GRID,
                 path: 'privileges-grid',
                 component: Tabs.UserPrivilegesGridTab,
                 meta: {

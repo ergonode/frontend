@@ -8,8 +8,8 @@
         @close="onClose">
         <template #body>
             <UserForm
-                submit-title="CREATE"
-                proceed-title="CREATE & EDIT"
+                :submit-title="$t('core.buttons.create')"
+                :proceed-title="$t('core.buttons.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :errors="scopeErrors"
@@ -29,6 +29,9 @@ import {
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import ModalForm from '@UI/components/Modal/ModalForm';
 import UserForm from '@Users/components/Forms/UserForm';
+import {
+    ROUTE_NAME,
+} from '@Users/config/routes';
 import {
     mapActions,
 } from 'vuex';
@@ -106,7 +109,7 @@ export default {
             this.isProceeding = false;
 
             this.$router.push({
-                name: 'user-id-general',
+                name: ROUTE_NAME.USER_EDIT_GENERAL,
                 params: {
                     id,
                 },

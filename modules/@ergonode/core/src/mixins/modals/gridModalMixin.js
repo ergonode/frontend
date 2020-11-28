@@ -10,23 +10,15 @@ export default {
     },
     data() {
         return {
-            isModalVisible: false,
             fetchGridData: false,
         };
     },
     methods: {
-        onShowModal() {
-            this.isModalVisible = true;
-        },
-        onCloseModal() {
-            this.isModalVisible = false;
-        },
-        onCreatedData() {
-            this.onCloseModal();
-            this.fetchGridData = true;
-        },
         onFetchedGridData() {
             this.fetchGridData = false;
+        },
+        onCreatedData() {
+            this.fetchGridData = true;
         },
     },
 };

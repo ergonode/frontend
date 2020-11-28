@@ -9,13 +9,22 @@ import {
 } from './imports';
 import PRIVILEGES from './privileges';
 
+export const ROUTE_NAME = {
+    COLLECTIONS: 'collections',
+    COLLECTIONS_GRID: 'collections-grid',
+    COLLECTION_EDIT: 'collection-id',
+    COLLECTION_EDIT_GENERAL: 'collection-id-general',
+    COLLECTION_EDIT_TRANSLATIONS: 'collection-id-translations',
+    COLLECTION_EDIT_PRODUCTS: 'collection-id-products',
+};
+
 export default [
     {
-        name: 'collections',
+        name: ROUTE_NAME.COLLECTIONS,
         path: '/collections',
         component: Pages.Collections,
         redirect: {
-            name: 'collections-grid',
+            name: ROUTE_NAME.COLLECTIONS_GRID,
         },
         meta: {
             title: 'Collections',
@@ -33,7 +42,7 @@ export default [
         },
         children: [
             {
-                name: 'collections-grid',
+                name: ROUTE_NAME.COLLECTIONS_GRID,
                 path: 'grid',
                 component: Tabs.CollectionGridTab,
                 meta: {
@@ -50,18 +59,18 @@ export default [
         ],
     },
     {
-        name: 'collection-id',
+        name: ROUTE_NAME.COLLECTION_EDIT,
         path: '/collections/collection/:id',
         component: Pages.CollectionEdit,
         redirect: {
-            name: 'collection-id-general',
+            name: ROUTE_NAME.COLLECTION_EDIT_GENERAL,
         },
         meta: {
             isMenu: false,
         },
         children: [
             {
-                name: 'collection-id-general',
+                name: ROUTE_NAME.COLLECTION_EDIT_GENERAL,
                 path: 'general',
                 component: Tabs.CollectionGeneralTab,
                 meta: {
@@ -73,14 +82,14 @@ export default [
                         },
                         {
                             title: 'Collections',
-                            routeName: 'collections-grid',
+                            routeName: ROUTE_NAME.COLLECTIONS_GRID,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'collection-id-translations',
+                name: ROUTE_NAME.COLLECTION_EDIT_TRANSLATIONS,
                 path: 'translations',
                 component: Tabs.CollectionTranslationsTab,
                 meta: {
@@ -92,14 +101,14 @@ export default [
                         },
                         {
                             title: 'Collections',
-                            routeName: 'collections-grid',
+                            routeName: ROUTE_NAME.COLLECTIONS_GRID,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'collection-id-products',
+                name: ROUTE_NAME.COLLECTION_EDIT_PRODUCTS,
                 path: 'products',
                 component: Tabs.CollectionProductsTab,
                 meta: {
@@ -111,7 +120,7 @@ export default [
                         },
                         {
                             title: 'Collections',
-                            routeName: 'collections-grid',
+                            routeName: ROUTE_NAME.COLLECTIONS_GRID,
                         },
                     ],
                     privileges: [],

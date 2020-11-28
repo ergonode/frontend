@@ -13,11 +13,7 @@
                 :pagination="pagination"
                 :filters="filterValues"
                 :collection-cell-binding="collectionCellBinding"
-                :extended-columns="extendedColumns"
-                :extended-data-cells="extendedDataCells"
-                :extended-data-filter-cells="extendedDataFilterCells"
-                :extended-data-edit-cells="extendedDataEditCells"
-                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :extended-components="extendedGridComponents"
                 :is-editable="isAllowedToUpdate"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
@@ -46,7 +42,7 @@
                 </template>
                 <template #appendFooter>
                     <Button
-                        title="SAVE CHANGES"
+                        :title="$t('core.buttons.submit')"
                         @click.native="onSubmit">
                         <template
                             v-if="isSubmitting"

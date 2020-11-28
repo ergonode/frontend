@@ -6,17 +6,9 @@
     <Page>
         <TitleBar
             title="Status transition"
-            :is-read-only="$isReadOnly('WORKFLOW')">
+            :is-read-only="isReadOnly">
             <template #mainAction>
-                <Button
-                    title="NEW TRANSITION"
-                    :size="smallSize"
-                    :disabled="!isAllowedToCreate"
-                    @click.native="onShowModal">
-                    <template #prepend="{ color }">
-                        <IconAdd :fill-color="color" />
-                    </template>
-                </Button>
+                <CreateStatusTransitionButton @created="onCreatedData" />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -28,23 +20,15 @@
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
-        <CreateStatusTransitionModalForm
-            v-if="isModalVisible"
-            @close="onCloseModal"
-            @created="onCreatedData" />
     </Page>
 </template>
 
 <script>
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import CreateStatusTransitionButton from '@Transitions/components/Buttons/CreateStatusTransitionButton';
 import PRIVILEGES from '@Transitions/config/privileges';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@UI/components/TitleBar/TitleBar';
@@ -52,12 +36,10 @@ import TitleBar from '@UI/components/TitleBar/TitleBar';
 export default {
     name: 'WorkflowTabs',
     components: {
+        CreateStatusTransitionButton,
         TitleBar,
         Page,
         HorizontalRoutingTabBar,
-        Button,
-        IconAdd,
-        CreateStatusTransitionModalForm: () => import('@Transitions/components/Modals/CreateStatusTransitionModalForm'),
     },
     mixins: [
         gridModalMixin,
@@ -65,13 +47,8 @@ export default {
         asyncTabsMixin,
     ],
     computed: {
-        isAllowedToCreate() {
-            return this.$hasAccess([
-                PRIVILEGES.WORKFLOW.create,
-            ]);
-        },
-        smallSize() {
-            return SIZE.SMALL;
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.WORKFLOW.namespace);
         },
     },
     head() {

@@ -3,18 +3,13 @@
  * See LICENSE for license details.
  */
 <template>
-    <CategoryTreePage
-        :title="code"
-        @remove="onRemove" />
+    <CategoryTreePage :title="code" />
 </template>
 
 <script>
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    MODAL_TYPE,
-} from '@Core/defaults/modals';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import CategoryTreePage from '@Trees/components/Pages/CategoryTreePage';
 import {
@@ -43,12 +38,10 @@ export default {
         await store.dispatch('categoryTree/getCategoryTree', {
             id: params.id,
             onError: () => {
-                if (process.client) {
-                    app.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: 'Category tree hasn`t been fetched properly',
-                    });
-                }
+                app.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Category tree hasn`t been fetched properly',
+                });
             },
         });
     },
@@ -65,7 +58,6 @@ export default {
     },
     methods: {
         ...mapActions('categoryTree', [
-            'removeCategoryTree',
             '__clearStorage',
         ]),
         ...mapActions('feedback', {
@@ -77,32 +69,6 @@ export default {
         ...mapActions('gridDesigner', {
             __clearGridDesignerStorage: '__clearStorage',
         }),
-        onRemove() {
-            this.$confirm({
-                type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this tree?',
-                applyTitle: 'YES, REMOVE',
-                action: () => this.removeCategoryTree({
-                    onSuccess: this.onRemoveSuccess,
-                    onError: this.onRemoveError,
-                }),
-            });
-        },
-        onRemoveSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Category tree removed',
-            });
-            this.$router.push({
-                name: 'category-trees-grid',
-            });
-        },
-        onRemoveError() {
-            this.$addAlert({
-                type: ALERT_TYPE.ERROR,
-                message: 'Catgory tree hasn`t been deleted',
-            });
-        },
     },
     head() {
         return {

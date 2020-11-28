@@ -9,19 +9,10 @@
             :is-navigation-back="true"
             :is-read-only="isReadOnly">
             <template #prependHeader>
-                <NavigationBackFab />
+                <NavigateBackFab />
             </template>
             <template #mainAction>
-                <Button
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    title="REMOVE ROLE"
-                    :disabled="!isAllowedToDelete"
-                    @click.native="onRemove">
-                    <template #prepend="{ color }">
-                        <IconDelete :fill-color="color" />
-                    </template>
-                </Button>
+                <RemoveRoleButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -35,10 +26,14 @@
 <script>
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import RemoveRoleButton from '@Users/components/Buttons/RemoveRoleButton';
 import PRIVILEGES from '@Users/config/privileges';
 
 export default {
     name: 'UserRolesPage',
+    components: {
+        RemoveRoleButton,
+    },
     mixins: [
         editPageMixin,
         asyncTabsMixin,
@@ -46,11 +41,6 @@ export default {
     computed: {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.USER_ROLE.namespace);
-        },
-        isAllowedToDelete() {
-            return this.$hasAccess([
-                PRIVILEGES.USER_ROLE.delete,
-            ]);
         },
     },
 };

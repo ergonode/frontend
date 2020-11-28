@@ -165,12 +165,10 @@ export default {
             await this.getMoreComments({
                 params,
                 onError: () => {
-                    if (process.client) {
-                        this.$addAlert({
-                            type: ALERT_TYPE.ERROR,
-                            message: 'Comments hasn`t been fetched properly',
-                        });
-                    }
+                    this.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Comments hasn`t been fetched properly',
+                    });
                 },
             });
 

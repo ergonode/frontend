@@ -9,13 +9,21 @@ import {
 } from './imports';
 import Privileges from './privileges';
 
+export const ROUTE_NAME = {
+    PRODUCT_STATUSES: 'product-statuses',
+    PRODUCT_STATUSES_GRID: 'product-statuses-grid',
+    PRODUCT_STATUS_EDIT: 'product-status-id',
+    PRODUCT_STATUS_EDIT_GENERAL: 'product-status-id-general',
+    PRODUCT_STATUS_EDIT_TRANSLATIONS: 'product-status-id-translation',
+};
+
 export default [
     {
-        name: 'product-statuses',
+        name: ROUTE_NAME.PRODUCT_STATUSES,
         path: '/product-statuses',
         component: Pages.ProductStatuses,
         redirect: {
-            name: 'product-statuses-grid',
+            name: ROUTE_NAME.PRODUCT_STATUSES_GRID,
         },
         meta: {
             title: 'Product statuses',
@@ -33,7 +41,7 @@ export default [
         },
         children: [
             {
-                name: 'product-statuses-grid',
+                name: ROUTE_NAME.PRODUCT_STATUSES_GRID,
                 path: 'grid',
                 component: Tabs.ProductStatusGridTab,
                 meta: {
@@ -50,18 +58,18 @@ export default [
         ],
     },
     {
-        name: 'product-status-id',
+        name: ROUTE_NAME.PRODUCT_STATUS_EDIT,
         path: '/product-statuses/status/:id',
         component: Pages.ProductStatusEdit,
         redirect: {
-            name: 'product-status-id-general',
+            name: ROUTE_NAME.PRODUCT_STATUS_EDIT_GENERAL,
         },
         meta: {
             isMenu: false,
         },
         children: [
             {
-                name: 'product-status-id-general',
+                name: ROUTE_NAME.PRODUCT_STATUS_EDIT_GENERAL,
                 path: 'general',
                 component: Tabs.ProductStatusGeneralTab,
                 meta: {
@@ -73,14 +81,14 @@ export default [
                         },
                         {
                             title: 'Product statuses',
-                            routeName: 'product-statuses-grid',
+                            routeName: ROUTE_NAME.PRODUCT_STATUSES_GRID,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'product-status-id-general-translations',
+                name: ROUTE_NAME.PRODUCT_STATUS_EDIT_TRANSLATIONS,
                 path: 'translations',
                 component: Tabs.ProductStatusTranslationsTab,
                 meta: {
@@ -92,7 +100,7 @@ export default [
                         },
                         {
                             title: 'Product statuses',
-                            routeName: 'product-statuses-grid',
+                            routeName: ROUTE_NAME.PRODUCT_STATUSES_GRID,
                         },
                     ],
                     privileges: [],

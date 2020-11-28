@@ -9,11 +9,7 @@
                 :columns="columns"
                 :rows="rows"
                 :data-count="dataCount"
-                :extended-columns="extendedColumns"
-                :extended-data-cells="extendedDataCells"
-                :extended-data-filter-cells="extendedDataFilterCells"
-                :extended-data-edit-cells="extendedDataEditCells"
-                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :extended-components="extendedGridComponents"
                 :is-editable="false"
                 :is-border="true"
                 :is-footer-visible="false" />

@@ -22,23 +22,11 @@
                             v-if="status"
                             :language="language" />
                     </TitleBarSubActions>
-                    <Button
-                        :theme="secondaryTheme"
-                        :size="smallSize"
-                        title="RESTORE"
-                        :disabled="!isAllowedToRestore"
-                        @click.native="onShowModal">
-                        <template #prepend="{ color }">
-                            <IconRestore :fill-color="color" />
-                        </template>
-                    </Button>
+                    <RestoreProductButton
+                        :language="language"
+                        :elements="elements"
+                        @resored="onRestoredDraftValues" />
                 </div>
-                <RestoreAttributeParentModalForm
-                    v-if="isModalVisible"
-                    :language="language"
-                    :elements="elements"
-                    @restore="onRestoreDraftValues"
-                    @close="onCloseModal" />
             </template>
             <template #centeredContent>
                 <Preloader v-if="isFetchingData" />
@@ -53,7 +41,7 @@
             </template>
             <template #default>
                 <Button
-                    title="SAVE CHANGES"
+                    :title="$t('core.buttons.submit')"
                     :floating="{ bottom: '24px', right: '24px' }"
                     @click.native="onSubmit">
                     <template
@@ -73,16 +61,14 @@ import {
 } from '@Core/defaults/alerts';
 import {
     SIZE,
-    THEME,
 } from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import ProductWorkflowActionButton from '@Products/components/Buttons/ProductWorkflowActionButton';
+import RestoreProductButton from '@Products/components/Buttons/RestoreProductButton';
 import ProductTemplateForm from '@Products/components/Forms/ProductTemplateForm';
 import ProductCompleteness from '@Products/components/Progress/ProductCompleteness';
-import PRIVILEGES from '@Products/config/privileges';
 import Button from '@UI/components/Button/Button';
-import IconRestore from '@UI/components/Icons/Actions/IconRestore';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
@@ -91,25 +77,23 @@ import TreeSelect from '@UI/components/Select/Tree/TreeSelect';
 import TitleBarSubActions from '@UI/components/TitleBar/TitleBarSubActions';
 import {
     mapActions,
-    mapGetters,
     mapState,
 } from 'vuex';
 
 export default {
     name: 'ProductTemplateTab',
     components: {
+        RestoreProductButton,
         IntersectionObserver,
         Preloader,
         IconSpinner,
         Button,
-        IconRestore,
         ProductTemplateForm,
         CenterViewTemplate,
         TreeSelect,
         TitleBarSubActions,
         ProductCompleteness,
         ProductWorkflowActionButton,
-        RestoreAttributeParentModalForm: () => import('@Products/components/Modals/RestoreAttributeParentModalForm'),
     },
     mixins: [
         gridModalMixin,
@@ -142,14 +126,8 @@ export default {
             'template',
             'status',
         ]),
-        ...mapGetters('core', [
-            'rootLanguage',
-        ]),
         smallSize() {
             return SIZE.SMALL;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
         },
         languageOptions() {
             return this.languagesTree.map(language => ({
@@ -160,17 +138,6 @@ export default {
                     ? !this.languagePrivileges[language.code].read
                     : true,
             }));
-        },
-        isAllowedToRestore() {
-            const {
-                code,
-            } = this.language;
-
-            return this.$hasAccess([
-                PRIVILEGES.PRODUCT.update,
-            ])
-                && this.languagePrivileges[code].edit
-                && this.rootLanguage.code !== code;
         },
     },
     created() {
@@ -270,7 +237,7 @@ export default {
 
             this.language = value;
         },
-        async onRestoreDraftValues() {
+        async onRestoredDraftValues() {
             const {
                 code: languageCode,
             } = this.language;

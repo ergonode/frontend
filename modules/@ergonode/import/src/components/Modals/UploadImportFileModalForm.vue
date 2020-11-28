@@ -117,7 +117,7 @@ export default {
             this.$emit('close');
         },
         onSubmit() {
-            if (this.isSubmitting) {
+            if (this.isSubmitting || !this.csvFile) {
                 return;
             }
             this.isSubmitting = true;
