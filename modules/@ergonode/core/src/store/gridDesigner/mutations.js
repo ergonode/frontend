@@ -15,6 +15,8 @@ export const types = {
     SET_GRID_DATA: 'SET_GRID_DATA',
     SET_FULL_GRID_DATA: 'SET_FULL_GRID_DATA',
     SET_GRID_ITEM: 'SET_GRID_ITEM',
+    REMOVE_GRID_ITEM: 'REMOVE_GRID_ITEM',
+    SHIFT_GRID_ITEMS: 'SHIFT_GRID_ITEMS',
     SWAP_GRID_ITEMS: 'SWAP_GRID_ITEMS',
     UPDATE_GRID_ITEM: 'UPDATE_GRID_ITEM',
     INSERT_GRID_ITEM: 'INSERT_GRID_ITEM',
@@ -27,7 +29,6 @@ export const types = {
 export default {
     [types.ADD_GRID_ITEM](state, item) {
         state.gridData.push(item);
-        state.gridData.sort((a, b) => a.row - b.row);
     },
     [types.SET_ROWS_COUNT](state, value) {
         state.rows = value;
@@ -37,6 +38,17 @@ export default {
     },
     [types.SET_FULL_GRID_DATA](state, value) {
         state.fullGridData = value;
+    },
+    [types.REMOVE_GRID_ITEM](state, index) {
+        state.gridData.splice(index, 1);
+    },
+    [types.SHIFT_GRID_ITEMS](state, {
+        since,
+        value,
+    }) {
+        for (let i = since + 1; i < state.gridData.length; i += 1) {
+            state.gridData[i].row += value;
+        }
     },
     [types.SET_GRID_ITEM](state, {
         index,

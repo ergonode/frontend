@@ -100,7 +100,6 @@ export default {
         TemplateGridItemsContainer,
         TemplateGridContainer,
         TemplateGridGhostItem,
-        TemplateGridItemArea,
         TemplateGridItem,
     },
     props: {
@@ -193,7 +192,7 @@ export default {
         gridStyles() {
             return {
                 gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
-                gridAutoRows: `${this.rowHeight}px`,
+                gridTemplateRows: `repeat(${this.rows}, ${this.rowHeight}px)`,
             };
         },
         gridItemStyles() {

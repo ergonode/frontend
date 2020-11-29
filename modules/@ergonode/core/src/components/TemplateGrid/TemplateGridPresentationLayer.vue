@@ -61,7 +61,11 @@ export default {
 
 <style lang="scss" scoped>
     .presentation-layer {
+        position: absolute;
+        top: 0;
+        z-index: 10;
         display: grid;
+        width: 100%;
         height: auto;
         border-right: $BORDER_DASHED_GREY;
 

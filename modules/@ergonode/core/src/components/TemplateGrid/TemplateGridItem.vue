@@ -20,6 +20,14 @@
                 class="grid-item__code"
                 v-text="`COLUMN: ${item.column}`" />
         </div>
+        <div class="grid-item__title">
+            <span
+                class="grid-item__name"
+                v-text="`ID: ${item.id}` " />
+            <span
+                class="grid-item__code"
+                v-text="`Parent: ${item.parent}`" />
+        </div>
         <div
             :class="['grid-item__contextual-menu', contextualMenuHoveStateClasses]">
             <ActionIconButton
@@ -161,8 +169,9 @@ export default {
 
         &__title {
             display: flex;
-            flex: 1;
+            //flex: 1;
             flex-direction: column;
+            margin-right: 8px;
             color: $GRAPHITE_DARK;
             text-overflow: ellipsis;
             overflow: hidden;

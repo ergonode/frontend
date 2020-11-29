@@ -96,20 +96,7 @@ export default {
         },
     },
     data: () => ({
-        positionBetweenRows: 0.5,
         additionalRows: 3,
-        ghostElement: {
-            id: 'ghost_item',
-            column: null,
-            row: null,
-            parent: null,
-        },
-        mousePosition: {
-            overColumn: null,
-            overRow: null,
-            directionOfCollision: null,
-            shadowItem: null,
-        },
         rowBounds: {},
         debounceFunc: null,
     }),
@@ -126,11 +113,8 @@ export default {
             'draggedElIndex',
             'ghostIndex',
         ]),
-        dataWithoutGhostElement() {
-            return this.gridData.filter(element => element.id !== this.ghostElement.id);
-        },
         maxRow() {
-            return getObjectWithMaxValueInArrayByObjectKey(this.dataWithoutGhostElement, 'row').row;
+            return getObjectWithMaxValueInArrayByObjectKey(this.gridData, 'row').row;
         },
     },
     created() {
@@ -165,6 +149,9 @@ export default {
             'removeGridItem',
             'rebuildGrid',
             '',
+            'shiftItems',
+            'addItem',
+            'removeItemAtIndex',
             'setItemAtIndex',
             'insertItemAtIndex',
             'swapItemsPosition',
@@ -233,7 +220,7 @@ export default {
                         id: 'ghost_item',
                         row,
                         column,
-                        parent: this.getParentId(row, column),
+                        parent: item.parent,
                     },
                 });
 
@@ -249,8 +236,22 @@ export default {
                     item: {
                         ...this.draggedElement,
                         ...this.ghostIndex,
+                        parent: this.getParent(this.ghostIndex.row, this.ghostIndex.column).id,
                     },
                 });
+
+                const nextRow = this.ghostIndex.row + 1;
+
+                if (nextRow < this.gridData.length
+                    && this.gridData[nextRow].column - this.ghostIndex.column === 1) {
+                    this.setItemAtIndex({
+                        index: nextRow,
+                        item: {
+                            ...this.gridData[nextRow],
+                            parent: this.draggedElement.id,
+                        },
+                    });
+                }
 
                 this.__setState({
                     key: 'ghostIndex',
@@ -273,24 +274,18 @@ export default {
 
             if (isDroppedToTrash) {
                 this.$emit('remove', this.draggedElement);
-            } else {
-                const {
-                    isOutOfBounds,
-                } = this.getElementBelowMouse(event);
+            } else if (this.isOutOfBounds(event)) {
+                this.insertItemAtIndex({
+                    index: this.draggedElIndex,
+                    item: this.draggedElement,
+                });
 
-                if (isOutOfBounds) {
-                    this.insertItemAtIndex({
-                        index: this.draggedElIndex,
-                        item: this.draggedElement,
+                if (!this.isMultiDraggable) {
+                    this.setDisabledElement({
+                        languageCode: this.language,
+                        elementId: this.draggedElement.id,
+                        disabled: true,
                     });
-
-                    if (!this.isMultiDraggable) {
-                        this.setDisabledElement({
-                            languageCode: this.language,
-                            elementId: this.draggedElement.id,
-                            disabled: true,
-                        });
-                    }
                 }
             }
 
@@ -312,12 +307,12 @@ export default {
             });
         },
         onDragLeave(event) {
-            const {
-                isOutOfBounds,
-            } = this.getElementBelowMouse(event);
-
-            if (isOutOfBounds) {
-                console.log('remove');
+            if (this.isOutOfBounds(event) && this.ghostIndex !== -1) {
+                this.shiftItems({
+                    since: this.ghostIndex.row,
+                    value: -1,
+                });
+                this.removeItemAtIndex(this.ghostIndex.row);
                 this.__setState({
                     key: 'ghostIndex',
                     value: -1,
@@ -325,8 +320,16 @@ export default {
             }
         },
         onDragOver(event) {
+            console.log('over');
             event.preventDefault();
 
+            if (this.ghostIndex === -1) {
+                this.insertGhostItemOnEnter(event);
+            } else {
+                this.updateGhostItemPositionOnDragOver(event);
+            }
+        },
+        updateGhostItemPositionOnDragOver(event) {
             const shadowItem = this.getShadowItem(event);
 
             if (shadowItem && shadowItem.row < this.gridData.length) {
@@ -340,7 +343,7 @@ export default {
                     height: shadowItemHeight,
                 } = shadowItem.element.getBoundingClientRect();
 
-                const isBefore = getDraggedRowPositionState(
+                const isBeforeRow = getDraggedRowPositionState(
                     event.pageY,
                     shadowItemYPos,
                     shadowItemHeight,
@@ -348,91 +351,155 @@ export default {
 
                 const isSamePosition = row === this.ghostIndex.row
                     && column === this.ghostIndex.column;
-                const isAbovePreviousRow = !isBefore && this.ghostIndex.row === row + 1;
-                const isBeforeNextRow = isBefore && this.ghostIndex.row === row - 1;
-
-                // console.log(this.gridData[row - 1].id === this.gridData[row].parent && this.gridData[row + 1].parent === this.gridData[row].parent);
+                const isAbovePreviousRow = !isBeforeRow && this.ghostIndex.row === row + 1;
+                const isBeforeNextRow = isBeforeRow && this.ghostIndex.row === row - 1;
 
                 if (isSamePosition
                     || isAbovePreviousRow
                     || isBeforeNextRow) {
-                    event.stopPropagation();
-
                     return;
                 }
 
-                // const parent = this.getParent(row, column);
-                //
-                // if (column - parent.column > 1) {
-                //     event.stopPropagation();
-                //
-                //     // console.log('return');
-                //
-                //     return;
-                // }
-
                 const isSameRow = row === this.ghostIndex.row;
-                // const isSameColumn = column === this.ghostIndex.column;
-                // const isMaxColumnRangeExceeded = Math.abs(column - this.gridData[row].column) > 2;
-                // const hasChildren = row + 1 < this.gridData.length && this.gridData[row + 1].parent === this.gridData[row].id;
-                // const isParentAbove = this.gridData[row - 1].id === parent.id;
 
                 if (isSameRow) {
-                    // Navigate in horizontal direction; left - right
-
-                    // TODO: Check for column collision
-
-                    if (!this.isCollidingHorizontally(row, column)) {
-                        console.log('insert', column);
-
-                        this.setItemAtIndex({
-                            index: this.ghostIndex.row,
-                            item: {
-                                id: 'ghost_item',
-                                row,
-                                column,
-                                parent: this.getParentId(row, column),
-                            },
-                        });
-
-                        this.__setState({
-                            key: 'ghostIndex',
-                            value: {
-                                row,
-                                column,
-                            },
-                        });
-                    }
+                    this.updateGhostItemPositionHorizontally(row, column);
                 } else {
-                    // Navigate between parent children; top - bottom
-                    console.log('switching');
-                    let fromRow = row - 1;
-                    let toRow = this.ghostIndex.row + 1;
+                    this.updateGhostItemPositionVertically(row, isBeforeRow);
+                }
+            }
+        },
+        updateGhostItemPositionHorizontally(row, column) {
+            const parentItemsRows = this.getParentItemsRows();
+            const minItemRow = Math.min(...parentItemsRows);
+            const maxItemRow = Math.max(...parentItemsRows);
 
-                    const fromColumn = this.gridData[row].column;
-                    const toColumn = this.ghostIndex.column + Math.abs(column - this.gridData[row].column);
+            const isFirstChild = minItemRow >= this.ghostIndex.row;
+            const isLastChild = maxItemRow <= this.ghostIndex.row;
+            const isBetweenChild = this.ghostIndex.row > minItemRow
+                && this.ghostIndex.row < maxItemRow;
 
-                    if (isBefore) {
-                        fromRow = this.ghostIndex.row;
-                        toRow = row;
-                    }
+            if (Math.abs(column - this.ghostIndex.column) > 1) {
+                return;
+            }
 
-                    this.swapItemsPosition({
-                        fromRow,
-                        toRow,
-                        fromColumn,
-                        toColumn,
+            if (isFirstChild && isLastChild) {
+                if (column > this.ghostIndex.column) {
+                    return;
+                }
+            } else if (isFirstChild) {
+                return;
+            } else if (isBetweenChild) {
+                const distanceBetweenNeighbours = Math.abs(
+                    this.gridData[row - 1].column - this.gridData[row + 1].column,
+                );
+                const isMaxColumn = column - this.ghostIndex.column > 1
+                    || column - this.ghostIndex.column < 0;
+
+                if (!distanceBetweenNeighbours && isMaxColumn) {
+                    return;
+                }
+            }
+
+            const fixedColumn = this.ghostIndex.column > column
+                ? this.ghostIndex.column - 1
+                : this.ghostIndex.column + 1;
+
+            this.setItemAtIndex({
+                index: this.ghostIndex.row,
+                item: {
+                    id: 'ghost_item',
+                    row,
+                    column: fixedColumn,
+                    parent: this.getParent(row, column).id,
+                },
+            });
+
+            this.__setState({
+                key: 'ghostIndex',
+                value: {
+                    row,
+                    column: fixedColumn,
+                },
+            });
+        },
+        updateGhostItemPositionVertically(row, isBeforeRow) {
+            let fromRow = row - 1;
+            let toRow = this.ghostIndex.row + 1;
+
+            const fromColumn = this.gridData[row].column;
+            const toColumn = this.gridData[row].column;
+
+            if (isBeforeRow) {
+                fromRow = this.ghostIndex.row;
+                toRow = row;
+            }
+
+            this.swapItemsPosition({
+                fromRow,
+                toRow,
+                fromColumn,
+                toColumn,
+            });
+
+            this.__setState({
+                key: 'ghostIndex',
+                value: {
+                    row: toRow,
+                    column: toColumn,
+                },
+            });
+        },
+        insertGhostItemOnEnter(event) {
+            const shadowItem = this.getShadowItem(event);
+
+            if (shadowItem) {
+                const {
+                    row,
+                    column,
+                } = shadowItem;
+
+                this.__setState({
+                    key: 'ghostIndex',
+                    value: {
+                        row,
+                        column,
+                    },
+                });
+
+                const parent = this.getParent(row, column);
+
+                if (row < this.gridData.length) {
+                    this.shiftItems({
+                        since: row - 1,
+                        value: 1,
                     });
 
-                    this.__setState({
-                        key: 'ghostIndex',
-                        value: {
+                    this.insertItemAtIndex({
+                        index: row,
+                        item: {
+                            id: 'ghost_item',
                             row,
                             column,
+                            parent: parent.id,
                         },
+                    });
+                } else {
+                    this.addItem({
+                        id: 'ghost_item',
+                        row,
+                        column,
+                        parent: parent.id,
                     });
                 }
             }
+        },
+        getParentItemsRows() {
+            const ghostItem = this.gridData[this.ghostIndex.row];
+
+            return this.gridData
+                .filter(element => element.parent === ghostItem.parent)
+                .map(element => element.row);
         },
         getShadowItem({
             pageX,
@@ -451,70 +518,13 @@ export default {
 
             return null;
         },
-        isCollidingHorizontally(row, column) {
-            const columns = [];
-            // const nextItem = this.gridData[row + 1];
-            const ghostItem = this.gridData[row];
-
-            // if (row - 1 >= 0 && this.gridData[row - 1].id === ghostItem.parent) {
-            //     return [];
-            // }
-
-            if (row + 1 < this.gridData.length && this.gridData[row + 1].parent === ghostItem.parent && this.gridData[row + 1].column - column < 2) {
-                console.log('not colliding');
-                return false;
-            }
-
-            // if (item.parent === prevItem.id) {
-            //     if (nextItem.parent === prevItem.id) {
-            //         return [];
-            //     }
-            //
-            //     return [
-            //         item.column,
-            //         item.column + 1,
-            //     ];
-            // }
-
-            // const maxColumn = ghostItem.column;
-            //
-            // for (let i = row + 1; i < this.gridData.length; i += 1) {
-            //     const item = this.gridData[i];
-            //
-            //     if (item.parent !== ghostItem.parent) {
-            //         if (item.column > maxColumn) {
-            //             columns.push(item.column);
-            //         }
-            //     }
-            //
-            //     console.log(nextItem);
-            // }
-
-            return true;
-
-            // if (item.id)
-        },
-        getElementBelowMouse(event) {
+        isOutOfBounds(event) {
             const {
-                xPos, yPos,
+                xPos,
+                yPos,
             } = getPositionForBrowser(event);
-            const itemsContainer = this.$el;
 
-            return {
-                itemsContainer,
-                isOutOfBounds: isMouseOutOfBoundsElement(itemsContainer, xPos, yPos),
-            };
-        },
-        getParentId(row, column) {
-            if (column === 0 || row === 0) {
-                return this.gridData[0];
-            }
-
-            if (this.gridData[row - 1].column === column) {
-                return this.gridData[row - 1].parent;
-            }
-
-            return this.gridData[row - 1].id;
+            return isMouseOutOfBoundsElement(this.$el, xPos, yPos);
         },
         getParent(row, column) {
             if (column === 0 || row === 0) {
@@ -536,6 +546,5 @@ export default {
 <style lang="scss" scoped>
     .template-grid-container {
         position: relative;
-        height: 100%;
     }
 </style>

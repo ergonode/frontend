@@ -4,7 +4,10 @@
  */
 export function isMouseOutOfBoundsElement(element, xPos, yPos) {
     const {
-        top, right, width, height,
+        top,
+        right,
+        width,
+        height,
     } = element.getBoundingClientRect();
     const leftAtTheLeft = xPos <= right - width;
     const leftAtTheRight = xPos >= right;

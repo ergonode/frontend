@@ -96,10 +96,25 @@ export default {
             value,
         });
     },
+    removeItemAtIndex({
+        commit,
+    }, payload) {
+        commit(types.REMOVE_GRID_ITEM, payload);
+    },
+    shiftItems({
+        commit,
+    }, payload) {
+        commit(types.SHIFT_GRID_ITEMS, payload);
+    },
     setItemAtIndex({
         commit,
     }, payload) {
         commit(types.SET_GRID_ITEM, payload);
+    },
+    addItem({
+        commit,
+    }, payload) {
+        commit(types.ADD_GRID_ITEM, payload);
     },
     swapItemsPosition({
         state,

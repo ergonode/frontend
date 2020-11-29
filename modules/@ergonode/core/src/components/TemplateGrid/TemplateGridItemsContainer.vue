@@ -3,8 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        class="grid-items-container">
+    <div class="grid-items-container">
         <slot />
     </div>
 </template>
@@ -17,11 +16,7 @@ export default {
 
 <style lang="scss" scoped>
     .grid-items-container {
-        position: absolute;
-        top: 0;
-        z-index: 10;
         display: grid;
-        width: 100%;
         height: auto;
     }
 </style>

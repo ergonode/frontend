@@ -44,6 +44,8 @@ export default {
 
 <style lang="scss" scoped>
     .grid__ghost-item {
+        position: relative;
+        z-index: $Z_INDEX_LVL_1;
         display: flex;
         grid-column: 1 / 3;
         justify-content: flex-start;
