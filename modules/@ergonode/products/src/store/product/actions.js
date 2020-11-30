@@ -25,6 +25,7 @@ import {
     updateValues,
     validateValue,
 } from '@Products/services/index';
+import axios from 'axios';
 
 import {
     types,
@@ -804,6 +805,7 @@ export default {
     },
     async removeProductValues({
         state,
+        rootState,
     }, {
         languageCode,
         attributes,
@@ -814,6 +816,12 @@ export default {
             const {
                 id,
             } = state;
+            const {
+                user: {
+                    language,
+                },
+                token,
+            } = rootState.authentication;
             const data = [
                 {
                     id,
@@ -830,12 +838,27 @@ export default {
                 });
             });
 
-            await removeValues({
-                $axios: this.app.$axios,
+            // TODO: When nuxt-axios upgrade to 0.21.0
+
+            await axios.delete(`${process.env.baseURL}${language}/products/attributes`, {
+                headers: {
+                    common: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    JWTAuthorization: `Bearer ${token}`,
+                },
                 data: {
                     data,
                 },
             });
+
+            // await removeValues({
+            //     $axios: this.app.$axios,
+            //     data: {
+            //         data,
+            //     },
+            // });
 
             onSuccess();
         } catch (e) {
