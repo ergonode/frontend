@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-beta.5](https://github.com/derpdead/frontend/compare/v1.0.0-beta.3...v1.0.0-beta.5) (2020-11-30)
+
+**Note:** Version bump only for package ergonode-front
+
+
+
+
+
 ## CHANGELOG FOR v1.0.0-beta.5
 - feature [#596](https://github.com/ergonode/frontend/pull/596) Migrate storybook from v5 to v6 (derpdead)
 - feature [#597](https://github.com/ergonode/frontend/pull/597) Add refresh token support (derpdead)
