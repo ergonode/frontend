@@ -4,6 +4,8 @@
  */
 import {
     insertValueAtIndex,
+    insertValuesAtIndex,
+    removeArrayIndexes,
 } from '@Core/models/arrayWrapper';
 import {
     removeObjectProperty,
@@ -11,12 +13,14 @@ import {
 
 export const types = {
     ADD_GRID_ITEM: 'ADD_GRID_ITEM',
+    INSERT_ITEMS: 'INSERT_ITEMS',
     SET_ROWS_COUNT: 'SET_ROWS_COUNT',
     SET_GRID_DATA: 'SET_GRID_DATA',
     SET_FULL_GRID_DATA: 'SET_FULL_GRID_DATA',
     SET_GRID_ITEM: 'SET_GRID_ITEM',
     REMOVE_GRID_ITEM: 'REMOVE_GRID_ITEM',
     SHIFT_GRID_ITEMS: 'SHIFT_GRID_ITEMS',
+    REMOVE_GRID_ITEMS: 'REMOVE_GRID_ITEMS',
     SWAP_GRID_ITEMS: 'SWAP_GRID_ITEMS',
     UPDATE_GRID_ITEM: 'UPDATE_GRID_ITEM',
     INSERT_GRID_ITEM: 'INSERT_GRID_ITEM',
@@ -27,6 +31,12 @@ export const types = {
 };
 
 export default {
+    [types.INSERT_ITEMS](state, {
+        items,
+        since,
+    }) {
+        state.gridData = insertValuesAtIndex(state.gridData, items, since);
+    },
     [types.ADD_GRID_ITEM](state, item) {
         state.gridData.push(item);
     },
@@ -49,6 +59,9 @@ export default {
         for (let i = since + 1; i < state.gridData.length; i += 1) {
             state.gridData[i].row += value;
         }
+    },
+    [types.REMOVE_GRID_ITEMS](state, indexes) {
+        state.gridData = removeArrayIndexes(state.gridData, indexes);
     },
     [types.SET_GRID_ITEM](state, {
         index,

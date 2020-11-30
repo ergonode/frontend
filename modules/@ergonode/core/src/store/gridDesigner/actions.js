@@ -84,6 +84,11 @@ export default {
             });
         }
     },
+    removeItems({
+        commit,
+    }, payload) {
+        commit(types.REMOVE_GRID_ITEMS, payload);
+    },
     setHiddenItem: ({
         commit,
     }, {
@@ -99,6 +104,11 @@ export default {
         commit,
     }, payload) {
         commit(types.REMOVE_GRID_ITEM, payload);
+    },
+    insertItemsSince({
+        commit,
+    }, payload) {
+        commit(types.ADD_GRID_ITEMS, payload);
     },
     shiftItems({
         commit,

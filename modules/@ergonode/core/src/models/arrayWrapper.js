@@ -104,6 +104,33 @@ export function insertValueAtIndex(array, value, index) {
 }
 
 /**
+ * Returns an array with new values since index
+ * @function
+ * @param {Array} array
+ * @param {*} value
+ * @param {number} since
+ * @returns {number} Transformed array
+ */
+export function insertValuesAtIndex(array, value, since) {
+    return [
+        ...array.slice(0, since),
+        ...value,
+        ...array.slice(since),
+    ];
+}
+
+/**
+ * Returns an array without given indexes
+ * @function
+ * @param {Array} array
+ * @param {Array} indexes
+ * @returns {number} Transformed array
+ */
+export function removeArrayIndexes(array, indexes) {
+    return array.filter((value, index) => indexes.indexOf(index) === -1);
+}
+
+/**
  * Returns an array without value at index
  * @function
  * @param {Array} array

@@ -37,6 +37,7 @@
                     :item="item"
                     :gap="gridGap"
                     :context-name="contextName"
+                    :is-expanded="typeof hiddenItems[item.id] === 'undefined'"
                     :is-dragging-enabled="isDraggingEnabled"
                     @expand="onExpandItem"
                     @remove-item="removeItem(item)" />
@@ -145,6 +146,11 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            hiddenItems: {},
+        };
+    },
     computed: {
         ...mapState('authentication', {
             language: state => state.user.language,
@@ -158,7 +164,6 @@ export default {
         ...mapState('gridDesigner', [
             'rows',
             'gridData',
-            'hiddenItems',
         ]),
         gridStyles() {
             return {
@@ -182,6 +187,10 @@ export default {
             'removeHiddenItem',
             'setExpandItem',
             'removeGridItem',
+            '',
+            'shiftItems',
+            'removeItems',
+            'insertItemsSince',
         ]),
         ...mapActions('list', [
             'removeDisabledElement',
@@ -192,59 +201,60 @@ export default {
         onExpandItem({
             id,
             row,
-            column,
-            expanded,
+            parent,
         }) {
-            if (!expanded) {
-                const maxChildRow = getNearestNeighborRowId(
-                    this.gridData,
-                    column,
-                    row,
-                );
-                const {
-                    hiddenCategories,
-                    visibleCategories,
-                } = this.gridData.reduce((acc, e, idx) => {
-                    if (idx > row && idx < maxChildRow) {
-                        acc.hiddenCategories.push(e);
-                    } else {
-                        acc.visibleCategories.push(e);
-                    }
-                    return acc;
-                }, {
-                    hiddenCategories: [],
-                    visibleCategories: [],
-                });
+            if (typeof this.hiddenItems[id] === 'undefined') {
+                const indexesToRemove = [];
 
-                this.setHiddenItem({
-                    key: id,
-                    value: hiddenCategories,
+                let i = row + 1;
+
+                this.hiddenItems[id] = [];
+
+                while (i < this.gridData.length && this.gridData[i].parent !== parent) {
+                    const item = this.gridData[i];
+
+                    this.hiddenItems[id].push({
+                        ...item,
+                    });
+                    indexesToRemove.push(i);
+
+                    i += 1;
+                }
+
+                const shiftValue = this.gridData[i].row - row;
+
+                console.log('before:', this.items.map(a => a.row));
+
+                this.shiftItems({
+                    since: row + shiftValue - 1,
+                    value: -(shiftValue - 1),
                 });
-                this.setGridWhenCollapse({
-                    data: visibleCategories,
-                    index: row,
-                });
-                this.setExpandItem({
-                    index: row,
-                    value: true,
-                });
+                this.removeItems(indexesToRemove);
+
+                console.log('After:', this.items.map(a => a.row));
             } else {
-                this.setGridWhenExpand({
-                    id,
-                    index: row,
-                });
-                this.removeHiddenItem(id);
-                this.setExpandItem({
-                    index: row,
-                    value: false,
-                });
-            }
+                const shiftValue = this.hiddenItems[id].length;
 
-            this.onScopeValueChange({
-                scope: this.scope,
-                fieldKey: 'designer',
-                value: true,
-            });
+                console.log('before:', this.items.map(i => i.row));
+
+                console.log(shiftValue, row);
+
+                this.shiftItems({
+                    since: row,
+                    value: shiftValue,
+                });
+
+                this.insertItemsSince({
+                    items: [
+                        ...this.hiddenItems[id],
+                    ],
+                    since: row + 1,
+                });
+
+                console.log('After:', this.items.map(i => i.row));
+
+                delete this.hiddenItems[id];
+            }
         },
         removeItemOnDrop(item) {
             this.removeDisabledElementsOnList(item.id);

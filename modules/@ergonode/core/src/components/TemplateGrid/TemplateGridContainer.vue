@@ -174,7 +174,6 @@ export default {
                 const {
                     id,
                     children,
-                    expanded,
                     code,
                 } = item;
                 const fixedColumn = Math.min(column, item.column);
@@ -221,7 +220,9 @@ export default {
                     },
                 });
 
-                this.$emit('expand', item);
+                if (children > 0) {
+                    this.$emit('expand', item);
+                }
             }
         },
         onDrop(event) {
@@ -376,6 +377,8 @@ export default {
             const isBetweenChild = this.ghostIndex.row > minItemRow
                 && this.ghostIndex.row < maxItemRow;
 
+            console.log(this.gridData[row + 1].column, column);
+
             if (row + 1 < this.gridData.length
                 && this.gridData[row + 1].column - column > 0) {
                 return;
@@ -457,19 +460,12 @@ export default {
                 const {
                     row,
                 } = shadowItem;
+                const fixedRow = Math.min(row, this.gridData.length - 1);
                 const {
                     column,
-                } = this.gridData[row];
+                } = this.gridData[fixedRow];
 
-                this.__setState({
-                    key: 'ghostIndex',
-                    value: {
-                        row,
-                        column,
-                    },
-                });
-
-                const parent = this.getParent(row, column);
+                const parent = this.getParent(fixedRow, column);
 
                 if (row < this.gridData.length) {
                     this.shiftItems({
@@ -478,20 +474,36 @@ export default {
                     });
 
                     this.insertItemAtIndex({
-                        index: row,
+                        index: fixedRow,
                         item: {
                             id: 'ghost_item',
-                            row,
+                            row: fixedRow,
                             column,
                             parent: parent.id,
+                        },
+                    });
+
+                    this.__setState({
+                        key: 'ghostIndex',
+                        value: {
+                            row: fixedRow,
+                            column,
                         },
                     });
                 } else {
                     this.addItem({
                         id: 'ghost_item',
-                        row,
+                        row: this.gridData.length,
                         column,
                         parent: parent.id,
+                    });
+
+                    this.__setState({
+                        key: 'ghostIndex',
+                        value: {
+                            row: fixedRow + 1,
+                            column,
+                        },
                     });
                 }
             }

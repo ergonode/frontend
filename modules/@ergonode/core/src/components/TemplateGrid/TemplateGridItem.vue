@@ -60,13 +60,6 @@ export default {
     },
     props: {
         /**
-         * Determines state of draggable attribute
-         */
-        isDraggingEnabled: {
-            type: Boolean,
-            default: false,
-        },
-        /**
          * Item data model
          */
         item: {
@@ -80,6 +73,17 @@ export default {
         contextName: {
             type: String,
             default: '',
+        },
+        isExpanded: {
+            type: Boolean,
+            default: true,
+        },
+        /**
+         * Determines state of draggable attribute
+         */
+        isDraggingEnabled: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {
@@ -120,7 +124,7 @@ export default {
             return this.item.children > 0;
         },
         buttonExpanderIconState() {
-            return this.item.expanded ? ARROW.DOWN : ARROW.UP;
+            return this.isExpanded ? ARROW.DOWN : ARROW.UP;
         },
         contextualMenuHoveStateClasses() {
             return {
