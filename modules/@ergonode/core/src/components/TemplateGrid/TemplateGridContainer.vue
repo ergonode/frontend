@@ -27,11 +27,9 @@ import {
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
 import {
-    getRowBellowMouse,
     getRowBounds,
 } from '@Core/models/template_grid/TreeCalculations';
 import {
-    getDraggedColumnPositionState,
     getDraggedRowPositionState,
     getPositionForBrowser,
     isMouseInsideElement,
@@ -145,9 +143,7 @@ export default {
         ...mapActions('gridDesigner', [
             'setRowsCount',
             'setChildrenLength',
-            'addGridItem',
             'removeGridItem',
-            'rebuildGrid',
             '',
             'shiftItems',
             'addItem',
@@ -172,16 +168,17 @@ export default {
             if (shadowItem) {
                 const {
                     row,
+                    column,
                 } = shadowItem;
                 const item = this.gridData[row];
                 const {
                     id,
                     children,
-                    parent,
                     expanded,
                     code,
-                    column,
                 } = item;
+                const fixedColumn = Math.min(column, item.column);
+                const parent = this.getParent(row, fixedColumn);
 
                 this.__setState({
                     key: 'draggedElement',
@@ -195,7 +192,7 @@ export default {
                     key: 'ghostIndex',
                     value: {
                         row,
-                        column,
+                        column: fixedColumn,
                     },
                 });
                 this.__setState({
@@ -209,34 +206,36 @@ export default {
                     label: code,
                 });
 
-                this.setChildrenLength({
-                    id: parent,
-                    value: -1,
-                });
+                // this.setChildrenLength({
+                //     id: parent,
+                //     value: -1,
+                // });
 
                 this.setItemAtIndex({
                     index: row,
                     item: {
                         id: 'ghost_item',
                         row,
-                        column,
-                        parent: item.parent,
+                        column: fixedColumn,
+                        parent: parent.id,
                     },
                 });
 
-                // this.$emit('expand', item);
+                this.$emit('expand', item);
             }
         },
         onDrop(event) {
             if (this.ghostIndex !== -1) {
                 console.log('drop');
 
+                const parent = this.getParent(this.ghostIndex.row, this.ghostIndex.column);
+
                 this.setItemAtIndex({
                     index: this.ghostIndex.row,
                     item: {
                         ...this.draggedElement,
                         ...this.ghostIndex,
-                        parent: this.getParent(this.ghostIndex.row, this.ghostIndex.column).id,
+                        parent: parent.id,
                     },
                 });
 
@@ -262,7 +261,6 @@ export default {
             event.preventDefault();
         },
         onDragEnd(event) {
-            console.log('end');
             removeElementCopyFromDocumentBody(event);
 
             const {
@@ -379,7 +377,7 @@ export default {
                 && this.ghostIndex.row < maxItemRow;
 
             if (row + 1 < this.gridData.length
-                && this.gridData[row + 1].column - column > 1) {
+                && this.gridData[row + 1].column - column > 0) {
                 return;
             }
 
@@ -405,13 +403,15 @@ export default {
                 ? this.ghostIndex.column - 1
                 : this.ghostIndex.column + 1;
 
+            const parent = this.getParent(row, column);
+
             this.setItemAtIndex({
                 index: this.ghostIndex.row,
                 item: {
                     id: 'ghost_item',
                     row,
                     column: fixedColumn,
-                    parent: this.getParent(row, column).id,
+                    parent: parent.id,
                 },
             });
 
@@ -435,11 +435,6 @@ export default {
                 toRow = row;
             }
 
-            // if (Math.abs(this.ghostIndex.column - toColumn) === 1) {
-            //     console.log('here');
-            //     toColumn += 1;
-            // }
-
             this.swapItemsPosition({
                 fromRow,
                 toRow,
@@ -461,8 +456,10 @@ export default {
             if (shadowItem) {
                 const {
                     row,
-                    column,
                 } = shadowItem;
+                const {
+                    column,
+                } = this.gridData[row];
 
                 this.__setState({
                     key: 'ghostIndex',

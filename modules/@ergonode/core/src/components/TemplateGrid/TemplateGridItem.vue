@@ -5,7 +5,7 @@
 <template>
     <div
         :style="styles"
-        class="template-grid-item"
+        :class="classes"
         @mouseover="onMouseOver"
         @mouseout="onMouseOut">
         <IconArrowDouble
@@ -101,6 +101,14 @@ export default {
                 gridArea: `${row + 1} / ${column + 1} / ${row + 2} / ${column + 3}`,
                 margin: `${this.gap}px`,
             };
+        },
+        classes() {
+            return [
+                'template-grid-item',
+                {
+                    'template-grid-item--first-column': this.item.column === 0,
+                },
+            ];
         },
         tinySize() {
             return SIZE.TINY;
@@ -206,14 +214,16 @@ export default {
             }
         }
 
-        &::before {
-            position: absolute;
-            left: -8px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: $GREEN;
-            content: "";
+        &:not(&--first-column) {
+            &::before {
+                position: absolute;
+                left: -8px;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background-color: $GREEN;
+                content: "";
+            }
         }
     }
 </style>

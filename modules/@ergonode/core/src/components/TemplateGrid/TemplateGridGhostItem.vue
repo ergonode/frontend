@@ -6,8 +6,10 @@
     <div
         :style="styles"
         class="template-grid-ghost-item">
-        <IconAddFilter :fill-color="whiteColor" />
-        ADD {{ contextName }}
+        <div class="container">
+            <IconAddFilter :fill-color="whiteColor" />
+            ADD {{ contextName }}
+        </div>
     </div>
 </template>
 <script>
@@ -55,13 +57,10 @@ export default {
 
 <style lang="scss" scoped>
     .template-grid-ghost-item {
-        position: relative;
         z-index: $Z_INDEX_LVL_1;
-        display: grid;
+        display: flex;
         align-items: center;
-        grid-column-gap: 8px;
-        grid-auto-flow: column;
-        grid-template-columns: max-content;
+        box-sizing: border-box;
         background-color: $GREEN;
         box-shadow: $ELEVATOR_HOLE;
         color: $WHITE;
@@ -69,14 +68,14 @@ export default {
         text-transform: uppercase;
         padding-left: 12px;
 
-        &::before {
-            position: absolute;
-            left: 0;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: $GREEN;
-            content: "";
+        .container {
+            display: grid;
+            grid-column-gap: 8px;
+            grid-auto-flow: column;
+            grid-template-columns: max-content;
+            align-items: center;
+            color: $WHITE;
+            font: $FONT_BOLD_12_16;
         }
     }
 </style>

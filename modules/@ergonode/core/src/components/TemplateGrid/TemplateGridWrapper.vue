@@ -4,13 +4,12 @@
  */
 <template>
     <div class="template-grid-wrapper">
-        <slot name="gridHeader" />
         <TemplateGridContainer
             :columns="columns"
             :rows="rows"
             :row-height="rowHeight"
             :constant-root="constantRoot"
-            :grid-data="filteredGridData"
+            :grid-data="gridData"
             :is-dragging-enabled="isDraggingEnabled"
             :is-multi-draggable="isMultiDraggable"
             @expand="onExpandItem"
@@ -25,61 +24,31 @@
                     :columns="columns"
                     :rows="rows" />
             </slot>
-            <TemplateGridItemsContainer
-                :style="gridStyles">
-                <!--                <TemplateGridItemArea-->
-                <!--                    v-for="(item, index) in gridData"-->
-                <!--                    :key="item.id"-->
-                <!--                    :item="item"-->
-                <!--                    :columns="columns"-->
-                <!--                    :grid-gap="gridGap">-->
-                <!--                    <slot-->
-                <!--                        name="gridGhostItem"-->
-                <!--                        v-if="item.id === 'ghost_item'"-->
-                <!--                        :grid-item-styles="gridItemStyles">-->
-                <!--                    </slot>-->
-                <!--                    <slot-->
-                <!--                        v-else-->
-                <!--                        name="gridItem"-->
-                <!--                        :item="item"-->
-                <!--                        :index="index"-->
-                <!--                        :grid-item-styles="gridItemStyles"-->
-                <!--                        :toggle-item="onExpandItem"-->
-                <!--                        :remove-item="removeItem">-->
-                <!--                        -->
-                <!--                    </slot>-->
-                <!--                    <template-->
-                <!--                        v-if="isConnectionsVisible"-->
-                <!--                        #connection>-->
-                <!--                        <div-->
-                <!--                            class="item-area__line"-->
-                <!--                            :style="connectionLineStyle(item)" />-->
-                <!--                    </template>-->
-                <!--                </TemplateGridItemArea>-->
-                <template v-for="(item, index) in gridData">
-                    <TemplateGridGhostItem
-                        v-if="item.id === 'ghost_item'"
-                        :key="item.id"
-                        :row="item.row"
-                        :column="item.column"
-                        :gap="gridGap"
-                        :context-name="contextName" />
-                    <TemplateGridItem
-                        v-else
-                        :key="item.id"
-                        :is-dragging-enabled="isDraggingEnabled"
-                        :item="item"
-                        :gap="gridGap"
-                        :context-name="contextName"
-                        @expand="onExpandItem"
-                        @remove-item="removeItem(item)" />
-                    <TemplateGirdItemLine
-                        v-if="item.column > 0"
-                        :key="`${item.id}-line`"
-                        :row="item.row"
-                        :column="item.column"
-                        :gap="gridGap" />
-                </template>
+            <TemplateGridItemsContainer :style="gridStyles">
+                <TemplateGridGhostItem
+                    v-if="ghostIndex !== -1"
+                    :row="ghostIndex.row"
+                    :column="ghostIndex.column"
+                    :gap="gridGap"
+                    :context-name="contextName" />
+                <TemplateGridItem
+                    v-for="item in items"
+                    :key="item.id"
+                    :item="item"
+                    :gap="gridGap"
+                    :context-name="contextName"
+                    :is-dragging-enabled="isDraggingEnabled"
+                    @expand="onExpandItem"
+                    @remove-item="removeItem(item)" />
+                <TemplateGirdItemLine
+                    v-for="item in connectionLines"
+                    :key="`${item.id}-line`"
+                    :grid-data="gridData"
+                    :row="item.row"
+                    :column="item.column"
+                    :row-height="rowHeight"
+                    :gap="gridGap"
+                    :is-ghost="item.id === 'ghost_item'" />
             </TemplateGridItemsContainer>
         </TemplateGridContainer>
     </div>
@@ -90,7 +59,6 @@ import TemplateGirdItemLine from '@Core/components/TemplateGrid/TemplateGirdItem
 import TemplateGridContainer from '@Core/components/TemplateGrid/TemplateGridContainer';
 import TemplateGridGhostItem from '@Core/components/TemplateGrid/TemplateGridGhostItem';
 import TemplateGridItem from '@Core/components/TemplateGrid/TemplateGridItem';
-import TemplateGridItemArea from '@Core/components/TemplateGrid/TemplateGridItemArea';
 import TemplateGridItemsContainer from '@Core/components/TemplateGrid/TemplateGridItemsContainer';
 import TemplateGridPresentationLayer from '@Core/components/TemplateGrid/TemplateGridPresentationLayer';
 import {
@@ -154,10 +122,6 @@ export default {
             type: Number,
             default: 8,
         },
-        isConnectionsVisible: {
-            type: Boolean,
-            default: true,
-        },
         constantRoot: {
             type: Boolean,
             default: false,
@@ -185,6 +149,9 @@ export default {
         ...mapState('authentication', {
             language: state => state.user.language,
         }),
+        ...mapState('draggable', [
+            'ghostIndex',
+        ]),
         ...mapState('list', [
             'disabledElements',
         ]),
@@ -193,21 +160,17 @@ export default {
             'gridData',
             'hiddenItems',
         ]),
-        filteredGridData() {
-            return this.gridData.filter(
-                item => item.column < this.columns,
-            );
-        },
         gridStyles() {
             return {
                 gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
                 gridTemplateRows: `repeat(${this.rows}, ${this.rowHeight}px)`,
             };
         },
-        gridItemStyles() {
-            return {
-                margin: `0 ${this.gridGap}px`,
-            };
+        connectionLines() {
+            return this.gridData.filter(item => item.column > 0);
+        },
+        items() {
+            return this.gridData.filter(item => item.id !== 'ghost_item');
         },
     },
     methods: {
@@ -234,14 +197,14 @@ export default {
         }) {
             if (!expanded) {
                 const maxChildRow = getNearestNeighborRowId(
-                    this.filteredGridData,
+                    this.gridData,
                     column,
                     row,
                 );
                 const {
                     hiddenCategories,
                     visibleCategories,
-                } = this.filteredGridData.reduce((acc, e, idx) => {
+                } = this.gridData.reduce((acc, e, idx) => {
                     if (idx > row && idx < maxChildRow) {
                         acc.hiddenCategories.push(e);
                     } else {
@@ -282,36 +245,6 @@ export default {
                 fieldKey: 'designer',
                 value: true,
             });
-        },
-        connectionLineStyle({
-            id, row, parent,
-        }) {
-            if (this.constantRoot && row === 0) {
-                return {
-                    display: 'none',
-                };
-            }
-            const children = this.filteredGridData.filter(e => e.parent === parent);
-            const connectionHeight = this.rowHeight * (
-                row - (children.length ? children[0].row : 0) + 1
-            ) + 10;
-            const borderStyle = id === 'ghost_item' ? 'dashed' : 'solid';
-            const linePosition = {
-                left: `calc(-100% + (${this.gridGap}px + 22px))`,
-            };
-
-            if (parent === 'root') {
-                linePosition.left = '0';
-            }
-
-            return {
-                borderBottomStyle: borderStyle,
-                borderLeftStyle: borderStyle,
-                left: linePosition.left,
-                width: linePosition.width,
-                height: `${connectionHeight}px`,
-                bottom: `${this.rowHeight / 2}px`,
-            };
         },
         removeItemOnDrop(item) {
             this.removeDisabledElementsOnList(item.id);

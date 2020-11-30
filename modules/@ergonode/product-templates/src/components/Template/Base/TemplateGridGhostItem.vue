@@ -32,8 +32,6 @@ export default {
 
 <style lang="scss" scoped>
     .template-grid-ghost-item {
-        $filter: &;
-
         position: fixed;
         z-index: $Z_INDEX_LVL_1;
         display: flex;

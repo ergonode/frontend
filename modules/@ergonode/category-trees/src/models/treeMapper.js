@@ -8,7 +8,7 @@ export function getParsedTreeData(tree, categories) {
     if (!Array.isArray(categories) || categories.length <= 0) {
         return [];
     }
-    const buildTree = (treeArray, parent, column) => {
+    const buildTree = (treeArray, parent, column, row) => {
         for (let i = 0; i < treeArray.length; i += 1) {
             const categoryId = treeArray[i].category_id;
             const {
@@ -18,6 +18,7 @@ export function getParsedTreeData(tree, categories) {
                 code: categoryCode,
                 name: categoryName,
             } = categories.find(e => e.id === categoryId);
+
             newTree.push({
                 id: categoryId,
                 code: categoryCode,

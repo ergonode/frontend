@@ -10,7 +10,6 @@ import {
     getTreeWhenElementCollapse,
     getTreeWhenElementExpand,
     getTreeWhenElementRemoved,
-    getTreeWhenGhostElementRemoved,
 } from '@Core/models/template_grid/TreeCalculations';
 
 import {
@@ -139,29 +138,6 @@ export default {
         commit,
     }, payload) {
         commit(types.INSERT_GRID_ITEM, payload);
-    },
-    addGridItem: ({
-        commit, getters,
-    }, item) => {
-        const findIndex = getters.getIndex(item.id);
-
-        if (findIndex >= 0) {
-            commit(types.SET_GRID_ITEM, {
-                index: findIndex,
-                item,
-            });
-        } else {
-            commit(types.ADD_GRID_ITEM, item);
-        }
-    },
-    rebuildGrid: ({
-        state, getters, dispatch,
-    }, id) => {
-        const index = getters.getIndex(id);
-        const newGrid = getTreeWhenGhostElementRemoved(state.gridData, index);
-
-        dispatch('setGridData', newGrid);
-        dispatch('setFullGridData', newGrid);
     },
     removeGridItem: ({
         state, dispatch,

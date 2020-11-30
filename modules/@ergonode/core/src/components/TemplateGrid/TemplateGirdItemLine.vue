@@ -20,18 +20,47 @@ export default {
             type: Number,
             default: 0,
         },
+        rowHeight: {
+            type: Number,
+            default: 0,
+        },
         gap: {
             type: Number,
             default: 8,
+        },
+        gridData: {
+            type: Array,
+            default: () => [],
+        },
+        isGhost: {
+            type: Boolean,
+            default: false,
         },
     },
     computed: {
         styles() {
             return {
                 gridArea: `${this.row + 1} / ${this.column} / ${this.row + 2} / ${this.column + 1}`,
-                transform: `translate(32px, -${this.gap}px)`,
-                height: `calc(50% + ${this.gap}px)`,
+                transform: `translate(32px, -${this.distanceBetweenParentRow * this.rowHeight + this.gap}px)`,
+                height: `calc((${this.distanceBetweenParentRow} * 100%) + 50% + ${this.gap}px)`,
+                borderStyle: this.isGhost ? 'dashed' : 'solid',
             };
+        },
+        parent() {
+            if (this.column === 0 || this.row === 0) {
+                return this.gridData[0];
+            }
+
+            for (let i = this.row - 1; i >= 0; i -= 1) {
+                if (this.gridData[i].column < this.column) {
+                    return this.gridData[i];
+                }
+            }
+
+            return this.gridData[0];
+        },
+        distanceBetweenParentRow() {
+            return this.row - this.parent.row - 1;
         },
     },
 };

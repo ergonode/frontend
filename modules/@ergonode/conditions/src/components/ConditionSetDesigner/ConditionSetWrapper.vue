@@ -9,7 +9,6 @@
         :errors="errors"
         :columns="columns"
         :row-height="rowHeight"
-        :is-connections-visible="false"
         :grid-gap="16"
         :is-dragging-enabled="!disabled"
         :is-multi-draggable="true"

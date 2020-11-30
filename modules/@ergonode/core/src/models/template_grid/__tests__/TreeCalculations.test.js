@@ -9,7 +9,6 @@ import {
     getTreeWhenElementCollapse,
     getTreeWhenElementExpand,
     getTreeWhenElementRemoved,
-    getTreeWhenGhostElementRemoved,
 } from '../TreeCalculations';
 import {
     hiddenItems,
@@ -195,37 +194,6 @@ describe('TreeCalculations/getTreeWhenElementRemoved', () => {
         ];
         const removedIndex = 0;
         const result = getTreeWhenElementRemoved(mappingTree, removedIndex);
-        expect(result).toStrictEqual(expectedTree);
-    });
-});
-
-describe('TreeCalculations/getTreeWhenGhostElementRemoved', () => {
-    it('New tree when remove not existing ghost element (id:100)', () => {
-        const removedIndex = 100;
-        const result = getTreeWhenGhostElementRemoved(mappingTree, removedIndex);
-        expect(result).toStrictEqual(mappingTree);
-    });
-
-    it('New tree when remove ghost element (id:0)', () => {
-        const removedIndex = 0;
-        const result = getTreeWhenGhostElementRemoved(mappingTree, removedIndex);
-        expect(result).toStrictEqual(mappingTree);
-    });
-
-    it('New tree when remove ghost element (id:3.5)', () => {
-        const expectedTree = JSON.parse(JSON.stringify(mappingTree)); // deep array clone hack
-        expectedTree.splice(expectedTree.length - 1, 1, {
-            id: 'b07154ca-3e19-5d69-9238-8fe2b0c5e49e',
-            code: 'code_5',
-            column: 0,
-            row: 5,
-            children: 0,
-            expanded: false,
-            name: null,
-            parent: 'root',
-        });
-        const removedIndex = 3.5;
-        const result = getTreeWhenGhostElementRemoved(mappingTree, removedIndex);
         expect(result).toStrictEqual(expectedTree);
     });
 });

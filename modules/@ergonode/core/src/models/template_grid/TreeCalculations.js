@@ -46,26 +46,6 @@ export function getTreeWhenElementRemoved(oldTree, index) {
     return newTree;
 }
 
-export function getTreeWhenGhostElementRemoved(oldTree, index) {
-    const newTree = [];
-
-    for (let i = 0; i < oldTree.length; i += 1) {
-        const currentElement = oldTree[i];
-        let newRow = null;
-
-        if (i >= index && (index !== 0 || (index === 0 && currentElement.row < 0))) {
-            newRow = currentElement.row + (i === index ? positionBetweenRows : 1);
-        } else {
-            newRow = currentElement.row + (oldTree[0].row < 0 ? 1 : 0);
-        }
-        newTree.push({
-            ...currentElement,
-            row: newRow,
-        });
-    }
-    return newTree;
-}
-
 export function getTreeWhenElementCollapse(oldTree, index) {
     const newTree = [];
 
@@ -113,47 +93,6 @@ export function getRowBounds(elements) {
     }
     return elementBounds;
 }
-
-export function getRowBellowMouse({
-    pageY,
-    elements,
-    elementBounds,
-}, completion) {
-    for (let i = 0; i < elements.length; i += 1) {
-        const {
-            y, height,
-        } = elementBounds[i];
-
-        if (y <= pageY && y + height >= pageY) {
-            return completion({
-                index: i,
-                column: '',
-                element: elements[i],
-            });
-        }
-    }
-    return null;
-}
-
-// export function getColumnBellowMouse({
-//     pageY,
-//     elements,
-//     elementBounds,
-// }, completion) {
-//     for (let i = 0; i < elements.length; i += 1) {
-//         const {
-//             y, height,
-//         } = elementBounds[i];
-//
-//         if (y <= pageY && y + height >= pageY) {
-//             return completion({
-//                 index: i,
-//                 element: elements[i],
-//             });
-//         }
-//     }
-//     return null;
-// }
 
 export function getFullTree(hiddenChildren, oldTree) {
     let newTree = oldTree.filter(el => el.id !== 'ghost_item');
