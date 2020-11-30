@@ -234,9 +234,7 @@ export default {
          */
         pagination: {
             type: Object,
-            default: () => ({
-                ...DEFAULT_GRID_PAGINATION,
-            }),
+            default: DEFAULT_GRID_PAGINATION,
         },
         /**
          * Determines the size of row height

@@ -1,6 +1,6 @@
 {
   "name": "@ergonode/conditions",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.5",
   "author": "Team Ergonode <team@ergonode.com>",
   "description": "Ergonode conditions module",
   "license": "OSL-3.0",

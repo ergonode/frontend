@@ -21,6 +21,7 @@
                 :is-header-visible="true"
                 :is-border="true"
                 @cell-value="onCellValueChange"
+                @preview-row="onPreviewRow"
                 @delete-row="onRemoveRow"
                 @pagination="onPaginationChange"
                 @column-sort="onColumnSortChange"
@@ -76,6 +77,9 @@ import {
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import {
+    ROUTE_NAME,
+} from '@Products/config/routes';
 import ActionButton from '@UI/components/ActionButton/ActionButton';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
@@ -224,6 +228,16 @@ export default {
 
             this.isSubmitting = false;
         },
+        onPreviewRow(args) {
+            const lastIndex = args.length - 1;
+
+            this.$router.push({
+                name: ROUTE_NAME.PRODUCT_EDIT_GENERAL,
+                params: {
+                    id: args[lastIndex],
+                },
+            });
+        },
         onCellValueChange(cellValues) {
             const drafts = cellValues.reduce((prev, {
                 rowId, columnId, value,
@@ -253,7 +267,7 @@ export default {
         async onCreatedData() {
             this.isPrefetchingData = true;
 
-            await this.onFetchData(this.localParams);
+            await this.onFetchData();
 
             this.selectedAppModalOption = null;
             this.isPrefetchingData = false;
