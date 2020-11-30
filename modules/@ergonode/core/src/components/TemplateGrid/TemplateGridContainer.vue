@@ -320,7 +320,6 @@ export default {
             }
         },
         onDragOver(event) {
-            console.log('over');
             event.preventDefault();
 
             if (this.ghostIndex === -1) {
@@ -379,7 +378,8 @@ export default {
             const isBetweenChild = this.ghostIndex.row > minItemRow
                 && this.ghostIndex.row < maxItemRow;
 
-            if (Math.abs(column - this.ghostIndex.column) > 1) {
+            if (row + 1 < this.gridData.length
+                && this.gridData[row + 1].column - column > 1) {
                 return;
             }
 
@@ -434,6 +434,11 @@ export default {
                 fromRow = this.ghostIndex.row;
                 toRow = row;
             }
+
+            // if (Math.abs(this.ghostIndex.column - toColumn) === 1) {
+            //     console.log('here');
+            //     toColumn += 1;
+            // }
 
             this.swapItemsPosition({
                 fromRow,

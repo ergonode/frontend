@@ -4,32 +4,27 @@
  */
 <template>
     <div
-        class="grid-item"
+        :style="styles"
+        class="template-grid-item"
         @mouseover="onMouseOver"
         @mouseout="onMouseOut">
         <IconArrowDouble
             v-if="hasChildren"
-            class="grid-item__icon"
+            class="template-grid-item__icon"
             :state="buttonExpanderIconState"
             @click.native="onExpandItem" />
-        <div class="grid-item__title">
-            <span
-                class="grid-item__name"
-                v-text="`ROW: ${item.row}`" />
-            <span
-                class="grid-item__code"
-                v-text="`COLUMN: ${item.column}`" />
-        </div>
-        <div class="grid-item__title">
-            <span
-                class="grid-item__name"
-                v-text="`ID: ${item.id}` " />
-            <span
-                class="grid-item__code"
-                v-text="`Parent: ${item.parent}`" />
-        </div>
         <div
-            :class="['grid-item__contextual-menu', contextualMenuHoveStateClasses]">
+            class="template-grid-item__title"
+            :title="item.name ? `#${item.code}`: ''">
+            <span
+                class="template-grid-item__name"
+                v-text="item.name || `#${item.code}`" />
+            <span
+                v-if="hasChildren"
+                class="template-grid-item__code"
+                v-text="`Inherited ${contextName.toLowerCase()}: ${item.children}`" />
+        </div>
+        <div :class="['template-grid-item__contextual-menu', contextualMenuHoveStateClasses]">
             <ActionIconButton
                 v-if="isDraggingEnabled"
                 :theme="secondaryTheme"
@@ -78,6 +73,10 @@ export default {
             type: Object,
             required: true,
         },
+        gap: {
+            type: Number,
+            default: 8,
+        },
         contextName: {
             type: String,
             default: '',
@@ -92,6 +91,17 @@ export default {
         };
     },
     computed: {
+        styles() {
+            const {
+                row,
+                column,
+            } = this.item;
+
+            return {
+                gridArea: `${row + 1} / ${column + 1} / ${row + 2} / ${column + 3}`,
+                margin: `${this.gap}px`,
+            };
+        },
         tinySize() {
             return SIZE.TINY;
         },
@@ -106,7 +116,7 @@ export default {
         },
         contextualMenuHoveStateClasses() {
             return {
-                'grid-item__contextual-menu--hovered': this.isHovered,
+                'template-grid-item__contextual-menu--hovered': this.isHovered,
             };
         },
     },
@@ -138,7 +148,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .grid-item {
+    .template-grid-item {
         position: relative;
         z-index: $Z_INDEX_LVL_1;
         display: flex;
@@ -169,9 +179,8 @@ export default {
 
         &__title {
             display: flex;
-            //flex: 1;
+            flex: 1;
             flex-direction: column;
-            margin-right: 8px;
             color: $GRAPHITE_DARK;
             text-overflow: ellipsis;
             overflow: hidden;

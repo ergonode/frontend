@@ -60,18 +60,25 @@
                     <TemplateGridGhostItem
                         v-if="item.id === 'ghost_item'"
                         :key="item.id"
-                        :item="item"
-                        :style="getItemPosition(item)"
+                        :row="item.row"
+                        :column="item.column"
+                        :gap="gridGap"
                         :context-name="contextName" />
                     <TemplateGridItem
                         v-else
-                        :style="getItemPosition(item)"
                         :key="item.id"
                         :is-dragging-enabled="isDraggingEnabled"
                         :item="item"
+                        :gap="gridGap"
                         :context-name="contextName"
                         @expand="onExpandItem"
                         @remove-item="removeItem(item)" />
+                    <TemplateGirdItemLine
+                        v-if="item.column > 0"
+                        :key="`${item.id}-line`"
+                        :row="item.row"
+                        :column="item.column"
+                        :gap="gridGap" />
                 </template>
             </TemplateGridItemsContainer>
         </TemplateGridContainer>
@@ -79,6 +86,7 @@
 </template>
 
 <script>
+import TemplateGirdItemLine from '@Core/components/TemplateGrid/TemplateGirdItemLine';
 import TemplateGridContainer from '@Core/components/TemplateGrid/TemplateGridContainer';
 import TemplateGridGhostItem from '@Core/components/TemplateGrid/TemplateGridGhostItem';
 import TemplateGridItem from '@Core/components/TemplateGrid/TemplateGridItem';
@@ -101,6 +109,7 @@ export default {
         TemplateGridContainer,
         TemplateGridGhostItem,
         TemplateGridItem,
+        TemplateGirdItemLine,
     },
     props: {
         /**
@@ -217,12 +226,6 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
-        getItemPosition(item) {
-            return {
-                gridArea: `${item.row + 1} / ${item.column + 1} / ${item.row + 2} / ${item.column + 3}`,
-                margin: `${this.gridGap}px`,
-            };
-        },
         onExpandItem({
             id,
             row,

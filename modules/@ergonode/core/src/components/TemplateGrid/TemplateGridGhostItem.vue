@@ -3,13 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="grid__ghost-item">
-        <div class="ghost-item__info">
-            <!--            <IconAddFilter :fill-color="whiteColor" />-->
-            <!--            ADD {{ contextName || 'ITEM' }}-->
-            <span v-text="`ROW: ${item.row}`" />
-            <span v-text="`COLUMN: ${item.column}`" />
-        </div>
+    <div
+        :style="styles"
+        class="template-grid-ghost-item">
+        <IconAddFilter :fill-color="whiteColor" />
+        ADD {{ contextName }}
     </div>
 </template>
 <script>
@@ -26,45 +24,50 @@ export default {
     props: {
         contextName: {
             type: String,
-            default: '',
+            default: 'ITEM',
         },
-        item: {
-            type: Object,
-            required: true,
+        row: {
+            type: Number,
+            default: 0,
+        },
+        column: {
+            type: Number,
+            default: 0,
+        },
+        gap: {
+            type: Number,
+            default: 8,
         },
     },
     computed: {
+        styles() {
+            return {
+                gridArea: `${this.row + 1} / ${this.column + 1} / ${this.row + 2} / ${this.column + 3}`,
+                margin: `${this.gap}px`,
+            };
+        },
         whiteColor() {
             return WHITE;
         },
-
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .grid__ghost-item {
+    .template-grid-ghost-item {
         position: relative;
         z-index: $Z_INDEX_LVL_1;
-        display: flex;
-        grid-column: 1 / 3;
-        justify-content: flex-start;
+        display: grid;
         align-items: center;
-        padding-left: 12px;
+        grid-column-gap: 8px;
+        grid-auto-flow: column;
+        grid-template-columns: max-content;
         background-color: $GREEN;
         box-shadow: $ELEVATOR_HOLE;
-
-        .ghost-item__info {
-            display: flex;
-            flex-direction: column;
-            //display: grid;
-            //grid-column-gap: 8px;
-            //grid-auto-flow: column;
-            //grid-template-columns: max-content;
-            color: $WHITE;
-            font: $FONT_BOLD_12_16;
-            text-transform: uppercase;
-        }
+        color: $WHITE;
+        font: $FONT_BOLD_12_16;
+        text-transform: uppercase;
+        padding-left: 12px;
 
         &::before {
             position: absolute;
