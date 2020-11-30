@@ -25,7 +25,7 @@
                     <RestoreProductButton
                         :language="language"
                         :elements="elements"
-                        @resored="onRestoredProductValues" />
+                        @restored="onRestoredProductValues" />
                 </div>
             </template>
             <template #centeredContent>

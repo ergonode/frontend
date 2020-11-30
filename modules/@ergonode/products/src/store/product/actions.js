@@ -20,7 +20,7 @@ import {
     getWorkflow,
     remove,
     removeChildren,
-    removeValues,
+    // removeValues,
     update,
     updateValues,
     validateValue,
@@ -838,7 +838,14 @@ export default {
                 });
             });
 
-            // TODO: When nuxt-axios upgrade to 0.21.0
+            // TODO: When nuxt-axios upgrade to 0.21.0 remove axios
+
+            // await removeValues({
+            //     $axios: this.app.$axios,
+            //     data: {
+            //         data,
+            //     },
+            // });
 
             await axios.delete(`${process.env.baseURL}${language}/products/attributes`, {
                 headers: {
@@ -852,13 +859,6 @@ export default {
                     data,
                 },
             });
-
-            // await removeValues({
-            //     $axios: this.app.$axios,
-            //     data: {
-            //         data,
-            //     },
-            // });
 
             onSuccess();
         } catch (e) {
