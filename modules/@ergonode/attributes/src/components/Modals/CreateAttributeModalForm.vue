@@ -46,20 +46,14 @@ export default {
         scopeErrorsMixin,
     ],
     async fetch() {
-        await Promise.all([
-            this.getInitialDictionary({
-                key: 'attrTypes',
-            }),
-            this.getInitialDictionary({
-                key: 'dateFormats',
-            }),
-            this.getInitialDictionary({
-                key: 'units',
-            }),
-            this.getInitialDictionary({
-                key: 'currencies',
-            }),
-        ]);
+        await this.getInitialDictionaries({
+            keys: [
+                'attrTypes',
+                'dateFormats',
+                'units',
+                'currencies',
+            ],
+        });
     },
     data() {
         return {
@@ -78,7 +72,7 @@ export default {
             '__clearStorage',
         ]),
         ...mapActions('dictionaries', [
-            'getInitialDictionary',
+            'getInitialDictionaries',
         ]),
         onClose() {
             this.__clearStorage();

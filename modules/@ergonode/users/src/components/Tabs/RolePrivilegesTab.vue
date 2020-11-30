@@ -72,8 +72,10 @@ export default {
     async fetch({
         store,
     }) {
-        await store.dispatch('dictionaries/getInitialDictionary', {
-            key: 'privileges',
+        await store.dispatch('dictionaries/getInitialDictionaries', {
+            keys: [
+                'privileges',
+            ],
         });
     },
     data() {

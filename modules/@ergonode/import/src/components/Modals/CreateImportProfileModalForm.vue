@@ -46,8 +46,10 @@ export default {
         scopeErrorsMixin,
     ],
     async fetch() {
-        await this.getInitialDictionary({
-            key: 'sources',
+        await this.getInitialDictionaries({
+            keys: [
+                'sources',
+            ],
         });
     },
     data() {
@@ -67,7 +69,7 @@ export default {
             '__clearStorage',
         ]),
         ...mapActions('dictionaries', [
-            'getInitialDictionary',
+            'getInitialDictionaries',
         ]),
         onClose() {
             this.__clearStorage();

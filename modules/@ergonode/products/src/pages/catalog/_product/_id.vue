@@ -42,8 +42,10 @@ export default {
             id,
         } = params;
 
-        await store.dispatch('dictionaries/getInitialDictionary', {
-            key: 'productTypes',
+        await store.dispatch('dictionaries/getInitialDictionaries', {
+            keys: [
+                'productTypes',
+            ],
         });
 
         await Promise.all([

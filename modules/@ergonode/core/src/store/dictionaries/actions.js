@@ -25,43 +25,56 @@ const modulesDictionaries = Object.values(extendsModules)
     }, []);
 
 export default {
-    async getInitialDictionary({
+    async getInitialDictionaries({
         commit,
         state,
     }, {
-        key,
+        keys,
     }) {
-        try {
-            const modulesDictionary = modulesDictionaries.find(
-                dictionary => dictionary.stateProp === key,
-            );
+        const requests = [];
 
-            if (JSON.stringify(state[key]) === JSON.stringify(modulesDictionary.defaultValue)) {
-                const {
-                    request: {
-                        path,
-                        config,
-                    },
-                    dataMapper = response => response,
-                } = modulesDictionary;
+        console.log(keys);
 
-                const response = await get({
-                    $axios: this.app.$axios,
-                    path,
-                    config,
-                });
+        keys.forEach((key) => {
+            requests.push(async () => {
+                try {
+                    const modulesDictionary = modulesDictionaries.find(
+                        dictionary => dictionary.stateProp === key,
+                    );
 
-                commit('__SET_STATE', {
-                    key,
-                    value: dataMapper(response),
-                });
-            }
-        } catch (e) {
-            this.app.$addAlert({
-                type: ALERT_TYPE.ERROR,
-                message: 'Dictionary couldn\'t be fetched',
+                    const stateValue = JSON.stringify(state[key]);
+                    const dictionaryDefaultValue = JSON.stringify(modulesDictionary.defaultValue);
+
+                    if (stateValue === dictionaryDefaultValue) {
+                        const {
+                            request: {
+                                path,
+                                config,
+                            },
+                            dataMapper = response => response,
+                        } = modulesDictionary;
+
+                        const response = await get({
+                            $axios: this.app.$axios,
+                            path,
+                            config,
+                        });
+
+                        commit('__SET_STATE', {
+                            key,
+                            value: dataMapper(response),
+                        });
+                    }
+                } catch (e) {
+                    this.app.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Dictionary couldn\'t be fetched',
+                    });
+                }
             });
-        }
+        });
+
+        await Promise.all(requests.map(request => request()));
     },
     async getDictionary({
         commit,

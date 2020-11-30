@@ -35,20 +35,14 @@ export default {
         store,
         params,
     }) {
-        await Promise.all([
-            store.dispatch('dictionaries/getInitialDictionary', {
-                key: 'attrTypes',
-            }),
-            store.dispatch('dictionaries/getInitialDictionary', {
-                key: 'dateFormats',
-            }),
-            store.dispatch('dictionaries/getInitialDictionary', {
-                key: 'units',
-            }),
-            store.dispatch('dictionaries/getInitialDictionary', {
-                key: 'currencies',
-            }),
-        ]);
+        await store.dispatch('dictionaries/getInitialDictionaries', {
+            keys: [
+                'attrTypes',
+                'dateFormats',
+                'units',
+                'currencies',
+            ],
+        });
 
         await store.dispatch('attribute/getAttribute', {
             id: params.id,

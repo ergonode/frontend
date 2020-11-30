@@ -43,8 +43,10 @@ export default {
         store,
         route,
     }) {
-        await store.dispatch('dictionaries/getInitialDictionary', {
-            key: 'privileges',
+        await store.dispatch('dictionaries/getInitialDictionaries', {
+            keys: [
+                'privileges',
+            ],
         });
 
         const {

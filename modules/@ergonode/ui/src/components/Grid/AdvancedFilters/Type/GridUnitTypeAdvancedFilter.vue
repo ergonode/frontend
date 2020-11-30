@@ -73,8 +73,10 @@ export default {
         },
     },
     async fetch() {
-        await this.getInitialDictionary({
-            key: 'units',
+        await this.getInitialDictionaries({
+            keys: [
+                'units',
+            ],
         });
     },
     data() {
@@ -128,7 +130,7 @@ export default {
     },
     methods: {
         ...mapActions('dictionaries', [
-            'getInitialDictionary',
+            'getInitialDictionaries',
         ]),
         onValueChange({
             key, value,
