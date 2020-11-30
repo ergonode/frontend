@@ -9,13 +9,26 @@ import {
 } from './imports';
 import Privileges from './privileges';
 
+export const ROUTE_NAME = {
+    ATTRIBUTES: 'attributes',
+    ATTRIBUTES_GRID: 'attributes-grid',
+    ATTRIBUTE_EDIT: 'attribute-id',
+    ATTRIBUTE_EDIT_GENERAL: 'attribute-id-general',
+    ATTRIBUTE_EDIT_TRANSLATIONS: 'attribute-id-translations',
+    ATTRIBUTE_GROUPS: 'attribute-groups',
+    ATTRIBUTE_GROUPS_GRID: 'attribute-groups-grid',
+    ATTRIBUTE_GROUPS_EDIT: 'attribute-group-id',
+    ATTRIBUTE_GROUPS_EDIT_GENERAL: 'attribute-group-id-genera',
+    ATTRIBUTE_GROUPS_EDIT_TRANSLATIONS: 'attribute-group-id-translations',
+};
+
 export default [
     {
-        name: 'attributes',
+        name: ROUTE_NAME.ATTRIBUTES,
         path: '/attributes',
         component: Pages.Attributes,
         redirect: {
-            name: 'attributes-grid',
+            name: ROUTE_NAME.ATTRIBUTES_GRID,
         },
         meta: {
             access: true,
@@ -34,7 +47,7 @@ export default [
         },
         children: [
             {
-                name: 'attributes-grid',
+                name: ROUTE_NAME.ATTRIBUTES_GRID,
                 path: 'grid',
                 component: Tabs.AttributeGridTab,
                 meta: {
@@ -51,18 +64,18 @@ export default [
         ],
     },
     {
-        name: 'attribute-id',
+        name: ROUTE_NAME.ATTRIBUTE_EDIT,
         path: '/attributes/attribute/:id',
         component: Pages.AttributeEdit,
         redirect: {
-            name: 'attribute-id-general',
+            name: ROUTE_NAME.ATTRIBUTE_EDIT_GENERAL,
         },
         meta: {
             isMenu: false,
         },
         children: [
             {
-                name: 'attribute-id-general',
+                name: ROUTE_NAME.ATTRIBUTE_EDIT_GENERAL,
                 path: 'general',
                 component: Tabs.AttributeGeneralTab,
                 meta: {
@@ -74,14 +87,14 @@ export default [
                         },
                         {
                             title: 'Attributes',
-                            routeName: 'attributes-grid',
+                            routeName: ROUTE_NAME.ATTRIBUTES_GRID,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'attribute-id-translations',
+                name: ROUTE_NAME.ATTRIBUTE_EDIT_TRANSLATIONS,
                 path: 'translations',
                 component: Tabs.AttributeTranslationsTab,
                 meta: {
@@ -93,7 +106,7 @@ export default [
                         },
                         {
                             title: 'Attributes',
-                            routeName: 'attributes-grid',
+                            routeName: ROUTE_NAME.ATTRIBUTES_GRID,
                         },
                     ],
                     privileges: [],
@@ -102,11 +115,11 @@ export default [
         ],
     },
     {
-        name: 'attribute-groups',
+        name: ROUTE_NAME.ATTRIBUTE_GROUPS,
         path: '/attribute-groups',
         component: Pages.AttributeGroups,
         redirect: {
-            name: 'attribute-groups-grid',
+            name: ROUTE_NAME.ATTRIBUTE_GROUPS_GRID,
         },
         meta: {
             access: true,
@@ -125,7 +138,7 @@ export default [
         },
         children: [
             {
-                name: 'attribute-groups-grid',
+                name: ROUTE_NAME.ATTRIBUTE_GROUPS_GRID,
                 path: 'grid',
                 component: Tabs.AttributeGroupGridTab,
                 meta: {
@@ -142,18 +155,18 @@ export default [
         ],
     },
     {
-        name: 'attribute-group-id',
+        name: ROUTE_NAME.ATTRIBUTE_GROUPS_EDIT,
         path: '/attribute-groups/group/:id',
         component: Pages.AttributeGroupEdit,
         redirect: {
-            name: 'attribute-group-id-general',
+            name: ROUTE_NAME.ATTRIBUTE_GROUPS_EDIT_GENERAL,
         },
         meta: {
             isMenu: false,
         },
         children: [
             {
-                name: 'attribute-group-id-general',
+                name: ROUTE_NAME.ATTRIBUTE_GROUPS_EDIT_GENERAL,
                 path: 'general',
                 component: Tabs.AttributeGroupGeneralTab,
                 meta: {
@@ -165,14 +178,14 @@ export default [
                         },
                         {
                             title: 'Attribute groups',
-                            routeName: 'attribute-groups-grid',
+                            routeName: ROUTE_NAME.ATTRIBUTE_GROUPS_GRID,
                         },
                     ],
                     privileges: [],
                 },
             },
             {
-                name: 'attribute-group-id-translations',
+                name: ROUTE_NAME.ATTRIBUTE_GROUPS_EDIT_TRANSLATIONS,
                 path: 'translations',
                 component: Tabs.AttributeGroupTranslationsTab,
                 meta: {
@@ -184,7 +197,7 @@ export default [
                         },
                         {
                             title: 'Attribute groups',
-                            routeName: 'attribute-groups-grid',
+                            routeName: ROUTE_NAME.ATTRIBUTE_GROUPS_GRID,
                         },
                     ],
                     privileges: [],

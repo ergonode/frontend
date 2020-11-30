@@ -5,8 +5,8 @@
 <template>
     <Page>
         <TitleBar
-            title="Users activity logs"
-            :is-read-only="$isReadOnly('USER')" />
+            :title="$t('activityLogs.page.title')"
+            :is-read-only="isReadOnly" />
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
             :items="asyncTabs" />
@@ -19,6 +19,7 @@ import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@UI/components/TitleBar/TitleBar';
+import PRIVILEGES from '@Users/config/privileges';
 
 export default {
     name: 'UsersTabs',
@@ -31,5 +32,10 @@ export default {
         beforeLeavePageMixin,
         asyncTabsMixin,
     ],
+    computed: {
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.USER.namespace);
+        },
+    },
 };
 </script>

@@ -3,18 +3,13 @@
  * See LICENSE for license details.
  */
 <template>
-    <ImportProfilePage
-        :title="name"
-        @remove="onRemove" />
+    <ImportProfilePage :title="name" />
 </template>
 
 <script>
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    MODAL_TYPE,
-} from '@Core/defaults/modals';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import ImportProfilePage from '@Import/components/Pages/ImportProfilePage';
 import {
@@ -43,12 +38,10 @@ export default {
         await store.dispatch('import/getImportProfile', {
             id: params.id,
             onError: () => {
-                if (process.client) {
-                    app.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: 'Import profile hasn`t been fetched properly',
-                    });
-                }
+                app.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Import profile hasn`t been fetched properly',
+                });
             },
         });
     },
@@ -71,37 +64,10 @@ export default {
     methods: {
         ...mapActions('import', [
             '__clearStorage',
-            'removeImport',
         ]),
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
-        onRemove() {
-            this.$confirm({
-                type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this import?',
-                applyTitle: 'YES, REMOVE',
-                action: () => this.removeImport({
-                    onSuccess: this.onRemoveSuccess,
-                    onError: this.onRemoveError,
-                }),
-            });
-        },
-        onRemoveSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Import profiles removed',
-            });
-            this.$router.push({
-                name: 'import-grid',
-            });
-        },
-        onRemoveError() {
-            this.$addAlert({
-                type: ALERT_TYPE.ERROR,
-                message: 'Import hasn`t been deleted',
-            });
-        },
     },
     head() {
         return {

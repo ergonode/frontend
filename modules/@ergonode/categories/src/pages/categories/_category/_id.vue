@@ -3,9 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <CategoryPage
-        :title="code"
-        @remove="onRemove" />
+    <CategoryPage :title="code" />
 </template>
 
 <script>
@@ -13,9 +11,6 @@ import CategoryPage from '@Categories/components/Pages/CategoryPage';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    MODAL_TYPE,
-} from '@Core/defaults/modals';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import {
     mapActions,
@@ -43,12 +38,10 @@ export default {
         await store.dispatch('category/getCategory', {
             id: params.id,
             onError: () => {
-                if (process.client) {
-                    app.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: app.i18n.t('category.errors.getRequest'),
-                    });
-                }
+                app.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: app.i18n.t('category.errors.getRequest'),
+                });
             },
         });
     },
@@ -64,7 +57,6 @@ export default {
     },
     methods: {
         ...mapActions('category', [
-            'removeCategory',
             '__clearStorage',
         ]),
         ...mapActions('feedback', {
@@ -73,34 +65,6 @@ export default {
         ...mapActions('tab', {
             __clearTranslationsStorage: '__clearStorage',
         }),
-        onRemove() {
-            this.$confirm({
-                type: MODAL_TYPE.DESTRUCTIVE,
-                title: this.$t('category.messages.deleteConfirm'),
-                applyTitle: 'YES, REMOVE',
-                action: () => {
-                    this.removeCategory({
-                        onSuccess: this.onRemoveSuccess,
-                        onError: this.onRemoveError,
-                    });
-                },
-            });
-        },
-        onRemoveSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: this.$t('category.messages.deleteSuccess'),
-            });
-            this.$router.push({
-                name: 'categories-grid',
-            });
-        },
-        onRemoveError() {
-            this.$addAlert({
-                type: ALERT_TYPE.ERROR,
-                message: this.$t('category.errors.deleteRequest'),
-            });
-        },
     },
     head() {
         return {

@@ -8,8 +8,8 @@
         @close="onClose">
         <template #body>
             <ProductTemplateForm
-                submit-title="CREATE"
-                proceed-title="CREATE & EDIT"
+                :submit-title="$t('core.buttons.create')"
+                :proceed-title="$t('core.buttons.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :errors="scopeErrors"
@@ -28,6 +28,9 @@ import {
 } from '@Core/defaults/theme';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import ProductTemplateForm from '@Templates/components/Forms/ProductTemplateForm';
+import {
+    ROUTE_NAME,
+} from '@Templates/config/routes';
 import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
@@ -106,7 +109,7 @@ export default {
             this.isProceeding = false;
 
             this.$router.push({
-                name: 'product-template-id-general',
+                name: ROUTE_NAME.PRODUCT_TEMPLATE_EDIT_GENERAL,
                 params: {
                     id,
                 },

@@ -7,20 +7,25 @@ import {
     Tabs,
 } from './imports';
 
+export const ROUTE_NAME = {
+    NOTIFICATIONS: 'notification',
+    NOTIFICATIONS_GRID: 'notification-grid',
+};
+
 export default [
     {
-        name: 'notifications',
+        name: ROUTE_NAME.NOTIFICATIONS,
         path: '/notifications',
         component: Pages.Notifications,
         redirect: {
-            name: 'notifications-grid',
+            name: ROUTE_NAME.NOTIFICATIONS_GRID,
         },
         meta: {
             isMenu: false,
         },
         children: [
             {
-                name: 'notifications-grid',
+                name: ROUTE_NAME.NOTIFICATIONS_GRID,
                 path: 'grid',
                 component: Tabs.NotificationGridTab,
             },

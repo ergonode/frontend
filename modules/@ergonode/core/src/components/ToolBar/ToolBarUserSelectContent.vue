@@ -26,6 +26,9 @@
 <script>
 import ToolBarUserSelectContentHeader from '@Core/components/ToolBar/ToolBarUserSelectContentHeader';
 import {
+    ROUTE_NAME,
+} from '@Core/config/routes';
+import {
     THEME,
 } from '@Core/defaults/theme';
 import navigationBarUserMenu from '@Core/models/navigation/navigationBarUserMenu';
@@ -94,7 +97,7 @@ export default {
                 value: false,
             });
             this.$router.push({
-                name: 'index',
+                name: ROUTE_NAME.INDEX,
             });
         },
     },

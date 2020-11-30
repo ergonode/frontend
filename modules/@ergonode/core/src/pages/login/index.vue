@@ -28,7 +28,7 @@
 
 <script>
 import {
-    JWT_KEY,
+    TOKEN_KEY,
 } from '@Authentication/defaults/cookies';
 import {
     LOGIN_STATE,
@@ -103,7 +103,7 @@ export default {
     },
     created() {
         if (!this.isLogged) {
-            this.$cookies.remove(JWT_KEY);
+            this.$cookies.remove(TOKEN_KEY);
             this.resetState();
         }
     },

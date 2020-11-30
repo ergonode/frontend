@@ -8,25 +8,11 @@
             :title="title"
             :is-read-only="isReadOnly">
             <template #prependHeader>
-                <NavigationBackFab />
+                <NavigateBackFab />
             </template>
             <template #mainAction>
-                <Button
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    title="REMOVE IMPORT"
-                    :disabled="!isAllowedToDelete"
-                    @click.native="onRemove">
-                    <template #prepend="{ color }">
-                        <IconDelete :fill-color="color" />
-                    </template>
-                </Button>
-                <Button
-                    title="IMPORT NOW"
-                    :size="smallSize"
-                    :theme="secondaryTheme"
-                    :disabled="!isAllowedToUpdate"
-                    @click.native="onShowModal" />
+                <RemoveImportButton />
+                <CreateImportButton @created="onCreatedData" />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -48,10 +34,6 @@
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
-        <UploadImportFileModalForm
-            v-if="isModalVisible"
-            @close="onCloseModal"
-            @created="onCreatedData" />
     </Page>
 </template>
 
@@ -59,12 +41,15 @@
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import CreateImportButton from '@Import/components/Buttons/CreateImportButton';
+import RemoveImportButton from '@Import/components/Buttons/RemoveImportButton';
 import PRIVILEGES from '@Import/config/privileges';
 
 export default {
     name: 'ImportProfilePage',
     components: {
-        UploadImportFileModalForm: () => import('@Import/components/Modals/UploadImportFileModalForm'),
+        CreateImportButton,
+        RemoveImportButton,
     },
     mixins: [
         editPageMixin,
@@ -74,16 +59,6 @@ export default {
     computed: {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.IMPORT.namespace);
-        },
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.IMPORT.update,
-            ]);
-        },
-        isAllowedToDelete() {
-            return this.$hasAccess([
-                PRIVILEGES.IMPORT.delete,
-            ]);
         },
     },
 };

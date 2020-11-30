@@ -15,16 +15,7 @@
                         :key="index"
                         v-bind="bindingProps(actionItem)" />
                 </template>
-                <Button
-                    data-cy="new-attribute"
-                    :title="$t('attribute.page.addButton')"
-                    :size="smallSize"
-                    :disabled="!isAllowedToCreate"
-                    @click.native="onShowModal">
-                    <template #prepend="{ color }">
-                        <IconAdd :fill-color="color" />
-                    </template>
-                </Button>
+                <CreateAttributeButton @created="onCreatedData" />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -36,10 +27,6 @@
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
-        <CreateAttributeModalForm
-            v-if="isModalVisible"
-            @close="onCloseModal"
-            @created="onCreatedData" />
         <template
             v-for="(modal, index) in extendedModals">
             <Component
@@ -51,15 +38,11 @@
 </template>
 
 <script>
+import CreateAttributeButton from '@Attributes/components/Buttons/CreateAttributeButton';
 import PRIVILEGES from '@Attributes/config/privileges';
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@UI/components/TitleBar/TitleBar';
@@ -67,12 +50,10 @@ import TitleBar from '@UI/components/TitleBar/TitleBar';
 export default {
     name: 'AttributeTabs',
     components: {
+        CreateAttributeButton,
         TitleBar,
         Page,
         HorizontalRoutingTabBar,
-        Button,
-        IconAdd,
-        CreateAttributeModalForm: () => import('@Attributes/components/Modals/CreateAttributeModalForm'),
     },
     mixins: [
         gridModalMixin,
@@ -86,18 +67,10 @@ export default {
         extendedModals() {
             return this.$getExtendedComponents('@Attributes/pages/attributes/injectModal');
         },
-        isAllowedToCreate() {
-            return this.$hasAccess([
-                PRIVILEGES.ATTRIBUTE.create,
-            ]);
-        },
         isReadOnly() {
             return this.$isReadOnly(
                 PRIVILEGES.ATTRIBUTE.namespace,
             );
-        },
-        smallSize() {
-            return SIZE.SMALL;
         },
     },
     methods: {

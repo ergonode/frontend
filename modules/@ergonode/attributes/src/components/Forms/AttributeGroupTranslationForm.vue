@@ -10,7 +10,7 @@
                     <TextField
                         :data-cy="dataCyGenerator(nameKeyField)"
                         :value="translations.name[languageCode]"
-                        label="Group name"
+                        :label="$t('attributeGroup.translation.nameLabel')"
                         :disabled="!isAllowedToUpdate"
                         :error-messages="translationErrors[nameKeyField]"
                         @input="(value) => setTranslationPropertyValue(value, nameKeyField)" />

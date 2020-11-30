@@ -15,15 +15,7 @@
                         :key="index"
                         v-bind="bindingProps(actionItem)" />
                 </template>
-                <Button
-                    title="NEW PRODUCT"
-                    :size="smallSize"
-                    :disabled="!isAllowedToCreate"
-                    @click.native="onShowModal">
-                    <template #prepend="{ color }">
-                        <IconAdd :fill-color="color" />
-                    </template>
-                </Button>
+                <CreateProductButton @created="onCreatedData" />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -45,10 +37,6 @@
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
-        <CreateProductModalForm
-            v-if="isModalVisible"
-            @close="onCloseModal"
-            @created="onCreatedData" />
         <template
             v-for="(modal, index) in extendedModals">
             <Component
@@ -60,12 +48,10 @@
 </template>
 
 <script>
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import CreateProductButton from '@Products/components/Buttons/CreateProductButton';
 import PRIVILEGES from '@Products/config/privileges';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
@@ -80,12 +66,12 @@ import {
 export default {
     name: 'Products',
     components: {
+        CreateProductButton,
         TitleBar,
         Page,
         HorizontalRoutingTabBar,
         Button,
         IconAdd,
-        CreateProductModalForm: () => import('@Products/components/Modals/CreateProductModalForm'),
     },
     mixins: [
         gridModalMixin,
@@ -102,14 +88,6 @@ export default {
         },
         extendedModals() {
             return this.$getExtendedComponents('@Products/pages/catalog/injectModal');
-        },
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        isAllowedToCreate() {
-            return this.$hasAccess([
-                PRIVILEGES.PRODUCT.create,
-            ]);
         },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.PRODUCT.namespace);

@@ -85,6 +85,9 @@ import FormSection from '@UI/components/Form/Section/FormSection';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import TranslationSelect from '@UI/components/Select/TranslationSelect';
 import {
+    ROUTE_NAME,
+} from '@Users/config/routes';
+import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -180,7 +183,7 @@ export default {
         },
         onNavigateToUserRoles() {
             this.$router.push({
-                name: 'user-roles-grid',
+                name: ROUTE_NAME.USER_ROLES_GRID,
             });
         },
         setSourceValue(value) {

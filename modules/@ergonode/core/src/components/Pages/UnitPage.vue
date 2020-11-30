@@ -8,20 +8,10 @@
             :title="title"
             :is-read-only="isReadOnly">
             <template #prependHeader>
-                <NavigationBackFab />
+                <NavigateBackFab />
             </template>
             <template #mainAction>
-                <Button
-                    data-cy="delete-unit"
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    title="REMOVE UNIT"
-                    :disabled="!isAllowedToDelete"
-                    @click.native="onRemove">
-                    <template #prepend="{ color }">
-                        <IconDelete :fill-color="color" />
-                    </template>
-                </Button>
+                <RemoveUnitButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -33,12 +23,16 @@
 </template>
 
 <script>
+import RemoveUnitButton from '@Core/components/Buttons/RemoveUnitButton';
 import PRIVILEGES from '@Core/config/privileges';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 
 export default {
     name: 'UnitPage',
+    components: {
+        RemoveUnitButton,
+    },
     mixins: [
         editPageMixin,
         asyncTabsMixin,
@@ -46,11 +40,6 @@ export default {
     computed: {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.SETTINGS.namespace);
-        },
-        isAllowedToDelete() {
-            return this.$hasAccess([
-                PRIVILEGES.SETTINGS.delete,
-            ]);
         },
     },
 };

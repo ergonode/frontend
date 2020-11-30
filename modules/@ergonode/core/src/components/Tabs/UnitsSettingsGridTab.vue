@@ -12,11 +12,7 @@
                 :pagination="pagination"
                 :filters="filterValues"
                 :placeholder="noDataPlaceholder"
-                :extended-columns="extendedColumns"
-                :extended-data-cells="extendedDataCells"
-                :extended-data-filter-cells="extendedDataFilterCells"
-                :extended-data-edit-cells="extendedDataEditCells"
-                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :extended-components="extendedGridComponents"
                 :is-editable="isAllowedToUpdate"
                 :is-prefetching-data="isPrefetchingData"
                 :is-header-visible="true"
@@ -30,17 +26,7 @@
                 @filter="onFilterChange"
                 @remove-all-filters="onRemoveAllFilters">
                 <template #actionsHeader>
-                    <Button
-                        data-cy="new-unit"
-                        title="NEW UNIT"
-                        :theme="secondaryTheme"
-                        :disabled="!isAllowedToCreate"
-                        :size="smallSize"
-                        @click.native="onShowModal">
-                        <template #prepend="{ color }">
-                            <IconAdd :fill-color="color" />
-                        </template>
-                    </Button>
+                    <CreateUnitButton @created="onCreatedData" />
                 </template>
             </Grid>
         </template>
@@ -48,18 +34,16 @@
 </template>
 
 <script>
+import CreateUnitButton from '@Core/components/Buttons/CreateUnitButton';
 import PRIVILEGES from '@Core/config/privileges';
 import {
-    SIZE,
-    THEME,
-} from '@Core/defaults/theme';
+    ROUTE_NAME,
+} from '@Core/config/routes';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,
@@ -68,9 +52,8 @@ import {
 export default {
     name: 'UnitsSettingsGridTab',
     components: {
+        CreateUnitButton,
         CenterViewTemplate,
-        Button,
-        IconAdd,
     },
     mixins: [
         fetchGridDataMixin({
@@ -96,17 +79,6 @@ export default {
                 color: WHITESMOKE,
             };
         },
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
-        isAllowedToCreate() {
-            return this.$hasAccess([
-                PRIVILEGES.SETTINGS.create,
-            ]);
-        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.SETTINGS.update,
@@ -117,6 +89,9 @@ export default {
         ...mapActions('dictionaries', [
             'getDictionary',
         ]),
+        onCreatedData() {
+            this.onFetchData();
+        },
         onRemoveUnit() {
             Promise.all([
                 this.onRemoveRow(),
@@ -129,14 +104,11 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'unit-id-general',
+                name: ROUTE_NAME.SETTINGS_UNIT_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },
             });
-        },
-        onShowModal() {
-            this.$emit('show-modal', 'units');
         },
     },
 };

@@ -8,17 +8,7 @@
             title="Product statuses"
             :is-read-only="isReadOnly">
             <template #mainAction>
-                <Button
-                    data-cy="new-status"
-                    title="NEW STATUS"
-                    :size="smallSize"
-                    :disabled="!isAllowedToCreate"
-                    @click.native="onShowModal">
-                    <template #prepend="{ color }">
-                        <IconAdd
-                            :fill-color="color" />
-                    </template>
-                </Button>
+                <CreateProductStatusButton @created="onCreatedData" />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -30,23 +20,15 @@
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
-        <CreateProductStatusModalForm
-            v-if="isModalVisible"
-            @close="onCloseModal"
-            @created="onCreatedData" />
     </Page>
 </template>
 
 <script>
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import CreateProductStatusButton from '@Statuses/components/Buttons/CreateProductStatusButton';
 import PRIVILEGES from '@Transitions/config/privileges';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@UI/components/TitleBar/TitleBar';
@@ -54,12 +36,10 @@ import TitleBar from '@UI/components/TitleBar/TitleBar';
 export default {
     name: 'Status',
     components: {
+        CreateProductStatusButton,
         TitleBar,
         Page,
         HorizontalRoutingTabBar,
-        Button,
-        IconAdd,
-        CreateProductStatusModalForm: () => import('@Statuses/components/Modals/CreateProductStatusModalForm'),
     },
     mixins: [
         gridModalMixin,
@@ -69,14 +49,6 @@ export default {
     computed: {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.WORKFLOW.namespace);
-        },
-        isAllowedToCreate() {
-            return this.$hasAccess([
-                PRIVILEGES.WORKFLOW.create,
-            ]);
-        },
-        smallSize() {
-            return SIZE.SMALL;
         },
     },
     head() {

@@ -8,25 +8,11 @@
             :title="title"
             :is-read-only="isReadOnly">
             <template #prependHeader>
-                <NavigationBackFab />
+                <NavigateBackFab />
             </template>
             <template #mainAction>
-                <Button
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    title="REMOVE CHANNEL"
-                    :disabled="!isAllowedToDelete"
-                    @click.native="onRemove">
-                    <template #prepend="{ color }">
-                        <IconDelete :fill-color="color" />
-                    </template>
-                </Button>
-                <Button
-                    title="EXPORT NOW"
-                    :size="smallSize"
-                    :theme="secondaryTheme"
-                    :disabled="!isAllowedToUpdate"
-                    @click.native="onCreateExport" />
+                <RemoveChannelButton />
+                <CreateExportButton @created="onCreatedData" />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -52,24 +38,18 @@
 </template>
 
 <script>
+import CreateExportButton from '@Channels/components/Buttons/CreateExportButton';
+import RemoveChannelButton from '@Channels/components/Buttons/RemoveChannelButton';
 import PRIVILEGES from '@Channels/config/privileges';
-import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import {
-    MODAL_TYPE,
-} from '@Core/defaults/modals';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import HorizontalRoutingTabBarContent from '@UI/components/TabBar/Routing/HorizontalRoutingTabBarContent';
-import {
-    mapActions,
-    mapState,
-} from 'vuex';
 
 export default {
     name: 'ChannelPage',
     components: {
+        CreateExportButton,
+        RemoveChannelButton,
         HorizontalRoutingTabBarContent,
     },
     mixins: [
@@ -82,45 +62,16 @@ export default {
         };
     },
     computed: {
-        ...mapState('channel', [
-            'id',
-        ]),
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.CHANNEL.update,
-            ]);
-        },
-        isAllowedToDelete() {
-            return this.$hasAccess([
-                PRIVILEGES.CHANNEL.delete,
-            ]);
-        },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.CHANNEL.namespace);
         },
     },
     methods: {
-        ...mapActions('channel', [
-            'createChannelExport',
-        ]),
         onFetchedGridData() {
             this.fetchGridData = false;
         },
-        onCreateExport() {
-            this.$confirm({
-                type: MODAL_TYPE.POSITIVE,
-                title: 'Are you sure you want to start export?',
-                action: () => this.createChannelExport({
-                    onSuccess: this.onExportSuccess,
-                }),
-            });
-        },
-        onExportSuccess() {
+        onCreatedData() {
             this.fetchGridData = true;
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Export has been finished',
-            });
         },
     },
 };

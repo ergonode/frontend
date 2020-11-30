@@ -8,20 +8,10 @@
             :title="title"
             :is-read-only="isReadOnly">
             <template #prependHeader>
-                <NavigationBackFab />
+                <NavigateBackFab />
             </template>
             <template #mainAction>
-                <Button
-                    data-cy="delete-category"
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    title="REMOVE CATEGORY"
-                    :disabled="!isAllowedToDelete"
-                    @click.native="onRemove">
-                    <template #prepend="{ color }">
-                        <IconDelete :fill-color="color" />
-                    </template>
-                </Button>
+                <RemoveCategoryButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -33,12 +23,16 @@
 </template>
 
 <script>
+import RemoveCategoryButton from '@Categories/components/Buttons/RemoveCategoryButton';
 import PRIVILEGES from '@Categories/config/privileges';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 
 export default {
     name: 'CategoryPage',
+    components: {
+        RemoveCategoryButton,
+    },
     mixins: [
         editPageMixin,
         asyncTabsMixin,
@@ -46,11 +40,6 @@ export default {
     computed: {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.CATEGORY.namespace);
-        },
-        isAllowedToDelete() {
-            return this.$hasAccess([
-                PRIVILEGES.CATEGORY.delete,
-            ]);
         },
     },
 };

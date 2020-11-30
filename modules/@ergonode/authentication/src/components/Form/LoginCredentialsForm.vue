@@ -39,6 +39,9 @@ import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import {
+    ROUTE_NAME,
+} from '@Dashboard/config/routes';
 import TextField from '@UI/components/TextField/TextField';
 import Toggler from '@UI/components/Toggler/Toggler';
 import {
@@ -97,7 +100,7 @@ export default {
         },
         onLoginSuccess() {
             this.$router.push({
-                name: 'dashboard',
+                name: ROUTE_NAME.DASHBOARD,
             });
 
             this.isSubmitting = false;

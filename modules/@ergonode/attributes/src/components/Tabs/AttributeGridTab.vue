@@ -12,11 +12,7 @@
                 :filters="filterValues"
                 :pagination="pagination"
                 :placeholder="noDataPlaceholder"
-                :extended-columns="extendedColumns"
-                :extended-data-cells="extendedDataCells"
-                :extended-data-filter-cells="extendedDataFilterCells"
-                :extended-data-edit-cells="extendedDataEditCells"
-                :extended-edit-filter-cells="extendedDataEditFilterCells"
+                :extended-components="extendedGridComponents"
                 :is-editable="isAllowedToUpdate"
                 :is-prefetching-data="isPrefetchingData"
                 :is-basic-filter="true"
@@ -34,6 +30,9 @@
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Attributes/config/routes';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import {
@@ -81,7 +80,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'attribute-id-general',
+                name: ROUTE_NAME.ATTRIBUTE_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },

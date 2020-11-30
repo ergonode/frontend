@@ -63,7 +63,11 @@ export default {
         size: {
             type: String,
             default: SIZE.REGULAR,
-            validator: value => Object.values(SIZE).indexOf(value) !== -1,
+            validator: value => [
+                SIZE.TINY,
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
         },
         /**
          * The title of the component

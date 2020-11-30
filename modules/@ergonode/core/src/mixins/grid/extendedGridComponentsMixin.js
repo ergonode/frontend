@@ -8,34 +8,22 @@ import {
 
 export default {
     computed: {
-        extendedDataFilterCells() {
+        extendedGridComponents() {
             return {
-                [GRID_LAYOUT.TABLE]: this.$getExtendedComponents('@UI/components/Grid/Layout/Table/Cells/Data/Filter'),
-                [GRID_LAYOUT.COLLECTION]: {},
-            };
-        },
-        extendedDataEditFilterCells() {
-            return {
-                [GRID_LAYOUT.TABLE]: this.$getExtendedComponents('@UI/components/Grid/Layout/Table/Cells/Edit/Filter'),
-                [GRID_LAYOUT.COLLECTION]: {},
-            };
-        },
-        extendedDataCells() {
-            return {
-                [GRID_LAYOUT.TABLE]: this.$getExtendedComponents('@UI/components/Grid/Layout/Table/Cells/Data'),
-                [GRID_LAYOUT.COLLECTION]: this.$getExtendedComponents('@UI/components/Grid/Layout/Collection/Cells'),
-            };
-        },
-        extendedDataEditCells() {
-            return {
-                [GRID_LAYOUT.TABLE]: this.$getExtendedComponents('@UI/components/Grid/Layout/Table/Cells/Edit'),
-                [GRID_LAYOUT.COLLECTION]: {},
-            };
-        },
-        extendedColumns() {
-            return {
-                [GRID_LAYOUT.TABLE]: this.$getExtendedComponents('@UI/components/Grid/Layout/Table/Columns'),
-                [GRID_LAYOUT.COLLECTION]: {},
+                [GRID_LAYOUT.TABLE]: {
+                    dataFilterCells: this.$getExtendedComponents('@UI/components/Grid/Layout/Table/Cells/Data/Filter'),
+                    dataEditFilterCells: this.$getExtendedComponents('@UI/components/Grid/Layout/Table/Cells/Edit/Filter'),
+                    dataCells: this.$getExtendedComponents('@UI/components/Grid/Layout/Table/Cells/Data'),
+                    dataEditCells: this.$getExtendedComponents('@UI/components/Grid/Layout/Table/Cells/Edit'),
+                    columns: this.$getExtendedComponents('@UI/components/Grid/Layout/Table/Columns'),
+                },
+                [GRID_LAYOUT.COLLECTION]: {
+                    dataFilterCells: {},
+                    dataEditFilterCells: {},
+                    dataCells: this.$getExtendedComponents('@UI/components/Grid/Layout/Collection/Cells'),
+                    dataEditCells: {},
+                    columns: {},
+                },
             };
         },
     },

@@ -8,15 +8,7 @@
             title="Import profiles"
             :is-read-only="isReadOnly">
             <template #mainAction>
-                <Button
-                    title="NEW IMPORT PROFILE"
-                    :size="smallSize"
-                    :disabled="!isAllowedToCreate"
-                    @click.native="onShowModal">
-                    <template #prepend="{ color }">
-                        <IconAdd :fill-color="color" />
-                    </template>
-                </Button>
+                <CreateImportProfileButton @created="onCreatedData" />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -28,22 +20,14 @@
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
-        <CreateImportProfileModalForm
-            v-if="isModalVisible"
-            @close="onCloseModal"
-            @created="onCreatedData" />
     </Page>
 </template>
 
 <script>
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import CreateImportProfileButton from '@Import/components/Buttons/CreateImportProfileButton';
 import PRIVILEGES from '@Import/config/privileges';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@UI/components/TitleBar/TitleBar';
@@ -51,12 +35,10 @@ import TitleBar from '@UI/components/TitleBar/TitleBar';
 export default {
     name: 'Imports',
     components: {
+        CreateImportProfileButton,
         TitleBar,
         Page,
         HorizontalRoutingTabBar,
-        Button,
-        IconAdd,
-        CreateImportProfileModalForm: () => import('@Import/components/Modals/CreateImportProfileModalForm'),
     },
     mixins: [
         gridModalMixin,
@@ -65,14 +47,6 @@ export default {
     computed: {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.IMPORT.namespace);
-        },
-        isAllowedToCreate() {
-            return this.$hasAccess([
-                PRIVILEGES.IMPORT.create,
-            ]);
-        },
-        smallSize() {
-            return SIZE.SMALL;
         },
     },
     head() {

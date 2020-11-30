@@ -19,6 +19,7 @@
         <ListSearchHeader
             v-else
             title="Attributes"
+            searchable
             @search-result="onSearch" />
         <List>
             <Preloader v-if="isPrefetchingData" />

@@ -3,22 +3,26 @@
  * See LICENSE for license details.
  */
 <template>
-    <ClickOutsideGlobalEvent @click-outside="onClickOutside">
+    <ResizeObserver @resize="onResize">
         <div
             :class="classes"
             ref="dropdown">
             <slot />
         </div>
-    </ClickOutsideGlobalEvent>
+    </ResizeObserver>
 </template>
 
 <script>
-import ClickOutsideGlobalEvent from '@UI/components/Events/ClickOutsideGlobalEvent';
+import ResizeObserver from '@UI/components/Observers/ResizeObserver';
+import {
+    getPositionForBrowser,
+    isMouseInsideElement,
+} from '@UI/models/dragAndDrop/helpers';
 
 export default {
     name: 'Dropdown',
     components: {
-        ClickOutsideGlobalEvent,
+        ResizeObserver,
     },
     props: {
         /**
@@ -46,9 +50,6 @@ export default {
         classes() {
             return [
                 'dropdown',
-                {
-                    'dropdown--visible': this.visible,
-                },
             ];
         },
     },
@@ -57,6 +58,15 @@ export default {
             immediate: true,
             handler() {
                 if (!this.parentReference || !this.visible) {
+                    if (!this.visible) {
+                        requestAnimationFrame(() => {
+                            this.$refs.dropdown.style.visibility = 'hidden';
+                            this.$refs.dropdown.style.opacity = '0';
+                        });
+
+                        window.removeEventListener('click', this.onClickOutside);
+                    }
+
                     return;
                 }
 
@@ -65,6 +75,9 @@ export default {
                     : this.parentReference.$el;
 
                 requestAnimationFrame(() => {
+                    this.$refs.dropdown.style.visibility = 'initial';
+                    this.$refs.dropdown.style.opacity = '1';
+
                     const parentOffset = parentElement.getBoundingClientRect();
                     const offset = 2;
                     const {
@@ -97,6 +110,10 @@ export default {
                         this.$refs.dropdown.style.top = `${parentOffset.y + parentOffset.height + offset}px`;
                     }
                 });
+
+                setTimeout(() => {
+                    window.addEventListener('click', this.onClickOutside);
+                });
             },
         },
     },
@@ -113,8 +130,22 @@ export default {
         }
     },
     methods: {
-        onClickOutside(payload) {
-            this.$emit('click-outside', payload);
+        onResize(entry) {
+            if (entry.contentRect.height !== 0) {
+                this.$emit('height', entry.contentRect.height);
+            }
+        },
+        onClickOutside(event) {
+            const {
+                xPos,
+                yPos,
+            } = getPositionForBrowser(event);
+            const isClickedOutside = !isMouseInsideElement(this.$refs.dropdown, xPos, yPos);
+
+            this.$emit('click-outside', {
+                event,
+                isClickedOutside,
+            });
         },
     },
 };
@@ -124,20 +155,21 @@ export default {
     .dropdown {
         position: absolute;
         z-index: $Z_INDEX_MAX;
-        display: none;
+        display: flex;
         flex-direction: column;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_2_DP;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+        opacity: 0;
+        visibility: hidden;
         will-change:
+            visibility,
+            opacity,
             top,
             left,
             bottom,
             right,
             height,
             width;
-
-        &--visible {
-            display: flex;
-        }
     }
 </style>

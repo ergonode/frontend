@@ -8,8 +8,8 @@
         @close="onClose">
         <template #body>
             <UserRoleForm
-                submit-title="CREATE"
-                proceed-title="CREATE & EDIT"
+                :submit-title="$t('core.buttons.create')"
+                :proceed-title="$t('core.buttons.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :errors="scopeErrors"
@@ -29,6 +29,9 @@ import {
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import ModalForm from '@UI/components/Modal/ModalForm';
 import UserRoleForm from '@Users/components/Forms/UserRoleForm';
+import {
+    ROUTE_NAME,
+} from '@Users/config/routes';
 import {
     mapActions,
     mapState,
@@ -110,7 +113,7 @@ export default {
             this.isProceeding = false;
 
             this.$router.push({
-                name: 'user-role-id-general',
+                name: ROUTE_NAME.USER_ROLE_EDIT_GENERAL,
                 params: {
                     id,
                 },

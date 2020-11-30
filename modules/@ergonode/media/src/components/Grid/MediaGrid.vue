@@ -12,11 +12,7 @@
             :filters="filterValues"
             :rows="rowsWithAttachValues"
             :collection-cell-binding="collectionCellBinding"
-            :extended-columns="extendedColumns"
-            :extended-data-cells="extendedDataCells"
-            :extended-data-filter-cells="extendedDataFilterCells"
-            :extended-data-edit-cells="extendedDataEditCells"
-            :extended-edit-filter-cells="extendedDataEditFilterCells"
+            :extended-components="extendedGridComponents"
             :is-editable="isAllowedToUpdate"
             :is-prefetching-data="isPrefetchingData"
             :is-basic-filter="true"
@@ -60,6 +56,9 @@ import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
 import PRIVILEGES from '@Media/config/privileges';
+import {
+    ROUTE_NAME,
+} from '@Media/config/routes';
 import {
     MEDIA_TYPE,
 } from '@Media/defaults';
@@ -374,7 +373,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: 'media-id-general',
+                name: ROUTE_NAME.MEDIA_RESOURCE_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },

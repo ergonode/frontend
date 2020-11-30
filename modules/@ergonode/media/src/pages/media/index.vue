@@ -8,16 +8,7 @@
             title="Media"
             :is-read-only="isReadOnly">
             <template #mainAction>
-                <Button
-                    title="UPLOAD FILES"
-                    :size="smallSize"
-                    :theme="secondaryTheme"
-                    :disabled="!isAllowedToCreate"
-                    @click.native="onShowModal">
-                    <template #prepend="{ color }">
-                        <IconUploadFile :fill-color="color" />
-                    </template>
-                </Button>
+                <UploadResourcesButton @uploaded="onCreatedData" />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -29,25 +20,15 @@
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
-        <ModalTabBar
-            v-if="isModalVisible"
-            title="Add resources"
-            :items="modalTabs"
-            @close="onCreatedData" />
     </Page>
 </template>
 
 <script>
-import {
-    SIZE,
-    THEME,
-} from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import UploadResourcesButton from '@Media/components/Buttons/UploadResourcesButton';
 import PRIVILEGES from '@Media/config/privileges';
-import Button from '@UI/components/Button/Button';
-import IconUploadFile from '@UI/components/Icons/Actions/IconUploadFile';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@UI/components/TitleBar/TitleBar';
@@ -55,12 +36,10 @@ import TitleBar from '@UI/components/TitleBar/TitleBar';
 export default {
     name: 'Media',
     components: {
+        UploadResourcesButton,
         TitleBar,
         Page,
         HorizontalRoutingTabBar,
-        Button,
-        IconUploadFile,
-        ModalTabBar: () => import('@UI/components/Modal/ModalTabBar'),
     },
     mixins: [
         gridModalMixin,
@@ -70,28 +49,6 @@ export default {
     computed: {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.MULTIMEDIA.namespace);
-        },
-        isAllowedToCreate() {
-            return this.$hasAccess([
-                PRIVILEGES.MULTIMEDIA.create,
-            ]);
-        },
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
-        modalTabs() {
-            return [
-                {
-                    title: 'Upload files',
-                    content: {
-                        component: () => import('@Media/components/Tabs/UploadFileTab'),
-                        listeners: {},
-                    },
-                },
-            ];
         },
     },
     head() {

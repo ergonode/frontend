@@ -8,15 +8,7 @@
             title="Users"
             :is-read-only="isReadOnly">
             <template #mainAction>
-                <Button
-                    title="NEW USER"
-                    :size="smallSize"
-                    :disabled="!isAllowedToCreate"
-                    @click.native="onShowModal">
-                    <template #prepend="{ color }">
-                        <IconAdd :fill-color="color" />
-                    </template>
-                </Button>
+                <CreateUserButton @created="onCreatedData" />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
@@ -28,36 +20,26 @@
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalRoutingTabBar>
-        <CreateUserModalForm
-            v-if="isModalVisible"
-            @close="onCloseModal"
-            @created="onCreatedData" />
     </Page>
 </template>
 
 <script>
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
-import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@UI/components/TitleBar/TitleBar';
+import CreateUserButton from '@Users/components/Buttons/CreateUserButton';
 import PRIVILEGES from '@Users/config/privileges';
 
 export default {
     name: 'UsersTabs',
     components: {
+        CreateUserButton,
         TitleBar,
         Page,
         HorizontalRoutingTabBar,
-        Button,
-        IconAdd,
-        CreateUserModalForm: () => import('@Users/components/Modals/CreateUserModalForm'),
     },
     mixins: [
         gridModalMixin,
@@ -67,14 +49,6 @@ export default {
     computed: {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.USER.namespace);
-        },
-        isAllowedToCreate() {
-            return this.$hasAccess([
-                PRIVILEGES.USER.create,
-            ]);
-        },
-        smallSize() {
-            return SIZE.SMALL;
         },
     },
     head() {

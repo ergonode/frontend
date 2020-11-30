@@ -25,7 +25,7 @@
                 :errors="errors"
                 :disabled="!isAllowedToUpdate" />
             <Button
-                title="SAVE CHANGES"
+                :title="$t('core.buttons.submit')"
                 :floating="saveChangesButtonFloatingStyle"
                 @click.native="onSubmit">
                 <template

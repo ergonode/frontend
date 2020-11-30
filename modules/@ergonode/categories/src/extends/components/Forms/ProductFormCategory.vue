@@ -33,6 +33,9 @@
 <script>
 import PRIVILEGES from '@Categories/config/privileges';
 import {
+    ROUTE_NAME,
+} from '@Categories/config/routes';
+import {
     SIZE,
 } from '@Core/defaults/theme';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
@@ -88,7 +91,7 @@ export default {
         ]),
         onNavigateToCategories() {
             this.$router.push({
-                name: 'categories-grid',
+                name: ROUTE_NAME.CATEGORIES_GRID,
             });
         },
         onCategoriesValueChange(value) {

@@ -70,6 +70,11 @@ export default {
                 true,
             );
             elm.addEventListener(
+                'drop',
+                this.onDrop,
+                true,
+            );
+            elm.addEventListener(
                 'dragover',
                 this.onDragOver,
                 true,
@@ -92,6 +97,11 @@ export default {
             elm.removeEventListener(
                 'dragend',
                 this.onDragEnd,
+                true,
+            );
+            elm.removeEventListener(
+                'drop',
+                this.onDrop,
                 true,
             );
             elm.removeEventListener(
@@ -155,6 +165,9 @@ export default {
             });
 
             return true;
+        },
+        onDrop(event) {
+            event.preventDefault();
         },
         onDragEnd(event) {
             removeElementCopyFromDocumentBody(event);

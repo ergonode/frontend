@@ -9,11 +9,13 @@ import {
     PRODUCT_TYPE,
 } from '@Products/defaults';
 
+import extendTabs from './extendTabs';
 import {
-    Icons,
     Store,
-    Tabs,
 } from './imports';
+import {
+    ROUTE_NAME,
+} from './routes';
 
 export default {
     dictionaries: [
@@ -26,59 +28,13 @@ export default {
     extendStore: {
         product: Store.Product,
     },
-    extendTabs: [
-        {
-            name: 'product-id', // existing router name what we want extend
-            children: [ // array with router to extend
-                {
-                    name: 'product-id-variants',
-                    path: 'variants',
-                    component: Tabs.ProductVariantsTab,
-                    meta: {
-                        title: 'Variants',
-                        visible: false,
-                        breadcrumbs: [
-                            {
-                                title: 'Products',
-                                icon: Icons.Product,
-                            },
-                            {
-                                title: 'Catalog',
-                                routeName: 'catalog-products',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-                {
-                    name: 'product-id-group',
-                    path: 'group',
-                    component: Tabs.ProductGroupTab,
-                    meta: {
-                        title: 'Groups',
-                        visible: false,
-                        breadcrumbs: [
-                            {
-                                title: 'Products',
-                                icon: Icons.Product,
-                            },
-                            {
-                                title: 'Catalog',
-                                routeName: 'catalog-products',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-            ],
-        },
-    ],
+    extendTabs,
     extendMethods: {
         '@Core/pages/tabs': ({
             $this, type = null, tabs,
         }) => {
             switch ($this.$route.matched[0].name) {
-            case 'product-id': {
+            case ROUTE_NAME.PRODUCT_EDIT: {
                 switch (type) {
                 case PRODUCT_TYPE.WITH_VARIANTS:
                     return tabs.filter(tab => tab.visible || tab.title === 'Variants');
