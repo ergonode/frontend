@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridAdvancedFilterContent
+    <AdvancedFilterContent
         :value="value.isEmptyRecord"
         :fixed="true"
         @input="onEmptyRecordChange">
@@ -34,7 +34,7 @@
             </template>
         </VirtualScroll>
         <DropdownPlaceholder v-else />
-    </GridAdvancedFilterContent>
+    </AdvancedFilterContent>
 </template>
 
 <script>
@@ -44,8 +44,8 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import AdvancedFilterContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterContent';
 import CheckBox from '@UI/components/CheckBox/CheckBox';
-import GridAdvancedFilterContent from '@UI/components/Grid/AdvancedFilters/Content/GridAdvancedFilterContent';
 import ListElement from '@UI/components/List/ListElement';
 import ListElementAction from '@UI/components/List/ListElementAction';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
@@ -56,9 +56,9 @@ import {
 } from 'vue-windowing';
 
 export default {
-    name: 'GridAdvancedFilterMultiselectContent',
+    name: 'AdvancedFilterMultiselectContent',
     components: {
-        GridAdvancedFilterContent,
+        AdvancedFilterContent,
         VirtualScroll,
         ListElement,
         ListElementAction,

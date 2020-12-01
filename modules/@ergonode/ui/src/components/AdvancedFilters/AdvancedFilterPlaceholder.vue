@@ -16,7 +16,7 @@ import {
 import IconDragDrop from '@UI/components/Icons/Actions/IconDragDrop';
 
 export default {
-    name: 'GridAdvancedFilterPlaceholder',
+    name: 'AdvancedFilterPlaceholder',
     components: {
         IconDragDrop,
     },

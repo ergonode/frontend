@@ -2,15 +2,15 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import GridAdvancedFilterShowOnly from '@UI/components/Grid/AdvancedFilters/GridAdvancedFilterShowOnly';
+import AdvancedFilterShowOnly from '@UI/components/AdvancedFilters/AdvancedFilterShowOnly';
 import {
     shallowMount,
 } from '@vue/test-utils';
 
-describe('Grid/AdvancedFilters/GridAdvancedFilterShowOnly', () => {
+describe('AdvancedFilters/AdvancedFilterShowOnly', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(GridAdvancedFilterShowOnly, {
+        wrapper = shallowMount(AdvancedFilterShowOnly, {
             propsData: {
                 value: false,
             },
@@ -18,8 +18,8 @@ describe('Grid/AdvancedFilters/GridAdvancedFilterShowOnly', () => {
     });
 
     it('Component is named well', () => {
-        expect(typeof GridAdvancedFilterShowOnly.name).toBe('string');
-        expect(GridAdvancedFilterShowOnly.name).toEqual('GridAdvancedFilterShowOnly');
+        expect(typeof AdvancedFilterShowOnly.name).toBe('string');
+        expect(AdvancedFilterShowOnly.name).toEqual('AdvancedFilterShowOnly');
     });
 
     it('Emitted value is reversed', () => {

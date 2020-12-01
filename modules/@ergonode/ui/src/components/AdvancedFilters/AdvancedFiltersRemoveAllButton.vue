@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <button class="grid-advanced-filters-remove-all-button">
+    <button class="advanced-filters-remove-all-button">
         <IconCancel />
         Remove filters
     </button>
@@ -13,7 +13,7 @@
 import IconCancel from '@UI/components/Icons/Actions/IconCancel';
 
 export default {
-    name: 'GridAdvancedFiltersRemoveAllButton',
+    name: 'AdvancedFiltersRemoveAllButton',
     components: {
         IconCancel,
     },
@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .grid-advanced-filters-remove-all-button {
+    .advanced-filters-remove-all-button {
         display: flex;
         align-items: center;
         border: none;

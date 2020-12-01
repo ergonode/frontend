@@ -3,30 +3,30 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridAdvancedFilterContent
+    <AdvancedFilterContent
         :value="value.isEmptyRecord"
         @input="onEmptyRecordChange">
         <DateRangePickerContent
             :value="parsedDate"
             :format="format"
             @input="onValueChange" />
-    </GridAdvancedFilterContent>
+    </AdvancedFilterContent>
 </template>
 
 <script>
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
+import AdvancedFilterContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterContent';
 import DateRangePickerContent from '@UI/components/DatePicker/DateRangePickerContent';
-import GridAdvancedFilterContent from '@UI/components/Grid/AdvancedFilters/Content/GridAdvancedFilterContent';
 import {
     DEFAULT_FORMAT,
 } from '@UI/models/calendar';
 
 export default {
-    name: 'GridAdvancedFilterDateContent',
+    name: 'AdvancedFilterDateContent',
     components: {
-        GridAdvancedFilterContent,
+        AdvancedFilterContent,
         DateRangePickerContent,
     },
     props: {

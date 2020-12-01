@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridAdvancedFilter
+    <AdvancedFilter
         :index="index"
         :value="filterValue"
         :hint="hint"
@@ -14,10 +14,8 @@
         @swap="onSwap"
         @apply="onApplyValue">
         <template #body>
-            <GridAdvancedFilterMultiselectContent
+            <AdvancedFilterRangeContent
                 :value="localValue"
-                :options="filter.options"
-                :language-code="filter.languageCode"
                 @input="onValueChange" />
         </template>
         <template #footer="{ onApply }">
@@ -25,22 +23,22 @@
                 @apply="onApply"
                 @clear="onClear" />
         </template>
-    </GridAdvancedFilter>
+    </AdvancedFilter>
 </template>
 
 <script>
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
-import GridAdvancedFilterMultiselectContent from '@UI/components/Grid/AdvancedFilters/Content/GridAdvancedFilterMultiselectContent';
-import GridAdvancedFilter from '@UI/components/Grid/AdvancedFilters/GridAdvancedFilter';
+import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
+import AdvancedFilterRangeContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterRangeContent';
 import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
 
 export default {
-    name: 'GridMultiSelectTypeAdvancedFilter',
+    name: 'NumericTypeAdvancedFilter',
     components: {
-        GridAdvancedFilter,
-        GridAdvancedFilterMultiselectContent,
+        AdvancedFilter,
+        AdvancedFilterRangeContent,
         MultiselectDropdownFooter,
     },
     props: {
@@ -65,7 +63,8 @@ export default {
             type: Object,
             default: () => ({
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.EQUAL]: [],
+                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
             }),
         },
     },
@@ -98,17 +97,11 @@ export default {
         filterValue() {
             if (this.localValue.isEmptyRecord) return 'Empty records';
 
-            const value = [];
-
-            this.localValue[FILTER_OPERATOR.EQUAL].forEach((id) => {
-                const option = this.filter.options.find(opt => opt.id === id);
-
-                if (option) {
-                    value.push(option.value || `#${option.key}`);
-                }
-            });
-
-            return value.join(', ');
+            return [
+                this.localValue[FILTER_OPERATOR.GREATER_OR_EQUAL],
+                this.localValue[FILTER_OPERATOR.SMALLER_OR_EQUAL],
+            ].filter(value => value !== '')
+                .join(' - ');
         },
     },
     watch: {
@@ -136,7 +129,8 @@ export default {
         onClear() {
             this.localValue = {
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.EQUAL]: [],
+                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
             };
         },
         onApplyValue() {

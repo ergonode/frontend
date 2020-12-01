@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridAdvancedFilter
+    <AdvancedFilter
         :index="index"
         :value="filterValue"
         :hint="hint"
@@ -14,34 +14,36 @@
         @swap="onSwap"
         @apply="onApplyValue">
         <template #body>
-            <GridAdvancedFilterSelectContent
+            <AdvancedFilterRangeContent
                 :value="localValue"
-                :options="filter.options"
-                :language-code="filter.languageCode"
                 @input="onValueChange" />
         </template>
         <template #footer="{ onApply }">
-            <SelectDropdownFooter
+            <SelectDropdownApplyFooter
                 @apply="onApply"
                 @clear="onClear" />
         </template>
-    </GridAdvancedFilter>
+    </AdvancedFilter>
 </template>
 
 <script>
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
-import GridAdvancedFilterSelectContent from '@UI/components/Grid/AdvancedFilters/Content/GridAdvancedFilterTextContent';
-import GridAdvancedFilter from '@UI/components/Grid/AdvancedFilters/GridAdvancedFilter';
-import SelectDropdownFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownFooter';
+import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
+import AdvancedFilterRangeContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterRangeContent';
+import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
-    name: 'GridSelectTypeAdvancedFilter',
+    name: 'UnitTypeAdvancedFilter',
     components: {
-        GridAdvancedFilter,
-        GridAdvancedFilterSelectContent,
-        SelectDropdownFooter,
+        AdvancedFilter,
+        AdvancedFilterRangeContent,
+        SelectDropdownApplyFooter,
     },
     props: {
         /**
@@ -65,9 +67,17 @@ export default {
             type: Object,
             default: () => ({
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.EQUAL]: '',
+                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
             }),
         },
+    },
+    async fetch() {
+        await this.getInitialDictionaries({
+            keys: [
+                'units',
+            ],
+        });
     },
     data() {
         return {
@@ -75,10 +85,13 @@ export default {
         };
     },
     computed: {
+        ...mapState('dictionaries', [
+            'units',
+        ]),
         parameters() {
             if (!this.filter.parameters) return '';
 
-            return Object.values(this.filter.parameters).join(', ');
+            return this.units.find(unit => unit.id === this.filter.parameters.unit).symbol;
         },
         title() {
             const [
@@ -98,12 +111,11 @@ export default {
         filterValue() {
             if (this.localValue.isEmptyRecord) return 'Empty records';
 
-            const option = this.filter.options
-                .find(opt => opt.id === this.localValue[FILTER_OPERATOR.EQUAL]);
-
-            if (!option) return '';
-
-            return option.value || `#${option.key}`;
+            return [
+                this.localValue[FILTER_OPERATOR.GREATER_OR_EQUAL],
+                this.localValue[FILTER_OPERATOR.SMALLER_OR_EQUAL],
+            ].filter(value => value !== '')
+                .join(' - ');
         },
     },
     watch: {
@@ -117,6 +129,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions('dictionaries', [
+            'getInitialDictionaries',
+        ]),
         onValueChange({
             key, value,
         }) {
@@ -131,7 +146,8 @@ export default {
         onClear() {
             this.localValue = {
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.EQUAL]: '',
+                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
             };
         },
         onApplyValue() {

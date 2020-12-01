@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="grid-advanced-filter-show-only">
+    <div class="advanced-filter-show-only">
         <Toggler
             :value="value"
             label="Show only empty records"
@@ -15,7 +15,7 @@
 import Toggler from '@UI/components/Toggler/Toggler';
 
 export default {
-    name: 'GridAdvancedFilterShowOnly',
+    name: 'AdvancedFilterShowOnly',
     components: {
         Toggler,
     },
@@ -37,7 +37,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .grid-advanced-filter-show-only {
+    .advanced-filter-show-only {
         padding: 8px 12px;
 
         &__title {

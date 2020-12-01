@@ -60,7 +60,7 @@
                         @drop="onDropFilter" />
                 </template>
                 <template #appendHeader>
-                    <GridAdvancedFilters
+                    <AdvancedFilters
                         v-show="isFiltersExpanded"
                         :value="advancedFilterValues"
                         :filters="advancedFilters"

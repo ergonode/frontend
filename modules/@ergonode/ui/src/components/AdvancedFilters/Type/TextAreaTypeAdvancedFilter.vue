@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridAdvancedFilter
+    <AdvancedFilter
         :index="index"
         :value="filterValue"
         :hint="hint"
@@ -14,32 +14,32 @@
         @swap="onSwap"
         @apply="onApplyValue">
         <template #body>
-            <GridAdvancedFilterRangeContent
+            <AdvancedFilterTextContent
                 :value="localValue"
                 @input="onValueChange" />
         </template>
         <template #footer="{ onApply }">
-            <MultiselectDropdownFooter
+            <SelectDropdownApplyFooter
                 @apply="onApply"
                 @clear="onClear" />
         </template>
-    </GridAdvancedFilter>
+    </AdvancedFilter>
 </template>
 
 <script>
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
-import GridAdvancedFilterRangeContent from '@UI/components/Grid/AdvancedFilters/Content/GridAdvancedFilterRangeContent';
-import GridAdvancedFilter from '@UI/components/Grid/AdvancedFilters/GridAdvancedFilter';
-import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
+import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
+import AdvancedFilterTextContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterTextContent';
+import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
 
 export default {
-    name: 'GridNumericTypeAdvancedFilter',
+    name: 'TextAreaTypeAdvancedFilter',
     components: {
-        GridAdvancedFilter,
-        GridAdvancedFilterRangeContent,
-        MultiselectDropdownFooter,
+        AdvancedFilter,
+        AdvancedFilterTextContent,
+        SelectDropdownApplyFooter,
     },
     props: {
         /**
@@ -63,8 +63,7 @@ export default {
             type: Object,
             default: () => ({
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
-                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.EQUAL]: '',
             }),
         },
     },
@@ -97,11 +96,7 @@ export default {
         filterValue() {
             if (this.localValue.isEmptyRecord) return 'Empty records';
 
-            return [
-                this.localValue[FILTER_OPERATOR.GREATER_OR_EQUAL],
-                this.localValue[FILTER_OPERATOR.SMALLER_OR_EQUAL],
-            ].filter(value => value !== '')
-                .join(' - ');
+            return this.localValue[FILTER_OPERATOR.EQUAL];
         },
     },
     watch: {
@@ -129,8 +124,7 @@ export default {
         onClear() {
             this.localValue = {
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
-                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.EQUAL]: '',
             };
         },
         onApplyValue() {

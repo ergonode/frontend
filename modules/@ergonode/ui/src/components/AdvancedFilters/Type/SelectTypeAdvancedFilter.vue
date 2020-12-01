@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridAdvancedFilter
+    <AdvancedFilter
         :index="index"
         :value="filterValue"
         :hint="hint"
@@ -14,32 +14,34 @@
         @swap="onSwap"
         @apply="onApplyValue">
         <template #body>
-            <GridAdvancedFilterTextContent
+            <AdvancedFilterSelectContent
                 :value="localValue"
+                :options="filter.options"
+                :language-code="filter.languageCode"
                 @input="onValueChange" />
         </template>
         <template #footer="{ onApply }">
-            <SelectDropdownApplyFooter
+            <SelectDropdownFooter
                 @apply="onApply"
                 @clear="onClear" />
         </template>
-    </GridAdvancedFilter>
+    </AdvancedFilter>
 </template>
 
 <script>
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
-import GridAdvancedFilterTextContent from '@UI/components/Grid/AdvancedFilters/Content/GridAdvancedFilterTextContent';
-import GridAdvancedFilter from '@UI/components/Grid/AdvancedFilters/GridAdvancedFilter';
-import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
+import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
+import AdvancedFilterSelectContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterTextContent';
+import SelectDropdownFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownFooter';
 
 export default {
-    name: 'GridPriceTypeAdvancedFilter',
+    name: 'SelectTypeAdvancedFilter',
     components: {
-        GridAdvancedFilter,
-        GridAdvancedFilterTextContent,
-        SelectDropdownApplyFooter,
+        AdvancedFilter,
+        AdvancedFilterSelectContent,
+        SelectDropdownFooter,
     },
     props: {
         /**
@@ -63,8 +65,7 @@ export default {
             type: Object,
             default: () => ({
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
-                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.EQUAL]: '',
             }),
         },
     },
@@ -97,11 +98,12 @@ export default {
         filterValue() {
             if (this.localValue.isEmptyRecord) return 'Empty records';
 
-            return [
-                this.localValue[FILTER_OPERATOR.GREATER_OR_EQUAL],
-                this.localValue[FILTER_OPERATOR.SMALLER_OR_EQUAL],
-            ].filter(value => value !== '')
-                .join(' - ');
+            const option = this.filter.options
+                .find(opt => opt.id === this.localValue[FILTER_OPERATOR.EQUAL]);
+
+            if (!option) return '';
+
+            return option.value || `#${option.key}`;
         },
     },
     watch: {
@@ -129,8 +131,7 @@ export default {
         onClear() {
             this.localValue = {
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
-                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.EQUAL]: '',
             };
         },
         onApplyValue() {

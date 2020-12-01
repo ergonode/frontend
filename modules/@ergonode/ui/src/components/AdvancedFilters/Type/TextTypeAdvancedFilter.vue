@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridAdvancedFilter
+    <AdvancedFilter
         :index="index"
         :value="filterValue"
         :hint="hint"
@@ -14,7 +14,7 @@
         @swap="onSwap"
         @apply="onApplyValue">
         <template #body>
-            <GridAdvancedFilterTextContent
+            <AdvancedFilterTextContent
                 :value="localValue"
                 @input="onValueChange" />
         </template>
@@ -23,22 +23,22 @@
                 @apply="onApply"
                 @clear="onClear" />
         </template>
-    </GridAdvancedFilter>
+    </AdvancedFilter>
 </template>
 
 <script>
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
-import GridAdvancedFilterTextContent from '@UI/components/Grid/AdvancedFilters/Content/GridAdvancedFilterTextContent';
-import GridAdvancedFilter from '@UI/components/Grid/AdvancedFilters/GridAdvancedFilter';
+import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
+import AdvancedFilterTextContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterTextContent';
 import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
 
 export default {
-    name: 'GridTextTypeAdvancedFilter',
+    name: 'TextTypeAdvancedFilter',
     components: {
-        GridAdvancedFilter,
-        GridAdvancedFilterTextContent,
+        AdvancedFilter,
+        AdvancedFilterTextContent,
         SelectDropdownApplyFooter,
     },
     props: {

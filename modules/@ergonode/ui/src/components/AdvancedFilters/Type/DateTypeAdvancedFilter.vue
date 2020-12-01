@@ -3,19 +3,19 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridAdvancedFilter
+    <AdvancedFilter
         :index="index"
         :value="filterValue"
         :hint="hint"
         :title="title"
-        :parameters="parameters"
         :filter-id="filter.id"
         @remove="onRemove"
         @swap="onSwap"
         @apply="onApplyValue">
         <template #body>
-            <GridAdvancedFilterRangeContent
+            <AdvancedFilterDateContent
                 :value="localValue"
+                :format="parameters"
                 @input="onValueChange" />
         </template>
         <template #footer="{ onApply }">
@@ -23,26 +23,29 @@
                 @apply="onApply"
                 @clear="onClear" />
         </template>
-    </GridAdvancedFilter>
+    </AdvancedFilter>
 </template>
 
 <script>
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
-import GridAdvancedFilterRangeContent from '@UI/components/Grid/AdvancedFilters/Content/GridAdvancedFilterRangeContent';
-import GridAdvancedFilter from '@UI/components/Grid/AdvancedFilters/GridAdvancedFilter';
+import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
+import AdvancedFilterDateContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterDateContent';
 import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
 import {
-    mapActions,
-    mapState,
-} from 'vuex';
+    DEFAULT_FORMAT,
+} from '@UI/models/calendar';
+import {
+    format as formatDate,
+    parse as parseDate,
+} from 'date-fns';
 
 export default {
-    name: 'GridUnitTypeAdvancedFilter',
+    name: 'DateTypeAdvancedFilter',
     components: {
-        GridAdvancedFilter,
-        GridAdvancedFilterRangeContent,
+        AdvancedFilter,
+        AdvancedFilterDateContent,
         SelectDropdownApplyFooter,
     },
     props: {
@@ -67,17 +70,10 @@ export default {
             type: Object,
             default: () => ({
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
-                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.GREATER_OR_EQUAL]: null,
+                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: null,
             }),
         },
-    },
-    async fetch() {
-        await this.getInitialDictionaries({
-            keys: [
-                'units',
-            ],
-        });
     },
     data() {
         return {
@@ -85,13 +81,10 @@ export default {
         };
     },
     computed: {
-        ...mapState('dictionaries', [
-            'units',
-        ]),
         parameters() {
             if (!this.filter.parameters) return '';
 
-            return this.units.find(unit => unit.id === this.filter.parameters.unit).symbol;
+            return Object.values(this.filter.parameters).join(', ');
         },
         title() {
             const [
@@ -114,7 +107,8 @@ export default {
             return [
                 this.localValue[FILTER_OPERATOR.GREATER_OR_EQUAL],
                 this.localValue[FILTER_OPERATOR.SMALLER_OR_EQUAL],
-            ].filter(value => value !== '')
+            ].filter(value => value)
+                .map(value => formatDate(value, this.parameters))
                 .join(' - ');
         },
     },
@@ -122,20 +116,50 @@ export default {
         value: {
             immediate: true,
             handler() {
+                const fromDate = this.value[FILTER_OPERATOR.GREATER_OR_EQUAL]
+                    ? parseDate(
+                        this.value[FILTER_OPERATOR.GREATER_OR_EQUAL],
+                        DEFAULT_FORMAT,
+                        new Date(),
+                    )
+                    : null;
+                const toDate = this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL]
+                    ? parseDate(
+                        this.value[FILTER_OPERATOR.SMALLER_OR_EQUAL],
+                        DEFAULT_FORMAT,
+                        new Date(),
+                    )
+                    : null;
+
                 this.localValue = {
                     ...this.value,
+                    [FILTER_OPERATOR.GREATER_OR_EQUAL]: fromDate,
+                    [FILTER_OPERATOR.SMALLER_OR_EQUAL]: toDate,
                 };
             },
         },
     },
     methods: {
-        ...mapActions('dictionaries', [
-            'getInitialDictionaries',
-        ]),
         onValueChange({
-            key, value,
+            from, to,
         }) {
-            this.localValue[key] = value;
+            const value = {
+                [FILTER_OPERATOR.GREATER_OR_EQUAL]: null,
+                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: null,
+            };
+
+            if (from) {
+                value[FILTER_OPERATOR.GREATER_OR_EQUAL] = from;
+            }
+
+            if (to) {
+                value[FILTER_OPERATOR.SMALLER_OR_EQUAL] = to;
+            }
+
+            this.localValue = {
+                ...this.localValue,
+                ...value,
+            };
         },
         onRemove(index) {
             this.$emit('remove', index);
@@ -146,15 +170,37 @@ export default {
         onClear() {
             this.localValue = {
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
-                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.GREATER_OR_EQUAL]: null,
+                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: null,
             };
         },
         onApplyValue() {
+            const filterValue = {
+                ...this.localValue,
+            };
+
+            if (filterValue[FILTER_OPERATOR.GREATER_OR_EQUAL]) {
+                const fromValue = formatDate(
+                    filterValue[FILTER_OPERATOR.GREATER_OR_EQUAL],
+                    DEFAULT_FORMAT,
+                );
+
+                filterValue[FILTER_OPERATOR.GREATER_OR_EQUAL] = fromValue;
+            }
+
+            if (filterValue[FILTER_OPERATOR.SMALLER_OR_EQUAL]) {
+                const toValue = formatDate(
+                    filterValue[FILTER_OPERATOR.SMALLER_OR_EQUAL],
+                    DEFAULT_FORMAT,
+                );
+
+                filterValue[FILTER_OPERATOR.SMALLER_OR_EQUAL] = toValue;
+            }
+
             if (JSON.stringify(this.value) !== JSON.stringify(this.localValue)) {
                 this.$emit('apply', {
                     key: this.filter.id,
-                    value: this.localValue,
+                    value: filterValue,
                 });
             }
         },

@@ -14,8 +14,8 @@
             @remove="onRemove"
             @swap="onSwap"
             @apply="onApply" />
-        <GridAdvancedFilterPlaceholder v-show="isPlaceholderVisible" />
-        <GridAdvancedFiltersRemoveAllButton
+        <AdvancedFilterPlaceholder v-show="isPlaceholderVisible" />
+        <AdvancedFiltersRemoveAllButton
             v-show="orderedFilters.length"
             @click.native="onRemoveAll" />
     </div>
@@ -28,14 +28,14 @@ import {
 import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';
-import GridAdvancedFilterPlaceholder from '@UI/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder';
-import GridAdvancedFiltersRemoveAllButton from '@UI/components/Grid/AdvancedFilters/GridAdvancedFiltersRemoveAllButton';
+import AdvancedFilterPlaceholder from '@UI/components/AdvancedFilters/AdvancedFilterPlaceholder';
+import AdvancedFiltersRemoveAllButton from '@UI/components/AdvancedFilters/AdvancedFiltersRemoveAllButton';
 
 export default {
-    name: 'GridAdvancedFilters',
+    name: 'AdvancedFilters',
     components: {
-        GridAdvancedFilterPlaceholder,
-        GridAdvancedFiltersRemoveAllButton,
+        AdvancedFilterPlaceholder,
+        AdvancedFiltersRemoveAllButton,
     },
     props: {
         /**
@@ -61,7 +61,7 @@ export default {
     },
     computed: {
         classes() {
-            return 'grid-advanced-filters';
+            return 'advanced-filters';
         },
         isPlaceholderVisible() {
             return !this.orderedFilters.length;
@@ -93,7 +93,7 @@ export default {
 
                 orderedFilters.push(this.filters[i]);
                 filterComponents.push(
-                    () => import(`@UI/components/Grid/AdvancedFilters/Type/Grid${capitalisedType}TypeAdvancedFilter`),
+                    () => import(`@UI/components/AdvancedFilters/Type/Grid${capitalisedType}TypeAdvancedFilter`),
                 );
             }
 
@@ -151,7 +151,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .grid-advanced-filters {
+    .advanced-filters {
         display: flex;
         flex-wrap: wrap;
         padding: 8px 6px 0 8px;

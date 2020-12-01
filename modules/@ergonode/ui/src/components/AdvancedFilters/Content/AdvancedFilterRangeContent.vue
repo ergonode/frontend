@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridAdvancedFilterContent
+    <AdvancedFilterContent
         :value="value.isEmptyRecord"
         @input="onEmptyRecordChange">
         <div class="container">
@@ -25,7 +25,7 @@
                 :size="smallSize"
                 @input="onToValueChange" />
         </div>
-    </GridAdvancedFilterContent>
+    </AdvancedFilterContent>
 </template>
 
 <script>
@@ -37,14 +37,14 @@ import {
     INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
-import GridAdvancedFilterContent from '@UI/components/Grid/AdvancedFilters/Content/GridAdvancedFilterContent';
+import AdvancedFilterContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterContent';
 import TextField from '@UI/components/TextField/TextField';
 
 export default {
-    name: 'GridAdvancedFilterRangeContent',
+    name: 'AdvancedFilterRangeContent',
     components: {
         TextField,
-        GridAdvancedFilterContent,
+        AdvancedFilterContent,
     },
     props: {
         /**

@@ -15,7 +15,7 @@
 import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
 
 export default {
-    name: 'GridAdvancedFilterDropdown',
+    name: 'AdvancedFilterDropdown',
     components: {
         Dropdown,
     },

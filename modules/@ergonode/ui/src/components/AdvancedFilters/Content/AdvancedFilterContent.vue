@@ -4,7 +4,7 @@
  */
 <template>
     <div :class="classes">
-        <GridAdvancedFilterShowOnly
+        <AdvancedFilterShowOnly
             :value="value"
             @input="onValueChange" />
         <Divider />
@@ -13,13 +13,13 @@
 </template>
 
 <script>
+import AdvancedFilterShowOnly from '@UI/components/AdvancedFilters/AdvancedFilterShowOnly';
 import Divider from '@UI/components/Dividers/Divider';
-import GridAdvancedFilterShowOnly from '@UI/components/Grid/AdvancedFilters/GridAdvancedFilterShowOnly';
 
 export default {
-    name: 'GridAdvancedFilterContent',
+    name: 'AdvancedFilterContent',
     components: {
-        GridAdvancedFilterShowOnly,
+        AdvancedFilterShowOnly,
         Divider,
     },
     props: {
@@ -41,9 +41,9 @@ export default {
     computed: {
         classes() {
             return [
-                'grid-advanced-filter-content',
+                'advanced-filter-content',
                 {
-                    'grid-advanced-filter-content--fixed': this.fixed,
+                    'advanced-filter-content--fixed': this.fixed,
                 },
             ];
         },
@@ -57,7 +57,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .grid-advanced-filter-content {
+    .advanced-filter-content {
         display: flex;
         flex-direction: column;
 

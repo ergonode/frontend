@@ -47,7 +47,7 @@
                     :fill-color="arrowIconFillColor" />
             </div>
         </div>
-        <GridAdvancedFilterDropdown
+        <AdvancedFilterDropdown
             v-if="isReadyToRender"
             ref="menu"
             :parent-reference="$refs.activator"
@@ -57,7 +57,7 @@
             <slot
                 name="footer"
                 :on-apply="onApply" />
-        </GridAdvancedFilterDropdown>
+        </AdvancedFilterDropdown>
     </div>
 </template>
 
@@ -76,7 +76,7 @@ import {
     GRAPHITE_DARK,
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import GridAdvancedFilterDropdown from '@UI/components/Grid/AdvancedFilters/Dropdown/GridAdvancedFilterDropdown';
+import AdvancedFilterDropdown from '@UI/components/AdvancedFilters/Dropdown/AdvancedFilterDropdown';
 import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
 import {
@@ -90,9 +90,9 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'GridAdvancedFilter',
+    name: 'AdvancedFilter',
     components: {
-        GridAdvancedFilterDropdown,
+        AdvancedFilterDropdown,
         IconArrowDropdown,
     },
     mixins: [
