@@ -33,8 +33,6 @@ export default {
     }) {
         const requests = [];
 
-        console.log(keys);
-
         keys.forEach((key) => {
             requests.push(async () => {
                 try {
