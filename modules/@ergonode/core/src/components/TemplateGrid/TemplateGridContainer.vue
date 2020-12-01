@@ -51,7 +51,11 @@ export default {
          */
         gridData: {
             type: Array,
-            required: true,
+            default: () => [],
+        },
+        hiddenItems: {
+            type: Object,
+            default: () => ({}),
         },
         /**
          * Number of visible columns
@@ -101,7 +105,6 @@ export default {
     computed: {
         ...mapState('gridDesigner', [
             'fullGridData',
-            'hiddenItems',
         ]),
         ...mapState('authentication', {
             language: state => state.user.language,
@@ -220,7 +223,9 @@ export default {
                     },
                 });
 
-                if (children > 0) {
+                console.log(children, this.hiddenItems[id], children > 0 && typeof this.hiddenItems[id] === 'undefined');
+
+                if (children > 0 && typeof this.hiddenItems[id] === 'undefined') {
                     this.$emit('expand', item);
                 }
             }
@@ -228,16 +233,16 @@ export default {
         onDrop(event) {
             if (this.ghostIndex !== -1) {
                 console.log('drop');
-
                 const parent = this.getParent(this.ghostIndex.row, this.ghostIndex.column);
+                const item = {
+                    ...this.draggedElement,
+                    ...this.ghostIndex,
+                    parent: parent.id,
+                };
 
                 this.setItemAtIndex({
                     index: this.ghostIndex.row,
-                    item: {
-                        ...this.draggedElement,
-                        ...this.ghostIndex,
-                        parent: parent.id,
-                    },
+                    item,
                 });
 
                 const nextRow = this.ghostIndex.row + 1;
@@ -251,6 +256,17 @@ export default {
                             parent: this.draggedElement.id,
                         },
                     });
+                }
+
+                console.log(item, this.hiddenItems);
+
+                if (item.children > 0 && typeof this.hiddenItems[item.id] !== 'undefined') {
+                    this.$emit('expand', item);
+                    // this.$emit('update-hidden-items', {
+                    //     id: item.id,
+                    //     row: this.ghostIndex.row,
+                    //     column: this.ghostIndex.column,
+                    // });
                 }
 
                 this.__setState({
@@ -376,8 +392,6 @@ export default {
             const isLastChild = maxItemRow <= this.ghostIndex.row;
             const isBetweenChild = this.ghostIndex.row > minItemRow
                 && this.ghostIndex.row < maxItemRow;
-
-            console.log(this.gridData[row + 1].column, column);
 
             if (row + 1 < this.gridData.length
                 && this.gridData[row + 1].column - column > 0) {

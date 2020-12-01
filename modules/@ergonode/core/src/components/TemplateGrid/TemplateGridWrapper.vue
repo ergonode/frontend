@@ -10,6 +10,7 @@
             :row-height="rowHeight"
             :constant-root="constantRoot"
             :grid-data="gridData"
+            :hidden-items="hiddenItems"
             :is-dragging-enabled="isDraggingEnabled"
             :is-multi-draggable="isMultiDraggable"
             @expand="onExpandItem"
@@ -210,7 +211,7 @@ export default {
 
                 this.hiddenItems[id] = [];
 
-                while (i < this.gridData.length && this.gridData[i].parent !== parent) {
+                while (i < this.gridData.length - 1 && this.gridData[i].parent !== parent) {
                     const item = this.gridData[i];
 
                     this.hiddenItems[id].push({
@@ -221,9 +222,11 @@ export default {
                     i += 1;
                 }
 
+                console.log(this.gridData, i);
+
                 const shiftValue = this.gridData[i].row - row;
 
-                console.log('before:', this.items.map(a => a.row));
+                // console.log('before:', this.items.map(a => a.row));
 
                 this.shiftItems({
                     since: row + shiftValue - 1,
@@ -231,13 +234,17 @@ export default {
                 });
                 this.removeItems(indexesToRemove);
 
-                console.log('After:', this.items.map(a => a.row));
+                // console.log('After:', this.items.map(a => a.row));
             } else {
                 const shiftValue = this.hiddenItems[id].length;
 
-                console.log('before:', this.items.map(i => i.row));
+                // console.log('before:', this.items.map(i => i.row));
 
-                console.log(shiftValue, row);
+                console.log(row);
+
+                for (let i = 0; i < this.hiddenItems[id].length; i += 1) {
+                    this.hiddenItems[id][i].row = row + i + 1;
+                }
 
                 this.shiftItems({
                     since: row,
@@ -251,7 +258,7 @@ export default {
                     since: row + 1,
                 });
 
-                console.log('After:', this.items.map(i => i.row));
+                // console.log('After:', this.items.map(i => i.row));
 
                 delete this.hiddenItems[id];
             }

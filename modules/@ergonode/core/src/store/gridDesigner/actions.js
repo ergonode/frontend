@@ -25,7 +25,7 @@ export default {
     setGridData: ({
         commit,
     }, data) => {
-        commit(types.SET_GRID_DATA, data);
+        commit(types.SET_DATA, data);
     },
     setFullGridData: ({
         commit, state,
@@ -45,7 +45,7 @@ export default {
         data,
         index,
     }) => {
-        commit(types.SET_GRID_DATA, getTreeWhenElementCollapse(data, index));
+        commit(types.SET_DATA, getTreeWhenElementCollapse(data, index));
     },
     setGridWhenExpand: ({
         commit, state,
@@ -54,7 +54,7 @@ export default {
     }) => {
         const newGrid = getTreeWhenElementExpand(state.hiddenItems[id], state.gridData, index);
 
-        commit(types.SET_GRID_DATA, newGrid);
+        commit(types.SET_DATA, newGrid);
     },
     setExpandItem: ({
         commit,
@@ -108,22 +108,22 @@ export default {
     insertItemsSince({
         commit,
     }, payload) {
-        commit(types.ADD_GRID_ITEMS, payload);
+        commit(types.INSERT_ITEMS, payload);
     },
     shiftItems({
         commit,
     }, payload) {
-        commit(types.SHIFT_GRID_ITEMS, payload);
+        commit(types.SHIFT_ITEMS, payload);
     },
     setItemAtIndex({
         commit,
     }, payload) {
-        commit(types.SET_GRID_ITEM, payload);
+        commit(types.SET_ITEM, payload);
     },
     addItem({
         commit,
     }, payload) {
-        commit(types.ADD_GRID_ITEM, payload);
+        commit(types.ADD_ITEM, payload);
     },
     swapItemsPosition({
         state,
@@ -142,12 +142,12 @@ export default {
         gridData[toRow].row = fromRow;
         gridData[toRow].column = fromColumn;
 
-        commit(types.SET_GRID_DATA, swapItemPosition(gridData, fromRow, toRow));
+        commit(types.SET_DATA, swapItemPosition(gridData, fromRow, toRow));
     },
     insertItemAtIndex({
         commit,
     }, payload) {
-        commit(types.INSERT_GRID_ITEM, payload);
+        commit(types.INSERT_ITEM, payload);
     },
     removeGridItem: ({
         state, dispatch,

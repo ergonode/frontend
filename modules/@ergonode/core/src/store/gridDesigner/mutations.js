@@ -12,18 +12,18 @@ import {
 } from '@Core/models/objectWrapper';
 
 export const types = {
-    ADD_GRID_ITEM: 'ADD_GRID_ITEM',
+    ADD_ITEM: 'ADD_ITEM',
     INSERT_ITEMS: 'INSERT_ITEMS',
     SET_ROWS_COUNT: 'SET_ROWS_COUNT',
-    SET_GRID_DATA: 'SET_GRID_DATA',
+    SET_DATA: 'SET_DATA',
     SET_FULL_GRID_DATA: 'SET_FULL_GRID_DATA',
-    SET_GRID_ITEM: 'SET_GRID_ITEM',
+    SET_ITEM: 'SET_ITEM',
     REMOVE_GRID_ITEM: 'REMOVE_GRID_ITEM',
-    SHIFT_GRID_ITEMS: 'SHIFT_GRID_ITEMS',
+    SHIFT_ITEMS: 'SHIFT_ITEMS',
     REMOVE_GRID_ITEMS: 'REMOVE_GRID_ITEMS',
     SWAP_GRID_ITEMS: 'SWAP_GRID_ITEMS',
     UPDATE_GRID_ITEM: 'UPDATE_GRID_ITEM',
-    INSERT_GRID_ITEM: 'INSERT_GRID_ITEM',
+    INSERT_ITEM: 'INSERT_ITEM',
     SET_HIDDEN_ITEM: 'SET_HIDDEN_ITEM',
     SET_EXPAND_ITEM: 'SET_EXPAND_ITEM',
     SET_CHILDREN_LENGTH: 'SET_CHILDREN_LENGTH',
@@ -37,13 +37,13 @@ export default {
     }) {
         state.gridData = insertValuesAtIndex(state.gridData, items, since);
     },
-    [types.ADD_GRID_ITEM](state, item) {
+    [types.ADD_ITEM](state, item) {
         state.gridData.push(item);
     },
     [types.SET_ROWS_COUNT](state, value) {
         state.rows = value;
     },
-    [types.SET_GRID_DATA](state, value) {
+    [types.SET_DATA](state, value) {
         state.gridData = value;
     },
     [types.SET_FULL_GRID_DATA](state, value) {
@@ -52,7 +52,7 @@ export default {
     [types.REMOVE_GRID_ITEM](state, index) {
         state.gridData.splice(index, 1);
     },
-    [types.SHIFT_GRID_ITEMS](state, {
+    [types.SHIFT_ITEMS](state, {
         since,
         value,
     }) {
@@ -63,7 +63,7 @@ export default {
     [types.REMOVE_GRID_ITEMS](state, indexes) {
         state.gridData = removeArrayIndexes(state.gridData, indexes);
     },
-    [types.SET_GRID_ITEM](state, {
+    [types.SET_ITEM](state, {
         index,
         item,
     }) {
@@ -72,7 +72,7 @@ export default {
             ...state.gridData,
         ];
     },
-    [types.INSERT_GRID_ITEM](state, {
+    [types.INSERT_ITEM](state, {
         index,
         item,
     }) {
