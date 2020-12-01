@@ -45,6 +45,16 @@ export default {
     mixins: [
         scopeErrorsMixin,
     ],
+    async fetch() {
+        await this.getInitialDictionaries({
+            keys: [
+                'attrTypes',
+                'dateFormats',
+                'units',
+                'currencies',
+            ],
+        });
+    },
     data() {
         return {
             isSubmitting: false,
@@ -60,6 +70,9 @@ export default {
         ...mapActions('attribute', [
             'createAttribute',
             '__clearStorage',
+        ]),
+        ...mapActions('dictionaries', [
+            'getInitialDictionaries',
         ]),
         onClose() {
             this.__clearStorage();

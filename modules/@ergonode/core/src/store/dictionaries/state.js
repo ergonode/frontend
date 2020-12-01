@@ -19,6 +19,6 @@ const dictionaries = Object.values(extendsModules)
 
 export default () => dictionaries.reduce((acc, current) => {
     const newObject = acc;
-    newObject[current.stateProp] = current.dataFormat;
+    newObject[current.stateProp] = current.defaultValue;
     return newObject;
 }, {});

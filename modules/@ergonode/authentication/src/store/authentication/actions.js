@@ -61,6 +61,15 @@ export default {
                 });
 
                 await dispatch('getUser');
+                await dispatch('core/getLanguages', {}, {
+                    root: true,
+                });
+                await dispatch('core/getLanguageTree', {}, {
+                    root: true,
+                });
+                await dispatch('core/setDefaultLanguage', {}, {
+                    root: true,
+                });
 
                 onSuccess();
             } catch (e) {

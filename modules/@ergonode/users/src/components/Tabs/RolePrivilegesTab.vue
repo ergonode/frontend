@@ -69,6 +69,15 @@ export default {
         extendedGridComponentsMixin,
         tabFeedbackMixin,
     ],
+    async fetch({
+        store,
+    }) {
+        await store.dispatch('dictionaries/getInitialDictionaries', {
+            keys: [
+                'privileges',
+            ],
+        });
+    },
     data() {
         return {
             columns: [],
