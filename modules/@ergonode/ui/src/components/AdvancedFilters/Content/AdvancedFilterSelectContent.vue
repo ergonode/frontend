@@ -8,27 +8,21 @@
             :value="value.isEmptyRecord"
             @input="onEmptyRecordChange" />
         <Divider />
-        <VirtualScroll
+        <SelectList
             v-if="options.length && !value.isEmptyRecord"
+            :value="filterValue"
             :items="options"
-            :root-height="200"
-            :render-ahead="4"
-            :estimated-height="20">
-            <template #item="{ item, index}">
-                <ListElement
-                    :key="index"
-                    :selected="selectedOptionIndex === index"
-                    :size="smallSize"
-                    @click.native.prevent="onSelectValue(item, index)">
-                    <ListElementDescription>
-                        <ListElementTitle
-                            :size="smallSize"
-                            :hint="item.value ? `#${item.key} ${languageCode}` : ''"
-                            :title="item.value || `#${item.key}`" />
-                    </ListElementDescription>
-                </ListElement>
+            :size="smallSize"
+            @input="onSelectValue">
+            <template #item="{ item }">
+                <ListElementDescription>
+                    <ListElementTitle
+                        :size="smallSize"
+                        :hint="item.value ? `#${item.key} ${languageCode}` : ''"
+                        :title="item.value || `#${item.key}`" />
+                </ListElementDescription>
             </template>
-        </VirtualScroll>
+        </SelectList>
         <DropdownPlaceholder v-else />
     </AdvancedFilterContent>
 </template>
@@ -43,21 +37,17 @@ import {
 import AdvancedFilterShowOnly from '@UI/components/AdvancedFilters/AdvancedFilterShowOnly';
 import AdvancedFilterContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterContent';
 import Divider from '@UI/components/Dividers/Divider';
-import ListElement from '@UI/components/List/ListElement';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
-import {
-    VirtualScroll,
-} from 'vue-windowing';
+import SelectList from '@UI/components/Select/List/SelectList';
 
 export default {
     name: 'AdvancedFilterSelectContent',
     components: {
         AdvancedFilterContent,
-        VirtualScroll,
         DropdownPlaceholder,
-        ListElement,
+        SelectList,
         ListElementDescription,
         ListElementTitle,
         AdvancedFilterShowOnly,
@@ -88,32 +78,26 @@ export default {
             default: () => [],
         },
     },
-    data() {
-        return {
-            selectedOptionIndex: -1,
-        };
-    },
     computed: {
         smallSize() {
             return SIZE.SMALL;
         },
         filterValue() {
-            return this.value[FILTER_OPERATOR.EQUAL] || '';
-        },
-    },
-    watch: {
-        filterValue: {
-            immediate: true,
-            handler() {
-                this.initSelectedOptions();
-            },
+            if (!this.value[FILTER_OPERATOR.EQUAL]) {
+                return {};
+            }
+
+            const value = this.value[FILTER_OPERATOR.EQUAL];
+            const option = this.options.find(({
+                id,
+            }) => id === value);
+
+            return {
+                [JSON.stringify(option)]: option,
+            };
         },
     },
     methods: {
-        initSelectedOptions() {
-            this.selectedOptionIndex = this.options
-                .findIndex(option => option.key === this.filterValue);
-        },
         onSelectValue(value) {
             this.$emit('input', {
                 value: value.key,
@@ -129,9 +113,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .filter-content {
-        max-height: 200px;
-    }
-</style>
