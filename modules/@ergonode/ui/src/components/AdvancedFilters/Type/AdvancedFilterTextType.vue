@@ -35,7 +35,7 @@ import AdvancedFilterTextContent from '@UI/components/AdvancedFilters/Content/Ad
 import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
 
 export default {
-    name: 'PriceTypeAdvancedFilter',
+    name: 'AdvancedFilterTextType',
     components: {
         AdvancedFilter,
         AdvancedFilterTextContent,
@@ -63,8 +63,7 @@ export default {
             type: Object,
             default: () => ({
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
-                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.EQUAL]: '',
             }),
         },
     },
@@ -97,11 +96,7 @@ export default {
         filterValue() {
             if (this.localValue.isEmptyRecord) return 'Empty records';
 
-            return [
-                this.localValue[FILTER_OPERATOR.GREATER_OR_EQUAL],
-                this.localValue[FILTER_OPERATOR.SMALLER_OR_EQUAL],
-            ].filter(value => value !== '')
-                .join(' - ');
+            return this.localValue[FILTER_OPERATOR.EQUAL];
         },
     },
     watch: {
@@ -129,8 +124,7 @@ export default {
         onClear() {
             this.localValue = {
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
-                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.EQUAL]: '',
             };
         },
         onApplyValue() {

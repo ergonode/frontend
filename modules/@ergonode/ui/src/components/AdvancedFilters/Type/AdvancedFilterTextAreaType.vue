@@ -35,7 +35,7 @@ import AdvancedFilterTextContent from '@UI/components/AdvancedFilters/Content/Ad
 import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
 
 export default {
-    name: 'TextAreaTypeAdvancedFilter',
+    name: 'AdvancedFilterTextAreaType',
     components: {
         AdvancedFilter,
         AdvancedFilterTextContent,

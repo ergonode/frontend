@@ -14,12 +14,14 @@
         @swap="onSwap"
         @apply="onApplyValue">
         <template #body>
-            <AdvancedFilterTextContent
+            <AdvancedFilterSelectContent
                 :value="localValue"
+                :options="filter.options"
+                :language-code="filter.languageCode"
                 @input="onValueChange" />
         </template>
         <template #footer="{ onApply }">
-            <SelectDropdownApplyFooter
+            <SelectDropdownFooter
                 @apply="onApply"
                 @clear="onClear" />
         </template>
@@ -31,15 +33,15 @@ import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
 import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
-import AdvancedFilterTextContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterTextContent';
-import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
+import AdvancedFilterSelectContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterTextContent';
+import SelectDropdownFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownFooter';
 
 export default {
-    name: 'TextTypeAdvancedFilter',
+    name: 'AdvancedFilterSelectType',
     components: {
         AdvancedFilter,
-        AdvancedFilterTextContent,
-        SelectDropdownApplyFooter,
+        AdvancedFilterSelectContent,
+        SelectDropdownFooter,
     },
     props: {
         /**
@@ -96,7 +98,12 @@ export default {
         filterValue() {
             if (this.localValue.isEmptyRecord) return 'Empty records';
 
-            return this.localValue[FILTER_OPERATOR.EQUAL];
+            const option = this.filter.options
+                .find(opt => opt.id === this.localValue[FILTER_OPERATOR.EQUAL]);
+
+            if (!option) return '';
+
+            return option.value || `#${option.key}`;
         },
     },
     watch: {

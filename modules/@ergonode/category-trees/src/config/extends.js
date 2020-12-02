@@ -10,7 +10,7 @@ import {
 export default {
     extendComponents: {
         '@UI/components/AdvancedFilters/Type': {
-            CATEGORY_TREE: Components.CategoryTreeTypeAdvancedFilter,
+            CATEGORY_TREE: Components.AdvancedFilterCategoryTreeType,
         },
     },
 };

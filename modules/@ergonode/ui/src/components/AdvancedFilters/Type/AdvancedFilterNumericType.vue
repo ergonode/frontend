@@ -14,17 +14,12 @@
         @swap="onSwap"
         @apply="onApplyValue">
         <template #body>
-            <AdvancedFilterContent :fixed="true">
-                <div>DUPA</div>
-            </AdvancedFilterContent>
-            <!--            <AdvancedFilterSelectContent-->
-            <!--                :value="localValue"-->
-            <!--                :options="filter.options"-->
-            <!--                :language-code="filter.languageCode"-->
-            <!--                @input="onValueChange" />-->
+            <AdvancedFilterRangeContent
+                :value="localValue"
+                @input="onValueChange" />
         </template>
         <template #footer="{ onApply }">
-            <SelectDropdownFooter
+            <MultiselectDropdownFooter
                 @apply="onApply"
                 @clear="onClear" />
         </template>
@@ -32,30 +27,19 @@
 </template>
 
 <script>
-import PRIVILEGES from '@Attributes/config/privileges';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
-import {
-    SIZE,
-} from '@Core/defaults/theme';
-import {
-    ROUTE_NAME,
-} from '@Trees/config/routes';
 import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
-import AdvancedFilterContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterContent';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
-import SelectDropdownFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownFooter';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
+import AdvancedFilterRangeContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterRangeContent';
+import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
 
 export default {
-    name: 'CategoryTreeTypeAdvancedFilter',
+    name: 'AdvancedFilterNumericType',
     components: {
         AdvancedFilter,
-        AdvancedFilterContent,
-        SelectDropdownFooter,
-        Autocomplete,
-        DropdownPlaceholder,
+        AdvancedFilterRangeContent,
+        MultiselectDropdownFooter,
     },
     props: {
         /**
@@ -79,7 +63,8 @@ export default {
             type: Object,
             default: () => ({
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.EQUAL]: '',
+                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
             }),
         },
     },
@@ -89,20 +74,6 @@ export default {
         };
     },
     computed: {
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.ATTRIBUTE.update,
-            ]);
-        },
-        placeholder() {
-            return {
-                title: 'No category tree',
-                subtitle: 'There are no category trees in the system, so you can create the first one.',
-            };
-        },
-        smallSize() {
-            return SIZE.SMALL;
-        },
         parameters() {
             if (!this.filter.parameters) return '';
 
@@ -124,7 +95,13 @@ export default {
             return this.filter.label ? `${code} ${languageCode}` : null;
         },
         filterValue() {
-            return '';
+            if (this.localValue.isEmptyRecord) return 'Empty records';
+
+            return [
+                this.localValue[FILTER_OPERATOR.GREATER_OR_EQUAL],
+                this.localValue[FILTER_OPERATOR.SMALLER_OR_EQUAL],
+            ].filter(value => value !== '')
+                .join(' - ');
         },
     },
     watch: {
@@ -138,14 +115,10 @@ export default {
         },
     },
     methods: {
-        onNavigateToCategoryTrees() {
-            this.$router.push({
-                name: ROUTE_NAME.CATEGORY_TREES_GRID,
-            });
-        },
-        onValueChange(value) {
-            // this.localValue[key] = value;
-            console.log(value);
+        onValueChange({
+            key, value,
+        }) {
+            this.localValue[key] = value;
         },
         onRemove(index) {
             this.$emit('remove', index);
@@ -156,7 +129,8 @@ export default {
         onClear() {
             this.localValue = {
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.EQUAL]: '',
+                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
             };
         },
         onApplyValue() {

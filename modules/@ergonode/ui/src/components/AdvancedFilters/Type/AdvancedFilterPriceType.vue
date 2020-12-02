@@ -14,14 +14,12 @@
         @swap="onSwap"
         @apply="onApplyValue">
         <template #body>
-            <AdvancedFilterMultiselectContent
+            <AdvancedFilterTextContent
                 :value="localValue"
-                :options="filter.options"
-                :language-code="filter.languageCode"
                 @input="onValueChange" />
         </template>
         <template #footer="{ onApply }">
-            <MultiselectDropdownFooter
+            <SelectDropdownApplyFooter
                 @apply="onApply"
                 @clear="onClear" />
         </template>
@@ -33,15 +31,15 @@ import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
 import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
-import AdvancedFilterMultiselectContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterMultiselectContent';
-import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
+import AdvancedFilterTextContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterTextContent';
+import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
 
 export default {
-    name: 'MultiSelectTypeAdvancedFilter',
+    name: 'AdvancedFilterPriceType',
     components: {
         AdvancedFilter,
-        AdvancedFilterMultiselectContent,
-        MultiselectDropdownFooter,
+        AdvancedFilterTextContent,
+        SelectDropdownApplyFooter,
     },
     props: {
         /**
@@ -65,7 +63,8 @@ export default {
             type: Object,
             default: () => ({
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.EQUAL]: [],
+                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
             }),
         },
     },
@@ -98,17 +97,11 @@ export default {
         filterValue() {
             if (this.localValue.isEmptyRecord) return 'Empty records';
 
-            const value = [];
-
-            this.localValue[FILTER_OPERATOR.EQUAL].forEach((id) => {
-                const option = this.filter.options.find(opt => opt.id === id);
-
-                if (option) {
-                    value.push(option.value || `#${option.key}`);
-                }
-            });
-
-            return value.join(', ');
+            return [
+                this.localValue[FILTER_OPERATOR.GREATER_OR_EQUAL],
+                this.localValue[FILTER_OPERATOR.SMALLER_OR_EQUAL],
+            ].filter(value => value !== '')
+                .join(' - ');
         },
     },
     watch: {
@@ -136,7 +129,8 @@ export default {
         onClear() {
             this.localValue = {
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.EQUAL]: [],
+                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
             };
         },
         onApplyValue() {

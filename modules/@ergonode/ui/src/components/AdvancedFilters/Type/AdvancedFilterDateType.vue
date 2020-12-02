@@ -42,7 +42,7 @@ import {
 } from 'date-fns';
 
 export default {
-    name: 'DateTypeAdvancedFilter',
+    name: 'AdvancedFilterDateType',
     components: {
         AdvancedFilter,
         AdvancedFilterDateContent,

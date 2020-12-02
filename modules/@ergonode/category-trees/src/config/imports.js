@@ -19,5 +19,5 @@ export const Icons = {
 };
 
 export const Components = {
-    CategoryTreeTypeAdvancedFilter: () => import('@Trees/components/AdvancedFilters/Type/CategoryTreeTypeAdvancedFilter'),
+    AdvancedFilterCategoryTreeType: () => import('@Trees/components/AdvancedFilters/Type/AdvancedFilterCategoryTreeType'),
 };

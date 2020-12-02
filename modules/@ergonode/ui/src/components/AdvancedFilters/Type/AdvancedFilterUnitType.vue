@@ -19,7 +19,7 @@
                 @input="onValueChange" />
         </template>
         <template #footer="{ onApply }">
-            <MultiselectDropdownFooter
+            <SelectDropdownApplyFooter
                 @apply="onApply"
                 @clear="onClear" />
         </template>
@@ -32,14 +32,18 @@ import {
 } from '@Core/defaults/operators';
 import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
 import AdvancedFilterRangeContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterRangeContent';
-import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
+import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
-    name: 'NumericTypeAdvancedFilter',
+    name: 'AdvancedFilterUnitType',
     components: {
         AdvancedFilter,
         AdvancedFilterRangeContent,
-        MultiselectDropdownFooter,
+        SelectDropdownApplyFooter,
     },
     props: {
         /**
@@ -68,16 +72,26 @@ export default {
             }),
         },
     },
+    async fetch() {
+        await this.getInitialDictionaries({
+            keys: [
+                'units',
+            ],
+        });
+    },
     data() {
         return {
             localValue: {},
         };
     },
     computed: {
+        ...mapState('dictionaries', [
+            'units',
+        ]),
         parameters() {
             if (!this.filter.parameters) return '';
 
-            return Object.values(this.filter.parameters).join(', ');
+            return this.units.find(unit => unit.id === this.filter.parameters.unit).symbol;
         },
         title() {
             const [
@@ -115,6 +129,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions('dictionaries', [
+            'getInitialDictionaries',
+        ]),
         onValueChange({
             key, value,
         }) {

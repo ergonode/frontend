@@ -14,11 +14,14 @@
         @swap="onSwap"
         @apply="onApplyValue">
         <template #body>
-            <AdvancedFilterSelectContent
-                :value="localValue"
-                :options="filter.options"
-                :language-code="filter.languageCode"
-                @input="onValueChange" />
+            <AdvancedFilterContent :fixed="true">
+                <div>DUPA</div>
+            </AdvancedFilterContent>
+            <!--            <AdvancedFilterSelectContent-->
+            <!--                :value="localValue"-->
+            <!--                :options="filter.options"-->
+            <!--                :language-code="filter.languageCode"-->
+            <!--                @input="onValueChange" />-->
         </template>
         <template #footer="{ onApply }">
             <SelectDropdownFooter
@@ -29,19 +32,30 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Attributes/config/privileges';
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
+    ROUTE_NAME,
+} from '@Trees/config/routes';
 import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
-import AdvancedFilterSelectContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterTextContent';
+import AdvancedFilterContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterContent';
+import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import SelectDropdownFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownFooter';
+import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 
 export default {
-    name: 'SelectTypeAdvancedFilter',
+    name: 'AdvancedFilterCategoryTreeType',
     components: {
         AdvancedFilter,
-        AdvancedFilterSelectContent,
+        AdvancedFilterContent,
         SelectDropdownFooter,
+        Autocomplete,
+        DropdownPlaceholder,
     },
     props: {
         /**
@@ -75,6 +89,20 @@ export default {
         };
     },
     computed: {
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.ATTRIBUTE.update,
+            ]);
+        },
+        placeholder() {
+            return {
+                title: 'No category tree',
+                subtitle: 'There are no category trees in the system, so you can create the first one.',
+            };
+        },
+        smallSize() {
+            return SIZE.SMALL;
+        },
         parameters() {
             if (!this.filter.parameters) return '';
 
@@ -96,14 +124,7 @@ export default {
             return this.filter.label ? `${code} ${languageCode}` : null;
         },
         filterValue() {
-            if (this.localValue.isEmptyRecord) return 'Empty records';
-
-            const option = this.filter.options
-                .find(opt => opt.id === this.localValue[FILTER_OPERATOR.EQUAL]);
-
-            if (!option) return '';
-
-            return option.value || `#${option.key}`;
+            return '';
         },
     },
     watch: {
@@ -117,10 +138,14 @@ export default {
         },
     },
     methods: {
-        onValueChange({
-            key, value,
-        }) {
-            this.localValue[key] = value;
+        onNavigateToCategoryTrees() {
+            this.$router.push({
+                name: ROUTE_NAME.CATEGORY_TREES_GRID,
+            });
+        },
+        onValueChange(value) {
+            // this.localValue[key] = value;
+            console.log(value);
         },
         onRemove(index) {
             this.$emit('remove', index);

@@ -132,11 +132,11 @@ export default {
             this.filterComponents[type] = this.extendedFilters[type];
         },
         setFilter(type) {
-            return import(`@UI/components/AdvancedFilters/Type/${this.filterTypes[type]}TypeAdvancedFilter`)
+            return import(`@UI/components/AdvancedFilters/Type/AdvancedFilter${this.filterTypes[type]}Type`)
                 .then((response) => {
                     this.filterComponents[type] = response.default;
                 })
-                .catch(() => import('@UI/components/AdvancedFilters/Type/TextTypeAdvancedFilter')
+                .catch(() => import('@UI/components/AdvancedFilters/Type/AdvancedFilterTextType')
                     .then((response) => {
                         this.filterComponents[type] = response.default;
                     }));

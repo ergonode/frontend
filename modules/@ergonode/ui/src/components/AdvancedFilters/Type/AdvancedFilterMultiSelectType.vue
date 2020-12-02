@@ -14,12 +14,14 @@
         @swap="onSwap"
         @apply="onApplyValue">
         <template #body>
-            <AdvancedFilterRangeContent
+            <AdvancedFilterMultiselectContent
                 :value="localValue"
+                :options="filter.options"
+                :language-code="filter.languageCode"
                 @input="onValueChange" />
         </template>
         <template #footer="{ onApply }">
-            <SelectDropdownApplyFooter
+            <MultiselectDropdownFooter
                 @apply="onApply"
                 @clear="onClear" />
         </template>
@@ -31,19 +33,15 @@ import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
 import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
-import AdvancedFilterRangeContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterRangeContent';
-import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
-import {
-    mapActions,
-    mapState,
-} from 'vuex';
+import AdvancedFilterMultiselectContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterMultiselectContent';
+import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
 
 export default {
-    name: 'UnitTypeAdvancedFilter',
+    name: 'AdvancedFilterMultiSelectType',
     components: {
         AdvancedFilter,
-        AdvancedFilterRangeContent,
-        SelectDropdownApplyFooter,
+        AdvancedFilterMultiselectContent,
+        MultiselectDropdownFooter,
     },
     props: {
         /**
@@ -67,17 +65,9 @@ export default {
             type: Object,
             default: () => ({
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
-                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.EQUAL]: [],
             }),
         },
-    },
-    async fetch() {
-        await this.getInitialDictionaries({
-            keys: [
-                'units',
-            ],
-        });
     },
     data() {
         return {
@@ -85,13 +75,10 @@ export default {
         };
     },
     computed: {
-        ...mapState('dictionaries', [
-            'units',
-        ]),
         parameters() {
             if (!this.filter.parameters) return '';
 
-            return this.units.find(unit => unit.id === this.filter.parameters.unit).symbol;
+            return Object.values(this.filter.parameters).join(', ');
         },
         title() {
             const [
@@ -111,11 +98,17 @@ export default {
         filterValue() {
             if (this.localValue.isEmptyRecord) return 'Empty records';
 
-            return [
-                this.localValue[FILTER_OPERATOR.GREATER_OR_EQUAL],
-                this.localValue[FILTER_OPERATOR.SMALLER_OR_EQUAL],
-            ].filter(value => value !== '')
-                .join(' - ');
+            const value = [];
+
+            this.localValue[FILTER_OPERATOR.EQUAL].forEach((id) => {
+                const option = this.filter.options.find(opt => opt.id === id);
+
+                if (option) {
+                    value.push(option.value || `#${option.key}`);
+                }
+            });
+
+            return value.join(', ');
         },
     },
     watch: {
@@ -129,9 +122,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('dictionaries', [
-            'getInitialDictionaries',
-        ]),
         onValueChange({
             key, value,
         }) {
@@ -146,8 +136,7 @@ export default {
         onClear() {
             this.localValue = {
                 isEmptyRecord: false,
-                [FILTER_OPERATOR.GREATER_OR_EQUAL]: '',
-                [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
+                [FILTER_OPERATOR.EQUAL]: [],
             };
         },
         onApplyValue() {
