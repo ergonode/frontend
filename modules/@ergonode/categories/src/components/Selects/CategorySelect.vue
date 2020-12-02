@@ -30,6 +30,7 @@
                         <AdvancedFilters
                             :value="{}"
                             :filters="advancedFilters"
+                            :extended-filters="extendedFilterComponents"
                             :draggable="false">
                             <template #removeAllButton>
                                 <AdvancedFiltersRemoveAllButton
@@ -99,6 +100,9 @@ import {
     getAutocomplete,
 } from '@Categories/services';
 import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
+import {
+    GRID_LAYOUT,
+} from '@Core/defaults/grid';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -238,6 +242,9 @@ export default {
                     label: 'Category tree',
                 },
             ];
+        },
+        extendedFilterComponents() {
+            return this.$getExtendedComponents('@UI/components/AdvancedFilters/Type');
         },
     },
     methods: {

@@ -93,11 +93,11 @@ export default {
         filterValue() {
             if (!this.value[FILTER_OPERATOR.EQUAL]
                 || this.value[FILTER_OPERATOR.EQUAL].length === 0) {
-                return {};
+                return [];
             }
 
             const value = this.value[FILTER_OPERATOR.EQUAL];
-            const filterValue = {};
+            const filterValue = [];
 
             for (let i = 0; i < value.length; i += 1) {
                 const option = this.options
@@ -105,7 +105,7 @@ export default {
                         id,
                     }) => id === value[i]);
 
-                filterValue[JSON.stringify(option)] = option;
+                filterValue.push(option);
             }
 
             return filterValue;

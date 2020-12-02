@@ -84,17 +84,14 @@ export default {
         },
         filterValue() {
             if (!this.value[FILTER_OPERATOR.EQUAL]) {
-                return {};
+                return null;
             }
 
             const value = this.value[FILTER_OPERATOR.EQUAL];
-            const option = this.options.find(({
+
+            return this.options.find(({
                 id,
             }) => id === value);
-
-            return {
-                [JSON.stringify(option)]: option,
-            };
         },
     },
     methods: {

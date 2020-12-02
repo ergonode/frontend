@@ -23,7 +23,7 @@
                 @input="onSearch" />
             <SelectList
                 v-if="isDropdownContentVisible"
-                :value="selectedOptions"
+                :value="value"
                 :items="options"
                 :size="size"
                 :multiselect="multiselect"
@@ -134,11 +134,16 @@ export default {
             default: () => [],
         },
         /**
-         * Map of selected option values
+         * Component value
          */
-        selectedOptions: {
-            type: Object,
-            default: () => ({}),
+        value: {
+            type: [
+                Array,
+                String,
+                Number,
+                Object,
+            ],
+            default: '',
         },
         /**
          * Search value

@@ -47,8 +47,13 @@ export default {
          * Map of selected item values
          */
         value: {
-            type: Object,
-            default: () => ({}),
+            type: [
+                Array,
+                String,
+                Number,
+                Object,
+            ],
+            default: '',
         },
         /**
          * Determines if the component is multiple choice
@@ -73,21 +78,46 @@ export default {
             default: () => [],
         },
     },
+    data() {
+        return {
+            selectedOptions: {},
+        };
+    },
     computed: {
         stringifiedItems() {
             return this.items.map(option => JSON.stringify(option));
         },
     },
+    watch: {
+        value: {
+            immediate: true,
+            handler() {
+                let selectedOptions = {};
+
+                if (Array.isArray(this.value) && this.value.length) {
+                    this.value.forEach((option) => {
+                        selectedOptions[JSON.stringify(option)] = option;
+                    });
+                } else if (!Array.isArray(this.value) && (this.value || this.value === 0)) {
+                    selectedOptions = {
+                        [JSON.stringify(this.value)]: this.value,
+                    };
+                }
+
+                this.selectedOptions = selectedOptions;
+            },
+        },
+    },
     methods: {
         isItemSelected(index) {
-            return typeof this.value[this.stringifiedItems[index]] !== 'undefined';
+            return typeof this.selectedOptions[this.stringifiedItems[index]] !== 'undefined';
         },
         onValueChange(index) {
             const value = this.items[index];
 
             if (this.multiselect) {
                 const selectedItems = {
-                    ...this.value,
+                    ...this.selectedOptions,
                 };
 
                 if (this.isItemSelected(index)) {
