@@ -3,10 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <AdvancedFilterContent
-        :value="value.isEmptyRecord"
-        @input="onEmptyRecordChange">
-        <div class="container">
+    <AdvancedFilterContent>
+        <AdvancedFilterShowOnly
+            :value="value.isEmptyRecord"
+            @input="onEmptyRecordChange" />
+        <Divider />
+        <div
+            class="container"
+            v-if="!value.isEmptyRecord">
             <TextField
                 :value="value[operators.GREATER_OR_EQUAL]"
                 :input="{ type: 'number', max: value[operators.SMALLER_OR_EQUAL] }"
@@ -37,7 +41,9 @@ import {
     INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
+import AdvancedFilterShowOnly from '@UI/components/AdvancedFilters/AdvancedFilterShowOnly';
 import AdvancedFilterContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterContent';
+import Divider from '@UI/components/Dividers/Divider';
 import TextField from '@UI/components/TextField/TextField';
 
 export default {
@@ -45,6 +51,8 @@ export default {
     components: {
         TextField,
         AdvancedFilterContent,
+        AdvancedFilterShowOnly,
+        Divider,
     },
     props: {
         /**

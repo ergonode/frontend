@@ -7,7 +7,7 @@
         <template #activator>
             <InputController>
                 <InputLabel
-                    :style="{ top: 0 }"
+                    :style="{ top: '-2px' }"
                     :required="required"
                     :size="size"
                     :floating="true"
@@ -24,13 +24,20 @@
                             label="Show only selected"
                             reversed />
                     </div>
-
                     <div
                         v-show="isFiltersExpanded"
                         class="category-select__filters">
                         <AdvancedFilters
                             :value="{}"
-                            :filters="[]" />
+                            :filters="advancedFilters"
+                            :draggable="false">
+                            <template #removeAllButton>
+                                <AdvancedFiltersRemoveAllButton
+                                    v-show="isCategoryTreeChosen"
+                                    title="Clear"
+                                    @click.native="onClear" />
+                            </template>
+                        </AdvancedFilters>
                     </div>
                 </div>
             </InputController>
@@ -41,6 +48,7 @@
                 <template v-else>
                     <div class="category-select__search-panel">
                         <SelectListSearch
+                            placeholder="Search for category…"
                             :value="searchValue"
                             :size="size"
                             @input="onSearch" />
@@ -49,7 +57,9 @@
                             reversed />
                     </div>
                     <SelectList
+                        v-if="isSelectContentVisible"
                         :items="categories"
+                        :size="size"
                         :multiselect="true">
                         <template #item="{ item, isSelected }">
                             <ListElementAction :size="size">
@@ -62,12 +72,18 @@
                             </ListElementDescription>
                         </template>
                     </SelectList>
-                    <ExpandNumericButton
-                        title="SHOW ALL"
-                        :size="tinySize"
-                        :number="categories.length"
-                        :is-expanded="isItemsExpanded"
-                        @click.native="onItemsExpand" />
+                    <DropdownPlaceholder
+                        v-else
+                        :title="noRecordsPlaceholder.title"
+                        :subtitle="noRecordsPlaceholder.subtitle" />
+                    <div class="category-select__expand-more">
+                        <ExpandNumericButton
+                            title="SHOW ALL"
+                            :size="tinySize"
+                            :number="categories.length"
+                            :is-expanded="isItemsExpanded"
+                            @click.native="onItemsExpand" />
+                    </div>
                 </template>
             </div>
         </template>
@@ -87,6 +103,7 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import AdvancedFilters from '@UI/components/AdvancedFilters/AdvancedFilters';
+import AdvancedFiltersRemoveAllButton from '@UI/components/AdvancedFilters/AdvancedFiltersRemoveAllButton';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import Button from '@UI/components/Button/Button';
 import CheckBox from '@UI/components/CheckBox/CheckBox';
@@ -123,6 +140,7 @@ export default {
         AdvancedFilters,
         Preloader,
         SelectList,
+        AdvancedFiltersRemoveAllButton,
     },
     props: {
         /**
@@ -144,7 +162,7 @@ export default {
          */
         size: {
             type: String,
-            default: SIZE.REGULAR,
+            default: SIZE.SMALL,
             validator: value => [
                 SIZE.SMALL,
                 SIZE.REGULAR,
@@ -188,6 +206,18 @@ export default {
                 subtitle: 'There are no categories in the system, so you can create the first one.',
             };
         },
+        isCategoryTreeChosen() {
+            return this.categoryTree !== null;
+        },
+        isAnyItem() {
+            return this.categories.length > 0;
+        },
+        isAnySearchPhrase() {
+            return this.searchValue !== '';
+        },
+        isSelectContentVisible() {
+            return this.isAnyItem || this.isAnySearchPhrase;
+        },
         isAllowedToCreate() {
             return this.$hasAccess([
                 PRIVILEGES.CATEGORY.create,
@@ -199,14 +229,25 @@ export default {
         tinySize() {
             return SIZE.TINY;
         },
+        advancedFilters() {
+            return [
+                {
+                    id: 'code_29:en_GB',
+                    languageCode: 'en_GB',
+                    type: 'CATEGORY_TREE',
+                    label: 'Category tree',
+                },
+            ];
+        },
     },
     methods: {
+        onClear() {
+
+        },
         onSearch(value) {
             this.categories = this.originalCategories.filter(category => category.code.includes(value));
 
-            this.serachValue = value;
-
-            console.log(value);
+            this.searchValue = value;
         },
         onFiltersExpand() {
             this.isFiltersExpanded = !this.isFiltersExpanded;
@@ -246,11 +287,12 @@ export default {
         }
 
         &__items {
+            position: relative;
             display: flex;
             flex-direction: column;
             border: $BORDER_1_GREY;
             border-top: unset;
-            margin-bottom: 36px;
+            padding: 12px 0 48px;
             box-sizing: border-box;
             transition: border-color 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             will-change: border-color;
@@ -264,6 +306,13 @@ export default {
             display: flex;
             justify-content: space-between;
             padding-right: 10px;
+        }
+
+        &__expand-more {
+            position: absolute;
+            left: 12px;
+            bottom: 12px;
+            background-color: $WHITE;
         }
     }
 

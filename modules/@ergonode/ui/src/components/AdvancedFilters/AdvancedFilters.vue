@@ -12,13 +12,18 @@
             :index="index"
             :value="value[filter.id]"
             :filter="filter"
+            :draggable="draggable"
             @remove="onRemove"
             @swap="onSwap"
             @apply="onApply" />
         <AdvancedFilterPlaceholder v-show="isPlaceholderVisible" />
-        <AdvancedFiltersRemoveAllButton
-            v-show="orderedFilters.length"
-            @click.native="onRemoveAll" />
+        <slot
+            name="removeAllButton"
+            :visible="orderedFilters.length">
+            <AdvancedFiltersRemoveAllButton
+                v-show="orderedFilters.length"
+                @click.native="onRemoveAll" />
+        </slot>
     </div>
 </template>
 
@@ -60,6 +65,13 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Determines state of draggable attribute
+         */
+        draggable: {
+            type: Boolean,
+            default: true,
+        },
     },
     data() {
         return {
@@ -73,7 +85,7 @@ export default {
             return 'advanced-filters';
         },
         isPlaceholderVisible() {
-            return !this.orderedFilters.length;
+            return !this.orderedFilters.length && this.draggable;
         },
     },
     watch: {

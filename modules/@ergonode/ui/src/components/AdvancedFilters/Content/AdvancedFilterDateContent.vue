@@ -3,10 +3,13 @@
  * See LICENSE for license details.
  */
 <template>
-    <AdvancedFilterContent
-        :value="value.isEmptyRecord"
-        @input="onEmptyRecordChange">
+    <AdvancedFilterContent>
+        <AdvancedFilterShowOnly
+            :value="value.isEmptyRecord"
+            @input="onEmptyRecordChange" />
+        <Divider />
         <DateRangePickerContent
+            v-if="!value.isEmptyRecord"
             :value="parsedDate"
             :format="format"
             @input="onValueChange" />
@@ -17,8 +20,10 @@
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
+import AdvancedFilterShowOnly from '@UI/components/AdvancedFilters/AdvancedFilterShowOnly';
 import AdvancedFilterContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterContent';
 import DateRangePickerContent from '@UI/components/DatePicker/DateRangePickerContent';
+import Divider from '@UI/components/Dividers/Divider';
 import {
     DEFAULT_FORMAT,
 } from '@UI/models/calendar';
@@ -28,6 +33,8 @@ export default {
     components: {
         AdvancedFilterContent,
         DateRangePickerContent,
+        AdvancedFilterShowOnly,
+        Divider,
     },
     props: {
         /**

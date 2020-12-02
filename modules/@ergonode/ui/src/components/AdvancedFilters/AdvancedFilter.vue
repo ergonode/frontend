@@ -5,7 +5,7 @@
 <template>
     <div
         :class="classes"
-        :draggable="!isFocused"
+        :draggable="!isFocused && draggable"
         @dragover="onDragOver"
         @dragstart="onDragStart"
         @dragend="onDragEnd">
@@ -146,6 +146,13 @@ export default {
                 Number,
             ],
             default: '',
+        },
+        /**
+         * Determines state of draggable attribute
+         */
+        draggable: {
+            type: Boolean,
+            default: true,
         },
     },
     data() {

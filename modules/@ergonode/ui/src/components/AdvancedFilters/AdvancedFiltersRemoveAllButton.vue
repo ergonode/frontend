@@ -5,7 +5,7 @@
 <template>
     <button class="advanced-filters-remove-all-button">
         <IconCancel />
-        Remove filters
+        {{ title }}
     </button>
 </template>
 
@@ -16,6 +16,12 @@ export default {
     name: 'AdvancedFiltersRemoveAllButton',
     components: {
         IconCancel,
+    },
+    props: {
+        title: {
+            type: String,
+            default: 'Remove filters',
+        },
     },
 };
 </script>

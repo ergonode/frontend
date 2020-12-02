@@ -3,12 +3,13 @@
  * See LICENSE for license details.
  */
 <template>
-    <AdvancedFilterContent
-        :value="value.isEmptyRecord"
-        :fixed="true"
-        @input="onEmptyRecordChange">
+    <AdvancedFilterContent :fixed="true">
+        <AdvancedFilterShowOnly
+            :value="value.isEmptyRecord"
+            @input="onEmptyRecordChange" />
+        <Divider />
         <VirtualScroll
-            v-if="options.length"
+            v-if="options.length && !value.isEmptyRecord"
             :items="options"
             :root-height="200"
             :render-ahead="4"
@@ -16,7 +17,7 @@
             <template #item="{ item, index}">
                 <ListElement
                     :key="index"
-                    :selected="typeof selectedOptions[index] !== 'undefined'"
+                    :selected="selectedOptionIndex === index"
                     :size="smallSize"
                     @click.native.prevent="onSelectValue(item, index)">
                     <ListElementDescription>
@@ -39,7 +40,9 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import AdvancedFilterShowOnly from '@UI/components/AdvancedFilters/AdvancedFilterShowOnly';
 import AdvancedFilterContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterContent';
+import Divider from '@UI/components/Dividers/Divider';
 import ListElement from '@UI/components/List/ListElement';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
@@ -57,6 +60,8 @@ export default {
         ListElement,
         ListElementDescription,
         ListElementTitle,
+        AdvancedFilterShowOnly,
+        Divider,
     },
     props: {
         /**

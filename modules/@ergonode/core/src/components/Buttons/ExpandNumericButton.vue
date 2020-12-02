@@ -7,6 +7,7 @@
         :size="size"
         :theme="theme"
         :title="title"
+        :floating="floating"
         @click.native="onExpand">
         <template #prepend="{ color }">
             <IconArrowDouble
@@ -66,6 +67,14 @@ export default {
         number: {
             type: Number,
             default: 0,
+        },
+        /**
+         * The floating state, absolute position relative to parent
+         * @values top, left, bottom, right
+         */
+        floating: {
+            type: Object,
+            default: null,
         },
         /**
          * Determines state of expanded component

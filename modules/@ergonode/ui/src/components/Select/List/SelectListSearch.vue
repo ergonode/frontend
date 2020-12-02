@@ -3,18 +3,18 @@
  * See LICENSE for license details.
  */
 <template>
-    <li :class="classes">
+    <div :class="classes">
+        <IconSearch :fill-color="searchIconFillColor" />
         <input
             class="select-list-search__input"
             :value="value"
             type="text"
-            placeholder="Search..."
+            :placeholder="placeholder"
             @focus="onSearchFocus"
             @blur="onSearchFocusLost"
             @input="debouncedSearch"
             @click.stop>
-        <IconSearch :fill-color="searchIconFillColor" />
-    </li>
+    </div>
 </template>
 
 <script>
@@ -42,6 +42,13 @@ export default {
         value: {
             type: String,
             default: '',
+        },
+        /**
+         * The placeholder is a helper text for the component
+         */
+        placeholder: {
+            type: String,
+            default: 'Search...',
         },
         /**
          * The size of the component
@@ -131,6 +138,7 @@ export default {
         &__input {
             flex: 1;
             width: 100%;
+            margin-left: 4px;
             border: none;
             outline: none;
             max-width: 100%;

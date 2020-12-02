@@ -3,12 +3,13 @@
  * See LICENSE for license details.
  */
 <template>
-    <AdvancedFilterContent
-        :value="value.isEmptyRecord"
-        :fixed="true"
-        @input="onEmptyRecordChange">
+    <AdvancedFilterContent :fixed="true">
+        <AdvancedFilterShowOnly
+            :value="value.isEmptyRecord"
+            @input="onEmptyRecordChange" />
+        <Divider />
         <VirtualScroll
-            v-if="options.length"
+            v-if="options.length && !value.isEmptyRecord"
             :items="options"
             :root-height="200"
             :render-ahead="4"
@@ -44,8 +45,10 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import AdvancedFilterShowOnly from '@UI/components/AdvancedFilters/AdvancedFilterShowOnly';
 import AdvancedFilterContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterContent';
 import CheckBox from '@UI/components/CheckBox/CheckBox';
+import Divider from '@UI/components/Dividers/Divider';
 import ListElement from '@UI/components/List/ListElement';
 import ListElementAction from '@UI/components/List/ListElementAction';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
@@ -66,6 +69,8 @@ export default {
         ListElementTitle,
         DropdownPlaceholder,
         CheckBox,
+        AdvancedFilterShowOnly,
+        Divider,
     },
     props: {
         /**

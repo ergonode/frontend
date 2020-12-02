@@ -4,24 +4,13 @@
  */
 <template>
     <div :class="classes">
-        <AdvancedFilterShowOnly
-            :value="value"
-            @input="onValueChange" />
-        <Divider />
-        <slot v-if="!value" />
+        <slot />
     </div>
 </template>
 
 <script>
-import AdvancedFilterShowOnly from '@UI/components/AdvancedFilters/AdvancedFilterShowOnly';
-import Divider from '@UI/components/Dividers/Divider';
-
 export default {
     name: 'AdvancedFilterContent',
-    components: {
-        AdvancedFilterShowOnly,
-        Divider,
-    },
     props: {
         /**
          * Component value
