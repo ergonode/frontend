@@ -41,7 +41,7 @@ import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
 
 export default {
-    name: 'DropdownListElement',
+    name: 'SelectListElement',
     components: {
         ListElement,
         ListElementAction,

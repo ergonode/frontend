@@ -63,7 +63,7 @@
     "tiptap": "^1.30.0",
     "tiptap-extensions": "^1.33.2",
     "vue-chartjs": "^3.5.1",
-    "vue-windowing": "^0.5.5",
+    "vue-windowing": "^0.6.0",
     "vuex": "^3.5.1"
   },
   "devDependencies": {

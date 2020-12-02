@@ -3,17 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResizeObserver @resize="onResize">
-        <div
-            :class="classes"
-            ref="dropdown">
-            <slot />
-        </div>
-    </ResizeObserver>
+    <div
+        :class="classes"
+        ref="dropdown">
+        <slot />
+    </div>
 </template>
 
 <script>
-import ResizeObserver from '@UI/components/Observers/ResizeObserver';
 import {
     getPositionForBrowser,
     isMouseInsideElement,
@@ -21,9 +18,6 @@ import {
 
 export default {
     name: 'Dropdown',
-    components: {
-        ResizeObserver,
-    },
     props: {
         /**
          * Determines whether content of dropdown has fixed height and width or not
@@ -103,11 +97,14 @@ export default {
                     if (yPos < maxHeight
                         && parentOffset.y >= maxHeight) {
                         this.$refs.dropdown.style.bottom = `${yPos}px`;
+                        this.$refs.dropdown.style.top = 'unset';
                     } else if (parentOffset.y < maxHeight
                         && yPos <= maxHeight) {
                         this.$refs.dropdown.style.top = 0;
+                        this.$refs.dropdown.style.bottom = 'unset';
                     } else {
                         this.$refs.dropdown.style.top = `${parentOffset.y + parentOffset.height + offset}px`;
+                        this.$refs.dropdown.style.bottom = 'unset';
                     }
                 });
 
@@ -130,11 +127,6 @@ export default {
         }
     },
     methods: {
-        onResize(entry) {
-            if (entry.contentRect.height !== 0) {
-                this.$emit('height', entry.contentRect.height);
-            }
-        },
         onClickOutside(event) {
             const {
                 xPos,

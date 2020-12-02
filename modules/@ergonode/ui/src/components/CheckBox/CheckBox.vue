@@ -4,7 +4,7 @@
  */
 
 <template>
-    <div class="checkbox">
+    <div :class="classes">
         <input
             :id="associatedLabel"
             ref="checkbox"
@@ -13,17 +13,32 @@
             :disabled="disabled"
             v-model="checkValue">
         <label :for="associatedLabel">
-            <svg
-                class="checkbox__box"
-                viewBox="0 0 14 10">
-                <path
-                    class="checkbox__mark"
-                    :d="markDrawingCommands" />
-            </svg>
-            <span
-                v-if="label"
-                class="checkbox__label"
-                v-text="label" />
+            <template v-if="reversed">
+                <span
+                    v-if="label"
+                    class="checkbox__label"
+                    v-text="label" />
+                <svg
+                    class="checkbox__box"
+                    viewBox="0 0 14 10">
+                    <path
+                        class="checkbox__mark"
+                        :d="markDrawingCommands" />
+                </svg>
+            </template>
+            <template v-else>
+                <svg
+                    class="checkbox__box"
+                    viewBox="0 0 14 10">
+                    <path
+                        class="checkbox__mark"
+                        :d="markDrawingCommands" />
+                </svg>
+                <span
+                    v-if="label"
+                    class="checkbox__label"
+                    v-text="label" />
+            </template>
         </label>
         <slot name="append" />
     </div>
@@ -63,6 +78,13 @@ export default {
             type: String,
             default: '',
         },
+        /**
+         * Determinate if the component content is reversed
+         */
+        reversed: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         checkValue: {
@@ -72,6 +94,14 @@ export default {
             set(value) {
                 this.$emit('input', value);
             },
+        },
+        classes() {
+            return [
+                'checkbox',
+                {
+                    'checkbox--reversed': this.reversed,
+                },
+            ];
         },
         markDrawingCommands() {
             return 'M5.22179 9.44443L0.777344 5.17093L2.02179 3.97435L5.22179 7.05127L11.9773 0.555542L13.2218 1.75212L5.22179 9.44443Z';
@@ -142,10 +172,27 @@ export default {
             fill: none;
         }
 
+        &--reversed {
+            & input[type="checkbox"] {
+                right: 0;
+            }
+
+            & label {
+                &::after {
+                    right: 0;
+                }
+            }
+        }
+
+        &:not(&--reversed) {
+            & input[type="checkbox"] {
+                left: 0;
+            }
+        }
+
         & input[type="checkbox"] {
             position: absolute;
             top: 0;
-            left: 0;
             margin: 0;
             opacity: 0;
 

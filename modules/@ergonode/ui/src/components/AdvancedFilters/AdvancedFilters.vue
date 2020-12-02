@@ -6,7 +6,8 @@
     <div :class="classes">
         <Component
             v-for="(filter, index) in orderedFilters"
-            :is="filterComponents[index]"
+            :is="filterComponents[filter.type]"
+            :class="{'': index > 1}"
             :key="filter.id"
             :index="index"
             :value="value[filter.id]"
@@ -52,11 +53,19 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * The data model of extended filter components
+         */
+        extendedFilters: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     data() {
         return {
+            filterTypes: {},
             orderedFilters: [],
-            filterComponents: [],
+            filterComponents: {},
         };
     },
     computed: {
@@ -78,9 +87,9 @@ export default {
         },
     },
     methods: {
-        initializeFilters() {
+        async initializeFilters() {
             const orderedFilters = [];
-            const filterComponents = [];
+            const requests = [];
             const {
                 length,
             } = this.filters;
@@ -89,22 +98,41 @@ export default {
                 const {
                     type,
                 } = this.filters[i];
-                const capitalisedType = capitalizeAndConcatenationArray(type.split('_'));
 
                 orderedFilters.push(this.filters[i]);
-                filterComponents.push(
-                    () => import(`@UI/components/AdvancedFilters/Type/Grid${capitalisedType}TypeAdvancedFilter`),
-                );
+
+                if (typeof this.filterTypes[type] === 'undefined') {
+                    this.filterTypes[type] = capitalizeAndConcatenationArray(type.split('_'));
+
+                    if (this.extendedFilters[type]) {
+                        this.setExtendedFilter(type);
+                    } else {
+                        requests.push(this.setFilter(type));
+                    }
+                }
             }
 
+            await Promise.all(requests);
+
             this.orderedFilters = orderedFilters;
-            this.filterComponents = filterComponents;
+        },
+        setExtendedFilter(type) {
+            this.filterComponents[type] = this.extendedFilters[type];
+        },
+        setFilter(type) {
+            return import(`@UI/components/AdvancedFilters/Type/${this.filterTypes[type]}TypeAdvancedFilter`)
+                .then((response) => {
+                    this.filterComponents[type] = response.default;
+                })
+                .catch(() => import('@UI/components/AdvancedFilters/Type/TextTypeAdvancedFilter')
+                    .then((response) => {
+                        this.filterComponents[type] = response.default;
+                    }));
         },
         onRemove(index) {
             const filter = this.orderedFilters[index];
 
             this.orderedFilters.splice(index, 1);
-            this.filterComponents.splice(index, 1);
 
             this.$emit('remove', {
                 index,
@@ -117,13 +145,6 @@ export default {
             this.orderedFilters = [
                 ...swapItemPosition(
                     this.orderedFilters,
-                    from,
-                    to,
-                ),
-            ];
-            this.filterComponents = [
-                ...swapItemPosition(
-                    this.filterComponents,
                     from,
                     to,
                 ),
@@ -153,11 +174,10 @@ export default {
 <style lang="scss" scoped>
     .advanced-filters {
         display: flex;
-        flex-wrap: wrap;
-        padding: 8px 6px 0 8px;
+        flex-flow: wrap;
 
         & > * {
-            margin: 8px 0 0 8px;
+            margin: 12px 12px 0 0;
         }
     }
 </style>

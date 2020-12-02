@@ -5,7 +5,7 @@
 <template>
     <li :class="classes">
         <input
-            class="search-element__input"
+            class="select-list-search__input"
             :value="value"
             type="text"
             placeholder="Search..."
@@ -31,7 +31,7 @@ import {
 } from 'debounce';
 
 export default {
-    name: 'DropdownListSearch',
+    name: 'SelectListSearch',
     components: {
         IconSearch,
     },
@@ -63,8 +63,8 @@ export default {
     computed: {
         classes() {
             return [
-                'search-element',
-                `search-element--${this.size}`,
+                'select-list-search',
+                `select-list-search--${this.size}`,
             ];
         },
         searchIconFillColor() {
@@ -94,7 +94,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .search-element {
+    .select-list-search {
         $element: &;
 
         display: flex;

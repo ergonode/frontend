@@ -14,7 +14,7 @@
         :label="label"
         :placeholder="placeholder"
         :error-messages="errorMessages"
-        :search-result="searchValue"
+        :search-value="searchValue"
         :hint="hint"
         :required="required"
         :autofocus="autofocus"

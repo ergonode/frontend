@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="toggler">
+    <div :class="classes">
         <input
             :id="associatedLabel"
             :value="value"
@@ -12,13 +12,24 @@
             type="checkbox"
             @input="onValueChange">
         <label :for="associatedLabel">
-            <div class="toggler__state-background">
-                <div class="toggler__state" />
-            </div>
-            <span
-                v-if="label"
-                class="toggler__label"
-                v-text="label" />
+            <template v-if="reversed">
+                <span
+                    v-if="label"
+                    class="toggler__label"
+                    v-text="label" />
+                <div class="toggler__state-background">
+                    <div class="toggler__state" />
+                </div>
+            </template>
+            <template v-else>
+                <div class="toggler__state-background">
+                    <div class="toggler__state" />
+                </div>
+                <span
+                    v-if="label"
+                    class="toggler__label"
+                    v-text="label" />
+            </template>
         </label>
         <slot name="append" />
     </div>
@@ -56,6 +67,23 @@ export default {
         label: {
             type: String,
             default: '',
+        },
+        /**
+         * Determinate if the component content is reversed
+         */
+        reversed: {
+            type: Boolean,
+            default: false,
+        },
+    },
+    computed: {
+        classes() {
+            return [
+                'toggler',
+                {
+                    'toggler--reversed': this.reversed,
+                },
+            ];
         },
     },
     methods: {
@@ -129,10 +157,27 @@ export default {
             cursor: pointer;
         }
 
+        &--reversed {
+            & input[type="checkbox"] {
+                right: 0;
+            }
+
+            & label {
+                &::after {
+                    right: 0;
+                }
+            }
+        }
+
+        &:not(&--reversed) {
+            & input[type="checkbox"] {
+                left: 0;
+            }
+        }
+
         & input[type="checkbox"] {
             position: absolute;
             top: 0;
-            left: 0;
             opacity: 0;
 
             &:focus + label, &:not(:disabled):hover + label {
