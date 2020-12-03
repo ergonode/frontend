@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <AdvancedFilterContent :fixed="true">
+    <AdvancedFilterContent>
         <AdvancedFilterShowOnly
             :value="value.isEmptyRecord"
             @input="onEmptyRecordChange" />

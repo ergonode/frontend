@@ -19,21 +19,11 @@ export default {
             type: Boolean,
             default: false,
         },
-        /**
-         * Determines whether content of dropdown has fixed height and width or not
-         */
-        fixed: {
-            type: Boolean,
-            default: false,
-        },
     },
     computed: {
         classes() {
             return [
                 'advanced-filter-content',
-                {
-                    'advanced-filter-content--fixed': this.fixed,
-                },
             ];
         },
     },
@@ -49,9 +39,5 @@ export default {
     .advanced-filter-content {
         display: flex;
         flex-direction: column;
-
-        &--fixed {
-            max-height: 200px;
-        }
     }
 </style>

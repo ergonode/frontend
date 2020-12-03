@@ -7,7 +7,6 @@
         <Component
             v-for="(filter, index) in orderedFilters"
             :is="filterComponents[filter.type]"
-            :class="{'': index > 1}"
             :key="filter.id"
             :index="index"
             :value="value[filter.id]"

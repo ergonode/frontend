@@ -14,7 +14,8 @@ export const get = ({
 
 export const getAutocomplete = ({
     $axios,
-}) => $axios.$get('categories/autocomplete');
+    config,
+}) => $axios.$get('categories/autocomplete', config);
 
 export const remove = ({
     $axios,

@@ -51,7 +51,8 @@
             v-if="isReadyToRender"
             ref="menu"
             :parent-reference="$refs.activator"
-            :is-visible="isFocused"
+            :visible="isFocused"
+            :fixed="fixedContent"
             @click-outside="onClickOutside">
             <slot name="body" />
             <slot
@@ -153,6 +154,13 @@ export default {
         draggable: {
             type: Boolean,
             default: true,
+        },
+        /**
+         * The flag which tells if the dropdown has fixed content to it's parent width
+         */
+        fixedContent: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {

@@ -48,6 +48,14 @@ export default {
         },
     },
     watch: {
+        fixed() {
+            if (!this.fixed) {
+                requestAnimationFrame(() => {
+                    this.$refs.dropdown.style.width = null;
+                    this.$refs.dropdown.style.maxHeight = null;
+                });
+            }
+        },
         visible: {
             immediate: true,
             handler() {
@@ -97,14 +105,14 @@ export default {
                     if (yPos < maxHeight
                         && parentOffset.y >= maxHeight) {
                         this.$refs.dropdown.style.bottom = `${yPos}px`;
-                        this.$refs.dropdown.style.top = 'unset';
+                        this.$refs.dropdown.style.top = null;
                     } else if (parentOffset.y < maxHeight
                         && yPos <= maxHeight) {
                         this.$refs.dropdown.style.top = 0;
-                        this.$refs.dropdown.style.bottom = 'unset';
+                        this.$refs.dropdown.style.bottom = null;
                     } else {
                         this.$refs.dropdown.style.top = `${parentOffset.y + parentOffset.height + offset}px`;
-                        this.$refs.dropdown.style.bottom = 'unset';
+                        this.$refs.dropdown.style.bottom = null;
                     }
                 });
 

@@ -10,6 +10,7 @@
         :title="title"
         :parameters="parameters"
         :filter-id="filter.id"
+        :fixed-content="true"
         @remove="onRemove"
         @swap="onSwap"
         @apply="onApplyValue">

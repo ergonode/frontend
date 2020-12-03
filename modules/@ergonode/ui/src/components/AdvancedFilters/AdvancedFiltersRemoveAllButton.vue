@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <button class="advanced-filters-remove-all-button">
+    <button
+        type="button"
+        class="advanced-filters-remove-all-button">
         <IconCancel />
         {{ title }}
     </button>

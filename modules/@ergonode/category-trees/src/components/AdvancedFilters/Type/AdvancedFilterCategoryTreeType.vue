@@ -5,28 +5,55 @@
 <template>
     <AdvancedFilter
         :index="index"
-        :value="filterValue"
-        :hint="hint"
-        :title="title"
-        :parameters="parameters"
+        :value="parsedFilterValue"
+        :title="filter.label"
         :filter-id="filter.id"
+        :fixed-content="!(isPlaceholderVisible || isSearchPlaceholderVisible)"
         @remove="onRemove"
-        @swap="onSwap"
-        @apply="onApplyValue">
+        @swap="onSwap">
         <template #body>
-            <AdvancedFilterContent :fixed="true">
-                <div>DUPA</div>
+            <AdvancedFilterContent>
+                <DropdownPlaceholder
+                    v-if="isPlaceholderVisible"
+                    :title="placeholder.title"
+                    :subtitle="placeholder.subtitle" />
+                <template v-if="isContentVisible">
+                    <SelectListSearch
+                        :value="searchValue"
+                        :size="smallSize"
+                        @input="onSearch" />
+                    <SelectList
+                        v-if="isContentVisible"
+                        :value="filterValue"
+                        :items="options"
+                        :size="smallSize"
+                        @input="onValueChange">
+                        <template #item="{ item, isSelected }">
+                            <slot
+                                name="option"
+                                :option="item"
+                                :is-selected="isSelected">
+                                <ListElementDescription>
+                                    <ListElementTitle
+                                        :size="smallSize"
+                                        :title="item.label || `#${item.code}`" />
+                                </ListElementDescription>
+                            </slot>
+                        </template>
+                    </SelectList>
+                    <DropdownPlaceholder
+                        v-if="isSearchPlaceholderVisible"
+                        :title="noResultsPlaceholder.title"
+                        :subtitle="noResultsPlaceholder.subtitle">
+                        <template #action>
+                            <ClearSearchButton @click.native.stop="onClearSearch" />
+                        </template>
+                    </DropdownPlaceholder>
+                </template>
             </AdvancedFilterContent>
-            <!--            <AdvancedFilterSelectContent-->
-            <!--                :value="localValue"-->
-            <!--                :options="filter.options"-->
-            <!--                :language-code="filter.languageCode"-->
-            <!--                @input="onValueChange" />-->
         </template>
-        <template #footer="{ onApply }">
-            <SelectDropdownFooter
-                @apply="onApply"
-                @clear="onClear" />
+        <template #footer>
+            <SelectDropdownFooter @clear="onClear" />
         </template>
     </AdvancedFilter>
 </template>
@@ -34,28 +61,36 @@
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
 import {
-    FILTER_OPERATOR,
-} from '@Core/defaults/operators';
-import {
     SIZE,
 } from '@Core/defaults/theme';
 import {
     ROUTE_NAME,
 } from '@Trees/config/routes';
+import {
+    getAutocomplete,
+} from '@Trees/services';
 import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
 import AdvancedFilterContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterContent';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
+import ListElementDescription from '@UI/components/List/ListElementDescription';
+import ListElementTitle from '@UI/components/List/ListElementTitle';
+import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
 import SelectDropdownFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownFooter';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
+import SelectList from '@UI/components/Select/List/SelectList';
+import SelectListSearch from '@UI/components/Select/List/SelectListSearch';
 
 export default {
     name: 'AdvancedFilterCategoryTreeType',
     components: {
         AdvancedFilter,
         AdvancedFilterContent,
+        SelectListSearch,
         SelectDropdownFooter,
-        Autocomplete,
+        SelectList,
         DropdownPlaceholder,
+        ListElementDescription,
+        ListElementTitle,
+        ClearSearchButton,
     },
     props: {
         /**
@@ -76,16 +111,17 @@ export default {
          * Component value
          */
         value: {
-            type: Object,
-            default: () => ({
-                isEmptyRecord: false,
-                [FILTER_OPERATOR.EQUAL]: '',
-            }),
+            type: String,
+            default: '',
         },
     },
     data() {
         return {
+            options: [],
+            allOptions: [],
             localValue: {},
+            searchValue: '',
+            isFetchingData: false,
         };
     },
     computed: {
@@ -93,6 +129,12 @@ export default {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,
             ]);
+        },
+        noResultsPlaceholder() {
+            return {
+                title: 'No results',
+                subtitle: 'Clear the search and try with another phrase.',
+            };
         },
         placeholder() {
             return {
@@ -103,49 +145,46 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-        parameters() {
-            if (!this.filter.parameters) return '';
-
-            return Object.values(this.filter.parameters).join(', ');
-        },
-        title() {
-            const [
-                code,
-            ] = this.filter.id.split(':');
-
-            return this.filter.label || `#${code}`;
-        },
-        hint() {
-            const [
-                code,
-                languageCode,
-            ] = this.filter.id.split(':');
-
-            return this.filter.label ? `${code} ${languageCode}` : null;
-        },
         filterValue() {
-            return '';
+            if (!this.value) {
+                return null;
+            }
+
+            return this.allOptions.find(option => option.id === this.value);
+        },
+        parsedFilterValue() {
+            if (!this.filterValue) {
+                return '';
+            }
+
+            return this.filterValue.label || `#${this.filterValue.code}`;
+        },
+        isAnySearchPhrase() {
+            return this.searchValue !== '';
+        },
+        isAnyOption() {
+            return this.options.length > 0;
+        },
+        isPlaceholderVisible() {
+            return !this.isAnyOption && !this.isAnySearchPhrase;
+        },
+        isSearchPlaceholderVisible() {
+            return !this.isAnyOption && this.isAnySearchPhrase;
+        },
+        isContentVisible() {
+            return this.isAnyOption || this.isAnySearchPhrase;
         },
     },
-    watch: {
-        value: {
-            immediate: true,
-            handler() {
-                this.localValue = {
-                    ...this.value,
-                };
-            },
-        },
+    async created() {
+        await this.getOptions();
+
+        this.allOptions = this.options;
     },
     methods: {
         onNavigateToCategoryTrees() {
             this.$router.push({
                 name: ROUTE_NAME.CATEGORY_TREES_GRID,
             });
-        },
-        onValueChange(value) {
-            // this.localValue[key] = value;
-            console.log(value);
         },
         onRemove(index) {
             this.$emit('remove', index);
@@ -154,17 +193,64 @@ export default {
             this.$emit('swap', payload);
         },
         onClear() {
-            this.localValue = {
-                isEmptyRecord: false,
-                [FILTER_OPERATOR.EQUAL]: '',
-            };
+            this.$emit('apply', {
+                key: this.filter.id,
+                value: '',
+            });
         },
-        onApplyValue() {
-            if (JSON.stringify(this.value) !== JSON.stringify(this.localValue)) {
+        onClearSearch() {
+            this.onSearch('');
+        },
+        onSearch(value) {
+            if (this.searchValue !== value) {
+                this.searchValue = value;
+
+                if (this.searchValue === '') {
+                    this.options = this.allOptions;
+                } else {
+                    this.getOptions();
+                }
+            }
+        },
+        onFocus(isFocused) {
+            this.$emit('focus', isFocused);
+        },
+        onValueChange(value) {
+            if (value) {
                 this.$emit('apply', {
                     key: this.filter.id,
-                    value: this.localValue,
+                    value: value.id,
                 });
+            } else {
+                this.$emit('apply', {
+                    key: this.filter.id,
+                    value,
+                });
+            }
+        },
+        async getOptions() {
+            try {
+                this.isFetchingData = true;
+
+                this.options = await getAutocomplete({
+                    $axios: this.$axios,
+                    config: {
+                        params: {
+                            search: this.searchValue,
+                            type: this.filterType,
+                        },
+                    },
+                });
+
+                console.log(this.options);
+
+                this.isFetchingData = false;
+            } catch (e) {
+                if (this.$axios.isCancel(e)) {
+                    return;
+                }
+
+                this.isFetchingData = false;
             }
         },
     },

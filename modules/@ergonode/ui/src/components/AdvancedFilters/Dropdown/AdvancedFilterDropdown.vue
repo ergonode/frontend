@@ -4,7 +4,8 @@
  */
 <template>
     <Dropdown
-        :visible="isVisible"
+        :visible="visible"
+        :fixed="fixed"
         :parent-reference="parentReference"
         @click-outside="onClickOutside">
         <slot />
@@ -23,7 +24,14 @@ export default {
         /**
          * Determines visibility of component
          */
-        isVisible: {
+        visible: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * Determines whether content of dropdown has fixed height and width or not
+         */
+        fixed: {
             type: Boolean,
             default: false,
         },

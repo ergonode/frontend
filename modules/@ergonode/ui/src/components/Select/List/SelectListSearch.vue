@@ -14,6 +14,10 @@
             @blur="onSearchFocusLost"
             @input="debouncedSearch"
             @click.stop>
+        <IconFilledClose
+            v-show="value !== ''"
+            :fill-color="iconClearFillColor"
+            @click.stop.native="onClear" />
     </div>
 </template>
 
@@ -24,8 +28,10 @@ import {
 import {
     GRAPHITE,
     GREEN,
+    GREY_DARK,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import IconSearch from '@UI/components/Icons/Actions/IconSearch';
+import IconFilledClose from '@UI/components/Icons/Window/IconFilledClose';
 import {
     debounce,
 } from 'debounce';
@@ -33,6 +39,7 @@ import {
 export default {
     name: 'SelectListSearch',
     components: {
+        IconFilledClose,
         IconSearch,
     },
     props: {
@@ -75,9 +82,12 @@ export default {
             ];
         },
         searchIconFillColor() {
-            return this.isSearchFocused
+            return this.isSearchFocused || this.value !== ''
                 ? GREEN
                 : GRAPHITE;
+        },
+        iconClearFillColor() {
+            return GREY_DARK;
         },
     },
     created() {
@@ -87,6 +97,9 @@ export default {
         delete this.debouncedSearch;
     },
     methods: {
+        onClear() {
+            this.$emit('input', '');
+        },
         onSearch(event) {
             this.$emit('input', event.target.value);
         },

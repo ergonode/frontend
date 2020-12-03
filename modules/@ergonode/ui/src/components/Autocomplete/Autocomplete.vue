@@ -294,7 +294,6 @@ export default {
                 this.searchValue = value;
 
                 if (this.searchValue === '') {
-                    console.log('setting!!');
                     this.options = this.allOptions;
                 } else {
                     this.getOptions();

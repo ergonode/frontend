@@ -17,7 +17,7 @@
                     <div class="horizontal-container">
                         <ExpandNumericButton
                             title="FILTERS"
-                            :number="0"
+                            :number="advancedFilterValuesCount"
                             :is-expanded="isFiltersExpanded"
                             @click.native="onFiltersExpand" />
                         <Toggler
@@ -28,15 +28,17 @@
                         v-show="isFiltersExpanded"
                         class="category-select__filters">
                         <AdvancedFilters
-                            :value="{}"
+                            :value="advancedFilterValues"
                             :filters="advancedFilters"
                             :extended-filters="extendedFilterComponents"
-                            :draggable="false">
+                            :draggable="false"
+                            @input="onAdvancedFilterChange">
                             <template #removeAllButton>
                                 <AdvancedFiltersRemoveAllButton
-                                    v-show="isCategoryTreeChosen"
+                                    v-if="isCategoryTreeSelected"
                                     title="Clear"
-                                    @click.native="onClear" />
+                                    @click.native="onClearAdvancedFilters" />
+                                <div v-else />
                             </template>
                         </AdvancedFilters>
                     </div>
@@ -101,17 +103,11 @@ import {
 } from '@Categories/services';
 import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
 import {
-    GRID_LAYOUT,
-} from '@Core/defaults/grid';
-import {
     SIZE,
 } from '@Core/defaults/theme';
 import AdvancedFilters from '@UI/components/AdvancedFilters/AdvancedFilters';
 import AdvancedFiltersRemoveAllButton from '@UI/components/AdvancedFilters/AdvancedFiltersRemoveAllButton';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
-import Button from '@UI/components/Button/Button';
 import CheckBox from '@UI/components/CheckBox/CheckBox';
-import Divider from '@UI/components/Dividers/Divider';
 import InputController from '@UI/components/Input/InputController';
 import InputLabel from '@UI/components/Input/InputLabel';
 import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
@@ -134,10 +130,7 @@ export default {
         ListElementAction,
         ListElementDescription,
         SelectListSearch,
-        Autocomplete,
         DropdownPlaceholder,
-        Button,
-        Divider,
         Toggler,
         CheckBox,
         ExpandNumericButton,
@@ -185,7 +178,7 @@ export default {
         return {
             originalCategories: [],
             categories: [],
-            categoryTree: null,
+            advancedFilterValues: {},
             isFiltersExpanded: false,
             isItemsExpanded: false,
             isFetchingData: true,
@@ -210,9 +203,6 @@ export default {
                 subtitle: 'There are no categories in the system, so you can create the first one.',
             };
         },
-        isCategoryTreeChosen() {
-            return this.categoryTree !== null;
-        },
         isAnyItem() {
             return this.categories.length > 0;
         },
@@ -236,8 +226,7 @@ export default {
         advancedFilters() {
             return [
                 {
-                    id: 'code_29:en_GB',
-                    languageCode: 'en_GB',
+                    id: 'category-tree',
                     type: 'CATEGORY_TREE',
                     label: 'Category tree',
                 },
@@ -246,10 +235,19 @@ export default {
         extendedFilterComponents() {
             return this.$getExtendedComponents('@UI/components/AdvancedFilters/Type');
         },
+        advancedFilterValuesCount() {
+            return Object.keys(this.advancedFilterValues).length;
+        },
+        isCategoryTreeSelected() {
+            return this.advancedFilterValuesCount > 0;
+        },
     },
     methods: {
-        onClear() {
-
+        onAdvancedFilterChange(filters) {
+            this.advancedFilterValues = filters;
+        },
+        onClearAdvancedFilters() {
+            this.advancedFilterValues = {};
         },
         onSearch(value) {
             this.categories = this.originalCategories.filter(category => category.code.includes(value));
