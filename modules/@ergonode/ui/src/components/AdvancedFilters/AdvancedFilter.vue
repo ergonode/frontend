@@ -54,9 +54,8 @@
             :visible="isFocused"
             :fixed="fixedContent"
             @click-outside="onClickOutside">
-            <slot name="body" />
             <slot
-                name="footer"
+                name="dropdown"
                 :on-apply="onApply" />
         </AdvancedFilterDropdown>
     </div>

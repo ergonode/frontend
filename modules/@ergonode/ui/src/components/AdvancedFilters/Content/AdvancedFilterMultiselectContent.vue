@@ -3,32 +3,36 @@
  * See LICENSE for license details.
  */
 <template>
-    <AdvancedFilterContent>
-        <AdvancedFilterShowOnly
-            :value="value.isEmptyRecord"
-            @input="onEmptyRecordChange" />
-        <Divider />
-        <SelectList
-            v-if="options.length && !value.isEmptyRecord"
-            :value="filterValue"
-            :items="options"
-            :size="smallSize"
-            :multiselect="true"
-            @input="onSelectValue">
-            <template #item="{ item, isSelected }">
-                <ListElementAction :size="smallSize">
-                    <CheckBox :value="isSelected" />
-                </ListElementAction>
-                <ListElementDescription>
-                    <ListElementTitle
-                        :size="smallSize"
-                        :hint="item.value ? `#${item.key} ${languageCode}` : ''"
-                        :title="item.value || `#${item.key}`" />
-                </ListElementDescription>
-            </template>
-        </SelectList>
-        <DropdownPlaceholder v-else />
-    </AdvancedFilterContent>
+    <SelectList
+        :value="filterValue"
+        :search-value="searchValue"
+        :items="localOptions"
+        :size="smallSize"
+        :searchable="!value.isEmptyRecord"
+        :multiselect="true"
+        @input="onSelectValue"
+        @search="onSearch">
+        <template #prependHeader>
+            <AdvancedFilterShowOnly
+                :value="value.isEmptyRecord"
+                @input="onEmptyRecordChange" />
+            <Divider />
+        </template>
+        <template #body>
+            <div v-if="value.isEmptyRecord" />
+        </template>
+        <template #item="{ item, isSelected }">
+            <ListElementAction :size="smallSize">
+                <CheckBox :value="isSelected" />
+            </ListElementAction>
+            <ListElementDescription>
+                <ListElementTitle
+                    :size="smallSize"
+                    :hint="item.value ? `#${item.key} ${languageCode}` : ''"
+                    :title="item.value || `#${item.key}`" />
+            </ListElementDescription>
+        </template>
+    </SelectList>
 </template>
 
 <script>
@@ -39,24 +43,20 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import AdvancedFilterShowOnly from '@UI/components/AdvancedFilters/AdvancedFilterShowOnly';
-import AdvancedFilterContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterContent';
 import CheckBox from '@UI/components/CheckBox/CheckBox';
 import Divider from '@UI/components/Dividers/Divider';
 import ListElementAction from '@UI/components/List/ListElementAction';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import SelectList from '@UI/components/Select/List/SelectList';
 
 export default {
     name: 'AdvancedFilterMultiselectContent',
     components: {
-        AdvancedFilterContent,
         ListElementAction,
         ListElementDescription,
         ListElementTitle,
         SelectList,
-        DropdownPlaceholder,
         CheckBox,
         AdvancedFilterShowOnly,
         Divider,
@@ -86,6 +86,12 @@ export default {
             default: () => [],
         },
     },
+    data() {
+        return {
+            localOptions: this.options,
+            searchValue: '',
+        };
+    },
     computed: {
         smallSize() {
             return SIZE.SMALL;
@@ -112,6 +118,23 @@ export default {
         },
     },
     methods: {
+        onSearch(value) {
+            this.searchValue = value;
+
+            if (value) {
+                const lowerCaseSearchValue = this.searchValue.toLowerCase();
+
+                this.localOptions = this.options.filter((option) => {
+                    if (option.value) {
+                        return option.value.toLowerCase().includes(lowerCaseSearchValue);
+                    }
+
+                    return option.key.toLowerCase().includes(lowerCaseSearchValue);
+                });
+            } else {
+                this.localOptions = this.options;
+            }
+        },
         onSelectValue(value) {
             this.$emit('input', {
                 key: FILTER_OPERATOR.EQUAL,

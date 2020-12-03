@@ -26,6 +26,9 @@
         <template #append>
             <slot name="append" />
         </template>
+        <template #placeholder>
+            <div />
+        </template>
         <template #dropdown="{ onSelectValueCallback }">
             <DatePickerContent
                 :value="value"

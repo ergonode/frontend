@@ -9,24 +9,30 @@
         :estimated-height="20">
         <template #header>
             <div class="select-list-header">
-                <SelectListSearch
-                    v-if="searchable"
-                    :placeholder="searchPlaceholder"
-                    :value="searchValue"
-                    :size="size"
-                    @input="onSearch" />
+                <slot name="prependHeader" />
+                <div class="select-list-header__search">
+                    <SelectListSearch
+                        v-if="searchable"
+                        :placeholder="searchPlaceholder"
+                        :value="searchValue"
+                        :size="size"
+                        @input="onSearch" />
+                    <slot name="appendSearchHeader" />
+                </div>
                 <slot name="appendHeader" />
             </div>
         </template>
         <template #body>
-            <DropdownPlaceholder
-                v-if="isSearchPlaceholderVisible"
-                :title="placeholder.title"
-                :subtitle="placeholder.subtitle">
-                <template #action>
-                    <ClearSearchButton @click.native.stop="onClearSearch" />
-                </template>
-            </DropdownPlaceholder>
+            <slot name="body">
+                <DropdownPlaceholder
+                    v-if="isSearchPlaceholderVisible"
+                    :title="placeholder.title"
+                    :subtitle="placeholder.subtitle">
+                    <template #action>
+                        <ClearSearchButton @click.native.stop="onClearSearch" />
+                    </template>
+                </DropdownPlaceholder>
+            </slot>
         </template>
         <template #item="{ item, index }">
             <SelectListElement
@@ -216,8 +222,13 @@ export default {
         top: 0;
         z-index: $Z_INDEX_LVL_1;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
         background-color: $WHITE;
+
+        &__search {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
     }
 </style>

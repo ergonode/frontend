@@ -57,7 +57,7 @@
                         search-placeholder="Search for category…"
                         :multiselect="true"
                         @search="onSearch">
-                        <template #appendHeader>
+                        <template #appendSearchHeader>
                             <CheckBox
                                 class="check-box-select-all"
                                 label="Select all"

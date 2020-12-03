@@ -12,13 +12,11 @@
         @remove="onRemove"
         @swap="onSwap"
         @apply="onApplyValue">
-        <template #body>
+        <template #dropdown="{ onApply }">
             <AdvancedFilterDateContent
                 :value="localValue"
                 :format="parameters"
                 @input="onValueChange" />
-        </template>
-        <template #footer="{ onApply }">
             <SelectDropdownApplyFooter
                 @apply="onApply"
                 @clear="onClear" />

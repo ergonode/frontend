@@ -85,7 +85,7 @@ export default {
                     const {
                         innerHeight,
                     } = window;
-                    let maxHeight = 200;
+                    let maxHeight = 250;
 
                     if (this.fixed) {
                         this.$refs.dropdown.style.maxHeight = `${maxHeight}px`;

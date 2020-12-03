@@ -13,12 +13,10 @@
         @remove="onRemove"
         @swap="onSwap"
         @apply="onApplyValue">
-        <template #body>
+        <template #dropdown="{ onApply }">
             <AdvancedFilterRangeContent
                 :value="localValue"
                 @input="onValueChange" />
-        </template>
-        <template #footer="{ onApply }">
             <MultiselectDropdownFooter
                 @apply="onApply"
                 @clear="onClear" />

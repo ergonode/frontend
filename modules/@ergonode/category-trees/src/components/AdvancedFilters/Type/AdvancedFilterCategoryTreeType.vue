@@ -39,8 +39,6 @@
                     </template>
                 </SelectList>
             </AdvancedFilterContent>
-        </template>
-        <template #footer>
             <SelectDropdownFooter @clear="onClear" />
         </template>
     </AdvancedFilter>

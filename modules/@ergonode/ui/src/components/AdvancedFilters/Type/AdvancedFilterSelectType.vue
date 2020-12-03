@@ -14,17 +14,18 @@
         @remove="onRemove"
         @swap="onSwap"
         @apply="onApplyValue">
-        <template #body>
-            <AdvancedFilterSelectContent
-                :value="localValue"
-                :options="filter.options"
-                :language-code="filter.languageCode"
-                @input="onValueChange" />
-        </template>
-        <template #footer="{ onApply }">
-            <SelectDropdownFooter
-                @apply="onApply"
-                @clear="onClear" />
+        <template #dropdown="{ onApply }">
+            <template v-if="filter.options.length">
+                <AdvancedFilterSelectContent
+                    :value="localValue"
+                    :options="filter.options"
+                    :language-code="filter.languageCode"
+                    @input="onValueChange" />
+                <SelectDropdownFooter
+                    @apply="onApply"
+                    @clear="onClear" />
+            </template>
+            <DropdownPlaceholder v-else />
         </template>
     </AdvancedFilter>
 </template>
@@ -36,6 +37,7 @@ import {
 import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
 import AdvancedFilterSelectContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterTextContent';
 import SelectDropdownFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownFooter';
+import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 
 export default {
     name: 'AdvancedFilterSelectType',
@@ -43,6 +45,7 @@ export default {
         AdvancedFilter,
         AdvancedFilterSelectContent,
         SelectDropdownFooter,
+        DropdownPlaceholder,
     },
     props: {
         /**
