@@ -204,7 +204,6 @@ export default {
             '__setState',
         ]),
         onNavigateToAttributeGroups() {
-            this.$emit('close');
             this.$router.push({
                 name: ROUTE_NAME.ATTRIBUTE_GROUPS_GRID,
             });

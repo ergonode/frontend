@@ -6,7 +6,7 @@
 export default async ({
     app, store,
 }, inject) => {
-    const DEFAULT_LANGUAGE = 'en_GB';
+    const DEFAULT_LANGUAGE = app.i18n.fallbackLocale;
     const loadedLanguages = [];
     const {
         language = DEFAULT_LANGUAGE,
