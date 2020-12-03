@@ -12,7 +12,7 @@
         <template #value>
             <span v-text="parsedValue" />
         </template>
-        <template #item="{ item, isSelected }">
+        <template #option="{ item, isSelected }">
             <ListElementTree
                 :level="item.level"
                 :size="$attrs.size"
