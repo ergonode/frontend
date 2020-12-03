@@ -105,23 +105,12 @@ module.exports = {
         isDev: process.env.NODE_ENV !== 'production',
     },
     i18n: {
-        locales: [
-            {
-                code: 'en_GB',
-                file: 'en_GB.json',
-            },
-            {
-                code: 'pl_PL',
-                file: 'pl_PL.json',
-            },
-        ],
-        defaultLocale: 'en_GB',
         vueI18n: {
+            locale: 'en_GB',
             fallbackLocale: 'en_GB',
+            silentTranslationWarn: true,
         },
-        objectNotation: true,
-        lazy: true,
-        langDir: '.nuxt/locales/',
+        vuex: false,
         strategy: 'no_prefix',
     },
     router: {
