@@ -212,7 +212,9 @@ export default {
     },
     methods: {
         onHeightChange(height) {
-            this.dropdownHeight = height;
+            if (height !== this.dropdownHeight) {
+                this.dropdownHeight = height;
+            }
         },
         onClickOutside(payload) {
             this.$emit('click-outside', payload);

@@ -96,7 +96,7 @@ export default {
             Promise.all([
                 this.onRemoveRow(),
                 this.getDictionary({
-                    dictionaryName: 'units',
+                    key: 'units',
                 }),
             ]);
         },

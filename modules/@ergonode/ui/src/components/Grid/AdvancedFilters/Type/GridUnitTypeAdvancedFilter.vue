@@ -34,6 +34,7 @@ import GridAdvancedFilterRangeContent from '@UI/components/Grid/AdvancedFilters/
 import GridAdvancedFilter from '@UI/components/Grid/AdvancedFilters/GridAdvancedFilter';
 import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -70,6 +71,13 @@ export default {
                 [FILTER_OPERATOR.SMALLER_OR_EQUAL]: '',
             }),
         },
+    },
+    async fetch() {
+        await this.getInitialDictionaries({
+            keys: [
+                'units',
+            ],
+        });
     },
     data() {
         return {
@@ -121,6 +129,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions('dictionaries', [
+            'getInitialDictionaries',
+        ]),
         onValueChange({
             key, value,
         }) {

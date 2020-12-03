@@ -21,6 +21,9 @@ export const actions = {
 
         if (token) {
             await dispatch('authentication/getUser');
+            await dispatch('core/getLanguages', {});
+            await dispatch('core/getLanguageTree', {});
+            await dispatch('core/setDefaultLanguage');
         }
     },
 };

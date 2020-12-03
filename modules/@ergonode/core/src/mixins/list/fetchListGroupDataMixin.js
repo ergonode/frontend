@@ -134,7 +134,10 @@ export default function ({
                 }
 
                 this.items[languageCode][UNASSIGNED_GROUP_ID] = items;
-                this.groupItemsCount[UNASSIGNED_GROUP_ID] = info.filtered;
+                this.groupItemsCount = {
+                    ...this.groupItemsCount,
+                    [UNASSIGNED_GROUP_ID]: info.filtered,
+                };
             },
             async getGroupItems({
                 groupId,
