@@ -20,7 +20,6 @@ import camelcaseKeys from 'camelcase-keys';
 
 export default {
     async authenticateUser({
-        commit,
         dispatch,
     }, {
         data,
@@ -60,13 +59,9 @@ export default {
                     refreshToken,
                 });
 
-                const {
-                    language,
-                } = await dispatch('getUser');
-
-                if (language) {
-                    this.$setInterfaceLanguage(language);
-                }
+                await dispatch('getUser', {
+                    onSuccess: user => this.$setInterfaceLanguage(user.language),
+                });
                 await dispatch('core/getLanguages', {}, {
                     root: true,
                 });
@@ -97,6 +92,8 @@ export default {
     },
     async getUser({
         commit,
+    }, {
+        onSuccess = () => {},
     }) {
         try {
             // EXTENDED BEFORE METHOD
@@ -127,14 +124,12 @@ export default {
             });
             // EXTENDED AFTER METHOD
 
-            return user;
+            onSuccess(user);
         } catch (e) {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
                 message: 'User data hasn`t been fetched properly',
             });
-
-            return {};
         }
     },
     setTokens({

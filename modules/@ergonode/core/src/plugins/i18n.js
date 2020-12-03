@@ -8,9 +8,13 @@ export default async ({
 }, inject) => {
     const DEFAULT_LANGUAGE = app.i18n.fallbackLocale;
     const loadedLanguages = [];
+    let language = DEFAULT_LANGUAGE;
     const {
-        language = DEFAULT_LANGUAGE,
-    } = store.state.authentication.user;
+        user,
+    } = store.state.authentication;
+    if (user) {
+        language = user.language;
+    }
 
     const setI18nLanguage = ({
         lang, message,
