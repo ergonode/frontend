@@ -49,21 +49,20 @@
             <div :class="categorySelectItemsClasses">
                 <Preloader v-if="isFetchingData" />
                 <template v-else>
-                    <div class="category-select__search-panel">
-                        <SelectListSearch
-                            placeholder="Search for category…"
-                            :value="searchValue"
-                            :size="size"
-                            @input="onSearch" />
-                        <CheckBox
-                            label="Select all"
-                            reversed />
-                    </div>
                     <SelectList
                         v-if="isSelectContentVisible"
+                        :search-value="searchValue"
                         :items="categories"
                         :size="size"
-                        :multiselect="true">
+                        search-placeholder="Search for category…"
+                        :multiselect="true"
+                        @search="onSearch">
+                        <template #appendHeader>
+                            <CheckBox
+                                class="check-box-select-all"
+                                label="Select all"
+                                reversed />
+                        </template>
                         <template #item="{ item, isSelected }">
                             <ListElementAction :size="size">
                                 <CheckBox :value="isSelected" />
@@ -75,11 +74,9 @@
                             </ListElementDescription>
                         </template>
                     </SelectList>
-                    <DropdownPlaceholder
-                        v-else
-                        :title="noRecordsPlaceholder.title"
-                        :subtitle="noRecordsPlaceholder.subtitle" />
-                    <div class="category-select__expand-more">
+                    <div
+                        v-show="categories.length"
+                        class="category-select__expand-more">
                         <ExpandNumericButton
                             title="SHOW ALL"
                             :size="tinySize"
@@ -117,7 +114,6 @@ import ListElementTitle from '@UI/components/List/ListElementTitle';
 import Preloader from '@UI/components/Preloader/Preloader';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import SelectList from '@UI/components/Select/List/SelectList';
-import SelectListSearch from '@UI/components/Select/List/SelectListSearch';
 import Toggler from '@UI/components/Toggler/Toggler';
 
 export default {
@@ -129,7 +125,6 @@ export default {
         ListElementTitle,
         ListElementAction,
         ListElementDescription,
-        SelectListSearch,
         DropdownPlaceholder,
         Toggler,
         CheckBox,
@@ -307,18 +302,20 @@ export default {
             }
         }
 
-        &__search-panel {
-            display: flex;
-            justify-content: space-between;
-            padding-right: 10px;
-        }
-
         &__expand-more {
             position: absolute;
-            left: 12px;
+            left: 0;
             bottom: 12px;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             background-color: $WHITE;
         }
+    }
+
+    .check-box-select-all {
+        margin-right: 12px;
     }
 
     .horizontal-container {

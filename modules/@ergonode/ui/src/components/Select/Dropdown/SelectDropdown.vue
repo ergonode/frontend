@@ -16,18 +16,16 @@
         <slot
             :is-visible="isDropdownContentVisible"
             name="dropdown">
-            <SelectListSearch
-                v-if="searchable"
-                :value="searchValue"
-                :size="size"
-                @input="onSearch" />
             <SelectList
                 v-if="isDropdownContentVisible"
                 :value="value"
+                :search-value="searchValue"
                 :items="options"
                 :size="size"
+                :searchable="searchable"
                 :multiselect="multiselect"
-                @input="onValueChange">
+                @input="onValueChange"
+                @search="onSearch">
                 <template #item="{ index, item, isSelected }">
                     <slot
                         name="item"
@@ -36,14 +34,6 @@
                         :is-selected="isSelected" />
                 </template>
             </SelectList>
-            <DropdownPlaceholder
-                v-if="isSearchPlaceholderVisible"
-                :title="placeholder.title"
-                :subtitle="placeholder.subtitle">
-                <template #action>
-                    <ClearSearchButton @click.native.stop="onClearSearch" />
-                </template>
-            </DropdownPlaceholder>
         </slot>
         <slot
             v-if="isFooterVisible"
@@ -67,24 +57,20 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
 import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
 import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
 import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import SelectList from '@UI/components/Select/List/SelectList';
-import SelectListSearch from '@UI/components/Select/List/SelectListSearch';
 
 export default {
     name: 'SelectDropdown',
     components: {
-        ClearSearchButton,
         MultiselectDropdownFooter,
         SelectDropdownApplyFooter,
         Dropdown,
         SelectList,
         DropdownPlaceholder,
-        SelectListSearch,
     },
     props: {
         /**
@@ -167,12 +153,6 @@ export default {
         },
     },
     computed: {
-        placeholder() {
-            return {
-                title: 'No results',
-                subtitle: 'Clear the search and try with another phrase.',
-            };
-        },
         isAnyOption() {
             return this.options.length > 0;
         },
@@ -181,9 +161,6 @@ export default {
         },
         isPlaceholderVisible() {
             return !this.isAnyOption && !this.isAnySearchPhrase;
-        },
-        isSearchPlaceholderVisible() {
-            return !this.isAnyOption && this.isAnySearchPhrase;
         },
         isDropdownContentVisible() {
             return this.isAnyOption || this.isAnySearchPhrase;

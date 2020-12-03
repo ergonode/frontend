@@ -5,8 +5,29 @@
 <template>
     <VirtualScroll
         :items="items"
-        :render-ahead="6"
+        :render-ahead="4"
         :estimated-height="20">
+        <template #header>
+            <div class="select-list-header">
+                <SelectListSearch
+                    v-if="searchable"
+                    :placeholder="searchPlaceholder"
+                    :value="searchValue"
+                    :size="size"
+                    @input="onSearch" />
+                <slot name="appendHeader" />
+            </div>
+        </template>
+        <template #body>
+            <DropdownPlaceholder
+                v-if="isSearchPlaceholderVisible"
+                :title="placeholder.title"
+                :subtitle="placeholder.subtitle">
+                <template #action>
+                    <ClearSearchButton @click.native.stop="onClearSearch" />
+                </template>
+            </DropdownPlaceholder>
+        </template>
         <template #item="{ item, index }">
             <SelectListElement
                 :key="index"
@@ -31,7 +52,10 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
+import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import SelectListElement from '@UI/components/Select/List/SelectListElement';
+import SelectListSearch from '@UI/components/Select/List/SelectListSearch';
 import {
     VirtualScroll,
 } from 'vue-windowing';
@@ -40,7 +64,10 @@ export default {
     name: 'SelectList',
     components: {
         VirtualScroll,
+        DropdownPlaceholder,
+        ClearSearchButton,
         SelectListElement,
+        SelectListSearch,
     },
     props: {
         /**
@@ -54,6 +81,27 @@ export default {
                 Object,
             ],
             default: '',
+        },
+        /**
+         * Search value
+         */
+        searchValue: {
+            type: String,
+            default: '',
+        },
+        /**
+         * The placeholder is a helper text for the component
+         */
+        searchPlaceholder: {
+            type: String,
+            default: 'Search...',
+        },
+        /**
+         * Determines if the component has possibility of search for value
+         */
+        searchable: {
+            type: Boolean,
+            default: false,
         },
         /**
          * Determines if the component is multiple choice
@@ -86,6 +134,27 @@ export default {
     computed: {
         stringifiedItems() {
             return this.items.map(option => JSON.stringify(option));
+        },
+        placeholder() {
+            return {
+                title: 'No results',
+                subtitle: 'Clear the search and try with another phrase.',
+            };
+        },
+        isAnyItem() {
+            return this.items.length > 0;
+        },
+        isAnySearchPhrase() {
+            return this.searchValue !== '';
+        },
+        isPlaceholderVisible() {
+            return !this.isAnyItem && !this.isAnySearchPhrase;
+        },
+        isSearchPlaceholderVisible() {
+            return !this.isAnyItem && this.isAnySearchPhrase;
+        },
+        isSelectContentVisible() {
+            return this.isAnyItem || this.isAnySearchPhrase;
         },
     },
     watch: {
@@ -131,6 +200,24 @@ export default {
                 this.$emit('input', value);
             }
         },
+        onSearch(value) {
+            this.$emit('search', value);
+        },
+        onClearSearch() {
+            this.onSearch('');
+        },
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .select-list-header {
+        position: sticky;
+        top: 0;
+        z-index: $Z_INDEX_LVL_1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: $WHITE;
+    }
+</style>

@@ -457,6 +457,10 @@ export default {
         },
         onLayoutChange(layout) {
             this.layout = layout;
+
+            if (layout === GRID_LAYOUT.COLLECTION) {
+                this.isRenderingTableLayout = false;
+            }
         },
         onCellValueChange(payload) {
             this.$emit('cell-value', payload);

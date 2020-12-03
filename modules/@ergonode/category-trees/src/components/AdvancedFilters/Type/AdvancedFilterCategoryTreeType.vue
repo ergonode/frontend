@@ -17,39 +17,27 @@
                     v-if="isPlaceholderVisible"
                     :title="placeholder.title"
                     :subtitle="placeholder.subtitle" />
-                <template v-if="isContentVisible">
-                    <SelectListSearch
-                        :value="searchValue"
-                        :size="smallSize"
-                        @input="onSearch" />
-                    <SelectList
-                        v-if="isContentVisible"
-                        :value="filterValue"
-                        :items="options"
-                        :size="smallSize"
-                        @input="onValueChange">
-                        <template #item="{ item, isSelected }">
-                            <slot
-                                name="option"
-                                :option="item"
-                                :is-selected="isSelected">
-                                <ListElementDescription>
-                                    <ListElementTitle
-                                        :size="smallSize"
-                                        :title="item.label || `#${item.code}`" />
-                                </ListElementDescription>
-                            </slot>
-                        </template>
-                    </SelectList>
-                    <DropdownPlaceholder
-                        v-if="isSearchPlaceholderVisible"
-                        :title="noResultsPlaceholder.title"
-                        :subtitle="noResultsPlaceholder.subtitle">
-                        <template #action>
-                            <ClearSearchButton @click.native.stop="onClearSearch" />
-                        </template>
-                    </DropdownPlaceholder>
-                </template>
+                <SelectList
+                    v-else-if="isContentVisible"
+                    :value="filterValue"
+                    :search-value="searchValue"
+                    :items="options"
+                    :size="smallSize"
+                    @input="onValueChange"
+                    @search="onSearch">
+                    <template #item="{ item, isSelected }">
+                        <slot
+                            name="option"
+                            :option="item"
+                            :is-selected="isSelected">
+                            <ListElementDescription>
+                                <ListElementTitle
+                                    :size="smallSize"
+                                    :title="item.label || `#${item.code}`" />
+                            </ListElementDescription>
+                        </slot>
+                    </template>
+                </SelectList>
             </AdvancedFilterContent>
         </template>
         <template #footer>
@@ -73,24 +61,20 @@ import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
 import AdvancedFilterContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterContent';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
-import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
 import SelectDropdownFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownFooter';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import SelectList from '@UI/components/Select/List/SelectList';
-import SelectListSearch from '@UI/components/Select/List/SelectListSearch';
 
 export default {
     name: 'AdvancedFilterCategoryTreeType',
     components: {
         AdvancedFilter,
         AdvancedFilterContent,
-        SelectListSearch,
         SelectDropdownFooter,
         SelectList,
         DropdownPlaceholder,
         ListElementDescription,
         ListElementTitle,
-        ClearSearchButton,
     },
     props: {
         /**
@@ -129,12 +113,6 @@ export default {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,
             ]);
-        },
-        noResultsPlaceholder() {
-            return {
-                title: 'No results',
-                subtitle: 'Clear the search and try with another phrase.',
-            };
         },
         placeholder() {
             return {

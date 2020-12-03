@@ -118,6 +118,7 @@ export default {
         $element: &;
 
         display: flex;
+        flex: 1;
         align-items: center;
         box-sizing: border-box;
         cursor: pointer;
