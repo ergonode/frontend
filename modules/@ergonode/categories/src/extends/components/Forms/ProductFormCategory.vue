@@ -3,37 +3,34 @@
  * See LICENSE for license details.
  */
 <template>
-    <!--    <Autocomplete-->
-    <!--        :value="categories"-->
-    <!--        :multiselect="true"-->
-    <!--        :clearable="true"-->
-    <!--        :searchable="true"-->
-    <!--        label="Category"-->
-    <!--        :disabled="disabled"-->
-    <!--        :error-messages="errors[categoryFieldKey]"-->
-    <!--        href="categories/autocomplete"-->
-    <!--        @input="onCategoriesValueChange">-->
-    <!--        <template #placeholder="{ isVisible }">-->
-    <!--            <DropdownPlaceholder-->
-    <!--                v-if="isVisible"-->
-    <!--                :title="placeholder.title"-->
-    <!--                :subtitle="placeholder.subtitle">-->
-    <!--                <template #action>-->
-    <!--                    <Button-->
-    <!--                        title="GO TO CATEGORIES"-->
-    <!--                        :size="smallSize"-->
-    <!--                        :disabled="!isAllowedToCreate"-->
-    <!--                        @click.native="onNavigateToCategories" />-->
-    <!--                </template>-->
-    <!--            </DropdownPlaceholder>-->
-    <!--        </template>-->
-    <!--    </Autocomplete>-->
-    <!--    <TreeAccordion />-->
-    <CategorySelect />
+    <Autocomplete
+        :value="categories"
+        :multiselect="true"
+        :clearable="true"
+        :searchable="true"
+        label="Category"
+        :disabled="disabled"
+        :error-messages="errors[categoryFieldKey]"
+        href="categories/autocomplete"
+        @input="onCategoriesValueChange">
+        <template #placeholder="{ isVisible }">
+            <DropdownPlaceholder
+                v-if="isVisible"
+                :title="placeholder.title"
+                :subtitle="placeholder.subtitle">
+                <template #action>
+                    <Button
+                        title="GO TO CATEGORIES"
+                        :size="smallSize"
+                        :disabled="!isAllowedToCreate"
+                        @click.native="onNavigateToCategories" />
+                </template>
+            </DropdownPlaceholder>
+        </template>
+    </Autocomplete>
 </template>
 
 <script>
-import CategorySelect from '@Categories/components/Selects/CategorySelect';
 import PRIVILEGES from '@Categories/config/privileges';
 import {
     ROUTE_NAME,
@@ -45,7 +42,6 @@ import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import Button from '@UI/components/Button/Button';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
-import TreeAccordion from '@UI/components/TreeAccordion/TreeAccordion';
 import {
     mapActions,
     mapState,
@@ -54,8 +50,6 @@ import {
 export default {
     name: 'ProductFormCategory',
     components: {
-        CategorySelect,
-        TreeAccordion,
         Autocomplete,
         Button,
         DropdownPlaceholder,
