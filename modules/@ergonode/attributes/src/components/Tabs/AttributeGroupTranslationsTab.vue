@@ -78,7 +78,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Attribute group translations have been updated',
+                message: this.$t('attributeGroup.messages.updateTranslationSuccess'),
             });
 
             this.isSubmitting = false;

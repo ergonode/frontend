@@ -13,6 +13,7 @@
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :errors="scopeErrors"
+                @close="onClose"
                 @submit="onSubmit"
                 @proceed="onProceed" />
         </template>

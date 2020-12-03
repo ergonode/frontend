@@ -60,7 +60,13 @@ export default {
                     refreshToken,
                 });
 
-                await dispatch('getUser');
+                const {
+                    language,
+                } = await dispatch('getUser');
+
+                if (language) {
+                    this.$setInterfaceLanguage(language);
+                }
 
                 onSuccess();
             } catch (e) {
@@ -93,7 +99,6 @@ export default {
             const user = await get({
                 $axios: this.app.$axios,
             });
-
             const transformedUserData = camelcaseKeys(user);
 
             transformedUserData.privileges = getMappedPrivileges(transformedUserData.privileges);
@@ -112,11 +117,15 @@ export default {
                 data: transformedUserData,
             });
             // EXTENDED AFTER METHOD
+
+            return user;
         } catch (e) {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
                 message: 'User data hasn`t been fetched properly',
             });
+
+            return {};
         }
     },
     setTokens({
