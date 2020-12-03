@@ -5,7 +5,7 @@
 <template>
     <Toggler
         :value="value"
-        label="Rich text content enabled"
+        :label="$t('attribute.form.types.richTextLabel')"
         @input="setParameterValue" />
 </template>
 
