@@ -12,9 +12,9 @@
         <template #value>
             <span v-text="parsedValue" />
         </template>
-        <template #option="{ item, isSelected }">
+        <template #option="{ option, isSelected }">
             <ListElementTree
-                :level="item.level"
+                :level="option.level"
                 :size="$attrs.size"
                 :multiselect="$attrs.multiselect">
                 <ListElementAction
@@ -27,8 +27,8 @@
                 <ListElementDescription>
                     <ListElementTitle
                         :size="$attrs.size"
-                        :hint="item.hint"
-                        :title="item.value || `#${item.key}`" />
+                        :hint="option.hint"
+                        :title="option.value || `#${option.key}`" />
                 </ListElementDescription>
             </ListElementTree>
         </template>
