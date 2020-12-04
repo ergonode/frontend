@@ -76,12 +76,14 @@ export default {
         },
         async onRemoveSuccess() {
             await this.getDictionary({
-                dictionaryName: 'units',
+                key: 'units',
             });
-            await this.$addAlert({
+
+            this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
                 message: 'Unit removed',
             });
+
             await this.$router.push({
                 name: ROUTE_NAME.SETTINGS_UNITS,
             });

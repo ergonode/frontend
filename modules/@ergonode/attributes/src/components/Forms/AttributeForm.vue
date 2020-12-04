@@ -49,11 +49,11 @@
                     <template #placeholder="{ isVisible }">
                         <DropdownPlaceholder
                             v-if="isVisible"
-                            :title="placeholder.title"
-                            :subtitle="placeholder.subtitle">
+                            :title="$t('attribute.form.noGroupTitle')"
+                            :subtitle="$t('attribute.form.noGroupSubtitle')">
                             <template #action>
                                 <Button
-                                    title="GO TO ATTRIBUTE GROUPS"
+                                    :title="$t('attribute.form.noGroupButton')"
                                     :size="smallSize"
                                     :disabled="!isAllowedToUpdate"
                                     @click.native="onNavigateToAttributeGroups" />
@@ -108,6 +108,7 @@ import {
     isObject,
 } from '@Core/models/objectWrapper';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
+import Button from '@UI/components/Button/Button';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
@@ -125,6 +126,7 @@ export default {
     name: 'AttributeForm',
     components: {
         DropdownPlaceholder,
+        Button,
         Form,
         FormSection,
         InfoHint,
@@ -155,12 +157,6 @@ export default {
         ]),
         smallSize() {
             return SIZE.SMALL;
-        },
-        placeholder() {
-            return {
-                title: 'No attribute groups',
-                subtitle: 'There are no attribute groups in the system, so you can create the first one.',
-            };
         },
         extendedForm() {
             return this.$extendedForm({

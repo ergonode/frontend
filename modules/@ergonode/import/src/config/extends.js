@@ -7,8 +7,12 @@ export default {
     dictionaries: [
         {
             stateProp: 'sources',
-            dataFormat: {},
-            requestPath: '/dictionary/sources',
+            defaultValue: {},
+            request: {
+                path: '/dictionary/sources',
+                config: {},
+            },
+            dataMapper: response => response,
         },
     ],
 };

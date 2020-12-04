@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="toggler">
+    <div :class="classes">
         <input
             :id="associatedLabel"
             :value="value"
@@ -57,6 +57,23 @@ export default {
             type: String,
             default: '',
         },
+        /**
+         * Determinate if the component content is reversed
+         */
+        reversed: {
+            type: Boolean,
+            default: false,
+        },
+    },
+    computed: {
+        classes() {
+            return [
+                'toggler',
+                {
+                    'toggler--reversed': this.reversed,
+                },
+            ];
+        },
     },
     methods: {
         onValueChange(event) {
@@ -81,9 +98,7 @@ export default {
 
         & label {
             position: relative;
-            display: grid;
-            grid-auto-flow: column;
-            column-gap: 8px;
+            display: flex;
             align-items: center;
         }
 
@@ -127,12 +142,32 @@ export default {
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_12_16;
             cursor: pointer;
+            margin-left: 8px;
+        }
+
+        &--reversed {
+            & input[type="checkbox"] {
+                right: 0;
+            }
+
+            & label {
+                flex-direction: row-reverse;
+            }
+
+            #{$toggler}__label {
+                margin-right: 8px;
+            }
+        }
+
+        &:not(&--reversed) {
+            & input[type="checkbox"] {
+                left: 0;
+            }
         }
 
         & input[type="checkbox"] {
             position: absolute;
             top: 0;
-            left: 0;
             opacity: 0;
 
             &:focus + label, &:not(:disabled):hover + label {

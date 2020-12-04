@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="Options"
+        :title="$t('attributeGroup.form.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"

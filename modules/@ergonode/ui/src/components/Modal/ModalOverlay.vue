@@ -6,6 +6,7 @@
     <FadeTransition>
         <div
             v-if="isMounted"
+            ref="modalOverlay"
             class="modal-overlay"
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">
@@ -51,8 +52,8 @@ export default {
     beforeDestroy() {
         const app = document.documentElement.querySelector('.app');
 
-        if (app.contains(this.$el)) {
-            app.removeChild(this.$el);
+        if (app.contains(this.$refs.modalOverlay)) {
+            app.removeChild(this.$refs.modalOverlay);
         }
     },
     methods: {

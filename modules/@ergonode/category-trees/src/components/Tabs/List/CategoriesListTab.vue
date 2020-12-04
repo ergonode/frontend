@@ -7,7 +7,7 @@
         <ListSearchHeader
             title="Categories"
             searchable
-            @search-result="onSearch" />
+            @search-value="onSearch" />
         <List>
             <Preloader v-if="isPrefetchingData" />
             <ListScrollableContainer v-else>

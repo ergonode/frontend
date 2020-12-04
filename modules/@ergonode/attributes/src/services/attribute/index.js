@@ -33,7 +33,8 @@ export const getAll = ({
 
 export const getAutocomplete = ({
     $axios,
-}) => $axios.$get('attributes/autocomplete');
+    config,
+}) => $axios.$get('attributes/autocomplete', config);
 
 export const getOption = ({
     $axios,

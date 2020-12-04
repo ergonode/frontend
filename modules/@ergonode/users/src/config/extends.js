@@ -10,8 +10,12 @@ export default {
     dictionaries: [
         {
             stateProp: 'privileges',
-            dataFormat: {},
-            requestPath: '/dictionary/privileges',
+            defaultValue: {},
+            request: {
+                path: '/dictionary/privileges',
+                config: {},
+            },
+            dataMapper: response => response,
         },
     ],
     extendComponents: {

@@ -99,7 +99,7 @@ export default {
         },
         async onCreateSuccess() {
             await this.getDictionary({
-                dictionaryName: 'units',
+                key: 'units',
             });
 
             this.$addAlert({
@@ -114,7 +114,7 @@ export default {
         },
         async onProceedSuccess(id) {
             await this.getDictionary({
-                dictionaryName: 'units',
+                key: 'units',
             });
 
             this.$addAlert({

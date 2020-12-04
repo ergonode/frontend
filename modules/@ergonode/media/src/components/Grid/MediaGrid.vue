@@ -103,7 +103,7 @@ export default {
     },
     data() {
         return {
-            searchResult: null,
+            searchValue: null,
             isSearchFocused: false,
             isPrefetchingData: true,
             filterValues: {},
@@ -367,7 +367,7 @@ export default {
             this.isSearchFocused = isFocused;
         },
         onSearch(value) {
-            this.searchResult = value;
+            this.searchValue = value;
         },
         onEditRow(args) {
             const lastIndex = args.length - 1;

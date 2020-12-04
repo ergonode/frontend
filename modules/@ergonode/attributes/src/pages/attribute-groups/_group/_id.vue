@@ -40,7 +40,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Attribute group hasn`t been fetched properly',
+                    message: app.i18n.t('attributeGroup.errors.getRequest'),
                 });
             },
         });

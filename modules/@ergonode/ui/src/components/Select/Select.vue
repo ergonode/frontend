@@ -66,6 +66,7 @@
         <SelectDropdown
             v-if="isReadyToRender"
             ref="menu"
+            :value="value"
             :parent-reference="$refs.activator"
             :data-cy="`${dataCy}-drop-down`"
             :fixed="fixedContent"
@@ -75,8 +76,7 @@
             :fixed-content="fixedContent"
             :searchable="searchable"
             :options="options"
-            :selected-options="selectedOptions"
-            :search-result="searchResult"
+            :search-value="searchValue"
             :is-visible="isFocused"
             @dismiss="onDismiss"
             @clear="onClear"
@@ -94,10 +94,10 @@
                     :is-visible="isVisible"
                     :on-select-value-callback="onSelectValue" />
             </template>
-            <template #option="{ index, option, isSelected, isSmallSize }">
+            <template #item="{ index, item, isSelected, isSmallSize }">
                 <slot
                     name="option"
-                    :option="option"
+                    :option="item"
                     :is-selected="isSelected"
                     :is-small-size="isSmallSize"
                     :index="index" />
@@ -281,9 +281,9 @@ export default {
             default: false,
         },
         /**
-         * Search result
+         * Search value
          */
-        searchResult: {
+        searchValue: {
             type: String,
             default: '',
         },
@@ -297,7 +297,6 @@ export default {
     },
     data() {
         return {
-            selectedOptions: {},
             isBlurringNeeded: false,
             isFocused: false,
             isReadyToRender: false,
@@ -340,23 +339,13 @@ export default {
         value: {
             immediate: true,
             handler() {
-                let selectedOptions = {};
-
                 if (Array.isArray(this.value) && this.value.length) {
-                    this.value.forEach((option) => {
-                        selectedOptions[JSON.stringify(option)] = option;
-                    });
                     this.hasAnyValueSelected = true;
                 } else if (!Array.isArray(this.value) && (this.value || this.value === 0)) {
-                    selectedOptions = {
-                        [JSON.stringify(this.value)]: this.value,
-                    };
                     this.hasAnyValueSelected = true;
                 } else {
                     this.hasAnyValueSelected = false;
                 }
-
-                this.selectedOptions = selectedOptions;
             },
         },
     },
@@ -380,8 +369,6 @@ export default {
             this.$emit('search', value);
         },
         onClear() {
-            this.selectedOptions = {};
-
             this.$emit('input', this.multiselect ? [] : '');
         },
         onSelectValue(value) {

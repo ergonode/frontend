@@ -4,7 +4,7 @@
  */
 
 export const get = ({
-    $axios, path, useCache = false,
-}) => $axios.$get(path, {
-    useCache,
-});
+    $axios,
+    path,
+    config,
+}) => $axios.$get(path, config);
