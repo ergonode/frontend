@@ -4,6 +4,7 @@
  */
 <template>
     <SelectList
+        :style="styles"
         :value="filterValue"
         :search-value="searchValue"
         :items="localOptions"
@@ -42,6 +43,9 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import {
+    DROPDOWN_MAX_HEIGHT,
+} from '@UI/assets/scss/_js-variables/sizes.scss';
 import AdvancedFilterShowOnly from '@UI/components/AdvancedFilters/AdvancedFilterShowOnly';
 import CheckBox from '@UI/components/CheckBox/CheckBox';
 import Divider from '@UI/components/Dividers/Divider';
@@ -93,6 +97,11 @@ export default {
         };
     },
     computed: {
+        styles() {
+            return {
+                maxHeight: DROPDOWN_MAX_HEIGHT,
+            };
+        },
         smallSize() {
             return SIZE.SMALL;
         },

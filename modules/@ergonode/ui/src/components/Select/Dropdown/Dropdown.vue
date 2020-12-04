@@ -12,6 +12,9 @@
 
 <script>
 import {
+    DROPDOWN_MAX_HEIGHT,
+} from '@UI/assets/scss/_js-variables/sizes.scss';
+import {
     getPositionForBrowser,
     isMouseInsideElement,
 } from '@UI/models/dragAndDrop/helpers';
@@ -85,7 +88,7 @@ export default {
                     const {
                         innerHeight,
                     } = window;
-                    let maxHeight = 250;
+                    let maxHeight = parseInt(DROPDOWN_MAX_HEIGHT, 10);
 
                     if (this.fixed) {
                         this.$refs.dropdown.style.maxHeight = `${maxHeight}px`;

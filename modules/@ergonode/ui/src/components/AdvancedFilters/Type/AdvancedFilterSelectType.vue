@@ -17,7 +17,6 @@
         <template #dropdown="{ onApply }">
             <template v-if="filter.options.length">
                 <AdvancedFilterSelectContent
-                    style="max-height: 250px;"
                     :value="localValue"
                     :options="filter.options"
                     :language-code="filter.languageCode"

@@ -13,32 +13,17 @@
             :disabled="disabled"
             v-model="checkValue">
         <label :for="associatedLabel">
-            <template v-if="reversed">
-                <span
-                    v-if="label"
-                    class="checkbox__label"
-                    v-text="label" />
-                <svg
-                    class="checkbox__box"
-                    viewBox="0 0 14 10">
-                    <path
-                        class="checkbox__mark"
-                        :d="markDrawingCommands" />
-                </svg>
-            </template>
-            <template v-else>
-                <svg
-                    class="checkbox__box"
-                    viewBox="0 0 14 10">
-                    <path
-                        class="checkbox__mark"
-                        :d="markDrawingCommands" />
-                </svg>
-                <span
-                    v-if="label"
-                    class="checkbox__label"
-                    v-text="label" />
-            </template>
+            <svg
+                class="checkbox__box"
+                viewBox="0 0 14 10">
+                <path
+                    class="checkbox__mark"
+                    :d="markDrawingCommands" />
+            </svg>
+            <span
+                v-if="label"
+                class="checkbox__label"
+                v-text="label" />
         </label>
         <slot name="append" />
     </div>
@@ -137,9 +122,7 @@ export default {
 
         & label {
             position: relative;
-            display: grid;
-            grid-auto-flow: column;
-            column-gap: 8px;
+            display: flex;
             align-items: center;
 
             &::after {
@@ -156,6 +139,7 @@ export default {
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_12_16;
             cursor: pointer;
+            margin-left: 8px;
         }
 
         &__box {
@@ -178,9 +162,11 @@ export default {
             }
 
             & label {
-                &::after {
-                    right: 0;
-                }
+                flex-direction: row-reverse;
+            }
+
+            #{$checkbox}__label {
+                margin-right: 8px;
             }
         }
 

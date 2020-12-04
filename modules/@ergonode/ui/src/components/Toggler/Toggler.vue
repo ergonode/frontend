@@ -12,24 +12,13 @@
             type="checkbox"
             @input="onValueChange">
         <label :for="associatedLabel">
-            <template v-if="reversed">
-                <span
-                    v-if="label"
-                    class="toggler__label"
-                    v-text="label" />
-                <div class="toggler__state-background">
-                    <div class="toggler__state" />
-                </div>
-            </template>
-            <template v-else>
-                <div class="toggler__state-background">
-                    <div class="toggler__state" />
-                </div>
-                <span
-                    v-if="label"
-                    class="toggler__label"
-                    v-text="label" />
-            </template>
+            <div class="toggler__state-background">
+                <div class="toggler__state" />
+            </div>
+            <span
+                v-if="label"
+                class="toggler__label"
+                v-text="label" />
         </label>
         <slot name="append" />
     </div>
@@ -109,9 +98,7 @@ export default {
 
         & label {
             position: relative;
-            display: grid;
-            grid-auto-flow: column;
-            column-gap: 8px;
+            display: flex;
             align-items: center;
         }
 
@@ -155,6 +142,7 @@ export default {
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_12_16;
             cursor: pointer;
+            margin-left: 8px;
         }
 
         &--reversed {
@@ -163,9 +151,11 @@ export default {
             }
 
             & label {
-                &::after {
-                    right: 0;
-                }
+                flex-direction: row-reverse;
+            }
+
+            #{$toggler}__label {
+                margin-right: 8px;
             }
         }
 
