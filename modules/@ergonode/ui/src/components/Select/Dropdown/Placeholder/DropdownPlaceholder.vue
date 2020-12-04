@@ -43,7 +43,6 @@ export default {
         classes() {
             return [
                 'dropdown-placeholder',
-                `dropdown-placeholder--${this.layoutOrientation}`,
             ];
         },
         isActionSlotVisible() {

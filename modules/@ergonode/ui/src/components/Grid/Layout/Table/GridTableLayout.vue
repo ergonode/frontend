@@ -521,7 +521,7 @@ export default {
                 length,
             } = this.visibleColumns;
 
-            const request = [];
+            const requests = [];
 
             for (let i = 0; i < length; i += 1) {
                 const column = this.visibleColumns[i];
@@ -533,7 +533,7 @@ export default {
                         && this.extendedComponents.dataCells[column.type]) {
                         this.setExtendedDataCell(column);
                     } else {
-                        request.push(this.setDataCell(column.type));
+                        requests.push(this.setDataCell(column.type));
                     }
                 }
 
@@ -544,7 +544,7 @@ export default {
                         && this.extendedComponents.dataFilterCells[column.filter.type]) {
                         this.setExtendedFilterDataCell(column);
                     } else {
-                        request.push(this.setDataFilterCell(column.filter.type));
+                        requests.push(this.setDataFilterCell(column.filter.type));
                     }
                 }
 
@@ -558,17 +558,17 @@ export default {
                 } = actionColumns[i];
 
                 if (typeof this.actionCellComponents[id] === 'undefined') {
-                    request.push(this.setActionCell(id));
+                    requests.push(this.setActionCell(id));
                 }
             }
 
-            await Promise.all(request);
+            await Promise.all(requests);
 
             this.actionColumns = actionColumns;
             this.orderedColumns = orderedColumns;
             this.columnWidths = columnWidths;
 
-            if (request.length) {
+            if (requests.length) {
                 this.$emit('rendered');
             }
         },

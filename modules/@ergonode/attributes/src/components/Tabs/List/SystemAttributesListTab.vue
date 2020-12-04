@@ -7,7 +7,7 @@
         <ListSearchSelectHeader
             v-if="isSelectLanguage"
             :title="$t('attribute.list.searchHeader2')"
-            @search-result="onSearch">
+            @search-value="onSearch">
             <template #select>
                 <TreeSelect
                     :value="language"
@@ -19,7 +19,7 @@
         <ListSearchHeader
             v-else
             :title="$t('attribute.list.searchHeader2')"
-            @search-result="onSearch" />
+            @search-value="onSearch" />
         <List>
             <Preloader v-if="isPrefetchingData" />
             <ListScrollableContainer v-else>

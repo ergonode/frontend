@@ -4,9 +4,10 @@
  */
 <template>
     <Button
-        :size="smallSize"
+        :size="size"
         :theme="theme"
         :title="title"
+        :floating="floating"
         @click.native="onExpand">
         <template #prepend="{ color }">
             <IconArrowDouble
@@ -42,11 +43,16 @@ export default {
     },
     props: {
         /**
-         * Determines state of expanded component
+         * The size of the component
          */
-        isExpanded: {
-            type: Boolean,
-            default: false,
+        size: {
+            type: String,
+            default: SIZE.SMALL,
+            validator: value => [
+                SIZE.TINY,
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
         },
         /**
          * The title of the component
@@ -62,6 +68,21 @@ export default {
             type: Number,
             default: 0,
         },
+        /**
+         * The floating state, absolute position relative to parent
+         * @values top, left, bottom, right
+         */
+        floating: {
+            type: Object,
+            default: null,
+        },
+        /**
+         * Determines state of expanded component
+         */
+        isExpanded: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         expandNumberClasses() {
@@ -74,9 +95,6 @@ export default {
         },
         theme() {
             return this.isExpanded ? THEME.PRIMARY : THEME.SECONDARY;
-        },
-        smallSize() {
-            return SIZE.SMALL;
         },
         iconExpandedState() {
             return this.isExpanded ? ARROW.UP : ARROW.DOWN;
