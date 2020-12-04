@@ -218,8 +218,6 @@ export default {
                     },
                 });
 
-                console.log(this.options);
-
                 this.isFetchingData = false;
             } catch (e) {
                 if (this.$axios.isCancel(e)) {
