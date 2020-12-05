@@ -27,6 +27,9 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import {
+    filterNestedArray,
+} from '@Core/models/arrayWrapper';
+import {
     getMappedObjectOption,
     getMappedObjectOptions,
 } from '@Core/models/mappers/translationsMapper';
@@ -108,19 +111,15 @@ export default {
         onSearch(value) {
             this.searchValue = value;
 
-            if (value) {
-                const lowerCaseSearchValue = this.searchValue.toLowerCase();
-
-                this.localOptions = this.allOptions.filter((option) => {
-                    if (option.value) {
-                        return option.value.toLowerCase().includes(lowerCaseSearchValue);
-                    }
-
-                    return option.key.toLowerCase().includes(lowerCaseSearchValue);
-                });
-            } else {
-                this.localOptions = this.allOptions;
-            }
+            this.localOptions = filterNestedArray(
+                this.allOptions,
+                value,
+                [
+                    'value',
+                    'key',
+                ],
+                false,
+            );
         },
         onFocus(isFocused) {
             if (!isFocused) {

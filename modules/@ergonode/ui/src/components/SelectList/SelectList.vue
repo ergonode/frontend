@@ -17,7 +17,13 @@
                         :value="searchValue"
                         :size="size"
                         @input="onSearch" />
-                    <slot name="appendSearchHeader" />
+                    <CheckBox
+                        v-if="selectable && !isSearchPlaceholderVisible"
+                        class="select-list-header__select-all"
+                        :value="rowsSelectionState"
+                        label="Select all"
+                        reversed
+                        @input="onSelectAll" />
                 </div>
                 <slot name="appendHeader" />
             </div>
@@ -58,10 +64,11 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import CheckBox from '@UI/components/CheckBox/CheckBox';
 import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
-import SelectListElement from '@UI/components/Select/List/SelectListElement';
-import SelectListSearch from '@UI/components/Select/List/SelectListSearch';
+import SelectListElement from '@UI/components/SelectList/SelectListElement';
+import SelectListSearch from '@UI/components/SelectList/SelectListSearch';
 import {
     VirtualScroll,
 } from 'vue-windowing';
@@ -74,6 +81,7 @@ export default {
         ClearSearchButton,
         SelectListElement,
         SelectListSearch,
+        CheckBox,
     },
     props: {
         /**
@@ -103,20 +111,6 @@ export default {
             default: 'Search...',
         },
         /**
-         * Determines if the component has possibility of search for value
-         */
-        searchable: {
-            type: Boolean,
-            default: false,
-        },
-        /**
-         * Determines if the component is multiple choice
-         */
-        multiselect: {
-            type: Boolean,
-            default: false,
-        },
-        /**
          * The size of the component
          */
         size: {
@@ -131,10 +125,31 @@ export default {
             type: Array,
             default: () => [],
         },
+        /**
+         * Determines if the component has possibility of search for value
+         */
+        searchable: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * Determines if the component is multiple choice
+         */
+        multiselect: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * Determines if the component is selectable
+         */
+        selectable: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
-            selectedOptions: {},
+            selectedItems: {},
         };
     },
     computed: {
@@ -146,6 +161,21 @@ export default {
                 title: 'No results',
                 subtitle: 'Clear the search and try with another phrase.',
             };
+        },
+        rowsSelectionState() {
+            const {
+                length,
+            } = Object.keys(this.selectedItems);
+
+            if (this.items.length === length) {
+                return 1;
+            }
+
+            if (length === 0) {
+                return 0;
+            }
+
+            return 2;
         },
         isAnyItem() {
             return this.items.length > 0;
@@ -167,32 +197,32 @@ export default {
         value: {
             immediate: true,
             handler() {
-                let selectedOptions = {};
+                let selectedItems = {};
 
                 if (Array.isArray(this.value) && this.value.length) {
                     this.value.forEach((option) => {
-                        selectedOptions[JSON.stringify(option)] = option;
+                        selectedItems[JSON.stringify(option)] = option;
                     });
                 } else if (!Array.isArray(this.value) && (this.value || this.value === 0)) {
-                    selectedOptions = {
+                    selectedItems = {
                         [JSON.stringify(this.value)]: this.value,
                     };
                 }
 
-                this.selectedOptions = selectedOptions;
+                this.selectedItems = selectedItems;
             },
         },
     },
     methods: {
         isItemSelected(index) {
-            return typeof this.selectedOptions[this.stringifiedItems[index]] !== 'undefined';
+            return typeof this.selectedItems[this.stringifiedItems[index]] !== 'undefined';
         },
         onValueChange(index) {
             const value = this.items[index];
 
             if (this.multiselect) {
                 const selectedItems = {
-                    ...this.selectedOptions,
+                    ...this.selectedItems,
                 };
 
                 if (this.isItemSelected(index)) {
@@ -204,6 +234,19 @@ export default {
                 this.$emit('input', Object.values(selectedItems));
             } else {
                 this.$emit('input', value);
+            }
+        },
+        onSelectAll(value) {
+            if (value) {
+                const selectedItems = {};
+
+                this.items.forEach((item, index) => {
+                    selectedItems[this.stringifiedItems[index]] = item;
+                });
+
+                this.$emit('input', this.items);
+            } else {
+                this.$emit('input', this.multiselect ? [] : '');
             }
         },
         onSearch(value) {
@@ -229,6 +272,10 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        &__select-all {
+            margin-right: 12px;
         }
     }
 </style>

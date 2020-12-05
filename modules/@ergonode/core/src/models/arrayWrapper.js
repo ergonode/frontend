@@ -60,6 +60,69 @@ export function swapItemPosition(array, pos1, pos2) {
 }
 
 /**
+ * Returns filtered array by given criteria
+ * @param array
+ * @param filterValue
+ * @param keys
+ * @param startsWith
+ * @returns {Array}
+ */
+export function filterNestedArray(
+    array = [],
+    filterValue = '',
+    keys = [],
+    startsWith = false,
+) {
+    if (filterValue === '') {
+        return array;
+    }
+
+    const lowerCaseSearchValue = filterValue.toLowerCase();
+
+    return array.reduce((result, {
+        children = [], ...object
+    }) => {
+        let isValidSearchKey = false;
+        let i = 0;
+
+        while (!isValidSearchKey && i < keys.length) {
+            const key = keys[i];
+
+            if (typeof object[key] !== 'undefined' && object[key] !== null && object[key] !== '') {
+                const lowerCaseObjectValue = String(object[key]).toLowerCase();
+
+                if ((startsWith && lowerCaseObjectValue.startsWith(lowerCaseSearchValue))
+                    || (!startsWith && lowerCaseObjectValue.includes(lowerCaseSearchValue))) {
+                    isValidSearchKey = true;
+
+                    result.push(object);
+
+                    return result;
+                }
+            }
+
+            i += 1;
+        }
+
+        const localChildren = filterNestedArray(
+            children,
+            lowerCaseSearchValue,
+            keys,
+            startsWith,
+        );
+
+        if (localChildren.length) {
+            result.push({
+                ...object,
+                children: localChildren,
+            });
+        }
+
+        return result;
+    }, []);
+}
+
+/**
  * Check if arrays are equal
  * @function
  * @param {Array} arr1
