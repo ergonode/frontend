@@ -45,7 +45,9 @@
                 :item="item"
                 :size="size"
                 :multiselect="multiselect"
-                @expand="onExpand" />
+                :selected="selectedItems[item.id]"
+                @expand="onExpand"
+                @input="onValueChange" />
         </template>
     </ExpandingList>
 </template>
@@ -81,11 +83,9 @@ export default {
         value: {
             type: [
                 Array,
-                String,
-                Number,
                 Object,
             ],
-            default: '',
+            default: () => [],
         },
         /**
          * Search value
@@ -142,6 +142,11 @@ export default {
             default: false,
         },
     },
+    data() {
+        return {
+            selectedItems: {},
+        };
+    },
     computed: {
         placeholder() {
             return {
@@ -165,7 +170,39 @@ export default {
             return this.isAnyItem || this.isAnySearchPhrase;
         },
     },
+    watch: {
+        value: {
+            immediate: true,
+            handler() {
+                if (Array.isArray(this.value)) {
+                    this.selectedItems = this.value.reduce((prev, curr) => {
+                        const tmp = prev;
+                        tmp[curr.id] = true;
+                        return tmp;
+                    }, {});
+                } else {
+                    this.selectedItems[this.value.id] = true;
+                }
+            },
+        },
+    },
     methods: {
+        onValueChange(item) {
+            if (this.multiselect) {
+                if (this.selectedItems[item.id]) {
+                    this.$emit('input', this.value.filter(({
+                        id,
+                    }) => id !== item.id));
+                } else {
+                    this.$emit('input', [
+                        ...this.value,
+                        item,
+                    ]);
+                }
+            } else {
+                this.$emit('input', item);
+            }
+        },
         onSearch(value) {
             this.$emit('search', value);
         },

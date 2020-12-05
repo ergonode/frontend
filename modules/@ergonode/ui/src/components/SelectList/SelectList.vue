@@ -197,19 +197,19 @@ export default {
         value: {
             immediate: true,
             handler() {
-                let selectedItems = {};
-
                 if (Array.isArray(this.value) && this.value.length) {
+                    const selectedItems = {};
+
                     this.value.forEach((option) => {
                         selectedItems[JSON.stringify(option)] = option;
                     });
+
+                    this.selectedItems = selectedItems;
                 } else if (!Array.isArray(this.value) && (this.value || this.value === 0)) {
-                    selectedItems = {
+                    this.selectedItems = {
                         [JSON.stringify(this.value)]: this.value,
                     };
                 }
-
-                this.selectedItems = selectedItems;
             },
         },
     },

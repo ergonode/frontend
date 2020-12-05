@@ -7,11 +7,10 @@
         <template #activator>
             <InputController>
                 <InputLabel
-                    :style="{ top: '-2px' }"
+                    :style="{ top: 0 }"
                     :required="required"
-                    :size="size"
                     :floating="true"
-                    :disabled="disabled"
+                    :disabled="isAllowedToCreate"
                     :label="label" />
                 <div class="category-select__header">
                     <div class="horizontal-container">
@@ -21,8 +20,10 @@
                             :is-expanded="isFiltersExpanded"
                             @click.native="onFiltersExpand" />
                         <Toggler
+                            v-model="isOnlySelectedVisible"
                             label="Show only selected"
-                            reversed />
+                            reversed
+                            @input="onToggleBetweenSelectedCategories" />
                     </div>
                     <div
                         v-show="isFiltersExpanded"
@@ -52,18 +53,22 @@
                     <TreeAccordion
                         v-if="isCategoryTreeSelected"
                         search-placeholder="Search for category…"
+                        :value="selectedOptions"
+                        :search-value="searchValue"
                         :items="categoryTrees[advancedFilterValues.categoryTree]"
                         :searchable="true"
                         :selectable="true"
                         :multiselect="true"
-                        :size="size"
+                        :expanded="isOnlySelectedVisible || searchValue !== ''"
+                        :size="smallSize"
+                        @input="onValueChange"
                         @search="onSearchTree" />
                     <SelectList
                         v-else
                         :value="selectedOptions"
                         :search-value="searchValue"
                         :items="categories"
-                        :size="size"
+                        :size="smallSize"
                         search-placeholder="Search for category…"
                         :searchable="true"
                         :selectable="true"
@@ -71,18 +76,18 @@
                         @input="onValueChange"
                         @search="onSearch">
                         <template #item="{ item, isSelected }">
-                            <ListElementAction :size="size">
+                            <ListElementAction :size="smallSize">
                                 <CheckBox :value="isSelected" />
                             </ListElementAction>
                             <ListElementDescription>
                                 <ListElementTitle
-                                    :size="size"
+                                    :size="smallSize"
                                     :title="item.label || `#${item.code}`" />
                             </ListElementDescription>
                         </template>
                     </SelectList>
                     <div
-                        v-show="categories.length"
+                        v-show="isAnyItem && !isCategoryTreeSelected"
                         class="category-select__expand-more">
                         <ExpandNumericButton
                             title="SHOW ALL"
@@ -112,9 +117,6 @@ import {
 import {
     filterNestedArray,
 } from '@Core/models/arrayWrapper';
-import {
-    getParsedTreeData,
-} from '@Trees/models/treeMapper';
 import {
     get,
 } from '@Trees/services';
@@ -157,18 +159,8 @@ export default {
          * Component value
          */
         value: {
-            type: [
-                String,
-                Array,
-            ],
-            default: '',
-        },
-        /**
-         * Determinate if the component is disabled
-         */
-        disabled: {
-            type: Boolean,
-            default: false,
+            type: Array,
+            default: () => [],
         },
         /**
          * Determines if the given component is required
@@ -176,17 +168,6 @@ export default {
         required: {
             type: Boolean,
             default: false,
-        },
-        /**
-         * The size of the component
-         */
-        size: {
-            type: String,
-            default: SIZE.SMALL,
-            validator: value => [
-                SIZE.SMALL,
-                SIZE.REGULAR,
-            ].indexOf(value) !== -1,
         },
     },
     async fetch() {
@@ -206,10 +187,12 @@ export default {
             categories: [],
             advancedFilterValues: {},
             isFiltersExpanded: false,
+            isOnlySelectedVisible: false,
             isItemsExpanded: false,
             isFetchingData: true,
             searchValue: '',
             categoryTrees: {},
+            allCategoryTrees: {},
         };
     },
     computed: {
@@ -218,6 +201,7 @@ export default {
                 'category-select__items',
                 {
                     'category-select__items--expanded': this.isItemsExpanded,
+                    'category-select__items--visible-expander': !this.isCategoryTreeSelected && this.isAnyItem,
                 },
             ];
         },
@@ -233,23 +217,13 @@ export default {
         isAnyItem() {
             return this.categories.length > 0;
         },
-        isAnySearchPhrase() {
-            return this.searchValue !== '';
-        },
-        isSelectContentVisible() {
-            return this.isAnyItem || this.isAnySearchPhrase;
-        },
         isAllowedToCreate() {
             return this.$hasAccess([
                 PRIVILEGES.CATEGORY.create,
             ]);
         },
         selectedOptions() {
-            if (Array.isArray(this.value)) {
-                return this.allCategories.filter(option => this.value.some(id => option.id === id));
-            }
-
-            return this.allCategories.find(option => option.id === this.value);
+            return this.allCategories.filter(option => this.value.some(id => option.id === id));
         },
         smallSize() {
             return SIZE.SMALL;
@@ -269,18 +243,34 @@ export default {
         extendedFilterComponents() {
             return this.$getExtendedComponents('@UI/components/AdvancedFilters/Type');
         },
-        advancedFilterValuesCount() {
-            return Object.keys(this.advancedFilterValues).length;
-        },
         isCategoryTreeSelected() {
             return Boolean(this.advancedFilterValues.categoryTree);
         },
     },
     methods: {
+        onToggleBetweenSelectedCategories(value) {
+            this.isOnlySelectedVisible = value;
+
+            if (this.isCategoryTreeSelected) {
+
+            } else {
+
+            }
+
+            // TODO: ''
+            // if (value) {
+            //     this.categories = this.selectedOptions;
+            // } else {
+            //     this.onSearch(this.searchValue);
+            // }
+        },
         async onAdvancedFilterChange(filters) {
             this.advancedFilterValues = filters;
 
-            if (this.isCategoryTreeSelected && typeof this.categoryTrees[filters.categoryTree] === 'undefined') {
+            if (this.isCategoryTreeSelected
+                && typeof this.categoryTrees[filters.categoryTree] === 'undefined') {
+                this.isFetchingData = true;
+
                 const categoryTree = await get({
                     $axios: this.$axios,
                     id: filters.categoryTree,
@@ -307,6 +297,12 @@ export default {
                     ...this.categoryTrees,
                     [filters.categoryTree]: getMappedCategories(categoryTree.categories),
                 };
+
+                this.allCategoryTrees = {
+                    ...this.categoryTrees,
+                };
+
+                this.isFetchingData = false;
             }
         },
         onClearAdvancedFilters() {
@@ -326,16 +322,20 @@ export default {
             );
         },
         onSearchTree(value) {
-            const array = filterNestedArray(
-                this.categoryTrees[this.advancedFilterValues.categoryTree],
-                value,
-                [
-                    'label',
-                    'code',
-                ],
-                true,
-            );
-            console.log(array, value);
+            this.searchValue = value;
+
+            this.categoryTrees = {
+                ...this.categoryTrees,
+                [this.advancedFilterValues.categoryTree]: filterNestedArray(
+                    this.allCategoryTrees[this.advancedFilterValues.categoryTree],
+                    value,
+                    [
+                        'label',
+                        'code',
+                    ],
+                    true,
+                ),
+            };
         },
         onValueChange(value) {
             this.$emit('input', value.map(({
@@ -385,13 +385,17 @@ export default {
             flex-direction: column;
             border: $BORDER_1_GREY;
             border-top: unset;
-            padding: 12px 0 48px;
+            padding: 12px 0;
             box-sizing: border-box;
             transition: border-color 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             will-change: border-color;
 
             &:not(&--expanded) {
                 max-height: 376px;
+            }
+
+            &--visible-expander {
+                padding-bottom: 48px;
             }
         }
 

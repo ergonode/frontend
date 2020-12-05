@@ -16,9 +16,10 @@
                 v-if="multiselect"
                 :size="size">
                 <CheckBox
-                    :value="item.expanded"
+                    :value="selected"
                     :disabled="item.disabled"
-                    @click.native.prevent />
+                    @click.native.stop
+                    @input="onSelect" />
             </ListElementAction>
             <ListElementDescription>
                 <ListElementTitle
@@ -78,6 +79,13 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if component is selected
+         */
+        selected: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         iconState() {
@@ -89,6 +97,9 @@ export default {
     methods: {
         onExpand() {
             this.$emit('expand', this.item);
+        },
+        onSelect() {
+            this.$emit('input', this.item);
         },
     },
 };
