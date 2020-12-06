@@ -3,32 +3,6 @@
  * See LICENSE for license details.
  */
 <template>
-    <!--    <Autocomplete-->
-    <!--        :value="categories"-->
-    <!--        :multiselect="true"-->
-    <!--        :clearable="true"-->
-    <!--        :searchable="true"-->
-    <!--        label="Category"-->
-    <!--        :disabled="disabled"-->
-    <!--        :error-messages="errors[categoryFieldKey]"-->
-    <!--        href="categories/autocomplete"-->
-    <!--        @input="onCategoriesValueChange">-->
-    <!--        <template #placeholder="{ isVisible }">-->
-    <!--            <DropdownPlaceholder-->
-    <!--                v-if="isVisible"-->
-    <!--                :title="placeholder.title"-->
-    <!--                :subtitle="placeholder.subtitle">-->
-    <!--                <template #action>-->
-    <!--                    <Button-->
-    <!--                        title="GO TO CATEGORIES"-->
-    <!--                        :size="smallSize"-->
-    <!--                        :disabled="!isAllowedToCreate"-->
-    <!--                        @click.native="onNavigateToCategories" />-->
-    <!--                </template>-->
-    <!--            </DropdownPlaceholder>-->
-    <!--        </template>-->
-    <!--    </Autocomplete>-->
-    <!--    <TreeAccordion />-->
     <CategorySelect
         :value="categories"
         @input="onCategoriesValueChange" />
@@ -44,9 +18,6 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
-import Button from '@UI/components/Button/Button';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import {
     mapActions,
     mapState,
@@ -56,9 +27,6 @@ export default {
     name: 'ProductFormCategory',
     components: {
         CategorySelect,
-        Autocomplete,
-        Button,
-        DropdownPlaceholder,
     },
     mixins: [
         formFeedbackMixin,

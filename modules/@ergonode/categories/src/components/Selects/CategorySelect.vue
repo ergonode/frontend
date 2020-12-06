@@ -8,9 +8,8 @@
             <InputController>
                 <InputLabel
                     :style="{ top: 0 }"
-                    :required="required"
                     :floating="true"
-                    :disabled="isAllowedToCreate"
+                    :disabled="isAllowedToCreateCategory"
                     :label="label" />
                 <div class="category-select__header">
                     <div class="horizontal-container">
@@ -71,6 +70,20 @@
                                 reversed
                                 @input="onSelectAll" />
                         </template>
+                        <template #body>
+                            <DropdownPlaceholder
+                                v-if="!isAnyCategoryInTree"
+                                :title="categoryTreePlaceholder.title"
+                                :subtitle="categoryTreePlaceholder.subtitle">
+                                <template #action>
+                                    <Button
+                                        title="GO TO CATEGORY TREE"
+                                        :size="smallSize"
+                                        :disabled="!isAllowedToUpdateTree"
+                                        @click.native="onNavigateToCategoryTree" />
+                                </template>
+                            </DropdownPlaceholder>
+                        </template>
                     </TreeAccordion>
                     <SelectList
                         v-else
@@ -92,6 +105,20 @@
                                 reversed
                                 @input="onSelectAll" />
                         </template>
+                        <template #body>
+                            <DropdownPlaceholder
+                                v-if="!isAnyCategory"
+                                :title="categoriesPlaceholder.title"
+                                :subtitle="categoriesPlaceholder.subtitle">
+                                <template #action>
+                                    <Button
+                                        title="GO TO CATEGORIES"
+                                        :size="smallSize"
+                                        :disabled="!isAllowedToCreateCategory"
+                                        @click.native="onNavigateToCategories" />
+                                </template>
+                            </DropdownPlaceholder>
+                        </template>
                         <template #item="{ item, isSelected }">
                             <ListElementAction :size="smallSize">
                                 <CheckBox :value="isSelected" />
@@ -104,13 +131,13 @@
                         </template>
                     </SelectList>
                     <div
-                        v-show="isAnyItem && !isCategoryTreeSelected"
+                        v-show="isAnyCategoryAfterFiltering && !isCategoryTreeSelected"
                         class="category-select__expand-more">
                         <ExpandNumericButton
                             title="SHOW ALL"
                             :size="tinySize"
                             :number="categories.length"
-                            :is-expanded="isItemsExpanded"
+                            :is-expanded="isCategoriesExpanded"
                             @click.native="onItemsExpand" />
                     </div>
                 </template>
@@ -120,9 +147,9 @@
 </template>
 
 <script>
-import PRIVILEGES from '@Categories/config/privileges';
+import CATEGORY_PRIVILEGES from '@Categories/config/privileges';
 import {
-    ROUTE_NAME,
+    ROUTE_NAME as CATEGORIES_ROUTE_NAME,
 } from '@Categories/config/routes';
 import {
     getAutocomplete,
@@ -135,11 +162,16 @@ import {
     dfsSearch,
     simpleSearch,
 } from '@Core/models/arrayWrapper';
+import TREE_PRIVILEGES from '@Trees/config/privileges';
+import {
+    ROUTE_NAME as CATEGORY_TREES_ROUTE_NAME,
+} from '@Trees/config/routes';
 import {
     get,
 } from '@Trees/services';
 import AdvancedFilters from '@UI/components/AdvancedFilters/AdvancedFilters';
 import AdvancedFiltersRemoveAllButton from '@UI/components/AdvancedFilters/AdvancedFiltersRemoveAllButton';
+import Button from '@UI/components/Button/Button';
 import CheckBox from '@UI/components/CheckBox/CheckBox';
 import InputController from '@UI/components/Input/InputController';
 import InputLabel from '@UI/components/Input/InputLabel';
@@ -171,6 +203,7 @@ export default {
         Preloader,
         SelectList,
         AdvancedFiltersRemoveAllButton,
+        Button,
     },
     props: {
         /**
@@ -179,13 +212,6 @@ export default {
         value: {
             type: Array,
             default: () => [],
-        },
-        /**
-         * Determines if the given component is required
-         */
-        required: {
-            type: Boolean,
-            default: false,
         },
     },
     async fetch() {
@@ -206,7 +232,7 @@ export default {
             advancedFilterValues: {},
             isFiltersExpanded: false,
             isOnlySelectedCategoriesVisible: false,
-            isItemsExpanded: false,
+            isCategoriesExpanded: false,
             isFetchingData: true,
             searchValue: '',
             categoryTrees: {},
@@ -218,8 +244,8 @@ export default {
             return [
                 'category-select__items',
                 {
-                    'category-select__items--expanded': this.isItemsExpanded,
-                    'category-select__items--visible-expander': !this.isCategoryTreeSelected && this.isAnyItem,
+                    'category-select__items--expanded': this.isCategoriesExpanded,
+                    'category-select__items--visible-expander': !this.isCategoryTreeSelected && this.isAnyCategoryAfterFiltering,
                 },
             ];
         },
@@ -237,18 +263,36 @@ export default {
         label() {
             return 'Category';
         },
-        placeholder() {
+        categoriesPlaceholder() {
             return {
                 title: 'No categories',
                 subtitle: 'There are no categories in the system, so you can create the first one.',
             };
         },
-        isAnyItem() {
+        categoryTreePlaceholder() {
+            return {
+                title: 'No categories in tree',
+                subtitle: 'There are no categories in the tree, so you can create the first one.',
+            };
+        },
+        isAnyCategoryAfterFiltering() {
             return this.categories.length > 0;
         },
-        isAllowedToCreate() {
+        isAnyCategory() {
+            return this.allCategories.length > 0;
+        },
+        isAnyCategoryInTree() {
+            return this.isCategoryTreeSelected
+                && this.allCategoryTrees[this.advancedFilterValues.categoryTree].length > 0;
+        },
+        isAllowedToCreateCategory() {
             return this.$hasAccess([
-                PRIVILEGES.CATEGORY.create,
+                CATEGORY_PRIVILEGES.CATEGORY.create,
+            ]);
+        },
+        isAllowedToUpdateTree() {
+            return this.$hasAccess([
+                TREE_PRIVILEGES.CATEGORY_TREE.update,
             ]);
         },
         selectedOptions() {
@@ -431,11 +475,19 @@ export default {
             this.isFiltersExpanded = !this.isFiltersExpanded;
         },
         onItemsExpand() {
-            this.isItemsExpanded = !this.isItemsExpanded;
+            this.isCategoriesExpanded = !this.isCategoriesExpanded;
         },
         onNavigateToCategories() {
             this.$router.push({
-                name: ROUTE_NAME.CATEGORIES_GRID,
+                name: CATEGORIES_ROUTE_NAME.CATEGORIES_GRID,
+            });
+        },
+        onNavigateToCategoryTree() {
+            this.$router.push({
+                name: CATEGORY_TREES_ROUTE_NAME.CATEGORY_TREE_EDIT,
+                params: {
+                    id: Object.keys(this.advancedFilterValues.categoryTree)[0],
+                },
             });
         },
         getFilterValue() {
