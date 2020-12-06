@@ -116,7 +116,6 @@ export default {
                     'value',
                     'key',
                 ],
-                (searchValue, objectValue) => objectValue.includes(searchValue),
             );
         },
         onFocus(isFocused) {

@@ -20,7 +20,7 @@
                             :is-expanded="isFiltersExpanded"
                             @click.native="onFiltersExpand" />
                         <Toggler
-                            v-model="isOnlySelectedVisible"
+                            v-model="isOnlySelectedCategoriesVisible"
                             label="Show only selected"
                             reversed
                             @input="onToggleBetweenSelectedCategories" />
@@ -60,7 +60,7 @@
                         :searchable="true"
                         :selectable="true"
                         :multiselect="true"
-                        :expanded="isOnlySelectedVisible || searchValue !== ''"
+                        :expanded="true"
                         @input="onValueChange"
                         @search="onSearchTree" />
                     <SelectList
@@ -188,7 +188,7 @@ export default {
             categories: [],
             advancedFilterValues: {},
             isFiltersExpanded: false,
-            isOnlySelectedVisible: false,
+            isOnlySelectedCategoriesVisible: false,
             isItemsExpanded: false,
             isFetchingData: true,
             searchValue: '',
@@ -226,6 +226,12 @@ export default {
         selectedOptions() {
             return this.allCategories.filter(option => this.value.some(id => option.id === id));
         },
+        selectedOptionsLabels() {
+            return this.selectedOptions.map(({
+                label,
+                code,
+            }) => label || code);
+        },
         smallSize() {
             return SIZE.SMALL;
         },
@@ -250,40 +256,32 @@ export default {
     },
     methods: {
         onToggleBetweenSelectedCategories(value) {
-            this.isOnlySelectedVisible = value;
+            this.isOnlySelectedCategoriesVisible = value;
 
-            // console.log(simpleSearch(
-            //     this.allCategoryTrees[this.advancedFilterValues.categoryTree],
-            //     this.selectedOptions.map(({
-            //         label,
-            //         code,
-            //     }) => label || code),
-            //     [
-            //         'label',
-            //         'code',
-            //     ],
-            //     true,
-            // ));
-            //
-            // if (this.isCategoryTreeSelected) {
-            //     this.categoryTrees = {
-            //         ...this.categoryTrees,
-            //         [this.advancedFilterValues.categoryTree]: simpleSearch(
-            //             this.allCategoryTrees[this.advancedFilterValues.categoryTree],
-            //             this.selectedOptions.map(({
-            //                 label,
-            //                 code,
-            //             }) => label || code),
-            //             [
-            //                 'label',
-            //                 'code',
-            //             ],
-            //             true,
-            //         ),
-            //     };
-            // } else {
-            //
-            // }
+            if (this.isCategoryTreeSelected) {
+                this.categoryTrees = {
+                    ...this.categoryTrees,
+                    [this.advancedFilterValues.categoryTree]: dfsSearch(
+                        this.allCategoryTrees[this.advancedFilterValues.categoryTree],
+                        this.getFilterValue(),
+                        [
+                            'label',
+                            'code',
+                        ],
+                        this.onSearchConditionCallback,
+                    ),
+                };
+            } else {
+                this.categories = simpleSearch(
+                    this.allCategories,
+                    this.getFilterValue(),
+                    [
+                        'label',
+                        'code',
+                    ],
+                    this.onSearchConditionCallback,
+                );
+            }
         },
         async onAdvancedFilterChange(filters) {
             this.advancedFilterValues = filters;
@@ -332,14 +330,14 @@ export default {
         onSearch(value) {
             this.searchValue = value;
 
-            this.categories = dfsSearch(
+            this.categories = simpleSearch(
                 this.allCategories,
-                value,
+                this.getFilterValue(),
                 [
                     'label',
                     'code',
                 ],
-                (searchValue, objectValue) => objectValue.startsWith(searchValue),
+                this.onSearchConditionCallback,
             );
         },
         onSearchTree(value) {
@@ -347,17 +345,25 @@ export default {
 
             this.categoryTrees = {
                 ...this.categoryTrees,
-                // [this.advancedFilterValues.categoryTree]: dfsSearch(),
                 [this.advancedFilterValues.categoryTree]: dfsSearch(
                     this.allCategoryTrees[this.advancedFilterValues.categoryTree],
-                    value,
+                    this.getFilterValue(),
                     [
                         'label',
                         'code',
                     ],
-                    (searchValue, objectValue) => objectValue.startsWith(searchValue),
+                    this.onSearchConditionCallback,
                 ),
             };
+        },
+        onSearchConditionCallback(filterValues, searchValue) {
+            if (this.isOnlySelectedCategoriesVisible) {
+                return filterValues.some(
+                    value => searchValue === value && value.startsWith(this.searchValue),
+                );
+            }
+
+            return filterValues.some(value => searchValue.startsWith(value));
         },
         onValueChange(value) {
             this.$emit('input', value.map(({
@@ -374,6 +380,9 @@ export default {
             this.$router.push({
                 name: ROUTE_NAME.CATEGORIES_GRID,
             });
+        },
+        getFilterValue() {
+            return this.isOnlySelectedCategoriesVisible ? this.selectedOptionsLabels : this.searchValue;
         },
     },
 };

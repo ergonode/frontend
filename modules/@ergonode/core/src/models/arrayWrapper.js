@@ -73,7 +73,10 @@ export function simpleSearch(
     array = [],
     filterValue = '',
     keys = [],
-    condition = () => false,
+    condition = (
+        lowerCaseFilterValue,
+        searchValue,
+    ) => lowerCaseFilterValue.some(value => value.includes(searchValue)),
 ) {
     const isArray = Array.isArray(filterValue);
 
@@ -91,7 +94,7 @@ export function simpleSearch(
         if (typeof node[key] !== 'undefined' && node[key] !== null && node[key] !== '') {
             const objectValue = String(node[key]).toLowerCase();
 
-            return lowerCaseFilterValue.some(value => condition(value, objectValue));
+            return condition(lowerCaseFilterValue, objectValue);
         }
 
         return false;
@@ -110,7 +113,10 @@ export function dfsSearch(
     array = [],
     filterValue = '',
     keys = [],
-    condition = () => false,
+    condition = (
+        lowerCaseFilterValue,
+        searchValue,
+    ) => lowerCaseFilterValue.some(value => value.includes(searchValue)),
 ) {
     const isArray = Array.isArray(filterValue);
 
@@ -154,7 +160,7 @@ export function dfsSearch(
             if (typeof node[key] !== 'undefined' && node[key] !== null && node[key] !== '') {
                 const objectValue = String(node[key]).toLowerCase();
 
-                if (lowerCaseFilterValue.some(value => condition(value, objectValue))) {
+                if (condition(lowerCaseFilterValue, objectValue)) {
                     callback();
                 }
             }

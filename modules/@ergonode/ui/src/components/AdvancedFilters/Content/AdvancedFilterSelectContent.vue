@@ -123,7 +123,6 @@ export default {
                     'label',
                     'code',
                 ],
-                (searchValue, objectValue) => objectValue.includes(searchValue),
             );
         },
         onSelectValue(value) {
