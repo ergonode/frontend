@@ -3,6 +3,8 @@
  * See LICENSE for license details.
  */
 /** @module arrayWrapper */
+import fetchListGroupDataMixin from '@Core/mixins/list/fetchListGroupDataMixin';
+
 /**
  * Returns object with max value in array by object key
  * @function
@@ -64,62 +66,138 @@ export function swapItemPosition(array, pos1, pos2) {
  * @param array
  * @param filterValue
  * @param keys
- * @param startsWith
+ * @param condition
  * @returns {Array}
  */
-export function filterNestedArray(
+export function simpleSearch(
     array = [],
     filterValue = '',
     keys = [],
-    startsWith = false,
+    condition = () => false,
 ) {
-    if (filterValue === '') {
+    const isArray = Array.isArray(filterValue);
+
+    if (filterValue === '' || (isArray && filterValue.length === 0)) {
         return array;
     }
 
-    const lowerCaseSearchValue = filterValue.toLowerCase();
+    const lowerCaseFilterValue = isArray
+        ? filterValue.map(value => value.toLowerCase())
+        : [
+            filterValue.toLowerCase(),
+        ];
 
-    return array.reduce((result, {
-        children = [], ...object
-    }) => {
-        let isValidSearchKey = false;
-        let i = 0;
+    return array.filter(node => keys.some((key) => {
+        if (typeof node[key] !== 'undefined' && node[key] !== null && node[key] !== '') {
+            const objectValue = String(node[key]).toLowerCase();
 
-        while (!isValidSearchKey && i < keys.length) {
-            const key = keys[i];
+            return lowerCaseFilterValue.some(value => condition(value, objectValue));
+        }
 
-            if (typeof object[key] !== 'undefined' && object[key] !== null && object[key] !== '') {
-                const lowerCaseObjectValue = String(object[key]).toLowerCase();
+        return false;
+    }));
+}
 
-                if ((startsWith && lowerCaseObjectValue.startsWith(lowerCaseSearchValue))
-                    || (!startsWith && lowerCaseObjectValue.includes(lowerCaseSearchValue))) {
-                    isValidSearchKey = true;
+/**
+ * Returns filtered array by given criteria
+ * @param array
+ * @param filterValue
+ * @param keys
+ * @param condition
+ * @returns {Array}
+ */
+export function dfsSearch(
+    array = [],
+    filterValue = '',
+    keys = [],
+    condition = () => false,
+) {
+    const isArray = Array.isArray(filterValue);
 
-                    result.push(object);
+    if (filterValue === '' || (isArray && filterValue.length === 0)) {
+        return array;
+    }
 
-                    return result;
-                }
+    const currentPath = [];
+    const lowerCaseFilterValue = isArray
+        ? filterValue.map(value => value.toLowerCase())
+        : [
+            filterValue.toLowerCase(),
+        ];
+
+    function depthFirstTraversal(o, fn) {
+        currentPath.push(o);
+
+        if (o.children) {
+            for (let i = 0, len = o.children.length; i < len; i += 1) {
+                depthFirstTraversal(o.children[i], fn);
             }
-
-            i += 1;
         }
 
-        const localChildren = filterNestedArray(
-            children,
-            lowerCaseSearchValue,
-            keys,
-            startsWith,
-        );
+        fn.call(null, o, currentPath);
+        currentPath.pop();
+    }
 
-        if (localChildren.length) {
-            result.push({
-                ...object,
-                children: localChildren,
+    function copyNode(node) {
+        const n = {
+            ...node,
+        };
+
+        if (n.children) { n.children = []; }
+
+        return n;
+    }
+
+    function filterTree(root) {
+        // eslint-disable-next-line no-param-reassign
+        root.copied = copyNode(root);
+        const filteredResult = root.copied;
+
+        depthFirstTraversal(root, (node, branch) => {
+            keys.forEach((key) => {
+                if (typeof node[key] !== 'undefined' && node[key] !== null && node[key] !== '') {
+                    const objectValue = String(node[key]).toLowerCase();
+
+                    if (lowerCaseFilterValue.some(value => condition(value, objectValue))) {
+                        for (let i = 0, len = branch.length; i < len; i += 1) {
+                            if (!branch[i].copied) {
+                                // eslint-disable-next-line no-param-reassign
+                                branch[i].copied = copyNode(branch[i]);
+                                branch[i - 1].copied.children.push(branch[i].copied);
+                            }
+                        }
+                    }
+                }
             });
+        });
+
+        depthFirstTraversal(root, (node) => {
+            // eslint-disable-next-line no-param-reassign
+            delete node.copied;
+        });
+
+        if (filteredResult.children && !filteredResult.children.length) {
+            return null;
         }
 
-        return result;
-    }, []);
+        return filteredResult;
+    }
+
+    function filterTreeList(list) {
+        const filteredList = [];
+
+        for (let i = 0; i < list.length; i += 1) {
+            const filteredLeaf = filterTree(list[i]);
+
+            if (filteredLeaf) {
+                filteredList.push(filteredLeaf);
+            }
+        }
+
+        return filteredList;
+    }
+
+    return filterTreeList(array);
 }
 
 /**

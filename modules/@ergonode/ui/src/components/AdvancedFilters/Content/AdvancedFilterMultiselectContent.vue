@@ -44,7 +44,7 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import {
-    filterNestedArray,
+    simpleSearch,
 } from '@Core/models/arrayWrapper';
 import {
     DROPDOWN_MAX_HEIGHT,
@@ -133,14 +133,14 @@ export default {
         onSearch(value) {
             this.searchValue = value;
 
-            this.localOptions = filterNestedArray(
+            this.localOptions = simpleSearch(
                 this.options,
                 value,
                 [
                     'value',
                     'key',
                 ],
-                false,
+                (searchValue, objectValue) => objectValue.includes(searchValue),
             );
         },
         onSelectValue(value) {

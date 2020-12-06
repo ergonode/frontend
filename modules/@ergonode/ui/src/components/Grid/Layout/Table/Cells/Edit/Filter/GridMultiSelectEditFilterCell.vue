@@ -29,7 +29,7 @@ import {
 } from '@Core/defaults/theme';
 import {
     arraysAreEqual,
-    filterNestedArray,
+    simpleSearch,
 } from '@Core/models/arrayWrapper';
 import {
     getMappedMatchedArrayOptions,
@@ -112,14 +112,14 @@ export default {
         onSearch(value) {
             this.searchValue = value;
 
-            this.localOptions = filterNestedArray(
+            this.localOptions = simpleSearch(
                 this.allOptions,
                 value,
                 [
                     'value',
                     'key',
                 ],
-                false,
+                (searchValue, objectValue) => objectValue.includes(searchValue),
             );
         },
         onFocus(isFocused) {

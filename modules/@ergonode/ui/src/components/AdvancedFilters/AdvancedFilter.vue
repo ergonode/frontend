@@ -351,6 +351,7 @@ export default {
         position: relative;
         display: flex;
         height: 32px;
+        border: $BORDER_2_WHITESMOKE;
         box-sizing: border-box;
         background-color: $WHITESMOKE;
         cursor: pointer;
@@ -422,16 +423,8 @@ export default {
         }
 
         &--selected {
-            border: $BORDER_2_GREEN;
+            border-color: $GREEN;
             background-color: $WHITE;
-
-            #{$filter}__label {
-                padding-left: 6px;
-            }
-
-            #{$filter}__details {
-                padding-right: 2px;
-            }
         }
     }
 </style>

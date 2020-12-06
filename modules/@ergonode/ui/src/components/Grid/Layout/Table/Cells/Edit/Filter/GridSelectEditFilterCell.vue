@@ -27,7 +27,7 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import {
-    filterNestedArray,
+    simpleSearch,
 } from '@Core/models/arrayWrapper';
 import {
     getMappedObjectOption,
@@ -111,14 +111,14 @@ export default {
         onSearch(value) {
             this.searchValue = value;
 
-            this.localOptions = filterNestedArray(
+            this.localOptions = simpleSearch(
                 this.allOptions,
                 value,
                 [
                     'value',
                     'key',
                 ],
-                false,
+                (searchValue, objectValue) => objectValue.includes(searchValue),
             );
         },
         onFocus(isFocused) {

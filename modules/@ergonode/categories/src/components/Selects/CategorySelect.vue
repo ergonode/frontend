@@ -56,11 +56,11 @@
                         :value="selectedOptions"
                         :search-value="searchValue"
                         :items="categoryTrees[advancedFilterValues.categoryTree]"
+                        :size="smallSize"
                         :searchable="true"
                         :selectable="true"
                         :multiselect="true"
                         :expanded="isOnlySelectedVisible || searchValue !== ''"
-                        :size="smallSize"
                         @input="onValueChange"
                         @search="onSearchTree" />
                     <SelectList
@@ -115,7 +115,8 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import {
-    filterNestedArray,
+    dfsSearch,
+    simpleSearch,
 } from '@Core/models/arrayWrapper';
 import {
     get,
@@ -251,17 +252,37 @@ export default {
         onToggleBetweenSelectedCategories(value) {
             this.isOnlySelectedVisible = value;
 
-            if (this.isCategoryTreeSelected) {
-
-            } else {
-
-            }
-
-            // TODO: ''
-            // if (value) {
-            //     this.categories = this.selectedOptions;
+            // console.log(simpleSearch(
+            //     this.allCategoryTrees[this.advancedFilterValues.categoryTree],
+            //     this.selectedOptions.map(({
+            //         label,
+            //         code,
+            //     }) => label || code),
+            //     [
+            //         'label',
+            //         'code',
+            //     ],
+            //     true,
+            // ));
+            //
+            // if (this.isCategoryTreeSelected) {
+            //     this.categoryTrees = {
+            //         ...this.categoryTrees,
+            //         [this.advancedFilterValues.categoryTree]: simpleSearch(
+            //             this.allCategoryTrees[this.advancedFilterValues.categoryTree],
+            //             this.selectedOptions.map(({
+            //                 label,
+            //                 code,
+            //             }) => label || code),
+            //             [
+            //                 'label',
+            //                 'code',
+            //             ],
+            //             true,
+            //         ),
+            //     };
             // } else {
-            //     this.onSearch(this.searchValue);
+            //
             // }
         },
         async onAdvancedFilterChange(filters) {
@@ -311,14 +332,14 @@ export default {
         onSearch(value) {
             this.searchValue = value;
 
-            this.categories = filterNestedArray(
+            this.categories = simpleSearch(
                 this.allCategories,
                 value,
                 [
                     'label',
                     'code',
                 ],
-                false,
+                (searchValue, objectValue) => objectValue.startsWith(searchValue),
             );
         },
         onSearchTree(value) {
@@ -326,14 +347,15 @@ export default {
 
             this.categoryTrees = {
                 ...this.categoryTrees,
-                [this.advancedFilterValues.categoryTree]: filterNestedArray(
+                // [this.advancedFilterValues.categoryTree]: dfsSearch(),
+                [this.advancedFilterValues.categoryTree]: dfsSearch(
                     this.allCategoryTrees[this.advancedFilterValues.categoryTree],
                     value,
                     [
                         'label',
                         'code',
                     ],
-                    true,
+                    (searchValue, objectValue) => objectValue.startsWith(searchValue),
                 ),
             };
         },

@@ -10,7 +10,7 @@
             class="search-text-field"
             :size="smallSize"
             placeholder="Search..."
-            @input="debouncedSearch"
+            @input="onDebounceSearch"
             @focus="onSearchFocus">
             <template #append>
                 <IconSearch :fill-color="searchIconFillColor" />
@@ -96,10 +96,10 @@ export default {
         },
     },
     created() {
-        this.debouncedSearch = debounce(this.onSearch, 500);
+        this.onDebounceSearch = debounce(this.onSearch, 500);
     },
     beforeDestroy() {
-        delete this.debouncedSearch;
+        delete this.onDebounceSearch;
     },
     methods: {
         onSearch(value) {
