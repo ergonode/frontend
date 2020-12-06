@@ -332,7 +332,7 @@ export default {
         onSearch(value) {
             this.searchValue = value;
 
-            this.categories = simpleSearch(
+            this.categories = dfsSearch(
                 this.allCategories,
                 value,
                 [

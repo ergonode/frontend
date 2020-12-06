@@ -99,7 +99,7 @@ export function simpleSearch(
 }
 
 /**
- * Returns filtered array by given criteria
+ * Returns filtered tree structure by given criteria
  * @param array
  * @param filterValue
  * @param keys
@@ -125,20 +125,21 @@ export function dfsSearch(
             filterValue.toLowerCase(),
         ];
 
-    function depthFirstTraversal(o, fn) {
-        currentPath.push(o);
+    const depthFirstTraversal = (root, callback) => {
+        currentPath.push(root);
 
-        if (o.children) {
-            for (let i = 0, len = o.children.length; i < len; i += 1) {
-                depthFirstTraversal(o.children[i], fn);
+        if (root.children) {
+            for (let i = 0; i < root.children.length; i += 1) {
+                depthFirstTraversal(root.children[i], callback);
             }
         }
 
-        fn.call(null, o, currentPath);
-        currentPath.pop();
-    }
+        callback(root, currentPath);
 
-    function copyNode(node) {
+        currentPath.pop();
+    };
+
+    const copyNode = (node) => {
         const n = {
             ...node,
         };
@@ -146,26 +147,32 @@ export function dfsSearch(
         if (n.children) { n.children = []; }
 
         return n;
-    }
+    };
 
-    function filterTree(root) {
+    const lookAtKeyedValues = (node, callback) => {
+        keys.forEach((key) => {
+            if (typeof node[key] !== 'undefined' && node[key] !== null && node[key] !== '') {
+                const objectValue = String(node[key]).toLowerCase();
+
+                if (lowerCaseFilterValue.some(value => condition(value, objectValue))) {
+                    callback();
+                }
+            }
+        });
+    };
+
+    const filterTree = (root) => {
         // eslint-disable-next-line no-param-reassign
         root.copied = copyNode(root);
         const filteredResult = root.copied;
 
         depthFirstTraversal(root, (node, branch) => {
-            keys.forEach((key) => {
-                if (typeof node[key] !== 'undefined' && node[key] !== null && node[key] !== '') {
-                    const objectValue = String(node[key]).toLowerCase();
-
-                    if (lowerCaseFilterValue.some(value => condition(value, objectValue))) {
-                        for (let i = 0, len = branch.length; i < len; i += 1) {
-                            if (!branch[i].copied) {
-                                // eslint-disable-next-line no-param-reassign
-                                branch[i].copied = copyNode(branch[i]);
-                                branch[i - 1].copied.children.push(branch[i].copied);
-                            }
-                        }
+            lookAtKeyedValues(node, () => {
+                for (let i = 0, len = branch.length; i < len; i += 1) {
+                    if (!branch[i].copied) {
+                        // eslint-disable-next-line no-param-reassign
+                        branch[i].copied = copyNode(branch[i]);
+                        branch[i - 1].copied.children.push(branch[i].copied);
                     }
                 }
             });
@@ -176,28 +183,35 @@ export function dfsSearch(
             delete node.copied;
         });
 
-        if (filteredResult.children && !filteredResult.children.length) {
-            return null;
+        if ((filteredResult.children && !filteredResult.children.length)
+            || typeof filteredResult.children === 'undefined') {
+            let result = null;
+
+            lookAtKeyedValues(filteredResult, () => {
+                result = filteredResult;
+            });
+
+            return result;
         }
 
         return filteredResult;
-    }
+    };
 
-    function filterTreeList(list) {
+    function searchForMultipleRoots(list) {
         const filteredList = [];
 
         for (let i = 0; i < list.length; i += 1) {
-            const filteredLeaf = filterTree(list[i]);
+            const filteredTree = filterTree(list[i]);
 
-            if (filteredLeaf) {
-                filteredList.push(filteredLeaf);
+            if (filteredTree) {
+                filteredList.push(filteredTree);
             }
         }
 
         return filteredList;
     }
 
-    return filterTreeList(array);
+    return searchForMultipleRoots(array);
 }
 
 /**
