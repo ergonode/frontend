@@ -46,8 +46,8 @@ export default {
         },
         placeholder() {
             return {
-                title: 'No categories',
-                subtitle: 'There are no categories in the system, so you can create the first one.',
+                title: this.$t('category.grid.placeholderTitle'),
+                subtitle: this.$t('category.grid.placeholderSubtitle'),
             };
         },
         isAllowedToCreate() {

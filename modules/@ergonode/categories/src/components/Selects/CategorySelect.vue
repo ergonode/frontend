@@ -14,13 +14,13 @@
                 <div class="category-select__header">
                     <div class="horizontal-container">
                         <ExpandNumericButton
-                            title="FILTERS"
+                            :title="$t('category.form.expandFilterButton')"
                             :number="isCategoryTreeSelected ? 1 : 0"
                             :is-expanded="isFiltersExpanded"
                             @click.native="onFiltersExpand" />
                         <Toggler
                             v-model="isOnlySelectedCategoriesVisible"
-                            label="Show only selected"
+                            :label="$t('category.form.toggleVisibleToggler')"
                             reversed
                             @input="onToggleBetweenSelectedCategories" />
                     </div>
@@ -36,7 +36,7 @@
                             <template #removeAllButton>
                                 <AdvancedFiltersRemoveAllButton
                                     v-if="isCategoryTreeSelected"
-                                    title="Clear"
+                                    :title="$t('core.buttons.clear')"
                                     @click.native="onClearAdvancedFilters" />
                                 <div v-else />
                             </template>
@@ -51,7 +51,7 @@
                 <template v-else>
                     <TreeAccordion
                         v-if="isCategoryTreeSelected"
-                        search-placeholder="Search for category…"
+                        :search-placeholder="$t('category.form.searchPlaceholder')"
                         :value="selectedOptions"
                         :search-value="searchValue"
                         :items="categoryTrees[advancedFilterValues.categoryTree]"
@@ -66,7 +66,7 @@
                             <CheckBox
                                 class="select-list-header-select-all"
                                 :value="rowsSelectionState"
-                                label="Select all"
+                                :label="$t('category.form.selectAllCheckBox')"
                                 reversed
                                 @input="onSelectAll" />
                         </template>
@@ -77,7 +77,7 @@
                                 :subtitle="categoryTreePlaceholder.subtitle">
                                 <template #action>
                                     <Button
-                                        title="GO TO CATEGORY TREE"
+                                        :title="$t('categoryTree.form.noCategoryTreeButton')"
                                         :size="smallSize"
                                         :disabled="!isAllowedToUpdateTree"
                                         @click.native="onNavigateToCategoryTree" />
@@ -91,7 +91,7 @@
                         :search-value="searchValue"
                         :items="categories"
                         :size="smallSize"
-                        search-placeholder="Search for category…"
+                        :search-placeholder="$t('category.form.searchPlaceholder')"
                         :searchable="true"
                         :selectable="true"
                         :multiselect="true"
@@ -101,7 +101,7 @@
                             <CheckBox
                                 class="select-list-header-select-all"
                                 :value="rowsSelectionState"
-                                label="Select all"
+                                :label="$t('category.form.selectAllCheckBox')"
                                 reversed
                                 @input="onSelectAll" />
                         </template>
@@ -112,7 +112,7 @@
                                 :subtitle="categoriesPlaceholder.subtitle">
                                 <template #action>
                                     <Button
-                                        title="GO TO CATEGORIES"
+                                        :title="$t('category.form.noCategoryButton')"
                                         :size="smallSize"
                                         :disabled="!isAllowedToCreateCategory"
                                         @click.native="onNavigateToCategories" />
@@ -134,7 +134,7 @@
                         v-show="isAnyCategoryAfterFiltering && !isCategoryTreeSelected"
                         class="category-select__expand-more">
                         <ExpandNumericButton
-                            title="SHOW ALL"
+                            :title="$t('category.form.showAllExpandNumericButton')"
                             :size="tinySize"
                             :number="categories.length"
                             :is-expanded="isCategoriesExpanded"
@@ -250,50 +250,49 @@ export default {
             ];
         },
         rowsSelectionState() {
-            if (this.value.length === this.categories.length) {
-                return 1;
+            if (this.isCategoryTreeSelected) {
+                const categoriesInTree = this.categoryTrees[this.advancedFilterValues.categoryTree];
+                const categoriesIdsInTree = this.selectedTreeCategoriesIds.filter(
+                    categoryId => this.value.some(
+                        id => id === categoryId,
+                    ),
+                );
+
+                if (categoriesIdsInTree.length === 0) {
+                    return 0;
+                }
+
+                if (categoriesIdsInTree.length === categoriesInTree.length) {
+                    return 1;
+                }
+
+                return 2;
             }
 
             if (this.value.length === 0) {
                 return 0;
             }
 
+            if (this.value.length === this.categories.length) {
+                return 1;
+            }
+
             return 2;
         },
         label() {
-            return 'Category';
+            return this.$t('category.form.selectLabel');
         },
         categoriesPlaceholder() {
             return {
-                title: 'No categories',
-                subtitle: 'There are no categories in the system, so you can create the first one.',
+                title: this.$t('category.grid.placeholderTitle'),
+                subtitle: this.$t('category.grid.placeholderSubtitle'),
             };
         },
         categoryTreePlaceholder() {
             return {
-                title: 'No categories in tree',
-                subtitle: 'There are no categories in the tree, so you can create the first one.',
+                title: this.$t('categoryTree.grid.placeholderTitle'),
+                subtitle: this.$t('categoryTree.grid.placeholderSubtitle'),
             };
-        },
-        isAnyCategoryAfterFiltering() {
-            return this.categories.length > 0;
-        },
-        isAnyCategory() {
-            return this.allCategories.length > 0;
-        },
-        isAnyCategoryInTree() {
-            return this.isCategoryTreeSelected
-                && this.allCategoryTrees[this.advancedFilterValues.categoryTree].length > 0;
-        },
-        isAllowedToCreateCategory() {
-            return this.$hasAccess([
-                CATEGORY_PRIVILEGES.CATEGORY.create,
-            ]);
-        },
-        isAllowedToUpdateTree() {
-            return this.$hasAccess([
-                TREE_PRIVILEGES.CATEGORY_TREE.update,
-            ]);
         },
         selectedOptions() {
             return this.allCategories.filter(option => this.value.some(id => option.id === id));
@@ -315,38 +314,65 @@ export default {
                 {
                     id: 'categoryTree',
                     type: 'CATEGORY_TREE',
-                    label: 'Category tree',
+                    label: this.$t('categoryTree.advancedFilter.label'),
                 },
             ];
         },
         extendedFilterComponents() {
             return this.$getExtendedComponents('@UI/components/AdvancedFilters/Type');
         },
+        selectedTreeCategoriesIds() {
+            if (!this.isCategoryTreeSelected) {
+                return [];
+            }
+
+            const getMappedCategoriesIds = (treeCategories = [], result = []) => {
+                const children = result;
+
+                treeCategories.forEach((treeCategory) => {
+                    children.push(treeCategory.id);
+
+                    if (treeCategory.children) {
+                        children.push(...getMappedCategoriesIds(treeCategory.children));
+                    }
+                });
+
+                return children;
+            };
+
+            return getMappedCategoriesIds(
+                this.categoryTrees[this.advancedFilterValues.categoryTree],
+            );
+        },
         isCategoryTreeSelected() {
             return Boolean(this.advancedFilterValues.categoryTree);
+        },
+        isAnyCategoryAfterFiltering() {
+            return this.categories.length > 0;
+        },
+        isAnyCategory() {
+            return this.allCategories.length > 0;
+        },
+        isAnyCategoryInTree() {
+            return this.isCategoryTreeSelected
+                && this.allCategoryTrees[this.advancedFilterValues.categoryTree].length > 0;
+        },
+        isAllowedToCreateCategory() {
+            return this.$hasAccess([
+                CATEGORY_PRIVILEGES.CATEGORY.create,
+            ]);
+        },
+        isAllowedToUpdateTree() {
+            return this.$hasAccess([
+                TREE_PRIVILEGES.CATEGORY_TREE.update,
+            ]);
         },
     },
     methods: {
         onSelectAll(value) {
             if (value) {
                 if (this.isCategoryTreeSelected) {
-                    const getMappedCategoriesIds = (treeCategories = [], result = []) => {
-                        const children = result;
-
-                        treeCategories.forEach((treeCategory) => {
-                            children.push(treeCategory.id);
-
-                            if (treeCategory.children) {
-                                children.push(...getMappedCategoriesIds(treeCategory.children));
-                            }
-                        });
-
-                        return children;
-                    };
-
-                    this.$emit('input', getMappedCategoriesIds(
-                        this.categoryTrees[this.advancedFilterValues.categoryTree],
-                    ));
+                    this.$emit('input', this.selectedTreeCategoriesIds);
                 } else {
                     this.$emit('input', this.categories.map(({
                         id,
