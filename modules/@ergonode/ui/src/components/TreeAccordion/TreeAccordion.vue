@@ -16,11 +16,7 @@
                         :value="searchValue"
                         :size="size"
                         @input="onSearch" />
-                    <CheckBox
-                        v-if="selectable && !isSearchPlaceholderVisible"
-                        class="select-list-header__select-all"
-                        label="Select all"
-                        reversed />
+                    <slot name="appendSearchHeader" />
                 </div>
                 <slot name="appendHeader" />
             </div>
@@ -57,7 +53,6 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import CheckBox from '@UI/components/CheckBox/CheckBox';
 import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import SelectListSearch from '@UI/components/SelectList/SelectListSearch';
@@ -74,7 +69,6 @@ export default {
         DropdownPlaceholder,
         ClearSearchButton,
         SelectListSearch,
-        CheckBox,
     },
     props: {
         /**
@@ -127,13 +121,6 @@ export default {
          * Determines if the component is multiple choice
          */
         multiselect: {
-            type: Boolean,
-            default: false,
-        },
-        /**
-         * Determines if the component is selectable
-         */
-        selectable: {
             type: Boolean,
             default: false,
         },

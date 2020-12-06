@@ -17,13 +17,7 @@
                         :value="searchValue"
                         :size="size"
                         @input="onSearch" />
-                    <CheckBox
-                        v-if="selectable && !isSearchPlaceholderVisible"
-                        class="select-list-header__select-all"
-                        :value="rowsSelectionState"
-                        label="Select all"
-                        reversed
-                        @input="onSelectAll" />
+                    <slot name="appendSearchHeader" />
                 </div>
                 <slot name="appendHeader" />
             </div>
@@ -64,7 +58,6 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import CheckBox from '@UI/components/CheckBox/CheckBox';
 import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import SelectListElement from '@UI/components/SelectList/SelectListElement';
@@ -81,7 +74,6 @@ export default {
         ClearSearchButton,
         SelectListElement,
         SelectListSearch,
-        CheckBox,
     },
     props: {
         /**
@@ -139,13 +131,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        /**
-         * Determines if the component is selectable
-         */
-        selectable: {
-            type: Boolean,
-            default: false,
-        },
     },
     data() {
         return {
@@ -161,21 +146,6 @@ export default {
                 title: 'No results',
                 subtitle: 'Clear the search and try with another phrase.',
             };
-        },
-        rowsSelectionState() {
-            const {
-                length,
-            } = Object.keys(this.selectedItems);
-
-            if (this.items.length === length) {
-                return 1;
-            }
-
-            if (length === 0) {
-                return 0;
-            }
-
-            return 2;
         },
         isAnyItem() {
             return this.items.length > 0;
@@ -234,19 +204,6 @@ export default {
                 this.$emit('input', Object.values(selectedItems));
             } else {
                 this.$emit('input', value);
-            }
-        },
-        onSelectAll(value) {
-            if (value) {
-                const selectedItems = {};
-
-                this.items.forEach((item, index) => {
-                    selectedItems[this.stringifiedItems[index]] = item;
-                });
-
-                this.$emit('input', this.items);
-            } else {
-                this.$emit('input', this.multiselect ? [] : '');
             }
         },
         onSearch(value) {

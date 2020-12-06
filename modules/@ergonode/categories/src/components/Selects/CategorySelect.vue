@@ -62,7 +62,16 @@
                         :multiselect="true"
                         :expanded="true"
                         @input="onValueChange"
-                        @search="onSearchTree" />
+                        @search="onSearchTree">
+                        <template #appendSearchHeader>
+                            <CheckBox
+                                class="select-list-header-select-all"
+                                :value="rowsSelectionState"
+                                label="Select all"
+                                reversed
+                                @input="onSelectAll" />
+                        </template>
+                    </TreeAccordion>
                     <SelectList
                         v-else
                         :value="selectedOptions"
@@ -75,6 +84,14 @@
                         :multiselect="true"
                         @input="onValueChange"
                         @search="onSearch">
+                        <template #appendSearchHeader>
+                            <CheckBox
+                                class="select-list-header-select-all"
+                                :value="rowsSelectionState"
+                                label="Select all"
+                                reversed
+                                @input="onSelectAll" />
+                        </template>
                         <template #item="{ item, isSelected }">
                             <ListElementAction :size="smallSize">
                                 <CheckBox :value="isSelected" />
@@ -206,6 +223,17 @@ export default {
                 },
             ];
         },
+        rowsSelectionState() {
+            if (this.value.length === this.categories.length) {
+                return 1;
+            }
+
+            if (this.value.length === 0) {
+                return 0;
+            }
+
+            return 2;
+        },
         label() {
             return 'Category';
         },
@@ -255,6 +283,35 @@ export default {
         },
     },
     methods: {
+        onSelectAll(value) {
+            if (value) {
+                if (this.isCategoryTreeSelected) {
+                    const getMappedCategoriesIds = (treeCategories = [], result = []) => {
+                        const children = result;
+
+                        treeCategories.forEach((treeCategory) => {
+                            children.push(treeCategory.id);
+
+                            if (treeCategory.children) {
+                                children.push(...getMappedCategoriesIds(treeCategory.children));
+                            }
+                        });
+
+                        return children;
+                    };
+
+                    this.$emit('input', getMappedCategoriesIds(
+                        this.categoryTrees[this.advancedFilterValues.categoryTree],
+                    ));
+                } else {
+                    this.$emit('input', this.categories.map(({
+                        id,
+                    }) => id));
+                }
+            } else {
+                this.$emit('input', []);
+            }
+        },
         onToggleBetweenSelectedCategories(value) {
             this.isOnlySelectedCategoriesVisible = value;
 
@@ -382,7 +439,9 @@ export default {
             });
         },
         getFilterValue() {
-            return this.isOnlySelectedCategoriesVisible ? this.selectedOptionsLabels : this.searchValue;
+            return this.isOnlySelectedCategoriesVisible
+                ? this.selectedOptionsLabels
+                : this.searchValue;
         },
     },
 };
@@ -446,5 +505,9 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+
+    .select-list-header-select-all {
+        margin-right: 12px;
     }
 </style>
