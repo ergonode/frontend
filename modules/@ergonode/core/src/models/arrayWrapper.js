@@ -2,9 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-/** @module arrayWrapper */
-import fetchListGroupDataMixin from '@Core/mixins/list/fetchListGroupDataMixin';
-
 /**
  * Returns object with max value in array by object key
  * @function
