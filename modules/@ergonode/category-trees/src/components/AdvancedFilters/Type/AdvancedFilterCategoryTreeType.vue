@@ -11,7 +11,7 @@
         :fixed-content="!(isPlaceholderVisible || isSearchPlaceholderVisible)"
         @remove="onRemove"
         @swap="onSwap">
-        <template #body>
+        <template #dropdown>
             <AdvancedFilterContent>
                 <DropdownPlaceholder
                     v-if="isPlaceholderVisible"
@@ -25,17 +25,12 @@
                     :size="smallSize"
                     @input="onValueChange"
                     @search="onSearch">
-                    <template #item="{ item, isSelected }">
-                        <slot
-                            name="option"
-                            :option="item"
-                            :is-selected="isSelected">
-                            <ListElementDescription>
-                                <ListElementTitle
-                                    :size="smallSize"
-                                    :title="item.label || `#${item.code}`" />
-                            </ListElementDescription>
-                        </slot>
+                    <template #item="{ item }">
+                        <ListElementDescription>
+                            <ListElementTitle
+                                :size="smallSize"
+                                :title="item.label || `#${item.code}`" />
+                        </ListElementDescription>
                     </template>
                 </SelectList>
             </AdvancedFilterContent>
@@ -61,7 +56,7 @@ import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
 import SelectDropdownFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownFooter';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
-import SelectList from '@UI/components/Select/List/SelectList';
+import SelectList from '@UI/components/SelectList/SelectList';
 
 export default {
     name: 'AdvancedFilterCategoryTreeType',

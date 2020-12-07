@@ -9,7 +9,7 @@
         <Button
             :theme="secondaryTheme"
             :size="tinySize"
-            title="CLEAR"
+            :title="$t('core.buttons.clear')"
             @click.native="onClear" />
     </DropdownFooter>
 </template>

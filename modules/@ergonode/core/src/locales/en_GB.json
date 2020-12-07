@@ -3,7 +3,8 @@
         "buttons": {
             "create": "CREATE",
             "proceed": "CREATE & EDIT",
-            "submit": "SAVE CHANGES"
+            "submit": "SAVE CHANGES",
+            "clear": "Clear",
         },
         "errors": {
             "network": "Network Error",

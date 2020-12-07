@@ -1,0 +1,591 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+<template>
+    <InputSolidStyle class="category-select">
+        <template #activator>
+            <InputController>
+                <InputLabel
+                    :style="{ top: 0 }"
+                    :floating="true"
+                    :disabled="isAllowedToCreateCategory"
+                    :label="label" />
+                <div class="category-select__header">
+                    <div class="horizontal-container">
+                        <ExpandNumericButton
+                            :title="$t('category.form.expandFilterButton')"
+                            :number="isCategoryTreeSelected ? 1 : 0"
+                            :is-expanded="isFiltersExpanded"
+                            @click.native="onFiltersExpand" />
+                        <Toggler
+                            v-model="isOnlySelectedCategoriesVisible"
+                            :label="$t('category.form.toggleVisibleToggler')"
+                            reversed
+                            @input="onToggleBetweenSelectedCategories" />
+                    </div>
+                    <div
+                        v-show="isFiltersExpanded"
+                        class="category-select__filters">
+                        <AdvancedFilters
+                            :value="advancedFilterValues"
+                            :filters="advancedFilters"
+                            :extended-filters="extendedFilterComponents"
+                            :draggable="false"
+                            @input="onAdvancedFilterChange">
+                            <template #removeAllButton>
+                                <AdvancedFiltersRemoveAllButton
+                                    v-if="isCategoryTreeSelected"
+                                    :title="$t('core.buttons.clear')"
+                                    @click.native="onClearAdvancedFilters" />
+                                <div v-else />
+                            </template>
+                        </AdvancedFilters>
+                    </div>
+                </div>
+            </InputController>
+        </template>
+        <template #details>
+            <div :class="categorySelectItemsClasses">
+                <Preloader v-if="isFetchingData" />
+                <template v-else>
+                    <TreeAccordion
+                        v-if="isCategoryTreeSelected"
+                        :search-placeholder="$t('category.form.searchPlaceholder')"
+                        :value="selectedOptions"
+                        :search-value="searchValue"
+                        :items="categoryTrees[advancedFilterValues.categoryTree]"
+                        :size="smallSize"
+                        :searchable="true"
+                        :selectable="true"
+                        :multiselect="true"
+                        :expanded="true"
+                        @input="onValueChange"
+                        @search="onSearchTree">
+                        <template #appendSearchHeader>
+                            <CheckBox
+                                class="select-list-header-select-all"
+                                :value="rowsSelectionState"
+                                :label="$t('category.form.selectAllCheckBox')"
+                                reversed
+                                @input="onSelectAll" />
+                        </template>
+                        <template #body>
+                            <DropdownPlaceholder
+                                v-if="!isAnyCategoryInTree"
+                                :title="categoryTreePlaceholder.title"
+                                :subtitle="categoryTreePlaceholder.subtitle">
+                                <template #action>
+                                    <Button
+                                        :title="$t('categoryTree.form.noCategoryTreeButton')"
+                                        :size="smallSize"
+                                        :disabled="!isAllowedToUpdateTree"
+                                        @click.native="onNavigateToCategoryTree" />
+                                </template>
+                            </DropdownPlaceholder>
+                        </template>
+                    </TreeAccordion>
+                    <SelectList
+                        v-else
+                        :value="selectedOptions"
+                        :search-value="searchValue"
+                        :items="categories"
+                        :size="smallSize"
+                        :search-placeholder="$t('category.form.searchPlaceholder')"
+                        :searchable="true"
+                        :selectable="true"
+                        :multiselect="true"
+                        @input="onValueChange"
+                        @search="onSearch">
+                        <template #appendSearchHeader>
+                            <CheckBox
+                                class="select-list-header-select-all"
+                                :value="rowsSelectionState"
+                                :label="$t('category.form.selectAllCheckBox')"
+                                reversed
+                                @input="onSelectAll" />
+                        </template>
+                        <template #body>
+                            <DropdownPlaceholder
+                                v-if="!isAnyCategory"
+                                :title="categoriesPlaceholder.title"
+                                :subtitle="categoriesPlaceholder.subtitle">
+                                <template #action>
+                                    <Button
+                                        :title="$t('category.form.noCategoryButton')"
+                                        :size="smallSize"
+                                        :disabled="!isAllowedToCreateCategory"
+                                        @click.native="onNavigateToCategories" />
+                                </template>
+                            </DropdownPlaceholder>
+                        </template>
+                        <template #item="{ item, isSelected }">
+                            <ListElementAction :size="smallSize">
+                                <CheckBox :value="isSelected" />
+                            </ListElementAction>
+                            <ListElementDescription>
+                                <ListElementTitle
+                                    :size="smallSize"
+                                    :title="item.label || `#${item.code}`" />
+                            </ListElementDescription>
+                        </template>
+                    </SelectList>
+                    <div
+                        v-show="isAnyCategoryAfterFiltering && !isCategoryTreeSelected"
+                        class="category-select__expand-more">
+                        <ExpandNumericButton
+                            :title="$t('category.form.showAllExpandNumericButton')"
+                            :size="tinySize"
+                            :number="categories.length"
+                            :is-expanded="isCategoriesExpanded"
+                            @click.native="onItemsExpand" />
+                    </div>
+                </template>
+            </div>
+        </template>
+    </InputSolidStyle>
+</template>
+
+<script>
+import CATEGORY_PRIVILEGES from '@Categories/config/privileges';
+import {
+    ROUTE_NAME as CATEGORIES_ROUTE_NAME,
+} from '@Categories/config/routes';
+import {
+    getAutocomplete,
+} from '@Categories/services';
+import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import {
+    dfsSearch,
+    simpleSearch,
+} from '@Core/models/arrayWrapper';
+import TREE_PRIVILEGES from '@Trees/config/privileges';
+import {
+    ROUTE_NAME as CATEGORY_TREES_ROUTE_NAME,
+} from '@Trees/config/routes';
+import {
+    get,
+} from '@Trees/services';
+import AdvancedFilters from '@UI/components/AdvancedFilters/AdvancedFilters';
+import AdvancedFiltersRemoveAllButton from '@UI/components/AdvancedFilters/AdvancedFiltersRemoveAllButton';
+import Button from '@UI/components/Button/Button';
+import CheckBox from '@UI/components/CheckBox/CheckBox';
+import InputController from '@UI/components/Input/InputController';
+import InputLabel from '@UI/components/Input/InputLabel';
+import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
+import ListElementAction from '@UI/components/List/ListElementAction';
+import ListElementDescription from '@UI/components/List/ListElementDescription';
+import ListElementTitle from '@UI/components/List/ListElementTitle';
+import Preloader from '@UI/components/Preloader/Preloader';
+import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
+import SelectList from '@UI/components/SelectList/SelectList';
+import Toggler from '@UI/components/Toggler/Toggler';
+import TreeAccordion from '@UI/components/TreeAccordion/TreeAccordion';
+
+export default {
+    name: 'CategorySelect',
+    components: {
+        TreeAccordion,
+        InputSolidStyle,
+        InputController,
+        InputLabel,
+        ListElementTitle,
+        ListElementAction,
+        ListElementDescription,
+        DropdownPlaceholder,
+        Toggler,
+        CheckBox,
+        ExpandNumericButton,
+        AdvancedFilters,
+        Preloader,
+        SelectList,
+        AdvancedFiltersRemoveAllButton,
+        Button,
+    },
+    props: {
+        /**
+         * Component value
+         */
+        value: {
+            type: Array,
+            default: () => [],
+        },
+    },
+    async fetch() {
+        this.categories = await getAutocomplete({
+            $axios: this.$axios,
+        });
+        this.allCategories = this.categories.map(category => ({
+            ...category,
+
+        }));
+
+        this.isFetchingData = false;
+    },
+    data() {
+        return {
+            allCategories: [],
+            categories: [],
+            advancedFilterValues: {},
+            isFiltersExpanded: false,
+            isOnlySelectedCategoriesVisible: false,
+            isCategoriesExpanded: false,
+            isFetchingData: true,
+            searchValue: '',
+            categoryTrees: {},
+            allCategoryTrees: {},
+        };
+    },
+    computed: {
+        categorySelectItemsClasses() {
+            return [
+                'category-select__items',
+                {
+                    'category-select__items--expanded': this.isCategoriesExpanded,
+                    'category-select__items--visible-expander': !this.isCategoryTreeSelected && this.isAnyCategoryAfterFiltering,
+                },
+            ];
+        },
+        rowsSelectionState() {
+            if (this.isCategoryTreeSelected) {
+                const categoriesInTree = this.categoryTrees[this.advancedFilterValues.categoryTree];
+                const categoriesIdsInTree = this.selectedTreeCategoriesIds.filter(
+                    categoryId => this.value.some(
+                        id => id === categoryId,
+                    ),
+                );
+
+                if (categoriesIdsInTree.length === 0) {
+                    return 0;
+                }
+
+                if (categoriesIdsInTree.length === categoriesInTree.length) {
+                    return 1;
+                }
+
+                return 2;
+            }
+
+            if (this.value.length === 0) {
+                return 0;
+            }
+
+            if (this.value.length === this.categories.length) {
+                return 1;
+            }
+
+            return 2;
+        },
+        label() {
+            return this.$t('category.form.selectLabel');
+        },
+        categoriesPlaceholder() {
+            return {
+                title: this.$t('category.grid.placeholderTitle'),
+                subtitle: this.$t('category.grid.placeholderSubtitle'),
+            };
+        },
+        categoryTreePlaceholder() {
+            return {
+                title: this.$t('categoryTree.grid.placeholderTitle'),
+                subtitle: this.$t('categoryTree.grid.placeholderSubtitle'),
+            };
+        },
+        selectedOptions() {
+            return this.allCategories.filter(option => this.value.some(id => option.id === id));
+        },
+        selectedOptionsLabels() {
+            return this.selectedOptions.map(({
+                label,
+                code,
+            }) => label || code);
+        },
+        smallSize() {
+            return SIZE.SMALL;
+        },
+        tinySize() {
+            return SIZE.TINY;
+        },
+        advancedFilters() {
+            return [
+                {
+                    id: 'categoryTree',
+                    type: 'CATEGORY_TREE',
+                    label: this.$t('categoryTree.advancedFilter.label'),
+                },
+            ];
+        },
+        extendedFilterComponents() {
+            return this.$getExtendedComponents('@UI/components/AdvancedFilters/Type');
+        },
+        selectedTreeCategoriesIds() {
+            if (!this.isCategoryTreeSelected) {
+                return [];
+            }
+
+            const getMappedCategoriesIds = (treeCategories = [], result = []) => {
+                const children = result;
+
+                treeCategories.forEach((treeCategory) => {
+                    children.push(treeCategory.id);
+
+                    if (treeCategory.children) {
+                        children.push(...getMappedCategoriesIds(treeCategory.children));
+                    }
+                });
+
+                return children;
+            };
+
+            return getMappedCategoriesIds(
+                this.categoryTrees[this.advancedFilterValues.categoryTree],
+            );
+        },
+        isCategoryTreeSelected() {
+            return Boolean(this.advancedFilterValues.categoryTree);
+        },
+        isAnyCategoryAfterFiltering() {
+            return this.categories.length > 0;
+        },
+        isAnyCategory() {
+            return this.allCategories.length > 0;
+        },
+        isAnyCategoryInTree() {
+            return this.isCategoryTreeSelected
+                && this.allCategoryTrees[this.advancedFilterValues.categoryTree].length > 0;
+        },
+        isAllowedToCreateCategory() {
+            return this.$hasAccess([
+                CATEGORY_PRIVILEGES.CATEGORY.create,
+            ]);
+        },
+        isAllowedToUpdateTree() {
+            return this.$hasAccess([
+                TREE_PRIVILEGES.CATEGORY_TREE.update,
+            ]);
+        },
+    },
+    methods: {
+        onSelectAll(value) {
+            if (value) {
+                if (this.isCategoryTreeSelected) {
+                    this.$emit('input', this.selectedTreeCategoriesIds);
+                } else {
+                    this.$emit('input', this.categories.map(({
+                        id,
+                    }) => id));
+                }
+            } else {
+                this.$emit('input', []);
+            }
+        },
+        onToggleBetweenSelectedCategories(value) {
+            this.isOnlySelectedCategoriesVisible = value;
+
+            if (this.isCategoryTreeSelected) {
+                this.categoryTrees = {
+                    ...this.categoryTrees,
+                    [this.advancedFilterValues.categoryTree]: dfsSearch(
+                        this.allCategoryTrees[this.advancedFilterValues.categoryTree],
+                        this.getFilterValue(),
+                        [
+                            'label',
+                            'code',
+                        ],
+                        this.onSearchConditionCallback,
+                    ),
+                };
+            } else {
+                this.categories = simpleSearch(
+                    this.allCategories,
+                    this.getFilterValue(),
+                    [
+                        'label',
+                        'code',
+                    ],
+                    this.onSearchConditionCallback,
+                );
+            }
+        },
+        async onAdvancedFilterChange(filters) {
+            this.advancedFilterValues = filters;
+
+            if (this.isCategoryTreeSelected
+                && typeof this.categoryTrees[filters.categoryTree] === 'undefined') {
+                this.isFetchingData = true;
+
+                const categoryTree = await get({
+                    $axios: this.$axios,
+                    id: filters.categoryTree,
+                });
+
+                const getMappedCategories = (treeCategories = []) => {
+                    const children = [];
+
+                    treeCategories.forEach((treeCategory) => {
+                        const category = this.allCategories.find(({
+                            id,
+                        }) => id === treeCategory.category_id);
+
+                        children.push({
+                            ...category,
+                            children: getMappedCategories(treeCategory.children),
+                        });
+                    });
+
+                    return children;
+                };
+
+                this.categoryTrees = {
+                    ...this.categoryTrees,
+                    [filters.categoryTree]: getMappedCategories(categoryTree.categories),
+                };
+
+                this.allCategoryTrees = {
+                    ...this.categoryTrees,
+                };
+
+                this.isFetchingData = false;
+            }
+        },
+        onClearAdvancedFilters() {
+            this.advancedFilterValues = {};
+        },
+        onSearch(value) {
+            this.searchValue = value;
+
+            this.categories = simpleSearch(
+                this.allCategories,
+                this.getFilterValue(),
+                [
+                    'label',
+                    'code',
+                ],
+                this.onSearchConditionCallback,
+            );
+        },
+        onSearchTree(value) {
+            this.searchValue = value;
+
+            this.categoryTrees = {
+                ...this.categoryTrees,
+                [this.advancedFilterValues.categoryTree]: dfsSearch(
+                    this.allCategoryTrees[this.advancedFilterValues.categoryTree],
+                    this.getFilterValue(),
+                    [
+                        'label',
+                        'code',
+                    ],
+                    this.onSearchConditionCallback,
+                ),
+            };
+        },
+        onSearchConditionCallback(filterValues, searchValue) {
+            if (this.isOnlySelectedCategoriesVisible) {
+                return filterValues.some(
+                    value => searchValue === value && value.startsWith(this.searchValue),
+                );
+            }
+
+            return filterValues.some(value => searchValue.startsWith(value));
+        },
+        onValueChange(value) {
+            this.$emit('input', value.map(({
+                id,
+            }) => id));
+        },
+        onFiltersExpand() {
+            this.isFiltersExpanded = !this.isFiltersExpanded;
+        },
+        onItemsExpand() {
+            this.isCategoriesExpanded = !this.isCategoriesExpanded;
+        },
+        onNavigateToCategories() {
+            this.$router.push({
+                name: CATEGORIES_ROUTE_NAME.CATEGORIES_GRID,
+            });
+        },
+        onNavigateToCategoryTree() {
+            this.$router.push({
+                name: CATEGORY_TREES_ROUTE_NAME.CATEGORY_TREE_EDIT,
+                params: {
+                    id: Object.keys(this.advancedFilterValues.categoryTree)[0],
+                },
+            });
+        },
+        getFilterValue() {
+            return this.isOnlySelectedCategoriesVisible
+                ? this.selectedOptionsLabels
+                : this.searchValue;
+        },
+    },
+};
+</script>
+
+<style lang="scss" scoped>
+    .category-select {
+        $select: &;
+
+        & > fieldset {
+            border: unset !important;
+        }
+
+        &:hover {
+            #{$select}__items {
+                border-color: $GREY_DARK;
+            }
+        }
+
+        &__header {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding: 4px 0 4px 2px;
+            box-sizing: border-box;
+        }
+
+        &__items {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: $BORDER_1_GREY;
+            border-top: unset;
+            padding: 12px 0;
+            box-sizing: border-box;
+            transition: border-color 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+            will-change: border-color;
+
+            &:not(&--expanded) {
+                max-height: 376px;
+            }
+
+            &--visible-expander {
+                padding-bottom: 48px;
+            }
+        }
+
+        &__expand-more {
+            position: absolute;
+            left: 0;
+            bottom: 12px;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: $WHITE;
+        }
+    }
+
+    .horizontal-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .select-list-header-select-all {
+        margin-right: 12px;
+    }
+</style>

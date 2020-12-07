@@ -12,7 +12,7 @@
             :placeholder="placeholder"
             @focus="onSearchFocus"
             @blur="onSearchFocusLost"
-            @input="debouncedSearch"
+            @input="onSearch"
             @click.stop>
         <IconFilledClose
             v-show="value !== ''"
@@ -32,9 +32,6 @@ import {
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import IconSearch from '@UI/components/Icons/Actions/IconSearch';
 import IconFilledClose from '@UI/components/Icons/Window/IconFilledClose';
-import {
-    debounce,
-} from 'debounce';
 
 export default {
     name: 'SelectListSearch',
@@ -90,12 +87,6 @@ export default {
             return GREY_DARK;
         },
     },
-    created() {
-        this.debouncedSearch = debounce(this.onSearch, 500);
-    },
-    beforeDestroy() {
-        delete this.debouncedSearch;
-    },
     methods: {
         onClear() {
             this.$emit('input', '');
@@ -125,7 +116,7 @@ export default {
 
         &--small {
             height: 32px;
-            padding: 8px;
+            padding: 4px;
 
             #{$element}__input {
                 font: $FONT_MEDIUM_12_16;
