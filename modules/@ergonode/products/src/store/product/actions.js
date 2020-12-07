@@ -473,6 +473,65 @@ export default {
             });
         }
     },
+    async updateProductValues({
+        state,
+    }, {
+        scope,
+        attributes,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const {
+                id,
+                drafts,
+            } = state;
+            const data = [
+                {
+                    id,
+                    payload: [],
+                },
+            ];
+
+            Object.keys(attributes).forEach((attributeCode) => {
+                const attributeId = attributes[attributeCode];
+
+                data[0].payload.push({
+                    id: attributeId,
+                    values: [],
+                });
+
+                Object.keys(drafts[attributeCode]).forEach((languageCode) => {
+                    data[0].payload[data[0].payload.length - 1].values.push({
+                        language: languageCode,
+                        value: drafts[attributeCode][languageCode],
+                    });
+                });
+            });
+
+            await updateValues({
+                $axios: this.app.$axios,
+                data: {
+                    data,
+                },
+            });
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Applying product draft has been canceled',
+                });
+
+                return;
+            }
+
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
+    },
     async validateProduct({
         dispatch,
         rootState,
@@ -607,10 +666,6 @@ export default {
                 $axios: this.app.$axios,
                 id,
                 data,
-            });
-            await updateValues({
-                $axios: this.app.$axios,
-                id,
             });
 
             // EXTENDED AFTER METHOD

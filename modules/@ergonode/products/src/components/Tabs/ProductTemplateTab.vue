@@ -40,7 +40,10 @@
                     @input="onValueChange" />
             </template>
             <template #default>
-                <UpdateProductTemplateButton @updated="onProductTemplateUpdated" />
+                <UpdateProductTemplateButton
+                    :scope="scope"
+                    :attributes="attributes"
+                    @updated="onProductTemplateUpdated" />
             </template>
         </CenterViewTemplate>
     </IntersectionObserver>
@@ -123,6 +126,13 @@ export default {
                     ? !this.languagePrivileges[language.code].read
                     : true,
             }));
+        },
+        attributes() {
+            return this.elements.reduce((prev, curr) => {
+                const tmp = prev;
+                tmp[curr.properties.attribute_code] = curr.properties.attribute_id;
+                return tmp;
+            }, {});
         },
     },
     created() {

@@ -47,7 +47,7 @@ export const validateValue = ({
     attributeId,
     languageCode,
     data,
-}) => $axios.$put(`${languageCode}/products/${id}/draft/${attributeId}/value`, data, {
+}) => $axios.$post(`${languageCode}/products/${id}/attribute/${attributeId}/validate`, data, {
     withLanguage: false,
 });
 

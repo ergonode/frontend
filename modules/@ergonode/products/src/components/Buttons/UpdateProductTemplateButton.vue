@@ -24,6 +24,7 @@ import Button from '@UI/components/Button/Button';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -37,7 +38,7 @@ export default {
             type: String,
             default: '',
         },
-        drafts: {
+        attributes: {
             type: Object,
             default: () => ({}),
         },
@@ -48,6 +49,9 @@ export default {
         };
     },
     computed: {
+        ...mapState('product', [
+            'drafts',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
@@ -61,7 +65,7 @@ export default {
             'markChangeValuesAsSaved',
         ]),
         ...mapActions('product', [
-            'updateProductsValues',
+            'updateProductValues',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -70,9 +74,9 @@ export default {
             this.isSubmitting = true;
 
             this.removeScopeErrors(this.scope);
-            this.updateProductsValues({
-                drafts: this.drafts,
+            this.updateProductValues({
                 scope: this.scope,
+                attributes: this.attributes,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });
