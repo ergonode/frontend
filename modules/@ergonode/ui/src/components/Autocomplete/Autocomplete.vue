@@ -296,7 +296,6 @@ export default {
     },
     methods: {
         onSearch(value) {
-            console.log('search');
             if (this.searchValue !== value) {
                 this.searchValue = value;
 
