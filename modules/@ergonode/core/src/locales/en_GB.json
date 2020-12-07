@@ -5,7 +5,8 @@
             "proceed": "CREATE & EDIT",
             "submit": "SAVE CHANGES",
             "restore": "RESTORE",
-            "cancel": "CANCEL"
+            "cancel": "CANCEL",
+            "clear": "Clear"
         },
         "errors": {
             "network": "Network Error",

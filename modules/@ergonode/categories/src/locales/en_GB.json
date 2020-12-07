@@ -5,6 +5,19 @@
       "head": "Categories - Ergonode",
       "addButton": "NEW CATEGORY"
     },
+    "form": {
+      "selectLabel": "Category",
+      "expandFilterButton": "FILTERS",
+      "toggleVisibleToggler": "Show only selected",
+      "selectAllCheckBox": "Select all",
+      "showAllExpandNumericButton": "Show all",
+      "searchPlaceholder": "Search for category...",
+      "noCategoryButton": "GO TO CATEGORIES"
+    },
+    "grid": {
+      "placeholderTitle": "No categories",
+      "placeholderSubtitle": "There are no categories in the system, so you can create the first one."
+    },
     "messages": {
         "deleteTitle": "Are you sure you want to delete this category?",
         "deleteConfirm": "YES, REMOVE",

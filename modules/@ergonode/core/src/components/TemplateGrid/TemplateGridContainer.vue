@@ -582,5 +582,6 @@ export default {
 <style lang="scss" scoped>
     .template-grid-container {
         position: relative;
+        flex: 1;
     }
 </style>

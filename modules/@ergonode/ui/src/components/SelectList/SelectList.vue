@@ -60,8 +60,8 @@ import {
 } from '@Core/defaults/theme';
 import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
-import SelectListElement from '@UI/components/Select/List/SelectListElement';
-import SelectListSearch from '@UI/components/Select/List/SelectListSearch';
+import SelectListElement from '@UI/components/SelectList/SelectListElement';
+import SelectListSearch from '@UI/components/SelectList/SelectListSearch';
 import {
     VirtualScroll,
 } from 'vue-windowing';
@@ -103,20 +103,6 @@ export default {
             default: 'Search...',
         },
         /**
-         * Determines if the component has possibility of search for value
-         */
-        searchable: {
-            type: Boolean,
-            default: false,
-        },
-        /**
-         * Determines if the component is multiple choice
-         */
-        multiselect: {
-            type: Boolean,
-            default: false,
-        },
-        /**
          * The size of the component
          */
         size: {
@@ -131,10 +117,24 @@ export default {
             type: Array,
             default: () => [],
         },
+        /**
+         * Determines if the component has possibility of search for value
+         */
+        searchable: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * Determines if the component is multiple choice
+         */
+        multiselect: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
-            selectedOptions: {},
+            selectedItems: {},
         };
     },
     computed: {
@@ -167,32 +167,32 @@ export default {
         value: {
             immediate: true,
             handler() {
-                let selectedOptions = {};
+                let selectedItems = {};
 
                 if (Array.isArray(this.value) && this.value.length) {
                     this.value.forEach((option) => {
-                        selectedOptions[JSON.stringify(option)] = option;
+                        selectedItems[JSON.stringify(option)] = option;
                     });
                 } else if (!Array.isArray(this.value) && (this.value || this.value === 0)) {
-                    selectedOptions = {
+                    selectedItems = {
                         [JSON.stringify(this.value)]: this.value,
                     };
                 }
 
-                this.selectedOptions = selectedOptions;
+                this.selectedItems = selectedItems;
             },
         },
     },
     methods: {
         isItemSelected(index) {
-            return typeof this.selectedOptions[this.stringifiedItems[index]] !== 'undefined';
+            return typeof this.selectedItems[this.stringifiedItems[index]] !== 'undefined';
         },
         onValueChange(index) {
             const value = this.items[index];
 
             if (this.multiselect) {
                 const selectedItems = {
-                    ...this.selectedOptions,
+                    ...this.selectedItems,
                 };
 
                 if (this.isItemSelected(index)) {
@@ -229,6 +229,10 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        &__select-all {
+            margin-right: 12px;
         }
     }
 </style>

@@ -42,7 +42,6 @@ export default {
     data() {
         return {
             selectedRows: {},
-            isSelectedAllRows: false,
         };
     },
     computed: {
