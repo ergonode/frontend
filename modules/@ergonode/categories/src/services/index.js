@@ -12,19 +12,10 @@ export const get = ({
     id,
 }) => $axios.$get(`categories/${id}`);
 
-export const getAll = ({
+export const getAutocomplete = ({
     $axios,
-    filter = '',
-}) => $axios.$get('categories', {
-    params: {
-        filter,
-        limit: 9999,
-        offset: 0,
-        view: 'list',
-        field: 'name',
-        order: 'ASC',
-    },
-});
+    config,
+}) => $axios.$get('categories/autocomplete', config);
 
 export const remove = ({
     $axios,

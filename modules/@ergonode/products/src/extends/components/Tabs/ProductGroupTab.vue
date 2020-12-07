@@ -107,8 +107,8 @@ export default {
             filterValues: {},
             selectedAppModalOption: null,
             isPrefetchingData: false,
-            localParams: DEFAULT_GRID_FETCH_PARAMS,
-            pagination: DEFAULT_GRID_PAGINATION,
+            localParams: DEFAULT_GRID_FETCH_PARAMS(),
+            pagination: DEFAULT_GRID_PAGINATION(),
         };
     },
     computed: {

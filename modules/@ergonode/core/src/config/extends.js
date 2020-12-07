@@ -6,19 +6,30 @@ export default {
     dictionaries: [
         {
             stateProp: 'currencies',
-            dataFormat: {},
-            requestPath: '/dictionary/currencies',
+            defaultValue: {},
+            request: {
+                path: '/dictionary/currencies',
+                config: {},
+            },
+            dataMapper: response => response,
         },
         {
             stateProp: 'units',
-            dataFormat: [],
-            requestPath: '/units',
-            isGrid: true,
+            defaultValue: [],
+            request: {
+                path: '/units?view=list',
+                config: {},
+            },
+            dataMapper: response => response.collection,
         },
         {
             stateProp: 'dateFormats',
-            dataFormat: {},
-            requestPath: '/dictionary/date_format',
+            defaultValue: {},
+            request: {
+                path: '/dictionary/date_format',
+                config: {},
+            },
+            dataMapper: response => response,
         },
     ],
 };

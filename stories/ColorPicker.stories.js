@@ -49,7 +49,7 @@ export default {
         multiselect: false,
         searchable: false,
         disabled: false,
-        searchResult: '',
+        searchValue: '',
         placeholder: '',
         dataCy: '',
         options: [],

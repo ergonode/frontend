@@ -16,8 +16,8 @@ export function getParsedTreeData(tree, categories) {
             } = treeArray[i].children;
             const {
                 code: categoryCode,
-                name: categoryName,
-            } = categories.find(e => e.id === categoryId);
+                label: categoryName,
+            } = categories.find(category => category.id === categoryId);
             newTree.push({
                 id: categoryId,
                 code: categoryCode,

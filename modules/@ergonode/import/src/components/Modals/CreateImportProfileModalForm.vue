@@ -45,6 +45,13 @@ export default {
     mixins: [
         scopeErrorsMixin,
     ],
+    async fetch() {
+        await this.getInitialDictionaries({
+            keys: [
+                'sources',
+            ],
+        });
+    },
     data() {
         return {
             isSubmitting: false,
@@ -60,6 +67,9 @@ export default {
         ...mapActions('import', [
             'createImportProfile',
             '__clearStorage',
+        ]),
+        ...mapActions('dictionaries', [
+            'getInitialDictionaries',
         ]),
         onClose() {
             this.__clearStorage();

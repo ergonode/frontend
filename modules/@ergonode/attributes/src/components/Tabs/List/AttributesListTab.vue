@@ -6,8 +6,8 @@
     <VerticalTabBarList>
         <ListSearchSelectHeader
             v-if="isSelectLanguage"
-            title="Attributes"
-            @search-result="onSearch">
+            :title="$t('attribute.list.searchHeader')"
+            @search-value="onSearch">
             <template #select>
                 <TreeSelect
                     :value="language"
@@ -18,9 +18,9 @@
         </ListSearchSelectHeader>
         <ListSearchHeader
             v-else
-            title="Attributes"
+            :title="$t('attribute.list.searchHeader')"
             searchable
-            @search-result="onSearch" />
+            @search-value="onSearch" />
         <List>
             <Preloader v-if="isPrefetchingData" />
             <ListScrollableContainer v-else>

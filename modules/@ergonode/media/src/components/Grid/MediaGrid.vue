@@ -103,15 +103,15 @@ export default {
     },
     data() {
         return {
-            searchResult: null,
+            searchValue: null,
             isSearchFocused: false,
             isPrefetchingData: true,
             filterValues: {},
             rows: [],
             columns: [],
             filtered: 0,
-            localParams: DEFAULT_GRID_FETCH_PARAMS,
-            pagination: DEFAULT_GRID_PAGINATION,
+            localParams: DEFAULT_GRID_FETCH_PARAMS(),
+            pagination: DEFAULT_GRID_PAGINATION(),
         };
     },
     computed: {
@@ -367,7 +367,7 @@ export default {
             this.isSearchFocused = isFocused;
         },
         onSearch(value) {
-            this.searchResult = value;
+            this.searchValue = value;
         },
         onEditRow(args) {
             const lastIndex = args.length - 1;

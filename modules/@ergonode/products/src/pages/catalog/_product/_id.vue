@@ -39,6 +39,12 @@ export default {
             id,
         } = params;
 
+        await store.dispatch('dictionaries/getInitialDictionaries', {
+            keys: [
+                'productTypes',
+            ],
+        });
+
         await store.dispatch('product/getProduct', {
             id,
             onError: () => {
@@ -61,8 +67,6 @@ export default {
     methods: {
         ...mapActions('product', [
             '__clearStorage',
-            'getProductDraft',
-            'getProduct',
         ]),
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',

@@ -59,14 +59,16 @@
                         @drop="onDropFilter" />
                 </template>
                 <template #appendHeader>
-                    <GridAdvancedFilters
-                        v-show="isFiltersExpanded"
-                        :value="advancedFilterValues"
-                        :filters="advancedFilters"
-                        @swap="onAdvancedFilterPositionChange"
-                        @remove="onAdvancedFilterRemove"
-                        @remove-all="onAdvancedFilterRemoveAll"
-                        @input="onAdvancedFilterChange" />
+                    <div class="products-advanced-filters">
+                        <AdvancedFilters
+                            v-show="isFiltersExpanded"
+                            :value="advancedFilterValues"
+                            :filters="advancedFilters"
+                            @swap="onAdvancedFilterPositionChange"
+                            @remove="onAdvancedFilterRemove"
+                            @remove-all="onAdvancedFilterRemoveAll"
+                            @input="onAdvancedFilterChange" />
+                    </div>
                 </template>
                 <template #filterActionPlaceholder>
                     <RemoveFiltersButton
@@ -554,6 +556,40 @@ export default {
                 },
             });
         },
+        async onSubmit() {
+            this.isSubmitting = true;
+
+            const promises = [];
+
+            const cachedRows = {};
+
+            Object.keys(this.drafts).forEach((key) => {
+                const [
+                    rowId,
+                ] = key.split('/');
+
+                if (typeof cachedRows[rowId] === 'undefined') {
+                    cachedRows[rowId] = true;
+
+                    promises.push(this.applyProductDraft({
+                        id: rowId,
+                    }).then(() => this.removeDraftRow(rowId)));
+                }
+            });
+
+            await Promise.all(promises);
+
+            await this.onFetchData();
+
+            this.$addAlert({
+                type: ALERT_TYPE.SUCCESS,
+                message: 'Products have been updated',
+            });
+
+            this.isSubmitting = false;
+
+            this.markChangeValuesAsSaved(this.scope);
+        },
         getDisabledElements({
             columns,
             filters,
@@ -602,3 +638,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .products-advanced-filters {
+        margin-left: 16px;
+    }
+</style>

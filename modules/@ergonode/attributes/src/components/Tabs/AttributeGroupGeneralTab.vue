@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Attribute group has been updated',
+                message: this.$t('attributeGroup.messages.updateSuccess'),
             });
 
             this.isSubmitting = false;

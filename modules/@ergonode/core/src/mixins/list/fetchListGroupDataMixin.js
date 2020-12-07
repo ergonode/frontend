@@ -114,8 +114,11 @@ export default function ({
 
                 this.groups[languageCode] = [
                     ...groups,
-                    this.unassignedGroup,
                 ];
+
+                this.groups[languageCode].push({
+                    ...this.unassignedGroup,
+                });
 
                 this.items[languageCode] = items;
 
@@ -131,34 +134,10 @@ export default function ({
                 }
 
                 this.items[languageCode][UNASSIGNED_GROUP_ID] = items;
-                this.groupItemsCount[UNASSIGNED_GROUP_ID] = info.filtered;
-            },
-            async getGroups(languageCode) {
-                await getListGroups({
-                    $axios: this.$axios,
-                    path: `${languageCode}/${namespace}/groups`,
-                    languageCode,
-                    onSuccess: payload => this.getGroupsSuccess({
-                        ...payload,
-                        languageCode,
-                    }),
-                });
-            },
-            getGroupsSuccess({
-                groups,
-                items,
-                groupItemsCount,
-                languageCode,
-            }) {
-                this.groups = {
-                    ...this.groups,
-                    [languageCode]: groups,
+                this.groupItemsCount = {
+                    ...this.groupItemsCount,
+                    [UNASSIGNED_GROUP_ID]: info.filtered,
                 };
-                this.items = {
-                    ...this.items,
-                    [languageCode]: items,
-                };
-                this.groupItemsCount = groupItemsCount;
             },
             async getGroupItems({
                 groupId,

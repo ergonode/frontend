@@ -43,8 +43,8 @@ export default function ({
                 columns: [],
                 filterValues: {},
                 filtered: 0,
-                localParams: DEFAULT_GRID_FETCH_PARAMS,
-                pagination: DEFAULT_GRID_PAGINATION,
+                localParams: DEFAULT_GRID_FETCH_PARAMS(),
+                pagination: DEFAULT_GRID_PAGINATION(),
             };
         },
         computed: {
@@ -145,9 +145,7 @@ export default function ({
 
                 this.onFetchData();
             },
-            async onFetchData(localParams = this.localParams) {
-                this.localParams = localParams;
-
+            async onFetchData() {
                 await getGridData({
                     $route: this.$route,
                     $cookies: this.$cookies,

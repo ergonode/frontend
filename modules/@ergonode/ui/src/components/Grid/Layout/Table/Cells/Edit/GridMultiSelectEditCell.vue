@@ -7,14 +7,17 @@
         <GridSelectEditContentCell :style="positionStyle">
             <TranslationSelect
                 v-model="localValue"
+                :search-value="searchValue"
                 :autofocus="true"
+                :searchable="true"
                 :size="smallSize"
                 :clearable="true"
                 :disabled="disabled"
                 :multiselect="true"
-                :options="mappedOptions"
+                :options="localOptions"
                 :error-messages="errorMessages"
-                @focus="onFocus" />
+                @focus="onFocus"
+                @search="onSearch" />
         </GridSelectEditContentCell>
     </GridEditNavigationCell>
 </template>
@@ -67,23 +70,26 @@ export default {
         },
     },
     data() {
+        const localValue = getMappedMatchedArrayOptions({
+            optionIds: this.value,
+            options: this.options,
+            languageCode: this.languageCode,
+        });
+        const localOptions = getMappedObjectOptions({
+            options: this.options,
+            languageCode: this.languageCode,
+        });
+
         return {
-            localValue: getMappedMatchedArrayOptions({
-                optionIds: this.value,
-                options: this.options,
-                languageCode: this.languageCode,
-            }),
+            localValue,
+            localOptions,
+            allOptions: localOptions,
+            searchValue: '',
         };
     },
     computed: {
         smallSize() {
             return SIZE.SMALL;
-        },
-        mappedOptions() {
-            return getMappedObjectOptions({
-                options: this.options,
-                languageCode: this.languageCode,
-            });
         },
     },
     beforeDestroy() {
@@ -102,6 +108,23 @@ export default {
         }
     },
     methods: {
+        onSearch(value) {
+            this.searchValue = value;
+
+            if (value) {
+                const lowerCaseSearchValue = this.searchValue.toLowerCase();
+
+                this.localOptions = this.allOptions.filter((option) => {
+                    if (option.value) {
+                        return option.value.toLowerCase().includes(lowerCaseSearchValue);
+                    }
+
+                    return option.key.toLowerCase().includes(lowerCaseSearchValue);
+                });
+            } else {
+                this.localOptions = this.allOptions;
+            }
+        },
         onFocus(isFocused) {
             if (!isFocused) {
                 this.onEditCell();

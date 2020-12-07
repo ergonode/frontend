@@ -3,11 +3,11 @@
  * See LICENSE for license details.
  */
 import {
+    getAutocomplete,
+} from '@Categories/services';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    getListItems,
-} from '@Core/services/list/getList.service';
 import {
     getMappedTreeData,
     getParsedTreeData,
@@ -103,51 +103,44 @@ export default {
             });
             // EXTENDED BEFORE METHOD
 
+            const [
+                categoryTreeData,
+                categoriesData,
+            ] = await Promise.all([
+                get({
+                    $axios: this.app.$axios,
+                    id,
+                }),
+                getAutocomplete({
+                    $axios: this.app.$axios,
+                }),
+            ]);
+
             const {
                 language: userLanguageCode,
             } = rootState.authentication.user;
-            const data = await get({
-                $axios: this.app.$axios,
-                id,
-            });
+
             const {
                 code,
                 name = '',
                 categories,
-            } = data;
+            } = categoryTreeData;
 
             if (categories.length) {
-                await getListItems({
-                    $axios: this.app.$axios,
-                    path: `${userLanguageCode}/categories`,
-                    params: {
-                        limit: 99999,
-                        offset: 0,
-                        // TODO: BE has no filter via ID's - we gonna wait for them
-                        // filter: `category_id=${categories.map(category => category.id).join(',')}`,
-                        view: 'list',
-                        field: 'code',
-                        order: 'ASC',
-                    },
-                    onSuccess: (({
-                        items,
-                    }) => {
-                        const treeToSet = getParsedTreeData(categories, items);
+                const treeToSet = getParsedTreeData(categories, categoriesData);
 
-                        treeToSet.forEach(e => dispatch('list/setDisabledElement', {
-                            languageCode: userLanguageCode,
-                            elementId: e.id,
-                            disabled: true,
-                        }, {
-                            root: true,
-                        }));
-                        dispatch('gridDesigner/setGridData', treeToSet, {
-                            root: true,
-                        });
-                        dispatch('gridDesigner/setFullGridData', treeToSet, {
-                            root: true,
-                        });
-                    }),
+                treeToSet.forEach(e => dispatch('list/setDisabledElement', {
+                    languageCode: userLanguageCode,
+                    elementId: e.id,
+                    disabled: true,
+                }, {
+                    root: true,
+                }));
+                dispatch('gridDesigner/setGridData', treeToSet, {
+                    root: true,
+                });
+                dispatch('gridDesigner/setFullGridData', treeToSet, {
+                    root: true,
                 });
             }
 
@@ -170,7 +163,7 @@ export default {
             // EXTENDED AFTER METHOD
             await this.$extendMethods('@Trees/store/categoryTree/action/getCategoryTree/__after', {
                 $this: this,
-                data,
+                data: categoryTreeData,
             });
             // EXTENDED AFTER METHOD
         } catch (e) {

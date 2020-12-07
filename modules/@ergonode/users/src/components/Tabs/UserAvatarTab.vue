@@ -78,7 +78,7 @@ export default {
             });
 
             if (this.user.id === this.id) {
-                await this.getUser();
+                await this.getUser({});
             }
 
             this.isSubmitting = false;
