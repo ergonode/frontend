@@ -4,7 +4,7 @@
             "create": "CREATE",
             "proceed": "CREATE & EDIT",
             "submit": "SAVE CHANGES",
-            "clear": "Clear",
+            "clear": "Clear"
         },
         "errors": {
             "network": "Network Error",
