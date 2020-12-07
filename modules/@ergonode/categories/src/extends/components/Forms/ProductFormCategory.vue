@@ -10,13 +10,6 @@
 
 <script>
 import CategorySelect from '@Categories/components/Selects/CategorySelect';
-import PRIVILEGES from '@Categories/config/privileges';
-import {
-    ROUTE_NAME,
-} from '@Categories/config/routes';
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     mapActions,
@@ -44,30 +37,11 @@ export default {
         categoryFieldKey() {
             return 'categories';
         },
-        placeholder() {
-            return {
-                title: this.$t('category.grid.placeholderTitle'),
-                subtitle: this.$t('category.grid.placeholderSubtitle'),
-            };
-        },
-        isAllowedToCreate() {
-            return this.$hasAccess([
-                PRIVILEGES.CATEGORY.create,
-            ]);
-        },
-        smallSize() {
-            return SIZE.SMALL;
-        },
     },
     methods: {
         ...mapActions('product', [
             '__setState',
         ]),
-        onNavigateToCategories() {
-            this.$router.push({
-                name: ROUTE_NAME.CATEGORIES_GRID,
-            });
-        },
         onCategoriesValueChange(value) {
             this.__setState({
                 key: this.categoryFieldKey,
