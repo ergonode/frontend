@@ -6,7 +6,7 @@
     <ListElement
         :size="size"
         :disabled="value.disabled"
-        :selected="selected"
+        :selected="selected && !multiselect"
         @click.native.prevent="onSelectValue">
         <slot
             name="option"
