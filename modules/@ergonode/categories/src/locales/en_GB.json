@@ -9,7 +9,7 @@
       "selectLabel": "Category",
       "expandFilterButton": "FILTERS",
       "toggleVisibleToggler": "Show only selected",
-      "selectAllCheckBox": "Select all",
+      "selectVisibleCheckBox": "Select visible",
       "showAllExpandNumericButton": "Show all",
       "searchPlaceholder": "Search for category...",
       "noCategoryButton": "GO TO CATEGORIES"

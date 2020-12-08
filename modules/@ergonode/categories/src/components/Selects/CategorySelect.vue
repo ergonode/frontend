@@ -9,7 +9,7 @@
                 <InputLabel
                     :style="{ top: 0 }"
                     :floating="true"
-                    :disabled="isAllowedToCreateCategory"
+                    :disabled="!isAllowedToCreateCategory"
                     :label="label" />
                 <div class="category-select__header">
                     <div class="horizontal-container">
@@ -54,21 +54,22 @@
                         :search-placeholder="$t('category.form.searchPlaceholder')"
                         :value="selectedOptions"
                         :search-value="searchValue"
-                        :items="categoryTrees[advancedFilterValues.categoryTree]"
+                        :items="categoryTreeItems"
                         :size="smallSize"
+                        :expanded="isOnlySelectedCategoriesVisible || isAnySearchPhrase"
                         :searchable="true"
                         :selectable="true"
                         :multiselect="true"
-                        :expanded="true"
                         @input="onValueChange"
-                        @search="onSearchTree">
+                        @search="onSearch">
                         <template #appendSearchHeader>
                             <CheckBox
                                 class="select-list-header-select-all"
-                                :value="rowsSelectionState"
-                                :label="$t('category.form.selectAllCheckBox')"
+                                :value="treeCategoriesSelectionState"
+                                :label="$t('category.form.selectVisibleCheckBox')"
+                                :disabled="!isAnyCategoryInTreeAfterFiltering"
                                 reversed
-                                @input="onSelectAll" />
+                                @input="onSelectAllVisible" />
                         </template>
                         <template #body>
                             <DropdownPlaceholder
@@ -89,7 +90,7 @@
                         v-else
                         :value="selectedOptions"
                         :search-value="searchValue"
-                        :items="categories"
+                        :items="categoryItems"
                         :size="smallSize"
                         :search-placeholder="$t('category.form.searchPlaceholder')"
                         :searchable="true"
@@ -100,10 +101,11 @@
                         <template #appendSearchHeader>
                             <CheckBox
                                 class="select-list-header-select-all"
-                                :value="rowsSelectionState"
-                                :label="$t('category.form.selectAllCheckBox')"
+                                :value="categoriesSelectionState"
+                                :label="$t('category.form.selectVisibleCheckBox')"
+                                :disabled="!isAnyCategoryAfterFiltering"
                                 reversed
-                                @input="onSelectAll" />
+                                @input="onSelectAllVisible" />
                         </template>
                         <template #body>
                             <DropdownPlaceholder
@@ -136,7 +138,7 @@
                         <ExpandNumericButton
                             :title="$t('category.form.showAllExpandNumericButton')"
                             :size="tinySize"
-                            :number="categories.length"
+                            :number="categoryItems.length"
                             :is-expanded="isCategoriesExpanded"
                             @click.native="onItemsExpand" />
                     </div>
@@ -215,27 +217,21 @@ export default {
         },
     },
     async fetch() {
-        this.categories = await getAutocomplete({
+        this.allCategories = await getAutocomplete({
             $axios: this.$axios,
         });
-        this.allCategories = this.categories.map(category => ({
-            ...category,
-
-        }));
 
         this.isFetchingData = false;
     },
     data() {
         return {
-            allCategories: [],
-            categories: [],
             advancedFilterValues: {},
             isFiltersExpanded: false,
             isOnlySelectedCategoriesVisible: false,
             isCategoriesExpanded: false,
             isFetchingData: true,
             searchValue: '',
-            categoryTrees: {},
+            allCategories: [],
             allCategoryTrees: {},
         };
     },
@@ -245,35 +241,40 @@ export default {
                 'category-select__items',
                 {
                     'category-select__items--expanded': this.isCategoriesExpanded,
+                    'category-select__items--has-any-items': (this.isCategoryTreeSelected && this.isAnyCategoryInTreeAfterFiltering) || (!this.isCategoryTreeSelected && this.isAnyCategoryAfterFiltering),
                     'category-select__items--visible-expander': !this.isCategoryTreeSelected && this.isAnyCategoryAfterFiltering,
                 },
             ];
         },
-        rowsSelectionState() {
-            if (this.isCategoryTreeSelected) {
-                const categoriesInTree = this.categoryTrees[this.advancedFilterValues.categoryTree];
-                const categoriesIdsInTree = this.selectedTreeCategoriesIds.filter(
-                    categoryId => this.value.some(
-                        id => id === categoryId,
-                    ),
-                );
+        categoriesSelectionState() {
+            const value = this.categoryItems.filter(
+                category => this.value.some(
+                    id => id === category.id,
+                ),
+            );
 
-                if (categoriesIdsInTree.length === 0) {
-                    return 0;
-                }
-
-                if (categoriesIdsInTree.length === categoriesInTree.length) {
-                    return 1;
-                }
-
-                return 2;
-            }
-
-            if (this.value.length === 0) {
+            if (value.length === 0) {
                 return 0;
             }
 
-            if (this.value.length === this.categories.length) {
+            if (value.length === this.categoryItems.length) {
+                return 1;
+            }
+
+            return 2;
+        },
+        treeCategoriesSelectionState() {
+            const categoriesIdsInTree = this.selectedTreeCategoryIds.filter(
+                categoryId => this.value.some(
+                    id => id === categoryId,
+                ),
+            );
+
+            if (categoriesIdsInTree.length === 0) {
+                return 0;
+            }
+
+            if (categoriesIdsInTree.length === this.categoryTreeItems.length) {
                 return 1;
             }
 
@@ -321,7 +322,7 @@ export default {
         extendedFilterComponents() {
             return this.$getExtendedComponents('@UI/components/AdvancedFilters/Type');
         },
-        selectedTreeCategoriesIds() {
+        selectedTreeCategoryIds() {
             if (!this.isCategoryTreeSelected) {
                 return [];
             }
@@ -340,22 +341,61 @@ export default {
                 return children;
             };
 
-            return getMappedCategoriesIds(
-                this.categoryTrees[this.advancedFilterValues.categoryTree],
-            );
+            return getMappedCategoriesIds(this.categoryTreeItems);
+        },
+        categoryTreeItems() {
+            if (this.value.length || !this.isOnlySelectedCategoriesVisible) {
+                return dfsSearch(
+                    this.allCategoryTrees[this.advancedFilterValues.categoryTree],
+                    this.getFilterValue(),
+                    [
+                        'label',
+                        'code',
+                    ],
+                    this.onSearchConditionCallback,
+                );
+            }
+
+            return [];
+        },
+        categoryItems() {
+            if (this.value.length || !this.isOnlySelectedCategoriesVisible) {
+                return simpleSearch(
+                    this.allCategories,
+                    this.getFilterValue(),
+                    [
+                        'label',
+                        'code',
+                    ],
+                    this.onSearchConditionCallback,
+                );
+            }
+
+            return [];
+        },
+        isAnySearchPhrase() {
+            return this.searchValue !== '';
         },
         isCategoryTreeSelected() {
             return Boolean(this.advancedFilterValues.categoryTree);
         },
         isAnyCategoryAfterFiltering() {
-            return this.categories.length > 0;
+            return this.categoryItems.length > 0;
         },
         isAnyCategory() {
             return this.allCategories.length > 0;
         },
         isAnyCategoryInTree() {
+            if (!this.allCategoryTrees[this.advancedFilterValues.categoryTree]) {
+                return false;
+            }
+
             return this.isCategoryTreeSelected
                 && this.allCategoryTrees[this.advancedFilterValues.categoryTree].length > 0;
+        },
+        isAnyCategoryInTreeAfterFiltering() {
+            return this.isCategoryTreeSelected
+                && this.categoryTreeItems.length > 0;
         },
         isAllowedToCreateCategory() {
             return this.$hasAccess([
@@ -369,52 +409,37 @@ export default {
         },
     },
     methods: {
-        onSelectAll(value) {
+        onSelectAllVisible(value) {
             if (value) {
                 if (this.isCategoryTreeSelected) {
-                    this.$emit('input', this.selectedTreeCategoriesIds);
+                    this.$emit('input', [
+                        ...new Set([
+                            ...this.selectedTreeCategoryIds,
+                            ...this.categoryItems.map(category => category.id),
+                        ]),
+                    ]);
                 } else {
-                    this.$emit('input', this.categories.map(({
-                        id,
-                    }) => id));
+                    this.$emit('input', [
+                        ...new Set([
+                            ...this.value,
+                            ...this.categoryItems.map(category => category.id),
+                        ]),
+                    ]);
                 }
+            } else if (this.isCategoryTreeSelected) {
+                this.$emit('input', this.value.filter(id => !this.selectedTreeCategoryIds.some(categoryId => categoryId === id)));
             } else {
-                this.$emit('input', []);
+                this.$emit('input', this.value.filter(id => !this.categoryItems.some(category => category.id === id)));
             }
         },
         onToggleBetweenSelectedCategories(value) {
             this.isOnlySelectedCategoriesVisible = value;
-
-            if (this.isCategoryTreeSelected) {
-                this.categoryTrees = {
-                    ...this.categoryTrees,
-                    [this.advancedFilterValues.categoryTree]: dfsSearch(
-                        this.allCategoryTrees[this.advancedFilterValues.categoryTree],
-                        this.getFilterValue(),
-                        [
-                            'label',
-                            'code',
-                        ],
-                        this.onSearchConditionCallback,
-                    ),
-                };
-            } else {
-                this.categories = simpleSearch(
-                    this.allCategories,
-                    this.getFilterValue(),
-                    [
-                        'label',
-                        'code',
-                    ],
-                    this.onSearchConditionCallback,
-                );
-            }
         },
         async onAdvancedFilterChange(filters) {
             this.advancedFilterValues = filters;
 
             if (this.isCategoryTreeSelected
-                && typeof this.categoryTrees[filters.categoryTree] === 'undefined') {
+                && typeof this.allCategoryTrees[filters.categoryTree] === 'undefined') {
                 this.isFetchingData = true;
 
                 const categoryTree = await get({
@@ -439,13 +464,9 @@ export default {
                     return children;
                 };
 
-                this.categoryTrees = {
-                    ...this.categoryTrees,
-                    [filters.categoryTree]: getMappedCategories(categoryTree.categories),
-                };
-
                 this.allCategoryTrees = {
-                    ...this.categoryTrees,
+                    ...this.allCategoryTrees,
+                    [filters.categoryTree]: getMappedCategories(categoryTree.categories),
                 };
 
                 this.isFetchingData = false;
@@ -456,32 +477,6 @@ export default {
         },
         onSearch(value) {
             this.searchValue = value;
-
-            this.categories = simpleSearch(
-                this.allCategories,
-                this.getFilterValue(),
-                [
-                    'label',
-                    'code',
-                ],
-                this.onSearchConditionCallback,
-            );
-        },
-        onSearchTree(value) {
-            this.searchValue = value;
-
-            this.categoryTrees = {
-                ...this.categoryTrees,
-                [this.advancedFilterValues.categoryTree]: dfsSearch(
-                    this.allCategoryTrees[this.advancedFilterValues.categoryTree],
-                    this.getFilterValue(),
-                    [
-                        'label',
-                        'code',
-                    ],
-                    this.onSearchConditionCallback,
-                ),
-            };
         },
         onSearchConditionCallback(filterValues, searchValue) {
             if (this.isOnlySelectedCategoriesVisible) {
@@ -512,7 +507,7 @@ export default {
             this.$router.push({
                 name: CATEGORY_TREES_ROUTE_NAME.CATEGORY_TREE_EDIT,
                 params: {
-                    id: Object.keys(this.advancedFilterValues.categoryTree)[0],
+                    id: this.advancedFilterValues.categoryTree,
                 },
             });
         },
@@ -553,13 +548,17 @@ export default {
             flex-direction: column;
             border: $BORDER_1_GREY;
             border-top: unset;
-            padding: 12px 0;
+            padding-top: 12px;
             box-sizing: border-box;
             transition: border-color 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             will-change: border-color;
 
             &:not(&--expanded) {
                 max-height: 376px;
+            }
+
+            &--has-any-items {
+                padding-bottom: 12px;
             }
 
             &--visible-expander {

@@ -110,7 +110,6 @@ export default {
             background-color: $GREY_LIGHT;
             border-radius: 8px;
             box-shadow: $ELEVATOR_HOLE;
-            cursor: pointer;
         }
 
         &__state {
@@ -141,7 +140,6 @@ export default {
         &__label {
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_12_16;
-            cursor: pointer;
             margin-left: 8px;
         }
 
@@ -174,6 +172,14 @@ export default {
                 #{$toggler}__state {
                     box-shadow: $ELEVATOR_HOVER_FOCUS;
                 }
+            }
+
+            &:not(:disabled) + label {
+                cursor: pointer;
+            }
+
+            &:disabled + label {
+                cursor: not-allowed;
             }
 
             &:checked + label {
