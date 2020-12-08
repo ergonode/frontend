@@ -2,7 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-/** @module arrayWrapper */
 /**
  * Returns object with max value in array by object key
  * @function
@@ -57,6 +56,165 @@ export function swapItemPosition(array, pos1, pos2) {
     }
 
     return tmpArray;
+}
+
+/**
+ * Returns filtered array by given criteria
+ * @param array
+ * @param filterValue
+ * @param keys
+ * @param condition
+ * @returns {Array}
+ */
+export function simpleSearch(
+    array = [],
+    filterValue = '',
+    keys = [],
+    condition = (
+        lowerCaseFilterValue,
+        searchValue,
+    ) => lowerCaseFilterValue.some(value => value.includes(searchValue)),
+) {
+    const isArray = Array.isArray(filterValue);
+
+    if (filterValue === '' || (isArray && filterValue.length === 0)) {
+        return array;
+    }
+
+    const lowerCaseFilterValue = isArray
+        ? filterValue.map(value => value.toLowerCase())
+        : [
+            filterValue.toLowerCase(),
+        ];
+
+    return array.filter(node => keys.some((key) => {
+        if (typeof node[key] !== 'undefined' && node[key] !== null && node[key] !== '') {
+            const objectValue = String(node[key]).toLowerCase();
+
+            return condition(lowerCaseFilterValue, objectValue);
+        }
+
+        return false;
+    }));
+}
+
+/**
+ * Returns filtered tree structure by given criteria
+ * @param array
+ * @param filterValue
+ * @param keys
+ * @param condition
+ * @returns {Array}
+ */
+export function dfsSearch(
+    array = [],
+    filterValue = '',
+    keys = [],
+    condition = (
+        lowerCaseFilterValue,
+        searchValue,
+    ) => lowerCaseFilterValue.some(value => value.includes(searchValue)),
+) {
+    const isArray = Array.isArray(filterValue);
+
+    if (filterValue === '' || (isArray && filterValue.length === 0)) {
+        return array;
+    }
+
+    const currentPath = [];
+    const lowerCaseFilterValue = isArray
+        ? filterValue.map(value => value.toLowerCase())
+        : [
+            filterValue.toLowerCase(),
+        ];
+
+    const depthFirstTraversal = (root, callback) => {
+        currentPath.push(root);
+
+        if (root.children) {
+            for (let i = 0; i < root.children.length; i += 1) {
+                depthFirstTraversal(root.children[i], callback);
+            }
+        }
+
+        callback(root, currentPath);
+
+        currentPath.pop();
+    };
+
+    const copyNode = (node) => {
+        const n = {
+            ...node,
+        };
+
+        if (n.children) { n.children = []; }
+
+        return n;
+    };
+
+    const lookAtKeyedValues = (node, callback) => {
+        keys.forEach((key) => {
+            if (typeof node[key] !== 'undefined' && node[key] !== null && node[key] !== '') {
+                const objectValue = String(node[key]).toLowerCase();
+
+                if (condition(lowerCaseFilterValue, objectValue)) {
+                    callback();
+                }
+            }
+        });
+    };
+
+    const filterTree = (root) => {
+        // eslint-disable-next-line no-param-reassign
+        root.copied = copyNode(root);
+        const filteredResult = root.copied;
+
+        depthFirstTraversal(root, (node, branch) => {
+            lookAtKeyedValues(node, () => {
+                for (let i = 0, len = branch.length; i < len; i += 1) {
+                    if (!branch[i].copied) {
+                        // eslint-disable-next-line no-param-reassign
+                        branch[i].copied = copyNode(branch[i]);
+                        branch[i - 1].copied.children.push(branch[i].copied);
+                    }
+                }
+            });
+        });
+
+        depthFirstTraversal(root, (node) => {
+            // eslint-disable-next-line no-param-reassign
+            delete node.copied;
+        });
+
+        if ((filteredResult.children && !filteredResult.children.length)
+            || typeof filteredResult.children === 'undefined') {
+            let result = null;
+
+            lookAtKeyedValues(filteredResult, () => {
+                result = filteredResult;
+            });
+
+            return result;
+        }
+
+        return filteredResult;
+    };
+
+    function searchForMultipleRoots(list) {
+        const filteredList = [];
+
+        for (let i = 0; i < list.length; i += 1) {
+            const filteredTree = filterTree(list[i]);
+
+            if (filteredTree) {
+                filteredList.push(filteredTree);
+            }
+        }
+
+        return filteredList;
+    }
+
+    return searchForMultipleRoots(array);
 }
 
 /**

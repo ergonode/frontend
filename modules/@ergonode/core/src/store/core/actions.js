@@ -159,18 +159,20 @@ export default {
     setDefaultLanguage({
         state, commit, rootState,
     }) {
-        const {
-            languagePrivileges,
-        } = rootState.authentication.user;
-        const defaultLanguage = state.languagesTree
-            .find(({
-                code,
-            }) => languagePrivileges[code].read === true);
+        if (rootState.authentication.user) {
+            const {
+                languagePrivileges,
+            } = rootState.authentication.user;
+            const defaultLanguage = state.languagesTree
+                .find(({
+                    code,
+                }) => languagePrivileges[code].read === true);
 
-        commit('__SET_STATE', {
-            key: 'defaultLanguageCode',
-            value: defaultLanguage.code,
-        });
+            commit('__SET_STATE', {
+                key: 'defaultLanguageCode',
+                value: defaultLanguage.code,
+            });
+        }
     },
     addModal({
         commit,

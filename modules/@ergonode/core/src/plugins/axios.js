@@ -1,3 +1,4 @@
+/* eslint-disable no-throw-literal */
 /*
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
@@ -97,7 +98,11 @@ export default function ({
         }
 
         if (!errorResponse || !errorResponse.response) {
-            return Promise.reject(new Error(app.i18n.t('core.errors.network')));
+            throw {
+                data: {
+                    message: app.i18n.t('core.errors.network'),
+                },
+            };
         }
         const {
             response: {

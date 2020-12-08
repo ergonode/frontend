@@ -61,7 +61,7 @@ import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
 import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
 import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
-import SelectList from '@UI/components/Select/List/SelectList';
+import SelectList from '@UI/components/SelectList/SelectList';
 
 export default {
     name: 'SelectDropdown',

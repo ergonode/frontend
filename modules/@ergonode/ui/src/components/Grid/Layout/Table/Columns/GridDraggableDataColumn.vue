@@ -53,8 +53,7 @@
                 :is-disabled="disabledRows[rowIds[rowIndex]]"
                 :is-locked="!(column.editable && isEditable)"
                 :is-copyable="column.editable && isEditable && !disabledRows[rowIds[rowIndex]]"
-                :is-selected="isSelectedAllRows
-                    || selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
+                :is-selected="selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
                 @cell-value="onCellValueChange"
                 @edit-cell="onEditCell" />
         </GridColumn>
@@ -163,13 +162,6 @@ export default {
         drafts: {
             type: Object,
             default: () => ({}),
-        },
-        /**
-         * The flag which determines the state of selected each row
-         */
-        isSelectedAllRows: {
-            type: Boolean,
-            default: false,
         },
         /**
          * The map of selected rows

@@ -21,10 +21,8 @@
                     :rows-offset="rowsOffset"
                     :row-ids="rowIds"
                     :is-basic-filter="isBasicFilter"
-                    :is-selected-all-rows="isSelectedAllRows"
                     :selected-rows="selectedRows"
-                    @row-select="onRowSelect"
-                    @rows-select="onRowsSelect" />
+                    @row-select="onRowSelect" />
             </GridTableLayoutPinnedSection>
             <GridTableLayoutColumnsSection
                 :style="templateColumns"
@@ -47,7 +45,6 @@
                         :filters="filters"
                         :disabled-rows="disabledRows"
                         :selected-rows="selectedRows"
-                        :is-selected-all-rows="isSelectedAllRows"
                         :rows-offset="rowsOffset"
                         :is-basic-filter="isBasicFilter"
                         @remove="onRemoveColumn"
@@ -76,7 +73,6 @@
                         :disabled-rows="disabledRows"
                         :drafts="drafts"
                         :selected-rows="selectedRows"
-                        :is-selected-all-rows="isSelectedAllRows"
                         :is-basic-filter="isBasicFilter"
                         :is-editable="isEditable"
                         @remove="onRemoveColumn"
@@ -111,7 +107,6 @@
                     :rows-offset="rowsOffset"
                     :is-basic-filter="isBasicFilter"
                     :columns-offset="orderedColumns.length + columnIndex + columnsOffset"
-                    :is-selected-all-rows="isSelectedAllRows"
                     :selected-rows="selectedRows"
                     @row-action="onRowAction" />
             </GridTableLayoutPinnedSection>
@@ -242,13 +237,6 @@ export default {
         rowHeight: {
             type: Number,
             default: ROW_HEIGHT.SMALL,
-        },
-        /**
-         * The flag which determines the state of selected each row
-         */
-        isSelectedAllRows: {
-            type: Boolean,
-            default: false,
         },
         /**
          * The map of selected rows
@@ -503,9 +491,6 @@ export default {
         },
         onRowSelect(selectedRows) {
             this.$emit('row-select', selectedRows);
-        },
-        onRowsSelect(isSelectedAllRows) {
-            this.$emit('rows-select', isSelectedAllRows);
         },
         onCellValueChange(value) {
             this.$emit('cell-value', value);

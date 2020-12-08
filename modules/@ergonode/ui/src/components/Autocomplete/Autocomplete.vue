@@ -24,7 +24,7 @@
         :searchable="searchable"
         :data-cy="dataCy"
         @focus="onFocus"
-        @search="onSearch"
+        @search="onDebounceSearch"
         @input="onValueChange">
         <template #prepend>
             <slot name="prepend" />
@@ -84,6 +84,9 @@ import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
 import Select from '@UI/components/Select/Select';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
+import {
+    debounce,
+} from 'debounce';
 
 export default {
     name: 'Autocomplete',
@@ -253,6 +256,7 @@ export default {
             allOptions: [],
             searchValue: '',
             isFetchingData: false,
+            onDebounceSearch: null,
         };
     },
     computed: {
@@ -284,6 +288,8 @@ export default {
         },
     },
     async created() {
+        this.onDebounceSearch = debounce(this.onSearch, 500);
+
         await this.getOptions();
 
         this.allOptions = this.options;

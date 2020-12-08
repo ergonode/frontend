@@ -104,6 +104,7 @@ import {
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
+import Button from '@UI/components/Button/Button';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
@@ -124,6 +125,7 @@ import {
 export default {
     name: 'UserForm',
     components: {
+        Button,
         DropdownPlaceholder,
         Divider,
         Form,

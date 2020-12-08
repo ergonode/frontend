@@ -3,9 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <li
-        :class="classes">
-        <slot :is-selected="selected" />
+    <li :class="classes">
+        <slot />
     </li>
 </template>
 

@@ -16,6 +16,7 @@
 
 <script>
 import {
+    REFRESH_TOKEN_KEY,
     TOKEN_KEY,
 } from '@Authentication/defaults/cookies';
 import {
@@ -75,6 +76,7 @@ export default {
 
         if (!this.isLogged) {
             this.$cookies.remove(TOKEN_KEY);
+            this.$cookies.remove(REFRESH_TOKEN_KEY);
             this.resetState();
         }
 

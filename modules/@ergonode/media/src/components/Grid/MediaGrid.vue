@@ -183,10 +183,10 @@ export default {
         },
     },
     created() {
-        this.debouncedSearch = debounce(this.onSearch, 500);
+        this.onDebounceSearch = debounce(this.onSearch, 500);
     },
     beforeDestroy() {
-        delete this.debouncedSearch;
+        delete this.onDebounceSearch;
     },
     methods: {
         async onIntersect(isIntersecting) {

@@ -29,6 +29,7 @@ import {
 } from '@Core/defaults/theme';
 import {
     arraysAreEqual,
+    simpleSearch,
 } from '@Core/models/arrayWrapper';
 import {
     getMappedMatchedArrayOptions,
@@ -111,19 +112,14 @@ export default {
         onSearch(value) {
             this.searchValue = value;
 
-            if (value) {
-                const lowerCaseSearchValue = this.searchValue.toLowerCase();
-
-                this.localOptions = this.allOptions.filter((option) => {
-                    if (option.value) {
-                        return option.value.toLowerCase().includes(lowerCaseSearchValue);
-                    }
-
-                    return option.key.toLowerCase().includes(lowerCaseSearchValue);
-                });
-            } else {
-                this.localOptions = this.allOptions;
-            }
+            this.localOptions = simpleSearch(
+                this.allOptions,
+                value,
+                [
+                    'value',
+                    'key',
+                ],
+            );
         },
         onFocus(isFocused) {
             if (!isFocused) {

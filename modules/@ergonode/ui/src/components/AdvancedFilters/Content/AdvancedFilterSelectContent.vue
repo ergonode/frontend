@@ -40,13 +40,16 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import {
+    simpleSearch,
+} from '@Core/models/arrayWrapper';
+import {
     DROPDOWN_MAX_HEIGHT,
 } from '@UI/assets/scss/_js-variables/sizes.scss';
 import AdvancedFilterShowOnly from '@UI/components/AdvancedFilters/AdvancedFilterShowOnly';
 import Divider from '@UI/components/Dividers/Divider';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
-import SelectList from '@UI/components/Select/List/SelectList';
+import SelectList from '@UI/components/SelectList/SelectList';
 
 export default {
     name: 'AdvancedFilterSelectContent',
@@ -113,19 +116,14 @@ export default {
         onSearch(value) {
             this.searchValue = value;
 
-            if (value) {
-                const lowerCaseSearchValue = this.searchValue.toLowerCase();
-
-                this.localOptions = this.options.filter((option) => {
-                    if (option.value) {
-                        return option.value.toLowerCase().includes(lowerCaseSearchValue);
-                    }
-
-                    return option.key.toLowerCase().includes(lowerCaseSearchValue);
-                });
-            } else {
-                this.localOptions = this.options;
-            }
+            this.localOptions = simpleSearch(
+                this.options,
+                value,
+                [
+                    'label',
+                    'code',
+                ],
+            );
         },
         onSelectValue(value) {
             this.$emit('input', {
