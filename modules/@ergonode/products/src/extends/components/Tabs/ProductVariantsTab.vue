@@ -82,7 +82,6 @@ import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
 import {
-    SIZE,
     THEME,
 } from '@Core/defaults/theme';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
