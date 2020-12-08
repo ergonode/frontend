@@ -15,7 +15,7 @@
       "noCategoryButton": "GO TO CATEGORIES",
       "clearSearchButtonLabel": "Clear categories visibility",
       "noVisibleCategoriesPlaceholderTitle": "No categories",
-      "noVisibleCategoriesPlaceholderSubtitle": "They are no categories which are selected for given criteria."
+      "noVisibleCategoriesPlaceholderSubtitle": "They are no selected categories for given criteria."
     },
     "grid": {
       "placeholderTitle": "No categories",
