@@ -40,6 +40,7 @@
                 :index="index"
                 :size="size"
                 :value="item"
+                :multiselect="multiselect"
                 :selected="isItemSelected(index)"
                 @input="onValueChange">
                 <template #option="{ isSelected }">

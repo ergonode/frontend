@@ -148,9 +148,10 @@ export default function ({
                 } = this.items[languageCode][groupId];
 
                 if (currentItemsCount !== this.groupItemsCount[groupId]) {
+                    const mappedGroupId = groupId === UNASSIGNED_GROUP_ID ? '' : groupId;
                     const filter = this.codeFilter
-                        ? `groups=${groupId || ''};code=${this.codeFilter}`
-                        : `groups=${groupId || ''}`;
+                        ? `groups=${mappedGroupId};code=${this.codeFilter}`
+                        : `groups=${mappedGroupId}`;
 
                     this.prefetchingGroupItemsId = this.expandedGroupId;
 

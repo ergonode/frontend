@@ -4,7 +4,7 @@
  */
 <template>
     <Button
-        title="CLEAR SEARCH"
+        :title="title"
         :size="smallSize"
         :theme="secondaryTheme">
         <template #prepend="{ color }">
@@ -26,6 +26,12 @@ export default {
     components: {
         Button,
         IconFilledClose,
+    },
+    props: {
+        title: {
+            type: String,
+            default: 'CLEAR SEARCH',
+        },
     },
     computed: {
         smallSize() {

@@ -71,6 +71,7 @@ import {
 } from '@Core/defaults/theme';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
+import Button from '@UI/components/Button/Button';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import {
@@ -81,6 +82,7 @@ import {
 export default {
     name: 'ProductTemplateFormPresentation',
     components: {
+        Button,
         DropdownPlaceholder,
         Autocomplete,
         FormSection,

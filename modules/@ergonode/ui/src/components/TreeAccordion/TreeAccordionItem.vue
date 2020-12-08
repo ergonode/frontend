@@ -5,21 +5,22 @@
 <template>
     <ListElement
         :size="size"
-        @click.native="onExpand">
+        @click.native="onSelect">
         <div class="tree-accordion-item">
             <TreeAccordionItemNode
                 v-for="position in item.level"
                 :size="size"
                 :key="position" />
-            <IconArrowSingle :state="iconState" />
+            <IconArrowSingle
+                :state="iconState"
+                @click.native.stop="onExpand" />
             <ListElementAction
                 v-if="multiselect"
                 :size="size">
                 <CheckBox
                     :value="selected"
                     :disabled="item.disabled"
-                    @click.native.stop
-                    @input="onSelect" />
+                    @click.native.stop />
             </ListElementAction>
             <ListElementDescription>
                 <ListElementTitle
