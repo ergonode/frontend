@@ -73,7 +73,7 @@ export function simpleSearch(
     condition = (
         lowerCaseFilterValue,
         searchValue,
-    ) => lowerCaseFilterValue.some(value => value.includes(searchValue)),
+    ) => lowerCaseFilterValue.some(value => searchValue.includes(value)),
 ) {
     const isArray = Array.isArray(filterValue);
 
@@ -113,7 +113,7 @@ export function dfsSearch(
     condition = (
         lowerCaseFilterValue,
         searchValue,
-    ) => lowerCaseFilterValue.some(value => value.includes(searchValue)),
+    ) => lowerCaseFilterValue.some(value => searchValue.includes(value)),
 ) {
     const isArray = Array.isArray(filterValue);
 

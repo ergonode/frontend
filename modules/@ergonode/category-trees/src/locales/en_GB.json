@@ -6,7 +6,9 @@
       "addButton": ""
     },
     "form": {
-      "noCategoryTreeButton": "GO TO CATEGORY TREE"
+      "noCategoryTreeButton": "GO TO CATEGORY TREE",
+      "noVisibleCategoriesInTreePlaceholderTitle": "No categories",
+      "noVisibleCategoriesInTreePlaceholderSubtitle": "They are no selected categories for given criteria."
     },
     "advancedFilter": {
       "label": "Category tree"
