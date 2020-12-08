@@ -19,10 +19,10 @@
                             :is-expanded="isFiltersExpanded"
                             @click.native="onFiltersExpand" />
                         <Toggler
-                            v-model="isOnlySelectedCategoriesVisible"
+                            v-model="isSelectedOnlyVisibleCategories"
                             :label="$t('category.form.toggleVisibleToggler')"
                             reversed
-                            @input="onToggleBetweenSelectedCategories" />
+                            @input="onToggleBetweenCategoriesVisibility" />
                     </div>
                     <div
                         v-show="isFiltersExpanded"
@@ -56,7 +56,7 @@
                         :search-value="searchValue"
                         :items="categoryTreeItems"
                         :size="smallSize"
-                        :expanded="isOnlySelectedCategoriesVisible || isAnySearchPhrase"
+                        :expanded="isSelectedOnlyVisibleCategories || isAnySearchPhrase"
                         :searchable="true"
                         :selectable="true"
                         :multiselect="true"
@@ -82,6 +82,16 @@
                                         :size="smallSize"
                                         :disabled="!isAllowedToUpdateTree"
                                         @click.native="onNavigateToCategoryTree" />
+                                </template>
+                            </DropdownPlaceholder>
+                            <DropdownPlaceholder
+                                v-else-if="isVisibleSelectedAnyCategoryInTree"
+                                :title="categoryTreeNonVisiblePlaceholder.title"
+                                :subtitle="categoryTreeNonVisiblePlaceholder.subtitle">
+                                <template #action>
+                                    <ClearSearchButton
+                                        :title="$t('category.form.clearSearchButtonLabel')"
+                                        @click.native="onClearVisibilitySelection" />
                                 </template>
                             </DropdownPlaceholder>
                         </template>
@@ -118,6 +128,16 @@
                                         :size="smallSize"
                                         :disabled="!isAllowedToCreateCategory"
                                         @click.native="onNavigateToCategories" />
+                                </template>
+                            </DropdownPlaceholder>
+                            <DropdownPlaceholder
+                                v-else-if="isVisibleSelectedAnyCategory"
+                                :title="categoriesNonVisiblePlaceholder.title"
+                                :subtitle="categoriesNonVisiblePlaceholder.subtitle">
+                                <template #action>
+                                    <ClearSearchButton
+                                        :title="$t('category.form.clearSearchButtonLabel')"
+                                        @click.native="onClearVisibilitySelection" />
                                 </template>
                             </DropdownPlaceholder>
                         </template>
@@ -182,6 +202,7 @@ import ListElementAction from '@UI/components/List/ListElementAction';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
 import Preloader from '@UI/components/Preloader/Preloader';
+import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import SelectList from '@UI/components/SelectList/SelectList';
 import Toggler from '@UI/components/Toggler/Toggler';
@@ -190,6 +211,7 @@ import TreeAccordion from '@UI/components/TreeAccordion/TreeAccordion';
 export default {
     name: 'CategorySelect',
     components: {
+        ClearSearchButton,
         TreeAccordion,
         InputSolidStyle,
         InputController,
@@ -227,7 +249,7 @@ export default {
         return {
             advancedFilterValues: {},
             isFiltersExpanded: false,
-            isOnlySelectedCategoriesVisible: false,
+            isSelectedOnlyVisibleCategories: false,
             isCategoriesExpanded: false,
             isFetchingData: true,
             searchValue: '',
@@ -289,10 +311,22 @@ export default {
                 subtitle: this.$t('category.grid.placeholderSubtitle'),
             };
         },
+        categoriesNonVisiblePlaceholder() {
+            return {
+                title: this.$t('category.form.noVisibleCategoriesPlaceholderTitle'),
+                subtitle: this.$t('category.form.noVisibleCategoriesPlaceholderSubtitle'),
+            };
+        },
         categoryTreePlaceholder() {
             return {
                 title: this.$t('categoryTree.grid.placeholderTitle'),
                 subtitle: this.$t('categoryTree.grid.placeholderSubtitle'),
+            };
+        },
+        categoryTreeNonVisiblePlaceholder() {
+            return {
+                title: this.$t('categoryTree.form.noVisibleCategoriesInTreePlaceholderTitle'),
+                subtitle: this.$t('categoryTree.form.noVisibleCategoriesInTreePlaceholderSubtitle'),
             };
         },
         selectedOptions() {
@@ -344,7 +378,7 @@ export default {
             return getMappedCategoriesIds(this.categoryTreeItems);
         },
         categoryTreeItems() {
-            if (this.value.length || !this.isOnlySelectedCategoriesVisible) {
+            if (this.value.length || !this.isSelectedOnlyVisibleCategories) {
                 return dfsSearch(
                     this.allCategoryTrees[this.advancedFilterValues.categoryTree],
                     this.getFilterValue(),
@@ -359,7 +393,7 @@ export default {
             return [];
         },
         categoryItems() {
-            if (this.value.length || !this.isOnlySelectedCategoriesVisible) {
+            if (this.value.length || !this.isSelectedOnlyVisibleCategories) {
                 return simpleSearch(
                     this.allCategories,
                     this.getFilterValue(),
@@ -372,6 +406,12 @@ export default {
             }
 
             return [];
+        },
+        isVisibleSelectedAnyCategory() {
+            return !this.isAnyCategoryAfterFiltering && this.isSelectedOnlyVisibleCategories;
+        },
+        isVisibleSelectedAnyCategoryInTree() {
+            return !this.isAnyCategoryInTreeAfterFiltering && this.isSelectedOnlyVisibleCategories;
         },
         isAnySearchPhrase() {
             return this.searchValue !== '';
@@ -432,8 +472,11 @@ export default {
                 this.$emit('input', this.value.filter(id => !this.categoryItems.some(category => category.id === id)));
             }
         },
-        onToggleBetweenSelectedCategories(value) {
-            this.isOnlySelectedCategoriesVisible = value;
+        onToggleBetweenCategoriesVisibility(value) {
+            this.isSelectedOnlyVisibleCategories = value;
+        },
+        onClearVisibilitySelection() {
+            this.isSelectedOnlyVisibleCategories = false;
         },
         async onAdvancedFilterChange(filters) {
             this.advancedFilterValues = filters;
@@ -479,7 +522,7 @@ export default {
             this.searchValue = value;
         },
         onSearchConditionCallback(filterValues, searchValue) {
-            if (this.isOnlySelectedCategoriesVisible) {
+            if (this.isSelectedOnlyVisibleCategories) {
                 return filterValues.some(
                     value => searchValue === value && value.startsWith(this.searchValue),
                 );
@@ -512,7 +555,7 @@ export default {
             });
         },
         getFilterValue() {
-            return this.isOnlySelectedCategoriesVisible
+            return this.isSelectedOnlyVisibleCategories
                 ? this.selectedOptionsLabels
                 : this.searchValue;
         },
