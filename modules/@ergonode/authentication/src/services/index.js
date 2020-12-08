@@ -16,6 +16,13 @@ export const refresh = ({
     withLanguage: false,
 });
 
+export const checkHash = ({
+    $axios,
+    hash,
+}) => $axios.$post('/', hash, {
+    withLanguage: false,
+});
+
 export const get = ({
     $axios,
 }) => $axios.$get('profile', {

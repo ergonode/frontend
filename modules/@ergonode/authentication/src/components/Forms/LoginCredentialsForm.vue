@@ -25,15 +25,25 @@
                 :input="passwordInputType"
                 :error-messages="scopeErrors.password"
                 label="Password" />
-            <Toggler
-                v-model="isPasswordVisible"
-                label="Show password" />
+            <div class="login-help-area">
+                <Toggler
+                    v-model="isPasswordVisible"
+                    label="Show password" />
+                <span
+                    class="help-area_link"
+                    @click="redirectToRecovery">
+                    Forgot password ?
+                </span>
+            </div>
         </template>
     </LoginForm>
 </template>
 
 <script>
-import LoginForm from '@Authentication/components/Form/LoginForm';
+import LoginForm from '@Authentication/components/Forms/LoginForm';
+import {
+    LOGIN_STATE,
+} from '@Authentication/defaults/login-state';
 import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
 import {
     INPUT_TYPE,
@@ -81,6 +91,9 @@ export default {
         ...mapActions('authentication', [
             'authenticateUser',
         ]),
+        redirectToRecovery() {
+            this.$emit('redirect-to', LOGIN_STATE.PASSWORD_RECOVERY);
+        },
         onSubmit() {
             this.isSubmitting = true;
 
@@ -119,5 +132,18 @@ export default {
         display: flex;
         flex: 1;
         justify-content: center;
+    }
+
+    .login-help-area {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .help-area_link {
+            color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_12_16;
+            text-decoration: underline;
+            cursor: pointer;
+        }
     }
 </style>

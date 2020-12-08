@@ -3,20 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <LoginForm>
+    <LoginForm
+        :submit-title="$t('authentication.forms.help.redirectTo')"
+        @submit="onRedirect">
         <template #header>
             <div class="help-form__header">
-                <Fab @click.native="onBack">
+                <Fab @click.native="onRedirect">
                     <template #icon="{ color }">
                         <IconArrowPointer :fill-color="color" />
                     </template>
                 </Fab>
-                <h2 v-text="helpHeader" />
+                <h2 v-text="$t('authentication.forms.help.title')" />
             </div>
         </template>
         <template #body>
             <p
-                v-text="helpInfo"
+                v-text="$t('authentication.forms.help.info')"
                 class="help-form__info" />
             <LinkButton title="team@ergonode.com">
                 <template #prepend>
@@ -24,21 +26,14 @@
                 </template>
             </LinkButton>
         </template>
-        <template #proceedForm>
-            <Button
-                title="BACK TO LOG IN PAGE"
-                type="submit"
-                @click.stop.prevent.native="onBack" />
-        </template>
     </LoginForm>
 </template>
 
 <script>
-import LoginForm from '@Authentication/components/Form/LoginForm';
+import LoginForm from '@Authentication/components/Forms/LoginForm';
 import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
-import Button from '@UI/components/Button/Button';
 import Fab from '@UI/components/Fab/Fab';
 import IconArrowPointer from '@UI/components/Icons/Arrows/IconArrowPointer';
 import IconEmail from '@UI/components/Icons/Others/IconEmail';
@@ -52,29 +47,16 @@ export default {
         IconArrowPointer,
         LinkButton,
         IconEmail,
-        Button,
-    },
-    computed: {
-        helpHeader() {
-            return 'Help';
-        },
-        helpInfo() {
-            return 'If you have any problems with your account, please contact the system administrator';
-        },
     },
     methods: {
-        onBack() {
-            this.$emit('back-to', LOGIN_STATE.CREDENTIALS);
+        onRedirect() {
+            this.$emit('redirect-to', LOGIN_STATE.CREDENTIALS);
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .login-header {
-        justify-content: flex-start;
-    }
-
     .help-form {
         &__header {
             display: grid;

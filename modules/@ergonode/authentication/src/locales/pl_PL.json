@@ -1,0 +1,30 @@
+{
+  "authentication": {
+      "forms":{
+          "passwordRecovery": {
+              "title": "Przypomnienie hasła",
+              "info": "Podaj swój adres e-mail, a my wyślemy Ci link do zresetowania hasła.",
+              "redirectTo": "POWRÓT DO STRONY LOGOWANIA",
+              "button": "Odzyskaj hasło"
+          }
+      },
+      "messages": {
+          "deleteTitle": "Are you sure you want to delete this attribute?",
+          "deleteConfirm": "YES, REMOVE",
+          "deleteSuccess": "Attribute removed",
+          "deleteCancel": "Removing attribute has been canceled",
+          "createSuccess": "Attribute created",
+          "createCancel": "Creating attribute has been canceled",
+          "updateSuccess": "Attribute has been updated",
+          "updateCancel": "Updating attribute has been canceled",
+          "updateTranslationSuccess": "Attribute translations have been updated"
+      },
+      "errors": {
+          "getRequest": "Attribute hasn’t been fetched properly",
+          "getOptionRequest": "Attribute options hasn’t been fetched properly",
+          "deleteRequest": "Attribute hasn’t been deleted",
+          "optionUniq": "Option code must be unique",
+          "optionEmpty": "Option cannot be empty"
+      }
+  }
+}

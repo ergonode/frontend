@@ -10,6 +10,7 @@ import {
     getMappedPrivileges,
 } from '@Authentication/models/userMapper';
 import {
+    // checkHash,
     get,
     login,
 } from '@Authentication/services/index';
@@ -19,6 +20,115 @@ import {
 import camelcaseKeys from 'camelcase-keys';
 
 export default {
+    async passwordRecoveryCheckHash({}, {
+        // hash,
+        onError = () => {},
+    }) {
+        try {
+            // await checkHash({
+            //     $axios: this.app.$axios,
+            //     hash,
+            // });
+        } catch (e) {
+            onError({
+                errors: {
+                    __form: [
+                        e.data.message,
+                    ],
+                },
+            });
+        }
+    },
+    async passwordRecovery({}, {
+        data,
+        scope,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        let isError = false;
+        const errors = {};
+
+        if (!data.email) {
+            errors.email = [
+                'Email is required',
+            ];
+            isError = true;
+        }
+
+        if (!isError) {
+            try {
+                // const {
+                //     token,
+                //     refresh_token: refreshToken,
+                // } = await recovery({
+                //     $axios: this.app.$axios,
+                //     data,
+                // });
+                console.log('send');
+
+                onSuccess();
+            } catch (e) {
+                onError({
+                    errors: {
+                        __form: [
+                            e.data.message,
+                        ],
+                    },
+                    scope,
+                });
+            }
+        } else {
+            onError({
+                errors,
+                scope,
+            });
+        }
+    },
+    async newPassword({}, {
+        data,
+        scope,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        let isError = false;
+        const errors = {};
+
+        if (!data.password) {
+            errors.password = [
+                'Email is required',
+            ];
+            isError = true;
+        }
+
+        if (!isError) {
+            try {
+                // const {
+                //     token,
+                //     refresh_token: refreshToken,
+                // } = await recovery({
+                //     $axios: this.app.$axios,
+                //     data,
+                // });
+                console.log('send', data);
+
+                onSuccess();
+            } catch (e) {
+                onError({
+                    errors: {
+                        __form: [
+                            e.data.message,
+                        ],
+                    },
+                    scope,
+                });
+            }
+        } else {
+            onError({
+                errors,
+                scope,
+            });
+        }
+    },
     async authenticateUser({
         dispatch,
     }, {
