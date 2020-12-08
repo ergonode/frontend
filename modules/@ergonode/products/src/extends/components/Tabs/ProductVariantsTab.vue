@@ -236,7 +236,15 @@ export default {
             this.onFetchData();
         },
         onColumnSortChange(sortedColumn) {
-            this.localParams.sortedColumn = sortedColumn;
+            if (Object.keys(sortedColumn).length) {
+                const {
+                    index: colSortID,
+                    orderState,
+                } = sortedColumn;
+
+                this.localParams.field = colSortID;
+                this.localParams.order = orderState;
+            }
 
             this.onFetchData();
         },
