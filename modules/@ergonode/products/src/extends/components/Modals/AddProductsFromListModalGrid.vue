@@ -11,6 +11,7 @@
                 :columns="columns"
                 :data-count="filtered"
                 :rows="rows"
+                :disabled-rows="disabledProducts"
                 :drafts="drafts"
                 :pagination="pagination"
                 :filters="filterValues"
@@ -53,6 +54,9 @@ import {
     DEFAULT_GRID_FETCH_PARAMS,
     DEFAULT_GRID_PAGINATION,
 } from '@Core/defaults/grid';
+import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
@@ -82,7 +86,10 @@ export default {
         scopeErrorsMixin,
     ],
     async fetch() {
-        await this.onFetchData();
+        await Promise.all([
+            this.getProductVariants(),
+            this.onFetchData(),
+        ]);
 
         this.isPrefetchingData = false;
     },
@@ -90,6 +97,7 @@ export default {
         return {
             columns: [],
             rows: [],
+            productVariants: [],
             filtered: 0,
             filterValues: {},
             isPrefetchingData: true,
@@ -102,7 +110,16 @@ export default {
     computed: {
         ...mapState('product', [
             'id',
+            'bindings',
+            'selectAttributes',
         ]),
+        bindingAttributes() {
+            return this.selectAttributes.filter(
+                attribute => this.bindings.some(
+                    binding => binding === attribute.id,
+                ),
+            );
+        },
         collectionCellBinding() {
             return {
                 imageColumn: 'default_image',
@@ -112,6 +129,41 @@ export default {
                     'attached',
                 ],
             };
+        },
+        disabledProductCombinations() {
+            const disabledCombinations = [];
+
+            this.productVariants.forEach((row) => {
+                const combinations = [];
+
+                this.bindingAttributes.forEach((binding) => {
+                    combinations.push(row[binding.key].value);
+                });
+
+                disabledCombinations.push(combinations.join('|'));
+            });
+
+            return disabledCombinations;
+        },
+        disabledProducts() {
+            const disabledProducts = {};
+
+            this.rows.forEach((row) => {
+                if (!(this.drafts[`${row.id.value}/attached`]
+                    || (row.attached.value && typeof this.drafts[`${row.id.value}/attached`] === 'undefined'))) {
+                    const combinations = [];
+
+                    this.bindingAttributes.forEach((binding) => {
+                        combinations.push(row[binding.key].value);
+                    });
+
+                    if (this.disabledProductCombinations.includes(combinations.join('|'))) {
+                        disabledProducts[row.id.value] = true;
+                    }
+                }
+            });
+
+            return disabledProducts;
         },
     },
     methods: {
@@ -151,6 +203,42 @@ export default {
 
             this.onFetchData();
         },
+        async getProductVariants() {
+            const params = {
+                offset: 0,
+                limit: 99999,
+                view: 'list',
+                extended: true,
+                filter: {
+                    attached: {
+                        [FILTER_OPERATOR.EQUAL]: true,
+                    },
+                },
+            };
+
+            await getGridData({
+                $route: this.$route,
+                $cookies: this.$cookies,
+                $axios: this.$axios,
+                path: `products/${this.id}/children-and-available-products`,
+                params,
+                onSuccess: this.onFetchProductVariantsSuccess,
+                onError: this.onFetchProductsVariantsError,
+            });
+        },
+        onFetchProductVariantsSuccess({
+            rows,
+        }) {
+            this.productVariants = rows;
+        },
+        onFetchProductsVariantsError() {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Grid data haven’t been fetched properly',
+            });
+
+            this.isPrefetchingData = false;
+        },
         async onFetchData() {
             await getGridData({
                 $route: this.$route,
@@ -170,6 +258,8 @@ export default {
                 type: ALERT_TYPE.ERROR,
                 message: 'Grid data haven’t been fetched properly',
             });
+
+            this.isPrefetchingData = false;
         },
         onFetchGridDataSuccess({
             columns,
@@ -273,7 +363,9 @@ export default {
             const drafts = {};
 
             cellValues.forEach(({
-                rowId, columnId, value,
+                rowId,
+                columnId,
+                value,
             }) => {
                 drafts[`${rowId}/${columnId}`] = value;
 
@@ -285,6 +377,14 @@ export default {
                     sku: row.sku.value,
                     value,
                 };
+
+                if (value) {
+                    this.productVariants.push(row);
+                } else {
+                    this.productVariants = this.productVariants.filter(({
+                        id,
+                    }) => id.value !== rowId);
+                }
             });
 
             this.setDrafts({

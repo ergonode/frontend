@@ -12,13 +12,11 @@
         <template #prepend="{ color }">
             <IconUploadFile :fill-color="color" />
         </template>
-        <template #default>
-            <ModalTabBar
-                v-if="isModalVisible"
-                title="Add resources"
-                :items="modalTabs"
-                @close="onUploadedData" />
-        </template>
+        <ModalTabBar
+            v-if="isModalVisible"
+            title="Add resources"
+            :items="modalTabs"
+            @close="onUploadedData" />
     </Button>
 </template>
 
