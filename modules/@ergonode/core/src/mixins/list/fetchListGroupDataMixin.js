@@ -114,15 +114,18 @@ export default function ({
 
                 this.groups[languageCode] = [
                     ...groups,
+                    this.unassignedGroup,
                 ];
 
-                this.groups[languageCode].push({
-                    ...this.unassignedGroup,
-                });
+                this.items = {
+                    ...this.items,
+                    [languageCode]: items,
+                };
 
-                this.items[languageCode] = items;
-
-                this.groupItemsCount = groupItemsCount;
+                this.groupItemsCount = {
+                    ...this.groupItemsCount,
+                    ...groupItemsCount,
+                };
             },
             onFetchListItemsSuccess({
                 items,
@@ -133,7 +136,11 @@ export default function ({
                     this.items[languageCode] = {};
                 }
 
-                this.items[languageCode][UNASSIGNED_GROUP_ID] = items;
+                this.items[languageCode] = {
+                    ...this.items[languageCode],
+                    [UNASSIGNED_GROUP_ID]: items,
+                };
+
                 this.groupItemsCount = {
                     ...this.groupItemsCount,
                     [UNASSIGNED_GROUP_ID]: info.filtered,

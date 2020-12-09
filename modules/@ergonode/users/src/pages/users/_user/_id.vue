@@ -40,7 +40,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'User hasn`t been fetched properly',
+                    message: app.i18n.t('user.errors.getRequest'),
                 });
             },
         });

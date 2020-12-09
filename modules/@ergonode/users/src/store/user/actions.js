@@ -236,7 +236,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating user has been canceled',
+                    message: this.app.i18n.t('user.messages.updateCancel'),
                 });
 
                 return;
@@ -295,7 +295,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating user avatar has been canceled',
+                    message: this.app.i18n.t('user.messages.updateAvatarCancel'),
                 });
             }
 
@@ -374,7 +374,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Creating user has been canceled',
+                    message: this.app.i18n.t('user.messages.createCancel'),
                 });
 
                 return;
@@ -425,7 +425,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Removing segment has been canceled',
+                    message: this.app.i18n.t('user.messages.deleteCancel'),
                 });
 
                 return;

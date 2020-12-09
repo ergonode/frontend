@@ -40,7 +40,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'Role hasn`t been fetched properly',
+                    message: app.i18n.t('role.errors.getRequest'),
                 });
             },
         });

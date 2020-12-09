@@ -169,7 +169,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating role has been canceled',
+                    message: this.app.i18n.t('role.messages.updateCancel'),
                 });
 
                 return;
@@ -235,7 +235,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Updating role has been canceled',
+                    message: this.app.i18n.t('role.messages.createCancel'),
                 });
 
                 return;
@@ -286,7 +286,7 @@ export default {
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
-                    message: 'Removing role has been canceled',
+                    message: this.app.i18n.t('role.messages.deleteCancel'),
                 });
 
                 return;

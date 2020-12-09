@@ -63,8 +63,8 @@ export default {
     computed: {
         noDataPlaceholder() {
             return {
-                title: 'No users',
-                subtitle: 'There are no users in the system, you can create the first one.',
+                title: this.$t('user.grid.placeholderTitle'),
+                subtitle: this.$t('user.grid.placeholderSubtitle'),
                 bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
                 color: WHITESMOKE,
             };

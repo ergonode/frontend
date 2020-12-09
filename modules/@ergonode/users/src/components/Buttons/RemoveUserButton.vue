@@ -6,7 +6,7 @@
     <Button
         :theme="secondaryTheme"
         :size="smallSize"
-        title="REMOVE USER"
+        :title="$t('user.page.removeButton')"
         :disabled="!isAllowedToDelete"
         @click.native="onRemove">
         <template #prepend="{ color }">
@@ -63,8 +63,8 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this user?',
-                applyTitle: 'YES, REMOVE',
+                title: this.$t('user.message.deleteTitle'),
+                applyTitle: this.$t('user.message.deleteConfirm'),
                 action: () => this.removeUser({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
@@ -74,7 +74,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'User removed',
+                message: this.$t('user.message.deleteSuccess'),
             });
             this.$router.push({
                 name: ROUTE_NAME.USERS_GRID,
@@ -83,7 +83,7 @@ export default {
         onRemoveError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'User hasn’t been deleted',
+                message: this.$t('user.errors.deleteRequest'),
             });
         },
     },
