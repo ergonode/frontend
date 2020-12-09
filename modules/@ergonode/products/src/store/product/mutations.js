@@ -12,9 +12,9 @@ export default {
         key,
         value,
     }) {
-        state.drafts[key] = {
-            ...state.drafts[key],
-            [languageCode]: value,
+        state.drafts[languageCode] = {
+            ...state.drafts[languageCode],
+            [key]: value,
         };
     },
 };

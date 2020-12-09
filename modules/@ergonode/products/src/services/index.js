@@ -8,6 +8,12 @@ export const get = ({
     id,
 }) => $axios.$get(`products/${id}`);
 
+export const getInherited = ({
+    $axios,
+    id,
+    languageCode,
+}) => $axios.$get(`products/${id}/inherited/${languageCode}`);
+
 export const getWorkflow = ({
     $axios,
     id,

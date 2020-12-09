@@ -113,6 +113,7 @@ export default {
             'id',
             'template',
             'status',
+            'drafts',
         ]),
         smallSize() {
             return SIZE.SMALL;
@@ -143,7 +144,7 @@ export default {
         ...mapActions('product', [
             'validateProduct',
             'setDraftValue',
-            'getProduct',
+            'getInheritedProduct',
             'getProductWorkflow',
             'getProductTemplate',
             'getProductCompleteness',
@@ -177,7 +178,7 @@ export default {
             }
         },
         async getProductTemplateData(languageCode) {
-            await Promise.all([
+            const requests = [
                 this.getProductTemplate({
                     languageCode,
                     id: this.id,
@@ -200,7 +201,18 @@ export default {
                     languageCode,
                     id: this.id,
                 }),
-            ]);
+            ];
+
+            if (typeof this.drafts[languageCode] === 'undefined') {
+                requests.push(
+                    this.getInheritedProduct({
+                        id: this.id,
+                        languageCode,
+                    }),
+                );
+            }
+
+            await Promise.all(requests);
         },
         async onLanguageChange(value) {
             const languageCode = value.code;
@@ -224,8 +236,9 @@ export default {
                         this.completeness = completeness;
                     }),
                 }),
-                this.getProduct({
+                this.getInheritedProduct({
                     id: this.id,
+                    languageCode,
                 }),
             ]);
         },

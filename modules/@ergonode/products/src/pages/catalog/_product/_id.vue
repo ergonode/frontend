@@ -39,6 +39,10 @@ export default {
             id,
         } = params;
 
+        const {
+            defaultLanguageCode: languageCode,
+        } = store.state.core;
+
         await store.dispatch('dictionaries/getInitialDictionaries', {
             keys: [
                 'productTypes',
@@ -51,6 +55,16 @@ export default {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
                     message: 'Product hasn’t been fetched properly',
+                });
+            },
+        });
+        await store.dispatch('product/getInheritedProduct', {
+            id,
+            languageCode,
+            onError: () => {
+                app.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Inherited product hasn’t been fetched properly',
                 });
             },
         });

@@ -4,7 +4,6 @@
  */
 export default () => ({
     drafts: {},
-    data: {},
     id: null,
     sku: '',
     status: null,

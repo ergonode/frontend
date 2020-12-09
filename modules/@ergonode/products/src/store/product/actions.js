@@ -16,6 +16,7 @@ import {
     get,
     getCollections,
     getCompleteness,
+    getInherited,
     getTemplate,
     getWorkflow,
     remove,
@@ -100,7 +101,6 @@ export default {
 
             const {
                 template_id: templateId,
-                attributes,
                 sku,
                 type,
             } = data;
@@ -124,20 +124,63 @@ export default {
                 key: 'type',
                 value: productTypes[type],
             });
-            commit('__SET_STATE', {
-                key: 'drafts',
-                value: attributes,
-            });
-            commit('__SET_STATE', {
-                key: 'data',
-                value: attributes,
-            });
 
             // EXTENDED AFTER METHOD
             await this.$extendMethods('@Products/store/product/action/getProduct/__after', {
                 $this: this,
                 data,
                 type,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
+    },
+    async getInheritedProduct({
+        state,
+        commit,
+    }, {
+        id,
+        languageCode,
+        onError = () => {},
+    }) {
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Products/store/product/action/getInheritedProduct/__before', {
+                $this: this,
+                data: {
+                    id,
+                    languageCode,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+
+            const data = await getInherited({
+                $axios: this.app.$axios,
+                id,
+                languageCode,
+            });
+
+            const {
+                attributes,
+            } = data;
+
+            commit('__SET_STATE', {
+                key: 'drafts',
+                value: {
+                    ...state.drafts,
+                    [languageCode]: attributes,
+                },
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Products/store/product/action/getInheritedProduct/__after', {
+                $this: this,
+                data,
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
@@ -501,10 +544,10 @@ export default {
                     values: [],
                 });
 
-                Object.keys(drafts[attributeCode]).forEach((languageCode) => {
+                Object.keys(drafts).forEach((languageCode) => {
                     data[0].payload[data[0].payload.length - 1].values.push({
                         language: languageCode,
-                        value: drafts[attributeCode][languageCode],
+                        value: drafts[languageCode][attributeCode],
                     });
                 });
             });
