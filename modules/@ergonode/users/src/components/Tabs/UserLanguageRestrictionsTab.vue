@@ -125,7 +125,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Language privileges have been updated',
+                message: this.$t('user.message.updateLanguageSuccess'),
             });
 
             this.setDrafts();
