@@ -159,7 +159,7 @@ export default {
          */
         dismissible: {
             type: Boolean,
-            default: true,
+            default: false,
         },
         /**
          * The flag which tells if the dropdown has fixed content to it's parent width

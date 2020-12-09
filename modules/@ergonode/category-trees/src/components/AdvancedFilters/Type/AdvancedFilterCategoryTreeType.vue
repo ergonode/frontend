@@ -13,28 +13,28 @@
         @remove="onRemove"
         @swap="onSwap">
         <template #dropdown>
-            <AdvancedFilterContent>
-                <DropdownPlaceholder
-                    v-if="isPlaceholderVisible"
-                    :title="placeholder.title"
-                    :subtitle="placeholder.subtitle" />
-                <SelectList
-                    v-else-if="isContentVisible"
-                    :value="filterValue"
-                    :search-value="searchValue"
-                    :items="options"
-                    :size="smallSize"
-                    @input="onValueChange"
-                    @search="onSearch">
-                    <template #item="{ item }">
-                        <ListElementDescription>
-                            <ListElementTitle
-                                :size="smallSize"
-                                :title="item.label || `#${item.code}`" />
-                        </ListElementDescription>
-                    </template>
-                </SelectList>
-            </AdvancedFilterContent>
+            <SelectList
+                v-if="isContentVisible"
+                :value="filterValue"
+                :search-value="searchValue"
+                :items="options"
+                :size="smallSize"
+                @input="onValueChange"
+                @search="onSearch">
+                <template #body>
+                    <DropdownPlaceholder
+                        v-if="isPlaceholderVisible"
+                        :title="placeholder.title"
+                        :subtitle="placeholder.subtitle" />
+                </template>
+                <template #item="{ item }">
+                    <ListElementDescription>
+                        <ListElementTitle
+                            :size="smallSize"
+                            :title="item.label || `#${item.code}`" />
+                    </ListElementDescription>
+                </template>
+            </SelectList>
             <SelectDropdownFooter @clear="onClear" />
         </template>
     </AdvancedFilter>
@@ -52,7 +52,6 @@ import {
     getAutocomplete,
 } from '@Trees/services';
 import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
-import AdvancedFilterContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterContent';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
 import SelectDropdownFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownFooter';
@@ -63,7 +62,6 @@ export default {
     name: 'AdvancedFilterCategoryTreeType',
     components: {
         AdvancedFilter,
-        AdvancedFilterContent,
         SelectDropdownFooter,
         SelectList,
         DropdownPlaceholder,
