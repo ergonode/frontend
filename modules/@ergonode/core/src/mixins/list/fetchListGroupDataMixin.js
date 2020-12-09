@@ -114,13 +114,13 @@ export default function ({
 
                 this.groups[languageCode] = [
                     ...groups,
+                    this.unassignedGroup,
                 ];
 
-                this.groups[languageCode].push({
-                    ...this.unassignedGroup,
-                });
-
-                this.items[languageCode] = items;
+                this.items = {
+                    ...this.items,
+                    [languageCode]: items,
+                };
 
                 this.groupItemsCount = {
                     ...this.groupItemsCount,
@@ -136,7 +136,10 @@ export default function ({
                     this.items[languageCode] = {};
                 }
 
-                this.items[languageCode][UNASSIGNED_GROUP_ID] = items;
+                this.items[languageCode] = {
+                    ...this.items[languageCode],
+                    [UNASSIGNED_GROUP_ID]: items,
+                };
 
                 this.groupItemsCount = {
                     ...this.groupItemsCount,
