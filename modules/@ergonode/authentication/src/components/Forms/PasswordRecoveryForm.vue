@@ -26,7 +26,7 @@
                 v-model="email"
                 required
                 :error-messages="scopeErrors.email"
-                label="E-mail" />
+                :label="$t('authentication.forms.passwordRecovery.field')" />
         </template>
     </LoginForm>
 </template>

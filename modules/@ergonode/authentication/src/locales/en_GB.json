@@ -1,10 +1,21 @@
 {
     "authentication": {
+        "layout": {
+            "help":"Help"
+        },
         "forms":{
+            "login": {
+                "button": "LOG IN",
+                "email": "E-mail",
+                "password": "Password",
+                "toggle": "Show password",
+                "forgot": "Forgot password ?"
+            },
             "passwordRecovery": {
                 "title": "Password recovery",
                 "info": "Enter your e-mail address, we will send you the link to reset your password.",
                 "redirectTo": "BACK TO LOG IN PAGE",
+                "field": "E-mail",
                 "button": "Recover password"
             },
             "newPassword": {
@@ -35,23 +46,10 @@
                 "redirectTo": "BACK TO LOG IN PAGE"
             }
         },
-        "messages": {
-            "deleteTitle": "Are you sure you want to delete this attribute?",
-            "deleteConfirm": "YES, REMOVE",
-            "deleteSuccess": "Attribute removed",
-            "deleteCancel": "Removing attribute has been canceled",
-            "createSuccess": "Attribute created",
-            "createCancel": "Creating attribute has been canceled",
-            "updateSuccess": "Attribute has been updated",
-            "updateCancel": "Updating attribute has been canceled",
-            "updateTranslationSuccess": "Attribute translations have been updated"
-        },
         "errors": {
-            "getRequest": "Attribute hasn’t been fetched properly",
-            "getOptionRequest": "Attribute options hasn’t been fetched properly",
-            "deleteRequest": "Attribute hasn’t been deleted",
-            "optionUniq": "Option code must be unique",
-            "optionEmpty": "Option cannot be empty"
+            "getUser": "User data hasn`t been fetched properly",
+            "emailRequired": "E-mail is required",
+            "passwordRequired": "Password is required"
         }
     }
 }

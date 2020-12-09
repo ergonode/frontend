@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import Login from '@Authentication/components/Layout/Login';
 import {
     REFRESH_TOKEN_KEY,
     TOKEN_KEY,
@@ -22,7 +23,6 @@ import {
 import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
-import Login from '@UI/components/Layout/Login';
 import {
     mapActions,
     mapState,

@@ -5,6 +5,7 @@
 import {
     REFRESH_TOKEN_KEY,
     TOKEN_KEY,
+    TRANSLATION_KEY,
 } from '@Authentication/defaults/cookies';
 import {
     getMappedPrivileges,
@@ -50,7 +51,7 @@ export default {
 
         if (!data.email) {
             errors.email = [
-                'Email is required',
+                this.app.i18n.t('authentication.errors.emailRequired'),
             ];
             isError = true;
         }
@@ -95,7 +96,7 @@ export default {
 
         if (!data.password) {
             errors.password = [
-                'Email is required',
+                this.app.i18n.t('authentication.errors.passwordRequired'),
             ];
             isError = true;
         }
@@ -142,14 +143,14 @@ export default {
 
         if (!data.username) {
             errors.username = [
-                'Email is required',
+                this.app.i18n.t('authentication.errors.emailRequired'),
             ];
             isError = true;
         }
 
         if (!data.password) {
             errors.password = [
-                'Password is required',
+                this.app.i18n.t('authentication.errors.passwordRequired'),
             ];
             isError = true;
         }
@@ -170,7 +171,10 @@ export default {
                 });
 
                 await dispatch('getUser', {
-                    onSuccess: user => this.$setInterfaceLanguage(user.language),
+                    onSuccess: (user) => {
+                        this.$setInterfaceLanguage(user.language);
+                        this.$cookies.set(TRANSLATION_KEY, user.language);
+                    },
                 });
                 await dispatch('core/getLanguages', {}, {
                     root: true,
@@ -238,7 +242,7 @@ export default {
         } catch (e) {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'User data hasn`t been fetched properly',
+                message: this.app.i18n.t('authentication.errors.getUser'),
             });
         }
     },

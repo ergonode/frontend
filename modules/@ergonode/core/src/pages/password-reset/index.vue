@@ -13,6 +13,7 @@
 
 <script>
 import NewPasswordForm from '@Authentication/components/Forms/NewPasswordForm';
+import Login from '@Authentication/components/Layout/Login';
 import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
@@ -22,7 +23,6 @@ import {
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import Login from '@UI/components/Layout/Login';
 
 export default {
     name: 'PasswordReset',

@@ -89,7 +89,13 @@ export default {
     data() {
         return {
             password: '',
-            validationHelper: {
+            isPasswordVisible: false,
+            isSubmitting: false,
+        };
+    },
+    computed: {
+        validationHelper() {
+            return {
                 hasMinimumLength: {
                     value: false,
                     title: this.$t('authentication.forms.newPassword.validation.hasMinimumLength'),
@@ -106,12 +112,8 @@ export default {
                     value: false,
                     title: this.$t('authentication.forms.newPassword.validation.hasDigital'),
                 },
-            },
-            isPasswordVisible: false,
-            isSubmitting: false,
-        };
-    },
-    computed: {
+            };
+        },
         passwordInputType() {
             return {
                 type: this.isPasswordVisible ? 'text' : 'password',

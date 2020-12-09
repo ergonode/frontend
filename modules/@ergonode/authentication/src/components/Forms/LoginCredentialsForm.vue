@@ -4,7 +4,7 @@
  */
 <template>
     <LoginForm
-        submit-title="LOG IN"
+        :submit-title="$t('authentication.forms.login.button')"
         :is-submitting="isSubmitting"
         :errors="scopeErrors"
         @submit="onSubmit">
@@ -18,22 +18,21 @@
                 data-cy="login-email"
                 v-model="email"
                 :error-messages="scopeErrors.username"
-                label="E-mail" />
+                :label="$t('authentication.forms.login.email')" />
             <TextField
                 data-cy="login-pass"
                 v-model="password"
                 :input="passwordInputType"
                 :error-messages="scopeErrors.password"
-                label="Password" />
+                :label="$t('authentication.forms.login.password')" />
             <div class="login-help-area">
                 <Toggler
                     v-model="isPasswordVisible"
-                    label="Show password" />
+                    :label="$t('authentication.forms.login.toggle')" />
                 <span
                     class="help-area_link"
-                    @click="redirectToRecovery">
-                    Forgot password ?
-                </span>
+                    v-text="$t('authentication.forms.login.forgot')"
+                    @click="redirectToRecovery" />
             </div>
         </template>
     </LoginForm>
