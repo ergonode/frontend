@@ -14,7 +14,7 @@
         :label="label"
         :placeholder="placeholder"
         :error-messages="errorMessages"
-        :search-result="searchValue"
+        :search-value="searchValue"
         :hint="hint"
         :required="required"
         :autofocus="autofocus"
@@ -84,6 +84,9 @@ import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
 import Select from '@UI/components/Select/Select';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
+import {
+    debounce,
+} from 'debounce';
 
 export default {
     name: 'Autocomplete',
@@ -226,11 +229,11 @@ export default {
             required: true,
         },
         /**
-         * The type of filter at which options will be narrowed
+         * The params of autocomplete request
          */
-        filterType: {
-            type: String,
-            default: '',
+        params: {
+            type: Object,
+            default: () => ({}),
         },
         /**
          * Array of the static options which are not coming from options request
@@ -253,6 +256,7 @@ export default {
             allOptions: [],
             searchValue: '',
             isFetchingData: false,
+            onDebounceGetOptions: null,
         };
     },
     computed: {
@@ -284,6 +288,8 @@ export default {
         },
     },
     async created() {
+        this.onDebounceGetOptions = debounce(this.getOptions, 500);
+
         await this.getOptions();
 
         this.allOptions = this.options;
@@ -296,7 +302,7 @@ export default {
                 if (this.searchValue === '') {
                     this.options = this.allOptions;
                 } else {
-                    this.getOptions();
+                    this.onDebounceGetOptions();
                 }
             }
         },
@@ -323,7 +329,7 @@ export default {
                 const options = await this.$axios.$get(this.href, {
                     params: {
                         search: this.searchValue,
-                        type: this.filterType,
+                        ...this.params,
                     },
                 });
 

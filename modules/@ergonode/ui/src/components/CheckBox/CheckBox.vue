@@ -4,7 +4,7 @@
  */
 
 <template>
-    <div class="checkbox">
+    <div :class="classes">
         <input
             :id="associatedLabel"
             ref="checkbox"
@@ -63,6 +63,13 @@ export default {
             type: String,
             default: '',
         },
+        /**
+         * Determinate if the component content is reversed
+         */
+        reversed: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         checkValue: {
@@ -72,6 +79,14 @@ export default {
             set(value) {
                 this.$emit('input', value);
             },
+        },
+        classes() {
+            return [
+                'checkbox',
+                {
+                    'checkbox--reversed': this.reversed,
+                },
+            ];
         },
         markDrawingCommands() {
             return 'M5.22179 9.44443L0.777344 5.17093L2.02179 3.97435L5.22179 7.05127L11.9773 0.555542L13.2218 1.75212L5.22179 9.44443Z';
@@ -107,9 +122,7 @@ export default {
 
         & label {
             position: relative;
-            display: grid;
-            grid-auto-flow: column;
-            column-gap: 8px;
+            display: flex;
             align-items: center;
 
             &::after {
@@ -125,7 +138,7 @@ export default {
         &__label {
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_12_16;
-            cursor: pointer;
+            margin-left: 8px;
         }
 
         &__box {
@@ -135,17 +148,35 @@ export default {
             height: 16px;
             border: 1px solid $GREY;
             box-sizing: border-box;
-            cursor: pointer;
         }
 
         &__mark {
             fill: none;
         }
 
+        &--reversed {
+            & input[type="checkbox"] {
+                right: 0;
+            }
+
+            & label {
+                flex-direction: row-reverse;
+            }
+
+            #{$checkbox}__label {
+                margin-right: 8px;
+            }
+        }
+
+        &:not(&--reversed) {
+            & input[type="checkbox"] {
+                left: 0;
+            }
+        }
+
         & input[type="checkbox"] {
             position: absolute;
             top: 0;
-            left: 0;
             margin: 0;
             opacity: 0;
 
@@ -155,6 +186,10 @@ export default {
             }
 
             &:not(:disabled) {
+                & + label {
+                    cursor: pointer;
+                }
+
                 &:checked + label, &:indeterminate + label {
                     #{$checkbox}__box {
                         background-color: $GREEN;
@@ -182,6 +217,8 @@ export default {
 
             &:disabled {
                 & + label {
+                    cursor: not-allowed;
+
                     #{$checkbox}__box {
                         background-color: $GREY_LIGHT;
                     }

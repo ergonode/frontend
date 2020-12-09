@@ -35,6 +35,15 @@ export default {
         store,
         params,
     }) {
+        await store.dispatch('dictionaries/getInitialDictionaries', {
+            keys: [
+                'attrTypes',
+                'dateFormats',
+                'units',
+                'currencies',
+            ],
+        });
+
         await store.dispatch('attribute/getAttribute', {
             id: params.id,
             onError: () => {

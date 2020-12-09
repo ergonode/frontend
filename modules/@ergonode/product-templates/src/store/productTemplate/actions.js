@@ -7,7 +7,7 @@ import {
 } from '@Attributes/defaults/attributes';
 import {
     get as getAttribute,
-    getAll as getAllAttributes,
+    getAutocomplete as getAttributesAutocomplete,
 } from '@Attributes/services/attribute/index';
 import {
     ALERT_TYPE,
@@ -73,7 +73,7 @@ export default {
                 getTypes({
                     $axios: this.app.$axios,
                 }),
-                getAllAttributes({
+                getAttributesAutocomplete({
                     $axios: this.app.$axios,
                 }),
             ]);
@@ -101,14 +101,13 @@ export default {
                 value: imageID,
             });
 
-            const elementDescriptions = attributes.collection
-                .reduce((prev, curr) => {
-                    const tmp = prev;
+            const elementDescriptions = attributes.reduce((prev, curr) => {
+                const tmp = prev;
 
-                    tmp[curr.id] = curr.label || curr.code;
+                tmp[curr.id] = curr.label || curr.code;
 
-                    return tmp;
-                }, {});
+                return tmp;
+            }, {});
 
             const layoutElements = getMappedLayoutElements(
                 elements,

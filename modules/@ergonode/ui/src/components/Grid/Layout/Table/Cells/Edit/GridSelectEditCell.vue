@@ -7,13 +7,16 @@
         <GridSelectEditContentCell :style="positionStyle">
             <TranslationSelect
                 v-model="localValue"
+                :search-value="searchValue"
                 :autofocus="true"
                 :size="smallSize"
+                :searchable="true"
                 :clearable="true"
                 :disabled="disabled"
-                :options="mappedOptions"
+                :options="localOptions"
                 :error-messages="errorMessages"
-                @focus="onFocus" />
+                @focus="onFocus"
+                @search="onSearch" />
         </GridSelectEditContentCell>
     </GridEditNavigationCell>
 </template>
@@ -22,6 +25,9 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import {
+    simpleSearch,
+} from '@Core/models/arrayWrapper';
 import {
     getMappedObjectOption,
     getMappedObjectOptions,
@@ -68,19 +74,21 @@ export default {
             });
         }
 
+        const localOptions = getMappedObjectOptions({
+            options: this.options,
+            languageCode: this.languageCode,
+        });
+
         return {
             localValue,
+            localOptions,
+            allOptions: localOptions,
+            searchValue: '',
         };
     },
     computed: {
         smallSize() {
             return SIZE.SMALL;
-        },
-        mappedOptions() {
-            return getMappedObjectOptions({
-                options: this.options,
-                languageCode: this.languageCode,
-            });
         },
     },
     beforeDestroy() {
@@ -98,6 +106,18 @@ export default {
         }
     },
     methods: {
+        onSearch(value) {
+            this.searchValue = value;
+
+            this.localOptions = simpleSearch(
+                this.allCategories,
+                value,
+                [
+                    'value',
+                    'key',
+                ],
+            );
+        },
         onFocus(isFocused) {
             if (!isFocused) {
                 this.onEditCell();

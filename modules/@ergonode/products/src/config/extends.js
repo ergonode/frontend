@@ -21,8 +21,12 @@ export default {
     dictionaries: [
         {
             stateProp: 'productTypes',
-            dataFormat: {},
-            requestPath: '/dictionary/product-type',
+            defaultValue: {},
+            request: {
+                path: '/dictionary/product-type',
+                config: {},
+            },
+            dataMapper: response => response,
         },
     ],
     extendStore: {

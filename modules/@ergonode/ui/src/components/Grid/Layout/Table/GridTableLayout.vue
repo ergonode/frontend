@@ -21,10 +21,8 @@
                     :rows-offset="rowsOffset"
                     :row-ids="rowIds"
                     :is-basic-filter="isBasicFilter"
-                    :is-selected-all-rows="isSelectedAllRows"
                     :selected-rows="selectedRows"
-                    @row-select="onRowSelect"
-                    @rows-select="onRowsSelect" />
+                    @row-select="onRowSelect" />
             </GridTableLayoutPinnedSection>
             <GridTableLayoutColumnsSection
                 :style="templateColumns"
@@ -47,7 +45,6 @@
                         :filters="filters"
                         :disabled-rows="disabledRows"
                         :selected-rows="selectedRows"
-                        :is-selected-all-rows="isSelectedAllRows"
                         :rows-offset="rowsOffset"
                         :is-basic-filter="isBasicFilter"
                         @remove="onRemoveColumn"
@@ -76,7 +73,6 @@
                         :disabled-rows="disabledRows"
                         :drafts="drafts"
                         :selected-rows="selectedRows"
-                        :is-selected-all-rows="isSelectedAllRows"
                         :is-basic-filter="isBasicFilter"
                         :is-editable="isEditable"
                         @remove="onRemoveColumn"
@@ -111,7 +107,6 @@
                     :rows-offset="rowsOffset"
                     :is-basic-filter="isBasicFilter"
                     :columns-offset="orderedColumns.length + columnIndex + columnsOffset"
-                    :is-selected-all-rows="isSelectedAllRows"
                     :selected-rows="selectedRows"
                     @row-action="onRowAction" />
             </GridTableLayoutPinnedSection>
@@ -234,9 +229,7 @@ export default {
          */
         pagination: {
             type: Object,
-            default: () => ({
-                ...DEFAULT_GRID_PAGINATION,
-            }),
+            default: DEFAULT_GRID_PAGINATION,
         },
         /**
          * Determines the size of row height
@@ -244,13 +237,6 @@ export default {
         rowHeight: {
             type: Number,
             default: ROW_HEIGHT.SMALL,
-        },
-        /**
-         * The flag which determines the state of selected each row
-         */
-        isSelectedAllRows: {
-            type: Boolean,
-            default: false,
         },
         /**
          * The map of selected rows
@@ -506,9 +492,6 @@ export default {
         onRowSelect(selectedRows) {
             this.$emit('row-select', selectedRows);
         },
-        onRowsSelect(isSelectedAllRows) {
-            this.$emit('rows-select', isSelectedAllRows);
-        },
         onCellValueChange(value) {
             this.$emit('cell-value', value);
         },
@@ -523,7 +506,7 @@ export default {
                 length,
             } = this.visibleColumns;
 
-            const request = [];
+            const requests = [];
 
             for (let i = 0; i < length; i += 1) {
                 const column = this.visibleColumns[i];
@@ -535,7 +518,7 @@ export default {
                         && this.extendedComponents.dataCells[column.type]) {
                         this.setExtendedDataCell(column);
                     } else {
-                        request.push(this.setDataCell(column.type));
+                        requests.push(this.setDataCell(column.type));
                     }
                 }
 
@@ -546,7 +529,7 @@ export default {
                         && this.extendedComponents.dataFilterCells[column.filter.type]) {
                         this.setExtendedFilterDataCell(column);
                     } else {
-                        request.push(this.setDataFilterCell(column.filter.type));
+                        requests.push(this.setDataFilterCell(column.filter.type));
                     }
                 }
 
@@ -560,17 +543,17 @@ export default {
                 } = actionColumns[i];
 
                 if (typeof this.actionCellComponents[id] === 'undefined') {
-                    request.push(this.setActionCell(id));
+                    requests.push(this.setActionCell(id));
                 }
             }
 
-            await Promise.all(request);
+            await Promise.all(requests);
 
             this.actionColumns = actionColumns;
             this.orderedColumns = orderedColumns;
             this.columnWidths = columnWidths;
 
-            if (request.length) {
+            if (requests.length) {
                 this.$emit('rendered');
             }
         },

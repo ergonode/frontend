@@ -22,8 +22,7 @@
             :action="row._links.value[column.id]"
             :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
             :is-disabled="disabledRows[rowIds[rowIndex]]"
-            :is-selected="isSelectedAllRows
-                || selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
+            :is-selected="selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
             @action="onRowAction" />
     </GridActionColumn>
 </template>
@@ -61,13 +60,6 @@ export default {
         actionCellComponents: {
             type: Object,
             default: () => ({}),
-        },
-        /**
-         * The flag which determines the state of selected each row
-         */
-        isSelectedAllRows: {
-            type: Boolean,
-            default: false,
         },
         /**
          * The map of selected rows

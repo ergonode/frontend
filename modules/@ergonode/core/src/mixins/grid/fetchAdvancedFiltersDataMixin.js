@@ -13,7 +13,7 @@ import {
 import {
     getAdvancedFiltersData,
 } from '@Core/services/grid/getGridData.service';
-import GridAdvancedFilters from '@UI/components/Grid/AdvancedFilters/GridAdvancedFilters';
+import AdvancedFilters from '@UI/components/AdvancedFilters/AdvancedFilters';
 import {
     mapActions,
 } from 'vuex';
@@ -24,7 +24,7 @@ export default function ({
     return {
         components: {
             ExpandNumericButton,
-            GridAdvancedFilters,
+            AdvancedFilters,
         },
         data() {
             return {

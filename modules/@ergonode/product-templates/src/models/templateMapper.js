@@ -54,13 +54,19 @@ export function getMappedLayoutElements(elements, elementDescriptions, types) {
 
     return elements.map((element) => {
         const {
-            position, size, properties, type,
+            position,
+            size,
+            properties,
+            type,
         } = element;
         const {
-            attribute_id: attrID, required, label,
+            attribute_id: attrID,
+            required,
+            label,
         } = properties;
         const {
-            x: column, y: row,
+            x: column,
+            y: row,
         } = position;
 
         if (typeof cachedTypes[type] === 'undefined') {

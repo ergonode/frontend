@@ -1,0 +1,30 @@
+{
+  "categoryTree": {
+    "page": {
+      "title": "",
+      "head": "",
+      "addButton": ""
+    },
+    "form": {
+      "noCategoryTreeButton": "GO TO CATEGORY TREE",
+      "noVisibleCategoriesInTreePlaceholderTitle": "No categories",
+      "noVisibleCategoriesInTreePlaceholderSubtitle": "They are no selected categories for given criteria."
+    },
+    "advancedFilter": {
+      "label": "Category tree"
+    },
+    "grid": {
+      "placeholderTitle": "No categories in tree",
+      "placeholderSubtitle": "There are no categories in the tree, so you can create the first one."
+    },
+    "messages": {
+        "deleteTitle": "",
+        "deleteConfirm": "",
+        "deleteSuccess": ""
+    },
+    "errors": {
+        "getRequest": "",
+        "deleteRequest": ""
+    }
+  }
+}

@@ -53,7 +53,6 @@
                     :row-height="tableLayoutConfig.rowHeight"
                     :extended-components="extendedComponents[gridLayout.TABLE]"
                     :selected-rows="selectedRows[pagination.page]"
-                    :is-selected-all-rows="isSelectedAllRows[pagination.page]"
                     :is-editable="isEditable"
                     :is-select-column="isSelectColumn"
                     :is-basic-filter="isBasicFilter"
@@ -65,7 +64,6 @@
                     @remove-column="onRemoveColumn"
                     @swap-columns="onSwapColumns"
                     @row-select="onRowSelect"
-                    @rows-select="onRowsSelect"
                     @rendered="onRenderedTableLayout" />
                 <GridCollectionLayout
                     v-else-if="isCollectionLayout && !isPrefetchingData && !isPlaceholderVisible"
@@ -211,9 +209,7 @@ export default {
          */
         pagination: {
             type: Object,
-            default: () => ({
-                ...DEFAULT_GRID_PAGINATION,
-            }),
+            default: DEFAULT_GRID_PAGINATION,
         },
         /**
          * The list of batch actions
@@ -328,7 +324,6 @@ export default {
             tableLayoutConfig: {
                 rowHeight: ROW_HEIGHT.SMALL,
             },
-            isSelectedAllRows: {},
             selectedRows: {},
         };
     },
@@ -400,22 +395,19 @@ export default {
             this.$emit('remove-all-filters');
         },
         onBatchActionSelect(option) {
-            if (this.isSelectedAllRows[this.pagination.page]
-                || Object.keys(this.selectedRows[this.pagination.page]).length > 0) {
+            if (Object.keys(this.selectedRows[this.pagination.page]).length > 0) {
                 let {
                     rowIds,
                 } = this;
 
-                if (!this.isSelectedAllRows[this.pagination.page]) {
-                    const rowsOffset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
-                    const fixedIndex = rowsOffset + (this.isBasicFilter ? 2 : 1);
+                const rowsOffset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
+                const fixedIndex = rowsOffset + (this.isBasicFilter ? 2 : 1);
 
-                    rowIds = [];
+                rowIds = [];
 
-                    Object.keys(this.selectedRows[this.pagination.page]).forEach((key) => {
-                        rowIds.push(this.rowIds[+key - fixedIndex]);
-                    });
-                }
+                Object.keys(this.selectedRows[this.pagination.page]).forEach((key) => {
+                    rowIds.push(this.rowIds[+key - fixedIndex]);
+                });
 
                 option.action({
                     payload: {
@@ -425,11 +417,6 @@ export default {
                         this.selectedRows = {
                             ...this.selectedRows,
                             [this.pagination.page]: {},
-                        };
-
-                        this.isSelectedAllRows = {
-                            ...this.isSelectedAllRows,
-                            [this.pagination.page]: false,
                         };
                     },
                     onError: () => {
@@ -444,12 +431,6 @@ export default {
                 [this.pagination.page]: selectedRows,
             };
         },
-        onRowsSelect(isSelectedAllRows) {
-            this.isSelectedAllRows = {
-                ...this.isSelectedAllRows,
-                [this.pagination.page]: isSelectedAllRows,
-            };
-        },
         onApplySettings({
             tableConfig,
             collectionConfig,
@@ -459,6 +440,10 @@ export default {
         },
         onLayoutChange(layout) {
             this.layout = layout;
+
+            if (layout === GRID_LAYOUT.COLLECTION) {
+                this.isRenderingTableLayout = false;
+            }
         },
         onCellValueChange(payload) {
             this.$emit('cell-value', payload);

@@ -45,6 +45,13 @@ export default {
     mixins: [
         scopeErrorsMixin,
     ],
+    async fetch() {
+        await this.getInitialDictionaries({
+            keys: [
+                'channels',
+            ],
+        });
+    },
     data() {
         return {
             isSubmitting: false,
@@ -60,6 +67,9 @@ export default {
         ...mapActions('channel', [
             'createChannel',
             '__clearStorage',
+        ]),
+        ...mapActions('dictionaries', [
+            'getInitialDictionaries',
         ]),
         onClose() {
             this.__clearStorage();

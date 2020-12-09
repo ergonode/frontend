@@ -63,7 +63,7 @@ export default {
         },
         async onUpdateSuccess() {
             await this.getDictionary({
-                dictionaryName: 'units',
+                key: 'units',
             });
 
             this.$addAlert({

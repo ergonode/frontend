@@ -38,11 +38,17 @@ export default {
     mixins: [
         extendedGridComponentsMixin,
     ],
-    asyncData({
+    async asyncData({
         app,
         store,
         route,
     }) {
+        await store.dispatch('dictionaries/getInitialDictionaries', {
+            keys: [
+                'privileges',
+            ],
+        });
+
         const {
             privileges: privilegesDictionary,
         } = store.state.dictionaries;

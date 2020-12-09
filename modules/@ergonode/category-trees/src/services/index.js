@@ -12,6 +12,11 @@ export const get = ({
     id,
 }) => $axios.$get(`trees/${id}`);
 
+export const getAutocomplete = ({
+    $axios,
+    config,
+}) => $axios.$get('trees/autocomplete', config);
+
 export const remove = ({
     $axios,
     id,

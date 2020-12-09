@@ -147,8 +147,8 @@ export default {
             rows: [],
             filtered: 0,
             filterValues: {},
-            localParams: DEFAULT_GRID_FETCH_PARAMS,
-            pagination: DEFAULT_GRID_PAGINATION,
+            localParams: DEFAULT_GRID_FETCH_PARAMS(),
+            pagination: DEFAULT_GRID_PAGINATION(),
             isPrefetchingData: false,
             isBindingAttributesExpanded: false,
         };

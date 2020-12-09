@@ -6,7 +6,7 @@
     <TextArea
         :data-cy="dataCyGenerator(placeholderFieldKey)"
         :value="translations.placeholder[languageCode]"
-        label="Placeholder"
+        :label="$t('attribute.translation.placeholderLabel')"
         resize="none"
         height="150px"
         :error-messages="errors[placeholderFieldKey]"

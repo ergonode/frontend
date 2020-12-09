@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormSection :title="$t('attribute.form.optionTitle')">
+    <FormSection :title="$t('attribute.form.types.optionTitle')">
         <AttributeOptionValue
             v-for="(index, i) in optionIndexes"
             :data-cy="`attribute-option_${languageCode}_${i}`"

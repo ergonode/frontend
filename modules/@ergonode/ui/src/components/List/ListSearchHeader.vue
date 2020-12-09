@@ -6,11 +6,11 @@
     <ListHeader :title="title">
         <TextField
             v-show="isSearchButtonClicked"
-            :value="searchResult"
+            :value="searchValue"
             class="search-text-field"
             :size="smallSize"
             placeholder="Search..."
-            @input="debouncedSearch"
+            @input="onDebounceSearch"
             @focus="onSearchFocus">
             <template #append>
                 <IconSearch :fill-color="searchIconFillColor" />
@@ -74,7 +74,7 @@ export default {
         return {
             isSearchButtonClicked: false,
             isSearchFocused: false,
-            searchResult: '',
+            searchValue: '',
         };
     },
     computed: {
@@ -96,22 +96,22 @@ export default {
         },
     },
     created() {
-        this.debouncedSearch = debounce(this.onSearch, 500);
+        this.onDebounceSearch = debounce(this.onSearch, 500);
     },
     beforeDestroy() {
-        delete this.debouncedSearch;
+        delete this.onDebounceSearch;
     },
     methods: {
         onSearch(value) {
-            this.searchResult = value;
-            this.$emit('search-result', value);
+            this.searchValue = value;
+            this.$emit('search-value', value);
         },
         onSearchButtonClick() {
             this.isSearchButtonClicked = !this.isSearchButtonClicked;
 
-            if (!this.isSearchButtonClicked && this.searchResult !== '') {
-                this.searchResult = '';
-                this.onSearch(this.searchResult);
+            if (!this.isSearchButtonClicked && this.searchValue !== '') {
+                this.searchValue = '';
+                this.onSearch(this.searchValue);
             }
         },
         onSearchFocus(isFocused) {

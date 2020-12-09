@@ -60,14 +60,16 @@
                         @drop="onDropFilter" />
                 </template>
                 <template #appendHeader>
-                    <GridAdvancedFilters
-                        v-show="isFiltersExpanded"
-                        :value="advancedFilterValues"
-                        :filters="advancedFilters"
-                        @swap="onAdvancedFilterPositionChange"
-                        @remove="onAdvancedFilterRemove"
-                        @remove-all="onAdvancedFilterRemoveAll"
-                        @input="onAdvancedFilterChange" />
+                    <div class="products-advanced-filters">
+                        <AdvancedFilters
+                            v-show="isFiltersExpanded"
+                            :value="advancedFilterValues"
+                            :filters="advancedFilters"
+                            @swap="onAdvancedFilterPositionChange"
+                            @remove="onAdvancedFilterRemove"
+                            @remove-all="onAdvancedFilterRemoveAll"
+                            @input="onAdvancedFilterChange" />
+                    </div>
                 </template>
                 <template #filterActionPlaceholder>
                     <RemoveFiltersButton
@@ -584,7 +586,7 @@ export default {
 
             await Promise.all(promises);
 
-            await this.onFetchData(this.localParams);
+            await this.onFetchData();
 
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
@@ -643,3 +645,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .products-advanced-filters {
+        margin-left: 16px;
+    }
+</style>

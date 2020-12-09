@@ -15,6 +15,10 @@ export default {
     ],
     plugins: [
         {
+            ssr: false,
+            src: './plugins/i18n',
+        },
+        {
             ssr: true,
             src: './plugins/axios',
         },
@@ -23,7 +27,7 @@ export default {
             src: './plugins/core',
         },
         {
-            ssr: false,
+            ssr: true,
             src: './plugins/alerts',
         },
     ],

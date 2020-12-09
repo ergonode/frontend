@@ -3,17 +3,17 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResizeObserver @resize="onResize">
-        <div
-            :class="classes"
-            ref="dropdown">
-            <slot />
-        </div>
-    </ResizeObserver>
+    <div
+        :class="classes"
+        ref="dropdown">
+        <slot />
+    </div>
 </template>
 
 <script>
-import ResizeObserver from '@UI/components/Observers/ResizeObserver';
+import {
+    DROPDOWN_MAX_HEIGHT,
+} from '@UI/assets/scss/_js-variables/sizes.scss';
 import {
     getPositionForBrowser,
     isMouseInsideElement,
@@ -21,9 +21,6 @@ import {
 
 export default {
     name: 'Dropdown',
-    components: {
-        ResizeObserver,
-    },
     props: {
         /**
          * Determines whether content of dropdown has fixed height and width or not
@@ -52,8 +49,29 @@ export default {
                 'dropdown',
             ];
         },
+        parentElement() {
+            return typeof this.parentReference.$el === 'undefined'
+                ? this.parentReference
+                : this.parentReference.$el;
+        },
     },
     watch: {
+        fixed() {
+            if (this.fixed) {
+                requestAnimationFrame(() => {
+                    const maxHeight = parseInt(DROPDOWN_MAX_HEIGHT, 10);
+                    const parentOffset = this.parentElement.getBoundingClientRect();
+
+                    this.$refs.dropdown.style.maxHeight = `${maxHeight}px`;
+                    this.$refs.dropdown.style.width = `${parentOffset.width}px`;
+                });
+            } else {
+                requestAnimationFrame(() => {
+                    this.$refs.dropdown.style.width = null;
+                    this.$refs.dropdown.style.maxHeight = null;
+                });
+            }
+        },
         visible: {
             immediate: true,
             handler() {
@@ -70,20 +88,16 @@ export default {
                     return;
                 }
 
-                const parentElement = typeof this.parentReference.$el === 'undefined'
-                    ? this.parentReference
-                    : this.parentReference.$el;
-
                 requestAnimationFrame(() => {
                     this.$refs.dropdown.style.visibility = 'initial';
                     this.$refs.dropdown.style.opacity = '1';
 
-                    const parentOffset = parentElement.getBoundingClientRect();
+                    const parentOffset = this.parentElement.getBoundingClientRect();
                     const offset = 2;
                     const {
                         innerHeight,
                     } = window;
-                    let maxHeight = 200;
+                    let maxHeight = parseInt(DROPDOWN_MAX_HEIGHT, 10);
 
                     if (this.fixed) {
                         this.$refs.dropdown.style.maxHeight = `${maxHeight}px`;
@@ -103,11 +117,14 @@ export default {
                     if (yPos < maxHeight
                         && parentOffset.y >= maxHeight) {
                         this.$refs.dropdown.style.bottom = `${yPos}px`;
+                        this.$refs.dropdown.style.top = null;
                     } else if (parentOffset.y < maxHeight
                         && yPos <= maxHeight) {
                         this.$refs.dropdown.style.top = 0;
+                        this.$refs.dropdown.style.bottom = null;
                     } else {
                         this.$refs.dropdown.style.top = `${parentOffset.y + parentOffset.height + offset}px`;
+                        this.$refs.dropdown.style.bottom = null;
                     }
                 });
 
@@ -130,11 +147,6 @@ export default {
         }
     },
     methods: {
-        onResize(entry) {
-            if (entry.contentRect.height !== 0) {
-                this.$emit('height', entry.contentRect.height);
-            }
-        },
         onClickOutside(event) {
             const {
                 xPos,

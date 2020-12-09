@@ -6,8 +6,7 @@
     <Dropdown
         :parent-reference="parentReference"
         :visible="isVisible"
-        :fixed="fixedContent"
-        @height="onHeightChange"
+        :fixed="isFixedContent"
         @click-outside="onClickOutside">
         <slot
             name="placeholder"
@@ -17,45 +16,24 @@
         <slot
             :is-visible="isDropdownContentVisible"
             name="dropdown">
-            <template v-if="isDropdownContentVisible">
-                <DropdownListSearch
-                    v-if="searchable"
-                    :value="searchResult"
-                    :size="size"
-                    @input="onSearch" />
-                <VirtualScroll
-                    v-if="options.length"
-                    :items="options"
-                    :root-height="dropdownHeight"
-                    :render-ahead="4"
-                    :estimated-height="20">
-                    <template #item="{ item, index}">
-                        <DropdownListElement
-                            :key="index"
-                            :index="index"
-                            :size="size"
-                            :value="item"
-                            :selected="isOptionSelected(index)"
-                            @input="onSelectValue">
-                            <template #option="{ isSelected }">
-                                <slot
-                                    name="option"
-                                    :option="item"
-                                    :is-selected="isSelected"
-                                    :index="index" />
-                            </template>
-                        </DropdownListElement>
-                    </template>
-                </VirtualScroll>
-            </template>
-            <DropdownPlaceholder
-                v-if="isSearchPlaceholderVisible"
-                :title="placeholder.title"
-                :subtitle="placeholder.subtitle">
-                <template #action>
-                    <ClearSearchButton @click.native.stop="onClearSearch" />
+            <SelectList
+                v-if="isDropdownContentVisible"
+                :value="value"
+                :search-value="searchValue"
+                :items="options"
+                :size="size"
+                :searchable="searchable"
+                :multiselect="multiselect"
+                @input="onValueChange"
+                @search="onSearch">
+                <template #item="{ index, item, isSelected }">
+                    <slot
+                        name="item"
+                        :item="item"
+                        :index="index"
+                        :is-selected="isSelected" />
                 </template>
-            </DropdownPlaceholder>
+            </SelectList>
         </slot>
         <slot
             v-if="isFooterVisible"
@@ -79,27 +57,20 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
 import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
 import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
 import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
-import DropdownListElement from '@UI/components/Select/Dropdown/List/DropdownListElement';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
-import {
-    VirtualScroll,
-} from 'vue-windowing';
+import SelectList from '@UI/components/SelectList/SelectList';
 
 export default {
     name: 'SelectDropdown',
     components: {
-        VirtualScroll,
-        ClearSearchButton,
         MultiselectDropdownFooter,
         SelectDropdownApplyFooter,
         Dropdown,
-        DropdownListElement,
+        SelectList,
         DropdownPlaceholder,
-        DropdownListSearch: () => import('@UI/components/Select/Dropdown/List/DropdownListSearch'),
     },
     props: {
         /**
@@ -149,16 +120,21 @@ export default {
             default: () => [],
         },
         /**
-         * Map of selected option values
+         * Component value
          */
-        selectedOptions: {
-            type: Object,
-            default: () => ({}),
+        value: {
+            type: [
+                Array,
+                String,
+                Number,
+                Object,
+            ],
+            default: '',
         },
         /**
-         * Search result
+         * Search value
          */
-        searchResult: {
+        searchValue: {
             type: String,
             default: '',
         },
@@ -176,32 +152,25 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            dropdownHeight: 400,
-        };
-    },
     computed: {
-        placeholder() {
-            return {
-                title: 'No results',
-                subtitle: 'Clear the search and try with another phrase.',
-            };
-        },
-        stringifiedOptions() {
-            return this.options.map(option => JSON.stringify(option));
+        isFixedContent() {
+            if (this.isAnyOption) {
+                return this.fixedContent;
+            }
+
+            return !(this.isPlaceholderVisible || this.isSearchPlaceholderVisible);
         },
         isAnyOption() {
             return this.options.length > 0;
         },
         isAnySearchPhrase() {
-            return this.searchResult !== '';
-        },
-        isPlaceholderVisible() {
-            return !this.isAnyOption && !this.isAnySearchPhrase;
+            return this.searchValue !== '';
         },
         isSearchPlaceholderVisible() {
             return !this.isAnyOption && this.isAnySearchPhrase;
+        },
+        isPlaceholderVisible() {
+            return !this.isAnyOption && !this.isAnySearchPhrase;
         },
         isDropdownContentVisible() {
             return this.isAnyOption || this.isAnySearchPhrase;
@@ -211,11 +180,6 @@ export default {
         },
     },
     methods: {
-        onHeightChange(height) {
-            if (height !== this.dropdownHeight) {
-                this.dropdownHeight = height;
-            }
-        },
         onClickOutside(payload) {
             this.$emit('click-outside', payload);
         },
@@ -231,27 +195,8 @@ export default {
         onClearSearch() {
             this.onSearch('');
         },
-        onSelectValue(index) {
-            const value = this.options[index];
-
-            if (this.multiselect) {
-                const selectedOptions = {
-                    ...this.selectedOptions,
-                };
-
-                if (this.isOptionSelected(index)) {
-                    delete selectedOptions[this.stringifiedOptions[index]];
-                } else {
-                    selectedOptions[this.stringifiedOptions[index]] = value;
-                }
-
-                this.$emit('input', Object.values(selectedOptions));
-            } else {
-                this.$emit('input', value);
-            }
-        },
-        isOptionSelected(index) {
-            return typeof this.selectedOptions[this.stringifiedOptions[index]] !== 'undefined';
+        onValueChange(value) {
+            this.$emit('input', value);
         },
     },
 };

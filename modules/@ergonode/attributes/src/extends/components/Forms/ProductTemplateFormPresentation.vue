@@ -3,13 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormSection title="Presentation product">
+    <FormSection :title="$t('attribute.extends.template.form.title')">
         <Autocomplete
             :data-cy="dataCyGenerator('default-label')"
             :value="defaultTextAttribute"
-            label="Default label attribute"
+            :label="$t('attribute.extends.template.form.defaultLabel')"
             :searchable="true"
             :disabled="disabled"
+            :params="autocompleteDefaultLabelParams"
             filter-type="TEXT"
             href="attributes/autocomplete"
             :error-messages="errors.defaultLabel"
@@ -18,11 +19,11 @@
             <template #placeholder="{ isVisible }">
                 <DropdownPlaceholder
                     v-if="isVisible"
-                    :title="textAttributesPlaceholder.title"
-                    :subtitle="textAttributesPlaceholder.subtitle">
+                    :title="$t('attribute.extends.template.form.noLabelTitle')"
+                    :subtitle="$t('attribute.extends.template.form.noLabelSubtitle')">
                     <template #action>
                         <Button
-                            title="GO TO ATTRIBUTES"
+                            :title="$t('attribute.extends.template.form.noLabelButton')"
                             :size="smallSize"
                             :disabled="disabled"
                             @click.native="onNavigateToAttributes" />
@@ -33,10 +34,11 @@
         <Autocomplete
             :data-cy="dataCyGenerator('default-image')"
             :value="defaultImageAttribute"
-            label="Default image attribute"
+            :label="$t('attribute.extends.template.form.defaultImage')"
             :searchable="true"
             :clearable="true"
             :disabled="disabled"
+            :params="autocompleteDefaultImageParams"
             filter-type="IMAGE"
             :error-messages="errors.defaultImage"
             href="attributes/autocomplete"
@@ -44,11 +46,11 @@
             <template #placeholder="{ isVisible }">
                 <DropdownPlaceholder
                     v-if="isVisible"
-                    :title="imageAttributesPlaceholder.title"
-                    :subtitle="imageAttributesPlaceholder.subtitle">
+                    :title="$t('attribute.extends.template.form.noImageTitle')"
+                    :subtitle="$t('attribute.extends.template.form.noImageSubtitle')">
                     <template #action>
                         <Button
-                            title="GO TO ATTRIBUTES"
+                            :title="$t('attribute.extends.template.form.noImageButton')"
                             :size="smallSize"
                             :disabled="disabled"
                             @click.native="onNavigateToAttributes" />
@@ -65,12 +67,14 @@ import {
 } from '@Attributes/config/routes';
 import {
     SKU_MODEL,
+    TYPES,
 } from '@Attributes/defaults/attributes';
 import {
     SIZE,
 } from '@Core/defaults/theme';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
+import Button from '@UI/components/Button/Button';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import {
@@ -81,6 +85,7 @@ import {
 export default {
     name: 'ProductTemplateFormPresentation',
     components: {
+        Button,
         DropdownPlaceholder,
         Autocomplete,
         FormSection,
@@ -102,22 +107,22 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-        imageAttributesPlaceholder() {
-            return {
-                title: 'No image attributes',
-                subtitle: 'There are no image attributes in the system, so you can create the first one.',
-            };
-        },
-        textAttributesPlaceholder() {
-            return {
-                title: 'No text attributes',
-                subtitle: 'There are no text attributes in the system, so you can create the first one.',
-            };
-        },
         additionalStaticTextOptions() {
             return [
                 SKU_MODEL,
             ];
+        },
+        autocompleteDefaultImageParams() {
+            return {
+                system: false,
+                type: TYPES.IMAGE,
+            };
+        },
+        autocompleteDefaultLabelParams() {
+            return {
+                system: false,
+                type: TYPES.TEXT,
+            };
         },
     },
     methods: {

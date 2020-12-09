@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 import {
+    ALERT_TYPE,
+} from '@Core/defaults/alerts';
+import {
     get,
 } from '@Core/services/dictionary/index';
 
@@ -22,52 +25,88 @@ const modulesDictionaries = Object.values(extendsModules)
     }, []);
 
 export default {
-    async getDictionaries({
+    async getInitialDictionaries({
         commit,
+        state,
+    }, {
+        keys,
     }) {
-        const promises = modulesDictionaries.map(async ({
-            stateProp, requestPath, isGrid = false,
-        }) => {
-            const path = `${requestPath}${isGrid ? '?view=list' : ''}`;
+        const requests = [];
 
-            const response = await get({
-                $axios: this.app.$axios,
-                path,
-                useCache: isGrid,
-            });
+        keys.forEach((key) => {
+            requests.push(async () => {
+                try {
+                    const modulesDictionary = modulesDictionaries.find(
+                        dictionary => dictionary.stateProp === key,
+                    );
 
-            const value = isGrid ? response.collection : response;
+                    const stateValue = JSON.stringify(state[key]);
+                    const dictionaryDefaultValue = JSON.stringify(modulesDictionary.defaultValue);
 
-            commit('__SET_STATE', {
-                key: stateProp,
-                value,
+                    if (stateValue === dictionaryDefaultValue) {
+                        const {
+                            request: {
+                                path,
+                                config,
+                            },
+                            dataMapper = response => response,
+                        } = modulesDictionary;
+
+                        const response = await get({
+                            $axios: this.app.$axios,
+                            path,
+                            config,
+                        });
+
+                        commit('__SET_STATE', {
+                            key,
+                            value: dataMapper(response),
+                        });
+                    }
+                } catch (e) {
+                    this.app.$addAlert({
+                        type: ALERT_TYPE.ERROR,
+                        message: 'Dictionary couldn\'t be fetched',
+                    });
+                }
             });
         });
 
-        await Promise.all(promises);
+        await Promise.all(requests.map(request => request()));
     },
     async getDictionary({
         commit,
     }, {
-        dictionaryName,
+        key,
     }) {
-        const {
-            stateProp,
-            requestPath,
-            isGrid = false,
-        } = modulesDictionaries.find(({
-            stateProp: name,
-        }) => name === dictionaryName);
-        const path = `${requestPath}${isGrid ? '?view=list' : ''}`;
-        const response = await get({
-            $axios: this.app.$axios,
-            path,
-        });
-        const value = isGrid ? response.collection : response;
+        try {
+            const modulesDictionary = modulesDictionaries.find(
+                dictionary => dictionary.stateProp === key,
+            );
 
-        commit('__SET_STATE', {
-            key: stateProp,
-            value,
-        });
+            const {
+                request: {
+                    path,
+                    config,
+                },
+                dataMapper = response => response,
+            } = modulesDictionary;
+
+            const response = await get({
+                $axios: this.app.$axios,
+                path,
+                config,
+            });
+
+            commit('__SET_STATE', {
+                key,
+                value: dataMapper(response),
+            });
+        } catch (e) {
+            this.app.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message: 'Dictionary couldn\'t be fetched',
+            });
+        }
     },
 };

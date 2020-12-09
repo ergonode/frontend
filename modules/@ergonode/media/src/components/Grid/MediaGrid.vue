@@ -103,15 +103,15 @@ export default {
     },
     data() {
         return {
-            searchResult: null,
+            searchValue: null,
             isSearchFocused: false,
             isPrefetchingData: true,
             filterValues: {},
             rows: [],
             columns: [],
             filtered: 0,
-            localParams: DEFAULT_GRID_FETCH_PARAMS,
-            pagination: DEFAULT_GRID_PAGINATION,
+            localParams: DEFAULT_GRID_FETCH_PARAMS(),
+            pagination: DEFAULT_GRID_PAGINATION(),
         };
     },
     computed: {
@@ -183,17 +183,17 @@ export default {
         },
     },
     created() {
-        this.debouncedSearch = debounce(this.onSearch, 500);
+        this.onDebounceSearch = debounce(this.onSearch, 500);
     },
     beforeDestroy() {
-        delete this.debouncedSearch;
+        delete this.onDebounceSearch;
     },
     methods: {
         async onIntersect(isIntersecting) {
             if (isIntersecting) {
                 this.isPrefetchingData = true;
 
-                await this.onFetchData(this.localParams);
+                await this.onFetchData();
 
                 this.isPrefetchingData = false;
             }
@@ -291,7 +291,7 @@ export default {
             });
         },
         onRemoveRow() {
-            this.onFetchData(this.localParams);
+            this.onFetchData();
         },
         onCellValueChange(cellValues) {
             const drafts = this.multiple
@@ -367,7 +367,7 @@ export default {
             this.isSearchFocused = isFocused;
         },
         onSearch(value) {
-            this.searchResult = value;
+            this.searchValue = value;
         },
         onEditRow(args) {
             const lastIndex = args.length - 1;
