@@ -6,7 +6,7 @@
     <Dropdown
         :parent-reference="parentReference"
         :visible="isVisible"
-        :fixed="fixedContent"
+        :fixed="isFixedContent"
         @click-outside="onClickOutside">
         <slot
             name="placeholder"
@@ -153,11 +153,21 @@ export default {
         },
     },
     computed: {
+        isFixedContent() {
+            if (this.isAnyOption) {
+                return this.fixedContent;
+            }
+
+            return !(this.isPlaceholderVisible || this.isSearchPlaceholderVisible);
+        },
         isAnyOption() {
             return this.options.length > 0;
         },
         isAnySearchPhrase() {
             return this.searchValue !== '';
+        },
+        isSearchPlaceholderVisible() {
+            return !this.isAnyOption && this.isAnySearchPhrase;
         },
         isPlaceholderVisible() {
             return !this.isAnyOption && !this.isAnySearchPhrase;

@@ -8,7 +8,8 @@
         :value="parsedFilterValue"
         :title="filter.label"
         :filter-id="filter.id"
-        :fixed-content="!(isPlaceholderVisible || isSearchPlaceholderVisible)"
+        :dismissible="true"
+        :fixed-content="isFixedContent"
         @remove="onRemove"
         @swap="onSwap">
         <template #dropdown>
@@ -129,6 +130,9 @@ export default {
             }
 
             return this.filterValue.label || `#${this.filterValue.code}`;
+        },
+        isFixedContent() {
+            return !(this.isPlaceholderVisible || this.isSearchPlaceholderVisible);
         },
         isAnySearchPhrase() {
             return this.searchValue !== '';
