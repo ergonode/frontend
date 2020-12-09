@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Role has been updated',
+                message: this.$t('role.message.updateSuccess'),
             });
 
             this.isSubmitting = false;

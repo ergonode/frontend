@@ -6,7 +6,7 @@
     <Button
         :theme="secondaryTheme"
         :size="smallSize"
-        title="REMOVE ROLE"
+        :title="$t('role.page.removeButton')"
         :disabled="!isAllowedToDelete"
         @click.native="onRemove">
         <template #prepend="{ color }">
@@ -62,8 +62,8 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: 'Are you sure you want to delete this role?',
-                applyTitle: 'YES, REMOVE',
+                title: this.$t('role.message.deleteTitle'),
+                applyTitle: this.$t('role.message.deleteConfirm'),
                 action: () => this.removeRole({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
@@ -73,7 +73,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Role removed',
+                message: this.$t('role.message.deleteSuccess'),
             });
             this.$router.push({
                 name: ROUTE_NAME.USER_ROLES_GRID,
@@ -82,7 +82,7 @@ export default {
         onRemoveError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Role hasn`t been deleted',
+                message: this.$t('role.errors.deleteRequest'),
             });
         },
     },

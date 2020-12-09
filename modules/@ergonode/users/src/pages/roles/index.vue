@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            title="User roles"
+            :title="$t('role.page.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <CreateRoleButton @created="onCreatedData" />
@@ -53,7 +53,7 @@ export default {
     },
     head() {
         return {
-            title: 'User roles - Ergonode',
+            title: this.$t('role.page.head'),
         };
     },
 };

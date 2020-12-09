@@ -1,0 +1,90 @@
+{
+    "user": {
+        "page": {
+            "title": "Users",
+            "head": "Users - Ergonode",
+            "addButton": "New user",
+            "removeButton": "Remove user"
+        },
+        "form":{
+            "createTitle": "Create user",
+            "title": "Options",
+            "emailLabel": "Email",
+            "nameLabel": "First name",
+            "lastNameLabel": "Last name",
+            "passwordLabel": "Password",
+            "passwordRepeatLabel": "Password repeat",
+            "activeLabel": "The active status",
+            "languageLabel": "Language",
+            "roleLabel": "Role",
+            "noRoleButton": "GO TO USER ROLES",
+            "noRoleTitle": "No user roles",
+            "noRoleSubtitle": "There are no user roles in the system, so you can create the first one."
+        },
+        "avatar": {
+            "title": "User avatar",
+            "uploadLabel": "Profile picture",
+            "uploadAlt": "User avatar"
+        },
+        "grid": {
+            "placeholderTitle": "No users",
+            "placeholderSubtitle": "There are no users in the system, you can create the first one."
+        },
+        "messages": {
+            "deleteTitle": "Are you sure you want to delete this user?",
+            "deleteConfirm": "YES, REMOVE",
+            "deleteSuccess": "User removed",
+            "deleteCancel": "Removing user has been canceled",
+            "createSuccess": "User created",
+            "createCancel": "Creating user has been canceled",
+            "updateSuccess": "User has been updated",
+            "updateAvatarSuccess": "User avatar has been updated",
+            "updateLanguageSuccess": "Language privileges have been updated",
+            "updateCancel": "Updating user has been canceled",
+            "updateAvatarCancel": "Updating user avatar has been canceled",
+            "updateTranslationSuccess": "User translations have been updated"
+        },
+        "errors": {
+            "getRequest": "User hasn`t been fetched properly",
+            "getOptionRequest": "Attribute options hasn’t been fetched properly",
+            "deleteRequest": "User hasn’t been deleted",
+            "optionUniq": "Option code must be unique",
+            "optionEmpty": "Option cannot be empty"
+        }
+    },
+    "role": {
+        "page": {
+            "title": "User roles",
+            "head": "User roles - Ergonode",
+            "addButton": "New role",
+            "removeButton": "Remove role"
+        },
+        "form":{
+            "createTitle": "Create role",
+            "title": "Options",
+            "nameLabel": "Role name",
+            "nameHint": "Role name must be unique",
+            "descLabel": "Role description"
+        },
+        "grid": {
+            "placeholderTitle": "No user roles",
+            "placeholderSubtitle": "There are no user roles in the system, you can create the first one."
+        },
+        "messages": {
+            "deleteTitle": "Are you sure you want to delete this role?",
+            "deleteConfirm": "YES, REMOVE",
+            "deleteSuccess": "Role removed",
+            "deleteCancel": "Removing role has been canceled",
+            "createSuccess": "Role created",
+            "createCancel": "Creating role has been canceled",
+            "updateSuccess": "Role has been updated",
+            "updatePrivilegesSuccess": "Role privileges have been updated",
+            "updateCancel": "Updating role has been canceled",
+            "updateTranslationSuccess": "Role translations have been updated"
+        },
+        "errors": {
+            "getRequest": "Role hasn`t been fetched properly",
+            "deleteRequest": "Role hasn`t been deleted"
+        }
+    }
+}
