@@ -122,7 +122,10 @@ export default function ({
 
                 this.items[languageCode] = items;
 
-                this.groupItemsCount = groupItemsCount;
+                this.groupItemsCount = {
+                    ...this.groupItemsCount,
+                    ...groupItemsCount,
+                };
             },
             onFetchListItemsSuccess({
                 items,
@@ -134,6 +137,7 @@ export default function ({
                 }
 
                 this.items[languageCode][UNASSIGNED_GROUP_ID] = items;
+
                 this.groupItemsCount = {
                     ...this.groupItemsCount,
                     [UNASSIGNED_GROUP_ID]: info.filtered,
