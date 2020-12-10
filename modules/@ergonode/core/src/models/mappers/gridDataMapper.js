@@ -40,7 +40,13 @@ export function getParsedFilter({
     if (!values.length) return '';
 
     return values
-        .map(key => `${id}${key}${filter[key]}`)
+        .map((key) => {
+            if (Array.isArray(filter[key])) {
+                return `${id}${key}[${filter[key]}]`;
+            }
+
+            return `${id}${key}${filter[key]}`;
+        })
         .join(';');
 }
 
@@ -52,6 +58,72 @@ export function getParsedFilters(filters) {
             filter: filters[key],
         }))
         .join(';');
+}
+
+// code_42:en_GB=264b0c7c-b571-4cf3-a91a-6edd5f2099ae     ;    esa_product_type:en_GB=VARIABLE-PRODUCT
+
+// {
+//     "code_42:en_GB":{
+//         "=":[
+//             "264b0c7c-b571-4cf3-a91a-6edd5f2099ae"
+//         ]
+//     },
+//     "esa_product_type:en_GB":{
+//             "=":[
+//                 "VARIABLE-PRODUCT"
+//             ]
+//         }
+// }
+
+// code_23:en_GB>=10;code_23:en_GB<=20
+
+// {
+//     "code_23:en_GB":{
+//             "isEmptyRecord":false,
+//                 ">=":"10",
+//                 "<=":"20"
+//         }
+// }
+
+export function getParams() {
+
+}
+
+export function getMappedFilters(parsedFilters) {
+    const operators = Object.values(FILTER_OPERATOR);
+    const arrayConditions = [
+        '[',
+        ']',
+    ];
+    const filters = parsedFilters.split(';');
+    const mappedFilters = {};
+
+    filters.forEach((filter) => {
+        operators.forEach((operator) => {
+            if (filter.includes(operator)) {
+                const [
+                    code,
+                    value,
+                ] = filter.split(operator);
+
+                if (typeof mappedFilters[code] === 'undefined') {
+                    mappedFilters[code] = {};
+                }
+
+                if (value === '') {
+                    mappedFilters[code].isEmptyRecord = true;
+                } else if (arrayConditions.every(condition => value.includes(condition))) {
+                    mappedFilters[code][operator] = value.replace('[', '').replace(']', '').split(',');
+                } else {
+                    mappedFilters[code][operator] = value;
+                }
+            }
+        });
+    });
+
+    console.log(mappedFilters);
+
+    return mappedFilters;
 }
 
 export function getSortedColumnsByIDs(columns, columnsID) {

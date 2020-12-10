@@ -49,6 +49,7 @@
                     :errors="errors"
                     :disabled-rows="disabledRows"
                     :filters="filters"
+                    :sorted-column="sortedColumn"
                     :pagination="pagination"
                     :row-height="tableLayoutConfig.rowHeight"
                     :extended-components="extendedComponents[gridLayout.TABLE]"
@@ -302,6 +303,13 @@ export default {
             default: false,
         },
         /**
+         * The data model of sorted column
+         */
+        sortedColumn: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
          * The data model of extended Grid components
          */
         extendedComponents: {
@@ -316,7 +324,6 @@ export default {
         return {
             layout: this.defaultLayout,
             isRenderingTableLayout: this.defaultLayout === GRID_LAYOUT.TABLE,
-            sortedColumn: {},
             collectionLayoutConfig: {
                 columnsNumber: COLUMNS_NUMBER.FOURTH_COLUMNS.value,
                 scaling: IMAGE_SCALING.FIT_TO_SIZE.value,
@@ -467,9 +474,7 @@ export default {
             this.$emit('drop-column', payload);
         },
         onSortColumn(sortedColumn) {
-            this.sortedColumn = sortedColumn;
-
-            this.$emit('column-sort', sortedColumn);
+            this.$emit('sort-column', sortedColumn);
         },
         onRenderedTableLayout() {
             this.isRenderingTableLayout = false;

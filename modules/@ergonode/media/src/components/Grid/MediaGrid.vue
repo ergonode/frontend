@@ -23,7 +23,7 @@
             @cell-value="onCellValueChange"
             @delete-row="onRemoveRow"
             @pagination="onPaginationChange"
-            @column-sort="onColumnSortChange"
+            @sort-column="onColumnSortChange"
             @remove-all-filters="onRemoveAllFilters"
             @filter="onFilterChange">
             <template #appendFooter>

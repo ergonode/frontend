@@ -21,7 +21,7 @@
                 @preview-row="onEditRow"
                 @delete-row="onRemoveRow"
                 @pagination="onPaginationChange"
-                @column-sort="onColumnSortChange"
+                @sort-column="onColumnSortChange"
                 @filter="onFilterChange"
                 @remove-all-filters="onRemoveAllFilters" />
         </template>

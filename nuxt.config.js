@@ -73,6 +73,7 @@ module.exports = {
     loading: {
         color: '#00BC87',
         height: '3px',
+        throttle: 0,
     },
     modulesDir: [
         'node_modules',

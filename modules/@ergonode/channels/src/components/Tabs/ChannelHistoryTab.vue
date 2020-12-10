@@ -17,7 +17,7 @@
                 :is-border="true"
                 @preview-row="onPreviewRow"
                 @pagination="onPaginationChange"
-                @column-sort="onColumnSortChange"
+                @sort-column="onColumnSortChange"
                 @filter="onFilterChange"
                 @remove-all-filters="onRemoveAllFilters" />
             <ExportDetailsModalGrid

@@ -16,7 +16,7 @@
                 :is-basic-filter="true"
                 :is-border="true"
                 @pagination="onPaginationChange"
-                @column-sort="onColumnSortChange"
+                @sort-column="onColumnSortChange"
                 @filter="onFilterChange"
                 @remove-all-filters="onRemoveAllFilters" />
         </template>

@@ -267,6 +267,13 @@ export default {
             default: false,
         },
         /**
+         * The data model of sorted column
+         */
+        sortedColumn: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
          * The data model of extended table layout components
          */
         extendedComponents: {
@@ -285,7 +292,6 @@ export default {
             dataFilterCellComponents: {},
             filterTypes: {},
             columnTypes: {},
-            sortedColumn: {},
             pinnedSections: {},
             editCell: null,
             editFilterCell: null,
@@ -423,8 +429,7 @@ export default {
             }
         },
         onSortColumn(sortedColumn) {
-            this.sortedColumn = sortedColumn;
-            this.$emit('sort', sortedColumn);
+            this.$emit('sort-column', sortedColumn);
         },
         onFilterValueChange({
             value,

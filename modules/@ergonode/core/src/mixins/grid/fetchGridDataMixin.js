@@ -6,14 +6,20 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
+    DATA_LIMIT,
     DEFAULT_GRID_FETCH_PARAMS,
     DEFAULT_GRID_PAGINATION,
+    DEFAULT_PAGE,
 } from '@Core/defaults/grid';
 import {
     changeCookiePosition,
     insertCookieAtIndex,
     removeCookieAtIndex,
 } from '@Core/models/cookies';
+import {
+    getMappedFilters,
+    getParsedFilters,
+} from '@Core/models/mappers/gridDataMapper';
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
@@ -38,13 +44,24 @@ export default function ({
             },
         },
         data() {
+            const {
+                query: {
+                    page = DEFAULT_PAGE,
+                    itemsPerPage = DATA_LIMIT,
+                    filter = '',
+                },
+            } = this.$route;
+
             return {
                 rows: [],
                 columns: [],
-                filterValues: {},
+                filterValues: getMappedFilters(filter),
                 filtered: 0,
                 localParams: DEFAULT_GRID_FETCH_PARAMS(),
-                pagination: DEFAULT_GRID_PAGINATION(),
+                pagination: {
+                    page: +page,
+                    itemsPerPage: +itemsPerPage,
+                },
             };
         },
         computed: {
@@ -61,6 +78,10 @@ export default function ({
                     this.onFetchData();
                 }
             },
+            $route() {
+                console.log('changed route');
+                this.onFetchData();
+            },
         },
         methods: {
             ...mapActions('list', [
@@ -69,18 +90,25 @@ export default function ({
             ]),
             onPaginationChange(pagination) {
                 this.pagination = pagination;
-                this.localParams.limit = pagination.itemsPerPage;
-                this.localParams.offset = (pagination.page - 1) * pagination.itemsPerPage;
 
-                this.onFetchData();
+                this.$router.replace({
+                    query: {
+                        ...this.$route.query,
+                        ...pagination,
+                    },
+                });
             },
             onRemoveAllFilters() {
                 this.filterValues = {};
                 this.pagination.page = 1;
                 this.localParams.filter = {};
-                this.localParams.offset = 0;
 
-                this.onFetchData();
+                this.$router.replace({
+                    query: {
+                        ...this.$route.query,
+                        ...this.pagination,
+                    },
+                });
             },
             onRemoveColumn({
                 index,
@@ -124,10 +152,14 @@ export default function ({
             onFilterChange(filters) {
                 this.filterValues = filters;
                 this.pagination.page = 1;
-                this.localParams.filter = filters;
-                this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
-                this.onFetchData();
+                this.$router.replace({
+                    query: {
+                        ...this.$route.query,
+                        ...this.pagination,
+                        filter: getParsedFilters(filters),
+                    },
+                });
             },
             onSwapColumns({
                 from,
@@ -221,11 +253,19 @@ export default function ({
                 };
             },
             getParams() {
+                const {
+                    query: {
+                        page = DEFAULT_PAGE,
+                        itemsPerPage = DATA_LIMIT,
+                        filter = '',
+                    },
+                } = this.$route;
+
                 const params = {
-                    offset: this.localParams.offset,
-                    limit: this.localParams.limit,
+                    offset: (page - 1) * itemsPerPage,
+                    limit: itemsPerPage,
                     extended: true,
-                    filter: this.localParams.filter,
+                    filter,
                     columns: this.$cookies.get(`GRID_CONFIG:${this.$route.name}`) || defaultColumns,
                 };
 

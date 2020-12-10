@@ -14,7 +14,7 @@
                 :is-prefetching-data="isPrefetchingData"
                 :is-border="true"
                 @pagination="onPaginationChange"
-                @column-sort="onColumnSortChange" />
+                @sort-column="onColumnSortChange" />
         </template>
     </CenterViewTemplate>
 </template>

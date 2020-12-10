@@ -3,7 +3,6 @@
  * See LICENSE for license details.
  */
 import {
-    getParsedFilters,
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
 import {
@@ -23,12 +22,9 @@ export const getGridData = async ({
         const config = {
             params: {
                 ...params,
+                filter: params.filter.replace('[', '').replace(']', ''),
             },
         };
-
-        if (params.filter) {
-            config.params.filter = getParsedFilters(params.filter);
-        }
 
         const {
             collection,

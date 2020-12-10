@@ -38,7 +38,7 @@
                 @remove-column="onRemoveColumn"
                 @swap-columns="onSwapColumns"
                 @pagination="onPaginationChange"
-                @column-sort="onColumnSortChange"
+                @sort-column="onColumnSortChange"
                 @remove-all-filters="onRemoveAllFilters">
                 <template #actionsHeader>
                     <ExpandNumericButton
@@ -118,6 +118,9 @@ import {
     removeCookieAtIndex,
 } from '@Core/models/cookies';
 import {
+    getParsedFilters,
+} from '@Core/models/mappers/gridDataMapper';
+import {
     getUUID,
 } from '@Core/models/stringWrapper';
 import PRIVILEGES from '@Products/config/privileges';
@@ -179,6 +182,8 @@ export default {
         await Promise.all(requests);
 
         this.isPrefetchingData = false;
+
+        console.log('finished');
 
         this.setDisabledElements(this.getDisabledElements({
             columns: this.columns,
@@ -399,10 +404,13 @@ export default {
             this.filterValues = {};
             this.advancedFilterValues = {};
             this.pagination.page = 1;
-            this.localParams.filter = {};
-            this.localParams.offset = 0;
 
-            this.onFetchData();
+            this.$router.replace({
+                query: {
+                    ...this.$route.query,
+                    ...this.pagination,
+                },
+            });
         },
         onAdvancedFilterPositionChange({
             from,
@@ -418,13 +426,14 @@ export default {
         onAdvancedFilterChange(filters) {
             this.advancedFilterValues = filters;
             this.pagination.page = 1;
-            this.localParams.filter = {
-                ...this.filterValues,
-                ...this.advancedFilterValues,
-            };
-            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
-            this.onFetchData();
+            this.$router.replace({
+                query: {
+                    ...this.pagination,
+                    advancedFilter: getParsedFilters(this.advancedFilterValues),
+                    filter: getParsedFilters(this.filterValues),
+                },
+            });
         },
         disableListElement({
             languageCode,
@@ -469,9 +478,13 @@ export default {
                 ...this.filterValues,
                 ...this.advancedFilterValues,
             };
-            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
-            this.onFetchData();
+            this.$router.replace({
+                query: {
+                    ...this.$route.query,
+                    ...this.pagination,
+                },
+            });
         },
         onAdvancedFilterRemoveAll() {
             this.$cookies.remove(`GRID_ADV_FILTERS_CONFIG:${this.$route.name}`);
@@ -490,9 +503,13 @@ export default {
             this.advancedFilters = [];
             this.pagination.page = 1;
             this.localParams.filter = this.filterValues;
-            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
-            this.onFetchData();
+            this.$router.replace({
+                query: {
+                    ...this.$route.query,
+                    ...this.pagination,
+                },
+            });
         },
         onFetchGridData() {
             this.onFetchData();
@@ -500,13 +517,15 @@ export default {
         onFilterChange(filters) {
             this.filterValues = filters;
             this.pagination.page = 1;
-            this.localParams.filter = {
-                ...this.filterValues,
-                ...this.advancedFilterValues,
-            };
-            this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
-            this.onFetchData();
+            this.$router.replace({
+                query: {
+                    ...this.$route.query,
+                    ...this.pagination,
+                    advancedFilter: getParsedFilters(this.advancedFilterValues),
+                    filter: getParsedFilters(this.filterValues),
+                },
+            });
         },
         async onCellValueChange(cellValues) {
             const cachedElementIds = {};

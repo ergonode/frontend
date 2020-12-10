@@ -23,7 +23,7 @@
                 :is-basic-filter="true"
                 @cell-value="onCellValueChange"
                 @pagination="onPaginationChange"
-                @column-sort="onColumnSortChange"
+                @sort-column="onColumnSortChange"
                 @remove-all-filters="onRemoveAllFilters"
                 @filter="onFilterChange">
                 <template #actionsHeader>
