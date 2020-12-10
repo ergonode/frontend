@@ -4,7 +4,7 @@
  */
 <template>
     <Button
-        title="NEW ROLE"
+        :title="$t('role.page.addButton')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">

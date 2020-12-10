@@ -21,6 +21,7 @@
                         <Toggler
                             v-model="isSelectedOnlyVisibleCategories"
                             :label="$t('category.form.toggleVisibleToggler')"
+                            :disabled="isSelectedCategoriesTogglerDisabled"
                             reversed
                             @input="onToggleBetweenCategoriesVisibility" />
                     </div>
@@ -406,6 +407,13 @@ export default {
             }
 
             return [];
+        },
+        isSelectedCategoriesTogglerDisabled() {
+            if (this.isCategoryTreeSelected) {
+                return !this.isAnyCategoryInTree;
+            }
+
+            return !this.isAnyCategory;
         },
         isVisibleSelectedAnyCategory() {
             return !this.isAnyCategoryAfterFiltering && this.isSelectedOnlyVisibleCategories;
