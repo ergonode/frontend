@@ -4,7 +4,7 @@
  */
 <template>
     <Button
-        title="NEW USER"
+        :title="$t('user.page.addButton')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">

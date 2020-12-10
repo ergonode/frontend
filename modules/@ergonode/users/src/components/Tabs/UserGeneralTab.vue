@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'User has been updated',
+                message: this.$t('user.message.updateSuccess'),
             });
 
             this.isSubmitting = false;

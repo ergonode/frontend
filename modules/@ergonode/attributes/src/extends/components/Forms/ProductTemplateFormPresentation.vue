@@ -10,6 +10,7 @@
             :label="$t('attribute.extends.template.form.defaultLabel')"
             :searchable="true"
             :disabled="disabled"
+            :params="autocompleteDefaultLabelParams"
             filter-type="TEXT"
             href="attributes/autocomplete"
             :error-messages="errors.defaultLabel"
@@ -37,6 +38,7 @@
             :searchable="true"
             :clearable="true"
             :disabled="disabled"
+            :params="autocompleteDefaultImageParams"
             filter-type="IMAGE"
             :error-messages="errors.defaultImage"
             href="attributes/autocomplete"
@@ -65,6 +67,7 @@ import {
 } from '@Attributes/config/routes';
 import {
     SKU_MODEL,
+    TYPES,
 } from '@Attributes/defaults/attributes';
 import {
     SIZE,
@@ -108,6 +111,18 @@ export default {
             return [
                 SKU_MODEL,
             ];
+        },
+        autocompleteDefaultImageParams() {
+            return {
+                system: false,
+                type: TYPES.IMAGE,
+            };
+        },
+        autocompleteDefaultLabelParams() {
+            return {
+                system: false,
+                type: TYPES.TEXT,
+            };
         },
     },
     methods: {
