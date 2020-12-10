@@ -12,12 +12,10 @@
         <template #prepend="{ color }">
             <IconAdd :fill-color="color" />
         </template>
-        <template #default>
-            <CreateCategoryModalForm
-                v-if="isModalVisible"
-                @close="onCloseModal"
-                @created="onCreatedData" />
-        </template>
+        <CreateCategoryModalForm
+            v-if="isModalVisible"
+            @close="onCloseModal"
+            @created="onCreatedData" />
     </Button>
 </template>
 

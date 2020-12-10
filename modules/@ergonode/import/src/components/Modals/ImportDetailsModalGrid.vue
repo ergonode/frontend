@@ -130,7 +130,15 @@ export default {
             this.onFetchData();
         },
         onColumnSortChange(sortedColumn) {
-            this.localParams.sortedColumn = sortedColumn;
+            if (Object.keys(sortedColumn).length) {
+                const {
+                    index: colSortID,
+                    orderState,
+                } = sortedColumn;
+
+                this.localParams.field = colSortID;
+                this.localParams.order = orderState;
+            }
 
             this.onFetchData();
         },
@@ -140,10 +148,7 @@ export default {
                 $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: `sources/${this.sourceId}/imports/${this.importId}/errors`,
-                params: {
-                    ...this.localParams,
-                    extended: true,
-                },
+                params: this.localParams,
                 onSuccess: this.onFetchGridDataSuccess,
                 onError: this.onFetchGridDataError,
             });
