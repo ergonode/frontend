@@ -3,12 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.0.0-beta.5](https://github.com/derpdead/frontend/compare/v1.0.0-beta.3...v1.0.0-beta.5) (2020-11-30)
+# [1.0.0-beta.6](https://github.com/bleto/frontend/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2020-12-10)
 
 **Note:** Version bump only for package ergonode-front
 
 
 
+
+
+## CHANGELOG FOR v1.0.0-beta.6
+
+- feature [#600](https://github.com/ergonode/frontend/pull/600) Added async dictionaries
+- feature [#604](https://github.com/ergonode/frontend/pull/604) New translation mechanism (i18n). Create a method for switch language values.
+- feature [#605](https://github.com/ergonode/frontend/pull/605) Advanced filters and dropdown improvement - unification
+- feature [#607](https://github.com/ergonode/frontend/pull/607) Integrate accordion tree with Category select
+- bugfix [#610](https://github.com/ergonode/frontend/pull/610) Bugfix refresh token
+- bugfix [#611](https://github.com/ergonode/frontend/pull/611) Category select imporvement
+- bugfix [#613](https://github.com/ergonode/frontend/pull/613) Dropdown search placeholder, autocomplete params support
+- bugfix [#615](https://github.com/ergonode/frontend/pull/615) Bugfix - return button in user edit page.
 
 
 ## CHANGELOG FOR v1.0.0-beta.5
@@ -23,7 +35,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - feature - add github actions
 - feature - search for sidebar list with categories
 - refactor - expose Grid pagination
-- bugfix - Grid filtering 
+- bugfix - Grid filtering
 - bugfix - sidebar list languages
 
 ## CHANGELOG FOR v1.0.0-beta.3
@@ -38,7 +50,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## CHANGELOG FOR v1.0.0-beta.2
 - feature - integrate lighter version of lazy loaded dropdowns
-- refactor - improve performance of loading data for attributes list 
+- refactor - improve performance of loading data for attributes list
 - refactor - exclude VueMS configuration from Grid
 - refactor - improve performance of Grid
 - refactor - exclude AdvancedFilters from GridHeader

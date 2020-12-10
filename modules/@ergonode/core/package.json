@@ -1,6 +1,6 @@
 {
   "name": "@ergonode/core",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0-beta.6",
   "author": "Team Ergonode <team@ergonode.com>",
   "description": "Ergonode core module",
   "license": "OSL-3.0",
