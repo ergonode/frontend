@@ -5,14 +5,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## CHANGELOG FOR v1.0.0-beta.6
 
-- feature [#600](https://github.com/ergonode/frontend/pull/600) Added async dictionaries
-- feature [#604](https://github.com/ergonode/frontend/pull/604) New translation mechanism (i18n). Create a method for switch language values.
-- feature [#605](https://github.com/ergonode/frontend/pull/605) Advanced filters and dropdown improvement - unification
-- feature [#607](https://github.com/ergonode/frontend/pull/607) Integrate accordion tree with Category select
-- bugfix [#610](https://github.com/ergonode/frontend/pull/610) Bugfix refresh token
-- bugfix [#611](https://github.com/ergonode/frontend/pull/611) Category select imporvement
-- bugfix [#613](https://github.com/ergonode/frontend/pull/613) Dropdown search placeholder, autocomplete params support
-- bugfix [#615](https://github.com/ergonode/frontend/pull/615) Bugfix - return button in user edit page.
+- feature [#600](https://github.com/ergonode/frontend/pull/600) Added async dictionaries (derpdead)
+- feature [#604](https://github.com/ergonode/frontend/pull/604) New translation mechanism (i18n). Create a method for switch language values(bleto)
+- feature [#605](https://github.com/ergonode/frontend/pull/605) Advanced filters and dropdown improvement - unification (derpdead)
+- feature [#607](https://github.com/ergonode/frontend/pull/607) Integrate accordion tree with Category select (derpdead)
+- bugfix [#610](https://github.com/ergonode/frontend/pull/610) Bugfix refresh token (bleto)
+- bugfix [#611](https://github.com/ergonode/frontend/pull/611) Category select imporvement (derpdead)
+- bugfix [#613](https://github.com/ergonode/frontend/pull/613) Dropdown search placeholder, autocomplete params support (derpdead)
+- bugfix [#615](https://github.com/ergonode/frontend/pull/615) Bugfix - return button in user edit page (bleto)
 
 ## CHANGELOG FOR v1.0.0-beta.5
 - feature [#596](https://github.com/ergonode/frontend/pull/596) Migrate storybook from v5 to v6 (derpdead)
