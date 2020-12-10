@@ -3,14 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.0.0-beta.6](https://github.com/bleto/frontend/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2020-12-10)
-
-**Note:** Version bump only for package ergonode-front
-
-
-
-
-
 ## CHANGELOG FOR v1.0.0-beta.6
 
 - feature [#600](https://github.com/ergonode/frontend/pull/600) Added async dictionaries
@@ -21,7 +13,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - bugfix [#611](https://github.com/ergonode/frontend/pull/611) Category select imporvement
 - bugfix [#613](https://github.com/ergonode/frontend/pull/613) Dropdown search placeholder, autocomplete params support
 - bugfix [#615](https://github.com/ergonode/frontend/pull/615) Bugfix - return button in user edit page.
-
 
 ## CHANGELOG FOR v1.0.0-beta.5
 - feature [#596](https://github.com/ergonode/frontend/pull/596) Migrate storybook from v5 to v6 (derpdead)
