@@ -39,18 +39,16 @@
                     :errors="errors"
                     @input="onValueChange" />
             </template>
-            <template #default>
-                <Button
-                    :title="$t('core.buttons.submit')"
-                    :floating="{ bottom: '24px', right: '24px' }"
-                    @click.native="onSubmit">
-                    <template
-                        v-if="isSubmitting"
-                        #prepend="{ color }">
-                        <IconSpinner :fill-color="color" />
-                    </template>
-                </Button>
-            </template>
+            <Button
+                :title="$t('core.buttons.submit')"
+                :floating="{ bottom: '24px', right: '24px' }"
+                @click.native="onSubmit">
+                <template
+                    v-if="isSubmitting"
+                    #prepend="{ color }">
+                    <IconSpinner :fill-color="color" />
+                </template>
+            </Button>
         </CenterViewTemplate>
     </IntersectionObserver>
 </template>

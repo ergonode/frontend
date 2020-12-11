@@ -83,6 +83,7 @@ export const DRAGGED_ELEMENT = {
 export const DATA_LIMIT = 25;
 
 export const DEFAULT_GRID_FETCH_PARAMS = () => ({
+    extended: true,
     offset: 0,
     limit: DATA_LIMIT,
     filter: {},

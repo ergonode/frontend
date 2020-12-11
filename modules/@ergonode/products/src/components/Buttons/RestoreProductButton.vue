@@ -12,14 +12,12 @@
         <template #prepend="{ color }">
             <IconRestore :fill-color="color" />
         </template>
-        <template #default>
-            <RestoreAttributeParentModalForm
-                v-if="isModalVisible"
-                :language="language"
-                :elements="elements"
-                @restored="onRestored"
-                @close="onCloseModal" />
-        </template>
+        <RestoreAttributeParentModalForm
+            v-if="isModalVisible"
+            :language="language"
+            :elements="elements"
+            @restored="onRestored"
+            @close="onCloseModal" />
     </Button>
 </template>
 
