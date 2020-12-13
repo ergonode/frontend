@@ -274,6 +274,12 @@ export default {
         },
     },
     methods: {
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
+        ...mapActions('product', [
+            'updateProductDraft',
+        ]),
         ...mapActions('list', [
             'removeDisabledElement',
             'setDisabledElement',
@@ -331,24 +337,24 @@ export default {
         }) {
             const {
                 id,
+                element_id,
             } = column;
 
-            if (column.element_id) {
+            if (element_id) {
                 const {
                     language: languageCode = this.userLanguageCode,
-                    element_id: elementId,
                 } = column;
 
-                if (this.disabledElements[languageCode][elementId]) {
+                if (this.disabledElements[languageCode][element_id]) {
                     this.setDisabledElement({
                         languageCode,
-                        elementId,
+                        elementId: element_id,
                         disabled: false,
                     });
                 } else {
                     this.removeDisabledElement({
                         languageCode,
-                        elementId,
+                        elementId: element_id,
                     });
                 }
             }
@@ -359,6 +365,14 @@ export default {
                 cookies: this.$cookies,
                 cookieName: `GRID_CONFIG:${this.$route.name}`,
                 index,
+            });
+
+            this.$router.replace({
+                query: {
+                    ...this.$route.query,
+                    filter: getParsedFilters(this.filterValues),
+                    page: 1,
+                },
             });
 
             this.onFetchData();
@@ -375,14 +389,11 @@ export default {
             });
         },
         onAdvancedFilterChange(filters) {
-            this.advancedFilterValues = filters;
-            this.pagination.page = 1;
-
             this.$router.replace({
                 query: {
-                    ...this.pagination,
-                    advancedFilter: getParsedFilters(this.advancedFilterValues),
-                    filter: getParsedFilters(this.filterValues),
+                    ...this.$route.query,
+                    advancedFilter: getParsedFilters(filters),
+                    page: 1,
                 },
             });
         },
@@ -407,12 +418,11 @@ export default {
                 id,
             }) => id !== filter.id);
 
-            this.pagination.page = 1;
-
             this.$router.replace({
                 query: {
                     ...this.$route.query,
-                    ...this.pagination,
+                    advancedFilter: getParsedFilters(this.advancedFilterValues),
+                    page: 1,
                 },
             });
         },

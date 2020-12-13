@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
 import CreateProductTemplateButton from '@Templates/components/Buttons/CreateProductTemplateButton';
 import ProductTemplatesGrid from '@Templates/components/Grids/ProductTemplatesGrid';
 import PRIVILEGES from '@Templates/config/privileges';
@@ -38,7 +38,7 @@ export default {
         Page,
     },
     mixins: [
-        beforeLeavePageMixin,
+        beforeRouteLeaveMixin,
     ],
     computed: {
         isReadOnly() {

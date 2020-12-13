@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import CreateProductButton from '@Products/components/Buttons/CreateProductButton';
 import PRIVILEGES from '@Products/config/privileges';
@@ -59,7 +59,7 @@ export default {
         IconAdd,
     },
     mixins: [
-        beforeLeavePageMixin,
+        beforeRouteLeaveMixin,
         asyncTabsMixin,
     ],
     computed: {

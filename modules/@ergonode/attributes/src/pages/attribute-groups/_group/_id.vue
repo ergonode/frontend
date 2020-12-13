@@ -3,15 +3,43 @@
  * See LICENSE for license details.
  */
 <template>
-    <AttributeGroupPage :title="code" />
+    <Page>
+        <TitleBar
+            :title="code"
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigateBackFab :previous-route="previousRoute" />
+            </template>
+            <template #mainAction>
+                <template v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
+                <RemoveAttributeGroupButton />
+            </template>
+        </TitleBar>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
+    </Page>
 </template>
 
 <script>
-import AttributeGroupPage from '@Attributes/components/Pages/AttributeGroupPage';
+import RemoveAttributeGroupButton from '@Attributes/components/Buttons/RemoveAttributeGroupButton';
+import PRIVILEGES from '@Attributes/config/privileges';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import Page from '@UI/components/Layout/Page';
+import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapActions,
     mapState,
@@ -20,10 +48,15 @@ import {
 export default {
     name: 'EditAttributeGroup',
     components: {
-        AttributeGroupPage,
+        Page,
+        TitleBar,
+        HorizontalRoutingTabBar,
+        RemoveAttributeGroupButton,
     },
     mixins: [
-        beforeLeavePageMixin,
+        asyncTabsMixin,
+        beforeRouteEnterMixin,
+        beforeRouteLeaveMixin,
     ],
     validate({
         params,
@@ -49,6 +82,12 @@ export default {
         ...mapState('attributeGroup', [
             'code',
         ]),
+        extendedMainAction() {
+            return this.$getExtendedComponents('@Attributes/pages/attribute-groups/_group/mainAction');
+        },
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.ATTRIBUTE_GROUP.namespace);
+        },
     },
     beforeDestroy() {
         this.__clearStorage();
@@ -65,6 +104,14 @@ export default {
         ...mapActions('tab', {
             __clearTranslationsStorage: '__clearStorage',
         }),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.ATTRIBUTE_GROUP,
+                ...props,
+            };
+        },
     },
     head() {
         return {

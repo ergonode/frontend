@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import UploadResourcesButton from '@Media/components/Buttons/UploadResourcesButton';
 import PRIVILEGES from '@Media/config/privileges';
@@ -35,7 +35,7 @@ export default {
         HorizontalRoutingTabBar,
     },
     mixins: [
-        beforeLeavePageMixin,
+        beforeRouteLeaveMixin,
         asyncTabsMixin,
     ],
     computed: {

@@ -93,7 +93,7 @@ export default {
                 $route: this.$route,
                 $cookies: this.$cookies,
                 $axios: this.$axios,
-                path: `product/${this.$route.params.id}/history`,
+                path: `products/${this.$route.params.id}/history`,
                 params: getParams({
                     $route: this.$route,
                     $cookies: this.$cookies,
