@@ -8,7 +8,6 @@ import {
 import {
     DATA_LIMIT,
     DEFAULT_GRID_FETCH_PARAMS,
-    DEFAULT_GRID_PAGINATION,
     DEFAULT_PAGE,
 } from '@Core/defaults/grid';
 import {
@@ -36,12 +35,6 @@ export default function ({
     return {
         components: {
             Grid,
-        },
-        props: {
-            isFetchingNeeded: {
-                type: Boolean,
-                default: false,
-            },
         },
         data() {
             const {
@@ -73,11 +66,6 @@ export default function ({
             ]),
         },
         watch: {
-            isFetchingNeeded() {
-                if (this.isFetchingNeeded) {
-                    this.onFetchData();
-                }
-            },
             $route() {
                 console.log('changed route');
                 this.onFetchData();
@@ -172,8 +160,8 @@ export default function ({
                     to,
                 });
             },
-            onColumnSortChange(sortedColumn) {
-                this.localParams.sortedColumn = sortedColumn;
+            onColumnSortChange(sortOrder) {
+                this.localParams.sortOrder = sortOrder;
 
                 this.onFetchData();
             },
@@ -269,11 +257,11 @@ export default function ({
                     columns: this.$cookies.get(`GRID_CONFIG:${this.$route.name}`) || defaultColumns,
                 };
 
-                if (Object.keys(this.localParams.sortedColumn).length) {
+                if (Object.keys(this.localParams.sortOrder).length) {
                     const {
                         index: colSortID,
                         orderState,
-                    } = this.localParams.sortedColumn;
+                    } = this.localParams.sortOrder;
 
                     params.field = colSortID;
                     params.order = orderState;

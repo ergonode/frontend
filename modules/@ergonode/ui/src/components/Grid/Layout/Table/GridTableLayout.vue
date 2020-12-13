@@ -64,7 +64,7 @@
                         :column="column"
                         :rows="rows"
                         :rows-offset="rowsOffset"
-                        :sorted-column="sortedColumn"
+                        :sort-order="sortOrder"
                         :filters="filters"
                         :data-filter-cell-components="dataFilterCellComponents"
                         :data-cell-components="dataCellComponents"
@@ -269,7 +269,7 @@ export default {
         /**
          * The data model of sorted column
          */
-        sortedColumn: {
+        sortOrder: {
             type: Object,
             default: () => ({}),
         },
@@ -428,8 +428,8 @@ export default {
                 this.$refs.gridTableLayout.removeEventListener('mousedown', this.onMouseDown);
             }
         },
-        onSortColumn(sortedColumn) {
-            this.$emit('sort-column', sortedColumn);
+        onSortColumn(sortOrder) {
+            this.$emit('sort-column', sortOrder);
         },
         onFilterValueChange({
             value,

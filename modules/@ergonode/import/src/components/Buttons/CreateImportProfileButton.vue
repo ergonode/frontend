@@ -57,7 +57,10 @@ export default {
         },
         onCreatedData() {
             this.onCloseModal();
-            this.$emit('created');
+
+            const event = new CustomEvent('import-profile-created');
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

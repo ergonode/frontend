@@ -87,7 +87,9 @@ export default {
 
             this.isAdding = false;
 
-            this.$emit('submitted');
+            const event = new CustomEvent('products-attachment-updated');
+
+            document.documentElement.dispatchEvent(event);
         },
         onAddError(errors) {
             this.onError(errors);

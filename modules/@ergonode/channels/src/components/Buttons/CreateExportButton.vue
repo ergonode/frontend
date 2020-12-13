@@ -76,7 +76,9 @@ export default {
                 message: 'Export has been finished',
             });
 
-            this.$emit('created');
+            const event = new CustomEvent('export-created');
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

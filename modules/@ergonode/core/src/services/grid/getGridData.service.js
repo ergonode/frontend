@@ -22,9 +22,12 @@ export const getGridData = async ({
         const config = {
             params: {
                 ...params,
-                filter: params.filter.replace('[', '').replace(']', ''),
             },
         };
+
+        if (params.filter) {
+            config.params.filter = params.filter.replace('[', '').replace(']', '');
+        }
 
         const {
             collection,
@@ -34,9 +37,7 @@ export const getGridData = async ({
             },
         } = await $axios.$get(path, config);
 
-        const sortedColumns = params.columns
-            ? getSortedColumnsByIDs(columns, params.columns)
-            : columns;
+        const sortedColumns = getSortedColumnsByIDs(columns, params.columns);
 
         if (!$cookies.get(`GRID_CONFIG:${$route.name}`)) {
             $cookies.set(

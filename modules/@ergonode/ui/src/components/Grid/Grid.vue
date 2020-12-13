@@ -49,7 +49,7 @@
                     :errors="errors"
                     :disabled-rows="disabledRows"
                     :filters="filters"
-                    :sorted-column="sortedColumn"
+                    :sort-order="sortOrder"
                     :pagination="pagination"
                     :row-height="tableLayoutConfig.rowHeight"
                     :extended-components="extendedComponents[gridLayout.TABLE]"
@@ -57,7 +57,7 @@
                     :is-editable="isEditable"
                     :is-select-column="isSelectColumn"
                     :is-basic-filter="isBasicFilter"
-                    @sort="onSortColumn"
+                    @sort-column="onSortColumn"
                     @filter="onFilterChange"
                     @cell-value="onCellValueChange"
                     @focus-cell="onFocusCell"
@@ -105,6 +105,7 @@
                 <slot name="appendFooter" />
             </slot>
         </GridFooter>
+        <slot />
     </div>
 </template>
 
@@ -305,7 +306,7 @@ export default {
         /**
          * The data model of sorted column
          */
-        sortedColumn: {
+        sortOrder: {
             type: Object,
             default: () => ({}),
         },
@@ -473,8 +474,9 @@ export default {
         onDropColumn(payload) {
             this.$emit('drop-column', payload);
         },
-        onSortColumn(sortedColumn) {
-            this.$emit('sort-column', sortedColumn);
+        onSortColumn(sortOrder) {
+            console.log('sorting');
+            this.$emit('sort-column', sortOrder);
         },
         onRenderedTableLayout() {
             this.isRenderingTableLayout = false;

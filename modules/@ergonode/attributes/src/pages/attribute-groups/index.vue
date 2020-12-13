@@ -15,18 +15,12 @@
                         :key="index"
                         v-bind="bindingProps(actionItem)" />
                 </template>
-                <CreateAttributeGroupButton @created="onCreatedData" />
+                <CreateAttributeGroupButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
-            :items="asyncTabs">
-            <template #content>
-                <HorizontalRoutingTabBarContent
-                    :is-fetching-needed="fetchGridData"
-                    @fetched="onFetchedGridData" />
-            </template>
-        </HorizontalRoutingTabBar>
+            :items="asyncTabs" />
         <template
             v-for="(modal, index) in extendedModals">
             <Component
@@ -40,7 +34,6 @@
 <script>
 import CreateAttributeGroupButton from '@Attributes/components/Buttons/CreateAttributeGroupButton';
 import PRIVILEGES from '@Attributes/config/privileges';
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import Page from '@UI/components/Layout/Page';
@@ -56,7 +49,6 @@ export default {
         HorizontalRoutingTabBar,
     },
     mixins: [
-        gridModalMixin,
         beforeLeavePageMixin,
         asyncTabsMixin,
     ],

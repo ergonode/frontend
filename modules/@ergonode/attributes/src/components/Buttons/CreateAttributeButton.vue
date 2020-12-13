@@ -58,7 +58,10 @@ export default {
         },
         onCreatedData() {
             this.onCloseModal();
-            this.$emit('created');
+
+            const event = new CustomEvent('attribute-created');
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

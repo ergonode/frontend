@@ -12,28 +12,14 @@
             </template>
             <template #mainAction>
                 <RemoveChannelButton />
-                <CreateExportButton @created="onCreatedData" />
+                <CreateExportButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
             :items="asyncTabs"
             :change-values="changeValues"
-            :errors="errors">
-            <template
-                #content="{
-                    item,
-                    errors: tabErrors,
-                    changeValues: tabChangeValues,
-                }">
-                <HorizontalRoutingTabBarContent
-                    :is-fetching-needed="fetchGridData"
-                    :scope="item.scope"
-                    :change-values="tabChangeValues"
-                    :errors="tabErrors"
-                    @fetched="onFetchedGridData" />
-            </template>
-        </HorizontalRoutingTabBar>
+            :errors="errors" />
     </Page>
 </template>
 
@@ -43,35 +29,20 @@ import RemoveChannelButton from '@Channels/components/Buttons/RemoveChannelButto
 import PRIVILEGES from '@Channels/config/privileges';
 import editPageMixin from '@Core/mixins/page/editPageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
-import HorizontalRoutingTabBarContent from '@UI/components/TabBar/Routing/HorizontalRoutingTabBarContent';
 
 export default {
     name: 'ChannelPage',
     components: {
         CreateExportButton,
         RemoveChannelButton,
-        HorizontalRoutingTabBarContent,
     },
     mixins: [
         editPageMixin,
         asyncTabsMixin,
     ],
-    data() {
-        return {
-            fetchGridData: false,
-        };
-    },
     computed: {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.CHANNEL.namespace);
-        },
-    },
-    methods: {
-        onFetchedGridData() {
-            this.fetchGridData = false;
-        },
-        onCreatedData() {
-            this.fetchGridData = true;
         },
     },
 };

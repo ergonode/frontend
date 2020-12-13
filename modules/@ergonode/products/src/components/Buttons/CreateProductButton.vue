@@ -57,7 +57,10 @@ export default {
         },
         onCreatedData() {
             this.onCloseModal();
-            this.$emit('created');
+
+            const event = new CustomEvent('product-created');
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

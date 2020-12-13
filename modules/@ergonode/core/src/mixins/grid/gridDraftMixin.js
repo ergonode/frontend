@@ -24,5 +24,14 @@ export default {
                 }
             });
         },
+        removeDrafts(rowIds) {
+            rowIds.forEach((rowId) => {
+                delete this.drafts[rowId];
+            });
+
+            this.drafts = {
+                ...this.drafts,
+            };
+        },
     },
 };

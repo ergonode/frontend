@@ -58,7 +58,10 @@ export default {
         },
         onCreatedData() {
             this.onCloseModal();
-            this.$emit('created');
+
+            const event = new CustomEvent('category-tree-created');
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

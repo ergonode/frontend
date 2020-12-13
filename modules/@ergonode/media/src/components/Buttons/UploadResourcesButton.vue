@@ -74,7 +74,10 @@ export default {
         },
         onUploadedData() {
             this.onCloseModal();
-            this.$emit('uploaded');
+
+            const event = new CustomEvent('resources-uploaded');
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

@@ -62,7 +62,10 @@ export default {
         },
         onCreatedData() {
             this.onCloseModal();
-            this.$emit('created');
+
+            const event = new CustomEvent('import-created');
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

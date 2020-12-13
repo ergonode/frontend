@@ -58,7 +58,10 @@ export default {
         },
         onCreatedData() {
             this.onCloseModal();
-            this.$emit('created');
+
+            const event = new CustomEvent('collection-created');
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

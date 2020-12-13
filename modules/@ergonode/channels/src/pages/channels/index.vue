@@ -8,25 +8,18 @@
             title="Channel"
             :is-read-only="isReadOnly">
             <template #mainAction>
-                <CreateChannelButton @created="onCreatedData" />
+                <CreateChannelButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
-            :items="asyncTabs">
-            <template #content>
-                <HorizontalRoutingTabBarContent
-                    :is-fetching-needed="fetchGridData"
-                    @fetched="onFetchedGridData" />
-            </template>
-        </HorizontalRoutingTabBar>
+            :items="asyncTabs" />
     </Page>
 </template>
 
 <script>
 import CreateChannelButton from '@Channels/components/Buttons/CreateChannelButton';
 import PRIVILEGES from '@Channels/config/privileges';
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import Page from '@UI/components/Layout/Page';
@@ -42,7 +35,6 @@ export default {
         HorizontalRoutingTabBar,
     },
     mixins: [
-        gridModalMixin,
         beforeLeavePageMixin,
         asyncTabsMixin,
     ],

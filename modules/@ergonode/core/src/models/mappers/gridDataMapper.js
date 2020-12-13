@@ -3,28 +3,16 @@
  * See LICENSE for license details.
  */
 import {
+    DATA_LIMIT,
+    DEFAULT_PAGE,
+} from '@Core/defaults/grid';
+import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
 
-export function cellDataCompose(check) {
-    return (data, draft, colId) => {
-        if (draft && typeof draft[colId] !== 'undefined') {
-            const draftValue = draft[colId];
-
-            return {
-                value: draftValue,
-                isDraft: check(data, draftValue),
-            };
-        }
-        return {
-            value: data,
-            isDraft: false,
-        };
-    };
-}
-
 export function getParsedFilter({
-    id, filter,
+    id,
+    filter,
 }) {
     if (filter.isEmptyRecord) {
         return `${id}${FILTER_OPERATOR.EQUAL}`;
@@ -60,33 +48,62 @@ export function getParsedFilters(filters) {
         .join(';');
 }
 
-// code_42:en_GB=264b0c7c-b571-4cf3-a91a-6edd5f2099ae     ;    esa_product_type:en_GB=VARIABLE-PRODUCT
+export function getDraftsBasedOnCellValues(cellValues) {
+    return cellValues.reduce((prev, {
+        rowId,
+        columnId,
+        value,
+    }) => {
+        const tmp = prev;
+        tmp[`${rowId}/${columnId}`] = value;
+        return tmp;
+    }, {});
+}
 
-// {
-//     "code_42:en_GB":{
-//         "=":[
-//             "264b0c7c-b571-4cf3-a91a-6edd5f2099ae"
-//         ]
-//     },
-//     "esa_product_type:en_GB":{
-//             "=":[
-//                 "VARIABLE-PRODUCT"
-//             ]
-//         }
-// }
+export function getParams({
+    $route,
+    $cookies,
+    defaultColumns = '',
+}) {
+    const {
+        query: {
+            page = DEFAULT_PAGE,
+            itemsPerPage = DATA_LIMIT,
+            filter = '',
+            advancedFilter = '',
+            field = '',
+            order = '',
+        },
+    } = $route;
 
-// code_23:en_GB>=10;code_23:en_GB<=20
+    const params = {
+        offset: (page - 1) * itemsPerPage,
+        limit: itemsPerPage,
+        extended: true,
+        columns: $cookies.get(`GRID_CONFIG:${$route.name}`) || defaultColumns,
+    };
 
-// {
-//     "code_23:en_GB":{
-//             "isEmptyRecord":false,
-//                 ">=":"10",
-//                 "<=":"20"
-//         }
-// }
+    if (advancedFilter) {
+        params.filter = advancedFilter;
+    }
 
-export function getParams() {
+    if (filter) {
+        if (params.filter) {
+            params.filter += filter;
+        } else {
+            params.filter = filter;
+        }
+    }
 
+    if (field) {
+        params.field = field;
+    }
+
+    if (order) {
+        params.order = order;
+    }
+
+    return params;
 }
 
 export function getMappedFilters(parsedFilters) {
@@ -121,13 +138,41 @@ export function getMappedFilters(parsedFilters) {
         });
     });
 
-    console.log(mappedFilters);
-
     return mappedFilters;
 }
 
-export function getSortedColumnsByIDs(columns, columnsID) {
+export function getSortedColumnsByIDs(columns, columnIds) {
+    if (!columnIds) {
+        return columns;
+    }
+
     return [
-        ...columns.sort((a, b) => columnsID.indexOf(a.id) - columnsID.indexOf(b.id)),
+        ...columns.sort((a, b) => columnIds.indexOf(a.id) - columnIds.indexOf(b.id)),
     ];
+}
+
+export function getDefaultDataFromQueryParams($route) {
+    const {
+        query: {
+            page = DEFAULT_PAGE,
+            itemsPerPage = DATA_LIMIT,
+            filter = '',
+            advancedFilter = '',
+            field = '',
+            order = '',
+        },
+    } = $route;
+
+    return {
+        filterValues: getMappedFilters(filter),
+        advancedFilterValues: getMappedFilters(advancedFilter),
+        pagination: {
+            page: +page,
+            itemsPerPage: +itemsPerPage,
+        },
+        sortOrder: {
+            field,
+            order,
+        },
+    };
 }

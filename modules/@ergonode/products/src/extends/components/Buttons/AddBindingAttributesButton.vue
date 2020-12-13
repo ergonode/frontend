@@ -52,7 +52,10 @@ export default {
         },
         onAddedData() {
             this.onCloseModal();
-            this.$emit('added');
+
+            const event = new CustomEvent('attribute-binding-added');
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };
