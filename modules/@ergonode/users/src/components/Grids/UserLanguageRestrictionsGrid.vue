@@ -147,10 +147,9 @@ export default {
                 defaults: privilegeDefaults,
                 isEditable: this.isAllowedToUpdate,
             });
-            const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
-            const sortedColumns = getSortedColumnsByIDs(columns, config.split(','));
+            const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`) || '';
 
-            this.columns = sortedColumns;
+            this.columns = getSortedColumnsByIDs(columns, config.split(','));
             this.rows = rows;
             this.filtered = fullDataList.length;
         },

@@ -52,11 +52,10 @@ export default {
             selectedData: this.privileges,
             defaults: privilegesDefaults,
         });
-        const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
-        const sortedColumns = getSortedColumnsByIDs(columns, config.split(','));
+        const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`) || '';
 
         this.filtered = this.dictionaryPrivileges.length;
-        this.columns = sortedColumns;
+        this.columns = getSortedColumnsByIDs(columns, config.split(','));
         this.rows = rows;
         this.isPrefetchingData = false;
     },

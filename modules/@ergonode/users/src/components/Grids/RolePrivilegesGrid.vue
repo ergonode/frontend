@@ -76,7 +76,7 @@ export default {
                 defaults: privilegesDefaults,
                 isEditable: this.isAllowedToUpdate,
             });
-            const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
+            const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`) || '';
 
             return {
                 columns: getSortedColumnsByIDs(columns, config.split(',')),
