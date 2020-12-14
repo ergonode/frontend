@@ -518,6 +518,7 @@ export default {
     },
     async updateProductValues({
         state,
+        rootState,
     }, {
         scope,
         attributes,
@@ -527,7 +528,6 @@ export default {
         try {
             const {
                 id,
-                drafts,
             } = state;
             const data = [
                 {
@@ -536,20 +536,31 @@ export default {
                 },
             ];
 
-            Object.keys(attributes).forEach((attributeCode) => {
-                const attributeId = attributes[attributeCode];
+            const cachedAttributes = {};
+            const changeValues = rootState.feedback.changeValues[scope] || {};
 
-                data[0].payload.push({
-                    id: attributeId,
-                    values: [],
-                });
+            Object.keys(changeValues).forEach((key) => {
+                if (key !== 'saved') {
+                    const [
+                        languageCode,
+                        code,
+                    ] = key.split('|');
+                    const attributeId = attributes[code.split('/')[0]];
 
-                Object.keys(drafts).forEach((languageCode) => {
-                    data[0].payload[data[0].payload.length - 1].values.push({
+                    if (typeof cachedAttributes[attributeId] === 'undefined') {
+                        cachedAttributes[attributeId] = data[0].payload.length;
+
+                        data[0].payload.push({
+                            id: attributeId,
+                            values: [],
+                        });
+                    }
+
+                    data[0].payload[cachedAttributes[attributeId]].values.push({
                         language: languageCode,
-                        value: drafts[languageCode][attributeCode],
+                        value: changeValues[key],
                     });
-                });
+                }
             });
 
             await updateValues({
@@ -560,6 +571,7 @@ export default {
             });
             onSuccess();
         } catch (e) {
+            console.log(e);
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
