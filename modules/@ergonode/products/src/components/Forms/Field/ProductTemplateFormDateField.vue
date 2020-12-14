@@ -99,11 +99,11 @@ export default {
                 attribute_code,
             } = this.properties;
 
-            if (typeof this.drafts[attribute_code] === 'undefined') {
+            if (typeof this.drafts[this.languageCode][attribute_code] === 'undefined') {
                 return null;
             }
 
-            const value = this.drafts[attribute_code][this.languageCode];
+            const value = this.drafts[this.languageCode][attribute_code];
 
             return value ? new Date(value) : null;
         },

@@ -110,11 +110,11 @@ export default {
                 attribute_code,
             } = this.properties;
 
-            if (typeof this.drafts[attribute_code] === 'undefined' || !this.hasOptions) {
+            if (typeof this.drafts[this.languageCode][attribute_code] === 'undefined' || !this.hasOptions) {
                 return [];
             }
 
-            const value = this.drafts[attribute_code][this.languageCode];
+            const value = this.drafts[this.languageCode][attribute_code];
 
             return getMappedMatchedArrayOptions({
                 optionIds: value,

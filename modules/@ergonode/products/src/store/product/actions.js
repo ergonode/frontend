@@ -571,7 +571,6 @@ export default {
             });
             onSuccess();
         } catch (e) {
-            console.log(e);
             if (this.app.$axios.isCancel(e)) {
                 this.app.$addAlert({
                     type: ALERT_TYPE.WARNING,
