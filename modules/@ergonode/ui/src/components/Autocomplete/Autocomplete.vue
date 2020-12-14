@@ -24,7 +24,7 @@
         :searchable="searchable"
         :data-cy="dataCy"
         @focus="onFocus"
-        @search="onDebounceSearch"
+        @search="onSearch"
         @input="onValueChange">
         <template #prepend>
             <slot name="prepend" />
@@ -229,11 +229,11 @@ export default {
             required: true,
         },
         /**
-         * The type of filter at which options will be narrowed
+         * The params of autocomplete request
          */
-        filterType: {
-            type: String,
-            default: '',
+        params: {
+            type: Object,
+            default: () => ({}),
         },
         /**
          * Array of the static options which are not coming from options request
@@ -256,7 +256,7 @@ export default {
             allOptions: [],
             searchValue: '',
             isFetchingData: false,
-            onDebounceSearch: null,
+            onDebounceGetOptions: null,
         };
     },
     computed: {
@@ -288,7 +288,7 @@ export default {
         },
     },
     async created() {
-        this.onDebounceSearch = debounce(this.onSearch, 500);
+        this.onDebounceGetOptions = debounce(this.getOptions, 500);
 
         await this.getOptions();
 
@@ -302,7 +302,7 @@ export default {
                 if (this.searchValue === '') {
                     this.options = this.allOptions;
                 } else {
-                    this.getOptions();
+                    this.onDebounceGetOptions();
                 }
             }
         },
@@ -329,7 +329,7 @@ export default {
                 const options = await this.$axios.$get(this.href, {
                     params: {
                         search: this.searchValue,
-                        type: this.filterType,
+                        ...this.params,
                     },
                 });
 

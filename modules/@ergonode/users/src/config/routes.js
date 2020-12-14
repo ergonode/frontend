@@ -91,7 +91,7 @@ export default [
                         },
                         {
                             title: 'Users',
-                            name: ROUTE_NAME.USERS_GRID,
+                            routeName: ROUTE_NAME.USERS_GRID,
                         },
                     ],
                     privileges: [],

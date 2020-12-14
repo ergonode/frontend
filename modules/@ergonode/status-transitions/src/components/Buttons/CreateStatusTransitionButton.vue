@@ -11,12 +11,10 @@
         <template #prepend="{ color }">
             <IconAdd :fill-color="color" />
         </template>
-        <template #default>
-            <CreateStatusTransitionModalForm
-                v-if="isModalVisible"
-                @close="onCloseModal"
-                @created="onCreatedData" />
-        </template>
+        <CreateStatusTransitionModalForm
+            v-if="isModalVisible"
+            @close="onCloseModal"
+            @created="onCreatedData" />
     </Button>
 </template>
 

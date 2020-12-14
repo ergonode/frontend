@@ -4,19 +4,17 @@
  */
 <template>
     <Button
-        title="NEW ROLE"
+        :title="$t('role.page.addButton')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">
         <template #prepend="{ color }">
             <IconAdd :fill-color="color" />
         </template>
-        <template #default>
-            <CreateRoleModalForm
-                v-if="isModalVisible"
-                @close="onCloseModal"
-                @created="onCreatedData" />
-        </template>
+        <CreateRoleModalForm
+            v-if="isModalVisible"
+            @close="onCloseModal"
+            @created="onCreatedData" />
     </Button>
 </template>
 

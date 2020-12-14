@@ -4,19 +4,17 @@
  */
 <template>
     <Button
-        title="NEW USER"
+        :title="$t('user.page.addButton')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">
         <template #prepend="{ color }">
             <IconAdd :fill-color="color" />
         </template>
-        <template #default>
-            <CreateUserModalForm
-                v-if="isModalVisible"
-                @close="onCloseModal"
-                @created="onCreatedData" />
-        </template>
+        <CreateUserModalForm
+            v-if="isModalVisible"
+            @close="onCloseModal"
+            @created="onCreatedData" />
     </Button>
 </template>
 
