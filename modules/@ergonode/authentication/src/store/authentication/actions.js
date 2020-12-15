@@ -11,7 +11,9 @@ import {
     getMappedPrivileges,
 } from '@Authentication/models/userMapper';
 import {
-    // checkHash,
+    applyPassword,
+    checkToken,
+    generateToken,
     get,
     login,
 } from '@Authentication/services/index';
@@ -21,15 +23,15 @@ import {
 import camelcaseKeys from 'camelcase-keys';
 
 export default {
-    async passwordRecoveryCheckHash({}, {
-        // hash,
+    async passwordRecoveryCheckToken({}, {
+        token,
         onError = () => {},
     }) {
         try {
-            // await checkHash({
-            //     $axios: this.app.$axios,
-            //     hash,
-            // });
+            await checkToken({
+                $axios: this.app.$axios,
+                token,
+            });
         } catch (e) {
             onError({
                 errors: {
@@ -58,23 +60,15 @@ export default {
 
         if (!isError) {
             try {
-                // const {
-                //     token,
-                //     refresh_token: refreshToken,
-                // } = await recovery({
-                //     $axios: this.app.$axios,
-                //     data,
-                // });
-                console.log('send');
+                await generateToken({
+                    $axios: this.app.$axios,
+                    data,
+                });
 
                 onSuccess();
             } catch (e) {
                 onError({
-                    errors: {
-                        __form: [
-                            e.data.message,
-                        ],
-                    },
+                    errors: e.data.errors,
                     scope,
                 });
             }
@@ -103,23 +97,15 @@ export default {
 
         if (!isError) {
             try {
-                // const {
-                //     token,
-                //     refresh_token: refreshToken,
-                // } = await recovery({
-                //     $axios: this.app.$axios,
-                //     data,
-                // });
-                console.log('send', data);
+                await applyPassword({
+                    $axios: this.app.$axios,
+                    data,
+                });
 
                 onSuccess();
             } catch (e) {
                 onError({
-                    errors: {
-                        __form: [
-                            e.data.message,
-                        ],
-                    },
+                    errors: e.data.errors,
                     scope,
                 });
             }

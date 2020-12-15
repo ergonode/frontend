@@ -16,10 +16,24 @@ export const refresh = ({
     withLanguage: false,
 });
 
-export const checkHash = ({
+export const checkToken = ({
     $axios,
-    hash,
-}) => $axios.$post('/', hash, {
+    token,
+}) => $axios.$get(`accounts/token/validation?token=${token}`, {
+    withLanguage: false,
+});
+
+export const generateToken = ({
+    $axios,
+    data,
+}) => $axios.$post('accounts/token/generate', data, {
+    withLanguage: false,
+});
+
+export const applyPassword = ({
+    $axios,
+    data,
+}) => $axios.$post('accounts/token/apply', data, {
     withLanguage: false,
 });
 

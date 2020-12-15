@@ -31,19 +31,21 @@ export default {
         Login,
     },
     async fetch({
+        app,
         store,
         route,
+        redirect,
     }) {
-        await store.dispatch('authentication/passwordRecoveryCheckHash', {
-            hash: route.query.hash,
+        await store.dispatch('authentication/passwordRecoveryCheckToken', {
+            token: route.query.token,
             onError: () => {
-                this.$router.push({
+                redirect({
                     name: ROUTE_NAME.INDEX,
                     params: {
                         loginState: LOGIN_STATE.CREDENTIALS,
                         alert: {
                             type: ALERT_TYPE.ERROR,
-                            message: this.$t('authentication.forms.newPassword.alertError'),
+                            message: app.i18n.t('authentication.forms.newPassword.alertError'),
                         },
                     },
                 });

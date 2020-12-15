@@ -6,7 +6,7 @@
     <LoginForm
         :submit-title="$t('authentication.forms.newPassword.button')"
         :is-submitting="isSubmitting"
-        :errors="scopeErrors"
+        :errors="errors"
         @submit="onSubmit">
         <template #header>
             <div class="new-password-form__header">
@@ -39,7 +39,7 @@
                 v-model="password"
                 required
                 :input="passwordInputType"
-                :error-messages="scopeErrors.password"
+                :error-messages="errors[passwordFieldKey]"
                 :label="$t('authentication.forms.newPassword.field')" />
             <Toggler
                 v-model="isPasswordVisible"
@@ -119,6 +119,9 @@ export default {
                 type: this.isPasswordVisible ? 'text' : 'password',
             };
         },
+        passwordFieldKey() {
+            return 'password';
+        },
         redColor() {
             return RED;
         },
@@ -143,6 +146,8 @@ export default {
 
             const data = {
                 password: this.password,
+                password_repeat: this.password,
+                token: this.$route.query.token,
             };
 
             this.removeScopeErrors(this.scope);

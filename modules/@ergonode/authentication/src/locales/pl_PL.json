@@ -31,7 +31,7 @@
                   "hasDigital": "co njamniej 1 cyfrę (0-9)."
               },
               "alertSuccess": "Hasło zostało uaktualnione",
-              "alertError": "Link wygasł"
+              "alertError": "Wystąpiły błędy poczas walidacji danych"
           },
           "help": {
               "title": "Pomoc",

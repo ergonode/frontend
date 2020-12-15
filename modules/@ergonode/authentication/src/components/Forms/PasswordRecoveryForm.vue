@@ -6,7 +6,7 @@
     <LoginForm
         :submit-title="$t('authentication.forms.passwordRecovery.button')"
         :is-submitting="isSubmitting"
-        :errors="scopeErrors"
+        :errors="errors"
         @submit="onSubmit">
         <template #header>
             <div class="recovery-form__header">
@@ -25,7 +25,7 @@
             <TextField
                 v-model="email"
                 required
-                :error-messages="scopeErrors.email"
+                :error-messages="errors[emialFieldKey]"
                 :label="$t('authentication.forms.passwordRecovery.field')" />
         </template>
     </LoginForm>
@@ -61,6 +61,11 @@ export default {
             isSubmitting: false,
         };
     },
+    computed: {
+        emialFieldKey() {
+            return 'email';
+        },
+    },
     methods: {
         ...mapActions('authentication', [
             'passwordRecovery',
@@ -70,6 +75,7 @@ export default {
 
             const data = {
                 email: this.email,
+                url: `${document.location.toString()}password-reset?token=`,
             };
 
             this.removeScopeErrors(this.scope);

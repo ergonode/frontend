@@ -85,7 +85,6 @@ export default {
         }
 
         if (alert) {
-            console.log(alert);
             this.$addAlert(alert);
         }
     },

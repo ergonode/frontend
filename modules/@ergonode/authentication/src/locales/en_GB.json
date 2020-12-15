@@ -31,7 +31,7 @@
                     "hasDigital": "at least 1 digit (0-9)."
                 },
                 "alertSuccess": "Password have been updated",
-                "alertError": "Link has expired"
+                "alertError": "Errors occurred after data validation"
             },
             "help": {
                 "title": "Help",
