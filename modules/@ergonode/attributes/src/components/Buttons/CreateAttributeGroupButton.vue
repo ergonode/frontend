@@ -22,6 +22,9 @@
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
 import {
+    ATTRIBUTE_GROUP_CREATED_EVENT_NAME,
+} from '@Attributes/defaults/attributes';
+import {
     SIZE,
 } from '@Core/defaults/theme';
 import Button from '@UI/components/Button/Button';
@@ -59,7 +62,7 @@ export default {
         onCreatedData() {
             this.onCloseModal();
 
-            const event = new CustomEvent('attribute-group-created');
+            const event = new CustomEvent(ATTRIBUTE_GROUP_CREATED_EVENT_NAME);
 
             document.documentElement.dispatchEvent(event);
         },

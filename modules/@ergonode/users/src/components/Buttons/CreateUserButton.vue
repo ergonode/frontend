@@ -25,6 +25,7 @@ import {
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import PRIVILEGES from '@Users/config/privileges';
+import {USER_CREATED_EVENT_NAME} from "@Users/defaults";
 
 export default {
     name: 'CreateUserButton',
@@ -58,7 +59,7 @@ export default {
         onCreatedData() {
             this.onCloseModal();
 
-            const event = new CustomEvent('user-created');
+            const event = new CustomEvent(USER_CREATED_EVENT_NAME);
 
             document.documentElement.dispatchEvent(event);
         },

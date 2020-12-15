@@ -29,6 +29,9 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    DEFAULT_PAGE,
+} from '@Core/defaults/grid';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
@@ -42,6 +45,9 @@ import PRIVILEGES from '@Transitions/config/privileges';
 import {
     ROUTE_NAME,
 } from '@Transitions/config/routes';
+import {
+    TRANSITION_CREATED_EVENT_NAME,
+} from '@Transitions/defaults';
 import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
@@ -112,10 +118,16 @@ export default {
         },
     },
     mounted() {
-        document.documentElement.addEventListener('transition-created', this.onTransitionCreated);
+        document.documentElement.addEventListener(
+            TRANSITION_CREATED_EVENT_NAME,
+            this.onTransitionCreated,
+        );
     },
     beforeDestroy() {
-        document.documentElement.removeEventListener('transition-created', this.onTransitionCreated);
+        document.documentElement.removeEventListener(
+            TRANSITION_CREATED_EVENT_NAME,
+            this.onTransitionCreated,
+        );
     },
     methods: {
         onTransitionCreated() {
@@ -169,7 +181,7 @@ export default {
                 query: {
                     ...this.$route.query,
                     filter: '',
-                    page: 1,
+                    page: DEFAULT_PAGE,
                 },
             });
         },
@@ -177,7 +189,7 @@ export default {
             this.$router.replace({
                 query: {
                     ...this.$route.query,
-                    page: 1,
+                    page: DEFAULT_PAGE,
                     filter: getParsedFilters(filters),
                 },
             });

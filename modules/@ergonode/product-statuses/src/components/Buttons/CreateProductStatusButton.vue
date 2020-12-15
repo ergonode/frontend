@@ -23,6 +23,9 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import {
+    PRODUCT_STATUS_CREATED_EVENT_NAME,
+} from '@Statuses/defaults';
 import PRIVILEGES from '@Transitions/config/privileges';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
@@ -59,7 +62,7 @@ export default {
         onCreatedData() {
             this.onCloseModal();
 
-            const event = new CustomEvent('product-status-created');
+            const event = new CustomEvent(PRODUCT_STATUS_CREATED_EVENT_NAME);
 
             document.documentElement.dispatchEvent(event);
         },

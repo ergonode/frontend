@@ -6,3 +6,5 @@ export const MEDIA_TYPE = {
     IMAGE: 'image',
     APPLICATION: 'application',
 };
+
+export const RESOURCES_UPLOADED_EVENT_NAME = 'resources-uploaded';

@@ -29,6 +29,9 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    DEFAULT_PAGE,
+} from '@Core/defaults/grid';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
@@ -46,6 +49,9 @@ import PRIVILEGES from '@Users/config/privileges';
 import {
     ROUTE_NAME,
 } from '@Users/config/routes';
+import {
+    USER_CREATED_EVENT_NAME,
+} from '@Users/defaults';
 
 export default {
     name: 'UsersGrid',
@@ -108,10 +114,10 @@ export default {
         },
     },
     mounted() {
-        document.documentElement.addEventListener('user-created', this.onUserCreated);
+        document.documentElement.addEventListener(USER_CREATED_EVENT_NAME, this.onUserCreated);
     },
     beforeDestroy() {
-        document.documentElement.removeEventListener('user-created', this.onUserCreated);
+        document.documentElement.removeEventListener(USER_CREATED_EVENT_NAME, this.onUserCreated);
     },
     methods: {
         onUserCreated() {
@@ -164,7 +170,7 @@ export default {
                 query: {
                     ...this.$route.query,
                     filter: '',
-                    page: 1,
+                    page: DEFAULT_PAGE,
                 },
             });
         },
@@ -172,7 +178,7 @@ export default {
             this.$router.replace({
                 query: {
                     ...this.$route.query,
-                    page: 1,
+                    page: DEFAULT_PAGE,
                     filter: getParsedFilters(filters),
                 },
             });

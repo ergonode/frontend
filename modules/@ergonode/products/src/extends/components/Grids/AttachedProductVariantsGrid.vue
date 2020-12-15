@@ -60,6 +60,9 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
+    DEFAULT_PAGE,
+} from '@Core/defaults/grid';
+import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
 import {
@@ -78,6 +81,10 @@ import {
 import PRIVILEGES from '@Products/config/privileges';
 import BindingAttributes from '@Products/extends/components/BindingAttributes/BindingAttributes';
 import AddProductVariantsButton from '@Products/extends/components/Buttons/AddProductVariantsButton';
+import {
+    ATTRIBUTE_BINDING_ADDED_EVENT_NAME,
+    PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
+} from '@Products/extends/defaults';
 import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
@@ -181,12 +188,24 @@ export default {
         },
     },
     mounted() {
-        document.documentElement.addEventListener('attribute-binding-added', this.onAttributeBindingAdded);
-        document.documentElement.addEventListener('products-attachment-updated', this.onProductsAttachmentUpdated);
+        document.documentElement.addEventListener(
+            ATTRIBUTE_BINDING_ADDED_EVENT_NAME,
+            this.onAttributeBindingAdded,
+        );
+        document.documentElement.addEventListener(
+            PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
+            this.onProductsAttachmentUpdated,
+        );
     },
     beforeDestroy() {
-        document.documentElement.removeEventListener('attribute-binding-added', this.onAttributeBindingAdded);
-        document.documentElement.removeEventListener('products-attachment-updated', this.onProductsAttachmentUpdated);
+        document.documentElement.removeEventListener(
+            ATTRIBUTE_BINDING_ADDED_EVENT_NAME,
+            this.onAttributeBindingAdded,
+        );
+        document.documentElement.removeEventListener(
+            PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
+            this.onProductsAttachmentUpdated,
+        );
     },
     methods: {
         ...mapActions('product', [
@@ -276,7 +295,7 @@ export default {
                 query: {
                     ...this.$route.query,
                     filter: '',
-                    page: 1,
+                    page: DEFAULT_PAGE,
                 },
             });
         },
@@ -284,7 +303,7 @@ export default {
             this.$router.replace({
                 query: {
                     ...this.$route.query,
-                    page: 1,
+                    page: DEFAULT_PAGE,
                     filter: getParsedFilters(filters),
                 },
             });

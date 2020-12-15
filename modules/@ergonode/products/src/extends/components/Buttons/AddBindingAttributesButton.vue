@@ -20,6 +20,9 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Products/config/privileges';
+import {
+    ATTRIBUTE_BINDING_ADDED_EVENT_NAME,
+} from '@Products/extends/defaults';
 import Button from '@UI/components/Button/Button';
 
 export default {
@@ -53,7 +56,7 @@ export default {
         onAddedData() {
             this.onCloseModal();
 
-            const event = new CustomEvent('attribute-binding-added');
+            const event = new CustomEvent(ATTRIBUTE_BINDING_ADDED_EVENT_NAME);
 
             document.documentElement.dispatchEvent(event);
         },

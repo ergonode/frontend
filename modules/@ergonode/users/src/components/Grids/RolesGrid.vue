@@ -29,6 +29,9 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    DEFAULT_PAGE,
+} from '@Core/defaults/grid';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
@@ -46,6 +49,9 @@ import PRIVILEGES from '@Users/config/privileges';
 import {
     ROUTE_NAME,
 } from '@Users/config/routes';
+import {
+    ROLE_CREATED_EVENT_NAME,
+} from '@Users/defaults';
 
 export default {
     name: 'RolesGrid',
@@ -112,10 +118,10 @@ export default {
         },
     },
     mounted() {
-        document.documentElement.addEventListener('role-created', this.onRoleCreated);
+        document.documentElement.addEventListener(ROLE_CREATED_EVENT_NAME, this.onRoleCreated);
     },
     beforeDestroy() {
-        document.documentElement.removeEventListener('role-created', this.onRoleCreated);
+        document.documentElement.removeEventListener(ROLE_CREATED_EVENT_NAME, this.onRoleCreated);
     },
     methods: {
         onRoleCreated() {
@@ -168,7 +174,7 @@ export default {
                 query: {
                     ...this.$route.query,
                     filter: '',
-                    page: 1,
+                    page: DEFAULT_PAGE,
                 },
             });
         },
@@ -176,7 +182,7 @@ export default {
             this.$router.replace({
                 query: {
                     ...this.$route.query,
-                    page: 1,
+                    page: DEFAULT_PAGE,
                     filter: getParsedFilters(filters),
                 },
             });

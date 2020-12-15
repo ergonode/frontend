@@ -93,6 +93,6 @@ export const DEFAULT_GRID_FETCH_PARAMS = () => ({
 });
 
 export const DEFAULT_GRID_PAGINATION = () => ({
-    page: 1,
+    page: DEFAULT_PAGE,
     itemsPerPage: DATA_LIMIT,
 });

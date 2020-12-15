@@ -31,8 +31,14 @@ import {
     ROUTE_NAME,
 } from '@Attributes/config/routes';
 import {
+    ATTRIBUTE_CREATED_EVENT_NAME,
+} from '@Attributes/defaults/attributes';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    DEFAULT_PAGE,
+} from '@Core/defaults/grid';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
@@ -112,10 +118,16 @@ export default {
         },
     },
     mounted() {
-        document.documentElement.addEventListener('attribute-created', this.onAttributeCreated);
+        document.documentElement.addEventListener(
+            ATTRIBUTE_CREATED_EVENT_NAME,
+            this.onAttributeCreated,
+        );
     },
     beforeDestroy() {
-        document.documentElement.removeEventListener('attribute-created', this.onAttributeCreated);
+        document.documentElement.removeEventListener(
+            ATTRIBUTE_CREATED_EVENT_NAME,
+            this.onAttributeCreated,
+        );
     },
     methods: {
         onAttributeCreated() {
@@ -168,7 +180,7 @@ export default {
                 query: {
                     ...this.$route.query,
                     filter: '',
-                    page: 1,
+                    page: DEFAULT_PAGE,
                 },
             });
         },
@@ -176,7 +188,7 @@ export default {
             this.$router.replace({
                 query: {
                     ...this.$route.query,
-                    page: 1,
+                    page: DEFAULT_PAGE,
                     filter: getParsedFilters(filters),
                 },
             });

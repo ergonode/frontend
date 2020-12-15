@@ -5,20 +5,20 @@
 <template>
     <CenterViewTemplate>
         <template #content>
-            <CategoryTreesGrid />
+            <CategoriesGrid />
         </template>
     </CenterViewTemplate>
 </template>
 
 <script>
-import CategoryTreesGrid from '@Trees/components/Grids/CategoryTreesGrid';
+import CategoriesGrid from '@Categories/components/Grids/CategoriesGrid';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 
 export default {
-    name: 'CategoryGridTab',
+    name: 'CategoriesTab',
     components: {
         CenterViewTemplate,
-        CategoryTreesGrid,
+        CategoriesGrid,
     },
 };
 </script>

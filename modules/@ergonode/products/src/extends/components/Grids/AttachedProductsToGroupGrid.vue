@@ -35,6 +35,9 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
+    DEFAULT_PAGE,
+} from '@Core/defaults/grid';
+import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
 import {
@@ -52,6 +55,9 @@ import {
 } from '@Core/services/grid/getGridData.service';
 import PRIVILEGES from '@Products/config/privileges';
 import AddProductsToGroupButton from '@Products/extends/components/Buttons/AddProductsToGroupButton';
+import {
+    PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
+} from '@Products/extends/defaults';
 import Grid from '@UI/components/Grid/Grid';
 import {
     mapActions,
@@ -125,10 +131,16 @@ export default {
         },
     },
     mounted() {
-        document.documentElement.addEventListener('products-attachment-updated', this.onProductsAttachmentUpdated);
+        document.documentElement.addEventListener(
+            PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
+            this.onProductsAttachmentUpdated,
+        );
     },
     beforeDestroy() {
-        document.documentElement.removeEventListener('products-attachment-updated', this.onProductsAttachmentUpdated);
+        document.documentElement.removeEventListener(
+            PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
+            this.onProductsAttachmentUpdated,
+        );
     },
     methods: {
         ...mapActions('feedback', [
@@ -189,7 +201,7 @@ export default {
                 query: {
                     ...this.$route.query,
                     filter: '',
-                    page: 1,
+                    page: DEFAULT_PAGE,
                 },
             });
         },
@@ -197,7 +209,7 @@ export default {
             this.$router.replace({
                 query: {
                     ...this.$route.query,
-                    page: 1,
+                    page: DEFAULT_PAGE,
                     filter: getParsedFilters(filters),
                 },
             });

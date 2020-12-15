@@ -23,6 +23,9 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Statuses/config/privileges';
+import {
+    TRANSITION_CREATED_EVENT_NAME,
+} from '@Transitions/defaults';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
@@ -58,7 +61,7 @@ export default {
         onCreatedData() {
             this.onCloseModal();
 
-            const event = new CustomEvent('transition-created');
+            const event = new CustomEvent(TRANSITION_CREATED_EVENT_NAME);
 
             document.documentElement.dispatchEvent(event);
         },

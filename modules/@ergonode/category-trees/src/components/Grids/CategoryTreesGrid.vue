@@ -29,6 +29,9 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    DEFAULT_PAGE,
+} from '@Core/defaults/grid';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
@@ -42,6 +45,9 @@ import PRIVILEGES from '@Trees/config/privileges';
 import {
     ROUTE_NAME,
 } from '@Trees/config/routes';
+import {
+    CATEGORY_TREE_CREATED_EVENT_NAME,
+} from '@Trees/defaults';
 import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
@@ -112,10 +118,16 @@ export default {
         },
     },
     mounted() {
-        document.documentElement.addEventListener('category-tree-created', this.onCategoryTreeCreated);
+        document.documentElement.addEventListener(
+            CATEGORY_TREE_CREATED_EVENT_NAME,
+            this.onCategoryTreeCreated,
+        );
     },
     beforeDestroy() {
-        document.documentElement.removeEventListener('category-tree-created', this.onCategoryTreeCreated);
+        document.documentElement.removeEventListener(
+            CATEGORY_TREE_CREATED_EVENT_NAME,
+            this.onCategoryTreeCreated,
+        );
     },
     methods: {
         onCategoryTreeCreated() {
@@ -168,7 +180,7 @@ export default {
                 query: {
                     ...this.$route.query,
                     filter: '',
-                    page: 1,
+                    page: DEFAULT_PAGE,
                 },
             });
         },
@@ -176,7 +188,7 @@ export default {
             this.$router.replace({
                 query: {
                     ...this.$route.query,
-                    page: 1,
+                    page: DEFAULT_PAGE,
                     filter: getParsedFilters(filters),
                 },
             });

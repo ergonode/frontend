@@ -18,6 +18,9 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
+} from '@Products/extends/defaults';
 import Button from '@UI/components/Button/Button';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import {
@@ -85,7 +88,7 @@ export default {
             this.isSubmitting = false;
 
             if (skusKeys.length) {
-                const event = new CustomEvent('products-attachment-updated');
+                const event = new CustomEvent(PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME);
 
                 document.documentElement.dispatchEvent(event);
             }

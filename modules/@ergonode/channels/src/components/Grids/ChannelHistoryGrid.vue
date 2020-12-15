@@ -30,8 +30,14 @@
 
 <script>
 import {
+    EXPORT_CREATED_EVENT_NAME,
+} from '@Channels/defaults';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    DEFAULT_PAGE,
+} from '@Core/defaults/grid';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
@@ -99,10 +105,16 @@ export default {
         },
     },
     mounted() {
-        document.documentElement.addEventListener('export-created', this.onExportCreated);
+        document.documentElement.addEventListener(
+            EXPORT_CREATED_EVENT_NAME,
+            this.onExportCreated,
+        );
     },
     beforeDestroy() {
-        document.documentElement.removeEventListener('export-created', this.onExportCreated);
+        document.documentElement.removeEventListener(
+            EXPORT_CREATED_EVENT_NAME,
+            this.onExportCreated,
+        );
     },
     methods: {
         onExportCreated() {
@@ -160,7 +172,7 @@ export default {
                 query: {
                     ...this.$route.query,
                     filter: '',
-                    page: 1,
+                    page: DEFAULT_PAGE,
                 },
             });
         },
@@ -168,7 +180,7 @@ export default {
             this.$router.replace({
                 query: {
                     ...this.$route.query,
-                    page: 1,
+                    page: DEFAULT_PAGE,
                     filter: getParsedFilters(filters),
                 },
             });

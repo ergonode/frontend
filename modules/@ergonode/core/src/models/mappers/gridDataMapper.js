@@ -130,7 +130,7 @@ export function getMappedFilters(parsedFilters) {
                 if (value === '') {
                     mappedFilters[code].isEmptyRecord = true;
                 } else if (arrayConditions.every(condition => value.includes(condition))) {
-                    mappedFilters[code][operator] = value.replace('[', '').replace(']', '').split(',');
+                    mappedFilters[code][operator] = value.replace(/\[|\]/g, '').split(',');
                 } else {
                     mappedFilters[code][operator] = value;
                 }

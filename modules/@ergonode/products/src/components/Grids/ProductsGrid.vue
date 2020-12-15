@@ -97,6 +97,9 @@ import ExpandNumericButton from '@Core/components/Buttons/ExpandNumericButton';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    DEFAULT_PAGE,
+} from '@Core/defaults/grid';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
@@ -120,6 +123,9 @@ import PRIVILEGES from '@Products/config/privileges';
 import {
     ROUTE_NAME,
 } from '@Products/config/routes';
+import {
+    PRODUCT_CREATED_EVENT_NAME,
+} from '@Products/defaults';
 import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
@@ -273,6 +279,18 @@ export default {
             this.onFetchData();
         },
     },
+    mounted() {
+        document.documentElement.addEventListener(
+            PRODUCT_CREATED_EVENT_NAME,
+            this.onProductCreated,
+        );
+    },
+    beforeDestroy() {
+        document.documentElement.removeEventListener(
+            PRODUCT_CREATED_EVENT_NAME,
+            this.onProductCreated,
+        );
+    },
     methods: {
         ...mapActions('feedback', [
             'onScopeValueChange',
@@ -285,6 +303,9 @@ export default {
             'setDisabledElement',
             'setDisabledElements',
         ]),
+        onProductCreated() {
+            this.onFetchData();
+        },
         onBatchActionCompleted() {
             this.onFetchData();
         },
@@ -371,7 +392,7 @@ export default {
                 query: {
                     ...this.$route.query,
                     filter: getParsedFilters(this.filterValues),
-                    page: 1,
+                    page: DEFAULT_PAGE,
                 },
             });
 
@@ -393,7 +414,7 @@ export default {
                 query: {
                     ...this.$route.query,
                     advancedFilter: getParsedFilters(filters),
-                    page: 1,
+                    page: DEFAULT_PAGE,
                 },
             });
         },
@@ -422,7 +443,7 @@ export default {
                 query: {
                     ...this.$route.query,
                     advancedFilter: getParsedFilters(this.advancedFilterValues),
-                    page: 1,
+                    page: DEFAULT_PAGE,
                 },
             });
         },
@@ -445,7 +466,7 @@ export default {
                 query: {
                     ...this.$route.query,
                     advancedFilter: '',
-                    page: 1,
+                    page: DEFAULT_PAGE,
                 },
             });
         },
@@ -711,7 +732,7 @@ export default {
                     ...this.$route.query,
                     filter: '',
                     advancedFilter: '',
-                    page: 1,
+                    page: DEFAULT_PAGE,
                 },
             });
         },

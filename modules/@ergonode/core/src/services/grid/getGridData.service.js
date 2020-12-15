@@ -26,7 +26,7 @@ export const getGridData = async ({
         };
 
         if (params.filter) {
-            config.params.filter = params.filter.replace('[', '').replace(']', '');
+            config.params.filter = params.filter.replace(/\[|\]/g, '');
         }
 
         const {

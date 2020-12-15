@@ -30,8 +30,14 @@ import {
     ROUTE_NAME,
 } from '@Channels/config/routes';
 import {
+    CHANNEL_CREATED_EVENT_NAME,
+} from '@Channels/defaults';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    DEFAULT_PAGE,
+} from '@Core/defaults/grid';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
@@ -100,10 +106,16 @@ export default {
         },
     },
     mounted() {
-        document.documentElement.addEventListener('channel-created', this.onChannelCreated);
+        document.documentElement.addEventListener(
+            CHANNEL_CREATED_EVENT_NAME,
+            this.onChannelCreated,
+        );
     },
     beforeDestroy() {
-        document.documentElement.removeEventListener('channel-created', this.onChannelCreated);
+        document.documentElement.removeEventListener(
+            CHANNEL_CREATED_EVENT_NAME,
+            this.onChannelCreated,
+        );
     },
     methods: {
         onChannelCreated() {
@@ -156,7 +168,7 @@ export default {
                 query: {
                     ...this.$route.query,
                     filter: '',
-                    page: 1,
+                    page: DEFAULT_PAGE,
                 },
             });
         },
@@ -164,7 +176,7 @@ export default {
             this.$router.replace({
                 query: {
                     ...this.$route.query,
-                    page: 1,
+                    page: DEFAULT_PAGE,
                     filter: getParsedFilters(filters),
                 },
             });

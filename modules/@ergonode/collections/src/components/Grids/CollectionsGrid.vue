@@ -30,8 +30,14 @@ import {
     ROUTE_NAME,
 } from '@Collections/config/routes';
 import {
+    COLLECTION_CREATED_EVENT_NAME,
+} from '@Collections/defaults';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    DEFAULT_PAGE,
+} from '@Core/defaults/grid';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
@@ -100,10 +106,16 @@ export default {
         },
     },
     mounted() {
-        document.documentElement.addEventListener('collection-created', this.onCollectionCreated);
+        document.documentElement.addEventListener(
+            COLLECTION_CREATED_EVENT_NAME,
+            this.onCollectionCreated,
+        );
     },
     beforeDestroy() {
-        document.documentElement.removeEventListener('collection-created', this.onCollectionCreated);
+        document.documentElement.removeEventListener(
+            COLLECTION_CREATED_EVENT_NAME,
+            this.onCollectionCreated,
+        );
     },
     methods: {
         onCollectionCreated() {
@@ -156,7 +168,7 @@ export default {
                 query: {
                     ...this.$route.query,
                     filter: '',
-                    page: 1,
+                    page: DEFAULT_PAGE,
                 },
             });
         },
@@ -164,7 +176,7 @@ export default {
             this.$router.replace({
                 query: {
                     ...this.$route.query,
-                    page: 1,
+                    page: DEFAULT_PAGE,
                     filter: getParsedFilters(filters),
                 },
             });

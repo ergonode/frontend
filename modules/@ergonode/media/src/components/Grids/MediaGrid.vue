@@ -30,6 +30,9 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import {
+    DEFAULT_PAGE,
+} from '@Core/defaults/grid';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
     getDefaultDataFromQueryParams,
@@ -43,6 +46,9 @@ import PRIVILEGES from '@Media/config/privileges';
 import {
     ROUTE_NAME,
 } from '@Media/config/routes';
+import {
+    RESOURCES_UPLOADED_EVENT_NAME,
+} from '@Media/defaults';
 import Grid from '@UI/components/Grid/Grid';
 
 export default {
@@ -108,10 +114,16 @@ export default {
         },
     },
     mounted() {
-        document.documentElement.addEventListener('resources-uploaded', this.onResourcesUploaded);
+        document.documentElement.addEventListener(
+            RESOURCES_UPLOADED_EVENT_NAME,
+            this.onResourcesUploaded,
+        );
     },
     beforeDestroy() {
-        document.documentElement.removeEventListener('resources-uploaded', this.onResourcesUploaded);
+        document.documentElement.removeEventListener(
+            RESOURCES_UPLOADED_EVENT_NAME,
+            this.onResourcesUploaded,
+        );
     },
     methods: {
         onResourcesUploaded() {
@@ -164,7 +176,7 @@ export default {
                 query: {
                     ...this.$route.query,
                     filter: '',
-                    page: 1,
+                    page: DEFAULT_PAGE,
                 },
             });
         },
@@ -172,7 +184,7 @@ export default {
             this.$router.replace({
                 query: {
                     ...this.$route.query,
-                    page: 1,
+                    page: DEFAULT_PAGE,
                     filter: getParsedFilters(filters),
                 },
             });

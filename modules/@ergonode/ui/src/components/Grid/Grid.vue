@@ -113,6 +113,7 @@
 import {
     COLUMNS_NUMBER,
     DEFAULT_GRID_PAGINATION,
+    DEFAULT_PAGE,
     DRAGGED_ELEMENT,
     GRID_LAYOUT,
     IMAGE_SCALING,
@@ -496,7 +497,7 @@ export default {
             if (number !== this.pagination.itemsPerPage) {
                 this.$emit('pagination', {
                     ...this.pagination,
-                    page: 1,
+                    page: DEFAULT_PAGE,
                     itemsPerPage: number,
                 });
             }
