@@ -9,9 +9,7 @@
         :errors="scopeErrors"
         @submit="onSubmit">
         <template #header>
-            <div class="logo-header">
-                <IconLogoName />
-            </div>
+            <IconLogoName class="header-logo" />
         </template>
         <template #body>
             <TextField
@@ -29,10 +27,9 @@
                 <Toggler
                     v-model="isPasswordVisible"
                     :label="$t('authentication.forms.login.toggle')" />
-                <span
-                    class="help-area_link"
-                    v-text="$t('authentication.forms.login.forgot')"
-                    @click="redirectToRecovery" />
+                <LinkButton
+                    :title="$t('authentication.forms.login.forgot')"
+                    @click.native="redirectToRecovery" />
             </div>
         </template>
     </LoginForm>
@@ -51,6 +48,7 @@ import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import {
     ROUTE_NAME,
 } from '@Dashboard/config/routes';
+import LinkButton from '@UI/components/LinkButton/LinkButton';
 import TextField from '@UI/components/TextField/TextField';
 import Toggler from '@UI/components/Toggler/Toggler';
 import {
@@ -62,6 +60,7 @@ export default {
     components: {
         LoginForm,
         TextField,
+        LinkButton,
         Toggler,
         IconLogoName,
     },
@@ -127,22 +126,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .logo-header {
-        display: flex;
-        flex: 1;
-        justify-content: center;
+    .header-logo {
+        justify-self: center;
     }
 
     .login-help-area {
         display: flex;
         justify-content: space-between;
         align-items: center;
-
-        .help-area_link {
-            color: $GRAPHITE_DARK;
-            font: $FONT_MEDIUM_12_16;
-            text-decoration: underline;
-            cursor: pointer;
-        }
     }
 </style>

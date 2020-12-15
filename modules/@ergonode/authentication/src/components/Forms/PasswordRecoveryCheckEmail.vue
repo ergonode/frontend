@@ -7,20 +7,15 @@
         :submit-title="$t('authentication.forms.checkEmail.redirectTo')"
         @submit="onRedirectToLogin">
         <template #header>
-            <div class="recovery-form__header">
-                <Fab @click.native="onBack">
-                    <template #icon="{ color }">
-                        <IconArrowPointer :fill-color="color" />
-                    </template>
-                </Fab>
-                <h2 v-text="$t('authentication.forms.checkEmail.title')" />
-            </div>
+            <Fab @click.native="onBack">
+                <template #icon="{ color }">
+                    <IconArrowPointer :fill-color="color" />
+                </template>
+            </Fab>
+            <FormHeader :text="$t('authentication.forms.newPassword.title')" />
         </template>
         <template #body>
-            <p
-                v-text="$t('authentication.forms.checkEmail.info')"
-                class="recovery-form__info" />
-
+            <FormParagraph :text="$t('authentication.forms.checkEmail.info')" />
             <p class="recovery-form__info">
                 <span
                     v-text="$t('authentication.forms.checkEmail.infoText')" />
@@ -39,11 +34,15 @@ import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
 import Fab from '@UI/components/Fab/Fab';
+import FormHeader from '@UI/components/Form/FormHeader';
+import FormParagraph from '@UI/components/Form/FormParagraph';
 import IconArrowPointer from '@UI/components/Icons/Arrows/IconArrowPointer';
 
 export default {
     name: 'PasswordRecoveryCheckEmail',
     components: {
+        FormHeader,
+        FormParagraph,
         LoginForm,
         Fab,
         IconArrowPointer,
@@ -64,25 +63,15 @@ export default {
 
 <style lang="scss" scoped>
     .recovery-form {
-        &__header {
-            display: grid;
-            align-items: center;
-            grid-auto-flow: column;
-            grid-column-gap: 16px;
-        }
-
         &__info {
             margin: 0;
+            color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_14_20;
 
             .link {
                 text-decoration: underline;
                 cursor: pointer;
             }
-        }
-
-        &__info, &__header {
-            color: $GRAPHITE_DARK;
         }
     }
 </style>

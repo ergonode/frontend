@@ -7,19 +7,15 @@
         :submit-title="$t('authentication.forms.help.redirectTo')"
         @submit="onRedirect">
         <template #header>
-            <div class="help-form__header">
-                <Fab @click.native="onRedirect">
-                    <template #icon="{ color }">
-                        <IconArrowPointer :fill-color="color" />
-                    </template>
-                </Fab>
-                <h2 v-text="$t('authentication.forms.help.title')" />
-            </div>
+            <Fab @click.native="onRedirect">
+                <template #icon="{ color }">
+                    <IconArrowPointer :fill-color="color" />
+                </template>
+            </Fab>
+            <FormHeader :text="$t('authentication.forms.help.title')" />
         </template>
         <template #body>
-            <p
-                v-text="$t('authentication.forms.help.info')"
-                class="help-form__info" />
+            <FormParagraph :text="$t('authentication.forms.help.info')" />
             <LinkButton title="team@ergonode.com">
                 <template #prepend>
                     <IconEmail class="email-icon" />
@@ -35,6 +31,8 @@ import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
 import Fab from '@UI/components/Fab/Fab';
+import FormHeader from '@UI/components/Form/FormHeader';
+import FormParagraph from '@UI/components/Form/FormParagraph';
 import IconArrowPointer from '@UI/components/Icons/Arrows/IconArrowPointer';
 import IconEmail from '@UI/components/Icons/Others/IconEmail';
 import LinkButton from '@UI/components/LinkButton/LinkButton';
@@ -44,6 +42,8 @@ export default {
     components: {
         LoginForm,
         Fab,
+        FormHeader,
+        FormParagraph,
         IconArrowPointer,
         LinkButton,
         IconEmail,
@@ -57,24 +57,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .help-form {
-        &__header {
-            display: grid;
-            align-items: center;
-            grid-auto-flow: column;
-            grid-column-gap: 16px;
-            font: $FONT_SEMI_BOLD_20_24;
-        }
-
-        &__info {
-            font: $FONT_MEDIUM_14_20;
-        }
-
-        &__info, &__header {
-            color: $GRAPHITE_DARK;
-        }
-    }
-
     .email-icon {
         margin-right: 8px;
     }

@@ -9,19 +9,15 @@
         :errors="errors"
         @submit="onSubmit">
         <template #header>
-            <div class="recovery-form__header">
-                <Fab @click.native="onRedirect">
-                    <template #icon="{ color }">
-                        <IconArrowPointer :fill-color="color" />
-                    </template>
-                </Fab>
-                <h2 v-text="$t('authentication.forms.passwordRecovery.title')" />
-            </div>
+            <Fab @click.native="onRedirect">
+                <template #icon="{ color }">
+                    <IconArrowPointer :fill-color="color" />
+                </template>
+            </Fab>
+            <FormHeader :text="$t('authentication.forms.passwordRecovery.title')" />
         </template>
         <template #body>
-            <p
-                v-text="$t('authentication.forms.passwordRecovery.info')"
-                class="recovery-form__info" />
+            <FormParagraph :text="$t('authentication.forms.passwordRecovery.info')" />
             <TextField
                 v-model="email"
                 required
@@ -38,6 +34,8 @@ import {
 } from '@Authentication/defaults/login-state';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import Fab from '@UI/components/Fab/Fab';
+import FormHeader from '@UI/components/Form/FormHeader';
+import FormParagraph from '@UI/components/Form/FormParagraph';
 import IconArrowPointer from '@UI/components/Icons/Arrows/IconArrowPointer';
 import TextField from '@UI/components/TextField/TextField';
 import {
@@ -47,8 +45,10 @@ import {
 export default {
     name: 'PasswordRecoveryForm',
     components: {
+        FormHeader,
         LoginForm,
         Fab,
+        FormParagraph,
         IconArrowPointer,
         TextField,
     },
@@ -102,22 +102,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .recovery-form {
-        &__header {
-            display: grid;
-            align-items: center;
-            grid-auto-flow: column;
-            grid-column-gap: 16px;
-        }
-
-        &__info {
-            font: $FONT_MEDIUM_14_20;
-        }
-
-        &__info, &__header {
-            color: $GRAPHITE_DARK;
-        }
-    }
-</style>
