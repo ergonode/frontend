@@ -65,7 +65,7 @@ describe('gridDataMapper/getParsedFilter', () => {
                     3,
                 ],
             };
-            const result = `${id}${FILTER_OPERATOR.EQUAL}1,2,3`;
+            const result = `${id}${FILTER_OPERATOR.EQUAL}[1,2,3]`;
 
             expect(getParsedFilter({
                 id,
