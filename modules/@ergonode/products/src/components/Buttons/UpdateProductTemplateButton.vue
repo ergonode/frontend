@@ -61,7 +61,6 @@ export default {
     methods: {
         ...mapActions('feedback', [
             'onError',
-            'removeScopeErrors',
             'markChangeValuesAsSaved',
         ]),
         ...mapActions('product', [
@@ -73,7 +72,6 @@ export default {
             }
             this.isSubmitting = true;
 
-            this.removeScopeErrors(this.scope);
             this.updateProductValues({
                 scope: this.scope,
                 attributes: this.attributes,

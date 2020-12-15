@@ -74,7 +74,6 @@ export default {
 
             this.isSubmitting = true;
 
-            this.removeScopeErrors(this.scope);
             this.updateProductsValues({
                 scope: this.scope,
                 drafts: this.drafts,
@@ -91,6 +90,7 @@ export default {
 
             this.isSubmitting = false;
 
+            this.removeScopeErrors(this.scope);
             this.markChangeValuesAsSaved(this.scope);
 
             this.$emit('updated');

@@ -435,7 +435,9 @@ export default {
             onError(e);
         }
     },
-    async updateProductsValues({}, {
+    async updateProductsValues({
+        rootState,
+    }, {
         scope,
         drafts,
         columns,
@@ -443,54 +445,57 @@ export default {
         onError = () => {},
     }) {
         try {
+            const errors = rootState.feedback.errors[scope] || {};
             const data = [];
             const cachedProducts = {};
             const cachedAttributes = {};
             const cachedElementIds = {};
 
             Object.keys(drafts).forEach((key) => {
-                const [
-                    rowId,
-                    columnId,
-                ] = key.split('/');
-                const [
-                    attributeCode,
-                    languageCode,
-                ] = columnId.split(':');
+                if (typeof errors[key] === 'undefined') {
+                    const [
+                        rowId,
+                        columnId,
+                    ] = key.split('/');
+                    const [
+                        attributeCode,
+                        languageCode,
+                    ] = columnId.split(':');
 
-                if (!cachedElementIds[columnId]) {
-                    const {
-                        element_id,
-                    } = columns.find(column => column.id === columnId);
+                    if (!cachedElementIds[columnId]) {
+                        const {
+                            element_id,
+                        } = columns.find(column => column.id === columnId);
 
-                    cachedElementIds[columnId] = element_id;
-                }
+                        cachedElementIds[columnId] = element_id;
+                    }
 
-                if (typeof cachedProducts[rowId] === 'undefined') {
-                    cachedProducts[rowId] = data.length;
-                    data[data.length] = {
-                        id: rowId,
-                        payload: [],
-                    };
-                }
+                    if (typeof cachedProducts[rowId] === 'undefined') {
+                        cachedProducts[rowId] = data.length;
+                        data[data.length] = {
+                            id: rowId,
+                            payload: [],
+                        };
+                    }
 
-                const index = cachedProducts[rowId];
+                    const index = cachedProducts[rowId];
 
-                if (typeof cachedAttributes[`${rowId}/${attributeCode}`] === 'undefined') {
-                    cachedAttributes[`${rowId}/${attributeCode}`] = data[index].payload.length;
+                    if (typeof cachedAttributes[`${rowId}/${attributeCode}`] === 'undefined') {
+                        cachedAttributes[`${rowId}/${attributeCode}`] = data[index].payload.length;
 
-                    data[index].payload.push({
-                        id: cachedElementIds[columnId] || attributeCode,
-                        values: [],
+                        data[index].payload.push({
+                            id: cachedElementIds[columnId] || attributeCode,
+                            values: [],
+                        });
+                    }
+
+                    const attributeIndex = cachedAttributes[`${rowId}/${attributeCode}`];
+
+                    data[index].payload[attributeIndex].values.push({
+                        language: languageCode,
+                        value: drafts[key],
                     });
                 }
-
-                const attributeIndex = cachedAttributes[`${rowId}/${attributeCode}`];
-
-                data[index].payload[attributeIndex].values.push({
-                    language: languageCode,
-                    value: drafts[key],
-                });
             });
 
             await updateValues({
@@ -538,13 +543,15 @@ export default {
 
             const cachedAttributes = {};
             const changeValues = rootState.feedback.changeValues[scope] || {};
+            const errors = rootState.feedback.errors[scope] || {};
 
             Object.keys(changeValues).forEach((key) => {
-                if (key !== 'saved') {
-                    const [
-                        languageCode,
-                        code,
-                    ] = key.split('|');
+                const [
+                    languageCode,
+                    code,
+                ] = key.split('|');
+
+                if (key !== 'saved' && typeof errors[code] === 'undefined') {
                     const attributeId = attributes[code.split('/')[0]];
 
                     if (typeof cachedAttributes[attributeId] === 'undefined') {

@@ -180,7 +180,7 @@ export default {
             }
         }
 
-        &--selected:not(&--disabled), &--draft:not(&--disabled) {
+        &--selected:not(&--disabled), &--draft:not(&--disabled):not(&--error) {
             background-color: $GREEN_LIGHT;
         }
 
