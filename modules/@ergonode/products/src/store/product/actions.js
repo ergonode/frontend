@@ -421,6 +421,30 @@ export default {
                 data,
             });
 
+            const productStatusData = [
+                {
+                    id,
+                    payload: [
+                        {
+                            id: attributeId,
+                            values: [
+                                {
+                                    language: languageCode,
+                                    value,
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ];
+
+            await updateValues({
+                $axios: this.app.$axios,
+                data: {
+                    data: productStatusData,
+                },
+            });
+
             onSuccess();
         } catch (e) {
             if (this.app.$axios.isCancel(e)) {
