@@ -79,6 +79,7 @@ export default {
     },
     data() {
         return {
+            childrenQueries: {},
             selectedTabIndex: this.items.findIndex(
                 item => item.route.name === this.$route.name,
             ),
@@ -91,7 +92,19 @@ export default {
     },
     methods: {
         onSelectTabBarItem(index) {
+            const {
+                name,
+            } = this.items[index].route;
+            const route = {
+                name,
+                query: this.childrenQueries[name] || {},
+            };
+
+            this.childrenQueries[this.$route.name] = {
+                ...this.$route.query,
+            };
             this.selectedTabIndex = index;
+            this.$router.push(route);
         },
     },
 };

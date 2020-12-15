@@ -3,15 +3,39 @@
  * See LICENSE for license details.
  */
 <template>
-    <ChannelPage :title="name" />
+    <Page>
+        <TitleBar
+            :title="name"
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigateBackFab :previous-route="previousRoute" />
+            </template>
+            <template #mainAction>
+                <RemoveChannelButton />
+                <CreateExportButton />
+            </template>
+        </TitleBar>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
+    </Page>
 </template>
 
 <script>
-import ChannelPage from '@Channels/components/Pages/ChannelPage';
+import CreateExportButton from '@Channels/components/Buttons/CreateExportButton';
+import RemoveChannelButton from '@Channels/components/Buttons/RemoveChannelButton';
+import PRIVILEGES from '@Channels/config/privileges';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import Page from '@UI/components/Layout/Page';
+import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapActions,
     mapState,
@@ -20,10 +44,16 @@ import {
 export default {
     name: 'EditChannel',
     components: {
-        ChannelPage,
+        Page,
+        TitleBar,
+        HorizontalRoutingTabBar,
+        CreateExportButton,
+        RemoveChannelButton,
     },
     mixins: [
-        beforeLeavePageMixin,
+        asyncTabsMixin,
+        beforeRouteEnterMixin,
+        beforeRouteLeaveMixin,
     ],
     validate({
         params,
@@ -60,6 +90,9 @@ export default {
             } = JSON.parse(this.configuration);
 
             return name;
+        },
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.CHANNEL.namespace);
         },
     },
     beforeDestroy() {

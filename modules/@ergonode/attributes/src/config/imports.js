@@ -10,10 +10,10 @@ export const Pages = {
 };
 
 export const Tabs = {
-    AttributeGridTab: () => import('@Attributes/components/Tabs/AttributeGridTab').then(m => m.default || m),
+    AttributesTab: () => import('@Attributes/components/Tabs/AttributesTab').then(m => m.default || m),
     AttributeGeneralTab: () => import('@Attributes/components/Tabs/AttributeGeneralTab').then(m => m.default || m),
     AttributeTranslationsTab: () => import('@Attributes/components/Tabs/AttributeTranslationsTab').then(m => m.default || m),
-    AttributeGroupGridTab: () => import('@Attributes/components/Tabs/AttributeGroupGridTab').then(m => m.default || m),
+    AttributeGroupsTab: () => import('@Attributes/components/Tabs/AttributeGroupsTab').then(m => m.default || m),
     AttributeGroupGeneralTab: () => import('@Attributes/components/Tabs/AttributeGroupGeneralTab').then(m => m.default || m),
     AttributeGroupTranslationsTab: () => import('@Attributes/components/Tabs/AttributeGroupTranslationsTab').then(m => m.default || m),
 };

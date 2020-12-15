@@ -41,7 +41,7 @@ export default [
             {
                 name: ROUTE_NAME.ACTIVITY_LOGS_GRID,
                 path: 'grid',
-                component: Tabs.UsersActivityLogsGridTab,
+                component: Tabs.UsersActivityLogsTab,
                 meta: {
                     title: '',
                     breadcrumbs: [

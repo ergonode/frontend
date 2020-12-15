@@ -45,7 +45,7 @@ export default [
             {
                 name: ROUTE_NAME.CATEGORY_TREES_GRID,
                 path: 'grid',
-                component: Tabs.CategoryTreesGridTab,
+                component: Tabs.CategoryTreesTab,
                 meta: {
                     title: '',
                     breadcrumbs: [

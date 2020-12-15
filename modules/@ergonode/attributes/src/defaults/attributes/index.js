@@ -31,3 +31,7 @@ export const SCOPE = {
     GLOBAL: 'global',
     LOCAL: 'local',
 };
+
+export const ATTRIBUTE_GROUP_CREATED_EVENT_NAME = 'attribute-group-created';
+
+export const ATTRIBUTE_CREATED_EVENT_NAME = 'attribute-created';

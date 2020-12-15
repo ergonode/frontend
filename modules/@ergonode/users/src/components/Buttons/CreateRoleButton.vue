@@ -25,6 +25,9 @@ import {
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import PRIVILEGES from '@Users/config/privileges';
+import {
+    ROLE_CREATED_EVENT_NAME,
+} from '@Users/defaults';
 
 export default {
     name: 'CreateRoleButton',
@@ -57,7 +60,10 @@ export default {
         },
         onCreatedData() {
             this.onCloseModal();
-            this.$emit('created');
+
+            const event = new CustomEvent(ROLE_CREATED_EVENT_NAME);
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

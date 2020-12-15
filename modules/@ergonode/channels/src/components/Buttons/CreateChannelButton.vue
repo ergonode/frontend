@@ -21,6 +21,9 @@
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
 import {
+    CHANNEL_CREATED_EVENT_NAME,
+} from '@Channels/defaults';
+import {
     SIZE,
 } from '@Core/defaults/theme';
 import Button from '@UI/components/Button/Button';
@@ -57,7 +60,10 @@ export default {
         },
         onCreatedData() {
             this.onCloseModal();
-            this.$emit('created');
+
+            const event = new CustomEvent(CHANNEL_CREATED_EVENT_NAME);
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

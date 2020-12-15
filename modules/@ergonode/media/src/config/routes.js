@@ -46,7 +46,7 @@ export default [
             {
                 name: ROUTE_NAME.MEDIA_GRID,
                 path: 'grid',
-                component: Tabs.MediaGridTab,
+                component: Tabs.MediaTab,
                 meta: {
                     title: '',
                     breadcrumbs: [

@@ -22,6 +22,9 @@
 <script>
 import PRIVILEGES from '@Collections/config/privileges';
 import {
+    COLLECTION_CREATED_EVENT_NAME,
+} from '@Collections/defaults';
+import {
     SIZE,
 } from '@Core/defaults/theme';
 import Button from '@UI/components/Button/Button';
@@ -58,7 +61,10 @@ export default {
         },
         onCreatedData() {
             this.onCloseModal();
-            this.$emit('created');
+
+            const event = new CustomEvent(COLLECTION_CREATED_EVENT_NAME);
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

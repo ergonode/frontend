@@ -8,7 +8,7 @@
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave">
         <NuxtLink
-            :to="{ path: route.path }"
+            :to="{ name: route.name, query: route.query }"
             class="side-bar-list-group-element__link">
             <div class="side-bar-list-group-element__dot" />
             <span
