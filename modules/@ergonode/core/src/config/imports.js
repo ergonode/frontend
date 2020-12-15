@@ -4,6 +4,7 @@
  */
 export const Pages = {
     Login: () => import('@Core/pages/login/index').then(m => m.default || m),
+    PasswordReset: () => import('@Core/pages/password-reset/index').then(m => m.default || m),
     Placeholder: () => import('@Core/pages/placeholder/index').then(m => m.default || m),
     Settings: () => import('@Core/pages/settings/index').then(m => m.default || m),
     UnitEdit: () => import('@Core/pages/settings/_unit/_id').then(m => m.default || m),

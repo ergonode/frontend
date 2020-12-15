@@ -4,36 +4,42 @@
  */
 <template>
     <LoginForm
-        submit-title="LOG IN"
+        :submit-title="$t('authentication.forms.login.button')"
         :is-submitting="isSubmitting"
         :errors="scopeErrors"
         @submit="onSubmit">
         <template #header>
-            <div class="logo-header">
-                <IconLogoName />
-            </div>
+            <IconLogoName class="header-logo" />
         </template>
         <template #body>
             <TextField
                 data-cy="login-email"
                 v-model="email"
                 :error-messages="scopeErrors.username"
-                label="E-mail" />
+                :label="$t('authentication.forms.login.email')" />
             <TextField
                 data-cy="login-pass"
                 v-model="password"
                 :input="passwordInputType"
                 :error-messages="scopeErrors.password"
-                label="Password" />
-            <Toggler
-                v-model="isPasswordVisible"
-                label="Show password" />
+                :label="$t('authentication.forms.login.password')" />
+            <div class="login-help-area">
+                <Toggler
+                    v-model="isPasswordVisible"
+                    :label="$t('authentication.forms.login.toggle')" />
+                <LinkButton
+                    :title="$t('authentication.forms.login.forgot')"
+                    @click.native="redirectToRecovery" />
+            </div>
         </template>
     </LoginForm>
 </template>
 
 <script>
-import LoginForm from '@Authentication/components/Form/LoginForm';
+import LoginForm from '@Authentication/components/Forms/LoginForm';
+import {
+    LOGIN_STATE,
+} from '@Authentication/defaults/login-state';
 import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
 import {
     INPUT_TYPE,
@@ -42,6 +48,7 @@ import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import {
     ROUTE_NAME,
 } from '@Dashboard/config/routes';
+import LinkButton from '@UI/components/LinkButton/LinkButton';
 import TextField from '@UI/components/TextField/TextField';
 import Toggler from '@UI/components/Toggler/Toggler';
 import {
@@ -53,6 +60,7 @@ export default {
     components: {
         LoginForm,
         TextField,
+        LinkButton,
         Toggler,
         IconLogoName,
     },
@@ -81,6 +89,9 @@ export default {
         ...mapActions('authentication', [
             'authenticateUser',
         ]),
+        redirectToRecovery() {
+            this.$emit('redirect-to', LOGIN_STATE.PASSWORD_RECOVERY);
+        },
         onSubmit() {
             this.isSubmitting = true;
 
@@ -115,9 +126,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .logo-header {
+    .header-logo {
+        justify-self: center;
+    }
+
+    .login-help-area {
         display: flex;
-        flex: 1;
-        justify-content: center;
+        justify-content: space-between;
+        align-items: center;
     }
 </style>

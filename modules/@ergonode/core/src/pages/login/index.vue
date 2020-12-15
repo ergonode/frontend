@@ -3,30 +3,19 @@
  * See LICENSE for license details.
  */
 <template>
-    <main class="login">
-        <section class="login__body">
-            <span
-                v-if="showReleaseInfo"
-                class="release-info"
-                v-text="showReleaseInfo" />
-            <FluidBlob />
-            <Component
-                :is="loginFormComponents.loginFormComponent"
-                @back-to="onBackTo" />
-            <img
-                class="login__infographic"
-                :src="loginFormComponents.formImage">
-        </section>
-        <Footer space-between>
-            <LinkButton
-                title="Help"
-                @click.native="onHelpClicked" />
-            <IconLogoName class="login__footer-logo" />
-        </Footer>
-    </main>
+    <Login
+        @redirect-to="onRedirectTo">
+        <Component
+            :is="loginFormComponents.loginFormComponent"
+            @redirect-to="onRedirectTo" />
+        <img
+            class="login__infographic"
+            :src="loginFormComponents.formImage">
+    </Login>
 </template>
 
 <script>
+import Login from '@Authentication/components/Layout/Login';
 import {
     REFRESH_TOKEN_KEY,
     TOKEN_KEY,
@@ -34,28 +23,15 @@ import {
 import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
-import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
-import {
-    DEFAULT_DATA_HOUR_FORMAT,
-} from '@Core/defaults/date';
-import FluidBlob from '@UI/components/FluidBlob/FluidBlob';
-import Footer from '@UI/components/Layout/Footer/Footer';
-import LinkButton from '@UI/components/LinkButton/LinkButton';
-import {
-    format as formatDate,
-} from 'date-fns';
 import {
     mapActions,
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'Login',
+    name: 'LoginPage',
     components: {
-        LinkButton,
-        Footer,
-        IconLogoName,
-        FluidBlob,
+        Login,
     },
     data() {
         return {
@@ -70,97 +46,56 @@ export default {
             switch (this.loginState) {
             case LOGIN_STATE.CREDENTIALS:
                 return {
-                    loginFormComponent: () => import('@Authentication/components/Form/LoginCredentialsForm'),
+                    loginFormComponent: () => import('@Authentication/components/Forms/LoginCredentialsForm'),
                     formImage: require('@Core/assets/images/login/login_face.png'),
                 };
             case LOGIN_STATE.HELP:
                 return {
-                    loginFormComponent: () => import('@Authentication/components/Form/LoginHelpForm'),
+                    loginFormComponent: () => import('@Authentication/components/Forms/LoginHelpForm'),
                     formImage: require('@Core/assets/images/login/login_help_face.png'),
                 };
             case LOGIN_STATE.PASSWORD_RECOVERY:
                 return {
-                    loginFormComponent: null,
+                    loginFormComponent: () => import('@Authentication/components/Forms/PasswordRecoveryForm'),
                     formImage: require('@Core/assets/images/login/login_password_recovery_face.png'),
                 };
-            case LOGIN_STATE.NEW_PASSWORD:
+            case LOGIN_STATE.CHECK_EMAIL:
                 return {
-                    loginFormComponent: null,
-                    formImage: require('@Core/assets/images/login/login_new_password_face.png'),
+                    loginFormComponent: () => import('@Authentication/components/Forms/PasswordRecoveryCheckEmail'),
+                    formImage: require('@Core/assets/images/login/login_password_recovery_face.png'),
                 };
             default: return null;
             }
         },
-        showReleaseInfo() {
-            const releaseVersion = process.env.VUE_APP_VERSION;
-            const gitInfo = process.env.VUE_APP_GIT_INFO;
-
-            if (!process.env.SHOW_RELEASE_INFO) return null;
-
-            return `Commit hash: ${gitInfo.abbreviatedSha}
-            Date: ${formatDate(new Date(gitInfo.committerDate), DEFAULT_DATA_HOUR_FORMAT)}
-            Release: v${releaseVersion}`;
-        },
     },
     created() {
+        const {
+            loginState = null,
+            alert = null,
+        } = this.$route.params;
+
         if (!this.isLogged) {
             this.$cookies.remove(TOKEN_KEY);
             this.$cookies.remove(REFRESH_TOKEN_KEY);
             this.resetState();
+        }
+
+        if (loginState) {
+            this.loginState = loginState;
+        }
+
+        if (alert) {
+            this.$addAlert(alert);
         }
     },
     methods: {
         ...mapActions([
             'resetState',
         ]),
-        onHelpClicked() {
-            this.loginState = LOGIN_STATE.HELP;
-        },
-        onBackTo(state) {
+        onRedirectTo(state) {
             this.loginState = state;
         },
     },
     layout: 'login',
 };
 </script>
-
-<style lang="scss" scoped>
-    .login {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        justify-content: space-between;
-        background-color: $WHITESMOKE;
-
-        &__body {
-            position: relative;
-            display: flex;
-            flex: 1;
-            justify-content: center;
-            align-items: center;
-
-            .release-info {
-                position: absolute;
-                top: 0;
-                right: 0;
-                padding: 10px;
-                white-space: pre-wrap;
-                color: $GREY_DARK;
-                font: $FONT_MEDIUM_12_16;
-                text-align: right;
-            }
-        }
-
-        &__infographic {
-            z-index: $Z_INDEX_LVL_1;
-            width: 460px;
-            height: 360px;
-            margin-left: 64px;
-        }
-
-        &__footer-logo {
-            width: 85.5px;
-            height: 24px;
-        }
-    }
-</style>
