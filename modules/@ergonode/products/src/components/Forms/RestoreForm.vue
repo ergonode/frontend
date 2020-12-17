@@ -39,7 +39,6 @@ import CheckBox from '@UI/components/CheckBox/CheckBox';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import {
-    mapGetters,
     mapState,
 } from 'vuex';
 
