@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="side-bar-logo">
+    <div class="navigation-side-bar-logo">
         <IconLogoName
             :full-logo="isExpanded"
             :name-color="whiteColor" />
@@ -17,7 +17,7 @@ import {
 } from '@UI/assets/scss/_js-variables/colors.scss';
 
 export default {
-    name: 'SideBarLogo',
+    name: 'NavigationSideBarLogo',
     components: {
         IconLogoName,
     },
@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .side-bar-logo {
+    .navigation-side-bar-logo {
         padding: 24px;
     }
 </style>

@@ -15,9 +15,9 @@ import {
     getUUID,
 } from '@Core/models/stringWrapper';
 import {
-    getListGroups,
-    getListItems,
-} from '@Core/services/list/getList.service';
+    getGroups,
+    getItems,
+} from '@Core/services/sidebar';
 
 export default function ({
     namespace,
@@ -75,7 +75,7 @@ export default function ({
                 limit = 99999,
             }) {
                 await Promise.all([
-                    getListGroups({
+                    getGroups({
                         $axios: this.$axios,
                         path: `${languageCode}/${namespace}/groups`,
                         languageCode,
@@ -84,7 +84,7 @@ export default function ({
                             languageCode,
                         }),
                     }),
-                    getListItems({
+                    getItems({
                         $axios: this.$axios,
                         path: `${languageCode}/${namespace}`,
                         params: {
@@ -162,7 +162,7 @@ export default function ({
 
                     this.prefetchingGroupItemsId = this.expandedGroupId;
 
-                    await getListItems({
+                    await getItems({
                         $axios: this.$axios,
                         path: `${languageCode}/${namespace}`,
                         params: {
@@ -198,7 +198,7 @@ export default function ({
             }) {
                 const filter = this.codeFilter ? `code=${this.codeFilter}` : '';
 
-                await getListItems({
+                await getItems({
                     $axios: this.$axios,
                     path: `${languageCode}/${namespace}`,
                     params: {

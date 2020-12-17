@@ -4,7 +4,9 @@
  */
 <template>
     <div class="vertical-tab-bar-list">
-        <slot />
+        <div class="vertical-tab-bar-list__container">
+            <slot />
+        </div>
     </div>
 </template>
 
@@ -23,5 +25,12 @@ export default {
         flex-direction: column;
         width: 275px;
         box-sizing: border-box;
+
+        &__container {
+            position: relative;
+            flex: 1 1 auto;
+            width: 100%;
+            height: 0;
+        }
     }
 </style>

@@ -6,8 +6,8 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
-    getListItems,
-} from '@Core/services/list/getList.service';
+    getItems,
+} from '@Core/services/sidebar';
 
 export default function ({
     namespace,
@@ -47,7 +47,7 @@ export default function ({
                     ? `code=${this.codeFilter};${extraFilters}`
                     : extraFilters;
 
-                await getListItems({
+                await getItems({
                     $axios: this.$axios,
                     path: `${languageCode}/${namespace}`,
                     params: {

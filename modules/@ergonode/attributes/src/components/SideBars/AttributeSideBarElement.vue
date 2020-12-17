@@ -49,7 +49,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'AttributesListElement',
+    name: 'AttributeSideBarElement',
     components: {
         ListElementDescription,
         ListElementTitle,

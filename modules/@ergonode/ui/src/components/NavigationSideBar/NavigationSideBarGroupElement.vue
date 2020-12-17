@@ -8,35 +8,24 @@
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave">
         <NuxtLink
-            :to="{ name: route.name, query: route.query }"
-            class="side-bar-list-element__link">
-            <div class="side-bar-list-element__icon">
-                <Component
-                    :is="listIcon"
-                    :fill-color="listIconFillColor" />
-            </div>
-            <FadeSideBarTextTransition>
-                <span
-                    v-if="isExpanded"
-                    class="side-bar-list-element__title"
-                    v-text="route.meta.title" />
-            </FadeSideBarTextTransition>
+            :to="{ path: route.path, query: route.query }"
+            class="navigation-side-bar-group-element__link">
+            <div class="navigation-side-bar-group-element__dot" />
+            <span
+                class="navigation-side-bar-group-element__title"
+                v-text="route.meta.title" />
         </NuxtLink>
     </li>
 </template>
 
 <script>
+
 import {
-    GREEN,
-    WHITE,
-} from '@UI/assets/scss/_js-variables/colors.scss';
-import FadeSideBarTextTransition from '@UI/components/Transitions/FadeSideBarTextTransition';
+    getParentRoutePath,
+} from '@Core/models/navigation/tabs';
 
 export default {
-    name: 'SideBarListElement',
-    components: {
-        FadeSideBarTextTransition,
-    },
+    name: 'NavigationSideBarGroupElement',
     props: {
         /**
          * Route data model
@@ -61,23 +50,16 @@ export default {
     computed: {
         classes() {
             return [
-                'side-bar-list-element',
+                'navigation-side-bar-group-element',
                 {
-                    'side-bar-list-element--selected': this.isSelected,
-                    'side-bar-list-element--hovered': this.isHovered,
+                    'navigation-side-bar-group-element--selected': this.isSelected,
+                    'navigation-side-bar-group-element--hovered': this.isHovered,
+                    'navigation-side-bar-group-element--expanded': this.isExpanded,
                 },
             ];
         },
-        listIcon() {
-            if (!(this.route.meta && this.route.meta.icon)) return null;
-
-            return this.route.meta.icon;
-        },
         isSelected() {
-            return this.$route.name === this.route.name;
-        },
-        listIconFillColor() {
-            return this.isSelected || this.isHovered ? WHITE : GREEN;
+            return getParentRoutePath(this.$route) === this.route.path;
         },
     },
     methods: {
@@ -92,12 +74,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .side-bar-list-element {
+    .navigation-side-bar-group-element {
         $element: &;
 
+        outline: none;
         display: flex;
         height: 48px;
-        padding: 0 24px;
+        padding: 0 16px 0 24px;
         box-sizing: border-box;
         cursor: pointer;
 
@@ -107,9 +90,17 @@ export default {
             #{$element}__title {
                 color: $WHITE;
             }
+
+            #{$element}__dot {
+                background-color: $WHITE;
+            }
         }
 
         &:not(&--selected):not(&--hovered) {
+            #{$element}__dot {
+                background-color: $GREEN;
+            }
+
             #{$element}__title {
                 color: $GREY_DARK;
             }
@@ -118,6 +109,19 @@ export default {
         &--hovered {
             #{$element}__title {
                 color: $WHITE;
+            }
+
+            #{$element}__dot {
+                background-color: $WHITE;
+            }
+        }
+
+        &--expanded {
+            height: 40px;
+
+            #{$element}__link {
+                width: 208px;
+                transform: translateX(-16px);
             }
         }
 
@@ -131,17 +135,15 @@ export default {
             text-decoration: none;
         }
 
-        &__icon {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        &__dot {
+            justify-self: center;
+            width: 4px;
+            height: 4px;
+            border-radius: 2px;
         }
 
         &__title {
             font: $FONT_MEDIUM_14_20;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
         }
     }
 </style>

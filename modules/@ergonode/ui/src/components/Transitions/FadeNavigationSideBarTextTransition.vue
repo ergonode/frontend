@@ -10,7 +10,7 @@
 
 <script>
 export default {
-    name: 'FadeSideBarTextTransition',
+    name: 'FadeNavigationSideBarTextTransition',
 };
 </script>
 

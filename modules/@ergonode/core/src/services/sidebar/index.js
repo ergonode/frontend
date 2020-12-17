@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export const getListGroups = async ({
+export const getGroups = async ({
     $axios,
     path,
     languageCode,
@@ -25,8 +25,6 @@ export const getListGroups = async ({
             withLanguage: false,
         });
         const groups = [];
-        const items = {};
-        const groupItemsCount = {};
         const {
             length,
         } = collection;
@@ -38,26 +36,22 @@ export const getListGroups = async ({
                 name,
             } = collection[i];
 
-            if (collection[i].elements_count > 0) {
-                const value = name || `#${code}`;
-                const hint = name ? `#${code} ${languageCode}` : '';
+            const value = name || `#${code}`;
+            const hint = name ? `#${code} ${languageCode}` : '';
 
-                groups.push({
-                    id,
-                    key: code,
-                    value,
-                    hint,
-                });
-
-                groupItemsCount[id] = collection[i].elements_count;
-                items[id] = [];
-            }
+            groups.push({
+                id,
+                key: code,
+                value,
+                hint,
+                itemsCount: collection[i].elements_count,
+                children: [],
+            });
         }
 
         onSuccess({
             groups,
-            items,
-            groupItemsCount,
+            languageCode,
         });
     } catch (e) {
         if ($axios.isCancel(e)) {
@@ -68,9 +62,10 @@ export const getListGroups = async ({
     }
 };
 
-export const getListItems = async ({
+export const getItems = async ({
     $axios,
     path,
+    languageCode,
     params,
     onSuccess = () => {},
     onError = () => {},
@@ -87,6 +82,7 @@ export const getListItems = async ({
         onSuccess({
             items: collection,
             info,
+            languageCode,
         });
     } catch (e) {
         if ($axios.isCancel(e)) {

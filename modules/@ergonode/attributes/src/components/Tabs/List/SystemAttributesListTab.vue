@@ -7,7 +7,7 @@
         <ListSearchSelectHeader
             v-if="isSelectLanguage"
             :title="$t('attribute.list.searchHeader2')"
-            @search-value="onSearch">
+            @search="onSearch">
             <template #select>
                 <TreeSelect
                     :value="language"
@@ -19,11 +19,11 @@
         <ListSearchHeader
             v-else
             :title="$t('attribute.list.searchHeader2')"
-            @search-value="onSearch" />
+            @search="onSearch" />
         <List>
             <Preloader v-if="isPrefetchingData" />
             <ListScrollableContainer v-else>
-                <AttributesListElement
+                <AttributeSideBarElement
                     v-for="item in items[language.code]"
                     :key="item.id"
                     :item="item"
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import AttributesListElement from '@Attributes/components/Lists/AttributesListElement';
+import AttributeSideBarElement from '@Attributes/components/SideBars/AttributeSideBarElement';
 import PRIVILEGES from '@Attributes/config/privileges';
 import {
     SIZE,
@@ -61,7 +61,7 @@ export default {
         ListSearchHeader,
         List,
         ListScrollableContainer,
-        AttributesListElement,
+        AttributeSideBarElement,
         TreeSelect,
     },
     mixins: [

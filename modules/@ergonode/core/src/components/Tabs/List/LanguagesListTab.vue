@@ -7,7 +7,7 @@
         <ListSearchHeader
             title="System languages"
             searchable
-            @search-value="onSearch" />
+            @search="onSearch" />
         <List>
             <ListScrollableContainer>
                 <LanguagesListElement

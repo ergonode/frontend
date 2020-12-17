@@ -8,18 +8,18 @@
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave">
         <div
-            class="side-bar-list-group__activator"
+            class="navigation-side-bar-group__activator"
             @click="onGroupSelect">
             <Component
-                class="side-bar-list-group__icon"
+                class="navigation-side-bar-group__icon"
                 :is="listIcon"
                 :fill-color="listIconFillColor" />
-            <FadeSideBarTextTransition>
+            <FadeNavigationSideBarTextTransition>
                 <span
                     v-if="isExpanded"
-                    class="side-bar-list-group__title"
+                    class="navigation-side-bar-group__title"
                     v-text="route.group.title" />
-            </FadeSideBarTextTransition>
+            </FadeNavigationSideBarTextTransition>
             <IconArrowDropdown
                 v-if="isExpanded"
                 :state="dropDownState"
@@ -29,8 +29,8 @@
             <AutoHeightTransition>
                 <ul
                     v-if="isSelected"
-                    class="side-bar-list-group__items">
-                    <SideBarListGroupElement
+                    class="navigation-side-bar-group__items">
+                    <NavigationSideBarGroupElement
                         v-for="(child, index) in route.routes"
                         :key="index"
                         :is-expanded="!isExpanded && isHovered"
@@ -40,19 +40,19 @@
         </template>
         <ul
             v-else-if="isHovered"
-            class="side-bar-list-group__items">
+            class="navigation-side-bar-group__items">
             <div
-                class="side-bar-list-group__expanded-title">
+                class="navigation-side-bar-group__expanded-title">
                 <span
-                    class="side-bar-list-group__title"
+                    class="navigation-side-bar-group__title"
                     v-text="route.group.title" />
             </div>
-            <SideBarListGroupElement
+            <NavigationSideBarGroupElement
                 v-for="(child, index) in route.routes"
                 :key="index"
                 :route="getRoute(child)"
                 :is-expanded="isHovered" />
-            <div class="side-bar-list-group__footer" />
+            <div class="navigation-side-bar-group__footer" />
         </ul>
     </li>
 </template>
@@ -67,16 +67,16 @@ import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
-import SideBarListGroupElement from '@UI/components/SideBar/SideBarListGroupElement';
+import NavigationSideBarGroupElement from '@UI/components/NavigationSideBar/NavigationSideBarGroupElement';
 import AutoHeightTransition from '@UI/components/Transitions/AutoHeightTransition';
-import FadeSideBarTextTransition from '@UI/components/Transitions/FadeSideBarTextTransition';
+import FadeNavigationSideBarTextTransition from '@UI/components/Transitions/FadeNavigationSideBarTextTransition';
 
 export default {
-    name: 'SideBarListGroup',
+    name: 'NavigationSideBarGroup',
     components: {
         AutoHeightTransition,
-        FadeSideBarTextTransition,
-        SideBarListGroupElement,
+        FadeNavigationSideBarTextTransition,
+        NavigationSideBarGroupElement,
         IconArrowDropdown,
     },
     props: {
@@ -114,12 +114,12 @@ export default {
     computed: {
         classes() {
             return [
-                'side-bar-list-group',
+                'navigation-side-bar-group',
                 {
-                    'side-bar-list-group--selected': this.isSelected,
-                    'side-bar-list-group--activated': this.isGroupActivated && !this.isSelected,
-                    'side-bar-list-group--hovered': this.isHovered,
-                    'side-bar-list-group--expanded': !this.isExpanded && this.isHovered,
+                    'navigation-side-bar-group--selected': this.isSelected,
+                    'navigation-side-bar-group--activated': this.isGroupActivated && !this.isSelected,
+                    'navigation-side-bar-group--hovered': this.isHovered,
+                    'navigation-side-bar-group--expanded': !this.isExpanded && this.isHovered,
                 },
             ];
         },
@@ -175,7 +175,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .side-bar-list-group {
+    .navigation-side-bar-group {
         $element: &;
 
         outline: none;

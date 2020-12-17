@@ -2,22 +2,20 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
-    <div class="list-scrollable-container">
+<template functional>
+    <div class="side-bar-footer">
         <slot />
     </div>
 </template>
 
 <script>
 export default {
-    name: 'ListScrollableContainer',
+    name: 'SideBarFooter',
 };
 </script>
 
 <style lang="scss" scoped>
-    .list-scrollable-container {
-        flex: 1 1 auto;
-        width: 100%;
-        height: 0;
+    .side-bar-footer {
+        height: 40px;
     }
 </style>
