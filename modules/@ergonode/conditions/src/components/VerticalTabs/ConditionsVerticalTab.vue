@@ -4,17 +4,17 @@
  */
 <template>
     <div class="conditions-vertical-tab">
-        <LanguagesSideBar :disabled="disabled" />
+        <ConditionsSideBar :disabled="disabled" />
     </div>
 </template>
 
 <script>
-import LanguagesSideBar from '@Core/components/SideBars/LanguagesSideBar';
+import ConditionsSideBar from '@Conditions/components/SideBars/ConditionsSideBar';
 
 export default {
     name: 'ConditionsVerticalTab',
     components: {
-        LanguagesSideBar,
+        ConditionsSideBar,
     },
     props: {
         disabled: {
