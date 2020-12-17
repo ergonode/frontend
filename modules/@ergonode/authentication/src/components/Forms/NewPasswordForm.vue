@@ -141,7 +141,7 @@ export default {
 
             const data = {
                 password: this.password,
-                password_repeat: this.password,
+                passwordRepeat: this.password,
                 token: this.$route.query.token,
             };
 
