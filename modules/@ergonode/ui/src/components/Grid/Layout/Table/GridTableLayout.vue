@@ -64,7 +64,7 @@
                         :column="column"
                         :rows="rows"
                         :rows-offset="rowsOffset"
-                        :sorted-column="sortedColumn"
+                        :sort-order="sortOrder"
                         :filters="filters"
                         :data-filter-cell-components="dataFilterCellComponents"
                         :data-cell-components="dataCellComponents"
@@ -267,6 +267,13 @@ export default {
             default: false,
         },
         /**
+         * The data model of sorted column
+         */
+        sortOrder: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
          * The data model of extended table layout components
          */
         extendedComponents: {
@@ -285,7 +292,6 @@ export default {
             dataFilterCellComponents: {},
             filterTypes: {},
             columnTypes: {},
-            sortedColumn: {},
             pinnedSections: {},
             editCell: null,
             editFilterCell: null,
@@ -422,9 +428,8 @@ export default {
                 this.$refs.gridTableLayout.removeEventListener('mousedown', this.onMouseDown);
             }
         },
-        onSortColumn(sortedColumn) {
-            this.sortedColumn = sortedColumn;
-            this.$emit('sort', sortedColumn);
+        onSortColumn(sortOrder) {
+            this.$emit('sort-column', sortOrder);
         },
         onFilterValueChange({
             value,

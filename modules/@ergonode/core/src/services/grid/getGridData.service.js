@@ -3,7 +3,6 @@
  * See LICENSE for license details.
  */
 import {
-    getParsedFilters,
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
 import {
@@ -27,7 +26,7 @@ export const getGridData = async ({
         };
 
         if (params.filter) {
-            config.params.filter = getParsedFilters(params.filter);
+            config.params.filter = params.filter.replace(/\[|\]/g, '');
         }
 
         const {
@@ -38,9 +37,7 @@ export const getGridData = async ({
             },
         } = await $axios.$get(path, config);
 
-        const sortedColumns = params.columns
-            ? getSortedColumnsByIDs(columns, params.columns)
-            : columns;
+        const sortedColumns = getSortedColumnsByIDs(columns, params.columns);
 
         if (!$cookies.get(`GRID_CONFIG:${$route.name}`)) {
             $cookies.set(

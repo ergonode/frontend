@@ -3,15 +3,37 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResourcePage :title="`${name}.${extension}`" />
+    <Page>
+        <TitleBar
+            :title="title"
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigateBackFab :previous-route="previousRoute" />
+            </template>
+            <template #mainAction>
+                <RemoveResourceButton />
+            </template>
+        </TitleBar>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
+    </Page>
 </template>
 
 <script>
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
-import ResourcePage from '@Media/components/Pages/ResourcePage';
+import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import RemoveResourceButton from '@Media/components/Buttons/RemoveResourceButton';
+import PRIVILEGES from '@Media/config/privileges';
+import Page from '@UI/components/Layout/Page';
+import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapActions,
     mapState,
@@ -20,10 +42,15 @@ import {
 export default {
     name: 'ResourceEdit',
     components: {
-        ResourcePage,
+        Page,
+        TitleBar,
+        HorizontalRoutingTabBar,
+        RemoveResourceButton,
     },
     mixins: [
-        beforeLeavePageMixin,
+        asyncTabsMixin,
+        beforeRouteEnterMixin,
+        beforeRouteLeaveMixin,
     ],
     asyncData({
         app,
@@ -45,6 +72,12 @@ export default {
             'name',
             'extension',
         ]),
+        title() {
+            return `${this.name}.${this.extension}`;
+        },
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.MULTIMEDIA.namespace);
+        },
     },
     beforeDestroy() {
         this.__clearStorage();

@@ -44,7 +44,7 @@ export default [
             {
                 name: ROUTE_NAME.STATUS_TRANSITIONS_GRID,
                 path: 'grid',
-                component: Tabs.TransitionsGridTab,
+                component: Tabs.TransitionsTab,
                 meta: {
                     title: '',
                     breadcrumbs: [

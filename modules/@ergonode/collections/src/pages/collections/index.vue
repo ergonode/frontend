@@ -8,26 +8,19 @@
             title="Collections"
             :is-read-only="isReadOnly">
             <template #mainAction>
-                <CreateCollectionButton @created="onCreatedData" />
+                <CreateCollectionButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
-            :items="asyncTabs">
-            <template #content>
-                <HorizontalRoutingTabBarContent
-                    :is-fetching-needed="fetchGridData"
-                    @fetched="onFetchedGridData" />
-            </template>
-        </HorizontalRoutingTabBar>
+            :items="asyncTabs" />
     </Page>
 </template>
 
 <script>
 import CreateCollectionButton from '@Collections/components/Buttons/CreateCollectionButton';
 import PRIVILEGES from '@Collections/config/privileges';
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
@@ -42,8 +35,7 @@ export default {
         HorizontalRoutingTabBar,
     },
     mixins: [
-        gridModalMixin,
-        beforeLeavePageMixin,
+        beforeRouteLeaveMixin,
         asyncTabsMixin,
     ],
     computed: {

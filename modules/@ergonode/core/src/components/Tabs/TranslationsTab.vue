@@ -19,9 +19,7 @@
         <template #centeredContent>
             <slot :language-codes="selectedLanguageCodes" />
         </template>
-        <template #default>
-            <slot name="saveButton" />
-        </template>
+        <slot name="saveButton" />
     </CenterViewTemplate>
 </template>
 

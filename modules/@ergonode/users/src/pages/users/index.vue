@@ -8,24 +8,17 @@
             :title="$t('user.page.title')"
             :is-read-only="isReadOnly">
             <template #mainAction>
-                <CreateUserButton @created="onCreatedData" />
+                <CreateUserButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
-            :items="asyncTabs">
-            <template #content>
-                <HorizontalRoutingTabBarContent
-                    :is-fetching-needed="fetchGridData"
-                    @fetched="onFetchedGridData" />
-            </template>
-        </HorizontalRoutingTabBar>
+            :items="asyncTabs" />
     </Page>
 </template>
 
 <script>
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
@@ -42,8 +35,7 @@ export default {
         HorizontalRoutingTabBar,
     },
     mixins: [
-        gridModalMixin,
-        beforeLeavePageMixin,
+        beforeRouteLeaveMixin,
         asyncTabsMixin,
     ],
     computed: {

@@ -3,15 +3,50 @@
  * See LICENSE for license details.
  */
 <template>
-    <AttributePage :title="code" />
+    <Page>
+        <TitleBar
+            :title="code"
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigateBackFab :previous-route="previousRoute" />
+            </template>
+            <template #mainAction>
+                <template
+                    v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
+                <RemoveAttributeButton />
+            </template>
+        </TitleBar>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
+    </Page>
 </template>
 
 <script>
-import AttributePage from '@Attributes/components/Pages/AttributePage';
+import RemoveAttributeButton from '@Attributes/components/Buttons/RemoveAttributeButton';
+import PRIVILEGES from '@Attributes/config/privileges';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import {
+    getNestedTabRoutes,
+} from '@Core/models/navigation/tabs';
+import {
+    getKeyByValue,
+} from '@Core/models/objectWrapper';
+import Page from '@UI/components/Layout/Page';
+import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapActions,
     mapState,
@@ -20,10 +55,15 @@ import {
 export default {
     name: 'EditAttribute',
     components: {
-        AttributePage,
+        Page,
+        TitleBar,
+        HorizontalRoutingTabBar,
+        RemoveAttributeButton,
     },
     mixins: [
-        beforeLeavePageMixin,
+        asyncTabsMixin,
+        beforeRouteEnterMixin,
+        beforeRouteLeaveMixin,
     ],
     validate({
         params,
@@ -56,8 +96,38 @@ export default {
     },
     computed: {
         ...mapState('attribute', [
+            'type',
             'code',
         ]),
+        ...mapState('dictionaries', [
+            'attrTypes',
+        ]),
+        extendedMainAction() {
+            return this.$getExtendedComponents('@Attributes/pages/attributes/_attribute/mainAction');
+        },
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.ATTRIBUTE.namespace);
+        },
+    },
+    watch: {
+        $route: {
+            immediate: true,
+            async handler() {
+                const tmpTabs = getNestedTabRoutes({
+                    hasAccess: this.$hasAccess,
+                    routes: this.$router.options.routes,
+                    route: this.$route,
+                });
+                const type = getKeyByValue(this.attrTypes, this.type);
+                const tabs = await this.$extendMethods('@Core/pages/tabs', {
+                    $this: this,
+                    type,
+                    tabs: tmpTabs,
+                });
+
+                this.asyncTabs = tabs.length ? Array.from(new Set([].concat(...tabs))) : tmpTabs;
+            },
+        },
     },
     beforeDestroy() {
         this.__clearStorage();
@@ -74,6 +144,14 @@ export default {
         ...mapActions('tab', {
             __clearTranslationsStorage: '__clearStorage',
         }),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.ATTRIBUTE,
+                ...props,
+            };
+        },
     },
     head() {
         return {

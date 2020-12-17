@@ -18,7 +18,7 @@
                 :column-id="column.id"
                 :label="column.label"
                 :deletable="column.deletable"
-                :sorted-column="sortedColumn"
+                :sort-order="sortOrder"
                 @sort="onSortColumn"
                 @remove="onRemoveColumn" />
             <template v-if="isBasicFilter">
@@ -117,7 +117,7 @@ export default {
         /**
          * Data about order of sorted column
          */
-        sortedColumn: {
+        sortOrder: {
             type: Object,
             required: true,
         },

@@ -15,19 +15,17 @@
                     v-if="route.group"
                     :key="index"
                     :route="route"
+                    :children-queries="childrenQueries"
                     :is-expanded="isExpanded"
                     :is-selected="isGroupSelected(route.group.title)"
                     @select="onGroupSelect" />
                 <SideBarListElement
                     v-else
                     :key="index"
-                    :route="route"
+                    :route="getRoute(route)"
                     :is-expanded="isExpanded" />
             </template>
         </ol>
-        <!--        <div class="side-bar__expand-button">-->
-        <!--            -->
-        <!--        </div>-->
         <Fab
             :floating="{ bottom: '16px', left: '24px' }"
             :theme="secondaryTheme"
@@ -69,6 +67,7 @@ export default {
     },
     data() {
         return {
+            childrenQueries: {},
             isSelected: true,
             isExpanded: true,
             selectedGroup: null,
@@ -146,10 +145,32 @@ export default {
             return this.sortRoutes(subMenuSorted);
         },
     },
+    watch: {
+        $route(to, from) {
+            this.childrenQueries = {
+                ...this.childrenQueries,
+                [from.name]: {
+                    ...from.query,
+                },
+            };
+        },
+    },
     beforeDestroy() {
         window.removeEventListener('click', this.onClickOutside);
     },
     methods: {
+        getRoute(route) {
+            let query = this.childrenQueries[route.name] || {};
+
+            if (route.redirect) {
+                query = this.childrenQueries[route.redirect.name];
+            }
+
+            return {
+                ...route,
+                query,
+            };
+        },
         sortRoutes(routes, subMenu = false) {
             const unsetPosition = 999;
 

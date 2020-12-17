@@ -9,7 +9,7 @@ export const Pages = {
 };
 
 export const Tabs = {
-    ImportProfileGridTab: () => import('@Import/components/Tabs/ImportProfileGridTab').then(m => m.default || m),
+    ImportProfilesTab: () => import('@Import/components/Tabs/ImportProfilesTab').then(m => m.default || m),
     ImportProfileGeneralTab: () => import('@Import/components/Tabs/ImportProfileGeneralTab').then(m => m.default || m),
     ImportProfileHistoryTab: () => import('@Import/components/Tabs/ImportProfileHistoryTab').then(m => m.default || m),
 };

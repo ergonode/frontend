@@ -49,7 +49,7 @@ export default [
             {
                 name: ROUTE_NAME.ATTRIBUTES_GRID,
                 path: 'grid',
-                component: Tabs.AttributeGridTab,
+                component: Tabs.AttributesTab,
                 meta: {
                     title: '',
                     breadcrumbs: [
@@ -140,7 +140,7 @@ export default [
             {
                 name: ROUTE_NAME.ATTRIBUTE_GROUPS_GRID,
                 path: 'grid',
-                component: Tabs.AttributeGroupGridTab,
+                component: Tabs.AttributeGroupsTab,
                 meta: {
                     title: '',
                     breadcrumbs: [

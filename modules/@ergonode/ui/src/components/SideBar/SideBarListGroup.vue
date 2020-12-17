@@ -34,7 +34,7 @@
                         v-for="(child, index) in route.routes"
                         :key="index"
                         :is-expanded="!isExpanded && isHovered"
-                        :route="child" />
+                        :route="getRoute(child)" />
                 </ul>
             </AutoHeightTransition>
         </template>
@@ -50,7 +50,7 @@
             <SideBarListGroupElement
                 v-for="(child, index) in route.routes"
                 :key="index"
-                :route="child"
+                :route="getRoute(child)"
                 :is-expanded="isHovered" />
             <div class="side-bar-list-group__footer" />
         </ul>
@@ -84,6 +84,10 @@ export default {
          * Route data model
          */
         route: {
+            type: Object,
+            required: true,
+        },
+        childrenQueries: {
             type: Object,
             required: true,
         },
@@ -143,6 +147,18 @@ export default {
         },
     },
     methods: {
+        getRoute(route) {
+            let query = this.childrenQueries[route.name] || {};
+
+            if (route.redirect) {
+                query = this.childrenQueries[route.redirect.name];
+            }
+
+            return {
+                ...route,
+                query,
+            };
+        },
         onGroupSelect() {
             if (this.isExpanded) {
                 this.$emit('select', this.isSelected ? null : this.route.group.title);

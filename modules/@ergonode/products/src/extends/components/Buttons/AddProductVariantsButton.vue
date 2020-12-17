@@ -14,10 +14,9 @@
                 name="prepend"
                 :color="color" />
         </template>
-        <AddProductsFromListModalGrid
+        <AddProductVariantsModalGrid
             v-if="isModalVisible"
-            @close="onCloseModal"
-            @submitted="onAddedData" />
+            @close="onCloseModal" />
     </Button>
 </template>
 
@@ -33,7 +32,7 @@ export default {
     name: 'AddProductVariantsButton',
     components: {
         Button,
-        AddProductsFromListModalGrid: () => import('@Products/extends/components/Modals/AddProductsFromListModalGrid'),
+        AddProductVariantsModalGrid: () => import('@Products/extends/components/Modals/AddProductVariantsModalGrid'),
     },
     props: {
         title: {
@@ -70,10 +69,6 @@ export default {
         },
         onCloseModal() {
             this.isModalVisible = false;
-        },
-        onAddedData() {
-            this.onCloseModal();
-            this.$emit('added');
         },
     },
 };

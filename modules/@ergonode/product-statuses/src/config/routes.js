@@ -43,7 +43,7 @@ export default [
             {
                 name: ROUTE_NAME.PRODUCT_STATUSES_GRID,
                 path: 'grid',
-                component: Tabs.ProductStatusGridTab,
+                component: Tabs.ProductStatusTab,
                 meta: {
                     title: '',
                     breadcrumbs: [
