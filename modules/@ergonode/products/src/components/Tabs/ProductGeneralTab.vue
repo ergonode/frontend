@@ -6,7 +6,7 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <ProductForm
-                :submit-title="$t('core.buttons.submit')"
+                :submit-title="$t('product.buttons.submit')"
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"

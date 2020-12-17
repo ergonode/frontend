@@ -20,7 +20,7 @@
                     </template>
                 </Button>
                 <Button
-                    :title="$t('core.buttons.cancel')"
+                    :title="$t('product.buttons.cancel')"
                     :theme="secondaryTheme"
                     :disabled="isSubmitting"
                     :size="smallSize"

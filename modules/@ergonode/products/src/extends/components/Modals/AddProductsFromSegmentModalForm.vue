@@ -10,7 +10,7 @@
             <AddProductsFromSegmentForm
                 :segments="segments"
                 submit-title="ADD TO PRODUCT"
-                :proceed-title="$t('core.buttons.cancel')"
+                :proceed-title="$t('product.buttons.cancel')"
                 :is-submitting="isAdding"
                 :errors="scopeErrors"
                 @submit="onSubmit"

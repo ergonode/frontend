@@ -4,7 +4,7 @@
  */
 <template>
     <Button
-        :title="$t('core.buttons.submit')"
+        :title="$t('product.buttons.submit')"
         :floating="{ bottom: '24px', right: '24px' }"
         @click.native="onSubmit">
         <template

@@ -176,7 +176,11 @@ export default {
             return this.isAnyOption || this.isAnySearchPhrase;
         },
         isFooterVisible() {
-            return this.clearable && this.isAnyOption;
+            if (this.isAnySearchPhrase) {
+                return this.clearable && this.isAnyOption;
+            }
+
+            return this.clearable;
         },
     },
     methods: {

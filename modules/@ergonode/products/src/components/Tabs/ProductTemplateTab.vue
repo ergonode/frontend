@@ -129,7 +129,9 @@ export default {
         attributes() {
             return this.elements.reduce((prev, curr) => {
                 const tmp = prev;
+
                 tmp[curr.properties.attribute_code] = curr.properties.attribute_id;
+
                 return tmp;
             }, {});
         },
@@ -195,20 +197,15 @@ export default {
                         this.completeness = completeness;
                     }),
                 }),
+                this.getInheritedProduct({
+                    id: this.id,
+                    languageCode,
+                }),
                 this.getProductWorkflow({
                     languageCode,
                     id: this.id,
                 }),
             ];
-
-            if (typeof this.drafts[languageCode] === 'undefined') {
-                requests.push(
-                    this.getInheritedProduct({
-                        id: this.id,
-                        languageCode,
-                    }),
-                );
-            }
 
             await Promise.all(requests);
         },

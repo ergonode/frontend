@@ -66,11 +66,7 @@ export default {
                 attribute_code,
             } = this.properties;
 
-            if (typeof this.drafts[this.languageCode][attribute_code] === 'undefined') {
-                return null;
-            }
-
-            return this.drafts[this.languageCode][attribute_code];
+            return this.drafts[this.languageCode][attribute_code] || null;
         },
         parameter() {
             if (!this.properties.parameters) return null;

@@ -4,7 +4,7 @@
  */
 <template>
     <Button
-        :title="$t('core.buttons.submit')"
+        :title="$t('product.buttons.submit')"
         :disabled="!isAllowedToUpdate"
         @click.native="onSubmit">
         <template

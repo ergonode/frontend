@@ -32,7 +32,7 @@
                 </template>
                 <template #appendFooter>
                     <Button
-                        :title="$t('core.buttons.submit')"
+                        :title="$t('product.buttons.submit')"
                         @click.native="onSubmit">
                         <template
                             v-if="isSubmitting"

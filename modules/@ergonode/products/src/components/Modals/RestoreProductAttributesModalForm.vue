@@ -8,8 +8,8 @@
         @close="onClose">
         <template #body>
             <RestoreForm
-                :submit-title="$t('core.buttons.restore')"
-                :proceed-title="$t('core.buttons.proceed')"
+                :submit-title="$t('product.buttons.restore')"
+                :proceed-title="$t('product.buttons.proceed')"
                 :errors="scopeErrors"
                 :elements-to-restore="elementsToRestore"
                 :elements="elements"
