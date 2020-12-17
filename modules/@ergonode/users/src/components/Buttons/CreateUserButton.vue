@@ -25,7 +25,9 @@ import {
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import PRIVILEGES from '@Users/config/privileges';
-import {USER_CREATED_EVENT_NAME} from "@Users/defaults";
+import {
+    USER_CREATED_EVENT_NAME,
+} from '@Users/defaults';
 
 export default {
     name: 'CreateUserButton',
