@@ -90,7 +90,6 @@ export default {
 
             this.isSubmitting = false;
 
-            this.removeScopeErrors(this.scope);
             this.markChangeValuesAsSaved(this.scope);
 
             this.$emit('updated');

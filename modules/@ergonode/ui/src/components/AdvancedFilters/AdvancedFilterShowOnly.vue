@@ -25,7 +25,7 @@ export default {
          */
         value: {
             type: Boolean,
-            required: true,
+            default: false,
         },
     },
     methods: {

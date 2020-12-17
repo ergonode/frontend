@@ -3,15 +3,37 @@
  * See LICENSE for license details.
  */
 <template>
-    <SegmentPage :title="code" />
+    <Page>
+        <TitleBar
+            :title="code"
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigateBackFab :previous-route="previousRoute" />
+            </template>
+            <template #mainAction>
+                <RemoveSegmentButton />
+            </template>
+        </TitleBar>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
+    </Page>
 </template>
 
 <script>
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
-import SegmentPage from '@Segments/components/Pages/SegmentPage';
+import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import RemoveSegmentButton from '@Segments/components/Buttons/RemoveSegmentButton';
+import PRIVILEGES from '@Segments/config/privileges';
+import Page from '@UI/components/Layout/Page';
+import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapActions,
     mapState,
@@ -20,10 +42,15 @@ import {
 export default {
     name: 'SegmentEdit',
     components: {
-        SegmentPage,
+        Page,
+        TitleBar,
+        HorizontalRoutingTabBar,
+        RemoveSegmentButton,
     },
     mixins: [
-        beforeLeavePageMixin,
+        asyncTabsMixin,
+        beforeRouteEnterMixin,
+        beforeRouteLeaveMixin,
     ],
     validate({
         params,
@@ -49,6 +76,9 @@ export default {
         ...mapState('segment', [
             'code',
         ]),
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.SEGMENT.namespace);
+        },
     },
     beforeDestroy() {
         this.__clearSegmentStorage();

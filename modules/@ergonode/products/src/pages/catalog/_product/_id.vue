@@ -3,15 +3,52 @@
  * See LICENSE for license details.
  */
 <template>
-    <ProductPage :title="sku" />
+    <Page>
+        <TitleBar
+            :title="sku"
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigateBackFab :previous-route="previousRoute" />
+            </template>
+            <template #mainAction>
+                <template v-for="(actionItem, index) in extendedMainAction">
+                    <Component
+                        :is="actionItem.component"
+                        :key="index"
+                        v-bind="bindingProps(actionItem)" />
+                </template>
+                <RemoveProductButton />
+            </template>
+        </TitleBar>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
+    </Page>
 </template>
 
 <script>
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
-import ProductPage from '@Products/components/Pages/ProductPage';
+import {
+    SIZE,
+} from '@Core/defaults/theme';
+import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import {
+    getNestedTabRoutes,
+} from '@Core/models/navigation/tabs';
+import {
+    getKeyByValue,
+} from '@Core/models/objectWrapper';
+import RemoveProductButton from '@Products/components/Buttons/RemoveProductButton';
+import PRIVILEGES from '@Products/config/privileges';
+import Footer from '@UI/components/Layout/Footer/Footer';
+import Page from '@UI/components/Layout/Page';
+import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapActions,
     mapState,
@@ -20,10 +57,15 @@ import {
 export default {
     name: 'ProductEdit',
     components: {
-        ProductPage,
+        Page,
+        TitleBar,
+        HorizontalRoutingTabBar,
+        Footer,
+        RemoveProductButton,
     },
     mixins: [
-        beforeLeavePageMixin,
+        beforeRouteEnterMixin,
+        beforeRouteLeaveMixin,
     ],
     validate({
         params,
@@ -69,10 +111,52 @@ export default {
             },
         });
     },
+    data() {
+        return {
+            asyncTabs: null,
+        };
+    },
     computed: {
+        ...mapState('feedback', [
+            'errors',
+            'changeValues',
+        ]),
         ...mapState('product', [
             'sku',
+            'type',
         ]),
+        ...mapState('dictionaries', [
+            'productTypes',
+        ]),
+        extendedMainAction() {
+            return this.$getExtendedComponents('@Products/pages/catalog/_product/mainAction');
+        },
+        smallSize() {
+            return SIZE.SMALL;
+        },
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.PRODUCT.namespace);
+        },
+    },
+    watch: {
+        $route: {
+            immediate: true,
+            async handler() {
+                const tmpTabs = getNestedTabRoutes({
+                    hasAccess: this.$hasAccess,
+                    routes: this.$router.options.routes,
+                    route: this.$route,
+                });
+                const type = getKeyByValue(this.productTypes, this.type);
+                const tabs = await this.$extendMethods('@Core/pages/tabs', {
+                    $this: this,
+                    type,
+                    tabs: tmpTabs,
+                });
+
+                this.asyncTabs = tabs.length ? Array.from(new Set([].concat(...tabs))) : tmpTabs;
+            },
+        },
     },
     beforeDestroy() {
         this.__clearStorage();
@@ -85,6 +169,14 @@ export default {
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
+        bindingProps({
+            props = {},
+        }) {
+            return {
+                privileges: PRIVILEGES.PRODUCT,
+                ...props,
+            };
+        },
     },
     head() {
         return {

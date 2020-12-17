@@ -7,7 +7,7 @@ export const Pages = {
 };
 
 export const Tabs = {
-    UsersActivityLogsGridTab: () => import('@ActivityLogs/components/Tabs/UsersActivityLogsGridTab').then(m => m.default || m),
+    UsersActivityLogsTab: () => import('@ActivityLogs/components/Tabs/UsersActivityLogsTab').then(m => m.default || m),
 };
 
 export const Icons = {

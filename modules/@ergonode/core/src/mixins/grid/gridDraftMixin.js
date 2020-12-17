@@ -13,5 +13,14 @@ export default {
         setDrafts(drafts = {}) {
             this.drafts = drafts;
         },
+        removeDrafts(rowIds) {
+            rowIds.forEach((rowId) => {
+                delete this.drafts[rowId];
+            });
+
+            this.drafts = {
+                ...this.drafts,
+            };
+        },
     },
 };

@@ -36,6 +36,7 @@
                     :value="template"
                     :required="true"
                     :searchable="true"
+                    :clearable="true"
                     label="Product template"
                     :error-messages="errors[templateIdFieldKey]"
                     :disabled="!isAllowedToUpdate"

@@ -68,6 +68,7 @@
                     :value="role"
                     :required="true"
                     :searchable="true"
+                    :clearable="true"
                     :label="$t('user.form.roleLabel')"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[roleIdFieldKey]"

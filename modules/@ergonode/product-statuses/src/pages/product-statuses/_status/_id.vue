@@ -3,7 +3,23 @@
  * See LICENSE for license details.
  */
 <template>
-    <ProductStatusPage :title="code" />
+    <Page>
+        <TitleBar
+            :title="code"
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigateBackFab :previous-route="previousRoute" />
+            </template>
+            <template #mainAction>
+                <RemoveProductStatusButton />
+            </template>
+        </TitleBar>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
+    </Page>
 </template>
 
 <script>
@@ -11,8 +27,14 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
-import ProductStatusPage from '@Statuses/components/Pages/ProductStatusPage';
+import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import RemoveProductStatusButton from '@Statuses/components/Buttons/RemoveProductStatusButton';
+import PRIVILEGES from '@Transitions/config/privileges';
+import Page from '@UI/components/Layout/Page';
+import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapActions,
     mapState,
@@ -21,10 +43,15 @@ import {
 export default {
     name: 'StatusEdit',
     components: {
-        ProductStatusPage,
+        Page,
+        TitleBar,
+        HorizontalRoutingTabBar,
+        RemoveProductStatusButton,
     },
     mixins: [
-        beforeLeavePageMixin,
+        asyncTabsMixin,
+        beforeRouteEnterMixin,
+        beforeRouteLeaveMixin,
     ],
     validate({
         params,
@@ -52,6 +79,9 @@ export default {
             'code',
             'isDefaultStatus',
         ]),
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.WORKFLOW.namespace);
+        },
     },
     beforeDestroy() {
         this.__clearStorage();

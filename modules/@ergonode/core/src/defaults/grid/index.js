@@ -82,15 +82,17 @@ export const DRAGGED_ELEMENT = {
 
 export const DATA_LIMIT = 25;
 
+export const DEFAULT_PAGE = 1;
+
 export const DEFAULT_GRID_FETCH_PARAMS = () => ({
     extended: true,
     offset: 0,
     limit: DATA_LIMIT,
-    filter: {},
-    sortedColumn: {},
+    filter: '',
+    sortOrder: {},
 });
 
 export const DEFAULT_GRID_PAGINATION = () => ({
-    page: 1,
+    page: DEFAULT_PAGE,
     itemsPerPage: DATA_LIMIT,
 });

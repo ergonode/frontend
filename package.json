@@ -59,7 +59,7 @@
     "figlet": "^1.5.0",
     "git-repo-info": "^2.1.1",
     "inquirer": "^7.3.3",
-    "nuxt": "^2.14.7",
+    "nuxt": "^2.14.10",
     "nuxt-i18n": "^6.15.4",
     "tiptap": "^1.30.0",
     "tiptap-extensions": "^1.33.2",

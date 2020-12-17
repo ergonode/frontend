@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
 import {
     ROUTE_NAME,
 } from '@Notifications/config/routes';
@@ -26,7 +26,7 @@ export default {
         Page,
     },
     mixins: [
-        beforeLeavePageMixin,
+        beforeRouteLeaveMixin,
     ],
     async fetch({
         store,

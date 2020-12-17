@@ -39,6 +39,7 @@
                             :state="iconArrowState" />
                     </slot>
                 </template>
+                <slot />
             </Button>
         </template>
         <template #option="{ option }">

@@ -3,15 +3,37 @@
  * See LICENSE for license details.
  */
 <template>
-    <UserRolesPage :title="name" />
+    <Page>
+        <TitleBar
+            :title="name"
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigateBackFab :previous-route="previousRoute" />
+            </template>
+            <template #mainAction>
+                <RemoveRoleButton />
+            </template>
+        </TitleBar>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
+    </Page>
 </template>
 
 <script>
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
-import UserRolesPage from '@Users/components/Pages/UserRolesPage';
+import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import Page from '@UI/components/Layout/Page';
+import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@UI/components/TitleBar/TitleBar';
+import RemoveRoleButton from '@Users/components/Buttons/RemoveRoleButton';
+import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
     mapState,
@@ -20,10 +42,15 @@ import {
 export default {
     name: 'EditUserRoles',
     components: {
-        UserRolesPage,
+        Page,
+        TitleBar,
+        HorizontalRoutingTabBar,
+        RemoveRoleButton,
     },
     mixins: [
-        beforeLeavePageMixin,
+        asyncTabsMixin,
+        beforeRouteEnterMixin,
+        beforeRouteLeaveMixin,
     ],
     validate({
         params,
@@ -49,6 +76,9 @@ export default {
         ...mapState('role', [
             'name',
         ]),
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.USER_ROLE.namespace);
+        },
     },
     beforeDestroy() {
         this.__clearStorage();
@@ -61,6 +91,11 @@ export default {
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
+    },
+    head() {
+        return {
+            title: `${this.name} - Roles - Ergonode`,
+        };
     },
 };
 </script>
