@@ -56,9 +56,6 @@ import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import ProductWorkflowActionButton from '@Products/components/Buttons/ProductWorkflowActionButton';
