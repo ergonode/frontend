@@ -78,11 +78,12 @@ export default {
         params,
     }) {
         const {
-            defaultLanguageCode,
-        } = store.state.core;
-        const {
             id,
         } = params;
+
+        const {
+            defaultLanguageCode: languageCode,
+        } = store.state.core;
 
         await store.dispatch('dictionaries/getInitialDictionaries', {
             keys: [
@@ -90,27 +91,25 @@ export default {
             ],
         });
 
-        await Promise.all([
-            store.dispatch('product/getProductDraft', {
-                languageCode: defaultLanguageCode,
-                id,
-                onError: () => {
-                    app.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: 'Product draft hasn’t been fetched properly',
-                    });
-                },
-            }),
-            store.dispatch('product/getProduct', {
-                id,
-                onError: () => {
-                    app.$addAlert({
-                        type: ALERT_TYPE.ERROR,
-                        message: 'Product hasn’t been fetched properly',
-                    });
-                },
-            }),
-        ]);
+        await store.dispatch('product/getProduct', {
+            id,
+            onError: () => {
+                app.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Product hasn’t been fetched properly',
+                });
+            },
+        });
+        await store.dispatch('product/getInheritedProduct', {
+            id,
+            languageCode,
+            onError: () => {
+                app.$addAlert({
+                    type: ALERT_TYPE.ERROR,
+                    message: 'Inherited product hasn’t been fetched properly',
+                });
+            },
+        });
     },
     data() {
         return {

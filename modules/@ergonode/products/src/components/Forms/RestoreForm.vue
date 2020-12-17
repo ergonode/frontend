@@ -6,19 +6,23 @@
     <Form
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
+        :errors="errors"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
         @proceed="onProceed"
         @submit="onSubmit">
         <template #body>
             <FormSection :title="modalTitle">
-                <RadioButton
-                    v-for="(element, index) in elementsToRestore"
-                    :key="index"
-                    :value="attributeToRestore"
-                    :label="element.label"
-                    :disabled="!isAllowedToRestore(element.properties.scope)"
-                    @input="setElementToRestore" />
+                <CheckBox
+                    v-for="attribute in attributes"
+                    :key="attribute.properties.attribute_code"
+                    :value="elementsToRestore[attribute.properties.attribute_code]"
+                    :label="attribute.label"
+                    :disabled="!isAllowedToRestore(attribute.properties.scope)"
+                    @input="(value) => setElementToRestore({
+                        key: attribute.properties.attribute_code,
+                        value,
+                    })" />
             </FormSection>
         </template>
     </Form>
@@ -30,11 +34,13 @@ import {
     SYSTEM_TYPES,
 } from '@Attributes/defaults/attributes';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import CheckBox from '@UI/components/CheckBox/CheckBox';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
-import RadioButton from '@UI/components/RadioButton/RadioButton';
 import {
     mapGetters,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -42,47 +48,57 @@ export default {
     components: {
         Form,
         FormSection,
-        RadioButton,
+        CheckBox,
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
     props: {
         elements: {
             type: Array,
             default: () => [],
         },
-        language: {
+        elementsToRestore: {
             type: Object,
+            default: () => ({}),
+        },
+        languageCode: {
+            type: String,
             required: true,
         },
     },
-    data() {
-        return {
-            attributeToRestore: '',
-        };
-    },
     computed: {
-        ...mapGetters('core', [
-            'getLanguage',
+        ...mapState('core', [
+            'languagesTree',
+            'languages',
         ]),
-        elementsToRestore() {
+        language() {
+            return this.languagesTree.find(({
+                code,
+            }) => code === this.languageCode);
+        },
+        parentLanguage() {
+            return this.languages.find(({
+                id,
+            }) => id === this.language.parent);
+        },
+        attributes() {
             return this.elements.filter(element => element.type !== SYSTEM_TYPES.SECTION);
         },
         modalTitle() {
-            const {
-                name, parent,
-            } = this.language;
-            const parentName = this.getLanguage(parent).name;
-
-            return `Select attributes which values you want to restore from ${name} to parent translation (${parentName})`;
+            return `Select attributes which values you want to restore from ${this.language.name} to parent translation (${this.parentLanguage.name})`;
         },
     },
     methods: {
-        setElementToRestore(value) {
-            this.attributeToRestore = value;
-
-            this.$emit('update', value);
+        setElementToRestore({
+            key,
+            value,
+        }) {
+            this.$emit('update', {
+                ...this.elementsToRestore,
+                [key]: value,
+            });
         },
         isAllowedToRestore(scope) {
             return scope !== SCOPE.GLOBAL;

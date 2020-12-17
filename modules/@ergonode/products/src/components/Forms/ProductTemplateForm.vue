@@ -14,7 +14,7 @@
                 :is="formComponents[element.type]"
                 :key="index"
                 :disabled="!isAllowedToUpdate(element.properties.scope)"
-                :language-code="language.code"
+                :language-code="languageCode"
                 :errors="errors"
                 v-bind="elements[index]"
                 @input="onValueChange" />
@@ -46,8 +46,8 @@ export default {
         formFeedbackMixin,
     ],
     props: {
-        language: {
-            type: Object,
+        languageCode: {
+            type: String,
             required: true,
         },
         elements: {
@@ -105,15 +105,11 @@ export default {
     },
     methods: {
         isAllowedToUpdate(scope) {
-            const {
-                code,
-            } = this.language;
-
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ])
-                && this.languagePrivileges[code].edit
-                && (this.rootLanguage.code === code || scope === SCOPE.LOCAL);
+                && this.languagePrivileges[this.languageCode].edit
+                && (this.rootLanguage.code === this.languageCode || scope === SCOPE.LOCAL);
         },
         onValueChange(payload) {
             this.onScopeValueChange({

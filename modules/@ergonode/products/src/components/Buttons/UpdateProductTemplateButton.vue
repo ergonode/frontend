@@ -5,7 +5,7 @@
 <template>
     <Button
         :title="$t('product.buttons.submit')"
-        :disabled="!isAllowedToUpdate"
+        :floating="{ bottom: '24px', right: '24px' }"
         @click.native="onSubmit">
         <template
             v-if="isSubmitting"
@@ -24,10 +24,11 @@ import Button from '@UI/components/Button/Button';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
-    name: 'UpdateProductsButton',
+    name: 'UpdateProductTemplateButton',
     components: {
         Button,
         IconSpinner,
@@ -37,13 +38,9 @@ export default {
             type: String,
             default: '',
         },
-        drafts: {
+        attributes: {
             type: Object,
             default: () => ({}),
-        },
-        columns: {
-            type: Array,
-            default: () => [],
         },
     },
     data() {
@@ -52,6 +49,9 @@ export default {
         };
     },
     computed: {
+        ...mapState('product', [
+            'drafts',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
@@ -61,23 +61,20 @@ export default {
     methods: {
         ...mapActions('feedback', [
             'onError',
-            'removeScopeErrors',
             'markChangeValuesAsSaved',
         ]),
         ...mapActions('product', [
-            'updateProductsValues',
+            'updateProductValues',
         ]),
-        async onSubmit() {
+        onSubmit() {
             if (this.isSubmitting) {
                 return;
             }
-
             this.isSubmitting = true;
 
-            this.updateProductsValues({
+            this.updateProductValues({
                 scope: this.scope,
-                drafts: this.drafts,
-                columns: this.columns,
+                attributes: this.attributes,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });
@@ -85,7 +82,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Products have been updated',
+                message: 'Product has been updated',
             });
 
             this.isSubmitting = false;

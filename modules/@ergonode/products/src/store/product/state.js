@@ -3,8 +3,7 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    draft: {},
-    data: {},
+    drafts: {},
     id: null,
     sku: '',
     status: null,

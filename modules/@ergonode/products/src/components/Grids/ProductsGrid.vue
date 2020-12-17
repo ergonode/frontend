@@ -85,6 +85,7 @@
                     <UpdateProductsButton
                         :scope="scope"
                         :drafts="drafts"
+                        :columns="columns"
                         @updated="onProductsUpdated" />
                 </template>
             </Grid>
@@ -109,7 +110,6 @@ import {
 } from '@Core/models/cookies';
 import {
     getDefaultDataFromQueryParams,
-    getDraftsBasedOnCellValues,
     getParams,
     getParsedFilters,
 } from '@Core/models/mappers/gridDataMapper';
@@ -296,7 +296,7 @@ export default {
             'onScopeValueChange',
         ]),
         ...mapActions('product', [
-            'updateProductDraft',
+            'validateProduct',
         ]),
         ...mapActions('list', [
             'removeDisabledElement',
@@ -516,21 +516,16 @@ export default {
                 ...props,
             };
         },
-        onProductsUpdated(rows) {
-            rows.forEach((row) => {
-                const [
-                    productId,
-                    columnId,
-                ] = row.split('/');
+        async onProductsUpdated() {
+            const rows = [];
 
-                const rowIndex = this.rows.findIndex(({
-                    id,
-                }) => id.value === productId);
-
-                if (rowIndex !== -1 && typeof this.rows[rowIndex][columnId] !== 'undefined') {
-                    this.rows[rowIndex][columnId].value = this.drafts[row];
+            Object.keys(this.drafts).forEach((row) => {
+                if (typeof this.errors[row] === 'undefined') {
+                    rows.push(row);
                 }
             });
+
+            await this.onFetchData();
 
             this.removeDrafts(rows);
         },
@@ -657,9 +652,17 @@ export default {
         async onCellValueChange(cellValues) {
             const cachedElementIds = {};
 
+            const drafts = cellValues.reduce((prev, {
+                rowId, columnId, value,
+            }) => {
+                const tmp = prev;
+                tmp[`${rowId}/${columnId}`] = value;
+                return tmp;
+            }, {});
+
             this.setDrafts({
                 ...this.drafts,
-                ...getDraftsBasedOnCellValues(cellValues),
+                ...drafts,
             });
 
             const requests = cellValues.map(async ({
@@ -675,7 +678,7 @@ export default {
                     cachedElementIds[columnId] = element_id;
                 }
 
-                await this.updateProductDraft({
+                await this.validateProduct({
                     fieldKey: `${rowId}/${columnId}`,
                     languageCode: columnId.split(':')[1],
                     productId: rowId,

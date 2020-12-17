@@ -18,52 +18,42 @@
                     <TitleBarSubActions>
                         <ProductWorkflowActionButton
                             v-if="status"
-                            :language="language" />
+                            :language-code="languageCode" />
                     </TitleBarSubActions>
                     <RestoreProductButton
-                        :language="language"
+                        :language-code="languageCode"
                         :elements="elements"
-                        @resored="onRestoredDraftValues" />
+                        @restored="onRestoredProductValues" />
                 </div>
             </template>
             <template #centeredContent>
                 <Preloader v-if="isFetchingData" />
                 <ProductTemplateForm
                     v-else
-                    :language="language"
+                    :language-code="languageCode"
                     :elements="elements"
                     :scope="scope"
                     :change-values="changeValues"
                     :errors="errors"
                     @input="onValueChange" />
             </template>
-            <Button
-                :title="$t('core.buttons.submit')"
-                :floating="{ bottom: '24px', right: '24px' }"
-                @click.native="onSubmit">
-                <template
-                    v-if="isSubmitting"
-                    #prepend="{ color }">
-                    <IconSpinner :fill-color="color" />
-                </template>
-            </Button>
+            <UpdateProductTemplateButton
+                :scope="scope"
+                :attributes="attributes"
+                @updated="onProductTemplateUpdated" />
         </CenterViewTemplate>
     </IntersectionObserver>
 </template>
 
 <script>
 import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
-import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import ProductWorkflowActionButton from '@Products/components/Buttons/ProductWorkflowActionButton';
 import RestoreProductButton from '@Products/components/Buttons/RestoreProductButton';
+import UpdateProductTemplateButton from '@Products/components/Buttons/UpdateProductTemplateButton';
 import ProductTemplateForm from '@Products/components/Forms/ProductTemplateForm';
 import ProductCompleteness from '@Products/components/Progress/ProductCompleteness';
-import Button from '@UI/components/Button/Button';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import Preloader from '@UI/components/Preloader/Preloader';
@@ -76,12 +66,11 @@ import {
 export default {
     name: 'ProductTemplateTab',
     components: {
+        UpdateProductTemplateButton,
         LanguageTreeSelect,
         RestoreProductButton,
         IntersectionObserver,
         Preloader,
-        IconSpinner,
-        Button,
         ProductTemplateForm,
         CenterViewTemplate,
         TitleBarSubActions,
@@ -94,7 +83,7 @@ export default {
     ],
     data() {
         return {
-            elements: [],
+            templates: {},
             completeness: {
                 missing: [],
                 filled: 0,
@@ -102,9 +91,7 @@ export default {
             },
             prevTemplateId: null,
             isFetchingData: false,
-            language: {},
             languageCode: '',
-            isSubmitting: false,
         };
     },
     computed: {
@@ -118,21 +105,44 @@ export default {
             'id',
             'template',
             'status',
+            'drafts',
         ]),
+        elements() {
+            return this.templates[this.languageCode] || [];
+        },
+        attributes() {
+            return this.elements.reduce((prev, curr) => {
+                const tmp = prev;
+
+                tmp[curr.properties.attribute_code] = curr.properties.attribute_id;
+
+                return tmp;
+            }, {});
+        },
     },
     created() {
         this.languageCode = this.defaultLanguageCode;
     },
     methods: {
         ...mapActions('product', [
-            'updateProductDraft',
+            'validateProduct',
             'setDraftValue',
+            'getInheritedProduct',
             'getProductWorkflow',
-            'getProductDraft',
             'getProductTemplate',
             'getProductCompleteness',
-            'applyProductDraft',
         ]),
+        onProductTemplateUpdated() {
+            this.getProductCompleteness({
+                languageCode: this.languageCode,
+                id: this.id,
+                onSuccess: (({
+                    completeness,
+                }) => {
+                    this.completeness = completeness;
+                }),
+            });
+        },
         async onIntersect(isIntersecting) {
             if (isIntersecting) {
                 if (this.template !== this.prevTemplateId) {
@@ -150,46 +160,8 @@ export default {
                 this.prevTemplateId = this.template;
             }
         },
-        onSubmit() {
-            if (this.isSubmitting) {
-                return;
-            }
-            this.isSubmitting = true;
-
-            this.removeScopeErrors(this.scope);
-            this.applyProductDraft({
-                id: this.id,
-                scope: this.scope,
-                onSuccess: this.onUpdateSuccess,
-                onError: this.onUpdateError,
-            });
-        },
-        onUpdateSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Product has been updated',
-            });
-
-            this.isSubmitting = false;
-
-            this.markChangeValuesAsSaved(this.scope);
-        },
-        onUpdateError(errors) {
-            this.onError(errors);
-
-            this.isSubmitting = false;
-        },
         async getProductTemplateData(languageCode) {
-            await Promise.all([
-                this.getProductTemplate({
-                    languageCode,
-                    id: this.id,
-                    onSuccess: (({
-                        elements,
-                    }) => {
-                        this.elements = elements;
-                    }),
-                }),
+            const requests = [
                 this.getProductCompleteness({
                     languageCode,
                     id: this.id,
@@ -198,25 +170,47 @@ export default {
                     }) => {
                         this.completeness = completeness;
                     }),
-                }),
-                this.getProductDraft({
-                    languageCode,
-                    id: this.id,
                 }),
                 this.getProductWorkflow({
                     languageCode,
                     id: this.id,
                 }),
-            ]);
+            ];
+
+            if (typeof this.templates[languageCode] === 'undefined') {
+                requests.push(
+                    this.getProductTemplate({
+                        languageCode,
+                        id: this.id,
+                        onSuccess: (({
+                            elements,
+                        }) => {
+                            this.templates = {
+                                ...this.templates,
+                                [languageCode]: elements,
+                            };
+                        }),
+                    }),
+                );
+            }
+
+            if (typeof this.drafts[languageCode] === 'undefined') {
+                requests.push(
+                    this.getInheritedProduct({
+                        id: this.id,
+                        languageCode,
+                    }),
+                );
+            }
+
+            await Promise.all(requests);
         },
         async onSelectLanguage(value) {
-            const languageCode = value.code;
+            await this.getProductTemplateData(value);
 
-            await this.getProductTemplateData(languageCode);
-
-            this.language = value;
+            this.languageCode = value;
         },
-        async onRestoredDraftValues() {
+        async onRestoredProductValues() {
             await Promise.all([
                 this.getProductCompleteness({
                     languageCode: this.languageCode,
@@ -227,9 +221,9 @@ export default {
                         this.completeness = completeness;
                     }),
                 }),
-                this.getProductDraft({
-                    languageCode: this.languageCode,
+                this.getInheritedProduct({
                     id: this.id,
+                    languageCode: this.languageCode,
                 }),
             ]);
         },
@@ -240,19 +234,9 @@ export default {
                 value: payload.value,
             });
 
-            await this.updateProductDraft({
+            await this.validateProduct({
                 ...payload,
                 scope: this.scope,
-            });
-
-            await this.getProductCompleteness({
-                languageCode: this.languageCode,
-                id: this.id,
-                onSuccess: (({
-                    completeness,
-                }) => {
-                    this.completeness = completeness;
-                }),
             });
         },
     },
