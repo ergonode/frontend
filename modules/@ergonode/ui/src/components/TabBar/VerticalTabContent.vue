@@ -3,11 +3,15 @@
  * See LICENSE for license details.
  */
 <template>
-    <KeepAlive>
-        <Component
-            :is="item.component"
-            v-bind="item.props" />
-    </KeepAlive>
+    <div class="vertical-tab-bar-content">
+        <div class="vertical-tab-bar-content__container">
+            <KeepAlive>
+                <Component
+                    :is="item.component"
+                    v-bind="item.props" />
+            </KeepAlive>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -24,3 +28,21 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .vertical-tab-bar-content {
+        position: relative;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        width: 275px;
+        box-sizing: border-box;
+
+        &__container {
+            position: relative;
+            flex: 1 1 auto;
+            width: 100%;
+            height: 0;
+        }
+    }
+</style>

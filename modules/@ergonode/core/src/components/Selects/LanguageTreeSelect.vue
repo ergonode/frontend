@@ -5,6 +5,7 @@
 <template>
     <TreeSelect
         :value="language"
+        :label="label"
         :size="smallSize"
         :options="languageOptions"
         @input="onSelect" />
@@ -26,6 +27,10 @@ export default {
     },
     props: {
         value: {
+            type: String,
+            default: '',
+        },
+        label: {
             type: String,
             default: '',
         },

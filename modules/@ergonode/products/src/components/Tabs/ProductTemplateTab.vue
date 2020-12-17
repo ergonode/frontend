@@ -7,13 +7,11 @@
         <CenterViewTemplate :fixed="true">
             <template #header>
                 <div class="view-template-header__section">
-                    <TreeSelect
+                    <LanguageTreeSelect
                         :style="{ flex: '0 0 192px' }"
-                        :value="language"
-                        :size="smallSize"
                         label="Edit language"
-                        :options="languageOptions"
-                        @input="onLanguageChange" />
+                        :value="languageCode"
+                        @input="onSelectLanguage" />
                 </div>
                 <div class="view-template-header__section">
                     <ProductCompleteness :completeness="completeness" />
@@ -54,6 +52,7 @@
 </template>
 
 <script>
+import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -71,7 +70,6 @@ import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import Preloader from '@UI/components/Preloader/Preloader';
-import TreeSelect from '@UI/components/Select/Tree/TreeSelect';
 import TitleBarSubActions from '@UI/components/TitleBar/TitleBarSubActions';
 import {
     mapActions,
@@ -81,6 +79,7 @@ import {
 export default {
     name: 'ProductTemplateTab',
     components: {
+        LanguageTreeSelect,
         RestoreProductButton,
         IntersectionObserver,
         Preloader,
@@ -88,7 +87,6 @@ export default {
         Button,
         ProductTemplateForm,
         CenterViewTemplate,
-        TreeSelect,
         TitleBarSubActions,
         ProductCompleteness,
         ProductWorkflowActionButton,
@@ -108,6 +106,7 @@ export default {
             prevTemplateId: null,
             isFetchingData: false,
             language: {},
+            languageCode: '',
             isSubmitting: false,
         };
     },
@@ -117,30 +116,15 @@ export default {
         }),
         ...mapState('core', [
             'defaultLanguageCode',
-            'languagesTree',
         ]),
         ...mapState('product', [
             'id',
             'template',
             'status',
         ]),
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        languageOptions() {
-            return this.languagesTree.map(language => ({
-                ...language,
-                key: language.code,
-                value: language.name,
-                disabled: this.languagePrivileges[language.code]
-                    ? !this.languagePrivileges[language.code].read
-                    : true,
-            }));
-        },
     },
     created() {
-        this.language = this.languageOptions
-            .find(languageCode => languageCode.code === this.defaultLanguageCode);
+        this.languageCode = this.defaultLanguageCode;
     },
     methods: {
         ...mapActions('product', [
@@ -159,7 +143,7 @@ export default {
 
                     const languageCode = this.prevTemplateId === null
                         ? this.defaultLanguageCode
-                        : this.language.code;
+                        : this.languageCode;
 
                     await this.getProductTemplateData(languageCode);
 
@@ -228,7 +212,7 @@ export default {
                 }),
             ]);
         },
-        async onLanguageChange(value) {
+        async onSelectLanguage(value) {
             const languageCode = value.code;
 
             await this.getProductTemplateData(languageCode);
@@ -236,13 +220,9 @@ export default {
             this.language = value;
         },
         async onRestoredDraftValues() {
-            const {
-                code: languageCode,
-            } = this.language;
-
             await Promise.all([
                 this.getProductCompleteness({
-                    languageCode,
+                    languageCode: this.languageCode,
                     id: this.id,
                     onSuccess: (({
                         completeness,
@@ -251,7 +231,7 @@ export default {
                     }),
                 }),
                 this.getProductDraft({
-                    languageCode,
+                    languageCode: this.languageCode,
                     id: this.id,
                 }),
             ]);
@@ -269,7 +249,7 @@ export default {
             });
 
             await this.getProductCompleteness({
-                languageCode: this.language.code,
+                languageCode: this.languageCode,
                 id: this.id,
                 onSuccess: (({
                     completeness,

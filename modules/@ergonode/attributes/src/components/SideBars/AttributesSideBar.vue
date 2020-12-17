@@ -3,50 +3,47 @@
  * See LICENSE for license details.
  */
 <template>
-    <VerticalTabBarList>
-        <SideBar
-            :title="$t('attribute.list.searchHeader')"
-            :items="groupedAttributesByLanguage"
-            :expanded="expandedGroup"
-            :searchable="true">
-            <template #header>
-                <ListSearchSelectHeader
-                    v-if="isSelectLanguage"
-                    :title="$t('attribute.list.searchHeader')"
-                    @search="onSearch">
-                    <template #select>
-                        <LanguageTreeSelect
-                            :value="languageCode"
-                            @input="onSelectLanguage" />
-                    </template>
-                </ListSearchSelectHeader>
-            </template>
-            <template #body>
-                <Preloader v-if="isPrefetchingData" />
-            </template>
-            <template #item="{ item, onExpand }">
-                <AttributeSideBarGroupElement
-                    v-if="item.rootId === null"
-                    :group="item"
-                    :is-prefetching-data="isPrefetchingGroupData[item.id]"
-                    @click.native="onExpandGroup({ item, onExpand })" />
-                <AttributeSideBarElement
-                    v-else
-                    :item="item"
-                    :language-code="languageCode"
-                    :is-draggable="!disabled" />
-            </template>
-        </SideBar>
-        <CreateAttributeFab
-            :floating="{ bottom: '16px', right: '16px' }"
-            @added="onCreatedAttribute" />
-    </VerticalTabBarList>
+    <SideBar
+        :title="$t('attribute.sideBar.searchHeader')"
+        :items="groupedAttributesByLanguage"
+        :expanded="expandedGroup"
+        :searchable="true">
+        <template #header>
+            <ListSearchSelectHeader
+                v-if="isSelectLanguage"
+                :title="$t('attribute.sideBar.searchHeader')"
+                @search="onSearch">
+                <template #select>
+                    <LanguageTreeSelect
+                        :value="languageCode"
+                        @input="onSelectLanguage" />
+                </template>
+            </ListSearchSelectHeader>
+        </template>
+        <template #body>
+            <Preloader v-if="isPrefetchingData" />
+        </template>
+        <template #item="{ item, onExpand }">
+            <AttributeSideBarGroupElement
+                v-if="item.rootId === null"
+                :group="item"
+                :is-prefetching-data="isPrefetchingGroupData[item.id]"
+                @click.native="onExpandGroup({ item, onExpand })" />
+            <AttributeSideBarElement
+                v-else
+                :item="item"
+                :language-code="languageCode"
+                :is-draggable="!disabled" />
+        </template>
+    </SideBar>
 </template>
 
 <script>
-import CreateAttributeFab from '@Attributes/components/Buttons/CreateAttributeFab';
 import AttributeSideBarElement from '@Attributes/components/SideBars/AttributeSideBarElement';
 import AttributeSideBarGroupElement from '@Attributes/components/SideBars/AttributeSideBarGroupElement';
+import {
+    ATTRIBUTE_CREATED_EVENT_NAME,
+} from '@Attributes/defaults/attributes';
 import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
 import {
     UNASSIGNED_GROUP_ID,
@@ -61,18 +58,15 @@ import {
 import ListSearchSelectHeader from '@UI/components/List/ListSearchSelectHeader';
 import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
-import VerticalTabBarList from '@UI/components/TabBar/VerticalTabBarList';
 import {
     mapActions,
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'AttributesListTab',
+    name: 'AttributesSideBar',
     components: {
         AttributeSideBarGroupElement,
-        CreateAttributeFab,
-        VerticalTabBarList,
         SideBar,
         ListSearchSelectHeader,
         LanguageTreeSelect,
@@ -108,7 +102,7 @@ export default {
             groupedAttributes: {},
             expandedGroup: {},
             languageCode: '',
-            searchPhrase: '',
+            searchValue: '',
         };
     },
     computed: {
@@ -124,13 +118,41 @@ export default {
     created() {
         this.languageCode = this.defaultLanguageCode;
     },
+    mounted() {
+        document.documentElement.addEventListener(
+            ATTRIBUTE_CREATED_EVENT_NAME,
+            this.onAttributeCreated,
+        );
+    },
     beforeDestroy() {
         this.setDisabledElements({});
+
+        document.documentElement.removeEventListener(
+            ATTRIBUTE_CREATED_EVENT_NAME,
+            this.onAttributeCreated,
+        );
     },
     methods: {
         ...mapActions('list', [
             'setDisabledElements',
         ]),
+        async onAttributeCreated() {
+            await this.fetchAttributesForLanguage({
+                languageCode: this.languageCode,
+            });
+
+            const [
+                groupId,
+            ] = Object.keys(this.expandedGroup);
+
+            if (groupId && this.expandedGroup[groupId]) {
+                await this.getItemsForGroup(groupId);
+            }
+
+            this.groupedAttributes = {
+                ...this.groupedAttributes,
+            };
+        },
         async onExpandGroup({
             item,
             onExpand,
@@ -260,13 +282,8 @@ export default {
                 });
             }
         },
-        onCreatedAttribute() {
-            this.fetchAttributesForLanguage({
-                languageCode: this.languageCode,
-            });
-        },
         async onSearch(value) {
-            this.searchPhrase = value;
+            this.searchValue = value;
 
             const params = {
                 limit: 99999,
@@ -276,8 +293,8 @@ export default {
                 order: 'ASC',
             };
 
-            if (this.searchPhrase !== '') {
-                params.filter = `code=${this.searchPhrase}`;
+            if (this.searchValue !== '') {
+                params.filter = `code=${this.searchValue}`;
             }
 
             await getItems({

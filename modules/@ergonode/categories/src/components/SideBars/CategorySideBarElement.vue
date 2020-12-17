@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import ListDraggableElement from '@UI/components/List/ListDraggableElement';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementHint from '@UI/components/List/ListElementHint';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
@@ -31,9 +32,9 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'CategoriesListElement',
+    name: 'CategorySideBarElement',
     components: {
-        ListDraggableElement: () => import('@UI/components/List/ListDraggableElement'),
+        ListDraggableElement,
         ListElementDescription,
         ListElementTitle,
         ListElementHint,

@@ -10,7 +10,7 @@
         <template #icon="{ color }">
             <IconAdd :fill-color="color" />
         </template>
-        <CreateAttributeModalForm
+        <CreateCategoryModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
             @created="onCreatedData" />
@@ -18,10 +18,10 @@
 </template>
 
 <script>
-import PRIVILEGES from '@Attributes/config/privileges';
 import {
-    ATTRIBUTE_CREATED_EVENT_NAME,
-} from '@Attributes/defaults/attributes';
+    CATEGORY_CREATED_EVENT_NAME,
+} from '@Categories/defaults/attributes';
+import PRIVILEGES from '@Trees/config/privileges';
 import Fab from '@UI/components/Fab/Fab';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
@@ -30,7 +30,7 @@ export default {
     components: {
         Fab,
         IconAdd,
-        CreateAttributeModalForm: () => import('@Attributes/components/Modals/CreateAttributeModalForm'),
+        CreateCategoryModalForm: () => import('@Categories/components/Modals/CreateCategoryModalForm'),
     },
     props: {
         /**
@@ -50,7 +50,7 @@ export default {
     computed: {
         isAllowedToCreate() {
             return this.$hasAccess([
-                PRIVILEGES.ATTRIBUTE.create,
+                PRIVILEGES.CATEGORY_TREE.create,
             ]);
         },
     },
@@ -64,7 +64,7 @@ export default {
         onCreatedData() {
             this.onCloseModal();
 
-            const event = new CustomEvent(ATTRIBUTE_CREATED_EVENT_NAME);
+            const event = new CustomEvent(CATEGORY_CREATED_EVENT_NAME);
 
             document.documentElement.dispatchEvent(event);
         },

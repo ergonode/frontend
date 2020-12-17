@@ -4,7 +4,7 @@
  */
 <template>
     <ListDraggableElement
-        :draggable="isAllowedToUpdate"
+        :draggable="isDraggable"
         :draggable-id="item.type"
         :label="item.label"
         @drag="onDrag">
@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import PRIVILEGES from '@Templates/config/privileges';
 import ListDraggableElement from '@UI/components/List/ListDraggableElement';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementHint from '@UI/components/List/ListElementHint';
@@ -30,7 +29,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'WidgetsListElement',
+    name: 'WidgetSideBarElement',
     components: {
         ListElementDescription,
         ListElementTitle,
@@ -43,15 +42,14 @@ export default {
             type: Object,
             required: true,
         },
+        isDraggable: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         widgetIconComponent() {
             return () => import('@UI/components/Icons/Editor/IconFontSize');
-        },
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.TEMPLATE_DESIGNER.update,
-            ]);
         },
     },
     methods: {

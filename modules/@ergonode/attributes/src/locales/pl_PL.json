@@ -26,7 +26,7 @@
               "optionLabel": "Kod opcji"
           }
       },
-      "list": {
+      "sideBar": {
         "searchHeader": "Atrybuty",
         "searchHeader2": "Atrybuty systemowe"
       },

@@ -4,43 +4,64 @@
  */
 <template>
     <ListDraggableElement
-        :draggable="!disabled"
-        :disabled="disabled"
         :draggable-id="item.id"
+        :draggable="isDraggable"
+        :disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
+        :hint="item.name ? `#${item.code}` : ''"
         :label="item.name"
         @drag="onDrag">
         <ListElementDescription>
             <ListElementTitle :title="item.name" />
+            <ListElementHint :title="item.code" />
         </ListElementDescription>
     </ListDraggableElement>
 </template>
 
 <script>
-import {
-    getUUID,
-} from '@Core/models/stringWrapper';
+import ListDraggableElement from '@UI/components/List/ListDraggableElement';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
+import ListElementHint from '@UI/components/List/ListElementHint';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
-    name: 'ConditionsListElement',
+    name: 'LanguageSideBarElement',
     components: {
+        ListDraggableElement,
         ListElementDescription,
         ListElementTitle,
-        ListDraggableElement: () => import('@UI/components/List/ListDraggableElement'),
+        ListElementHint,
     },
     props: {
+        /**
+         * Item data model
+         */
         item: {
             type: Object,
             required: true,
         },
-        disabled: {
-            type: Boolean,
-            deafulr: false,
+        /**
+         * Code of the language
+         */
+        languageCode: {
+            type: String,
+            required: true,
         },
+        /**
+         * Determines state of draggable attribute
+         */
+        isDraggable: {
+            type: Boolean,
+            default: false,
+        },
+    },
+    computed: {
+        ...mapState('list', [
+            'disabledElements',
+        ]),
     },
     methods: {
         ...mapActions('draggable', [
@@ -51,9 +72,9 @@ export default {
                 key: 'draggedElement',
                 value: isDragged
                     ? {
-                        id: `${this.item.id}--${getUUID()}`,
-                        name: this.item.name,
+                        id: this.item.id,
                         code: this.item.code,
+                        name: this.item.name,
                     }
                     : null,
             });
