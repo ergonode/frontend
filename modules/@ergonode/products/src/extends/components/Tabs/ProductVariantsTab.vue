@@ -33,48 +33,33 @@
                         :number="bindings.length"
                         :is-expanded="isBindingAttributesExpanded"
                         @click.native="onBindingAttributesExpand" />
-                    <Button
+                    <AddProductVariantsButton
                         title="ADD PRODUCTS"
-                        :size="smallSize"
-                        :disabled="!isAllowedToUpdate"
                         :theme="secondaryTheme"
-                        @click.native="onShowProductsModal">
+                        @added="onAddedProductVariants">
                         <template #prepend="{ color }">
                             <IconAdd :fill-color="color" />
                         </template>
-                    </Button>
-                    <AddProductsFromListModalGrid
-                        v-if="isAddProductsModalVisible"
-                        @close="onCloseProductsModal"
-                        @submitted="onSubmittedProductVariants" />
+                    </AddProductVariantsButton>
                 </template>
                 <template #appendHeader>
                     <BindingAttributes
                         v-if="isBindingAttributesExpanded"
                         :attributes="bindingAttributes"
                         @remove-binding="onRemoveBinding"
-                        @added="onAddedBinding" />
+                        @added="onAddedBindingAttributes" />
                 </template>
                 <template #actionPlaceholder>
-                    <Button
+                    <AddProductVariantsButton
                         title="CHOOSE VARIANTS"
-                        :size="smallSize"
-                        :disabled="!isAllowedToUpdate"
-                        @click.native="onShowProductsModal" />
+                        @added="onAddedProductVariants" />
                 </template>
             </Grid>
             <ListPlaceholder
                 v-else
                 v-bind="listPlaceholder">
                 <template #action>
-                    <Button
-                        title="ADD BINDING ATTRIBUTES"
-                        :size="smallSize"
-                        @click.native="onShowBindingAttributesModal" />
-                    <AddBindingAttributesModalForm
-                        v-if="isAddBindingModalVisible"
-                        @close="onCloseBindingAttributesModal"
-                        @created="onCreatedBindingAttributesData" />
+                    <AddBindingAttributesButton @added="onAddedBindingAttributes" />
                 </template>
             </ListPlaceholder>
         </template>
@@ -97,7 +82,6 @@ import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
 import {
-    SIZE,
     THEME,
 } from '@Core/defaults/theme';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
@@ -108,10 +92,11 @@ import {
 } from '@Core/services/grid/getGridData.service';
 import PRIVILEGES from '@Products/config/privileges';
 import BindingAttributes from '@Products/extends/components/BindingAttributes/BindingAttributes';
+import AddBindingAttributesButton from '@Products/extends/components/Buttons/AddBindingAttributesButton';
+import AddProductVariantsButton from '@Products/extends/components/Buttons/AddProductVariantsButton';
 import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Button from '@UI/components/Button/Button';
 import Grid from '@UI/components/Grid/Grid';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
@@ -127,12 +112,11 @@ export default {
         ListPlaceholder,
         CenterViewTemplate,
         Grid,
-        Button,
         ExpandNumericButton,
         BindingAttributes,
         IconAdd,
-        AddProductsFromListModalGrid: () => import('@Products/extends/components/Modals/AddProductsFromListModalGrid'),
-        AddBindingAttributesModalForm: () => import('@Products/extends/components/Modals/AddBindingAttributesModalForm'),
+        AddProductVariantsButton,
+        AddBindingAttributesButton,
     },
     mixins: [
         gridDraftMixin,
@@ -141,8 +125,6 @@ export default {
     ],
     data() {
         return {
-            isAddBindingModalVisible: false,
-            isAddProductsModalVisible: false,
             columns: [],
             rows: [],
             filtered: 0,
@@ -181,9 +163,6 @@ export default {
         },
         horizontalOrientation() {
             return LAYOUT_ORIENTATION.HORIZONTAL;
-        },
-        smallSize() {
-            return SIZE.SMALL;
         },
         secondaryTheme() {
             return THEME.SECONDARY;
@@ -256,35 +235,26 @@ export default {
             this.onFetchData();
         },
         onColumnSortChange(sortedColumn) {
-            this.localParams.sortedColumn = sortedColumn;
+            if (Object.keys(sortedColumn).length) {
+                const {
+                    index: colSortID,
+                    orderState,
+                } = sortedColumn;
+
+                this.localParams.field = colSortID;
+                this.localParams.order = orderState;
+            }
 
             this.onFetchData();
         },
-        onShowBindingAttributesModal() {
-            this.isAddBindingModalVisible = true;
-        },
-        onCloseBindingAttributesModal() {
-            this.isAddBindingModalVisible = false;
-        },
-        onShowProductsModal() {
-            this.isAddProductsModalVisible = true;
-        },
-        async onCloseProductsModal() {
-            this.isAddProductsModalVisible = false;
-        },
-        async onSubmittedProductVariants() {
+        async onAddedProductVariants() {
             this.isPrefetchingData = true;
 
             await this.onFetchData();
 
             this.isPrefetchingData = false;
         },
-        async onCreatedBindingAttributesData() {
-            this.onCloseBindingAttributesModal();
-
-            await this.onAddedBinding();
-        },
-        async onAddedBinding() {
+        async onAddedBindingAttributes() {
             this.isPrefetchingData = true;
 
             await Promise.all([

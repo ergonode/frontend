@@ -39,12 +39,10 @@
                     :errors="errors"
                     @input="onValueChange" />
             </template>
-            <template #default>
-                <UpdateProductTemplateButton
-                    :scope="scope"
-                    :attributes="attributes"
-                    @updated="onProductTemplateUpdated" />
-            </template>
+            <UpdateProductTemplateButton
+                :scope="scope"
+                :attributes="attributes"
+                @updated="onProductTemplateUpdated" />
         </CenterViewTemplate>
     </IntersectionObserver>
 </template>

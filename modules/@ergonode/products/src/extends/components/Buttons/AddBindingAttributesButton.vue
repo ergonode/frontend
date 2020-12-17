@@ -4,35 +4,29 @@
  */
 <template>
     <Button
-        data-cy="new-attribute-group"
-        :title="$t('attributeGroup.page.addButton')"
+        title="ADD BINDING ATTRIBUTES"
         :size="smallSize"
-        :disabled="!isAllowedToCreate"
+        :disabled="!isAllowedToUpdate"
         @click.native="onShowModal">
-        <template #prepend="{ color }">
-            <IconAdd :fill-color="color" />
-        </template>
-        <CreateAttributeGroupModalForm
+        <AddBindingAttributesModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @created="onCreatedData" />
+            @submitted="onAddedData" />
     </Button>
 </template>
 
 <script>
-import PRIVILEGES from '@Attributes/config/privileges';
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import PRIVILEGES from '@Products/config/privileges';
 import Button from '@UI/components/Button/Button';
-import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
 export default {
-    name: 'CreateAttributeGroupButton',
+    name: 'AddBindingAttributesButton',
     components: {
         Button,
-        IconAdd,
-        CreateAttributeGroupModalForm: () => import('@Attributes/components/Modals/CreateAttributeGroupModalForm'),
+        AddBindingAttributesModalForm: () => import('@Products/extends/components/Modals/AddBindingAttributesModalForm'),
     },
     data() {
         return {
@@ -40,13 +34,13 @@ export default {
         };
     },
     computed: {
-        isAllowedToCreate() {
-            return this.$hasAccess([
-                PRIVILEGES.ATTRIBUTE_GROUP.create,
-            ]);
-        },
         smallSize() {
             return SIZE.SMALL;
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT.update,
+            ]);
         },
     },
     methods: {
@@ -56,9 +50,9 @@ export default {
         onCloseModal() {
             this.isModalVisible = false;
         },
-        onCreatedData() {
+        onAddedData() {
             this.onCloseModal();
-            this.$emit('created');
+            this.$emit('added');
         },
     },
 };

@@ -224,7 +224,7 @@ export default function ({
                 const params = {
                     offset: this.localParams.offset,
                     limit: this.localParams.limit,
-                    extended: true,
+                    extended: this.localParams.extended,
                     filter: this.localParams.filter,
                     columns: this.$cookies.get(`GRID_CONFIG:${this.$route.name}`) || defaultColumns,
                 };
