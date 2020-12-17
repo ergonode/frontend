@@ -6,19 +6,23 @@
     <Form
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
+        :errors="errors"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
         @proceed="onProceed"
         @submit="onSubmit">
         <template #body>
             <FormSection :title="modalTitle">
-                <RadioButton
-                    v-for="(element, index) in elementsToRestore"
-                    :key="index"
-                    :value="attributeToRestore"
-                    :label="element.label"
-                    :disabled="!isAllowedToRestore(element.properties.scope)"
-                    @input="setElementToRestore" />
+                <CheckBox
+                    v-for="attribute in attributes"
+                    :key="attribute.properties.attribute_code"
+                    :value="elementsToRestore[attribute.properties.attribute_code]"
+                    :label="attribute.label"
+                    :disabled="!isAllowedToRestore(attribute.properties.scope)"
+                    @input="(value) => setElementToRestore({
+                        key: attribute.properties.attribute_code,
+                        value,
+                    })" />
             </FormSection>
         </template>
     </Form>
@@ -30,9 +34,10 @@ import {
     SYSTEM_TYPES,
 } from '@Attributes/defaults/attributes';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import CheckBox from '@UI/components/CheckBox/CheckBox';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
-import RadioButton from '@UI/components/RadioButton/RadioButton';
 import {
     mapGetters,
 } from 'vuex';
@@ -42,36 +47,37 @@ export default {
     components: {
         Form,
         FormSection,
-        RadioButton,
+        CheckBox,
     },
     mixins: [
         formActionsMixin,
+        formFeedbackMixin,
     ],
     props: {
         elements: {
             type: Array,
             default: () => [],
         },
+        elementsToRestore: {
+            type: Object,
+            default: () => ({}),
+        },
         language: {
             type: Object,
             required: true,
         },
     },
-    data() {
-        return {
-            attributeToRestore: '',
-        };
-    },
     computed: {
         ...mapGetters('core', [
             'getLanguage',
         ]),
-        elementsToRestore() {
+        attributes() {
             return this.elements.filter(element => element.type !== SYSTEM_TYPES.SECTION);
         },
         modalTitle() {
             const {
-                name, parent,
+                name,
+                parent,
             } = this.language;
             const parentName = this.getLanguage(parent).name;
 
@@ -79,10 +85,14 @@ export default {
         },
     },
     methods: {
-        setElementToRestore(value) {
-            this.attributeToRestore = value;
-
-            this.$emit('update', value);
+        setElementToRestore({
+            key,
+            value,
+        }) {
+            this.$emit('update', {
+                ...this.elementsToRestore,
+                [key]: value,
+            });
         },
         isAllowedToRestore(scope) {
             return scope !== SCOPE.GLOBAL;

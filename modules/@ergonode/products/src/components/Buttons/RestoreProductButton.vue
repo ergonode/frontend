@@ -6,13 +6,13 @@
     <Button
         :theme="secondaryTheme"
         :size="smallSize"
-        title="RESTORE"
+        :title="$t('product.buttons.restore')"
         :disabled="!isAllowedToRestore"
         @click.native="onShowModal">
         <template #prepend="{ color }">
             <IconRestore :fill-color="color" />
         </template>
-        <RestoreAttributeParentModalForm
+        <RestoreProductAttributesModalForm
             v-if="isModalVisible"
             :language="language"
             :elements="elements"
@@ -39,7 +39,7 @@ export default {
     components: {
         Button,
         IconRestore,
-        RestoreAttributeParentModalForm: () => import('@Products/components/Modals/RestoreAttributeParentModalForm'),
+        RestoreProductAttributesModalForm: () => import('@Products/components/Modals/RestoreProductAttributesModalForm'),
     },
     props: {
         language: {

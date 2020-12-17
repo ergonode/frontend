@@ -25,7 +25,7 @@
                     <RestoreProductButton
                         :language="language"
                         :elements="elements"
-                        @resored="onRestoredDraftValues" />
+                        @restored="onRestoredProductValues" />
                 </div>
             </template>
             <template #centeredContent>
@@ -39,24 +39,15 @@
                     :errors="errors"
                     @input="onValueChange" />
             </template>
-            <Button
-                :title="$t('core.buttons.submit')"
-                :floating="{ bottom: '24px', right: '24px' }"
-                @click.native="onSubmit">
-                <template
-                    v-if="isSubmitting"
-                    #prepend="{ color }">
-                    <IconSpinner :fill-color="color" />
-                </template>
-            </Button>
+            <UpdateProductTemplateButton
+                :scope="scope"
+                :attributes="attributes"
+                @updated="onProductTemplateUpdated" />
         </CenterViewTemplate>
     </IntersectionObserver>
 </template>
 
 <script>
-import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -64,10 +55,9 @@ import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import ProductWorkflowActionButton from '@Products/components/Buttons/ProductWorkflowActionButton';
 import RestoreProductButton from '@Products/components/Buttons/RestoreProductButton';
+import UpdateProductTemplateButton from '@Products/components/Buttons/UpdateProductTemplateButton';
 import ProductTemplateForm from '@Products/components/Forms/ProductTemplateForm';
 import ProductCompleteness from '@Products/components/Progress/ProductCompleteness';
-import Button from '@UI/components/Button/Button';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import Preloader from '@UI/components/Preloader/Preloader';
@@ -81,11 +71,10 @@ import {
 export default {
     name: 'ProductTemplateTab',
     components: {
+        UpdateProductTemplateButton,
         RestoreProductButton,
         IntersectionObserver,
         Preloader,
-        IconSpinner,
-        Button,
         ProductTemplateForm,
         CenterViewTemplate,
         TreeSelect,
@@ -108,7 +97,6 @@ export default {
             prevTemplateId: null,
             isFetchingData: false,
             language: {},
-            isSubmitting: false,
         };
     },
     computed: {
@@ -123,6 +111,7 @@ export default {
             'id',
             'template',
             'status',
+            'drafts',
         ]),
         smallSize() {
             return SIZE.SMALL;
@@ -137,6 +126,15 @@ export default {
                     : true,
             }));
         },
+        attributes() {
+            return this.elements.reduce((prev, curr) => {
+                const tmp = prev;
+
+                tmp[curr.properties.attribute_code] = curr.properties.attribute_id;
+
+                return tmp;
+            }, {});
+        },
     },
     created() {
         this.language = this.languageOptions
@@ -144,14 +142,24 @@ export default {
     },
     methods: {
         ...mapActions('product', [
-            'updateProductDraft',
+            'validateProduct',
             'setDraftValue',
+            'getInheritedProduct',
             'getProductWorkflow',
-            'getProductDraft',
             'getProductTemplate',
             'getProductCompleteness',
-            'applyProductDraft',
         ]),
+        onProductTemplateUpdated() {
+            this.getProductCompleteness({
+                languageCode: this.language.code,
+                id: this.id,
+                onSuccess: (({
+                    completeness,
+                }) => {
+                    this.completeness = completeness;
+                }),
+            });
+        },
         async onIntersect(isIntersecting) {
             if (isIntersecting) {
                 if (this.template !== this.prevTemplateId) {
@@ -169,37 +177,8 @@ export default {
                 this.prevTemplateId = this.template;
             }
         },
-        onSubmit() {
-            if (this.isSubmitting) {
-                return;
-            }
-            this.isSubmitting = true;
-
-            this.removeScopeErrors(this.scope);
-            this.applyProductDraft({
-                id: this.id,
-                scope: this.scope,
-                onSuccess: this.onUpdateSuccess,
-                onError: this.onUpdateError,
-            });
-        },
-        onUpdateSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Product has been updated',
-            });
-
-            this.isSubmitting = false;
-
-            this.markChangeValuesAsSaved(this.scope);
-        },
-        onUpdateError(errors) {
-            this.onError(errors);
-
-            this.isSubmitting = false;
-        },
         async getProductTemplateData(languageCode) {
-            await Promise.all([
+            const requests = [
                 this.getProductTemplate({
                     languageCode,
                     id: this.id,
@@ -218,15 +197,17 @@ export default {
                         this.completeness = completeness;
                     }),
                 }),
-                this.getProductDraft({
-                    languageCode,
+                this.getInheritedProduct({
                     id: this.id,
+                    languageCode,
                 }),
                 this.getProductWorkflow({
                     languageCode,
                     id: this.id,
                 }),
-            ]);
+            ];
+
+            await Promise.all(requests);
         },
         async onLanguageChange(value) {
             const languageCode = value.code;
@@ -235,7 +216,7 @@ export default {
 
             this.language = value;
         },
-        async onRestoredDraftValues() {
+        async onRestoredProductValues() {
             const {
                 code: languageCode,
             } = this.language;
@@ -250,9 +231,9 @@ export default {
                         this.completeness = completeness;
                     }),
                 }),
-                this.getProductDraft({
-                    languageCode,
+                this.getInheritedProduct({
                     id: this.id,
+                    languageCode,
                 }),
             ]);
         },
@@ -263,19 +244,9 @@ export default {
                 value: payload.value,
             });
 
-            await this.updateProductDraft({
+            await this.validateProduct({
                 ...payload,
                 scope: this.scope,
-            });
-
-            await this.getProductCompleteness({
-                languageCode: this.language.code,
-                id: this.id,
-                onSuccess: (({
-                    completeness,
-                }) => {
-                    this.completeness = completeness;
-                }),
             });
         },
     },

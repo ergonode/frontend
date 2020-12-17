@@ -89,7 +89,7 @@ export default {
     },
     computed: {
         ...mapState('product', [
-            'draft',
+            'drafts',
         ]),
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;
@@ -109,11 +109,12 @@ export default {
             const {
                 attribute_code,
             } = this.properties;
-            const value = this.draft[this.languageCode][attribute_code];
 
-            if (!this.hasOptions || !value) {
+            if (!this.hasOptions) {
                 return [];
             }
+
+            const value = this.drafts[this.languageCode][attribute_code] || [];
 
             return getMappedMatchedArrayOptions({
                 optionIds: value,

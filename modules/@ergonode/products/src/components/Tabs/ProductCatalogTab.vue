@@ -10,7 +10,9 @@
             </VerticalTabBar>
         </template>
         <template #grid>
-            <ProductsGrid />
+            <ProductsGrid
+                :scope="scope"
+                :errors="errors" />
         </template>
     </GridViewTemplate>
 </template>

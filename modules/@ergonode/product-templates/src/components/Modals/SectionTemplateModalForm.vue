@@ -12,7 +12,7 @@
         <template #body>
             <Form
                 submit-title="SAVE"
-                proceed-title="CANCEL"
+                :proceed-title="$t('core.buttons.cancel')"
                 @submit="onSubmit"
                 @proceed="onClose">
                 <template #body>

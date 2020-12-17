@@ -33,7 +33,7 @@
             <Button
                 :theme="secondaryTheme"
                 :size="smallSize"
-                title="CANCEL"
+                :title="$t('core.buttons.cancel')"
                 @click.native="closeComment" />
         </template>
     </Comment>
