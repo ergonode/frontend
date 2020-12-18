@@ -154,12 +154,21 @@ export default {
             this.onFetchData();
         },
         async onFetchData() {
+            const {
+                sortOrder = {}, ...rest
+            } = this.localParams;
+
+            const params = {
+                ...rest,
+                ...sortOrder,
+            };
+
             await getGridData({
                 $route: this.$route,
                 $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: `channels/${this.channelId}/exports/${this.exportId}/errors`,
-                params: this.localParams,
+                params,
                 onSuccess: this.onFetchGridDataSuccess,
                 onError: this.onFetchGridDataError,
             });
