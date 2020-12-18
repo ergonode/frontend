@@ -65,7 +65,7 @@ module.exports = {
             },
         ],
         'func-names': 'off',
-        'simple-import-sort/sort': 'error',
+        'simple-import-sort/imports': 'error',
         'import/order': 'error',
         'import/no-mutable-exports': 'error',
         'import/first': 'error',

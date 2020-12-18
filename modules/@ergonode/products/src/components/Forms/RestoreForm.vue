@@ -39,7 +39,7 @@ import CheckBox from '@UI/components/CheckBox/CheckBox';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import {
-    mapGetters,
+    mapState,
 } from 'vuex';
 
 export default {
@@ -62,26 +62,31 @@ export default {
             type: Object,
             default: () => ({}),
         },
-        language: {
-            type: Object,
+        languageCode: {
+            type: String,
             required: true,
         },
     },
     computed: {
-        ...mapGetters('core', [
-            'getLanguage',
+        ...mapState('core', [
+            'languagesTree',
+            'languages',
         ]),
+        language() {
+            return this.languagesTree.find(({
+                code,
+            }) => code === this.languageCode);
+        },
+        parentLanguage() {
+            return this.languages.find(({
+                id,
+            }) => id === this.language.parent);
+        },
         attributes() {
             return this.elements.filter(element => element.type !== SYSTEM_TYPES.SECTION);
         },
         modalTitle() {
-            const {
-                name,
-                parent,
-            } = this.language;
-            const parentName = this.getLanguage(parent).name;
-
-            return `Select attributes which values you want to restore from ${name} to parent translation (${parentName})`;
+            return `Select attributes which values you want to restore from ${this.language.name} to parent translation (${this.parentLanguage.name})`;
         },
     },
     methods: {

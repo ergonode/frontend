@@ -63,8 +63,8 @@ export default {
         ListElementTitle,
     },
     props: {
-        language: {
-            type: Object,
+        languageCode: {
+            type: String,
             required: true,
         },
     },
@@ -114,7 +114,7 @@ export default {
                 title: `Are you sure you want to change status to ${code}?`,
                 action: () => this.updateProductStatus({
                     value: statusId,
-                    languageCode: this.language.code,
+                    languageCode: this.languageCode,
                     attributeId: this.status.attribute_id,
                     onSuccess: () => {
                         const {
@@ -124,7 +124,7 @@ export default {
                         } = this.$route;
 
                         this.getProductWorkflow({
-                            languageCode: this.language.code,
+                            languageCode: this.languageCode,
                             id,
                         });
                         this.$addAlert({

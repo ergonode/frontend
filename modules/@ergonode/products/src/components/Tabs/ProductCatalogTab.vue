@@ -45,13 +45,13 @@ export default {
             return [
                 {
                     title: 'Product attributes',
-                    component: () => import('@Attributes/components/Tabs/List/AttributesListTab'),
+                    component: () => import('@Attributes/components/VerticalTabs/AttributesVerticalTab'),
                     icon: () => import('@Attributes/components/Icons/IconAttributes'),
                     props: {},
                 },
                 {
                     title: 'System attributes',
-                    component: () => import('@Attributes/components/Tabs/List/SystemAttributesListTab'),
+                    component: () => import('@Attributes/components/VerticalTabs/SystemAttributesVerticalTab'),
                     icon: () => import('@Core/components/Icons/Menu/IconSettings'),
                     props: {},
                 },

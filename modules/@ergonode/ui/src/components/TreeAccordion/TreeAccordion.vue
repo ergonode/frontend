@@ -124,8 +124,14 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if the list elements are expanded
+         */
         expanded: {
-            type: Boolean,
+            type: [
+                Object,
+                Boolean,
+            ],
             default: false,
         },
     },
