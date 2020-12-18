@@ -9,6 +9,7 @@ import Router from 'vue-router';
 import {
     extendRoutes,
     scrollBehavior,
+    setLocalMiddlewares,
 } from '~/.nuxt/routerHelper.modules';
 
 import localRouter from './router.local';
@@ -16,7 +17,7 @@ import localRouter from './router.local';
 Vue.use(Router);
 
 export function createRouter() {
-    return new Router({
+    const router = new Router({
         mode: 'history',
         base: '/',
         linkActiveClass: 'nuxt-link-active',
@@ -25,4 +26,15 @@ export function createRouter() {
         routes: extendRoutes(localRouter),
         fallback: false,
     });
+
+    console.log(this);
+    router.beforeEach(
+        (to, from, next) => setLocalMiddlewares({
+            to,
+            from,
+            next,
+        }),
+    );
+
+    return router;
 }
