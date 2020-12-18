@@ -8,7 +8,7 @@ export const Pages = {
 };
 
 export const Tabs = {
-    TransitionsGridTab: () => import('@Transitions/components/Tabs/TransitionsGridTab').then(m => m.default || m),
+    TransitionsTab: () => import('@Transitions/components/Tabs/TransitionsTab').then(m => m.default || m),
     StatusTransitionGeneralTab: () => import('@Transitions/components/Tabs/TransitionGeneralTab').then(m => m.default || m),
     ConditionDesignerTab: () => import('@Transitions/components/Tabs/ConditionDesignerTab').then(m => m.default || m),
 };

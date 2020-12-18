@@ -26,6 +26,9 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Media/config/privileges';
+import {
+    RESOURCES_UPLOADED_EVENT_NAME,
+} from '@Media/defaults';
 import Button from '@UI/components/Button/Button';
 import IconUploadFile from '@UI/components/Icons/Actions/IconUploadFile';
 
@@ -74,7 +77,10 @@ export default {
         },
         onUploadedData() {
             this.onCloseModal();
-            this.$emit('uploaded');
+
+            const event = new CustomEvent(RESOURCES_UPLOADED_EVENT_NAME);
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

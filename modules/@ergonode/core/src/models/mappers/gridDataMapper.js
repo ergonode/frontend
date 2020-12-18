@@ -3,28 +3,16 @@
  * See LICENSE for license details.
  */
 import {
+    DATA_LIMIT,
+    DEFAULT_PAGE,
+} from '@Core/defaults/grid';
+import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
 
-export function cellDataCompose(check) {
-    return (data, draft, colId) => {
-        if (draft && typeof draft[colId] !== 'undefined') {
-            const draftValue = draft[colId];
-
-            return {
-                value: draftValue,
-                isDraft: check(data, draftValue),
-            };
-        }
-        return {
-            value: data,
-            isDraft: false,
-        };
-    };
-}
-
 export function getParsedFilter({
-    id, filter,
+    id,
+    filter,
 }) {
     if (filter.isEmptyRecord) {
         return `${id}${FILTER_OPERATOR.EQUAL}`;
@@ -40,7 +28,13 @@ export function getParsedFilter({
     if (!values.length) return '';
 
     return values
-        .map(key => `${id}${key}${filter[key]}`)
+        .map((key) => {
+            if (Array.isArray(filter[key])) {
+                return `${id}${key}[${filter[key]}]`;
+            }
+
+            return `${id}${key}${filter[key]}`;
+        })
         .join(';');
 }
 
@@ -54,8 +48,131 @@ export function getParsedFilters(filters) {
         .join(';');
 }
 
-export function getSortedColumnsByIDs(columns, columnsID) {
-    return [
-        ...columns.sort((a, b) => columnsID.indexOf(a.id) - columnsID.indexOf(b.id)),
+export function getDraftsBasedOnCellValues(cellValues) {
+    return cellValues.reduce((prev, {
+        rowId,
+        columnId,
+        value,
+    }) => {
+        const tmp = prev;
+        tmp[`${rowId}/${columnId}`] = value;
+        return tmp;
+    }, {});
+}
+
+export function getParams({
+    $route,
+    $cookies,
+    defaultColumns = '',
+}) {
+    const {
+        query: {
+            page = DEFAULT_PAGE,
+            itemsPerPage = DATA_LIMIT,
+            filter = '',
+            advancedFilter = '',
+            field = '',
+            order = '',
+        },
+    } = $route;
+
+    const params = {
+        offset: (page - 1) * itemsPerPage,
+        limit: itemsPerPage,
+        extended: true,
+        columns: $cookies.get(`GRID_CONFIG:${$route.name}`) || defaultColumns,
+    };
+
+    if (advancedFilter) {
+        params.filter = advancedFilter;
+    }
+
+    if (filter) {
+        if (params.filter) {
+            params.filter += filter;
+        } else {
+            params.filter = filter;
+        }
+    }
+
+    if (field) {
+        params.field = field;
+    }
+
+    if (order) {
+        params.order = order;
+    }
+
+    return params;
+}
+
+export function getMappedFilters(parsedFilters) {
+    const operators = Object.values(FILTER_OPERATOR);
+    const arrayConditions = [
+        '[',
+        ']',
     ];
+    const filters = parsedFilters.split(';');
+    const mappedFilters = {};
+
+    filters.forEach((filter) => {
+        operators.forEach((operator) => {
+            if (filter.includes(operator)) {
+                const [
+                    code,
+                    value,
+                ] = filter.split(operator);
+
+                if (typeof mappedFilters[code] === 'undefined') {
+                    mappedFilters[code] = {};
+                }
+
+                if (value === '') {
+                    mappedFilters[code].isEmptyRecord = true;
+                } else if (arrayConditions.every(condition => value.includes(condition))) {
+                    mappedFilters[code][operator] = value.replace(/\[|\]/g, '').split(',');
+                } else {
+                    mappedFilters[code][operator] = value;
+                }
+            }
+        });
+    });
+
+    return mappedFilters;
+}
+
+export function getSortedColumnsByIDs(columns, columnIds) {
+    if (!columnIds) {
+        return columns;
+    }
+
+    return [
+        ...columns.sort((a, b) => columnIds.indexOf(a.id) - columnIds.indexOf(b.id)),
+    ];
+}
+
+export function getDefaultDataFromQueryParams($route) {
+    const {
+        query: {
+            page = DEFAULT_PAGE,
+            itemsPerPage = DATA_LIMIT,
+            filter = '',
+            advancedFilter = '',
+            field = '',
+            order = '',
+        },
+    } = $route;
+
+    return {
+        filterValues: getMappedFilters(filter),
+        advancedFilterValues: getMappedFilters(advancedFilter),
+        pagination: {
+            page: +page,
+            itemsPerPage: +itemsPerPage,
+        },
+        sortOrder: {
+            field,
+            order,
+        },
+    };
 }

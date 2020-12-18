@@ -24,3 +24,5 @@ export const PRODUCT_TYPE_COLOR = {
     [PRODUCT_TYPE.GROUPING]: BLUE,
     [PRODUCT_TYPE.SIMPLE_PRODUCT]: GREEN,
 };
+
+export const PRODUCT_CREATED_EVENT_NAME = 'product-created';

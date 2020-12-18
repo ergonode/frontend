@@ -28,7 +28,7 @@ export const update = ({
     data,
 }) => $axios.$put(`collections/${id}`, data);
 
-export const updateDraftValue = ({
+export const validateValue = ({
     $axios,
     id,
     productId,

@@ -15,28 +15,14 @@
                         :key="index"
                         v-bind="bindingProps(actionItem)" />
                 </template>
-                <CreateProductButton @created="onCreatedData" />
+                <CreateProductButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
             :items="asyncTabs"
             :errors="errors"
-            :change-values="changeValues">
-            <template
-                #content="{
-                    item,
-                    errors: tabErrors,
-                    changeValues: tabChangeValues,
-                }">
-                <HorizontalRoutingTabBarContent
-                    :is-fetching-needed="fetchGridData"
-                    :scope="item.scope"
-                    :change-values="tabChangeValues"
-                    :errors="tabErrors"
-                    @fetched="onFetchedGridData" />
-            </template>
-        </HorizontalRoutingTabBar>
+            :change-values="changeValues" />
         <template
             v-for="(modal, index) in extendedModals">
             <Component
@@ -48,8 +34,7 @@
 </template>
 
 <script>
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import CreateProductButton from '@Products/components/Buttons/CreateProductButton';
 import PRIVILEGES from '@Products/config/privileges';
@@ -74,8 +59,7 @@ export default {
         IconAdd,
     },
     mixins: [
-        gridModalMixin,
-        beforeLeavePageMixin,
+        beforeRouteLeaveMixin,
         asyncTabsMixin,
     ],
     computed: {

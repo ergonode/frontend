@@ -8,7 +8,7 @@ export const Pages = {
 };
 
 export const Tabs = {
-    CategoryGridTab: () => import('@Categories/components/Tabs/CategoryGridTab').then(m => m.default || m),
+    CategoriesTab: () => import('@Categories/components/Tabs/CategoriesTab').then(m => m.default || m),
     CategoryGeneralTab: () => import('@Categories/components/Tabs/CategoryGeneralTab').then(m => m.default || m),
     CategoryTranslationsTab: () => import('@Categories/components/Tabs/CategoryTranslationsTab').then(m => m.default || m),
 };

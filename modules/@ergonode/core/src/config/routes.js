@@ -108,7 +108,7 @@ export default [
             {
                 name: ROUTE_NAME.SETTINGS_UNITS,
                 path: 'units',
-                component: Tabs.UnitsSettingsGridTab,
+                component: Tabs.UnitSettingsTab,
                 meta: {
                     title: 'Units',
                     breadcrumbs: [
