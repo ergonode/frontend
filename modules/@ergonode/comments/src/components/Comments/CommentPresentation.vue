@@ -94,11 +94,6 @@ export default {
         },
     },
     computed: {
-        avatarId() {
-            return this.comment.avatar_filename
-                ? this.comment.avatar_filename.split('.')[0]
-                : '';
-        },
         smallSize() {
             return SIZE.SMALL;
         },
@@ -113,6 +108,9 @@ export default {
         },
         whiteColor() {
             return WHITE;
+        },
+        avatarId() {
+            return this.comment.avatar_filename !== null ? this.comment.user_id : '';
         },
         isAbleToEdit() {
             return this.comment._links.edit;
