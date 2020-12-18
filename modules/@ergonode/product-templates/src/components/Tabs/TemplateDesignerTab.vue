@@ -180,19 +180,20 @@ export default {
             return [
                 {
                     title: 'Product attributes',
-                    component: () => import('@Attributes/components/Tabs/List/AttributesListTab'),
+                    component: () => import('@Attributes/components/VerticalTabs/AttributesVerticalTab'),
                     props: {
                         isSelectLanguage: false,
-                        disabled: !this.$hasAccess([
-                            PRIVILEGES.TEMPLATE_DESIGNER.update,
-                        ]),
+                        disabled: !this.isAllowedToUpdate,
                     },
                     icon: () => import('@Attributes/components/Icons/IconAttributes'),
                 },
                 {
                     title: 'Widgets',
-                    component: () => import('@Templates/components/Tabs/List/WidgetsListTab'),
+                    component: () => import('@Templates/components/VerticalTabs/WidgetsVerticalTab'),
                     icon: () => import('@Core/components/Icons/Widgets/IconWidget'),
+                    props: {
+                        disabled: !this.isAllowedToUpdate,
+                    },
                 },
             ];
         },

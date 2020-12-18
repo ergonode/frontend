@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="Options"
+        :title="$t('role.form.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -17,14 +17,14 @@
                 <TextField
                     :value="name"
                     required
-                    label="Role name"
-                    hint="Role name must be unique"
+                    :label="$t('role.form.nameLabel')"
+                    :hint="$t('role.form.nameHint')"
                     :error-messages="errors[nameFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     @input="setNameValue" />
                 <TextArea
                     :value="description"
-                    label="Role description"
+                    :label="$t('role.form.descLabel')"
                     resize="none"
                     height="150px"
                     :error-messages="errors[descriptionFieldKey]"

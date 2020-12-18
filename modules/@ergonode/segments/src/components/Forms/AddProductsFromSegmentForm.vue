@@ -17,6 +17,7 @@
                     :value="segments"
                     :multiselect="true"
                     :searchable="true"
+                    :clearable="true"
                     label="From segmentation rules"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[segmentsFieldKey]"
@@ -53,6 +54,7 @@ import {
     ROUTE_NAME,
 } from '@Segments/config/routes';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
+import Button from '@UI/components/Button/Button';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
@@ -60,6 +62,7 @@ import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/Drop
 export default {
     name: 'AddProductsFromSegmentForm',
     components: {
+        Button,
         Form,
         FormSection,
         Autocomplete,

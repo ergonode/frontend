@@ -49,10 +49,23 @@ export default {
                 'dropdown',
             ];
         },
+        parentElement() {
+            return typeof this.parentReference.$el === 'undefined'
+                ? this.parentReference
+                : this.parentReference.$el;
+        },
     },
     watch: {
         fixed() {
-            if (!this.fixed) {
+            if (this.fixed) {
+                requestAnimationFrame(() => {
+                    const maxHeight = parseInt(DROPDOWN_MAX_HEIGHT, 10);
+                    const parentOffset = this.parentElement.getBoundingClientRect();
+
+                    this.$refs.dropdown.style.maxHeight = `${maxHeight}px`;
+                    this.$refs.dropdown.style.width = `${parentOffset.width}px`;
+                });
+            } else {
                 requestAnimationFrame(() => {
                     this.$refs.dropdown.style.width = null;
                     this.$refs.dropdown.style.maxHeight = null;
@@ -75,15 +88,11 @@ export default {
                     return;
                 }
 
-                const parentElement = typeof this.parentReference.$el === 'undefined'
-                    ? this.parentReference
-                    : this.parentReference.$el;
-
                 requestAnimationFrame(() => {
                     this.$refs.dropdown.style.visibility = 'initial';
                     this.$refs.dropdown.style.opacity = '1';
 
-                    const parentOffset = parentElement.getBoundingClientRect();
+                    const parentOffset = this.parentElement.getBoundingClientRect();
                     const offset = 2;
                     const {
                         innerHeight,

@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="Options"
+        :title="$t('user.form.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -17,28 +17,28 @@
                 <TextField
                     :value="email"
                     required
-                    label="Email"
+                    :label="$t('user.form.emailLabel')"
                     :error-messages="errors[emailFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setEmailValue" />
                 <TextField
                     :value="firstName"
                     required
-                    label="First name"
+                    :label="$t('user.form.nameLabel')"
                     :error-messages="errors[firstNameFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     @input="setFirstNameValue" />
                 <TextField
                     :value="lastName"
                     required
-                    label="Last name"
+                    :label="$t('user.form.lastNameLabel')"
                     :error-messages="errors[lastNameFieldKey]"
                     :disabled="!isAllowedToUpdate"
                     @input="setLastNameValue" />
                 <TextField
                     :value="password"
                     required
-                    label="Password"
+                    :label="$t('user.form.passwordLabel')"
                     :input="{ type: 'password' }"
                     :error-messages="errors[passwordFieldKey]"
                     :disabled="!isAllowedToUpdate"
@@ -46,7 +46,7 @@
                 <TextField
                     :value="passwordRepeat"
                     required
-                    label="Password repeat"
+                    :label="$t('user.form.passwordRepeatLabel')"
                     :input="{ type: 'password' }"
                     :error-messages="errors[passwordRepeatFieldKey]"
                     :disabled="!isAllowedToUpdate"
@@ -54,12 +54,12 @@
                 <Toggler
                     :value="isActive"
                     :disabled="!isAllowedToUpdate"
-                    label="The active status"
+                    :label="$t('user.form.activeLabel')"
                     @input="setStatusValue" />
                 <Select
                     :value="language"
                     required
-                    label="Language"
+                    :label="$t('user.form.languageLabel')"
                     :options="languageOptions"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[languageFieldKey]"
@@ -68,7 +68,8 @@
                     :value="role"
                     :required="true"
                     :searchable="true"
-                    label="Role"
+                    :clearable="true"
+                    :label="$t('user.form.roleLabel')"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[roleIdFieldKey]"
                     href="roles/autocomplete"
@@ -78,7 +79,7 @@
                         :subtitle="placeholder.subtitle">
                         <template #action>
                             <Button
-                                title="GO TO USER ROLES"
+                                :title="$t('user.form.noRoleButton')"
                                 :size="smallSize"
                                 :disabled="!isAllowedToUpdate"
                                 @click.native="onNavigateToUserRoles" />
@@ -104,6 +105,7 @@ import {
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
+import Button from '@UI/components/Button/Button';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
@@ -124,6 +126,7 @@ import {
 export default {
     name: 'UserForm',
     components: {
+        Button,
         DropdownPlaceholder,
         Divider,
         Form,
@@ -171,8 +174,8 @@ export default {
         },
         placeholder() {
             return {
-                title: 'No user roles',
-                subtitle: 'There are no user roles in the system, so you can create the first one.',
+                title: this.$t('user.form.noRoleTitle'),
+                subtitle: this.$t('user.form.noRoleSubtitle'),
             };
         },
         extendedForm() {

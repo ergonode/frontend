@@ -1,0 +1,11 @@
+{
+    "product": {
+        "buttons": {
+            "create": "STWÓRZ",
+            "proceed": "STWÓRZ & EDYTUJ",
+            "submit": "ZAPISZ ZMIANY",
+            "restore": "PRZYWRÓC",
+            "cancel": "ANULUJ"
+        }
+    }
+}

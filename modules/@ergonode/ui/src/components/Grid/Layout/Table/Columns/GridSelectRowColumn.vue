@@ -9,8 +9,8 @@
             :edit-key-code="32"
             :row="rowsOffset"
             :column="0"
-            @mousedown.native="onSelectAllRows"
-            @edit="onSelectAllRows">
+            @mousedown.native="onSelectAll"
+            @edit="onSelectAll">
             <GridCheckEditCell :value="rowsSelectionState" />
         </GridTableCell>
         <GridTableCell
@@ -26,8 +26,7 @@
             :column="0"
             :disabled="disabledRows[rowIds[rowIndex]]"
             :row="rowsOffset + row + basicFiltersOffset"
-            :selected="isSelectedAllRows
-                || selectedRows[rowsOffset + row + basicFiltersOffset]"
+            :selected="selectedRows[rowsOffset + row + basicFiltersOffset]"
             @select="onSelectRow" />
     </GridActionColumn>
 </template>
@@ -71,13 +70,6 @@ export default {
             default: () => [],
         },
         /**
-         * The flag which determines the state of selected each row
-         */
-        isSelectedAllRows: {
-            type: Boolean,
-            default: false,
-        },
-        /**
          * The disabled rows are defining which rows are not being able to interact with
          */
         disabledRows: {
@@ -108,10 +100,16 @@ export default {
     },
     computed: {
         rowsSelectionState() {
-            const rowsAreSelected = Boolean(Object.keys(this.selectedRows).length);
+            const {
+                length,
+            } = Object.keys(this.selectedRows);
 
-            if (!rowsAreSelected) {
-                return +this.isSelectedAllRows;
+            if (this.dataCount === length) {
+                return 1;
+            }
+
+            if (length === 0) {
+                return 0;
             }
 
             return 2;
@@ -121,13 +119,21 @@ export default {
         },
     },
     methods: {
-        onSelectAllRows() {
-            const anyRowsSelected = Object.entries(this.selectedRows).length;
-
-            if (anyRowsSelected) {
+        onSelectAll() {
+            if (this.rowsSelectionState > 0) {
                 this.$emit('row-select', {});
             } else {
-                this.$emit('rows-select', !this.isSelectedAllRows);
+                const selectedRows = {};
+
+                // If we had chosen option with selected all of the options, we need to remove it
+                // and mark visible rows as selected
+                const fixedIndex = this.isBasicFilter ? 2 : 1;
+
+                for (let i = fixedIndex; i < this.dataCount + fixedIndex; i += 1) {
+                    selectedRows[i + this.rowsOffset] = true;
+                }
+
+                this.$emit('row-select', selectedRows);
             }
         },
         onSelectRow({
@@ -142,20 +148,6 @@ export default {
                 selectedRows[row] = true;
             } else {
                 delete selectedRows[row];
-
-                if (this.isSelectedAllRows) {
-                    // If we had chosen option with selected all of the options, we need to remove it
-                    // and mark visible rows as selected
-                    const fixedIndex = this.isBasicFilter ? 2 : 1;
-
-                    for (let i = fixedIndex; i < this.dataCount + fixedIndex; i += 1) {
-                        if (i !== row) {
-                            selectedRows[i + this.rowsOffset] = true;
-                        }
-                    }
-
-                    this.$emit('rows-select', false);
-                }
             }
 
             this.$emit('row-select', selectedRows);

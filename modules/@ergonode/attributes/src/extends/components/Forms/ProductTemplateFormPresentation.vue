@@ -9,7 +9,9 @@
             :value="defaultTextAttribute"
             :label="$t('attribute.extends.template.form.defaultLabel')"
             :searchable="true"
+            :clearable="true"
             :disabled="disabled"
+            :params="autocompleteDefaultLabelParams"
             filter-type="TEXT"
             href="attributes/autocomplete"
             :error-messages="errors.defaultLabel"
@@ -37,6 +39,7 @@
             :searchable="true"
             :clearable="true"
             :disabled="disabled"
+            :params="autocompleteDefaultImageParams"
             filter-type="IMAGE"
             :error-messages="errors.defaultImage"
             href="attributes/autocomplete"
@@ -65,12 +68,14 @@ import {
 } from '@Attributes/config/routes';
 import {
     SKU_MODEL,
+    TYPES,
 } from '@Attributes/defaults/attributes';
 import {
     SIZE,
 } from '@Core/defaults/theme';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
+import Button from '@UI/components/Button/Button';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import {
@@ -81,6 +86,7 @@ import {
 export default {
     name: 'ProductTemplateFormPresentation',
     components: {
+        Button,
         DropdownPlaceholder,
         Autocomplete,
         FormSection,
@@ -106,6 +112,18 @@ export default {
             return [
                 SKU_MODEL,
             ];
+        },
+        autocompleteDefaultImageParams() {
+            return {
+                system: false,
+                type: TYPES.IMAGE,
+            };
+        },
+        autocompleteDefaultLabelParams() {
+            return {
+                system: false,
+                type: TYPES.TEXT,
+            };
         },
     },
     methods: {

@@ -3,14 +3,37 @@
  * See LICENSE for license details.
  */
 <template>
-    <TransitionPage :title="`${source.value} -> ${destination.value}`" />
+    <Page>
+        <TitleBar
+            :title="title"
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigateBackFab :previous-route="previousRoute" />
+            </template>
+            <template #mainAction>
+                <RemoveStatusTransitionButton />
+            </template>
+        </TitleBar>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
+    </Page>
 </template>
 
 <script>
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import TransitionPage from '@Transitions/components/Pages/TransitionPage';
+import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import RemoveStatusTransitionButton from '@Transitions/components/Buttons/RemoveStatusTransitionButton';
+import PRIVILEGES from '@Transitions/config/privileges';
+import Page from '@UI/components/Layout/Page';
+import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapActions,
     mapState,
@@ -19,8 +42,16 @@ import {
 export default {
     name: 'TransitionEdit',
     components: {
-        TransitionPage,
+        Page,
+        TitleBar,
+        HorizontalRoutingTabBar,
+        RemoveStatusTransitionButton,
     },
+    mixins: [
+        asyncTabsMixin,
+        beforeRouteEnterMixin,
+        beforeRouteLeaveMixin,
+    ],
     async fetch({
         app,
         store,
@@ -48,6 +79,12 @@ export default {
             } = this.$route.params;
             return id.split('--');
         },
+        title() {
+            return `${this.source.value} -> ${this.destination.value}`;
+        },
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.WORKFLOW.namespace);
+        },
     },
     beforeDestroy() {
         this.__clearTransitionStorage();
@@ -67,7 +104,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.source.value} -> ${this.destination.value} - Status transitions - Ergonode`,
+            title: `${this.title} - Status transitions - Ergonode`,
         };
     },
 };

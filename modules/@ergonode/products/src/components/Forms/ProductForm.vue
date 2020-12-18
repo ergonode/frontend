@@ -36,6 +36,7 @@
                     :value="template"
                     :required="true"
                     :searchable="true"
+                    :clearable="true"
                     label="Product template"
                     :error-messages="errors[templateIdFieldKey]"
                     :disabled="!isAllowedToUpdate"
@@ -83,6 +84,7 @@ import {
     ROUTE_NAME,
 } from '@Templates/config/routes';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
+import Button from '@UI/components/Button/Button';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
@@ -97,6 +99,7 @@ import {
 export default {
     name: 'ProductForm',
     components: {
+        Button,
         Divider,
         DropdownPlaceholder,
         Form,

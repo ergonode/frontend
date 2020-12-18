@@ -3,15 +3,33 @@
  * See LICENSE for license details.
  */
 <template>
-    <UserPage :title="title" />
+    <Page>
+        <TitleBar
+            :title="title"
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigateBackFab :previous-route="previousRoute" />
+            </template>
+        </TitleBar>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
+    </Page>
 </template>
 
 <script>
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
-import UserPage from '@Users/components/Pages/UserPage';
+import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import Page from '@UI/components/Layout/Page';
+import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@UI/components/TitleBar/TitleBar';
+import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
     mapState,
@@ -20,10 +38,14 @@ import {
 export default {
     name: 'EditUser',
     components: {
-        UserPage,
+        Page,
+        TitleBar,
+        HorizontalRoutingTabBar,
     },
     mixins: [
-        beforeLeavePageMixin,
+        asyncTabsMixin,
+        beforeRouteEnterMixin,
+        beforeRouteLeaveMixin,
     ],
     validate({
         params,
@@ -40,7 +62,7 @@ export default {
             onError: () => {
                 app.$addAlert({
                     type: ALERT_TYPE.ERROR,
-                    message: 'User hasn`t been fetched properly',
+                    message: app.i18n.t('user.errors.getRequest'),
                 });
             },
         });
@@ -52,6 +74,9 @@ export default {
         ]),
         title() {
             return `${this.firstName} ${this.lastName}`;
+        },
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.USER.namespace);
         },
     },
     beforeDestroy() {
@@ -65,6 +90,11 @@ export default {
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
         }),
+    },
+    head() {
+        return {
+            title: `${this.title} - Users - Ergonode`,
+        };
     },
 };
 </script>

@@ -12,19 +12,19 @@ import {
 import {
     addBySegment,
     addBySku,
-    applyDraft,
     create,
     get,
     getCollections,
     getCompleteness,
-    getDraft,
+    getInherited,
     getTemplate,
     getWorkflow,
     remove,
     removeChildren,
-    removeDraftValue,
+    removeValues,
     update,
-    updateDraftValue,
+    updateValues,
+    validateValue,
 } from '@Products/services/index';
 
 import {
@@ -35,50 +35,6 @@ export default {
     setDraftValue: ({
         commit,
     }, payload) => commit(types.SET_DRAFT_VALUE, payload),
-    async getProductDraft({
-        commit,
-    }, {
-        id,
-        onError = () => {},
-        languageCode,
-    }) {
-        try {
-            // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Products/store/product/action/getProductDraft/__before', {
-                $this: this,
-                data: {
-                    id,
-                },
-            });
-            // EXTENDED BEFORE METHOD
-            const {
-                attributes,
-            } = await getDraft({
-                $axios: this.app.$axios,
-                id,
-                languageCode,
-            });
-
-            commit(types.SET_PRODUCT_DRAFT, {
-                languageCode,
-                draft: attributes,
-            });
-            // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Products/store/product/action/getProductDraft/__after', {
-                $this: this,
-                data: {
-                    attributes,
-                },
-            });
-            // EXTENDED AFTER METHOD
-        } catch (e) {
-            if (this.app.$axios.isCancel(e)) {
-                return;
-            }
-
-            onError(e);
-        }
-    },
     async getProductWorkflow({
         commit,
     }, {
@@ -144,7 +100,6 @@ export default {
 
             const {
                 template_id: templateId,
-                attributes,
                 sku,
                 type,
             } = data;
@@ -168,16 +123,63 @@ export default {
                 key: 'type',
                 value: productTypes[type],
             });
-            commit('__SET_STATE', {
-                key: 'data',
-                value: attributes,
-            });
 
             // EXTENDED AFTER METHOD
             await this.$extendMethods('@Products/store/product/action/getProduct/__after', {
                 $this: this,
                 data,
                 type,
+            });
+            // EXTENDED AFTER METHOD
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
+    },
+    async getInheritedProduct({
+        state,
+        commit,
+    }, {
+        id,
+        languageCode,
+        onError = () => {},
+    }) {
+        try {
+            // EXTENDED BEFORE METHOD
+            await this.$extendMethods('@Products/store/product/action/getInheritedProduct/__before', {
+                $this: this,
+                data: {
+                    id,
+                    languageCode,
+                },
+            });
+            // EXTENDED BEFORE METHOD
+
+            const data = await getInherited({
+                $axios: this.app.$axios,
+                id,
+                languageCode,
+            });
+
+            const {
+                attributes,
+            } = data;
+
+            commit('__SET_STATE', {
+                key: 'drafts',
+                value: {
+                    ...state.drafts,
+                    [languageCode]: attributes,
+                },
+            });
+
+            // EXTENDED AFTER METHOD
+            await this.$extendMethods('@Products/store/product/action/getInheritedProduct/__after', {
+                $this: this,
+                data,
             });
             // EXTENDED AFTER METHOD
         } catch (e) {
@@ -410,16 +412,36 @@ export default {
                 value,
             };
 
-            await updateDraftValue({
+            await validateValue({
                 $axios: this.app.$axios,
                 id,
                 attributeId,
                 languageCode,
                 data,
             });
-            await applyDraft({
+
+            const productStatusData = [
+                {
+                    id,
+                    payload: [
+                        {
+                            id: attributeId,
+                            values: [
+                                {
+                                    language: languageCode,
+                                    value,
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ];
+
+            await updateValues({
                 $axios: this.app.$axios,
-                id,
+                data: {
+                    data: productStatusData,
+                },
             });
 
             onSuccess();
@@ -436,16 +458,74 @@ export default {
             onError(e);
         }
     },
-    async applyProductDraft({}, {
-        id,
+    async updateProductsValues({
+        rootState,
+    }, {
         scope,
+        drafts,
+        columns,
         onSuccess = () => {},
         onError = () => {},
     }) {
         try {
-            await applyDraft({
+            const errors = rootState.feedback.errors[scope] || {};
+            const data = [];
+            const cachedProducts = {};
+            const cachedAttributes = {};
+            const cachedElementIds = {};
+
+            Object.keys(drafts).forEach((key) => {
+                if (typeof errors[key] === 'undefined') {
+                    const [
+                        rowId,
+                        columnId,
+                    ] = key.split('/');
+                    const [
+                        attributeCode,
+                        languageCode,
+                    ] = columnId.split(':');
+
+                    if (!cachedElementIds[columnId]) {
+                        const {
+                            element_id,
+                        } = columns.find(column => column.id === columnId);
+
+                        cachedElementIds[columnId] = element_id;
+                    }
+
+                    if (typeof cachedProducts[rowId] === 'undefined') {
+                        cachedProducts[rowId] = data.length;
+                        data[data.length] = {
+                            id: rowId,
+                            payload: [],
+                        };
+                    }
+
+                    const index = cachedProducts[rowId];
+
+                    if (typeof cachedAttributes[`${rowId}/${attributeCode}`] === 'undefined') {
+                        cachedAttributes[`${rowId}/${attributeCode}`] = data[index].payload.length;
+
+                        data[index].payload.push({
+                            id: cachedElementIds[columnId] || attributeCode,
+                            values: [],
+                        });
+                    }
+
+                    const attributeIndex = cachedAttributes[`${rowId}/${attributeCode}`];
+
+                    data[index].payload[attributeIndex].values.push({
+                        language: languageCode,
+                        value: drafts[key],
+                    });
+                }
+            });
+
+            await updateValues({
                 $axios: this.app.$axios,
-                id,
+                data: {
+                    data,
+                },
             });
             onSuccess();
         } catch (e) {
@@ -464,7 +544,79 @@ export default {
             });
         }
     },
-    async updateProductDraft({
+    async updateProductValues({
+        state,
+        rootState,
+    }, {
+        scope,
+        attributes,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const {
+                id,
+            } = state;
+            const data = [
+                {
+                    id,
+                    payload: [],
+                },
+            ];
+
+            const cachedAttributes = {};
+            const changeValues = rootState.feedback.changeValues[scope] || {};
+            const errors = rootState.feedback.errors[scope] || {};
+
+            Object.keys(changeValues).forEach((key) => {
+                const [
+                    languageCode,
+                    code,
+                ] = key.split('|');
+
+                if (key !== 'saved' && typeof errors[code] === 'undefined') {
+                    const attributeId = attributes[code.split('/')[0]];
+
+                    if (typeof cachedAttributes[attributeId] === 'undefined') {
+                        cachedAttributes[attributeId] = data[0].payload.length;
+
+                        data[0].payload.push({
+                            id: attributeId,
+                            values: [],
+                        });
+                    }
+
+                    data[0].payload[cachedAttributes[attributeId]].values.push({
+                        language: languageCode,
+                        value: changeValues[key],
+                    });
+                }
+            });
+
+            await updateValues({
+                $axios: this.app.$axios,
+                data: {
+                    data,
+                },
+            });
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                this.app.$addAlert({
+                    type: ALERT_TYPE.WARNING,
+                    message: 'Applying product draft has been canceled',
+                });
+
+                return;
+            }
+
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
+    },
+    async validateProduct({
         dispatch,
         rootState,
     }, {
@@ -480,7 +632,7 @@ export default {
                 value,
             };
 
-            await updateDraftValue({
+            await validateValue({
                 $axios: this.app.$axios,
                 id: productId,
                 attributeId: elementId,
@@ -598,10 +750,6 @@ export default {
                 $axios: this.app.$axios,
                 id,
                 data,
-            });
-            await applyDraft({
-                $axios: this.app.$axios,
-                id,
             });
 
             // EXTENDED AFTER METHOD
@@ -794,11 +942,11 @@ export default {
             onError(e);
         }
     },
-    async removeProductDraft({
+    async removeProductValues({
         state,
     }, {
         languageCode,
-        attributeId,
+        attributes,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -806,12 +954,29 @@ export default {
             const {
                 id,
             } = state;
+            const data = [
+                {
+                    id,
+                    payload: [],
+                },
+            ];
 
-            await removeDraftValue({
+            attributes.forEach((attribute) => {
+                data[0].payload.push({
+                    id: attribute.id,
+                    languages: [
+                        languageCode,
+                    ],
+                });
+            });
+
+            await removeValues({
                 $axios: this.app.$axios,
-                id,
-                languageCode,
-                attributeId,
+                data: {
+                    data: {
+                        data,
+                    },
+                },
             });
 
             onSuccess();

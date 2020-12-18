@@ -4,19 +4,17 @@
  */
 <template>
     <Button
-        title="NEW USER"
+        :title="$t('user.page.addButton')"
         :size="smallSize"
         :disabled="!isAllowedToCreate"
         @click.native="onShowModal">
         <template #prepend="{ color }">
             <IconAdd :fill-color="color" />
         </template>
-        <template #default>
-            <CreateUserModalForm
-                v-if="isModalVisible"
-                @close="onCloseModal"
-                @created="onCreatedData" />
-        </template>
+        <CreateUserModalForm
+            v-if="isModalVisible"
+            @close="onCloseModal"
+            @created="onCreatedData" />
     </Button>
 </template>
 
@@ -27,6 +25,9 @@ import {
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import PRIVILEGES from '@Users/config/privileges';
+import {
+    USER_CREATED_EVENT_NAME,
+} from '@Users/defaults';
 
 export default {
     name: 'CreateUserButton',
@@ -59,7 +60,10 @@ export default {
         },
         onCreatedData() {
             this.onCloseModal();
-            this.$emit('created');
+
+            const event = new CustomEvent(USER_CREATED_EVENT_NAME);
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

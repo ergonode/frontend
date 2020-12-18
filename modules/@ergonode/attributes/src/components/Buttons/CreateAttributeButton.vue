@@ -12,17 +12,18 @@
         <template #prepend="{ color }">
             <IconAdd :fill-color="color" />
         </template>
-        <template #default>
-            <CreateAttributeModalForm
-                v-if="isModalVisible"
-                @close="onCloseModal"
-                @created="onCreatedData" />
-        </template>
+        <CreateAttributeModalForm
+            v-if="isModalVisible"
+            @close="onCloseModal"
+            @created="onCreatedData" />
     </Button>
 </template>
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
+import {
+    ATTRIBUTE_CREATED_EVENT_NAME,
+} from '@Attributes/defaults/attributes';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -60,7 +61,10 @@ export default {
         },
         onCreatedData() {
             this.onCloseModal();
-            this.$emit('created');
+
+            const event = new CustomEvent(ATTRIBUTE_CREATED_EVENT_NAME);
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

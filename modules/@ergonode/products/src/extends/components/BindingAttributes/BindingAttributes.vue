@@ -10,19 +10,11 @@
             :attribute="attribute"
             :key="attribute.id"
             @remove="onRemoveBinding" />
-        <AddBindingAttributes @click.native="onShowModal" />
-        <AddBindingAttributesModalForm
-            v-if="isModalVisible"
-            @close="onCloseModal"
-            @created="onCreatedData" />
+        <AddBindingAttributes @added="onAddedBinding" />
     </GridPanelHeader>
 </template>
 
 <script>
-import {
-    SIZE,
-    THEME,
-} from '@Core/defaults/theme';
 import AddBindingAttributes from '@Products/extends/components/BindingAttributes/AddBindingAttributes';
 import BindingAttribute from '@Products/extends/components/BindingAttributes/BindingAttribute';
 import GridPanelHeader from '@UI/components/Grid/Header/GridPanelHeader';
@@ -33,7 +25,6 @@ export default {
         GridPanelHeader,
         BindingAttribute,
         AddBindingAttributes,
-        AddBindingAttributesModalForm: () => import('@Products/extends/components/Modals/AddBindingAttributesModalForm'),
     },
     props: {
         attributes: {
@@ -41,30 +32,8 @@ export default {
             default: () => [],
         },
     },
-    data() {
-        return {
-            isModalVisible: false,
-            fetchGridData: false,
-        };
-    },
-    computed: {
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
-    },
     methods: {
-        onShowModal() {
-            this.isModalVisible = true;
-        },
-        onCloseModal() {
-            this.isModalVisible = false;
-        },
-        onCreatedData() {
-            this.onCloseModal();
-
+        onAddedBinding() {
             this.$emit('added');
         },
         onRemoveBinding(index) {

@@ -12,12 +12,10 @@
         <template #prepend="{ color }">
             <IconAdd :fill-color="color" />
         </template>
-        <template #default>
-            <CreateProductStatusModalForm
-                v-if="isModalVisible"
-                @close="onCloseModal"
-                @created="onCreatedData" />
-        </template>
+        <CreateProductStatusModalForm
+            v-if="isModalVisible"
+            @close="onCloseModal"
+            @created="onCreatedData" />
     </Button>
 </template>
 
@@ -25,6 +23,9 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import {
+    PRODUCT_STATUS_CREATED_EVENT_NAME,
+} from '@Statuses/defaults';
 import PRIVILEGES from '@Transitions/config/privileges';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
@@ -60,7 +61,10 @@ export default {
         },
         onCreatedData() {
             this.onCloseModal();
-            this.$emit('created');
+
+            const event = new CustomEvent(PRODUCT_STATUS_CREATED_EVENT_NAME);
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

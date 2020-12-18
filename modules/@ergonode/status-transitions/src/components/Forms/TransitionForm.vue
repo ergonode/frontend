@@ -79,6 +79,7 @@ import {
 } from '@Core/models/objectWrapper';
 import PRIVILEGES from '@Transitions/config/privileges';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
+import Button from '@UI/components/Button/Button';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
@@ -95,6 +96,7 @@ import {
 export default {
     name: 'TransitionForm',
     components: {
+        Button,
         Form,
         FormSection,
         Divider,

@@ -18,7 +18,7 @@
                 :column-id="column.id"
                 :label="column.label"
                 :deletable="column.deletable"
-                :sorted-column="sortedColumn"
+                :sort-order="sortOrder"
                 @sort="onSortColumn"
                 @remove="onRemoveColumn" />
             <template v-if="isBasicFilter">
@@ -53,8 +53,7 @@
                 :is-disabled="disabledRows[rowIds[rowIndex]]"
                 :is-locked="!(column.editable && isEditable)"
                 :is-copyable="column.editable && isEditable && !disabledRows[rowIds[rowIndex]]"
-                :is-selected="isSelectedAllRows
-                    || selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
+                :is-selected="selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
                 @cell-value="onCellValueChange"
                 @edit-cell="onEditCell" />
         </GridColumn>
@@ -118,7 +117,7 @@ export default {
         /**
          * Data about order of sorted column
          */
-        sortedColumn: {
+        sortOrder: {
             type: Object,
             required: true,
         },
@@ -163,13 +162,6 @@ export default {
         drafts: {
             type: Object,
             default: () => ({}),
-        },
-        /**
-         * The flag which determines the state of selected each row
-         */
-        isSelectedAllRows: {
-            type: Boolean,
-            default: false,
         },
         /**
          * The map of selected rows

@@ -4,7 +4,7 @@
  */
 <template>
     <ModalForm
-        title="Create user"
+        :title="$t('user.form.createTitle')"
         @close="onClose">
         <template #body>
             <UserForm
@@ -97,7 +97,7 @@ export default {
         onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'User created',
+                message: this.$t('user.messages.createSuccess'),
             });
 
             this.isSubmitting = false;

@@ -21,10 +21,8 @@
                     :rows-offset="rowsOffset"
                     :row-ids="rowIds"
                     :is-basic-filter="isBasicFilter"
-                    :is-selected-all-rows="isSelectedAllRows"
                     :selected-rows="selectedRows"
-                    @row-select="onRowSelect"
-                    @rows-select="onRowsSelect" />
+                    @row-select="onRowSelect" />
             </GridTableLayoutPinnedSection>
             <GridTableLayoutColumnsSection
                 :style="templateColumns"
@@ -47,7 +45,6 @@
                         :filters="filters"
                         :disabled-rows="disabledRows"
                         :selected-rows="selectedRows"
-                        :is-selected-all-rows="isSelectedAllRows"
                         :rows-offset="rowsOffset"
                         :is-basic-filter="isBasicFilter"
                         @remove="onRemoveColumn"
@@ -67,7 +64,7 @@
                         :column="column"
                         :rows="rows"
                         :rows-offset="rowsOffset"
-                        :sorted-column="sortedColumn"
+                        :sort-order="sortOrder"
                         :filters="filters"
                         :data-filter-cell-components="dataFilterCellComponents"
                         :data-cell-components="dataCellComponents"
@@ -76,7 +73,6 @@
                         :disabled-rows="disabledRows"
                         :drafts="drafts"
                         :selected-rows="selectedRows"
-                        :is-selected-all-rows="isSelectedAllRows"
                         :is-basic-filter="isBasicFilter"
                         :is-editable="isEditable"
                         @remove="onRemoveColumn"
@@ -111,7 +107,6 @@
                     :rows-offset="rowsOffset"
                     :is-basic-filter="isBasicFilter"
                     :columns-offset="orderedColumns.length + columnIndex + columnsOffset"
-                    :is-selected-all-rows="isSelectedAllRows"
                     :selected-rows="selectedRows"
                     @row-action="onRowAction" />
             </GridTableLayoutPinnedSection>
@@ -244,13 +239,6 @@ export default {
             default: ROW_HEIGHT.SMALL,
         },
         /**
-         * The flag which determines the state of selected each row
-         */
-        isSelectedAllRows: {
-            type: Boolean,
-            default: false,
-        },
-        /**
          * The map of selected rows
          */
         selectedRows: {
@@ -279,6 +267,13 @@ export default {
             default: false,
         },
         /**
+         * The data model of sorted column
+         */
+        sortOrder: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
          * The data model of extended table layout components
          */
         extendedComponents: {
@@ -297,7 +292,6 @@ export default {
             dataFilterCellComponents: {},
             filterTypes: {},
             columnTypes: {},
-            sortedColumn: {},
             pinnedSections: {},
             editCell: null,
             editFilterCell: null,
@@ -434,9 +428,8 @@ export default {
                 this.$refs.gridTableLayout.removeEventListener('mousedown', this.onMouseDown);
             }
         },
-        onSortColumn(sortedColumn) {
-            this.sortedColumn = sortedColumn;
-            this.$emit('sort', sortedColumn);
+        onSortColumn(sortOrder) {
+            this.$emit('sort-column', sortOrder);
         },
         onFilterValueChange({
             value,
@@ -503,9 +496,6 @@ export default {
         },
         onRowSelect(selectedRows) {
             this.$emit('row-select', selectedRows);
-        },
-        onRowsSelect(isSelectedAllRows) {
-            this.$emit('rows-select', isSelectedAllRows);
         },
         onCellValueChange(value) {
             this.$emit('cell-value', value);

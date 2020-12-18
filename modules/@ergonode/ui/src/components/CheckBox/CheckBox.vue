@@ -138,7 +138,6 @@ export default {
         &__label {
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_12_16;
-            cursor: pointer;
             margin-left: 8px;
         }
 
@@ -149,7 +148,6 @@ export default {
             height: 16px;
             border: 1px solid $GREY;
             box-sizing: border-box;
-            cursor: pointer;
         }
 
         &__mark {
@@ -188,6 +186,10 @@ export default {
             }
 
             &:not(:disabled) {
+                & + label {
+                    cursor: pointer;
+                }
+
                 &:checked + label, &:indeterminate + label {
                     #{$checkbox}__box {
                         background-color: $GREEN;
@@ -215,6 +217,8 @@ export default {
 
             &:disabled {
                 & + label {
+                    cursor: not-allowed;
+
                     #{$checkbox}__box {
                         background-color: $GREY_LIGHT;
                     }

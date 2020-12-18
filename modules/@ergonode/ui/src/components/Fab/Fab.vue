@@ -20,6 +20,7 @@
             name="icon"
             :color="iconFillColor"
             :is-hovered="isHovered" />
+        <slot />
     </button>
 </template>
 <script>

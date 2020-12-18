@@ -3,15 +3,39 @@
  * See LICENSE for license details.
  */
 <template>
-    <ImportProfilePage :title="name" />
+    <Page>
+        <TitleBar
+            :title="name"
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigateBackFab :previous-route="previousRoute" />
+            </template>
+            <template #mainAction>
+                <RemoveImportButton />
+                <CreateImportButton />
+            </template>
+        </TitleBar>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
+    </Page>
 </template>
 
 <script>
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
-import ImportProfilePage from '@Import/components/Pages/ImportProfilePage';
+import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import CreateImportButton from '@Import/components/Buttons/CreateImportButton';
+import RemoveImportButton from '@Import/components/Buttons/RemoveImportButton';
+import PRIVILEGES from '@Import/config/privileges';
+import Page from '@UI/components/Layout/Page';
+import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapActions,
     mapState,
@@ -20,10 +44,16 @@ import {
 export default {
     name: 'EditImportProfile',
     components: {
-        ImportProfilePage,
+        Page,
+        TitleBar,
+        HorizontalRoutingTabBar,
+        CreateImportButton,
+        RemoveImportButton,
     },
     mixins: [
-        beforeLeavePageMixin,
+        asyncTabsMixin,
+        beforeRouteEnterMixin,
+        beforeRouteLeaveMixin,
     ],
     validate({
         params,
@@ -55,6 +85,9 @@ export default {
             } = JSON.parse(this.configuration);
 
             return name;
+        },
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.IMPORT.namespace);
         },
     },
     beforeDestroy() {

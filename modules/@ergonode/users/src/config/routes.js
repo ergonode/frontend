@@ -53,7 +53,7 @@ export default [
             {
                 name: ROUTE_NAME.USERS_GRID,
                 path: 'grid',
-                component: Tabs.UsersGridTab,
+                component: Tabs.UsersTab,
                 meta: {
                     title: '',
                     breadcrumbs: [
@@ -91,7 +91,7 @@ export default [
                         },
                         {
                             title: 'Users',
-                            name: ROUTE_NAME.USERS_GRID,
+                            routeName: ROUTE_NAME.USERS_GRID,
                         },
                     ],
                     privileges: [],
@@ -163,7 +163,7 @@ export default [
             {
                 name: ROUTE_NAME.USER_ROLES_GRID,
                 path: 'grid',
-                component: Tabs.RolesGridTab,
+                component: Tabs.RolesTab,
                 meta: {
                     title: '',
                     breadcrumbs: [
@@ -242,7 +242,7 @@ export default [
             {
                 name: ROUTE_NAME.USER_PROFILE_ACTIVITY_LOGS_GRID,
                 path: 'activity-log-grid',
-                component: Tabs.UserActivityLogsGridTab,
+                component: Tabs.UserActivityLogsTab,
                 meta: {
                     title: 'Activity log',
                     privileges: [],
@@ -251,7 +251,7 @@ export default [
             {
                 name: ROUTE_NAME.USER_PROFILE_PRIVILEGES_GRID,
                 path: 'privileges-grid',
-                component: Tabs.UserPrivilegesGridTab,
+                component: Tabs.UserPrivilegesTab,
                 meta: {
                     title: 'Privileges',
                     privileges: [],

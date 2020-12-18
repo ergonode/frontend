@@ -18,7 +18,7 @@
                 :is-header-visible="true"
                 :is-basic-filter="true"
                 @pagination="onPaginationChange"
-                @column-sort="onColumnSortChange"
+                @sort-column="onColumnSortChange"
                 @filter="onFilterChange"
                 @remove-all-filters="onRemoveAllFilters">
                 <template #actionsHeader>
@@ -129,21 +129,27 @@ export default {
 
             this.onFetchData();
         },
-        onColumnSortChange(sortedColumn) {
-            this.localParams.sortedColumn = sortedColumn;
+        onColumnSortChange(sortOrder) {
+            this.localParams.sortOrder = sortOrder;
 
             this.onFetchData();
         },
         async onFetchData() {
+            const {
+                sortOrder = {}, ...rest
+            } = this.localParams;
+
+            const params = {
+                ...rest,
+                ...sortOrder,
+            };
+
             await getGridData({
                 $route: this.$route,
                 $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: `sources/${this.sourceId}/imports/${this.importId}/errors`,
-                params: {
-                    ...this.localParams,
-                    extended: true,
-                },
+                params,
                 onSuccess: this.onFetchGridDataSuccess,
                 onError: this.onFetchGridDataError,
             });
@@ -153,6 +159,7 @@ export default {
                 type: ALERT_TYPE.ERROR,
                 message: 'Grid data haven’t been fetched properly',
             });
+
             this.isPrefetchingData = false;
         },
         onFetchGridDataSuccess({

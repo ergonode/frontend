@@ -49,15 +49,15 @@
                     :errors="errors"
                     :disabled-rows="disabledRows"
                     :filters="filters"
+                    :sort-order="sortOrder"
                     :pagination="pagination"
                     :row-height="tableLayoutConfig.rowHeight"
                     :extended-components="extendedComponents[gridLayout.TABLE]"
                     :selected-rows="selectedRows[pagination.page]"
-                    :is-selected-all-rows="isSelectedAllRows[pagination.page]"
                     :is-editable="isEditable"
                     :is-select-column="isSelectColumn"
                     :is-basic-filter="isBasicFilter"
-                    @sort="onSortColumn"
+                    @sort-column="onSortColumn"
                     @filter="onFilterChange"
                     @cell-value="onCellValueChange"
                     @focus-cell="onFocusCell"
@@ -65,7 +65,6 @@
                     @remove-column="onRemoveColumn"
                     @swap-columns="onSwapColumns"
                     @row-select="onRowSelect"
-                    @rows-select="onRowsSelect"
                     @rendered="onRenderedTableLayout" />
                 <GridCollectionLayout
                     v-else-if="isCollectionLayout && !isPrefetchingData && !isPlaceholderVisible"
@@ -106,6 +105,7 @@
                 <slot name="appendFooter" />
             </slot>
         </GridFooter>
+        <slot />
     </div>
 </template>
 
@@ -113,6 +113,7 @@
 import {
     COLUMNS_NUMBER,
     DEFAULT_GRID_PAGINATION,
+    DEFAULT_PAGE,
     DRAGGED_ELEMENT,
     GRID_LAYOUT,
     IMAGE_SCALING,
@@ -304,6 +305,13 @@ export default {
             default: false,
         },
         /**
+         * The data model of sorted column
+         */
+        sortOrder: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
          * The data model of extended Grid components
          */
         extendedComponents: {
@@ -318,7 +326,6 @@ export default {
         return {
             layout: this.defaultLayout,
             isRenderingTableLayout: this.defaultLayout === GRID_LAYOUT.TABLE,
-            sortedColumn: {},
             collectionLayoutConfig: {
                 columnsNumber: COLUMNS_NUMBER.FOURTH_COLUMNS.value,
                 scaling: IMAGE_SCALING.FIT_TO_SIZE.value,
@@ -326,7 +333,6 @@ export default {
             tableLayoutConfig: {
                 rowHeight: ROW_HEIGHT.SMALL,
             },
-            isSelectedAllRows: {},
             selectedRows: {},
         };
     },
@@ -398,22 +404,19 @@ export default {
             this.$emit('remove-all-filters');
         },
         onBatchActionSelect(option) {
-            if (this.isSelectedAllRows[this.pagination.page]
-                || Object.keys(this.selectedRows[this.pagination.page]).length > 0) {
+            if (Object.keys(this.selectedRows[this.pagination.page]).length > 0) {
                 let {
                     rowIds,
                 } = this;
 
-                if (!this.isSelectedAllRows[this.pagination.page]) {
-                    const rowsOffset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
-                    const fixedIndex = rowsOffset + (this.isBasicFilter ? 2 : 1);
+                const rowsOffset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
+                const fixedIndex = rowsOffset + (this.isBasicFilter ? 2 : 1);
 
-                    rowIds = [];
+                rowIds = [];
 
-                    Object.keys(this.selectedRows[this.pagination.page]).forEach((key) => {
-                        rowIds.push(this.rowIds[+key - fixedIndex]);
-                    });
-                }
+                Object.keys(this.selectedRows[this.pagination.page]).forEach((key) => {
+                    rowIds.push(this.rowIds[+key - fixedIndex]);
+                });
 
                 option.action({
                     payload: {
@@ -423,11 +426,6 @@ export default {
                         this.selectedRows = {
                             ...this.selectedRows,
                             [this.pagination.page]: {},
-                        };
-
-                        this.isSelectedAllRows = {
-                            ...this.isSelectedAllRows,
-                            [this.pagination.page]: false,
                         };
                     },
                     onError: () => {
@@ -440,12 +438,6 @@ export default {
             this.selectedRows = {
                 ...this.selectedRows,
                 [this.pagination.page]: selectedRows,
-            };
-        },
-        onRowsSelect(isSelectedAllRows) {
-            this.isSelectedAllRows = {
-                ...this.isSelectedAllRows,
-                [this.pagination.page]: isSelectedAllRows,
             };
         },
         onApplySettings({
@@ -483,10 +475,8 @@ export default {
         onDropColumn(payload) {
             this.$emit('drop-column', payload);
         },
-        onSortColumn(sortedColumn) {
-            this.sortedColumn = sortedColumn;
-
-            this.$emit('column-sort', sortedColumn);
+        onSortColumn(sortOrder) {
+            this.$emit('sort-column', sortOrder);
         },
         onRenderedTableLayout() {
             this.isRenderingTableLayout = false;
@@ -506,7 +496,7 @@ export default {
             if (number !== this.pagination.itemsPerPage) {
                 this.$emit('pagination', {
                     ...this.pagination,
-                    page: 1,
+                    page: DEFAULT_PAGE,
                     itemsPerPage: number,
                 });
             }

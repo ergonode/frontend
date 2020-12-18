@@ -6,7 +6,7 @@
     <Dropdown
         :parent-reference="parentReference"
         :visible="isVisible"
-        :fixed="fixedContent"
+        :fixed="isFixedContent"
         @click-outside="onClickOutside">
         <slot
             name="placeholder"
@@ -61,7 +61,7 @@ import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
 import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
 import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
-import SelectList from '@UI/components/Select/List/SelectList';
+import SelectList from '@UI/components/SelectList/SelectList';
 
 export default {
     name: 'SelectDropdown',
@@ -153,11 +153,21 @@ export default {
         },
     },
     computed: {
+        isFixedContent() {
+            if (this.isAnyOption) {
+                return this.fixedContent;
+            }
+
+            return !(this.isPlaceholderVisible || this.isSearchPlaceholderVisible);
+        },
         isAnyOption() {
             return this.options.length > 0;
         },
         isAnySearchPhrase() {
             return this.searchValue !== '';
+        },
+        isSearchPlaceholderVisible() {
+            return !this.isAnyOption && this.isAnySearchPhrase;
         },
         isPlaceholderVisible() {
             return !this.isAnyOption && !this.isAnySearchPhrase;
@@ -166,7 +176,11 @@ export default {
             return this.isAnyOption || this.isAnySearchPhrase;
         },
         isFooterVisible() {
-            return this.clearable && this.isAnyOption;
+            if (this.isAnySearchPhrase) {
+                return this.clearable && this.isAnyOption;
+            }
+
+            return this.clearable;
         },
     },
     methods: {

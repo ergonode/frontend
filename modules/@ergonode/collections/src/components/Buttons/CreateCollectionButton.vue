@@ -12,17 +12,18 @@
         <template #prepend="{ color }">
             <IconAdd :fill-color="color" />
         </template>
-        <template #default>
-            <CreateCollectionModalForm
-                v-if="isModalVisible"
-                @close="onCloseModal"
-                @created="onCreatedData" />
-        </template>
+        <CreateCollectionModalForm
+            v-if="isModalVisible"
+            @close="onCloseModal"
+            @created="onCreatedData" />
     </Button>
 </template>
 
 <script>
 import PRIVILEGES from '@Collections/config/privileges';
+import {
+    COLLECTION_CREATED_EVENT_NAME,
+} from '@Collections/defaults';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -60,7 +61,10 @@ export default {
         },
         onCreatedData() {
             this.onCloseModal();
-            this.$emit('created');
+
+            const event = new CustomEvent(COLLECTION_CREATED_EVENT_NAME);
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };
