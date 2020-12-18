@@ -22,7 +22,8 @@
                 v-model="email"
                 required
                 :error-messages="errors[emialFieldKey]"
-                :label="$t('authentication.forms.passwordRecovery.field')" />
+                :label="$t('authentication.forms.passwordRecovery.field')"
+                @keydown.enter.prevent="onSubmit" />
         </template>
     </LoginForm>
 </template>

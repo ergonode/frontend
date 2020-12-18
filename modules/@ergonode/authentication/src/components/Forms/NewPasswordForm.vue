@@ -26,7 +26,8 @@
                 required
                 :input="passwordInputType"
                 :error-messages="errors[passwordFieldKey]"
-                :label="$t('authentication.forms.newPassword.field')" />
+                :label="$t('authentication.forms.newPassword.field')"
+                @keydown.enter.prevent="onSubmit" />
             <Toggler
                 v-model="isPasswordVisible"
                 :label="$t('authentication.forms.newPassword.toggle')" />
