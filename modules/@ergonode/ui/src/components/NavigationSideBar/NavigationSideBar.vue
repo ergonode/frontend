@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <aside :class="classes">
+    <nav :class="classes">
         <ol class="navigation-side-bar__menu">
             <li>
                 <NuxtLink to="/dashboard">
@@ -36,7 +36,7 @@
                     :state="expendStateIcon" />
             </template>
         </Fab>
-    </aside>
+    </nav>
 </template>
 
 <script>

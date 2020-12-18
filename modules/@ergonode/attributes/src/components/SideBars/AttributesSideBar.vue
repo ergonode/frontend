@@ -275,7 +275,7 @@ export default {
                 this.groupedAttributes[languageCode].push({
                     id: UNASSIGNED_GROUP_ID,
                     key: getUUID(),
-                    value: 'Not Assigned',
+                    value: this.$t('attribute.sideBar.group.notAssigned'),
                     hint: '',
                     itemsCount: 0,
                     children: [],

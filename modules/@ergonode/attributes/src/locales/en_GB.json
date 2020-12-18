@@ -27,8 +27,11 @@
             }
         },
         "sideBar": {
-          "searchHeader": "Attributes",
-          "searchHeader2": "System attributes"
+            "searchHeader": "Attributes",
+            "searchHeader2": "System attributes",
+            "group": {
+                "notAssigned": "Not assigned"
+            }
         },
         "translation": {
             "nameLabel": "Attribute name",
@@ -59,7 +62,7 @@
         },
         "extends": {
             "template": {
-                 "form": {
+                "form": {
                     "title": "Presentation product",
                     "defaultLabel": "Default label attribute",
                     "defaultImage": "Default image attribute",
@@ -69,7 +72,7 @@
                     "noImageButton": "GO TO ATTRIBUTES",
                     "noImageTitle": "No image attributes",
                     "noImageSubtitle" : "There are no image attributes in the system, so you can create the first one."
-                 }
+                }
             }
         }
     },
