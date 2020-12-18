@@ -25,7 +25,7 @@
               "toggle": "Pokaż hasło",
               "button": "Ustaw hasło",
               "validation": {
-                  "hasMinimumLength": "co najmniej 8 znaków,",
+                  "hasMinimumLength": "co najmniej {length} znaków,",
                   "hasUppercase": "co najmniej 1 dużą literę (A-Z),",
                   "hasLowercase": "co najmniej 1 małą literę (a-z),",
                   "hasDigital": "co njamniej 1 cyfrę (0-9)."
@@ -49,7 +49,8 @@
       "errors": {
           "getUser": "Dane użytkownika nie zostały pobrane prawidłowo",
           "emailRequired": "E-mail jest wymagany",
-          "passwordRequired": "Hasło jest wymagane"
+          "passwordRequired": "Hasło jest wymagane",
+          "passwordValidation": "Wprowadzone hasło nie spełnia wymogów bezpieczeństwa"
       }
   }
 }

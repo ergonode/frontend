@@ -87,10 +87,19 @@ export default {
     }) {
         let isError = false;
         const errors = {};
+        const {
+            validation, ...dataToSend
+        } = data;
 
-        if (!data.password) {
+        if (!dataToSend.password) {
             errors.password = [
                 this.app.i18n.t('authentication.errors.passwordRequired'),
+            ];
+            isError = true;
+        }
+        if (!validation) {
+            errors.validation = [
+                this.app.i18n.t('authentication.errors.passwordValidation'),
             ];
             isError = true;
         }
@@ -99,7 +108,7 @@ export default {
             try {
                 await applyPassword({
                     $axios: this.app.$axios,
-                    data,
+                    data: dataToSend,
                 });
 
                 onSuccess();

@@ -76,6 +76,8 @@ export default {
             password: '',
             isPasswordVisible: false,
             isSubmitting: false,
+            maxLength: 6,
+
         };
     },
     computed: {
@@ -86,7 +88,7 @@ export default {
             set(value) {
                 this.validationHelper.hasMinimumLength = {
                     ...this.validationHelper.hasMinimumLength,
-                    value: (value.length >= 8),
+                    value: (value.length >= this.maxLength),
                 };
                 this.validationHelper.hasUppercase = {
                     ...this.validationHelper.hasUppercase,
@@ -108,7 +110,9 @@ export default {
             return {
                 hasMinimumLength: {
                     value: false,
-                    title: this.$t('authentication.forms.newPassword.validation.hasMinimumLength'),
+                    title: this.$t('authentication.forms.newPassword.validation.hasMinimumLength', {
+                        length: this.maxLength,
+                    }),
                 },
                 hasUppercase: {
                     value: false,
@@ -144,6 +148,7 @@ export default {
                 password: this.password,
                 passwordRepeat: this.password,
                 token: this.$route.query.token,
+                validation: Object.values(this.validationHelper).every(e => e.value),
             };
 
             this.removeScopeErrors(this.scope);
