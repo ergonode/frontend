@@ -7,7 +7,6 @@ import {
 } from '@Core/models/arrayWrapper';
 import {
     getFullTree,
-    getTreeWhenElementCollapse,
     getTreeWhenElementExpand,
     getTreeWhenElementRemoved,
 } from '@Core/models/template_grid/TreeCalculations';
@@ -33,19 +32,6 @@ export default {
         const newFullGridData = getFullTree(state.hiddenItems, data);
 
         commit(types.SET_FULL_GRID_DATA, newFullGridData);
-    },
-    setHiddenElementsForParent({
-        commit,
-    }, parent) {
-
-    },
-    setGridWhenCollapse: ({
-        commit,
-    }, {
-        data,
-        index,
-    }) => {
-        commit(types.SET_DATA, getTreeWhenElementCollapse(data, index));
     },
     setGridWhenExpand: ({
         commit, state,
@@ -126,23 +112,9 @@ export default {
         commit(types.ADD_ITEM, payload);
     },
     swapItemsPosition({
-        state,
         commit,
-    }, {
-        fromRow,
-        toRow,
-        fromColumn,
-        toColumn,
-    }) {
-        const gridData = JSON.parse(JSON.stringify(state.gridData));
-
-        gridData[fromRow].row = toRow;
-        gridData[fromRow].column = toColumn;
-
-        gridData[toRow].row = fromRow;
-        gridData[toRow].column = fromColumn;
-
-        commit(types.SET_DATA, swapItemPosition(gridData, fromRow, toRow));
+    }, payload) {
+        commit(types.SWAP_ITEMS, payload);
     },
     insertItemAtIndex({
         commit,

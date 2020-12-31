@@ -6,6 +6,7 @@ import {
     insertValueAtIndex,
     insertValuesAtIndex,
     removeArrayIndexes,
+    swapItemPosition,
 } from '@Core/models/arrayWrapper';
 import {
     removeObjectProperty,
@@ -18,6 +19,7 @@ export const types = {
     SET_DATA: 'SET_DATA',
     SET_FULL_GRID_DATA: 'SET_FULL_GRID_DATA',
     SET_ITEM: 'SET_ITEM',
+    SWAP_ITEMS: 'SWAP_ITEMS',
     REMOVE_GRID_ITEM: 'REMOVE_GRID_ITEM',
     SHIFT_ITEMS: 'SHIFT_ITEMS',
     REMOVE_GRID_ITEMS: 'REMOVE_GRID_ITEMS',
@@ -51,6 +53,26 @@ export default {
     },
     [types.REMOVE_GRID_ITEM](state, index) {
         state.gridData.splice(index, 1);
+    },
+    [types.SWAP_ITEMS](state, {
+        since,
+        till,
+        ghostShiftRow,
+        ghostColumn,
+        shiftRow,
+        parentId,
+    }) {
+        for (let i = since; i <= till; i += 1) {
+            if (state.gridData[i].id === 'ghost_item') {
+                state.gridData[i].row += ghostShiftRow;
+                state.gridData[i].column = ghostColumn;
+                state.gridData[i].parent = parentId;
+            } else {
+                state.gridData[i].row += shiftRow;
+            }
+        }
+
+        state.gridData = state.gridData.sort((a, b) => a.row - b.row);
     },
     [types.SHIFT_ITEMS](state, {
         since,

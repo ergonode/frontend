@@ -22,7 +22,7 @@
             <span
                 v-if="hasChildren"
                 class="template-grid-item__code"
-                v-text="`Inherited ${contextName.toLowerCase()}: ${item.children}`" />
+                v-text="`Inherited ${contextName.toLowerCase()}: ${childrenLength}`" />
         </div>
         <div :class="['template-grid-item__contextual-menu', contextualMenuHoveStateClasses]">
             <ActionIconButton
@@ -74,6 +74,10 @@ export default {
             type: String,
             default: '',
         },
+        childrenLength: {
+            type: Number,
+            default: 0,
+        },
         isExpanded: {
             type: Boolean,
             default: true,
@@ -121,7 +125,7 @@ export default {
             return THEME.SECONDARY;
         },
         hasChildren() {
-            return this.item.children > 0;
+            return this.childrenLength > 0;
         },
         buttonExpanderIconState() {
             return this.isExpanded ? ARROW.DOWN : ARROW.UP;

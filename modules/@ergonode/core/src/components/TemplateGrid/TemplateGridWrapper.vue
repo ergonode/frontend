@@ -38,13 +38,14 @@
                     :item="item"
                     :gap="gridGap"
                     :context-name="contextName"
+                    :children-length="childrenLength[item.id]"
                     :is-expanded="typeof hiddenItems[item.id] === 'undefined'"
                     :is-dragging-enabled="isDraggingEnabled"
                     @expand="onExpandItem"
                     @remove-item="removeItem(item)" />
                 <TemplateGirdItemLine
                     v-for="item in connectionLines"
-                    :key="`${item.id}-line`"
+                    :key="`${item.id}-line|${item.row}|${item.column}`"
                     :grid-data="gridData"
                     :row="item.row"
                     :column="item.column"
@@ -178,10 +179,22 @@ export default {
         items() {
             return this.gridData.filter(item => item.id !== 'ghost_item');
         },
+        childrenLength() {
+            return this.gridData.reduce((prev, curr) => {
+                const tmp = prev;
+
+                if (typeof tmp[curr.parent] === 'undefined') {
+                    tmp[curr.parent] = 1;
+                } else {
+                    tmp[curr.parent] += 1;
+                }
+
+                return tmp;
+            }, {});
+        },
     },
     methods: {
         ...mapActions('gridDesigner', [
-            'setGridWhenCollapse',
             'setGridWhenExpand',
             'setChildrenLength',
             'setHiddenItem',
@@ -211,7 +224,7 @@ export default {
 
                 this.hiddenItems[id] = [];
 
-                while (i < this.gridData.length - 1 && this.gridData[i].parent !== parent) {
+                while (i < this.gridData.length && this.gridData[i].parent !== parent) {
                     const item = this.gridData[i];
 
                     this.hiddenItems[id].push({
@@ -222,9 +235,8 @@ export default {
                     i += 1;
                 }
 
-                console.log(this.gridData, i);
-
-                const shiftValue = this.gridData[i].row - row;
+                const shiftValue = i - row;
+                console.log(this.gridData, shiftValue);
 
                 // console.log('before:', this.items.map(a => a.row));
 

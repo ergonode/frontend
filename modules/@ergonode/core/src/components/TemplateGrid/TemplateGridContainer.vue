@@ -154,7 +154,6 @@ export default {
             'setItemAtIndex',
             'insertItemAtIndex',
             'swapItemsPosition',
-            'setHiddenElementsForParent',
         ]),
         calculateRowsCount() {
             const {
@@ -223,8 +222,6 @@ export default {
                     },
                 });
 
-                console.log(children, this.hiddenItems[id], children > 0 && typeof this.hiddenItems[id] === 'undefined');
-
                 if (children > 0 && typeof this.hiddenItems[id] === 'undefined') {
                     this.$emit('expand', item);
                 }
@@ -258,15 +255,8 @@ export default {
                     });
                 }
 
-                console.log(item, this.hiddenItems);
-
                 if (item.children > 0 && typeof this.hiddenItems[item.id] !== 'undefined') {
                     this.$emit('expand', item);
-                    // this.$emit('update-hidden-items', {
-                    //     id: item.id,
-                    //     row: this.ghostIndex.row,
-                    //     column: this.ghostIndex.column,
-                    // });
                 }
 
                 this.__setState({
@@ -332,6 +322,7 @@ export default {
                     key: 'ghostIndex',
                     value: -1,
                 });
+                console.log('left');
             }
         },
         onDragOver(event) {
@@ -339,7 +330,7 @@ export default {
 
             if (this.ghostIndex === -1) {
                 this.insertGhostItemOnEnter(event);
-            } else {
+            } else if (this.gridData.length > 1) {
                 this.updateGhostItemPositionOnDragOver(event);
             }
         },
@@ -377,48 +368,16 @@ export default {
                 const isSameRow = row === this.ghostIndex.row;
 
                 if (isSameRow) {
-                    this.updateGhostItemPositionHorizontally(row, column);
+                    this.updateHorizontally(row, column);
                 } else {
-                    this.updateGhostItemPositionVertically(row, isBeforeRow);
+                    this.updateVertically(row, column);
                 }
             }
         },
-        updateGhostItemPositionHorizontally(row, column) {
-            const parentItemsRows = this.getParentItemsRows();
-            const minItemRow = Math.min(...parentItemsRows);
-            const maxItemRow = Math.max(...parentItemsRows);
-
-            const isFirstChild = minItemRow >= this.ghostIndex.row;
-            const isLastChild = maxItemRow <= this.ghostIndex.row;
-            const isBetweenChild = this.ghostIndex.row > minItemRow
-                && this.ghostIndex.row < maxItemRow;
-
-            if (row + 1 < this.gridData.length
-                && this.gridData[row + 1].column - column > 0) {
+        updateHorizontally(row, column) {
+            if (this.isColliding(row, column)) {
                 return;
             }
-
-            if (isFirstChild && isLastChild) {
-                if (column > this.ghostIndex.column) {
-                    return;
-                }
-            } else if (isFirstChild) {
-                return;
-            } else if (isBetweenChild) {
-                const distanceBetweenNeighbours = Math.abs(
-                    this.gridData[row - 1].column - this.gridData[row + 1].column,
-                );
-                const isMaxColumn = column - this.ghostIndex.column > 1
-                    || column - this.ghostIndex.column < 0;
-
-                if (!distanceBetweenNeighbours && isMaxColumn) {
-                    return;
-                }
-            }
-
-            const fixedColumn = this.ghostIndex.column > column
-                ? this.ghostIndex.column - 1
-                : this.ghostIndex.column + 1;
 
             const parent = this.getParent(row, column);
 
@@ -427,7 +386,7 @@ export default {
                 item: {
                     id: 'ghost_item',
                     row,
-                    column: fixedColumn,
+                    column,
                     parent: parent.id,
                 },
             });
@@ -436,34 +395,44 @@ export default {
                 key: 'ghostIndex',
                 value: {
                     row,
-                    column: fixedColumn,
+                    column,
                 },
             });
         },
-        updateGhostItemPositionVertically(row, isBeforeRow) {
-            let fromRow = row - 1;
-            let toRow = this.ghostIndex.row + 1;
+        updateVertically(row, column) {
+            const fromRow = this.ghostIndex.row;
 
-            const fromColumn = this.gridData[row].column;
-            const toColumn = this.gridData[row].column;
+            const isColliding = this.isColliding(row, column);
 
-            if (isBeforeRow) {
-                fromRow = this.ghostIndex.row;
-                toRow = row;
+            let since = fromRow;
+            let till = row;
+            let ghostShiftRow = row - fromRow;
+            const ghostColumn = isColliding
+                ? this.gridData[row].column
+                : Math.min(this.gridData[row].column + 1, column);
+            let shiftRow = -1;
+
+            if (fromRow > row) {
+                since = row;
+                till = fromRow;
+                shiftRow = 1;
+                ghostShiftRow = row - fromRow;
             }
 
             this.swapItemsPosition({
-                fromRow,
-                toRow,
-                fromColumn,
-                toColumn,
+                since,
+                till,
+                ghostShiftRow,
+                ghostColumn,
+                shiftRow,
+                parentId: this.getParent(till, ghostColumn).id,
             });
 
             this.__setState({
                 key: 'ghostIndex',
                 value: {
-                    row: toRow,
-                    column: toColumn,
+                    row: fromRow + ghostShiftRow,
+                    column: ghostColumn,
                 },
             });
         },
@@ -475,9 +444,12 @@ export default {
                     row,
                 } = shadowItem;
                 const fixedRow = Math.min(row, this.gridData.length - 1);
-                const {
-                    column,
-                } = this.gridData[fixedRow];
+
+                let column = 0;
+
+                if (fixedRow !== -1) {
+                    column = this.gridData[fixedRow].column;
+                }
 
                 const parent = this.getParent(fixedRow, column);
 
@@ -522,12 +494,28 @@ export default {
                 }
             }
         },
-        getParentItemsRows() {
-            const ghostItem = this.gridData[this.ghostIndex.row];
+        isColliding(row, column) {
+            const aboveColumn = this.getAboveItem(row).column;
+            const bellowColumn = this.getBellowItem(row).column;
 
-            return this.gridData
-                .filter(element => element.parent === ghostItem.parent)
-                .map(element => element.row);
+            const isCollidingTop = !(aboveColumn >= bellowColumn
+                && column > this.ghostIndex.column
+                && column <= aboveColumn + 1);
+            const isCollidingBottom = !(bellowColumn <= aboveColumn
+                && column < this.ghostIndex.column
+                && column >= bellowColumn);
+
+            return (isCollidingTop && isCollidingBottom) || row === 0;
+        },
+        getAboveItem(row) {
+            return row - 1 > 0
+                ? this.gridData[row - 1]
+                : this.gridData[0];
+        },
+        getBellowItem(row) {
+            return row + 1 < this.gridData.length
+                ? this.gridData[row + 1]
+                : this.gridData[0];
         },
         getShadowItem({
             pageX,
@@ -555,6 +543,14 @@ export default {
             return isMouseOutOfBoundsElement(this.$el, xPos, yPos);
         },
         getParent(row, column) {
+            if (!this.gridData.length) {
+                return {
+                    id: null,
+                    row: 0,
+                    column: 0,
+                };
+            }
+
             if (column === 0 || row === 0) {
                 return this.gridData[0];
             }

@@ -12,9 +12,6 @@ export function getParsedTreeData(tree, categories) {
         for (let i = 0; i < treeArray.length; i += 1) {
             const categoryId = treeArray[i].category_id;
             const {
-                length: childrenLength,
-            } = treeArray[i].children;
-            const {
                 code: categoryCode,
                 label: categoryName,
             } = categories.find(category => category.id === categoryId);
@@ -26,13 +23,12 @@ export function getParsedTreeData(tree, categories) {
                 row: rowCounter,
                 column,
                 parent,
-                children: childrenLength,
             });
             rowCounter += 1;
             buildTree(treeArray[i].children, categoryId, column + 1);
         }
     };
-    buildTree(tree, 'root', 0);
+    buildTree(tree, null, 0);
     return newTree;
 }
 
