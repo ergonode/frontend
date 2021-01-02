@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <TemplateGridWrapper
+    <TemplateGrid
         constant-root
         :columns="columns"
         :row-height="rowHeight"
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import TemplateGridWrapper from '@Core/components/TemplateGrid/TemplateGridWrapper';
+import TemplateGrid from '@Core/components/TemplateGrid/TemplateGrid';
 import PRIVILEGES from '@Core/config/privileges';
 import {
     COLUMNS,
@@ -23,7 +23,7 @@ import {
 export default {
     name: 'LanguagesTreeWrapper',
     components: {
-        TemplateGridWrapper,
+        TemplateGrid,
     },
     computed: {
         isAllowedToUpdate() {

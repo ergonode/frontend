@@ -6,12 +6,12 @@ import {
     shallowMount,
 } from '@vue/test-utils';
 
-import TemplateGridShadowItem from '../TemplateGridShadowItem';
+import DesignerBackgroundItem from '../DesignerBackgroundItem';
 
-describe('TemplateGrid/TemplateGridShadowItem', () => {
+describe('TemplateGrid/DesignerBackgroundItem', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(TemplateGridShadowItem, {
+        wrapper = shallowMount(DesignerBackgroundItem, {
             propsData: {
                 lastRow: false,
                 itemId: 1,
@@ -20,19 +20,9 @@ describe('TemplateGrid/TemplateGridShadowItem', () => {
     });
 
     it('Component is named well', () => {
-        expect(typeof TemplateGridShadowItem.name).toBe('string');
-        expect(TemplateGridShadowItem.name).toEqual('TemplateGridShadowItem');
+        expect(typeof DesignerBackgroundItem.name).toBe('string');
+        expect(DesignerBackgroundItem.name).toEqual('DesignerBackgroundItem');
     });
-    it('Check if not last row', () => {
-        expect(wrapper.find('.shadow-grid-item--last-row')).toBeTruthy();
-    });
-    // FIXME
-    // it('Check if last row', () => {
-    //     wrapper.setProps({
-    //         lastRow: true,
-    //     });
-    //     expect(wrapper.find('.shadow-grid-item--last-row')).toBeTruthy();
-    // });
     it('Check item default id', () => {
         expect(wrapper.vm.lastRow).toBeFalsy();
         expect(wrapper.vm.itemId).toBe(1);

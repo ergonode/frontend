@@ -232,7 +232,7 @@ export default {
             default: DEFAULT_GRID_PAGINATION,
         },
         /**
-         * Determines the size of row height
+         * Determines the row height
          */
         rowHeight: {
             type: Number,

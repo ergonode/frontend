@@ -6,12 +6,12 @@ import {
     mount,
 } from '@vue/test-utils';
 
-import TemplateGridPresentationLayer from '../TemplateGridPresentationLayer';
+import DesignerBackgroundLayer from '@UI/components/Designer/DesignerBackgroundLayer';
 
-describe('TemplateGrid/TemplateGridPresentationLayer', () => {
+describe('TemplateGrid/DesignerBackgroundLayer', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(TemplateGridPresentationLayer, {
+        wrapper = mount(DesignerBackgroundLayer, {
             propsData: {
                 columns: 2,
                 rows: 2,
@@ -21,12 +21,12 @@ describe('TemplateGrid/TemplateGridPresentationLayer', () => {
     });
 
     it('Component is named well', () => {
-        expect(typeof TemplateGridPresentationLayer.name).toBe('string');
-        expect(TemplateGridPresentationLayer.name).toEqual('TemplateGridPresentationLayer');
+        expect(typeof DesignerBackgroundLayer.name).toBe('string');
+        expect(DesignerBackgroundLayer.name).toEqual('DesignerBackgroundLayer');
     });
 
     it('Check number of items', () => {
-        expect(TemplateGridPresentationLayer.computed.numberOfItems.call({
+        expect(DesignerBackgroundLayer.computed.numberOfItems.call({
             columns: 3,
             rows: 10,
         })).toBe(30);
@@ -39,14 +39,10 @@ describe('TemplateGrid/TemplateGridPresentationLayer', () => {
     });
 
     it('Check main classes witch default props', () => {
-        const children = wrapper.findAll('.presentation-layer > div');
-        expect(wrapper.find('.presentation-layer')).toBeTruthy();
-        expect(wrapper.find('.presentation-layer__border-top')).toBeTruthy();
+        const children = wrapper.findAll('.designer-background-layer > div');
+        expect(wrapper.find('.designer-background-layer')).toBeTruthy();
+        expect(wrapper.find('.template-grid-background-layer__border-top')).toBeTruthy();
         expect(children.length).toEqual(4);
-        expect(children.at(0).contains('.shadow-grid-item--last-row')).toBeFalsy();
-        expect(children.at(1).contains('.shadow-grid-item--last-row')).toBeFalsy();
-        expect(children.at(2).contains('.shadow-grid-item--last-row')).toBeTruthy();
-        expect(children.at(3).contains('.shadow-grid-item--last-row')).toBeTruthy();
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -57,9 +53,9 @@ describe('TemplateGrid/TemplateGridPresentationLayer', () => {
     //         isHeader: true,
     //     });
     //
-    //     const children = wrapper.findAll('.presentation-layer > div');
-    //     expect(wrapper.find('.presentation-layer').exists()).toBeTruthy();
-    //     expect(wrapper.find('.presentation-layer__border-top')).toBeFalsy();
+    //     const children = wrapper.findAll('.designer-background-layer > div');
+    //     expect(wrapper.find('.designer-background-layer').exists()).toBeTruthy();
+    //     expect(wrapper.find('.template-grid-background-layer__border-top')).toBeFalsy();
     //     expect(children.length).toEqual(6);
     //     expect(wrapper).toMatchSnapshot();
     // });

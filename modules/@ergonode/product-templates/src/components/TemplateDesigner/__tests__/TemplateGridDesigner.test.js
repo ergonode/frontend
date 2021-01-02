@@ -2,12 +2,12 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import TemplateGridPresentationLayer from '@Core/components/TemplateGrid/TemplateGridPresentationLayer';
+import DesignerBackgroundLayer from '@UI/components/Designer/DesignerBackgroundLayer';
 import {
     shallowMount,
 } from '@vue/test-utils';
 
-import TemplateGridDesigner from '../Base/TemplateGridDesigner';
+import Designer from '@UI/components/Designer/Designer';
 
 const columnsNumber = 4;
 const maxRows = 0;
@@ -17,11 +17,11 @@ const gridStyle = {
     gridAutoRows: `${rowHeight}px`,
 };
 
-describe('Template/Base/TemplateGridDesigner', () => {
+describe('Template/Base/Designer', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(TemplateGridDesigner, {
+        wrapper = shallowMount(Designer, {
             attachToDocument: true,
             propsData: {
                 maxRow: maxRows,
@@ -30,7 +30,7 @@ describe('Template/Base/TemplateGridDesigner', () => {
             slots: {
                 default: {
                     render(h) {
-                        return h(TemplateGridPresentationLayer, {
+                        return h(DesignerBackgroundLayer, {
                             props: {
                                 gridStyles: gridStyle,
                                 columns: columnsNumber,
@@ -45,8 +45,8 @@ describe('Template/Base/TemplateGridDesigner', () => {
     });
 
     it('Component is named well', () => {
-        expect(typeof TemplateGridDesigner.name).toBe('string');
-        expect(TemplateGridDesigner.name).toEqual('TemplateGridDesigner');
+        expect(typeof Designer.name).toBe('string');
+        expect(Designer.name).toEqual('Designer');
     });
 
     it('Check if resizing event was called', () => {
@@ -70,7 +70,7 @@ describe('Template/Base/TemplateGridDesigner', () => {
     });
 
     it('Template designer has presentation layer as a child', () => {
-        const presentationLayer = wrapper.find(TemplateGridPresentationLayer);
+        const presentationLayer = wrapper.find(DesignerBackgroundLayer);
 
         expect(presentationLayer.isVueInstance()).toBe(true);
     });

@@ -3,20 +3,20 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="grid-items-container">
+    <div class="designer-background-item">
         <slot />
     </div>
 </template>
-
 <script>
+
 export default {
-    name: 'TemplateGridItemsContainer',
+    name: 'DesignerBackgroundItem',
 };
 </script>
 
 <style lang="scss" scoped>
-    .grid-items-container {
-        display: grid;
-        height: auto;
+    .designer-background-item {
+        border-top: $BORDER_DASHED_GREY;
+        border-left: $BORDER_DASHED_GREY;
     }
 </style>

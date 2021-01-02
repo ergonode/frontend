@@ -4,7 +4,7 @@
  */
 // import { shallowMount, createLocalVue } from '@vue/test-utils';
 // import { Store } from 'vuex-mock-store';
-import TemplateGridContainer from '../TemplateGridContainer';
+import TemplateGridDraggableLayer from '../TemplateGridDraggableLayer';
 
 // const localVue = createLocalVue();
 // const store = new Store({
@@ -27,9 +27,9 @@ import TemplateGridContainer from '../TemplateGridContainer';
 // const mocks = {
 //     $store: store,
 // };
-describe('TemplateGrid/TemplateGridContainer', () => {
+describe('TemplateGrid/TemplateGridDraggableLayer', () => {
     it('Component is named well', () => {
-        expect(typeof TemplateGridContainer.name).toBe('string');
-        expect(TemplateGridContainer.name).toEqual('TemplateGridContainer');
+        expect(typeof TemplateGridDraggableLayer.name).toBe('string');
+        expect(TemplateGridDraggableLayer.name).toEqual('TemplateGridDraggableLayer');
     });
 });

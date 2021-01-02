@@ -10,7 +10,7 @@ import {
     Store,
 } from 'vuex-mock-store';
 
-import TemplateGridDraggableLayer from '../Base/TemplateGridDraggableLayer';
+// import TemplateGridDraggableLayer from '../Base/TemplateGridDraggableLayer';
 
 const localVue = createLocalVue();
 const store = new Store({

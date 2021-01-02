@@ -3,18 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="shadow-grid-item" />
+    <div class="designer-body">
+        <slot />
+    </div>
 </template>
+
 <script>
 
 export default {
-    name: 'TemplateGridShadowItem',
+    name: 'DesignerBody',
 };
 </script>
 
 <style lang="scss" scoped>
-    .shadow-grid-item {
-        border-top: $BORDER_DASHED_GREY;
-        border-left: $BORDER_DASHED_GREY;
+    .designer-body {
+        position: relative;
+        display: flex;
+        flex: 1;
     }
 </style>

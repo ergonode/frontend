@@ -4,9 +4,9 @@
  */
 <template>
     <div
+        :style="styles"
         :class="classes"
         :draggable="isDraggingEnabled && !disabled"
-        ref="layoutElement"
         @dragstart="onDragStart"
         @dragend="onDragEnd">
         <slot name="content" />
@@ -115,6 +115,21 @@ export default {
         ...mapState('draggable', [
             'draggedElement',
         ]),
+        styles() {
+            const {
+                row,
+                column,
+                height,
+                width,
+            } = this.element;
+
+            const offsetRow = row + 1;
+            const offsetColumn = column + 1;
+
+            return {
+                gridArea: `${offsetRow} / ${offsetColumn} / ${offsetRow + height} / ${offsetColumn + width}`,
+            };
+        },
         classes() {
             return [
                 'layout-element',

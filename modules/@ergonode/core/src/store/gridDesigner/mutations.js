@@ -6,7 +6,6 @@ import {
     insertValueAtIndex,
     insertValuesAtIndex,
     removeArrayIndexes,
-    swapItemPosition,
 } from '@Core/models/arrayWrapper';
 import {
     removeObjectProperty,
@@ -15,7 +14,6 @@ import {
 export const types = {
     ADD_ITEM: 'ADD_ITEM',
     INSERT_ITEMS: 'INSERT_ITEMS',
-    SET_ROWS_COUNT: 'SET_ROWS_COUNT',
     SET_DATA: 'SET_DATA',
     SET_FULL_GRID_DATA: 'SET_FULL_GRID_DATA',
     SET_ITEM: 'SET_ITEM',
@@ -41,9 +39,6 @@ export default {
     },
     [types.ADD_ITEM](state, item) {
         state.gridData.push(item);
-    },
-    [types.SET_ROWS_COUNT](state, value) {
-        state.rows = value;
     },
     [types.SET_DATA](state, value) {
         state.gridData = value;

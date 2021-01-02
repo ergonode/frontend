@@ -93,7 +93,10 @@ const addObstaclesToHighlightingPositions = ({
 // When element is in resizing mode,
 // we need to determinate which area is going to be marked as obstacle or not
 export function getObstaclePositionsForElement({
-    row, column, width, height,
+    row,
+    column,
+    width,
+    height,
 }) {
     if (width < 0 || height < 0) {
         return [];
@@ -117,7 +120,11 @@ export function getObstaclePositionsForElement({
 }
 
 export function getHighlightingLayoutDropPositions({
-    draggedElWidth, draggedElHeight, layoutWidth, layoutHeight, layoutElements,
+    draggedElWidth,
+    draggedElHeight,
+    layoutWidth,
+    layoutHeight,
+    layoutElements,
 }) {
     const {
         length,

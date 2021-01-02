@@ -6,16 +6,16 @@
  * Returns object with max value in array by object key
  * @function
  * @param {Array} array
- * @param {string} propName
+ * @param {string} key
  * @returns {Object}
  */
-export function getObjectWithMaxValueInArrayByObjectKey(array, propName) {
+export function getMaxValueObject(array, key) {
     if (!array.length) return null;
 
     return array.reduce(
         (prev, current) => {
-            if (!current || !current[propName]) return prev;
-            return (prev[propName] > current[propName] ? prev : current);
+            if (!current || !current[key]) return prev;
+            return (prev[key] > current[key] ? prev : current);
         },
     );
 }

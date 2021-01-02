@@ -3,29 +3,20 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="template-grid-wrapper">
-        <TemplateGridContainer
-            :columns="columns"
-            :rows="rows"
-            :row-height="rowHeight"
-            :constant-root="constantRoot"
-            :grid-data="gridData"
-            :hidden-items="hiddenItems"
-            :is-dragging-enabled="isDraggingEnabled"
-            :is-multi-draggable="isMultiDraggable"
-            @expand="onExpandItem"
-            @after-drop="id => $emit('after-drop', id)"
-            @after-remove="id => $emit('after-remove', id)"
-            @remove="removeItemOnDrop">
-            <slot
-                name="gridPresentationLayer"
-                :rows="rows">
-                <TemplateGridPresentationLayer
-                    :style="gridStyles"
-                    :columns="columns"
-                    :rows="rows" />
-            </slot>
-            <TemplateGridItemsContainer :style="gridStyles">
+    <Designer
+        :columns="columns"
+        :row-height="rowHeight"
+        :last-item-row="gridData.length">
+        <template #body="{ layerStyle }">
+            <TemplateGridDraggableLayer
+                :style="layerStyle"
+                :constant-root="constantRoot"
+                :grid-data="gridData"
+                :hidden-items="hiddenItems"
+                :is-dragging-enabled="isDraggingEnabled"
+                :is-multi-draggable="isMultiDraggable"
+                @expand="onExpandItem"
+                @remove="removeItemOnDrop">
                 <TemplateGridGhostItem
                     v-if="ghostIndex !== -1"
                     :row="ghostIndex.row"
@@ -52,32 +43,27 @@
                     :row-height="rowHeight"
                     :gap="gridGap"
                     :is-ghost="item.id === 'ghost_item'" />
-            </TemplateGridItemsContainer>
-        </TemplateGridContainer>
-    </div>
+            </TemplateGridDraggableLayer>
+        </template>
+    </Designer>
 </template>
 
 <script>
 import TemplateGirdItemLine from '@Core/components/TemplateGrid/TemplateGirdItemLine';
-import TemplateGridContainer from '@Core/components/TemplateGrid/TemplateGridContainer';
+import TemplateGridDraggableLayer from '@Core/components/TemplateGrid/TemplateGridDraggableLayer';
 import TemplateGridGhostItem from '@Core/components/TemplateGrid/TemplateGridGhostItem';
 import TemplateGridItem from '@Core/components/TemplateGrid/TemplateGridItem';
-import TemplateGridItemsContainer from '@Core/components/TemplateGrid/TemplateGridItemsContainer';
-import TemplateGridPresentationLayer from '@Core/components/TemplateGrid/TemplateGridPresentationLayer';
-import {
-    getNearestNeighborRowId,
-} from '@Core/models/template_grid/TreeCalculations';
+import Designer from '@UI/components/Designer/Designer';
 import {
     mapActions,
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'TemplateGridWrapper',
+    name: 'TemplateGrid',
     components: {
-        TemplateGridPresentationLayer,
-        TemplateGridItemsContainer,
-        TemplateGridContainer,
+        Designer,
+        TemplateGridDraggableLayer,
         TemplateGridGhostItem,
         TemplateGridItem,
         TemplateGirdItemLine,
@@ -141,7 +127,7 @@ export default {
             required: true,
         },
         /**
-         * Determines the size of row height
+         * Determines the row height
          */
         rowHeight: {
             type: Number,
@@ -164,15 +150,8 @@ export default {
             'disabledElements',
         ]),
         ...mapState('gridDesigner', [
-            'rows',
             'gridData',
         ]),
-        gridStyles() {
-            return {
-                gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
-                gridTemplateRows: `repeat(${this.rows}, ${this.rowHeight}px)`,
-            };
-        },
         connectionLines() {
             return this.gridData.filter(item => item.column > 0);
         },
@@ -180,17 +159,25 @@ export default {
             return this.gridData.filter(item => item.id !== 'ghost_item');
         },
         childrenLength() {
-            return this.gridData.reduce((prev, curr) => {
-                const tmp = prev;
+            const childrenLength = {};
 
-                if (typeof tmp[curr.parent] === 'undefined') {
-                    tmp[curr.parent] = 1;
-                } else {
-                    tmp[curr.parent] += 1;
+            this.gridData.forEach((item) => {
+                if (typeof childrenLength[item.parent] === 'undefined') {
+                    childrenLength[item.parent] = 0;
                 }
 
-                return tmp;
-            }, {});
+                childrenLength[item.parent] += 1;
+            });
+
+            Object.keys(this.hiddenItems).forEach((key) => {
+                if (typeof childrenLength[key] === 'undefined') {
+                    childrenLength[key] = 0;
+                }
+
+                childrenLength[key] += this.hiddenItems[key].length;
+            });
+
+            return childrenLength;
         },
     },
     methods: {
@@ -236,23 +223,14 @@ export default {
                 }
 
                 const shiftValue = i - row;
-                console.log(this.gridData, shiftValue);
-
-                // console.log('before:', this.items.map(a => a.row));
 
                 this.shiftItems({
                     since: row + shiftValue - 1,
                     value: -(shiftValue - 1),
                 });
                 this.removeItems(indexesToRemove);
-
-                // console.log('After:', this.items.map(a => a.row));
             } else {
                 const shiftValue = this.hiddenItems[id].length;
-
-                // console.log('before:', this.items.map(i => i.row));
-
-                console.log(row);
 
                 for (let i = 0; i < this.hiddenItems[id].length; i += 1) {
                     this.hiddenItems[id][i].row = row + i + 1;
@@ -269,8 +247,6 @@ export default {
                     ],
                     since: row + 1,
                 });
-
-                // console.log('After:', this.items.map(i => i.row));
 
                 delete this.hiddenItems[id];
             }
@@ -340,11 +316,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .template-grid-wrapper {
+    .template-grid {
         display: flex;
         flex: 1 1 auto;
         flex-direction: column;
-        justify-content: space-between;
         height: 0;
         padding: 24px 24px 0;
         overflow: auto;

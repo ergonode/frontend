@@ -18,24 +18,28 @@
 import {
     isObject,
 } from '@Core/models/objectWrapper';
-import TemplateGridGhostItem from '@Templates/components/Template/Base/TemplateGridGhostItem';
+import TemplateGridGhostItem from '@Templates/components/TemplateDesigner/Base/TemplateGridGhostItem';
 import {
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'TemplateGridLayerItem',
+    name: 'TemplateDesignerBackgroundItem',
     components: {
         TemplateGridGhostItem,
     },
     props: {
-        position: {
-            type: Object,
-            required: true,
-        },
         highlightingPositions: {
             type: Array,
             default: () => [],
+        },
+        row: {
+            type: Number,
+            default: 0,
+        },
+        column: {
+            type: Number,
+            default: 0,
         },
     },
     data() {
@@ -49,11 +53,11 @@ export default {
         ]),
         classes() {
             return [
-                'template-grid-layer-item',
+                'designer-background-item',
                 {
-                    'template-grid-layer-item--highlighted': this.highlightedElement,
-                    'template-grid-layer-item--top-border': this.highlightedElement && !this.isTopNeighbour,
-                    'template-grid-layer-item--right-border': this.highlightedElement && !this.isRightNeighbour,
+                    'designer-background-item--highlighted': this.highlightedElement,
+                    // 'designer-background-item--top-border': this.highlightedElement && !this.isTopNeighbour,
+                    // 'designer-background-item--right-border': this.highlightedElement && !this.isRightNeighbour,
                 },
             ];
         },
@@ -61,23 +65,17 @@ export default {
             return this.highlightingPositions.find(this.isEqualToPosition);
         },
         isTopNeighbour() {
-            const {
-                row: rowPos, column: columnPos,
-            } = this.position;
             return this.highlightingPositions.some(
                 ({
                     row, column,
-                }) => row === rowPos - 1 && column === columnPos,
+                }) => row === this.row - 1 && column === this.column,
             );
         },
         isRightNeighbour() {
-            const {
-                row: rowPos, column: columnPos,
-            } = this.position;
             return this.highlightingPositions.some(
                 ({
                     row, column,
-                }) => row === rowPos && column === columnPos + 1,
+                }) => row === this.row && column === this.column + 1,
             );
         },
         ghostItemBoundsStyle() {
@@ -111,7 +109,10 @@ export default {
                 this.isGhostElement = false;
                 this.$emit('drop', {
                     draggableId: event.dataTransfer.getData('text/plain'),
-                    position: this.position,
+                    position: {
+                        row: this.row,
+                        column: this.column,
+                    },
                 });
             }
         },
@@ -129,32 +130,29 @@ export default {
             }
         },
         isEqualToPosition(position) {
-            const {
-                row, column,
-            } = this.position;
-            return row === position.row && column === position.column;
+            return this.row === position.row && this.column === position.column;
         },
     },
 };
 </script>
 <style lang="scss" scoped>
-    .template-grid-layer-item {
+    .designer-background-item {
         position: relative;
         display: flex;
         padding: 8px;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+        border-top: $BORDER_DASHED_GREY;
         border-left: $BORDER_DASHED_GREY;
-        border-bottom: $BORDER_DASHED_GREY;
 
         &--highlighted {
             flex: 1;
             background-color: $GREEN_LIGHT;
-            border-left: $BORDER_DASHED_GREEN;
-            border-bottom: $BORDER_DASHED_GREEN;
+            border-top-color: $GREEN;
+            border-left-color: $GREEN;
         }
 
         &--top-border {
-            border-top: $BORDER_DASHED_GREEN;
+            border-top-color: $GREEN;
         }
 
         &--right-border {

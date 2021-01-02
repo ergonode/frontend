@@ -3,9 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <TemplateGridDesigner
+    <Designer
         :row-height="templateRowHeight"
-        :max-row="maxRows">
+        :rows="maxRows">
         <div
             class="product-template-grid"
             :style="gridTemplateRows">
@@ -19,7 +19,7 @@
                 v-bind="elements[index]"
                 @input="onValueChange" />
         </div>
-    </TemplateGridDesigner>
+    </Designer>
 </template>
 
 <script>
@@ -31,7 +31,7 @@ import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';
 import PRIVILEGES from '@Products/config/privileges';
-import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
+import Designer from '@UI/components/Designer/Designer';
 import {
     mapGetters,
     mapState,
@@ -40,7 +40,7 @@ import {
 export default {
     name: 'ProductTemplateForm',
     components: {
-        TemplateGridDesigner,
+        Designer,
     },
     mixins: [
         formFeedbackMixin,

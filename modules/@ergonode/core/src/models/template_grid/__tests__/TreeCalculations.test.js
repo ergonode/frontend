@@ -5,7 +5,6 @@
 import {
     getCoordinatesForHiddenElements,
     getFullTree,
-    getNearestNeighborRowId,
     getTreeWhenElementCollapse,
     getTreeWhenElementExpand,
     getTreeWhenElementRemoved,
@@ -80,57 +79,6 @@ describe('TreeCalculations/getCoordinatesForHiddenElements', () => {
         });
         expect(result.length).toBe(2);
         expect(result).toStrictEqual(expectedData);
-    });
-});
-
-describe('TreeCalculations/getNearestNeighborRowId', () => {
-    it('Find nearest neighbor for element (col:null, row:null)', () => {
-        const column = null;
-        const row = null;
-        const result = getNearestNeighborRowId(mappingTree, column, row);
-        expect(result).toBe(4);
-    });
-
-    it('Find nearest neighbor for element (col:0, row:0)', () => {
-        const column = 0;
-        const row = 0;
-        const result = getNearestNeighborRowId(mappingTree, column, row);
-        expect(result).toBe(4);
-    });
-
-    it('Find nearest neighbor for element (col:1, row:1)', () => {
-        const column = 1;
-        const row = 1;
-        const result = getNearestNeighborRowId(mappingTree, column, row);
-        expect(result).toBe(4);
-    });
-
-    it('Find nearest neighbor for element (col:2, row:2)', () => {
-        const column = 2;
-        const row = 2;
-        const result = getNearestNeighborRowId(mappingTree, column, row);
-        expect(result).toBe(3);
-    });
-
-    it('Find nearest neighbor for element (col:2, row:3)', () => {
-        const column = 2;
-        const row = 3;
-        const result = getNearestNeighborRowId(mappingTree, column, row);
-        expect(result).toBe(4);
-    });
-
-    it('Find nearest neighbor for element (col:0, row:4)', () => {
-        const column = 0;
-        const row = 4;
-        const result = getNearestNeighborRowId(mappingTree, column, row);
-        expect(result).toBe(5);
-    });
-
-    it('Find nearest neighbor for element (col:100, row:100)', () => {
-        const column = 100;
-        const row = 100;
-        const result = getNearestNeighborRowId(mappingTree, column, row);
-        expect(result).toBe(5);
     });
 });
 

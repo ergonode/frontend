@@ -6,20 +6,20 @@ import {
     shallowMount,
 } from '@vue/test-utils';
 
-import TemplateGridItemsContainer from '../TemplateGridItemsContainer';
+import TemplateGridItemsLayer from '../TemplateGridItemsLayer';
 
-describe('TemplateGrid/TemplateGridItemsContainer', () => {
+describe('TemplateGrid/TemplateGridItemsLayer', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(TemplateGridItemsContainer);
+        wrapper = shallowMount(TemplateGridItemsLayer);
     });
 
     it('Component is named well', () => {
-        expect(typeof TemplateGridItemsContainer.name).toBe('string');
-        expect(TemplateGridItemsContainer.name).toEqual('TemplateGridItemsContainer');
+        expect(typeof TemplateGridItemsLayer.name).toBe('string');
+        expect(TemplateGridItemsLayer.name).toEqual('TemplateGridItemsLayer');
     });
     it('Component has main class', () => {
-        expect(wrapper.find('.grid-items-container')).toBeTruthy();
+        expect(wrapper.find('.template-grid-items-layer')).toBeTruthy();
         expect(wrapper).toMatchSnapshot();
     });
 });

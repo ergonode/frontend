@@ -10,7 +10,7 @@ import {
     Store,
 } from 'vuex-mock-store';
 
-import TemplateGridLayerItem from '../Base/TemplateGridLayerItem';
+import DesignerBackgroundItem from '../DesignerBackgroundItem';
 
 const localVue = createLocalVue();
 const store = new Store({
@@ -24,11 +24,11 @@ const mocks = {
     $store: store,
 };
 
-describe('Template/Base/TemplateGridLayerItem', () => {
+describe('Template/Base/DesignerBackgroundItem', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(TemplateGridLayerItem, {
+        wrapper = shallowMount(DesignerBackgroundItem, {
             localVue,
             mocks,
             propsData: {
@@ -41,8 +41,8 @@ describe('Template/Base/TemplateGridLayerItem', () => {
     });
 
     it('Component is named well', () => {
-        expect(typeof TemplateGridLayerItem.name).toBe('string');
-        expect(TemplateGridLayerItem.name).toEqual('TemplateGridLayerItem');
+        expect(typeof DesignerBackgroundItem.name).toBe('string');
+        expect(DesignerBackgroundItem.name).toEqual('DesignerBackgroundItem');
     });
 
     describe('Component highlighting states', () => {
@@ -134,7 +134,7 @@ describe('Template/Base/TemplateGridLayerItem', () => {
                 ],
             });
 
-            wrapper.find('.template-grid-layer-item').trigger('dragenter');
+            wrapper.find('.designer-background-item').trigger('dragenter');
 
             expect(wrapper.vm.isGhostElement).toBeTruthy();
         });
@@ -149,14 +149,14 @@ describe('Template/Base/TemplateGridLayerItem', () => {
                 ],
             });
 
-            wrapper.find('.template-grid-layer-item').trigger('dragleave');
+            wrapper.find('.designer-background-item').trigger('dragleave');
 
             expect(wrapper.vm.isGhostElement).toBeFalsy();
         });
 
         it('Ghost element is removed on drop', () => {
-            wrapper.find('.template-grid-layer-item').trigger('dragenter');
-            wrapper.find('.template-grid-layer-item').trigger('drop');
+            wrapper.find('.designer-background-item').trigger('dragenter');
+            wrapper.find('.designer-background-item').trigger('drop');
 
             expect(wrapper.vm.isGhostElement).toBeFalsy();
         });

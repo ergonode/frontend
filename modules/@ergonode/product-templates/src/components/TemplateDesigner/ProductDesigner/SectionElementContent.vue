@@ -40,7 +40,7 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
+import ElementContentBase from '@Templates/components/TemplateDesigner/ProductDesigner/ElementContentBase';
 import ActionIconButton from '@UI/components/ActionIconButton/ActionIconButton';
 import IconFontSize from '@UI/components/Icons/Editor/IconFontSize';
 import IconDots from '@UI/components/Icons/Others/IconDots';

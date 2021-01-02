@@ -3,9 +3,6 @@
  * See LICENSE for license details.
  */
 import {
-    swapItemPosition,
-} from '@Core/models/arrayWrapper';
-import {
     getFullTree,
     getTreeWhenElementExpand,
     getTreeWhenElementRemoved,
@@ -16,11 +13,6 @@ import {
 } from './mutations';
 
 export default {
-    setRowsCount: ({
-        commit,
-    }, value) => {
-        commit(types.SET_ROWS_COUNT, value);
-    },
     setGridData: ({
         commit,
     }, data) => {

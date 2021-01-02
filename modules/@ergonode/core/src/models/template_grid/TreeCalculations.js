@@ -2,8 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-const positionBetweenRows = 0.5;
-
 export function getCoordinatesForHiddenElements(hiddenElements, {
     row, column,
 }) {
@@ -20,15 +18,6 @@ export function getCoordinatesForHiddenElements(hiddenElements, {
         row: getFixedRow(ele.row),
         column: getFixedColumn(ele.column),
     }));
-}
-
-export function getNearestNeighborRowId(tree, column, row) {
-    const [
-        neighbor,
-    ] = tree.filter(
-        e => e.column <= column && e.row > row,
-    );
-    return neighbor ? neighbor.row : tree.length;
 }
 
 export function getTreeWhenElementRemoved(oldTree, index) {
@@ -82,16 +71,6 @@ export function getTreeWhenElementExpand(hiddenChildren, oldTree, index) {
         }
     }
     return newTree;
-}
-
-export function getRowBounds(elements) {
-    const elementBounds = [];
-
-    for (let i = 0; i < elements.length; i += 1) {
-        const bounds = elements[i].getBoundingClientRect();
-        elementBounds.push(bounds);
-    }
-    return elementBounds;
 }
 
 export function getFullTree(hiddenChildren, oldTree) {

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <TemplateGridWrapper
+    <TemplateGrid
         :scope="scope"
         :change-values="changeValues"
         :errors="errors"
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import TemplateGridWrapper from '@Core/components/TemplateGrid/TemplateGridWrapper';
+import TemplateGrid from '@Core/components/TemplateGrid/TemplateGrid';
 import PRIVILEGES from '@Trees/config/privileges';
 import {
     COLUMNS,
@@ -25,7 +25,7 @@ import {
 export default {
     name: 'CategoryTreeWrapper',
     components: {
-        TemplateGridWrapper,
+        TemplateGrid,
     },
     props: {
         scope: {

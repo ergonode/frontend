@@ -3,16 +3,15 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        class="template-grid-container"
+    <DesignerDraggableLayer
         :draggable="isDraggingEnabled && gridData.length > 0"
-        @dragstart="onDragStart"
-        @dragend="onDragEnd"
-        @dragover="onDragOver"
-        @dragleave="onDragLeave"
-        @drop="onDrop">
+        @dragstart.native="onDragStart"
+        @dragend.native="onDragEnd"
+        @dragover.native="onDragOver"
+        @dragleave.native="onDragLeave"
+        @drop.native="onDrop">
         <slot />
-    </div>
+    </DesignerDraggableLayer>
 </template>
 
 <script>
@@ -20,15 +19,10 @@ import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
 import {
-    getObjectWithMaxValueInArrayByObjectKey,
-} from '@Core/models/arrayWrapper';
-import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
-import {
-    getRowBounds,
-} from '@Core/models/template_grid/TreeCalculations';
+import DesignerDraggableLayer from '@UI/components/Designer/DesignerDraggableLayer';
 import {
     getDraggedRowPositionState,
     getPositionForBrowser,
@@ -36,15 +30,15 @@ import {
     isMouseOutOfBoundsElement,
 } from '@UI/models/dragAndDrop/helpers';
 import {
-    debounce,
-} from 'debounce';
-import {
     mapActions,
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'TemplateGridContainer',
+    name: 'TemplateGridDraggableLayer',
+    components: {
+        DesignerDraggableLayer,
+    },
     props: {
         /**
          * Grid data model
@@ -56,27 +50,6 @@ export default {
         hiddenItems: {
             type: Object,
             default: () => ({}),
-        },
-        /**
-         * Number of visible columns
-         */
-        columns: {
-            type: Number,
-            required: true,
-        },
-        /**
-         * Number of visible rows
-         */
-        rows: {
-            type: Number,
-            required: true,
-        },
-        /**
-         * Determines the size of row height
-         */
-        rowHeight: {
-            type: Number,
-            required: true,
         },
         /**
          * Determines state of draggable attribute
@@ -97,15 +70,7 @@ export default {
             default: false,
         },
     },
-    data: () => ({
-        additionalRows: 3,
-        rowBounds: {},
-        debounceFunc: null,
-    }),
     computed: {
-        ...mapState('gridDesigner', [
-            'fullGridData',
-        ]),
         ...mapState('authentication', {
             language: state => state.user.language,
         }),
@@ -114,27 +79,6 @@ export default {
             'draggedElIndex',
             'ghostIndex',
         ]),
-        maxRow() {
-            return getObjectWithMaxValueInArrayByObjectKey(this.gridData, 'row').row;
-        },
-    },
-    created() {
-        this.debounceFunc = debounce(this.calculateRowsCount, 200);
-    },
-    mounted() {
-        this.calculateRowsCount();
-
-        const itemsContainer = this.$el.querySelector('.grid-items-container');
-        const {
-            children: elements,
-        } = itemsContainer;
-
-        this.rowBounds = getRowBounds(elements);
-
-        window.addEventListener('resize', this.debounceFunc);
-    },
-    beforeDestroy() {
-        window.removeEventListener('resize', this.debounceFunc);
     },
     methods: {
         ...mapActions('draggable', [
@@ -144,7 +88,6 @@ export default {
             'setDisabledElement',
         ]),
         ...mapActions('gridDesigner', [
-            'setRowsCount',
             'setChildrenLength',
             'removeGridItem',
             '',
@@ -155,15 +98,6 @@ export default {
             'insertItemAtIndex',
             'swapItemsPosition',
         ]),
-        calculateRowsCount() {
-            const {
-                clientHeight,
-            } = this.$el;
-            const visibleRows = Math.ceil(clientHeight / this.rowHeight);
-            const totalRows = Math.max(this.fullGridData.length, visibleRows) + this.additionalRows;
-
-            this.setRowsCount(totalRows);
-        },
         onDragStart(event) {
             const shadowItem = this.getShadowItem(event);
 
@@ -229,7 +163,6 @@ export default {
         },
         onDrop(event) {
             if (this.ghostIndex !== -1) {
-                console.log('drop');
                 const parent = this.getParent(this.ghostIndex.row, this.ghostIndex.column);
                 const item = {
                     ...this.draggedElement,
@@ -322,7 +255,6 @@ export default {
                     key: 'ghostIndex',
                     value: -1,
                 });
-                console.log('left');
             }
         },
         onDragOver(event) {
@@ -402,21 +334,43 @@ export default {
         updateVertically(row, column) {
             const fromRow = this.ghostIndex.row;
 
-            const isColliding = this.isColliding(row, column);
-
+            // GOING DOWN
             let since = fromRow;
             let till = row;
             let ghostShiftRow = row - fromRow;
-            const ghostColumn = isColliding
-                ? this.gridData[row].column
-                : Math.min(this.gridData[row].column + 1, column);
+            let ghostColumn = this.gridData[row].column;
             let shiftRow = -1;
 
             if (fromRow > row) {
+                // GOING UP
                 since = row;
                 till = fromRow;
                 shiftRow = 1;
                 ghostShiftRow = row - fromRow;
+
+                const aboveColumn = this.getAboveItem(since).column;
+
+                if (aboveColumn - this.gridData[since].column > -1
+                    && column > this.gridData[since].column
+                    && since > 0) {
+                    const distance = Math.abs(this.gridData[since].column - column);
+
+                    if (distance >= 1) {
+                        ghostColumn = aboveColumn + 1;
+                    }
+                }
+            } else {
+                const bellowColumn = this.getBellowItem(since).column;
+
+                if (bellowColumn - this.gridData[since].column < 1
+                    && column > this.gridData[since].column
+                    && since > 0) {
+                    const distance = Math.abs(this.gridData[since].column - column);
+
+                    if (distance >= 1) {
+                        ghostColumn = bellowColumn + 1;
+                    }
+                }
             }
 
             this.swapItemsPosition({
@@ -522,13 +476,13 @@ export default {
             pageY,
         }) {
             const elements = document.elementsFromPoint(pageX, pageY);
-            const shadowItem = elements.find(element => element.classList.contains('shadow-grid-item'));
+            const shadowItem = elements.find(element => element.classList.contains('designer-background-item'));
 
             if (shadowItem) {
                 return {
                     element: shadowItem,
-                    row: +shadowItem.getAttribute('row-index'),
-                    column: +shadowItem.getAttribute('column-index'),
+                    row: +shadowItem.getAttribute('row'),
+                    column: +shadowItem.getAttribute('column'),
                 };
             }
 
@@ -543,16 +497,12 @@ export default {
             return isMouseOutOfBoundsElement(this.$el, xPos, yPos);
         },
         getParent(row, column) {
-            if (!this.gridData.length) {
+            if (!this.gridData.length || column === 0) {
                 return {
                     id: null,
-                    row: 0,
-                    column: 0,
+                    row,
+                    column,
                 };
-            }
-
-            if (column === 0 || row === 0) {
-                return this.gridData[0];
             }
 
             for (let i = row - 1; i >= 0; i -= 1) {
@@ -568,8 +518,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .template-grid-container {
+    .template-grid-draggable-layer {
         position: relative;
+        display: grid;
         flex: 1;
     }
 </style>
