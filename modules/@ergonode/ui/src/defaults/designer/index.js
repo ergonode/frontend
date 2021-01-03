@@ -3,4 +3,4 @@
  * See LICENSE for license details.
  */
 
-export const ROW_HEIGHT = 62;
+export const ROW_HEIGHT = 64;

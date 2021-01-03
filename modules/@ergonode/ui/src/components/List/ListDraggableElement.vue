@@ -56,6 +56,15 @@ export default {
             type: String,
             default: '',
         },
+        draggedElement: {
+            type: [
+                Object,
+                String,
+                Number,
+                Array,
+            ],
+            default: null,
+        },
         /**
          *  The hint is a tip for the component
          */
@@ -104,17 +113,24 @@ export default {
                 key: 'isElementDragging',
                 value: DRAGGED_ELEMENT.LIST,
             });
-            this.$emit('drag', true);
+            this.__setState({
+                key: 'draggedElement',
+                value: JSON.parse(JSON.stringify(this.draggedElement)),
+            });
         },
         onDragEnd(event) {
             removeElementCopyFromDocumentBody(event);
 
             this.isDragged = false;
+
             this.__setState({
                 key: 'isElementDragging',
                 value: null,
             });
-            this.$emit('drag', false);
+            this.__setState({
+                key: 'draggedElement',
+                value: null,
+            });
         },
     },
 };

@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TreeDesigner/TemplateGridItemsLayer Component has main class 1`] = `<div class="template-grid-items-layer"></div>`;

@@ -3,29 +3,32 @@
  * See LICENSE for license details.
  */
 <template>
-    <TemplateGrid
-        :scope="scope"
-        :change-values="changeValues"
-        :errors="errors"
+    <TreeDesigner
+        :items="gridData"
         :columns="columns"
         :row-height="rowHeight"
         :context-name="contextName"
-        :is-dragging-enabled="isAllowedToUpdate" />
+        :disabled="!isAllowedToUpdate"
+        @input="onValueChange" />
 </template>
 
 <script>
-import TemplateGrid from '@Core/components/TemplateGrid/TemplateGrid';
 import PRIVILEGES from '@Trees/config/privileges';
 import {
     COLUMNS,
     CONTEXT_NAME,
     ROW_HEIGHT,
 } from '@Trees/defaults/designer';
+import TreeDesigner from '@UI/components/TreeDesigner/TreeDesigner';
+import {
+    mapActions,
+    mapState,
+} from 'vuex';
 
 export default {
-    name: 'CategoryTreeWrapper',
+    name: 'CategoryTreeDesigner',
     components: {
-        TemplateGrid,
+        TreeDesigner,
     },
     props: {
         scope: {
@@ -42,6 +45,9 @@ export default {
         },
     },
     computed: {
+        ...mapState('gridDesigner', [
+            'gridData',
+        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.CATEGORY_TREE.update,
@@ -55,6 +61,26 @@ export default {
         },
         rowHeight() {
             return ROW_HEIGHT;
+        },
+    },
+    methods: {
+        ...mapActions('gridDesigner', [
+            '__setState',
+        ]),
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
+        onValueChange(value) {
+            this.__setState({
+                key: 'gridData',
+                value,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'categoryTreeDesigner',
+                value,
+            });
         },
     },
 };

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TemplateGrid/DesignerBackgroundLayer Check main classes witch default props 1`] = `
+exports[`TreeDesigner/DesignerBackgroundLayer Check main classes witch default props 1`] = `
 <div class="designer-background-layer template-grid-background-layer__border-top">
   <div shadow-id="0" class="designer-background-item"></div>
   <div shadow-id="1" class="designer-background-item"></div>

@@ -4,12 +4,12 @@
  */
 <template>
     <ListDraggableElement
-        :draggable="isDraggable"
         :draggable-id="item.type"
-        :label="item.label"
-        @drag="onDrag">
+        :draggable="isDraggable"
+        :dragged-element="item.type"
+        :label="item.label">
         <ListElementIcon>
-            <Component :is="widgetIconComponent" />
+            <IconFontSize />
         </ListElementIcon>
         <ListElementDescription>
             <ListElementTitle :title="item.label" />
@@ -24,10 +24,7 @@ import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementHint from '@UI/components/List/ListElementHint';
 import ListElementIcon from '@UI/components/List/ListElementIcon';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
-import {
-    mapActions,
-} from 'vuex';
-
+import IconFontSize from "@UI/components/Icons/Editor/IconFontSize";
 export default {
     name: 'WidgetSideBarElement',
     components: {
@@ -36,6 +33,7 @@ export default {
         ListDraggableElement,
         ListElementIcon,
         ListElementHint,
+        IconFontSize,
     },
     props: {
         item: {
@@ -45,24 +43,6 @@ export default {
         isDraggable: {
             type: Boolean,
             default: false,
-        },
-    },
-    computed: {
-        widgetIconComponent() {
-            return () => import('@UI/components/Icons/Editor/IconFontSize');
-        },
-    },
-    methods: {
-        ...mapActions('draggable', [
-            '__setState',
-        ]),
-        onDrag(isDragged) {
-            this.__setState({
-                key: 'draggedElement',
-                value: isDragged
-                    ? this.item.type
-                    : null,
-            });
         },
     },
 };

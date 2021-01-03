@@ -126,6 +126,8 @@ export function getHighlightingLayoutDropPositions({
     layoutHeight,
     layoutElements,
 }) {
+    console.log('Layout size: ', '[', layoutWidth, layoutHeight, ']');
+
     const {
         length,
     } = layoutElements;
@@ -142,13 +144,16 @@ export function getHighlightingLayoutDropPositions({
 
     const highlightingPositions = new Set();
 
-    for (let x = 1; x <= layoutWidth; x += 1) {
-        for (let y = 1; y <= layoutHeight; y += 1) {
+    for (let x = 0; x < layoutWidth; x += 1) {
+        for (let y = 0; y < layoutHeight; y += 1) {
             const xRange = x - 1 + draggedElWidth;
             const yRange = y - 1 + draggedElHeight;
-            const rangeIsNotOutOfLayoutBounds = (xRange > layoutWidth || yRange > layoutHeight);
 
-            if (!rangeIsNotOutOfLayoutBounds
+            console.log('xRange:', xRange, 'yRange', yRange);
+
+            const isOutOfBounds = (xRange > layoutWidth || yRange > layoutHeight);
+
+            if (!isOutOfBounds
                 && !isObstacleInRangeOf(layoutObstaclePositions, x, y, xRange, yRange)) {
                 fillHighlightingPositions(
                     highlightingPositions,

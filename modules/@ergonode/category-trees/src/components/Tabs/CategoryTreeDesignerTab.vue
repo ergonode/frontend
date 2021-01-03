@@ -19,7 +19,7 @@
             </VerticalTabBar>
         </template>
         <template #grid>
-            <CategoryTreeWrapper
+            <CategoryTreeDesigner
                 :scope="scope"
                 :change-values="changeValues"
                 :errors="errors" />
@@ -45,7 +45,7 @@ import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
-import CategoryTreeWrapper from '@Trees/components/CategoryTreeDesigner/CategoryTreeWrapper';
+import CategoryTreeDesigner from '@Trees/components/TreeDesigners/CategoryTreeDesigner';
 import PRIVILEGES from '@Trees/config/privileges';
 import {
     GRAPHITE_LIGHT,
@@ -71,7 +71,7 @@ export default {
         Button,
         IconSpinner,
         VerticalTabBar,
-        CategoryTreeWrapper,
+        CategoryTreeDesigner,
         GridViewTemplate,
         IconRemoveFilter,
         DropZone,

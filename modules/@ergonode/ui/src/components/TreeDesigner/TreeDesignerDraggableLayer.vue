@@ -4,7 +4,7 @@
  */
 <template>
     <DesignerDraggableLayer
-        :draggable="isDraggingEnabled && gridData.length > 0"
+        :draggable="!disabled"
         @dragstart.native="onDragStart"
         @dragend.native="onDragEnd"
         @dragover.native="onDragOver"
@@ -30,12 +30,15 @@ import {
     isMouseOutOfBoundsElement,
 } from '@UI/models/dragAndDrop/helpers';
 import {
+    getParent,
+} from '@UI/models/treeDesigner';
+import {
     mapActions,
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'TemplateGridDraggableLayer',
+    name: 'TreeDesignerDraggableLayer',
     components: {
         DesignerDraggableLayer,
     },
@@ -43,7 +46,7 @@ export default {
         /**
          * Grid data model
          */
-        gridData: {
+        items: {
             type: Array,
             default: () => [],
         },
@@ -51,17 +54,14 @@ export default {
             type: Object,
             default: () => ({}),
         },
-        /**
-         * Determines state of draggable attribute
-         */
-        isDraggingEnabled: {
-            type: Boolean,
-            default: false,
+        childrenLength: {
+            type: Object,
+            default: () => ({}),
         },
         /**
-         * Determines if the component might be dragged twice
+         * Determines edit mode state
          */
-        isMultiDraggable: {
+        disabled: {
             type: Boolean,
             default: false,
         },
@@ -70,10 +70,12 @@ export default {
             default: false,
         },
     },
+    data() {
+        return {
+            wasItemExpanded: false,
+        };
+    },
     computed: {
-        ...mapState('authentication', {
-            language: state => state.user.language,
-        }),
         ...mapState('draggable', [
             'draggedElement',
             'draggedElIndex',
@@ -87,17 +89,6 @@ export default {
         ...mapActions('list', [
             'setDisabledElement',
         ]),
-        ...mapActions('gridDesigner', [
-            'setChildrenLength',
-            'removeGridItem',
-            '',
-            'shiftItems',
-            'addItem',
-            'removeItemAtIndex',
-            'setItemAtIndex',
-            'insertItemAtIndex',
-            'swapItemsPosition',
-        ]),
         onDragStart(event) {
             const shadowItem = this.getShadowItem(event);
 
@@ -106,14 +97,17 @@ export default {
                     row,
                     column,
                 } = shadowItem;
-                const item = this.gridData[row];
+                const item = this.items[row];
                 const {
                     id,
-                    children,
                     code,
                 } = item;
                 const fixedColumn = Math.min(column, item.column);
-                const parent = this.getParent(row, fixedColumn);
+                const parent = getParent({
+                    items: this.items,
+                    row,
+                    column: fixedColumn,
+                });
 
                 this.__setState({
                     key: 'draggedElement',
@@ -141,13 +135,8 @@ export default {
                     label: code,
                 });
 
-                // this.setChildrenLength({
-                //     id: parent,
-                //     value: -1,
-                // });
-
-                this.setItemAtIndex({
-                    index: row,
+                this.$emit('update-item', {
+                    index: this.ghostIndex.row,
                     item: {
                         id: 'ghost_item',
                         row,
@@ -156,46 +145,43 @@ export default {
                     },
                 });
 
-                if (children > 0 && typeof this.hiddenItems[id] === 'undefined') {
-                    this.$emit('expand', item);
+                if (typeof this.hiddenItems[id] === 'undefined' && this.childrenLength[item.id]) {
+                    this.wasItemExpanded = true;
+
+                    this.$emit('expand-item', item);
                 }
             }
         },
         onDrop(event) {
             if (this.ghostIndex !== -1) {
-                const parent = this.getParent(this.ghostIndex.row, this.ghostIndex.column);
+                const parent = getParent({
+                    items: this.items,
+                    row: this.ghostIndex.row,
+                    column: this.ghostIndex.column,
+                });
                 const item = {
                     ...this.draggedElement,
                     ...this.ghostIndex,
                     parent: parent.id,
                 };
 
-                this.setItemAtIndex({
+                this.$emit('update-item', {
                     index: this.ghostIndex.row,
                     item,
                 });
 
-                const nextRow = this.ghostIndex.row + 1;
+                if (this.wasItemExpanded) {
+                    this.wasItemExpanded = false;
 
-                if (nextRow < this.gridData.length
-                    && this.gridData[nextRow].column - this.ghostIndex.column === 1) {
-                    this.setItemAtIndex({
-                        index: nextRow,
-                        item: {
-                            ...this.gridData[nextRow],
-                            parent: this.draggedElement.id,
-                        },
-                    });
-                }
-
-                if (item.children > 0 && typeof this.hiddenItems[item.id] !== 'undefined') {
-                    this.$emit('expand', item);
+                    this.$emit('expand-item', item);
                 }
 
                 this.__setState({
                     key: 'ghostIndex',
                     value: -1,
                 });
+
+                this.$emit('drop', item);
             }
 
             event.preventDefault();
@@ -211,20 +197,12 @@ export default {
             const isDroppedToTrash = isMouseInsideElement(trashElement, xPos, yPos);
 
             if (isDroppedToTrash) {
-                this.$emit('remove', this.draggedElement);
+                this.$emit('remove-items', this.draggedElement.id);
             } else if (this.isOutOfBounds(event)) {
-                this.insertItemAtIndex({
+                this.$emit('insert-item', {
                     index: this.draggedElIndex,
                     item: this.draggedElement,
                 });
-
-                if (!this.isMultiDraggable) {
-                    this.setDisabledElement({
-                        languageCode: this.language,
-                        elementId: this.draggedElement.id,
-                        disabled: true,
-                    });
-                }
             }
 
             this.__setState({
@@ -246,11 +224,12 @@ export default {
         },
         onDragLeave(event) {
             if (this.isOutOfBounds(event) && this.ghostIndex !== -1) {
-                this.shiftItems({
+                this.$emit('shift-items', {
                     since: this.ghostIndex.row,
                     value: -1,
                 });
-                this.removeItemAtIndex(this.ghostIndex.row);
+                this.$emit('remove-item', this.ghostIndex.row);
+
                 this.__setState({
                     key: 'ghostIndex',
                     value: -1,
@@ -262,14 +241,14 @@ export default {
 
             if (this.ghostIndex === -1) {
                 this.insertGhostItemOnEnter(event);
-            } else if (this.gridData.length > 1) {
+            } else if (this.items.length > 1) {
                 this.updateGhostItemPositionOnDragOver(event);
             }
         },
         updateGhostItemPositionOnDragOver(event) {
             const shadowItem = this.getShadowItem(event);
 
-            if (shadowItem && shadowItem.row < this.gridData.length) {
+            if (shadowItem && shadowItem.row < this.items.length) {
                 const {
                     row,
                     column,
@@ -311,9 +290,13 @@ export default {
                 return;
             }
 
-            const parent = this.getParent(row, column);
+            const parent = getParent({
+                items: this.items,
+                row,
+                column,
+            });
 
-            this.setItemAtIndex({
+            this.$emit('update-item', {
                 index: this.ghostIndex.row,
                 item: {
                     id: 'ghost_item',
@@ -338,7 +321,7 @@ export default {
             let since = fromRow;
             let till = row;
             let ghostShiftRow = row - fromRow;
-            let ghostColumn = this.gridData[row].column;
+            let ghostColumn = this.items[row].column;
             let shiftRow = -1;
 
             if (fromRow > row) {
@@ -350,38 +333,40 @@ export default {
 
                 const aboveColumn = this.getAboveItem(since).column;
 
-                if (aboveColumn - this.gridData[since].column > -1
-                    && column > this.gridData[since].column
+                if (aboveColumn - this.items[since].column > -1
+                    && column > aboveColumn
                     && since > 0) {
-                    const distance = Math.abs(this.gridData[since].column - column);
+                    const distance = Math.abs(this.items[since].column - column);
 
                     if (distance >= 1) {
                         ghostColumn = aboveColumn + 1;
                     }
                 }
             } else {
-                const bellowColumn = this.getBellowItem(since).column;
+                const bellowSinceColumn = this.getBellowItem(since).column;
+                const bellowTillColumn = this.getBellowItem(till).column;
 
-                if (bellowColumn - this.gridData[since].column < 1
-                    && column > this.gridData[since].column
-                    && since > 0) {
-                    const distance = Math.abs(this.gridData[since].column - column);
+                if (bellowSinceColumn - bellowTillColumn < 0) {
+                    const distance = Math.abs(this.items[since].column - column);
 
-                    if (distance >= 1) {
-                        ghostColumn = bellowColumn + 1;
+                    if (distance >= 0) {
+                        ghostColumn = bellowSinceColumn + 1;
                     }
                 }
             }
 
-            this.swapItemsPosition({
+            this.$emit('update-items', {
                 since,
                 till,
                 ghostShiftRow,
                 ghostColumn,
                 shiftRow,
-                parentId: this.getParent(till, ghostColumn).id,
+                parentId: getParent({
+                    items: this.items,
+                    row: till,
+                    column: ghostColumn,
+                }).id,
             });
-
             this.__setState({
                 key: 'ghostIndex',
                 value: {
@@ -397,23 +382,26 @@ export default {
                 const {
                     row,
                 } = shadowItem;
-                const fixedRow = Math.min(row, this.gridData.length - 1);
+                const fixedRow = Math.min(row, this.items.length - 1);
 
                 let column = 0;
 
                 if (fixedRow !== -1) {
-                    column = this.gridData[fixedRow].column;
+                    column = this.items[fixedRow].column;
                 }
 
-                const parent = this.getParent(fixedRow, column);
+                const parent = getParent({
+                    items: this.items,
+                    row: fixedRow,
+                    column,
+                });
 
-                if (row < this.gridData.length) {
-                    this.shiftItems({
+                if (row < this.items.length) {
+                    this.$emit('shift-items', {
                         since: row - 1,
                         value: 1,
                     });
-
-                    this.insertItemAtIndex({
+                    this.$emit('insert-item', {
                         index: fixedRow,
                         item: {
                             id: 'ghost_item',
@@ -422,7 +410,6 @@ export default {
                             parent: parent.id,
                         },
                     });
-
                     this.__setState({
                         key: 'ghostIndex',
                         value: {
@@ -431,13 +418,12 @@ export default {
                         },
                     });
                 } else {
-                    this.addItem({
+                    this.$emit('add-item', {
                         id: 'ghost_item',
-                        row: this.gridData.length,
+                        row: this.items.length,
                         column,
                         parent: parent.id,
                     });
-
                     this.__setState({
                         key: 'ghostIndex',
                         value: {
@@ -463,13 +449,13 @@ export default {
         },
         getAboveItem(row) {
             return row - 1 > 0
-                ? this.gridData[row - 1]
-                : this.gridData[0];
+                ? this.items[row - 1]
+                : this.items[0];
         },
         getBellowItem(row) {
-            return row + 1 < this.gridData.length
-                ? this.gridData[row + 1]
-                : this.gridData[0];
+            return row + 1 < this.items.length
+                ? this.items[row + 1]
+                : this.items[0];
         },
         getShadowItem({
             pageX,
@@ -496,31 +482,6 @@ export default {
 
             return isMouseOutOfBoundsElement(this.$el, xPos, yPos);
         },
-        getParent(row, column) {
-            if (!this.gridData.length || column === 0) {
-                return {
-                    id: null,
-                    row,
-                    column,
-                };
-            }
-
-            for (let i = row - 1; i >= 0; i -= 1) {
-                if (this.gridData[i].column < column) {
-                    return this.gridData[i];
-                }
-            }
-
-            return this.gridData[0];
-        },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .template-grid-draggable-layer {
-        position: relative;
-        display: grid;
-        flex: 1;
-    }
-</style>

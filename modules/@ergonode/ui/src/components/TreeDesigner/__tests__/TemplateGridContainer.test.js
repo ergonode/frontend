@@ -4,7 +4,7 @@
  */
 // import { shallowMount, createLocalVue } from '@vue/test-utils';
 // import { Store } from 'vuex-mock-store';
-import TemplateGridDraggableLayer from '../TemplateGridDraggableLayer';
+import TreeDesignerDraggableLayer from '../TreeDesignerDraggableLayer';
 
 // const localVue = createLocalVue();
 // const store = new Store({
@@ -27,9 +27,9 @@ import TemplateGridDraggableLayer from '../TemplateGridDraggableLayer';
 // const mocks = {
 //     $store: store,
 // };
-describe('TemplateGrid/TemplateGridDraggableLayer', () => {
+describe('TreeDesigner/TreeDesignerDraggableLayer', () => {
     it('Component is named well', () => {
-        expect(typeof TemplateGridDraggableLayer.name).toBe('string');
-        expect(TemplateGridDraggableLayer.name).toEqual('TemplateGridDraggableLayer');
+        expect(typeof TreeDesignerDraggableLayer.name).toBe('string');
+        expect(TreeDesignerDraggableLayer.name).toEqual('TreeDesignerDraggableLayer');
     });
 });

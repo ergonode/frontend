@@ -5,11 +5,11 @@
 <template>
     <ListDraggableElement
         :draggable-id="`${item.id}/${item.code}:${languageCode}`"
+        :dragged-element="`${item.code}:${languageCode}`"
         :draggable="isDraggable"
         :disabled="isDisabled"
         :hint="hint"
-        :label="title"
-        @drag="onDrag">
+        :label="title">
         <ListElementIcon>
             <template v-for="(formComponent, index) in typeIconComponent">
                 <Component
@@ -44,7 +44,6 @@ import ListElementHint from '@UI/components/List/ListElementHint';
 import ListElementIcon from '@UI/components/List/ListElementIcon';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -106,17 +105,6 @@ export default {
         },
         hint() {
             return this.item.label ? `#${this.item.code} ${this.languageCode}` : '';
-        },
-    },
-    methods: {
-        ...mapActions('draggable', [
-            '__setState',
-        ]),
-        onDrag(isDragged) {
-            this.__setState({
-                key: 'draggedElement',
-                value: isDragged ? `${this.item.code}:${this.languageCode}` : null,
-            });
         },
     },
 };

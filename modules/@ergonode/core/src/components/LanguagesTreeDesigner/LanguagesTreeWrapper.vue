@@ -3,16 +3,16 @@
  * See LICENSE for license details.
  */
 <template>
-    <TemplateGrid
+    <TreeDesigner
         constant-root
         :columns="columns"
         :row-height="rowHeight"
         :context-name="contextName"
-        :is-dragging-enabled="isAllowedToUpdate" />
+        :disabled="!isAllowedToUpdate" />
 </template>
 
 <script>
-import TemplateGrid from '@Core/components/TemplateGrid/TemplateGrid';
+import TreeDesigner from '@UI/components/TreeDesigner/TreeDesigner';
 import PRIVILEGES from '@Core/config/privileges';
 import {
     COLUMNS,
@@ -23,7 +23,7 @@ import {
 export default {
     name: 'LanguagesTreeWrapper',
     components: {
-        TemplateGrid,
+        TreeDesigner,
     },
     computed: {
         isAllowedToUpdate() {

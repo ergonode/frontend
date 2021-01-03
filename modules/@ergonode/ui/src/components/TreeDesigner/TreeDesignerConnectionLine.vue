@@ -5,12 +5,16 @@
 <template>
     <div
         :style="styles"
-        class="template-grid-item-line" />
+        class="tree-designer-connection-line" />
 </template>
 
 <script>
+import {
+    getParent,
+} from '@UI/models/treeDesigner';
+
 export default {
-    name: 'TemplateGirdItemLine',
+    name: 'TreeDesignerConnectionLine',
     props: {
         row: {
             type: Number,
@@ -28,38 +32,32 @@ export default {
             type: Number,
             default: 8,
         },
-        gridData: {
+        items: {
             type: Array,
             default: () => [],
         },
-        isGhost: {
-            type: Boolean,
-            default: false,
+        borderStyle: {
+            type: String,
+            default: 'solid',
         },
     },
     computed: {
         styles() {
             return {
                 gridArea: `${this.row + 1} / ${this.column} / ${this.row + 2} / ${this.column + 1}`,
-                transform: `translate(32px, -${this.distanceBetweenParentRow * this.rowHeight + this.gap}px)`,
-                height: `calc((${this.distanceBetweenParentRow} * 100%) + 50% + ${this.gap}px)`,
-                borderStyle: this.isGhost ? 'dashed' : 'solid',
+                transform: `translate(32px, -${this.distanceBetweenParent * this.rowHeight + this.gap}px)`,
+                height: `calc((${this.distanceBetweenParent} * 100%) + 50% + ${this.gap}px)`,
+                borderStyle: this.borderStyle,
             };
         },
         parent() {
-            if (this.column === 0 || this.row === 0) {
-                return this.gridData[0];
-            }
-
-            for (let i = this.row - 1; i >= 0; i -= 1) {
-                if (this.gridData[i].column < this.column) {
-                    return this.gridData[i];
-                }
-            }
-
-            return this.gridData[0];
+            return getParent({
+                items: this.items,
+                row: this.row,
+                column: this.column,
+            });
         },
-        distanceBetweenParentRow() {
+        distanceBetweenParent() {
             return this.row - this.parent.row - 1;
         },
     },
@@ -67,7 +65,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .template-grid-item-line {
+    .tree-designer-connection-line {
         width: 100%;
         border-left: 2px solid $GREEN;
         border-bottom: 2px solid $GREEN;

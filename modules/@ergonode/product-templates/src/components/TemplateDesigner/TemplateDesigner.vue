@@ -13,7 +13,7 @@
                 :column="column"
                 :row="row" />
         </template>
-        <template #body="{ layerStyle }">
+        <template #body="{ rows, layerStyle }">
             <DesignerDraggableLayer :style="layerStyle">
                 <TemplateGridPlaceholderItem v-if="!layoutElements.length" />
                 <LayoutElement
@@ -22,7 +22,7 @@
                     :index="index"
                     :element="element"
                     :columns-number="columns"
-                    :rows-number="lastItemRow"
+                    :rows-number="rows"
                     :disabled="!isAllowedToUpdate"
                     @highlighted-position-change="onHighlightedPositionsChange"
                     @resizing-el-max-row="onResizingElMaxRow"
@@ -46,7 +46,7 @@
                 </LayoutElement>
             </DesignerDraggableLayer>
         </template>
-        <!--                <TemplateGridDraggableLayer-->
+        <!--                <TreeDesignerDraggableLayer-->
         <!--                    :style="gridStyles"-->
         <!--                    :rows-number="lastItemRow"-->
         <!--                    :columns-number="columns"-->
@@ -54,7 +54,7 @@
         <!--                    @drop="updateLayoutElement">-->
         <!--                    <template #elements>-->
         <!--                    </template>-->
-        <!--                </TemplateGridDraggableLayer>-->
+        <!--                </TreeDesignerDraggableLayer>-->
         <!--                <SectionTemplateModalForm-->
         <!--                    v-if="isSectionAdded"-->
         <!--                    :index="sectionIndex"-->

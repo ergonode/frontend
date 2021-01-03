@@ -6,67 +6,79 @@
     <Designer
         :columns="columns"
         :row-height="rowHeight"
-        :last-item-row="gridData.length">
+        :last-item-row="localItems.length">
         <template #body="{ layerStyle }">
-            <TemplateGridDraggableLayer
+            <TreeDesignerDraggableLayer
                 :style="layerStyle"
                 :constant-root="constantRoot"
-                :grid-data="gridData"
+                :items="localItems"
                 :hidden-items="hiddenItems"
-                :is-dragging-enabled="isDraggingEnabled"
-                :is-multi-draggable="isMultiDraggable"
-                @expand="onExpandItem"
-                @remove="removeItemOnDrop">
+                :children-length="childrenLength"
+                :disabled="disabled"
+                @update-items="onUpdateItems"
+                @update-item="onUpdateItem"
+                @insert-item="onInsertItem"
+                @add-item="onAddItem"
+                @remove-item="onRemoveItem"
+                @remove-items="onRemoveItems"
+                @shift-items="onShiftItems"
+                @expand-item="onExpandItem"
+                @drop="onDropItem">
                 <TemplateGridGhostItem
                     v-if="ghostIndex !== -1"
                     :row="ghostIndex.row"
                     :column="ghostIndex.column"
                     :gap="gridGap"
                     :context-name="contextName" />
-                <TemplateGridItem
-                    v-for="item in items"
+                <TreeDesignerItem
+                    v-for="item in itemsWithoutGhost"
                     :key="item.id"
                     :item="item"
                     :gap="gridGap"
                     :context-name="contextName"
                     :children-length="childrenLength[item.id]"
+                    :disabled="disabled"
                     :is-expanded="typeof hiddenItems[item.id] === 'undefined'"
-                    :is-dragging-enabled="isDraggingEnabled"
-                    @expand="onExpandItem"
+                    @expand-item="onExpandItem"
                     @remove-item="removeItem(item)" />
-                <TemplateGirdItemLine
+                <TreeDesignerConnectionLine
                     v-for="item in connectionLines"
                     :key="`${item.id}-line|${item.row}|${item.column}`"
-                    :grid-data="gridData"
+                    :items="localItems"
                     :row="item.row"
                     :column="item.column"
                     :row-height="rowHeight"
                     :gap="gridGap"
-                    :is-ghost="item.id === 'ghost_item'" />
-            </TemplateGridDraggableLayer>
+                    :border-style="item.id === 'ghost_item' ? 'dashed' : 'solid'" />
+            </TreeDesignerDraggableLayer>
         </template>
     </Designer>
 </template>
 
 <script>
-import TemplateGirdItemLine from '@Core/components/TemplateGrid/TemplateGirdItemLine';
-import TemplateGridDraggableLayer from '@Core/components/TemplateGrid/TemplateGridDraggableLayer';
-import TemplateGridGhostItem from '@Core/components/TemplateGrid/TemplateGridGhostItem';
-import TemplateGridItem from '@Core/components/TemplateGrid/TemplateGridItem';
+import {
+    insertValueAtIndex,
+    insertValuesAtIndex,
+    removeArrayIndexes,
+} from '@Core/models/arrayWrapper';
 import Designer from '@UI/components/Designer/Designer';
+import TemplateGridGhostItem from '@UI/components/TreeDesigner/TemplateGridGhostItem';
+import TreeDesignerConnectionLine from '@UI/components/TreeDesigner/TreeDesignerConnectionLine';
+import TreeDesignerDraggableLayer from '@UI/components/TreeDesigner/TreeDesignerDraggableLayer';
+import TreeDesignerItem from '@UI/components/TreeDesigner/TreeDesignerItem';
 import {
     mapActions,
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'TemplateGrid',
+    name: 'TreeDesigner',
     components: {
         Designer,
-        TemplateGridDraggableLayer,
+        TreeDesignerDraggableLayer,
         TemplateGridGhostItem,
-        TemplateGridItem,
-        TemplateGirdItemLine,
+        TreeDesignerItem,
+        TreeDesignerConnectionLine,
     },
     props: {
         /**
@@ -90,17 +102,14 @@ export default {
             type: Object,
             default: () => ({}),
         },
-        /**
-         * Determines state of draggable attribute
-         */
-        isDraggingEnabled: {
-            type: Boolean,
-            default: false,
+        items: {
+            type: Array,
+            default: () => [],
         },
         /**
-         * Determines if the component might be dragged twice
+         * Determines edit mode state
          */
-        isMultiDraggable: {
+        disabled: {
             type: Boolean,
             default: false,
         },
@@ -137,6 +146,7 @@ export default {
     data() {
         return {
             hiddenItems: {},
+            localItems: [],
         };
     },
     computed: {
@@ -149,19 +159,16 @@ export default {
         ...mapState('list', [
             'disabledElements',
         ]),
-        ...mapState('gridDesigner', [
-            'gridData',
-        ]),
         connectionLines() {
-            return this.gridData.filter(item => item.column > 0);
+            return this.localItems.filter(item => item.column > 0);
         },
-        items() {
-            return this.gridData.filter(item => item.id !== 'ghost_item');
+        itemsWithoutGhost() {
+            return this.localItems.filter(item => item.id !== 'ghost_item');
         },
         childrenLength() {
             const childrenLength = {};
 
-            this.gridData.forEach((item) => {
+            this.localItems.forEach((item) => {
                 if (typeof childrenLength[item.parent] === 'undefined') {
                     childrenLength[item.parent] = 0;
                 }
@@ -180,6 +187,14 @@ export default {
             return childrenLength;
         },
     },
+    watch: {
+        items: {
+            immediate: true,
+            handler() {
+                this.localItems = JSON.parse(JSON.stringify(this.items));
+            },
+        },
+    },
     methods: {
         ...mapActions('gridDesigner', [
             'setGridWhenExpand',
@@ -189,9 +204,6 @@ export default {
             'setExpandItem',
             'removeGridItem',
             '',
-            'shiftItems',
-            'removeItems',
-            'insertItemsSince',
         ]),
         ...mapActions('list', [
             'removeDisabledElement',
@@ -199,10 +211,93 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
+        onValueChange() {
+            this.$emit('input', JSON.parse(JSON.stringify(this.localItems)));
+        },
+        onUpdateItems({
+            since,
+            till,
+            ghostShiftRow,
+            ghostColumn,
+            shiftRow,
+            parentId,
+        }) {
+            for (let i = since; i <= till; i += 1) {
+                if (this.localItems[i].id === 'ghost_item') {
+                    this.localItems[i].row += ghostShiftRow;
+                    this.localItems[i].column = ghostColumn;
+                    this.localItems[i].parent = parentId;
+                } else {
+                    this.localItems[i].row += shiftRow;
+                }
+            }
+
+            this.localItems.sort((a, b) => a.row - b.row);
+        },
+        onUpdateItem({
+            index,
+            item,
+        }) {
+            this.localItems[index] = item;
+
+            this.localItems = [
+                ...this.localItems,
+            ];
+        },
+        onInsertItem({
+            index,
+            item,
+        }) {
+            this.localItems = insertValueAtIndex(this.localItems, item, index);
+
+            this.onValueChange();
+        },
+        onAddItem(item) {
+            this.localItems.push(item);
+
+            this.onValueChange();
+        },
+        onRemoveItem(index) {
+            const item = this.localItems[index];
+
+            this.localItems.splice(index, 1);
+
+            this.$emit('remove-items', [
+                item.id,
+            ]);
+            this.onValueChange();
+        },
+        onRemoveItems(id) {
+            let itemIds = [
+                id,
+            ];
+
+            if (typeof this.hiddenItems[id] !== 'undefined') {
+                itemIds = [
+                    id,
+                    ...this.hiddenItems[id].map(item => item.id),
+                ];
+
+                delete this.hiddenItems[id];
+            }
+
+            this.$emit('remove-items', itemIds);
+            this.onValueChange();
+        },
+        onShiftItems({
+            since,
+            value,
+        }) {
+            for (let i = since + 1; i < this.localItems.length; i += 1) {
+                this.localItems[i].row += value;
+            }
+        },
+        onDropItem(item) {
+            this.$emit('drop', item);
+        },
         onExpandItem({
             id,
             row,
-            parent,
         }) {
             if (typeof this.hiddenItems[id] === 'undefined') {
                 const indexesToRemove = [];
@@ -211,8 +306,8 @@ export default {
 
                 this.hiddenItems[id] = [];
 
-                while (i < this.gridData.length && this.gridData[i].parent !== parent) {
-                    const item = this.gridData[i];
+                while (this.localItems[i].parent === id) {
+                    const item = this.localItems[i];
 
                     this.hiddenItems[id].push({
                         ...item,
@@ -222,31 +317,34 @@ export default {
                     i += 1;
                 }
 
-                const shiftValue = i - row;
+                const shiftRowValue = i - row;
 
-                this.shiftItems({
-                    since: row + shiftValue - 1,
-                    value: -(shiftValue - 1),
+                this.onShiftItems({
+                    since: row + shiftRowValue - 1,
+                    value: -(shiftRowValue - 1),
                 });
-                this.removeItems(indexesToRemove);
+
+                this.localItems = removeArrayIndexes(this.localItems, indexesToRemove);
             } else {
-                const shiftValue = this.hiddenItems[id].length;
+                const firstChild = this.hiddenItems[id][0];
+                const shiftRowValue = this.hiddenItems[id].length;
+                const shiftColumnValue = this.localItems[row].column - firstChild.column + 1;
 
                 for (let i = 0; i < this.hiddenItems[id].length; i += 1) {
                     this.hiddenItems[id][i].row = row + i + 1;
+                    this.hiddenItems[id][i].column += shiftColumnValue;
                 }
 
-                this.shiftItems({
+                this.onShiftItems({
                     since: row,
-                    value: shiftValue,
+                    value: shiftRowValue,
                 });
 
-                this.insertItemsSince({
-                    items: [
-                        ...this.hiddenItems[id],
-                    ],
-                    since: row + 1,
-                });
+                this.localItems = insertValuesAtIndex(
+                    this.localItems,
+                    this.hiddenItems[id],
+                    row + 1,
+                );
 
                 delete this.hiddenItems[id];
             }

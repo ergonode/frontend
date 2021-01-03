@@ -8,7 +8,7 @@ import {
 
 import DesignerBackgroundItem from '../DesignerBackgroundItem';
 
-describe('TemplateGrid/DesignerBackgroundItem', () => {
+describe('TreeDesigner/DesignerBackgroundItem', () => {
     let wrapper;
     beforeEach(() => {
         wrapper = shallowMount(DesignerBackgroundItem, {

@@ -8,7 +8,7 @@ import {
 
 import DesignerBackgroundLayer from '@UI/components/Designer/DesignerBackgroundLayer';
 
-describe('TemplateGrid/DesignerBackgroundLayer', () => {
+describe('TreeDesigner/DesignerBackgroundLayer', () => {
     let wrapper;
     beforeEach(() => {
         wrapper = mount(DesignerBackgroundLayer, {

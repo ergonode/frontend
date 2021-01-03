@@ -51,7 +51,7 @@ import {
 import {
     isObject,
 } from '@Core/models/objectWrapper';
-// import TemplateGridDraggableLayer from '@Templates/components/Template/Base/TemplateGridDraggableLayer';
+// import TreeDesignerDraggableLayer from '@Templates/components/Template/Base/TreeDesignerDraggableLayer';
 import TemplateGridPlaceholderItem from '@Templates/components/TemplateDesigner/Base/TemplateGridPlaceholderItem';
 import AttributeElementContent from '@Templates/components/TemplateDesigner/ProductDesigner/AttributeElementContent';
 import LayoutElement from '@Templates/components/TemplateDesigner/ProductDesigner/LayoutElement';
@@ -87,7 +87,7 @@ export default {
         DropZone,
         FadeTransition,
         GridViewTemplate,
-        // TemplateGridDraggableLayer,
+        // TreeDesignerDraggableLayer,
         // TemplateGridPlaceholderItem,
         // LayoutElement,
         IconRemoveFilter,

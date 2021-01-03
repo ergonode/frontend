@@ -8,7 +8,7 @@ import {
 
 import TemplateGridGhostItem from '../TemplateGridGhostItem';
 
-describe('TemplateGrid/TemplateGridGhostItem', () => {
+describe('TreeDesigner/TemplateGridGhostItem', () => {
     let wrapper;
     beforeEach(() => {
         wrapper = shallowMount(TemplateGridGhostItem);

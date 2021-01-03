@@ -4,11 +4,11 @@
  */
 <template>
     <ListDraggableElement
+        :draggable-id="item.id"
+        :dragged-element="draggedElement"
         :draggable="!disabled"
         :disabled="disabled"
-        :draggable-id="item.id"
-        :label="item.name"
-        @drag="onDrag">
+        :label="item.name">
         <ListElementDescription>
             <ListElementTitle :title="item.name" />
         </ListElementDescription>
@@ -43,21 +43,13 @@ export default {
             default: false,
         },
     },
-    methods: {
-        ...mapActions('draggable', [
-            '__setState',
-        ]),
-        onDrag(isDragged) {
-            this.__setState({
-                key: 'draggedElement',
-                value: isDragged
-                    ? {
-                        id: `${this.item.id}--${getUUID()}`,
-                        name: this.item.name,
-                        code: this.item.code,
-                    }
-                    : null,
-            });
+    computed: {
+        draggedElement() {
+            return {
+                id: `${this.item.id}--${getUUID()}`,
+                name: this.item.name,
+                code: this.item.code,
+            };
         },
     },
 };

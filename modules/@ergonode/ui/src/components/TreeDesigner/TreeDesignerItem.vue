@@ -24,9 +24,10 @@
                 class="template-grid-item__code"
                 v-text="`Inherited ${contextName.toLowerCase()}: ${childrenLength}`" />
         </div>
-        <div :class="['template-grid-item__contextual-menu', contextualMenuHoveStateClasses]">
+        <div
+            v-if="!disabled"
+            :class="['template-grid-item__contextual-menu', contextualMenuHoveStateClasses]">
             <ActionIconButton
-                v-if="isDraggingEnabled"
                 :theme="secondaryTheme"
                 :size="tinySize"
                 :options="contextualMenuItems"
@@ -52,7 +53,7 @@ import IconArrowDouble from '@UI/components/Icons/Arrows/IconArrowDouble';
 import IconDots from '@UI/components/Icons/Others/IconDots';
 
 export default {
-    name: 'TemplateGridItem',
+    name: 'TreeDesignerItem',
     components: {
         IconDots,
         IconArrowDouble,
@@ -83,9 +84,9 @@ export default {
             default: true,
         },
         /**
-         * Determines state of draggable attribute
+         * Determines edit mode state
          */
-        isDraggingEnabled: {
+        disabled: {
             type: Boolean,
             default: false,
         },
@@ -138,7 +139,7 @@ export default {
     },
     methods: {
         onExpandItem() {
-            this.$emit('expand', this.item);
+            this.$emit('expand-item', this.item);
         },
         onSelectFocus(isFocused) {
             if (!isFocused) this.isHovered = false;

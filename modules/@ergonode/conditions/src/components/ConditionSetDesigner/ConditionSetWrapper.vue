@@ -3,14 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <TemplateGrid
+    <TreeDesigner
         :scope="scope"
         :change-values="changeValues"
         :errors="errors"
         :columns="columns"
         :row-height="rowHeight"
         :grid-gap="16"
-        :is-dragging-enabled="!disabled"
+        :disabled="disabled"
         :is-multi-draggable="true"
         :context-name="contextName"
         @after-drop="onGetConditionConfiguration"
@@ -31,7 +31,7 @@
                 :disabled="disabled"
                 @remove="onRemoveCondition" />
         </template>
-    </TemplateGrid>
+    </TreeDesigner>
 </template>
 
 <script>
@@ -41,7 +41,7 @@ import {
     CONTEXT_NAME,
     ROW_HEIGHT,
 } from '@Conditions/defaults/conditionsDesigner';
-import TemplateGrid from '@Core/components/TemplateGrid/TemplateGrid';
+import TreeDesigner from '@UI/components/TreeDesigner/TreeDesigner';
 import {
     mapActions,
     mapState,
@@ -51,7 +51,7 @@ export default {
     name: 'ConditionSetWrapper',
     components: {
         ConditionSetItem,
-        TemplateGrid,
+        TreeDesigner,
     },
     props: {
         disabled: {

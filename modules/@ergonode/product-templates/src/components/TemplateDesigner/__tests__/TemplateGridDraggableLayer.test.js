@@ -10,7 +10,7 @@ import {
     Store,
 } from 'vuex-mock-store';
 
-// import TemplateGridDraggableLayer from '../Base/TemplateGridDraggableLayer';
+// import TreeDesignerDraggableLayer from '../Base/TreeDesignerDraggableLayer';
 
 const localVue = createLocalVue();
 const store = new Store({
@@ -24,11 +24,11 @@ const mocks = {
     $store: store,
 };
 
-describe('Template/Base/TemplateGridDraggableLayer', () => {
+describe('Template/Base/TreeDesignerDraggableLayer', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(TemplateGridDraggableLayer, {
+        wrapper = shallowMount(TreeDesignerDraggableLayer, {
             localVue,
             mocks,
             propsData: {
@@ -39,8 +39,8 @@ describe('Template/Base/TemplateGridDraggableLayer', () => {
     });
 
     it('Component is named well', () => {
-        expect(typeof TemplateGridDraggableLayer.name).toBe('string');
-        expect(TemplateGridDraggableLayer.name).toEqual('TemplateGridDraggableLayer');
+        expect(typeof TreeDesignerDraggableLayer.name).toBe('string');
+        expect(TreeDesignerDraggableLayer.name).toEqual('TreeDesignerDraggableLayer');
     });
 
     it('Interactive placeholder positions', () => {

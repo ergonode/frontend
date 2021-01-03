@@ -8,7 +8,7 @@ import {
 
 import TemplateGridItemsLayer from '../TemplateGridItemsLayer';
 
-describe('TemplateGrid/TemplateGridItemsLayer', () => {
+describe('TreeDesigner/TemplateGridItemsLayer', () => {
     let wrapper;
     beforeEach(() => {
         wrapper = shallowMount(TemplateGridItemsLayer);
