@@ -25,7 +25,7 @@ export default {
     ) {
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Segments/store/segment/action/getSegment/__before', {
+            await this.$getExtendMethod('@Segments/store/segment/action/getSegment/__before', {
                 $this: this,
                 data: {
                     id,
@@ -71,7 +71,7 @@ export default {
                 });
             }
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Segments/store/segment/action/getSegment/__after', {
+            await this.$getExtendMethod('@Segments/store/segment/action/getSegment/__after', {
                 $this: this,
                 data,
             });
@@ -113,7 +113,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Segments/store/segment/action/updateSegment/__before', {
+            const extendedData = await this.$getExtendMethod('@Segments/store/segment/action/updateSegment/__before', {
                 $this: this,
                 data: {
                     id,
@@ -135,7 +135,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Segments/store/segment/action/updateSegment/__after', {
+            await this.$getExtendMethod('@Segments/store/segment/action/updateSegment/__after', {
                 $this: this,
                 data,
             });
@@ -178,7 +178,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Segments/store/segment/action/createSegment/__before', {
+            const extendedData = await this.$getExtendMethod('@Segments/store/segment/action/createSegment/__before', {
                 $this: this,
                 data,
             });
@@ -198,7 +198,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Segments/store/segment/action/createSegment/__after', {
+            await this.$getExtendMethod('@Segments/store/segment/action/createSegment/__after', {
                 $this: this,
                 data: {
                     id,
@@ -235,7 +235,7 @@ export default {
                 id, conditionSetId,
             } = state;
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Segments/store/segment/action/removeSegment/__before', {
+            await this.$getExtendMethod('@Segments/store/segment/action/removeSegment/__before', {
                 $this: this,
                 data: {
                     id,
@@ -253,7 +253,7 @@ export default {
             }
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Segments/store/segment/action/removeSegment/__after', {
+            await this.$getExtendMethod('@Segments/store/segment/action/removeSegment/__after', {
                 $this: this,
             });
             // EXTENDED AFTER METHOD

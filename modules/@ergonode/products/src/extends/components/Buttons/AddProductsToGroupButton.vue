@@ -63,7 +63,7 @@ export default {
             return options;
         },
         extendedComponents() {
-            return this.$getExtendedComponents('@Products/components/Tabs/ProductGroupTab/addProductFrom') || [];
+            return this.$getExtendSlot('@Products/components/Tabs/ProductGroupTab/addProductFrom') || [];
         },
         modalComponent() {
             let extendedOptions = [];

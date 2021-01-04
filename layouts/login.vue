@@ -10,19 +10,17 @@
 
 <script>
 import LoginLayout from '@Core/layouts/login';
+import {
+    loginLayoutMiddleware,
+} from '@Core/middleware/layouts';
 
 export default {
     name: 'NuxtLoginLayout',
     components: {
         LoginLayout,
     },
-    middleware({
-        store, redirect,
-    }) {
-        if (store.state.authentication.isLogged) {
-            return redirect('/dashboard');
-        }
-        return null;
+    middleware(ctx) {
+        loginLayoutMiddleware(ctx);
     },
 };
 </script>

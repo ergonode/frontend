@@ -83,7 +83,7 @@ export default {
             'code',
         ]),
         extendedMainAction() {
-            return this.$getExtendedComponents('@Attributes/pages/attribute-groups/_group/mainAction');
+            return this.$getExtendSlot('@Attributes/pages/attribute-groups/_group/mainAction');
         },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.ATTRIBUTE_GROUP.namespace);

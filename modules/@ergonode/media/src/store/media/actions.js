@@ -23,7 +23,7 @@ export default {
     }) {
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Media/store/media/action/getResource/__before', {
+            await this.$getExtendMethod('@Media/store/media/action/getResource/__before', {
                 $this: this,
                 data: {
                     id,
@@ -60,7 +60,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Media/store/media/action/getResource/__after', {
+            await this.$getExtendMethod('@Media/store/media/action/getResource/__after', {
                 $this: this,
                 data,
             });
@@ -161,7 +161,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Media/store/media/action/updateResource/__before', {
+            const extendedData = await this.$getExtendMethod('@Media/store/media/action/updateResource/__before', {
                 $this: this,
                 data: {
                     id,
@@ -183,7 +183,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Media/store/media/action/updateResource/__after', {
+            await this.$getExtendMethod('@Media/store/media/action/updateResource/__after', {
                 $this: this,
                 data,
             });
@@ -218,7 +218,7 @@ export default {
             } = state;
 
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Media/store/media/action/removeResource/__before', {
+            await this.$getExtendMethod('@Media/store/media/action/removeResource/__before', {
                 $this: this,
                 data: {
                     id,
@@ -232,7 +232,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Media/store/media/action/removeResource/__after', {
+            await this.$getExtendMethod('@Media/store/media/action/removeResource/__after', {
                 $this: this,
             });
             // EXTENDED AFTER METHOD

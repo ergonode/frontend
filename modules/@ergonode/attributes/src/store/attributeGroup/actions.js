@@ -30,7 +30,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Attributes/store/attributeGroup/action/createAttributeGroup/__before', {
+            const extendedData = await this.$getExtendMethod('@Attributes/store/attributeGroup/action/createAttributeGroup/__before', {
                 $this: this,
                 data,
             });
@@ -50,7 +50,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Attributes/store/attributeGroup/action/createAttributeGroup/__after', {
+            await this.$getExtendMethod('@Attributes/store/attributeGroup/action/createAttributeGroup/__after', {
                 $this: this,
                 data: {
                     id,
@@ -88,7 +88,7 @@ export default {
     ) {
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Attributes/store/attributeGroup/action/getAttributeGroup/__before', {
+            await this.$getExtendMethod('@Attributes/store/attributeGroup/action/getAttributeGroup/__before', {
                 $this: this,
                 data: {
                     id,
@@ -127,7 +127,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Attributes/store/attributeGroup/action/getAttributeGroup/__after', {
+            await this.$getExtendMethod('@Attributes/store/attributeGroup/action/getAttributeGroup/__after', {
                 $this: this,
                 data,
             });
@@ -164,7 +164,7 @@ export default {
                 name,
             };
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Attributes/store/attributeGroup/action/updateAttributeGroup/__before', {
+            const extendedData = await this.$getExtendMethod('@Attributes/store/attributeGroup/action/updateAttributeGroup/__before', {
                 $this: this,
                 data: {
                     id,
@@ -186,7 +186,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Attributes/store/attributeGroup/action/updateAttributeGroup/__after', {
+            await this.$getExtendMethod('@Attributes/store/attributeGroup/action/updateAttributeGroup/__after', {
                 $this: this,
                 data,
             });
@@ -221,7 +221,7 @@ export default {
             } = state;
 
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Attributes/store/attributeGroup/action/removeAttributeGroup/__before', {
+            await this.$getExtendMethod('@Attributes/store/attributeGroup/action/removeAttributeGroup/__before', {
                 $this: this,
                 data: {
                     id,
@@ -235,7 +235,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Attributes/store/attributeGroup/action/removeAttributeGroup/__after', {
+            await this.$getExtendMethod('@Attributes/store/attributeGroup/action/removeAttributeGroup/__after', {
                 $this: this,
             });
             // EXTENDED AFTER METHOD

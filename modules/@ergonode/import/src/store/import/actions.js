@@ -37,7 +37,7 @@ export default {
             } = rootState.dictionaries;
 
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Import/store/import/action/getImportProfile/__before', {
+            await this.$getExtendMethod('@Import/store/import/action/getImportProfile/__before', {
                 $this: this,
                 data: {
                     id,
@@ -68,7 +68,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Import/store/import/action/getImportProfile/__after', {
+            await this.$getExtendMethod('@Import/store/import/action/getImportProfile/__after', {
                 $this: this,
                 data,
             });
@@ -185,7 +185,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Import/store/import/action/updateImportProfile/__before', {
+            const extendedData = await this.$getExtendMethod('@Import/store/import/action/updateImportProfile/__before', {
                 $this: this,
                 data: {
                     id,
@@ -207,7 +207,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Import/store/import/action/updateImportProfile/__after', {
+            await this.$getExtendMethod('@Import/store/import/action/updateImportProfile/__after', {
                 $this: this,
                 data,
             });
@@ -305,7 +305,7 @@ export default {
             }
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Import/store/import/action/createImportProfile/__before', {
+            const extendedData = await this.$getExtendMethod('@Import/store/import/action/createImportProfile/__before', {
                 $this: this,
                 data,
             });
@@ -325,7 +325,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Import/store/import/action/createImportProfile/__after', {
+            await this.$getExtendMethod('@Import/store/import/action/createImportProfile/__after', {
                 $this: this,
                 data: {
                     id,
@@ -362,7 +362,7 @@ export default {
             } = state;
 
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Import/store/import/action/removeImport/__before', {
+            await this.$getExtendMethod('@Import/store/import/action/removeImport/__before', {
                 $this: this,
                 data: {
                     id,
@@ -376,7 +376,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Import/store/import/action/removeImport/__after', {
+            await this.$getExtendMethod('@Import/store/import/action/removeImport/__after', {
                 $this: this,
             });
             // EXTENDED AFTER METHOD

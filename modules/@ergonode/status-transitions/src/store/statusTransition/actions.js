@@ -37,7 +37,7 @@ export default {
             ] = id.split('--');
 
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Transitions/store/statusTransition/action/getStatusTransition/__before', {
+            await this.$getExtendMethod('@Transitions/store/statusTransition/action/getStatusTransition/__before', {
                 $this: this,
                 data: {
                     id,
@@ -89,7 +89,7 @@ export default {
                 });
             }
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Transitions/store/statusTransition/action/getStatusTransition/__after', {
+            await this.$getExtendMethod('@Transitions/store/statusTransition/action/getStatusTransition/__after', {
                 $this: this,
                 data,
             });
@@ -128,7 +128,7 @@ export default {
             }
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Transitions/store/statusTransition/action/updateStatusTransition/__before', {
+            const extendedData = await this.$getExtendMethod('@Transitions/store/statusTransition/action/updateStatusTransition/__before', {
                 $this: this,
                 data: {
                     source,
@@ -152,7 +152,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Transitions/store/statusTransition/action/updateStatusTransition/__after', {
+            await this.$getExtendMethod('@Transitions/store/statusTransition/action/updateStatusTransition/__after', {
                 $this: this,
                 data,
             });
@@ -196,7 +196,7 @@ export default {
                 roles,
             };
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Transitions/store/statusTransition/action/createStatusTransition/__before', {
+            const extendedData = await this.$getExtendMethod('@Transitions/store/statusTransition/action/createStatusTransition/__before', {
                 $this: this,
                 data,
             });
@@ -216,7 +216,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Transitions/store/statusTransition/action/createStatusTransition/__after', {
+            await this.$getExtendMethod('@Transitions/store/statusTransition/action/createStatusTransition/__after', {
                 $this: this,
                 data: {
                     id,
@@ -256,7 +256,7 @@ export default {
             } = state;
 
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Transitions/store/statusTransition/action/removeStatusTransition/__before', {
+            await this.$getExtendMethod('@Transitions/store/statusTransition/action/removeStatusTransition/__before', {
                 $this: this,
                 data: {
                     source,
@@ -275,7 +275,7 @@ export default {
                 await this.app.$axios.$delete(`conditionsets/${conditionSetId}`);
             }
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Transitions/store/statusTransition/action/removeStatusTransition/__after', {
+            await this.$getExtendMethod('@Transitions/store/statusTransition/action/removeStatusTransition/__after', {
                 $this: this,
             });
             // EXTENDED AFTER METHOD

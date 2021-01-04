@@ -103,7 +103,7 @@ export default {
             'attrTypes',
         ]),
         extendedMainAction() {
-            return this.$getExtendedComponents('@Attributes/pages/attributes/_attribute/mainAction');
+            return this.$getExtendSlot('@Attributes/pages/attributes/_attribute/mainAction');
         },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.ATTRIBUTE.namespace);
@@ -119,7 +119,7 @@ export default {
                     route: this.$route,
                 });
                 const type = getKeyByValue(this.attrTypes, this.type);
-                const tabs = await this.$extendMethods('@Core/pages/tabs', {
+                const tabs = await this.$getExtendMethod('@Core/pages/tabs', {
                     $this: this,
                     type,
                     tabs: tmpTabs,
