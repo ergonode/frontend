@@ -44,7 +44,7 @@ export default [
             {
                 name: ROUTE_NAME.IMPORTS_GRID,
                 path: 'grid',
-                component: Tabs.ImportProfileGridTab,
+                component: Tabs.ImportProfilesTab,
                 meta: {
                     title: '',
                     breadcrumbs: [

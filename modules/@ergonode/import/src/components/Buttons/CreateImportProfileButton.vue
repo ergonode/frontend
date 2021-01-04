@@ -23,6 +23,9 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Import/config/privileges';
+import {
+    IMPORT_PROFILE_CREATED_EVENT_NAME,
+} from '@Import/defaults';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 
@@ -57,7 +60,10 @@ export default {
         },
         onCreatedData() {
             this.onCloseModal();
-            this.$emit('created');
+
+            const event = new CustomEvent(IMPORT_PROFILE_CREATED_EVENT_NAME);
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

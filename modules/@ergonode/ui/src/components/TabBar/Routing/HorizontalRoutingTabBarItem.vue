@@ -109,10 +109,6 @@ export default {
     methods: {
         onLinkSelect() {
             if (this.item.route.name !== this.$route.name) {
-                this.$router.push({
-                    name: this.item.route.name,
-                });
-
                 this.$emit('select', this.index);
             }
         },

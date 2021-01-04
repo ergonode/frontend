@@ -39,7 +39,7 @@
                 <template #proceed>
                     <Button
                         :theme="theme.SECONDARY"
-                        title="CANCEL"
+                        :title="$t('core.buttons.cancel')"
                         :size="smallSize"
                         @click.native="onClose" />
                 </template>

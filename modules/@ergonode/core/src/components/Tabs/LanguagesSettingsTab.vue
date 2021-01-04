@@ -36,6 +36,7 @@
 
 <script>
 import LanguagesTreeWrapper from '@Core/components/LanguagesTreeDesigner/LanguagesTreeWrapper';
+import PRIVILEGES from '@Core/config/privileges';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -122,8 +123,13 @@ export default {
             return [
                 {
                     title: 'System languages',
-                    component: () => import('@Core/components/Tabs/List/LanguagesListTab'),
+                    component: () => import('@Core/components/VerticalTabs/LanguagesVerticalTab'),
                     icon: () => import('@UI/components/Icons/Others/IconTranslate'),
+                    props: {
+                        disabled: !this.$hasAccess([
+                            PRIVILEGES.SETTINGS.update,
+                        ]),
+                    },
                 },
             ];
         },

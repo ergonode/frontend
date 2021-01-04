@@ -11,15 +11,15 @@ export const Pages = {
 };
 
 export const Tabs = {
-    UsersGridTab: () => import('@Users/components/Tabs/UsersGridTab').then(m => m.default || m),
+    UsersTab: () => import('@Users/components/Tabs/UsersTab').then(m => m.default || m),
     UserGeneralTab: () => import('@Users/components/Tabs/UserGeneralTab').then(m => m.default || m),
     UserAvatarTab: () => import('@Users/components/Tabs/UserAvatarTab').then(m => m.default || m),
-    RolesGridTab: () => import('@Users/components/Tabs/RolesGridTab').then(m => m.default || m),
+    RolesTab: () => import('@Users/components/Tabs/RolesTab').then(m => m.default || m),
     RoleGeneralTab: () => import('@Users/components/Tabs/RoleGeneralTab').then(m => m.default || m),
     RolePrivilegesTab: () => import('@Users/components/Tabs/RolePrivilegesTab').then(m => m.default || m),
     UserLanguageRestrictionsTab: () => import('@Users/components/Tabs/UserLanguageRestrictionsTab').then(m => m.default || m),
-    UserActivityLogsGridTab: () => import('@Users/components/Tabs/UserActivityLogsGridTab').then(m => m.default || m),
-    UserPrivilegesGridTab: () => import('@Users/components/Tabs/UserPrivilegesGridTab').then(m => m.default || m),
+    UserActivityLogsTab: () => import('@Users/components/Tabs/UserActivityLogsTab').then(m => m.default || m),
+    UserPrivilegesTab: () => import('@Users/components/Tabs/UserPrivilegesTab').then(m => m.default || m),
 };
 
 export const Icons = {

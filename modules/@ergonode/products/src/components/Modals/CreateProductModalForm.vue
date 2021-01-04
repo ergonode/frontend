@@ -8,8 +8,8 @@
         @close="onClose">
         <template #body>
             <ProductForm
-                :submit-title="$t('core.buttons.create')"
-                :proceed-title="$t('core.buttons.proceed')"
+                :submit-title="$t('product.buttons.create')"
+                :proceed-title="$t('product.buttons.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
                 :errors="scopeErrors"

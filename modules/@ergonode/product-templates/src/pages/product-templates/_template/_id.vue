@@ -3,13 +3,34 @@
  * See LICENSE for license details.
  */
 <template>
-    <TemplatePage :title="templateTitle" />
+    <Page>
+        <TitleBar
+            :title="title"
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigateBackFab :previous-route="previousRoute" />
+            </template>
+            <template #mainAction>
+                <RemoveProductTemplateButton />
+            </template>
+        </TitleBar>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
+    </Page>
 </template>
 
 <script>
-import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
-import TemplatePage from '@Templates/components/Pages/TemplatePage';
+import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import RemoveProductTemplateButton from '@Templates/components/Buttons/RemoveProductTemplateButton';
+import PRIVILEGES from '@Templates/config/privileges';
+import Page from '@UI/components/Layout/Page';
+import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapActions,
     mapState,
@@ -18,11 +39,15 @@ import {
 export default {
     name: 'Edit',
     components: {
-        TemplatePage,
+        Page,
+        TitleBar,
+        HorizontalRoutingTabBar,
+        RemoveProductTemplateButton,
     },
     mixins: [
-        beforeLeavePageMixin,
-        scopeErrorsMixin,
+        asyncTabsMixin,
+        beforeRouteEnterMixin,
+        beforeRouteLeaveMixin,
     ],
     validate({
         params,
@@ -35,9 +60,12 @@ export default {
         await store.dispatch('productTemplate/getTemplate', params);
     },
     computed: {
-        ...mapState('productTemplate', {
-            templateTitle: state => state.title,
-        }),
+        ...mapState('productTemplate', [
+            'title',
+        ]),
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.TEMPLATE_DESIGNER.namespace);
+        },
     },
     beforeDestroy() {
         this.__clearListStorage();
@@ -57,7 +85,7 @@ export default {
     },
     head() {
         return {
-            title: `${this.templateTitle} - Product templates - Ergonode`,
+            title: `${this.title} - Product templates - Ergonode`,
         };
     },
 };

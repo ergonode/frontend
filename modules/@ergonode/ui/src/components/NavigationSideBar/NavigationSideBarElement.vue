@@ -1,0 +1,147 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+<template>
+    <li
+        :class="classes"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave">
+        <NuxtLink
+            :to="{ name: route.name }"
+            class="navigation-side-bar-element__link">
+            <div class="navigation-side-bar-element__icon">
+                <Component
+                    :is="listIcon"
+                    :fill-color="listIconFillColor" />
+            </div>
+            <FadeNavigationSideBarTextTransition>
+                <span
+                    v-if="isExpanded"
+                    class="navigation-side-bar-element__title"
+                    v-text="route.meta.title" />
+            </FadeNavigationSideBarTextTransition>
+        </NuxtLink>
+    </li>
+</template>
+
+<script>
+import {
+    GREEN,
+    WHITE,
+} from '@UI/assets/scss/_js-variables/colors.scss';
+import FadeNavigationSideBarTextTransition from '@UI/components/Transitions/FadeNavigationSideBarTextTransition';
+
+export default {
+    name: 'NavigationSideBarElement',
+    components: {
+        FadeNavigationSideBarTextTransition,
+    },
+    props: {
+        /**
+         * Route data model
+         */
+        route: {
+            type: Object,
+            required: true,
+        },
+        /**
+         * Determines state of expanded component
+         */
+        isExpanded: {
+            type: Boolean,
+            default: true,
+        },
+    },
+    data() {
+        return {
+            isHovered: false,
+        };
+    },
+    computed: {
+        classes() {
+            return [
+                'navigation-side-bar-element',
+                {
+                    'navigation-side-bar-element--selected': this.isSelected,
+                    'navigation-side-bar-element--hovered': this.isHovered,
+                },
+            ];
+        },
+        listIcon() {
+            if (!(this.route.meta && this.route.meta.icon)) return null;
+
+            return this.route.meta.icon;
+        },
+        isSelected() {
+            return this.$route.name === this.route.name;
+        },
+        listIconFillColor() {
+            return this.isSelected || this.isHovered ? WHITE : GREEN;
+        },
+    },
+    methods: {
+        onMouseEnter() {
+            this.isHovered = true;
+        },
+        onMouseLeave() {
+            this.isHovered = false;
+        },
+    },
+};
+</script>
+
+<style lang="scss" scoped>
+    .navigation-side-bar-element {
+        $element: &;
+
+        display: flex;
+        height: 48px;
+        padding: 0 24px;
+        box-sizing: border-box;
+        cursor: pointer;
+
+        &--selected {
+            background-color: $GREEN;
+
+            #{$element}__title {
+                color: $WHITE;
+            }
+        }
+
+        &:not(&--selected):not(&--hovered) {
+            #{$element}__title {
+                color: $GREY_DARK;
+            }
+        }
+
+        &--hovered {
+            #{$element}__title {
+                color: $WHITE;
+            }
+        }
+
+        &__link {
+            outline: none;
+            display: grid;
+            grid-template-columns: 32px max-content;
+            grid-column-gap: 8px;
+            flex: 1;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        &__icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        &__title {
+            font: $FONT_MEDIUM_14_20;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    }
+</style>

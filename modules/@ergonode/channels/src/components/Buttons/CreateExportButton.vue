@@ -18,6 +18,9 @@
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
 import {
+    EXPORT_CREATED_EVENT_NAME,
+} from '@Channels/defaults';
+import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
@@ -76,7 +79,9 @@ export default {
                 message: 'Export has been finished',
             });
 
-            this.$emit('created');
+            const event = new CustomEvent(EXPORT_CREATED_EVENT_NAME);
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

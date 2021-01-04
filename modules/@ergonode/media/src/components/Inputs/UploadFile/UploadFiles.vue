@@ -174,7 +174,7 @@ export default {
                 {
                     title: 'Media',
                     content: {
-                        component: () => import('@Media/components/Grid/MediaGrid'),
+                        component: () => import('@Media/components/Grids/AddMediaGrid'),
                         props: {
                             multiple: true,
                             value: this.value,

@@ -84,14 +84,14 @@ export default {
     },
     computed: {
         ...mapState('product', [
-            'draft',
+            'drafts',
         ]),
         fieldData() {
             const {
                 attribute_code,
             } = this.properties;
 
-            return this.draft[this.languageCode][attribute_code] || '';
+            return this.drafts[this.languageCode][attribute_code];
         },
         parameter() {
             if (!this.properties.parameters) return null;

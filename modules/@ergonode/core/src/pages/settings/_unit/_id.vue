@@ -3,15 +3,37 @@
  * See LICENSE for license details.
  */
 <template>
-    <UnitPage :title="name" />
+    <Page>
+        <TitleBar
+            :title="name"
+            :is-read-only="isReadOnly">
+            <template #prependHeader>
+                <NavigateBackFab :previous-route="previousRoute" />
+            </template>
+            <template #mainAction>
+                <RemoveUnitButton />
+            </template>
+        </TitleBar>
+        <HorizontalRoutingTabBar
+            v-if="asyncTabs"
+            :items="asyncTabs"
+            :change-values="changeValues"
+            :errors="errors" />
+    </Page>
 </template>
 
 <script>
-import UnitPage from '@Core/components/Pages/UnitPage';
+import RemoveUnitButton from '@Core/components/Buttons/RemoveUnitButton';
+import PRIVILEGES from '@Core/config/privileges';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import beforeRouteEnterMixin from '@Core/mixins/route/beforeRouteEnterMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
+import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
+import Page from '@UI/components/Layout/Page';
+import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
+import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
     mapActions,
     mapState,
@@ -20,10 +42,15 @@ import {
 export default {
     name: 'UnitEdit',
     components: {
-        UnitPage,
+        Page,
+        TitleBar,
+        HorizontalRoutingTabBar,
+        RemoveUnitButton,
     },
     mixins: [
-        beforeLeavePageMixin,
+        asyncTabsMixin,
+        beforeRouteEnterMixin,
+        beforeRouteLeaveMixin,
     ],
     validate({
         params,
@@ -49,6 +76,9 @@ export default {
         ...mapState('unit', [
             'name',
         ]),
+        isReadOnly() {
+            return this.$isReadOnly(PRIVILEGES.SETTINGS.namespace);
+        },
     },
     beforeDestroy() {
         this.clearUnitStorage();

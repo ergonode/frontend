@@ -9,6 +9,7 @@
             :value="defaultTextAttribute"
             :label="$t('attribute.extends.template.form.defaultLabel')"
             :searchable="true"
+            :clearable="true"
             :disabled="disabled"
             :params="autocompleteDefaultLabelParams"
             filter-type="TEXT"

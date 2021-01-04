@@ -4,6 +4,8 @@
             "create": "CREATE",
             "proceed": "CREATE & EDIT",
             "submit": "SAVE CHANGES",
+            "restore": "RESTORE",
+            "cancel": "CANCEL",
             "clear": "Clear"
         },
         "errors": {
