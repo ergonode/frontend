@@ -4,11 +4,12 @@
  */
 <template>
     <TreeDesigner
-        :items="gridData"
+        :items="tree"
         :columns="columns"
         :row-height="rowHeight"
-        :context-name="contextName"
         :disabled="!isAllowedToUpdate"
+        @remove-items="onRemoveItems"
+        @add-item="onAddItem"
         @input="onValueChange" />
 </template>
 
@@ -45,34 +46,59 @@ export default {
         },
     },
     computed: {
-        ...mapState('gridDesigner', [
-            'gridData',
+        ...mapState('authentication', {
+            languageCode: state => state.user.language,
+        }),
+        ...mapState('categoryTree', [
+            'tree',
         ]),
-        isAllowedToUpdate() {
-            return this.$hasAccess([
-                PRIVILEGES.CATEGORY_TREE.update,
-            ]);
-        },
-        contextName() {
-            return CONTEXT_NAME;
-        },
         columns() {
             return COLUMNS;
         },
         rowHeight() {
             return ROW_HEIGHT;
         },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.CATEGORY_TREE.update,
+            ]);
+        },
     },
     methods: {
-        ...mapActions('gridDesigner', [
+        ...mapActions('categoryTree', [
             '__setState',
         ]),
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
+        ...mapActions('list', [
+            'removeDisabledElement',
+            'setDisabledElement',
+        ]),
+        onRemoveItems(ids) {
+            ids.forEach((id) => {
+                this.removeDisabledElement({
+                    languageCode: this.languageCode,
+                    elementId: id,
+                });
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'categoryTreeDesigner',
+                value: this.gridData,
+            });
+        },
+        onAddItem(item) {
+            this.setDisabledElement({
+                languageCode: this.languageCode,
+                elementId: item.id,
+                disabled: true,
+            });
+        },
         onValueChange(value) {
             this.__setState({
-                key: 'gridData',
+                key: 'tree',
                 value,
             });
 

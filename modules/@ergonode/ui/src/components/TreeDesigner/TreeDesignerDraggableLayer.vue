@@ -181,7 +181,7 @@ export default {
                     value: -1,
                 });
 
-                this.$emit('drop', item);
+                this.$emit('drop-item', item);
             }
 
             event.preventDefault();

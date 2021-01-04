@@ -10,23 +10,23 @@
         @mouseout="onMouseOut">
         <IconArrowDouble
             v-if="hasChildren"
-            class="template-grid-item__icon"
+            class="tree-designer-item__icon"
             :state="buttonExpanderIconState"
             @click.native="onExpandItem" />
         <div
-            class="template-grid-item__title"
+            class="tree-designer-item__title"
             :title="item.name ? `#${item.code}`: ''">
             <span
-                class="template-grid-item__name"
+                class="tree-designer-item__name"
                 v-text="item.name || `#${item.code}`" />
             <span
                 v-if="hasChildren"
-                class="template-grid-item__code"
+                class="tree-designer-item__code"
                 v-text="`Inherited ${contextName.toLowerCase()}: ${childrenLength}`" />
         </div>
         <div
             v-if="!disabled"
-            :class="['template-grid-item__contextual-menu', contextualMenuHoveStateClasses]">
+            :class="['tree-designer-item__contextual-menu', contextualMenuHoveStateClasses]">
             <ActionIconButton
                 :theme="secondaryTheme"
                 :size="tinySize"
@@ -113,9 +113,9 @@ export default {
         },
         classes() {
             return [
-                'template-grid-item',
+                'tree-designer-item',
                 {
-                    'template-grid-item--first-column': this.item.column === 0,
+                    'tree-designer-item--first-column': this.item.column === 0,
                 },
             ];
         },
@@ -133,7 +133,7 @@ export default {
         },
         contextualMenuHoveStateClasses() {
             return {
-                'template-grid-item__contextual-menu--hovered': this.isHovered,
+                'tree-designer-item__contextual-menu--hovered': this.isHovered,
             };
         },
     },
@@ -149,7 +149,7 @@ export default {
         onSelectValue(option) {
             switch (option) {
             case 'Remove':
-                this.$emit('remove-item');
+                this.$emit('remove-item', this.item.id);
                 break;
             default: break;
             }
@@ -165,7 +165,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .template-grid-item {
+    .tree-designer-item {
         position: relative;
         z-index: $Z_INDEX_LVL_1;
         display: flex;

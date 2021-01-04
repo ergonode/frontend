@@ -5,10 +5,10 @@
 <template>
     <div
         :style="styles"
-        class="template-grid-ghost-item">
+        class="designer-ghost-item">
         <div class="container">
             <IconAddFilter :fill-color="whiteColor" />
-            ADD {{ contextName }}
+            ADD ITEM
         </div>
     </div>
 </template>
@@ -17,6 +17,9 @@ import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import IconAddFilter from '@UI/components/Icons/Actions/IconAddFilter';
+import {
+    GRID_GAP,
+} from '@UI/defaults/designer';
 
 export default {
     name: 'TemplateGridGhostItem',
@@ -24,10 +27,6 @@ export default {
         IconAddFilter,
     },
     props: {
-        contextName: {
-            type: String,
-            default: 'ITEM',
-        },
         row: {
             type: Number,
             default: 0,
@@ -38,7 +37,7 @@ export default {
         },
         gap: {
             type: Number,
-            default: 8,
+            default: GRID_GAP,
         },
     },
     computed: {
@@ -56,7 +55,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .template-grid-ghost-item {
+    .designer-ghost-item {
         z-index: $Z_INDEX_LVL_1;
         display: flex;
         align-items: center;

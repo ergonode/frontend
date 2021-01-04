@@ -115,6 +115,11 @@ export default {
             };
         },
     },
+    watch: {
+        lastItemRow() {
+            this.setRows(this.rows);
+        },
+    },
     methods: {
         onResize(entry) {
             const {
@@ -123,6 +128,8 @@ export default {
             const maxRow = Math.ceil((height - this.footerHeight) / this.rowHeight);
 
             this.rows = Math.max(this.lastItemRow, maxRow) + this.additionalRows;
+
+            this.setRows(maxRow);
         },
         onAddRow() {
             this.additionalRows += 1;
@@ -131,6 +138,9 @@ export default {
             requestAnimationFrame(() => {
                 this.$refs.footer.$el.scrollIntoView(true);
             });
+        },
+        setRows(rows) {
+            this.rows = Math.max(this.lastItemRow, rows) + this.additionalRows;
         },
     },
 };

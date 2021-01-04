@@ -23,13 +23,12 @@
                 @remove-items="onRemoveItems"
                 @shift-items="onShiftItems"
                 @expand-item="onExpandItem"
-                @drop="onDropItem">
-                <TemplateGridGhostItem
+                @drop-item="onDropItem">
+                <DesignerGhostItem
                     v-if="ghostIndex !== -1"
                     :row="ghostIndex.row"
                     :column="ghostIndex.column"
-                    :gap="gridGap"
-                    :context-name="contextName" />
+                    :gap="gridGap" />
                 <TreeDesignerItem
                     v-for="item in itemsWithoutGhost"
                     :key="item.id"
@@ -40,7 +39,7 @@
                     :disabled="disabled"
                     :is-expanded="typeof hiddenItems[item.id] === 'undefined'"
                     @expand-item="onExpandItem"
-                    @remove-item="removeItem(item)" />
+                    @remove-item="onRemoveItems" />
                 <TreeDesignerConnectionLine
                     v-for="item in connectionLines"
                     :key="`${item.id}-line|${item.row}|${item.column}`"
@@ -62,12 +61,11 @@ import {
     removeArrayIndexes,
 } from '@Core/models/arrayWrapper';
 import Designer from '@UI/components/Designer/Designer';
-import TemplateGridGhostItem from '@UI/components/TreeDesigner/TemplateGridGhostItem';
+import DesignerGhostItem from '@UI/components/Designer/DesignerGhostItem';
 import TreeDesignerConnectionLine from '@UI/components/TreeDesigner/TreeDesignerConnectionLine';
 import TreeDesignerDraggableLayer from '@UI/components/TreeDesigner/TreeDesignerDraggableLayer';
 import TreeDesignerItem from '@UI/components/TreeDesigner/TreeDesignerItem';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -76,32 +74,11 @@ export default {
     components: {
         Designer,
         TreeDesignerDraggableLayer,
-        TemplateGridGhostItem,
+        DesignerGhostItem,
         TreeDesignerItem,
         TreeDesignerConnectionLine,
     },
     props: {
-        /**
-         * Scope of context
-         */
-        scope: {
-            type: String,
-            default: '',
-        },
-        /**
-         * Values that have been changes at given context
-         */
-        changeValues: {
-            type: Object,
-            default: () => ({}),
-        },
-        /**
-         * The validation errors
-         */
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
         items: {
             type: Array,
             default: () => [],
@@ -150,14 +127,8 @@ export default {
         };
     },
     computed: {
-        ...mapState('authentication', {
-            language: state => state.user.language,
-        }),
         ...mapState('draggable', [
             'ghostIndex',
-        ]),
-        ...mapState('list', [
-            'disabledElements',
         ]),
         connectionLines() {
             return this.localItems.filter(item => item.column > 0);
@@ -196,21 +167,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('gridDesigner', [
-            'setGridWhenExpand',
-            'setChildrenLength',
-            'setHiddenItem',
-            'removeHiddenItem',
-            'setExpandItem',
-            'removeGridItem',
-            '',
-        ]),
-        ...mapActions('list', [
-            'removeDisabledElement',
-        ]),
-        ...mapActions('feedback', [
-            'onScopeValueChange',
-        ]),
         onValueChange() {
             this.$emit('input', JSON.parse(JSON.stringify(this.localItems)));
         },
@@ -293,11 +249,13 @@ export default {
             }
         },
         onDropItem(item) {
-            this.$emit('drop', item);
+            this.$emit('add-item', item);
+            this.onValueChange();
         },
         onExpandItem({
             id,
             row,
+            column,
         }) {
             if (typeof this.hiddenItems[id] === 'undefined') {
                 const indexesToRemove = [];
@@ -306,7 +264,7 @@ export default {
 
                 this.hiddenItems[id] = [];
 
-                while (this.localItems[i].parent === id) {
+                while (i < this.localItems.length && this.localItems[i].column > column) {
                     const item = this.localItems[i];
 
                     this.hiddenItems[id].push({
@@ -349,77 +307,6 @@ export default {
                 delete this.hiddenItems[id];
             }
         },
-        removeItemOnDrop(item) {
-            this.removeDisabledElementsOnList(item.id);
-
-            this.onScopeValueChange({
-                scope: this.scope,
-                fieldKey: 'designer',
-                value: true,
-            });
-
-            this.$emit('remove', item);
-        },
-        removeItem(item) {
-            const {
-                id, row, parent,
-            } = item;
-
-            this.onExpandItem(item);
-            this.removeDisabledElementsOnList(id);
-            this.removeHiddenItem(id);
-            this.setChildrenLength({
-                id: parent,
-                value: -1,
-            });
-            this.removeGridItem(row);
-
-            this.onScopeValueChange({
-                scope: this.scope,
-                fieldKey: 'designer',
-                value: true,
-            });
-        },
-        removeDisabledElementsOnList(id) {
-            if (this.hiddenItems[id]) {
-                const childrenForHiddenItem = this.hiddenItems[id];
-
-                for (let i = 0; i < childrenForHiddenItem.length; i += 1) {
-                    if (typeof this.disabledElements[this.language] !== 'undefined'
-                        && typeof this.disabledElements[this.language][childrenForHiddenItem[i].id] !== 'undefined') {
-                        this.removeDisabledElement({
-                            languageCode: this.language,
-                            elementId: childrenForHiddenItem[i].id,
-                        });
-                    }
-                }
-            }
-
-            if (typeof this.disabledElements[this.language] !== 'undefined'
-                && typeof this.disabledElements[this.language][id] !== 'undefined') {
-                this.removeDisabledElement({
-                    languageCode: this.language,
-                    elementId: id,
-                });
-            }
-
-            this.onScopeValueChange({
-                scope: this.scope,
-                fieldKey: 'designer',
-                value: true,
-            });
-        },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .template-grid {
-        display: flex;
-        flex: 1 1 auto;
-        flex-direction: column;
-        height: 0;
-        padding: 24px 24px 0;
-        overflow: auto;
-    }
-</style>

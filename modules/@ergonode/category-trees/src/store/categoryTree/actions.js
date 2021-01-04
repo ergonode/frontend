@@ -127,20 +127,19 @@ export default {
             } = categoryTreeData;
 
             if (categories.length) {
-                const treeToSet = getParsedTreeData(categories, categoriesData);
+                const tree = getParsedTreeData(categories, categoriesData);
 
-                treeToSet.forEach(e => dispatch('list/setDisabledElement', {
+                tree.forEach(element => dispatch('list/setDisabledElement', {
                     languageCode: userLanguageCode,
-                    elementId: e.id,
+                    elementId: element.id,
                     disabled: true,
                 }, {
                     root: true,
                 }));
-                dispatch('gridDesigner/setGridData', treeToSet, {
-                    root: true,
-                });
-                dispatch('gridDesigner/setFullGridData', treeToSet, {
-                    root: true,
+
+                commit('__SET_STATE', {
+                    key: 'tree',
+                    value: tree,
                 });
             }
 
@@ -188,18 +187,16 @@ export default {
         try {
             const {
                 id,
+                tree,
             } = state;
             const {
                 translations: {
                     name,
                 },
             } = rootState.tab;
-            const {
-                fullGridData,
-            } = rootState.gridDesigner;
             let data = {
                 name,
-                categories: getMappedTreeData(fullGridData),
+                categories: getMappedTreeData(tree),
             };
 
             // EXTENDED BEFORE METHOD

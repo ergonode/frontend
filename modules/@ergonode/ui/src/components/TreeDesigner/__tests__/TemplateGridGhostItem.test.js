@@ -6,7 +6,7 @@ import {
     shallowMount,
 } from '@vue/test-utils';
 
-import TemplateGridGhostItem from '../TemplateGridGhostItem';
+import TemplateGridGhostItem from '../../Designer/TemplateGridGhostItem';
 
 describe('TreeDesigner/TemplateGridGhostItem', () => {
     let wrapper;
