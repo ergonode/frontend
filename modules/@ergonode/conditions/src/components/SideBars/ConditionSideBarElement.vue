@@ -5,10 +5,10 @@
 <template>
     <ListDraggableElement
         :draggable-id="item.id"
-        :dragged-element="draggedElement"
         :draggable="!disabled"
         :disabled="disabled"
-        :label="item.name">
+        :label="item.name"
+        @drag="onDrag">
         <ListElementDescription>
             <ListElementTitle :title="item.name" />
         </ListElementDescription>
@@ -43,13 +43,22 @@ export default {
             default: false,
         },
     },
-    computed: {
-        draggedElement() {
-            return {
-                id: `${this.item.id}--${getUUID()}`,
-                name: this.item.name,
-                code: this.item.code,
-            };
+    methods: {
+        ...mapActions('draggable', [
+            '__setState',
+        ]),
+        onDrag(isDragged) {
+            this.__setState({
+                key: 'draggedElement',
+                value: isDragged
+                    ? {
+                        id: getUUID(),
+                        type: this.item.id,
+                        name: this.item.name,
+                        code: this.item.code,
+                    }
+                    : null,
+            });
         },
     },
 };

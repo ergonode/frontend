@@ -19,7 +19,7 @@
             </VerticalTabBar>
         </template>
         <template #grid>
-            <ConditionSetWrapper
+            <ConditionSetTreeDesigner
                 :scope="scope"
                 :change-values="changeValues"
                 :errors="errors"
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import ConditionSetWrapper from '@Conditions/components/ConditionSetDesigner/ConditionSetWrapper';
+import ConditionSetTreeDesigner from '@Conditions/components/TreeDesigners/ConditionSetTreeDesigner';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -76,18 +76,11 @@ export default {
         DropZone,
         FadeTransition,
         VerticalTabBar,
-        ConditionSetWrapper,
+        ConditionSetTreeDesigner,
     },
     mixins: [
         tabFeedbackMixin,
     ],
-    async fetch({
-        store,
-    }) {
-        await store.dispatch('condition/getConditions', {
-            group: 'segment',
-        });
-    },
     data() {
         return {
             isSubmitting: false,
@@ -113,6 +106,7 @@ export default {
                     icon: () => import('@Categories/components/Icons/IconCategory'),
                     props: {
                         disabled: !this.isAllowedToUpdate,
+                        group: 'segment',
                     },
                 },
             ];

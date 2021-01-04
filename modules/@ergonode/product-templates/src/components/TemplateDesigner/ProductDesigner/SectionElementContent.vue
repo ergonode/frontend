@@ -5,8 +5,8 @@
 <template>
     <ElementContentBase
         :disabled="disabled"
-        @mouseover.native="onMouseOver"
-        @mouseout.native="onMouseOut">
+        @mouseenter.native="onMouseEnter"
+        @mouseleave.native="onMouseLeave">
         <div class="element-content__icon">
             <IconFontSize />
         </div>
@@ -134,10 +134,10 @@ export default {
             default: break;
             }
         },
-        onMouseOver() {
-            if (!this.isHovered) this.isHovered = true;
+        onMouseEnter() {
+            this.isHovered = true;
         },
-        onMouseOut() {
+        onMouseLeave() {
             if (!this.isContextualMenuActive) this.isHovered = false;
         },
     },

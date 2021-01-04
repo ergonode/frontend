@@ -243,19 +243,43 @@ export default {
             ]);
             this.onValueChange();
         },
-        onRemoveItems(id) {
+        onRemoveItems({
+            id,
+            row,
+            column,
+        }) {
+            const indexesToRemove = [];
             let itemIds = [
                 id,
             ];
 
             if (typeof this.hiddenItems[id] !== 'undefined') {
                 itemIds = [
-                    id,
-                    ...this.hiddenItems[id].map(item => item.id),
+                    ...itemIds,
+                    ...this.hiddenItems[id].map(hiddenItem => hiddenItem.id),
                 ];
 
                 delete this.hiddenItems[id];
+            } else {
+                if (this.localItems.some(item => item.id === id)) {
+                    indexesToRemove.push(row);
+                }
+
+                let i = row + 1;
+
+                while (i < this.localItems.length && this.localItems[i].column > column) {
+                    indexesToRemove.push(i);
+
+                    i += 1;
+                }
             }
+
+            this.onShiftItems({
+                since: row + indexesToRemove.length - 1,
+                value: -indexesToRemove.length,
+            });
+
+            this.localItems = removeArrayIndexes(this.localItems, indexesToRemove);
 
             this.$emit('remove-items', itemIds);
             this.onValueChange();

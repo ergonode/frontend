@@ -3,40 +3,31 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        :style="styles"
-        :class="classes"
-        @mouseover="onMouseOver"
-        @mouseout="onMouseOut">
-        <IconButton
-            v-if="hasChildren"
-            :size="tinySize"
-            :theme="secondaryPlainTheme"
-            @click.native="onExpandItem">
-            <template #icon>
-                <IconArrowDouble :state="buttonExpanderIconState" />
-            </template>
-        </IconButton>
-        <slot name="description">
-            <DesignerItemDescription
-                :title="title"
-                :subtitle="subtitle" />
-        </slot>
-        <div
-            v-if="!disabled"
-            :class="['tree-designer-item__contextual-menu', contextualMenuHoveStateClasses]">
-            <ActionIconButton
-                :theme="secondaryPlainTheme"
+    <DesignerItem
+        :row="item.row"
+        :column="item.column"
+        :gap="gap"
+        :title="title"
+        :subtitle="subtitle"
+        :disabled="disabled"
+        :menu-items="menuItems"
+        @select-menu-option="onSelectValue">
+        <template #prepend>
+            <IconButton
+                v-if="hasChildren"
+                class="tree-designer-item-expand-button"
                 :size="tinySize"
-                :options="contextualMenuItems"
-                @input="onSelectValue"
-                @focus="onSelectFocus">
-                <template #icon="{ color }">
-                    <IconDots :fill-color="color" />
+                :theme="secondaryPlainTheme"
+                @click.native="onExpandItem">
+                <template #icon>
+                    <IconArrowDouble :state="buttonExpanderIconState" />
                 </template>
-            </ActionIconButton>
-        </div>
-    </div>
+            </IconButton>
+        </template>
+        <template #description>
+            <slot name="description" />
+        </template>
+    </DesignerItem>
 </template>
 <script>
 import {
@@ -46,20 +37,16 @@ import {
     SIZE,
     THEME,
 } from '@Core/defaults/theme';
-import ActionIconButton from '@UI/components/ActionIconButton/ActionIconButton';
-import DesignerItemDescription from '@UI/components/Designer/DesignerItemDescription';
+import DesignerItem from '@UI/components/Designer/DesignerItem';
 import IconButton from '@UI/components/IconButton/IconButton';
 import IconArrowDouble from '@UI/components/Icons/Arrows/IconArrowDouble';
-import IconDots from '@UI/components/Icons/Others/IconDots';
 
 export default {
     name: 'TreeDesignerItem',
     components: {
-        IconDots,
         IconArrowDouble,
-        ActionIconButton,
         IconButton,
-        DesignerItemDescription,
+        DesignerItem,
     },
     props: {
         /**
@@ -89,32 +76,10 @@ export default {
             default: false,
         },
     },
-    data() {
-        return {
-            contextualMenuItems: [
-                'Remove',
-            ],
-            isHovered: false,
-        };
-    },
     computed: {
-        styles() {
-            const {
-                row,
-                column,
-            } = this.item;
-
-            return {
-                gridArea: `${row + 1} / ${column + 1} / ${row + 2} / ${column + 3}`,
-                margin: `${this.gap}px`,
-            };
-        },
-        classes() {
+        menuItems() {
             return [
-                'tree-designer-item',
-                {
-                    'tree-designer-item--first-column': this.item.column === 0,
-                },
+                'Remove',
             ];
         },
         title() {
@@ -139,89 +104,25 @@ export default {
         buttonExpanderIconState() {
             return this.isExpanded ? ARROW.DOWN : ARROW.UP;
         },
-        contextualMenuHoveStateClasses() {
-            return {
-                'tree-designer-item__contextual-menu--hovered': this.isHovered,
-            };
-        },
     },
     methods: {
         onExpandItem() {
             this.$emit('expand-item', this.item);
         },
-        onSelectFocus(isFocused) {
-            if (!isFocused) this.isHovered = false;
-
-            this.isContextualMenuActive = isFocused;
-        },
         onSelectValue(option) {
             switch (option) {
             case 'Remove':
-                this.$emit('remove-item', this.item.id);
+                this.$emit('remove-item', this.item);
                 break;
             default: break;
             }
-        },
-        onMouseOver() {
-            if (!this.isHovered) this.isHovered = true;
-        },
-        onMouseOut() {
-            if (!this.isContextualMenuActive) this.isHovered = false;
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .tree-designer-item {
-        position: relative;
-        z-index: $Z_INDEX_LVL_1;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        grid-column: 1 / 3;
-        border: 1px solid $GREY;
-        padding: 0 12px 0 10px;
-        box-sizing: border-box;
-        background-color: $WHITESMOKE;
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-        cursor: grab;
-
-        &--menu-active {
-            z-index: $Z_INDEX_LVL_3;
-        }
-
-        &:hover {
-            z-index: $Z_INDEX_LVL_2;
-            border-color: $WHITESMOKE;
-            box-shadow: $ELEVATOR_2_DP;
-        }
-
-        &__icon {
-            margin-right: 8px;
-            cursor: pointer;
-        }
-
-        &__contextual-menu {
-            flex: 0 1 auto;
-            align-items: flex-start;
-            opacity: 0;
-
-            &--hovered {
-                opacity: 1;
-            }
-        }
-
-        &:not(&--first-column) {
-            &::before {
-                position: absolute;
-                left: -8px;
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
-                background-color: $GREEN;
-                content: "";
-            }
-        }
+    .tree-designer-item-expand-button {
+        margin-right: 8px;
     }
 </style>

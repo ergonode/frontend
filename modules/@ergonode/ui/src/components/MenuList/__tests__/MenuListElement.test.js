@@ -54,9 +54,9 @@ describe('Navigation/MenuListElement', () => {
 
     describe('mouseover event', () => {
         beforeEach(() => {
-            const onMouseOver = jest.fn();
+            const onMouseEnter = jest.fn();
             wrapper.setMethods({
-                onMouseOver,
+                onMouseEnter,
             });
             wrapper.find('.menu-list-element').trigger('mouseover');
         });
@@ -82,12 +82,12 @@ describe('Navigation/MenuListElement', () => {
     });
 
     it('mouseout event', () => {
-        const onMouseOut = jest.fn();
+        const onMouseLeave = jest.fn();
         wrapper.setMethods({
-            onMouseOut,
+            onMouseLeave,
         });
         wrapper.find('.menu-list-element').trigger('mouseout');
-        expect(onMouseOut).toHaveBeenCalled();
+        expect(onMouseLeave).toHaveBeenCalled();
         expect(wrapper.vm.isHover).toBeFalsy();
     });
 });

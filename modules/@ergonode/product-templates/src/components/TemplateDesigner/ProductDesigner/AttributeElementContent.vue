@@ -5,8 +5,8 @@
 <template>
     <ElementContentBase
         :disabled="disabled"
-        @mouseover.native="onMouseOver"
-        @mouseout.native="onMouseOut">
+        @mouseenter.native="onMouseEnter"
+        @mouseleave.native="onMouseLeave">
         <div class="element-content__icon">
             <template v-for="(formComponent, i) in typeIconComponent">
                 <Component
@@ -200,10 +200,10 @@ export default {
             default: break;
             }
         },
-        onMouseOver() {
-            if (!this.isHovered) this.isHovered = true;
+        onMouseEnter() {
+            this.isHovered = true;
         },
-        onMouseOut() {
+        onMouseLeave() {
             if (!this.isContextualMenuActive) this.isHovered = false;
         },
     },

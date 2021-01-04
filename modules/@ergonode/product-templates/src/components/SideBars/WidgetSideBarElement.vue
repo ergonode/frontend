@@ -4,10 +4,10 @@
  */
 <template>
     <ListDraggableElement
-        :draggable-id="item.type"
         :draggable="isDraggable"
-        :dragged-element="item.type"
-        :label="item.label">
+        :draggable-id="item.type"
+        :label="item.label"
+        @drag="onDrag">
         <ListElementIcon>
             <IconFontSize />
         </ListElementIcon>
@@ -19,12 +19,16 @@
 </template>
 
 <script>
+import IconFontSize from '@UI/components/Icons/Editor/IconFontSize';
 import ListDraggableElement from '@UI/components/List/ListDraggableElement';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementHint from '@UI/components/List/ListElementHint';
 import ListElementIcon from '@UI/components/List/ListElementIcon';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
-import IconFontSize from "@UI/components/Icons/Editor/IconFontSize";
+import {
+    mapActions,
+} from 'vuex';
+
 export default {
     name: 'WidgetSideBarElement',
     components: {
@@ -43,6 +47,19 @@ export default {
         isDraggable: {
             type: Boolean,
             default: false,
+        },
+    },
+    methods: {
+        ...mapActions('draggable', [
+            '__setState',
+        ]),
+        onDrag(isDragged) {
+            this.__setState({
+                key: 'draggedElement',
+                value: isDragged
+                    ? this.item.type
+                    : null,
+            });
         },
     },
 };

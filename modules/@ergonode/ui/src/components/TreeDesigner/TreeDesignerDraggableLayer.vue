@@ -197,7 +197,7 @@ export default {
             const isDroppedToTrash = isMouseInsideElement(trashElement, xPos, yPos);
 
             if (isDroppedToTrash) {
-                this.$emit('remove-items', this.draggedElement.id);
+                this.$emit('remove-items', this.draggedElement);
             } else if (this.isOutOfBounds(event)) {
                 this.$emit('insert-item', {
                     index: this.draggedElIndex,

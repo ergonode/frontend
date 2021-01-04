@@ -4,27 +4,23 @@
  */
 <template>
     <TreeDesigner
-        :scope="scope"
-        :change-values="changeValues"
-        :errors="errors"
+        :items="tree"
         :columns="columns"
         :row-height="rowHeight"
         :grid-gap="16"
         :disabled="disabled"
-        :is-multi-draggable="true"
-        :context-name="contextName"
-        @after-drop="onGetConditionConfiguration"
-        @remove="onRemoveCondition">
+        @input="onValueChange">
         <template
-            #gridItem="{
+            #item="{
                 item,
                 index,
-                gridItemStyles,
+                gap,
             }">
-            <ConditionSetItem
-                :style="gridItemStyles"
-                :condition="getCondition(item.id)"
+            <ConditionSetTreeDesignerItem
+                :key="item.id"
                 :item="item"
+                :condition="conditions[item.type]"
+                :gap="gap"
                 :scope="scope"
                 :change-values="changeValues"
                 :errors="conditionErrors[`element-${index}`]"
@@ -35,7 +31,7 @@
 </template>
 
 <script>
-import ConditionSetItem from '@Conditions/components/ConditionSetDesigner/ConditionSetItem';
+import ConditionSetTreeDesignerItem from '@Conditions/components/TreeDesigners/ConditionSetTreeDesignerItem';
 import {
     COLUMNS,
     CONTEXT_NAME,
@@ -48,9 +44,9 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'ConditionSetWrapper',
+    name: 'ConditionSetTreeDesigner',
     components: {
-        ConditionSetItem,
+        ConditionSetTreeDesignerItem,
         TreeDesigner,
     },
     props: {
@@ -73,6 +69,7 @@ export default {
     },
     computed: {
         ...mapState('condition', [
+            'tree',
             'conditions',
         ]),
         contextName() {
@@ -90,33 +87,27 @@ export default {
     },
     methods: {
         ...mapActions('condition', [
-            'getConditionConfiguration',
+            '__setState',
+            'getCondition',
             'removeConditionValue',
             'setConditionValue',
         ]),
         ...mapActions('gridDesigner', [
             'removeGridItem',
         ]),
-        getCondition(id) {
-            const [
-                correctId,
-            ] = id.split('--');
-            return this.conditions[correctId] || {};
-        },
-        onGetConditionConfiguration(id) {
-            const [
-                correctId,
-            ] = id.split('--');
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
+        onValueChange(value) {
+            this.__setState({
+                key: 'tree',
+                value,
+            });
 
-            if (!this.conditions[correctId]) {
-                this.getConditionConfiguration({
-                    id: correctId,
-                });
-            }
-            this.setConditionValue({
-                conditionId: id,
-                parameterName: null,
-                parameterValue: null,
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'conditionSetTreeDesigner',
+                value,
             });
         },
         onRemoveCondition(item) {

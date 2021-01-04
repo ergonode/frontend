@@ -28,7 +28,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'ConditionSetParameters',
+    name: 'ConditionSetTreeDesignerItemParameters',
     props: {
         parameter: {
             type: Object,

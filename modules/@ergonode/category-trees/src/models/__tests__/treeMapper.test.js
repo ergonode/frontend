@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 import {
-    getMappedTreeData,
-    getParsedTreeData,
+    getParsedTree,
+    getMappedTree,
 } from '../treeMapper';
 import {
     categoryList,
@@ -14,31 +14,31 @@ import {
     parsingTree,
 } from './__mocks__/categoryTree.mock';
 
-describe('treeMapper/getParsedTreeData', () => {
+describe('treeMapper/getMappedTree', () => {
     it('Tree parsing with valid input data', () => {
-        const result = getParsedTreeData(parsingTree, categoryList);
+        const result = getMappedTree(parsingTree, categoryList);
         expect(result).toStrictEqual(mappingTree);
     });
 
     it('Tree parsing with empty categories array', () => {
-        const result = getParsedTreeData(parsingTree, []);
+        const result = getMappedTree(parsingTree, []);
         expect(result).toStrictEqual([]);
     });
 
     it('Tree parsing without input data', () => {
-        const result = getParsedTreeData([], '');
+        const result = getMappedTree([], '');
         expect(result).toStrictEqual([]);
     });
 });
 
-describe('treeMapper/getMappedTreeData', () => {
+describe('treeMapper/getParsedTree', () => {
     it('Tree mapping with valid input data', () => {
-        const result = getMappedTreeData(mappingTree);
+        const result = getParsedTree(mappingTree);
         expect(result).toStrictEqual(parsingTree);
     });
 
     it('Tree mapping without input data', () => {
-        const result = getMappedTreeData([]);
+        const result = getParsedTree([]);
         expect(result).toStrictEqual([]);
     });
 });

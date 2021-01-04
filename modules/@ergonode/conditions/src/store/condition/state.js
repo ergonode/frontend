@@ -4,8 +4,8 @@
  */
 export default () => ({
     id: null,
+    tree: [],
     conditionSets: {},
     conditions: {},
-    conditionsDictionary: [],
     conditionsValues: {},
 });

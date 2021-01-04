@@ -4,11 +4,11 @@
  */
 import {
     getMappedConditionSetData,
-    getParsedConditionSetData,
+    getMappedTree,
 } from '@Conditions/models/conditionSetMapper';
 import {
     createSet,
-    getConfiguration,
+    get,
     getDictionary,
     getSets,
     updateSet,
@@ -24,37 +24,61 @@ import {
 export default {
     async getConditions({
         commit,
-    }, params = {}) {
-        const dictionary = await getDictionary({
-            $axios: this.app.$axios,
-            params,
-        });
+    }, {
+        group,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        try {
+            const dictionary = await getDictionary({
+                $axios: this.app.$axios,
+                params: {
+                    group,
+                },
+            });
 
-        commit(types.SET_CONDITIONS_DICTIONARY, objectToArrayWithPropsName(dictionary));
+            onSuccess(objectToArrayWithPropsName(dictionary));
+        } catch (e) {
+            if (this.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
-    async getConditionConfiguration(
+    async getCondition(
         {
             commit,
         },
         {
             id,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        const configuration = await getConfiguration({
-            $axios: this.app.$axios,
-            id,
-        });
+        try {
+            const configuration = await get({
+                $axios: this.app.$axios,
+                id,
+            });
 
-        commit(types.SET_CONDITIONS, {
-            key: id,
-            value: configuration,
-        });
+            commit(types.SET_CONDITIONS, {
+                key: id,
+                value: configuration,
+            });
+
+            onSuccess();
+        } catch (e) {
+            if (this.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError(e);
+        }
     },
     async getConditionSet(
         {
-            state,
             commit,
-            dispatch,
         },
         {
             id,
@@ -67,35 +91,19 @@ export default {
             id,
         });
 
-        await Promise.all(conditions.map(async (condition) => {
-            const {
-                type,
-            } = condition;
-            if (!state.conditions[type]) {
-                await dispatch('getConditionConfiguration', {
-                    id: type,
-                });
-            }
-        }));
-
-        const {
-            conditionsData,
-            conditionsTree,
-        } = getParsedConditionSetData(conditions, state.conditions);
+        const tree = getMappedTree(conditions);
 
         commit('__SET_STATE', {
             key: 'id',
             value: id,
         });
+        // commit('__SET_STATE', {
+        //     key: 'conditionsValues',
+        //     value: data,
+        // });
         commit('__SET_STATE', {
-            key: 'conditionsValues',
-            value: conditionsData,
-        });
-        dispatch('gridDesigner/setGridData', conditionsTree, {
-            root: true,
-        });
-        dispatch('gridDesigner/setFullGridData', conditionsTree, {
-            root: true,
+            key: 'tree',
+            value: tree,
         });
     },
     async createConditionSet(

@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export function getMappedTreeData(treeArray) {
+export function getParsedTree(treeArray) {
     const newTree = [];
 
     for (let i = 0; i < treeArray.length; i += 1) {

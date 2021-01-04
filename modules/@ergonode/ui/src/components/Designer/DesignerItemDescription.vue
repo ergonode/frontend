@@ -36,7 +36,6 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
-        margin-left: 8px;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;

@@ -45,7 +45,7 @@ import {
 } from '@Core/defaults/grid';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
-    getMappedTreeData,
+    getParsedTree,
 } from '@Core/models/mappers/languageTreeMapper';
 import {
     isEmpty,
@@ -162,7 +162,7 @@ export default {
 
                 const [
                     languages,
-                ] = getMappedTreeData(this.fullGridData);
+                ] = getParsedTree(this.fullGridData);
 
                 this.removeScopeErrors(this.scope);
 

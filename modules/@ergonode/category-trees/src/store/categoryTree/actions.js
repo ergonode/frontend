@@ -9,8 +9,8 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
-    getMappedTreeData,
-    getParsedTreeData,
+    getParsedTree,
+    getMappedTree,
 } from '@Trees/models/treeMapper';
 import {
     create,
@@ -127,7 +127,7 @@ export default {
             } = categoryTreeData;
 
             if (categories.length) {
-                const tree = getParsedTreeData(categories, categoriesData);
+                const tree = getMappedTree(categories, categoriesData);
 
                 tree.forEach(element => dispatch('list/setDisabledElement', {
                     languageCode: userLanguageCode,
@@ -196,7 +196,7 @@ export default {
             } = rootState.tab;
             let data = {
                 name,
-                categories: getMappedTreeData(tree),
+                categories: getParsedTree(tree),
             };
 
             // EXTENDED BEFORE METHOD

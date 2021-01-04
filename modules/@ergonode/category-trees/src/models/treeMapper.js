@@ -2,12 +2,12 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export function getParsedTreeData(tree, categories) {
+export function getMappedTree(tree, categories) {
     if (!Array.isArray(categories) || categories.length <= 0) {
         return [];
     }
 
-    const parsedTree = [];
+    const mappedTree = [];
     let rowCounter = 0;
 
     const buildTree = (treeArray, parent, column) => {
@@ -18,7 +18,7 @@ export function getParsedTreeData(tree, categories) {
                 label: categoryName,
             } = categories.find(category => category.id === categoryId);
 
-            parsedTree.push({
+            mappedTree.push({
                 id: categoryId,
                 code: categoryCode,
                 name: categoryName,
@@ -33,11 +33,11 @@ export function getParsedTreeData(tree, categories) {
 
     buildTree(tree, null, 0);
 
-    return parsedTree;
+    return mappedTree;
 }
 
-export function getMappedTreeData(treeArray) {
-    const mappedTree = [];
+export function getParsedTree(treeArray) {
+    const parsedTree = [];
 
     for (let i = 0; i < treeArray.length; i += 1) {
         const {
@@ -60,11 +60,11 @@ export function getMappedTreeData(treeArray) {
         };
 
         if (parent === null) {
-            mappedTree.push(childrenElement);
+            parsedTree.push(childrenElement);
         } else {
-            setChild(mappedTree);
+            setChild(parsedTree);
         }
     }
 
-    return mappedTree;
+    return parsedTree;
 }

@@ -5,11 +5,11 @@
 <template>
     <ListDraggableElement
         :draggable-id="item.id"
-        :dragged-element="item"
         :draggable="isDraggable"
         :disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
         :hint="item.name ? `#${item.code}` : ''"
-        :label="item.name">
+        :label="item.name"
+        @drag="onDrag">
         <ListElementDescription>
             <ListElementTitle :title="item.name" />
             <ListElementHint :title="item.code" />
@@ -23,6 +23,7 @@ import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementHint from '@UI/components/List/ListElementHint';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -61,6 +62,23 @@ export default {
         ...mapState('list', [
             'disabledElements',
         ]),
+    },
+    methods: {
+        ...mapActions('draggable', [
+            '__setState',
+        ]),
+        onDrag(isDragged) {
+            this.__setState({
+                key: 'draggedElement',
+                value: isDragged
+                    ? {
+                        id: this.item.id,
+                        code: this.item.code,
+                        name: this.item.name,
+                    }
+                    : null,
+            });
+        },
     },
 };
 </script>

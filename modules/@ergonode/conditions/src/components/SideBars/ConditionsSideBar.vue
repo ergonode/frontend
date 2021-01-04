@@ -5,7 +5,10 @@
 <template>
     <SideBar
         title="Conditions"
-        :items="items">
+        :items="conditions">
+        <template #body>
+            <Preloader v-if="isPrefetchingData" />
+        </template>
         <template #item="{ item }">
             <ConditionSideBarElement
                 :item="item"
@@ -16,14 +19,16 @@
 
 <script>
 import ConditionSideBarElement from '@Conditions/components/SideBars/ConditionSideBarElement';
+import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
 import {
-    mapState,
+    mapActions,
 } from 'vuex';
 
 export default {
     name: 'ConditionsSideBar',
     components: {
+        Preloader,
         ConditionSideBarElement,
         SideBar,
     },
@@ -32,11 +37,36 @@ export default {
             type: Boolean,
             default: false,
         },
+        group: {
+            type: String,
+            required: true,
+        },
     },
-    computed: {
-        ...mapState('condition', {
-            items: state => state.conditionsDictionary,
-        }),
+    async fetch() {
+        await this.getConditions({
+            group: this.group,
+            onSuccess: this.getConditionsSuccess,
+            onError: this.getConditionsError,
+        });
+    },
+    data() {
+        return {
+            conditions: [],
+            isPrefetchingData: true,
+        };
+    },
+    methods: {
+        ...mapActions('condition', [
+            'getConditions',
+        ]),
+        getConditionsSuccess(conditions) {
+            this.conditions = conditions;
+
+            this.isPrefetchingData = false;
+        },
+        getConditionsError() {
+            this.isPrefetchingData = false;
+        },
     },
 };
 </script>
