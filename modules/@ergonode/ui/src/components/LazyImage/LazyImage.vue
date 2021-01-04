@@ -94,14 +94,17 @@ export default {
                 this.getImage();
             }
         },
-        getImage() {
-            this.$axios.$get(this.href, {
-                useCache: this.useCache,
-                responseType: 'arraybuffer',
-                withLanguage: false,
-            })
-                .then(response => this.onSuccess(response))
-                .catch(this.imageLoadOnError);
+        async getImage() {
+            try {
+                const response = await this.$axios.$get(this.href, {
+                    useCache: this.useCache,
+                    responseType: 'arraybuffer',
+                    withLanguage: false,
+                });
+                this.onSuccess(response);
+            } catch (e) {
+                this.onError(e);
+            }
         },
         onSuccess(response) {
             if (this.$refs.img) {
@@ -110,7 +113,7 @@ export default {
 
             this.isLoading = false;
         },
-        imageLoadOnError(error) {
+        onError(error) {
             if (this.$axios.isCancel(error)) {
                 return;
             }
