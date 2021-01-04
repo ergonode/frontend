@@ -24,7 +24,7 @@ export default {
     ) {
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Core/store/unit/action/getUnit/__before', {
+            await this.$getExtendMethod('@Core/store/unit/action/getUnit/__before', {
                 $this: this,
                 data: {
                     id,
@@ -55,7 +55,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Core/store/unit/action/getUnit/__after', {
+            await this.$getExtendMethod('@Core/store/unit/action/getUnit/__after', {
                 $this: this,
                 data,
             });
@@ -88,7 +88,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Core/store/unit/action/updateUnit/__before', {
+            const extendedData = await this.$getExtendMethod('@Core/store/unit/action/updateUnit/__before', {
                 $this: this,
                 data: {
                     id,
@@ -110,7 +110,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Core/store/unit/action/updateUnit/__after', {
+            await this.$getExtendMethod('@Core/store/unit/action/updateUnit/__after', {
                 $this: this,
                 data,
             });
@@ -151,7 +151,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Core/store/unit/action/createUnit/__before', {
+            const extendedData = await this.$getExtendMethod('@Core/store/unit/action/createUnit/__before', {
                 $this: this,
                 data,
             });
@@ -171,7 +171,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Core/store/unit/action/createUnit/__after', {
+            await this.$getExtendMethod('@Core/store/unit/action/createUnit/__after', {
                 $this: this,
                 data: {
                     id,
@@ -209,7 +209,7 @@ export default {
             } = state;
 
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Core/store/unit/action/removeUnit/__before', {
+            await this.$getExtendMethod('@Core/store/unit/action/removeUnit/__before', {
                 $this: this,
                 data: {
                     id,
@@ -223,7 +223,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Core/store/unit/action/removeUnit/__after', {
+            await this.$getExtendMethod('@Core/store/unit/action/removeUnit/__after', {
                 $this: this,
             });
             // EXTENDED AFTER METHOD

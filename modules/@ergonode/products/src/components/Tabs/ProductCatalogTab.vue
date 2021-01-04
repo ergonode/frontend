@@ -209,10 +209,10 @@ export default {
             'draggedElement',
         ]),
         extendedActionHeader() {
-            return this.$getExtendedComponents('@Products/components/Tabs/ProductCatalogTab/actionHeader');
+            return this.$getExtendSlot('@Products/components/Tabs/ProductCatalogTab/actionHeader');
         },
         extendedFooter() {
-            return this.$getExtendedComponents('@Products/components/Tabs/ProductCatalogTab/footer');
+            return this.$getExtendSlot('@Products/components/Tabs/ProductCatalogTab/footer');
         },
         productsBatchActions() {
             return [
@@ -315,7 +315,7 @@ export default {
         },
     },
     async mounted() {
-        const extendVerticalTabs = await this.$extendMethods('@Products/components/Tabs/ProductCatalogTab/verticalTabs', {
+        const extendVerticalTabs = await this.$getExtendMethod('@Products/components/Tabs/ProductCatalogTab/verticalTabs', {
             $this: this,
         });
 

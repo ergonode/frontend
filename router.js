@@ -12,8 +12,6 @@ import {
     setLocalMiddlewares,
 } from '~/.nuxt/routerHelper.modules';
 
-import localRouter from './router.local';
-
 Vue.use(Router);
 
 export function createRouter() {
@@ -23,11 +21,10 @@ export function createRouter() {
         linkActiveClass: 'nuxt-link-active',
         linkExactActiveClass: 'nuxt-link-exact-active',
         scrollBehavior,
-        routes: extendRoutes(localRouter),
+        routes: extendRoutes(),
         fallback: false,
     });
 
-    console.log(this);
     router.beforeEach(
         (to, from, next) => setLocalMiddlewares({
             to,

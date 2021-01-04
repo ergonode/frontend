@@ -66,7 +66,7 @@ export default {
             'productTypes',
         ]),
         extendedMainAction() {
-            return this.$getExtendedComponents('@Products/components/Pages/ProductPage/mainAction');
+            return this.$getExtendSlot('@Products/components/Pages/ProductPage/mainAction');
         },
         smallSize() {
             return SIZE.SMALL;
@@ -85,7 +85,7 @@ export default {
                     route: this.$route,
                 });
                 const type = getKeyByValue(this.productTypes, this.type);
-                const tabs = await this.$extendMethods('@Core/pages/tabs', {
+                const tabs = await this.$getExtendMethod('@Core/pages/tabs', {
                     $this: this,
                     type,
                     tabs: tmpTabs,

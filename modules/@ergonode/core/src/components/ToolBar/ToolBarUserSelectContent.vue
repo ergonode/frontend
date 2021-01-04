@@ -79,7 +79,7 @@ export default {
         },
     },
     async mounted() {
-        const extendMenu = await this.$extendMethods('@Core/components/ToolBar/ToolBarMenu', {
+        const extendMenu = await this.$getExtendMethod('@Core/components/ToolBar/ToolBarMenu', {
             $this: this,
         });
 

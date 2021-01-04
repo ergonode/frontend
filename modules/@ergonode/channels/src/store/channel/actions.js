@@ -80,7 +80,7 @@ export default {
                 id,
             } = state;
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Channels/store/channel/action/getSchedulerConfiguration/__before', {
+            await this.$getExtendMethod('@Channels/store/channel/action/getSchedulerConfiguration/__before', {
                 $this: this,
                 data: {
                     id,
@@ -100,7 +100,7 @@ export default {
                 });
             }
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Channels/store/channel/action/getChannel/__after', {
+            await this.$getExtendMethod('@Channels/store/channel/action/getChannel/__after', {
                 $this: this,
                 data: scheduler,
             });
@@ -172,7 +172,7 @@ export default {
     ) {
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Channels/store/channel/action/getChannel/__before', {
+            await this.$getExtendMethod('@Channels/store/channel/action/getChannel/__before', {
                 $this: this,
                 data: {
                     id,
@@ -207,7 +207,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Channels/store/channel/action/getChannel/__after', {
+            await this.$getExtendMethod('@Channels/store/channel/action/getChannel/__after', {
                 $this: this,
                 data,
             });
@@ -241,7 +241,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Channels/store/channel/action/createChannel/__before', {
+            const extendedData = await this.$getExtendMethod('@Channels/store/channel/action/createChannel/__before', {
                 $this: this,
                 data,
             });
@@ -268,7 +268,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Channels/store/channel/action/createChannel/__after', {
+            await this.$getExtendMethod('@Channels/store/channel/action/createChannel/__after', {
                 $this: this,
                 data: {
                     id,
@@ -308,7 +308,7 @@ export default {
             let data = {};
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Channels/store/channel/action/createChannelExport/__before', {
+            const extendedData = await this.$getExtendMethod('@Channels/store/channel/action/createChannelExport/__before', {
                 $this: this,
                 data,
             });
@@ -327,7 +327,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Channels/store/channel/action/createChannelExport/__after', {
+            await this.$getExtendMethod('@Channels/store/channel/action/createChannelExport/__after', {
                 $this: this,
                 data: {
                     id,
@@ -375,7 +375,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Channels/store/channel/action/updateChannel/__before', {
+            const extendedData = await this.$getExtendMethod('@Channels/store/channel/action/updateChannel/__before', {
                 $this: this,
                 data: {
                     id,
@@ -397,7 +397,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Channels/store/channel/action/updateChannel/__after', {
+            await this.$getExtendMethod('@Channels/store/channel/action/updateChannel/__after', {
                 $this: this,
                 data,
             });
@@ -439,7 +439,7 @@ export default {
             let data = removeObjectProperty(tmpData, 'id');
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Channels/store/channel/action/updateScheduler/__before', {
+            const extendedData = await this.$getExtendMethod('@Channels/store/channel/action/updateScheduler/__before', {
                 $this: this,
                 data: {
                     id,
@@ -461,7 +461,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Channels/store/channel/action/updateScheduler/__after', {
+            await this.$getExtendMethod('@Channels/store/channel/action/updateScheduler/__after', {
                 $this: this,
                 data,
             });
@@ -496,7 +496,7 @@ export default {
             } = state;
 
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Channels/store/channel/action/removeChannel/__before', {
+            await this.$getExtendMethod('@Channels/store/channel/action/removeChannel/__before', {
                 $this: this,
             });
             // EXTENDED BEFORE METHOD
@@ -507,7 +507,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Channels/store/channel/action/removeChannel/__after', {
+            await this.$getExtendMethod('@Channels/store/channel/action/removeChannel/__after', {
                 $this: this,
             });
             // EXTENDED AFTER METHOD

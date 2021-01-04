@@ -46,7 +46,7 @@ export default {
     ],
     computed: {
         extendedMainAction() {
-            return this.$getExtendedComponents('@Attributes/components/Pages/AttributeGroupPage/mainAction');
+            return this.$getExtendSlot('@Attributes/components/Pages/AttributeGroupPage/mainAction');
         },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.ATTRIBUTE_GROUP.namespace);
