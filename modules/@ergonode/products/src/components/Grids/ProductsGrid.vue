@@ -219,10 +219,10 @@ export default {
             'disabledElements',
         ]),
         extendedActionHeader() {
-            return this.$getExtendedComponents('@Products/components/Grids/ProductsGrid/actionHeader');
+            return this.$getExtendSlot('@Products/components/Grids/ProductsGrid/actionHeader');
         },
         extendedFooter() {
-            return this.$getExtendedComponents('@Products/components/Grids/ProductsGrid/footer');
+            return this.$getExtendSlot('@Products/components/Grids/ProductsGrid/footer');
         },
         isAnyFilter() {
             return this.filtered === 0

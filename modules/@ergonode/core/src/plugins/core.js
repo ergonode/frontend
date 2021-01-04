@@ -20,7 +20,7 @@ export default ({
     }) => {
         const forAllTypes = '__ALL';
         const components = [];
-        const extendedComponents = app.$getExtendedComponents(key);
+        const extendedComponents = app.$getExtendSlot(key);
 
         if (extendedComponents && isObject(extendedComponents)) {
             if (extendedComponents[forAllTypes]) {

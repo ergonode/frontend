@@ -10,25 +10,17 @@
 
 <script>
 import DefaultLayout from '@Core/layouts/default';
+import {
+    defaultLayoutMiddleware,
+} from '@Core/middleware/layouts';
 
 export default {
     name: 'NuxtDefaultLayout',
     components: {
         DefaultLayout,
     },
-    async middleware({
-        store,
-        redirect,
-    }) {
-        const {
-            authentication,
-        } = store.state;
-
-        if (!authentication.isLogged) {
-            return redirect('/');
-        }
-
-        return null;
+    async middleware(ctx) {
+        await defaultLayoutMiddleware(ctx);
     },
 };
 </script>

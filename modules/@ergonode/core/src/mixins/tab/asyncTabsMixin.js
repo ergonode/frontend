@@ -21,7 +21,7 @@ export default {
                     routes: this.$router.options.routes,
                     route: this.$route,
                 });
-                const tabs = await this.$extendMethods('@Core/pages/tabs', {
+                const tabs = await this.$getExtendMethod('@Core/pages/tabs', {
                     $this: this,
                     tabs: tmpTabs,
                 });

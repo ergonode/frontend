@@ -68,10 +68,10 @@ export default {
             'changeValues',
         ]),
         extendedMainAction() {
-            return this.$getExtendedComponents('@Products/pages/catalog/mainAction');
+            return this.$getExtendSlot('@Products/pages/catalog/mainAction');
         },
         extendedModals() {
-            return this.$getExtendedComponents('@Products/pages/catalog/injectModal');
+            return this.$getExtendSlot('@Products/pages/catalog/injectModal');
         },
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.PRODUCT.namespace);

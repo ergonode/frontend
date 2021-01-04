@@ -46,6 +46,7 @@ import {
 } from '@Core/defaults/grid';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import CategoryTreeWrapper from '@Trees/components/CategoryTreeDesigner/CategoryTreeWrapper';
+import PRIVILEGES from '@Trees/config/privileges';
 import {
     GRAPHITE_LIGHT,
 } from '@UI/assets/scss/_js-variables/colors.scss';
@@ -92,8 +93,14 @@ export default {
             return [
                 {
                     title: 'Categories',
-                    component: () => import('@Trees/components/Tabs/List/CategoriesListTab'),
+                    component: () => import('@Categories/components/VerticalTabs/CategoriesVerticalTab'),
                     icon: () => import('@Trees/components/Icons/IconTree'),
+                    props: {
+                        isSelectLanguage: true,
+                        disabled: !this.$hasAccess([
+                            PRIVILEGES.CATEGORY_TREE.update,
+                        ]),
+                    },
                 },
             ];
         },

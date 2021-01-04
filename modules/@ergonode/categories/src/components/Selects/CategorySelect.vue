@@ -355,7 +355,7 @@ export default {
             ];
         },
         extendedFilterComponents() {
-            return this.$getExtendedComponents('@UI/components/AdvancedFilters/Type');
+            return this.$getExtendSlot('@UI/components/AdvancedFilters/Type');
         },
         selectedTreeCategoryIds() {
             if (!this.isCategoryTreeSelected) {

@@ -30,7 +30,7 @@ export default {
     ) {
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Users/store/role/action/getRole/__before', {
+            await this.$getExtendMethod('@Users/store/role/action/getRole/__before', {
                 $this: this,
                 data: {
                     id,
@@ -66,7 +66,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Users/store/role/action/getRole/__after', {
+            await this.$getExtendMethod('@Users/store/role/action/getRole/__after', {
                 $this: this,
                 data,
             });
@@ -123,7 +123,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Users/store/role/action/updateRole/__before', {
+            const extendedData = await this.$getExtendMethod('@Users/store/role/action/updateRole/__before', {
                 $this: this,
                 data: {
                     id,
@@ -158,7 +158,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Users/store/role/action/updateRole/__after', {
+            await this.$getExtendMethod('@Users/store/role/action/updateRole/__after', {
                 $this: this,
                 data,
             });
@@ -201,7 +201,7 @@ export default {
                 description,
             };
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Users/store/role/action/updateRole/__before', {
+            const extendedData = await this.$getExtendMethod('@Users/store/role/action/updateRole/__before', {
                 $this: this,
                 data,
             });
@@ -221,7 +221,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Users/store/role/action/updateRole/__after', {
+            await this.$getExtendMethod('@Users/store/role/action/updateRole/__after', {
                 $this: this,
                 data: {
                     id,
@@ -262,7 +262,7 @@ export default {
             } = state;
 
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Users/store/role/action/removeRole/__before', {
+            await this.$getExtendMethod('@Users/store/role/action/removeRole/__before', {
                 $this: this,
                 data: {
                     id,
@@ -276,7 +276,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Users/store/role/action/removeRole/__after', {
+            await this.$getExtendMethod('@Users/store/role/action/removeRole/__after', {
                 $this: this,
             });
             // EXTENDED AFTER METHOD

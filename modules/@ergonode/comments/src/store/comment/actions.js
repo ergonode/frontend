@@ -26,7 +26,7 @@ export default {
     }) {
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Comments/store/comment/action/getComments/__before', {
+            await this.$getExtendMethod('@Comments/store/comment/action/getComments/__before', {
                 $this: this,
             });
             // EXTENDED BEFORE METHOD
@@ -50,7 +50,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Comments/store/comment/action/getComments/__after', {
+            await this.$getExtendMethod('@Comments/store/comment/action/getComments/__after', {
                 $this: this,
                 data,
             });
@@ -74,7 +74,7 @@ export default {
     ) {
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Comments/store/comment/action/getMoreComments/__before', {
+            await this.$getExtendMethod('@Comments/store/comment/action/getMoreComments/__before', {
                 $this: this,
             });
             // EXTENDED BEFORE METHOD
@@ -102,7 +102,7 @@ export default {
             commit(types.INSERT_MORE_COMMENTS, comments);
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Comments/store/comment/action/getMoreComments/__after', {
+            await this.$getExtendMethod('@Comments/store/comment/action/getMoreComments/__after', {
                 $this: this,
                 data,
             });
@@ -146,7 +146,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Comments/store/comment/action/createComment/__before', {
+            const extendedData = await this.$getExtendMethod('@Comments/store/comment/action/createComment/__before', {
                 $this: this,
                 data,
             });
@@ -185,7 +185,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Comments/store/comment/action/createComment/__after', {
+            await this.$getExtendMethod('@Comments/store/comment/action/createComment/__after', {
                 $this: this,
                 data: {
                     id,
@@ -235,7 +235,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Comments/store/comment/action/updateComment/__before', {
+            const extendedData = await this.$getExtendMethod('@Comments/store/comment/action/updateComment/__before', {
                 $this: this,
                 data: {
                     id,
@@ -271,7 +271,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Comments/store/comment/action/updateComment/__after', {
+            await this.$getExtendMethod('@Comments/store/comment/action/updateComment/__after', {
                 $this: this,
                 data,
             });
@@ -311,7 +311,7 @@ export default {
             } = state;
 
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Comments/store/comment/action/removeComment/__before', {
+            await this.$getExtendMethod('@Comments/store/comment/action/removeComment/__before', {
                 $this: this,
                 data: {
                     id,
@@ -331,7 +331,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Comments/store/comment/action/removeComment/__after', {
+            await this.$getExtendMethod('@Comments/store/comment/action/removeComment/__after', {
                 $this: this,
             });
             // EXTENDED AFTER METHOD

@@ -228,12 +228,21 @@ export default {
             this.isPrefetchingData = false;
         },
         async onFetchData() {
+            const {
+                sortOrder = {}, ...rest
+            } = this.localParams;
+
+            const params = {
+                ...rest,
+                ...sortOrder,
+            };
+
             await getGridData({
                 $route: this.$route,
                 $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: `products/${this.id}/children-and-available-products`,
-                params: this.localParams,
+                params,
                 onSuccess: this.onFetchGridDataSuccess,
                 onError: this.onFetchGridDataError,
             });

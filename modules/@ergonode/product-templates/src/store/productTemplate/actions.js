@@ -53,7 +53,7 @@ export default {
             } = rootState.authentication;
 
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Templates/store/productTemplate/action/getTemplate/__before', {
+            await this.$getExtendMethod('@Templates/store/productTemplate/action/getTemplate/__before', {
                 $this: this,
                 data: {
                     id,
@@ -131,7 +131,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Templates/store/productTemplate/action/getTemplate/__after', {
+            await this.$getExtendMethod('@Templates/store/productTemplate/action/getTemplate/__after', {
                 $this: this,
                 data: template,
             });
@@ -169,7 +169,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Templates/store/productTemplate/action/updateTemplate/__before', {
+            const extendedData = await this.$getExtendMethod('@Templates/store/productTemplate/action/updateTemplate/__before', {
                 $this: this,
                 data,
             });
@@ -189,7 +189,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Templates/store/productTemplate/action/updateTemplate/__after', {
+            await this.$getExtendMethod('@Templates/store/productTemplate/action/updateTemplate/__after', {
                 $this: this,
                 data: {
                     id,
@@ -311,7 +311,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Templates/store/productTemplate/action/createTemplate/__before', {
+            const extendedData = await this.$getExtendMethod('@Templates/store/productTemplate/action/createTemplate/__before', {
                 $this: this,
                 data,
             });
@@ -332,7 +332,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Templates/store/productTemplate/action/createTemplate/__after', {
+            await this.$getExtendMethod('@Templates/store/productTemplate/action/createTemplate/__after', {
                 $this: this,
                 data: {
                     id,
@@ -374,7 +374,7 @@ export default {
 
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Templates/store/productTemplate/action/removeTemplate/__before', {
+            await this.$getExtendMethod('@Templates/store/productTemplate/action/removeTemplate/__before', {
                 $this: this,
             });
             // EXTENDED BEFORE METHOD
@@ -385,7 +385,7 @@ export default {
             });
 
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Templates/store/productTemplate/action/removeTemplate/__after', {
+            await this.$getExtendMethod('@Templates/store/productTemplate/action/removeTemplate/__after', {
                 $this: this,
             });
             // EXTENDED BEFORE METHOD

@@ -26,9 +26,12 @@
         "optionLabel": "Kod opcji"
       }
     },
-    "list": {
+    "sideBar": {
       "searchHeader": "Atrybuty",
-      "searchHeader2": "Atrybuty systemowe"
+      "searchHeader2": "Atrybuty systemowe",
+      "group": {
+          "notAssigned": "Nie przypisane"
+      }
     },
     "translation": {
       "nameLabel": "Nazwa atrybutu",

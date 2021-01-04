@@ -31,7 +31,7 @@ export default {
     ) {
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Users/store/user/action/getUser/__before', {
+            await this.$getExtendMethod('@Users/store/user/action/getUser/__before', {
                 $this: this,
                 data: {
                     id,
@@ -111,7 +111,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Users/store/user/action/getUser/__after', {
+            await this.$getExtendMethod('@Users/store/user/action/getUser/__after', {
                 $this: this,
                 data,
             });
@@ -192,7 +192,7 @@ export default {
                 ),
             };
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Users/store/user/action/updateUser/__before', {
+            const extendedData = await this.$getExtendMethod('@Users/store/user/action/updateUser/__before', {
                 $this: this,
                 data: {
                     id,
@@ -225,7 +225,7 @@ export default {
             }
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Users/store/user/action/updateUser/__after', {
+            await this.$getExtendMethod('@Users/store/user/action/updateUser/__after', {
                 $this: this,
                 data,
             });
@@ -340,7 +340,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Users/store/user/action/createUser/__before', {
+            const extendedData = await this.$getExtendMethod('@Users/store/user/action/createUser/__before', {
                 $this: this,
                 data,
             });
@@ -360,7 +360,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Users/store/user/action/createUser/__after', {
+            await this.$getExtendMethod('@Users/store/user/action/createUser/__after', {
                 $this: this,
                 data: {
                     id,
@@ -401,7 +401,7 @@ export default {
             } = state;
 
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Users/store/user/action/createUser/__before', {
+            await this.$getExtendMethod('@Users/store/user/action/createUser/__before', {
                 $this: this,
                 data: {
                     id,
@@ -415,7 +415,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Users/store/user/action/createUser/__after', {
+            await this.$getExtendMethod('@Users/store/user/action/createUser/__after', {
                 $this: this,
             });
             // EXTENDED AFTER METHOD

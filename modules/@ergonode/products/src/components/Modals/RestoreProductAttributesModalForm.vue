@@ -13,7 +13,7 @@
                 :errors="scopeErrors"
                 :elements-to-restore="elementsToRestore"
                 :elements="elements"
-                :language="language"
+                :language-code="languageCode"
                 :is-submitting="isSubmitting"
                 @update="onUpdateElementsToRestore"
                 @submit="onSubmit"
@@ -43,8 +43,8 @@ export default {
         scopeErrorsMixin,
     ],
     props: {
-        language: {
-            type: Object,
+        languageCode: {
+            type: String,
             required: true,
         },
         elements: {
@@ -93,7 +93,7 @@ export default {
 
             this.removeScopeErrors(this.scope);
             this.removeProductValues({
-                languageCode: this.language.code,
+                languageCode: this.languageCode,
                 attributes: attributes.map(attribute => ({
                     id: attribute.properties.attribute_id,
                 })),

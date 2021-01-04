@@ -109,7 +109,7 @@ export default {
             return [
                 {
                     title: 'Conditions',
-                    component: () => import('@Conditions/components/Tabs/Lists/ConditionsListTab'),
+                    component: () => import('@Conditions/components/VerticalTabs/ConditionsVerticalTab'),
                     icon: () => import('@Categories/components/Icons/IconCategory'),
                     props: {
                         disabled: !this.isAllowedToUpdate,

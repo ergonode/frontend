@@ -21,12 +21,11 @@ import {
     getWorkflow,
     remove,
     removeChildren,
-    // removeValues,
+    removeValues,
     update,
     updateValues,
     validateValue,
 } from '@Products/services/index';
-import axios from 'axios';
 
 import {
     types,
@@ -82,7 +81,7 @@ export default {
     }) {
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Products/store/product/action/getProduct/__before', {
+            await this.$getExtendMethod('@Products/store/product/action/getProduct/__before', {
                 $this: this,
                 data: {
                     id,
@@ -126,7 +125,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Products/store/product/action/getProduct/__after', {
+            await this.$getExtendMethod('@Products/store/product/action/getProduct/__after', {
                 $this: this,
                 data,
                 type,
@@ -150,7 +149,7 @@ export default {
     }) {
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Products/store/product/action/getInheritedProduct/__before', {
+            await this.$getExtendMethod('@Products/store/product/action/getInheritedProduct/__before', {
                 $this: this,
                 data: {
                     id,
@@ -178,7 +177,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Products/store/product/action/getInheritedProduct/__after', {
+            await this.$getExtendMethod('@Products/store/product/action/getInheritedProduct/__after', {
                 $this: this,
                 data,
             });
@@ -730,7 +729,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Products/store/product/action/updateProduct/__before', {
+            const extendedData = await this.$getExtendMethod('@Products/store/product/action/updateProduct/__before', {
                 $this: this,
                 type: typeKey,
                 data: {
@@ -754,7 +753,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Products/store/product/action/updateProduct/__after', {
+            await this.$getExtendMethod('@Products/store/product/action/updateProduct/__after', {
                 $this: this,
                 type: typeKey,
                 data,
@@ -806,7 +805,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Products/store/product/action/createProduct/__before', {
+            const extendedData = await this.$getExtendMethod('@Products/store/product/action/createProduct/__before', {
                 $this: this,
                 type: typeKey,
                 data,
@@ -828,7 +827,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Products/store/product/action/createProduct/__after', {
+            await this.$getExtendMethod('@Products/store/product/action/createProduct/__after', {
                 $this: this,
                 type: typeKey,
                 data: {
@@ -873,7 +872,7 @@ export default {
 
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Products/store/product/action/removeProduct/__before', {
+            await this.$getExtendMethod('@Products/store/product/action/removeProduct/__before', {
                 $this: this,
                 type: typeKey,
             });
@@ -885,7 +884,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Products/store/product/action/removeProduct/__after', {
+            await this.$getExtendMethod('@Products/store/product/action/removeProduct/__after', {
                 $this: this,
                 type: typeKey,
             });
@@ -945,7 +944,6 @@ export default {
     },
     async removeProductValues({
         state,
-        rootState,
     }, {
         languageCode,
         attributes,
@@ -956,12 +954,6 @@ export default {
             const {
                 id,
             } = state;
-            const {
-                user: {
-                    language,
-                },
-                token,
-            } = rootState.authentication;
             const data = [
                 {
                     id,
@@ -978,25 +970,12 @@ export default {
                 });
             });
 
-            // TODO: When nuxt-axios upgrade to 0.21.0 remove axios
-
-            // await removeValues({
-            //     $axios: this.app.$axios,
-            //     data: {
-            //         data,
-            //     },
-            // });
-
-            await axios.delete(`${process.env.baseURL}${language}/products/attributes`, {
-                headers: {
-                    common: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    JWTAuthorization: `Bearer ${token}`,
-                },
+            await removeValues({
+                $axios: this.app.$axios,
                 data: {
-                    data,
+                    data: {
+                        data,
+                    },
                 },
             });
 

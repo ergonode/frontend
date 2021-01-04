@@ -206,7 +206,7 @@ export default {
     }) {
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Authentication/store/authentication/action/getUser/__before', {
+            await this.$getExtendMethod('@Authentication/store/authentication/action/getUser/__before', {
                 $this: this,
             });
             // EXTENDED BEFORE METHOD
@@ -227,7 +227,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Authentication/store/authentication/action/getUser/__after', {
+            await this.$getExtendMethod('@Authentication/store/authentication/action/getUser/__after', {
                 $this: this,
                 data: transformedUserData,
             });

@@ -476,7 +476,6 @@ export default {
             this.$emit('drop-column', payload);
         },
         onSortColumn(sortOrder) {
-            console.log('sorting');
             this.$emit('sort-column', sortOrder);
         },
         onRenderedTableLayout() {

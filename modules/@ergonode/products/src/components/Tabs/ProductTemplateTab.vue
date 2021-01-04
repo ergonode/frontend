@@ -7,23 +7,21 @@
         <CenterViewTemplate :fixed="true">
             <template #header>
                 <div class="view-template-header__section">
-                    <TreeSelect
+                    <LanguageTreeSelect
                         :style="{ flex: '0 0 192px' }"
-                        :value="language"
-                        :size="smallSize"
                         label="Edit language"
-                        :options="languageOptions"
-                        @input="onLanguageChange" />
+                        :value="languageCode"
+                        @input="onSelectLanguage" />
                 </div>
                 <div class="view-template-header__section">
                     <ProductCompleteness :completeness="completeness" />
                     <TitleBarSubActions>
                         <ProductWorkflowActionButton
                             v-if="status"
-                            :language="language" />
+                            :language-code="languageCode" />
                     </TitleBarSubActions>
                     <RestoreProductButton
-                        :language="language"
+                        :language-code="languageCode"
                         :elements="elements"
                         @restored="onRestoredProductValues" />
                 </div>
@@ -32,7 +30,7 @@
                 <Preloader v-if="isFetchingData" />
                 <ProductTemplateForm
                     v-else
-                    :language="language"
+                    :language-code="languageCode"
                     :elements="elements"
                     :scope="scope"
                     :change-values="changeValues"
@@ -48,9 +46,7 @@
 </template>
 
 <script>
-import {
-    SIZE,
-} from '@Core/defaults/theme';
+import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import ProductWorkflowActionButton from '@Products/components/Buttons/ProductWorkflowActionButton';
@@ -61,7 +57,6 @@ import ProductCompleteness from '@Products/components/Progress/ProductCompletene
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import Preloader from '@UI/components/Preloader/Preloader';
-import TreeSelect from '@UI/components/Select/Tree/TreeSelect';
 import TitleBarSubActions from '@UI/components/TitleBar/TitleBarSubActions';
 import {
     mapActions,
@@ -72,12 +67,12 @@ export default {
     name: 'ProductTemplateTab',
     components: {
         UpdateProductTemplateButton,
+        LanguageTreeSelect,
         RestoreProductButton,
         IntersectionObserver,
         Preloader,
         ProductTemplateForm,
         CenterViewTemplate,
-        TreeSelect,
         TitleBarSubActions,
         ProductCompleteness,
         ProductWorkflowActionButton,
@@ -88,7 +83,7 @@ export default {
     ],
     data() {
         return {
-            elements: [],
+            templates: {},
             completeness: {
                 missing: [],
                 filled: 0,
@@ -96,7 +91,7 @@ export default {
             },
             prevTemplateId: null,
             isFetchingData: false,
-            language: {},
+            languageCode: '',
         };
     },
     computed: {
@@ -105,7 +100,6 @@ export default {
         }),
         ...mapState('core', [
             'defaultLanguageCode',
-            'languagesTree',
         ]),
         ...mapState('product', [
             'id',
@@ -113,18 +107,8 @@ export default {
             'status',
             'drafts',
         ]),
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        languageOptions() {
-            return this.languagesTree.map(language => ({
-                ...language,
-                key: language.code,
-                value: language.name,
-                disabled: this.languagePrivileges[language.code]
-                    ? !this.languagePrivileges[language.code].read
-                    : true,
-            }));
+        elements() {
+            return this.templates[this.languageCode] || [];
         },
         attributes() {
             return this.elements.reduce((prev, curr) => {
@@ -137,8 +121,7 @@ export default {
         },
     },
     created() {
-        this.language = this.languageOptions
-            .find(languageCode => languageCode.code === this.defaultLanguageCode);
+        this.languageCode = this.defaultLanguageCode;
     },
     methods: {
         ...mapActions('product', [
@@ -151,7 +134,7 @@ export default {
         ]),
         onProductTemplateUpdated() {
             this.getProductCompleteness({
-                languageCode: this.language.code,
+                languageCode: this.languageCode,
                 id: this.id,
                 onSuccess: (({
                     completeness,
@@ -167,7 +150,7 @@ export default {
 
                     const languageCode = this.prevTemplateId === null
                         ? this.defaultLanguageCode
-                        : this.language.code;
+                        : this.languageCode;
 
                     await this.getProductTemplateData(languageCode);
 
@@ -179,15 +162,6 @@ export default {
         },
         async getProductTemplateData(languageCode) {
             const requests = [
-                this.getProductTemplate({
-                    languageCode,
-                    id: this.id,
-                    onSuccess: (({
-                        elements,
-                    }) => {
-                        this.elements = elements;
-                    }),
-                }),
                 this.getProductCompleteness({
                     languageCode,
                     id: this.id,
@@ -196,10 +170,6 @@ export default {
                     }) => {
                         this.completeness = completeness;
                     }),
-                }),
-                this.getInheritedProduct({
-                    id: this.id,
-                    languageCode,
                 }),
                 this.getProductWorkflow({
                     languageCode,
@@ -207,23 +177,43 @@ export default {
                 }),
             ];
 
+            if (typeof this.templates[languageCode] === 'undefined') {
+                requests.push(
+                    this.getProductTemplate({
+                        languageCode,
+                        id: this.id,
+                        onSuccess: (({
+                            elements,
+                        }) => {
+                            this.templates = {
+                                ...this.templates,
+                                [languageCode]: elements,
+                            };
+                        }),
+                    }),
+                );
+            }
+
+            if (typeof this.drafts[languageCode] === 'undefined') {
+                requests.push(
+                    this.getInheritedProduct({
+                        id: this.id,
+                        languageCode,
+                    }),
+                );
+            }
+
             await Promise.all(requests);
         },
-        async onLanguageChange(value) {
-            const languageCode = value.code;
+        async onSelectLanguage(value) {
+            await this.getProductTemplateData(value);
 
-            await this.getProductTemplateData(languageCode);
-
-            this.language = value;
+            this.languageCode = value;
         },
         async onRestoredProductValues() {
-            const {
-                code: languageCode,
-            } = this.language;
-
             await Promise.all([
                 this.getProductCompleteness({
-                    languageCode,
+                    languageCode: this.languageCode,
                     id: this.id,
                     onSuccess: (({
                         completeness,
@@ -233,7 +223,7 @@ export default {
                 }),
                 this.getInheritedProduct({
                     id: this.id,
-                    languageCode,
+                    languageCode: this.languageCode,
                 }),
             ]);
         },

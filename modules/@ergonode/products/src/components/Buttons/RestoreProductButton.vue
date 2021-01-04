@@ -14,7 +14,7 @@
         </template>
         <RestoreProductAttributesModalForm
             v-if="isModalVisible"
-            :language="language"
+            :language-code="languageCode"
             :elements="elements"
             @restored="onRestored"
             @close="onCloseModal" />
@@ -42,8 +42,8 @@ export default {
         RestoreProductAttributesModalForm: () => import('@Products/components/Modals/RestoreProductAttributesModalForm'),
     },
     props: {
-        language: {
-            type: Object,
+        languageCode: {
+            type: String,
             required: true,
         },
         elements: {
@@ -70,15 +70,11 @@ export default {
             return THEME.SECONDARY;
         },
         isAllowedToRestore() {
-            const {
-                code,
-            } = this.language;
-
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ])
-                && this.languagePrivileges[code].edit
-                && this.rootLanguage.code !== code;
+                && this.languagePrivileges[this.languageCode].edit
+                && this.rootLanguage.code !== this.languageCode;
         },
     },
     methods: {
