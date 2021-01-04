@@ -8,27 +8,25 @@
         :class="classes"
         @mouseover="onMouseOver"
         @mouseout="onMouseOut">
-        <IconArrowDouble
+        <IconButton
             v-if="hasChildren"
-            class="tree-designer-item__icon"
-            :state="buttonExpanderIconState"
-            @click.native="onExpandItem" />
-        <div
-            class="tree-designer-item__title"
-            :title="item.name ? `#${item.code}`: ''">
-            <span
-                class="tree-designer-item__name"
-                v-text="item.name || `#${item.code}`" />
-            <span
-                v-if="hasChildren"
-                class="tree-designer-item__code"
-                v-text="`Inherited ${contextName.toLowerCase()}: ${childrenLength}`" />
-        </div>
+            :size="tinySize"
+            :theme="secondaryPlainTheme"
+            @click.native="onExpandItem">
+            <template #icon>
+                <IconArrowDouble :state="buttonExpanderIconState" />
+            </template>
+        </IconButton>
+        <slot name="description">
+            <DesignerItemDescription
+                :title="title"
+                :subtitle="subtitle" />
+        </slot>
         <div
             v-if="!disabled"
             :class="['tree-designer-item__contextual-menu', contextualMenuHoveStateClasses]">
             <ActionIconButton
-                :theme="secondaryTheme"
+                :theme="secondaryPlainTheme"
                 :size="tinySize"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
@@ -49,6 +47,8 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import ActionIconButton from '@UI/components/ActionIconButton/ActionIconButton';
+import DesignerItemDescription from '@UI/components/Designer/DesignerItemDescription';
+import IconButton from '@UI/components/IconButton/IconButton';
 import IconArrowDouble from '@UI/components/Icons/Arrows/IconArrowDouble';
 import IconDots from '@UI/components/Icons/Others/IconDots';
 
@@ -58,6 +58,8 @@ export default {
         IconDots,
         IconArrowDouble,
         ActionIconButton,
+        IconButton,
+        DesignerItemDescription,
     },
     props: {
         /**
@@ -70,10 +72,6 @@ export default {
         gap: {
             type: Number,
             default: 8,
-        },
-        contextName: {
-            type: String,
-            default: '',
         },
         childrenLength: {
             type: Number,
@@ -119,11 +117,21 @@ export default {
                 },
             ];
         },
+        title() {
+            return this.item.title;
+        },
+        subtitle() {
+            if (!this.childrenLength) {
+                return '';
+            }
+
+            return `Nodes: ${this.childrenLength}`;
+        },
         tinySize() {
             return SIZE.TINY;
         },
-        secondaryTheme() {
-            return THEME.SECONDARY;
+        secondaryPlainTheme() {
+            return THEME.SECONDARY_PLAIN;
         },
         hasChildren() {
             return this.childrenLength > 0;
@@ -192,25 +200,6 @@ export default {
         &__icon {
             margin-right: 8px;
             cursor: pointer;
-        }
-
-        &__title {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            color: $GRAPHITE_DARK;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-
-        &__name {
-            font: $FONT_MEDIUM_14_20;
-        }
-
-        &__code {
-            color: $GRAPHITE;
-            font: $FONT_SEMI_BOLD_10_12;
         }
 
         &__contextual-menu {

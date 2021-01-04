@@ -10,16 +10,22 @@
         :disabled="!isAllowedToUpdate"
         @remove-items="onRemoveItems"
         @add-item="onAddItem"
-        @input="onValueChange" />
+        @input="onValueChange">
+        <template #itemDescription="{ item, childrenLength }">
+            <DesignerItemDescription
+                :title="item.name || `#${item.code}`"
+                :subtitle="childrenLength ? `Subcategories: ${childrenLength}` : ''" />
+        </template>
+    </TreeDesigner>
 </template>
 
 <script>
 import PRIVILEGES from '@Trees/config/privileges';
 import {
     COLUMNS,
-    CONTEXT_NAME,
     ROW_HEIGHT,
 } from '@Trees/defaults/designer';
+import DesignerItemDescription from '@UI/components/Designer/DesignerItemDescription';
 import TreeDesigner from '@UI/components/TreeDesigner/TreeDesigner';
 import {
     mapActions,
@@ -30,6 +36,7 @@ export default {
     name: 'CategoryTreeDesigner',
     components: {
         TreeDesigner,
+        DesignerItemDescription,
     },
     props: {
         scope: {

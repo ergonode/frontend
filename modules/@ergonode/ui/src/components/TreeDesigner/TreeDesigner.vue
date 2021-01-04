@@ -29,17 +29,34 @@
                     :row="ghostIndex.row"
                     :column="ghostIndex.column"
                     :gap="gridGap" />
-                <TreeDesignerItem
-                    v-for="item in itemsWithoutGhost"
-                    :key="item.id"
-                    :item="item"
-                    :gap="gridGap"
-                    :context-name="contextName"
-                    :children-length="childrenLength[item.id]"
-                    :disabled="disabled"
-                    :is-expanded="typeof hiddenItems[item.id] === 'undefined'"
-                    @expand-item="onExpandItem"
-                    @remove-item="onRemoveItems" />
+                <template v-for="item in itemsWithoutGhost">
+                    <slot
+                        name="item"
+                        :item="item"
+                        :gap="gridGap"
+                        :children-length="childrenLength[item.id]"
+                        :disabled="disabled"
+                        :is-expanded="typeof hiddenItems[item.id] === 'undefined'"
+                        :on-expand-item="onExpandItem"
+                        :on-remove-items="onRemoveItems">
+                        <TreeDesignerItem
+                            :key="item.id"
+                            :item="item"
+                            :gap="gridGap"
+                            :children-length="childrenLength[item.id]"
+                            :disabled="disabled"
+                            :is-expanded="typeof hiddenItems[item.id] === 'undefined'"
+                            @expand-item="onExpandItem"
+                            @remove-item="onRemoveItems">
+                            <template #description>
+                                <slot
+                                    name="itemDescription"
+                                    :item="item"
+                                    :children-length="childrenLength[item.id]" />
+                            </template>
+                        </TreeDesignerItem>
+                    </slot>
+                </template>
                 <TreeDesignerConnectionLine
                     v-for="item in connectionLines"
                     :key="`${item.id}-line|${item.row}|${item.column}`"
@@ -79,6 +96,9 @@ export default {
         TreeDesignerConnectionLine,
     },
     props: {
+        /**
+         * List of items
+         */
         items: {
             type: Array,
             default: () => [],
@@ -100,10 +120,6 @@ export default {
         constantRoot: {
             type: Boolean,
             default: false,
-        },
-        contextName: {
-            type: String,
-            default: '',
         },
         /**
          * Number of visible columns
@@ -145,14 +161,18 @@ export default {
                 }
 
                 childrenLength[item.parent] += 1;
-            });
 
-            Object.keys(this.hiddenItems).forEach((key) => {
-                if (typeof childrenLength[key] === 'undefined') {
-                    childrenLength[key] = 0;
+                if (this.hiddenItems[item.id]) {
+                    this.hiddenItems[item.id].forEach((hiddenItem) => {
+                        if (hiddenItem.parent === item.id) {
+                            if (typeof childrenLength[hiddenItem.parent] === 'undefined') {
+                                childrenLength[hiddenItem.parent] = 0;
+                            }
+
+                            childrenLength[hiddenItem.parent] += 1;
+                        }
+                    });
                 }
-
-                childrenLength[key] += this.hiddenItems[key].length;
             });
 
             return childrenLength;
