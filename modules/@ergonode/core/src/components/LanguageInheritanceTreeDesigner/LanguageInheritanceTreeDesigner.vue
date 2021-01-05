@@ -9,6 +9,8 @@
         :columns="columns"
         :row-height="rowHeight"
         :disabled="!isAllowedToUpdate"
+        @remove-items="onRemoveItems"
+        @add-item="onAddItem"
         @input="onValueChange">
         <template #itemDescription="{ item, childrenLength }">
             <DesignerItemDescription
@@ -52,6 +54,9 @@ export default {
         },
     },
     computed: {
+        ...mapState('authentication', {
+            languageCode: state => state.user.language,
+        }),
         ...mapState('core', [
             'languagesTree',
         ]),
@@ -90,6 +95,13 @@ export default {
                 scope: this.scope,
                 fieldKey: 'languagesInheritanceTreeDesigner',
                 value: this.languagesTree,
+            });
+        },
+        onAddItem(item) {
+            this.setDisabledElement({
+                languageCode: this.languageCode,
+                elementId: item.id,
+                disabled: true,
             });
         },
         onValueChange(value) {
