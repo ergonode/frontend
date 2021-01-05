@@ -6,25 +6,37 @@
     <ResizeObserver @resize="onResize">
         <div class="designer">
             <DesignerBody>
-                <DesignerBackgroundLayer
-                    :style="layerStyle"
-                    :columns="columns"
-                    :rows="rows">
-                    <template #item="{ row, column }">
-                        <slot
-                            name="backgroundItem"
-                            :row="row"
-                            :column="column">
-                            <DesignerBackgroundItem
-                                :key="`${column} | ${row}`"
-                                :column="column"
-                                :row="row" />
-                        </slot>
-                    </template>
-                </DesignerBackgroundLayer>
                 <slot
-                    name="body"
+                    name="prependBody"
                     :rows="rows"
+                    :columns="columns"
+                    :layer-style="layerStyle" />
+                <slot
+                    name="backgroundBody"
+                    :rows="rows"
+                    :columns="columns"
+                    :layer-style="layerStyle">
+                    <DesignerBackgroundLayer
+                        :style="layerStyle"
+                        :columns="columns"
+                        :rows="rows">
+                        <template #item="{ row, column }">
+                            <slot
+                                name="backgroundItem"
+                                :row="row"
+                                :column="column">
+                                <DesignerBackgroundItem
+                                    :key="`${column} | ${row}`"
+                                    :column="column"
+                                    :row="row" />
+                            </slot>
+                        </template>
+                    </DesignerBackgroundLayer>
+                </slot>
+                <slot
+                    name="appendBody"
+                    :rows="rows"
+                    :columns="columns"
                     :layer-style="layerStyle" />
             </DesignerBody>
             <DesignerFooter ref="footer">

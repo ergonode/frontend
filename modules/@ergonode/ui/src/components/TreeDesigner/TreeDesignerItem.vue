@@ -15,7 +15,6 @@
         <template #prepend>
             <IconButton
                 v-if="hasChildren"
-                class="tree-designer-item-expand-button"
                 :size="tinySize"
                 :theme="secondaryPlainTheme"
                 @click.native="onExpandItem">
@@ -120,9 +119,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .tree-designer-item-expand-button {
-        margin-right: 8px;
-    }
-</style>

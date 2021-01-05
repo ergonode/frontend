@@ -21,7 +21,7 @@ import {
 } from '@UI/defaults/designer';
 
 export default {
-    name: 'TemplateGridGhostItem',
+    name: 'DesignerGhostItem',
     components: {
         IconAddFilter,
     },

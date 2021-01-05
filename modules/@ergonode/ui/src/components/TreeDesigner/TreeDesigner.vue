@@ -7,7 +7,7 @@
         :columns="columns"
         :row-height="rowHeight"
         :last-item-row="localItems.length">
-        <template #body="{ layerStyle }">
+        <template #appendBody="{ layerStyle }">
             <TreeDesignerDraggableLayer
                 :style="layerStyle"
                 :single-root="singleRoot"

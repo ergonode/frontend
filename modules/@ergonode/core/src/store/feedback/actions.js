@@ -55,6 +55,12 @@ export default {
         fieldKeys = {},
     }) {
         if (errors) {
+            console.log(getMappedErrorsV2({
+                errors,
+                fieldKeys,
+                scope,
+            }));
+
             commit(types.SET_ERRORS, getMappedErrorsV2({
                 errors,
                 fieldKeys,

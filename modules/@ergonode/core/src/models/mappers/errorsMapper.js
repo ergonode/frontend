@@ -38,10 +38,15 @@ export const getMappedErrors = ({
 };
 
 const flattenErrors = ({
-    mappedErrors, errors, fieldKeys,
+    mappedErrors,
+    errors,
+    fieldKeys,
 }) => {
     const keys = Object.keys(errors);
-    const tmpErrors = {};
+
+    let tmpErrors = {
+        ...mappedErrors,
+    };
 
     for (let i = 0; i < keys.length; i += 1) {
         const key = keys[i];
@@ -50,26 +55,23 @@ const flattenErrors = ({
         if (Array.isArray(errors[key])) {
             tmpErrors[fieldKey || key] = errors[key].join(', ');
         } else if (typeof errors[key] === 'object') {
-            return {
-                ...mappedErrors,
+            tmpErrors = {
+                ...tmpErrors,
                 [fieldKey || key]: flattenErrors({
-                    mappedErrors,
+                    tmpErrors,
                     errors: errors[key],
                     fieldKeys,
                 }),
             };
         } else {
-            return {
-                ...mappedErrors,
+            tmpErrors = {
+                ...tmpErrors,
                 [fieldKey || key]: errors[key],
             };
         }
     }
 
-    return {
-        ...mappedErrors,
-        ...tmpErrors,
-    };
+    return tmpErrors;
 };
 
 export const getMappedErrorsV2 = ({

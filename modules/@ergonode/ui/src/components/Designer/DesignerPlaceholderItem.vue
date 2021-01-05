@@ -35,6 +35,10 @@ export default {
             type: Number,
             default: 0,
         },
+        width: {
+            type: Number,
+            default: 2,
+        },
         gap: {
             type: Number,
             default: GRID_GAP,
@@ -47,7 +51,7 @@ export default {
     computed: {
         styles() {
             return {
-                gridArea: `${this.row + 1} / ${this.column + 1} / ${this.row + 2} / ${this.column + 3}`,
+                gridArea: `${this.row + 1} / ${this.column + 1} / ${this.row + 2} / ${this.column + 1 + this.width}`,
                 margin: `${this.gap}px`,
                 height: `${this.rowHeight - (2 * this.gap)}px`,
             };
@@ -71,7 +75,7 @@ export default {
         background-color: $GREY_LIGHT;
         box-shadow: $ELEVATOR_HOLE;
         color: $GRAPHITE_DARK;
-        font: $FONT_MEDIUM_12_16;
+        font: $FONT_BOLD_12_16;
         text-transform: uppercase;
         padding-left: 12px;
     }

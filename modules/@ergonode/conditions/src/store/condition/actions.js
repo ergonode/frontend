@@ -250,7 +250,6 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            console.log(e);
             onError({
                 errors: e.data.errors,
                 scope,

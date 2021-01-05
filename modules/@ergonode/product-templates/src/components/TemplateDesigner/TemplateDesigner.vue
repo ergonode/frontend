@@ -13,9 +13,12 @@
                 :column="column"
                 :row="row" />
         </template>
-        <template #body="{ rows, layerStyle }">
+        <template #prependBody="{ rows, layerStyle }">
             <DesignerDraggableLayer :style="layerStyle">
-                <DesignerPlaceholderItem v-if="!layoutElements.length" />
+                <DesignerPlaceholderItem
+                    v-if="!layoutElements.length"
+                    :width="1" />
+
                 <LayoutElement
                     v-for="(element, index) in layoutElements"
                     :key="`${element.row}/${element.column}`"
@@ -80,7 +83,6 @@ import {
 import {
     isObject,
 } from '@Core/models/objectWrapper';
-import DesignerPlaceholderItem from '@UI/components/Designer/DesignerPlaceholderItem';
 import AttributeElementContent from '@Templates/components/TemplateDesigner/ProductDesigner/AttributeElementContent';
 import LayoutElement from '@Templates/components/TemplateDesigner/ProductDesigner/LayoutElement';
 import SectionElementContent from '@Templates/components/TemplateDesigner/ProductDesigner/SectionElementContent';
@@ -91,6 +93,8 @@ import {
 } from '@Templates/models/layout/LayoutCalculations';
 import Designer from '@UI/components/Designer/Designer';
 import DesignerDraggableLayer from '@UI/components/Designer/DesignerDraggableLayer';
+import DesignerGhostItem from '@UI/components/Designer/DesignerGhostItem';
+import DesignerPlaceholderItem from '@UI/components/Designer/DesignerPlaceholderItem';
 import {
     mapActions,
     mapState,
@@ -101,6 +105,7 @@ export default {
     components: {
         Designer,
         DesignerDraggableLayer,
+        DesignerGhostItem,
         TemplateDesignerBackgroundItem,
         LayoutElement,
         DesignerPlaceholderItem,

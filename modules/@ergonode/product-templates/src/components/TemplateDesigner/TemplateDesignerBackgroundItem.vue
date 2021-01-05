@@ -53,11 +53,11 @@ export default {
         ]),
         classes() {
             return [
-                'designer-background-item',
+                'template-designer-background-item',
                 {
-                    'designer-background-item--highlighted': this.highlightedElement,
-                    // 'designer-background-item--top-border': this.highlightedElement && !this.isTopNeighbour,
-                    // 'designer-background-item--right-border': this.highlightedElement && !this.isRightNeighbour,
+                    'template-designer-background-item--highlighted': this.highlightedElement,
+                    // 'template-designer-background-item--top-border': this.highlightedElement && !this.isTopNeighbour,
+                    // 'template-designer-background-item--right-border': this.highlightedElement && !this.isRightNeighbour,
                 },
             ];
         },
@@ -120,6 +120,7 @@ export default {
             event.preventDefault();
         },
         onDragEnter() {
+            console.log('entered');
             if (this.highlightedElement && !this.highlightedElement.isObstacle) {
                 this.isGhostElement = true;
             }
@@ -136,7 +137,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-    .designer-background-item {
+    .template-designer-background-item {
         position: relative;
         display: flex;
         padding: 8px;

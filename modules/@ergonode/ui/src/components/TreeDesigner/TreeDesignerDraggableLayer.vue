@@ -90,6 +90,10 @@ export default {
             'setDisabledElement',
         ]),
         onDragStart(event) {
+            if (this.items.length === 0) {
+                return;
+            }
+
             const backgroundItem = this.getBackgroundItem(event);
 
             if (backgroundItem) {
