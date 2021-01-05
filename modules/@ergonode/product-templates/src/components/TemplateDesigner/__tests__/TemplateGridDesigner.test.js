@@ -2,12 +2,11 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import Designer from '@UI/components/Designer/Designer';
 import DesignerBackgroundLayer from '@UI/components/Designer/DesignerBackgroundLayer';
 import {
     shallowMount,
 } from '@vue/test-utils';
-
-import Designer from '@UI/components/Designer/Designer';
 
 const columnsNumber = 4;
 const maxRows = 0;

@@ -2,11 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import DesignerBackgroundLayer from '@UI/components/Designer/DesignerBackgroundLayer';
 import {
     mount,
 } from '@vue/test-utils';
-
-import DesignerBackgroundLayer from '@UI/components/Designer/DesignerBackgroundLayer';
 
 describe('TreeDesigner/DesignerBackgroundLayer', () => {
     let wrapper;

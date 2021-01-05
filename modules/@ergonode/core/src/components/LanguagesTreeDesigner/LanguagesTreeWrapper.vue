@@ -12,13 +12,13 @@
 </template>
 
 <script>
-import TreeDesigner from '@UI/components/TreeDesigner/TreeDesigner';
 import PRIVILEGES from '@Core/config/privileges';
 import {
     COLUMNS,
     CONTEXT_NAME,
     ROW_HEIGHT,
 } from '@Core/defaults/languagesDesigner';
+import TreeDesigner from '@UI/components/TreeDesigner/TreeDesigner';
 
 export default {
     name: 'LanguagesTreeWrapper',

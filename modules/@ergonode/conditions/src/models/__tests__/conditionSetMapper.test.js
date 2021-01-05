@@ -4,12 +4,12 @@
  */
 // eslint-disable-next-line jest/no-mocks-import
 // import { conditionsTree, conditionValues, mappedData } from './__mocks__/conditions.mock';
-// import { getMappedConditionSetData, getMappedTree } from '../conditionSetMapper';
+// import { getParsedConditions, getMappedTree } from '../conditionSetMapper';
 
-describe('conditionSetMapper/getMappedConditionSetData', () => {
+describe('conditionSetMapper/getParsedConditions', () => {
     it('Tree mapping with valid input data', () => {
         // FIXME
-        // const result = getMappedConditionSetData(conditionsTree, conditionValues);
+        // const result = getParsedConditions(conditionsTree, conditionValues);
         // expect(result).toStrictEqual(mappedData);
     });
 
@@ -19,13 +19,13 @@ describe('conditionSetMapper/getMappedConditionSetData', () => {
         //     { type: 'NUMERIC_ATTRIBUTE_VALUE_CONDITION' },
         //     { type: 'ATTRIBUTE_EXISTS_CONDITION' },
         // ];
-        // const result = getMappedConditionSetData(conditionsTree, []);
+        // const result = getParsedConditions(conditionsTree, []);
         // expect(result).toStrictEqual(expected);
     });
 
     it('Tree mapping without input data', () => {
         // FIXME
-        // const result = getMappedConditionSetData([], []);
+        // const result = getParsedConditions([], []);
         // expect(result).toStrictEqual([]);
     });
 });

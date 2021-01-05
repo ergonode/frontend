@@ -9,8 +9,8 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
-    getParsedTree,
     getMappedTree,
+    getParsedTree,
 } from '@Trees/models/treeMapper';
 import {
     create,

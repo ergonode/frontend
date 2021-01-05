@@ -9,12 +9,14 @@
         :row-height="rowHeight"
         :grid-gap="16"
         :disabled="disabled"
+        @add-item="onAddItem"
+        @remove-items="onRemoveConditions"
         @input="onValueChange">
         <template
             #item="{
                 item,
-                index,
                 gap,
+                onRemoveItems,
             }">
             <ConditionSetTreeDesignerItem
                 :key="item.id"
@@ -23,9 +25,12 @@
                 :gap="gap"
                 :scope="scope"
                 :change-values="changeValues"
-                :errors="conditionErrors[`element-${index}`]"
+                :errors="conditionErrors[`element-${item.row}`]"
                 :disabled="disabled"
-                @remove="onRemoveCondition" />
+                :is-prefetching-data="
+                    fetchingTypes[item.type]
+                        || typeof fetchingTypes[item.type] === 'undefined'"
+                @remove="onRemoveItems" />
         </template>
     </TreeDesigner>
 </template>
@@ -67,6 +72,28 @@ export default {
             default: () => ({}),
         },
     },
+    async fetch() {
+        const requests = [];
+
+        this.tree.forEach((node) => {
+            if (!this.conditions[node.type] && !this.fetchingTypes[node.type]) {
+                this.fetchingTypes[node.type] = true;
+
+                requests.push(this.getCondition({
+                    id: node.type,
+                    onSuccess: this.getConditionSuccess,
+                    onError: this.getConditionError,
+                }));
+            }
+        });
+
+        await Promise.all(requests);
+    },
+    data() {
+        return {
+            fetchingTypes: {},
+        };
+    },
     computed: {
         ...mapState('condition', [
             'tree',
@@ -90,14 +117,32 @@ export default {
             '__setState',
             'getCondition',
             'removeConditionValue',
-            'setConditionValue',
-        ]),
-        ...mapActions('gridDesigner', [
-            'removeGridItem',
         ]),
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
+        onFetchingType({
+            type,
+            fetching,
+        }) {
+            this.fetchingTypes = {
+                ...this.fetchingTypes,
+                [type]: fetching,
+            };
+        },
+        onAddItem({
+            type,
+        }) {
+            if (!this.conditions[type] && !this.fetchingTypes[type]) {
+                this.fetchingTypes[type] = true;
+
+                this.getCondition({
+                    id: type,
+                    onSuccess: this.getConditionSuccess,
+                    onError: this.getConditionError,
+                });
+            }
+        },
         onValueChange(value) {
             this.__setState({
                 key: 'tree',
@@ -110,9 +155,16 @@ export default {
                 value,
             });
         },
-        onRemoveCondition(item) {
-            this.removeConditionValue(item.id);
-            this.removeGridItem(item.row);
+        onRemoveConditions(ids) {
+            ids.forEach((id) => {
+                this.removeConditionValue(id);
+            });
+        },
+        getConditionSuccess(type) {
+            this.fetchingTypes[type] = false;
+        },
+        getConditionError(type) {
+            this.fetchingTypes[type] = false;
         },
     },
 };

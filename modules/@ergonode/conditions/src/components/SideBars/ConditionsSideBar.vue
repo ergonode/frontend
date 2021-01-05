@@ -5,7 +5,10 @@
 <template>
     <SideBar
         title="Conditions"
-        :items="conditions">
+        :search-value="searchValue"
+        :searchable="true"
+        :items="conditions"
+        @search="onSearch">
         <template #body>
             <Preloader v-if="isPrefetchingData" />
         </template>
@@ -51,6 +54,8 @@ export default {
     },
     data() {
         return {
+            searchValue: '',
+            allConditions: [],
             conditions: [],
             isPrefetchingData: true,
         };
@@ -59,7 +64,17 @@ export default {
         ...mapActions('condition', [
             'getConditions',
         ]),
+        onSearch(value) {
+            const lowerCaseSearchValue = value.toLowerCase();
+
+            this.conditions = this.allConditions.filter(({
+                name,
+            }) => name.toLowerCase().includes(lowerCaseSearchValue));
+
+            this.searchValue = value;
+        },
         getConditionsSuccess(conditions) {
+            this.allConditions = conditions;
             this.conditions = conditions;
 
             this.isPrefetchingData = false;

@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 import {
-    getParsedTree,
     getMappedTree,
+    getParsedTree,
 } from '../treeMapper';
 import {
     categoryList,

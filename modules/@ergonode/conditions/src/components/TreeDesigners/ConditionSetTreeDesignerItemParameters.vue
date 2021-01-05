@@ -4,12 +4,12 @@
  */
 <template>
     <Component
-        :is="getComponentViaType"
+        :is="typeComponent"
         :required="true"
         :clearable="true"
         :size="smallSize"
         :label="parameter.name"
-        :options="conditionOptions"
+        :options="options"
         :value="conditionValue"
         :multiselect="isConditionTypeMultiSelect"
         :error-messages="errorMessages"
@@ -63,10 +63,7 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-        isConditionTypeMultiSelect() {
-            return this.parameter.type === TYPES.MULTI_SELECT;
-        },
-        getComponentViaType() {
+        typeComponent() {
             switch (this.parameter.type) {
             case TYPES.SELECT:
             case TYPES.MULTI_SELECT:
@@ -84,7 +81,7 @@ export default {
                 name,
             } = this.parameter;
 
-            if (!this.conditionsValues[this.itemId] || !this.conditionsValues[this.itemId][name]) {
+            if (!(this.conditionsValues[this.itemId] && this.conditionsValues[this.itemId][name])) {
                 if (this.isConditionTypeMultiSelect) {
                     return [];
                 }
@@ -93,40 +90,33 @@ export default {
 
             return this.conditionsValues[this.itemId][name];
         },
-        conditionOptions() {
-            if (this.parameter.complexOptions) {
-                const options = this.parameter.complexOptions[this.affectedByOptionId];
+        options() {
+            const {
+                complexOptions = {},
+                affectedBy = '',
+            } = this.parameter;
 
-                return options
-                    ? Object.keys(options).map(key => ({
-                        id: key,
-                        key,
-                        value: options[key],
-                    }))
-                    : [];
-            }
-            return this.parameter.options
-                ? Object.keys(this.parameter.options).map(key => ({
-                    id: key,
-                    key,
-                    value: this.parameter.options[key],
-                }))
-                : [];
-        },
-    },
-    watch: {
-        conditionsValues: {
-            deep: true,
-            immediate: true,
-            handler(value) {
-                if (this.parameter.affectedBy && value[this.itemId]) {
-                    if (value[this.itemId][this.parameter.affectedBy]) {
-                        const selectedValue = value[this.itemId][this.parameter.affectedBy].id;
+            let options = this.parameter.options || {};
 
-                        this.affectedByOptionId = selectedValue || null;
+            if (affectedBy) {
+                if (this.conditionsValues[this.itemId]
+                    && this.conditionsValues[this.itemId][affectedBy]) {
+                    const affectedByValue = this.conditionsValues[this.itemId][affectedBy];
+
+                    if (complexOptions[affectedByValue.id]) {
+                        options = complexOptions[affectedByValue.id];
                     }
                 }
-            },
+            }
+
+            return Object.keys(options).map(key => ({
+                id: key,
+                key,
+                value: options[key],
+            }));
+        },
+        isConditionTypeMultiSelect() {
+            return this.parameter.type === TYPES.MULTI_SELECT;
         },
     },
     methods: {

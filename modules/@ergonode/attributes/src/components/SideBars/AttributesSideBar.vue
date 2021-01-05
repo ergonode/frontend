@@ -12,6 +12,7 @@
             <ListSearchSelectHeader
                 v-if="isSelectLanguage"
                 :title="$t('attribute.sideBar.searchHeader')"
+                :search-value="searchValue"
                 @search="onSearch">
                 <template #select>
                     <LanguageTreeSelect

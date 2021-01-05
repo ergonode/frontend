@@ -46,7 +46,6 @@ import {
 import DesignerItem from '@UI/components/Designer/DesignerItem';
 import Preloader from '@UI/components/Preloader/Preloader';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
@@ -65,11 +64,15 @@ export default {
         },
         condition: {
             type: Object,
-            default: () => ({}),
+            default: null,
         },
         gap: {
             type: Number,
             default: 16,
+        },
+        isPrefetchingData: {
+            type: Boolean,
+            default: false,
         },
         scope: {
             type: String,
@@ -88,27 +91,9 @@ export default {
             default: false,
         },
     },
-    async fetch() {
-        console.log('fetching', this.item.type);
-        if (typeof this.conditions[this.item.type] === 'undefined') {
-            this.isPrefetchingData = true;
-
-            await this.getCondition({
-                id: this.item.type,
-                onSuccess: this.getConditionSuccess,
-                onError: this.getConditionError,
-            });
-        }
-    },
-    data() {
-        return {
-            isPrefetchingData: false,
-        };
-    },
     computed: {
         ...mapState('condition', [
             'conditionsValues',
-            'conditions',
         ]),
         menuItems() {
             return [
@@ -137,15 +122,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('condition', [
-            'getCondition',
-        ]),
-        getConditionSuccess() {
-            this.isPrefetchingData = false;
-        },
-        getConditionError() {
-            this.isPrefetchingData = false;
-        },
         onSelectValue(value) {
             switch (value) {
             case 'Remove':
@@ -193,12 +169,12 @@ export default {
         &::after {
             position: absolute;
             left: 50%;
-            bottom: -8px;
+            bottom: -24px;
             padding: 0 8px;
             transform: translateX(-50%);
-            background-image: linear-gradient($WHITESMOKE, $WHITE);
+            background-color: $WHITE;
             color: $GRAPHITE_DARK;
-            font: $FONT_SEMI_BOLD_10_12;
+            font: $FONT_MEDIUM_12_16;
             content: "AND";
         }
 

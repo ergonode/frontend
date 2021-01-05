@@ -3,8 +3,9 @@
  * See LICENSE for license details.
  */
 import {
-    getMappedConditionSetData,
+    getMappedCondition,
     getMappedTree,
+    getParsedConditions,
 } from '@Conditions/models/conditionSetMapper';
 import {
     createSet,
@@ -48,6 +49,7 @@ export default {
     },
     async getCondition(
         {
+            state,
             commit,
         },
         {
@@ -62,12 +64,26 @@ export default {
                 id,
             });
 
+            const conditionsValues = {};
+
+            state.tree.forEach((node) => {
+                if (state.conditionsValues[node.id]
+                    && !Object.keys(state.conditionsValues[node.id]).length
+                    && node.type === id) {
+                    conditionsValues[node.id] = getMappedCondition({
+                        parameters: configuration.parameters,
+                        node,
+                    });
+                }
+            });
+
+            commit(types.SET_CONDITIONS_VALUES, conditionsValues);
             commit(types.SET_CONDITIONS, {
                 key: id,
                 value: configuration,
             });
 
-            onSuccess();
+            onSuccess(id);
         } catch (e) {
             if (this.$axios.isCancel(e)) {
                 return;
@@ -91,16 +107,19 @@ export default {
             id,
         });
 
-        const tree = getMappedTree(conditions);
+        const {
+            tree,
+            values,
+        } = getMappedTree(conditions);
 
         commit('__SET_STATE', {
             key: 'id',
             value: id,
         });
-        // commit('__SET_STATE', {
-        //     key: 'conditionsValues',
-        //     value: data,
-        // });
+        commit('__SET_STATE', {
+            key: 'conditionsValues',
+            value: values,
+        });
         commit('__SET_STATE', {
             key: 'tree',
             value: tree,
@@ -121,10 +140,16 @@ export default {
             const {
                 conditions,
                 conditionsValues,
+                tree,
             } = state;
             let data = {
-                conditions: getMappedConditionSetData(conditionsValues, conditions),
+                conditions: getParsedConditions({
+                    values: conditionsValues,
+                    conditions,
+                    tree,
+                }),
             };
+
             // EXTENDED BEFORE METHOD
             const extendedData = await this.$extendMethods('@Conditions/store/condition/action/createConditionSet/__before', {
                 $this: this,
@@ -162,6 +187,7 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            console.log(e);
             onError({
                 errors: e.data.errors,
                 scope,
@@ -182,10 +208,15 @@ export default {
             const {
                 id,
                 conditions,
+                tree,
                 conditionsValues,
             } = state;
             let data = {
-                conditions: getMappedConditionSetData(conditionsValues, conditions),
+                conditions: getParsedConditions({
+                    values: conditionsValues,
+                    conditions,
+                    tree,
+                }),
             };
 
             // EXTENDED BEFORE METHOD
@@ -219,6 +250,7 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            console.log(e);
             onError({
                 errors: e.data.errors,
                 scope,
@@ -226,10 +258,13 @@ export default {
         }
     },
     setConditionValue({
-        commit, state,
+        commit,
+        state,
     },
     {
-        conditionId, parameterName, parameterValue,
+        conditionId,
+        parameterName,
+        parameterValue,
     }) {
         if (!state.conditionsValues[conditionId]) {
             commit(types.ADD_CONDITION_VALUE, {
@@ -246,7 +281,8 @@ export default {
         }
     },
     removeConditionValue({
-        commit, state,
+        commit,
+        state,
     }, conditionId) {
         if (state.conditionsValues[conditionId]) {
             commit(types.REMOVE_CONDITION_VALUE_FROM_SET, conditionId);

@@ -6,90 +6,114 @@ import {
     getUUID,
 } from '@Core/models/stringWrapper';
 
-export function getMappedConditionSetData(conditionSetData, conditions) {
-    const mappedData = [];
+export function getParsedConditions({
+    values,
+    conditions,
+    tree,
+}) {
+    const parsedConditions = {};
 
-    Object.keys(conditionSetData).forEach((key) => {
-        const [
-            conditionId,
-        ] = key.split('--');
-        const conditionData = {
-            ...conditionSetData[key],
-        };
+    tree.forEach((node) => {
         const {
-            parameters,
-        } = conditions[conditionId];
+            id,
+            type,
+        } = node;
 
-        Object.keys(conditionData).forEach((conditionKey) => {
-            const parameter = parameters.find(({
-                name,
-            }) => name === conditionKey);
+        if (typeof parsedConditions[id] === 'undefined') {
+            parsedConditions[id] = {
+                type,
+            };
+        }
 
-            if (parameter && (parameter.options || parameter.complexOptions)) {
-                if (Array.isArray(conditionData[conditionKey])) {
-                    conditionData[conditionKey] = conditionData[conditionKey].map(
-                        option => option.id,
-                    );
-                } else {
-                    conditionData[conditionKey] = conditionData[conditionKey].id;
+        const condition = conditions[type];
+
+        condition.parameters.forEach((parameter) => {
+            let value = '';
+
+            if (values[id]) {
+                value = values[id][parameter.name];
+
+                if (typeof values[id][parameter.name] === 'object') {
+                    value = values[id][parameter.name].id;
+                } else if (Array.isArray(values[id][parameter.name])) {
+                    value = values[id][parameter.name].map(conditionValue => conditionValue.id);
                 }
             }
-        });
 
-        mappedData.push({
-            type: conditionId,
-            ...conditionData,
+            parsedConditions[id][parameter.name] = value;
         });
     });
 
-    return mappedData;
+    return Object.keys(parsedConditions).reduce((prev, curr) => [
+        ...prev,
+        parsedConditions[curr],
+    ], []);
+}
+
+export function getMappedCondition({
+    parameters,
+    node,
+}) {
+    const mappedCondition = {};
+
+    for (let i = 0; i < parameters.length; i += 1) {
+        const {
+            name,
+            options,
+            affectedBy,
+            complexOptions,
+        } = parameters[i];
+
+        if (node[name]) {
+            mappedCondition[name] = node[name];
+
+            if (options || complexOptions) {
+                const value = complexOptions && affectedBy
+                    ? complexOptions[node[affectedBy]][node[name]]
+                    : options[node[name]];
+
+                mappedCondition[name] = {
+                    id: node[name],
+                    key: node[name],
+                    value,
+                };
+            } else if (Array.isArray(node[name])) {
+                mappedCondition[name] = node[name].map((option) => {
+                    const value = complexOptions && affectedBy
+                        ? complexOptions[node[affectedBy]][option]
+                        : options[option];
+
+                    return {
+                        id: option,
+                        key: option,
+                        value,
+                    };
+                });
+            }
+        }
+    }
+
+    return mappedCondition;
 }
 
 export function getMappedTree(conditions) {
     const mappedTree = [];
+    const values = {};
 
     for (let i = 0; i < conditions.length; i += 1) {
-        // Object.keys(parameters).forEach((key) => {
-        //     const {
-        //         options,
-        //         complexOptions = null,
-        //         affectedBy = null,
-        //     } = conditionsData[type].parameters.find(param => param.name === key);
-        //
-        //     if (affectedBy && complexOptions) {
-        //         const affectedByOptionId = conditions[i][affectedBy];
-        //
-        //         parameters[key] = {
-        //             id: parameters[key],
-        //             key: parameters[key],
-        //             value: complexOptions[affectedByOptionId][parameters[key]],
-        //         };
-        //     }
-        //     if (options) {
-        //         if (Array.isArray(parameters[key])) {
-        //             parameters[key] = parameters[key].map(option => ({
-        //                 id: option,
-        //                 key: option,
-        //                 value: options[option],
-        //             }));
-        //         } else {
-        //             parameters[key] = {
-        //                 id: parameters[key],
-        //                 key: parameters[key],
-        //                 value: options[parameters[key]],
-        //             };
-        //         }
-        //     }
-        // });
+        const id = getUUID();
 
-        // parsedData.conditionsData[uniqId] = parameters;
+        values[id] = {};
         mappedTree.push({
-            id: getUUID(),
+            ...conditions[i],
+            id,
             row: i,
             column: 0,
             parent: null,
-            ...conditions[i],
         });
     }
-    return mappedTree;
+    return {
+        tree: mappedTree,
+        values,
+    };
 }
