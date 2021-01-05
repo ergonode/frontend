@@ -40,7 +40,7 @@ export default {
             languagePrivileges: state => state.user.languagePrivileges,
         }),
         ...mapState('core', [
-            'languagesTree',
+            'inheritedLanguages',
         ]),
         language() {
             return this.languageOptions.find(
@@ -51,7 +51,7 @@ export default {
             return SIZE.SMALL;
         },
         languageOptions() {
-            return this.languagesTree.map(language => ({
+            return this.inheritedLanguages.map(language => ({
                 ...language,
                 key: language.code,
                 value: language.name,

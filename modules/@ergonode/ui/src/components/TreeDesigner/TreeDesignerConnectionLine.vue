@@ -10,9 +10,12 @@
 
 <script>
 import {
+    GRID_GAP,
+    ROW_HEIGHT,
+} from '@UI/defaults/designer';
+import {
     getParent,
 } from '@UI/models/treeDesigner';
-import {GRID_GAP, ROW_HEIGHT} from "@UI/defaults/designer";
 
 export default {
     name: 'TreeDesignerConnectionLine',

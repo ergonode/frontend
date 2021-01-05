@@ -10,7 +10,7 @@
         <template #body="{ layerStyle }">
             <TreeDesignerDraggableLayer
                 :style="layerStyle"
-                :constant-root="constantRoot"
+                :single-root="singleRoot"
                 :items="localItems"
                 :hidden-items="hiddenItems"
                 :children-length="childrenLength"
@@ -122,7 +122,7 @@ export default {
             type: Number,
             default: GRID_GAP,
         },
-        constantRoot: {
+        singleRoot: {
             type: Boolean,
             default: false,
         },

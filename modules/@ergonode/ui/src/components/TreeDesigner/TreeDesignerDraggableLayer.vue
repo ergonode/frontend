@@ -65,7 +65,7 @@ export default {
             type: Boolean,
             default: false,
         },
-        constantRoot: {
+        singleRoot: {
             type: Boolean,
             default: false,
         },
@@ -90,13 +90,13 @@ export default {
             'setDisabledElement',
         ]),
         onDragStart(event) {
-            const shadowItem = this.getShadowItem(event);
+            const backgroundItem = this.getBackgroundItem(event);
 
-            if (shadowItem) {
+            if (backgroundItem) {
                 const {
                     row,
                     column,
-                } = shadowItem;
+                } = backgroundItem;
                 const item = this.items[row];
                 const {
                     id,
@@ -239,30 +239,36 @@ export default {
         onDragOver(event) {
             event.preventDefault();
 
+            const backgroundItem = this.getBackgroundItem(event);
+
+            if (!backgroundItem
+                || (this.singleRoot && this.items.length > 0
+                    && (backgroundItem.row === 0 || backgroundItem.column === 0))) {
+                return;
+            }
+
             if (this.ghostIndex === -1) {
-                this.insertGhostItemOnEnter(event);
+                this.insertGhostItemOnEnter(event, backgroundItem);
             } else if (this.items.length > 1) {
-                this.updateGhostItemPositionOnDragOver(event);
+                this.updateGhostItemPositionOnDragOver(event, backgroundItem);
             }
         },
-        updateGhostItemPositionOnDragOver(event) {
-            const shadowItem = this.getShadowItem(event);
-
-            if (shadowItem && shadowItem.row < this.items.length) {
+        updateGhostItemPositionOnDragOver(event, backgroundItem) {
+            if (backgroundItem.row < this.items.length) {
                 const {
                     row,
                     column,
-                } = shadowItem;
+                } = backgroundItem;
 
                 const {
-                    y: shadowItemYPos,
-                    height: shadowItemHeight,
-                } = shadowItem.element.getBoundingClientRect();
+                    y: backgroundItemYPos,
+                    height: backgroundItemHeight,
+                } = backgroundItem.element.getBoundingClientRect();
 
                 const isBeforeRow = getDraggedRowPositionState(
                     event.pageY,
-                    shadowItemYPos,
-                    shadowItemHeight,
+                    backgroundItemYPos,
+                    backgroundItemHeight,
                 );
 
                 const isSamePosition = row === this.ghostIndex.row
@@ -375,63 +381,59 @@ export default {
                 },
             });
         },
-        insertGhostItemOnEnter(event) {
-            const shadowItem = this.getShadowItem(event);
+        insertGhostItemOnEnter(event, backgroundItem) {
+            const {
+                row,
+            } = backgroundItem;
+            const fixedRow = Math.min(row, this.items.length - 1);
 
-            if (shadowItem) {
-                const {
-                    row,
-                } = shadowItem;
-                const fixedRow = Math.min(row, this.items.length - 1);
+            let column = 0;
 
-                let column = 0;
+            if (fixedRow !== -1) {
+                column = this.items[fixedRow].column;
+            }
 
-                if (fixedRow !== -1) {
-                    column = this.items[fixedRow].column;
-                }
+            const parent = getParent({
+                items: this.items,
+                row: fixedRow,
+                column,
+            });
 
-                const parent = getParent({
-                    items: this.items,
-                    row: fixedRow,
-                    column,
+            if (row < this.items.length) {
+                this.$emit('shift-items', {
+                    since: row - 1,
+                    value: 1,
                 });
-
-                if (row < this.items.length) {
-                    this.$emit('shift-items', {
-                        since: row - 1,
-                        value: 1,
-                    });
-                    this.$emit('insert-item', {
-                        index: fixedRow,
-                        item: {
-                            id: 'ghost_item',
-                            row: fixedRow,
-                            column,
-                            parent: parent.id,
-                        },
-                    });
-                    this.__setState({
-                        key: 'ghostIndex',
-                        value: {
-                            row: fixedRow,
-                            column,
-                        },
-                    });
-                } else {
-                    this.$emit('add-item', {
+                this.$emit('insert-item', {
+                    index: fixedRow,
+                    item: {
                         id: 'ghost_item',
-                        row: this.items.length,
+                        row: fixedRow,
                         column,
                         parent: parent.id,
-                    });
-                    this.__setState({
-                        key: 'ghostIndex',
-                        value: {
-                            row: fixedRow + 1,
-                            column,
-                        },
-                    });
-                }
+                    },
+                });
+                this.__setState({
+                    key: 'ghostIndex',
+                    value: {
+                        row: fixedRow,
+                        column,
+                    },
+                });
+            } else {
+                this.$emit('add-item', {
+                    id: 'ghost_item',
+                    row: this.items.length,
+                    column,
+                    parent: parent.id,
+                });
+                this.__setState({
+                    key: 'ghostIndex',
+                    value: {
+                        row: fixedRow + 1,
+                        column,
+                    },
+                });
             }
         },
         isColliding(row, column) {
@@ -457,18 +459,18 @@ export default {
                 ? this.items[row + 1]
                 : this.items[0];
         },
-        getShadowItem({
+        getBackgroundItem({
             pageX,
             pageY,
         }) {
             const elements = document.elementsFromPoint(pageX, pageY);
-            const shadowItem = elements.find(element => element.classList.contains('designer-background-item'));
+            const backgroundItem = elements.find(element => element.classList.contains('designer-background-item'));
 
-            if (shadowItem) {
+            if (backgroundItem) {
                 return {
-                    element: shadowItem,
-                    row: +shadowItem.getAttribute('row'),
-                    column: +shadowItem.getAttribute('column'),
+                    element: backgroundItem,
+                    row: +backgroundItem.getAttribute('row'),
+                    column: +backgroundItem.getAttribute('column'),
                 };
             }
 

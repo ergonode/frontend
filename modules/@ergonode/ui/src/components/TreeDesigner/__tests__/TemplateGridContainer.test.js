@@ -6,27 +6,6 @@
 // import { Store } from 'vuex-mock-store';
 import TreeDesignerDraggableLayer from '../TreeDesignerDraggableLayer';
 
-// const localVue = createLocalVue();
-// const store = new Store({
-//     state: {
-//         gridDesigner: {
-//             fullGridData: [],
-//             hiddenItems: {},
-//         },
-//         draggable: {
-//             draggedElement: {},
-//         },
-//         authentication: {
-//             language: 'EN',
-//         },
-//         list: {
-//             listElements: [],
-//         },
-//     },
-// });
-// const mocks = {
-//     $store: store,
-// };
 describe('TreeDesigner/TreeDesignerDraggableLayer', () => {
     it('Component is named well', () => {
         expect(typeof TreeDesignerDraggableLayer.name).toBe('string');

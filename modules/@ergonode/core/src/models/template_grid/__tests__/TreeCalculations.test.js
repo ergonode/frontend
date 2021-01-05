@@ -137,7 +137,7 @@ describe('TreeCalculations/getTreeWhenElementRemoved', () => {
                 children: 0,
                 expanded: false,
                 name: null,
-                parent: 'root',
+                parent: null,
             },
         ];
         const removedIndex = 0;

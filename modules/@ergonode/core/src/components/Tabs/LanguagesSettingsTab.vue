@@ -19,7 +19,10 @@
             </VerticalTabBar>
         </template>
         <template #grid>
-            <LanguagesTreeWrapper />
+            <LanguageInheritanceTreeDesigner
+                :scope="scope"
+                :errors="errors"
+                :change-values="changeValues" />
             <Button
                 :title="$t('core.buttons.submit')"
                 :floating="{ bottom: '24px', right: '24px' }"
@@ -35,7 +38,7 @@
 </template>
 
 <script>
-import LanguagesTreeWrapper from '@Core/components/LanguagesTreeDesigner/LanguagesTreeWrapper';
+import LanguageInheritanceTreeDesigner from '@Core/components/LanguageInheritanceTreeDesigner/LanguageInheritanceTreeDesigner';
 import PRIVILEGES from '@Core/config/privileges';
 import {
     ALERT_TYPE,
@@ -74,47 +77,23 @@ export default {
         DropZone,
         FadeTransition,
         IconSpinner,
-        LanguagesTreeWrapper,
+        LanguageInheritanceTreeDesigner,
         VerticalTabBar,
     },
     mixins: [
         tabFeedbackMixin,
     ],
-    asyncData({
-        store,
-    }) {
-        const {
-            language: languageCode,
-        } = store.state.authentication.user;
-        const {
-            languagesTree,
-        } = store.state.core;
-        const treeToSet = languagesTree.map((item, i) => {
-            store.dispatch('list/setDisabledElement', {
-                languageCode,
-                elementId: item.id,
-                disabled: true,
-            });
-
-            return {
-                ...item,
-                row: i,
-                column: item.level,
-                expanded: false,
-            };
-        });
-
-        store.dispatch('gridDesigner/setGridData', treeToSet);
-        store.dispatch('gridDesigner/setFullGridData', treeToSet);
-    },
     data() {
         return {
             isSubmitting: false,
         };
     },
     computed: {
-        ...mapState('gridDesigner', [
-            'fullGridData',
+        ...mapState('authentication', {
+            languageCode: state => state.user.language,
+        }),
+        ...mapState('core', [
+            'languagesTree',
         ]),
         ...mapState('draggable', [
             'isElementDragging',
@@ -140,13 +119,19 @@ export default {
             return GRAPHITE_LIGHT;
         },
     },
-    beforeDestroy() {
-        this.__clearGridDesignerStorage();
+    created() {
+        this.languagesTree.forEach((node) => {
+            this.setDisabledElement({
+                languageCode: this.languageCode,
+                elementId: node.id,
+                disabled: true,
+            });
+        });
     },
     methods: {
-        ...mapActions('gridDesigner', {
-            __clearGridDesignerStorage: '__clearStorage',
-        }),
+        ...mapActions('list', [
+            'setDisabledElement',
+        ]),
         ...mapActions('core', [
             'setLanguageTree',
             'setDefaultLanguage',
@@ -157,12 +142,12 @@ export default {
                 return;
             }
 
-            if (!isEmpty(this.fullGridData)) {
+            if (this.languagesTree.length) {
                 this.isSubmitting = true;
 
                 const [
                     languages,
-                ] = getParsedTree(this.fullGridData);
+                ] = getParsedTree(this.languagesTree);
 
                 this.removeScopeErrors(this.scope);
 

@@ -46,7 +46,7 @@ export const mappingTree = [
         children: 1,
         expanded: false,
         name: null,
-        parent: 'root',
+        parent: null,
     },
     {
         id: '4c59d19f-e569-576b-a67f-e2d2094b19f5',
@@ -86,7 +86,7 @@ export const mappingTree = [
         children: 0,
         expanded: false,
         name: null,
-        parent: 'root',
+        parent: null,
     },
 ];
 

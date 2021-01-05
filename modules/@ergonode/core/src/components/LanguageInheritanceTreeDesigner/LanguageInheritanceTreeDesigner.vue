@@ -4,27 +4,26 @@
  */
 <template>
     <TreeDesigner
-        :items="tree"
+        :single-root="true"
+        :items="languagesTree"
         :columns="columns"
         :row-height="rowHeight"
         :disabled="!isAllowedToUpdate"
-        @remove-items="onRemoveItems"
-        @add-item="onAddItem"
         @input="onValueChange">
         <template #itemDescription="{ item, childrenLength }">
             <DesignerItemDescription
                 :title="item.name || `#${item.code}`"
-                :subtitle="childrenLength ? `Subcategories: ${childrenLength}` : ''" />
+                :subtitle="childrenLength ? `Inherited languages: ${childrenLength}` : ''" />
         </template>
     </TreeDesigner>
 </template>
 
 <script>
-import PRIVILEGES from '@Trees/config/privileges';
+import PRIVILEGES from '@Core/config/privileges';
 import {
     COLUMNS,
     ROW_HEIGHT,
-} from '@Trees/defaults/designer';
+} from '@Core/defaults/languagesDesigner';
 import DesignerItemDescription from '@UI/components/Designer/DesignerItemDescription';
 import TreeDesigner from '@UI/components/TreeDesigner/TreeDesigner';
 import {
@@ -33,7 +32,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'CategoryTreeDesigner',
+    name: 'LanguageInheritanceTreeDesigner',
     components: {
         TreeDesigner,
         DesignerItemDescription,
@@ -53,11 +52,8 @@ export default {
         },
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
-        ...mapState('categoryTree', [
-            'tree',
+        ...mapState('core', [
+            'languagesTree',
         ]),
         columns() {
             return COLUMNS;
@@ -67,12 +63,12 @@ export default {
         },
         isAllowedToUpdate() {
             return this.$hasAccess([
-                PRIVILEGES.CATEGORY_TREE.update,
+                PRIVILEGES.SETTINGS.update,
             ]);
         },
     },
     methods: {
-        ...mapActions('categoryTree', [
+        ...mapActions('core', [
             '__setState',
         ]),
         ...mapActions('feedback', [
@@ -92,26 +88,19 @@ export default {
 
             this.onScopeValueChange({
                 scope: this.scope,
-                fieldKey: 'categoryTreeDesigner',
-                value: this.tree,
-            });
-        },
-        onAddItem(item) {
-            this.setDisabledElement({
-                languageCode: this.languageCode,
-                elementId: item.id,
-                disabled: true,
+                fieldKey: 'languagesInheritanceTreeDesigner',
+                value: this.languagesTree,
             });
         },
         onValueChange(value) {
             this.__setState({
-                key: 'tree',
+                key: 'languagesTree',
                 value,
             });
 
             this.onScopeValueChange({
                 scope: this.scope,
-                fieldKey: 'categoryTreeDesigner',
+                fieldKey: 'languagesInheritanceTreeDesigner',
                 value,
             });
         },

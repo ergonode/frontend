@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export function getParsedTree(treeArray) {
-    const newTree = [];
+    const parsedTree = [];
 
     for (let i = 0; i < treeArray.length; i += 1) {
         const {
@@ -22,11 +22,13 @@ export function getParsedTree(treeArray) {
                 }
             }
         };
-        if (parent === 'root') {
-            newTree.push(childrenElement);
+
+        if (parent === null) {
+            parsedTree.push(childrenElement);
         } else {
-            setChild(newTree);
+            setChild(parsedTree);
         }
     }
-    return newTree;
+
+    return parsedTree;
 }

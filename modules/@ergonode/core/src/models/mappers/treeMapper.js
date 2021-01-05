@@ -29,7 +29,7 @@ export function getFlattenedTreeData({
     };
     flatStructure([
         treeData,
-    ], 'root', 0);
+    ], null, 0);
 
     return flattenedCollection;
 }

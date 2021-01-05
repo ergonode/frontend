@@ -147,13 +147,25 @@ export default {
             };
         };
 
+        const inheritedLanguages = getFlattenedTreeData({
+            treeData,
+            mappedId: 'language_id',
+            reducer,
+        });
+
+        commit('__SET_STATE', {
+            key: 'inheritedLanguages',
+            value: inheritedLanguages,
+        });
+
         commit('__SET_STATE', {
             key: 'languagesTree',
-            value: getFlattenedTreeData({
-                treeData,
-                mappedId: 'language_id',
-                reducer,
-            }),
+            value: inheritedLanguages.map((item, i) => ({
+                ...item,
+                row: i,
+                column: item.level,
+                expanded: false,
+            })),
         });
     },
     setDefaultLanguage({
@@ -163,7 +175,7 @@ export default {
             const {
                 languagePrivileges,
             } = rootState.authentication.user;
-            const defaultLanguage = state.languagesTree
+            const defaultLanguage = state.inheritedLanguages
                 .find(({
                     code,
                 }) => languagePrivileges[code].read === true);

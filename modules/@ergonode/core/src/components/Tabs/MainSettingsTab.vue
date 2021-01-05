@@ -47,7 +47,7 @@ export default {
     },
     computed: {
         ...mapState('core', [
-            'languagesTree',
+            'inheritedLanguages',
             'languages',
         ]),
     },
@@ -70,7 +70,7 @@ export default {
                 return;
             }
 
-            const isUsedOnTree = this.languagesTree.find(
+            const isUsedOnTree = this.inheritedLanguages.find(
                 ({
                     id,
                 }) => selectedLanguages.indexOf(id) === -1,

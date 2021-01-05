@@ -126,7 +126,6 @@ export default {
         },
     },
     beforeDestroy() {
-        this.__clearGridDesignerStorage();
         this.__clearConditionStorage();
     },
     methods: {
@@ -134,9 +133,6 @@ export default {
             'createConditionSet',
             'updateConditionSet',
         ]),
-        ...mapActions('gridDesigner', {
-            __clearGridDesignerStorage: '__clearStorage',
-        }),
         ...mapActions('statusTransition', [
             '__setState',
             'updateStatusTransition',
