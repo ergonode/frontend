@@ -5,25 +5,26 @@
 <template>
     <div
         :style="styles"
-        class="designer-ghost-item">
-        <IconAddFilter :fill-color="whiteColor" />
-        ADD ITEM
+        class="designer-placeholder-item">
+        <IconDragDrop />
+        Drag & drop the item here
     </div>
 </template>
+
 <script>
 import {
     WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import IconAddFilter from '@UI/components/Icons/Actions/IconAddFilter';
+import IconDragDrop from '@UI/components/Icons/Actions/IconDragDrop';
 import {
     GRID_GAP,
     ROW_HEIGHT,
 } from '@UI/defaults/designer';
 
 export default {
-    name: 'TemplateGridGhostItem',
+    name: 'DesignerPlaceholderItem',
     components: {
-        IconAddFilter,
+        IconDragDrop,
     },
     props: {
         row: {
@@ -59,7 +60,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .designer-ghost-item {
+    .designer-placeholder-item {
         z-index: $Z_INDEX_LVL_1;
         display: grid;
         grid-auto-flow: column;
@@ -67,10 +68,10 @@ export default {
         grid-column-gap: 8px;
         align-items: center;
         box-sizing: border-box;
-        background-color: $GREEN;
+        background-color: $GREY_LIGHT;
         box-shadow: $ELEVATOR_HOLE;
-        color: $WHITE;
-        font: $FONT_BOLD_12_16;
+        color: $GRAPHITE_DARK;
+        font: $FONT_MEDIUM_12_16;
         text-transform: uppercase;
         padding-left: 12px;
     }

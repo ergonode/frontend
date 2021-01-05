@@ -24,11 +24,16 @@
                 @shift-items="onShiftItems"
                 @expand-item="onExpandItem"
                 @drop-item="onDropItem">
+                <DesignerPlaceholderItem
+                    v-if="localItems.length === 0"
+                    :gap="gridGap"
+                    :row-height="rowHeight" />
                 <DesignerGhostItem
                     v-if="ghostIndex !== -1"
                     :row="ghostIndex.row"
                     :column="ghostIndex.column"
-                    :gap="gridGap" />
+                    :gap="gridGap"
+                    :row-height="rowHeight" />
                 <template v-for="item in itemsWithoutGhost">
                     <slot
                         name="item"
@@ -79,6 +84,7 @@ import {
 } from '@Core/models/arrayWrapper';
 import Designer from '@UI/components/Designer/Designer';
 import DesignerGhostItem from '@UI/components/Designer/DesignerGhostItem';
+import DesignerPlaceholderItem from '@UI/components/Designer/DesignerPlaceholderItem';
 import TreeDesignerConnectionLine from '@UI/components/TreeDesigner/TreeDesignerConnectionLine';
 import TreeDesignerDraggableLayer from '@UI/components/TreeDesigner/TreeDesignerDraggableLayer';
 import TreeDesignerItem from '@UI/components/TreeDesigner/TreeDesignerItem';
@@ -94,6 +100,7 @@ import {
 export default {
     name: 'TreeDesigner',
     components: {
+        DesignerPlaceholderItem,
         Designer,
         TreeDesignerDraggableLayer,
         DesignerGhostItem,
@@ -239,14 +246,7 @@ export default {
             this.onValueChange();
         },
         onRemoveItem(index) {
-            const item = this.localItems[index];
-
             this.localItems.splice(index, 1);
-
-            this.$emit('remove-items', [
-                item.id,
-            ]);
-            this.onValueChange();
         },
         onRemoveItems({
             id,

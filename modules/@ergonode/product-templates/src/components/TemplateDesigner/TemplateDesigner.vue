@@ -15,7 +15,7 @@
         </template>
         <template #body="{ rows, layerStyle }">
             <DesignerDraggableLayer :style="layerStyle">
-                <TemplateGridPlaceholderItem v-if="!layoutElements.length" />
+                <DesignerPlaceholderItem v-if="!layoutElements.length" />
                 <LayoutElement
                     v-for="(element, index) in layoutElements"
                     :key="`${element.row}/${element.column}`"
@@ -80,7 +80,7 @@ import {
 import {
     isObject,
 } from '@Core/models/objectWrapper';
-import TemplateGridPlaceholderItem from '@Templates/components/TemplateDesigner/Base/TemplateGridPlaceholderItem';
+import DesignerPlaceholderItem from '@UI/components/Designer/DesignerPlaceholderItem';
 import AttributeElementContent from '@Templates/components/TemplateDesigner/ProductDesigner/AttributeElementContent';
 import LayoutElement from '@Templates/components/TemplateDesigner/ProductDesigner/LayoutElement';
 import SectionElementContent from '@Templates/components/TemplateDesigner/ProductDesigner/SectionElementContent';
@@ -103,7 +103,7 @@ export default {
         DesignerDraggableLayer,
         TemplateDesignerBackgroundItem,
         LayoutElement,
-        TemplateGridPlaceholderItem,
+        DesignerPlaceholderItem,
         AttributeElementContent,
         SectionElementContent,
     },

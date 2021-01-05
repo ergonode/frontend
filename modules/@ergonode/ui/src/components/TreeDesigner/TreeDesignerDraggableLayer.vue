@@ -199,6 +199,10 @@ export default {
             if (isDroppedToTrash) {
                 this.$emit('remove-items', this.draggedElement);
             } else if (this.isOutOfBounds(event)) {
+                this.$emit('shift-items', {
+                    since: this.draggedElIndex - 1,
+                    value: 1,
+                });
                 this.$emit('insert-item', {
                     index: this.draggedElIndex,
                     item: this.draggedElement,
