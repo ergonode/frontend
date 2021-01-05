@@ -65,7 +65,7 @@ export default {
     }) {
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Statuses/store/productStatus/action/getProductStatus/__before', {
+            await this.$getExtendMethod('@Statuses/store/productStatus/action/getProductStatus/__before', {
                 $this: this,
                 data: {
                     id,
@@ -106,7 +106,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Statuses/store/productStatus/action/getProductStatus/__after', {
+            await this.$getExtendMethod('@Statuses/store/productStatus/action/getProductStatus/__after', {
                 $this: this,
                 data,
             });
@@ -178,7 +178,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Statuses/store/productStatus/action/updateProductStatus/__before', {
+            const extendedData = await this.$getExtendMethod('@Statuses/store/productStatus/action/updateProductStatus/__before', {
                 $this: this,
                 data: {
                     id,
@@ -211,7 +211,7 @@ export default {
             await Promise.all(requests);
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Statuses/store/productStatus/action/updateProductStatus/__after', {
+            await this.$getExtendMethod('@Statuses/store/productStatus/action/updateProductStatus/__after', {
                 $this: this,
                 data,
             });
@@ -255,7 +255,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Statuses/store/productStatus/action/createProductStatus/__before', {
+            const extendedData = await this.$getExtendMethod('@Statuses/store/productStatus/action/createProductStatus/__before', {
                 $this: this,
                 data,
             });
@@ -275,7 +275,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Statuses/store/productStatus/action/createProductStatus/__after', {
+            await this.$getExtendMethod('@Statuses/store/productStatus/action/createProductStatus/__after', {
                 $this: this,
                 data: {
                     id,
@@ -312,7 +312,7 @@ export default {
                 id,
             } = state;
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Statuses/store/productStatus/action/removeProductStatus/__before', {
+            await this.$getExtendMethod('@Statuses/store/productStatus/action/removeProductStatus/__before', {
                 $this: this,
                 data: {
                     id,
@@ -326,7 +326,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Statuses/store/productStatus/action/removeProductStatus/__after', {
+            await this.$getExtendMethod('@Statuses/store/productStatus/action/removeProductStatus/__after', {
                 $this: this,
             });
             // EXTENDED AFTER METHOD

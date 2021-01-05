@@ -60,7 +60,7 @@ export default {
         },
     },
     async mounted() {
-        const extendVerticalTabs = await this.$extendMethods('@Products/components/Tabs/ProductCatalogTab/verticalTabs', {
+        const extendVerticalTabs = await this.$getExtendMethod('@Products/components/Tabs/ProductCatalogTab/verticalTabs', {
             $this: this,
         });
 

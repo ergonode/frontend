@@ -9,7 +9,7 @@ import {
     PRODUCT_TYPE,
 } from '@Products/defaults';
 
-import extendTabs from './extendTabs';
+import extendRoutesChildren from './extendRoutesChildren';
 import {
     Store,
 } from './imports';
@@ -32,7 +32,7 @@ export default {
     extendStore: {
         product: Store.Product,
     },
-    extendTabs,
+    extendRoutesChildren,
     extendMethods: {
         '@Core/pages/tabs': ({
             $this, type = null, tabs,

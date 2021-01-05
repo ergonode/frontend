@@ -84,7 +84,7 @@ export default {
             };
         },
         extendedComponents() {
-            return this.$getExtendedComponents(COMPONENTS.NAVIGATION_BAR);
+            return this.$getExtendSlot(COMPONENTS.NAVIGATION_BAR);
         },
     },
     watch: {

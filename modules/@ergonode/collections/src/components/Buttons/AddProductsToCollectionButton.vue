@@ -58,7 +58,7 @@ export default {
             return options;
         },
         extendedComponents() {
-            return this.$getExtendedComponents('@Collections/components/Tabs/CollectionProductsTab/addProductFrom');
+            return this.$getExtendSlot('@Collections/components/Tabs/CollectionProductsTab/addProductFrom');
         },
         modalComponent() {
             let extendedOptions = [];

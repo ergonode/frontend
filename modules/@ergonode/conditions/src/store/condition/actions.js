@@ -151,7 +151,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Conditions/store/condition/action/createConditionSet/__before', {
+            const extendedData = await this.$getExtendMethod('@Conditions/store/condition/action/createConditionSet/__before', {
                 $this: this,
                 data,
             });
@@ -176,7 +176,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Conditions/store/condition/action/createConditionSet/__after', {
+            await this.$getExtendMethod('@Conditions/store/condition/action/createConditionSet/__after', {
                 $this: this,
                 data: {
                     id,
@@ -220,7 +220,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Conditions/store/condition/action/updateConditionSet/__before', {
+            const extendedData = await this.$getExtendMethod('@Conditions/store/condition/action/updateConditionSet/__before', {
                 $this: this,
                 data: {
                     id,
@@ -242,7 +242,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Conditions/store/condition/action/updateConditionSet/__after', {
+            await this.$getExtendMethod('@Conditions/store/condition/action/updateConditionSet/__after', {
                 $this: this,
                 data,
             });

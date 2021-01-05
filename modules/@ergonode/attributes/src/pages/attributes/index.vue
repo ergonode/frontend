@@ -54,10 +54,10 @@ export default {
     ],
     computed: {
         extendedMainAction() {
-            return this.$getExtendedComponents('@Attributes/pages/attributes/mainAction');
+            return this.$getExtendSlot('@Attributes/pages/attributes/mainAction');
         },
         extendedModals() {
-            return this.$getExtendedComponents('@Attributes/pages/attributes/injectModal');
+            return this.$getExtendSlot('@Attributes/pages/attributes/injectModal');
         },
         isReadOnly() {
             return this.$isReadOnly(

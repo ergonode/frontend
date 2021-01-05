@@ -36,7 +36,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Trees/store/categoryTree/action/createCategoryTree/__before', {
+            const extendedData = await this.$getExtendMethod('@Trees/store/categoryTree/action/createCategoryTree/__before', {
                 $this: this,
                 data,
             });
@@ -56,7 +56,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Trees/store/categoryTree/action/createCategoryTree/__after', {
+            await this.$getExtendMethod('@Trees/store/categoryTree/action/createCategoryTree/__after', {
                 $this: this,
                 data: {
                     id,
@@ -95,7 +95,7 @@ export default {
     ) {
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Trees/store/categoryTree/action/getCategoryTree/__before', {
+            await this.$getExtendMethod('@Trees/store/categoryTree/action/getCategoryTree/__before', {
                 $this: this,
                 data: {
                     id,
@@ -160,7 +160,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Trees/store/categoryTree/action/getCategoryTree/__after', {
+            await this.$getExtendMethod('@Trees/store/categoryTree/action/getCategoryTree/__after', {
                 $this: this,
                 data: categoryTreeData,
             });
@@ -200,7 +200,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Trees/store/categoryTree/action/updateCategoryTree/__before', {
+            const extendedData = await this.$getExtendMethod('@Trees/store/categoryTree/action/updateCategoryTree/__before', {
                 $this: this,
                 data: {
                     id,
@@ -223,7 +223,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Trees/store/categoryTree/action/updateCategoryTree/__after', {
+            await this.$getExtendMethod('@Trees/store/categoryTree/action/updateCategoryTree/__after', {
                 $this: this,
                 data,
             });
@@ -258,7 +258,7 @@ export default {
             } = state;
 
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Trees/store/categoryTree/action/removeCategoryTree/__before', {
+            await this.$getExtendMethod('@Trees/store/categoryTree/action/removeCategoryTree/__before', {
                 $this: this,
             });
             // EXTENDED BEFORE METHOD
@@ -268,7 +268,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Trees/store/categoryTree/action/removeCategoryTree/__after', {
+            await this.$getExtendMethod('@Trees/store/categoryTree/action/removeCategoryTree/__after', {
                 $this: this,
             });
             // EXTENDED AFTER METHOD

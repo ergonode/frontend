@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 
-import extendTabs from './extendTabs';
+import extendRoutesChildren from './extendRoutesChildren';
 
 export default {
-    extendTabs,
+    extendRoutesChildren,
 };
