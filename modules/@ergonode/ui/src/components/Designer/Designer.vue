@@ -55,6 +55,7 @@ import DesignerFooter from '@UI/components/Designer/DesignerFooter';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import ResizeObserver from '@UI/components/Observers/ResizeObserver';
 import {
+    COLUMNS,
     ROW_HEIGHT,
 } from '@UI/defaults/designer';
 
@@ -75,7 +76,7 @@ export default {
          */
         columns: {
             type: Number,
-            default: 0,
+            default: COLUMNS,
         },
         /**
          * The last added item row

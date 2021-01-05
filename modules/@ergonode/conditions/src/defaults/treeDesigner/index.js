@@ -4,6 +4,7 @@
  */
 export const ROW_HEIGHT = 140;
 export const COLUMNS = 1;
+export const GRID_GAP = 16;
 export const TYPES = {
     TEXT: 'TEXT',
     UNIT: 'UNIT',

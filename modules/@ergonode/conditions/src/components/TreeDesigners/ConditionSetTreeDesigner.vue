@@ -7,7 +7,7 @@
         :items="tree"
         :columns="columns"
         :row-height="rowHeight"
-        :grid-gap="16"
+        :grid-gap="gridGap"
         :disabled="disabled"
         @add-item="onAddItem"
         @remove-items="onRemoveConditions"
@@ -39,9 +39,9 @@
 import ConditionSetTreeDesignerItem from '@Conditions/components/TreeDesigners/ConditionSetTreeDesignerItem';
 import {
     COLUMNS,
-    CONTEXT_NAME,
+    GRID_GAP,
     ROW_HEIGHT,
-} from '@Conditions/defaults/conditionsDesigner';
+} from '@Conditions/defaults/treeDesigner';
 import TreeDesigner from '@UI/components/TreeDesigner/TreeDesigner';
 import {
     mapActions,
@@ -99,14 +99,14 @@ export default {
             'tree',
             'conditions',
         ]),
-        contextName() {
-            return CONTEXT_NAME;
-        },
         columns() {
             return COLUMNS;
         },
         rowHeight() {
             return ROW_HEIGHT;
+        },
+        gridGap() {
+            return GRID_GAP;
         },
         conditionErrors() {
             return this.errors.conditions || {};

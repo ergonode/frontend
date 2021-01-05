@@ -18,7 +18,7 @@
 <script>
 import {
     TYPES,
-} from '@Conditions/defaults/conditionsDesigner';
+} from '@Conditions/defaults/treeDesigner';
 import {
     SIZE,
 } from '@Core/defaults/theme';

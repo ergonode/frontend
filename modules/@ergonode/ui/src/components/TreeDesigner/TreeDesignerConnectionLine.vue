@@ -12,6 +12,7 @@
 import {
     getParent,
 } from '@UI/models/treeDesigner';
+import {GRID_GAP, ROW_HEIGHT} from "@UI/defaults/designer";
 
 export default {
     name: 'TreeDesignerConnectionLine',
@@ -26,11 +27,11 @@ export default {
         },
         rowHeight: {
             type: Number,
-            default: 0,
+            default: ROW_HEIGHT,
         },
         gap: {
             type: Number,
-            default: 8,
+            default: GRID_GAP,
         },
         items: {
             type: Array,

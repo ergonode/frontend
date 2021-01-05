@@ -83,6 +83,11 @@ import TreeDesignerConnectionLine from '@UI/components/TreeDesigner/TreeDesigner
 import TreeDesignerDraggableLayer from '@UI/components/TreeDesigner/TreeDesignerDraggableLayer';
 import TreeDesignerItem from '@UI/components/TreeDesigner/TreeDesignerItem';
 import {
+    COLUMNS,
+    GRID_GAP,
+    ROW_HEIGHT,
+} from '@UI/defaults/designer';
+import {
     mapState,
 } from 'vuex';
 
@@ -115,7 +120,7 @@ export default {
          */
         gridGap: {
             type: Number,
-            default: 8,
+            default: GRID_GAP,
         },
         constantRoot: {
             type: Boolean,
@@ -126,14 +131,14 @@ export default {
          */
         columns: {
             type: Number,
-            required: true,
+            default: COLUMNS,
         },
         /**
          * Determines the row height
          */
         rowHeight: {
             type: Number,
-            required: true,
+            default: ROW_HEIGHT,
         },
     },
     data() {
