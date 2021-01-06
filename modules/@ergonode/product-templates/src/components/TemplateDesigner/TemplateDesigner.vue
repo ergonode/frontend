@@ -52,25 +52,16 @@
                     </template>
                 </LayoutElement>
             </DesignerDraggableLayer>
+            <SectionTemplateModalForm
+                v-if="isSectionAdded"
+                :index="sectionIndex"
+                :scope="scope"
+                :errors="errors"
+                :change-values="changeValues"
+                :position="sectionPosition"
+                :element="sectionElement"
+                @close="onCloseSectionModal" />
         </template>
-        <!--                <TreeDesignerDraggableLayer-->
-        <!--                    :style="gridStyles"-->
-        <!--                    :rows-number="lastItemRow"-->
-        <!--                    :columns-number="columns"-->
-        <!--                    :highlighted-positions="highlightedPositions"-->
-        <!--                    @drop="updateLayoutElement">-->
-        <!--                    <template #elements>-->
-        <!--                    </template>-->
-        <!--                </TreeDesignerDraggableLayer>-->
-        <!--                <SectionTemplateModalForm-->
-        <!--                    v-if="isSectionAdded"-->
-        <!--                    :index="sectionIndex"-->
-        <!--                    :scope="scope"-->
-        <!--                    :errors="errors"-->
-        <!--                    :change-values="changeValues"-->
-        <!--                    :position="sectionPosition"-->
-        <!--                    :element="sectionElement"-->
-        <!--                    @close="onCloseSectionModal" />-->
     </Designer>
 </template>
 
@@ -119,6 +110,21 @@ export default {
         DesignerPlaceholderItem,
         AttributeElementContent,
         SectionElementContent,
+        SectionTemplateModalForm: () => import('@Templates/components/Modals/SectionTemplateModalForm'),
+    },
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     data() {
         return {

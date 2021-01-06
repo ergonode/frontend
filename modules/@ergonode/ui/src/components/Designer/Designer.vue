@@ -151,6 +151,8 @@ export default {
             requestAnimationFrame(() => {
                 this.$refs.footer.$el.scrollIntoView(true);
             });
+
+            this.$emit('rows', this.rows);
         },
         setRows(rows) {
             this.rows = Math.max(this.lastItemRow, rows) + this.additionalRows;

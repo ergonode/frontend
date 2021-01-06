@@ -19,7 +19,10 @@
             </VerticalTabBar>
         </template>
         <template #grid>
-            <TemplateDesigner />
+            <TemplateDesigner
+                :scope="scope"
+                :errors="errors"
+                :changed-values="changeValues" />
             <Button
                 :title="$t('core.buttons.submit')"
                 :floating="{ bottom: '24px', right: '24px' }"
@@ -36,37 +39,18 @@
 
 <script>
 import {
-    SYSTEM_TYPES,
-} from '@Attributes/defaults/attributes';
-import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
-import {
-    getMaxValueObject,
-} from '@Core/models/arrayWrapper';
-import {
-    isObject,
-} from '@Core/models/objectWrapper';
-// import TreeDesignerDraggableLayer from '@Templates/components/Template/Base/TreeDesignerDraggableLayer';
-import DesignerPlaceholderItem from '@UI/components/Designer/DesignerPlaceholderItem';
-import AttributeElementContent from '@Templates/components/TemplateDesigner/ProductDesigner/AttributeElementContent';
-import LayoutElement from '@Templates/components/TemplateDesigner/ProductDesigner/LayoutElement';
-import SectionElementContent from '@Templates/components/TemplateDesigner/ProductDesigner/SectionElementContent';
 import TemplateDesigner from '@Templates/components/TemplateDesigner/TemplateDesigner';
 import PRIVILEGES from '@Templates/config/privileges';
-import {
-    getHighlightingLayoutDropPositions,
-} from '@Templates/models/layout/LayoutCalculations';
 import {
     GRAPHITE_LIGHT,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Button from '@UI/components/Button/Button';
-import Designer from '@UI/components/Designer/Designer';
-import DesignerBackgroundLayer from '@UI/components/Designer/DesignerBackgroundLayer';
 import DropZone from '@UI/components/DropZone/DropZone';
 import IconRemoveFilter from '@UI/components/Icons/Actions/IconRemoveFilter';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
@@ -87,34 +71,18 @@ export default {
         DropZone,
         FadeTransition,
         GridViewTemplate,
-        // TreeDesignerDraggableLayer,
-        // DesignerPlaceholderItem,
-        // LayoutElement,
         IconRemoveFilter,
         VerticalTabBar,
-        // AttributeElementContent,
-        // SectionElementContent,
-        // SectionTemplateModalForm: () => import('@Templates/components/Modals/SectionTemplateModalForm'),
     },
     mixins: [
         tabFeedbackMixin,
     ],
     data() {
         return {
-            highlightedPositions: [],
             isSubmitting: false,
-            isSectionAdded: false,
-            sectionPosition: null,
-            sectionIndex: null,
-            sectionElement: null,
-            columns: 4,
-            maxRow: 0,
         };
     },
     computed: {
-        ...mapState('productTemplate', [
-            'title',
-        ]),
         ...mapState('draggable', [
             'isElementDragging',
         ]),
