@@ -107,10 +107,8 @@ export default {
         border-left: $BORDER_DASHED_GREY;
 
         &--highlighted {
-            flex: 1;
             background-color: $GREEN_LIGHT;
-            border-top-color: $GREEN;
-            border-left-color: $GREEN;
+            border-color: $GREEN;
         }
 
         &--top-border {
