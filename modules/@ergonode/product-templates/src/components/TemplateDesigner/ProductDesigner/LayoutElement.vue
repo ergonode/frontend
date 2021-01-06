@@ -79,11 +79,11 @@ export default {
             type: Object,
             required: true,
         },
-        columnsNumber: {
+        layoutWidth: {
             type: Number,
             required: true,
         },
-        rowsNumber: {
+        layoutHeight: {
             type: Number,
             required: true,
         },
@@ -175,8 +175,8 @@ export default {
             this.highlightingPositions = getHighlightingLayoutDropPositions({
                 draggedElWidth: width,
                 draggedElHeight: height,
-                layoutWidth: this.columnsNumber,
-                layoutHeight: this.rowsNumber,
+                layoutWidth: this.layoutWidth,
+                layoutHeight: this.layoutHeight,
                 layoutElements: this.layoutElements.filter(el => el.id !== id),
             });
 
@@ -240,10 +240,10 @@ export default {
 
             this.$emit('highlighted-position-change', this.highlightingPositions);
         },
-        onResize(event) {
-            const {
-                pageX, pageY,
-            } = event;
+        onResize({
+            pageX,
+            pageY,
+        }) {
             const width = this.getElementWidthBasedOnMouseXPosition(pageX);
             const height = this.getElementHeightBasedOnMouseYPosition(pageY);
 
@@ -306,11 +306,18 @@ export default {
                 column,
             } = this.element;
             const columnBellowMouse = getColumnBasedOnWidth(width, this.minWidth, column);
+
+            if (columnBellowMouse > this.layoutWidth - 1) {
+                return;
+            }
+
             const maxColumn = getMaxColumnForGivenRow(
                 this.actualElementRow,
                 this.highlightingPositions,
+                this.layoutWidth,
             );
-            const elWidth = 1 + maxColumn - column;
+            const elWidth = maxColumn - column;
+
             this.maxWidth = this.getElementMaxWidth(elWidth);
 
             if (width <= this.maxWidth && width >= this.minWidth) {
@@ -321,7 +328,9 @@ export default {
                     const ghostElementWidth = this.minWidth * this.newWidth
                         + gapsValue;
 
-                    updateResizablePlaceholderWidth(ghostElementWidth);
+                    requestAnimationFrame(() => {
+                        updateResizablePlaceholderWidth(ghostElementWidth);
+                    });
                 }
 
                 requestAnimationFrame(() => {
@@ -336,11 +345,18 @@ export default {
                 row,
             } = this.element;
             const rowBellowMouse = getRowBasedOnHeight(height, this.minHeight, row);
+
+            if (rowBellowMouse > this.layoutHeight - 1) {
+                return;
+            }
+
             const maxRow = getMaxRowForGivenColumn(
                 this.actualElementColumn,
                 this.highlightingPositions,
+                this.layoutHeight,
             );
             const elHeight = 1 + maxRow - row;
+
             this.maxHeight = this.getElementMaxHeight(elHeight);
 
             if (height <= this.maxHeight && height >= this.minHeight) {
@@ -359,14 +375,14 @@ export default {
                 });
 
                 this.actualElementRow = rowBellowMouse;
-                this.$emit('resizing-el-max-row', this.newHeight + row);
             }
         },
         blockOtherInteractionsOnResizeEvent() {
             this.isDraggingEnabled = false;
         },
         initMousePosition({
-            pageX, pageY,
+            pageX,
+            pageY,
         }) {
             this.startX = pageX;
             this.startY = pageY;

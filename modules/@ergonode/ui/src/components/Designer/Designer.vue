@@ -154,6 +154,8 @@ export default {
         },
         setRows(rows) {
             this.rows = Math.max(this.lastItemRow, rows) + this.additionalRows;
+
+            this.$emit('rows', this.rows);
         },
     },
 };

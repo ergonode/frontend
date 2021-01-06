@@ -160,15 +160,16 @@ test('Getting max column (limited by obstacles - first obstacle met at column br
     ];
 
     const highlightingPositions = getHighlightingPositions(elementPosition, layoutElements);
+    const layoutWidth = 4;
 
-    expect(getMaxColumnForGivenRow(3, highlightingPositions)).toEqual(2);
-    expect(getMaxColumnForGivenRow(5, highlightingPositions)).toEqual(4);
-    expect(getMaxColumnForGivenRow(0, highlightingPositions)).toEqual(2);
-    expect(getMaxColumnForGivenRow(10, highlightingPositions)).toEqual(2);
-    expect(getMaxColumnForGivenRow(-1, highlightingPositions)).toEqual(2);
-    expect(getMaxColumnForGivenRow(null, highlightingPositions)).toEqual(2);
-    expect(getMaxColumnForGivenRow(undefined, highlightingPositions)).toEqual(2);
-    expect(getMaxColumnForGivenRow(10, [])).toEqual(0);
+    expect(getMaxColumnForGivenRow(3, highlightingPositions, layoutWidth)).toEqual(2);
+    expect(getMaxColumnForGivenRow(5, highlightingPositions, layoutWidth)).toEqual(4);
+    expect(getMaxColumnForGivenRow(0, highlightingPositions, layoutWidth)).toEqual(2);
+    expect(getMaxColumnForGivenRow(10, highlightingPositions, layoutWidth)).toEqual(2);
+    expect(getMaxColumnForGivenRow(-1, highlightingPositions, layoutWidth)).toEqual(2);
+    expect(getMaxColumnForGivenRow(null, highlightingPositions, layoutWidth)).toEqual(2);
+    expect(getMaxColumnForGivenRow(undefined, highlightingPositions, layoutWidth)).toEqual(2);
+    expect(getMaxColumnForGivenRow(10, [], layoutWidth)).toEqual(0);
 });
 
 test('Getting max row (limited by obstacles - first obstacle met at row breaks iteration) for given column', () => {
@@ -206,15 +207,16 @@ test('Getting max row (limited by obstacles - first obstacle met at row breaks i
     ];
 
     const highlightingPositions = getHighlightingPositions(elementPosition, layoutElements);
+    const layoutHeight = 10;
 
-    expect(getMaxRowForGivenColumn(3, highlightingPositions)).toEqual(7);
-    expect(getMaxRowForGivenColumn(5, highlightingPositions)).toEqual(5);
-    expect(getMaxRowForGivenColumn(0, highlightingPositions)).toEqual(5);
-    expect(getMaxRowForGivenColumn(10, highlightingPositions)).toEqual(5);
-    expect(getMaxRowForGivenColumn(-1, highlightingPositions)).toEqual(5);
-    expect(getMaxRowForGivenColumn(null, highlightingPositions)).toEqual(5);
-    expect(getMaxRowForGivenColumn(undefined, highlightingPositions)).toEqual(5);
-    expect(getMaxRowForGivenColumn(10, [])).toEqual(0);
+    expect(getMaxRowForGivenColumn(3, highlightingPositions, layoutHeight)).toEqual(7);
+    expect(getMaxRowForGivenColumn(5, highlightingPositions, layoutHeight)).toEqual(5);
+    expect(getMaxRowForGivenColumn(0, highlightingPositions, layoutHeight)).toEqual(5);
+    expect(getMaxRowForGivenColumn(10, highlightingPositions, layoutHeight)).toEqual(5);
+    expect(getMaxRowForGivenColumn(-1, highlightingPositions, layoutHeight)).toEqual(5);
+    expect(getMaxRowForGivenColumn(null, highlightingPositions, layoutHeight)).toEqual(5);
+    expect(getMaxRowForGivenColumn(undefined, highlightingPositions, layoutHeight)).toEqual(5);
+    expect(getMaxRowForGivenColumn(10, [], layoutHeight)).toEqual(0);
 });
 
 test('Getting normalized column', () => {

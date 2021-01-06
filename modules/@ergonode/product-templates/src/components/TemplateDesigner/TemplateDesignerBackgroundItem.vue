@@ -5,29 +5,20 @@
 <template>
     <div
         :class="classes"
-        @dragenter="onDragEnter"
-        @dragleave="onDragLeave"
-        @dragover="onDragOver"
-        @drop="onDrop">
-        <TemplateGridGhostItem
-            v-if="isGhostElement"
-            :style="ghostItemBoundsStyle" />
-    </div>
+        :row="row"
+        :column="column" />
 </template>
 <script>
 import {
     isObject,
 } from '@Core/models/objectWrapper';
-import TemplateGridGhostItem from '@Templates/components/TemplateDesigner/Base/TemplateGridGhostItem';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
 export default {
     name: 'TemplateDesignerBackgroundItem',
-    components: {
-        TemplateGridGhostItem,
-    },
     props: {
         highlightingPositions: {
             type: Array,
@@ -41,11 +32,6 @@ export default {
             type: Number,
             default: 0,
         },
-    },
-    data() {
-        return {
-            isGhostElement: false,
-        };
     },
     computed: {
         ...mapState('draggable', [
@@ -102,34 +88,9 @@ export default {
         },
     },
     methods: {
-        onDrop(event) {
-            event.preventDefault();
-
-            if (this.isGhostElement) {
-                this.isGhostElement = false;
-                this.$emit('drop', {
-                    draggableId: event.dataTransfer.getData('text/plain'),
-                    position: {
-                        row: this.row,
-                        column: this.column,
-                    },
-                });
-            }
-        },
-        onDragOver(event) {
-            event.preventDefault();
-        },
-        onDragEnter() {
-            console.log('entered');
-            if (this.highlightedElement && !this.highlightedElement.isObstacle) {
-                this.isGhostElement = true;
-            }
-        },
-        onDragLeave() {
-            if (this.highlightedElement && !this.highlightedElement.isObstacle) {
-                this.isGhostElement = false;
-            }
-        },
+        ...mapActions('draggable', [
+            '__setState',
+        ]),
         isEqualToPosition(position) {
             return this.row === position.row && this.column === position.column;
         },

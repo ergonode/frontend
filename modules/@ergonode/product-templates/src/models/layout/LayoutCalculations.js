@@ -149,8 +149,6 @@ export function getHighlightingLayoutDropPositions({
             const xRange = x - 1 + draggedElWidth;
             const yRange = y - 1 + draggedElHeight;
 
-            console.log('xRange:', xRange, 'yRange', yRange);
-
             const isOutOfBounds = (xRange > layoutWidth || yRange > layoutHeight);
 
             if (!isOutOfBounds
@@ -228,28 +226,28 @@ export function getHighlightingPositions({
 
 // Based on current highlighted area - points;
 // Returning max column for given row.
-export function getMaxColumnForGivenRow(row, highlightingPositions) {
+export function getMaxColumnForGivenRow(row, highlightingPositions, layoutWidth) {
     if (highlightingPositions.length > 0) {
-        return highlightingPositions.reduce((max, bounds) => {
+        return Math.min(highlightingPositions.reduce((max, bounds) => {
             if (bounds.row === row) {
                 return bounds.column;
             }
             return max;
-        }, highlightingPositions[0].column);
+        }, highlightingPositions[0].column), layoutWidth);
     }
     return 0;
 }
 
 // Based on current highlighted area - points;
 // Returning max row for given column.
-export function getMaxRowForGivenColumn(column, highlightingPositions) {
+export function getMaxRowForGivenColumn(column, highlightingPositions, layoutHeight) {
     if (highlightingPositions.length > 0) {
-        return highlightingPositions.reduce((max, bounds) => {
+        return Math.min(highlightingPositions.reduce((max, bounds) => {
             if (bounds.column === column) {
                 return bounds.row;
             }
             return max;
-        }, highlightingPositions[0].row);
+        }, highlightingPositions[0].row), layoutHeight);
     }
     return 0;
 }

@@ -42,13 +42,21 @@ export default {
             type: Number,
             default: ROW_HEIGHT,
         },
+        width: {
+            type: Number,
+            default: 2,
+        },
+        height: {
+            type: Number,
+            default: 1,
+        },
     },
     computed: {
         styles() {
             return {
-                gridArea: `${this.row + 1} / ${this.column + 1} / ${this.row + 2} / ${this.column + 3}`,
+                gridArea: `${this.row + 1} / ${this.column + 1} / ${this.row + 1 + this.height} / ${this.column + 1 + this.width}`,
                 margin: `${this.gap}px`,
-                height: `${this.rowHeight - (2 * this.gap)}px`,
+                height: `${this.rowHeight * this.height - (2 * this.gap)}px`,
             };
         },
         whiteColor() {

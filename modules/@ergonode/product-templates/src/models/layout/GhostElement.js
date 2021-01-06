@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-const draggableLayerElementSelector = '.template-grid-draggable-layer';
+const draggableLayerElementSelector = '.designer-draggable-layer';
 const ghostElementSelector = '.ghost-element';
 const getDraggableLayerElement = () => document.documentElement.querySelector(
     draggableLayerElementSelector,

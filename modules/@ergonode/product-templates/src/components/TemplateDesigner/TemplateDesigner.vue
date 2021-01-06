@@ -5,7 +5,8 @@
 <template>
     <Designer
         :columns="columns"
-        :last-item-row="lastItemRow">
+        :last-item-row="lastItemRow"
+        @rows="onRowsChange">
         <template #backgroundItem="{ row, column }">
             <TemplateDesignerBackgroundItem
                 :key="`${column} | ${row}`"
@@ -13,29 +14,32 @@
                 :column="column"
                 :row="row" />
         </template>
-        <template #prependBody="{ rows, layerStyle }">
-            <DesignerDraggableLayer :style="layerStyle">
+        <template #appendBody="{ rows, layerStyle }">
+            <DesignerDraggableLayer
+                ref="designerDraggableLayer"
+                :style="layerStyle"
+                @dragover.native="onDragOver"
+                @dragleave.native="onDragLeave"
+                @drop.native="onDrop">
                 <DesignerPlaceholderItem
-                    v-if="!layoutElements.length"
+                    v-if="!layoutElements.length && !highlightedPositions.length"
                     :width="1" />
-
+                <DesignerGhostItem
+                    v-if="ghostIndex !== -1"
+                    v-bind="{ ...ghostItemBounds }" />
                 <LayoutElement
                     v-for="(element, index) in layoutElements"
                     :key="`${element.row}/${element.column}`"
                     :index="index"
                     :element="element"
-                    :columns-number="columns"
-                    :rows-number="rows"
+                    :layout-width="columns"
+                    :layout-height="rows"
                     :disabled="!isAllowedToUpdate"
                     @highlighted-position-change="onHighlightedPositionsChange"
-                    @resizing-el-max-row="onResizingElMaxRow"
                     @remove="onRemoveLayoutElement">
                     <template #content>
                         <AttributeElementContent
                             v-if="element.type !== sectionType"
-                            :scope="scope"
-                            :errors="errors"
-                            :change-values="changeValues"
                             :element="element"
                             :disabled="!isAllowedToUpdate"
                             :index="index" />
@@ -96,6 +100,10 @@ import DesignerDraggableLayer from '@UI/components/Designer/DesignerDraggableLay
 import DesignerGhostItem from '@UI/components/Designer/DesignerGhostItem';
 import DesignerPlaceholderItem from '@UI/components/Designer/DesignerPlaceholderItem';
 import {
+    getPositionForBrowser,
+    isMouseOutOfBoundsElement,
+} from '@UI/models/dragAndDrop/helpers';
+import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -114,6 +122,7 @@ export default {
     },
     data() {
         return {
+            rowsCount: 0,
             highlightedPositions: [],
             isSectionAdded: false,
             sectionPosition: null,
@@ -128,6 +137,7 @@ export default {
         ]),
         ...mapState('draggable', [
             'draggedElement',
+            'ghostIndex',
             'isElementDragging',
         ]),
         lastItemRow() {
@@ -147,6 +157,27 @@ export default {
         sectionType() {
             return SYSTEM_TYPES.SECTION;
         },
+        ghostItemBounds() {
+            const {
+                row,
+                column,
+            } = this.ghostIndex;
+
+            let width = 1;
+            let height = 1;
+
+            if (isObject(this.draggedElement)) {
+                width = this.draggedElement.width;
+                height = this.draggedElement.height;
+            }
+
+            return {
+                row,
+                column,
+                width,
+                height,
+            };
+        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.TEMPLATE_DESIGNER.update,
@@ -164,7 +195,7 @@ export default {
                     draggedElWidth: 1,
                     draggedElHeight: 1,
                     layoutWidth: this.columns,
-                    layoutHeight: this.lastItemRow,
+                    layoutHeight: this.rowsCount,
                     layoutElements: this.layoutElements,
                 });
 
@@ -177,6 +208,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions('draggable', [
+            '__setState',
+        ]),
         ...mapActions('productTemplate', [
             'addListElementToLayout',
             'updateLayoutElementAtIndex',
@@ -185,16 +219,56 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
-        onResizingElMaxRow(row) {
-            if (row > this.maxRow) {
-                this.maxRow = row;
-            }
+        onDragOver(event) {
+            event.preventDefault();
 
-            this.onScopeValueChange({
-                scope: this.scope,
-                fieldKey: 'templateDesigner',
-                value: true,
-            });
+            const backgroundItem = this.getBackgroundItem(event);
+
+            if (backgroundItem) {
+                const {
+                    row,
+                    column,
+                } = backgroundItem;
+
+                if (this.ghostIndex === -1
+                    || (row !== this.ghostIndex.row || column !== this.ghostIndex.column)) {
+                    this.__setState({
+                        key: 'ghostIndex',
+                        value: {
+                            row,
+                            column,
+                        },
+                    });
+                }
+            }
+        },
+        onDragLeave(event) {
+            if (this.isOutOfBounds(event) && this.ghostIndex !== -1) {
+                this.__setState({
+                    key: 'ghostIndex',
+                    value: -1,
+                });
+            }
+        },
+        onDrop(event) {
+            event.preventDefault();
+
+            if (this.ghostIndex !== -1) {
+                this.updateLayoutElement({
+                    draggableId: event.dataTransfer.getData('text/plain'),
+                    position: {
+                        ...this.ghostIndex,
+                    },
+                });
+
+                this.__setState({
+                    key: 'ghostIndex',
+                    value: -1,
+                });
+            }
+        },
+        onRowsChange(rows) {
+            this.rowsCount = rows;
         },
         onHighlightedPositionsChange(positions) {
             this.highlightedPositions = positions;
@@ -252,6 +326,31 @@ export default {
                 fieldKey: 'templateDesigner',
                 value: true,
             });
+        },
+        getBackgroundItem({
+            pageX,
+            pageY,
+        }) {
+            const elements = document.elementsFromPoint(pageX, pageY);
+            const backgroundItem = elements.find(element => element.classList.contains('template-designer-background-item--highlighted'));
+
+            if (backgroundItem) {
+                return {
+                    element: backgroundItem,
+                    row: +backgroundItem.getAttribute('row'),
+                    column: +backgroundItem.getAttribute('column'),
+                };
+            }
+
+            return null;
+        },
+        isOutOfBounds(event) {
+            const {
+                xPos,
+                yPos,
+            } = getPositionForBrowser(event);
+
+            return isMouseOutOfBoundsElement(this.$refs.designerDraggableLayer.$el, xPos, yPos);
         },
     },
 };
