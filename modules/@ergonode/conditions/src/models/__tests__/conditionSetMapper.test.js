@@ -2,48 +2,109 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-// eslint-disable-next-line jest/no-mocks-import
-// import { conditionsTree, conditionValues, mappedData } from './__mocks__/conditions.mock';
-// import { getParsedConditions, getMappedTree } from '../conditionSetMapper';
+import {
+    getMappedInitialConditionsValues,
+    getMappedInitialTypeConditionsValues,
+    getMappedTree,
+    getParsedConditions,
+} from '../conditionSetMapper';
+import {
+    CONDITION_TYPES,
+    conditions,
+    conditionSets,
+    conditionSetsTree,
+    conditionsValues,
+    initialParsedConditions,
+    parsedConditions,
+    tree,
+} from './__mocks__/conditions.mock';
 
-describe('conditionSetMapper/getParsedConditions', () => {
-    it('Tree mapping with valid input data', () => {
-        // FIXME
-        // const result = getParsedConditions(conditionsTree, conditionValues);
-        // expect(result).toStrictEqual(mappedData);
-    });
+expect.extend({
+    toContainObject(received, argument) {
+        const pass = this.equals(received,
+            expect.arrayContaining([
+                expect.objectContaining(argument),
+            ]));
 
-    it('Tree mapping with empty values data', () => {
-        // FIXME
-        // const expected = [
-        //     { type: 'NUMERIC_ATTRIBUTE_VALUE_CONDITION' },
-        //     { type: 'ATTRIBUTE_EXISTS_CONDITION' },
-        // ];
-        // const result = getParsedConditions(conditionsTree, []);
-        // expect(result).toStrictEqual(expected);
-    });
-
-    it('Tree mapping without input data', () => {
-        // FIXME
-        // const result = getParsedConditions([], []);
-        // expect(result).toStrictEqual([]);
-    });
+        if (pass) {
+            return {
+                message: () => (`expected ${this.utils.printReceived(received)} not to contain object ${this.utils.printExpected(argument)}`),
+                pass: true,
+            };
+        }
+        return {
+            message: () => (`expected ${this.utils.printReceived(received)} to contain object ${this.utils.printExpected(argument)}`),
+            pass: false,
+        };
+    },
 });
 
 describe('conditionSetMapper/getMappedTree', () => {
-    it('Tree parsing with input data', () => {
-        // FIXME
-        // const result = getMappedTree(mappedData);
-        // expect(result.conditionsTree.length).toStrictEqual(mappedData.length);
-        // expect(Object.keys(result.conditionsData).length).toStrictEqual(mappedData.length);
+    it('Based on API data, map condition sets to tree data structure', () => {
+        const result = getMappedTree({
+            conditions: conditionSets,
+        }).map(({
+            row,
+            column,
+            parent,
+        }) => ({
+            row,
+            column,
+            parent,
+        }));
+
+        expect(result).toStrictEqual(conditionSetsTree);
     });
-    it('Tree parsing without data', () => {
-        // FIXME
-        // const expected = {
-        //     conditionsTree: [],
-        //     conditionsData: {},
-        // };
-        // const result = getMappedTree([]);
-        // expect(result).toStrictEqual(expected);
+});
+
+describe('conditionSetMapper/getParsedConditions', () => {
+    it('Based on tree data, parse tree to condition sets data structure', () => {
+        const result = getParsedConditions({
+            values: conditionsValues,
+            conditions,
+            tree,
+        });
+
+        parsedConditions.forEach((parsedCondition) => {
+            expect(result).toContainObject(parsedCondition);
+        });
+    });
+});
+
+describe('conditionSetMapper/getMappedInitialTypeConditionsValues', () => {
+    it('Based on condition sets API data, map conditions type values', () => {
+        let results = {};
+
+        Object.keys(CONDITION_TYPES).forEach((key) => {
+            const result = getMappedInitialTypeConditionsValues({
+                tree,
+                type: key,
+                parameters: conditions[key].parameters,
+                values: initialParsedConditions,
+            });
+
+            results = {
+                ...results,
+                ...result,
+            };
+        });
+
+        Object.keys(results).forEach((key) => {
+            expect(results[key]).toStrictEqual(conditionsValues[key]);
+        });
+    });
+});
+
+describe('conditionSetMapper/getMappedInitialConditionsValues', () => {
+    it('Based on condition sets API data, map conditions initial values', () => {
+        const result = getMappedInitialConditionsValues({
+            tree,
+            conditions: parsedConditions,
+        });
+
+        Object.keys(result).forEach((key) => {
+            console.log(result[key], initialParsedConditions[key]);
+            expect(result[key]).toStrictEqual(initialParsedConditions[key]);
+        });
     });
 });

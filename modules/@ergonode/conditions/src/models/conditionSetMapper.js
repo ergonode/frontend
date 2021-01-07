@@ -19,11 +19,9 @@ export function getParsedConditions({
             type,
         } = node;
 
-        if (typeof parsedConditions[id] === 'undefined') {
-            parsedConditions[id] = {
-                type,
-            };
-        }
+        parsedConditions[id] = {
+            type,
+        };
 
         const condition = conditions[type];
 
@@ -33,10 +31,10 @@ export function getParsedConditions({
             if (values[id]) {
                 value = values[id][parameter.name];
 
-                if (typeof values[id][parameter.name] === 'object') {
-                    value = values[id][parameter.name].id;
-                } else if (Array.isArray(values[id][parameter.name])) {
-                    value = values[id][parameter.name].map(conditionValue => conditionValue.id);
+                if (Array.isArray(value)) {
+                    value = value.map(conditionValue => conditionValue.id);
+                } else if (typeof value === 'object') {
+                    value = value.id;
                 }
             }
 
@@ -50,9 +48,9 @@ export function getParsedConditions({
     ], []);
 }
 
-export function getMappedCondition({
+export function getMappedInitialTypeConditionValues({
     parameters,
-    node,
+    value,
 }) {
     const mappedCondition = {};
 
@@ -64,31 +62,25 @@ export function getMappedCondition({
             complexOptions,
         } = parameters[i];
 
-        if (node[name]) {
-            mappedCondition[name] = node[name];
+        if (value[name]) {
+            mappedCondition[name] = value[name];
 
-            if (options || complexOptions) {
-                const value = complexOptions && affectedBy
-                    ? complexOptions[node[affectedBy]][node[name]]
-                    : options[node[name]];
-
+            if (Array.isArray(value[name])) {
+                mappedCondition[name] = value[name].map(option => ({
+                    id: option,
+                    key: option,
+                    value: complexOptions && affectedBy
+                        ? complexOptions[value[affectedBy]][option]
+                        : options[option],
+                }));
+            } else if (options || complexOptions) {
                 mappedCondition[name] = {
-                    id: node[name],
-                    key: node[name],
-                    value,
+                    id: value[name],
+                    key: value[name],
+                    value: complexOptions && affectedBy
+                        ? complexOptions[value[affectedBy]][value[name]]
+                        : options[value[name]],
                 };
-            } else if (Array.isArray(node[name])) {
-                mappedCondition[name] = node[name].map((option) => {
-                    const value = complexOptions && affectedBy
-                        ? complexOptions[node[affectedBy]][option]
-                        : options[option];
-
-                    return {
-                        id: option,
-                        key: option,
-                        value,
-                    };
-                });
             }
         }
     }
@@ -96,24 +88,61 @@ export function getMappedCondition({
     return mappedCondition;
 }
 
-export function getMappedTree(conditions) {
+export function getMappedInitialTypeConditionsValues({
+    tree,
+    type,
+    parameters,
+    values,
+}) {
+    const mappedConditions = {};
+
+    tree.forEach((node) => {
+        if (values[node.id] && values[node.id].__initial && node.type === type) {
+            mappedConditions[node.id] = getMappedInitialTypeConditionValues({
+                parameters,
+                value: values[node.id],
+            });
+        }
+    });
+
+    return mappedConditions;
+}
+
+export function getMappedTree({
+    conditions,
+}) {
     const mappedTree = [];
-    const values = {};
 
     for (let i = 0; i < conditions.length; i += 1) {
         const id = getUUID();
 
-        values[id] = {};
         mappedTree.push({
-            ...conditions[i],
             id,
+            type: conditions[i].type,
             row: i,
             column: 0,
             parent: null,
         });
     }
-    return {
-        tree: mappedTree,
-        values,
-    };
+
+    return mappedTree;
+}
+
+export function getMappedInitialConditionsValues({
+    tree,
+    conditions,
+}) {
+    const conditionsValues = {};
+
+    for (let i = 0; i < tree.length; i += 1) {
+        const condition = conditions[i];
+        const node = tree[i];
+
+        conditionsValues[node.id] = {
+            ...condition,
+            __initial: true,
+        };
+    }
+
+    return conditionsValues;
 }

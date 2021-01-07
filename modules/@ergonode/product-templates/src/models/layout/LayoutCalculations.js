@@ -126,8 +126,6 @@ export function getHighlightingLayoutDropPositions({
     layoutHeight,
     layoutElements,
 }) {
-    console.log('Layout size: ', '[', layoutWidth, layoutHeight, ']');
-
     const {
         length,
     } = layoutElements;

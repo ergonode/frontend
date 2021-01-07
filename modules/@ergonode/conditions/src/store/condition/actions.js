@@ -3,7 +3,8 @@
  * See LICENSE for license details.
  */
 import {
-    getMappedCondition,
+    getMappedInitialConditionsValues,
+    getMappedInitialTypeConditionsValues,
     getMappedTree,
     getParsedConditions,
 } from '@Conditions/models/conditionSetMapper';
@@ -64,20 +65,12 @@ export default {
                 id,
             });
 
-            const conditionsValues = {};
-
-            state.tree.forEach((node) => {
-                if (state.conditionsValues[node.id]
-                    && !Object.keys(state.conditionsValues[node.id]).length
-                    && node.type === id) {
-                    conditionsValues[node.id] = getMappedCondition({
-                        parameters: configuration.parameters,
-                        node,
-                    });
-                }
-            });
-
-            commit(types.SET_CONDITIONS_VALUES, conditionsValues);
+            commit(types.SET_CONDITIONS_VALUES, getMappedInitialTypeConditionsValues({
+                tree: state.tree,
+                type: id,
+                parameters: configuration.parameters,
+                values: state.conditionsValues,
+            }));
             commit(types.SET_CONDITIONS, {
                 key: id,
                 value: configuration,
@@ -98,32 +91,51 @@ export default {
         },
         {
             id,
+            scope,
+            onSuccess = () => {},
+            onError = () => {},
         },
     ) {
-        const {
-            conditions = [],
-        } = await getSets({
-            $axios: this.app.$axios,
-            id,
-        });
+        try {
+            const {
+                conditions = [],
+            } = await getSets({
+                $axios: this.app.$axios,
+                id,
+            });
 
-        const {
-            tree,
-            values,
-        } = getMappedTree(conditions);
+            const tree = getMappedTree({
+                conditions,
+            });
+            const conditionsValues = getMappedInitialConditionsValues({
+                tree,
+                conditions,
+            });
 
-        commit('__SET_STATE', {
-            key: 'id',
-            value: id,
-        });
-        commit('__SET_STATE', {
-            key: 'conditionsValues',
-            value: values,
-        });
-        commit('__SET_STATE', {
-            key: 'tree',
-            value: tree,
-        });
+            commit('__SET_STATE', {
+                key: 'id',
+                value: id,
+            });
+            commit('__SET_STATE', {
+                key: 'conditionsValues',
+                value: conditionsValues,
+            });
+            commit('__SET_STATE', {
+                key: 'tree',
+                value: tree,
+            });
+
+            onSuccess();
+        } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
+            onError({
+                errors: e.data.errors,
+                scope,
+            });
+        }
     },
     async createConditionSet(
         {
@@ -187,7 +199,10 @@ export default {
 
             onSuccess(id);
         } catch (e) {
-            console.log(e);
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,
@@ -250,6 +265,10 @@ export default {
 
             onSuccess(id);
         } catch (e) {
+            if (this.app.$axios.isCancel(e)) {
+                return;
+            }
+
             onError({
                 errors: e.data.errors,
                 scope,

@@ -204,8 +204,6 @@ export default {
                     layoutHeight: this.rowsCount,
                     layoutElements: this.layoutElements,
                 });
-
-                console.log(this.highlightedPositions);
             } else {
                 this.highlightedPositions = [];
             }
