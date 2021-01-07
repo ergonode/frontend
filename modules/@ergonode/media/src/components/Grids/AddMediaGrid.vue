@@ -53,6 +53,9 @@ import {
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
+    getParsedFilters,
+} from '@Core/models/mappers/gridDataMapper';
+import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
 import PRIVILEGES from '@Media/config/privileges';
@@ -208,7 +211,7 @@ export default {
         onFilterChange(filters) {
             this.filterValues = filters;
             this.pagination.page = 1;
-            this.localParams.filter = filters;
+            this.localParams.filter = getParsedFilters(filters);
             this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
             this.onFetchData();
@@ -216,7 +219,7 @@ export default {
         onRemoveAllFilters() {
             this.filterValues = {};
             this.pagination.page = 1;
-            this.localParams.filter = {};
+            this.localParams.filter = '';
             this.localParams.offset = 0;
 
             this.onFetchData();
@@ -226,34 +229,22 @@ export default {
 
             this.onFetchData();
         },
-        async onFetchData({
-            offset,
-            limit,
-            filter,
-            sortOrder,
-        } = this.localParams) {
-            const filtersWithType = {
-                ...filter,
-            };
-
-            if (typeof filter.type === 'undefined') {
-                filtersWithType.type = {
-                    [FILTER_OPERATOR.EQUAL]: this.type,
-                };
-            }
-
-            this.localParams = {
+        async onFetchData() {
+            const {
                 offset,
                 limit,
-                filter: filtersWithType,
+                filter,
                 sortOrder,
-            };
+            } = this.localParams;
 
             const params = {
                 offset,
                 limit,
                 extended: true,
-                filter: this.localParams.filter,
+                filter: [
+                    filter,
+                    `type=${FILTER_OPERATOR.EQUAL}${this.type}`,
+                ].join(';'),
             };
 
             if (Object.keys(sortOrder).length) {
@@ -284,7 +275,8 @@ export default {
             this.rows = rows;
             this.filtered = filtered;
         },
-        onFetchDataError() {
+        onFetchDataError(e) {
+            console.log(e);
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
                 message: 'Grid data haven’t been fetched properly',
