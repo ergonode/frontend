@@ -51,9 +51,6 @@ import {
     getParsedTree,
 } from '@Core/models/mappers/languageTreeMapper';
 import {
-    isEmpty,
-} from '@Core/models/objectWrapper';
-import {
     GRAPHITE_LIGHT,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Button from '@UI/components/Button/Button';

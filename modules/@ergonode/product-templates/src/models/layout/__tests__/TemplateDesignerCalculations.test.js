@@ -5,7 +5,6 @@
 import {
     getColumnBasedOnWidth,
     getHighlightingPositions,
-    // getHighlightingLayoutDropPositions,
     getMaxColumnForGivenRow,
     getMaxRowForGivenColumn,
     getObstaclePositionsForElement,
