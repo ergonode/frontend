@@ -41,7 +41,7 @@ import {
     getMaxColumnForGivenRow,
     getMaxRowForGivenColumn,
     getRowBasedOnHeight,
-} from '@Templates/models/layout/LayoutCalculations';
+} from '@Templates/models/layout/TemplateDesignerCalculations';
 import {
     GREEN,
 } from '@UI/assets/scss/_js-variables/colors.scss';

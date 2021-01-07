@@ -10,7 +10,7 @@ import {
     getMaxRowForGivenColumn,
     getObstaclePositionsForElement,
     getRowBasedOnHeight,
-} from '../LayoutCalculations';
+} from '../TemplateDesignerCalculations';
 
 test('Element has correct number of obstacle points', () => {
     const elementBounds = {

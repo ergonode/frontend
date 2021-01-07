@@ -85,11 +85,14 @@ import TemplateDesignerBackgroundItem from '@Templates/components/TemplateDesign
 import PRIVILEGES from '@Templates/config/privileges';
 import {
     getHighlightingLayoutDropPositions,
-} from '@Templates/models/layout/LayoutCalculations';
+} from '@Templates/models/layout/TemplateDesignerCalculations';
 import Designer from '@UI/components/Designer/Designer';
 import DesignerDraggableLayer from '@UI/components/Designer/DesignerDraggableLayer';
 import DesignerGhostItem from '@UI/components/Designer/DesignerGhostItem';
 import DesignerPlaceholderItem from '@UI/components/Designer/DesignerPlaceholderItem';
+import {
+    getBackgroundItem,
+} from '@UI/models/designer/intex';
 import {
     getPositionForBrowser,
     isMouseOutOfBoundsElement,
@@ -226,7 +229,11 @@ export default {
         onDragOver(event) {
             event.preventDefault();
 
-            const backgroundItem = this.getBackgroundItem(event);
+            const backgroundItem = getBackgroundItem({
+                pageX: event.pageX,
+                pageY: event.pageY,
+                itemClass: 'template-designer-background-item--highlighted',
+            });
 
             if (backgroundItem) {
                 const {
@@ -341,23 +348,6 @@ export default {
                 fieldKey: 'templateDesigner',
                 value: true,
             });
-        },
-        getBackgroundItem({
-            pageX,
-            pageY,
-        }) {
-            const elements = document.elementsFromPoint(pageX, pageY);
-            const backgroundItem = elements.find(element => element.classList.contains('template-designer-background-item--highlighted'));
-
-            if (backgroundItem) {
-                return {
-                    element: backgroundItem,
-                    row: +backgroundItem.getAttribute('row'),
-                    column: +backgroundItem.getAttribute('column'),
-                };
-            }
-
-            return null;
         },
         isOutOfBounds(event) {
             const {

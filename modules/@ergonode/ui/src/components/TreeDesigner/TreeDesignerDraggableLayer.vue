@@ -24,6 +24,9 @@ import {
 } from '@Core/models/layout/ElementCopy';
 import DesignerDraggableLayer from '@UI/components/Designer/DesignerDraggableLayer';
 import {
+    getBackgroundItem,
+} from '@UI/models/designer/intex';
+import {
     getDraggedRowPositionState,
     getPositionForBrowser,
     isMouseInsideElement,
@@ -94,7 +97,10 @@ export default {
                 return;
             }
 
-            const backgroundItem = this.getBackgroundItem(event);
+            const backgroundItem = getBackgroundItem({
+                pageX: event.pageX,
+                pageY: event.pageY,
+            });
 
             if (backgroundItem) {
                 const {
@@ -247,7 +253,10 @@ export default {
         onDragOver(event) {
             event.preventDefault();
 
-            const backgroundItem = this.getBackgroundItem(event);
+            const backgroundItem = getBackgroundItem({
+                pageX: event.pageX,
+                pageY: event.pageY,
+            });
 
             if (!backgroundItem
                 || (this.singleRoot && this.items.length > 0
@@ -466,23 +475,6 @@ export default {
             return row + 1 < this.items.length
                 ? this.items[row + 1]
                 : this.items[0];
-        },
-        getBackgroundItem({
-            pageX,
-            pageY,
-        }) {
-            const elements = document.elementsFromPoint(pageX, pageY);
-            const backgroundItem = elements.find(element => element.classList.contains('designer-background-item'));
-
-            if (backgroundItem) {
-                return {
-                    element: backgroundItem,
-                    row: +backgroundItem.getAttribute('row'),
-                    column: +backgroundItem.getAttribute('column'),
-                };
-            }
-
-            return null;
         },
         isOutOfBounds(event) {
             const {
