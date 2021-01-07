@@ -44,7 +44,12 @@ const positionsSetToArray = (set) => {
     return array;
 };
 const addObstaclesToHighlightingPositions = ({
-    positions, obstacles, draggedElWidth, draggedElHeight, layoutWidth, layoutHeight,
+    positions,
+    obstacles,
+    draggedElWidth,
+    draggedElHeight,
+    layoutWidth,
+    layoutHeight,
 }) => {
     const {
         length: obstaclesLength,
@@ -144,8 +149,8 @@ export function getHighlightingLayoutDropPositions({
 
     for (let x = 0; x < layoutWidth; x += 1) {
         for (let y = 0; y < layoutHeight; y += 1) {
-            const xRange = x - 1 + draggedElWidth;
-            const yRange = y - 1 + draggedElHeight;
+            const xRange = Math.min(x - 1 + draggedElWidth, layoutWidth);
+            const yRange = Math.min(y - 1 + draggedElHeight, layoutHeight);
 
             const isOutOfBounds = (xRange > layoutWidth || yRange > layoutHeight);
 
