@@ -210,10 +210,12 @@ export default {
             this.$emit('highlighted-position-change', []);
         },
         onInitResize(event) {
-            this.highlightingPositions = getHighlightingPositions(
-                this.element,
-                this.layoutElements,
-            );
+            this.highlightingPositions = getHighlightingPositions({
+                elementBounds: this.element,
+                elements: this.layoutElements,
+                layoutWidth: this.layoutWidth,
+                layoutHeight: this.layoutHeight,
+            });
 
             this.blockOtherInteractionsOnResizeEvent();
             this.initActualElementNormalizedBoundary();
@@ -289,18 +291,6 @@ export default {
             } = this.element;
             return (this.startHeight - (this.elementsGap * (height - 1))) / height;
         },
-        getElementMaxWidth(maxWidth) {
-            const {
-                column,
-            } = this.element;
-            const columnsNumberToFill = maxWidth - (column - 1);
-            const elementGapsNumber = columnsNumberToFill - 1;
-
-            return (this.minWidth * columnsNumberToFill) + (elementGapsNumber * this.elementsGap);
-        },
-        getElementMaxHeight(maxHeight) {
-            return (this.minHeight * maxHeight) + ((maxHeight - 1) * this.elementsGap);
-        },
         updateElementWidth(width) {
             const {
                 column,
@@ -316,11 +306,8 @@ export default {
                 this.highlightingPositions,
                 this.layoutWidth,
             );
-            const elWidth = maxColumn - column;
 
-            this.maxWidth = this.getElementMaxWidth(elWidth);
-
-            if (width <= this.maxWidth && width >= this.minWidth) {
+            if (columnBellowMouse <= maxColumn) {
                 this.newWidth = columnBellowMouse - column + 1;
 
                 if (columnBellowMouse !== this.actualElementColumn) {
@@ -328,9 +315,9 @@ export default {
                     const ghostElementWidth = this.minWidth * this.newWidth
                         + gapsValue;
 
-                    requestAnimationFrame(() => {
-                        updateResizablePlaceholderWidth(ghostElementWidth);
-                    });
+                    console.log(this.newWidth, gapsValue);
+
+                    updateResizablePlaceholderWidth(ghostElementWidth);
                 }
 
                 requestAnimationFrame(() => {
@@ -355,11 +342,8 @@ export default {
                 this.highlightingPositions,
                 this.layoutHeight,
             );
-            const elHeight = 1 + maxRow - row;
 
-            this.maxHeight = this.getElementMaxHeight(elHeight);
-
-            if (height <= this.maxHeight && height >= this.minHeight) {
+            if (rowBellowMouse <= maxRow) {
                 this.newHeight = rowBellowMouse - row + 1;
 
                 if (rowBellowMouse !== this.actualElementRow) {

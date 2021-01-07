@@ -177,17 +177,22 @@ export function getHighlightingLayoutDropPositions({
 // and we want to expand it to 3x3 as it's his max width,
 // height we need to get all of the elements within 3x3 area
 export function getHighlightingPositions({
-    row,
-    column,
-    maxWidth,
-    maxHeight,
-}, layoutElements) {
+    elementBounds: {
+        row,
+        column,
+        maxWidth,
+        maxHeight,
+    },
+    elements,
+    layoutWidth,
+    layoutHeight,
+}) {
     const highlightingPositions = [];
-    const maxColumn = column + maxWidth;
+    const maxColumn = Math.min(column + maxWidth, layoutWidth);
     const layoutObstaclePositions = [];
-    let maxRowForGivenColumn = row + maxHeight;
+    let maxRowForGivenColumn = Math.min(row + maxHeight, layoutHeight);
 
-    layoutElements.forEach((element) => {
+    elements.forEach((element) => {
         if (!(element.row === row && element.column === column)) {
             const elementObstaclePositions = getObstaclePositionsForElement(element);
             elementObstaclePositions.forEach((point) => {

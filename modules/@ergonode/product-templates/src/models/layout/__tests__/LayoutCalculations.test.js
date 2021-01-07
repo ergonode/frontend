@@ -56,14 +56,14 @@ test('Element has correct values of obstacle points', () => {
 });
 
 test('Based on theme elements getting number of elements to highlight', () => {
-    const elementPosition = {
+    const elementBounds = {
         row: 5,
         column: 2,
         maxWidth: 4,
         maxHeight: 4,
     };
 
-    let layoutElements = [
+    let elements = [
         {
             row: 5,
             column: 2,
@@ -72,12 +72,20 @@ test('Based on theme elements getting number of elements to highlight', () => {
         },
     ];
 
-    let highlightingPositions = getHighlightingPositions(elementPosition, layoutElements);
+    const layoutWidth = 4;
+    const layoutHeight = 10;
+
+    let highlightingPositions = getHighlightingPositions({
+        elementBounds,
+        elements,
+        layoutWidth,
+        layoutHeight,
+    });
 
     expect(highlightingPositions.length)
-        .toEqual(elementPosition.maxWidth * elementPosition.maxHeight);
+        .toEqual(elementBounds.maxWidth * elementBounds.maxHeight);
 
-    layoutElements = [
+    elements = [
         {
             row: 5,
             column: 2,
@@ -104,35 +112,50 @@ test('Based on theme elements getting number of elements to highlight', () => {
         },
     ];
 
-    highlightingPositions = getHighlightingPositions(elementPosition, layoutElements);
+    highlightingPositions = getHighlightingPositions({
+        elementBounds,
+        elements,
+        layoutWidth,
+        layoutHeight,
+    });
 
     expect(highlightingPositions.length).toEqual(9);
 
-    layoutElements.push({
+    elements.push({
         row: 6,
         column: 3,
         width: 1,
         height: 1,
     });
 
-    highlightingPositions = getHighlightingPositions(elementPosition, layoutElements);
+    highlightingPositions = getHighlightingPositions({
+        elementBounds,
+        elements,
+        layoutWidth,
+        layoutHeight,
+    });
 
     expect(highlightingPositions.length).toEqual(5);
 
-    highlightingPositions = getHighlightingPositions(elementPosition, []);
+    highlightingPositions = getHighlightingPositions({
+        elementBounds,
+        elements: [],
+        layoutWidth,
+        layoutHeight,
+    });
 
     expect(highlightingPositions.length)
-        .toEqual(elementPosition.maxWidth * elementPosition.maxHeight);
+        .toEqual(elementBounds.maxWidth * elementBounds.maxHeight);
 });
 
 test('Getting max column (limited by obstacles - first obstacle met at column breaks iteration) for given row', () => {
-    const elementPosition = {
+    const elementBounds = {
         row: 5,
         column: 2,
         maxWidth: 4,
         maxHeight: 4,
     };
-    const layoutElements = [
+    const elements = [
         {
             row: 5,
             column: 2,
@@ -159,8 +182,15 @@ test('Getting max column (limited by obstacles - first obstacle met at column br
         },
     ];
 
-    const highlightingPositions = getHighlightingPositions(elementPosition, layoutElements);
     const layoutWidth = 4;
+    const layoutHeight = 10;
+
+    const highlightingPositions = getHighlightingPositions({
+        elementBounds,
+        elements,
+        layoutWidth,
+        layoutHeight,
+    });
 
     expect(getMaxColumnForGivenRow(3, highlightingPositions, layoutWidth)).toEqual(2);
     expect(getMaxColumnForGivenRow(5, highlightingPositions, layoutWidth)).toEqual(4);
@@ -173,13 +203,13 @@ test('Getting max column (limited by obstacles - first obstacle met at column br
 });
 
 test('Getting max row (limited by obstacles - first obstacle met at row breaks iteration) for given column', () => {
-    const elementPosition = {
+    const elementBounds = {
         row: 5,
         column: 2,
         maxWidth: 4,
         maxHeight: 4,
     };
-    const layoutElements = [
+    const elements = [
         {
             row: 5,
             column: 2,
@@ -206,8 +236,15 @@ test('Getting max row (limited by obstacles - first obstacle met at row breaks i
         },
     ];
 
-    const highlightingPositions = getHighlightingPositions(elementPosition, layoutElements);
     const layoutHeight = 10;
+    const layoutWidth = 4;
+
+    const highlightingPositions = getHighlightingPositions({
+        elementBounds,
+        elements,
+        layoutWidth,
+        layoutHeight,
+    });
 
     expect(getMaxRowForGivenColumn(3, highlightingPositions, layoutHeight)).toEqual(7);
     expect(getMaxRowForGivenColumn(5, highlightingPositions, layoutHeight)).toEqual(5);
@@ -230,52 +267,3 @@ test('Getting normalized row', () => {
 
     expect(normalizedRow).toEqual(3);
 });
-
-// test('Based on non theme elements getting highlighting positions where we can drop element', () => {
-// FIXME
-// it('Zero theme elements', () => {
-//     const layoutElements = [];
-//     const highlightingPositions = getHighlightingLayoutDropPositions({
-//         draggedElWidth: 2,
-//         draggedElHeight: 2,
-//         layoutWidth: 4,
-//         layoutHeight: 5,
-//         layoutElements,
-//     });
-//
-//     expect(highlightingPositions.length).toEqual(20);
-// });
-
-// it('Many theme elements', () => {
-//     const layoutElements = [
-//         {
-//             row: 3,
-//             column: 2,
-//             width: 2,
-//             height: 1,
-//         },
-//         {
-//             row: 3,
-//             column: 4,
-//             width: 1,
-//             height: 3,
-//         },
-//         {
-//             row: 4,
-//             column: 1,
-//             width: 1,
-//             height: 2,
-//         },
-//     ];
-//
-//     const highlightingPositions = getHighlightingLayoutDropPositions({
-//         draggedElWidth: 2,
-//         draggedElHeight: 2,
-//         layoutWidth: 4,
-//         layoutHeight: 5,
-//         layoutElements,
-//     });
-//
-//     expect(highlightingPositions.length).toEqual(12);
-// });
-// });

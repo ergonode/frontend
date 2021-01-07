@@ -236,13 +236,24 @@ export default {
 
                 if (this.ghostIndex === -1
                     || (row !== this.ghostIndex.row || column !== this.ghostIndex.column)) {
-                    this.__setState({
-                        key: 'ghostIndex',
-                        value: {
-                            row,
-                            column,
-                        },
-                    });
+                    const highlightedPosition = this.highlightedPositions.find(
+                        position => position.row === row && position.column === column,
+                    );
+
+                    if (highlightedPosition && highlightedPosition.isObstacle) {
+                        this.__setState({
+                            key: 'ghostIndex',
+                            value: -1,
+                        });
+                    } else {
+                        this.__setState({
+                            key: 'ghostIndex',
+                            value: {
+                                row,
+                                column,
+                            },
+                        });
+                    }
                 }
             }
         },
