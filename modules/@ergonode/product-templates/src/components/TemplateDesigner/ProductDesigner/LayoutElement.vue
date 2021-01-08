@@ -29,6 +29,9 @@ import {
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
 import {
+    GRID_GAP,
+} from '@Templates/defaults/templateDesigner';
+import {
     addResizablePlaceholder,
     removeResizablePlaceholder,
     updateResizablePlaceholderHeight,
@@ -104,7 +107,6 @@ export default {
             actualElementRow: 0,
             actualElementColumn: 0,
             highlightingPositions: [],
-            elementsGap: 16,
             isDragged: false,
         };
     },
@@ -115,6 +117,9 @@ export default {
         ...mapState('draggable', [
             'draggedElement',
         ]),
+        gap() {
+            return GRID_GAP;
+        },
         styles() {
             const {
                 row,
@@ -283,19 +288,19 @@ export default {
             const {
                 width,
             } = this.element;
-            return (this.startWidth - (this.elementsGap * (width - 1))) / width;
+            return (this.startWidth - (this.gap * (width - 1))) / width;
         },
         getElementMinHeight() {
             const {
                 height,
             } = this.element;
-            return (this.startHeight - (this.elementsGap * (height - 1))) / height;
+            return (this.startHeight - (this.gap * (height - 1))) / height;
         },
         updateElementWidth(width) {
             const {
                 column,
             } = this.element;
-            const columnBellowMouse = getColumnBasedOnWidth(width, this.minWidth, column);
+            const columnBellowMouse = getColumnBasedOnWidth(width, this.minWidth, column, this.gap);
 
             if (columnBellowMouse > this.layoutWidth - 1) {
                 return;
@@ -311,7 +316,7 @@ export default {
                 this.newWidth = columnBellowMouse - column + 1;
 
                 if (columnBellowMouse !== this.actualElementColumn) {
-                    const gapsValue = this.elementsGap * (this.newWidth - 1);
+                    const gapsValue = this.gap * (this.newWidth - 1);
                     const ghostElementWidth = this.minWidth * this.newWidth
                         + gapsValue;
 
@@ -331,7 +336,7 @@ export default {
             const {
                 row,
             } = this.element;
-            const rowBellowMouse = getRowBasedOnHeight(height, this.minHeight, row);
+            const rowBellowMouse = getRowBasedOnHeight(height, this.minHeight, row, this.gap);
 
             if (rowBellowMouse > this.layoutHeight - 1) {
                 return;
@@ -347,7 +352,7 @@ export default {
                 this.newHeight = rowBellowMouse - row + 1;
 
                 if (rowBellowMouse !== this.actualElementRow) {
-                    const gapsValue = this.elementsGap * (this.newHeight - 1);
+                    const gapsValue = this.gap * (this.newHeight - 1);
                     const ghostElementHeight = this.minHeight * this.newHeight
                         + gapsValue;
 

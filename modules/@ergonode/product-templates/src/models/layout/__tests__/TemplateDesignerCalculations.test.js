@@ -99,7 +99,7 @@ test('Based on theme elements getting number of elements to highlight', () => {
         },
         {
             row: 4,
-            column: 5,
+            column: 3,
             width: 1,
             height: 5,
         },
@@ -256,13 +256,13 @@ test('Getting max row (limited by obstacles - first obstacle met at row breaks i
 });
 
 test('Getting normalized column', () => {
-    const normalizedColumn = getColumnBasedOnWidth(100, 50, 2);
+    const normalizedColumn = getColumnBasedOnWidth(100, 50, 2, 16);
 
     expect(normalizedColumn).toEqual(3);
 });
 
 test('Getting normalized row', () => {
-    const normalizedRow = getRowBasedOnHeight(100, 50, 2);
+    const normalizedRow = getRowBasedOnHeight(100, 50, 2, 16);
 
     expect(normalizedRow).toEqual(3);
 });

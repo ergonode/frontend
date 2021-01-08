@@ -4,7 +4,6 @@
  */
 
 // Helpers
-const paddingGap = 16;
 const isObstacle = (obstacles, x, y) => obstacles.some(
     obstacle => obstacle.row === y && obstacle.column === x,
 );
@@ -260,10 +259,10 @@ export function getMaxRowForGivenColumn(column, highlightingPositions, layoutHei
     return 0;
 }
 
-export function getColumnBasedOnWidth(width, elementMinWidth, elementColumn) {
-    return Math.floor(width / (elementMinWidth + paddingGap)) + elementColumn;
+export function getColumnBasedOnWidth(width, elementMinWidth, elementColumn, gap) {
+    return Math.floor(width / (elementMinWidth + gap)) + elementColumn;
 }
 
-export function getRowBasedOnHeight(height, elementMinHeight, elementRow) {
-    return Math.floor(height / (elementMinHeight + paddingGap)) + elementRow;
+export function getRowBasedOnHeight(height, elementMinHeight, elementRow, gap) {
+    return Math.floor(height / (elementMinHeight + gap)) + elementRow;
 }

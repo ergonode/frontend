@@ -10,9 +10,6 @@
 </template>
 <script>
 import {
-    isObject,
-} from '@Core/models/objectWrapper';
-import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -63,28 +60,6 @@ export default {
                     row, column,
                 }) => row === this.row && column === this.column + 1,
             );
-        },
-        ghostItemBoundsStyle() {
-            let draggedElementWidth = 1;
-            let draggedElementHeight = 1;
-            if (isObject(this.draggedElement)) {
-                draggedElementWidth = this.draggedElement.width;
-                draggedElementHeight = this.draggedElement.height;
-            }
-            const elementsGap = 16;
-            const {
-                width, height,
-                top,
-                left,
-            } = this.$el.getBoundingClientRect();
-            const normalizedWidth = width * draggedElementWidth - elementsGap;
-            const normalizedHeight = height * draggedElementHeight - elementsGap;
-            return {
-                top: `${top + (elementsGap / 2)}px`,
-                left: `${left + (elementsGap / 2)}px`,
-                width: `${normalizedWidth}px`,
-                height: `${normalizedHeight}px`,
-            };
         },
     },
     methods: {

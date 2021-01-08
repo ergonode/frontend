@@ -84,6 +84,9 @@ import SectionElementContent from '@Templates/components/TemplateDesigner/Produc
 import TemplateDesignerBackgroundItem from '@Templates/components/TemplateDesigner/TemplateDesignerBackgroundItem';
 import PRIVILEGES from '@Templates/config/privileges';
 import {
+    COLUMNS,
+} from '@Templates/defaults/templateDesigner';
+import {
     getHighlightingLayoutDropPositions,
 } from '@Templates/models/layout/TemplateDesignerCalculations';
 import Designer from '@UI/components/Designer/Designer';
@@ -137,7 +140,6 @@ export default {
             sectionPosition: null,
             sectionIndex: null,
             sectionElement: null,
-            columns: 4,
         };
     },
     computed: {
@@ -149,6 +151,9 @@ export default {
             'ghostIndex',
             'isElementDragging',
         ]),
+        columns() {
+            return COLUMNS;
+        },
         lastItemRow() {
             const layoutElement = getMaxValueObject(this.layoutElements, 'row');
 
