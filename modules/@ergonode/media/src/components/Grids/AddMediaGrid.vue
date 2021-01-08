@@ -276,7 +276,6 @@ export default {
             this.filtered = filtered;
         },
         onFetchDataError(e) {
-            console.log(e);
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
                 message: 'Grid data haven’t been fetched properly',
