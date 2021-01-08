@@ -42,6 +42,7 @@ import {
     getHighlightingLayoutDropPositions,
     getHighlightingPositions,
     getMaxColumnForGivenRow,
+    getMaxHeightBasedOnRow,
     getMaxRowForGivenColumn,
     getRowBasedOnHeight,
 } from '@Templates/models/layout/TemplateDesignerCalculations';
@@ -140,7 +141,7 @@ export default {
                 'layout-element',
                 {
                     'layout-element--dragged': this.isDragged,
-                    'layout-element--resized': !this.isDraggingEnabled,
+                    'layout-element--resizing': !this.isDraggingEnabled,
                     'layout-element--disabled': this.disabled,
                 },
             ];
@@ -229,14 +230,14 @@ export default {
             this.initElementBoundary();
             this.initElementStyleForResizeState();
 
-            addResizablePlaceholder({
-                top: this.$el.offsetTop,
-                left: this.$el.offsetLeft,
-                width: this.startWidth,
-                height: this.startHeight,
-                boxShadow: ELEVATOR_HOLE,
-                backgroundColor: GREEN,
-            });
+            // addResizablePlaceholder({
+            //     top: this.$el.offsetTop,
+            //     left: this.$el.offsetLeft,
+            //     width: this.startWidth,
+            //     height: this.startHeight,
+            //     boxShadow: ELEVATOR_HOLE,
+            //     backgroundColor: GREEN,
+            // });
 
             this.minWidth = this.getElementMinWidth();
             this.minHeight = this.getElementMinHeight();
@@ -270,7 +271,7 @@ export default {
             this.resetElementStyleForEndResizeInteraction();
             this.resetDataForEndResizeInteraction();
 
-            removeResizablePlaceholder();
+            // removeResizablePlaceholder();
 
             unregisterResizeEventListeners().then((response) => {
                 response.default(this.onResize, this.onStopResizing);
@@ -316,18 +317,12 @@ export default {
                 this.newWidth = columnBellowMouse - column + 1;
 
                 if (columnBellowMouse !== this.actualElementColumn) {
-                    const gapsValue = this.gap * (this.newWidth - 1);
-                    const ghostElementWidth = this.minWidth * this.newWidth
+                    const gapsValue = (this.gap * (this.newWidth - 1)) * 2;
+                    const fixedWidth = this.minWidth * this.newWidth
                         + gapsValue;
 
-                    console.log(this.newWidth, gapsValue);
-
-                    updateResizablePlaceholderWidth(ghostElementWidth);
+                    this.$el.style.width = `${fixedWidth}px`;
                 }
-
-                requestAnimationFrame(() => {
-                    this.$el.style.width = `${width}px`;
-                });
 
                 this.actualElementColumn = columnBellowMouse;
             }
@@ -352,16 +347,14 @@ export default {
                 this.newHeight = rowBellowMouse - row + 1;
 
                 if (rowBellowMouse !== this.actualElementRow) {
-                    const gapsValue = this.gap * (this.newHeight - 1);
-                    const ghostElementHeight = this.minHeight * this.newHeight
-                        + gapsValue;
+                    const gapsValue = (this.gap * (this.newHeight - 1)) * 2;
+                    const fixedHeight = this.minHeight * this.newHeight + gapsValue;
 
-                    updateResizablePlaceholderHeight(ghostElementHeight);
+                    requestAnimationFrame(() => {
+                        console.log('updating height');
+                        this.$el.style.height = `${fixedHeight}px`;
+                    });
                 }
-
-                requestAnimationFrame(() => {
-                    this.$el.style.height = `${height}px`;
-                });
 
                 this.actualElementRow = rowBellowMouse;
             }
@@ -434,12 +427,19 @@ export default {
         background-color: $WHITESMOKE;
         user-select: none;
         transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+        will-change:
+            border-color,
+            box-shadow,
+            height,
+            width;
         transition-property:
             border-color,
-            box-shadow;
+            box-shadow,
+            height,
+            width;
         cursor: grab;
 
-        &:hover:not(&--resized):not(&--disabled) {
+        &:hover:not(&--resizing):not(&--disabled) {
             border-color: $WHITESMOKE;
             box-shadow: $ELEVATOR_2_DP;
         }
@@ -456,10 +456,9 @@ export default {
             visibility: hidden;
         }
 
-        &--resized {
+        &--resizing {
             position: absolute;
-            z-index: 5;
-            border: 2px solid $GREEN;
+            border: $BORDER_2_GREEN;
         }
 
         &--disabled {

@@ -54,7 +54,7 @@ test('Element has correct values of obstacle points', () => {
     });
 });
 
-test('Based on theme elements getting number of elements to highlight', () => {
+test('Highlight positions to resize at', () => {
     const elementBounds = {
         row: 5,
         column: 2,
@@ -82,7 +82,7 @@ test('Based on theme elements getting number of elements to highlight', () => {
     });
 
     expect(highlightingPositions.length)
-        .toEqual(elementBounds.maxWidth * elementBounds.maxHeight);
+        .toEqual(elementBounds.column * elementBounds.maxHeight);
 
     elements = [
         {
