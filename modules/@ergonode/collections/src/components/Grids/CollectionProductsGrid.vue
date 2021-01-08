@@ -7,6 +7,7 @@
         :columns="columns"
         :data-count="filtered"
         :rows="rows"
+        :drafts="drafts"
         :errors="errors"
         :sort-order="sortOrder"
         :filters="filterValues"
@@ -20,6 +21,7 @@
         @edit-row="onEditRow"
         @preview-row="onEditRow"
         @delete-row="onRemoveRow"
+        @cell-value="onCellValueChange"
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
@@ -30,6 +32,7 @@
         <template #appendFooter>
             <UpdateCollectionProductsVisibilityButton
                 :scope="scope"
+                :drafts="drafts"
                 @updated="onCollectionProductsVisibilityUpdated" />
         </template>
     </Grid>
@@ -41,15 +44,13 @@ import UpdateCollectionProductsVisibilityButton
     from '@Collections/components/Buttons/UpdateCollectionProductsVisibilityButton';
 import PRIVILEGES from '@Collections/config/privileges';
 import {
-    ROUTE_NAME,
-} from '@Collections/config/routes';
-import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
     DEFAULT_PAGE,
 } from '@Core/defaults/grid';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
+import gridDraftMixin from '@Core/mixins/grid/gridDraftMixin';
 import {
     getDefaultDataFromQueryParams,
     getDraftsBasedOnCellValues,
@@ -59,10 +60,12 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import {
+    ROUTE_NAME,
+} from '@Products/config/routes';
 import Grid from '@UI/components/Grid/Grid';
 import {
     mapActions,
-    mapState,
 } from 'vuex';
 
 export default {
@@ -73,6 +76,7 @@ export default {
         UpdateCollectionProductsVisibilityButton,
     },
     mixins: [
+        gridDraftMixin,
         extendedGridComponentsMixin,
     ],
     props: {
@@ -108,13 +112,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('grid', [
-            'drafts',
-            'setDrafts',
-        ]),
-        ...mapActions('feedback', [
-            'onScopeValueChange',
-        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT_COLLECTION.update,
@@ -147,6 +144,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         onCollectionProductsVisibilityUpdated() {
             Object.keys(this.drafts).forEach((key) => {
                 const [
@@ -186,7 +186,7 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({
-                name: ROUTE_NAME.COLLECTION_EDIT_GENERAL,
+                name: ROUTE_NAME.PRODUCT_EDIT_GENERAL,
                 params: {
                     id: args[lastIndex],
                 },
