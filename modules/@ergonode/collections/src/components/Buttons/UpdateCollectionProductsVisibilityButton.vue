@@ -35,6 +35,10 @@ export default {
             type: String,
             default: '',
         },
+        drafts: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     data() {
         return {
@@ -59,6 +63,7 @@ export default {
             this.removeScopeErrors(this.scope);
             this.updateCollectionProductsVisibility({
                 scope: this.scope,
+                drafts: this.drafts,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });

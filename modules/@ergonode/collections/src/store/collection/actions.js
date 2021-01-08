@@ -113,6 +113,7 @@ export default {
     },
     {
         scope,
+        drafts,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -120,9 +121,6 @@ export default {
             const {
                 id,
             } = state;
-            const {
-                drafts,
-            } = rootState.grid;
             const {
                 language: userLanguageCode,
             } = rootState.authentication.user;
