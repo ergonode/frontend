@@ -7,6 +7,7 @@
         :title="$t('category.sideBar.searchHeader')"
         :items="categoriesByLanguage"
         :searchable="true"
+        :search-value="searchValue"
         @search="onSearch">
         <template #body>
             <Preloader v-if="isPrefetchingData" />

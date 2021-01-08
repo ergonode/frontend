@@ -77,6 +77,13 @@ export default {
             required: true,
         },
         /**
+         * Search value
+         */
+        searchValue: {
+            type: String,
+            default: '',
+        },
+        /**
          * Component variances that user can choose from
          */
         options: {
@@ -95,7 +102,6 @@ export default {
         return {
             isSearchButtonClicked: false,
             isSearchFocused: false,
-            searchValue: null,
         };
     },
     computed: {
@@ -127,7 +133,6 @@ export default {
     },
     methods: {
         onSearch(value) {
-            this.searchValue = value;
             this.$emit('search', value);
         },
         onLanguageSelect(value) {
@@ -137,8 +142,7 @@ export default {
             this.isSearchButtonClicked = !this.isSearchButtonClicked;
 
             if (!this.isSearchButtonClicked && this.searchValue !== '') {
-                this.searchValue = '';
-                this.onSearch(this.searchValue);
+                this.onSearch('');
             }
         },
         onSearchFocus(isFocused) {

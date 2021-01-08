@@ -67,6 +67,13 @@ export default {
             required: true,
         },
         /**
+         * Search value
+         */
+        searchValue: {
+            type: String,
+            default: '',
+        },
+        /**
          * Determines if the component has possibility of search for value
          */
         searchable: {
@@ -78,7 +85,6 @@ export default {
         return {
             isSearchButtonClicked: false,
             isSearchFocused: false,
-            searchValue: '',
         };
     },
     computed: {
@@ -110,15 +116,13 @@ export default {
     },
     methods: {
         onSearch(value) {
-            this.searchValue = value;
             this.$emit('search', value);
         },
         onSearchButtonClick() {
             this.isSearchButtonClicked = !this.isSearchButtonClicked;
 
             if (!this.isSearchButtonClicked && this.searchValue !== '') {
-                this.searchValue = '';
-                this.onSearch(this.searchValue);
+                this.onSearch('');
             }
         },
         onSearchFocus(isFocused) {

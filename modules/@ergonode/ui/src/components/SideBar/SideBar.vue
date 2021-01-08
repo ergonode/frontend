@@ -13,6 +13,7 @@
                 <slot name="header">
                     <ListSearchHeader
                         :title="title"
+                        :search-value="searchValue"
                         :searchable="searchable"
                         @search="onSearch" />
                 </slot>
