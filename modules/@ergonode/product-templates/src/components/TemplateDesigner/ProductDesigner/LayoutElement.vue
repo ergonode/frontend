@@ -54,9 +54,9 @@ import {
 } from '@UI/assets/scss/_js-variables/elevators.scss';
 import IconResize from '@UI/components/Icons/Others/IconResize';
 import {
-    getPositionForBrowser,
-    isMouseInsideElement,
-} from '@UI/models/dragAndDrop/helpers';
+    getFixedMousePosition,
+    isMouseOutsideElement,
+} from '@UI/models/mouse';
 import {
     mapActions,
     mapState,
@@ -194,9 +194,9 @@ export default {
             const {
                 xPos,
                 yPos,
-            } = getPositionForBrowser(event);
+            } = getFixedMousePosition(event);
             const trashElement = document.documentElement.querySelector('.drop-zone');
-            const isDroppedToTrash = isMouseInsideElement(trashElement, xPos, yPos);
+            const isDroppedToTrash = !isMouseOutsideElement(trashElement, xPos, yPos);
 
             this.isDragged = false;
             this.highlightingPositions = [];

@@ -28,10 +28,11 @@ import {
 } from '@UI/models/designer/intex';
 import {
     getDraggedRowPositionState,
-    getPositionForBrowser,
-    isMouseInsideElement,
-    isMouseOutOfBoundsElement,
 } from '@UI/models/dragAndDrop/helpers';
+import {
+    getFixedMousePosition,
+    isMouseOutsideElement,
+} from '@UI/models/mouse';
 import {
     getParent,
 } from '@UI/models/treeDesigner';
@@ -202,9 +203,9 @@ export default {
             const {
                 xPos,
                 yPos,
-            } = getPositionForBrowser(event);
+            } = getFixedMousePosition(event);
             const trashElement = document.documentElement.querySelector('.drop-zone');
-            const isDroppedToTrash = isMouseInsideElement(trashElement, xPos, yPos);
+            const isDroppedToTrash = !isMouseOutsideElement(trashElement, xPos, yPos);
 
             if (isDroppedToTrash) {
                 this.$emit('remove-items', this.draggedElement);
@@ -480,9 +481,9 @@ export default {
             const {
                 xPos,
                 yPos,
-            } = getPositionForBrowser(event);
+            } = getFixedMousePosition(event);
 
-            return isMouseOutOfBoundsElement(this.$el, xPos, yPos);
+            return isMouseOutsideElement(this.$el, xPos, yPos);
         },
     },
 };

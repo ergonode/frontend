@@ -97,9 +97,9 @@ import {
     getBackgroundItem,
 } from '@UI/models/designer/intex';
 import {
-    getPositionForBrowser,
-    isMouseOutOfBoundsElement,
-} from '@UI/models/dragAndDrop/helpers';
+    getFixedMousePosition,
+    isMouseOutsideElement,
+} from '@UI/models/mouse';
 import {
     mapActions,
     mapState,
@@ -358,9 +358,9 @@ export default {
             const {
                 xPos,
                 yPos,
-            } = getPositionForBrowser(event);
+            } = getFixedMousePosition(event);
 
-            return isMouseOutOfBoundsElement(this.$refs.designerDraggableLayer.$el, xPos, yPos);
+            return isMouseOutsideElement(this.$refs.designerDraggableLayer.$el, xPos, yPos);
         },
     },
 };
