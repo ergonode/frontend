@@ -140,8 +140,6 @@ export default {
             } = entry.contentRect;
             const maxRow = Math.ceil((height - this.footerHeight) / this.rowHeight);
 
-            this.rows = Math.max(this.lastItemRow, maxRow) + this.additionalRows;
-
             this.setRows(maxRow);
         },
         onAddRow() {

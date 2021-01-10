@@ -95,6 +95,14 @@ export default {
             type: Array,
             default: () => [],
         },
+        width: {
+            type: Number,
+            default: 2,
+        },
+        height: {
+            type: Number,
+            default: 1,
+        },
     },
     data() {
         return {
@@ -104,7 +112,7 @@ export default {
     computed: {
         styles() {
             return {
-                gridArea: `${this.row + 1} / ${this.column + 1} / ${this.row + 2} / ${this.column + 3}`,
+                gridArea: `${this.row + 1} / ${this.column + 1} / ${this.row + 1 + this.height} / ${this.column + 1 + this.width}`,
                 margin: `${this.gap}px`,
             };
         },
