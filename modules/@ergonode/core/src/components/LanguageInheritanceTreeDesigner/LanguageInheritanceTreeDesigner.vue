@@ -5,7 +5,7 @@
 <template>
     <TreeDesigner
         :single-root="true"
-        :items="languagesTree"
+        :items="inheritedLanguagesTree"
         :columns="columns"
         :row-height="rowHeight"
         :disabled="!isAllowedToUpdate"
@@ -58,7 +58,7 @@ export default {
             languageCode: state => state.user.language,
         }),
         ...mapState('core', [
-            'languagesTree',
+            'inheritedLanguagesTree',
         ]),
         columns() {
             return COLUMNS;
@@ -94,7 +94,7 @@ export default {
             this.onScopeValueChange({
                 scope: this.scope,
                 fieldKey: 'languagesInheritanceTreeDesigner',
-                value: this.languagesTree,
+                value: this.inheritedLanguagesTree,
             });
         },
         onAddItem(item) {
@@ -106,7 +106,7 @@ export default {
         },
         onValueChange(value) {
             this.__setState({
-                key: 'languagesTree',
+                key: 'inheritedLanguagesTree',
                 value,
             });
 

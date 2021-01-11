@@ -2,34 +2,82 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export function getFlattenedTreeData({
-    treeData, mappedId, reducer = () => ({}),
+export function getMappedTree({
+    data,
+    childrenId,
+    reducer = () => ({}),
 }) {
-    if (!treeData || !mappedId) {
+    if (!data || !childrenId) {
         return [];
     }
-    const flattenedCollection = [];
-    const flatStructure = (tree, parent, level) => {
+
+    const mappedTree = [];
+    let rowCounter = 0;
+
+    const setNode = (tree, parent, column) => {
         if (!tree || tree.length === 0) return;
+
         for (let i = 0; i < tree.length; i += 1) {
-            const itemId = tree[i][mappedId];
+            const itemId = tree[i][childrenId];
             const {
                 children,
             } = tree[i];
 
-            flattenedCollection.push({
+            mappedTree.push({
                 id: itemId,
                 parent,
-                level,
-                children: children.length,
+                row: rowCounter,
+                column,
                 ...reducer(itemId),
             });
-            flatStructure(children, itemId, level + 1);
+
+            rowCounter += 1;
+
+            setNode(children, itemId, column + 1);
         }
     };
-    flatStructure([
-        treeData,
-    ], null, 0);
 
-    return flattenedCollection;
+    setNode(data, null, 0);
+
+    return mappedTree;
+}
+
+export function getParsedTree({
+    data,
+    childrenId,
+}) {
+    if (!data || !childrenId) {
+        return [];
+    }
+
+    const parsedTree = [];
+
+    for (let i = 0; i < data.length; i += 1) {
+        const {
+            parent,
+            id,
+        } = data[i];
+        const childrenElement = {
+            [childrenId]: id,
+            children: [],
+        };
+
+        const setChild = (childArray) => {
+            for (let j = 0; j < childArray.length; j += 1) {
+                if (childArray[j][childrenId] === parent) {
+                    childArray[j].children.push(childrenElement);
+                } else {
+                    setChild(childArray[j].children);
+                }
+            }
+        };
+
+        if (parent === null) {
+            parsedTree.push(childrenElement);
+        } else {
+            setChild(parsedTree);
+        }
+    }
+
+    return parsedTree;
 }

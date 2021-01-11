@@ -11,7 +11,7 @@ import {
 import {
     getMappedTree,
     getParsedTree,
-} from '@Trees/models/treeMapper';
+} from '@Core/models/mappers/treeMapper';
 import {
     create,
     get,
@@ -126,22 +126,36 @@ export default {
                 categories,
             } = categoryTreeData;
 
-            if (categories.length) {
-                const tree = getMappedTree(categories, categoriesData);
+            const reducer = (categoryId) => {
+                const {
+                    code: categoryCode,
+                    label: categoryLabel,
+                } = categoriesData.find(e => e.id === categoryId);
 
-                tree.forEach(element => dispatch('list/setDisabledElement', {
-                    languageCode: userLanguageCode,
-                    elementId: element.id,
-                    disabled: true,
-                }, {
-                    root: true,
-                }));
+                return {
+                    code: categoryCode,
+                    name: categoryLabel,
+                };
+            };
 
-                commit('__SET_STATE', {
-                    key: 'tree',
-                    value: tree,
-                });
-            }
+            const tree = getMappedTree({
+                data: categories,
+                childrenId: 'category_id',
+                reducer,
+            });
+
+            tree.forEach(element => dispatch('list/setDisabledElement', {
+                languageCode: userLanguageCode,
+                elementId: element.id,
+                disabled: true,
+            }, {
+                root: true,
+            }));
+
+            commit('__SET_STATE', {
+                key: 'tree',
+                value: tree,
+            });
 
             const translations = {
                 name,
@@ -196,7 +210,10 @@ export default {
             } = rootState.tab;
             let data = {
                 name,
-                categories: getParsedTree(tree),
+                categories: getParsedTree({
+                    data: tree,
+                    childrenId: 'category_id',
+                }),
             };
 
             // EXTENDED BEFORE METHOD

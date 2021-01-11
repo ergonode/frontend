@@ -49,7 +49,7 @@ import {
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     getParsedTree,
-} from '@Core/models/mappers/languageTreeMapper';
+} from '@Core/models/mappers/treeMapper';
 import {
     GRAPHITE_LIGHT,
 } from '@UI/assets/scss/_js-variables/colors.scss';
@@ -90,7 +90,7 @@ export default {
             languageCode: state => state.user.language,
         }),
         ...mapState('core', [
-            'languagesTree',
+            'inheritedLanguagesTree',
         ]),
         ...mapState('draggable', [
             'isElementDragging',
@@ -117,7 +117,7 @@ export default {
         },
     },
     created() {
-        this.languagesTree.forEach((node) => {
+        this.inheritedLanguagesTree.forEach((node) => {
             this.setDisabledElement({
                 languageCode: this.languageCode,
                 elementId: node.id,
@@ -139,12 +139,15 @@ export default {
                 return;
             }
 
-            if (this.languagesTree.length) {
+            if (this.inheritedLanguagesTree.length) {
                 this.isSubmitting = true;
 
                 const [
                     languages,
-                ] = getParsedTree(this.languagesTree);
+                ] = getParsedTree({
+                    data: this.inheritedLanguagesTree,
+                    childrenId: 'language_id',
+                });
 
                 this.removeScopeErrors(this.scope);
 

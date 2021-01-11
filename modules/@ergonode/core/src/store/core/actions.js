@@ -6,7 +6,7 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import {
-    getFlattenedTreeData,
+    getMappedTree,
 } from '@Core/models/mappers/treeMapper';
 import {
     getAll as getAllLanguages,
@@ -134,7 +134,7 @@ export default {
     },
     setLanguageTree({
         state, commit,
-    }, treeData) {
+    }, languages) {
         const reducer = (id) => {
             const {
                 name = '',
@@ -147,25 +147,17 @@ export default {
             };
         };
 
-        const inheritedLanguages = getFlattenedTreeData({
-            treeData,
-            mappedId: 'language_id',
+        const languageInheritanceTree = getMappedTree({
+            data: [
+                languages,
+            ],
+            childrenId: 'language_id',
             reducer,
         });
 
         commit('__SET_STATE', {
-            key: 'inheritedLanguages',
-            value: inheritedLanguages,
-        });
-
-        commit('__SET_STATE', {
-            key: 'languagesTree',
-            value: inheritedLanguages.map((item, i) => ({
-                ...item,
-                row: i,
-                column: item.level,
-                expanded: false,
-            })),
+            key: 'inheritedLanguagesTree',
+            value: languageInheritanceTree,
         });
     },
     setDefaultLanguage({
@@ -175,7 +167,7 @@ export default {
             const {
                 languagePrivileges,
             } = rootState.authentication.user;
-            const defaultLanguage = state.inheritedLanguages
+            const defaultLanguage = state.inheritedLanguagesTree
                 .find(({
                     code,
                 }) => languagePrivileges[code].read === true);
