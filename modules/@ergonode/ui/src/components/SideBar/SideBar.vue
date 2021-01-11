@@ -3,178 +3,147 @@
  * See LICENSE for license details.
  */
 <template>
-    <aside :class="classes">
-        <ol class="side-bar__menu">
-            <li>
-                <NuxtLink to="/dashboard">
-                    <SideBarLogo :is-expanded="isExpanded" />
-                </NuxtLink>
-            </li>
-            <template v-for="(route, index) in routes">
-                <SideBarListGroup
-                    v-if="route.group"
-                    :key="index"
-                    :route="route"
-                    :is-expanded="isExpanded"
-                    :is-selected="isGroupSelected(route.group.title)"
-                    @select="onGroupSelect" />
-                <SideBarListElement
-                    v-else
-                    :key="index"
-                    :route="route"
-                    :is-expanded="isExpanded" />
-            </template>
-        </ol>
-        <!--        <div class="side-bar__expand-button">-->
-        <!--            -->
-        <!--        </div>-->
-        <Fab
-            :floating="{ bottom: '16px', left: '24px' }"
-            :theme="secondaryTheme"
-            @click.native="onExpand">
-            <template #icon="{ isHovered, color }">
-                <IconArrowDouble
-                    :fill-color="isHovered ? color : whiteColor"
-                    :state="expendStateIcon" />
-            </template>
-        </Fab>
-    </aside>
+    <ExpandingList
+        class="side-bar"
+        :items="items"
+        :expanded="expanded"
+        :render-ahead="8">
+        <template #header>
+            <SideBarStickyHeader>
+                <slot name="header">
+                    <ListSearchHeader
+                        :title="title"
+                        :search-value="searchValue"
+                        :searchable="searchable"
+                        @search="onSearch" />
+                </slot>
+            </SideBarStickyHeader>
+        </template>
+        <template #body>
+            <slot name="body">
+                <DropdownPlaceholder
+                    v-if="isSearchPlaceholderVisible"
+                    :title="placeholder.title"
+                    :subtitle="placeholder.subtitle">
+                    <template #action>
+                        <ClearSearchButton @click.native.stop="onClearSearch" />
+                    </template>
+                </DropdownPlaceholder>
+            </slot>
+        </template>
+        <template #footer>
+            <slot name="footer">
+                <SideBarFooter />
+            </slot>
+        </template>
+        <template #item="{ item, onExpand }">
+            <slot
+                name="item"
+                :item="item"
+                :on-expand="onExpand" />
+        </template>
+    </ExpandingList>
 </template>
 
 <script>
+
+import ListSearchHeader from '@UI/components/List/ListSearchHeader';
+import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
+import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
+import SideBarFooter from '@UI/components/SideBar/SideBarFooter';
+import SideBarStickyHeader from '@UI/components/SideBar/SideBarStickyHeader';
 import {
-    ARROW,
-} from '@Core/defaults/icons';
-import {
-    THEME,
-} from '@Core/defaults/theme';
-import {
-    GREEN,
-    WHITE,
-} from '@UI/assets/scss/_js-variables/colors.scss';
-import Fab from '@UI/components/Fab/Fab';
-import IconArrowDouble from '@UI/components/Icons/Arrows/IconArrowDouble';
-import SideBarListElement from '@UI/components/SideBar/SideBarListElement';
-import SideBarListGroup from '@UI/components/SideBar/SideBarListGroup';
-import SideBarLogo from '@UI/components/SideBar/SideBarLogo';
+    ExpandingList,
+} from 'vue-windowing';
 
 export default {
     name: 'SideBar',
     components: {
-        SideBarLogo,
-        SideBarListElement,
-        SideBarListGroup,
-        IconArrowDouble,
-        Fab,
+        SideBarStickyHeader,
+        SideBarFooter,
+        ListSearchHeader,
+        ExpandingList,
+        DropdownPlaceholder,
+        ClearSearchButton,
+    },
+    props: {
+        /**
+         * The title of the component
+         */
+        title: {
+            type: String,
+            default: '',
+        },
+        /**
+         * Search value
+         */
+        searchValue: {
+            type: String,
+            default: '',
+        },
+        /**
+         * The placeholder is a helper text for the component
+         */
+        searchPlaceholder: {
+            type: String,
+            default: 'Search...',
+        },
+        items: {
+            type: Array,
+            default: () => [],
+        },
+        /**
+         * Determines if the component has possibility of search for value
+         */
+        searchable: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * Determines if the list elements are expanded
+         */
+        expanded: {
+            type: [
+                Object,
+                Boolean,
+            ],
+            default: false,
+        },
     },
     data() {
         return {
-            isSelected: true,
-            isExpanded: true,
-            selectedGroup: null,
+            selectedItems: {},
         };
     },
     computed: {
-        classes() {
-            return [
-                'side-bar',
-                {
-                    'side-bar--expanded': this.isExpanded,
-                },
-            ];
+        placeholder() {
+            return {
+                title: 'No results',
+                subtitle: 'Clear the search and try with another phrase.',
+            };
         },
-        expendStateIcon() {
-            return this.isExpanded ? ARROW.LEFT : ARROW.RIGHT;
+        isAnyItem() {
+            return this.items.length > 0;
         },
-        secondaryTheme() {
-            return THEME.SECONDARY;
+        isAnySearchPhrase() {
+            return this.searchValue !== '';
         },
-        greenColor() {
-            return GREEN;
+        isPlaceholderVisible() {
+            return !this.isAnyItem && !this.isAnySearchPhrase;
         },
-        whiteColor() {
-            return WHITE;
+        isSearchPlaceholderVisible() {
+            return !this.isAnyItem && this.isAnySearchPhrase;
         },
-        routes() {
-            const routes = [];
-            const groups = {};
-
-            this.$router.options.routes.forEach((route) => {
-                if (route.meta && route.meta.isMenu && (!route.meta.privileges
-                    || this.$hasAccess([
-                        route.meta.privileges.read,
-                    ]))) {
-                    if (route.meta.group && !groups[route.meta.group.title]) {
-                        const routeData = {
-                            group: {
-                                ...route.meta.group,
-                            },
-                            routes: [
-                                route,
-                            ],
-                        };
-                        if (route.meta.group.menuPosition) {
-                            routeData.menuPosition = route.meta.group.menuPosition;
-                        }
-                        routes.push(routeData);
-                        groups[route.meta.group.title] = true;
-                    } else if (route.meta.group && groups[route.meta.group.title]) {
-                        const index = routes
-                            .findIndex(r => r.group && r.group.title === route.meta.group.title);
-
-                        routes[index].routes.push({
-                            ...route,
-                        });
-                    } else {
-                        routes.push({
-                            ...route,
-                            menuPosition: route.meta.menuPosition,
-                        });
-                    }
-                }
-            });
-            const subMenuSorted = routes.map((route) => {
-                if (route.routes) {
-                    return {
-                        ...route,
-                        routes: this.sortRoutes(route.routes, true),
-                    };
-                }
-                return route;
-            });
-
-            return this.sortRoutes(subMenuSorted);
+        isSelectContentVisible() {
+            return this.isAnyItem || this.isAnySearchPhrase;
         },
-    },
-    beforeDestroy() {
-        window.removeEventListener('click', this.onClickOutside);
     },
     methods: {
-        sortRoutes(routes, subMenu = false) {
-            const unsetPosition = 999;
-
-            return routes.sort((a, b) => {
-                let routeA = a.menuPosition || unsetPosition;
-                let routeB = b.menuPosition || unsetPosition;
-
-                if (subMenu) {
-                    routeA = a.meta.menuPosition || unsetPosition;
-                    routeB = b.meta.menuPosition || unsetPosition;
-                }
-
-                return routeA - routeB;
-            });
+        onSearch(value) {
+            this.$emit('search', value);
         },
-        onExpand() {
-            this.isExpanded = !this.isExpanded;
-
-            this.$emit('expand', this.isExpanded);
-        },
-        onGroupSelect(group) {
-            this.selectedGroup = group;
-        },
-        isGroupSelected(groupTitle) {
-            return this.selectedGroup === groupTitle && this.isExpanded;
+        onClearSearch() {
+            this.onSearch('');
         },
     },
 };
@@ -182,33 +151,6 @@ export default {
 
 <style lang="scss" scoped>
     .side-bar {
-        position: relative;
-        z-index: $Z_INDEX_NAV;
-        display: flex;
-        flex-shrink: 0;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100vh;
-        background-color: $GRAPHITE_DARK;
-        box-shadow: $ELEVATOR_2_DP;
-        transition: width 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-        will-change: width;
-        transform: translateZ(0);
-        backface-visibility: hidden;
-        perspective: 1000px;
-
-        &--expanded {
-            width: 256px;
-        }
-
-        &:not(&--expanded) {
-            width: 80px;
-        }
-
-        &__menu {
-            padding-bottom: 48px;
-            overflow-x: hidden;
-            overflow-y: auto;
-        }
+        max-height: 100%;
     }
 </style>

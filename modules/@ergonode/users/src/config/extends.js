@@ -10,7 +10,7 @@ export default {
     dictionaries: [
         {
             stateProp: 'privileges',
-            defaultValue: {},
+            defaultValue: [],
             request: {
                 path: '/dictionary/privileges',
                 config: {},

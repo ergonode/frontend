@@ -11,16 +11,16 @@ export default {
         extendedGridComponents() {
             return {
                 [GRID_LAYOUT.TABLE]: {
-                    dataFilterCells: this.$getExtendedComponents('@UI/components/Grid/Layout/Table/Cells/Data/Filter'),
-                    dataEditFilterCells: this.$getExtendedComponents('@UI/components/Grid/Layout/Table/Cells/Edit/Filter'),
-                    dataCells: this.$getExtendedComponents('@UI/components/Grid/Layout/Table/Cells/Data'),
-                    dataEditCells: this.$getExtendedComponents('@UI/components/Grid/Layout/Table/Cells/Edit'),
-                    columns: this.$getExtendedComponents('@UI/components/Grid/Layout/Table/Columns'),
+                    dataFilterCells: this.$getExtendSlot('@UI/components/Grid/Layout/Table/Cells/Data/Filter'),
+                    dataEditFilterCells: this.$getExtendSlot('@UI/components/Grid/Layout/Table/Cells/Edit/Filter'),
+                    dataCells: this.$getExtendSlot('@UI/components/Grid/Layout/Table/Cells/Data'),
+                    dataEditCells: this.$getExtendSlot('@UI/components/Grid/Layout/Table/Cells/Edit'),
+                    columns: this.$getExtendSlot('@UI/components/Grid/Layout/Table/Columns'),
                 },
                 [GRID_LAYOUT.COLLECTION]: {
                     dataFilterCells: {},
                     dataEditFilterCells: {},
-                    dataCells: this.$getExtendedComponents('@UI/components/Grid/Layout/Collection/Cells'),
+                    dataCells: this.$getExtendSlot('@UI/components/Grid/Layout/Collection/Cells'),
                     dataEditCells: {},
                     columns: {},
                 },

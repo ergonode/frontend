@@ -48,7 +48,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__before', {
+            const extendedData = await this.$getExtendMethod('@Attributes/store/attribute/action/createAttribute/__before', {
                 $this: this,
                 type: typeKey,
                 data,
@@ -70,7 +70,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Attributes/store/attribute/action/createAttribute/__after', {
+            await this.$getExtendMethod('@Attributes/store/attribute/action/createAttribute/__after', {
                 $this: this,
                 type: typeKey,
                 data: {
@@ -147,7 +147,7 @@ export default {
 
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__before', {
+            await this.$getExtendMethod('@Attributes/store/attribute/action/getAttribute/__before', {
                 $this: this,
                 data: {
                     id,
@@ -198,7 +198,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Attributes/store/attribute/action/getAttribute/__after', {
+            await this.$getExtendMethod('@Attributes/store/attribute/action/getAttribute/__after', {
                 $this: this,
                 data,
                 type,
@@ -247,7 +247,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Attributes/store/attribute/action/updateAttribute/__before', {
+            const extendedData = await this.$getExtendMethod('@Attributes/store/attribute/action/updateAttribute/__before', {
                 $this: this,
                 type: typeKey,
                 data: {
@@ -271,7 +271,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Attributes/store/attribute/action/updateAttribute/__after', {
+            await this.$getExtendMethod('@Attributes/store/attribute/action/updateAttribute/__after', {
                 $this: this,
                 type: typeKey,
                 data,
@@ -313,7 +313,7 @@ export default {
 
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Attributes/store/attribute/action/removeAttribute/__before', {
+            await this.$getExtendMethod('@Attributes/store/attribute/action/removeAttribute/__before', {
                 $this: this,
                 type: typeKey,
             });
@@ -325,7 +325,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Attributes/store/attribute/action/removeAttribute/__after', {
+            await this.$getExtendMethod('@Attributes/store/attribute/action/removeAttribute/__after', {
                 $this: this,
                 type: typeKey,
             });

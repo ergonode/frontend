@@ -28,6 +28,7 @@
                     :value="type"
                     required
                     searchable
+                    :clearable="true"
                     label="Type"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errors[typeIdFieldKey]"

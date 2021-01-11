@@ -97,8 +97,8 @@ module.exports = {
     vuems: {
         required: _requiredModules,
         modules: modulesConfig,
-        i18n: true,
-        i18nLocales: [
+        vuex: true,
+        i18n: [
             'en_GB',
             'pl_PL',
         ],

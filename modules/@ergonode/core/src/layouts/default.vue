@@ -21,7 +21,7 @@
                 </template>
             </template>
         </ToolBar>
-        <SideBar @expand="onExpandSideBar" />
+        <NavigationSideBar @expand="onExpandNavigationSideBar" />
         <AppMain>
             <slot />
             <FlashMessages />
@@ -43,7 +43,7 @@ import {
 } from '@Core/defaults/extends';
 import App from '@UI/components/Layout/App';
 import AppMain from '@UI/components/Layout/AppMain';
-import SideBar from '@UI/components/SideBar/SideBar';
+import NavigationSideBar from '@UI/components/NavigationSideBar/NavigationSideBar';
 import ToolBar from '@UI/components/ToolBar/ToolBar';
 import ToolBarBreadcrumb from '@UI/components/ToolBar/ToolBarBreadcrumb';
 import {
@@ -56,7 +56,7 @@ export default {
     components: {
         AppMain,
         App,
-        SideBar,
+        NavigationSideBar,
         ToolBar,
         ToolBarUserButton,
         ToolBarBreadcrumb,
@@ -66,7 +66,7 @@ export default {
         return {
             executingBatchActions: {},
             breadcrumbs: [],
-            isExpandedSideBar: true,
+            isExpandedNavigationSideBar: true,
         };
     },
     computed: {
@@ -79,12 +79,12 @@ export default {
         navigationBarPosition() {
             return {
                 top: 0,
-                left: this.isExpandedSideBar ? '256px' : '80px',
+                left: this.isExpandedNavigationSideBar ? '256px' : '80px',
                 right: 0,
             };
         },
         extendedComponents() {
-            return this.$getExtendedComponents(COMPONENTS.NAVIGATION_BAR);
+            return this.$getExtendSlot(COMPONENTS.NAVIGATION_BAR);
         },
     },
     watch: {
@@ -155,8 +155,8 @@ export default {
         onCloseModal(index) {
             this.removeModal(index);
         },
-        onExpandSideBar(isExpanded) {
-            this.isExpandedSideBar = isExpanded;
+        onExpandNavigationSideBar(isExpanded) {
+            this.isExpandedNavigationSideBar = isExpanded;
         },
     },
 };

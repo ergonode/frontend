@@ -11,17 +11,18 @@
         <template #prepend="{ color }">
             <IconAdd :fill-color="color" />
         </template>
-        <template #default>
-            <CreateChannelModalForm
-                v-if="isModalVisible"
-                @close="onCloseModal"
-                @created="onCreatedData" />
-        </template>
+        <CreateChannelModalForm
+            v-if="isModalVisible"
+            @close="onCloseModal"
+            @created="onCreatedData" />
     </Button>
 </template>
 
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
+import {
+    CHANNEL_CREATED_EVENT_NAME,
+} from '@Channels/defaults';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -59,7 +60,10 @@ export default {
         },
         onCreatedData() {
             this.onCloseModal();
-            this.$emit('created');
+
+            const event = new CustomEvent(CHANNEL_CREATED_EVENT_NAME);
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

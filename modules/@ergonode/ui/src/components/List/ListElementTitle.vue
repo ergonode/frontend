@@ -25,7 +25,7 @@ export default {
                 String,
                 Number,
             ],
-            required: true,
+            default: '',
         },
         /**
          * The size of the component

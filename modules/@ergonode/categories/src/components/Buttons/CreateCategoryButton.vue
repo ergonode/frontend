@@ -12,17 +12,18 @@
         <template #prepend="{ color }">
             <IconAdd :fill-color="color" />
         </template>
-        <template #default>
-            <CreateCategoryModalForm
-                v-if="isModalVisible"
-                @close="onCloseModal"
-                @created="onCreatedData" />
-        </template>
+        <CreateCategoryModalForm
+            v-if="isModalVisible"
+            @close="onCloseModal"
+            @created="onCreatedData" />
     </Button>
 </template>
 
 <script>
 import PRIVILEGES from '@Categories/config/privileges';
+import {
+    CATEGORY_CREATED_EVENT_NAME,
+} from '@Categories/defaults/attributes';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -60,7 +61,10 @@ export default {
         },
         onCreatedData() {
             this.onCloseModal();
-            this.$emit('created');
+
+            const event = new CustomEvent(CATEGORY_CREATED_EVENT_NAME);
+
+            document.documentElement.dispatchEvent(event);
         },
     },
 };

@@ -16,13 +16,8 @@ export default {
 
 <style lang="scss" scoped>
     .list-scrollable-container {
+        flex: 1 1 auto;
         width: 100%;
         height: 0;
-
-        &::after {
-            position: absolute;
-            height: 40px;
-            content: "";
-        }
     }
 </style>

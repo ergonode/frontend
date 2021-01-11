@@ -3,14 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <nav class="tool-bar">
+    <div class="tool-bar">
         <section class="tool-bar__breadcrumbs">
             <slot name="breadcrumbs" />
         </section>
         <section class="tool-bar__actions">
             <slot name="actions" />
         </section>
-    </nav>
+    </div>
 </template>
 
 <script>

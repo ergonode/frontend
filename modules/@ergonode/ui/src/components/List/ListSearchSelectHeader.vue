@@ -27,6 +27,7 @@
         </TextField>
         <Fab
             class="search-button"
+            :theme="secondaryTheme"
             @click.native="onSearchButtonClick">
             <template #icon="{ color }">
                 <Component
@@ -40,6 +41,7 @@
 <script>
 import {
     SIZE,
+    THEME,
 } from '@Core/defaults/theme';
 import {
     GRAPHITE,
@@ -48,6 +50,7 @@ import {
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Fab from '@UI/components/Fab/Fab';
 import IconSearch from '@UI/components/Icons/Actions/IconSearch';
+import IconClose from '@UI/components/Icons/Window/IconClose';
 import ListHeader from '@UI/components/List/ListHeader';
 import Select from '@UI/components/Select/Select';
 import TextField from '@UI/components/TextField/TextField';
@@ -63,6 +66,7 @@ export default {
         Select,
         TextField,
         IconSearch,
+        IconClose,
     },
     props: {
         /**
@@ -71,6 +75,13 @@ export default {
         title: {
             type: String,
             required: true,
+        },
+        /**
+         * Search value
+         */
+        searchValue: {
+            type: String,
+            default: '',
         },
         /**
          * Component variances that user can choose from
@@ -91,19 +102,21 @@ export default {
         return {
             isSearchButtonClicked: false,
             isSearchFocused: false,
-            searchValue: null,
         };
     },
     computed: {
         smallSize() {
             return SIZE.SMALL;
         },
+        secondaryTheme() {
+            return THEME.SECONDARY;
+        },
         whiteColor() {
             return WHITE;
         },
         searchButtonIconComponent() {
             return this.isSearchButtonClicked
-                ? () => import('@UI/components/Icons/Window/IconClose')
+                ? IconClose
                 : IconSearch;
         },
         searchIconFillColor() {
@@ -120,8 +133,7 @@ export default {
     },
     methods: {
         onSearch(value) {
-            this.searchValue = value;
-            this.$emit('search-value', value);
+            this.$emit('search', value);
         },
         onLanguageSelect(value) {
             this.$emit('select-option', value);
@@ -130,8 +142,7 @@ export default {
             this.isSearchButtonClicked = !this.isSearchButtonClicked;
 
             if (!this.isSearchButtonClicked && this.searchValue !== '') {
-                this.searchValue = '';
-                this.onSearch(this.searchValue);
+                this.onSearch('');
             }
         },
         onSearchFocus(isFocused) {

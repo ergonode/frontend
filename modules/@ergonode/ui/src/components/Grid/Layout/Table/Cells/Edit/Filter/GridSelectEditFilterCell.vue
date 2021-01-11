@@ -95,8 +95,8 @@ export default {
         },
     },
     beforeDestroy() {
-        if ((this.localValue && this.localValue.id !== this.value)
-            || (!this.localValue && this.value)) {
+        if ((this.localValue && this.localValue.id !== this.value[FILTER_OPERATOR.EQUAL])
+            || (!this.localValue && this.value[FILTER_OPERATOR.EQUAL])) {
             this.$emit('filter-value', {
                 value: {
                     [FILTER_OPERATOR.EQUAL]: this.localValue.id || this.localValue,

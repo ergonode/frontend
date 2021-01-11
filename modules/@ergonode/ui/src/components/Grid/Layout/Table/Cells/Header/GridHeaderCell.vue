@@ -91,7 +91,7 @@ export default {
         /**
          * Data about order of sorted column
          */
-        sortedColumn: {
+        sortOrder: {
             type: Object,
             required: true,
         },
@@ -163,12 +163,12 @@ export default {
                 || this.draggedElement === this.columnId;
         },
         isSorted() {
-            return this.sortedColumn.index === this.columnId;
+            return this.sortOrder.field === this.columnId;
         },
         sortingOrder() {
             if (!this.isSorted) return null;
 
-            return this.sortedColumn.orderState;
+            return this.sortOrder.order;
         },
         isActionsVisible() {
             return !this.isColumnExist
@@ -198,19 +198,20 @@ export default {
             'setDisabledElement',
         ]),
         onClickSort() {
-            let orderState = SORTING_ORDER.ASC;
+            let order = SORTING_ORDER.ASC;
+
             if (this.isSorted) {
-                if (this.sortedColumn.orderState === SORTING_ORDER.ASC) {
-                    orderState = SORTING_ORDER.DESC;
+                if (this.sortOrder.order === SORTING_ORDER.ASC) {
+                    order = SORTING_ORDER.DESC;
                 }
-                if (this.sortedColumn.orderState === SORTING_ORDER.DESC) {
-                    orderState = SORTING_ORDER.ASC;
+                if (this.sortOrder.order === SORTING_ORDER.DESC) {
+                    order = SORTING_ORDER.ASC;
                 }
             }
 
             this.$emit('sort', {
-                index: this.columnId,
-                orderState,
+                field: this.columnId,
+                order,
             });
         },
         onSelectFocus(isFocused) {

@@ -18,7 +18,7 @@ export default {
          */
         title: {
             type: String,
-            required: true,
+            default: '',
         },
         /**
          *  The hint is a tip for the component

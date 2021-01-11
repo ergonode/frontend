@@ -45,7 +45,7 @@ export default [
             {
                 name: ROUTE_NAME.CHANNELS_GRID,
                 path: 'grid',
-                component: Tabs.ChannelGridTab,
+                component: Tabs.ChannelsTab,
                 meta: {
                     title: '',
                     breadcrumbs: [

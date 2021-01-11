@@ -11,7 +11,7 @@ import {
     getTypes,
     remove,
     update,
-    updateDraftValue,
+    validateValue,
 } from '@Collections/services/index';
 import {
     ALERT_TYPE,
@@ -30,7 +30,7 @@ export default {
     ) {
         try {
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Collections/store/collection/action/getCollection/__before', {
+            await this.$getExtendMethod('@Collections/store/collection/action/getCollection/__before', {
                 $this: this,
                 data: {
                     id,
@@ -72,7 +72,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Collections/store/collection/action/getCollection/__after', {
+            await this.$getExtendMethod('@Collections/store/collection/action/getCollection/__after', {
                 $this: this,
                 data,
             });
@@ -113,6 +113,7 @@ export default {
     },
     {
         scope,
+        drafts,
         onSuccess = () => {},
         onError = () => {},
     }) {
@@ -120,9 +121,6 @@ export default {
             const {
                 id,
             } = state;
-            const {
-                drafts,
-            } = rootState.grid;
             const {
                 language: userLanguageCode,
             } = rootState.authentication.user;
@@ -137,7 +135,7 @@ export default {
                         visible: drafts[key],
                     };
 
-                    await updateDraftValue({
+                    await validateValue({
                         $axios: this.app.$axios,
                         id,
                         productId,
@@ -195,7 +193,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Collections/store/collection/action/updateCollection/__before', {
+            const extendedData = await this.$getExtendMethod('@Collections/store/collection/action/updateCollection/__before', {
                 $this: this,
                 data: {
                     id,
@@ -217,7 +215,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Collections/store/collection/action/updateCollection/__after', {
+            await this.$getExtendMethod('@Collections/store/collection/action/updateCollection/__after', {
                 $this: this,
                 data,
             });
@@ -258,7 +256,7 @@ export default {
             };
 
             // EXTENDED BEFORE METHOD
-            const extendedData = await this.$extendMethods('@Collections/store/collection/action/createCollection/__before', {
+            const extendedData = await this.$getExtendMethod('@Collections/store/collection/action/createCollection/__before', {
                 $this: this,
                 data,
             });
@@ -278,7 +276,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Collections/store/collection/action/createCollection/__after', {
+            await this.$getExtendMethod('@Collections/store/collection/action/createCollection/__after', {
                 $this: this,
                 data: {
                     id,
@@ -431,7 +429,7 @@ export default {
             } = state;
 
             // EXTENDED BEFORE METHOD
-            await this.$extendMethods('@Collections/store/collection/action/removeCollection/__before', {
+            await this.$getExtendMethod('@Collections/store/collection/action/removeCollection/__before', {
                 $this: this,
                 data: {
                     id,
@@ -445,7 +443,7 @@ export default {
             });
 
             // EXTENDED AFTER METHOD
-            await this.$extendMethods('@Collections/store/collection/action/removeCollection/__after', {
+            await this.$getExtendMethod('@Collections/store/collection/action/removeCollection/__after', {
                 $this: this,
             });
             // EXTENDED AFTER METHOD

@@ -15,18 +15,12 @@
                         :key="index"
                         v-bind="bindingProps(actionItem)" />
                 </template>
-                <CreateAttributeButton @created="onCreatedData" />
+                <CreateAttributeButton />
             </template>
         </TitleBar>
         <HorizontalRoutingTabBar
             v-if="asyncTabs"
-            :items="asyncTabs">
-            <template #content>
-                <HorizontalRoutingTabBarContent
-                    :is-fetching-needed="fetchGridData"
-                    @fetched="onFetchedGridData" />
-            </template>
-        </HorizontalRoutingTabBar>
+            :items="asyncTabs" />
         <template
             v-for="(modal, index) in extendedModals">
             <Component
@@ -40,8 +34,7 @@
 <script>
 import CreateAttributeButton from '@Attributes/components/Buttons/CreateAttributeButton';
 import PRIVILEGES from '@Attributes/config/privileges';
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
-import beforeLeavePageMixin from '@Core/mixins/page/beforeLeavePageMixin';
+import beforeRouteLeaveMixin from '@Core/mixins/route/beforeRouteLeaveMixin';
 import asyncTabsMixin from '@Core/mixins/tab/asyncTabsMixin';
 import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
@@ -56,16 +49,15 @@ export default {
         HorizontalRoutingTabBar,
     },
     mixins: [
-        gridModalMixin,
-        beforeLeavePageMixin,
+        beforeRouteLeaveMixin,
         asyncTabsMixin,
     ],
     computed: {
         extendedMainAction() {
-            return this.$getExtendedComponents('@Attributes/pages/attributes/mainAction');
+            return this.$getExtendSlot('@Attributes/pages/attributes/mainAction');
         },
         extendedModals() {
-            return this.$getExtendedComponents('@Attributes/pages/attributes/injectModal');
+            return this.$getExtendSlot('@Attributes/pages/attributes/injectModal');
         },
         isReadOnly() {
             return this.$isReadOnly(

@@ -18,11 +18,6 @@
             </ListElementAction>
         </ListElement>
         <Preloader v-if="isPrefetchingData" />
-        <li v-else-if="isExpanded && !isPrefetchingData">
-            <ul>
-                <slot name="item" />
-            </ul>
-        </li>
     </ul>
 </template>
 

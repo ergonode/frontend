@@ -20,8 +20,20 @@ export default {
         IconArrowPointer,
         Fab,
     },
+    props: {
+        previousRoute: {
+            type: Object,
+            default: null,
+        },
+    },
     methods: {
         onBack() {
+            if (this.previousRoute) {
+                this.$router.push(this.previousRoute);
+
+                return;
+            }
+
             const {
                 breadcrumbs,
             } = this.$route.meta;
@@ -31,8 +43,9 @@ export default {
                     console.error(`Route ${this.$route.fullPath} has no breadcrumbs initialised!`);
                 }
 
-                return false;
+                return;
             }
+
             const routerPush = {
                 name: breadcrumbs[breadcrumbs.length - 1].routeName,
             };
@@ -44,8 +57,6 @@ export default {
             }
 
             this.$router.push(routerPush);
-
-            return true;
         },
     },
 };

@@ -17,6 +17,7 @@
                     :value="segments"
                     :multiselect="true"
                     :searchable="true"
+                    :clearable="true"
                     label="From segmentation rules"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[segmentsFieldKey]"

@@ -3,9 +3,15 @@
  * See LICENSE for license details.
  */
 <template>
-    <button :class="classes">
+    <button
+        :class="classes"
+        @click="onShowModal">
         <IconAdd />
         <span :class="titleClasses">Add attribute</span>
+        <AddBindingAttributesModalForm
+            v-if="isModalVisible"
+            @close="onCloseModal"
+            @submitted="onAddedData" />
     </button>
 </template>
 
@@ -16,6 +22,12 @@ export default {
     name: 'AddBindingAttributes',
     components: {
         IconAdd,
+        AddBindingAttributesModalForm: () => import('@Products/extends/components/Modals/AddBindingAttributesModalForm'),
+    },
+    data() {
+        return {
+            isModalVisible: false,
+        };
     },
     computed: {
         classes() {
@@ -29,11 +41,24 @@ export default {
             ];
         },
     },
+    methods: {
+        onShowModal() {
+            this.isModalVisible = true;
+        },
+        onCloseModal() {
+            this.isModalVisible = false;
+        },
+        onAddedData() {
+            this.onCloseModal();
+            this.$emit('added');
+        },
+    },
 };
 </script>
 
 <style lang="scss" scoped>
 .add-binding-attributes {
+    position: relative;
     display: flex;
     align-items: center;
     border: none;

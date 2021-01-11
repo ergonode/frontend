@@ -10,7 +10,7 @@
             <AddProductsFromSegmentForm
                 :segments="segments"
                 submit-title="ADD TO PRODUCT"
-                proceed-title="CANCEL"
+                :proceed-title="$t('product.buttons.cancel')"
                 :is-submitting="isAdding"
                 :errors="scopeErrors"
                 @submit="onSubmit"
@@ -28,6 +28,9 @@ import {
     THEME,
 } from '@Core/defaults/theme';
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import {
+    PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
+} from '@Products/extends/defaults';
 import AddProductsFromSegmentForm from '@Segments/components/Forms/AddProductsFromSegmentForm';
 import ModalForm from '@UI/components/Modal/ModalForm';
 import {
@@ -87,7 +90,9 @@ export default {
 
             this.isAdding = false;
 
-            this.$emit('submitted');
+            const event = new CustomEvent(PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME);
+
+            document.documentElement.dispatchEvent(event);
         },
         onAddError(errors) {
             this.onError(errors);

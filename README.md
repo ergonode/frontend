@@ -1,24 +1,26 @@
 <!--
-How to do a release:
+How to do a release and publish modules:
 
 1. Make sure you have publish access for all packages:
     - You must be in the developers team in the npm @ergonode organization
     - You must have publish access to all @ergonode modules
-2. Merge develop to master and from master create release branch (release/v0.9.0).
-3. Run `npm run publish:all ${semver}` - semver is semantic version (1.0.0, major, minor, path, etc.)
-4A. If everything works properly, all modules are published and CHANGELOG will be created
-4B. If the publish fails half-way, things have gotten hairy. Now you need to
+2. Create release branch from develop branch (release/v0.9.0).
+3. Switch to release branch and edit everything you need for the release.
+4. Run `npm run publish:all ${semver}` - semver is semantic version (1.0.0, major, minor, path, etc.)
+5A. If everything works properly, all modules are published and CHANGELOG will be created
+5B. If the publish fails half-way, things have gotten hairy. Now you need to
     go to npm to check which packages have been published and manually publish
     the ones that have not been published yet.
 5. Edit CHANGELOG and other things and push changes to release branch.
 4. Go to GitHub and merge release branch to master branch.
 5. Go to GitHub and verify that the changelog is live.
 6. Go to GitHub releases page and publish the release.
+7. Merge master branch to develop branch.
 
  -->
 <p align="center">
   <a href="https://ergonode.com" rel="noopener noreferrer">
-    <img width="300" src="https://ergonode.com/img/logo-dark.svg" alt="Ergonode logo">
+    <img width="300" src="/static/images/logo.svg" alt="Ergonode logo">
   </a>
 </p>
 <p align="center">Desktop PWA Ready Product Information Management Platform</p>

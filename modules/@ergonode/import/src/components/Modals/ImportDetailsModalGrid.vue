@@ -18,7 +18,7 @@
                 :is-header-visible="true"
                 :is-basic-filter="true"
                 @pagination="onPaginationChange"
-                @column-sort="onColumnSortChange"
+                @sort-column="onColumnSortChange"
                 @filter="onFilterChange"
                 @remove-all-filters="onRemoveAllFilters">
                 <template #actionsHeader>
@@ -44,6 +44,9 @@ import {
     DEFAULT_GRID_PAGINATION,
 } from '@Core/defaults/grid';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
+import {
+    getParsedFilters,
+} from '@Core/models/mappers/gridDataMapper';
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
@@ -116,7 +119,7 @@ export default {
         onFilterChange(filters) {
             this.filterValues = filters;
             this.pagination.page = 1;
-            this.localParams.filter = filters;
+            this.localParams.filter = getParsedFilters(filters);
             this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
             this.onFetchData();
@@ -124,26 +127,32 @@ export default {
         onRemoveAllFilters() {
             this.filterValues = {};
             this.pagination.page = 1;
-            this.localParams.filter = {};
+            this.localParams.filter = '';
             this.localParams.offset = 0;
 
             this.onFetchData();
         },
-        onColumnSortChange(sortedColumn) {
-            this.localParams.sortedColumn = sortedColumn;
+        onColumnSortChange(sortOrder) {
+            this.localParams.sortOrder = sortOrder;
 
             this.onFetchData();
         },
         async onFetchData() {
+            const {
+                sortOrder = {}, ...rest
+            } = this.localParams;
+
+            const params = {
+                ...rest,
+                ...sortOrder,
+            };
+
             await getGridData({
                 $route: this.$route,
                 $cookies: this.$cookies,
                 $axios: this.$axios,
                 path: `sources/${this.sourceId}/imports/${this.importId}/errors`,
-                params: {
-                    ...this.localParams,
-                    extended: true,
-                },
+                params,
                 onSuccess: this.onFetchGridDataSuccess,
                 onError: this.onFetchGridDataError,
             });
@@ -153,6 +162,7 @@ export default {
                 type: ALERT_TYPE.ERROR,
                 message: 'Grid data haven’t been fetched properly',
             });
+
             this.isPrefetchingData = false;
         },
         onFetchGridDataSuccess({

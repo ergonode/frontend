@@ -49,6 +49,7 @@
                     :errors="errors"
                     :disabled-rows="disabledRows"
                     :filters="filters"
+                    :sort-order="sortOrder"
                     :pagination="pagination"
                     :row-height="tableLayoutConfig.rowHeight"
                     :extended-components="extendedComponents[gridLayout.TABLE]"
@@ -56,7 +57,7 @@
                     :is-editable="isEditable"
                     :is-select-column="isSelectColumn"
                     :is-basic-filter="isBasicFilter"
-                    @sort="onSortColumn"
+                    @sort-column="onSortColumn"
                     @filter="onFilterChange"
                     @cell-value="onCellValueChange"
                     @focus-cell="onFocusCell"
@@ -104,6 +105,7 @@
                 <slot name="appendFooter" />
             </slot>
         </GridFooter>
+        <slot />
     </div>
 </template>
 
@@ -111,6 +113,7 @@
 import {
     COLUMNS_NUMBER,
     DEFAULT_GRID_PAGINATION,
+    DEFAULT_PAGE,
     DRAGGED_ELEMENT,
     GRID_LAYOUT,
     IMAGE_SCALING,
@@ -302,6 +305,13 @@ export default {
             default: false,
         },
         /**
+         * The data model of sorted column
+         */
+        sortOrder: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
          * The data model of extended Grid components
          */
         extendedComponents: {
@@ -316,7 +326,6 @@ export default {
         return {
             layout: this.defaultLayout,
             isRenderingTableLayout: this.defaultLayout === GRID_LAYOUT.TABLE,
-            sortedColumn: {},
             collectionLayoutConfig: {
                 columnsNumber: COLUMNS_NUMBER.FOURTH_COLUMNS.value,
                 scaling: IMAGE_SCALING.FIT_TO_SIZE.value,
@@ -466,10 +475,8 @@ export default {
         onDropColumn(payload) {
             this.$emit('drop-column', payload);
         },
-        onSortColumn(sortedColumn) {
-            this.sortedColumn = sortedColumn;
-
-            this.$emit('column-sort', sortedColumn);
+        onSortColumn(sortOrder) {
+            this.$emit('sort-column', sortOrder);
         },
         onRenderedTableLayout() {
             this.isRenderingTableLayout = false;
@@ -489,7 +496,7 @@ export default {
             if (number !== this.pagination.itemsPerPage) {
                 this.$emit('pagination', {
                     ...this.pagination,
-                    page: 1,
+                    page: DEFAULT_PAGE,
                     itemsPerPage: number,
                 });
             }

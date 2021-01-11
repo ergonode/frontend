@@ -63,7 +63,11 @@ export default {
         },
     },
     methods: {
-        onEdit() {
+        onEdit(event) {
+            if (event.which === 3) {
+                return;
+            }
+
             if (!this.isDisabled) {
                 const args = this.href.split('/');
 
