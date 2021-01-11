@@ -94,73 +94,77 @@ export default {
             'setDisabledElement',
         ]),
         onDragStart(event) {
-            if (this.items.length === 0) {
-                return;
-            }
-
             const backgroundItem = getBackgroundItem({
                 pageX: event.pageX,
                 pageY: event.pageY,
             });
 
-            if (backgroundItem) {
-                const {
-                    row,
-                    column,
-                } = backgroundItem;
-                const item = this.items[row];
-                const {
-                    id,
-                    code,
-                } = item;
-                const fixedColumn = Math.min(column, item.column);
-                const parent = getParent({
-                    items: this.items,
+            if (this.items.length === 0
+                || !backgroundItem
+                || backgroundItem.row >= this.items.length
+                || backgroundItem.column < this.items[backgroundItem.row].column
+                || backgroundItem.column > this.items[backgroundItem.row].column + 1) {
+                event.preventDefault();
+
+                return;
+            }
+
+            const {
+                row,
+                column,
+            } = backgroundItem;
+            const item = this.items[row];
+            const {
+                id,
+                code,
+            } = item;
+            const fixedColumn = Math.min(column, item.column);
+            const parent = getParent({
+                items: this.items,
+                row,
+                column: fixedColumn,
+            });
+
+            this.__setState({
+                key: 'draggedElement',
+                value: item,
+            });
+            this.__setState({
+                key: 'draggedElIndex',
+                value: row,
+            });
+            this.__setState({
+                key: 'ghostIndex',
+                value: {
                     row,
                     column: fixedColumn,
-                });
+                },
+            });
+            this.__setState({
+                key: 'isElementDragging',
+                value: DRAGGED_ELEMENT.TEMPLATE,
+            });
 
-                this.__setState({
-                    key: 'draggedElement',
-                    value: item,
-                });
-                this.__setState({
-                    key: 'draggedElIndex',
-                    value: row,
-                });
-                this.__setState({
-                    key: 'ghostIndex',
-                    value: {
-                        row,
-                        column: fixedColumn,
-                    },
-                });
-                this.__setState({
-                    key: 'isElementDragging',
-                    value: DRAGGED_ELEMENT.TEMPLATE,
-                });
+            addElementCopyToDocumentBody({
+                event,
+                id,
+                label: code,
+            });
 
-                addElementCopyToDocumentBody({
-                    event,
-                    id,
-                    label: code,
-                });
+            this.$emit('update-item', {
+                index: this.ghostIndex.row,
+                item: {
+                    id: 'ghost_item',
+                    row,
+                    column: fixedColumn,
+                    parent: parent.id,
+                },
+            });
 
-                this.$emit('update-item', {
-                    index: this.ghostIndex.row,
-                    item: {
-                        id: 'ghost_item',
-                        row,
-                        column: fixedColumn,
-                        parent: parent.id,
-                    },
-                });
+            if (typeof this.hiddenItems[id] === 'undefined' && this.childrenLength[item.id]) {
+                this.wasItemExpanded = true;
 
-                if (typeof this.hiddenItems[id] === 'undefined' && this.childrenLength[item.id]) {
-                    this.wasItemExpanded = true;
-
-                    this.$emit('expand-item', item);
-                }
+                this.$emit('expand-item', item);
             }
         },
         onDrop(event) {

@@ -52,27 +52,9 @@ describe('Navigation/MenuListElement', () => {
         expect(MenuListElement.name).toEqual('MenuListElement');
     });
 
-    describe('mouseover event', () => {
-        beforeEach(() => {
-            const onMouseEnter = jest.fn();
-            wrapper.setMethods({
-                onMouseEnter,
-            });
-            wrapper.find('.menu-list-element').trigger('mouseover');
-        });
-
-        it('Element is not selected', () => {
-            wrapper.setProps({
-                item: {
-                    title: 'Categories',
-                    routing: '/categories',
-                    icon: 'categories',
-                },
-            });
-
-            expect(wrapper.vm.isSelected).toBeFalsy();
-            // FIXME: Data is not changed - WHY ? No idea..
-            // expect(wrapper.vm.isHover).toBeTruthy();
+    describe('mouseenter event', () => {
+        beforeEach(async () => {
+            await wrapper.trigger('mouseenter');
         });
 
         it('Element is selected', () => {
@@ -81,13 +63,14 @@ describe('Navigation/MenuListElement', () => {
         });
     });
 
-    it('mouseout event', () => {
-        const onMouseLeave = jest.fn();
-        wrapper.setMethods({
-            onMouseLeave,
+    describe('mouseleave event', () => {
+        beforeEach(async () => {
+            await wrapper.trigger('mouseleave');
         });
-        wrapper.find('.menu-list-element').trigger('mouseout');
-        expect(onMouseLeave).toHaveBeenCalled();
-        expect(wrapper.vm.isHover).toBeFalsy();
+
+        it('Element is selected', () => {
+            expect(wrapper.vm.isSelected).toBeTruthy();
+            expect(wrapper.vm.isHover).toBeFalsy();
+        });
     });
 });
