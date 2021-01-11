@@ -7,7 +7,9 @@
         :title="$t('attribute.sideBar.searchHeader')"
         :items="groupedAttributesByLanguage"
         :expanded="expandedGroup"
-        :searchable="true">
+        :searchable="true"
+        :search-value="searchValue"
+        @search="onSearch">
         <template #header>
             <ListSearchSelectHeader
                 v-if="isSelectLanguage"
@@ -222,6 +224,8 @@ export default {
             languageCode,
             limit = 99999,
         }) {
+            this.addUnassignedGroup(languageCode);
+
             await Promise.all([
                 getGroups({
                     $axios: this.$axios,
@@ -249,17 +253,16 @@ export default {
             groups,
             languageCode,
         }) {
-            this.groupedAttributes[languageCode] = groups;
-
-            this.addUnassignedGroup(languageCode);
+            this.groupedAttributes[languageCode] = [
+                ...groups,
+                ...this.groupedAttributes[languageCode],
+            ];
         },
         onFetchUnassignedGroupItemsSuccess({
             items,
             info,
             languageCode,
         }) {
-            this.addUnassignedGroup(languageCode);
-
             const unassignedGroupIndex = this.groupedAttributes[languageCode].findIndex(
                 group => group.id === UNASSIGNED_GROUP_ID,
             );
@@ -268,6 +271,10 @@ export default {
             this.groupedAttributes[languageCode][unassignedGroupIndex].itemsCount = info.filtered;
         },
         addUnassignedGroup(languageCode) {
+            if (typeof this.groupedAttributes[languageCode] === 'undefined') {
+                this.groupedAttributes[languageCode] = [];
+            }
+
             const isUnassignedGroup = this.groupedAttributes[languageCode].some(
                 group => group.id === UNASSIGNED_GROUP_ID,
             );

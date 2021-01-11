@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## CHANGELOG FOR v1.0.0-beta.7
+
+- feature [#623](https://github.com/ergonode/frontend/pull/623) Remove drafts (derpdead)
+- feature [#624](https://github.com/ergonode/frontend/pull/624) Add support for routing query params (derpdead)
+- feature [#625](https://github.com/ergonode/frontend/pull/625) Sidebar DOM virtualization (derpdead)
+- performance [#629](https://github.com/ergonode/frontend/pull/629) Performance / vuems integration (bleto)
+- bugfix [#626](https://github.com/ergonode/frontend/pull/626) Enabling sorting based on localParams (derpdead)
+- bugfix [#627](https://github.com/ergonode/frontend/pull/627) Add additional validation for fetching user avatar (derpdead)
+- bugfix [#630](https://github.com/ergonode/frontend/pull/630) RTE empty paragraph, grid media / import details crash (derpdead)
+
 ## CHANGELOG FOR v1.0.0-beta.6
 
 - feature [#600](https://github.com/ergonode/frontend/pull/600) Added async dictionaries (derpdead)

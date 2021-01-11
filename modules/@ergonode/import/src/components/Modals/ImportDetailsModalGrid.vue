@@ -45,6 +45,9 @@ import {
 } from '@Core/defaults/grid';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import {
+    getParsedFilters,
+} from '@Core/models/mappers/gridDataMapper';
+import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
 import Grid from '@UI/components/Grid/Grid';
@@ -116,7 +119,7 @@ export default {
         onFilterChange(filters) {
             this.filterValues = filters;
             this.pagination.page = 1;
-            this.localParams.filter = filters;
+            this.localParams.filter = getParsedFilters(filters);
             this.localParams.offset = (this.pagination.page - 1) * this.pagination.itemsPerPage;
 
             this.onFetchData();
@@ -124,7 +127,7 @@ export default {
         onRemoveAllFilters() {
             this.filterValues = {};
             this.pagination.page = 1;
-            this.localParams.filter = {};
+            this.localParams.filter = '';
             this.localParams.offset = 0;
 
             this.onFetchData();
