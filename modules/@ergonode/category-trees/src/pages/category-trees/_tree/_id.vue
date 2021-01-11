@@ -81,11 +81,15 @@ export default {
         },
     },
     beforeDestroy() {
+        this.__clearListStorage();
         this.__clearStorage();
         this.__clearTranslationsStorage();
         this.__clearFeedbackStorage();
     },
     methods: {
+        ...mapActions('list', {
+            __clearListStorage: '__clearStorage',
+        }),
         ...mapActions('categoryTree', [
             '__clearStorage',
         ]),

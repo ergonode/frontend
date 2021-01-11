@@ -4,7 +4,6 @@
  */
 import {
     DEFAULT_GAP,
-    DEFAULT_ROW_HEIGHT,
 } from '@UI/components/Designer/__tests__/__mocks__/index';
 import DesignerItem from '@UI/components/Designer/DesignerItem';
 import {
