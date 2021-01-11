@@ -11,7 +11,7 @@ import {
 import {
     getMappedTree,
     getParsedTree,
-} from '@Core/models/mappers/treeMapper';
+} from '@Core/models/mappers/treeDesignerMapper';
 
 expect.extend({
     toContainObject(received, argument) {
@@ -33,7 +33,7 @@ expect.extend({
     },
 });
 
-describe('treeMapper/getMappedTree', () => {
+describe('treeDesignerMapper/getMappedTree', () => {
     it('Based on API data, map data to tree designer structure', () => {
         const result = getMappedTree({
             data: apiData,
@@ -80,7 +80,7 @@ describe('treeMapper/getMappedTree', () => {
     });
 });
 
-describe('treeMapper/getParsedTree', () => {
+describe('treeDesignerMapper/getParsedTree', () => {
     it('Based on API data, map data to tree designer structure', () => {
         const result = getParsedTree({
             data: mappedTree,

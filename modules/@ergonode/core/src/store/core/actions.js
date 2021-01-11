@@ -7,7 +7,7 @@ import {
 } from '@Core/defaults/alerts';
 import {
     getMappedTree,
-} from '@Core/models/mappers/treeMapper';
+} from '@Core/models/mappers/treeDesignerMapper';
 import {
     getAll as getAllLanguages,
     update as updateLanguage,

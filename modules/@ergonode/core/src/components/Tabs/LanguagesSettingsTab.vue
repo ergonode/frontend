@@ -49,7 +49,7 @@ import {
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import {
     getParsedTree,
-} from '@Core/models/mappers/treeMapper';
+} from '@Core/models/mappers/treeDesignerMapper';
 import {
     GRAPHITE_LIGHT,
 } from '@UI/assets/scss/_js-variables/colors.scss';

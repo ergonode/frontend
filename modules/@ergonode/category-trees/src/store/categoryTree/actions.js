@@ -11,7 +11,7 @@ import {
 import {
     getMappedTree,
     getParsedTree,
-} from '@Core/models/mappers/treeMapper';
+} from '@Core/models/mappers/treeDesignerMapper';
 import {
     create,
     get,
