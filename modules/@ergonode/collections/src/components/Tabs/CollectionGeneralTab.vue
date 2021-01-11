@@ -45,9 +45,6 @@ export default {
         ...mapActions('collection', [
             'updateCollection',
         ]),
-        ...mapActions('grid', [
-            'setDrafts',
-        ]),
         async onSubmit() {
             if (this.isSubmitting) {
                 return;
@@ -55,7 +52,6 @@ export default {
             this.isSubmitting = true;
 
             this.removeScopeErrors(this.scope);
-            this.setDrafts();
 
             this.updateCollection({
                 scope: this.scope,
