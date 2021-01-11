@@ -3,6 +3,11 @@
  * See LICENSE for license details.
  */
 import {
+    getElementHeight,
+    getElementMinHeight,
+    getElementMinWidth,
+    getElementWidth,
+    getGapsValue,
     getHighlightingPositions,
     getMaxColumnForGivenRow,
     getMaxRowForGivenColumn,
@@ -79,8 +84,7 @@ test('Highlight positions to resize at', () => {
         layoutHeight,
     });
 
-    expect(highlightingPositions.length)
-        .toEqual(elementBounds.column * elementBounds.maxHeight);
+    expect(highlightingPositions.length).toEqual(8);
 
     elements = [
         {
@@ -96,15 +100,9 @@ test('Highlight positions to resize at', () => {
             height: 1,
         },
         {
-            row: 4,
-            column: 3,
-            width: 1,
-            height: 5,
-        },
-        {
             row: 8,
             column: 1,
-            width: 5,
+            width: 3,
             height: 1,
         },
     ];
@@ -116,33 +114,7 @@ test('Highlight positions to resize at', () => {
         layoutHeight,
     });
 
-    expect(highlightingPositions.length).toEqual(9);
-
-    elements.push({
-        row: 6,
-        column: 3,
-        width: 1,
-        height: 1,
-    });
-
-    highlightingPositions = getHighlightingPositions({
-        elementBounds,
-        elements,
-        layoutWidth,
-        layoutHeight,
-    });
-
-    expect(highlightingPositions.length).toEqual(5);
-
-    highlightingPositions = getHighlightingPositions({
-        elementBounds,
-        elements: [],
-        layoutWidth,
-        layoutHeight,
-    });
-
-    expect(highlightingPositions.length)
-        .toEqual(elementBounds.maxWidth * elementBounds.maxHeight);
+    expect(highlightingPositions.length).toEqual(6);
 });
 
 test('Getting max column (limited by obstacles - first obstacle met at column breaks iteration) for given row', () => {
@@ -166,12 +138,6 @@ test('Getting max column (limited by obstacles - first obstacle met at column br
             height: 1,
         },
         {
-            row: 4,
-            column: 5,
-            width: 1,
-            height: 5,
-        },
-        {
             row: 8,
             column: 1,
             width: 5,
@@ -190,7 +156,7 @@ test('Getting max column (limited by obstacles - first obstacle met at column br
     });
 
     expect(getMaxColumnForGivenRow(3, highlightingPositions, layoutWidth)).toEqual(2);
-    expect(getMaxColumnForGivenRow(5, highlightingPositions, layoutWidth)).toEqual(4);
+    expect(getMaxColumnForGivenRow(5, highlightingPositions, layoutWidth)).toEqual(3);
     expect(getMaxColumnForGivenRow(0, highlightingPositions, layoutWidth)).toEqual(2);
     expect(getMaxColumnForGivenRow(10, highlightingPositions, layoutWidth)).toEqual(2);
     expect(getMaxColumnForGivenRow(-1, highlightingPositions, layoutWidth)).toEqual(2);
@@ -251,4 +217,40 @@ test('Getting max row (limited by obstacles - first obstacle met at row breaks i
     expect(getMaxRowForGivenColumn(null, highlightingPositions, layoutHeight)).toEqual(5);
     expect(getMaxRowForGivenColumn(undefined, highlightingPositions, layoutHeight)).toEqual(5);
     expect(getMaxRowForGivenColumn(10, [], layoutHeight)).toEqual(0);
+});
+
+describe('Element is 3 tiles wide', () => {
+    const width = 3;
+    const minWidth = 48;
+    const gap = 8;
+
+    it('Gaps', () => {
+        expect(getGapsValue(gap, width)).toEqual(32);
+    });
+
+    it('Width', () => {
+        expect(getElementWidth(minWidth, width, gap)).toEqual(176);
+    });
+
+    it('Min width', () => {
+        expect(getElementMinWidth(176, width, 8)).toEqual(minWidth);
+    });
+});
+
+describe('Element is 3 tiles height', () => {
+    const height = 3;
+    const minHeight = 48;
+    const gap = 8;
+
+    it('Gaps', () => {
+        expect(getGapsValue(gap, height)).toEqual(32);
+    });
+
+    it('Width', () => {
+        expect(getElementHeight(minHeight, height, gap)).toEqual(176);
+    });
+
+    it('Min width', () => {
+        expect(getElementMinHeight(176, height, 8)).toEqual(minHeight);
+    });
 });

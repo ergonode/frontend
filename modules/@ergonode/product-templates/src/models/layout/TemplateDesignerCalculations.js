@@ -9,7 +9,8 @@ const isObstacle = (obstacles, x, y) => obstacles.some(
 );
 const isObstacleInRangeOf = (obstacles, x, y, xRange, yRange) => obstacles.some((obstacle) => {
     const {
-        row, column,
+        row,
+        column,
     } = obstacle;
 
     return row >= y && row <= yRange && column >= x && column <= xRange;

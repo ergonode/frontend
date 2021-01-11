@@ -258,6 +258,10 @@ export default {
                 id,
             ];
 
+            if (this.localItems.some(item => item.id === id)) {
+                indexesToRemove.push(row);
+            }
+
             if (typeof this.hiddenItems[id] !== 'undefined') {
                 itemIds = [
                     ...itemIds,
@@ -266,14 +270,11 @@ export default {
 
                 delete this.hiddenItems[id];
             } else {
-                if (this.localItems.some(item => item.id === id)) {
-                    indexesToRemove.push(row);
-                }
-
                 let i = row + 1;
 
                 while (i < this.localItems.length && this.localItems[i].column > column) {
                     indexesToRemove.push(i);
+                    itemIds.push(this.localItems[i].id);
 
                     i += 1;
                 }
@@ -285,6 +286,8 @@ export default {
             });
 
             this.localItems = removeArrayIndexes(this.localItems, indexesToRemove);
+
+            console.log(itemIds, indexesToRemove);
 
             this.$emit('remove-items', itemIds);
             this.onValueChange();
