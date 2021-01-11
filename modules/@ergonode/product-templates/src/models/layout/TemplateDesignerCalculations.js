@@ -235,13 +235,17 @@ export function getHighlightingPositions({
 // Returning max column for given row.
 export function getMaxColumnForGivenRow(row, highlightingPositions, layoutWidth) {
     if (highlightingPositions.length > 0) {
-        return Math.min(highlightingPositions.reduce((max, bounds) => {
-            if (bounds.row === row) {
-                return bounds.column;
-            }
-            return max;
-        }, highlightingPositions[0].column), layoutWidth);
+        return Math.min(
+            highlightingPositions.reduce((max, bounds) => {
+                if (bounds.row === row) {
+                    return bounds.column;
+                }
+                return max;
+            }, highlightingPositions[0].column),
+            layoutWidth,
+        );
     }
+
     return 0;
 }
 
@@ -249,20 +253,36 @@ export function getMaxColumnForGivenRow(row, highlightingPositions, layoutWidth)
 // Returning max row for given column.
 export function getMaxRowForGivenColumn(column, highlightingPositions, layoutHeight) {
     if (highlightingPositions.length > 0) {
-        return Math.min(highlightingPositions.reduce((max, bounds) => {
-            if (bounds.column === column) {
-                return bounds.row;
-            }
-            return max;
-        }, highlightingPositions[0].row), layoutHeight);
+        return Math.min(
+            highlightingPositions.reduce((max, bounds) => {
+                if (bounds.column === column) {
+                    return bounds.row;
+                }
+                return max;
+            }, highlightingPositions[0].row),
+            layoutHeight,
+        );
     }
+
     return 0;
 }
 
-export function getColumnBasedOnWidth(width, elementMinWidth, elementColumn, gap) {
-    return Math.floor(width / (elementMinWidth + gap)) + elementColumn;
+export function getGapsValue(gap, count) {
+    return gap * ((count - 1) * 2);
 }
 
-export function getRowBasedOnHeight(height, elementMinHeight, elementRow, gap) {
-    return Math.floor(height / (elementMinHeight + gap)) + elementRow;
+export function getElementWidth(minWidth, width, gap) {
+    return (minWidth * width) + getGapsValue(gap, width);
+}
+
+export function getElementHeight(minHeight, height, gap) {
+    return (minHeight * height) + getGapsValue(gap, height);
+}
+
+export function getElementMinWidth(currentWidth, width, gap) {
+    return (currentWidth - getGapsValue(gap, width)) / width;
+}
+
+export function getElementMinHeight(currentHeight, height, gap) {
+    return (currentHeight - getGapsValue(gap, height)) / height;
 }

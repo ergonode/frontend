@@ -36,15 +36,16 @@ import {
     removeResizablePlaceholder,
     updateResizablePlaceholderHeight,
     updateResizablePlaceholderWidth,
-} from '@Templates/models/layout/GhostElement';
+} from '@Templates/models/layout/ResizablePlaceholder';
 import {
-    getColumnBasedOnWidth,
+    getElementHeight,
+    getElementMinHeight,
+    getElementMinWidth,
+    getElementWidth,
     getHighlightingLayoutDropPositions,
     getHighlightingPositions,
     getMaxColumnForGivenRow,
-    getMaxHeightBasedOnRow,
     getMaxRowForGivenColumn,
-    getRowBasedOnHeight,
 } from '@Templates/models/layout/TemplateDesignerCalculations';
 import {
     GREEN,
@@ -53,6 +54,9 @@ import {
     ELEVATOR_HOLE,
 } from '@UI/assets/scss/_js-variables/elevators.scss';
 import IconResize from '@UI/components/Icons/Others/IconResize';
+import {
+    getBackgroundItem,
+} from '@UI/models/designer/intex';
 import {
     getFixedMousePosition,
     isMouseOutsideElement,
@@ -230,17 +234,25 @@ export default {
             this.initElementBoundary();
             this.initElementStyleForResizeState();
 
-            // addResizablePlaceholder({
-            //     top: this.$el.offsetTop,
-            //     left: this.$el.offsetLeft,
-            //     width: this.startWidth,
-            //     height: this.startHeight,
-            //     boxShadow: ELEVATOR_HOLE,
-            //     backgroundColor: GREEN,
-            // });
+            addResizablePlaceholder({
+                top: this.$el.offsetTop,
+                left: this.$el.offsetLeft,
+                width: this.startWidth,
+                height: this.startHeight,
+                boxShadow: ELEVATOR_HOLE,
+                backgroundColor: GREEN,
+            });
 
-            this.minWidth = this.getElementMinWidth();
-            this.minHeight = this.getElementMinHeight();
+            this.minWidth = getElementMinWidth(
+                this.startWidth,
+                this.element.width,
+                this.gap,
+            );
+            this.minHeight = getElementMinHeight(
+                this.startHeight,
+                this.element.height,
+                this.gap,
+            );
 
             registerResizeEventListeners().then((response) => {
                 response.default(this.onResize, this.onStopResizing);
@@ -255,8 +267,24 @@ export default {
             const width = this.getElementWidthBasedOnMouseXPosition(pageX);
             const height = this.getElementHeightBasedOnMouseYPosition(pageY);
 
-            this.updateElementWidth(width);
-            this.updateElementHeight(height);
+            const backgroundItem = getBackgroundItem({
+                pageX,
+                pageY,
+                itemClass: 'template-designer-background-item',
+            });
+
+            let column = this.layoutWidth;
+            let row = this.layoutHeight;
+
+            if (backgroundItem) {
+                column = Math.min(backgroundItem.column, this.layoutWidth);
+                row = Math.min(backgroundItem.row, this.layoutHeight);
+            }
+
+            requestAnimationFrame(() => {
+                this.updateElementWidth(width, column);
+                this.updateElementHeight(height, row);
+            });
         },
         onStopResizing() {
             this.updateLayoutElementAtIndex({
@@ -271,7 +299,7 @@ export default {
             this.resetElementStyleForEndResizeInteraction();
             this.resetDataForEndResizeInteraction();
 
-            // removeResizablePlaceholder();
+            removeResizablePlaceholder();
 
             unregisterResizeEventListeners().then((response) => {
                 response.default(this.onResize, this.onStopResizing);
@@ -285,78 +313,68 @@ export default {
         getElementHeightBasedOnMouseYPosition(yPos) {
             return this.startHeight + yPos - this.startY;
         },
-        getElementMinWidth() {
-            const {
-                width,
-            } = this.element;
-            return (this.startWidth - (this.gap * (width - 1))) / width;
-        },
-        getElementMinHeight() {
-            const {
-                height,
-            } = this.element;
-            return (this.startHeight - (this.gap * (height - 1))) / height;
-        },
-        updateElementWidth(width) {
-            const {
-                column,
-            } = this.element;
-            const columnBellowMouse = getColumnBasedOnWidth(width, this.minWidth, column, this.gap);
-
-            if (columnBellowMouse > this.layoutWidth - 1) {
-                return;
-            }
-
+        updateElementWidth(width, column) {
             const maxColumn = getMaxColumnForGivenRow(
                 this.actualElementRow,
                 this.highlightingPositions,
                 this.layoutWidth,
             );
+            const fixedWidth = maxColumn + 1 - this.element.column;
 
-            if (columnBellowMouse <= maxColumn) {
-                this.newWidth = columnBellowMouse - column + 1;
+            this.maxWidth = getElementWidth(
+                this.minWidth,
+                fixedWidth,
+                this.gap,
+            );
 
-                if (columnBellowMouse !== this.actualElementColumn) {
-                    const gapsValue = (this.gap * (this.newWidth - 1)) * 2;
-                    const fixedWidth = this.minWidth * this.newWidth
-                        + gapsValue;
+            if (width <= this.maxWidth && width >= this.minWidth) {
+                this.newWidth = column - this.element.column + 1;
 
-                    this.$el.style.width = `${fixedWidth}px`;
+                if (column !== this.actualElementColumn) {
+                    updateResizablePlaceholderWidth(getElementWidth(
+                        this.minWidth,
+                        this.newWidth,
+                        this.gap,
+                    ));
                 }
 
-                this.actualElementColumn = columnBellowMouse;
+                this.$el.style.width = `${width}px`;
+
+                this.actualElementColumn = column;
+            } else if (width < this.minWidth) {
+                this.$el.style.width = `${this.minWidth}px`;
             }
         },
-        updateElementHeight(height) {
-            const {
-                row,
-            } = this.element;
-            const rowBellowMouse = getRowBasedOnHeight(height, this.minHeight, row, this.gap);
-
-            if (rowBellowMouse > this.layoutHeight - 1) {
-                return;
-            }
-
+        updateElementHeight(height, row) {
             const maxRow = getMaxRowForGivenColumn(
                 this.actualElementColumn,
                 this.highlightingPositions,
                 this.layoutHeight,
             );
+            const fixedHeight = maxRow + 1 - this.element.row;
 
-            if (rowBellowMouse <= maxRow) {
-                this.newHeight = rowBellowMouse - row + 1;
+            this.maxHeight = getElementHeight(
+                this.minHeight,
+                fixedHeight,
+                this.gap,
+            );
 
-                if (rowBellowMouse !== this.actualElementRow) {
-                    const gapsValue = (this.gap * (this.newHeight - 1)) * 2;
-                    const fixedHeight = this.minHeight * this.newHeight + gapsValue;
+            if (height <= this.maxHeight && height >= this.minHeight) {
+                this.newHeight = row - this.element.row + 1;
 
-                    requestAnimationFrame(() => {
-                        console.log('updating height');
-                        this.$el.style.height = `${fixedHeight}px`;
-                    });
+                if (row !== this.actualElementRow) {
+                    updateResizablePlaceholderHeight(getElementHeight(
+                        this.minHeight,
+                        this.newHeight,
+                        this.gap,
+                    ));
                 }
 
-                this.actualElementRow = rowBellowMouse;
+                this.$el.style.height = `${height}px`;
+
+                this.actualElementRow = row;
+            } else if (height < this.minHeight) {
+                this.$el.style.height = `${this.minHeight}px`;
             }
         },
         blockOtherInteractionsOnResizeEvent() {
@@ -429,14 +447,10 @@ export default {
         transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         will-change:
             border-color,
-            box-shadow,
-            height,
-            width;
+            box-shadow;
         transition-property:
             border-color,
-            box-shadow,
-            height,
-            width;
+            box-shadow;
         cursor: grab;
 
         &:hover:not(&--resizing):not(&--disabled) {
@@ -458,6 +472,7 @@ export default {
 
         &--resizing {
             position: absolute;
+            z-index: 5;
             border: $BORDER_2_GREEN;
         }
 

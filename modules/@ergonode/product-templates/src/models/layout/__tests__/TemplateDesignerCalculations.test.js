@@ -3,12 +3,10 @@
  * See LICENSE for license details.
  */
 import {
-    getColumnBasedOnWidth,
     getHighlightingPositions,
     getMaxColumnForGivenRow,
     getMaxRowForGivenColumn,
     getObstaclePositionsForElement,
-    getRowBasedOnHeight,
 } from '../TemplateDesignerCalculations';
 
 test('Element has correct number of obstacle points', () => {
@@ -253,16 +251,4 @@ test('Getting max row (limited by obstacles - first obstacle met at row breaks i
     expect(getMaxRowForGivenColumn(null, highlightingPositions, layoutHeight)).toEqual(5);
     expect(getMaxRowForGivenColumn(undefined, highlightingPositions, layoutHeight)).toEqual(5);
     expect(getMaxRowForGivenColumn(10, [], layoutHeight)).toEqual(0);
-});
-
-test('Getting normalized column', () => {
-    const normalizedColumn = getColumnBasedOnWidth(100, 50, 2, 16);
-
-    expect(normalizedColumn).toEqual(3);
-});
-
-test('Getting normalized row', () => {
-    const normalizedRow = getRowBasedOnHeight(100, 50, 2, 16);
-
-    expect(normalizedRow).toEqual(3);
 });
