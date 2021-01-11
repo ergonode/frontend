@@ -74,7 +74,7 @@ export default {
         box-sizing: border-box;
         background-color: $GREY_LIGHT;
         box-shadow: $ELEVATOR_HOLE;
-        color: $GRAPHITE_DARK;
+        color: $GRAPHITE;
         font: $FONT_BOLD_12_16;
         text-transform: uppercase;
         padding-left: 12px;

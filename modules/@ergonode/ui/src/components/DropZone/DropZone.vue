@@ -151,6 +151,7 @@ export default {
     box-sizing: border-box;
     background-color: $GREY_LIGHT;
     box-shadow: $ELEVATOR_HOLE;
+    color: $GRAPHITE;
     font: $FONT_BOLD_12_16;
 }
 </style>
