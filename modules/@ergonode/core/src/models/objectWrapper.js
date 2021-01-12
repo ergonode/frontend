@@ -16,6 +16,15 @@ export function getKeyByValue(object, value) {
 }
 
 /**
+ * Returns cloned data structure
+ * @param any
+ * @returns {any}
+ */
+export function deepClone(any) {
+    return JSON.parse(JSON.stringify(any));
+}
+
+/**
  * Returns array from object
  * @function
  * @param {Object} object

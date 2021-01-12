@@ -39,6 +39,9 @@ import AttributeSideBarElement from '@Attributes/components/SideBars/AttributeSi
 import PRIVILEGES from '@Attributes/config/privileges';
 import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
 import {
+    deepClone,
+} from '@Core/models/objectWrapper';
+import {
     getItems,
 } from '@Core/services/sidebar';
 import ListSearchSelectHeader from '@UI/components/List/ListSearchSelectHeader';
@@ -72,6 +75,7 @@ export default {
         return {
             isPrefetchingData: true,
             attributes: {},
+            attributesBeforeSearch: {},
             languageCode: '',
             searchValue: '',
         };
@@ -131,9 +135,18 @@ export default {
             };
         },
         async onSearch(value) {
+            if (this.searchValue === '') {
+                this.attributesBeforeSearch = deepClone(this.attributes);
+            }
+
             this.searchValue = value;
 
-            await this.getItems();
+            if (value !== '') {
+                await this.getItems();
+            } else {
+                this.attributes = deepClone(this.attributesBeforeSearch);
+                this.attributesBeforeSearch = {};
+            }
         },
         async onSelectLanguage(value) {
             this.languageCode = value;

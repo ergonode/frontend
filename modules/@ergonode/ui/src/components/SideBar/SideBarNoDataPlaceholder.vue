@@ -4,11 +4,10 @@
  */
 <template>
     <Placeholder
-        :orientation="orientation"
         :title="title"
+        :orientation="horizontalOrientation"
         :subtitle="subtitle"
-        :bg-url="bgUrl"
-        :color="color">
+        :size="smallSize">
         <template #action>
             <slot name="action" />
         </template>
@@ -20,24 +19,16 @@ import {
     ORIENTATION,
 } from '@Core/defaults/layout';
 import {
-    WHITESMOKE,
-} from '@UI/assets/scss/_js-variables/colors.scss';
+    SIZE,
+} from '@Core/defaults/theme';
 import Placeholder from '@UI/components/Placeholder/Placeholder';
 
 export default {
-    name: 'WidgetPlaceholder',
+    name: 'SideBarNoDataPlaceholder',
     components: {
         Placeholder,
     },
     props: {
-        /**
-         * Determines position of body components; vertical / horizontal
-         */
-        orientation: {
-            type: String,
-            default: ORIENTATION.HORIZONTAL,
-            validator: value => Object.values(ORIENTATION).indexOf(value) !== -1,
-        },
         /**
          * The title of the component
          */
@@ -52,20 +43,18 @@ export default {
             type: String,
             default: 'There are no records in the system.',
         },
-        /**
-         * The url to background image of placeholder
-         */
-        bgUrl: {
-            type: String,
-            default: require('@UI/assets/images/placeholders/comments.svg'),
+    },
+    computed: {
+        smallSize() {
+            return SIZE.SMALL;
         },
-        /**
-         * Color of background
-         */
-        color: {
-            type: String,
-            default: WHITESMOKE,
-            validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
+        horizontalOrientation() {
+            return ORIENTATION.HORIZONTAL;
+        },
+    },
+    methods: {
+        onClearSearch() {
+            this.$emit('clear');
         },
     },
 };

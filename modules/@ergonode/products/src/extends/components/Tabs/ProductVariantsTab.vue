@@ -22,7 +22,7 @@
 
 <script>
 import {
-    LAYOUT_ORIENTATION,
+    ORIENTATION,
 } from '@Core/defaults/layout';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
@@ -61,14 +61,14 @@ export default {
         listPlaceholder() {
             return {
                 style: 'width: 560px; max-height: 280px; margin-top: 24px; align-self: center',
-                layoutOrientation: this.horizontalOrientation,
+                orientation: this.horizontalOrientation,
                 title: 'No binding attributes',
                 subtitle: 'Binding attribute is the common attribute of the products, which link products together into the product with variants.',
                 bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
             };
         },
         horizontalOrientation() {
-            return LAYOUT_ORIENTATION.HORIZONTAL;
+            return ORIENTATION.HORIZONTAL;
         },
     },
     async created() {
