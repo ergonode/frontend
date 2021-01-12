@@ -6,11 +6,14 @@
     <SideBar
         :title="$t('attribute.sideBar.searchHeader2')"
         :items="attributesByLanguage"
-        :searchable="true">
+        :searchable="true"
+        :search-value="searchValue"
+        @search="onSearch">
         <template #header>
             <ListSearchSelectHeader
                 v-if="isSelectLanguage"
                 :title="$t('attribute.sideBar.searchHeader2')"
+                :search-value="searchValue"
                 @search="onSearch">
                 <template #select>
                     <LanguageTreeSelect

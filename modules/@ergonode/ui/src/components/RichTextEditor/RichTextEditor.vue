@@ -309,7 +309,16 @@ export default {
             this.editorWidth = 0;
 
             if (!this.disabled) {
-                this.$emit('blur', this.editor.getHTML());
+                // TODO:
+                // It will be fixed in +2.0 tiptap
+
+                let html = this.editor.getHTML();
+
+                if (html === '<p></p>') {
+                    html = null;
+                }
+
+                this.$emit('blur', html);
             }
         },
         onMouseDown(event) {

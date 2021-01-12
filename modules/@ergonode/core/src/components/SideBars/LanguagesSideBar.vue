@@ -7,6 +7,7 @@
         title="System languages"
         :items="filteredLanguages"
         :searchable="true"
+        :search-value="searchValue"
         @search="onSearch">
         <template #item="{ item }">
             <LanguageSideBarElement
