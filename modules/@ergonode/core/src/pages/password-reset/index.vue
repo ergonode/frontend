@@ -5,9 +5,7 @@
 <template>
     <Login @redirect-to="onRedirectTo">
         <NewPasswordForm />
-        <img
-            class="login__infographic"
-            :src="require('@Core/assets/images/login/login_new_password_face.png')">
+        <Infographic :src="require('@Core/assets/images/login/login_new_password_face.png')" />
     </Login>
 </template>
 
@@ -17,6 +15,7 @@ import Login from '@Authentication/components/Layout/Login';
 import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
+import Infographic from '@Core/components/Infographic/Infographic';
 import {
     ROUTE_NAME,
 } from '@Core/config/routes';
@@ -29,6 +28,7 @@ export default {
     components: {
         NewPasswordForm,
         Login,
+        Infographic,
     },
     async fetch({
         app,

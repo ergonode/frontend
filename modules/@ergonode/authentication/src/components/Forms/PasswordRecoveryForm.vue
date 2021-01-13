@@ -14,7 +14,7 @@
                     <IconArrowPointer :fill-color="color" />
                 </template>
             </Fab>
-            <FormHeader :text="$t('authentication.forms.passwordRecovery.title')" />
+            <FormHeader :title="$t('authentication.forms.passwordRecovery.title')" />
         </template>
         <template #body>
             <FormParagraph :text="$t('authentication.forms.passwordRecovery.info')" />

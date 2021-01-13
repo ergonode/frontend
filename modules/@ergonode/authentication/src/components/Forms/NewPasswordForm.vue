@@ -9,10 +9,10 @@
         :errors="errors"
         @submit="onSubmit">
         <template #header>
-            <FormHeader :text="$t('authentication.forms.newPassword.title')" />
+            <FormHeader :title="$t('authentication.forms.newPassword.title')" />
         </template>
         <template #body>
-            <div class="new-password-form__info">
+            <div>
                 <FormParagraph :text="$t('authentication.forms.newPassword.info')" />
                 <List>
                     <ListElement
@@ -58,7 +58,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'PasswordRecoveryForm',
+    name: 'NewPasswordForm',
     components: {
         FormHeader,
         FormParagraph,
@@ -77,7 +77,6 @@ export default {
             isPasswordVisible: false,
             isSubmitting: false,
             maxLength: 6,
-
         };
     },
     computed: {
@@ -181,12 +180,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .new-password-form {
-        &__info {
-            color: $GRAPHITE_DARK;
-            font: $FONT_MEDIUM_14_20;
-        }
-    }
-</style>

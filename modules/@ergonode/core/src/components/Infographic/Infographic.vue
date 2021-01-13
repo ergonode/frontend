@@ -3,26 +3,26 @@
  * See LICENSE for license details.
  */
 <template>
-    <h2
-        class="form-header"
-        v-text="title" />
+    <img
+        class="infographic"
+        :src="src">
 </template>
-
 <script>
 export default {
-    name: 'FormHeader',
+    name: 'Infographic',
     props: {
-        title: {
+        src: {
             type: String,
             required: true,
         },
     },
 };
 </script>
-
 <style lang="scss" scoped>
-    .form-header {
-        color: $GRAPHITE_DARK;
-        font: $FONT_SEMI_BOLD_20_24;
+    .infographic {
+        z-index: $Z_INDEX_LVL_1;
+        width: 460px;
+        height: 360px;
+        margin-left: 64px;
     }
 </style>

@@ -8,9 +8,7 @@
         <Component
             :is="loginFormComponents.loginFormComponent"
             @redirect-to="onRedirectTo" />
-        <img
-            class="login__infographic"
-            :src="loginFormComponents.formImage">
+        <Infographic :src="loginFormComponents.formImage" />
     </Login>
 </template>
 
@@ -23,6 +21,7 @@ import {
 import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
+import Infographic from '@Core/components/Infographic/Infographic';
 import {
     mapActions,
     mapState,
@@ -32,6 +31,7 @@ export default {
     name: 'LoginPage',
     components: {
         Login,
+        Infographic,
     },
     data() {
         return {

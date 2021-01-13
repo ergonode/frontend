@@ -5,10 +5,7 @@
 <template>
     <main class="login">
         <section class="login__body">
-            <span
-                v-if="showReleaseInfo"
-                class="release-info"
-                v-text="showReleaseInfo" />
+            <GitInformation />
             <FluidBlob />
             <slot />
         </section>
@@ -41,9 +38,7 @@ import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
 import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
-import {
-    DEFAULT_DATA_HOUR_FORMAT,
-} from '@Core/defaults/date';
+import GitInformation from '@Core/components/ReleaseInfo/GitInformation';
 import {
     SIZE,
 } from '@Core/defaults/theme';
@@ -54,15 +49,13 @@ import FluidBlob from '@UI/components/FluidBlob/FluidBlob';
 import Footer from '@UI/components/Layout/Footer/Footer';
 import LinkButton from '@UI/components/LinkButton/LinkButton';
 import Select from '@UI/components/Select/Select';
-import {
-    format as formatDate,
-} from 'date-fns';
 
 export default {
     name: 'Login',
     components: {
         LinkButton,
         Footer,
+        GitInformation,
         IconLogoName,
         FluidBlob,
         Select,
@@ -74,16 +67,6 @@ export default {
         };
     },
     computed: {
-        showReleaseInfo() {
-            const releaseVersion = process.env.VUE_APP_VERSION;
-            const gitInfo = process.env.VUE_APP_GIT_INFO;
-
-            if (!process.env.SHOW_RELEASE_INFO) return null;
-
-            return `Commit hash: ${gitInfo.abbreviatedSha}
-            Date: ${formatDate(new Date(gitInfo.committerDate), DEFAULT_DATA_HOUR_FORMAT)}
-            Release: v${releaseVersion}`;
-        },
         smallSize() {
             return SIZE.SMALL;
         },
@@ -127,24 +110,6 @@ export default {
             flex: 1;
             justify-content: center;
             align-items: center;
-
-            .release-info {
-                position: absolute;
-                top: 0;
-                right: 0;
-                padding: 10px;
-                white-space: pre-wrap;
-                color: $GREY_DARK;
-                font: $FONT_MEDIUM_12_16;
-                text-align: right;
-            }
-        }
-
-        &__infographic {
-            z-index: $Z_INDEX_LVL_1;
-            width: 460px;
-            height: 360px;
-            margin-left: 64px;
         }
 
         &__footer-logo {

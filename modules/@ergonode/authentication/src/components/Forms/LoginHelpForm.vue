@@ -12,7 +12,7 @@
                     <IconArrowPointer :fill-color="color" />
                 </template>
             </Fab>
-            <FormHeader :text="$t('authentication.forms.help.title')" />
+            <FormHeader :title="$t('authentication.forms.help.title')" />
         </template>
         <template #body>
             <FormParagraph :text="$t('authentication.forms.help.info')" />
