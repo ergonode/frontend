@@ -21,7 +21,17 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
-        @remove-all-filters="onRemoveAllFilters" />
+        @remove-all-filters="onRemoveAllFilters">
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                :title="$t('transition.grid.placeholderTitle')"
+                :subtitle="$t('transition.grid.placeholderSubtitle')">
+                <template #action>
+                    <CreateStatusTransitionButton />
+                </template>
+            </GridNoDataPlaceholder>
+        </template>
+    </Grid>
 </template>
 
 <script>
@@ -51,11 +61,15 @@ import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Grid from '@UI/components/Grid/Grid';
+import GridNoDataPlaceholder from "@UI/components/Grid/GridNoDataPlaceholder";
+import CreateStatusTransitionButton from "@Transitions/components/Buttons/CreateStatusTransitionButton";
 
 export default {
     name: 'TransitionsGrid',
     components: {
+        CreateStatusTransitionButton,
         Grid,
+        GridNoDataPlaceholder,
     },
     mixins: [
         extendedGridComponentsMixin,
@@ -98,7 +112,7 @@ export default {
         },
     },
     watch: {
-        $route(from, to) {
+        async $route(from, to) {
             if (from.name !== to.name) {
                 return;
             }
@@ -113,7 +127,9 @@ export default {
             this.pagination = pagination;
             this.sortOrder = sortOrder;
 
-            this.onFetchData();
+            await this.onFetchData();
+
+            this.isPrefetchingData = false;
         },
     },
     mounted() {
@@ -183,6 +199,8 @@ export default {
                     page: DEFAULT_PAGE,
                 },
             });
+
+            this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
             this.$router.replace({

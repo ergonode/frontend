@@ -173,6 +173,8 @@ export default {
             this.localParams.offset = 0;
 
             this.onFetchData();
+
+            // TODO: !!
         },
         onColumnSortChange(sortOrder) {
             this.localParams.sortOrder = sortOrder;

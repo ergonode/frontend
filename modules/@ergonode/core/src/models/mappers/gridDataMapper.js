@@ -156,23 +156,23 @@ export function getDefaultDataFromQueryParams($route) {
         query: {
             page = DEFAULT_PAGE,
             itemsPerPage = DATA_LIMIT,
-            filter = '',
-            advancedFilter = '',
-            field = '',
-            order = '',
+            filter,
+            advancedFilter,
+            field,
+            order,
         },
     } = $route;
 
     return {
-        filterValues: getMappedFilters(filter),
-        advancedFilterValues: getMappedFilters(advancedFilter),
+        filterValues: getMappedFilters(filter || ''),
+        advancedFilterValues: getMappedFilters(advancedFilter || ''),
         pagination: {
             page: +page,
             itemsPerPage: +itemsPerPage,
         },
         sortOrder: {
-            field,
-            order,
+            field: field || '',
+            order: order || '',
         },
     };
 }

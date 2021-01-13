@@ -21,7 +21,17 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
-        @remove-all-filters="onRemoveAllFilters" />
+        @remove-all-filters="onRemoveAllFilters">
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                :title="$t('segment.grid.placeholderTitle')"
+                :subtitle="$t('segment.grid.placeholderSubtitle')">
+                <template #action>
+                    <CreateSegmentButton />
+                </template>
+            </GridNoDataPlaceholder>
+        </template>
+    </Grid>
 </template>
 
 <script>
@@ -40,6 +50,7 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import CreateSegmentButton from '@Segments/components/Buttons/CreateSegmentButton';
 import PRIVILEGES from '@Segments/config/privileges';
 import {
     ROUTE_NAME,
@@ -51,11 +62,14 @@ import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Grid from '@UI/components/Grid/Grid';
+import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'SegmentsGrid',
     components: {
+        CreateSegmentButton,
         Grid,
+        GridNoDataPlaceholder,
     },
     mixins: [
         extendedGridComponentsMixin,
@@ -98,7 +112,7 @@ export default {
         },
     },
     watch: {
-        $route(from, to) {
+        async $route(from, to) {
             if (from.name !== to.name) {
                 return;
             }
@@ -113,7 +127,9 @@ export default {
             this.pagination = pagination;
             this.sortOrder = sortOrder;
 
-            this.onFetchData();
+            await this.onFetchData();
+
+            this.isPrefetchingData = false;
         },
     },
     mounted() {
@@ -182,6 +198,8 @@ export default {
                     page: DEFAULT_PAGE,
                 },
             });
+
+            this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
             this.$router.replace({

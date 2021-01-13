@@ -95,7 +95,7 @@ export default {
         },
     },
     watch: {
-        $route(from, to) {
+        async $route(from, to) {
             if (from.name !== to.name) {
                 return;
             }
@@ -110,7 +110,9 @@ export default {
             this.pagination = pagination;
             this.sortOrder = sortOrder;
 
-            this.onFetchData();
+            await this.onFetchData();
+
+            this.isPrefetchingData = false;
         },
     },
     mounted() {
@@ -179,6 +181,8 @@ export default {
                     page: DEFAULT_PAGE,
                 },
             });
+
+            this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
             this.$router.replace({

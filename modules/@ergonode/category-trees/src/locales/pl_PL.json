@@ -1,0 +1,30 @@
+{
+  "categoryTree": {
+    "page": {
+      "title": "",
+      "head": "",
+      "addButton": ""
+    },
+    "form": {
+      "noCategoryTreeButton": "IDŹ DO DRZEWA KATEGORII",
+      "noVisibleCategoriesInTreePlaceholderTitle": "Brak kategorii",
+      "noVisibleCategoriesInTreePlaceholderSubtitle": "Nie ma zaznaczonych kategorii dla wybranych kryteriów."
+    },
+    "advancedFilter": {
+      "label": "Drzewo kategorii"
+    },
+    "grid": {
+      "placeholderTitle": "Brak drzew kategorii",
+      "placeholderSubtitle": "W systemie nie ma drzew kategorii, stwórz pierwsze."
+    },
+    "messages": {
+        "deleteTitle": "",
+        "deleteConfirm": "",
+        "deleteSuccess": ""
+    },
+    "errors": {
+        "getRequest": "",
+        "deleteRequest": ""
+    }
+  }
+}

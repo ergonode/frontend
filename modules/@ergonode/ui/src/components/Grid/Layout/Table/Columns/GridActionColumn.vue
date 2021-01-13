@@ -20,7 +20,6 @@ export default {
         flex-shrink: 0;
         display: grid;
         width: 32px;
-        background-color: $WHITE;
 
         & > .grid-table-cell:nth-child(1) {
             position: sticky;

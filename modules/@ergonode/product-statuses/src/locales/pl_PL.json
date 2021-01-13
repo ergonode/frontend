@@ -1,0 +1,8 @@
+{
+    "productStatus": {
+        "grid": {
+            "placeholderTitle": "Brak statusów produktowych",
+            "placeholderSubtitle": "W systemie nie ma statusów produktowych, stwórz pierwszy."
+        }
+    }
+}

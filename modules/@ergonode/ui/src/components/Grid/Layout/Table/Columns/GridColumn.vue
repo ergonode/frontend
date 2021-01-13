@@ -58,7 +58,6 @@ export default {
         position: relative;
         display: grid;
         box-sizing: border-box;
-        background-color: $WHITE;
         will-change: width;
 
         & > .grid-table-cell:nth-child(1) {

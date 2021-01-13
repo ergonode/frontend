@@ -21,10 +21,21 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
-        @remove-all-filters="onRemoveAllFilters" />
+        @remove-all-filters="onRemoveAllFilters">
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                :title="$t('collection.grid.placeholderTitle')"
+                :subtitle="$t('collection.grid.placeholderSubtitle')">
+                <template #action>
+                    <CreateCollectionButton />
+                </template>
+            </GridNoDataPlaceholder>
+        </template>
+    </Grid>
 </template>
 
 <script>
+import CreateCollectionButton from '@Collections/components/Buttons/CreateCollectionButton';
 import PRIVILEGES from '@Collections/config/privileges';
 import {
     ROUTE_NAME,
@@ -48,11 +59,14 @@ import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
 import Grid from '@UI/components/Grid/Grid';
+import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'CollectionsGrid',
     components: {
+        CreateCollectionButton,
         Grid,
+        GridNoDataPlaceholder,
     },
     mixins: [
         extendedGridComponentsMixin,
@@ -87,7 +101,7 @@ export default {
         },
     },
     watch: {
-        $route(from, to) {
+        async $route(from, to) {
             if (from.name !== to.name) {
                 return;
             }
@@ -102,7 +116,9 @@ export default {
             this.pagination = pagination;
             this.sortOrder = sortOrder;
 
-            this.onFetchData();
+            await this.onFetchData();
+
+            this.isPrefetchingData = false;
         },
     },
     mounted() {
@@ -171,6 +187,8 @@ export default {
                     page: DEFAULT_PAGE,
                 },
             });
+
+            this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
             this.$router.replace({

@@ -25,7 +25,17 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
-        @remove-all-filters="onRemoveAllFilters" />
+        @remove-all-filters="onRemoveAllFilters">
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                :title="$t('productTemplate.grid.placeholderTitle')"
+                :subtitle="$t('productTemplate.grid.placeholderSubtitle')">
+                <template #action>
+                    <CreateProductTemplateButton />
+                </template>
+            </GridNoDataPlaceholder>
+        </template>
+    </Grid>
 </template>
 
 <script>
@@ -45,6 +55,7 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import CreateProductTemplateButton from '@Templates/components/Buttons/CreateProductTemplateButton';
 import PRIVILEGES from '@Templates/config/privileges';
 import {
     ROUTE_NAME,
@@ -56,11 +67,14 @@ import {
     WHITESMOKE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Grid from '@UI/components/Grid/Grid';
+import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'ProductTemplatesGrid',
     components: {
+        CreateProductTemplateButton,
         Grid,
+        GridNoDataPlaceholder,
     },
     mixins: [
         extendedGridComponentsMixin,
@@ -112,7 +126,7 @@ export default {
         },
     },
     watch: {
-        $route(from, to) {
+        async $route(from, to) {
             if (from.name !== to.name) {
                 return;
             }
@@ -127,7 +141,9 @@ export default {
             this.pagination = pagination;
             this.sortOrder = sortOrder;
 
-            this.onFetchData();
+            await this.onFetchData();
+
+            this.isPrefetchingData = false;
         },
     },
     mounted() {
@@ -196,6 +212,8 @@ export default {
                     page: DEFAULT_PAGE,
                 },
             });
+
+            this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
             this.$router.replace({

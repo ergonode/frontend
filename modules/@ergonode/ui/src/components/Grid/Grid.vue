@@ -67,7 +67,7 @@
                         @swap-columns="onSwapColumns"
                         @row-select="onRowSelect" />
                     <GridCollectionLayout
-                        v-else
+                        v-else-if="isAnyData"
                         :rows="rows"
                         :row-ids="rowIds"
                         :collection-cell-binding="collectionCellBinding"
@@ -76,6 +76,7 @@
                         :columns-number="collectionLayoutConfig.columnsNumber"
                         :object-fit="collectionLayoutConfig.scaling"
                         :extended-components="extendedComponents[gridLayout.COLLECTION]"
+                        :is-prefetching-data="isPrefetchingData"
                         @row-action="onRowAction"
                         @cell-value="onCellValueChange" />
                 </KeepAlive>

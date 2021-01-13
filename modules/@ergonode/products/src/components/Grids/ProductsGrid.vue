@@ -723,8 +723,6 @@ export default {
             });
         },
         onRemoveAllFilters() {
-            this.isPrefetchingData = true;
-
             this.$router.replace({
                 query: {
                     ...this.$route.query,
@@ -733,6 +731,8 @@ export default {
                     page: DEFAULT_PAGE,
                 },
             });
+
+            this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
             this.$router.replace({
