@@ -31,7 +31,9 @@
           "searchHeader2": "Atrybuty systemowe",
           "group": {
               "notAssigned": "Nie przypisane"
-          }
+          },
+          "placeholderTitle": "Brak atrybutów",
+          "placeholderSubtitle": "W systemie nie ma atrybutów, stwórz pierwszy."
       },
       "translation": {
           "nameLabel": "Nazwa atrybutu",

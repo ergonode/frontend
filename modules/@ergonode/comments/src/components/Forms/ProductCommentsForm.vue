@@ -34,7 +34,7 @@
         </template>
         <template #placeholder>
             <ListPlaceholder
-                :layout-orientation="horizontalOrientation"
+                :orientation="horizontalOrientation"
                 title="No results"
                 subtitle="Here you can share information about the product with other people."
                 :bg-url="require('@UI/assets/images/placeholders/comments.svg')" />
@@ -66,7 +66,7 @@ import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
 import {
-    LAYOUT_ORIENTATION,
+    ORIENTATION,
 } from '@Core/defaults/layout';
 import {
     SIZE,
@@ -118,7 +118,7 @@ export default {
             return SIZE.SMALL;
         },
         horizontalOrientation() {
-            return LAYOUT_ORIENTATION.HORIZONTAL;
+            return ORIENTATION.HORIZONTAL;
         },
         showMoreText() {
             const {

@@ -21,14 +21,17 @@
         </template>
         <template #body>
             <slot name="body">
-                <DropdownPlaceholder
+                <slot
                     v-if="isSearchPlaceholderVisible"
-                    :title="placeholder.title"
-                    :subtitle="placeholder.subtitle">
-                    <template #action>
-                        <ClearSearchButton @click.native.stop="onClearSearch" />
-                    </template>
-                </DropdownPlaceholder>
+                    name="noResultsPlaceholder"
+                    :on-clear-search="onClearSearch">
+                    <SideBarNoResultsPlaceholder @clear="onClearSearch" />
+                </slot>
+                <slot
+                    v-else-if="isPlaceholderVisible"
+                    name="noDataPlaceholder">
+                    <SideBarNoDataPlaceholder />
+                </slot>
             </slot>
         </template>
         <template #footer>
@@ -48,9 +51,9 @@
 <script>
 
 import ListSearchHeader from '@UI/components/List/ListSearchHeader';
-import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import SideBarFooter from '@UI/components/SideBar/SideBarFooter';
+import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
+import SideBarNoResultsPlaceholder from '@UI/components/SideBar/SideBarNoResultsPlaceholder';
 import SideBarStickyHeader from '@UI/components/SideBar/SideBarStickyHeader';
 import {
     ExpandingList,
@@ -59,12 +62,12 @@ import {
 export default {
     name: 'SideBar',
     components: {
+        SideBarNoDataPlaceholder,
+        SideBarNoResultsPlaceholder,
         SideBarStickyHeader,
         SideBarFooter,
         ListSearchHeader,
         ExpandingList,
-        DropdownPlaceholder,
-        ClearSearchButton,
     },
     props: {
         /**
@@ -82,12 +85,8 @@ export default {
             default: '',
         },
         /**
-         * The placeholder is a helper text for the component
+         * List of items
          */
-        searchPlaceholder: {
-            type: String,
-            default: 'Search...',
-        },
         items: {
             type: Array,
             default: () => [],
@@ -116,12 +115,6 @@ export default {
         };
     },
     computed: {
-        placeholder() {
-            return {
-                title: 'No results',
-                subtitle: 'Clear the search and try with another phrase.',
-            };
-        },
         isAnyItem() {
             return this.items.length > 0;
         },
