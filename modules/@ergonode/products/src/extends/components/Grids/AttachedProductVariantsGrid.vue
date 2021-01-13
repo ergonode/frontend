@@ -11,7 +11,6 @@
         :sort-order="sortOrder"
         :filters="filterValues"
         :collection-cell-binding="collectionCellBinding"
-        :placeholder="gridPlaceholder"
         :pagination="pagination"
         :extended-components="extendedGridComponents"
         :is-editable="isAllowedToUpdate"

@@ -31,6 +31,7 @@ export default {
 
 <style lang="scss" scoped>
     .preloader {
+        z-index: $Z_INDEX_LVL_1;
         display: flex;
         flex: 1;
         justify-content: center;

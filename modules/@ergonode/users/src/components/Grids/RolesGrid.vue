@@ -10,7 +10,6 @@
         :sort-order="sortOrder"
         :filters="filterValues"
         :pagination="pagination"
-        :placeholder="noDataPlaceholder"
         :extended-components="extendedGridComponents"
         :is-prefetching-data="isPrefetchingData"
         :is-basic-filter="true"

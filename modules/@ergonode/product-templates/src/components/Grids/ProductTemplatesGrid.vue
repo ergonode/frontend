@@ -10,7 +10,6 @@
         :sort-order="sortOrder"
         :filters="filterValues"
         :pagination="pagination"
-        :placeholder="noDataPlaceholder"
         :default-layout="gridLayout.COLLECTION"
         :collection-cell-binding="collectionCellBinding"
         :extended-components="extendedGridComponents"

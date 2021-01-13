@@ -6,6 +6,10 @@
             "submit": "SAVE CHANGES",
             "restore": "RESTORE",
             "cancel": "CANCEL"
+        },
+        "grid": {
+            "placeholderTitle": "No products",
+            "placeholderSubtitle": "There are no product in the system, you can create the first one."
         }
     }
 }

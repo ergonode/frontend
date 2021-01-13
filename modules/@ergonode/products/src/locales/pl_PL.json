@@ -6,6 +6,10 @@
             "submit": "ZAPISZ ZMIANY",
             "restore": "PRZYWRÓC",
             "cancel": "ANULUJ"
+        },
+        "grid": {
+            "placeholderTitle": "Brak produktów",
+            "placeholderSubtitle": "W systemie nie ma produktów, stwórz pierwszy."
         }
     }
 }
