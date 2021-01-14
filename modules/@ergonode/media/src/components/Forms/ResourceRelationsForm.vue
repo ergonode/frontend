@@ -35,13 +35,9 @@
 </template>
 
 <script>
-import {
-    ORIENTATION,
-} from '@Core/defaults/layout';
 import LinkRelationButton from '@Media/components/Buttons/LinkRelationButton';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
-import ListPlaceholder from '@UI/components/List/ListPlaceholder';
 import TabBarNoDataPlaceholer from '@UI/components/TabBar/TabBarNoDataPlaceholder';
 import Table from '@UI/components/Table/Table';
 import TableRow from '@UI/components/Table/TableRow';
@@ -62,18 +58,12 @@ export default {
         TableRow,
         TableRowHeader,
         TableRowCell,
-        ListPlaceholder,
     },
     data() {
         return {
             rows: [],
             isPrefetchingData: true,
         };
-    },
-    computed: {
-        horizontalOrientation() {
-            return ORIENTATION.HORIZONTAL;
-        },
     },
     async created() {
         await this.getResourceRelation({
