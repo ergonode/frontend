@@ -1,9 +1,9 @@
 {
   "categoryTree": {
     "page": {
-      "title": "",
-      "head": "",
-      "addButton": ""
+      "title": "Category trees",
+      "head": "Category trees - Ergonode",
+      "addButton": "NEW CATEGORY TREE"
     },
     "form": {
       "noCategoryTreeButton": "GO TO CATEGORY TREE",
@@ -18,13 +18,13 @@
       "placeholderSubtitle": "There are no categories in the tree, so you can create the first one."
     },
     "messages": {
-        "deleteTitle": "",
-        "deleteConfirm": "",
-        "deleteSuccess": ""
+      "deleteTitle": "Are you sure you want to delete this category tree?",
+      "deleteConfirm": "YES, REMOVE",
+      "deleteSuccess": "Category tree removed"
     },
     "errors": {
-        "getRequest": "",
-        "deleteRequest": ""
+      "getRequest": "Category tree hasn’t been fetched properly",
+      "deleteRequest": "Category tree hasn’t been deleted"
     }
   }
 }

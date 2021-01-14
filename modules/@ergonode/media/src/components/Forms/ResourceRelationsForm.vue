@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        title="Relations in products"
+        :title="$t('media.form.productRelationsTitle')"
         v-if="isPrefetchingData || (!isPrefetchingData && rows.length)">
         <template #body>
             <FormSection>
@@ -28,17 +28,17 @@
             </FormSection>
         </template>
     </Form>
-    <TabBarNoDataPlaceholer
+    <TabBarNoDataPlaceholder
         v-else
-        title="Nothing to see here"
-        subtitle="Here you can see information about relations in products" />
+        :title="$t('media.tab.productRelationsPlaceholderTitle')"
+        :subtitle="$t('media.tab.productRelationsPlaceholderSubtitle')" />
 </template>
 
 <script>
 import LinkRelationButton from '@Media/components/Buttons/LinkRelationButton';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
-import TabBarNoDataPlaceholer from '@UI/components/TabBar/TabBarNoDataPlaceholder';
+import TabBarNoDataPlaceholder from '@UI/components/TabBar/TabBarNoDataPlaceholder';
 import Table from '@UI/components/Table/Table';
 import TableRow from '@UI/components/Table/TableRow';
 import TableRowCell from '@UI/components/Table/TableRowCell';
@@ -53,7 +53,7 @@ export default {
         Form,
         FormSection,
         LinkRelationButton,
-        TabBarNoDataPlaceholer,
+        TabBarNoDataPlaceholder,
         Table,
         TableRow,
         TableRowHeader,

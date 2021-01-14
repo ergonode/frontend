@@ -154,8 +154,8 @@ export function getSortedColumnsByIDs(columns, columnIds) {
 export function getDefaultDataFromQueryParams($route) {
     const {
         query: {
-            page = DEFAULT_PAGE,
-            itemsPerPage = DATA_LIMIT,
+            page,
+            itemsPerPage,
             filter,
             advancedFilter,
             field,
@@ -167,8 +167,8 @@ export function getDefaultDataFromQueryParams($route) {
         filterValues: getMappedFilters(filter || ''),
         advancedFilterValues: getMappedFilters(advancedFilter || ''),
         pagination: {
-            page: +page,
-            itemsPerPage: +itemsPerPage,
+            page: +page || DEFAULT_PAGE,
+            itemsPerPage: +itemsPerPage || DATA_LIMIT,
         },
         sortOrder: {
             field: field || '',

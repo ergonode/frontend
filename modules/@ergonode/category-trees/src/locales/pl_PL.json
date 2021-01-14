@@ -1,9 +1,9 @@
 {
   "categoryTree": {
     "page": {
-      "title": "",
-      "head": "",
-      "addButton": ""
+      "title": "Drzewa kategorii",
+      "head": "Drzewa kategorii - Ergonode",
+      "addButton": "NOWE DRZEWO KATEGORII"
     },
     "form": {
       "noCategoryTreeButton": "IDŹ DO DRZEWA KATEGORII",
@@ -18,13 +18,13 @@
       "placeholderSubtitle": "W systemie nie ma drzew kategorii, stwórz pierwsze."
     },
     "messages": {
-        "deleteTitle": "",
-        "deleteConfirm": "",
-        "deleteSuccess": ""
+      "deleteTitle": "Czy jesteś pewien, że chcesz usunąć to drzewo kategorii?",
+      "deleteConfirm": "TAK, USUŃ",
+      "deleteSuccess": "Drzewo kategorie usunięte"
     },
     "errors": {
-        "getRequest": "",
-        "deleteRequest": ""
+      "getRequest": "Drzewo kategorii nie została pobrana",
+      "deleteRequest": "Drzewo kategorii nie została usunięte"
     }
   }
 }
