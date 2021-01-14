@@ -32,7 +32,7 @@
         class="products-relations-placeholder"
         v-else>
         <ListPlaceholder
-            :layout-orientation="horizontalOrientation"
+            :orientation="horizontalOrientation"
             title="Nothing to see here"
             subtitle="Here you can see information about relations in products"
             :bg-url="require('@UI/assets/images/placeholders/comments.svg')" />
@@ -41,7 +41,7 @@
 
 <script>
 import {
-    LAYOUT_ORIENTATION,
+    ORIENTATION,
 } from '@Core/defaults/layout';
 import LinkRelationButton from '@Media/components/Buttons/LinkRelationButton';
 import Form from '@UI/components/Form/Form';
@@ -75,7 +75,7 @@ export default {
     },
     computed: {
         horizontalOrientation() {
-            return LAYOUT_ORIENTATION.HORIZONTAL;
+            return ORIENTATION.HORIZONTAL;
         },
     },
     async created() {

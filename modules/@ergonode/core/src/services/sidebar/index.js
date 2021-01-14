@@ -16,6 +16,7 @@ export const getGroups = async ({
             view: 'list',
             order: 'ASC',
             field: 'name',
+            filter: 'elements_count>=1',
             columns: 'id,code,name,elements_count',
         };
         const {

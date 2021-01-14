@@ -4,7 +4,7 @@
  */
 <template>
     <Placeholder
-        :layout-orientation="layoutOrientation"
+        :orientation="orientation"
         :title="title"
         :subtitle="subtitle"
         :bg-url="bgUrl"
@@ -17,7 +17,7 @@
 
 <script>
 import {
-    LAYOUT_ORIENTATION,
+    ORIENTATION,
 } from '@Core/defaults/layout';
 import {
     WHITESMOKE,
@@ -33,10 +33,10 @@ export default {
         /**
          * Determines position of body components; vertical / horizontal
          */
-        layoutOrientation: {
+        orientation: {
             type: String,
-            default: LAYOUT_ORIENTATION.VERTICAL,
-            validator: value => Object.values(LAYOUT_ORIENTATION).indexOf(value) !== -1,
+            default: ORIENTATION.VERTICAL,
+            validator: value => Object.values(ORIENTATION).indexOf(value) !== -1,
         },
         /**
          * The title of the component
