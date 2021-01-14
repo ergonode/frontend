@@ -84,9 +84,6 @@ import {
     ATTRIBUTE_BINDING_ADDED_EVENT_NAME,
     PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
 } from '@Products/extends/defaults';
-import {
-    WHITESMOKE,
-} from '@UI/assets/scss/_js-variables/colors.scss';
 import Grid from '@UI/components/Grid/Grid';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import {
@@ -135,14 +132,6 @@ export default {
             'selectAttributes',
             'bindings',
         ]),
-        gridPlaceholder() {
-            return {
-                title: 'No product variants',
-                subtitle: 'Choose products which together will create a product with variants. You can choose between products which contain selected binding attributes.',
-                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
-                color: WHITESMOKE,
-            };
-        },
         collectionCellBinding() {
             return {
                 imageColumn: 'default_image',

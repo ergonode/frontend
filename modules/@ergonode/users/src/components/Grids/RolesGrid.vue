@@ -50,9 +50,6 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
-import {
-    WHITESMOKE,
-} from '@UI/assets/scss/_js-variables/colors.scss';
 import Grid from '@UI/components/Grid/Grid';
 import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 import CreateRoleButton from '@Users/components/Buttons/CreateRoleButton';
@@ -97,14 +94,6 @@ export default {
         };
     },
     computed: {
-        noDataPlaceholder() {
-            return {
-                title: this.$t('role.grid.placeholderTitle'),
-                subtitle: this.$t('role.grid.placeholderSubtitle'),
-                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
-                color: WHITESMOKE,
-            };
-        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.USER_ROLE.update,

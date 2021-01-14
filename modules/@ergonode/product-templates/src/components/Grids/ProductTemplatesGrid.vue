@@ -63,9 +63,6 @@ import {
 import {
     PRODUCT_TEMPLATE_CREATED_EVENT_NAME,
 } from '@Templates/defaults';
-import {
-    WHITESMOKE,
-} from '@UI/assets/scss/_js-variables/colors.scss';
 import Grid from '@UI/components/Grid/Grid';
 import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
@@ -102,14 +99,6 @@ export default {
         };
     },
     computed: {
-        noDataPlaceholder() {
-            return {
-                title: 'No product templates',
-                subtitle: 'There are no product templates in the system, you can create the first one.',
-                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
-                color: WHITESMOKE,
-            };
-        },
         collectionCellBinding() {
             return {
                 imageColumn: 'image_id',

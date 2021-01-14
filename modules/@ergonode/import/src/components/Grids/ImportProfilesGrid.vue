@@ -58,9 +58,6 @@ import {
 import {
     IMPORT_PROFILE_CREATED_EVENT_NAME,
 } from '@Import/defaults';
-import {
-    WHITESMOKE,
-} from '@UI/assets/scss/_js-variables/colors.scss';
 import Grid from '@UI/components/Grid/Grid';
 import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
@@ -97,14 +94,6 @@ export default {
         };
     },
     computed: {
-        noDataPlaceholder() {
-            return {
-                title: 'No imports',
-                subtitle: 'There are no imports in the system, you can create the first one.',
-                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
-                color: WHITESMOKE,
-            };
-        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.IMPORT.update,

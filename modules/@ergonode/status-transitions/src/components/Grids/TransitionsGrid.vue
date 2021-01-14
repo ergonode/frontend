@@ -57,9 +57,6 @@ import {
 import {
     TRANSITION_CREATED_EVENT_NAME,
 } from '@Transitions/defaults';
-import {
-    WHITESMOKE,
-} from '@UI/assets/scss/_js-variables/colors.scss';
 import Grid from '@UI/components/Grid/Grid';
 import GridNoDataPlaceholder from "@UI/components/Grid/GridNoDataPlaceholder";
 import CreateStatusTransitionButton from "@Transitions/components/Buttons/CreateStatusTransitionButton";
@@ -97,14 +94,6 @@ export default {
         };
     },
     computed: {
-        noDataPlaceholder() {
-            return {
-                title: 'No workflow transitions',
-                subtitle: 'There are no workflow transitions in the system, you can create the first one.',
-                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
-                color: WHITESMOKE,
-            };
-        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.WORKFLOW.update,

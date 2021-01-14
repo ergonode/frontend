@@ -58,9 +58,6 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
-import {
-    WHITESMOKE,
-} from '@UI/assets/scss/_js-variables/colors.scss';
 import Grid from '@UI/components/Grid/Grid';
 import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
@@ -97,14 +94,6 @@ export default {
         };
     },
     computed: {
-        noDataPlaceholder() {
-            return {
-                title: this.$t('attribute.grid.placeholderTitle'),
-                subtitle: this.$t('attribute.grid.placeholderSubtitle'),
-                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
-                color: WHITESMOKE,
-            };
-        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.ATTRIBUTE.update,

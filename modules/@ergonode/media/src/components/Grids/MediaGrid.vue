@@ -23,7 +23,17 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
-        @remove-all-filters="onRemoveAllFilters" />
+        @remove-all-filters="onRemoveAllFilters">
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                :title="$t('media.grid.placeholderTitle')"
+                :subtitle="$t('media.grid.placeholderSubtitle')">
+                <template #action>
+                    <UploadResourcesButton />
+                </template>
+            </GridNoDataPlaceholder>
+        </template>
+    </Grid>
 </template>
 
 <script>
@@ -42,6 +52,7 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import UploadResourcesButton from '@Media/components/Buttons/UploadResourcesButton';
 import PRIVILEGES from '@Media/config/privileges';
 import {
     ROUTE_NAME,
@@ -50,11 +61,14 @@ import {
     RESOURCES_UPLOADED_EVENT_NAME,
 } from '@Media/defaults';
 import Grid from '@UI/components/Grid/Grid';
+import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'MediaGrid',
     components: {
+        UploadResourcesButton,
         Grid,
+        GridNoDataPlaceholder,
     },
     mixins: [
         extendedGridComponentsMixin,

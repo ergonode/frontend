@@ -18,20 +18,17 @@
                         </template>
                     </ExpandingCollection>
                 </ProductCollection>
-                <ListPlaceholder
+                <TabBarNoDataPlaceholder
                     v-else
-                    style="width: 560px;"
                     title="Nothing to see here"
-                    subtitle="This product has not been added to any collection"
-                    :orientation="horizontalOrientation"
-                    :bg-url="require('@UI/assets/images/placeholders/comments.svg')">
+                    subtitle="This product has not been added to any collection">
                     <template #action>
                         <Button
                             title="GO TO COLLECTIONS"
                             :size="smallSize"
                             @click.native="onNavigateToCollections" />
                     </template>
-                </ListPlaceholder>
+                </TabBarNoDataPlaceholder>
             </div>
         </template>
     </CenterViewTemplate>
@@ -44,12 +41,10 @@ import {
     ROUTE_NAME,
 } from '@Collections/config/routes';
 import {
-    ORIENTATION,
-} from '@Core/defaults/layout';
-import {
     SIZE,
 } from '@Core/defaults/theme';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
+import TabBarNoDataPlaceholder from '@UI/components/TabBar/TabBarNoDataPlaceholder';
 import {
     mapActions,
 } from 'vuex';
@@ -60,8 +55,8 @@ export default {
         CenterViewTemplate,
         ProductCollection,
         ProductCollectionItem,
+        TabBarNoDataPlaceholder,
         ExpandingCollection: () => import('@Core/components/ExpandingCollection/ExpandingCollection'),
-        ListPlaceholder: () => import('@UI/components/List/ListPlaceholder'),
         Button: () => import('@UI/components/Button/Button'),
     },
     data() {
@@ -70,9 +65,6 @@ export default {
         };
     },
     computed: {
-        horizontalOrientation() {
-            return ORIENTATION.HORIZONTAL;
-        },
         smallSize() {
             return SIZE.SMALL;
         },

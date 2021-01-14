@@ -28,15 +28,10 @@
             </FormSection>
         </template>
     </Form>
-    <div
-        class="products-relations-placeholder"
-        v-else>
-        <ListPlaceholder
-            :orientation="horizontalOrientation"
-            title="Nothing to see here"
-            subtitle="Here you can see information about relations in products"
-            :bg-url="require('@UI/assets/images/placeholders/comments.svg')" />
-    </div>
+    <TabBarNoDataPlaceholer
+        v-else
+        title="Nothing to see here"
+        subtitle="Here you can see information about relations in products" />
 </template>
 
 <script>
@@ -47,6 +42,7 @@ import LinkRelationButton from '@Media/components/Buttons/LinkRelationButton';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import ListPlaceholder from '@UI/components/List/ListPlaceholder';
+import TabBarNoDataPlaceholer from '@UI/components/TabBar/TabBarNoDataPlaceholder';
 import Table from '@UI/components/Table/Table';
 import TableRow from '@UI/components/Table/TableRow';
 import TableRowCell from '@UI/components/Table/TableRowCell';
@@ -61,6 +57,7 @@ export default {
         Form,
         FormSection,
         LinkRelationButton,
+        TabBarNoDataPlaceholer,
         Table,
         TableRow,
         TableRowHeader,
@@ -95,11 +92,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .products-relations-placeholder {
-        width: 560px;
-        padding: 24px;
-        box-sizing: border-box;
-    }
-</style>
