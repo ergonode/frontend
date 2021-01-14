@@ -15,7 +15,9 @@
             "variantPlaceholderTitle": "No product variants",
             "variantPlaceholderSubtitle": "Choose products which together will create a product with variants. You can choose between products which contain selected binding attributes.",
             "productsToAttachForGroupPlaceholderTitle": "No products",
-            "productsToAttachForGroupPlaceholderSubtitle": "There are either no product with variants nor simple products in the system, you can create the first one."
+            "productsToAttachForGroupPlaceholderSubtitle": "There are either no product with variants nor simple products in the system, you can create the first one.",
+            "productVariantsToAttachPlaceholderTitle": "No products to attach",
+            "productVariantsToAttachPlaceholderSubtitle": "There are no simple products which matches selected binding attributes, consider to change bindings or fill products with binded attributes data."
         }
     }
 }

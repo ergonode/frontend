@@ -50,6 +50,7 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import CreateStatusTransitionButton from '@Transitions/components/Buttons/CreateStatusTransitionButton';
 import PRIVILEGES from '@Transitions/config/privileges';
 import {
     ROUTE_NAME,
@@ -58,8 +59,7 @@ import {
     TRANSITION_CREATED_EVENT_NAME,
 } from '@Transitions/defaults';
 import Grid from '@UI/components/Grid/Grid';
-import GridNoDataPlaceholder from "@UI/components/Grid/GridNoDataPlaceholder";
-import CreateStatusTransitionButton from "@Transitions/components/Buttons/CreateStatusTransitionButton";
+import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'TransitionsGrid',

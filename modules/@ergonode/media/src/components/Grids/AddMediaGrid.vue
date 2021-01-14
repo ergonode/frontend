@@ -26,6 +26,11 @@
             @sort-column="onColumnSortChange"
             @remove-all-filters="onRemoveAllFilters"
             @filter="onFilterChange">
+            <template #noDataPlaceholder>
+                <GridNoDataPlaceholder
+                    :title="$t('media.grid.placeholderTitle')"
+                    :subtitle="$t('media.grid.placeholderSubtitle')" />
+            </template>
             <template #appendFooter>
                 <Button
                     title="SAVE MEDIA"
@@ -71,6 +76,7 @@ import {
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Button from '@UI/components/Button/Button';
 import Grid from '@UI/components/Grid/Grid';
+import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 import IntersectionObserver from '@UI/components/Observers/IntersectionObserver';
 import {
     debounce,
@@ -80,6 +86,7 @@ export default {
     name: 'AddMediaGrid',
     components: {
         Grid,
+        GridNoDataPlaceholder,
         Button,
         IntersectionObserver,
     },
@@ -223,8 +230,6 @@ export default {
             this.localParams.offset = 0;
 
             this.onFetchData();
-
-            // TODO: !!
         },
         onColumnSortChange(sortOrder) {
             this.localParams.sortOrder = sortOrder;

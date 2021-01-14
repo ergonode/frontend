@@ -38,17 +38,23 @@
                 </template>
             </AddProductVariantsButton>
         </template>
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                :title="$t('product.grid.variantPlaceholderTitle')"
+                :subtitle="$t('product.grid.variantPlaceholderSubtitle')">
+                <template #action>
+                    <AddProductVariantsButton
+                        title="CHOOSE VARIANTS"
+                        @added="onProductsAttachmentUpdated" />
+                </template>
+            </GridNoDataPlaceholder>
+        </template>
         <template #appendHeader>
             <BindingAttributes
                 v-if="isBindingAttributesExpanded"
                 :attributes="bindingAttributes"
                 @remove-binding="onRemoveBinding"
                 @added="onAttributeBindingAdded" />
-        </template>
-        <template #actionPlaceholder>
-            <AddProductVariantsButton
-                title="CHOOSE VARIANTS"
-                @added="onProductsAttachmentUpdated" />
         </template>
     </Grid>
 </template>
@@ -85,6 +91,7 @@ import {
     PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
 } from '@Products/extends/defaults';
 import Grid from '@UI/components/Grid/Grid';
+import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import {
     mapActions,
@@ -95,6 +102,7 @@ export default {
     name: 'AttachedProductVariantsGrid',
     components: {
         Grid,
+        GridNoDataPlaceholder,
         ExpandNumericButton,
         BindingAttributes,
         IconAdd,

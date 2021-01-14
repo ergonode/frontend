@@ -139,8 +139,6 @@ export default {
             this.localParams.offset = 0;
 
             this.onFetchData();
-
-            // TODO: !!!
         },
         onFilterChange(filters) {
             this.filterValues = filters;
