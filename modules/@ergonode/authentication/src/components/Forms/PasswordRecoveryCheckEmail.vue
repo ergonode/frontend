@@ -16,14 +16,9 @@
         </template>
         <template #body>
             <FormParagraph :text="$t('authentication.forms.checkEmail.info')" />
-            <p class="recovery-form__info">
-                <span
-                    v-text="$t('authentication.forms.checkEmail.infoText')" />
-                <span
-                    v-text="$t('authentication.forms.checkEmail.infoLink')"
-                    @click="onRedirectToHelp"
-                    class="link" />
-            </p>
+            <ParagraphWithLinks
+                :paragraph="$t('authentication.forms.checkEmail.infoText')"
+                :links="paragraphLinks" />
         </template>
     </LoginForm>
 </template>
@@ -37,6 +32,7 @@ import Fab from '@UI/components/Fab/Fab';
 import FormHeader from '@UI/components/Form/FormHeader';
 import FormParagraph from '@UI/components/Form/FormParagraph';
 import IconArrowPointer from '@UI/components/Icons/Arrows/IconArrowPointer';
+import ParagraphWithLinks from '@UI/components/ParagraphWithLinks/ParagraphWithLinks';
 
 export default {
     name: 'PasswordRecoveryCheckEmail',
@@ -46,6 +42,17 @@ export default {
         LoginForm,
         Fab,
         IconArrowPointer,
+        ParagraphWithLinks,
+    },
+    computed: {
+        paragraphLinks() {
+            return {
+                infoLink: {
+                    title: this.$t('authentication.forms.checkEmail.infoLink'),
+                    action: this.onRedirectToHelp,
+                },
+            };
+        },
     },
     methods: {
         onBack() {
