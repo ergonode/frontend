@@ -10,6 +10,12 @@
 </template>
 <script>
 import {
+    COLUMNS,
+} from '@Templates/defaults/templateDesigner';
+import {
+    getMaxColumnForGivenRow,
+} from '@Templates/models/layout/TemplateDesignerCalculations';
+import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -29,6 +35,10 @@ export default {
             type: Number,
             default: 0,
         },
+        columns: {
+            type: Number,
+            default: COLUMNS,
+        },
     },
     computed: {
         ...mapState('draggable', [
@@ -39,8 +49,8 @@ export default {
                 'template-designer-background-item',
                 {
                     'template-designer-background-item--highlighted': this.highlightedElement,
-                    // 'template-designer-background-item--top-border': this.highlightedElement && !this.isTopNeighbour,
-                    // 'template-designer-background-item--right-border': this.highlightedElement && !this.isRightNeighbour,
+                    'template-designer-background-item--top-border': !this.highlightedElement && this.isTopNeighbour,
+                    'template-designer-background-item--right-border': this.highlightedElement && this.isRightNeighbour,
                 },
             ];
         },
@@ -50,16 +60,21 @@ export default {
         isTopNeighbour() {
             return this.highlightingPositions.some(
                 ({
-                    row, column,
+                    row,
+                    column,
                 }) => row === this.row - 1 && column === this.column,
             );
         },
         isRightNeighbour() {
-            return this.highlightingPositions.some(
-                ({
-                    row, column,
-                }) => row === this.row && column === this.column + 1,
+            const maxColumnForGivenRow = getMaxColumnForGivenRow(
+                this.row,
+                this.highlightingPositions,
+                this.columns,
             );
+
+            return this.highlightingPositions.some(({
+                row,
+            }) => row === this.row) && this.column === maxColumnForGivenRow;
         },
     },
     methods: {

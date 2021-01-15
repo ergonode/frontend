@@ -11,6 +11,7 @@
             <TemplateDesignerBackgroundItem
                 :key="`${column} | ${row}`"
                 :highlighting-positions="highlightedPositions"
+                :columns="columns"
                 :column="column"
                 :row="row" />
         </template>

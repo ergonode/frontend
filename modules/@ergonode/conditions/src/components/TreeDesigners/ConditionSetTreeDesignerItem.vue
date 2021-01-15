@@ -4,6 +4,7 @@
  */
 <template>
     <DesignerItem
+        class="condition-set-tree-designer-item"
         :row="item.row"
         :column="item.column"
         :gap="gap"
@@ -15,23 +16,22 @@
             <Preloader v-if="isPrefetchingData" />
             <div
                 v-else
-                class="condition-set-tree-designer-item">
+                class="condition-set-tree-designer-item__body">
                 <ConditionSetTreeDesignerItemDescription
                     :title="condition.name"
                     :subtitle="conditionPhrase" />
-                <div
-                    :style="parametersStyle"
-                    class="condition-set-tree-designer-item__parameters">
-                    <ConditionSetTreeDesignerItemParameters
-                        v-for="(parameter, index) in condition.parameters"
-                        :key="index"
-                        :parameter="parameter"
-                        :item-id="item.id"
-                        :item-row="item.row"
-                        :scope="scope"
-                        :error-messages="errors[parameter.name]"
-                        :disabled="disabled" />
-                </div>
+                <ConditionSetTreeDesignerItemParameters :parameters="condition.parameters">
+                    <template #parameter="{ index, parameter }">
+                        <ConditionSetTreeDesignerItemParameter
+                            :key="index"
+                            :parameter="parameter"
+                            :item-id="item.id"
+                            :item-row="item.row"
+                            :scope="scope"
+                            :error-messages="errors[parameter.name]"
+                            :disabled="disabled" />
+                    </template>
+                </ConditionSetTreeDesignerItemParameters>
             </div>
         </template>
     </DesignerItem>
@@ -39,7 +39,10 @@
 <script>
 import ConditionSetTreeDesignerItemDescription
     from '@Conditions/components/TreeDesigners/ConditionSetTreeDesignerItemDescription';
-import ConditionSetTreeDesignerItemParameters from '@Conditions/components/TreeDesigners/ConditionSetTreeDesignerItemParameters';
+import ConditionSetTreeDesignerItemParameter
+    from '@Conditions/components/TreeDesigners/ConditionSetTreeDesignerItemParameter';
+import ConditionSetTreeDesignerItemParameters
+    from '@Conditions/components/TreeDesigners/ConditionSetTreeDesignerItemParameters';
 import {
     hasOptions,
 } from '@Conditions/models/conditionTypes';
@@ -52,9 +55,10 @@ import {
 export default {
     name: 'ConditionSetTreeDesignerItem',
     components: {
+        ConditionSetTreeDesignerItemParameter,
+        ConditionSetTreeDesignerItemParameters,
         ConditionSetTreeDesignerItemDescription,
         Preloader,
-        ConditionSetTreeDesignerItemParameters,
         DesignerItem,
     },
     props: {
@@ -70,10 +74,6 @@ export default {
             type: Number,
             default: 16,
         },
-        isPrefetchingData: {
-            type: Boolean,
-            default: false,
-        },
         scope: {
             type: String,
             default: '',
@@ -87,6 +87,10 @@ export default {
             default: () => ({}),
         },
         disabled: {
+            type: Boolean,
+            default: false,
+        },
+        isPrefetchingData: {
             type: Boolean,
             default: false,
         },
@@ -111,14 +115,6 @@ export default {
             }
 
             return this.replacePlaceholderOnPhrase(placeholders);
-        },
-        parametersStyle() {
-            const {
-                parameters,
-            } = this.condition;
-            return {
-                gridTemplateColumns: `repeat(${parameters.length}, minmax(max-content, 33%))`,
-            };
         },
     },
     methods: {
@@ -162,9 +158,11 @@ export default {
 
 <style lang="scss" scoped>
     .condition-set-tree-designer-item {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
+        &__body {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+        }
 
         &::after {
             position: absolute;
@@ -176,18 +174,6 @@ export default {
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_12_16;
             content: "AND";
-        }
-
-        &__parameters {
-            display: grid;
-            grid-auto-flow: column;
-            grid-column-gap: 16px;
-            margin-top: 12px;
-        }
-
-        &__description {
-            display: flex;
-            flex-direction: column;
         }
     }
 </style>

@@ -68,6 +68,7 @@ import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import ResizeObserver from '@UI/components/Observers/ResizeObserver';
 import {
     COLUMNS,
+    FOOTER_HEIGHT,
     ROW_HEIGHT,
 } from '@UI/defaults/designer';
 
@@ -119,7 +120,7 @@ export default {
             return SIZE.SMALL;
         },
         footerHeight() {
-            return 64;
+            return FOOTER_HEIGHT;
         },
         layerStyle() {
             return {

@@ -96,10 +96,12 @@ export default {
                 value: this.tree,
             });
         },
-        onAddItem(item) {
+        onAddItem({
+            id,
+        }) {
             this.setDisabledElement({
                 languageCode: this.languageCode,
-                elementId: item.id,
+                elementId: id,
                 disabled: true,
             });
         },

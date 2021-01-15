@@ -39,6 +39,10 @@ export default {
             type: Number,
             default: 2,
         },
+        height: {
+            type: Number,
+            default: 1,
+        },
         gap: {
             type: Number,
             default: GRID_GAP,
@@ -50,8 +54,11 @@ export default {
     },
     computed: {
         styles() {
+            const gridRow = this.row + 1;
+            const gridColumn = this.column + 1;
+
             return {
-                gridArea: `${this.row + 1} / ${this.column + 1} / ${this.row + 2} / ${this.column + 1 + this.width}`,
+                gridArea: `${gridRow} / ${gridColumn} / ${gridRow + this.height} / ${gridColumn + this.width}`,
                 margin: `${this.gap}px`,
                 height: `${this.rowHeight - (2 * this.gap)}px`,
             };

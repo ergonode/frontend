@@ -290,8 +290,6 @@ export default {
 
             this.localItems = removeArrayIndexes(this.localItems, indexesToRemove);
 
-            console.log(itemIds, indexesToRemove);
-
             this.$emit('remove-items', itemIds);
             this.onValueChange();
         },

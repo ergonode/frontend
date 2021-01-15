@@ -103,7 +103,6 @@ describe('conditionSetMapper/getMappedInitialConditionsValues', () => {
         });
 
         Object.keys(result).forEach((key) => {
-            console.log(result[key], initialParsedConditions[key]);
             expect(result[key]).toStrictEqual(initialParsedConditions[key]);
         });
     });

@@ -53,8 +53,11 @@ export default {
     },
     computed: {
         styles() {
+            const gridRow = this.row + 1;
+            const gridColumn = this.column + 1;
+
             return {
-                gridArea: `${this.row + 1} / ${this.column + 1} / ${this.row + 1 + this.height} / ${this.column + 1 + this.width}`,
+                gridArea: `${gridRow} / ${gridColumn} / ${gridRow + this.height} / ${gridColumn + this.width}`,
                 margin: `${this.gap}px`,
                 height: `${this.rowHeight * this.height - (2 * this.gap)}px`,
             };
