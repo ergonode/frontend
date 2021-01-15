@@ -23,7 +23,7 @@
                     style="width: 560px;"
                     title="Nothing to see here"
                     subtitle="This product has not been added to any collection"
-                    :layout-orientation="horizontalOrientation"
+                    :orientation="horizontalOrientation"
                     :bg-url="require('@UI/assets/images/placeholders/comments.svg')">
                     <template #action>
                         <Button
@@ -44,7 +44,7 @@ import {
     ROUTE_NAME,
 } from '@Collections/config/routes';
 import {
-    LAYOUT_ORIENTATION,
+    ORIENTATION,
 } from '@Core/defaults/layout';
 import {
     SIZE,
@@ -71,7 +71,7 @@ export default {
     },
     computed: {
         horizontalOrientation() {
-            return LAYOUT_ORIENTATION.HORIZONTAL;
+            return ORIENTATION.HORIZONTAL;
         },
         smallSize() {
             return SIZE.SMALL;

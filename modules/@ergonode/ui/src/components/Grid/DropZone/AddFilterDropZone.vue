@@ -6,7 +6,7 @@
     <FadeTransition>
         <DropZone
             v-show="isDropZoneVisible"
-            :layout-orientation="horizontalOrientation"
+            :orientation="horizontalOrientation"
             title="ADD FILTER"
             @drop="onDropFilter">
             <template #icon="{ color }">
@@ -21,7 +21,7 @@ import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
 import {
-    LAYOUT_ORIENTATION,
+    ORIENTATION,
 } from '@Core/defaults/layout';
 import DropZone from '@UI/components/DropZone/DropZone';
 import IconAddFilter from '@UI/components/Icons/Actions/IconAddFilter';
@@ -49,7 +49,7 @@ export default {
             'draggedElement',
         ]),
         horizontalOrientation() {
-            return LAYOUT_ORIENTATION.HORIZONTAL;
+            return ORIENTATION.HORIZONTAL;
         },
         isDropZoneVisible() {
             return this.isElementDragging === DRAGGED_ELEMENT.LIST

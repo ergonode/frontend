@@ -9,6 +9,7 @@
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
         :errors="errors"
+        :errors-presentation-mapper="errorMapper"
         @proceed="onProceed"
         @submit="onSubmit">
         <template #header>
@@ -32,6 +33,9 @@
 
 <script>
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
+import {
+    isObject,
+} from '@Core/models/objectWrapper';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 
@@ -50,6 +54,21 @@ export default {
             default: () => ({}),
         },
     },
+    methods: {
+        errorMapper(errors) {
+            return Object.keys(errors).reduce((acc, key) => {
+                const tmpObject = acc;
+
+                if (isObject(errors[key])) {
+                    tmpObject[key] = Object.values(errors[key]).join(', ');
+                } else {
+                    tmpObject[key] = errors[key];
+                }
+
+                return tmpObject;
+            }, {});
+        },
+    },
 };
 </script>
 
@@ -63,7 +82,10 @@ export default {
     }
 
     .login-header {
-        display: flex;
+        display: grid;
+        justify-content: flex-start;
         align-items: center;
+        grid-auto-flow: column;
+        grid-column-gap: 16px;
     }
 </style>

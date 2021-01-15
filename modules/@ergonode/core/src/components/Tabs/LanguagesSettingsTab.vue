@@ -134,6 +134,9 @@ export default {
             'setDefaultLanguage',
             'updateLanguageTree',
         ]),
+        ...mapActions('authentication', [
+            'getUser',
+        ]),
         onSubmit() {
             if (this.isSubmitting) {
                 return;
@@ -158,8 +161,21 @@ export default {
                 });
             }
         },
-        onUpdateSuccess(languages) {
+        async onUpdateSuccess(languages) {
             this.setLanguageTree(languages);
+
+            await this.getUser({
+                onSuccess: this.onGetUserSuccess,
+            });
+        },
+        onUpdateError(message) {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message,
+            });
+            this.isSubmitting = false;
+        },
+        onGetUserSuccess() {
             this.setDefaultLanguage();
 
             this.$addAlert({
@@ -169,13 +185,6 @@ export default {
             this.isSubmitting = false;
 
             this.markChangeValuesAsSaved(this.scope);
-        },
-        onUpdateError(message) {
-            this.$addAlert({
-                type: ALERT_TYPE.ERROR,
-                message,
-            });
-            this.isSubmitting = false;
         },
     },
 };

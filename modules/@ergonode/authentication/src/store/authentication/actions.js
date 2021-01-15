@@ -5,11 +5,15 @@
 import {
     REFRESH_TOKEN_KEY,
     TOKEN_KEY,
+    TRANSLATION_KEY,
 } from '@Authentication/defaults/cookies';
 import {
     getMappedPrivileges,
 } from '@Authentication/models/userMapper';
 import {
+    applyPassword,
+    checkToken,
+    generateToken,
     get,
     login,
 } from '@Authentication/services/index';
@@ -19,6 +23,108 @@ import {
 import camelcaseKeys from 'camelcase-keys';
 
 export default {
+    async passwordRecoveryCheckToken({}, {
+        token,
+        onError = () => {},
+    }) {
+        try {
+            await checkToken({
+                $axios: this.app.$axios,
+                token,
+            });
+        } catch (e) {
+            onError({
+                errors: {
+                    __form: [
+                        e.data.message,
+                    ],
+                },
+            });
+        }
+    },
+    async passwordRecovery({}, {
+        data,
+        scope,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        let isError = false;
+        const errors = {};
+
+        if (!data.email) {
+            errors.email = [
+                this.app.i18n.t('authentication.errors.emailRequired'),
+            ];
+            isError = true;
+        }
+
+        if (!isError) {
+            try {
+                await generateToken({
+                    $axios: this.app.$axios,
+                    data,
+                });
+
+                onSuccess();
+            } catch (e) {
+                onError({
+                    errors: e.data.errors,
+                    scope,
+                });
+            }
+        } else {
+            onError({
+                errors,
+                scope,
+            });
+        }
+    },
+    async newPassword({}, {
+        data,
+        scope,
+        onSuccess = () => {},
+        onError = () => {},
+    }) {
+        let isError = false;
+        const errors = {};
+        const {
+            validation, ...dataToSend
+        } = data;
+
+        if (!dataToSend.password) {
+            errors.password = [
+                this.app.i18n.t('authentication.errors.passwordRequired'),
+            ];
+            isError = true;
+        }
+        if (!validation) {
+            errors.validation = [
+                this.app.i18n.t('authentication.errors.passwordValidation'),
+            ];
+            isError = true;
+        }
+
+        if (!isError) {
+            try {
+                await applyPassword({
+                    $axios: this.app.$axios,
+                    data: dataToSend,
+                });
+
+                onSuccess();
+            } catch (e) {
+                onError({
+                    errors: e.data.errors,
+                    scope,
+                });
+            }
+        } else {
+            onError({
+                errors,
+                scope,
+            });
+        }
+    },
     async authenticateUser({
         dispatch,
     }, {
@@ -32,14 +138,14 @@ export default {
 
         if (!data.username) {
             errors.username = [
-                'Email is required',
+                this.app.i18n.t('authentication.errors.emailRequired'),
             ];
             isError = true;
         }
 
         if (!data.password) {
             errors.password = [
-                'Password is required',
+                this.app.i18n.t('authentication.errors.passwordRequired'),
             ];
             isError = true;
         }
@@ -60,7 +166,10 @@ export default {
                 });
 
                 await dispatch('getUser', {
-                    onSuccess: user => this.$setInterfaceLanguage(user.language),
+                    onSuccess: (user) => {
+                        this.$setInterfaceLanguage(user.language);
+                        this.$cookies.set(TRANSLATION_KEY, user.language);
+                    },
                 });
                 await dispatch('core/getLanguages', {}, {
                     root: true,
@@ -128,7 +237,7 @@ export default {
         } catch (e) {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'User data hasn`t been fetched properly',
+                message: this.app.i18n.t('authentication.errors.getUser'),
             });
         }
     },

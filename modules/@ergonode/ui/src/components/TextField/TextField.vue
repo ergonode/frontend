@@ -35,6 +35,8 @@
                     autocomplete="on"
                     :disabled="disabled"
                     :aria-label="label || 'no description'"
+                    @keydown="onKeyDown"
+                    @keyup="onKeyUp"
                     @input="onValueChange"
                     @focus="onFocus"
                     @blur="onBlur">
@@ -279,6 +281,12 @@ export default {
         },
         onMouseMove() {
             this.isMouseMoving = true;
+        },
+        onKeyDown(event) {
+            this.$emit('keydown', event);
+        },
+        onKeyUp(event) {
+            this.$emit('keyup', event);
         },
     },
 };

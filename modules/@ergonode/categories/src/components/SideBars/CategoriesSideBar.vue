@@ -27,6 +27,9 @@ import {
     CATEGORY_CREATED_EVENT_NAME,
 } from '@Categories/defaults/attributes';
 import {
+    deepClone,
+} from '@Core/models/objectWrapper';
+import {
     getItems,
 } from '@Core/services/sidebar';
 import Preloader from '@UI/components/Preloader/Preloader';
@@ -61,6 +64,7 @@ export default {
         return {
             isPrefetchingData: true,
             categories: {},
+            categoriesBeforeSearch: {},
             languageCode: '',
             searchValue: '',
         };
@@ -123,9 +127,18 @@ export default {
             };
         },
         async onSearch(value) {
+            if (this.searchValue === '') {
+                this.categoriesBeforeSearch = deepClone(this.categories);
+            }
+
             this.searchValue = value;
 
-            await this.getItems();
+            if (value !== '') {
+                await this.getItems();
+            } else {
+                this.categories = deepClone(this.categoriesBeforeSearch);
+                this.categoriesBeforeSearch = {};
+            }
         },
         async onSelectLanguage(value) {
             this.languageCode = value;
