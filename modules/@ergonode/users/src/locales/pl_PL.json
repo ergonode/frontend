@@ -46,7 +46,7 @@
         },
         "errors": {
             "getRequest": "Użytkownik nie został pobrany poprawnie",
-            "deleteRequest": "Użytkownik nie został usunięty",
+            "deleteRequest": "Użytkownik nie został usunięty"
         }
     },
     "role": {
