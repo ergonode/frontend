@@ -1,0 +1,8 @@
+{
+    "import": {
+        "grid": {
+            "placeholderTitle": "Brak profilów importowych",
+            "placeholderSubtitle": "W systemie nie ma profilów importowych, stwórz pierwszy."
+        }
+    }
+}

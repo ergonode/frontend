@@ -101,7 +101,7 @@ export default {
             }
 
             return {
-                background: `${this.color} url(${this.bgUrl}) no-repeat right bottom`,
+                background: `${this.color} url(${this.bgUrl}) no-repeat right top`,
             };
         },
     },

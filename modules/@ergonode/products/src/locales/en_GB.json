@@ -6,6 +6,18 @@
             "submit": "SAVE CHANGES",
             "restore": "RESTORE",
             "cancel": "CANCEL"
+        },
+        "grid": {
+            "placeholderTitle": "No products",
+            "placeholderSubtitle": "There are no product in the system, you can create the first one.",
+            "groupPlaceholderTitle": "No products in group",
+            "groupPlaceholderSubtitle": "There are no product added to the group, you can add the first one.",
+            "variantPlaceholderTitle": "No product variants",
+            "variantPlaceholderSubtitle": "Choose products which together will create a product with variants. You can choose between products which contain selected binding attributes.",
+            "productsToAttachForGroupPlaceholderTitle": "No products",
+            "productsToAttachForGroupPlaceholderSubtitle": "There are either no product with variants nor simple products in the system, you can create the first one.",
+            "productVariantsToAttachPlaceholderTitle": "No products to attach",
+            "productVariantsToAttachPlaceholderSubtitle": "There are no simple products which matches selected binding attributes, consider to change bindings or fill products with binded attributes data."
         }
     }
 }

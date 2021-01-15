@@ -24,8 +24,17 @@
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
         @remove-all-filters="onRemoveAllFilters">
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                :title="$t('product.grid.groupPlaceholderTitle')"
+                :subtitle="$t('product.grid.groupPlaceholderSubtitle')">
+                <template #action>
+                    <AddProductsToGroupButton />
+                </template>
+            </GridNoDataPlaceholder>
+        </template>
         <template #actionsHeader>
-            <AddProductsToGroupButton />
+            <AddProductsToGroupActionButton />
         </template>
     </Grid>
 </template>
@@ -54,11 +63,13 @@ import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
 import PRIVILEGES from '@Products/config/privileges';
+import AddProductsToGroupActionButton from '@Products/extends/components/Buttons/AddProductsToGroupActionButton';
 import AddProductsToGroupButton from '@Products/extends/components/Buttons/AddProductsToGroupButton';
 import {
     PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
 } from '@Products/extends/defaults';
 import Grid from '@UI/components/Grid/Grid';
+import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 import {
     mapActions,
 } from 'vuex';
@@ -66,8 +77,10 @@ import {
 export default {
     name: 'AttachedProductsToGroupGrid',
     components: {
-        Grid,
         AddProductsToGroupButton,
+        Grid,
+        GridNoDataPlaceholder,
+        AddProductsToGroupActionButton,
     },
     mixins: [
         gridDraftMixin,
@@ -112,7 +125,7 @@ export default {
         },
     },
     watch: {
-        $route(from, to) {
+        async $route(from, to) {
             if (from.name !== to.name) {
                 return;
             }
@@ -127,7 +140,9 @@ export default {
             this.pagination = pagination;
             this.sortOrder = sortOrder;
 
-            this.onFetchData();
+            await this.onFetchData();
+
+            this.isPrefetchingData = false;
         },
     },
     mounted() {
@@ -204,6 +219,8 @@ export default {
                     page: DEFAULT_PAGE,
                 },
             });
+
+            this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
             this.$router.replace({

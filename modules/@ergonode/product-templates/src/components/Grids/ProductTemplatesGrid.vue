@@ -10,7 +10,6 @@
         :sort-order="sortOrder"
         :filters="filterValues"
         :pagination="pagination"
-        :placeholder="noDataPlaceholder"
         :default-layout="gridLayout.COLLECTION"
         :collection-cell-binding="collectionCellBinding"
         :extended-components="extendedGridComponents"
@@ -26,7 +25,17 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
-        @remove-all-filters="onRemoveAllFilters" />
+        @remove-all-filters="onRemoveAllFilters">
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                :title="$t('productTemplate.grid.placeholderTitle')"
+                :subtitle="$t('productTemplate.grid.placeholderSubtitle')">
+                <template #action>
+                    <CreateProductTemplateButton />
+                </template>
+            </GridNoDataPlaceholder>
+        </template>
+    </Grid>
 </template>
 
 <script>
@@ -46,6 +55,7 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import CreateProductTemplateButton from '@Templates/components/Buttons/CreateProductTemplateButton';
 import PRIVILEGES from '@Templates/config/privileges';
 import {
     ROUTE_NAME,
@@ -53,15 +63,15 @@ import {
 import {
     PRODUCT_TEMPLATE_CREATED_EVENT_NAME,
 } from '@Templates/defaults';
-import {
-    WHITESMOKE,
-} from '@UI/assets/scss/_js-variables/colors.scss';
 import Grid from '@UI/components/Grid/Grid';
+import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'ProductTemplatesGrid',
     components: {
+        CreateProductTemplateButton,
         Grid,
+        GridNoDataPlaceholder,
     },
     mixins: [
         extendedGridComponentsMixin,
@@ -89,14 +99,6 @@ export default {
         };
     },
     computed: {
-        noDataPlaceholder() {
-            return {
-                title: 'No product templates',
-                subtitle: 'There are no product templates in the system, you can create the first one.',
-                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
-                color: WHITESMOKE,
-            };
-        },
         collectionCellBinding() {
             return {
                 imageColumn: 'image_id',
@@ -113,7 +115,7 @@ export default {
         },
     },
     watch: {
-        $route(from, to) {
+        async $route(from, to) {
             if (from.name !== to.name) {
                 return;
             }
@@ -128,7 +130,9 @@ export default {
             this.pagination = pagination;
             this.sortOrder = sortOrder;
 
-            this.onFetchData();
+            await this.onFetchData();
+
+            this.isPrefetchingData = false;
         },
     },
     mounted() {
@@ -197,6 +201,8 @@ export default {
                     page: DEFAULT_PAGE,
                 },
             });
+
+            this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
             this.$router.replace({

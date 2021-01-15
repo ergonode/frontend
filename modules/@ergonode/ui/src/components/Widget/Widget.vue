@@ -11,7 +11,7 @@
             <slot name="appendHeader" />
         </section>
         <section class="widget__body">
-            <WidgetPlaceholder v-if="isPlaceholderVisible" />
+            <WidgetNoDataPlaceholder v-if="isPlaceholderVisible" />
             <slot
                 v-else
                 name="body" />
@@ -20,12 +20,12 @@
 </template>
 
 <script>
-import WidgetPlaceholder from '@UI/components/Widget/WidgetPlaceholder';
+import WidgetNoDataPlaceholder from '@UI/components/Widget/WidgetNoDataPlaceholder';
 
 export default {
     name: 'Widget',
     components: {
-        WidgetPlaceholder,
+        WidgetNoDataPlaceholder,
     },
     props: {
         /**

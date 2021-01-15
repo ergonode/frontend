@@ -1,0 +1,87 @@
+{
+    "user": {
+        "page": {
+            "title": "Użytkownicy",
+            "head": "Użytkownicy - Ergonode",
+            "addButton": "Nowy użytkownik",
+            "removeButton": "Usuń użytkownika"
+        },
+        "form":{
+            "createTitle": "Stwórz użytkownika",
+            "title": "Opcje",
+            "emailLabel": "Email",
+            "nameLabel": "Imie",
+            "lastNameLabel": "Nazwisko",
+            "passwordLabel": "Hasło",
+            "passwordRepeatLabel": "Powtórz hasło",
+            "activeLabel": "Aktywny status",
+            "languageLabel": "Język",
+            "roleLabel": "Rola",
+            "noRoleButton": "Idź do roli użytkownika",
+            "noRoleTitle": "Brak roli użytkownika",
+            "noRoleSubtitle": "Brak roli użytkownika w systemie, stwórz pierwszą."
+        },
+        "avatar": {
+            "title": "Awatar użytkownika",
+            "uploadLabel": "Zdjęcie profilowe",
+            "uploadAlt": "Awatar użytkownika"
+        },
+        "grid": {
+            "placeholderTitle": "Brak uzytkowników",
+            "placeholderSubtitle": "Brak użytkowników w systemie, stwórz pierwszego."
+        },
+        "messages": {
+            "deleteTitle": "Czy jesteś pewien, że chcesz usunąć tego użytkownika?",
+            "deleteConfirm": "Tak, usuń",
+            "deleteSuccess": "Użytkownik usunięty",
+            "deleteCancel": "Usuwanie użytkownika zostało przerwane",
+            "createSuccess": "Użytkownik stworzony",
+            "createCancel": "Tworzenie użytkownika zostało przerwane",
+            "updateSuccess": "Użytkownik został zaaktualizowany",
+            "updateAvatarSuccess": "Awatar użytkownika został zaktaulizowany",
+            "updateLanguageSuccess": "Uprawnienia językowe zostały zaktualizowane",
+            "updateCancel": "Aktualizowanie użytkownika zostało przerwane",
+            "updateAvatarCancel": "Aktualizowanie awataru użytkownika zostało przerwane",
+            "updateTranslationSuccess": "Tłumaczenia użytkownika zostały zaktualizowane"
+        },
+        "errors": {
+            "getRequest": "Użytkownik nie został pobrany poprawnie",
+            "deleteRequest": "Użytkownik nie został usunięty",
+        }
+    },
+    "role": {
+        "page": {
+            "title": "Role użytkownika",
+            "head": "Role użytkownika - Ergonode",
+            "addButton": "Nowa rola",
+            "removeButton": "Usuń role"
+        },
+        "form":{
+            "createTitle": "Utwórz role",
+            "title": "Opcje",
+            "nameLabel": "Nazwa roli",
+            "nameHint": "Nazwa roli musi być unikatowa",
+            "descLabel": "Opis roli"
+        },
+        "grid": {
+            "placeholderTitle": "Brak roli użytkowników",
+            "placeholderSubtitle": "Brak roli użytkowników w systemie, stwórz pierwszą."
+        },
+        "messages": {
+            "deleteTitle": "Czy jesteś pewien by usunąć role?",
+            "deleteConfirm": "Tak, usuń",
+            "deleteSuccess": "Rola usunięta",
+            "deleteCancel": "Usuwanie roli zostało przerwane",
+            "createSuccess": "Rola stworzona",
+            "createCancel": "Tworzenie roli zostało przerwane",
+            "updateSuccess": "Rola została zaktualizowana",
+            "updatePrivilegesSuccess": "Uprawnienia roli zostały zaktualizowane",
+            "updateCancel": "Aktualizowanie roli zostało przerwane",
+            "updateTranslationSuccess": "Tłumaczenia roli zostały zaktualizowane"
+        },
+        "errors": {
+            "getRequest": "Rola nie została pobrana",
+            "deleteRequest": "Rola nie została usunięta"
+        }
+    }
+}

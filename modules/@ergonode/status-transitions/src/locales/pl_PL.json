@@ -1,0 +1,8 @@
+{
+    "transition": {
+        "grid": {
+            "placeholderTitle": "Brak przejść statusowych",
+            "placeholderSubtitle": "W systemie nie ma przejść statusowych, stwórz pierwsze."
+        }
+    }
+}

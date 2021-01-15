@@ -8,29 +8,26 @@
             <Preloader v-if="isPrefetchingData" />
             <template v-else>
                 <AttachedProductVariantsGrid v-if="bindings.length" />
-                <ListPlaceholder
+                <TabBarNoDataPlaceholder
                     v-else
                     v-bind="listPlaceholder">
                     <template #action>
                         <AddBindingAttributesButton />
                     </template>
-                </ListPlaceholder>
+                </TabBarNoDataPlaceholder>
             </template>
         </template>
     </CenterViewTemplate>
 </template>
 
 <script>
-import {
-    ORIENTATION,
-} from '@Core/defaults/layout';
 import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
 import AddBindingAttributesButton from '@Products/extends/components/Buttons/AddBindingAttributesButton';
 import AttachedProductVariantsGrid from '@Products/extends/components/Grids/AttachedProductVariantsGrid';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
-import ListPlaceholder from '@UI/components/List/ListPlaceholder';
 import Preloader from '@UI/components/Preloader/Preloader';
+import TabBarNoDataPlaceholder from '@UI/components/TabBar/TabBarNoDataPlaceholder';
 import {
     mapActions,
     mapState,
@@ -41,9 +38,9 @@ export default {
     components: {
         AttachedProductVariantsGrid,
         Preloader,
-        ListPlaceholder,
         CenterViewTemplate,
         AddBindingAttributesButton,
+        TabBarNoDataPlaceholder,
     },
     mixins: [
         extendedGridComponentsMixin,
@@ -60,15 +57,10 @@ export default {
         ]),
         listPlaceholder() {
             return {
-                style: 'width: 560px; max-height: 280px; margin-top: 24px; align-self: center',
-                orientation: this.horizontalOrientation,
+                style: 'margin-top: 24px; align-self: center',
                 title: 'No binding attributes',
                 subtitle: 'Binding attribute is the common attribute of the products, which link products together into the product with variants.',
-                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
             };
-        },
-        horizontalOrientation() {
-            return ORIENTATION.HORIZONTAL;
         },
     },
     async created() {
