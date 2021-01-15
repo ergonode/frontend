@@ -5,8 +5,8 @@
 <template>
     <li
         :class="classes"
-        @mouseover="onMouseOver"
-        @mouseout="onMouseOut">
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave">
         <NuxtLink
             class="menu-list-element__link"
             :to="{ path: item.routing }">
@@ -64,10 +64,10 @@ export default {
         },
     },
     methods: {
-        onMouseOver() {
+        onMouseEnter() {
             if (!this.isSelected) this.isHover = true;
         },
-        onMouseOut() {
+        onMouseLeave() {
             this.isHover = false;
         },
     },

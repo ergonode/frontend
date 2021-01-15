@@ -23,6 +23,7 @@ import Page from '@UI/components/Layout/Page';
 import HorizontalRoutingTabBar from '@UI/components/TabBar/Routing/HorizontalRoutingTabBar';
 import TitleBar from '@UI/components/TitleBar/TitleBar';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -45,6 +46,14 @@ export default {
         isReadOnly() {
             return this.$isReadOnly(PRIVILEGES.SETTINGS.namespace);
         },
+    },
+    beforeDestroy() {
+        this.__clearFeedbackStorage();
+    },
+    methods: {
+        ...mapActions('feedback', {
+            __clearFeedbackStorage: '__clearStorage',
+        }),
     },
     head() {
         return {

@@ -81,9 +81,11 @@ import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
 import {
     getDraggedColumnPositionState,
-    getPositionForBrowser,
-    isMouseInsideElement,
 } from '@UI/models/dragAndDrop/helpers';
+import {
+    getFixedMousePosition,
+    isMouseOutsideElement,
+} from '@UI/models/mouse';
 import {
     mapActions,
     mapState,
@@ -237,9 +239,9 @@ export default {
             const {
                 xPos,
                 yPos,
-            } = getPositionForBrowser(event);
+            } = getFixedMousePosition(event);
             const trashElement = document.documentElement.querySelector('.drop-zone');
-            const isDroppedToTrash = isMouseInsideElement(trashElement, xPos, yPos);
+            const isDroppedToTrash = !isMouseOutsideElement(trashElement, xPos, yPos);
 
             if (isDroppedToTrash) {
                 this.$emit('remove', this.index);

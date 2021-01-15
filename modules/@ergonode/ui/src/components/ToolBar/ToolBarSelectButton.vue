@@ -22,8 +22,8 @@
 import ToolBarButton from '@UI/components/ToolBar/ToolBarButton';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
-    isMouseOutOfBoundsElement,
-} from '@UI/models/dragAndDrop/helpers';
+    isMouseOutsideElement,
+} from '@UI/models/mouse';
 
 export default {
     name: 'ToolBarSelectButton',
@@ -57,7 +57,7 @@ export default {
                     menu,
                 } = this.$refs;
 
-                isClickedInsideMenu = !isMouseOutOfBoundsElement(menu, pageX, pageY);
+                isClickedInsideMenu = !isMouseOutsideElement(menu, pageX, pageY);
 
                 if (!isClickedInsideMenu) {
                     this.isFocused = false;

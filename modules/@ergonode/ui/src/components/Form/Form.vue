@@ -106,7 +106,7 @@ export default {
             default: () => ({}),
         },
         /**
-         * The function which is parsing validation errors to custom presentation format
+         * The parsing validation errors function for custom presentation format
          */
         errorsPresentationMapper: {
             type: Function,

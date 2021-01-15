@@ -11,6 +11,7 @@ import Privileges from './privileges';
 
 export const ROUTE_NAME = {
     INDEX: 'index',
+    PASSWORD_RESET: 'password-reset',
     PLACEHOLDER: 'placeholder',
     SETTINGS: 'settings',
     SETTINGS_LANGUAGES: 'settings-languages',
@@ -25,6 +26,14 @@ export default [
         name: ROUTE_NAME.INDEX,
         path: '/',
         component: Pages.Login,
+        meta: {
+            isMenu: false,
+        },
+    },
+    {
+        name: ROUTE_NAME.PASSWORD_RESET,
+        path: '/password-reset',
+        component: Pages.PasswordReset,
         meta: {
             isMenu: false,
         },

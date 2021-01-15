@@ -8,7 +8,7 @@ import {
 
 export const types = {
     SET_CONDITIONS: 'SET_CONDITIONS',
-    SET_CONDITIONS_DICTIONARY: 'SET_CONDITIONS_DICTIONARY',
+    SET_CONDITIONS_VALUES: 'SET_CONDITIONS_VALUES',
     ADD_CONDITION_VALUE: 'ADD_CONDITION_VALUE',
     SET_CONDITION_VALUE: 'SET_CONDITION_VALUE',
     REMOVE_CONDITION_VALUE_FROM_SET: 'REMOVE_CONDITION_VALUE_FROM_SET',
@@ -23,11 +23,16 @@ export default {
             [key]: value,
         };
     },
-    [types.SET_CONDITIONS_DICTIONARY](state, value) {
-        state.conditionsDictionary = value;
+    [types.SET_CONDITIONS_VALUES](state, values) {
+        state.conditionsValues = {
+            ...state.conditionsValues,
+            ...values,
+        };
     },
     [types.ADD_CONDITION_VALUE](state, {
-        conditionId, parameterName, parameterValue,
+        conditionId,
+        parameterName,
+        parameterValue,
     }) {
         const condition = parameterName === null ? {} : {
             [parameterName]: parameterValue,

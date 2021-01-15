@@ -23,7 +23,7 @@
 
 <script>
 import {
-    LAYOUT_ORIENTATION,
+    ORIENTATION,
 } from '@Core/defaults/layout';
 import {
     GRAPHITE,
@@ -53,10 +53,10 @@ export default {
         /**
          * Determines position of body components; vertical / horizontal
          */
-        layoutOrientation: {
+        orientation: {
             type: String,
-            default: LAYOUT_ORIENTATION.VERTICAL,
-            validator: value => Object.values(LAYOUT_ORIENTATION).indexOf(value) !== -1,
+            default: ORIENTATION.VERTICAL,
+            validator: value => Object.values(ORIENTATION).indexOf(value) !== -1,
         },
     },
     data() {
@@ -91,7 +91,7 @@ export default {
             return this.isHovered ? WHITE : GRAPHITE;
         },
         isHorizontal() {
-            return this.layoutOrientation === LAYOUT_ORIENTATION.HORIZONTAL;
+            return this.orientation === ORIENTATION.HORIZONTAL;
         },
     },
     methods: {
@@ -151,6 +151,7 @@ export default {
     box-sizing: border-box;
     background-color: $GREY_LIGHT;
     box-shadow: $ELEVATOR_HOLE;
+    color: $GRAPHITE;
     font: $FONT_BOLD_12_16;
 }
 </style>

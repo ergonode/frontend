@@ -83,7 +83,6 @@ export default {
     beforeDestroy() {
         this.__clearSegmentStorage();
         this.__clearConditionStorage();
-        this.__clearGridDesignerStorage();
         this.__clearFeedbackStorage();
     },
     methods: {
@@ -95,9 +94,6 @@ export default {
         }),
         ...mapActions('feedback', {
             __clearFeedbackStorage: '__clearStorage',
-        }),
-        ...mapActions('gridDesigner', {
-            __clearGridDesignerStorage: '__clearStorage',
         }),
     },
     head() {

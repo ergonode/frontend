@@ -78,8 +78,8 @@ export function getMappedLayoutElements(elements, elementDescriptions, types) {
             label: elementDescriptions[attrID] || label,
             bounds: cachedTypes[type],
             position: {
-                row: row + 1,
-                column: column + 1,
+                row,
+                column,
             },
             required,
             size,
@@ -99,8 +99,8 @@ export function getMappedLayoutElementsForAPIUpdate(elements) {
         required,
     }) => {
         const position = {
-            x: column - 1,
-            y: row - 1,
+            x: column,
+            y: row,
         };
         const size = {
             width,

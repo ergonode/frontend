@@ -4,9 +4,9 @@
  */
 <template>
     <ListDraggableElement
+        :draggable-id="item.id"
         :draggable="!disabled"
         :disabled="disabled"
-        :draggable-id="item.id"
         :label="item.name"
         @drag="onDrag">
         <ListElementDescription>
@@ -52,7 +52,8 @@ export default {
                 key: 'draggedElement',
                 value: isDragged
                     ? {
-                        id: `${this.item.id}--${getUUID()}`,
+                        id: getUUID(),
+                        type: this.item.id,
                         name: this.item.name,
                         code: this.item.code,
                     }

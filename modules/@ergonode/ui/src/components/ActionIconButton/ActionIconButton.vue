@@ -4,6 +4,7 @@
  */
 <template>
     <ActionBaseButton
+        :style="floatingStyle"
         :options="options"
         :dismissible="dismissible"
         :disabled="disabled"
@@ -108,6 +109,14 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * The floating state, absolute position relative to parent
+         * @values top, left, bottom, right
+         */
+        floating: {
+            type: Object,
+            default: null,
+        },
     },
     data() {
         return {
@@ -116,6 +125,14 @@ export default {
         };
     },
     computed: {
+        floatingStyle() {
+            if (!this.floating) return null;
+
+            return {
+                position: 'absolute',
+                ...this.floating,
+            };
+        },
         iconFillColor() {
             if (this.theme !== THEME.PRIMARY) {
                 if (this.disabled) {

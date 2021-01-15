@@ -9,7 +9,7 @@
         :label="item.label"
         @drag="onDrag">
         <ListElementIcon>
-            <Component :is="widgetIconComponent" />
+            <IconFontSize />
         </ListElementIcon>
         <ListElementDescription>
             <ListElementTitle :title="item.label" />
@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import IconFontSize from '@UI/components/Icons/Editor/IconFontSize';
 import ListDraggableElement from '@UI/components/List/ListDraggableElement';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementHint from '@UI/components/List/ListElementHint';
@@ -36,6 +37,7 @@ export default {
         ListDraggableElement,
         ListElementIcon,
         ListElementHint,
+        IconFontSize,
     },
     props: {
         item: {
@@ -45,11 +47,6 @@ export default {
         isDraggable: {
             type: Boolean,
             default: false,
-        },
-    },
-    computed: {
-        widgetIconComponent() {
-            return () => import('@UI/components/Icons/Editor/IconFontSize');
         },
     },
     methods: {

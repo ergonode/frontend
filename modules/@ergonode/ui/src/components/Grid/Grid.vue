@@ -21,6 +21,7 @@
             <template #actions>
                 <BatchActionButton
                     v-if="isBatchActionVisible"
+                    :highlighted="isAnyRowSelected"
                     :options="batchActions"
                     @action="onBatchActionSelect" />
                 <slot name="actionsHeader" />
@@ -341,9 +342,6 @@ export default {
             'isElementDragging',
             'draggedElement',
         ]),
-        isAnyFilter() {
-            return Object.keys(this.filters).length > 0;
-        },
         dataPlaceholder() {
             if (this.dataCount === 0 && this.isAnyFilter) {
                 return {
@@ -364,25 +362,8 @@ export default {
                 },
             ];
         },
-        isBatchActionVisible() {
-            return this.batchActions.length > 0;
-        },
-        isListElementDragging() {
-            return this.isElementDragging === DRAGGED_ELEMENT.LIST;
-        },
-        isColumnExist() {
-            return this.columns.some(
-                column => column.id === this.draggedElement,
-            );
-        },
         gridLayout() {
             return GRID_LAYOUT;
-        },
-        isTableLayout() {
-            return this.layout === GRID_LAYOUT.TABLE;
-        },
-        isPlaceholderVisible() {
-            return this.dataCount === 0 && !this.isPrefetchingData;
         },
         maxPage() {
             return Math.ceil(this.dataCount / this.pagination.itemsPerPage) || 1;
@@ -397,6 +378,34 @@ export default {
 
                 return getUUID();
             });
+        },
+        isAnyRowSelected() {
+            if (!this.selectedRows[this.pagination.page]) {
+                return false;
+            }
+
+            return Object.values(this.selectedRows[this.pagination.page])
+                .some(isSelected => isSelected);
+        },
+        isAnyFilter() {
+            return Object.keys(this.filters).length > 0;
+        },
+        isBatchActionVisible() {
+            return this.batchActions.length > 0;
+        },
+        isListElementDragging() {
+            return this.isElementDragging === DRAGGED_ELEMENT.LIST;
+        },
+        isColumnExist() {
+            return this.columns.some(
+                column => column.id === this.draggedElement,
+            );
+        },
+        isTableLayout() {
+            return this.layout === GRID_LAYOUT.TABLE;
+        },
+        isPlaceholderVisible() {
+            return this.dataCount === 0 && !this.isPrefetchingData;
         },
     },
     methods: {

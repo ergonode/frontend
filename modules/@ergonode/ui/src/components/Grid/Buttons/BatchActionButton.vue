@@ -6,7 +6,7 @@
     <ActionButton
         :title="actionButtonTitle"
         :size="smallSize"
-        :theme="secondaryTheme"
+        :theme="theme"
         :options="options"
         @input="onSelectBatchAction">
         <template #option="{ option }">
@@ -36,6 +36,10 @@ export default {
         ActionButton,
     },
     props: {
+        highlighted: {
+            type: Boolean,
+            default: false,
+        },
         options: {
             type: Array,
             default: () => [],
@@ -48,8 +52,8 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-        secondaryTheme() {
-            return THEME.SECONDARY;
+        theme() {
+            return this.highlighted ? THEME.PRIMARY : THEME.SECONDARY;
         },
     },
     methods: {

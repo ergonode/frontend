@@ -15,9 +15,9 @@ import {
     DROPDOWN_MAX_HEIGHT,
 } from '@UI/assets/scss/_js-variables/sizes.scss';
 import {
-    getPositionForBrowser,
-    isMouseInsideElement,
-} from '@UI/models/dragAndDrop/helpers';
+    getFixedMousePosition,
+    isMouseOutsideElement,
+} from '@UI/models/mouse';
 
 export default {
     name: 'Dropdown',
@@ -151,8 +151,8 @@ export default {
             const {
                 xPos,
                 yPos,
-            } = getPositionForBrowser(event);
-            const isClickedOutside = !isMouseInsideElement(this.$refs.dropdown, xPos, yPos);
+            } = getFixedMousePosition(event);
+            const isClickedOutside = isMouseOutsideElement(this.$refs.dropdown, xPos, yPos);
 
             this.$emit('click-outside', {
                 event,
