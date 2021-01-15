@@ -82,6 +82,9 @@ import {
     insertValuesAtIndex,
     removeArrayIndexes,
 } from '@Core/models/arrayWrapper';
+import {
+    deepClone,
+} from '@Core/models/objectWrapper';
 import Designer from '@UI/components/Designer/Designer';
 import DesignerGhostItem from '@UI/components/Designer/DesignerGhostItem';
 import DesignerPlaceholderItem from '@UI/components/Designer/DesignerPlaceholderItem';
@@ -194,13 +197,13 @@ export default {
         items: {
             immediate: true,
             handler() {
-                this.localItems = JSON.parse(JSON.stringify(this.items));
+                this.localItems = deepClone(this.items);
             },
         },
     },
     methods: {
         onValueChange() {
-            this.$emit('input', JSON.parse(JSON.stringify(this.localItems)));
+            this.$emit('input', deepClone(this.localItems));
         },
         onUpdateItems({
             since,
