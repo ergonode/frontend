@@ -1,0 +1,8 @@
+{
+    "productStatus": {
+        "grid": {
+            "placeholderTitle": "No product statuses",
+            "placeholderSubtitle": "There are no product statuses in the system, you can create the first one."
+        }
+    }
+}

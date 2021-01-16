@@ -4,11 +4,11 @@
  */
 <template>
     <Placeholder
-        :orientation="orientation"
+        class="widget-no-data-placeholder"
+        :orientation="horizontalOrientation"
         :title="title"
         :subtitle="subtitle"
-        :bg-url="bgUrl"
-        :color="color">
+        :bg-url="bgUrl">
         <template #action>
             <slot name="action" />
         </template>
@@ -19,25 +19,14 @@
 import {
     ORIENTATION,
 } from '@Core/defaults/layout';
-import {
-    WHITESMOKE,
-} from '@UI/assets/scss/_js-variables/colors.scss';
 import Placeholder from '@UI/components/Placeholder/Placeholder';
 
 export default {
-    name: 'WidgetPlaceholder',
+    name: 'WidgetNoDataPlaceholder',
     components: {
         Placeholder,
     },
     props: {
-        /**
-         * Determines position of body components; vertical / horizontal
-         */
-        orientation: {
-            type: String,
-            default: ORIENTATION.HORIZONTAL,
-            validator: value => Object.values(ORIENTATION).indexOf(value) !== -1,
-        },
         /**
          * The title of the component
          */
@@ -52,21 +41,20 @@ export default {
             type: String,
             default: 'There are no records in the system.',
         },
-        /**
-         * The url to background image of placeholder
-         */
-        bgUrl: {
-            type: String,
-            default: require('@UI/assets/images/placeholders/comments.svg'),
+    },
+    computed: {
+        horizontalOrientation() {
+            return ORIENTATION.HORIZONTAL;
         },
-        /**
-         * Color of background
-         */
-        color: {
-            type: String,
-            default: WHITESMOKE,
-            validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
+        bgUrl() {
+            return require('@UI/assets/images/placeholders/man_placeholder.svg');
         },
     },
 };
 </script>
+
+<style lang="scss" scoped>
+.widget-no-data-placeholder {
+    flex: 0 0 328px;
+}
+</style>

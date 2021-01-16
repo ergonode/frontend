@@ -11,7 +11,9 @@
             :column="0"
             @mousedown.native="onSelectAll"
             @edit="onSelectAll">
-            <GridCheckEditCell :value="rowsSelectionState" />
+            <GridCheckEditCell
+                :disabled="!isAnyData"
+                :value="rowsSelectionState" />
         </GridTableCell>
         <GridTableCell
             v-if="isBasicFilter"
@@ -99,17 +101,20 @@ export default {
         },
     },
     computed: {
+        isAnyData() {
+            return this.dataCount > 0;
+        },
         rowsSelectionState() {
             const {
                 length,
             } = Object.keys(this.selectedRows);
 
-            if (this.dataCount === length) {
-                return 1;
-            }
-
             if (length === 0) {
                 return 0;
+            }
+
+            if (this.dataCount === length) {
+                return 1;
             }
 
             return 2;

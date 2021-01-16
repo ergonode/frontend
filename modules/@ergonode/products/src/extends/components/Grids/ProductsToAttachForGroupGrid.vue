@@ -23,6 +23,11 @@
         @sort-column="onColumnSortChange"
         @remove-all-filters="onRemoveAllFilters"
         @filter="onFilterChange">
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                :title="$t('product.grid.productsToAttachForGroupPlaceholderTitle')"
+                :subtitle="$t('product.grid.productsToAttachForGroupPlaceholderSubtitle')" />
+        </template>
         <template #appendFooter>
             <UpdateProductsAttachmentButton
                 :skus="skus"
@@ -49,12 +54,14 @@ import {
 } from '@Core/services/grid/getGridData.service';
 import UpdateProductsAttachmentButton from '@Products/extends/components/Buttons/UpdateProductsAttachmentButton';
 import Grid from '@UI/components/Grid/Grid';
+import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'ProductsToAttachForGroupGrid',
     components: {
         UpdateProductsAttachmentButton,
         Grid,
+        GridNoDataPlaceholder,
     },
     mixins: [
         gridDraftMixin,

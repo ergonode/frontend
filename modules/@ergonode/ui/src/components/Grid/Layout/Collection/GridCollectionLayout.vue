@@ -3,28 +3,34 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        class="grid-collection-layout"
-        :style="gridTemplateColumns">
-        <GridCollectionCell
-            v-for="(element, index) in data"
-            :key="index"
-            :data="element"
-            :drafts="drafts"
-            :object-fit="objectFit"
-            :extended-data-cell="extendedComponents.dataCells
-                && extendedComponents.dataCells[element.type]"
-            @row-action="onRowAction"
-            @cell-value="onCellValueChange" />
+    <div class="grid-collection-layout">
+        <Preloader v-if="isPrefetchingData" />
+        <div
+            v-else
+            :style="gridTemplateColumns"
+            class="grid-collection-layout__body">
+            <GridCollectionCell
+                v-for="(element, index) in data"
+                :key="index"
+                :data="element"
+                :drafts="drafts"
+                :object-fit="objectFit"
+                :extended-data-cell="extendedComponents.dataCells
+                    && extendedComponents.dataCells[element.type]"
+                @row-action="onRowAction"
+                @cell-value="onCellValueChange" />
+        </div>
     </div>
 </template>
 
 <script>
 import GridCollectionCell from '@UI/components/Grid/Layout/Collection/Cells/GridCollectionCell';
+import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'GridCollectionLayout',
     components: {
+        Preloader,
         GridCollectionCell,
     },
     props: {
@@ -76,6 +82,13 @@ export default {
         extendedComponents: {
             type: Object,
             default: () => ({}),
+        },
+        /**
+         * Determines if data is loaded asynchronously
+         */
+        isPrefetchingData: {
+            type: Boolean,
+            default: false,
         },
     },
     computed: {
@@ -130,12 +143,19 @@ export default {
 
 <style lang="scss" scoped>
     .grid-collection-layout {
-        display: grid;
-        grid-template-rows: 190px;
-        grid-gap: 24px;
-        padding: 24px;
-        box-sizing: border-box;
-        background-color: $WHITE;
-        overflow: auto;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+
+        &__body {
+            display: grid;
+            flex: 1 1 auto;
+            grid-template-rows: 190px;
+            grid-gap: 24px;
+            height: 0;
+            padding: 24px;
+            box-sizing: border-box;
+            overflow: auto;
+        }
     }
 </style>

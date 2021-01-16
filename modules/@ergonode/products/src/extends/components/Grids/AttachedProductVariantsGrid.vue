@@ -11,7 +11,6 @@
         :sort-order="sortOrder"
         :filters="filterValues"
         :collection-cell-binding="collectionCellBinding"
-        :placeholder="gridPlaceholder"
         :pagination="pagination"
         :extended-components="extendedGridComponents"
         :is-editable="isAllowedToUpdate"
@@ -39,17 +38,23 @@
                 </template>
             </AddProductVariantsButton>
         </template>
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                :title="$t('product.grid.variantPlaceholderTitle')"
+                :subtitle="$t('product.grid.variantPlaceholderSubtitle')">
+                <template #action>
+                    <AddProductVariantsButton
+                        title="CHOOSE VARIANTS"
+                        @added="onProductsAttachmentUpdated" />
+                </template>
+            </GridNoDataPlaceholder>
+        </template>
         <template #appendHeader>
             <BindingAttributes
                 v-if="isBindingAttributesExpanded"
                 :attributes="bindingAttributes"
                 @remove-binding="onRemoveBinding"
                 @added="onAttributeBindingAdded" />
-        </template>
-        <template #actionPlaceholder>
-            <AddProductVariantsButton
-                title="CHOOSE VARIANTS"
-                @added="onProductsAttachmentUpdated" />
         </template>
     </Grid>
 </template>
@@ -85,10 +90,8 @@ import {
     ATTRIBUTE_BINDING_ADDED_EVENT_NAME,
     PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
 } from '@Products/extends/defaults';
-import {
-    WHITESMOKE,
-} from '@UI/assets/scss/_js-variables/colors.scss';
 import Grid from '@UI/components/Grid/Grid';
+import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import {
     mapActions,
@@ -99,6 +102,7 @@ export default {
     name: 'AttachedProductVariantsGrid',
     components: {
         Grid,
+        GridNoDataPlaceholder,
         ExpandNumericButton,
         BindingAttributes,
         IconAdd,
@@ -136,14 +140,6 @@ export default {
             'selectAttributes',
             'bindings',
         ]),
-        gridPlaceholder() {
-            return {
-                title: 'No product variants',
-                subtitle: 'Choose products which together will create a product with variants. You can choose between products which contain selected binding attributes.',
-                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
-                color: WHITESMOKE,
-            };
-        },
         collectionCellBinding() {
             return {
                 imageColumn: 'default_image',
@@ -169,7 +165,7 @@ export default {
         },
     },
     watch: {
-        $route(from, to) {
+        async $route(from, to) {
             if (from.name !== to.name) {
                 return;
             }
@@ -184,7 +180,9 @@ export default {
             this.pagination = pagination;
             this.sortOrder = sortOrder;
 
-            this.onFetchData();
+            await this.onFetchData();
+
+            this.isPrefetchingData = false;
         },
     },
     mounted() {
@@ -298,6 +296,8 @@ export default {
                     page: DEFAULT_PAGE,
                 },
             });
+
+            this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
             this.$router.replace({
