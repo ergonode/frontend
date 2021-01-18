@@ -154,25 +154,25 @@ export function getSortedColumnsByIDs(columns, columnIds) {
 export function getDefaultDataFromQueryParams($route) {
     const {
         query: {
-            page = DEFAULT_PAGE,
-            itemsPerPage = DATA_LIMIT,
-            filter = '',
-            advancedFilter = '',
-            field = '',
-            order = '',
+            page,
+            itemsPerPage,
+            filter,
+            advancedFilter,
+            field,
+            order,
         },
     } = $route;
 
     return {
-        filterValues: getMappedFilters(filter),
-        advancedFilterValues: getMappedFilters(advancedFilter),
+        filterValues: getMappedFilters(filter || ''),
+        advancedFilterValues: getMappedFilters(advancedFilter || ''),
         pagination: {
-            page: +page,
-            itemsPerPage: +itemsPerPage,
+            page: +page || DEFAULT_PAGE,
+            itemsPerPage: +itemsPerPage || DATA_LIMIT,
         },
         sortOrder: {
-            field,
-            order,
+            field: field || '',
+            order: order || '',
         },
     };
 }

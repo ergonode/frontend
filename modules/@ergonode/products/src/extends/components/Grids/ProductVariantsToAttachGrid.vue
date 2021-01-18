@@ -27,6 +27,11 @@
         <template #actionsHeader>
             <slot name="actionsHeader" />
         </template>
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                :title="$t('product.grid.productVariantsToAttachPlaceholderTitle')"
+                :subtitle="$t('product.grid.productVariantsToAttachPlaceholderSubtitle')" />
+        </template>
         <template #appendFooter>
             <UpdateProductsAttachmentButton
                 :skus="skus"
@@ -56,6 +61,7 @@ import {
 } from '@Core/services/grid/getGridData.service';
 import UpdateProductsAttachmentButton from '@Products/extends/components/Buttons/UpdateProductsAttachmentButton';
 import Grid from '@UI/components/Grid/Grid';
+import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 import {
     mapState,
 } from 'vuex';
@@ -65,6 +71,7 @@ export default {
     components: {
         UpdateProductsAttachmentButton,
         Grid,
+        GridNoDataPlaceholder,
     },
     mixins: [
         gridDraftMixin,

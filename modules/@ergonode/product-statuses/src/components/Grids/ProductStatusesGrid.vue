@@ -10,7 +10,6 @@
         :sort-order="sortOrder"
         :filters="filterValues"
         :pagination="pagination"
-        :placeholder="noDataPlaceholder"
         :extended-components="extendedGridComponents"
         :is-editable="isAllowedToUpdate"
         :is-prefetching-data="isPrefetchingData"
@@ -22,7 +21,17 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
-        @remove-all-filters="onRemoveAllFilters" />
+        @remove-all-filters="onRemoveAllFilters">
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                :title="$t('productStatus.grid.placeholderTitle')"
+                :subtitle="$t('productStatus.grid.placeholderSubtitle')">
+                <template #action>
+                    <CreateProductStatusButton />
+                </template>
+            </GridNoDataPlaceholder>
+        </template>
+    </Grid>
 </template>
 
 <script>
@@ -41,6 +50,7 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import CreateProductStatusButton from '@Statuses/components/Buttons/CreateProductStatusButton';
 import {
     ROUTE_NAME,
 } from '@Statuses/config/routes';
@@ -48,15 +58,15 @@ import {
     PRODUCT_STATUS_CREATED_EVENT_NAME,
 } from '@Statuses/defaults';
 import PRIVILEGES from '@Transitions/config/privileges';
-import {
-    WHITESMOKE,
-} from '@UI/assets/scss/_js-variables/colors.scss';
 import Grid from '@UI/components/Grid/Grid';
+import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'ProductStatusesGrid',
     components: {
+        CreateProductStatusButton,
         Grid,
+        GridNoDataPlaceholder,
     },
     mixins: [
         extendedGridComponentsMixin,
@@ -84,15 +94,6 @@ export default {
         };
     },
     computed: {
-
-        noDataPlaceholder() {
-            return {
-                title: 'No product statuses',
-                subtitle: 'There are no product statuses in the system, you can create the first one.',
-                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
-                color: WHITESMOKE,
-            };
-        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.WORKFLOW.delete,
@@ -100,7 +101,7 @@ export default {
         },
     },
     watch: {
-        $route(from, to) {
+        async $route(from, to) {
             if (from.name !== to.name) {
                 return;
             }
@@ -115,7 +116,9 @@ export default {
             this.pagination = pagination;
             this.sortOrder = sortOrder;
 
-            this.onFetchData();
+            await this.onFetchData();
+
+            this.isPrefetchingData = false;
         },
     },
     mounted() {
@@ -184,6 +187,8 @@ export default {
                     page: DEFAULT_PAGE,
                 },
             });
+
+            this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
             this.$router.replace({

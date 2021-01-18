@@ -46,10 +46,7 @@
         },
         "errors": {
             "getRequest": "User hasn`t been fetched properly",
-            "getOptionRequest": "Attribute options hasn’t been fetched properly",
-            "deleteRequest": "User hasn’t been deleted",
-            "optionUniq": "Option code must be unique",
-            "optionEmpty": "Option cannot be empty"
+            "deleteRequest": "User hasn’t been deleted"
         }
     },
     "role": {

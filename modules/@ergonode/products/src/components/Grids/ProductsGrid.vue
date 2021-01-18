@@ -12,7 +12,6 @@
             <Grid
                 :columns="columns"
                 :rows="rows"
-                :placeholder="noDataPlaceholder"
                 :drafts="drafts"
                 :filters="filterValues"
                 :errors="errors"
@@ -70,10 +69,18 @@
                             @input="onAdvancedFilterChange" />
                     </div>
                 </template>
-                <template #filterActionPlaceholder>
-                    <RemoveFiltersButton
-                        v-if="isAnyFilter"
-                        @click.native="onRemoveAllFilters" />
+                <template #noDataPlaceholder>
+                    <GridNoDataPlaceholder
+                        v-if="!isAnyFilter && filtered === 0"
+                        :title="$t('product.grid.placeholderTitle')"
+                        :subtitle="$t('product.grid.placeholderSubtitle')">
+                        <template #action>
+                            <CreateProductButton />
+                        </template>
+                    </GridNoDataPlaceholder>
+                    <GridNoResultsPlaceholder
+                        v-else
+                        @clear="onRemoveAllFilters" />
                 </template>
                 <template #appendFooter>
                     <template v-for="(footerItem, index) in extendedFooter">
@@ -118,6 +125,7 @@ import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
 import ProductsBatchActions from '@Products/components/BatchActions/ProductsBatchActions';
+import CreateProductButton from '@Products/components/Buttons/CreateProductButton';
 import UpdateProductsButton from '@Products/components/Buttons/UpdateProductsButton';
 import PRIVILEGES from '@Products/config/privileges';
 import {
@@ -126,15 +134,13 @@ import {
 import {
     PRODUCT_CREATED_EVENT_NAME,
 } from '@Products/defaults';
-import {
-    WHITESMOKE,
-} from '@UI/assets/scss/_js-variables/colors.scss';
 import AdvancedFilters from '@UI/components/AdvancedFilters/AdvancedFilters';
 import Button from '@UI/components/Button/Button';
-import RemoveFiltersButton from '@UI/components/Grid/Buttons/RemoveFiltersButton';
 import AddFilterDropZone from '@UI/components/Grid/DropZone/AddFilterDropZone';
 import RemoveFilterAndColumnDropZone from '@UI/components/Grid/DropZone/RemoveFilterAndColumnDropZone';
 import Grid from '@UI/components/Grid/Grid';
+import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
+import GridNoResultsPlaceholder from '@UI/components/Grid/GridNoResultsPlaceholder';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import {
@@ -143,16 +149,18 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'ProductHistoryGrid',
+    name: 'ProductsGrid',
     components: {
+        CreateProductButton,
         Grid,
+        GridNoDataPlaceholder,
+        GridNoResultsPlaceholder,
         ProductsBatchActions,
         AddFilterDropZone,
         RemoveFilterAndColumnDropZone,
         Button,
         VerticalTabBar,
         IconSpinner,
-        RemoveFiltersButton,
         UpdateProductsButton,
         ExpandNumericButton,
         AdvancedFilters,
@@ -229,23 +237,6 @@ export default {
                 && (Object.keys(this.filterValues).length > 0
                     || Object.keys(this.advancedFilterValues).length > 0);
         },
-        noDataPlaceholder() {
-            if (this.filtered === 0 && this.isAnyFilter) {
-                return {
-                    title: 'No results',
-                    subtitle: 'There are no results that meet the conditions for the selected filters.',
-                    bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
-                    color: WHITESMOKE,
-                };
-            }
-
-            return {
-                title: 'No products',
-                subtitle: 'There are no products in the system, you can create the first one.',
-                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
-                color: WHITESMOKE,
-            };
-        },
         collectionCellBinding() {
             return {
                 imageColumn: 'esa_default_image',
@@ -259,7 +250,7 @@ export default {
         },
     },
     watch: {
-        $route(from, to) {
+        async $route(from, to) {
             if (from.name !== to.name) {
                 return;
             }
@@ -276,7 +267,9 @@ export default {
             this.pagination = pagination;
             this.sortOrder = sortOrder;
 
-            this.onFetchData();
+            await this.onFetchData();
+
+            this.isPrefetchingData = false;
         },
     },
     mounted() {
@@ -738,6 +731,8 @@ export default {
                     page: DEFAULT_PAGE,
                 },
             });
+
+            this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
             this.$router.replace({

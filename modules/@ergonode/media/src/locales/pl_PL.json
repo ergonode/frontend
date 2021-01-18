@@ -1,0 +1,12 @@
+{
+    "media": {
+        "grid": {
+            "placeholderTitle": "Brak multimediów",
+            "placeholderSubtitle": "W systemie nie ma multimediów, dodaj pierwsze."
+        },
+        "tab": {
+            "productRelationsPlaceholderTitle": "Brak relacji w produktach",
+            "productRelationsPlaceholderSubtitle": "Tutaj możesz zobaczyć informację na temat relacji w produktach."
+        }
+    }
+}
