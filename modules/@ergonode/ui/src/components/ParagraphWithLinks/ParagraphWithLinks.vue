@@ -34,7 +34,7 @@ export default {
                     } = this.links[key];
 
                     return createElement('span', {
-                        class: 'link',
+                        class: 'paragraph-with-links__link',
                         on: {
                             click: action,
                         },
@@ -53,11 +53,10 @@ export default {
 
 <style lang="scss" scoped>
     .paragraph-with-links {
-        margin: 0;
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_14_20;
 
-        .link {
+        &__link {
             text-decoration: underline;
             cursor: pointer;
         }

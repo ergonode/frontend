@@ -67,18 +67,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .recovery-form {
-        &__info {
-            margin: 0;
-            color: $GRAPHITE_DARK;
-            font: $FONT_MEDIUM_14_20;
-
-            .link {
-                text-decoration: underline;
-                cursor: pointer;
-            }
-        }
-    }
-</style>
