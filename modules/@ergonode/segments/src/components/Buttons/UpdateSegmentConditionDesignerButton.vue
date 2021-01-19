@@ -10,7 +10,7 @@
             <Button
                 data-cy="submit"
                 :title="$t('core.buttons.submit')"
-                :floating="{ bottom: '24px', right: '24px' }"
+                :floating="saveChangesButtonFloatingStyle"
                 @click.native="onSubmit">
                 <template #prepend="{ color }">
                     <IconSpinner
@@ -30,16 +30,20 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
+import {
+    Z_INDEX_LVL_2,
+} from '@UI/assets/scss/_js-variables/indexes.scss';
 import Button from '@UI/components/Button/Button';
 import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import IconSync from '@UI/components/Icons/Feedback/IconSync';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
-    name: 'UpdateCollectionProductsVisibilityButton',
+    name: 'UpdateSegmentConditionDesignerButton',
     components: {
         FeedbackProvider,
         Button,
@@ -49,20 +53,31 @@ export default {
     mixins: [
         updateButtonFeedbackMixin,
     ],
-    props: {
-        drafts: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     data() {
         return {
             isSubmitting: false,
         };
     },
+    computed: {
+        ...mapState('segment', [
+            'conditionSetId',
+        ]),
+        saveChangesButtonFloatingStyle() {
+            return {
+                bottom: '24px',
+                right: '24px',
+                zIndex: Z_INDEX_LVL_2,
+            };
+        },
+    },
     methods: {
-        ...mapActions('collection', [
-            'updateCollectionProductsVisibility',
+        ...mapActions('condition', [
+            'createConditionSet',
+            'updateConditionSet',
+        ]),
+        ...mapActions('segment', [
+            'updateSegment',
+            '__setState',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -71,24 +86,39 @@ export default {
             this.isSubmitting = true;
 
             this.removeScopeErrors(this.scope);
-            this.updateCollectionProductsVisibility({
-                scope: this.scope,
-                drafts: this.drafts,
-                onSuccess: this.onUpdateSuccess,
-                onError: this.onUpdateError,
-            });
+
+            if (!this.conditionSetId) {
+                this.createConditionSet({
+                    scope: this.scope,
+                    onSuccess: this.onUpdateSuccess,
+                    onError: this.onUpdateError,
+                });
+            } else {
+                this.updateConditionSet({
+                    scope: this.scope,
+                    onSuccess: this.onUpdateSuccess,
+                    onError: this.onUpdateError,
+                });
+            }
         },
-        async onUpdateSuccess() {
+        async onUpdateSuccess(id) {
+            this.__setState({
+                key: 'conditionSetId',
+                value: id,
+            });
+
+            await this.updateSegment({
+                scope: this.scope,
+            });
+
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product visibilities in collection have been updated',
+                message: 'Segment conditions have been updated',
             });
 
             this.isSubmitting = false;
 
             this.markChangeValuesAsSaved(this.scope);
-
-            this.$emit('updated');
         },
         onUpdateError(errors) {
             this.onError(errors);

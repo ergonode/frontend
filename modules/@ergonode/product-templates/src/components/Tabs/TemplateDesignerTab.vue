@@ -71,16 +71,10 @@
                     :element="sectionElement"
                     @close="onCloseSectionModal" />
             </TemplateGridDesigner>
-            <Button
-                :title="$t('core.buttons.submit')"
-                :floating="{ bottom: '24px', right: '24px' }"
-                @click.native="onSubmit">
-                <template
-                    v-if="isSubmitting"
-                    #prepend="{ color }">
-                    <IconSpinner :fill-color="color" />
-                </template>
-            </Button>
+            <UpdateTemplateDesignerButton
+                :scope="scope"
+                :errors="errors"
+                :change-values="changeValues" />
         </template>
     </GridViewTemplate>
 </template>
@@ -89,9 +83,6 @@
 import {
     SYSTEM_TYPES,
 } from '@Attributes/defaults/attributes';
-import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
@@ -102,6 +93,7 @@ import {
 import {
     isObject,
 } from '@Core/models/objectWrapper';
+import UpdateTemplateDesignerButton from '@Templates/components/Buttons/UpdateTemplateDesignerButton';
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
 import TemplateGridDraggableLayer from '@Templates/components/Template/Base/TemplateGridDraggableLayer';
 import TemplateGridPlaceholderItem from '@Templates/components/Template/Base/TemplateGridPlaceholderItem';
@@ -115,10 +107,8 @@ import {
 import {
     GRAPHITE_LIGHT,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import Button from '@UI/components/Button/Button';
 import DropZone from '@UI/components/DropZone/DropZone';
 import IconRemoveFilter from '@UI/components/Icons/Actions/IconRemoveFilter';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
 import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
@@ -130,8 +120,7 @@ import {
 export default {
     name: 'TemplateDesignerTab',
     components: {
-        Button,
-        IconSpinner,
+        UpdateTemplateDesignerButton,
         DropZone,
         FadeTransition,
         GridViewTemplate,
@@ -248,7 +237,6 @@ export default {
     },
     methods: {
         ...mapActions('productTemplate', [
-            'updateTemplate',
             'addListElementToLayout',
             'updateLayoutElementAtIndex',
             'removeLayoutElementAtIndex',
@@ -256,34 +244,6 @@ export default {
         ...mapActions('feedback', [
             'onScopeValueChange',
         ]),
-        onSubmit() {
-            if (this.isSubmitting) {
-                return;
-            }
-            this.isSubmitting = true;
-
-            this.removeScopeErrors();
-            this.updateTemplate({
-                scope: this.scope,
-                onSuccess: this.onUpdateSuccess,
-                onError: this.onUpdateError,
-            });
-        },
-        onUpdateSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Template has been updated',
-            });
-
-            this.isSubmitting = false;
-
-            this.markChangeValuesAsSaved(this.scope);
-        },
-        onUpdateError(errors) {
-            this.onError(errors);
-
-            this.isSubmitting = false;
-        },
         onRemoveLayoutElement(index) {
             this.removeLayoutElementAtIndex(index);
 

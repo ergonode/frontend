@@ -10,7 +10,7 @@
             <Button
                 data-cy="submit"
                 :title="$t('core.buttons.submit')"
-                :floating="{ bottom: '24px', right: '24px' }"
+                :floating="saveChangesButtonFloatingStyle"
                 @click.native="onSubmit">
                 <template #prepend="{ color }">
                     <IconSpinner
@@ -30,6 +30,9 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
+import {
+    Z_INDEX_LVL_2,
+} from '@UI/assets/scss/_js-variables/indexes.scss';
 import Button from '@UI/components/Button/Button';
 import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
@@ -39,7 +42,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'UpdateCollectionProductsVisibilityButton',
+    name: 'UpdateCategoryTreeDesignerButton',
     components: {
         FeedbackProvider,
         Button,
@@ -49,20 +52,23 @@ export default {
     mixins: [
         updateButtonFeedbackMixin,
     ],
-    props: {
-        drafts: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     data() {
         return {
             isSubmitting: false,
         };
     },
+    computed: {
+        saveChangesButtonFloatingStyle() {
+            return {
+                bottom: '24px',
+                right: '24px',
+                zIndex: Z_INDEX_LVL_2,
+            };
+        },
+    },
     methods: {
-        ...mapActions('collection', [
-            'updateCollectionProductsVisibility',
+        ...mapActions('categoryTree', [
+            'updateCategoryTree',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -71,24 +77,21 @@ export default {
             this.isSubmitting = true;
 
             this.removeScopeErrors(this.scope);
-            this.updateCollectionProductsVisibility({
+            this.updateCategoryTree({
                 scope: this.scope,
-                drafts: this.drafts,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });
         },
-        async onUpdateSuccess() {
+        onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product visibilities in collection have been updated',
+                message: 'Category tree has been updated',
             });
 
             this.isSubmitting = false;
 
             this.markChangeValuesAsSaved(this.scope);
-
-            this.$emit('updated');
         },
         onUpdateError(errors) {
             this.onError(errors);

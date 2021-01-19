@@ -24,16 +24,10 @@
                 :change-values="changeValues"
                 :errors="errors"
                 :disabled="!isAllowedToUpdate" />
-            <Button
-                :title="$t('core.buttons.submit')"
-                :floating="saveChangesButtonFloatingStyle"
-                @click.native="onSubmit">
-                <template
-                    v-if="isSubmitting"
-                    #prepend="{ color }">
-                    <IconSpinner :fill-color="color" />
-                </template>
-            </Button>
+            <UpdateProductStatusConditionDesignerButton
+                :scope="scope"
+                :change-values="changeValues"
+                :errors="errors" />
         </template>
     </GridViewTemplate>
 </template>
@@ -41,23 +35,17 @@
 <script>
 import ConditionSetWrapper from '@Conditions/components/ConditionSetDesigner/ConditionSetWrapper';
 import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import UpdateProductStatusConditionDesignerButton
+    from '@Statuses/components/Buttons/UpdateProductStatusConditionDesignerButton';
 import PRIVILEGES from '@Statuses/config/privileges';
 import {
     GRAPHITE_LIGHT,
 } from '@UI/assets/scss/_js-variables/colors.scss';
-import {
-    Z_INDEX_LVL_2,
-} from '@UI/assets/scss/_js-variables/indexes.scss';
-import Button from '@UI/components/Button/Button';
 import DropZone from '@UI/components/DropZone/DropZone';
 import IconRemoveFilter from '@UI/components/Icons/Actions/IconRemoveFilter';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
 import VerticalTabBar from '@UI/components/TabBar/VerticalTabBar';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
@@ -69,8 +57,7 @@ import {
 export default {
     name: 'ConditionDesignerTab',
     components: {
-        Button,
-        IconSpinner,
+        UpdateProductStatusConditionDesignerButton,
         GridViewTemplate,
         IconRemoveFilter,
         DropZone,
@@ -97,9 +84,6 @@ export default {
         ...mapState('draggable', [
             'isElementDragging',
         ]),
-        ...mapState('statusTransition', [
-            'conditionSetId',
-        ]),
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.WORKFLOW.update,
@@ -117,13 +101,6 @@ export default {
                 },
             ];
         },
-        saveChangesButtonFloatingStyle() {
-            return {
-                bottom: '24px',
-                right: '24px',
-                zIndex: Z_INDEX_LVL_2,
-            };
-        },
         isDropZoneVisible() {
             return this.isElementDragging === DRAGGED_ELEMENT.TEMPLATE;
         },
@@ -136,66 +113,12 @@ export default {
         this.__clearConditionStorage();
     },
     methods: {
-        ...mapActions('condition', [
-            'createConditionSet',
-            'updateConditionSet',
-        ]),
         ...mapActions('gridDesigner', {
             __clearGridDesignerStorage: '__clearStorage',
         }),
-        ...mapActions('statusTransition', [
-            '__setState',
-            'updateStatusTransition',
-        ]),
         ...mapActions('condition', {
             __clearConditionStorage: '__clearStorage',
         }),
-        onSubmit() {
-            if (this.isSubmitting) {
-                return;
-            }
-            this.isSubmitting = true;
-
-            this.removeScopeErrors(this.scope);
-
-            if (!this.conditionSetId) {
-                this.createConditionSet({
-                    scope: this.scope,
-                    onSuccess: this.onUpdateSuccess,
-                    onError: this.onUpdateError,
-                });
-            } else {
-                this.updateConditionSet({
-                    scope: this.scope,
-                    onSuccess: this.onUpdateSuccess,
-                    onError: this.onUpdateError,
-                });
-            }
-        },
-        async onUpdateSuccess(id) {
-            this.__setState({
-                key: 'conditionSetId',
-                value: id,
-            });
-
-            await this.updateStatusTransition({
-                scope: this.scope,
-            });
-
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Status transition conditions have been updated',
-            });
-
-            this.isSubmitting = false;
-
-            this.markChangeValuesAsSaved(this.scope);
-        },
-        onUpdateError(errors) {
-            this.onError(errors);
-
-            this.isSubmitting = false;
-        },
     },
 };
 </script>

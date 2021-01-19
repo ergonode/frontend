@@ -3,22 +3,33 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        :class="classes"
-        tabindex="-1"
-        @click="onLinkSelect">
-        {{ item.title }}
-        <IconError
-            v-if="hasError"
-            view-box="6 -6 12 36"
-            :fill-color="redColor" />
-        <IconMark
-            v-else-if="hasSuccess"
-            :fill-color="greenColor" />
-        <IconSync
-            v-else-if="hasValueToSave"
-            :fill-color="graphiteDarkColor" />
-    </div>
+    <FeedbackProvider
+        :errors="errors"
+        :change-values="changeValues">
+        <template
+            #default="{
+                hasValueToSave,
+                hasSuccess,
+                hasError,
+            }">
+            <div
+                :class="classes"
+                tabindex="-1"
+                @click="onLinkSelect">
+                {{ item.title }}
+                <IconError
+                    v-if="hasError"
+                    view-box="6 -6 12 36"
+                    :fill-color="redColor" />
+                <IconMark
+                    v-else-if="hasSuccess"
+                    :fill-color="greenColor" />
+                <IconSync
+                    v-else-if="hasValueToSave"
+                    :fill-color="graphiteDarkColor" />
+            </div>
+        </template>
+    </FeedbackProvider>
 </template>
 
 <script>
@@ -27,6 +38,7 @@ import {
     GREEN,
     RED,
 } from '@UI/assets/scss/_js-variables/colors.scss';
+import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconError from '@UI/components/Icons/Feedback/IconError';
 import IconMark from '@UI/components/Icons/Feedback/IconMark';
 import IconSync from '@UI/components/Icons/Feedback/IconSync';
@@ -34,6 +46,7 @@ import IconSync from '@UI/components/Icons/Feedback/IconSync';
 export default {
     name: 'HorizontalRoutingTabBarItem',
     components: {
+        FeedbackProvider,
         IconError,
         IconSync,
         IconMark,
@@ -92,18 +105,6 @@ export default {
         },
         graphiteDarkColor() {
             return GRAPHITE_DARK;
-        },
-        changeValuesKeys() {
-            return Object.keys(this.changeValues);
-        },
-        hasValueToSave() {
-            return this.changeValuesKeys.length > 0 && !this.changeValues.saved;
-        },
-        hasError() {
-            return Object.keys(this.errors).length > 0;
-        },
-        hasSuccess() {
-            return this.changeValues.saved;
         },
     },
     methods: {

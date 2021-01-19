@@ -39,7 +39,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'UpdateCollectionProductsVisibilityButton',
+    name: 'UpdateCollectionTranslationButton',
     components: {
         FeedbackProvider,
         Button,
@@ -49,12 +49,6 @@ export default {
     mixins: [
         updateButtonFeedbackMixin,
     ],
-    props: {
-        drafts: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     data() {
         return {
             isSubmitting: false,
@@ -62,7 +56,7 @@ export default {
     },
     methods: {
         ...mapActions('collection', [
-            'updateCollectionProductsVisibility',
+            'updateCollection',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
@@ -71,24 +65,21 @@ export default {
             this.isSubmitting = true;
 
             this.removeScopeErrors(this.scope);
-            this.updateCollectionProductsVisibility({
+            this.updateCollection({
                 scope: this.scope,
-                drafts: this.drafts,
                 onSuccess: this.onUpdateSuccess,
                 onError: this.onUpdateError,
             });
         },
-        async onUpdateSuccess() {
+        onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product visibilities in collection have been updated',
+                message: 'Collection translations have been updated',
             });
 
             this.isSubmitting = false;
 
             this.markChangeValuesAsSaved(this.scope);
-
-            this.$emit('updated');
         },
         onUpdateError(errors) {
             this.onError(errors);

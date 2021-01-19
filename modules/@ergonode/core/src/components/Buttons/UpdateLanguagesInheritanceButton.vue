@@ -30,16 +30,23 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
+import {
+    getMappedTreeData,
+} from '@Core/models/mappers/languageTreeMapper';
+import {
+    isEmpty,
+} from '@Core/models/objectWrapper';
 import Button from '@UI/components/Button/Button';
 import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import IconSync from '@UI/components/Icons/Feedback/IconSync';
 import {
     mapActions,
+    mapState,
 } from 'vuex';
 
 export default {
-    name: 'UpdateCollectionProductsVisibilityButton',
+    name: 'UpdateLanguagesInheritanceButton',
     components: {
         FeedbackProvider,
         Button,
@@ -49,51 +56,70 @@ export default {
     mixins: [
         updateButtonFeedbackMixin,
     ],
-    props: {
-        drafts: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     data() {
         return {
             isSubmitting: false,
         };
     },
+    computed: {
+        ...mapState('gridDesigner', [
+            'fullGridData',
+        ]),
+    },
     methods: {
-        ...mapActions('collection', [
-            'updateCollectionProductsVisibility',
+        ...mapActions('core', [
+            'setLanguageTree',
+            'setDefaultLanguage',
+            'updateLanguageTree',
+        ]),
+        ...mapActions('authentication', [
+            'getUser',
         ]),
         onSubmit() {
             if (this.isSubmitting) {
                 return;
             }
-            this.isSubmitting = true;
 
-            this.removeScopeErrors(this.scope);
-            this.updateCollectionProductsVisibility({
-                scope: this.scope,
-                drafts: this.drafts,
-                onSuccess: this.onUpdateSuccess,
-                onError: this.onUpdateError,
+            if (!isEmpty(this.fullGridData)) {
+                this.isSubmitting = true;
+
+                const [
+                    languages,
+                ] = getMappedTreeData(this.fullGridData);
+
+                this.removeScopeErrors(this.scope);
+
+                this.updateLanguageTree({
+                    languages,
+                    onSuccess: () => this.onUpdateSuccess(languages),
+                    onError: this.onUpdateError,
+                });
+            }
+        },
+        async onUpdateSuccess(languages) {
+            this.setLanguageTree(languages);
+
+            await this.getUser({
+                onSuccess: this.onGetUserSuccess,
             });
         },
-        async onUpdateSuccess() {
+        onUpdateError(message) {
+            this.$addAlert({
+                type: ALERT_TYPE.ERROR,
+                message,
+            });
+            this.isSubmitting = false;
+        },
+        onGetUserSuccess() {
+            this.setDefaultLanguage();
+
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Product visibilities in collection have been updated',
+                message: 'Languages tree has been updated',
             });
-
             this.isSubmitting = false;
 
             this.markChangeValuesAsSaved(this.scope);
-
-            this.$emit('updated');
-        },
-        onUpdateError(errors) {
-            this.onError(errors);
-
-            this.isSubmitting = false;
         },
     },
 };

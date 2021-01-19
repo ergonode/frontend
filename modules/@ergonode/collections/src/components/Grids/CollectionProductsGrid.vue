@@ -32,7 +32,9 @@
         <template #appendFooter>
             <UpdateCollectionProductsVisibilityButton
                 :scope="scope"
+                :errors="errors"
                 :drafts="drafts"
+                :change-values="changeValues"
                 @updated="onCollectionProductsVisibilityUpdated" />
         </template>
     </Grid>
@@ -85,6 +87,10 @@ export default {
             default: '',
         },
         errors: {
+            type: Object,
+            default: () => ({}),
+        },
+        changeValues: {
             type: Object,
             default: () => ({}),
         },

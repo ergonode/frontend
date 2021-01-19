@@ -7,7 +7,8 @@
         <template #content>
             <CollectionProductsGrid
                 :scope="scope"
-                :errors="errors" />
+                :errors="errors"
+                :change-values="changeValues" />
         </template>
     </CenterViewTemplate>
 </template>
@@ -28,6 +29,10 @@ export default {
             default: '',
         },
         errors: {
+            type: Object,
+            default: () => ({}),
+        },
+        changeValues: {
             type: Object,
             default: () => ({}),
         },

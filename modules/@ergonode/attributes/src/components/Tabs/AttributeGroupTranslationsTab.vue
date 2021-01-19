@@ -14,82 +14,30 @@
                 :language-code="languageCode" />
         </template>
         <template #saveButton>
-            <Button
-                :title="$t('core.buttons.submit')"
-                data-cy="submit"
-                :floating="{ bottom: '24px', right: '24px' }"
-                @click.native="onSubmit">
-                <template
-                    v-if="isSubmitting"
-                    #prepend="{ color }">
-                    <IconSpinner :fill-color="color" />
-                </template>
-            </Button>
+            <UpdateAttributeGroupTranslationButton
+                :scope="scope"
+                :change-values="changeValues"
+                :errors="errors" />
         </template>
     </TranslationsTab>
 </template>
 
 <script>
+import UpdateAttributeGroupTranslationButton
+    from '@Attributes/components/Buttons/UpdateAttributeGroupTranslationButton';
 import AttributeGroupTranslationForm from '@Attributes/components/Forms/AttributeGroupTranslationForm';
 import TranslationsTab from '@Core/components/Tabs/TranslationsTab';
-import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
 import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
-import Button from '@UI/components/Button/Button';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'AttributeGroupTranslationsTab',
     components: {
+        UpdateAttributeGroupTranslationButton,
         TranslationsTab,
         AttributeGroupTranslationForm,
-        Button,
-        IconSpinner,
     },
     mixins: [
         tabFeedbackMixin,
     ],
-    data() {
-        return {
-            isSubmitting: false,
-        };
-    },
-    methods: {
-        ...mapActions('attributeGroup', [
-            'updateAttributeGroup',
-        ]),
-        onSubmit() {
-            if (this.isSubmitting) {
-                return;
-            }
-            this.isSubmitting = true;
-
-            this.removeScopeErrors(this.scope);
-            this.updateAttributeGroup({
-                scope: this.scope,
-                onSuccess: this.onUpdateSuccess,
-                onError: this.onUpdateError,
-            });
-        },
-        onUpdateSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: this.$t('attributeGroup.messages.updateTranslationSuccess'),
-            });
-
-            this.isSubmitting = false;
-
-            this.markChangeValuesAsSaved(this.scope);
-        },
-        onUpdateError(errors) {
-            this.onError(errors);
-
-            this.isSubmitting = false;
-        },
-    },
 };
 </script>

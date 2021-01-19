@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import ProductVariantsToAttachGrid from '@Products/extends/components/Grids/ProductVariantsToAttachGrid';
 import ModalGrid from '@UI/components/Modal/ModalGrid';
 
@@ -22,6 +23,9 @@ export default {
         ModalGrid,
         ProductVariantsToAttachGrid,
     },
+    mixins: [
+        scopeErrorsMixin,
+    ],
     methods: {
         onClose() {
             this.$emit('close');
