@@ -10,6 +10,7 @@
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
         :errors="errors"
+        :change-values="changeValues"
         :errors-presentation-mapper="errorMapper"
         @proceed="onProceed"
         @submit="onSubmit">

@@ -9,6 +9,7 @@
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
         :errors="errors"
+        :change-values="changeValues"
         @proceed="onProceed"
         @submit="onSubmit">
         <template #body>
@@ -58,7 +59,7 @@ import Button from '@UI/components/Button/Button';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
-
+// TODO
 export default {
     name: 'AddProductsFromSegmentForm',
     components: {
@@ -73,10 +74,6 @@ export default {
         formFeedbackMixin,
     ],
     props: {
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
         segments: {
             type: Array,
             default: () => [],

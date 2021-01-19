@@ -10,7 +10,7 @@
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"
-                :changed-values="changeValues"
+                :change-values="changeValues"
                 @submit="onSubmit" />
         </template>
     </CenterViewTemplate>

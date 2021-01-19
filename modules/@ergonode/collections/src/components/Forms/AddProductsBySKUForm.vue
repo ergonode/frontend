@@ -9,6 +9,7 @@
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
         :errors="errors"
+        :change-values="changeValues"
         @proceed="onProceed"
         @submit="onSubmit">
         <template #body>
@@ -33,6 +34,7 @@ import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import TextArea from '@UI/components/TextArea/TextArea';
+// TODO
 
 export default {
     name: 'AddProductsBySKUForm',

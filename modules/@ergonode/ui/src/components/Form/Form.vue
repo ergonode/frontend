@@ -6,7 +6,7 @@
     <FeedbackProvider
         :errors="errors"
         :change-values="changeValues">
-        <template #default="{ hasError }">
+        <template #default="{ hasError, hasValueToSave }">
             <form
                 class="form"
                 @submit.prevent="onSubmit">
@@ -43,10 +43,13 @@
                             data-cy="submit"
                             :title="submitTitle"
                             type="submit">
-                            <template
-                                v-if="isSubmitting"
-                                #append="{ color }">
-                                <IconSpinner :fill-color="color" />
+                            <template #append="{ color }">
+                                <IconSpinner
+                                    v-if="isSubmitting"
+                                    :fill-color="color" />
+                                <IconSync
+                                    v-else-if="hasValueToSave"
+                                    :fill-color="color" />
                             </template>
                         </Button>
                     </slot>
@@ -83,6 +86,7 @@ import Divider from '@UI/components/Dividers/Divider';
 import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconError from '@UI/components/Icons/Feedback/IconError';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import IconSync from '@UI/components/Icons/Feedback/IconSync';
 import LinkButton from '@UI/components/LinkButton/LinkButton';
 
 export default {
@@ -94,6 +98,7 @@ export default {
         IconError,
         Divider,
         IconSpinner,
+        IconSync,
     },
     mixins: [
         formActionsMixin,

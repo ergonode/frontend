@@ -7,6 +7,7 @@
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :errors="errors"
+        :change-values="changeValues"
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
         @proceed="onProceed"
