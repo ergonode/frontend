@@ -5,7 +5,7 @@
 import {
     REFRESH_TOKEN_KEY,
     TOKEN_KEY,
-    TRANSLATION_KEY,
+    USER_INTERFACE_LANGUAGE_KEY,
 } from '@Authentication/defaults/cookies';
 import {
     getMappedPrivileges,
@@ -167,8 +167,8 @@ export default {
 
                 await dispatch('getUser', {
                     onSuccess: (user) => {
-                        this.$setInterfaceLanguage(user.language);
-                        this.$cookies.set(TRANSLATION_KEY, user.language);
+                        // this.$setInterfaceLanguage(user.language);
+                        this.$cookies.set(USER_INTERFACE_LANGUAGE_KEY, user.language);
                     },
                 });
                 await dispatch('core/getLanguages', {}, {

@@ -3,6 +3,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+
 import dotenv from 'dotenv';
 import getRepoInfo from 'git-repo-info';
 import {

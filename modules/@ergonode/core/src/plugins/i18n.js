@@ -3,54 +3,50 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export default async ({
-    app, store,
-}, inject) => {
-    const DEFAULT_LANGUAGE = app.i18n.fallbackLocale;
-    const loadedLanguages = [];
-    let language = DEFAULT_LANGUAGE;
-    const {
-        user,
-    } = store.state.authentication;
-    if (user) {
-        language = user.language;
-    }
 
-    const setI18nLanguage = ({
-        lang, message,
-    }) => {
-        app.i18n.setLocaleMessage(lang, message);
-        loadedLanguages.push(lang);
-        app.i18n.locale = lang;
-    };
-    const loadLanguageAsync = async (lang) => {
-        if (app.i18n.locale === lang || loadedLanguages.includes(lang)) {
-            app.i18n.locale = lang;
-        } else {
-            try {
-                if (!loadedLanguages.length) {
-                    const defaultMessage = await import(`@/.nuxt/locales/${DEFAULT_LANGUAGE}`);
+import {
+    USER_INTERFACE_LANGUAGE_KEY,
+} from '@Authentication/defaults/cookies';
+import {
+    DEFAULT_LANGUAGE_CODE,
+} from '@Core/defaults/cookies';
 
-                    setI18nLanguage({
-                        lang: DEFAULT_LANGUAGE,
-                        message: defaultMessage.default,
-                    });
-                }
-                const message = await import(`@/.nuxt/locales/${lang}`);
+const languages = [];
 
-                setI18nLanguage({
-                    lang,
-                    message: message.default,
-                });
-            } catch (e) {
-                app.i18n.locale = DEFAULT_LANGUAGE;
-            }
+const setI18nLanguage = async ({
+    i18n,
+    languageCode,
+}) => {
+    try {
+        if (!languages.includes(languageCode)) {
+            const messages = await import(`@/.nuxt/locales/${languageCode}`);
+
+            languages.push(languageCode);
+            i18n.setLocaleMessage(languageCode, messages);
         }
-    };
 
-    loadLanguageAsync(language);
+        i18n.locale = languageCode;
+    } catch (e) {
+        console.error(e);
+    }
+};
 
-    inject('setInterfaceLanguage', async (lang) => {
-        await loadLanguageAsync(lang);
+export default async ({
+    app,
+}, inject) => {
+    const defaultLanguageCode = app.$cookies.get(USER_INTERFACE_LANGUAGE_KEY);
+
+    await setI18nLanguage({
+        i18n: app.i18n,
+        $cookies: app.$cookies,
+        languageCode: defaultLanguageCode || DEFAULT_LANGUAGE_CODE,
+    });
+
+    inject('setInterfaceLanguage', async (languageCode) => {
+        await setI18nLanguage({
+            i18n: app.i18n,
+            $cookies: app.$cookies,
+            languageCode,
+        });
     });
 };
