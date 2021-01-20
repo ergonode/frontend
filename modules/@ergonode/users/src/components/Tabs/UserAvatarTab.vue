@@ -74,7 +74,7 @@ export default {
         async onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('user.message.updateAvatarSuccess'),
+                message: this.$t('user.messages.updateAvatarSuccess'),
             });
 
             if (this.user.id === this.id) {

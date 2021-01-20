@@ -67,7 +67,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('user.message.updateLanguageSuccess'),
+                message: this.$t('user.messages.updateLanguageSuccess'),
             });
 
             this.__setState({
