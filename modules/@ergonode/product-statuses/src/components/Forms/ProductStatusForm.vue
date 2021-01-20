@@ -62,8 +62,8 @@
 import {
     COLORS,
 } from '@Core/defaults/colors';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Statuses/config/privileges';
 import CheckBox from '@UI/components/CheckBox/CheckBox';
 import ColorPicker from '@UI/components/ColorPicker/ColorPicker';

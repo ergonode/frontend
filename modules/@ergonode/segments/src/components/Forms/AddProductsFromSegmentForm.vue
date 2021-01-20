@@ -48,8 +48,8 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Segments/config/privileges';
 import {
     ROUTE_NAME,
@@ -59,7 +59,7 @@ import Button from '@UI/components/Button/Button';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
-// TODO
+
 export default {
     name: 'AddProductsFromSegmentForm',
     components: {

@@ -35,8 +35,8 @@
 </template>
 
 <script>
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import ProductAttributeBindingField from '@Products/extends/components/Forms/Field/ProductAttributeBindingField';
 import Form from '@UI/components/Form/Form';
 import FormListSection from '@UI/components/Form/Section/FormListSection';

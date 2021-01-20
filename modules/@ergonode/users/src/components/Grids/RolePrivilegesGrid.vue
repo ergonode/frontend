@@ -15,7 +15,10 @@
         @cell-value="onCellValueChange">
         <template #footer>
             <div class="role-privileges-footer">
-                <UpdateRolePrivilegesButton :scope="scope" />
+                <UpdateRolePrivilegesButton
+                    :scope="scope"
+                    :errors="errors"
+                    :change-values="changeValues" />
             </div>
         </template>
     </Grid>
@@ -55,6 +58,10 @@ export default {
             default: '',
         },
         errors: {
+            type: Object,
+            default: () => ({}),
+        },
+        changeValues: {
             type: Object,
             default: () => ({}),
         },

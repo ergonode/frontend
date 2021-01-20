@@ -27,7 +27,7 @@ import UpdateAttributeGroupTranslationButton
     from '@Attributes/components/Buttons/UpdateAttributeGroupTranslationButton';
 import AttributeGroupTranslationForm from '@Attributes/components/Forms/AttributeGroupTranslationForm';
 import TranslationsTab from '@Core/components/Tabs/TranslationsTab';
-import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 
 export default {
     name: 'AttributeGroupTranslationsTab',

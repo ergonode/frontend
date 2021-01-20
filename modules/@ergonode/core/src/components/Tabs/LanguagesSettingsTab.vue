@@ -35,7 +35,7 @@ import PRIVILEGES from '@Core/config/privileges';
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
-import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import {
     GRAPHITE_LIGHT,
 } from '@UI/assets/scss/_js-variables/colors.scss';

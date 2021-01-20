@@ -21,8 +21,7 @@
 </template>
 
 <script>
-import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
-import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import AddBindingAttributesButton from '@Products/extends/components/Buttons/AddBindingAttributesButton';
 import AttachedProductVariantsGrid from '@Products/extends/components/Grids/AttachedProductVariantsGrid';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
@@ -43,7 +42,6 @@ export default {
         TabBarNoDataPlaceholder,
     },
     mixins: [
-        extendedGridComponentsMixin,
         tabFeedbackMixin,
     ],
     data() {

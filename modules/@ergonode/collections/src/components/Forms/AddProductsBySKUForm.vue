@@ -34,7 +34,6 @@ import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import TextArea from '@UI/components/TextArea/TextArea';
-// TODO
 
 export default {
     name: 'AddProductsBySKUForm',
@@ -48,6 +47,10 @@ export default {
     ],
     props: {
         errors: {
+            type: Object,
+            default: () => ({}),
+        },
+        changeValues: {
             type: Object,
             default: () => ({}),
         },

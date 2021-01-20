@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import {
     getMappedTranslationErrors,
 } from '@Core/models/mappers/errorsMapper';

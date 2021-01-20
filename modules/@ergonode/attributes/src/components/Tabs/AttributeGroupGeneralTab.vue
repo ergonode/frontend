@@ -21,7 +21,7 @@ import AttributeGroupForm from '@Attributes/components/Forms/AttributeGroupForm'
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,

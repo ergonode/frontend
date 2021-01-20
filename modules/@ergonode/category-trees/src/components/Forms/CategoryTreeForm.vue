@@ -37,8 +37,8 @@
 </template>
 
 <script>
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Trees/config/privileges';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';

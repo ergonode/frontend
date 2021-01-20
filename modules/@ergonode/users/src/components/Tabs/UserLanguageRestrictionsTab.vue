@@ -7,13 +7,14 @@
         <template #content>
             <UserLanguageRestrictionsGrid
                 :scope="scope"
-                :errors="errors" />
+                :errors="errors"
+                :change-values="changeValues" />
         </template>
     </CenterViewTemplate>
 </template>
 
 <script>
-import extendedGridComponentsMixin from '@Core/mixins/grid/extendedGridComponentsMixin';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import UserLanguageRestrictionsGrid from '@Users/components/Grids/UserLanguageRestrictionsGrid';
 
@@ -24,17 +25,7 @@ export default {
         CenterViewTemplate,
     },
     mixins: [
-        extendedGridComponentsMixin,
+        tabFeedbackMixin,
     ],
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-        errors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
 };
 </script>

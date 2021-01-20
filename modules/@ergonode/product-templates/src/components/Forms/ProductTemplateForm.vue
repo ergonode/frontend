@@ -43,8 +43,8 @@
 </template>
 
 <script>
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import UploadImageFile from '@Media/components/Inputs/UploadFile/UploadImageFile';
 import PRIVILEGES from '@Templates/config/privileges';
 import Divider from '@UI/components/Dividers/Divider';

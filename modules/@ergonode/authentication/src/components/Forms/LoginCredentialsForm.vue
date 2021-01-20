@@ -46,7 +46,7 @@ import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
 import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
-import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import {
     ROUTE_NAME,
 } from '@Dashboard/config/routes';
@@ -67,7 +67,7 @@ export default {
         IconLogoName,
     },
     mixins: [
-        scopeErrorsMixin,
+        modalFeedbackMixin,
     ],
     data() {
         return {

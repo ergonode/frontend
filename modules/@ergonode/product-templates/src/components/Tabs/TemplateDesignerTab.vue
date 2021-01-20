@@ -86,7 +86,7 @@ import {
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
-import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import {
     getObjectWithMaxValueInArrayByObjectKey,
 } from '@Core/models/arrayWrapper';

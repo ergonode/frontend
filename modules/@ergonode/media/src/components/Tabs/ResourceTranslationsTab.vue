@@ -24,7 +24,7 @@
 
 <script>
 import TranslationsTab from '@Core/components/Tabs/TranslationsTab';
-import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import UpdateResourceTranslationButton from '@Media/components/Buttons/UpdateResourceTranslationButton';
 import ResourceTranslationForm from '@Media/components/Forms/ResourceTranslationForm';
 

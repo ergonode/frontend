@@ -3,23 +3,36 @@
  * See LICENSE for license details.
  */
 <template>
-    <Button
-        :title="$t('core.buttons.submit')"
-        @click.native="onSubmit">
-        <template
-            v-if="isSubmitting"
-            #prepend="{ color }">
-            <IconSpinner :fill-color="color" />
+    <FeedbackProvider
+        :errors="errors"
+        :change-values="changeValues">
+        <template #default="{ hasValueToSave }">
+            <Button
+                data-cy="submit"
+                :title="$t('core.buttons.submit')"
+                @click.native="onSubmit">
+                <template #prepend="{ color }">
+                    <IconSpinner
+                        v-if="isSubmitting"
+                        :fill-color="color" />
+                    <IconSync
+                        v-else-if="hasValueToSave"
+                        :fill-color="color" />
+                </template>
+            </Button>
         </template>
-    </Button>
+    </FeedbackProvider>
 </template>
 
 <script>
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import buttonFeedbackMixin from '@Core/mixins/feedback/buttonFeedbackMixin';
 import Button from '@UI/components/Button/Button';
+import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import IconSync from '@UI/components/Icons/Feedback/IconSync';
 import {
     mapActions,
 } from 'vuex';
@@ -27,15 +40,14 @@ import {
 export default {
     name: 'UpdateRolePrivilegesButton',
     components: {
+        FeedbackProvider,
         Button,
         IconSpinner,
+        IconSync,
     },
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-    },
+    mixins: [
+        buttonFeedbackMixin,
+    ],
     data() {
         return {
             isSubmitting: false,
@@ -45,11 +57,6 @@ export default {
         ...mapActions('role', [
             'updateRole',
             '__setState',
-        ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
-            'markChangeValuesAsSaved',
         ]),
         onSubmit() {
             if (this.isSubmitting) {

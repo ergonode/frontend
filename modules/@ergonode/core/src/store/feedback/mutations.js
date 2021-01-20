@@ -12,6 +12,7 @@ export const types = {
     REMOVE_ERROR: 'REMOVE_ERROR',
     REMOVE_SCOPE_ERROR: 'REMOVE_SCOPE_ERROR',
     REMOVE_SCOPE_ERRORS: 'REMOVE_SCOPE_ERRORS',
+    REMOVE_SCOPE_CHANGE_VALUES: 'REMOVE_SCOPE_CHANGE_VALUES',
     REMOVE_ERRORS: 'REMOVE_ERRORS',
     REMOVE_CHANGE_VALUES: 'REMOVE_CHANGE_VALUES',
 };
@@ -56,6 +57,12 @@ export default {
         delete state.errors[scope];
         state.errors = {
             ...state.errors,
+        };
+    },
+    [types.REMOVE_SCOPE_CHANGE_VALUES](state, scope) {
+        delete state.changeValues[scope];
+        state.changeValues = {
+            ...state.changeValues,
         };
     },
     [types.REMOVE_SCOPE_ERROR](state, {

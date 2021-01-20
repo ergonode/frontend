@@ -37,7 +37,7 @@ import ConditionSetWrapper from '@Conditions/components/ConditionSetDesigner/Con
 import {
     DRAGGED_ELEMENT,
 } from '@Core/defaults/grid';
-import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import UpdateSegmentConditionDesignerButton from '@Segments/components/Buttons/UpdateSegmentConditionDesignerButton';
 import PRIVILEGES from '@Segments/config/privileges';
 import {

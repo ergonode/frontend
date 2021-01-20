@@ -52,8 +52,8 @@
 </template>
 
 <script>
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import PRIVILEGES from '@Import/config/privileges';
 import {
     GRAPHITE,

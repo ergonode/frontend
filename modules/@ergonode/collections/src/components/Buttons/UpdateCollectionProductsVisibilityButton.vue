@@ -29,7 +29,7 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
+import buttonFeedbackMixin from '@Core/mixins/feedback/buttonFeedbackMixin';
 import Button from '@UI/components/Button/Button';
 import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
@@ -47,7 +47,7 @@ export default {
         IconSync,
     },
     mixins: [
-        updateButtonFeedbackMixin,
+        buttonFeedbackMixin,
     ],
     props: {
         drafts: {

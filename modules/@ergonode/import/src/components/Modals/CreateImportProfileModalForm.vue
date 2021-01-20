@@ -12,7 +12,9 @@
                 :proceed-title="$t('core.buttons.proceed')"
                 :is-submitting="isSubmitting"
                 :is-proceeding="isProceeding"
+                :scope="scope"
                 :errors="scopeErrors"
+                :change-values="scopeChangeValues"
                 @submit="onSubmit"
                 @proceed="onProceed" />
         </template>
@@ -26,7 +28,7 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import ImportProfileForm from '@Import/components/Forms/ImportProfileForm';
 import {
     ROUTE_NAME,
@@ -43,7 +45,7 @@ export default {
         ImportProfileForm,
     },
     mixins: [
-        scopeErrorsMixin,
+        modalFeedbackMixin,
     ],
     async fetch() {
         await this.getInitialDictionaries({
@@ -73,7 +75,7 @@ export default {
         ]),
         onClose() {
             this.__clearStorage();
-            this.removeScopeErrors(this.scope);
+            this.removeScopeData(this.scope);
             this.$emit('close');
         },
         onSubmit() {

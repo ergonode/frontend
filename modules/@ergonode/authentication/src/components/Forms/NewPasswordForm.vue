@@ -47,7 +47,7 @@ import {
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import FormHeader from '@UI/components/Form/FormHeader';
 import FormParagraph from '@UI/components/Form/FormParagraph';
 import List from '@UI/components/List/List';
@@ -69,7 +69,7 @@ export default {
         TextField,
     },
     mixins: [
-        scopeErrorsMixin,
+        modalFeedbackMixin,
     ],
     data() {
         return {

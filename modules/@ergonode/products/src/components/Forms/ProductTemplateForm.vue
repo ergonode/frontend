@@ -26,7 +26,7 @@
 import {
     SCOPE,
 } from '@Attributes/defaults/attributes';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import {
     capitalizeAndConcatenationArray,
 } from '@Core/models/stringWrapper';

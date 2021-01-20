@@ -24,7 +24,7 @@
 
 <script>
 import TranslationsTab from '@Core/components/Tabs/TranslationsTab';
-import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import UpdateSegmentTranslationButton from '@Segments/components/Buttons/UpdateSegmentTranslationButton';
 import SegmentTranslationForm from '@Segments/components/Forms/SegmentTranslationForm';
 

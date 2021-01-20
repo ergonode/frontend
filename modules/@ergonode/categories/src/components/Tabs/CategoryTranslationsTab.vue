@@ -26,7 +26,7 @@
 import UpdateCategoryTranslationButton from '@Categories/components/Buttons/UpdateCategoryTranslationButton';
 import CategoryTranslationForm from '@Categories/components/Forms/CategoryTranslationForm';
 import TranslationsTab from '@Core/components/Tabs/TranslationsTab';
-import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 
 export default {
     name: 'CategoryTranslationsTab',

@@ -51,7 +51,7 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import UploadFile from '@Media/components/Inputs/UploadFile/UploadFile';
 import {
     GREEN,
@@ -82,7 +82,7 @@ export default {
         Button,
     },
     mixins: [
-        scopeErrorsMixin,
+        modalFeedbackMixin,
     ],
     data() {
         return {
@@ -112,7 +112,7 @@ export default {
             this.csvFile = file;
         },
         onClose() {
-            this.removeScopeErrors(this.scope);
+            this.removeScopeData(this.scope);
 
             this.$emit('close');
         },

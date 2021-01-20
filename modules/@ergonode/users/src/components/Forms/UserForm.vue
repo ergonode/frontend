@@ -103,8 +103,8 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import Button from '@UI/components/Button/Button';
 import Divider from '@UI/components/Dividers/Divider';

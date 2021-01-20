@@ -75,8 +75,8 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';

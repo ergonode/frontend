@@ -20,7 +20,7 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import SegmentForm from '@Segments/components/Forms/SegmentForm';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
