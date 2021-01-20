@@ -29,7 +29,7 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import buttonFeedbackMixin from '@Core/mixins/feedback/buttonFeedbackMixin';
+import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
 import {
     getMappedTreeData,
 } from '@Core/models/mappers/languageTreeMapper';
@@ -54,7 +54,7 @@ export default {
         IconSync,
     },
     mixins: [
-        buttonFeedbackMixin,
+        updateButtonFeedbackMixin,
     ],
     data() {
         return {

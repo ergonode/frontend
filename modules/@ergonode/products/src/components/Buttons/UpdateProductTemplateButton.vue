@@ -30,7 +30,7 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import buttonFeedbackMixin from '@Core/mixins/feedback/buttonFeedbackMixin';
+import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
 import PRIVILEGES from '@Products/config/privileges';
 import Button from '@UI/components/Button/Button';
 import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
@@ -50,7 +50,7 @@ export default {
         IconSync,
     },
     mixins: [
-        buttonFeedbackMixin,
+        updateButtonFeedbackMixin,
     ],
     props: {
         attributes: {

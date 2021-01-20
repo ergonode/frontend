@@ -29,7 +29,7 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import buttonFeedbackMixin from '@Core/mixins/feedback/buttonFeedbackMixin';
+import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
 import {
     Z_INDEX_LVL_2,
 } from '@UI/assets/scss/_js-variables/indexes.scss';
@@ -50,7 +50,7 @@ export default {
         IconSync,
     },
     mixins: [
-        buttonFeedbackMixin,
+        updateButtonFeedbackMixin,
     ],
     data() {
         return {

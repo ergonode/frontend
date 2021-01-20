@@ -28,7 +28,7 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import buttonFeedbackMixin from '@Core/mixins/feedback/buttonFeedbackMixin';
+import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
 import {
     PRODUCTS_ATTACHMENT_UPDATED_EVENT_NAME,
 } from '@Products/extends/defaults';
@@ -49,7 +49,7 @@ export default {
         IconSync,
     },
     mixins: [
-        buttonFeedbackMixin,
+        updateButtonFeedbackMixin,
     ],
     props: {
         skus: {
