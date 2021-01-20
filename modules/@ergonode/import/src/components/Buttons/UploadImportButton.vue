@@ -9,8 +9,7 @@
         <template #default="{ hasValueToSave }">
             <Button
                 data-cy="submit"
-                :title="$t('core.buttons.submit')"
-                :floating="{ bottom: '24px', right: '24px' }"
+                title="IMPORT NOW"
                 :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">
                 <template #prepend="{ color }">
@@ -27,11 +26,11 @@
 </template>
 
 <script>
-import PRIVILEGES from '@Collections/config/privileges';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
+import PRIVILEGES from '@Import/config/privileges';
 import Button from '@UI/components/Button/Button';
 import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
@@ -41,7 +40,7 @@ import {
 } from 'vuex';
 
 export default {
-    name: 'UpdateCollectionTranslationButton',
+    name: 'UploadImportButton',
     components: {
         FeedbackProvider,
         Button,
@@ -51,6 +50,12 @@ export default {
     mixins: [
         updateButtonFeedbackMixin,
     ],
+    props: {
+        csvFile: {
+            type: File,
+            default: null,
+        },
+    },
     data() {
         return {
             isSubmitting: false,
@@ -59,38 +64,39 @@ export default {
     computed: {
         isAllowedToUpdate() {
             return this.$hasAccess([
-                PRIVILEGES.PRODUCT_COLLECTION.update,
+                PRIVILEGES.IMPORT.update,
             ]);
         },
     },
     methods: {
-        ...mapActions('collection', [
-            'updateCollection',
+        ...mapActions('import', [
+            'uploadImportFile',
         ]),
         onSubmit() {
-            if (this.isSubmitting) {
+            if (this.isSubmitting || !this.csvFile) {
                 return;
             }
             this.isSubmitting = true;
 
-            this.removeScopeErrors(this.scope);
-            this.updateCollection({
+            this.uploadImportFile({
                 scope: this.scope,
-                onSuccess: this.onUpdateSuccess,
-                onError: this.onUpdateError,
+                file: this.csvFile,
+                onSuccess: this.onCreateSuccess,
+                onError: this.onCreateError,
             });
         },
-        onUpdateSuccess() {
+        onCreateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: 'Collection translations have been updated',
+                message: 'File uploaded',
             });
 
             this.isSubmitting = false;
 
-            this.markChangeValuesAsSaved(this.scope);
+            this.$emit('uploaded');
+            this.onClose();
         },
-        onUpdateError(errors) {
+        onCreateError(errors) {
             this.onError(errors);
 
             this.isSubmitting = false;

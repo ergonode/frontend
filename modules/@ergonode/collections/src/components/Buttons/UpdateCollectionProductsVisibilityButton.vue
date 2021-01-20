@@ -11,6 +11,7 @@
                 data-cy="submit"
                 :title="$t('core.buttons.submit')"
                 :floating="{ bottom: '24px', right: '24px' }"
+                :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">
                 <template #prepend="{ color }">
                     <IconSpinner
@@ -26,6 +27,7 @@
 </template>
 
 <script>
+import PRIVILEGES from '@Collections/config/privileges';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -59,6 +61,13 @@ export default {
         return {
             isSubmitting: false,
         };
+    },
+    computed: {
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.PRODUCT_COLLECTION.update,
+            ]);
+        },
     },
     methods: {
         ...mapActions('collection', [

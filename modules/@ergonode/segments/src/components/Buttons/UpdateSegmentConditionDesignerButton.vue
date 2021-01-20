@@ -11,6 +11,7 @@
                 data-cy="submit"
                 :title="$t('core.buttons.submit')"
                 :floating="saveChangesButtonFloatingStyle"
+                :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">
                 <template #prepend="{ color }">
                     <IconSpinner
@@ -30,6 +31,7 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
+import PRIVILEGES from '@Segments/config/privileges';
 import {
     Z_INDEX_LVL_2,
 } from '@UI/assets/scss/_js-variables/indexes.scss';
@@ -68,6 +70,11 @@ export default {
                 right: '24px',
                 zIndex: Z_INDEX_LVL_2,
             };
+        },
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.SEGMENT.update,
+            ]);
         },
     },
     methods: {

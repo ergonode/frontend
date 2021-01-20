@@ -11,6 +11,7 @@
                 data-cy="submit"
                 :title="$t('core.buttons.submit')"
                 :floating="{ bottom: '24px', right: '24px' }"
+                :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">
                 <template #prepend="{ color }">
                     <IconSpinner
@@ -30,6 +31,7 @@ import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
 import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
+import PRIVILEGES from '@Segments/config/privileges';
 import Button from '@UI/components/Button/Button';
 import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
@@ -53,6 +55,13 @@ export default {
         return {
             isSubmitting: false,
         };
+    },
+    computed: {
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.SEGMENT.update,
+            ]);
+        },
     },
     methods: {
         ...mapActions('segment', [

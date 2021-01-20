@@ -10,6 +10,7 @@
             <Button
                 data-cy="submit"
                 :title="$t('core.buttons.submit')"
+                :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">
                 <template #prepend="{ color }">
                     <IconSpinner
@@ -33,6 +34,7 @@ import Button from '@UI/components/Button/Button';
 import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import IconSync from '@UI/components/Icons/Feedback/IconSync';
+import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
 } from 'vuex';
@@ -52,6 +54,13 @@ export default {
         return {
             isSubmitting: false,
         };
+    },
+    computed: {
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.USER.update,
+            ]);
+        },
     },
     methods: {
         ...mapActions('user', [
