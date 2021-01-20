@@ -65,8 +65,6 @@ export default {
             );
         },
         title() {
-            console.log(this.$i18n._vm._data.messages);
-
             return this.$t('attribute.page.title');
         },
     },
