@@ -48,7 +48,8 @@
             <SelectDropdownApplyFooter
                 v-else
                 :size="size"
-                @clear="onClear" />
+                @clear="onClear"
+                @apply="onDismiss" />
         </slot>
     </Dropdown>
 </template>
