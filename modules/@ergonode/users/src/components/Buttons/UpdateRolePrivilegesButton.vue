@@ -67,7 +67,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('role.message.updatePrivilegesSuccess'),
+                message: this.$t('role.messages.updatePrivilegesSuccess'),
             });
 
             this.__setState({

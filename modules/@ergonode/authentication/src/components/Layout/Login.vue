@@ -28,10 +28,9 @@
 
 <script>
 import {
-    TRANSLATION_KEY,
+    USER_INTERFACE_LANGUAGE_KEY,
 } from '@Authentication/defaults/cookies';
 import {
-    DEFAULT_TRANSLATION,
     TRANSLATIONS,
 } from '@Authentication/defaults/layout';
 import {
@@ -62,8 +61,7 @@ export default {
     },
     data() {
         return {
-            value: TRANSLATIONS[this.$cookies.get(TRANSLATION_KEY)]
-                || TRANSLATIONS[DEFAULT_TRANSLATION],
+            value: TRANSLATIONS[this.$cookies.get(USER_INTERFACE_LANGUAGE_KEY)],
         };
     },
     computed: {
@@ -74,13 +72,6 @@ export default {
             return Object.values(TRANSLATIONS);
         },
     },
-    mounted() {
-        if (!this.$cookies.get(TRANSLATION_KEY)) {
-            this.$cookies.set(TRANSLATION_KEY, DEFAULT_TRANSLATION);
-        }
-
-        this.$setInterfaceLanguage(getKeyByValue(TRANSLATIONS, this.value));
-    },
     methods: {
         onHelpClicked() {
             this.$emit('redirect-to', LOGIN_STATE.HELP);
@@ -89,7 +80,7 @@ export default {
             const languageKey = getKeyByValue(TRANSLATIONS, value);
 
             this.value = value;
-            this.$cookies.set(TRANSLATION_KEY, languageKey);
+            this.$cookies.set(USER_INTERFACE_LANGUAGE_KEY, languageKey);
             this.$setInterfaceLanguage(languageKey);
         },
     },
