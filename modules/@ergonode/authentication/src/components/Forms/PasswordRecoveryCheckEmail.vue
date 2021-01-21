@@ -15,10 +15,15 @@
             <FormHeader :title="$t('authentication.forms.newPassword.title')" />
         </template>
         <template #body>
-            <FormParagraph :text="$t('authentication.forms.checkEmail.info')" />
-            <ParagraphWithLinks
-                :paragraph="$t('authentication.forms.checkEmail.infoText')"
-                :links="paragraphLinks" />
+            <Paragraph :title="$t('authentication.forms.checkEmail.info')" />
+            <Paragraph :title="$t('authentication.forms.checkEmail.infoText')">
+                <template #infoLink>
+                    <a
+                        class="paragraph__link"
+                        v-text="$t('authentication.forms.checkEmail.infoLink')"
+                        @click="onRedirectToHelp" />
+                </template>
+            </Paragraph>
         </template>
     </LoginForm>
 </template>
@@ -30,19 +35,17 @@ import {
 } from '@Authentication/defaults/login-state';
 import Fab from '@UI/components/Fab/Fab';
 import FormHeader from '@UI/components/Form/FormHeader';
-import FormParagraph from '@UI/components/Form/FormParagraph';
 import IconArrowPointer from '@UI/components/Icons/Arrows/IconArrowPointer';
-import ParagraphWithLinks from '@UI/components/ParagraphWithLinks/ParagraphWithLinks';
+import Paragraph from '@UI/components/Paragraph/Paragraph';
 
 export default {
     name: 'PasswordRecoveryCheckEmail',
     components: {
         FormHeader,
-        FormParagraph,
         LoginForm,
         Fab,
         IconArrowPointer,
-        ParagraphWithLinks,
+        Paragraph,
     },
     computed: {
         paragraphLinks() {
@@ -67,3 +70,10 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .paragraph__link {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+</style>
