@@ -376,6 +376,7 @@ export default {
         },
         onDismiss() {
             this.isBlurringNeeded = true;
+
             if (document.activeElement === this.$refs.input) {
                 this.$refs.input.blur();
             } else {
