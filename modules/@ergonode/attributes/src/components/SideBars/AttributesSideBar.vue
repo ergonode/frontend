@@ -103,7 +103,7 @@ export default {
         },
     },
     async fetch() {
-        await this.fetchAttributesForLanguage({
+        await this.getAttributesForLanguage({
             languageCode: this.defaultLanguageCode,
             limit: 0,
         });
@@ -157,7 +157,7 @@ export default {
             'setDisabledElements',
         ]),
         async onAttributeCreated() {
-            await this.fetchAttributesForLanguage({
+            await this.getAttributesForLanguage({
                 languageCode: this.languageCode,
             });
 
@@ -237,7 +237,7 @@ export default {
                 [groupId]: false,
             };
         },
-        async fetchAttributesForLanguage({
+        async getAttributesForLanguage({
             languageCode,
             limit = 99999,
         }) {
@@ -270,10 +270,24 @@ export default {
             groups,
             languageCode,
         }) {
-            this.groupedAttributes[languageCode] = [
-                ...groups,
-                ...this.groupedAttributes[languageCode],
-            ];
+            groups.forEach((group) => {
+                const addedGroupIndex = this.groupedAttributes[languageCode].findIndex(({
+                    id,
+                }) => id === group.id);
+
+                if (addedGroupIndex === -1) {
+                    this.groupedAttributes[languageCode].push(group);
+                } else {
+                    this.groupedAttributes[languageCode][addedGroupIndex] = group;
+                }
+            });
+
+            this.groupedAttributes = {
+                ...this.groupedAttributes,
+                [languageCode]: [
+                    ...this.groupedAttributes[languageCode],
+                ],
+            };
         },
         onFetchUnassignedGroupItemsSuccess({
             items,
@@ -371,7 +385,7 @@ export default {
             if (typeof this.groupedAttributes[value] === 'undefined') {
                 this.isPrefetchingData = true;
 
-                await this.fetchAttributesForLanguage({
+                await this.getAttributesForLanguage({
                     languageCode: value,
                     limit: 0,
                 });
