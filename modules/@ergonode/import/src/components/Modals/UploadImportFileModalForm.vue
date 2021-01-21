@@ -10,7 +10,7 @@
             <Form>
                 <template #body>
                     <FormSection>
-                        <FormParagraph :text="paragraphText" />
+                        <Paragraph :title="paragraphText" />
                         <UploadFile
                             :value="Boolean(csvFile)"
                             accept-files="csv/*"
@@ -58,12 +58,12 @@ import {
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Button from '@UI/components/Button/Button';
 import Form from '@UI/components/Form/Form';
-import FormParagraph from '@UI/components/Form/FormParagraph';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import IconFile from '@UI/components/Icons/Others/IconFile';
 import LinkButton from '@UI/components/LinkButton/LinkButton';
 import ModalForm from '@UI/components/Modal/ModalForm';
+import Paragraph from '@UI/components/Paragraph/Paragraph';
 import {
     mapActions,
 } from 'vuex';
@@ -77,7 +77,7 @@ export default {
         IconFile,
         Form,
         FormSection,
-        FormParagraph,
+        Paragraph,
         ModalForm,
         Button,
     },

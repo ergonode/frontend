@@ -41,7 +41,7 @@
           "checkEmail": {
               "title": "Sprawdź swój e-mail",
               "info": "Link do zresetowania hasła zostanie wysłany na podany adres e-mail.",
-              "infoText": "Jeśli nie dotrze, prosimy ",
+              "infoText": "Jeśli nie dotrze, prosimy [[infoLink]]",
               "infoLink": "o kontakt z administratorem systemu.",
               "redirectTo": "POWRÓT DO STRONY LOGOWANIA"
           }

@@ -17,7 +17,7 @@
             <FormHeader :title="$t('authentication.forms.passwordRecovery.title')" />
         </template>
         <template #body>
-            <FormParagraph :text="$t('authentication.forms.passwordRecovery.info')" />
+            <Paragraph :title="$t('authentication.forms.passwordRecovery.info')" />
             <TextField
                 v-model="email"
                 required
@@ -36,8 +36,8 @@ import {
 import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
 import Fab from '@UI/components/Fab/Fab';
 import FormHeader from '@UI/components/Form/FormHeader';
-import FormParagraph from '@UI/components/Form/FormParagraph';
 import IconArrowPointer from '@UI/components/Icons/Arrows/IconArrowPointer';
+import Paragraph from '@UI/components/Paragraph/Paragraph';
 import TextField from '@UI/components/TextField/TextField';
 import {
     mapActions,
@@ -49,7 +49,7 @@ export default {
         FormHeader,
         LoginForm,
         Fab,
-        FormParagraph,
+        Paragraph,
         IconArrowPointer,
         TextField,
     },
