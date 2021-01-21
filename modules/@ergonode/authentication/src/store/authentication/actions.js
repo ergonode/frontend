@@ -167,7 +167,7 @@ export default {
 
                 await dispatch('getUser', {
                     onSuccess: (user) => {
-                        // this.$setInterfaceLanguage(user.language);
+                        this.$setInterfaceLanguage(user.language);
                         this.$cookies.set(USER_INTERFACE_LANGUAGE_KEY, user.language);
                     },
                 });

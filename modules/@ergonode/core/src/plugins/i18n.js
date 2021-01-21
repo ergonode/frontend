@@ -38,14 +38,12 @@ export default async ({
 
     await setI18nLanguage({
         i18n: app.i18n,
-        $cookies: app.$cookies,
         languageCode: defaultLanguageCode || DEFAULT_LANGUAGE_CODE,
     });
 
     inject('setInterfaceLanguage', async (languageCode) => {
         await setI18nLanguage({
             i18n: app.i18n,
-            $cookies: app.$cookies,
             languageCode,
         });
     });
