@@ -12,6 +12,15 @@
         <template #body>
             <Preloader v-if="isPrefetchingData" />
         </template>
+        <template #noDataPlaceholder>
+            <SideBarNoDataPlaceholder
+                :title="$t('category.sideBar.placeholderTitle')"
+                :subtitle="$t('category.sideBar.placeholderSubtitle')">
+                <template #action>
+                    <CreateCategoryButton />
+                </template>
+            </SideBarNoDataPlaceholder>
+        </template>
         <template #item="{ item }">
             <CategorySideBarElement
                 :item="item"
@@ -22,6 +31,7 @@
 </template>
 
 <script>
+import CreateCategoryButton from '@Categories/components/Buttons/CreateCategoryButton';
 import CategorySideBarElement from '@Categories/components/SideBars/CategorySideBarElement';
 import {
     CATEGORY_CREATED_EVENT_NAME,
@@ -34,6 +44,7 @@ import {
 } from '@Core/services/sidebar';
 import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
+import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
 import {
     mapState,
 } from 'vuex';
@@ -42,6 +53,8 @@ export default {
     name: 'CategoriesSideBar',
     components: {
         Preloader,
+        SideBarNoDataPlaceholder,
+        CreateCategoryButton,
         CategorySideBarElement,
         SideBar,
     },

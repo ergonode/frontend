@@ -18,7 +18,9 @@
       "noVisibleCategoriesPlaceholderSubtitle": "Nie ma zaznaczonych kategorii dla wybranych kryteriów."
     },
     "sideBar": {
-      "searchHeader": "Kategorie"
+      "searchHeader": "Kategorie",
+      "placeholderTitle": "Brak kategorii",
+      "placeholderSubtitle": "W systemie nie ma kategorii, stwórz pierwszy."
     },
     "grid": {
       "placeholderTitle": "Brak kategorii",
