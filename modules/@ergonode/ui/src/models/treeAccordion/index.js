@@ -15,15 +15,14 @@ export const getSelectedNodesCount = ({
     const nodesCount = {};
 
     const count = (tree) => {
+        const selectedValue = value.find(({
+            id,
+        }) => id === tree.id);
         let sum = 0;
 
         (tree.children || []).forEach((node) => {
             sum += count(node);
         });
-
-        const selectedValue = value.find(({
-            id,
-        }) => id === tree.id);
 
         nodesCount[tree.id] = sum;
 

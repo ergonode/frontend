@@ -4,7 +4,7 @@
  */
 <template>
     <CheckBox
-        class="category-select-select-all-tree-categories"
+        class="category-select-all-tree-categories"
         :value="selectionState"
         :label="$t('category.form.selectVisibleCheckBox')"
         :disabled="disabled"
@@ -16,7 +16,7 @@
 import CheckBox from '@UI/components/CheckBox/CheckBox';
 
 export default {
-    name: 'CategorySelectSelectAllTreeCheckBox',
+    name: 'CategorySelectAllTreeCheckBox',
     components: {
         CheckBox,
     },
@@ -72,23 +72,27 @@ export default {
     },
     methods: {
         onSelectAllVisible(value) {
+            let selectedCategories = this.value.filter(
+                id => !this.categoriesIds.some(categoryId => categoryId === id),
+            );
+
             if (value) {
-                this.$emit('input', [
+                selectedCategories = [
                     ...new Set([
                         ...this.categoriesIds,
                         ...this.categories.map(category => category.id),
                     ]),
-                ]);
-            } else {
-                this.$emit('input', this.value.filter(id => !this.categoriesIds.some(categoryId => categoryId === id)));
+                ];
             }
+
+            this.$emit('input', selectedCategories);
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .category-select-select-all-tree-categories {
+    .category-select-all-tree-categories {
         margin-right: 12px;
     }
 </style>

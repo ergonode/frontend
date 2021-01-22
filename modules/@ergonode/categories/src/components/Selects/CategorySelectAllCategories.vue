@@ -4,7 +4,7 @@
  */
 <template>
     <CheckBox
-        class="category-select-select-all-categories"
+        class="category-select-all-categories"
         :value="selectionState"
         :label="$t('category.form.selectVisibleCheckBox')"
         :disabled="disabled"
@@ -16,7 +16,7 @@
 import CheckBox from '@UI/components/CheckBox/CheckBox';
 
 export default {
-    name: 'CategorySelectSelectAllCheckBox',
+    name: 'CategorySelectAllCheckBox',
     components: {
         CheckBox,
     },
@@ -55,23 +55,27 @@ export default {
     },
     methods: {
         onSelectAllVisible(value) {
+            let selectedCategories = this.value.filter(
+                id => !this.categories.some(category => category.id === id),
+            );
+
             if (value) {
-                this.$emit('input', [
+                selectedCategories = [
                     ...new Set([
                         ...this.value,
                         ...this.categories.map(category => category.id),
                     ]),
-                ]);
-            } else {
-                this.$emit('input', this.value.filter(id => !this.categories.some(category => category.id === id)));
+                ];
             }
+
+            this.$emit('input', selectedCategories);
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .category-select-select-all-categories {
+    .category-select-all-categories {
         margin-right: 12px;
     }
 </style>

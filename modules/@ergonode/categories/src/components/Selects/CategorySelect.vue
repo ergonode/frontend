@@ -65,7 +65,7 @@
                         @input="onValueChange"
                         @search="onSearch">
                         <template #appendSearchHeader>
-                            <CategorySelectSelectAllTreeCheckBox
+                            <CategorySelectAllTreeCheckBox
                                 :value="value"
                                 :categories="categoryTreeItems"
                                 :disabled="!isAnyCategoryInTreeAfterFiltering"
@@ -110,7 +110,7 @@
                         @input="onValueChange"
                         @search="onSearch">
                         <template #appendSearchHeader>
-                            <CategorySelectSelectAllCheckBox
+                            <CategorySelectAllCheckBox
                                 :value="value"
                                 :categories="categoryItems"
                                 :disabled="!isAnyCategoryAfterFiltering"
@@ -166,8 +166,8 @@
 
 <script>
 import CreateCategoryButton from '@Categories/components/Buttons/CreateCategoryButton';
-import CategorySelectSelectAllCheckBox from '@Categories/components/Selects/CategorySelectSelectAllCategories';
-import CategorySelectSelectAllTreeCheckBox from '@Categories/components/Selects/CategorySelectSelectAllTreeCategories';
+import CategorySelectAllCheckBox from '@Categories/components/Selects/CategorySelectAllCategories';
+import CategorySelectAllTreeCheckBox from '@Categories/components/Selects/CategorySelectAllTreeCategories';
 import CATEGORY_PRIVILEGES from '@Categories/config/privileges';
 import {
     CATEGORY_CREATED_EVENT_NAME,
@@ -212,8 +212,8 @@ export default {
     components: {
         Button,
         CreateCategoryButton,
-        CategorySelectSelectAllTreeCheckBox,
-        CategorySelectSelectAllCheckBox,
+        CategorySelectAllTreeCheckBox,
+        CategorySelectAllCheckBox,
         ClearSearchButton,
         TreeAccordion,
         InputSolidStyle,
