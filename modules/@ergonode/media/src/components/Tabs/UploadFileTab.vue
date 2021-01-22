@@ -59,7 +59,7 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import {
-    getMappedErrors,
+    getMappedScopedErrors,
 } from '@Core/models/mappers/errorsMapper';
 import {
     formatBytes,
@@ -160,7 +160,6 @@ export default {
                         type: ALERT_TYPE.SUCCESS,
                         message: 'File uploaded',
                     });
-                    this.isRequestPending = false;
                     this.$emit('uploaded-file', id);
                 }).catch((e) => {
                     if (this.$axios.isCancel(e)) {
@@ -169,17 +168,17 @@ export default {
                             message: e.message,
                         });
                         this.files.splice(fixedIndex, 1);
-                    } else {
-                        const errorMessages = e.data && e.data.errors
-                            ? getMappedErrors({
-                                errors: e.data.errors,
-                                fieldKey: 'uploader',
-                            }).uploader
-                            : 'Internal server error';
 
-                        this.isRequestPending = false;
-                        this.files[fixedIndex].error = errorMessages;
+                        return;
                     }
+
+                    this.files[fixedIndex].error = e.data && e.data.errors
+                        ? getMappedScopedErrors({
+                            errors: e.data.errors,
+                            fieldKeys: {},
+                            scope: 'uploadFileTab',
+                        }).uploadFileTab.upload
+                        : 'Internal server error';
                 });
             });
 
