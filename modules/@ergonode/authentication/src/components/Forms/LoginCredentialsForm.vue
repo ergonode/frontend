@@ -16,15 +16,13 @@
                 data-cy="login-email"
                 v-model="email"
                 :error-messages="scopeErrors.username"
-                :label="$t('authentication.forms.login.email')"
-                @keydown.enter.prevent="onSubmit" />
+                :label="$t('authentication.forms.login.email')" />
             <TextField
                 data-cy="login-pass"
                 v-model="password"
                 :input="passwordInputType"
                 :error-messages="scopeErrors.password"
-                :label="$t('authentication.forms.login.password')"
-                @keydown.enter.prevent="onSubmit" />
+                :label="$t('authentication.forms.login.password')" />
             <div class="login-help-area">
                 <Toggler
                     v-model="isPasswordVisible"
@@ -129,7 +127,8 @@ export default {
 
 <style lang="scss" scoped>
     .header-logo {
-        justify-self: center;
+        display: block;
+        margin: 0 auto;
     }
 
     .login-help-area {

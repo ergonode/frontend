@@ -1,7 +1,8 @@
 {
     "authentication": {
         "layout": {
-            "help":"Help"
+            "help":"Help",
+            "userGuide":"User guide"
         },
         "forms":{
             "login": {
@@ -9,7 +10,7 @@
                 "email": "E-mail",
                 "password": "Password",
                 "toggle": "Show password",
-                "forgot": "Forgot password ?"
+                "forgot": "Forgot password?"
             },
             "passwordRecovery": {
                 "title": "Password recovery",

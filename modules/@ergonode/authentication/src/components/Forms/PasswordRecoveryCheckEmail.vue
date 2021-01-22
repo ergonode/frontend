@@ -47,16 +47,6 @@ export default {
         IconArrowPointer,
         Paragraph,
     },
-    computed: {
-        paragraphLinks() {
-            return {
-                infoLink: {
-                    title: this.$t('authentication.forms.checkEmail.infoLink'),
-                    action: this.onRedirectToHelp,
-                },
-            };
-        },
-    },
     methods: {
         onBack() {
             this.$emit('redirect-to', LOGIN_STATE.PASSWORD_RECOVERY);

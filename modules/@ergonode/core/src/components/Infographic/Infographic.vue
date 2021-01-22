@@ -3,17 +3,31 @@
  * See LICENSE for license details.
  */
 <template>
-    <img
+    <div
         class="infographic"
-        :src="src">
+        :style="placeholderStyles" />
 </template>
 <script>
 export default {
     name: 'Infographic',
     props: {
-        src: {
+        bgUrl: {
             type: String,
-            required: true,
+            default: '',
+        },
+        bgPosition: {
+            type: Object,
+            default: () => ({
+                vertical: 'center',
+                horizontal: 'left',
+            }),
+        },
+    },
+    computed: {
+        placeholderStyles() {
+            return {
+                background: `url(${this.bgUrl}) no-repeat ${this.bgPosition.horizontal} ${this.bgPosition.vertical}`,
+            };
         },
     },
 };
@@ -21,8 +35,12 @@ export default {
 <style lang="scss" scoped>
     .infographic {
         z-index: $Z_INDEX_LVL_1;
-        width: 460px;
-        height: 360px;
-        margin-left: 64px;
+        animation: fade-in 1.6s;
+    }
+
+    @keyframes fade-in {
+        0% {
+            opacity: 0;
+        }
     }
 </style>

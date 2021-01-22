@@ -4,8 +4,16 @@
  */
 <template>
     <Login @redirect-to="onRedirectTo">
-        <NewPasswordForm />
-        <Infographic :src="require('@Core/assets/images/login/login_new_password_face.png')" />
+        <template #form>
+            <Component
+                :is="passwordResetFormComponents.formComponent"
+                @redirect-to="onRedirectTo" />
+        </template>
+        <FadeTransition>
+            <Infographic
+                :bg-url="passwordResetFormComponents.bgUrl"
+                :bg-position="passwordResetFormComponents.bgPosition" />
+        </FadeTransition>
     </Login>
 </template>
 
@@ -22,6 +30,7 @@ import {
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import FadeTransition from '@UI/components/Transitions/FadeTransition';
 
 export default {
     name: 'PasswordReset',
@@ -29,6 +38,7 @@ export default {
         NewPasswordForm,
         Login,
         Infographic,
+        FadeTransition,
     },
     async fetch({
         app,
@@ -51,6 +61,18 @@ export default {
                 });
             },
         });
+    },
+    computed: {
+        passwordResetFormComponents() {
+            return {
+                formComponent: NewPasswordForm,
+                bgUrl: require('@Authentication/assets/images/infographics/shield-man.svg'),
+                bgPosition: {
+                    vertical: 'calc(50% - 8px)',
+                    horizontal: '10px',
+                },
+            };
+        },
     },
     methods: {
         onRedirectTo(loginState) {
