@@ -52,6 +52,7 @@
                 <template v-else>
                     <TreeAccordion
                         v-if="isCategoryTreeSelected"
+                        class="category-select__list"
                         :search-placeholder="$t('category.form.searchPlaceholder')"
                         :value="selectedOptions"
                         :search-value="searchValue"
@@ -64,12 +65,10 @@
                         @input="onValueChange"
                         @search="onSearch">
                         <template #appendSearchHeader>
-                            <CheckBox
-                                class="select-list-header-select-all"
-                                :value="treeCategoriesSelectionState"
-                                :label="$t('category.form.selectVisibleCheckBox')"
+                            <CategorySelectAllTreeCheckBox
+                                :value="value"
+                                :categories="categoryTreeItems"
                                 :disabled="!isAnyCategoryInTreeAfterFiltering"
-                                reversed
                                 @input="onSelectAllVisible" />
                         </template>
                         <template #body>
@@ -99,9 +98,10 @@
                     </TreeAccordion>
                     <SelectList
                         v-else
+                        class="category-select__list"
                         :value="selectedOptions"
                         :search-value="searchValue"
-                        :items="categoryItems"
+                        :items="visibleCategoryItems"
                         :size="smallSize"
                         :search-placeholder="$t('category.form.searchPlaceholder')"
                         :searchable="true"
@@ -110,13 +110,12 @@
                         @input="onValueChange"
                         @search="onSearch">
                         <template #appendSearchHeader>
-                            <CheckBox
-                                class="select-list-header-select-all"
-                                :value="categoriesSelectionState"
-                                :label="$t('category.form.selectVisibleCheckBox')"
+                            <CategorySelectAllCheckBox
+                                :value="value"
+                                :categories="categoryItems"
                                 :disabled="!isAnyCategoryAfterFiltering"
-                                reversed
-                                @input="onSelectAllVisible" />
+                                @input="onSelectAllVisible"
+                            />
                         </template>
                         <template #body>
                             <DropdownPlaceholder
@@ -124,11 +123,7 @@
                                 :title="categoriesPlaceholder.title"
                                 :subtitle="categoriesPlaceholder.subtitle">
                                 <template #action>
-                                    <Button
-                                        :title="$t('category.form.noCategoryButton')"
-                                        :size="smallSize"
-                                        :disabled="!isAllowedToCreateCategory"
-                                        @click.native="onNavigateToCategories" />
+                                    <CreateCategoryButton />
                                 </template>
                             </DropdownPlaceholder>
                             <DropdownPlaceholder
@@ -170,10 +165,13 @@
 </template>
 
 <script>
+import CreateCategoryButton from '@Categories/components/Buttons/CreateCategoryButton';
+import CategorySelectAllCheckBox from '@Categories/components/Selects/CategorySelectAllCategories';
+import CategorySelectAllTreeCheckBox from '@Categories/components/Selects/CategorySelectAllTreeCategories';
 import CATEGORY_PRIVILEGES from '@Categories/config/privileges';
 import {
-    ROUTE_NAME as CATEGORIES_ROUTE_NAME,
-} from '@Categories/config/routes';
+    CATEGORY_CREATED_EVENT_NAME,
+} from '@Categories/defaults/attributes';
 import {
     getAutocomplete,
 } from '@Categories/services';
@@ -212,6 +210,10 @@ import TreeAccordion from '@UI/components/TreeAccordion/TreeAccordion';
 export default {
     name: 'CategorySelect',
     components: {
+        Button,
+        CreateCategoryButton,
+        CategorySelectAllTreeCheckBox,
+        CategorySelectAllCheckBox,
         ClearSearchButton,
         TreeAccordion,
         InputSolidStyle,
@@ -228,7 +230,6 @@ export default {
         Preloader,
         SelectList,
         AdvancedFiltersRemoveAllButton,
-        Button,
     },
     props: {
         /**
@@ -263,45 +264,10 @@ export default {
             return [
                 'category-select__items',
                 {
-                    'category-select__items--expanded': this.isCategoriesExpanded,
                     'category-select__items--has-any-items': (this.isCategoryTreeSelected && this.isAnyCategoryInTreeAfterFiltering) || (!this.isCategoryTreeSelected && this.isAnyCategoryAfterFiltering),
                     'category-select__items--visible-expander': !this.isCategoryTreeSelected && this.isAnyCategoryAfterFiltering,
                 },
             ];
-        },
-        categoriesSelectionState() {
-            const value = this.categoryItems.filter(
-                category => this.value.some(
-                    id => id === category.id,
-                ),
-            );
-
-            if (value.length === 0) {
-                return 0;
-            }
-
-            if (value.length === this.categoryItems.length) {
-                return 1;
-            }
-
-            return 2;
-        },
-        treeCategoriesSelectionState() {
-            const categoriesIdsInTree = this.selectedTreeCategoryIds.filter(
-                categoryId => this.value.some(
-                    id => id === categoryId,
-                ),
-            );
-
-            if (categoriesIdsInTree.length === 0) {
-                return 0;
-            }
-
-            if (categoriesIdsInTree.length === this.categoryTreeItems.length) {
-                return 1;
-            }
-
-            return 2;
         },
         label() {
             return this.$t('category.form.selectLabel');
@@ -357,27 +323,6 @@ export default {
         extendedFilterComponents() {
             return this.$getExtendSlot('@UI/components/AdvancedFilters/Type');
         },
-        selectedTreeCategoryIds() {
-            if (!this.isCategoryTreeSelected) {
-                return [];
-            }
-
-            const getMappedCategoriesIds = (treeCategories = [], result = []) => {
-                const children = result;
-
-                treeCategories.forEach((treeCategory) => {
-                    children.push(treeCategory.id);
-
-                    if (treeCategory.children) {
-                        children.push(...getMappedCategoriesIds(treeCategory.children));
-                    }
-                });
-
-                return children;
-            };
-
-            return getMappedCategoriesIds(this.categoryTreeItems);
-        },
         categoryTreeItems() {
             if (this.value.length || !this.isSelectedOnlyVisibleCategories) {
                 return dfsSearch(
@@ -392,6 +337,13 @@ export default {
             }
 
             return [];
+        },
+        visibleCategoryItems() {
+            if (!this.isCategoriesExpanded) {
+                return this.categoryItems.slice(0, 7);
+            }
+
+            return this.categoryItems;
         },
         categoryItems() {
             if (this.value.length || !this.isSelectedOnlyVisibleCategories) {
@@ -456,29 +408,30 @@ export default {
             ]);
         },
     },
+    mounted() {
+        document.documentElement.addEventListener(
+            CATEGORY_CREATED_EVENT_NAME,
+            this.onCategoryCreated,
+        );
+    },
+    beforeDestroy() {
+        document.documentElement.removeEventListener(
+            CATEGORY_CREATED_EVENT_NAME,
+            this.onCategoryCreated,
+        );
+    },
     methods: {
+        async onCategoryCreated() {
+            this.isFetchingData = true;
+
+            this.allCategories = await getAutocomplete({
+                $axios: this.$axios,
+            });
+
+            this.isFetchingData = false;
+        },
         onSelectAllVisible(value) {
-            if (value) {
-                if (this.isCategoryTreeSelected) {
-                    this.$emit('input', [
-                        ...new Set([
-                            ...this.selectedTreeCategoryIds,
-                            ...this.categoryItems.map(category => category.id),
-                        ]),
-                    ]);
-                } else {
-                    this.$emit('input', [
-                        ...new Set([
-                            ...this.value,
-                            ...this.categoryItems.map(category => category.id),
-                        ]),
-                    ]);
-                }
-            } else if (this.isCategoryTreeSelected) {
-                this.$emit('input', this.value.filter(id => !this.selectedTreeCategoryIds.some(categoryId => categoryId === id)));
-            } else {
-                this.$emit('input', this.value.filter(id => !this.categoryItems.some(category => category.id === id)));
-            }
+            this.$emit('input', value);
         },
         onToggleBetweenCategoriesVisibility(value) {
             this.isSelectedOnlyVisibleCategories = value;
@@ -549,11 +502,6 @@ export default {
         onItemsExpand() {
             this.isCategoriesExpanded = !this.isCategoriesExpanded;
         },
-        onNavigateToCategories() {
-            this.$router.push({
-                name: CATEGORIES_ROUTE_NAME.CATEGORIES_GRID,
-            });
-        },
         onNavigateToCategoryTree() {
             this.$router.push({
                 name: CATEGORY_TREES_ROUTE_NAME.CATEGORY_TREE_EDIT,
@@ -593,6 +541,10 @@ export default {
             box-sizing: border-box;
         }
 
+        &__list {
+            padding: 0 8px;
+        }
+
         &__items {
             position: relative;
             display: flex;
@@ -603,10 +555,6 @@ export default {
             box-sizing: border-box;
             transition: border-color 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             will-change: border-color;
-
-            &:not(&--expanded) {
-                max-height: 376px;
-            }
 
             &--has-any-items {
                 padding-bottom: 12px;
@@ -633,9 +581,5 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
-    }
-
-    .select-list-header-select-all {
-        margin-right: 12px;
     }
 </style>

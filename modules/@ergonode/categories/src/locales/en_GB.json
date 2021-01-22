@@ -12,7 +12,6 @@
       "selectVisibleCheckBox": "Select visible",
       "showAllExpandNumericButton": "Show all",
       "searchPlaceholder": "Search for category...",
-      "noCategoryButton": "GO TO CATEGORIES",
       "clearSearchButtonLabel": "Clear categories visibility",
       "noVisibleCategoriesPlaceholderTitle": "No categories",
       "noVisibleCategoriesPlaceholderSubtitle": "They are no selected categories for given criteria."
