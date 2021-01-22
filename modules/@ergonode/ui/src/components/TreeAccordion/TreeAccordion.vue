@@ -41,6 +41,7 @@
                 :item="item"
                 :size="size"
                 :multiselect="multiselect"
+                :selected-nodes-count="selectedNodesCount[item.id]"
                 :selected="selectedItems[item.id]"
                 @expand="onExpand"
                 @input="onValueChange" />
@@ -57,6 +58,10 @@ import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearc
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import SelectListSearch from '@UI/components/SelectList/SelectListSearch';
 import TreeAccordionItem from '@UI/components/TreeAccordion/TreeAccordionItem';
+import {
+    getSelectedItems,
+    getSelectedNodesCount,
+} from '@UI/models/treeAccordion';
 import {
     ExpandingList,
 } from 'vue-windowing';
@@ -147,6 +152,12 @@ export default {
                 subtitle: 'Clear the search and try with another phrase.',
             };
         },
+        selectedNodesCount() {
+            return getSelectedNodesCount({
+                value: this.value,
+                treeStructure: this.items,
+            });
+        },
         isAnyItem() {
             return this.items.length > 0;
         },
@@ -168,11 +179,7 @@ export default {
             immediate: true,
             handler() {
                 if (Array.isArray(this.value)) {
-                    this.selectedItems = this.value.reduce((prev, curr) => {
-                        const tmp = prev;
-                        tmp[curr.id] = true;
-                        return tmp;
-                    }, {});
+                    this.selectedItems = getSelectedItems(this.value);
                 } else {
                     this.selectedItems[this.value.id] = true;
                 }
