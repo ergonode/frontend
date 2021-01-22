@@ -18,7 +18,9 @@
       "noVisibleCategoriesPlaceholderSubtitle": "They are no selected categories for given criteria."
     },
     "sideBar": {
-      "searchHeader": "Categories"
+      "searchHeader": "Categories",
+      "placeholderTitle": "No categories",
+      "placeholderSubtitle": "There are no categories in the system, you can create the first one."
     },
     "grid": {
       "placeholderTitle": "No categories",
