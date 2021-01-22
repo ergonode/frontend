@@ -46,6 +46,7 @@ import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
 import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -100,12 +101,17 @@ export default {
         );
     },
     beforeDestroy() {
+        this.setDisabledElements({});
+
         document.documentElement.removeEventListener(
             CATEGORY_CREATED_EVENT_NAME,
             this.onCategoryCreated,
         );
     },
     methods: {
+        ...mapActions('list', [
+            'setDisabledElements',
+        ]),
         async onCategoryCreated() {
             await this.getItems();
         },
