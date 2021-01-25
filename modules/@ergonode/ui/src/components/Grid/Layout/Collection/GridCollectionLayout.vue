@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="grid-collection-layout">
-        <Preloader v-if="isPrefetchingData" />
+    <div :class="classes">
+        <Preloader v-if="isPrefetchingData || !isLayoutResolved" />
         <div
             v-else
             :style="gridTemplateColumns"
@@ -24,6 +24,9 @@
 </template>
 
 <script>
+import {
+    GRID_LAYOUT,
+} from '@Core/defaults/grid';
 import GridCollectionCell from '@UI/components/Grid/Layout/Collection/Cells/GridCollectionCell';
 import Preloader from '@UI/components/Preloader/Preloader';
 
@@ -90,8 +93,23 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * Determines if layout is resolved
+         */
+        isLayoutResolved: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
+        classes() {
+            return [
+                'grid-collection-layout',
+                {
+                    'grid-collection-layout--placeholder': this.rows.length === 0,
+                },
+            ];
+        },
         gridTemplateColumns() {
             return {
                 gridTemplateColumns: `repeat(${this.columnsNumber}, 1fr)`,
@@ -130,6 +148,12 @@ export default {
                 });
         },
     },
+    mounted() {
+        this.$emit('resolved', {
+            layout: GRID_LAYOUT.COLLECTION,
+            isResolved: true,
+        });
+    },
     methods: {
         onRowAction(payload) {
             this.$emit('row-action', payload);
@@ -156,6 +180,11 @@ export default {
             padding: 24px;
             box-sizing: border-box;
             overflow: auto;
+        }
+
+        &--placeholder {
+            flex: 0;
+            height: 0;
         }
     }
 </style>

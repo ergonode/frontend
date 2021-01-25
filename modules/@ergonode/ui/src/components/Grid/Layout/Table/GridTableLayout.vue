@@ -8,7 +8,7 @@
         ref="gridTableLayout"
         @focusin="onFocusInside"
         @focusout="onFocusOut">
-        <Preloader v-if="isPrefetchingData || isRendering" />
+        <Preloader v-if="isPrefetchingData || !isLayoutResolved" />
         <template v-else>
             <GridTableLayoutPinnedSection
                 v-if="isSelectColumn"
@@ -139,6 +139,7 @@ import {
     COLUMN_WIDTH,
     DEFAULT_GRID_PAGINATION,
     GRID_ACTION,
+    GRID_LAYOUT,
     PINNED_COLUMN_STATE,
     ROW_HEIGHT,
 } from '@Core/defaults/grid';
@@ -256,6 +257,13 @@ export default {
             default: false,
         },
         /**
+         * Determines if layout is resolved
+         */
+        isLayoutResolved: {
+            type: Boolean,
+            default: false,
+        },
+        /**
          * Determinate if the component is being able to edit
          */
         isEditable: {
@@ -305,7 +313,6 @@ export default {
             pinnedSections: {},
             editCell: null,
             editFilterCell: null,
-            isRendering: true,
         };
     },
     computed: {
@@ -569,8 +576,11 @@ export default {
             this.orderedColumns = orderedColumns;
             this.columnWidths = columnWidths;
 
-            if (this.isRendering) {
-                this.isRendering = false;
+            if (!this.isLayoutResolved) {
+                this.$emit('resolved', {
+                    layout: GRID_LAYOUT.TABLE,
+                    isResolved: true,
+                });
             }
         },
         initialColumnWidths() {
