@@ -11,7 +11,7 @@
             height="20" />
         <IconSuccess
             v-else
-            :fill-color="!item.value ? graphiteColor : greenColor"
+            :fill-color="fillSuccessColor"
             width="20"
             height="20" />
         <span v-text="item.title" />
@@ -40,6 +40,9 @@ export default {
         },
     },
     computed: {
+        fillSuccessColor() {
+            return this.item.value ? this.greenColor : this.graphiteColor;
+        },
         redColor() {
             return RED;
         },

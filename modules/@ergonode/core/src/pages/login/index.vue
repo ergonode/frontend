@@ -10,11 +10,9 @@
                 :is="loginFormComponents.formComponent"
                 @redirect-to="onRedirectTo" />
         </template>
-        <FadeTransition>
-            <Infographic
-                :bg-url="loginFormComponents.bgUrl"
-                :bg-position="loginFormComponents.bgPosition" />
-        </FadeTransition>
+        <Infographic
+            :bg-url="loginFormComponents.bgUrl"
+            :bg-position="loginFormComponents.bgPosition" />
     </Login>
 </template>
 
@@ -32,7 +30,6 @@ import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
 import Infographic from '@Core/components/Infographic/Infographic';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
     mapActions,
     mapState,
@@ -43,7 +40,6 @@ export default {
     components: {
         Login,
         Infographic,
-        FadeTransition,
     },
     data() {
         return {

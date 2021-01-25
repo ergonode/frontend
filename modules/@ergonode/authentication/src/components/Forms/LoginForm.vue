@@ -82,10 +82,8 @@ export default {
     }
 
     .login-header {
-        display: grid;
-        justify-content: flex-start;
+        display: flex;
         align-items: center;
-        grid-auto-flow: column;
-        grid-column-gap: 16px;
+        column-gap: 16px;
     }
 </style>

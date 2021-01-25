@@ -9,11 +9,9 @@
                 :is="passwordResetFormComponents.formComponent"
                 @redirect-to="onRedirectTo" />
         </template>
-        <FadeTransition>
-            <Infographic
-                :bg-url="passwordResetFormComponents.bgUrl"
-                :bg-position="passwordResetFormComponents.bgPosition" />
-        </FadeTransition>
+        <Infographic
+            :bg-url="passwordResetFormComponents.bgUrl"
+            :bg-position="passwordResetFormComponents.bgPosition" />
     </Login>
 </template>
 
@@ -30,7 +28,6 @@ import {
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
 
 export default {
     name: 'PasswordReset',
@@ -38,7 +35,6 @@ export default {
         NewPasswordForm,
         Login,
         Infographic,
-        FadeTransition,
     },
     async fetch({
         app,

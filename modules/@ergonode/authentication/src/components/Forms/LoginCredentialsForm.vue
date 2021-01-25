@@ -128,8 +128,7 @@ export default {
 
 <style lang="scss" scoped>
     .header-logo {
-        display: block;
-        margin: 0 auto;
+        flex: 1;
     }
 
     .login-help-area {

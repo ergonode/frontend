@@ -118,8 +118,6 @@ export default {
             grid-auto-flow: column;
             grid-template-columns: 1fr 1fr;
             grid-column-gap: 16px;
-            width: 100%;
-            height: 100%;
 
             .login-body__form {
                 display: flex;

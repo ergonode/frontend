@@ -84,7 +84,7 @@ export default {
                 return this.password;
             },
             set(value) {
-                this.validation(value, 'value');
+                this.validatePassword(value, 'value');
 
                 this.password = value;
             },
@@ -128,7 +128,7 @@ export default {
         ...mapActions('authentication', [
             'newPassword',
         ]),
-        validation(value, key) {
+        validatePassword(value, key) {
             this.validationHelper.hasMinimumLength = {
                 ...this.validationHelper.hasMinimumLength,
                 [key]: (value.length >= this.maxLength),
@@ -149,7 +149,7 @@ export default {
         onSubmit() {
             this.isSubmitting = true;
 
-            this.validation(this.password, 'success');
+            this.validatePassword(this.password, 'success');
 
             const data = {
                 password: this.password,
