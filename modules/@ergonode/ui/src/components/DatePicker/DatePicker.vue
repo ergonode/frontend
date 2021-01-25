@@ -29,10 +29,10 @@
         <template #placeholder>
             <div />
         </template>
-        <template #dropdown="{ onSelectValueCallback }">
+        <template #dropdown="{ onSelectValue }">
             <DatePickerContent
                 :value="value"
-                @input="onSelectValueCallback" />
+                @input="onSelectValue" />
         </template>
         <template #footer="{ clear, apply }">
             <SelectDropdownApplyFooter

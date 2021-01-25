@@ -83,16 +83,19 @@
             @search="onSearch"
             @input="onSelectValue"
             @click-outside="onClickOutside">
-            <template #placeholder="{ isVisible }">
-                <slot
-                    name="placeholder"
-                    :is-visible="isVisible" />
+            <template #body>
+                <slot name="dropdownBody" />
             </template>
-            <template #dropdown="{ isVisible }">
+            <template #noDataPlaceholder>
+                <slot name="noDataPlaceholder" />
+            </template>
+            <template #noResultsPlaceholder>
+                <slot name="noResultsPlaceholder" />
+            </template>
+            <template #dropdown>
                 <slot
                     name="dropdown"
-                    :is-visible="isVisible"
-                    :on-select-value-callback="onSelectValue" />
+                    :on-select-value="onSelectValue" />
             </template>
             <template #item="{ index, item, isSelected, isSmallSize }">
                 <slot

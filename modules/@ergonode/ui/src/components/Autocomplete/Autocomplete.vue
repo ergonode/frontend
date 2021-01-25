@@ -40,10 +40,14 @@
                     :color="graphiteColor" />
             </FadeTransition>
         </template>
-        <template #placeholder="{ isVisible }">
-            <slot
-                name="placeholder"
-                :is-visible="isVisible" />
+        <template #dropdownBody>
+            <Preloader v-if="isFetchingData" />
+        </template>
+        <template #noDataPlaceholder>
+            <slot name="noDataPlaceholder" />
+        </template>
+        <template #noResultsPlaceholder>
+            <slot name="noResultsPlaceholder" />
         </template>
         <template #details>
             <slot name="details" />
@@ -82,6 +86,7 @@ import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
 import ListElementAction from '@UI/components/List/ListElementAction';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
+import Preloader from '@UI/components/Preloader/Preloader';
 import Select from '@UI/components/Select/Select';
 import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import {
@@ -91,6 +96,7 @@ import {
 export default {
     name: 'Autocomplete',
     components: {
+        Preloader,
         Select,
         IconSpinner,
         FadeTransition,
@@ -248,6 +254,10 @@ export default {
         dataCy: {
             type: String,
             default: '',
+        },
+        customEvents: {
+            type: Array,
+            default: () => ([]),
         },
     },
     data() {

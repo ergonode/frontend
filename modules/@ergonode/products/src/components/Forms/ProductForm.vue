@@ -42,24 +42,17 @@
                     :disabled="!isAllowedToUpdate"
                     href="templates/autocomplete"
                     @input="setTemplateValue">
-                    <template #placeholder="{ isVisible }">
-                        <DropdownPlaceholder
-                            v-if="isVisible"
+                    <template #noDataPlaceholder>
+                        <DropdownNoDataPlaceholder
                             :title="placeholder.title"
                             :subtitle="placeholder.subtitle">
                             <template #action>
-                                <Button
-                                    title="GO TO PRODUCT TEMPLATES"
-                                    :size="smallSize"
-                                    :disabled="!isAllowedToUpdate"
-                                    @click.native="onNavigateToProductTemplates" />
+                                <CreateProductTemplateButton />
                             </template>
-                        </DropdownPlaceholder>
+                        </DropdownNoDataPlaceholder>
                     </template>
                 </Autocomplete>
-                <Divider v-if="extendedForm.length" />
-                <template
-                    v-for="(formComponent, index) in extendedForm">
+                <template v-for="(formComponent, index) in extendedForm">
                     <Component
                         :is="formComponent.component"
                         :key="index"
@@ -71,23 +64,19 @@
 </template>
 
 <script>
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
 import PRIVILEGES from '@Products/config/privileges';
-import {
-    ROUTE_NAME,
-} from '@Templates/config/routes';
+import CreateProductTemplateButton from '@Templates/components/Buttons/CreateProductTemplateButton';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import Button from '@UI/components/Button/Button';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
+import DropdownNoDataPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownNoDataPlaceholder';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import Select from '@UI/components/Select/Select';
 import TextField from '@UI/components/TextField/TextField';
@@ -99,6 +88,8 @@ import {
 export default {
     name: 'ProductForm',
     components: {
+        CreateProductTemplateButton,
+        DropdownNoDataPlaceholder,
         Button,
         Divider,
         DropdownPlaceholder,
@@ -122,9 +113,6 @@ export default {
             'type',
             'template',
         ]),
-        smallSize() {
-            return SIZE.SMALL;
-        },
         placeholder() {
             return {
                 title: 'No product templates',
@@ -165,11 +153,6 @@ export default {
         ...mapActions('product', [
             '__setState',
         ]),
-        onNavigateToProductTemplates() {
-            this.$router.push({
-                name: ROUTE_NAME.PRODUCT_TEMPLATES,
-            });
-        },
         setTypeValue(value) {
             this.__setState({
                 key: this.typeFieldKey,

@@ -57,20 +57,18 @@ export default {
     },
     watch: {
         fixed() {
-            if (this.fixed) {
-                requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                if (this.fixed) {
                     const maxHeight = parseInt(DROPDOWN_MAX_HEIGHT, 10);
                     const parentOffset = this.parentElement.getBoundingClientRect();
 
                     this.$refs.dropdown.style.maxHeight = `${maxHeight}px`;
                     this.$refs.dropdown.style.width = `${parentOffset.width}px`;
-                });
-            } else {
-                requestAnimationFrame(() => {
+                } else {
                     this.$refs.dropdown.style.width = null;
                     this.$refs.dropdown.style.maxHeight = null;
-                });
-            }
+                }
+            });
         },
         visible: {
             immediate: true,
