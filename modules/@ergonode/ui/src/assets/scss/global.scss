@@ -1,0 +1,27 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+
+/*
+ * Global UI Styles
+ */
+
+// page fade transition
+.page {
+    &-enter-active,
+    &-leave-active {
+        transition: all 0.2s ease;
+        transform: translate(0, 0);
+    }
+
+    &-enter {
+        transform: translate(0, 6px);
+        opacity: 0;
+    }
+
+    &-leave-active {
+        transform: translate(0, -6px);
+        opacity: 0;
+    }
+}
