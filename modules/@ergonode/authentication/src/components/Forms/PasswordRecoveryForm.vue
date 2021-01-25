@@ -22,8 +22,7 @@
                 v-model="email"
                 required
                 :error-messages="errors[emialFieldKey]"
-                :label="$t('authentication.forms.passwordRecovery.field')"
-                @keydown.enter.prevent="onSubmit" />
+                :label="$t('authentication.forms.passwordRecovery.field')" />
         </template>
     </LoginForm>
 </template>
@@ -98,6 +97,7 @@ export default {
             this.isSubmitting = false;
         },
         onRedirect() {
+            this.removeScopeErrors(this.scope);
             this.$emit('redirect-to', LOGIN_STATE.CREDENTIALS);
         },
     },

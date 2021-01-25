@@ -90,6 +90,7 @@ export default {
             'authenticateUser',
         ]),
         redirectToRecovery() {
+            this.removeScopeErrors(this.scope);
             this.$emit('redirect-to', LOGIN_STATE.PASSWORD_RECOVERY);
         },
         onSubmit() {

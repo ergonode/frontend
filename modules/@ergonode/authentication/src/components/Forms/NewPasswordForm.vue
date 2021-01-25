@@ -26,8 +26,7 @@
                 required
                 :input="passwordInputType"
                 :error-messages="errors[passwordFieldKey]"
-                :label="$t('authentication.forms.newPassword.field')"
-                @keydown.enter.prevent="onSubmit" />
+                :label="$t('authentication.forms.newPassword.field')" />
             <Toggler
                 v-model="isPasswordVisible"
                 :label="$t('authentication.forms.newPassword.toggle')" />
@@ -85,22 +84,7 @@ export default {
                 return this.password;
             },
             set(value) {
-                this.validationHelper.hasMinimumLength = {
-                    ...this.validationHelper.hasMinimumLength,
-                    value: (value.length >= this.maxLength),
-                };
-                this.validationHelper.hasUppercase = {
-                    ...this.validationHelper.hasUppercase,
-                    value: /[A-Z]/.test(value),
-                };
-                this.validationHelper.hasLowercase = {
-                    ...this.validationHelper.hasLowercase,
-                    value: /[a-z]/.test(value),
-                };
-                this.validationHelper.hasDigital = {
-                    ...this.validationHelper.hasDigital,
-                    value: /\d/.test(value),
-                };
+                this.validation(value, 'value');
 
                 this.password = value;
             },
@@ -109,20 +93,24 @@ export default {
             return {
                 hasMinimumLength: {
                     value: false,
+                    success: true,
                     title: this.$t('authentication.forms.newPassword.validation.hasMinimumLength', {
                         length: this.maxLength,
                     }),
                 },
                 hasUppercase: {
                     value: false,
+                    success: true,
                     title: this.$t('authentication.forms.newPassword.validation.hasUppercase'),
                 },
                 hasLowercase: {
                     value: false,
+                    success: true,
                     title: this.$t('authentication.forms.newPassword.validation.hasLowercase'),
                 },
                 hasDigital: {
                     value: false,
+                    success: true,
                     title: this.$t('authentication.forms.newPassword.validation.hasDigital'),
                 },
             };
@@ -140,8 +128,28 @@ export default {
         ...mapActions('authentication', [
             'newPassword',
         ]),
+        validation(value, key) {
+            this.validationHelper.hasMinimumLength = {
+                ...this.validationHelper.hasMinimumLength,
+                [key]: (value.length >= this.maxLength),
+            };
+            this.validationHelper.hasUppercase = {
+                ...this.validationHelper.hasUppercase,
+                [key]: /[A-Z]/.test(value),
+            };
+            this.validationHelper.hasLowercase = {
+                ...this.validationHelper.hasLowercase,
+                [key]: /[a-z]/.test(value),
+            };
+            this.validationHelper.hasDigital = {
+                ...this.validationHelper.hasDigital,
+                [key]: /\d/.test(value),
+            };
+        },
         onSubmit() {
             this.isSubmitting = true;
+
+            this.validation(this.password, 'success');
 
             const data = {
                 password: this.password,
@@ -173,6 +181,7 @@ export default {
             });
         },
         onNewPasswordError(errors) {
+            this.removeScopeErrors(this.scope);
             this.onError(errors);
 
             this.isSubmitting = false;

@@ -15,7 +15,6 @@
         <Footer space-between>
             <div class="login__footer-info">
                 <Select
-                    class="footer-info__select"
                     :value="value"
                     :options="languageOptions"
                     :size="smallSize"
@@ -137,11 +136,8 @@ export default {
             display: grid;
             align-items: center;
             grid-auto-flow: column;
+            grid-template-columns: 128px auto;
             column-gap: 16px;
-
-            .footer-info__select {
-                width: 128px;
-            }
         }
     }
 </style>

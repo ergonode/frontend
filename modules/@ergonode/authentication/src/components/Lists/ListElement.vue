@@ -5,13 +5,13 @@
 <template>
     <li class="list-element">
         <IconError
-            v-if="!item.value"
+            v-if="!item.success && !item.value"
             :fill-color="redColor"
             width="20"
             height="20" />
         <IconSuccess
             v-else
-            :fill-color="greenColor"
+            :fill-color="!item.value ? graphiteColor : greenColor"
             width="20"
             height="20" />
         <span v-text="item.title" />
@@ -20,6 +20,7 @@
 
 <script>
 import {
+    GRAPHITE,
     GREEN,
     RED,
 } from '@UI/assets/scss/_js-variables/colors.scss';
@@ -44,6 +45,9 @@ export default {
         },
         greenColor() {
             return GREEN;
+        },
+        graphiteColor() {
+            return GRAPHITE;
         },
     },
 };
