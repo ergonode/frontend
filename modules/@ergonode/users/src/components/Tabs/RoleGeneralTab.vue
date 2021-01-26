@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('role.message.updateSuccess'),
+                message: this.$t('role.messages.updateSuccess'),
             });
 
             this.isSubmitting = false;

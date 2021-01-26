@@ -89,47 +89,47 @@ export default {
                 }
 
                 requestAnimationFrame(() => {
-                    this.$refs.dropdown.style.visibility = 'initial';
-                    this.$refs.dropdown.style.opacity = '1';
+                    setTimeout(() => {
+                        this.$refs.dropdown.style.visibility = 'initial';
+                        this.$refs.dropdown.style.opacity = '1';
 
-                    const parentOffset = this.parentElement.getBoundingClientRect();
-                    const offset = 2;
-                    const {
-                        innerHeight,
-                    } = window;
-                    let maxHeight = parseInt(DROPDOWN_MAX_HEIGHT, 10);
+                        const parentOffset = this.parentElement.getBoundingClientRect();
+                        const offset = 2;
+                        const {
+                            innerHeight,
+                        } = window;
+                        let maxHeight = parseInt(DROPDOWN_MAX_HEIGHT, 10);
 
-                    if (this.fixed) {
-                        this.$refs.dropdown.style.maxHeight = `${maxHeight}px`;
-                        this.$refs.dropdown.style.width = `${parentOffset.width}px`;
-                    } else {
-                        maxHeight = this.$refs.dropdown.clientHeight;
-                    }
+                        if (this.fixed) {
+                            this.$refs.dropdown.style.maxHeight = `${maxHeight}px`;
+                            this.$refs.dropdown.style.width = `${parentOffset.width}px`;
+                        } else {
+                            maxHeight = this.$refs.dropdown.clientHeight;
+                        }
 
-                    const yPos = innerHeight - parentOffset.y;
+                        const yPos = innerHeight - parentOffset.y;
 
-                    if (this.$el.offsetWidth + parentOffset.x > window.innerWidth) {
-                        this.$refs.dropdown.style.right = 0;
-                    } else {
-                        this.$refs.dropdown.style.left = `${parentOffset.x}px`;
-                    }
+                        if (this.$el.offsetWidth + parentOffset.x > window.innerWidth) {
+                            this.$refs.dropdown.style.right = 0;
+                        } else {
+                            this.$refs.dropdown.style.left = `${parentOffset.x}px`;
+                        }
 
-                    if (yPos < maxHeight
-                        && parentOffset.y >= maxHeight) {
-                        this.$refs.dropdown.style.bottom = `${yPos}px`;
-                        this.$refs.dropdown.style.top = null;
-                    } else if (parentOffset.y < maxHeight
-                        && yPos <= maxHeight) {
-                        this.$refs.dropdown.style.top = 0;
-                        this.$refs.dropdown.style.bottom = null;
-                    } else {
-                        this.$refs.dropdown.style.top = `${parentOffset.y + parentOffset.height + offset}px`;
-                        this.$refs.dropdown.style.bottom = null;
-                    }
-                });
+                        if (yPos - parentOffset.height < maxHeight
+                            && parentOffset.y >= maxHeight) {
+                            this.$refs.dropdown.style.bottom = `${yPos}px`;
+                            this.$refs.dropdown.style.top = null;
+                        } else if (parentOffset.y < maxHeight
+                            && yPos <= maxHeight) {
+                            this.$refs.dropdown.style.top = 0;
+                            this.$refs.dropdown.style.bottom = null;
+                        } else {
+                            this.$refs.dropdown.style.top = `${parentOffset.y + parentOffset.height + offset}px`;
+                            this.$refs.dropdown.style.bottom = null;
+                        }
 
-                setTimeout(() => {
-                    window.addEventListener('click', this.onClickOutside);
+                        window.addEventListener('click', this.onClickOutside);
+                    });
                 });
             },
         },

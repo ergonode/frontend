@@ -46,5 +46,6 @@ export default {
         text-align: left;
         cursor: pointer;
         word-break: break-word;
+        user-select: all;
     }
 </style>

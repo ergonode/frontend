@@ -6,4 +6,3 @@ export const TRANSLATIONS = {
     en_GB: 'English',
     pl_PL: 'Polish',
 };
-export const DEFAULT_TRANSLATION = 'en_GB';

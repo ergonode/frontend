@@ -13,7 +13,7 @@
         </template>
         <template #body>
             <div>
-                <FormParagraph :text="$t('authentication.forms.newPassword.info')" />
+                <Paragraph :title="$t('authentication.forms.newPassword.info')" />
                 <List>
                     <ListElement
                         v-for="(value, key) in validationHelper"
@@ -49,8 +49,8 @@ import {
 } from '@Core/defaults/alerts';
 import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import FormHeader from '@UI/components/Form/FormHeader';
-import FormParagraph from '@UI/components/Form/FormParagraph';
 import List from '@UI/components/List/List';
+import Paragraph from '@UI/components/Paragraph/Paragraph';
 import TextField from '@UI/components/TextField/TextField';
 import Toggler from '@UI/components/Toggler/Toggler';
 import {
@@ -61,7 +61,7 @@ export default {
     name: 'NewPasswordForm',
     components: {
         FormHeader,
-        FormParagraph,
+        Paragraph,
         LoginForm,
         ListElement,
         List,

@@ -41,7 +41,7 @@
             "checkEmail": {
                 "title": "Check your e-mail",
                 "info": "The link to reset your password will be sent to the provided e-mail address.",
-                "infoText": "If it does not arrive, please ",
+                "infoText": "If it does not arrive, please [[infoLink]]",
                 "infoLink": "contact the system administrator.",
                 "redirectTo": "BACK TO LOG IN PAGE"
             }

@@ -11,6 +11,7 @@ export default {
     css: [
         './assets/scss/reset.scss',
         './assets/scss/font-inter-ui.scss',
+        './assets/scss/global.scss',
     ],
     styleResources: {
         scss: './assets/scss/main.scss',

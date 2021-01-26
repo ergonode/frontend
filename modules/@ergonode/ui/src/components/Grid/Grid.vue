@@ -56,6 +56,7 @@
                         :extended-components="extendedComponents[gridLayout.TABLE]"
                         :selected-rows="selectedRows[pagination.page]"
                         :is-prefetching-data="isPrefetchingData"
+                        :is-layout-resolved="isLayoutResolved[layout]"
                         :is-editable="isEditable"
                         :is-select-column="isSelectColumn"
                         :is-basic-filter="isBasicFilter"
@@ -66,9 +67,10 @@
                         @row-action="onRowAction"
                         @remove-column="onRemoveColumn"
                         @swap-columns="onSwapColumns"
-                        @row-select="onRowSelect" />
+                        @row-select="onRowSelect"
+                        @resolved="onResolvedLayout" />
                     <GridCollectionLayout
-                        v-else-if="isAnyData"
+                        v-else
                         :rows="rows"
                         :row-ids="rowIds"
                         :collection-cell-binding="collectionCellBinding"
@@ -78,8 +80,10 @@
                         :object-fit="collectionLayoutConfig.scaling"
                         :extended-components="extendedComponents[gridLayout.COLLECTION]"
                         :is-prefetching-data="isPrefetchingData"
+                        :is-layout-resolved="isLayoutResolved[layout]"
                         @row-action="onRowAction"
-                        @cell-value="onCellValueChange" />
+                        @cell-value="onCellValueChange"
+                        @resolved="onResolvedLayout" />
                 </KeepAlive>
                 <slot
                     v-if="isPlaceholderVisible"
@@ -317,6 +321,10 @@ export default {
                 rowHeight: ROW_HEIGHT.SMALL,
             },
             selectedRows: {},
+            isLayoutResolved: {
+                [GRID_LAYOUT.TABLE]: false,
+                [GRID_LAYOUT.COLLECTION]: false,
+            },
         };
     },
     computed: {
@@ -378,13 +386,25 @@ export default {
             return this.dataCount > 0;
         },
         isPlaceholderVisible() {
-            return !this.isAnyData && !this.isPrefetchingData && !this.isAnyFilter;
+            return !this.isAnyData
+                && !this.isPrefetchingData
+                && !this.isAnyFilter
+                && this.isLayoutResolved[this.layout];
         },
         isFilterPlaceholderVisible() {
-            return !this.isAnyData && this.isAnyFilter && !this.isPrefetchingData;
+            return !this.isAnyData
+                && !this.isPrefetchingData
+                && this.isAnyFilter
+                && this.isLayoutResolved[this.layout];
         },
     },
     methods: {
+        onResolvedLayout({
+            layout,
+            isResolved,
+        }) {
+            this.isLayoutResolved[layout] = isResolved;
+        },
         onRemoveAllFilters() {
             this.$emit('remove-all-filters');
         },

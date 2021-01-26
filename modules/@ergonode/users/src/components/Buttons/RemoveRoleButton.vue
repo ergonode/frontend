@@ -62,8 +62,8 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: this.$t('role.message.deleteTitle'),
-                applyTitle: this.$t('role.message.deleteConfirm'),
+                title: this.$t('role.messages.deleteTitle'),
+                applyTitle: this.$t('role.messages.deleteConfirm'),
                 action: () => this.removeRole({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
@@ -73,7 +73,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('role.message.deleteSuccess'),
+                message: this.$t('role.messages.deleteSuccess'),
             });
             this.$router.push({
                 name: ROUTE_NAME.USER_ROLES_GRID,

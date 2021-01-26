@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            :title="$t('attribute.page.title')"
+            :title="title"
             :is-read-only="isReadOnly">
             <template #mainAction>
                 <template
@@ -63,6 +63,9 @@ export default {
             return this.$isReadOnly(
                 PRIVILEGES.ATTRIBUTE.namespace,
             );
+        },
+        title() {
+            return this.$t('attribute.page.title');
         },
     },
     methods: {

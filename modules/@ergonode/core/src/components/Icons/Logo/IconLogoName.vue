@@ -4,9 +4,9 @@
  */
 <template>
     <svg
-        width="171"
-        height="48"
-        viewBox="0 0 171 48"
+        :width="width"
+        :height="height"
+        :viewBox="viewBox"
         xmlns="http://www.w3.org/2000/svg">
         <path
             :d="symbolDrawingPath"
@@ -40,6 +40,33 @@ export default {
             type: String,
             default: GRAPHITE_DARK,
             validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
+        },
+        /**
+         * Width of the component
+         */
+        width: {
+            type: [
+                Number,
+                String,
+            ],
+            default: 171,
+        },
+        /**
+         * Height of the component
+         */
+        height: {
+            type: [
+                Number,
+                String,
+            ],
+            default: 48,
+        },
+        /**
+         * Svg viewBox attribute
+         */
+        viewBox: {
+            type: String,
+            default: '0 0 171 48',
         },
     },
     computed: {

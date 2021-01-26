@@ -1,0 +1,20 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+
+/*
+ * Global UI Styles
+ */
+
+.page {
+    &-enter-active,
+    &-leave-active {
+        transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+    }
+
+    &-enter,
+    &-leave-active {
+        opacity: 0;
+    }
+}
