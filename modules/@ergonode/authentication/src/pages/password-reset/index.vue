@@ -17,14 +17,14 @@
 
 <script>
 import NewPasswordForm from '@Authentication/components/Forms/NewPasswordForm';
+import Infographic from '@Authentication/components/Infographic/Infographic';
 import Login from '@Authentication/components/Layout/Login';
+import {
+    ROUTE_NAME,
+} from '@Authentication/config/routes';
 import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
-import Infographic from '@Core/components/Infographic/Infographic';
-import {
-    ROUTE_NAME,
-} from '@Core/config/routes';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';

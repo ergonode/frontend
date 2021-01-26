@@ -18,6 +18,7 @@ module.exports = {
         '^~/(.*)$': '<rootDir>/$1',
         '@UI/(.*)$': '<rootDir>/modules/@ergonode/ui/src/$1',
         '@Core/(.*)$': '<rootDir>/modules/@ergonode/core/src/$1',
+        '@Authentication/(.*)$': '<rootDir>/modules/@ergonode/core/src/$1',
         '@Templates/(.*)$': '<rootDir>/modules/@ergonode/product-templates/src/$1',
         '@Attributes/(.*)$': '<rootDir>/modules/@ergonode/attributes/src/$1',
         '@Notifications/(.*)$': '<rootDir>/modules/@ergonode/notifications/src/$1',

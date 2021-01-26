@@ -11,18 +11,3 @@ export function loginLayoutMiddleware({
     }
     return null;
 }
-
-export async function defaultLayoutMiddleware({
-    store,
-    redirect,
-}) {
-    const {
-        authentication,
-    } = store.state;
-
-    if (!authentication.isLogged) {
-        return redirect('/');
-    }
-
-    return null;
-}

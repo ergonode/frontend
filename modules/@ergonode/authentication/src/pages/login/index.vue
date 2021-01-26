@@ -21,6 +21,7 @@ import LoginCredentialsForm from '@Authentication/components/Forms/LoginCredenti
 import LoginHelpForm from '@Authentication/components/Forms/LoginHelpForm';
 import PasswordRecoveryCheckEmail from '@Authentication/components/Forms/PasswordRecoveryCheckEmail';
 import PasswordRecoveryForm from '@Authentication/components/Forms/PasswordRecoveryForm';
+import Infographic from '@Authentication/components/Infographic/Infographic';
 import Login from '@Authentication/components/Layout/Login';
 import {
     REFRESH_TOKEN_KEY,
@@ -29,7 +30,6 @@ import {
 import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
-import Infographic from '@Core/components/Infographic/Infographic';
 import {
     mapActions,
     mapState,
