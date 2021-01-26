@@ -172,6 +172,7 @@ export default {
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         opacity: 0;
         visibility: hidden;
+        overflow: hidden;
         will-change:
             visibility,
             opacity,

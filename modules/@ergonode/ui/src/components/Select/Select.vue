@@ -329,13 +329,13 @@ export default {
         informationLabel() {
             return this.errorMessages || this.hint;
         },
-        isError() {
-            return Boolean(this.errorMessages);
-        },
         placeholderValue() {
             if (!this.hasAnyValueSelected || (this.label && !this.isFocused)) return null;
 
             return this.placeholder;
+        },
+        isError() {
+            return Boolean(this.errorMessages);
         },
     },
     watch: {

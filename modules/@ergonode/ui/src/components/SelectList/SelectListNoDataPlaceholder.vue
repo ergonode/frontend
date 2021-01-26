@@ -7,7 +7,8 @@
         :title="title"
         :orientation="horizontalOrientation"
         :subtitle="subtitle"
-        :size="smallSize">
+        :size="smallSize"
+        @click.native.prevent.stop>
         <template #action>
             <slot name="action" />
         </template>
@@ -24,7 +25,7 @@ import {
 import Placeholder from '@UI/components/Placeholder/Placeholder';
 
 export default {
-    name: 'DropdownNoDataPlaceholder',
+    name: 'SelectListNoDataPlaceholder',
     components: {
         Placeholder,
     },

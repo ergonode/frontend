@@ -17,7 +17,6 @@
             "activeLabel": "The active status",
             "languageLabel": "Language",
             "roleLabel": "Role",
-            "noRoleButton": "GO TO USER ROLES",
             "noRoleTitle": "No user roles",
             "noRoleSubtitle": "There are no user roles in the system, so you can create the first one."
         },

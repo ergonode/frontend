@@ -4,7 +4,7 @@
  */
 <template>
     <FormSection :title="$t('attribute.extends.template.form.title')">
-        <Autocomplete
+        <AttributesAutocomplete
             :data-cy="dataCyGenerator('default-label')"
             :value="defaultTextAttribute"
             :label="$t('attribute.extends.template.form.defaultLabel')"
@@ -12,57 +12,25 @@
             :clearable="true"
             :disabled="disabled"
             :params="autocompleteDefaultLabelParams"
-            filter-type="TEXT"
-            href="attributes/autocomplete"
             :error-messages="errors.defaultLabel"
             :additional-static-options="additionalStaticTextOptions"
-            @input="setDefaultTextAttributeValue">
-            <template #placeholder="{ isVisible }">
-                <DropdownPlaceholder
-                    v-if="isVisible"
-                    :title="$t('attribute.extends.template.form.noLabelTitle')"
-                    :subtitle="$t('attribute.extends.template.form.noLabelSubtitle')">
-                    <template #action>
-                        <Button
-                            :title="$t('attribute.extends.template.form.noLabelButton')"
-                            :size="smallSize"
-                            :disabled="disabled"
-                            @click.native="onNavigateToAttributes" />
-                    </template>
-                </DropdownPlaceholder>
-            </template>
-        </Autocomplete>
-        <Autocomplete
+            :no-data-placeholder="noTextAttributeDataPlaceholder"
+            @input="setDefaultTextAttributeValue" />
+        <AttributesAutocomplete
             :data-cy="dataCyGenerator('default-image')"
             :value="defaultImageAttribute"
             :label="$t('attribute.extends.template.form.defaultImage')"
-            :searchable="true"
             :clearable="true"
             :disabled="disabled"
             :params="autocompleteDefaultImageParams"
-            filter-type="IMAGE"
             :error-messages="errors.defaultImage"
-            href="attributes/autocomplete"
-            @input="setDefaultImageAttributeValue">
-            <template #placeholder="{ isVisible }">
-                <DropdownPlaceholder
-                    v-if="isVisible"
-                    :title="$t('attribute.extends.template.form.noImageTitle')"
-                    :subtitle="$t('attribute.extends.template.form.noImageSubtitle')">
-                    <template #action>
-                        <Button
-                            :title="$t('attribute.extends.template.form.noImageButton')"
-                            :size="smallSize"
-                            :disabled="disabled"
-                            @click.native="onNavigateToAttributes" />
-                    </template>
-                </DropdownPlaceholder>
-            </template>
-        </Autocomplete>
+            :no-data-placeholder="noImageAttributeDataPlaceholder"
+            @input="setDefaultImageAttributeValue" />
     </FormSection>
 </template>
 
 <script>
+import AttributesAutocomplete from '@Attributes/components/Autocompletes/AttributesAutocomplete';
 import {
     ROUTE_NAME,
 } from '@Attributes/config/routes';
@@ -74,10 +42,7 @@ import {
     SIZE,
 } from '@Core/defaults/theme';
 import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
-import Button from '@UI/components/Button/Button';
 import FormSection from '@UI/components/Form/Section/FormSection';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import {
     mapActions,
     mapState,
@@ -86,9 +51,7 @@ import {
 export default {
     name: 'ProductTemplateFormPresentation',
     components: {
-        Button,
-        DropdownPlaceholder,
-        Autocomplete,
+        AttributesAutocomplete,
         FormSection,
     },
     mixins: [
@@ -123,6 +86,18 @@ export default {
             return {
                 system: false,
                 type: TYPES.TEXT,
+            };
+        },
+        noImageAttributeDataPlaceholder() {
+            return {
+                title: this.$t('attribute.extends.template.form.noImageTitle'),
+                subtitle: this.$t('attribute.extends.template.form.noImageSubtitle'),
+            };
+        },
+        noTextAttributeDataPlaceholder() {
+            return {
+                title: this.$t('attribute.extends.template.form.noLabelTitle'),
+                subtitle: this.$t('attribute.extends.template.form.noLabelSubtitle'),
             };
         },
     },

@@ -99,17 +99,9 @@ export default {
             });
 
             const {
-                template_id: templateId,
                 sku,
                 type,
             } = data;
-
-            if (templateId) {
-                commit('__SET_STATE', {
-                    key: 'template',
-                    value: templateId,
-                });
-            }
 
             commit('__SET_STATE', {
                 key: 'id',
@@ -720,13 +712,10 @@ export default {
             } = rootState.dictionaries;
             const {
                 id,
-                template,
                 type,
             } = state;
             const typeKey = getKeyByValue(productTypes, type);
-            let data = {
-                templateId: template,
-            };
+            let data = {};
 
             // EXTENDED BEFORE METHOD
             const extendedData = await this.$getExtendMethod('@Products/store/product/action/updateProduct/__before', {

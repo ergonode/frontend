@@ -8,7 +8,9 @@
         :render-ahead="4"
         :estimated-height="20">
         <template #header>
-            <div class="select-list-header">
+            <div
+                v-if="!isPlaceholderVisible"
+                class="select-list-header">
                 <slot name="prependHeader" />
                 <div class="select-list-header__search">
                     <SelectListSearch
@@ -24,14 +26,16 @@
         </template>
         <template #body>
             <slot name="body">
-                <DropdownPlaceholder
-                    v-if="isSearchPlaceholderVisible"
-                    :title="placeholder.title"
-                    :subtitle="placeholder.subtitle">
-                    <template #action>
-                        <ClearSearchButton @click.native.stop="onClearSearch" />
-                    </template>
-                </DropdownPlaceholder>
+                <slot
+                    v-if="isPlaceholderVisible"
+                    name="noDataPlaceholder">
+                    <SelectListNoDataPlaceholder @click.native.prevent.stop />
+                </slot>
+                <slot
+                    v-else-if="isSearchPlaceholderVisible"
+                    name="noResultsPlaceholder">
+                    <SelectListNoResultsPlaceholder @clear="onClearSearch" />
+                </slot>
             </slot>
         </template>
         <template #item="{ item, index }">
@@ -59,9 +63,9 @@
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import SelectListElement from '@UI/components/SelectList/SelectListElement';
+import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
+import SelectListNoResultsPlaceholder from '@UI/components/SelectList/SelectListNoResultsPlaceholder';
 import SelectListSearch from '@UI/components/SelectList/SelectListSearch';
 import {
     VirtualScroll,
@@ -70,9 +74,9 @@ import {
 export default {
     name: 'SelectList',
     components: {
+        SelectListNoResultsPlaceholder,
+        SelectListNoDataPlaceholder,
         VirtualScroll,
-        DropdownPlaceholder,
-        ClearSearchButton,
         SelectListElement,
         SelectListSearch,
     },
@@ -141,12 +145,6 @@ export default {
     computed: {
         stringifiedItems() {
             return this.items.map(option => JSON.stringify(option));
-        },
-        placeholder() {
-            return {
-                title: 'No results',
-                subtitle: 'Clear the search and try with another phrase.',
-            };
         },
         isAnyItem() {
             return this.items.length > 0;

@@ -41,7 +41,7 @@
             </FadeTransition>
         </template>
         <template #dropdownBody>
-            <Preloader v-if="isFetchingData" />
+            <Preloader v-if="isPreloaderVisible" />
         </template>
         <template #noDataPlaceholder>
             <slot name="noDataPlaceholder" />
@@ -255,9 +255,12 @@ export default {
             type: String,
             default: '',
         },
-        customEvents: {
-            type: Array,
-            default: () => ([]),
+        /**
+         * Listen for custom event to trigger fetch data
+         */
+        customFetchEvent: {
+            type: String,
+            default: '',
         },
     },
     data() {
@@ -296,6 +299,9 @@ export default {
 
             return '';
         },
+        isPreloaderVisible() {
+            return this.isFetchingData && this.allOptions.length === 0;
+        },
     },
     async created() {
         this.onDebounceGetOptions = debounce(this.getOptions, 500);
@@ -303,6 +309,21 @@ export default {
         await this.getOptions();
 
         this.allOptions = this.options;
+
+        if (this.customFetchEvent !== '') {
+            document.documentElement.addEventListener(
+                this.customFetchEvent,
+                this.onCustomFetchEvent,
+            );
+        }
+    },
+    beforeDestroy() {
+        if (this.customFetchEvent !== '') {
+            document.documentElement.removeEventListener(
+                this.customFetchEvent,
+                this.onCustomFetchEvent,
+            );
+        }
     },
     methods: {
         onSearch(value) {
@@ -331,6 +352,11 @@ export default {
             } else {
                 this.$emit('input', value);
             }
+        },
+        async onCustomFetchEvent() {
+            await this.getOptions();
+
+            this.allOptions = this.options;
         },
         async getOptions() {
             try {

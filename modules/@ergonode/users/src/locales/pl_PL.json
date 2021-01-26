@@ -17,7 +17,6 @@
             "activeLabel": "Aktywny status",
             "languageLabel": "Język",
             "roleLabel": "Rola",
-            "noRoleButton": "Idź do roli użytkownika",
             "noRoleTitle": "Brak roli użytkownika",
             "noRoleSubtitle": "Brak roli użytkownika w systemie, stwórz pierwszą."
         },

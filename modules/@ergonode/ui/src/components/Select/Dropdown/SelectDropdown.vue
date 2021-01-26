@@ -9,19 +9,7 @@
         :fixed="fixedContent"
         @click-outside="onClickOutside">
         <slot name="body">
-            <slot
-                v-if="isPlaceholderVisible"
-                name="noDataPlaceholder">
-                <DropdownNoDataPlaceholder />
-            </slot>
-            <slot
-                v-else-if="isSearchPlaceholderVisible"
-                name="noResultsPlaceholder">
-                <DropdownNoResultsPlaceholder />
-            </slot>
-            <slot
-                v-else-if="isDropdownContentVisible"
-                name="dropdown">
+            <slot name="dropdown">
                 <SelectList
                     :value="value"
                     :search-value="searchValue"
@@ -37,6 +25,12 @@
                             :item="item"
                             :index="index"
                             :is-selected="isSelected" />
+                    </template>
+                    <template #noDataPlaceholder>
+                        <slot name="noDataPlaceholder" />
+                    </template>
+                    <template #noResultsPlaceholder>
+                        <slot name="noResultsPlaceholder" />
                     </template>
                 </SelectList>
             </slot>
@@ -67,15 +61,11 @@ import {
 import Dropdown from '@UI/components/Select/Dropdown/Dropdown';
 import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
 import SelectDropdownApplyFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownApplyFooter';
-import DropdownNoDataPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownNoDataPlaceholder';
-import DropdownNoResultsPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownNoResultsPlaceholder';
 import SelectList from '@UI/components/SelectList/SelectList';
 
 export default {
     name: 'SelectDropdown',
     components: {
-        DropdownNoResultsPlaceholder,
-        DropdownNoDataPlaceholder,
         MultiselectDropdownFooter,
         SelectDropdownApplyFooter,
         Dropdown,
@@ -173,9 +163,6 @@ export default {
         },
         isPlaceholderVisible() {
             return !this.isAnyOption && !this.isAnySearchPhrase;
-        },
-        isDropdownContentVisible() {
-            return this.isAnyOption || this.isAnySearchPhrase;
         },
         isFooterVisible() {
             if (this.isSearchPlaceholderVisible) {

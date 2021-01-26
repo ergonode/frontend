@@ -5,15 +5,16 @@
 <template>
     <div :class="classes">
         <IconSearch :fill-color="searchIconFillColor" />
-        <input
-            class="select-list-search__input"
-            :value="value"
-            type="text"
-            :placeholder="placeholder"
-            @focus="onSearchFocus"
-            @blur="onSearchFocusLost"
-            @input="onSearch"
-            @click.stop>
+        <div :class="activatorClasses">
+            <input
+                :value="value"
+                type="text"
+                :placeholder="placeholder"
+                @focus="onSearchFocus"
+                @blur="onSearchFocusLost"
+                @input="onSearch"
+                @click.stop>
+        </div>
         <IconFilledClose
             v-show="value !== ''"
             :fill-color="iconClearFillColor"
@@ -78,6 +79,14 @@ export default {
                 `select-list-search--${this.size}`,
             ];
         },
+        activatorClasses() {
+            return [
+                'select-list-search__activator',
+                {
+                    'select-list-search__activator--focused': this.isSearchFocused,
+                },
+            ];
+        },
         searchIconFillColor() {
             return this.isSearchFocused || this.value !== ''
                 ? GREEN
@@ -140,19 +149,46 @@ export default {
             }
         }
 
-        &__input {
+        &__activator {
+            $activator: &;
+
+            position: relative;
+            display: flex;
             flex: 1;
             width: 100%;
             margin-left: 4px;
-            border: none;
-            outline: none;
-            max-width: 100%;
-            min-width: 0;
             color: $GRAPHITE_DARK;
 
-            &::placeholder {
-                opacity: 0.4;
-                color: $GRAPHITE_DARK;
+            input {
+                flex: 1;
+                border: none;
+                outline: none;
+                max-width: 100%;
+                min-width: 0;
+
+                &::placeholder {
+                    opacity: 0.4;
+                    color: $GRAPHITE_DARK;
+                }
+            }
+
+            &::after {
+                position: absolute;
+                left: 0;
+                bottom: -2px;
+                z-index: $Z_INDEX_LVL_3;
+                width: 100%;
+                height: 2px;
+                background-color: $GREEN;
+                transform-origin: left;
+                transform: scaleX(0);
+                transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+                will-change: transform;
+                content: "";
+            }
+
+            &--focused::after {
+                transform: scaleX(1);
             }
         }
     }

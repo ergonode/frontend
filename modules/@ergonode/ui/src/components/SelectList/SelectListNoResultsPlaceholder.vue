@@ -7,9 +7,10 @@
         :title="title"
         :orientation="horizontalOrientation"
         :subtitle="subtitle"
-        :size="smallSize">
+        :size="smallSize"
+        @click.native.prevent.stop>
         <template #action>
-            <PlaceholderClearSearchButton @click.native="onClearSearch" />
+            <PlaceholderClearSearchButton @click.native.prevent.stop="onClearSearch" />
         </template>
     </Placeholder>
 </template>
@@ -25,7 +26,7 @@ import Placeholder from '@UI/components/Placeholder/Placeholder';
 import PlaceholderClearSearchButton from '@UI/components/Placeholder/PlaceholderClearSearchButton';
 
 export default {
-    name: 'DropdownNoResultsPlaceholder',
+    name: 'SelectListNoResultsPlaceholder',
     components: {
         PlaceholderClearSearchButton,
         Placeholder,

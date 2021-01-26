@@ -32,26 +32,7 @@
                     :error-messages="errors[skuFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setSkuValue" />
-                <Autocomplete
-                    :value="template"
-                    :required="true"
-                    :searchable="true"
-                    :clearable="true"
-                    label="Product template"
-                    :error-messages="errors[templateIdFieldKey]"
-                    :disabled="!isAllowedToUpdate"
-                    href="templates/autocomplete"
-                    @input="setTemplateValue">
-                    <template #noDataPlaceholder>
-                        <DropdownNoDataPlaceholder
-                            :title="placeholder.title"
-                            :subtitle="placeholder.subtitle">
-                            <template #action>
-                                <CreateProductTemplateButton />
-                            </template>
-                        </DropdownNoDataPlaceholder>
-                    </template>
-                </Autocomplete>
+                <Divider v-if="extendedForm.length" />
                 <template v-for="(formComponent, index) in extendedForm">
                     <Component
                         :is="formComponent.component"
@@ -70,13 +51,10 @@ import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
 import PRIVILEGES from '@Products/config/privileges';
-import CreateProductTemplateButton from '@Templates/components/Buttons/CreateProductTemplateButton';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import Button from '@UI/components/Button/Button';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
-import DropdownNoDataPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownNoDataPlaceholder';
 import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import Select from '@UI/components/Select/Select';
 import TextField from '@UI/components/TextField/TextField';
@@ -88,8 +66,6 @@ import {
 export default {
     name: 'ProductForm',
     components: {
-        CreateProductTemplateButton,
-        DropdownNoDataPlaceholder,
         Button,
         Divider,
         DropdownPlaceholder,
@@ -97,7 +73,6 @@ export default {
         FormSection,
         Select,
         TextField,
-        Autocomplete,
     },
     mixins: [
         formActionsMixin,
@@ -111,14 +86,7 @@ export default {
             'id',
             'sku',
             'type',
-            'template',
         ]),
-        placeholder() {
-            return {
-                title: 'No product templates',
-                subtitle: 'There are no product templates in the system, so you can create the first one.',
-            };
-        },
         extendedForm() {
             return this.$extendedForm({
                 key: '@Products/components/Forms/ProductForm',
@@ -138,9 +106,6 @@ export default {
             return this.$hasAccess([
                 PRIVILEGES.PRODUCT.update,
             ]);
-        },
-        templateIdFieldKey() {
-            return 'templateId';
         },
         skuFieldKey() {
             return 'sku';
@@ -172,17 +137,6 @@ export default {
             this.onScopeValueChange({
                 scope: this.scope,
                 fieldKey: this.skuFieldKey,
-                value,
-            });
-        },
-        setTemplateValue(value) {
-            this.__setState({
-                key: 'template',
-                value,
-            });
-            this.onScopeValueChange({
-                scope: this.scope,
-                fieldKey: 'template',
                 value,
             });
         },
