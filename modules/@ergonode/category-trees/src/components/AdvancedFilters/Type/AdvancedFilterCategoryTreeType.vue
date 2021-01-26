@@ -14,18 +14,21 @@
         @swap="onSwap">
         <template #dropdown>
             <SelectList
-                v-if="isContentVisible"
                 :value="filterValue"
                 :search-value="searchValue"
                 :items="options"
                 :size="smallSize"
+                :searchable="true"
                 @input="onValueChange"
                 @search="onSearch">
-                <template #body>
-                    <DropdownPlaceholder
-                        v-if="isPlaceholderVisible"
+                <template #noDataPlaceholder>
+                    <SelectListNoDataPlaceholder
                         :title="placeholder.title"
-                        :subtitle="placeholder.subtitle" />
+                        :subtitle="placeholder.subtitle">
+                        <template #action>
+                            <CreateCategoryTreeButton />
+                        </template>
+                    </SelectListNoDataPlaceholder>
                 </template>
                 <template #item="{ item }">
                     <ListElementDescription>
@@ -35,7 +38,9 @@
                     </ListElementDescription>
                 </template>
             </SelectList>
-            <SelectDropdownFooter @clear="onClear" />
+            <SelectDropdownFooter
+                v-if="allOptions.length > 0"
+                @clear="onClear" />
         </template>
     </AdvancedFilter>
 </template>
@@ -45,9 +50,10 @@ import PRIVILEGES from '@Attributes/config/privileges';
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import CreateCategoryTreeButton from '@Trees/components/Buttons/CreateCategoryTreeButton';
 import {
-    ROUTE_NAME,
-} from '@Trees/config/routes';
+    CATEGORY_TREE_CREATED_EVENT_NAME,
+} from '@Trees/defaults';
 import {
     getAutocomplete,
 } from '@Trees/services';
@@ -55,16 +61,18 @@ import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
 import SelectDropdownFooter from '@UI/components/Select/Dropdown/Footers/SelectDropdownFooter';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import SelectList from '@UI/components/SelectList/SelectList';
+import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
+import debounce from 'debounce';
 
 export default {
     name: 'AdvancedFilterCategoryTreeType',
     components: {
+        CreateCategoryTreeButton,
         AdvancedFilter,
         SelectDropdownFooter,
         SelectList,
-        DropdownPlaceholder,
+        SelectListNoDataPlaceholder,
         ListElementDescription,
         ListElementTitle,
     },
@@ -98,6 +106,7 @@ export default {
             localValue: {},
             searchValue: '',
             isFetchingData: false,
+            onDebounceGetOptions: null,
         };
     },
     computed: {
@@ -144,20 +153,31 @@ export default {
         isSearchPlaceholderVisible() {
             return !this.isAnyOption && this.isAnySearchPhrase;
         },
-        isContentVisible() {
-            return this.isAnyOption || this.isAnySearchPhrase;
-        },
     },
     async created() {
+        this.onDebounceGetOptions = debounce(this.getOptions, 500);
+
         await this.getOptions();
 
         this.allOptions = this.options;
     },
+    mounted() {
+        document.documentElement.addEventListener(
+            CATEGORY_TREE_CREATED_EVENT_NAME,
+            this.onCategoryTreeCreated,
+        );
+    },
+    beforeDestroy() {
+        document.documentElement.removeEventListener(
+            CATEGORY_TREE_CREATED_EVENT_NAME,
+            this.onCategoryTreeCreated,
+        );
+    },
     methods: {
-        onNavigateToCategoryTrees() {
-            this.$router.push({
-                name: ROUTE_NAME.CATEGORY_TREES_GRID,
-            });
+        async onCategoryTreeCreated() {
+            await this.getOptions();
+
+            this.allOptions = this.options;
         },
         onRemove(index) {
             this.$emit('remove', index);
@@ -171,18 +191,15 @@ export default {
                 value: '',
             });
         },
-        onClearSearch() {
-            this.onSearch('');
-        },
         onSearch(value) {
-            if (this.searchValue !== value) {
-                this.searchValue = value;
+            this.searchValue = value;
 
-                if (this.searchValue === '') {
-                    this.options = this.allOptions;
-                } else {
-                    this.getOptions();
-                }
+            console.log(value);
+
+            if (value === '') {
+                this.options = this.allOptions;
+            } else {
+                this.onDebounceGetOptions();
             }
         },
         onFocus(isFocused) {

@@ -127,7 +127,7 @@ export default {
             height: 32px;
             padding: 4px;
 
-            #{$element}__input {
+            input {
                 font: $FONT_MEDIUM_12_16;
 
                 &::placeholder {
@@ -140,7 +140,7 @@ export default {
             height: 40px;
             padding: 12px 10px;
 
-            #{$element}__input {
+            input {
                 font: $FONT_MEDIUM_14_20;
 
                 &::placeholder {
@@ -161,9 +161,10 @@ export default {
 
             input {
                 flex: 1;
+                width: 100%;
                 border: none;
+                box-sizing: border-box;
                 outline: none;
-                max-width: 100%;
                 min-width: 0;
 
                 &::placeholder {

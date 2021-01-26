@@ -126,7 +126,7 @@ export default {
             }
 
             #{$placeholder}__description {
-                grid-template-columns: 228px;
+                grid-template-columns: minmax(min-content, 228px);
             }
         }
 
@@ -138,7 +138,7 @@ export default {
             }
 
             #{$placeholder}__description {
-                grid-template-columns: 272px;
+                grid-template-columns: minmax(min-content, 272px);
             }
         }
 
