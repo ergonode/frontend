@@ -175,9 +175,6 @@ export default {
             return disabledProducts;
         },
     },
-    beforeDestroy() {
-
-    },
     methods: {
         ...mapActions('feedback', [
             'onScopeValueChange',
