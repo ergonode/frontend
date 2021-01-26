@@ -90,7 +90,6 @@ import Button from '@UI/components/Button/Button';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import Select from '@UI/components/Select/Select';
 import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
 import TextField from '@UI/components/TextField/TextField';
@@ -111,7 +110,6 @@ export default {
         CreateUserButton,
         SelectListNoDataPlaceholder,
         Button,
-        DropdownPlaceholder,
         Divider,
         Form,
         FormSection,
