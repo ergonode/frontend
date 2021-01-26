@@ -11,17 +11,11 @@
 .page {
     &-enter-active,
     &-leave-active {
-        transition: all 0.2s ease;
-        transform: translate(0, 0);
+        transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
     }
 
-    &-enter {
-        transform: translate(0, 6px);
-        opacity: 0;
-    }
-
+    &-enter,
     &-leave-active {
-        transform: translate(0, -6px);
         opacity: 0;
     }
 }
