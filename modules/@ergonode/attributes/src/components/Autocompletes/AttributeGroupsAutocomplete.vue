@@ -19,8 +19,7 @@
         <template #noDataPlaceholder>
             <SelectListNoDataPlaceholder
                 :title="noDataPlaceholder.title"
-                :subtitle="noDataPlaceholder.subtitle"
-                @click.native.prevent.stop>
+                :subtitle="noDataPlaceholder.subtitle">
                 <template #action>
                     <CreateAttributeGroupButton />
                 </template>

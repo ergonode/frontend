@@ -15,6 +15,7 @@ export default {
     computed: {
         ...mapState('feedback', [
             'errors',
+            'changeValues',
         ]),
         scope() {
             return toLowerCaseFirstLetter(this.$options.name);
@@ -22,11 +23,15 @@ export default {
         scopeErrors() {
             return this.errors[this.scope] || {};
         },
+        scopeChangeValues() {
+            return this.changeValues[this.scope] || {};
+        },
     },
     methods: {
         ...mapActions('feedback', [
             'onError',
             'removeScopeErrors',
+            'removeScopeData',
         ]),
     },
 };

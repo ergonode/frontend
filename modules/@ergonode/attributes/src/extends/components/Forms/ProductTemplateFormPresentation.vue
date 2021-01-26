@@ -41,7 +41,7 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import {
     mapActions,

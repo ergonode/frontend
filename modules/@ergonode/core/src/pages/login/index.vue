@@ -5,14 +5,22 @@
 <template>
     <Login
         @redirect-to="onRedirectTo">
-        <Component
-            :is="loginFormComponents.loginFormComponent"
-            @redirect-to="onRedirectTo" />
-        <Infographic :src="loginFormComponents.formImage" />
+        <template #form>
+            <Component
+                :is="loginFormComponents.formComponent"
+                @redirect-to="onRedirectTo" />
+        </template>
+        <Infographic
+            :bg-url="loginFormComponents.bgUrl"
+            :bg-position="loginFormComponents.bgPosition" />
     </Login>
 </template>
 
 <script>
+import LoginCredentialsForm from '@Authentication/components/Forms/LoginCredentialsForm';
+import LoginHelpForm from '@Authentication/components/Forms/LoginHelpForm';
+import PasswordRecoveryCheckEmail from '@Authentication/components/Forms/PasswordRecoveryCheckEmail';
+import PasswordRecoveryForm from '@Authentication/components/Forms/PasswordRecoveryForm';
 import Login from '@Authentication/components/Layout/Login';
 import {
     REFRESH_TOKEN_KEY,
@@ -46,23 +54,35 @@ export default {
             switch (this.loginState) {
             case LOGIN_STATE.CREDENTIALS:
                 return {
-                    loginFormComponent: () => import('@Authentication/components/Forms/LoginCredentialsForm'),
-                    formImage: require('@Core/assets/images/login/login_face.png'),
+                    formComponent: LoginCredentialsForm,
+                    bgUrl: require('@Authentication/assets/images/infographics/walking-woman.svg'),
                 };
             case LOGIN_STATE.HELP:
                 return {
-                    loginFormComponent: () => import('@Authentication/components/Forms/LoginHelpForm'),
-                    formImage: require('@Core/assets/images/login/login_help_face.png'),
+                    formComponent: LoginHelpForm,
+                    bgUrl: require('@Authentication/assets/images/infographics/calling-man.svg'),
+                    bgPosition: {
+                        vertical: 'calc(50% - 60px)',
+                        horizontal: '-60px',
+                    },
                 };
             case LOGIN_STATE.PASSWORD_RECOVERY:
                 return {
-                    loginFormComponent: () => import('@Authentication/components/Forms/PasswordRecoveryForm'),
-                    formImage: require('@Core/assets/images/login/login_password_recovery_face.png'),
+                    formComponent: PasswordRecoveryForm,
+                    bgUrl: require('@Authentication/assets/images/infographics/man-with-plane.svg'),
+                    bgPosition: {
+                        vertical: 'calc(50% - 60px)',
+                        horizontal: '-60px',
+                    },
                 };
             case LOGIN_STATE.CHECK_EMAIL:
                 return {
-                    loginFormComponent: () => import('@Authentication/components/Forms/PasswordRecoveryCheckEmail'),
-                    formImage: require('@Core/assets/images/login/login_password_recovery_face.png'),
+                    formComponent: PasswordRecoveryCheckEmail,
+                    bgUrl: require('@Authentication/assets/images/infographics/man-with-flying-plane.svg'),
+                    bgPosition: {
+                        vertical: 'calc(50% - 60px)',
+                        horizontal: '-60px',
+                    },
                 };
             default: return null;
             }

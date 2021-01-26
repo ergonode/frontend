@@ -67,6 +67,12 @@ export default {
     }, scope = 'default') {
         commit(types.REMOVE_SCOPE_ERRORS, scope);
     },
+    removeScopeData({
+        commit,
+    }, scope = 'default') {
+        commit(types.REMOVE_SCOPE_ERRORS, scope);
+        commit(types.REMOVE_SCOPE_CHANGE_VALUES, scope);
+    },
     removeScopeError({
         commit,
     }, {

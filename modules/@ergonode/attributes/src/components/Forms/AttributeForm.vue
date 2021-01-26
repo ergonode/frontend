@@ -10,6 +10,7 @@
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
         :errors="errors"
+        :change-values="changeValues"
         :errors-presentation-mapper="errorMapper"
         @proceed="onProceed"
         @submit="onSubmit">
@@ -78,17 +79,12 @@ import PRIVILEGES from '@Attributes/config/privileges';
 import {
     SCOPE,
 } from '@Attributes/defaults/attributes';
-import {
-    SIZE,
-} from '@Core/defaults/theme';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     getKeyByValue,
     isObject,
 } from '@Core/models/objectWrapper';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
-import Button from '@UI/components/Button/Button';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
@@ -105,13 +101,11 @@ export default {
     name: 'AttributeForm',
     components: {
         AttributeGroupsAutocomplete,
-        Button,
         Form,
         FormSection,
         InfoHint,
         TextField,
         Select,
-        Autocomplete,
         Divider,
     },
     mixins: [
@@ -134,9 +128,6 @@ export default {
         ...mapGetters('core', [
             'rootLanguage',
         ]),
-        smallSize() {
-            return SIZE.SMALL;
-        },
         extendedForm() {
             return this.$extendedForm({
                 key: '@Attributes/components/Forms/AttributeForm',

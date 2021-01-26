@@ -29,7 +29,7 @@
                 <slot
                     v-if="isPlaceholderVisible"
                     name="noDataPlaceholder">
-                    <SelectListNoDataPlaceholder @click.native.prevent.stop />
+                    <SelectListNoDataPlaceholder />
                 </slot>
                 <slot
                     v-else-if="isSearchPlaceholderVisible"

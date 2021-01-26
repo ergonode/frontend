@@ -10,18 +10,16 @@
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
         :errors="errors"
+        :change-values="changeValues"
         @proceed="onProceed"
         @submit="onSubmitForm">
         <template #body>
             <FormSection>
-                <Autocomplete
+                <LanguagesAutocomplete
                     :value="activeLanguages"
-                    label="Languages"
                     :multiselect="true"
                     :clearable="true"
-                    :searchable="true"
                     :disabled="!isAllowedToUpdate"
-                    href="languages/autocomplete"
                     @input="setSelectedLanguages" />
                 <Divider v-if="extendedForm.length" />
                 <template v-for="(field, index) in extendedForm">
@@ -36,10 +34,10 @@
 </template>
 
 <script>
+import LanguagesAutocomplete from '@Core/components/Autocompletes/LanguagesAutocomplete';
 import PRIVILEGES from '@Core/config/privileges';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
@@ -50,10 +48,10 @@ import {
 export default {
     name: 'MainSettingsForm',
     components: {
+        LanguagesAutocomplete,
         Divider,
         Form,
         FormSection,
-        Autocomplete,
     },
     mixins: [
         formActionsMixin,

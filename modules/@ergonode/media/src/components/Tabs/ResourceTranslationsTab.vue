@@ -14,81 +14,29 @@
                 :language-code="languageCode" />
         </template>
         <template #saveButton>
-            <Button
-                :title="$t('core.buttons.submit')"
-                :floating="{ bottom: '24px', right: '24px' }"
-                @click.native="onSubmit">
-                <template
-                    v-if="isSubmitting"
-                    #prepend="{ color }">
-                    <IconSpinner :fill-color="color" />
-                </template>
-            </Button>
+            <UpdateResourceTranslationButton
+                :scope="scope"
+                :change-values="changeValues"
+                :errors="errors" />
         </template>
     </TranslationsTab>
 </template>
 
 <script>
 import TranslationsTab from '@Core/components/Tabs/TranslationsTab';
-import {
-    ALERT_TYPE,
-} from '@Core/defaults/alerts';
-import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
+import UpdateResourceTranslationButton from '@Media/components/Buttons/UpdateResourceTranslationButton';
 import ResourceTranslationForm from '@Media/components/Forms/ResourceTranslationForm';
-import Button from '@UI/components/Button/Button';
-import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
-import {
-    mapActions,
-} from 'vuex';
 
 export default {
     name: 'ResourceTranslationsTab',
     components: {
+        UpdateResourceTranslationButton,
         TranslationsTab,
         ResourceTranslationForm,
-        Button,
-        IconSpinner,
     },
     mixins: [
         tabFeedbackMixin,
     ],
-    data() {
-        return {
-            isSubmitting: false,
-        };
-    },
-    methods: {
-        ...mapActions('media', [
-            'updateResource',
-        ]),
-        onSubmit() {
-            if (this.isSubmitting) {
-                return;
-            }
-            this.isSubmitting = true;
-
-            this.removeScopeErrors(this.scope);
-            this.updateResource({
-                scope: this.scope,
-                onSuccess: this.onUpdateSuccess,
-                onError: this.onUpdateError,
-            });
-        },
-        onUpdateSuccess() {
-            this.$addAlert({
-                type: ALERT_TYPE.SUCCESS,
-                message: 'Resource translations have been updated',
-            });
-
-            this.isSubmitting = false;
-
-            this.markChangeValuesAsSaved(this.scope);
-        },
-        onUpdateError(errors) {
-            this.onError(errors);
-
-            this.isSubmitting = false;
-        },
-    },
 };
 </script>

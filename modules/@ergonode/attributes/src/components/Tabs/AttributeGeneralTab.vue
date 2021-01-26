@@ -10,7 +10,7 @@
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"
-                :changed-values="changeValues"
+                :change-values="changeValues"
                 @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
@@ -21,7 +21,7 @@ import AttributeForm from '@Attributes/components/Forms/AttributeForm';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import {
     mapActions,

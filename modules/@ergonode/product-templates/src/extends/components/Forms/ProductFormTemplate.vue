@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import ProductTemplateAutocomplete from '@Templates/components/Autocompletes/ProductTemplatesAutocomplete';
 import {
     PRODUCT_TEMPLATE_CREATED_EVENT_NAME,

@@ -1,7 +1,8 @@
 {
   "authentication": {
       "layout": {
-          "help":"Pomoc"
+          "help":"Pomoc",
+          "userGuide":"Pomoc użytkownika"
       },
       "forms":{
           "login": {
