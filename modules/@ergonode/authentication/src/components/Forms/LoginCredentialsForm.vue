@@ -16,15 +16,13 @@
                 data-cy="login-email"
                 v-model="email"
                 :error-messages="scopeErrors.username"
-                :label="$t('authentication.forms.login.email')"
-                @keydown.enter.prevent="onSubmit" />
+                :label="$t('authentication.forms.login.email')" />
             <TextField
                 data-cy="login-pass"
                 v-model="password"
                 :input="passwordInputType"
                 :error-messages="scopeErrors.password"
-                :label="$t('authentication.forms.login.password')"
-                @keydown.enter.prevent="onSubmit" />
+                :label="$t('authentication.forms.login.password')" />
             <div class="login-help-area">
                 <Toggler
                     v-model="isPasswordVisible"
@@ -92,6 +90,7 @@ export default {
             'authenticateUser',
         ]),
         redirectToRecovery() {
+            this.removeScopeErrors(this.scope);
             this.$emit('redirect-to', LOGIN_STATE.PASSWORD_RECOVERY);
         },
         onSubmit() {
@@ -129,7 +128,7 @@ export default {
 
 <style lang="scss" scoped>
     .header-logo {
-        justify-self: center;
+        flex: 1;
     }
 
     .login-help-area {
