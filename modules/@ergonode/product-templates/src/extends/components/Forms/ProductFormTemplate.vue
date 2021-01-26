@@ -16,9 +16,6 @@
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import ProductTemplateAutocomplete from '@Templates/components/Autocompletes/ProductTemplatesAutocomplete';
 import {
-    PRODUCT_TEMPLATE_CREATED_EVENT_NAME,
-} from '@Templates/defaults';
-import {
     mapActions,
     mapState,
 } from 'vuex';
@@ -43,9 +40,6 @@ export default {
         ]),
         templateIdFieldKey() {
             return 'templateId';
-        },
-        productTemplateCreatedEventName() {
-            return PRODUCT_TEMPLATE_CREATED_EVENT_NAME;
         },
     },
     methods: {

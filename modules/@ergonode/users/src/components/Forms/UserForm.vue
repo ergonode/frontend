@@ -123,20 +123,6 @@ export default {
         formActionsMixin,
         formFeedbackMixin,
     ],
-    data() {
-        return {
-            activityStatuses: [
-                {
-                    id: true,
-                    name: 'Active',
-                },
-                {
-                    id: false,
-                    name: 'Inactive',
-                },
-            ],
-        };
-    },
     computed: {
         ...mapGetters('core', [
             'activeLanguages',

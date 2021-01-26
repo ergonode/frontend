@@ -32,15 +32,9 @@
 <script>
 import AttributesAutocomplete from '@Attributes/components/Autocompletes/AttributesAutocomplete';
 import {
-    ROUTE_NAME,
-} from '@Attributes/config/routes';
-import {
     SKU_MODEL,
     TYPES,
 } from '@Attributes/defaults/attributes';
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import {
@@ -68,9 +62,6 @@ export default {
             'defaultTextAttribute',
             'defaultImageAttribute',
         ]),
-        smallSize() {
-            return SIZE.SMALL;
-        },
         additionalStaticTextOptions() {
             return [
                 SKU_MODEL,
@@ -105,11 +96,6 @@ export default {
         ...mapActions('productTemplate', [
             '__setState',
         ]),
-        onNavigateToAttributes() {
-            this.$router.push({
-                name: ROUTE_NAME.ATTRIBUTES_GRID,
-            });
-        },
         setDefaultTextAttributeValue(value) {
             this.__setState({
                 key: 'defaultTextAttribute',
