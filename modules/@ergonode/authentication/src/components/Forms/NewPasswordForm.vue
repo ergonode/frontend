@@ -38,11 +38,11 @@
 import LoginForm from '@Authentication/components/Forms/LoginForm';
 import ListElement from '@Authentication/components/Lists/ListElement';
 import {
+    ROUTE_NAME,
+} from '@Authentication/config/routes';
+import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
-import {
-    ROUTE_NAME,
-} from '@Core/config/routes';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';

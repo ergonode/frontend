@@ -9,10 +9,10 @@
 </template>
 
 <script>
-import LoginLayout from '@Core/layouts/login';
+import LoginLayout from '@Authentication/layouts/login';
 import {
     loginLayoutMiddleware,
-} from '@Core/middleware/layouts';
+} from '@Authentication/middleware/layout';
 
 export default {
     name: 'NuxtLoginLayout',

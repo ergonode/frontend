@@ -12,7 +12,7 @@
 import DefaultLayout from '@Core/layouts/default';
 import {
     defaultLayoutMiddleware,
-} from '@Core/middleware/layouts';
+} from '@Core/middleware/layout';
 
 export default {
     name: 'NuxtDefaultLayout',
