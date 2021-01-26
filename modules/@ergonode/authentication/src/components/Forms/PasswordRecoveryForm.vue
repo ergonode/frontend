@@ -32,7 +32,7 @@ import LoginForm from '@Authentication/components/Forms/LoginForm';
 import {
     LOGIN_STATE,
 } from '@Authentication/defaults/login-state';
-import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import Fab from '@UI/components/Fab/Fab';
 import FormHeader from '@UI/components/Form/FormHeader';
 import IconArrowPointer from '@UI/components/Icons/Arrows/IconArrowPointer';
@@ -53,7 +53,7 @@ export default {
         TextField,
     },
     mixins: [
-        scopeErrorsMixin,
+        modalFeedbackMixin,
     ],
     data() {
         return {

@@ -91,6 +91,8 @@
                     </template>
                     <UpdateProductsButton
                         :scope="scope"
+                        :errors="errors"
+                        :change-values="changeValues"
                         :drafts="drafts"
                         :columns="columns"
                         @updated="onProductsUpdated" />
@@ -175,6 +177,10 @@ export default {
             default: '',
         },
         errors: {
+            type: Object,
+            default: () => ({}),
+        },
+        changeValues: {
             type: Object,
             default: () => ({}),
         },

@@ -3,23 +3,38 @@
  * See LICENSE for license details.
  */
 <template>
-    <Button
-        :title="$t('core.buttons.submit')"
-        @click.native="onSubmit">
-        <template
-            v-if="isSubmitting"
-            #prepend="{ color }">
-            <IconSpinner :fill-color="color" />
+    <FeedbackProvider
+        :errors="errors"
+        :change-values="changeValues">
+        <template #default="{ hasValueToSave }">
+            <Button
+                data-cy="submit"
+                :title="$t('core.buttons.submit')"
+                :disabled="!isAllowedToUpdate"
+                @click.native="onSubmit">
+                <template #prepend="{ color }">
+                    <IconSpinner
+                        v-if="isSubmitting"
+                        :fill-color="color" />
+                    <IconSync
+                        v-else-if="hasValueToSave"
+                        :fill-color="color" />
+                </template>
+            </Button>
         </template>
-    </Button>
+    </FeedbackProvider>
 </template>
 
 <script>
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
+import updateButtonFeedbackMixin from '@Core/mixins/feedback/updateButtonFeedbackMixin';
 import Button from '@UI/components/Button/Button';
+import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import IconSync from '@UI/components/Icons/Feedback/IconSync';
+import PRIVILEGES from '@Users/config/privileges';
 import {
     mapActions,
 } from 'vuex';
@@ -27,29 +42,30 @@ import {
 export default {
     name: 'UpdateLanguageRestrictionsButton',
     components: {
+        FeedbackProvider,
         Button,
         IconSpinner,
+        IconSync,
     },
-    props: {
-        scope: {
-            type: String,
-            default: '',
-        },
-    },
+    mixins: [
+        updateButtonFeedbackMixin,
+    ],
     data() {
         return {
             isSubmitting: false,
         };
     },
+    computed: {
+        isAllowedToUpdate() {
+            return this.$hasAccess([
+                PRIVILEGES.USER.update,
+            ]);
+        },
+    },
     methods: {
         ...mapActions('user', [
             'updateUser',
             '__setState',
-        ]),
-        ...mapActions('feedback', [
-            'onError',
-            'removeScopeErrors',
-            'markChangeValuesAsSaved',
         ]),
         onSubmit() {
             if (this.isSubmitting) {

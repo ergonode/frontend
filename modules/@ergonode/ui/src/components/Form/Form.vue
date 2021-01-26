@@ -3,65 +3,74 @@
  * See LICENSE for license details.
  */
 <template>
-    <form
-        class="form"
-        @submit.prevent="onSubmit">
-        <slot name="header">
-            <h2
-                v-if="title"
-                class="form__title"
-                v-text="title" />
-        </slot>
-        <template v-if="hasAnyError">
-            <section class="form__errors">
-                <IconError :fill-color="redColor" />
-                <div class="errors-list">
-                    <h3 class="errors-list__header">
-                        Please review errors below
-                    </h3>
-                    <div class="errors-list__links">
-                        <LinkButton
-                            v-for="(error, index) in presentationErrors"
-                            :title="error"
-                            :key="index" />
-                    </div>
+    <FeedbackProvider
+        :errors="errors"
+        :change-values="changeValues">
+        <template #default="{ hasError, hasValueToSave }">
+            <form
+                class="form"
+                @submit.prevent="onSubmit">
+                <slot name="header">
+                    <h2
+                        v-if="title"
+                        class="form__title"
+                        v-text="title" />
+                </slot>
+                <template v-if="hasError">
+                    <section class="form__errors">
+                        <IconError :fill-color="redColor" />
+                        <div class="errors-list">
+                            <h3 class="errors-list__header">
+                                Please review errors below
+                            </h3>
+                            <div class="errors-list__links">
+                                <LinkButton
+                                    v-for="(error, index) in presentationErrors"
+                                    :title="error"
+                                    :key="index" />
+                            </div>
+                        </div>
+                    </section>
+                    <Divider />
+                </template>
+                <slot name="body" />
+                <div
+                    class="form__footer"
+                    v-if="isFooterVisible">
+                    <slot name="submit">
+                        <Button
+                            v-if="isSubmitButtonVisible"
+                            data-cy="submit"
+                            :title="submitTitle"
+                            type="submit">
+                            <template #append="{ color }">
+                                <IconSpinner
+                                    v-if="isSubmitting"
+                                    :fill-color="color" />
+                                <IconSync
+                                    v-else-if="hasValueToSave"
+                                    :fill-color="color" />
+                            </template>
+                        </Button>
+                    </slot>
+                    <slot name="proceed">
+                        <Button
+                            v-if="isProceedButtonVisible"
+                            data-cy="proceed"
+                            :title="proceedTitle"
+                            :theme="secondaryTheme"
+                            @click.native="onProceed">
+                            <template
+                                v-if="isProceeding"
+                                #prepend="{ color }">
+                                <IconSpinner :fill-color="color" />
+                            </template>
+                        </Button>
+                    </slot>
                 </div>
-            </section>
-            <Divider />
+            </form>
         </template>
-        <slot name="body" />
-        <div
-            class="form__footer"
-            v-if="isFooterVisible">
-            <slot name="submit">
-                <Button
-                    v-if="isSubmitButtonVisible"
-                    data-cy="submit"
-                    :title="submitTitle"
-                    type="submit">
-                    <template
-                        v-if="isSubmitting"
-                        #append="{ color }">
-                        <IconSpinner :fill-color="color" />
-                    </template>
-                </Button>
-            </slot>
-            <slot name="proceed">
-                <Button
-                    v-if="isProceedButtonVisible"
-                    data-cy="proceed"
-                    :title="proceedTitle"
-                    :theme="secondaryTheme"
-                    @click.native="onProceed">
-                    <template
-                        v-if="isProceeding"
-                        #prepend="{ color }">
-                        <IconSpinner :fill-color="color" />
-                    </template>
-                </Button>
-            </slot>
-        </div>
-    </form>
+    </FeedbackProvider>
 </template>
 
 <script>
@@ -74,18 +83,22 @@ import {
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Button from '@UI/components/Button/Button';
 import Divider from '@UI/components/Dividers/Divider';
+import FeedbackProvider from '@UI/components/Feedback/FeedbackProvider';
 import IconError from '@UI/components/Icons/Feedback/IconError';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import IconSync from '@UI/components/Icons/Feedback/IconSync';
 import LinkButton from '@UI/components/LinkButton/LinkButton';
 
 export default {
     name: 'Form',
     components: {
+        FeedbackProvider,
         Button,
         LinkButton,
         IconError,
         Divider,
         IconSpinner,
+        IconSync,
     },
     mixins: [
         formActionsMixin,
@@ -102,6 +115,13 @@ export default {
          * The validation errors
          */
         errors: {
+            type: Object,
+            default: () => ({}),
+        },
+        /**
+         * Values that have been changes at given context
+         */
+        changeValues: {
             type: Object,
             default: () => ({}),
         },
@@ -128,12 +148,6 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        formGlobalError() {
-            return this.getErrorForKey('__form');
-        },
-        hasAnyError() {
-            return Object.values(this.errors).length > 0 || this.formGlobalError;
-        },
         redColor() {
             return RED;
         },
@@ -143,11 +157,6 @@ export default {
             }
 
             return this.errorsPresentationMapper(this.errors);
-        },
-    },
-    methods: {
-        getErrorForKey(key) {
-            return this.errors[key] || null;
         },
     },
 };

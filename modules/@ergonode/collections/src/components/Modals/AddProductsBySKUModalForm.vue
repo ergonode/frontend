@@ -12,7 +12,9 @@
                 submit-title="ADD TO COLLECTION"
                 :proceed-title="$t('core.buttons.cancel')"
                 :is-submitting="isAdding"
+                :scope="scope"
                 :errors="scopeErrors"
+                :change-values="scopeChangeValues"
                 @submit="onSubmit"
                 @proceed="onClose"
                 @input="onFormValueChange" />
@@ -28,7 +30,7 @@ import {
 import {
     THEME,
 } from '@Core/defaults/theme';
-import scopeErrorsMixin from '@Core/mixins/feedback/scopeErrorsMixin';
+import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import ModalForm from '@UI/components/Modal/ModalForm';
 import {
     mapActions,
@@ -41,7 +43,7 @@ export default {
         ModalForm,
     },
     mixins: [
-        scopeErrorsMixin,
+        modalFeedbackMixin,
     ],
     data() {
         return {
@@ -62,7 +64,7 @@ export default {
             this.productSkus = value;
         },
         onClose() {
-            this.removeScopeErrors(this.scope);
+            this.removeScopeData(this.scope);
 
             this.$emit('close');
         },

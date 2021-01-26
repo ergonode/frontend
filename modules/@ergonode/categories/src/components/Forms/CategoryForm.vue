@@ -10,6 +10,7 @@
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
         :errors="errors"
+        :change-values="changeValues"
         @proceed="onProceed"
         @submit="onSubmit">
         <template #body>
@@ -37,8 +38,8 @@
 
 <script>
 import PRIVILEGES from '@Categories/config/privileges';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';

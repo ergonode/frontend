@@ -12,13 +12,14 @@
         <template #grid>
             <ProductsGrid
                 :scope="scope"
-                :errors="errors" />
+                :errors="errors"
+                :change-values="changeValues" />
         </template>
     </GridViewTemplate>
 </template>
 
 <script>
-import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import ProductsGrid from '@Products/components/Grids/ProductsGrid';
 import RemoveFilterAndColumnDropZone from '@UI/components/Grid/DropZone/RemoveFilterAndColumnDropZone';
 import GridViewTemplate from '@UI/components/Layout/Templates/GridViewTemplate';
