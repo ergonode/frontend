@@ -24,16 +24,12 @@
                     label="System name"
                     hint="System name must be unique"
                     @input="setCodeValue" />
-                <Autocomplete
+                <CollectionTypesAutocomplete
                     :data-cy="dataCyGenerator(typeIdFieldKey)"
                     :value="type"
                     required
-                    searchable
-                    :clearable="true"
-                    label="Type"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :error-messages="errors[typeIdFieldKey]"
-                    href="collections/type/autocomplete"
                     @input="setTypeValue" />
                 <Divider v-if="extendedForm.length" />
                 <template v-for="(field, index) in extendedForm">
@@ -48,10 +44,10 @@
 </template>
 
 <script>
+import CollectionTypesAutocomplete from '@Collections/components/Autocompletes/CollectionTypesAutocomplete';
 import PRIVILEGES from '@Collections/config/privileges';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
@@ -64,11 +60,11 @@ import {
 export default {
     name: 'CollectionForm',
     components: {
+        CollectionTypesAutocomplete,
         Divider,
         Form,
         FormSection,
         TextField,
-        Autocomplete,
     },
     mixins: [
         formActionsMixin,

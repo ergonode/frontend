@@ -14,17 +14,15 @@
         @swap="onSwap"
         @apply="onApplyValue">
         <template #dropdown="{ onApply }">
-            <template v-if="filter.options.length">
-                <AdvancedFilterMultiselectContent
-                    :value="localValue"
-                    :options="filter.options"
-                    :language-code="filter.languageCode"
-                    @input="onValueChange" />
-                <MultiselectDropdownFooter
-                    @apply="onApply"
-                    @clear="onClear" />
-            </template>
-            <DropdownPlaceholder v-else />
+            <AdvancedFilterMultiselectContent
+                :value="localValue"
+                :options="filter.options"
+                :language-code="filter.languageCode"
+                @input="onValueChange" />
+            <MultiselectDropdownFooter
+                v-if="filter.options.length"
+                @apply="onApply"
+                @clear="onClear" />
         </template>
     </AdvancedFilter>
 </template>
@@ -36,7 +34,6 @@ import {
 import AdvancedFilter from '@UI/components/AdvancedFilters/AdvancedFilter';
 import AdvancedFilterMultiselectContent from '@UI/components/AdvancedFilters/Content/AdvancedFilterMultiselectContent';
 import MultiselectDropdownFooter from '@UI/components/Select/Dropdown/Footers/MultiselectDropdownFooter';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 
 export default {
     name: 'AdvancedFilterMultiSelectType',
@@ -44,7 +41,6 @@ export default {
         AdvancedFilter,
         AdvancedFilterMultiselectContent,
         MultiselectDropdownFooter,
-        DropdownPlaceholder,
     },
     props: {
         /**

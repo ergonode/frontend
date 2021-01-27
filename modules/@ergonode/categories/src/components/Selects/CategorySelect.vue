@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <InputSolidStyle class="category-select">
+    <InputSolidStyle :class="classes">
         <template #activator>
             <InputController>
                 <InputLabel
@@ -72,7 +72,7 @@
                                 @input="onSelectAllVisible" />
                         </template>
                         <template #body>
-                            <DropdownPlaceholder
+                            <SelectListNoDataPlaceholder
                                 v-if="!isAnyCategoryInTree"
                                 :title="categoryTreePlaceholder.title"
                                 :subtitle="categoryTreePlaceholder.subtitle">
@@ -83,17 +83,17 @@
                                         :disabled="!isAllowedToUpdateTree"
                                         @click.native="onNavigateToCategoryTree" />
                                 </template>
-                            </DropdownPlaceholder>
-                            <DropdownPlaceholder
+                            </SelectListNoDataPlaceholder>
+                            <SelectListNoDataPlaceholder
                                 v-else-if="isVisibleSelectedAnyCategoryInTree"
                                 :title="categoryTreeNonVisiblePlaceholder.title"
                                 :subtitle="categoryTreeNonVisiblePlaceholder.subtitle">
                                 <template #action>
-                                    <ClearSearchButton
+                                    <PlaceholderClearSearchButton
                                         :title="$t('category.form.clearSearchButtonLabel')"
                                         @click.native="onClearVisibilitySelection" />
                                 </template>
-                            </DropdownPlaceholder>
+                            </SelectListNoDataPlaceholder>
                         </template>
                     </TreeAccordion>
                     <SelectList
@@ -117,25 +117,25 @@
                                 @input="onSelectAllVisible"
                             />
                         </template>
-                        <template #body>
-                            <DropdownPlaceholder
+                        <template #noDataPlaceholder>
+                            <SelectListNoDataPlaceholder
                                 v-if="!isAnyCategory"
                                 :title="categoriesPlaceholder.title"
                                 :subtitle="categoriesPlaceholder.subtitle">
                                 <template #action>
                                     <CreateCategoryButton />
                                 </template>
-                            </DropdownPlaceholder>
-                            <DropdownPlaceholder
+                            </SelectListNoDataPlaceholder>
+                            <SelectListNoDataPlaceholder
                                 v-else-if="isVisibleSelectedAnyCategory"
                                 :title="categoriesNonVisiblePlaceholder.title"
                                 :subtitle="categoriesNonVisiblePlaceholder.subtitle">
                                 <template #action>
-                                    <ClearSearchButton
+                                    <PlaceholderClearSearchButton
                                         :title="$t('category.form.clearSearchButtonLabel')"
                                         @click.native="onClearVisibilitySelection" />
                                 </template>
-                            </DropdownPlaceholder>
+                            </SelectListNoDataPlaceholder>
                         </template>
                         <template #item="{ item, isSelected }">
                             <ListElementAction :size="smallSize">
@@ -200,21 +200,22 @@ import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 import ListElementAction from '@UI/components/List/ListElementAction';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
+import PlaceholderClearSearchButton from '@UI/components/Placeholder/PlaceholderClearSearchButton';
 import Preloader from '@UI/components/Preloader/Preloader';
-import ClearSearchButton from '@UI/components/Select/Dropdown/Buttons/ClearSearchButton';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import SelectList from '@UI/components/SelectList/SelectList';
+import SelectListNoDataPlaceholder from '@UI/components/SelectList/SelectListNoDataPlaceholder';
 import Toggler from '@UI/components/Toggler/Toggler';
 import TreeAccordion from '@UI/components/TreeAccordion/TreeAccordion';
 
 export default {
     name: 'CategorySelect',
     components: {
+        PlaceholderClearSearchButton,
         Button,
         CreateCategoryButton,
         CategorySelectAllTreeCheckBox,
         CategorySelectAllCheckBox,
-        ClearSearchButton,
+        SelectListNoDataPlaceholder,
         TreeAccordion,
         InputSolidStyle,
         InputController,
@@ -222,7 +223,6 @@ export default {
         ListElementTitle,
         ListElementAction,
         ListElementDescription,
-        DropdownPlaceholder,
         Toggler,
         CheckBox,
         ExpandNumericButton,
@@ -260,11 +260,18 @@ export default {
         };
     },
     computed: {
+        classes() {
+            return [
+                'category-select',
+                {
+                    'category-select--no-data': !((this.isCategoryTreeSelected && this.isAnyCategoryInTreeAfterFiltering) || (!this.isCategoryTreeSelected && this.isAnyCategoryAfterFiltering)),
+                },
+            ];
+        },
         categorySelectItemsClasses() {
             return [
                 'category-select__items',
                 {
-                    'category-select__items--has-any-items': (this.isCategoryTreeSelected && this.isAnyCategoryInTreeAfterFiltering) || (!this.isCategoryTreeSelected && this.isAnyCategoryAfterFiltering),
                     'category-select__items--visible-expander': !this.isCategoryTreeSelected && this.isAnyCategoryAfterFiltering,
                 },
             ];
@@ -533,6 +540,10 @@ export default {
             }
         }
 
+        &__list {
+            padding: 0 8px;
+        }
+
         &__header {
             display: flex;
             flex-direction: column;
@@ -541,24 +552,16 @@ export default {
             box-sizing: border-box;
         }
 
-        &__list {
-            padding: 0 8px;
-        }
-
         &__items {
             position: relative;
             display: flex;
             flex-direction: column;
             border: $BORDER_1_GREY;
+            padding: 12px 0;
             border-top: unset;
-            padding-top: 12px;
             box-sizing: border-box;
             transition: border-color 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             will-change: border-color;
-
-            &--has-any-items {
-                padding-bottom: 12px;
-            }
 
             &--visible-expander {
                 padding-bottom: 48px;

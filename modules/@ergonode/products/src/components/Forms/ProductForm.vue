@@ -33,34 +33,8 @@
                     :error-messages="errors[skuFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     @input="setSkuValue" />
-                <Autocomplete
-                    :value="template"
-                    :required="true"
-                    :searchable="true"
-                    :clearable="true"
-                    label="Product template"
-                    :error-messages="errors[templateIdFieldKey]"
-                    :disabled="!isAllowedToUpdate"
-                    href="templates/autocomplete"
-                    @input="setTemplateValue">
-                    <template #placeholder="{ isVisible }">
-                        <DropdownPlaceholder
-                            v-if="isVisible"
-                            :title="placeholder.title"
-                            :subtitle="placeholder.subtitle">
-                            <template #action>
-                                <Button
-                                    title="GO TO PRODUCT TEMPLATES"
-                                    :size="smallSize"
-                                    :disabled="!isAllowedToUpdate"
-                                    @click.native="onNavigateToProductTemplates" />
-                            </template>
-                        </DropdownPlaceholder>
-                    </template>
-                </Autocomplete>
                 <Divider v-if="extendedForm.length" />
-                <template
-                    v-for="(formComponent, index) in extendedForm">
+                <template v-for="(formComponent, index) in extendedForm">
                     <Component
                         :is="formComponent.component"
                         :key="index"
@@ -72,24 +46,16 @@
 </template>
 
 <script>
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     getKeyByValue,
 } from '@Core/models/objectWrapper';
 import PRIVILEGES from '@Products/config/privileges';
-import {
-    ROUTE_NAME,
-} from '@Templates/config/routes';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import Button from '@UI/components/Button/Button';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import Select from '@UI/components/Select/Select';
 import TextField from '@UI/components/TextField/TextField';
 import {
@@ -102,12 +68,10 @@ export default {
     components: {
         Button,
         Divider,
-        DropdownPlaceholder,
         Form,
         FormSection,
         Select,
         TextField,
-        Autocomplete,
     },
     mixins: [
         formActionsMixin,
@@ -121,17 +85,7 @@ export default {
             'id',
             'sku',
             'type',
-            'template',
         ]),
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        placeholder() {
-            return {
-                title: 'No product templates',
-                subtitle: 'There are no product templates in the system, so you can create the first one.',
-            };
-        },
         extendedForm() {
             return this.$extendedForm({
                 key: '@Products/components/Forms/ProductForm',
@@ -152,9 +106,6 @@ export default {
                 PRIVILEGES.PRODUCT.update,
             ]);
         },
-        templateIdFieldKey() {
-            return 'templateId';
-        },
         skuFieldKey() {
             return 'sku';
         },
@@ -166,11 +117,6 @@ export default {
         ...mapActions('product', [
             '__setState',
         ]),
-        onNavigateToProductTemplates() {
-            this.$router.push({
-                name: ROUTE_NAME.PRODUCT_TEMPLATES,
-            });
-        },
         setTypeValue(value) {
             this.__setState({
                 key: this.typeFieldKey,
@@ -190,17 +136,6 @@ export default {
             this.onScopeValueChange({
                 scope: this.scope,
                 fieldKey: this.skuFieldKey,
-                value,
-            });
-        },
-        setTemplateValue(value) {
-            this.__setState({
-                key: 'template',
-                value,
-            });
-            this.onScopeValueChange({
-                scope: this.scope,
-                fieldKey: 'template',
                 value,
             });
         },

@@ -9,5 +9,4 @@ export default () => ({
     status: null,
     type: '',
     workflow: [],
-    template: null,
 });

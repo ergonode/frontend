@@ -12,12 +12,11 @@
       "sectionTitle": "Konfiguracja",
       "nameLabel": "Nazwa systemowa",
       "nameHint": "Nazwa systemowa musi być unikalna",
-      "noGroupButton": "Idź do grup atrybutów",
-      "noGroupTitle": "Brak grup atrybutów",
-      "noGroupSubtitle": "W systemie nie ma grup atrybutów, stwórz pierwszą.",
       "groupLabel": "Grupa",
       "typeLabel": "Typ",
       "scopeLabel": "Scope",
+      "noAttributeTitle": "Brak atrybutów",
+      "noAttributeSubtitle": "W systemie nie ma atrybutów, stwórz pierwszy.",
       "scopeHint": "Global oznacza że ta sama wartość atrybutu dla każdego języja, będzie odziedziczona po jezyku głownym. Wartości opcji mogą być tłumaczone, ale nie mogą być zmienione w szablonie produktu. ",
       "types": {
         "richTextLabel": "Zawartość Rich text włączona",
@@ -89,7 +88,9 @@
       "createTitle": "Stwórz grupę atrybutów",
       "title": "Opcje",
       "nameLabel": "Nazwa systemowa",
-      "nameHint": "Nazwa systemowa musi być unikalna"
+      "nameHint": "Nazwa systemowa musi być unikalna",
+      "noGroupTitle": "Brak grup atrybutów",
+      "noGroupSubtitle": "W systemie nie ma grup atrybutów, stwórz pierwszą."
     },
     "translation": {
       "nameLabel": "Nazwa grupy"
