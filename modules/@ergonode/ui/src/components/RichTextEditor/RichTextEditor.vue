@@ -74,11 +74,10 @@ import {
     INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
-import {
-    toCapitalize,
-} from '@Core/models/stringWrapper';
 import InputController from '@UI/components/Input/InputController';
 import InputLabel from '@UI/components/Input/InputLabel';
+import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
+import InputUnderlineStyle from '@UI/components/Input/InputUnderlineStyle';
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
 import RichTextEditorMenu from '@UI/components/RichTextEditor/Menu/RichTextEditorMenu';
 import RichTextEditorMenuBubble from '@UI/components/RichTextEditor/MenuBubble/RichTextEditorMenuBubble';
@@ -228,7 +227,11 @@ export default {
             return this.type === INPUT_TYPE.SOLID;
         },
         styleComponent() {
-            return () => import(`@UI/components/Input/Input${toCapitalize(this.type)}Style`);
+            if (this.type === INPUT_TYPE.SOLID) {
+                return InputSolidStyle;
+            }
+
+            return InputUnderlineStyle;
         },
         isError() {
             return Boolean(this.errorMessages);
