@@ -10,7 +10,6 @@
             <Button
                 data-cy="submit"
                 :title="$t('core.buttons.submit')"
-                :floating="{ bottom: '24px', right: '24px' }"
                 :disabled="!isAllowedToUpdate"
                 @click.native="onSubmit">
                 <template #prepend="{ color }">

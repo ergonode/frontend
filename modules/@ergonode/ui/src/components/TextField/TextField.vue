@@ -15,8 +15,7 @@
         :height="height"
         :details-label="informationLabel"
         @mousedown="onMouseDown"
-        @mouseup="onMouseUp"
-        @mounted="onMounted">
+        @mouseup="onMouseUp">
         <template #activator>
             <InputController
                 ref="activator"
@@ -74,13 +73,11 @@ import {
     INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
-import {
-    toCapitalize,
-} from '@Core/models/stringWrapper';
 import InputController from '@UI/components/Input/InputController';
 import InputLabel from '@UI/components/Input/InputLabel';
+import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
+import InputUnderlineStyle from '@UI/components/Input/InputUnderlineStyle';
 import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
-
 /**
  * `TextField` is a default text input component.
  *  It might be configured with `prepend` and `append` slots.
@@ -219,7 +216,11 @@ export default {
             ];
         },
         styleComponent() {
-            return () => import(`@UI/components/Input/Input${toCapitalize(this.type)}Style`);
+            if (this.type === INPUT_TYPE.SOLID) {
+                return InputSolidStyle;
+            }
+
+            return InputUnderlineStyle;
         },
         isEmpty() {
             return this.value === '' || this.value === null;
@@ -236,16 +237,12 @@ export default {
             return this.placeholder;
         },
     },
+    mounted() {
+        if (this.autofocus) {
+            this.$refs.input.focus();
+        }
+    },
     methods: {
-        onMounted() {
-            if (this.autofocus) {
-                this.$nextTick(() => {
-                    requestAnimationFrame(() => {
-                        this.$refs.input.focus();
-                    });
-                });
-            }
-        },
         onValueChange(event) {
             this.$emit('input', event.target.value);
         },

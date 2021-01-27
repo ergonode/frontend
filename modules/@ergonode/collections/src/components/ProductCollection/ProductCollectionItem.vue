@@ -7,7 +7,8 @@
         <LazyImage
             v-if="item.image"
             :href="`multimedia/${item.image}/download/default`"
-            :value="item.image" />
+            :value="item.image"
+            :height="collectionImageHeight" />
         <img
             v-else
             class="product-collection-item__placeholder"
@@ -21,10 +22,15 @@
 </template>
 
 <script>
+import {
+    COLLECTION_IMAGE_HEIGHT,
+} from '@Core/defaults/grid';
+import LazyImage from '@UI/components/LazyImage/LazyImage';
+
 export default {
     name: 'ProductCollectionItem',
     components: {
-        LazyImage: () => import('@UI/components/LazyImage/LazyImage'),
+        LazyImage,
     },
     props: {
         item: {
@@ -36,6 +42,9 @@ export default {
         placeholderImage() {
             return require('@UI/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
         },
+        collectionImageHeight() {
+            return COLLECTION_IMAGE_HEIGHT;
+        },
     },
 };
 </script>
@@ -45,7 +54,7 @@ export default {
         display: flex;
         flex-direction: column;
         width: 100%;
-        height: 188px;
+        height: 190px;
         border: $BORDER_1_GREY;
         box-sizing: border-box;
         text-align: left;
@@ -65,11 +74,9 @@ export default {
         &__placeholder {
             justify-self: center;
             align-self: center;
+            width: 100%;
+            height: 157px;
             object-fit: none;
-        }
-
-        &__placeholder, & > .image {
-            height: 156px;
         }
     }
 </style>

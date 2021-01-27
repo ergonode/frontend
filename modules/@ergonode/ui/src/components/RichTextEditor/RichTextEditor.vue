@@ -33,9 +33,8 @@
                             :editor="editor" />
                     </VerticalFixedScroll>
                     <RichTextEditorMenu
-                        v-if="isSolidType && isFocused && editorWidth !== 0"
+                        v-if="isSolidType && isFocused"
                         :type="type"
-                        :editor-width="editorWidth"
                         :editor="editor" />
                 </div>
                 <InputLabel
@@ -74,11 +73,10 @@ import {
     INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
-import {
-    toCapitalize,
-} from '@Core/models/stringWrapper';
 import InputController from '@UI/components/Input/InputController';
 import InputLabel from '@UI/components/Input/InputLabel';
+import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
+import InputUnderlineStyle from '@UI/components/Input/InputUnderlineStyle';
 import VerticalFixedScroll from '@UI/components/Layout/Scroll/VerticalFixedScroll';
 import RichTextEditorMenu from '@UI/components/RichTextEditor/Menu/RichTextEditorMenu';
 import RichTextEditorMenuBubble from '@UI/components/RichTextEditor/MenuBubble/RichTextEditorMenuBubble';
@@ -220,7 +218,6 @@ export default {
         return {
             isFocused: false,
             editor: null,
-            editorWidth: 0,
         };
     },
     computed: {
@@ -228,7 +225,11 @@ export default {
             return this.type === INPUT_TYPE.SOLID;
         },
         styleComponent() {
-            return () => import(`@UI/components/Input/Input${toCapitalize(this.type)}Style`);
+            if (this.type === INPUT_TYPE.SOLID) {
+                return InputSolidStyle;
+            }
+
+            return InputUnderlineStyle;
         },
         isError() {
             return Boolean(this.errorMessages);
@@ -306,7 +307,6 @@ export default {
         },
         onBlur() {
             this.isFocused = false;
-            this.editorWidth = 0;
 
             if (!this.disabled) {
                 // TODO:
@@ -325,10 +325,6 @@ export default {
             if (this.disabled) {
                 return;
             }
-
-            requestAnimationFrame(() => {
-                this.editorWidth = this.$refs.editorContent.$el.offsetWidth;
-            });
 
             const isClickedInsideEditor = this.$refs.editorContent.$el.contains(event.target);
 
