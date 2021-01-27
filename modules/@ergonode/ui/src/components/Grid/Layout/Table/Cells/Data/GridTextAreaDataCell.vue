@@ -38,10 +38,9 @@ export default {
     methods: {
         onEditCell() {
             this.$emit('edit-cell', {
-                type: this.column.parameters && this.column.parameters.rich_edit
-                    ? `RICH_${this.column.type}`
-                    : this.column.type,
+                type: this.column.type,
                 props: {
+                    isRichEdit: Boolean(this.column.parameters && this.column.parameters.rich_edit),
                     bounds: this.$el.getBoundingClientRect(),
                     value: this.cellData.value,
                     row: this.rowIndex,

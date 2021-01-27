@@ -33,9 +33,8 @@
                             :editor="editor" />
                     </VerticalFixedScroll>
                     <RichTextEditorMenu
-                        v-if="isSolidType && isFocused && editorWidth !== 0"
+                        v-if="isSolidType && isFocused"
                         :type="type"
-                        :editor-width="editorWidth"
                         :editor="editor" />
                 </div>
                 <InputLabel
@@ -219,7 +218,6 @@ export default {
         return {
             isFocused: false,
             editor: null,
-            editorWidth: 0,
         };
     },
     computed: {
@@ -309,7 +307,6 @@ export default {
         },
         onBlur() {
             this.isFocused = false;
-            this.editorWidth = 0;
 
             if (!this.disabled) {
                 // TODO:
@@ -328,10 +325,6 @@ export default {
             if (this.disabled) {
                 return;
             }
-
-            requestAnimationFrame(() => {
-                this.editorWidth = this.$refs.editorContent.$el.offsetWidth;
-            });
 
             const isClickedInsideEditor = this.$refs.editorContent.$el.contains(event.target);
 

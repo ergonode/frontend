@@ -22,7 +22,6 @@
                 :size="size">
                 <slot name="prepend" />
                 <InputSelectValue
-                    v-if="hasAnyValueSelected"
                     :data-cy="`${dataCy}-value`"
                     :size="size"
                     :alignment="alignment"
@@ -130,13 +129,12 @@ import InputSelectValue from '@UI/components/Input/InputSelectValue';
 import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
 import InputUnderlineStyle from '@UI/components/Input/InputUnderlineStyle';
 import SelectDropdown from '@UI/components/Select/Dropdown/SelectDropdown';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'Select',
     components: {
-        FadeTransition,
+        InputSolidStyle,
         SelectDropdown,
         IconArrowDropdown,
         InputController,
@@ -346,8 +344,8 @@ export default {
                 if (isArray && this.value.length) {
                     this.hasAnyValueSelected = true;
                 } else {
-                    this.hasAnyValueSelected = !isArray
-                        && (this.value || this.value === 0);
+                    this.hasAnyValueSelected = Boolean(!isArray
+                        && (this.value || this.value === 0));
                 }
             },
         },

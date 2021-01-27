@@ -4,30 +4,33 @@
  */
 <template>
     <div
-        class="collection-cell"
+        class="grid-collection-default-cell"
         @click="onClick">
         <LazyImage
             v-if="data.image"
             :href="`multimedia/${data.image}/download/default`"
             :value="data.image"
             :object-fit="objectFit"
-            :height="157" />
+            :height="collectionImageHeight" />
         <img
             v-else
-            class="collection-cell__placeholder"
+            class="grid-collection-default-cell__placeholder"
             :src="placeholderImage"
             alt="template icon">
         <div
-            class="collection-cell__fixed-title-content"
+            class="grid-collection-default-cell__fixed-title-content"
             :title="data.description">
             <span
-                class="collection-cell__title"
+                class="grid-collection-default-cell__title"
                 v-text="data.description" />
         </div>
     </div>
 </template>
 
 <script>
+import {
+    COLLECTION_IMAGE_HEIGHT,
+} from '@Core/defaults/grid';
 import {
     THEME,
 } from '@Core/defaults/theme';
@@ -73,6 +76,9 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
+        collectionImageHeight() {
+            return COLLECTION_IMAGE_HEIGHT;
+        },
     },
     methods: {
         onClick() {
@@ -90,13 +96,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .collection-cell {
+    .grid-collection-default-cell {
         $cell: &;
 
         position: relative;
         display: flex;
         flex-direction: column;
+        height: 190px;
         border: $BORDER_1_GREY;
+        box-sizing: border-box;
         background-color: $WHITE;
         cursor: pointer;
 
