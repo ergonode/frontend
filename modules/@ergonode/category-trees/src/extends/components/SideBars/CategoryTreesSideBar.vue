@@ -38,6 +38,7 @@
                 v-else
                 :item="{...item, level: item.level - 1 }"
                 :multiselect="true"
+                :selected-nodes-count="selectedNodesCount[item.id]"
                 :selected="selectedCategories[item.id]"
                 @expand="onExpand"
                 @input="onSelectCategory" />
@@ -59,9 +60,6 @@ import {
     getMappedFilters,
     getParsedFilters,
 } from '@Core/models/mappers/gridDataMapper';
-import {
-    deepClone,
-} from '@Core/models/objectWrapper';
 import CreateCategoryTreeButton from '@Trees/components/Buttons/CreateCategoryTreeButton';
 import {
     CATEGORY_TREE_CREATED_EVENT_NAME,
@@ -80,6 +78,9 @@ import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
 import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
 import TreeAccordionItem from '@UI/components/TreeAccordion/TreeAccordionItem';
+import {
+    getSelectedNodesCount,
+} from '@UI/models/treeAccordion';
 import {
     debounce,
 } from 'debounce';
@@ -146,6 +147,14 @@ export default {
         ...mapState('core', [
             'defaultLanguageCode',
         ]),
+        selectedNodesCount() {
+            return getSelectedNodesCount({
+                value: Object.keys(this.selectedCategories).map(key => ({
+                    id: key,
+                })),
+                treeStructure: this.categoryTrees,
+            });
+        },
     },
     watch: {
         $route(from, to) {
