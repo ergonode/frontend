@@ -7,6 +7,7 @@
         <IconSearch :fill-color="searchIconFillColor" />
         <div :class="activatorClasses">
             <input
+                class="select-list-search__input"
                 :value="value"
                 type="text"
                 :placeholder="placeholder"
@@ -115,7 +116,7 @@ export default {
 
 <style lang="scss" scoped>
     .select-list-search {
-        $element: &;
+        $search: &;
 
         display: flex;
         flex: 1;
@@ -127,7 +128,7 @@ export default {
             height: 32px;
             padding: 4px;
 
-            input {
+            #{$search}__input {
                 font: $FONT_MEDIUM_12_16;
 
                 &::placeholder {
@@ -140,7 +141,7 @@ export default {
             height: 40px;
             padding: 12px 10px;
 
-            input {
+            #{$search}__input {
                 font: $FONT_MEDIUM_14_20;
 
                 &::placeholder {
@@ -150,8 +151,6 @@ export default {
         }
 
         &__activator {
-            $activator: &;
-
             position: relative;
             display: flex;
             flex: 1;

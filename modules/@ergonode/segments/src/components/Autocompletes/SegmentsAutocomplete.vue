@@ -83,7 +83,7 @@ export default {
         noDataPlaceholder() {
             return {
                 title: this.$t('segment.form.noSegmentsTitle'),
-                subtitle: this.$t('user.form.noSegmentsSubtitle'),
+                subtitle: this.$t('segment.form.noSegmentsSubtitle'),
             };
         },
     },

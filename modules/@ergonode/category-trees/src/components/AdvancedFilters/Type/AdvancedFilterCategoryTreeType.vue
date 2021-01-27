@@ -194,8 +194,6 @@ export default {
         onSearch(value) {
             this.searchValue = value;
 
-            console.log(value);
-
             if (value === '') {
                 this.options = this.allOptions;
             } else {
