@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import AttributeSideBarElement from '@Attributes/components/SideBars/AttributeSideBarElement';
+import AttributeSideBarElement from '@Attributes/extends/components/SideBars/AttributeSideBarElement';
 import PRIVILEGES from '@Attributes/config/privileges';
 import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
 import {

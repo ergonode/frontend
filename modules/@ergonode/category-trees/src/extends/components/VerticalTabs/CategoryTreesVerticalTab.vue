@@ -3,23 +3,23 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="attributes-vertical-tab">
-        <AttributesSideBar
+    <div class="category-vertical-tab">
+        <CategoryTreesSideBar
             :disabled="disabled"
             :is-select-language="isSelectLanguage" />
-        <CreateAttributeFab :floating="{ bottom: '16px', right: '16px' }" />
+        <CreateCategoryFab :floating="{ bottom: '16px', right: '16px' }" />
     </div>
 </template>
 
 <script>
-import CreateAttributeFab from '@Attributes/components/Buttons/CreateAttributeFab';
-import AttributesSideBar from '@Attributes/components/SideBars/AttributesSideBar';
+import CreateCategoryFab from '@Categories/components/Buttons/CreateCategoryFab';
+import CategoryTreesSideBar from '@Trees/extends/components/SideBars/CategoryTreesSideBar';
 
 export default {
-    name: 'AttributesVerticalTab',
+    name: 'CategoryTreesVerticalTab',
     components: {
-        AttributesSideBar,
-        CreateAttributeFab,
+        CategoryTreesSideBar,
+        CreateCategoryFab,
     },
     props: {
         isSelectLanguage: {
@@ -35,7 +35,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .attributes-vertical-tab {
+    .category-trees-vertical-tab {
         position: relative;
         height: 100%;
     }

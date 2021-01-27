@@ -63,3 +63,36 @@ export function getMappedTreeData(treeArray) {
     }
     return newTree;
 }
+
+export function getMappedCategories({
+    tree,
+    categories,
+}) {
+    const children = [];
+
+    tree.forEach((node) => {
+        const category = categories.find(({
+            id,
+        }) => id === node.category_id);
+
+        children.push({
+            ...category,
+            children: getMappedCategories({
+                tree: node.children,
+                categories,
+            }),
+        });
+    });
+
+    return children;
+}
+
+export function getCategoriesCount(tree) {
+    let categoriesCount = 0;
+
+    tree.forEach((node) => {
+        categoriesCount += node.children.length + getCategoriesCount(node.children);
+    });
+
+    return categoriesCount;
+}

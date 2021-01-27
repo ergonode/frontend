@@ -73,7 +73,7 @@ export default {
             return [
                 {
                     title: 'Categories',
-                    component: () => import('@Categories/components/VerticalTabs/CategoriesVerticalTab'),
+                    component: () => import('@Categories/extends/components/VerticalTabs/CategoriesVerticalTab'),
                     icon: () => import('@Trees/components/Icons/IconTree'),
                     props: {
                         isSelectLanguage: true,

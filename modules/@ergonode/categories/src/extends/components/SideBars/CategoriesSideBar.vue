@@ -32,7 +32,7 @@
 
 <script>
 import CreateCategoryButton from '@Categories/components/Buttons/CreateCategoryButton';
-import CategorySideBarElement from '@Categories/components/SideBars/CategorySideBarElement';
+import CategorySideBarElement from '@Categories/extends/components/SideBars/CategorySideBarElement';
 import {
     CATEGORY_CREATED_EVENT_NAME,
 } from '@Categories/defaults/attributes';

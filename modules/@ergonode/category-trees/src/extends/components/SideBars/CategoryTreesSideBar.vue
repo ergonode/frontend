@@ -4,8 +4,8 @@
  */
 <template>
     <SideBar
-        :title="$t('attribute.sideBar.searchHeader')"
-        :items="groupedAttributesByLanguage"
+        :title="$t('categoryTree.sideBar.searchHeader')"
+        :items="categoryTreesByLanguage"
         :expanded="expandedGroup"
         :searchable="true"
         :search-value="searchValue"
@@ -13,7 +13,7 @@
         <template #header>
             <ListSearchSelectHeader
                 v-if="isSelectLanguage"
-                :title="$t('attribute.sideBar.searchHeader')"
+                :title="$t('categoryTree.sideBar.searchHeader')"
                 :search-value="searchValue"
                 @search="onSearch">
                 <template #select>
@@ -28,15 +28,15 @@
         </template>
         <template #noDataPlaceholder>
             <SideBarNoDataPlaceholder
-                :title="$t('attribute.sideBar.placeholderTitle')"
-                :subtitle="$t('attribute.sideBar.placeholderSubtitle')">
+                :title="$t('categoryTree.sideBar.placeholderTitle')"
+                :subtitle="$t('categoryTree.sideBar.placeholderSubtitle')">
                 <template #action>
-                    <CreateAttributeButton />
+                    <CreateCategoryTreeButton />
                 </template>
             </SideBarNoDataPlaceholder>
         </template>
         <template #item="{ item, onExpand }">
-            <AttributeSideBarGroupElement
+            <CategoryTreeSideBarGroupElement
                 v-if="item.rootId === null"
                 :group="item"
                 :is-prefetching-data="isPrefetchingGroupData[item.id]"
@@ -51,12 +51,10 @@
 </template>
 
 <script>
-import CreateAttributeButton from '@Attributes/components/Buttons/CreateAttributeButton';
-import AttributeSideBarElement from '@Attributes/components/SideBars/AttributeSideBarElement';
-import AttributeSideBarGroupElement from '@Attributes/components/SideBars/AttributeSideBarGroupElement';
+import AttributeSideBarElement from '@Attributes/extends/components/SideBars/AttributeSideBarElement';
 import {
-    ATTRIBUTE_CREATED_EVENT_NAME,
-} from '@Attributes/defaults/attributes';
+    getAutocomplete as getCategoriesAutocomplete,
+} from '@Categories/services';
 import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
 import {
     UNASSIGNED_GROUP_ID,
@@ -71,21 +69,33 @@ import {
     getGroups,
     getItems,
 } from '@Core/services/sidebar';
+import CreateCategoryTreeButton from '@Trees/components/Buttons/CreateCategoryTreeButton';
+import {
+    CATEGORY_TREE_CREATED_EVENT_NAME,
+} from '@Trees/defaults';
+import CategoryTreeSideBarGroupElement from '@Trees/extends/components/SideBars/CategoryTreeSideBarGroupElement';
+import {
+    getCategoriesCount,
+    getMappedCategories,
+} from '@Trees/models/treeMapper';
+import {
+    get as getCategoryTree,
+    getAutocomplete as getCategoryTreesAutocomplete,
+} from '@Trees/services';
 import ListSearchSelectHeader from '@UI/components/List/ListSearchSelectHeader';
 import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
 import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
 import {
-    mapActions,
     mapState,
 } from 'vuex';
 
 export default {
-    name: 'AttributesSideBar',
+    name: 'CategoryTreesSideBar',
     components: {
-        CreateAttributeButton,
+        CreateCategoryTreeButton,
         SideBarNoDataPlaceholder,
-        AttributeSideBarGroupElement,
+        CategoryTreeSideBarGroupElement,
         SideBar,
         ListSearchSelectHeader,
         LanguageTreeSelect,
@@ -103,13 +113,35 @@ export default {
         },
     },
     async fetch() {
-        await this.getAttributesForLanguage({
-            languageCode: this.defaultLanguageCode,
-            limit: 0,
-        });
+        const [
+            trees,
+            categories,
+        ] = await Promise.all([
+            getCategoryTreesAutocomplete({
+                $axios: this.$axios,
+            }),
+            getCategoriesAutocomplete({
+                $axios: this.$axios,
+            }),
+        ]);
 
-        this.groupedAttributes = {
-            ...this.groupedAttributes,
+        const treesData = await Promise.all(trees.map(tree => getCategoryTree({
+            $axios: this.$axios,
+            id: tree.id,
+        })));
+
+        this.categoryTrees[this.defaultLanguageCode] = treesData.map(tree => ({
+            ...tree,
+            name: tree.name[this.defaultLanguageCode],
+            children: getMappedCategories({
+                tree: tree.categories || [],
+                categories,
+            }),
+            itemsCount: getCategoriesCount(tree.categories),
+        }));
+
+        this.categoryTrees = {
+            ...this.categoryTrees,
         };
 
         this.isPrefetchingData = false;
@@ -118,7 +150,7 @@ export default {
         return {
             isPrefetchingData: true,
             isPrefetchingGroupData: {},
-            groupedAttributes: {},
+            categoryTrees: {},
             groupedAttributesBeforeSearch: {},
             expandedGroup: {},
             languageCode: '',
@@ -129,10 +161,10 @@ export default {
         ...mapState('core', [
             'defaultLanguageCode',
         ]),
-        groupedAttributesByLanguage() {
-            const groups = this.groupedAttributes[this.languageCode] || [];
+        categoryTreesByLanguage() {
+            const categoryTrees = this.categoryTrees[this.languageCode] || [];
 
-            return groups.filter(item => item.itemsCount > 0);
+            return categoryTrees.filter(item => item.children.length > 0);
         },
     },
     created() {
@@ -140,23 +172,18 @@ export default {
     },
     mounted() {
         document.documentElement.addEventListener(
-            ATTRIBUTE_CREATED_EVENT_NAME,
-            this.onAttributeCreated,
+            CATEGORY_TREE_CREATED_EVENT_NAME,
+            this.onCategoryTreeCreated,
         );
     },
     beforeDestroy() {
-        this.setDisabledElements({});
-
         document.documentElement.removeEventListener(
-            ATTRIBUTE_CREATED_EVENT_NAME,
-            this.onAttributeCreated,
+            CATEGORY_TREE_CREATED_EVENT_NAME,
+            this.onCategoryTreeCreated,
         );
     },
     methods: {
-        ...mapActions('list', [
-            'setDisabledElements',
-        ]),
-        async onAttributeCreated() {
+        async onCategoryTreeCreated() {
             await this.getAttributesForLanguage({
                 languageCode: this.languageCode,
             });

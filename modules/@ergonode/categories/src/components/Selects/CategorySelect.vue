@@ -188,6 +188,9 @@ import {
     ROUTE_NAME as CATEGORY_TREES_ROUTE_NAME,
 } from '@Trees/config/routes';
 import {
+    getMappedCategories,
+} from '@Trees/models/treeMapper';
+import {
     get,
 } from '@Trees/services';
 import AdvancedFilters from '@UI/components/AdvancedFilters/AdvancedFilters';
@@ -451,26 +454,12 @@ export default {
                     id: filters.categoryTree,
                 });
 
-                const getMappedCategories = (treeCategories = []) => {
-                    const children = [];
-
-                    treeCategories.forEach((treeCategory) => {
-                        const category = this.allCategories.find(({
-                            id,
-                        }) => id === treeCategory.category_id);
-
-                        children.push({
-                            ...category,
-                            children: getMappedCategories(treeCategory.children),
-                        });
-                    });
-
-                    return children;
-                };
-
                 this.allCategoryTrees = {
                     ...this.allCategoryTrees,
-                    [filters.categoryTree]: getMappedCategories(categoryTree.categories),
+                    [filters.categoryTree]: getMappedCategories({
+                        tree: categoryTree.categories,
+                        categories: this.allCategories,
+                    }),
                 };
 
                 this.isFetchingData = false;
