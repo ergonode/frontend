@@ -12,12 +12,11 @@
             "sectionTitle": "Configuration",
             "nameLabel": "System name",
             "nameHint": "System name must be unique",
-            "noGroupButton": "GO TO ATTRIBUTE GROUPS",
-            "noGroupTitle": "No attribute groups",
-            "noGroupSubtitle": "There are no attribute groups in the system, so you can create the first one.",
             "groupLabel": "Groups",
             "typeLabel": "Type",
             "scopeLabel": "Scope",
+            "noAttributeTitle": "No attributes",
+            "noAttributeSubtitle": "There are no attributes in the system, you can create the first one.",
             "scopeHint": "Global means the same attribute values for each language, inherited from the root language ({lang}). Option values can be translated, but cannot be changed in the product template.",
             "types": {
                 "richTextLabel": "Rich text content enabled",
@@ -89,7 +88,9 @@
             "createTitle": "Create attribute group",
             "title": "Options",
             "nameLabel": "System name",
-            "nameHint": "System name must be unique"
+            "nameHint": "System name must be unique",
+            "noGroupTitle": "No attribute groups",
+            "noGroupSubtitle": "There are no attribute groups in the system, so you can create the first one."
         },
         "translation": {
             "nameLabel": "Group name"

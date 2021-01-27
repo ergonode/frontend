@@ -36,32 +36,14 @@
                     :label="$t('attribute.form.nameLabel')"
                     :hint="$t('attribute.form.nameHint')"
                     @input="setCodeValue" />
-                <Autocomplete
+                <AttributeGroupsAutocomplete
                     :data-cy="dataCyGenerator(groupsFieldKey)"
                     :value="groups"
-                    :label="$t('attribute.form.groupLabel')"
                     :multiselect="true"
-                    :searchable="true"
                     :clearable="true"
                     :disabled="!isAllowedToUpdate"
                     :error-messages="errors[groupsFieldKey]"
-                    href="attributes/groups/autocomplete"
-                    @input="setGroupsValue">
-                    <template #placeholder="{ isVisible }">
-                        <DropdownPlaceholder
-                            v-if="isVisible"
-                            :title="$t('attribute.form.noGroupTitle')"
-                            :subtitle="$t('attribute.form.noGroupSubtitle')">
-                            <template #action>
-                                <Button
-                                    :title="$t('attribute.form.noGroupButton')"
-                                    :size="smallSize"
-                                    :disabled="!isAllowedToUpdate"
-                                    @click.native="onNavigateToAttributeGroups" />
-                            </template>
-                        </DropdownPlaceholder>
-                    </template>
-                </Autocomplete>
+                    @input="setGroupsValue" />
                 <Divider />
             </FormSection>
             <FormSection
@@ -92,29 +74,21 @@
 </template>
 
 <script>
+import AttributeGroupsAutocomplete from '@Attributes/components/Autocompletes/AttributeGroupsAutocomplete';
 import PRIVILEGES from '@Attributes/config/privileges';
-import {
-    ROUTE_NAME,
-} from '@Attributes/config/routes';
 import {
     SCOPE,
 } from '@Attributes/defaults/attributes';
-import {
-    SIZE,
-} from '@Core/defaults/theme';
 import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
 import {
     getKeyByValue,
     isObject,
 } from '@Core/models/objectWrapper';
-import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
-import Button from '@UI/components/Button/Button';
 import Divider from '@UI/components/Dividers/Divider';
 import Form from '@UI/components/Form/Form';
 import FormSection from '@UI/components/Form/Section/FormSection';
 import InfoHint from '@UI/components/Hints/InfoHint';
-import DropdownPlaceholder from '@UI/components/Select/Dropdown/Placeholder/DropdownPlaceholder';
 import Select from '@UI/components/Select/Select';
 import TextField from '@UI/components/TextField/TextField';
 import {
@@ -126,14 +100,12 @@ import {
 export default {
     name: 'AttributeForm',
     components: {
-        DropdownPlaceholder,
-        Button,
+        AttributeGroupsAutocomplete,
         Form,
         FormSection,
         InfoHint,
         TextField,
         Select,
-        Autocomplete,
         Divider,
     },
     mixins: [
@@ -156,9 +128,6 @@ export default {
         ...mapGetters('core', [
             'rootLanguage',
         ]),
-        smallSize() {
-            return SIZE.SMALL;
-        },
         extendedForm() {
             return this.$extendedForm({
                 key: '@Attributes/components/Forms/AttributeForm',
@@ -204,11 +173,6 @@ export default {
         ...mapActions('attribute', [
             '__setState',
         ]),
-        onNavigateToAttributeGroups() {
-            this.$router.push({
-                name: ROUTE_NAME.ATTRIBUTE_GROUPS_GRID,
-            });
-        },
         bindingProps({
             props = {},
         }) {

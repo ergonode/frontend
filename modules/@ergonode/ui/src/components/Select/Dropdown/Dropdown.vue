@@ -57,20 +57,18 @@ export default {
     },
     watch: {
         fixed() {
-            if (this.fixed) {
-                requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                if (this.fixed) {
                     const maxHeight = parseInt(DROPDOWN_MAX_HEIGHT, 10);
                     const parentOffset = this.parentElement.getBoundingClientRect();
 
                     this.$refs.dropdown.style.maxHeight = `${maxHeight}px`;
                     this.$refs.dropdown.style.width = `${parentOffset.width}px`;
-                });
-            } else {
-                requestAnimationFrame(() => {
+                } else {
                     this.$refs.dropdown.style.width = null;
                     this.$refs.dropdown.style.maxHeight = null;
-                });
-            }
+                }
+            });
         },
         visible: {
             immediate: true,
@@ -174,6 +172,7 @@ export default {
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         opacity: 0;
         visibility: hidden;
+        overflow: hidden;
         will-change:
             visibility,
             opacity,

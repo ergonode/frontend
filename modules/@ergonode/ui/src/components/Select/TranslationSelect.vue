@@ -15,10 +15,14 @@
         <template #value>
             <span v-text="parsedValue" />
         </template>
-        <template #placeholder="{ isVisible }">
-            <slot
-                name="placeholder"
-                :is-visible="isVisible" />
+        <template #dropdownBody>
+            <slot name="dropdownBody" />
+        </template>
+        <template #noDataPlaceholder>
+            <slot name="noDataPlaceholder" />
+        </template>
+        <template #noResultsPlaceholder>
+            <slot name="noResultsPlaceholder" />
         </template>
         <template #details>
             <slot name="details" />

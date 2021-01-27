@@ -12,11 +12,11 @@
                 :style="{ color: $attrs.value }"
                 v-text="$attrs.value" />
         </template>
-        <template #dropdown="{ onSelectValueCallback }">
+        <template #dropdown="{ onSelectValue }">
             <ColorPickerContent
                 :value="$attrs.value"
                 :options="$attrs.options"
-                @input="onSelectValueCallback" />
+                @input="onSelectValue" />
         </template>
         <template #footer="{ clear, apply }">
             <DropdownFooter
