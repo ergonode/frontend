@@ -16,7 +16,7 @@ export default {
     extendMethods: {
         '@Products/components/Tabs/ProductCatalogTab/verticalTabs': ({}) => [
             {
-                title: 'Category trees',
+                title: 'Categories',
                 component: () => import('@Trees/extends/components/VerticalTabs/CategoryTreesVerticalTab'),
                 icon: () => import('@Trees/components/Icons/IconTree'),
                 props: {},

@@ -5,23 +5,17 @@
 <template>
     <SideBar
         :title="$t('categoryTree.sideBar.searchHeader')"
-        :items="categoryTreesByLanguage"
-        :expanded="expandedGroup"
+        :items="categoryTrees"
+        :expanded="expendedCategoryTree"
         :searchable="true"
         :search-value="searchValue"
         @search="onSearch">
         <template #header>
-            <ListSearchSelectHeader
-                v-if="isSelectLanguage"
+            <ListSearchHeader
                 :title="$t('categoryTree.sideBar.searchHeader')"
                 :search-value="searchValue"
-                @search="onSearch">
-                <template #select>
-                    <LanguageTreeSelect
-                        :value="languageCode"
-                        @input="onSelectLanguage" />
-                </template>
-            </ListSearchSelectHeader>
+                :searchable="true"
+                @search="onSearch" />
         </template>
         <template #body>
             <Preloader v-if="isPrefetchingData" />
@@ -39,36 +33,35 @@
             <CategoryTreeSideBarGroupElement
                 v-if="item.rootId === null"
                 :group="item"
-                :is-prefetching-data="isPrefetchingGroupData[item.id]"
                 @click.native="onExpandGroup({ item, onExpand })" />
-            <AttributeSideBarElement
+            <TreeAccordionItem
                 v-else
-                :item="item"
-                :language-code="languageCode"
-                :is-draggable="!disabled" />
+                :item="{...item, level: item.level - 1 }"
+                :multiselect="true"
+                :selected="selectedCategories[item.id]"
+                @expand="onExpand"
+                @input="onSelectCategory" />
         </template>
     </SideBar>
 </template>
 
 <script>
-import AttributeSideBarElement from '@Attributes/extends/components/SideBars/AttributeSideBarElement';
 import {
     getAutocomplete as getCategoriesAutocomplete,
 } from '@Categories/services';
-import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
 import {
-    UNASSIGNED_GROUP_ID,
-} from '@Core/defaults/list';
+    DEFAULT_PAGE,
+} from '@Core/defaults/grid';
+import {
+    FILTER_OPERATOR,
+} from '@Core/defaults/operators';
+import {
+    getMappedFilters,
+    getParsedFilters,
+} from '@Core/models/mappers/gridDataMapper';
 import {
     deepClone,
 } from '@Core/models/objectWrapper';
-import {
-    getUUID,
-} from '@Core/models/stringWrapper';
-import {
-    getGroups,
-    getItems,
-} from '@Core/services/sidebar';
 import CreateCategoryTreeButton from '@Trees/components/Buttons/CreateCategoryTreeButton';
 import {
     CATEGORY_TREE_CREATED_EVENT_NAME,
@@ -82,10 +75,14 @@ import {
     get as getCategoryTree,
     getAutocomplete as getCategoryTreesAutocomplete,
 } from '@Trees/services';
-import ListSearchSelectHeader from '@UI/components/List/ListSearchSelectHeader';
+import ListSearchHeader from '@UI/components/List/ListSearchHeader';
 import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
 import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
+import TreeAccordionItem from '@UI/components/TreeAccordion/TreeAccordionItem';
+import {
+    debounce,
+} from 'debounce';
 import {
     mapState,
 } from 'vuex';
@@ -97,22 +94,13 @@ export default {
         SideBarNoDataPlaceholder,
         CategoryTreeSideBarGroupElement,
         SideBar,
-        ListSearchSelectHeader,
-        LanguageTreeSelect,
+        ListSearchHeader,
         Preloader,
-        AttributeSideBarElement,
-    },
-    props: {
-        isSelectLanguage: {
-            type: Boolean,
-            default: true,
-        },
-        disabled: {
-            type: Boolean,
-            default: false,
-        },
+        TreeAccordionItem,
     },
     async fetch() {
+        this.isPrefetchingData = true;
+
         const [
             trees,
             categories,
@@ -130,45 +118,47 @@ export default {
             id: tree.id,
         })));
 
-        this.categoryTrees[this.defaultLanguageCode] = treesData.map(tree => ({
-            ...tree,
-            name: tree.name[this.defaultLanguageCode],
-            children: getMappedCategories({
-                tree: tree.categories || [],
-                categories,
-            }),
-            itemsCount: getCategoriesCount(tree.categories),
-        }));
-
-        this.categoryTrees = {
-            ...this.categoryTrees,
-        };
+        this.categoryTrees = treesData
+            .map(tree => ({
+                ...tree,
+                name: tree.name[this.defaultLanguageCode],
+                children: getMappedCategories({
+                    tree: tree.categories || [],
+                    categories,
+                }),
+                itemsCount: getCategoriesCount(tree.categories),
+            }))
+            .filter(tree => tree.itemsCount > 0);
 
         this.isPrefetchingData = false;
     },
     data() {
         return {
             isPrefetchingData: true,
-            isPrefetchingGroupData: {},
-            categoryTrees: {},
-            groupedAttributesBeforeSearch: {},
-            expandedGroup: {},
-            languageCode: '',
+            categoryTrees: [],
+            selectedCategories: {},
+            expendedCategoryTree: {},
             searchValue: '',
+            onDebounceSelectedCategories: null,
         };
     },
     computed: {
         ...mapState('core', [
             'defaultLanguageCode',
         ]),
-        categoryTreesByLanguage() {
-            const categoryTrees = this.categoryTrees[this.languageCode] || [];
+    },
+    watch: {
+        $route(from, to) {
+            if (from.name !== to.name) {
+                return;
+            }
 
-            return categoryTrees.filter(item => item.children.length > 0);
+            this.selectedCategories = this.getSelectedCategories();
         },
     },
     created() {
-        this.languageCode = this.defaultLanguageCode;
+        this.selectedCategories = this.getSelectedCategories();
+        this.onDebounceSelectedCategories = debounce(this.setSelectedCategories, 500);
     },
     mounted() {
         document.documentElement.addEventListener(
@@ -181,24 +171,21 @@ export default {
             CATEGORY_TREE_CREATED_EVENT_NAME,
             this.onCategoryTreeCreated,
         );
+        delete this.onDebounceSelectedCategories;
     },
     methods: {
-        async onCategoryTreeCreated() {
-            await this.getAttributesForLanguage({
-                languageCode: this.languageCode,
-            });
+        onSelectCategory(category) {
+            const isSelected = !this.selectedCategories[category.id];
 
-            const [
-                groupId,
-            ] = Object.keys(this.expandedGroup);
-
-            if (groupId && this.expandedGroup[groupId]) {
-                await this.getItemsForGroup(groupId);
-            }
-
-            this.groupedAttributes = {
-                ...this.groupedAttributes,
+            this.selectedCategories = {
+                ...this.selectedCategories,
+                [category.id]: isSelected,
             };
+
+            this.onDebounceSelectedCategories();
+        },
+        async onCategoryTreeCreated() {
+            // TODO
         },
         async onExpandGroup({
             item,
@@ -206,233 +193,81 @@ export default {
         }) {
             onExpand(item);
 
-            await this.getItemsForGroup(item.id);
-
-            this.expandedGroup = {
+            this.expendedCategoryTree = {
                 [item.id]: item.expanded,
             };
         },
-        async getItemsForGroup(id) {
-            const groupToExpand = this.groupedAttributesByLanguage.find(
-                group => group.id === id,
-            );
-
-            if (groupToExpand.itemsCount !== groupToExpand.children.length) {
-                this.isPrefetchingGroupData = {
-                    ...this.isPrefetchingGroupData,
-                    [id]: true,
-                };
-
-                const mappedGroupId = id === UNASSIGNED_GROUP_ID ? '' : id;
-                const filter = `groups=${mappedGroupId}`;
-
-                await getItems({
-                    $axios: this.$axios,
-                    languageCode: this.languageCode,
-                    path: `${this.languageCode}/attributes`,
-                    params: {
-                        limit: 99999,
-                        offset: 0,
-                        filter,
-                        view: 'list',
-                        field: 'code',
-                        order: 'ASC',
-                    },
-                    onSuccess: payload => this.getGroupItemsSuccess({
-                        ...payload,
-                        groupId: id,
-                    }),
-                });
-            }
-        },
-        getGroupItemsSuccess({
-            items,
-            languageCode,
-            groupId,
-        }) {
-            const groupIndex = this.groupedAttributes[languageCode].findIndex(
-                group => group.id === groupId,
-            );
-
-            this.groupedAttributes[languageCode][groupIndex].children = items;
-            this.groupedAttributes = {
-                ...this.groupedAttributes,
-            };
-
-            this.isPrefetchingGroupData = {
-                ...this.isPrefetchingGroupData,
-                [groupId]: false,
-            };
-        },
-        async getAttributesForLanguage({
-            languageCode,
-            limit = 99999,
-        }) {
-            this.addUnassignedGroup(languageCode);
-
-            await Promise.all([
-                getGroups({
-                    $axios: this.$axios,
-                    path: `${languageCode}/attributes/groups`,
-                    languageCode,
-                    onSuccess: this.onFetchGroupsSuccess,
-                }),
-                getItems({
-                    $axios: this.$axios,
-                    path: `${languageCode}/attributes`,
-                    languageCode,
-                    params: {
-                        limit,
-                        offset: 0,
-                        view: 'list',
-                        filter: 'groups=',
-                        field: 'code',
-                        order: 'ASC',
-                    },
-                    onSuccess: this.onFetchUnassignedGroupItemsSuccess,
-                }),
-            ]);
-        },
-        onFetchGroupsSuccess({
-            groups,
-            languageCode,
-        }) {
-            groups.forEach((group) => {
-                const addedGroupIndex = this.groupedAttributes[languageCode].findIndex(({
-                    id,
-                }) => id === group.id);
-
-                if (addedGroupIndex === -1) {
-                    this.groupedAttributes[languageCode].push(group);
-                } else {
-                    this.groupedAttributes[languageCode][addedGroupIndex] = group;
-                }
-            });
-
-            this.groupedAttributes = {
-                ...this.groupedAttributes,
-                [languageCode]: [
-                    ...this.groupedAttributes[languageCode],
-                ],
-            };
-        },
-        onFetchUnassignedGroupItemsSuccess({
-            items,
-            info,
-            languageCode,
-        }) {
-            const unassignedGroupIndex = this.groupedAttributes[languageCode].findIndex(
-                group => group.id === UNASSIGNED_GROUP_ID,
-            );
-
-            this.groupedAttributes[languageCode][unassignedGroupIndex].children = items;
-            this.groupedAttributes[languageCode][unassignedGroupIndex].itemsCount = info.filtered;
-        },
-        addUnassignedGroup(languageCode) {
-            if (typeof this.groupedAttributes[languageCode] === 'undefined') {
-                this.groupedAttributes[languageCode] = [];
-            }
-
-            const isUnassignedGroup = this.groupedAttributes[languageCode].some(
-                group => group.id === UNASSIGNED_GROUP_ID,
-            );
-
-            if (!isUnassignedGroup) {
-                this.groupedAttributes[languageCode].push({
-                    id: UNASSIGNED_GROUP_ID,
-                    key: getUUID(),
-                    value: this.$t('attribute.sideBar.group.notAssigned'),
-                    hint: '',
-                    itemsCount: 0,
-                    children: [],
-                });
-            }
-        },
         async onSearch(value) {
-            if (this.searchValue === '') {
-                this.groupedAttributesBeforeSearch = deepClone(this.groupedAttributes);
-            }
+            // if (this.searchValue === '') {
+            //     this.groupedAttributesBeforeSearch = deepClone(this.groupedAttributes);
+            // }
 
             this.searchValue = value;
 
-            if (value !== '') {
-                const params = {
-                    limit: 99999,
-                    offset: 0,
-                    view: 'list',
-                    field: 'code',
-                    order: 'ASC',
-                };
-
-                if (this.searchValue !== '') {
-                    params.filter = `code=${this.searchValue}`;
-                }
-
-                await getItems({
-                    $axios: this.$axios,
-                    path: `${this.languageCode}/attributes`,
-                    languageCode: this.languageCode,
-                    params,
-                    onSuccess: this.getAllGroupsItemsSuccess,
-                });
-            } else {
-                this.groupedAttributes = deepClone(this.groupedAttributesBeforeSearch);
-                this.groupedAttributesBeforeSearch = {};
-            }
+            // if (value !== '') {
+            //     const params = {
+            //         limit: 99999,
+            //         offset: 0,
+            //         view: 'list',
+            //         field: 'code',
+            //         order: 'ASC',
+            //     };
+            //
+            //     if (this.searchValue !== '') {
+            //         params.filter = `code=${this.searchValue}`;
+            //     }
+            // } else {
+            //     this.groupedAttributes = deepClone(this.groupedAttributesBeforeSearch);
+            //     this.groupedAttributesBeforeSearch = {};
+            // }
         },
-        getAllGroupsItemsSuccess({
-            items,
-            languageCode,
-        }) {
-            this.groupedAttributes[languageCode].forEach((group, index) => {
-                let children = [];
+        getSelectedCategories() {
+            const advancedFilters = getMappedFilters(this.$route.query.advancedFilter);
+            const categoryFilters = advancedFilters[`esa_category:${this.defaultLanguageCode}`];
+            const selectedCategories = {};
 
-                if (group.id === UNASSIGNED_GROUP_ID) {
-                    children = items.filter(({
-                        groups,
-                    }) => groups.length === 0);
-                } else {
-                    children = items.filter(({
-                        groups,
-                    }) => groups.some(id => id === group.id));
+            if (categoryFilters) {
+                categoryFilters[FILTER_OPERATOR.EQUAL].forEach((categoryId) => {
+                    selectedCategories[categoryId] = true;
+                });
+            }
+
+            return selectedCategories;
+        },
+        setSelectedCategories() {
+            const advancedFilters = getMappedFilters(this.$route.query.advancedFilter);
+            let categoryFilters = advancedFilters[`esa_category:${this.defaultLanguageCode}`];
+
+            const equalOperator = FILTER_OPERATOR.EQUAL;
+
+            Object.keys(this.selectedCategories).forEach((key) => {
+                if (this.selectedCategories[key]) {
+                    if (typeof categoryFilters === 'undefined') {
+                        categoryFilters = {
+                            [equalOperator]: [],
+                        };
+                    }
+
+                    if (!categoryFilters[equalOperator].some(categoryId => categoryId === key)) {
+                        categoryFilters[equalOperator].push(key);
+                    }
+                } else if (typeof categoryFilters !== 'undefined') {
+                    categoryFilters[equalOperator] = categoryFilters[equalOperator].filter(
+                        categoryId => categoryId !== key,
+                    );
                 }
-
-                this.groupedAttributes[languageCode][index] = {
-                    ...this.groupedAttributes[languageCode][index],
-                    children,
-                    itemsCount: children.length,
-                };
             });
 
-            this.groupedAttributes = {
-                ...this.groupedAttributes,
-            };
-        },
-        async onSelectLanguage(value) {
-            if (typeof this.groupedAttributes[value] === 'undefined') {
-                this.isPrefetchingData = true;
-
-                await this.getAttributesForLanguage({
-                    languageCode: value,
-                    limit: 0,
-                });
-            }
-
-            const [
-                groupId,
-            ] = Object.keys(this.expandedGroup);
-
-            this.languageCode = value;
-
-            if (groupId && this.expandedGroup[groupId]) {
-                await this.getItemsForGroup(groupId);
-            }
-
-            this.groupedAttributes = {
-                ...this.groupedAttributes,
-            };
-
-            this.isPrefetchingData = false;
+            this.$router.replace({
+                query: {
+                    ...this.$route.query,
+                    advancedFilter: getParsedFilters({
+                        ...advancedFilters,
+                        [`esa_category:${this.defaultLanguageCode}`]: categoryFilters,
+                    }),
+                    page: DEFAULT_PAGE,
+                },
+            });
         },
     },
 };

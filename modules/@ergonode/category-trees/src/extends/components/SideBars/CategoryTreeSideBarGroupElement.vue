@@ -31,7 +31,7 @@ export default {
     },
     computed: {
         itemsCountDescription() {
-            return `${this.group.itemsCount} ${this.$t('categoryTree.sidebar.groupSubtitle')}`;
+            return `${this.group.itemsCount} ${this.$t('categoryTree.sideBar.groupSubtitle')}`;
         },
     },
 };

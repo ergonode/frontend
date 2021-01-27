@@ -48,7 +48,7 @@ export default {
         }
 
         &--regular {
-            margin: 0 13px;
+            margin: 0 12px;
         }
     }
 </style>

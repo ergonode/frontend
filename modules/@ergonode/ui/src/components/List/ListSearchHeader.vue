@@ -38,7 +38,6 @@ import {
 import {
     GRAPHITE,
     GREEN,
-    WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 import Fab from '@UI/components/Fab/Fab';
 import IconSearch from '@UI/components/Icons/Actions/IconSearch';
@@ -93,9 +92,6 @@ export default {
         },
         secondaryTheme() {
             return THEME.SECONDARY;
-        },
-        whiteColor() {
-            return WHITE;
         },
         searchButtonIconComponent() {
             return this.isSearchButtonClicked

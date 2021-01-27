@@ -11,10 +11,10 @@
       "noVisibleCategoriesInTreePlaceholderSubtitle": "They are no selected categories for given criteria."
     },
     "sideBar": {
-      "searchHeader": "Category trees",
+      "searchHeader": "Categories",
       "placeholderTitle": "No category trees",
       "placeholderSubtitle": "There are no category trees in the system, you can create the first one.",
-      "groupSubtitle": "Subcategories"
+      "groupSubtitle": "Categories"
     },
     "advancedFilter": {
       "label": "Category tree"

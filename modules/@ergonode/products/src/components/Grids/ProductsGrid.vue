@@ -409,6 +409,7 @@ export default {
             });
         },
         onAdvancedFilterChange(filters) {
+            console.log(filters);
             this.$router.replace({
                 query: {
                     ...this.$route.query,

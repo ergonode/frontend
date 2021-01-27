@@ -126,7 +126,20 @@ export default {
     padding-right: 4px;
 
     &__extender {
+        position: relative;
         width: 24px;
+        height: 24px;
+
+        &::after {
+            position: absolute;
+            top: 50%;
+            left: 4px;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 1px;
+            background-color: $GREY;
+            content: "",
+        }
     }
 }
 </style>

@@ -4,9 +4,7 @@
  */
 <template>
     <div class="category-vertical-tab">
-        <CategoryTreesSideBar
-            :disabled="disabled"
-            :is-select-language="isSelectLanguage" />
+        <CategoryTreesSideBar />
         <CreateCategoryFab :floating="{ bottom: '16px', right: '16px' }" />
     </div>
 </template>
@@ -20,16 +18,6 @@ export default {
     components: {
         CategoryTreesSideBar,
         CreateCategoryFab,
-    },
-    props: {
-        isSelectLanguage: {
-            type: Boolean,
-            default: true,
-        },
-        disabled: {
-            type: Boolean,
-            default: false,
-        },
     },
 };
 </script>

@@ -11,7 +11,7 @@
       "noVisibleCategoriesInTreePlaceholderSubtitle": "Nie ma zaznaczonych kategorii dla wybranych kryteriów."
     },
     "sideBar": {
-      "searchHeader": "Drzewa kategorii",
+      "searchHeader": "Kategorie",
       "placeholderTitle": "Brak drzew kategorii",
       "placeholderSubtitle": "W systemie nie ma drzew kategorii, stwórz pierwsze.",
       "groupSubtitle": "Podkategorii"

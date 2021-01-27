@@ -75,13 +75,15 @@ export function getMappedCategories({
             id,
         }) => id === node.category_id);
 
-        children.push({
-            ...category,
-            children: getMappedCategories({
-                tree: node.children,
-                categories,
-            }),
-        });
+        if (category) {
+            children.push({
+                ...category,
+                children: getMappedCategories({
+                    tree: node.children,
+                    categories,
+                }),
+            });
+        }
     });
 
     return children;

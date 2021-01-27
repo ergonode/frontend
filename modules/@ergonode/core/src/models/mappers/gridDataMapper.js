@@ -107,6 +107,10 @@ export function getParams({
 }
 
 export function getMappedFilters(parsedFilters) {
+    if (!parsedFilters) {
+        return {};
+    }
+
     const operators = Object.values(FILTER_OPERATOR);
     const arrayConditions = [
         '[',
