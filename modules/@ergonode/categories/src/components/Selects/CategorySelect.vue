@@ -149,7 +149,7 @@
                         </template>
                     </SelectList>
                     <div
-                        v-show="isAnyCategoryAfterFiltering && !isCategoryTreeSelected"
+                        v-show="isExpandButtonVisible"
                         class="category-select__expand-more">
                         <ExpandNumericButton
                             :title="$t('category.form.showAllExpandNumericButton')"
@@ -275,7 +275,7 @@ export default {
             return [
                 'category-select__items',
                 {
-                    'category-select__items--visible-expander': !this.isCategoryTreeSelected && this.isAnyCategoryAfterFiltering,
+                    'category-select__items--visible-expander': this.isExpandButtonVisible,
                 },
             ];
         },
@@ -369,6 +369,11 @@ export default {
             }
 
             return [];
+        },
+        isExpandButtonVisible() {
+            return this.isAnyCategoryAfterFiltering
+                && !this.isCategoryTreeSelected
+                && this.categoryItems.length > 7;
         },
         isSelectedCategoriesTogglerDisabled() {
             if (this.isCategoryTreeSelected) {

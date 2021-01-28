@@ -24,8 +24,8 @@
         @remove-all-filters="onRemoveAllFilters">
         <template #noDataPlaceholder>
             <GridNoDataPlaceholder
-                :title="$t('attribute.grid.placeholderTitle')"
-                :subtitle="$t('attribute.grid.placeholderSubtitle')">
+                :title="$t('@Attributes.attribute._.noAttributes')"
+                :subtitle="$t('@Attributes.attribute._.createFirst')">
                 <template #action>
                     <CreateAttributeButton />
                 </template>
@@ -176,7 +176,7 @@ export default {
         onFetchDataError() {
             this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: 'Attributes haven’t been fetched properly',
+                message: this.$t('@Attributes.attribute.components.AttributesGrid.getRequest'),
             });
         },
         onRemoveAllFilters() {

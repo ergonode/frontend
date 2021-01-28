@@ -6,7 +6,7 @@
 import {
     createOption,
     updateOption,
-} from '@Attributes/extends/services';
+} from '@Attributes/extends/attribute/services';
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
@@ -97,13 +97,13 @@ export const prepareOptionsData = ({
 
             if (duplications.length > 1) {
                 errors[fieldKey] = [
-                    $this.app.i18n.t('attribute.errors.optionUniq'),
+                    $this.app.i18n.t('@Attributes.attributeExtend.methods.optionUniq'),
                 ];
                 isAnyError = true;
             }
             if (!options[optionKey].key) {
                 errors[fieldKey] = [
-                    $this.app.i18n.t('attribute.errors.optionEmpty'),
+                    $this.app.i18n.t('@Attributes.attributeExtend.methods.optionEmpty'),
                 ];
                 isAnyError = true;
             }
@@ -206,7 +206,7 @@ export const getAttributeOptions = async ({
         onError: () => {
             $this.$addAlert({
                 type: ALERT_TYPE.ERROR,
-                message: $this.app.i18n.t('attribute.errors.getOptionRequest'),
+                message: $this.app.i18n.t('@Attributes.attributeExtend.methods.getOptionRequest'),
             });
         },
     });

@@ -31,7 +31,7 @@ export default {
     },
     computed: {
         itemsCountDescription() {
-            return `${this.group.itemsCount} ${this.$t('attribute.page.title')}`;
+            return `${this.group.itemsCount} ${this.$t('@Attributes.attribute._.title')}`;
         },
     },
 };

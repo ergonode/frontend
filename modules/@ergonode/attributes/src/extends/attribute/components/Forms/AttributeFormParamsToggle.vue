@@ -5,7 +5,7 @@
 <template>
     <Toggler
         :value="value"
-        :label="$t('attribute.form.types.richTextLabel')"
+        :label="$t('@Attributes.attributeExtend.components.AttributeFormParamsToggle.richTextLabel')"
         @input="setParameterValue" />
 </template>
 

@@ -134,7 +134,7 @@ export default {
             display: grid;
             align-items: center;
             grid-auto-flow: column;
-            grid-template-columns: 128px auto;
+            grid-template-columns: 128px max-content max-content;
             column-gap: 16px;
         }
     }

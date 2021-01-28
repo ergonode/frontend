@@ -4,7 +4,7 @@
  */
 <template>
     <SideBar
-        :title="$t('attribute.sideBar.searchHeader2')"
+        :title="$t('@Attributes.attribute.components.SystemAttributesSideBar.title')"
         :items="attributesByLanguage"
         :searchable="true"
         :search-value="searchValue"
@@ -12,7 +12,7 @@
         <template #header>
             <ListSearchSelectHeader
                 v-if="isSelectLanguage"
-                :title="$t('attribute.sideBar.searchHeader2')"
+                :title="$t('@Attributes.attribute.components.SystemAttributesSideBar.title')"
                 :search-value="searchValue"
                 @search="onSearch">
                 <template #select>

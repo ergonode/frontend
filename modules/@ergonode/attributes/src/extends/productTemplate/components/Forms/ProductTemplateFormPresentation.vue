@@ -3,11 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormSection :title="$t('attribute.extends.template.form.title')">
+    <FormSection :title="$t('@Attributes.productTemplate.components.ProductTemplateFormPresentation.title')">
         <AttributesAutocomplete
             :data-cy="dataCyGenerator('default-label')"
             :value="defaultTextAttribute"
-            :label="$t('attribute.extends.template.form.defaultLabel')"
+            :label="$t('@Attributes.productTemplate.components.ProductTemplateFormPresentation.defaultLabel')"
             :searchable="true"
             :clearable="true"
             :disabled="disabled"
@@ -19,7 +19,7 @@
         <AttributesAutocomplete
             :data-cy="dataCyGenerator('default-image')"
             :value="defaultImageAttribute"
-            :label="$t('attribute.extends.template.form.defaultImage')"
+            :label="$t('@Attributes.productTemplate.components.ProductTemplateFormPresentation.defaultImage')"
             :clearable="true"
             :disabled="disabled"
             :params="autocompleteDefaultImageParams"
@@ -81,14 +81,14 @@ export default {
         },
         noImageAttributeDataPlaceholder() {
             return {
-                title: this.$t('attribute.extends.template.form.noImageTitle'),
-                subtitle: this.$t('attribute.extends.template.form.noImageSubtitle'),
+                title: this.$t('@Attributes.productTemplate.components.ProductTemplateFormPresentation.noImageTitle'),
+                subtitle: this.$t('@Attributes.productTemplate.components.ProductTemplateFormPresentation.noImageSubtitle'),
             };
         },
         noTextAttributeDataPlaceholder() {
             return {
-                title: this.$t('attribute.extends.template.form.noLabelTitle'),
-                subtitle: this.$t('attribute.extends.template.form.noLabelSubtitle'),
+                title: this.$t('@Attributes.productTemplate.components.ProductTemplateFormPresentation.noLabelTitle'),
+                subtitle: this.$t('@Attributes.productTemplate.components.ProductTemplateFormPresentation.noLabelSubtitle'),
             };
         },
     },

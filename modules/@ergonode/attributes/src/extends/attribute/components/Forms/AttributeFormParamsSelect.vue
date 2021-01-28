@@ -59,7 +59,7 @@ export default {
             return this.$store.state.attribute[this.parameterData.fieldName];
         },
         paramsLabel() {
-            return toCapitalize(this.parameterData.key);
+            return toCapitalize(this.parameterData.translation);
         },
         params() {
             return this.parameterData.value;

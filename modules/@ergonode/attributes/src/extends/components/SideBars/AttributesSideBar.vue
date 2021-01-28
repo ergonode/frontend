@@ -4,7 +4,7 @@
  */
 <template>
     <SideBar
-        :title="$t('attribute.sideBar.searchHeader')"
+        :title="$t('@Attributes.attribute._.title')"
         :items="groupedAttributesByLanguage"
         :expanded="expandedGroup"
         :searchable="true"
@@ -13,7 +13,7 @@
         <template #header>
             <ListSearchSelectHeader
                 v-if="isSelectLanguage"
-                :title="$t('attribute.sideBar.searchHeader')"
+                :title="$t('@Attributes.attribute._.title')"
                 :search-value="searchValue"
                 @search="onSearch">
                 <template #select>
@@ -28,8 +28,8 @@
         </template>
         <template #noDataPlaceholder>
             <SideBarNoDataPlaceholder
-                :title="$t('attribute.sideBar.placeholderTitle')"
-                :subtitle="$t('attribute.sideBar.placeholderSubtitle')">
+                :title="$t('@Attributes.attribute._.noAttributes')"
+                :subtitle="$t('@Attributes.attribute._.createFirst')">
                 <template #action>
                     <CreateAttributeButton />
                 </template>
@@ -318,7 +318,7 @@ export default {
                 this.groupedAttributes[languageCode].push({
                     id: UNASSIGNED_GROUP_ID,
                     key: getUUID(),
-                    value: this.$t('attribute.sideBar.group.notAssigned'),
+                    value: this.$t('@Attributes._.notAssigned'),
                     hint: '',
                     itemsCount: 0,
                     children: [],

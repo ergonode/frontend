@@ -5,7 +5,7 @@
 import {
     getOption,
     removeOption,
-} from '@Attributes/extends/services';
+} from '@Attributes/extends/attribute/services';
 import {
     getMappedArrayOptions,
 } from '@Attributes/models/attributeMapper';

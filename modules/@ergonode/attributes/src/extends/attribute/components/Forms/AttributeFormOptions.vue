@@ -11,7 +11,7 @@
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
-import AttributeOptionKeyValues from '@Attributes/extends/components/Forms/Sections/AttributeOptionKeyValues';
+import AttributeOptionKeyValues from '@Attributes/extends/attribute/components/Forms/Sections/AttributeOptionKeyValues';
 import {
     mapActions,
     mapState,

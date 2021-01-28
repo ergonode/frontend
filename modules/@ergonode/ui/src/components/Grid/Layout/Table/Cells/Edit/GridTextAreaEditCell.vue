@@ -7,7 +7,16 @@
         :edit-key-code="27"
         @edit="onEditCell">
         <GridTextEditContentCell :style="positionStyle">
+            <RichTextEditor
+                v-if="isRichEdit"
+                :style="{height: '134px'}"
+                :value="localValue"
+                :disabled="disabled"
+                :autofocus="true"
+                :type="underlineInputType"
+                @blur="onRTEValueChange" />
             <TextArea
+                v-else
                 height="134px"
                 v-model="localValue"
                 :autofocus="true"
@@ -24,6 +33,7 @@ import {
     INPUT_TYPE,
 } from '@Core/defaults/theme';
 import GridTextEditContentCell from '@UI/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
+import RichTextEditor from '@UI/components/RichTextEditor/RichTextEditor';
 import TextArea from '@UI/components/TextArea/TextArea';
 import gridEditCellMixin from '@UI/mixins/grid/gridEditCellMixin';
 
@@ -32,10 +42,17 @@ export default {
     components: {
         GridTextEditContentCell,
         TextArea,
+        RichTextEditor,
     },
     mixins: [
         gridEditCellMixin,
     ],
+    props: {
+        isRichEdit: {
+            type: Boolean,
+            default: false,
+        },
+    },
     computed: {
         positionStyle() {
             const {
@@ -65,6 +82,13 @@ export default {
                 },
             ]);
         }
+    },
+    methods: {
+        onRTEValueChange(value) {
+            if (this.localValue !== value) {
+                this.localValue = value;
+            }
+        },
     },
 };
 </script>

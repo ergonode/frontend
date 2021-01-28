@@ -4,7 +4,7 @@
  */
 <template>
     <Form
-        :title="$t('attribute.form.title')"
+        :title="$t('@Attributes.attribute.components.AttributeForm.title')"
         :submit-title="submitTitle"
         :proceed-title="proceedTitle"
         :is-submitting="isSubmitting"
@@ -20,7 +20,7 @@
                     :data-cy="dataCyGenerator(typeFieldKey)"
                     :value="type"
                     required
-                    :label="$t('attribute.form.typeLabel')"
+                    :label="$t('@Attributes.attribute.components.AttributeForm.typeLabel')"
                     :disabled="isDisabled || !isAllowedToUpdate"
                     :options="attributeTypeOptions"
                     :error-messages="errors[typeFieldKey]"
@@ -33,8 +33,8 @@
                     required
                     :error-messages="errors[codeFieldKey]"
                     :disabled="isDisabled || !isAllowedToUpdate"
-                    :label="$t('attribute.form.nameLabel')"
-                    :hint="$t('attribute.form.nameHint')"
+                    :label="$t('@Attributes.attribute.components.AttributeForm.nameLabel')"
+                    :hint="$t('@Attributes.attribute.components.AttributeForm.nameHint')"
                     @input="setCodeValue" />
                 <AttributeGroupsAutocomplete
                     :data-cy="dataCyGenerator(groupsFieldKey)"
@@ -48,12 +48,12 @@
             </FormSection>
             <FormSection
                 v-if="type"
-                :title="$t('attribute.form.sectionTitle')">
+                :title="$t('@Attributes.attribute.components.AttributeForm.sectionTitle')">
                 <Select
                     :data-cy="dataCyGenerator(scopeFieldKey)"
                     :value="attributeScope"
                     required
-                    :label="$t('attribute.form.scopeLabel')"
+                    :label="$t('@Attributes.attribute.components.AttributeForm.scopeLabel')"
                     :disabled="!isAllowedToUpdate"
                     :options="attributeScopeOptions"
                     :error-messages="errors[scopeFieldKey]"
@@ -135,7 +135,7 @@ export default {
             });
         },
         scopeHint() {
-            return this.$t('attribute.form.scopeHint', {
+            return this.$t('@Attributes.attribute.components.AttributeForm.scopeHint', {
                 lang: this.rootLanguage.name,
             });
         },
