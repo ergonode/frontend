@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import SystemAttributesSideBar from '@Attributes/extends/components/SideBars/SystemAttributesSideBar';
+import SystemAttributesSideBar from '@Attributes/extends/attribute/components/SideBars/SystemAttributesSideBar';
 
 export default {
     name: 'SystemAttributesVerticalTab',

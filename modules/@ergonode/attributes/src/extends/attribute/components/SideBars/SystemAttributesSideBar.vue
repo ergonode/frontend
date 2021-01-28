@@ -36,7 +36,7 @@
 
 <script>
 import PRIVILEGES from '@Attributes/config/privileges';
-import AttributeSideBarElement from '@Attributes/extends/components/SideBars/AttributeSideBarElement';
+import AttributeSideBarElement from '@Attributes/extends/attribute/components/SideBars/AttributeSideBarElement';
 import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
 import {
     deepClone,

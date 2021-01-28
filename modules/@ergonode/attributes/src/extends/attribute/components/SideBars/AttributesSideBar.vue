@@ -55,8 +55,8 @@ import CreateAttributeButton from '@Attributes/components/Buttons/CreateAttribut
 import {
     ATTRIBUTE_CREATED_EVENT_NAME,
 } from '@Attributes/defaults/attributes';
-import AttributeSideBarElement from '@Attributes/extends/components/SideBars/AttributeSideBarElement';
-import AttributeSideBarGroupElement from '@Attributes/extends/components/SideBars/AttributeSideBarGroupElement';
+import AttributeSideBarElement from '@Attributes/extends/attribute/components/SideBars/AttributeSideBarElement';
+import AttributeSideBarGroupElement from '@Attributes/extends/attribute/components/SideBars/AttributeSideBarGroupElement';
 import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
 import {
     UNASSIGNED_GROUP_ID,

@@ -13,7 +13,7 @@
 
 <script>
 import CreateAttributeFab from '@Attributes/components/Buttons/CreateAttributeFab';
-import AttributesSideBar from '@Attributes/extends/components/SideBars/AttributesSideBar';
+import AttributesSideBar from '@Attributes/extends/attribute/components/SideBars/AttributesSideBar';
 
 export default {
     name: 'AttributesVerticalTab',
