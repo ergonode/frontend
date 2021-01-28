@@ -10,7 +10,7 @@
             class="search-text-field"
             :size="smallSize"
             placeholder="Search..."
-            @input="onDebounceSearch"
+            @input="onSearch"
             @focus="onSearchFocus">
             <template #append>
                 <IconSearch :fill-color="searchIconFillColor" />
@@ -44,9 +44,6 @@ import IconSearch from '@UI/components/Icons/Actions/IconSearch';
 import IconClose from '@UI/components/Icons/Window/IconClose';
 import ListHeader from '@UI/components/List/ListHeader';
 import TextField from '@UI/components/TextField/TextField';
-import {
-    debounce,
-} from 'debounce';
 
 export default {
     name: 'ListSearchHeader',
@@ -103,12 +100,6 @@ export default {
                 ? GREEN
                 : GRAPHITE;
         },
-    },
-    created() {
-        this.onDebounceSearch = debounce(this.onSearch, 500);
-    },
-    beforeDestroy() {
-        delete this.onDebounceSearch;
     },
     methods: {
         onSearch(value) {

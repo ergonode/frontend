@@ -5,8 +5,8 @@
 <template>
     <SideBar
         :title="$t('categoryTree.sideBar.searchHeader')"
-        :items="categoryTrees"
-        :expanded="expendedCategoryTree"
+        :items="filteredCategoryTrees"
+        :expanded="isAnySearchPhrase || expendedCategoryTree"
         :searchable="true"
         :search-value="searchValue"
         @search="onSearch">
@@ -56,6 +56,9 @@ import {
 import {
     FILTER_OPERATOR,
 } from '@Core/defaults/operators';
+import {
+    dfsSearch,
+} from '@Core/models/arrayWrapper';
 import {
     getMappedFilters,
     getParsedFilters,
@@ -155,6 +158,24 @@ export default {
                 treeStructure: this.categoryTrees,
             });
         },
+        filteredCategoryTrees() {
+            if (!this.isAnySearchPhrase) {
+                return this.categoryTrees;
+            }
+
+            return dfsSearch(
+                this.categoryTrees,
+                this.searchValue,
+                [
+                    'label',
+                    'code',
+                ],
+                this.onSearchConditionCallback,
+            );
+        },
+        isAnySearchPhrase() {
+            return this.searchValue !== '';
+        },
     },
     watch: {
         $route(from, to) {
@@ -183,6 +204,9 @@ export default {
         delete this.onDebounceSelectedCategories;
     },
     methods: {
+        onSearchConditionCallback(filterValues, searchValue) {
+            return filterValues.some(value => searchValue.startsWith(value));
+        },
         onSelectCategory(category) {
             const isSelected = !this.selectedCategories[category.id];
 
@@ -207,28 +231,7 @@ export default {
             };
         },
         async onSearch(value) {
-            // if (this.searchValue === '') {
-            //     this.groupedAttributesBeforeSearch = deepClone(this.groupedAttributes);
-            // }
-
             this.searchValue = value;
-
-            // if (value !== '') {
-            //     const params = {
-            //         limit: 99999,
-            //         offset: 0,
-            //         view: 'list',
-            //         field: 'code',
-            //         order: 'ASC',
-            //     };
-            //
-            //     if (this.searchValue !== '') {
-            //         params.filter = `code=${this.searchValue}`;
-            //     }
-            // } else {
-            //     this.groupedAttributes = deepClone(this.groupedAttributesBeforeSearch);
-            //     this.groupedAttributesBeforeSearch = {};
-            // }
         },
         getSelectedCategories() {
             const advancedFilters = getMappedFilters(this.$route.query.advancedFilter);

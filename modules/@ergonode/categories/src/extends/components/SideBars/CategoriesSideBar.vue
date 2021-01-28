@@ -32,10 +32,10 @@
 
 <script>
 import CreateCategoryButton from '@Categories/components/Buttons/CreateCategoryButton';
-import CategorySideBarElement from '@Categories/extends/components/SideBars/CategorySideBarElement';
 import {
     CATEGORY_CREATED_EVENT_NAME,
 } from '@Categories/defaults/attributes';
+import CategorySideBarElement from '@Categories/extends/components/SideBars/CategorySideBarElement';
 import {
     deepClone,
 } from '@Core/models/objectWrapper';
@@ -45,6 +45,7 @@ import {
 import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
 import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
+import debounce from 'debounce';
 import {
     mapActions,
     mapState,
@@ -81,6 +82,7 @@ export default {
             categoriesBeforeSearch: {},
             languageCode: '',
             searchValue: '',
+            onDebounceGetItems: null,
         };
     },
     computed: {
@@ -93,6 +95,8 @@ export default {
     },
     created() {
         this.languageCode = this.defaultLanguageCode;
+
+        this.onDebounceGetItems = debounce(this.getItems, 500);
     },
     mounted() {
         document.documentElement.addEventListener(
@@ -153,21 +157,10 @@ export default {
             this.searchValue = value;
 
             if (value !== '') {
-                await this.getItems();
+                this.onDebounceGetItems();
             } else {
                 this.categories = deepClone(this.categoriesBeforeSearch);
                 this.categoriesBeforeSearch = {};
-            }
-        },
-        async onSelectLanguage(value) {
-            this.languageCode = value;
-
-            if (typeof this.categories[value] === 'undefined') {
-                this.isPrefetchingData = true;
-
-                await this.getItems();
-
-                this.isPrefetchingData = false;
             }
         },
     },

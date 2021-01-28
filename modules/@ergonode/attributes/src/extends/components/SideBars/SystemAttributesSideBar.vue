@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import AttributeSideBarElement from '@Attributes/extends/components/SideBars/AttributeSideBarElement';
 import PRIVILEGES from '@Attributes/config/privileges';
+import AttributeSideBarElement from '@Attributes/extends/components/SideBars/AttributeSideBarElement';
 import LanguageTreeSelect from '@Core/components/Selects/LanguageTreeSelect';
 import {
     deepClone,
@@ -47,6 +47,7 @@ import {
 import ListSearchSelectHeader from '@UI/components/List/ListSearchSelectHeader';
 import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
+import debounce from 'debounce';
 import {
     mapState,
 } from 'vuex';
@@ -78,6 +79,7 @@ export default {
             attributesBeforeSearch: {},
             languageCode: '',
             searchValue: '',
+            onDebounceGetItems: null,
         };
     },
     computed: {
@@ -102,6 +104,8 @@ export default {
     },
     created() {
         this.languageCode = this.defaultLanguageCode;
+
+        this.onDebounceGetItems = debounce(this.getItems, 500);
     },
     methods: {
         async getItems() {
@@ -142,7 +146,7 @@ export default {
             this.searchValue = value;
 
             if (value !== '') {
-                await this.getItems();
+                this.onDebounceGetItems();
             } else {
                 this.attributes = deepClone(this.attributesBeforeSearch);
                 this.attributesBeforeSearch = {};
