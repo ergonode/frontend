@@ -23,11 +23,7 @@
         <template #noDataPlaceholder>
             <SideBarNoDataPlaceholder
                 :title="$t('categoryTree.sideBar.placeholderTitle')"
-                :subtitle="$t('categoryTree.sideBar.placeholderSubtitle')">
-                <template #action>
-                    <CreateCategoryTreeButton />
-                </template>
-            </SideBarNoDataPlaceholder>
+                :subtitle="$t('categoryTree.sideBar.placeholderSubtitle')" />
         </template>
         <template #item="{ item, onExpand }">
             <CategoryTreeSideBarGroupElement
@@ -63,10 +59,6 @@ import {
     getMappedFilters,
     getParsedFilters,
 } from '@Core/models/mappers/gridDataMapper';
-import CreateCategoryTreeButton from '@Trees/components/Buttons/CreateCategoryTreeButton';
-import {
-    CATEGORY_TREE_CREATED_EVENT_NAME,
-} from '@Trees/defaults';
 import CategoryTreeSideBarGroupElement from '@Trees/extends/components/SideBars/CategoryTreeSideBarGroupElement';
 import {
     getCategoriesCount,
@@ -94,7 +86,6 @@ import {
 export default {
     name: 'CategoryTreesSideBar',
     components: {
-        CreateCategoryTreeButton,
         SideBarNoDataPlaceholder,
         CategoryTreeSideBarGroupElement,
         SideBar,
@@ -190,17 +181,7 @@ export default {
         this.selectedCategories = this.getSelectedCategories();
         this.onDebounceSelectedCategories = debounce(this.setSelectedCategories, 500);
     },
-    mounted() {
-        document.documentElement.addEventListener(
-            CATEGORY_TREE_CREATED_EVENT_NAME,
-            this.onCategoryTreeCreated,
-        );
-    },
     beforeDestroy() {
-        document.documentElement.removeEventListener(
-            CATEGORY_TREE_CREATED_EVENT_NAME,
-            this.onCategoryTreeCreated,
-        );
         delete this.onDebounceSelectedCategories;
     },
     methods: {
@@ -216,9 +197,6 @@ export default {
             };
 
             this.onDebounceSelectedCategories();
-        },
-        async onCategoryTreeCreated() {
-            // TODO
         },
         async onExpandGroup({
             item,

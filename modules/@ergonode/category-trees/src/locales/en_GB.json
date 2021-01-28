@@ -13,7 +13,7 @@
     "sideBar": {
       "searchHeader": "Categories",
       "placeholderTitle": "No category trees",
-      "placeholderSubtitle": "There are no category trees in the system, you can create the first one.",
+      "placeholderSubtitle": "There are no category trees in the system that contain categories.",
       "groupSubtitle": "Categories"
     },
     "advancedFilter": {

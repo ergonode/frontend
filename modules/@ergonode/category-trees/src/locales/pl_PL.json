@@ -13,7 +13,7 @@
     "sideBar": {
       "searchHeader": "Kategorie",
       "placeholderTitle": "Brak drzew kategorii",
-      "placeholderSubtitle": "W systemie nie ma drzew kategorii, stwórz pierwsze.",
+      "placeholderSubtitle": "W systemie nie ma drzew kategorii, które posiadają kategorie.",
       "groupSubtitle": "Podkategorii"
     },
     "advancedFilter": {
