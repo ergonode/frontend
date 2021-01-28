@@ -9,6 +9,8 @@ export const ROW_INTERVALS = [
     200,
 ];
 
+export const COLLECTION_IMAGE_HEIGHT = 157;
+
 export const GRID_ACTION = {
     EDIT: 'edit',
     GET: 'get',

@@ -11,7 +11,7 @@
             :href="`multimedia/${data.image}/download/default`"
             :value="data.image"
             :object-fit="objectFit"
-            :height="157" />
+            :height="collectionImageHeight" />
         <img
             v-else
             class="collection-cell__placeholder"
@@ -31,6 +31,9 @@
 </template>
 
 <script>
+import {
+    COLLECTION_IMAGE_HEIGHT,
+} from '@Core/defaults/grid';
 import {
     THEME,
 } from '@Core/defaults/theme';
@@ -79,6 +82,9 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
+        collectionImageHeight() {
+            return COLLECTION_IMAGE_HEIGHT;
+        },
     },
     methods: {
         onClick(event) {
@@ -115,7 +121,9 @@ export default {
         position: relative;
         display: flex;
         flex-direction: column;
+        height: 190px;
         border: $BORDER_1_GREY;
+        box-sizing: border-box;
         background-color: $WHITE;
         cursor: pointer;
 

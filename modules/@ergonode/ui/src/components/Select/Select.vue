@@ -16,14 +16,12 @@
         :details-label="informationLabel"
         @keydown.native="onKeyDown"
         @mousedown="onMouseDown"
-        @mouseup="onMouseUp"
-        @mounted="onMounted">
+        @mouseup="onMouseUp">
         <template #activator>
             <InputController
                 :size="size">
                 <slot name="prepend" />
                 <InputSelectValue
-                    v-if="hasAnyValueSelected"
                     :data-cy="`${dataCy}-value`"
                     :size="size"
                     :alignment="alignment"
@@ -127,21 +125,19 @@ import {
     INPUT_TYPE,
     SIZE,
 } from '@Core/defaults/theme';
-import {
-    toCapitalize,
-} from '@Core/models/stringWrapper';
 import IconArrowDropdown from '@UI/components/Icons/Arrows/IconArrowDropdown';
 import InputController from '@UI/components/Input/InputController';
 import InputLabel from '@UI/components/Input/InputLabel';
 import InputSelectValue from '@UI/components/Input/InputSelectValue';
+import InputSolidStyle from '@UI/components/Input/InputSolidStyle';
+import InputUnderlineStyle from '@UI/components/Input/InputUnderlineStyle';
 import SelectDropdown from '@UI/components/Select/Dropdown/SelectDropdown';
-import FadeTransition from '@UI/components/Transitions/FadeTransition';
 import associatedLabelMixin from '@UI/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'Select',
     components: {
-        FadeTransition,
+        InputSolidStyle,
         SelectDropdown,
         IconArrowDropdown,
         InputController,
@@ -313,7 +309,11 @@ export default {
                 : '40px';
         },
         styleComponent() {
-            return () => import(`@UI/components/Input/Input${toCapitalize(this.type)}Style`);
+            if (this.type === INPUT_TYPE.SOLID) {
+                return InputSolidStyle;
+            }
+
+            return InputUnderlineStyle;
         },
         classes() {
             return [
@@ -342,26 +342,23 @@ export default {
         value: {
             immediate: true,
             handler() {
-                if (Array.isArray(this.value) && this.value.length) {
-                    this.hasAnyValueSelected = true;
-                } else if (!Array.isArray(this.value) && (this.value || this.value === 0)) {
+                const isArray = Array.isArray(this.value);
+
+                if (isArray && this.value.length) {
                     this.hasAnyValueSelected = true;
                 } else {
-                    this.hasAnyValueSelected = false;
+                    this.hasAnyValueSelected = Boolean(!isArray
+                        && (this.value || this.value === 0));
                 }
             },
         },
     },
+    mounted() {
+        if (this.autofocus) {
+            this.$refs.input.focus();
+        }
+    },
     methods: {
-        onMounted() {
-            if (this.autofocus) {
-                this.$nextTick(() => {
-                    requestAnimationFrame(() => {
-                        this.$refs.input.focus();
-                    });
-                });
-            }
-        },
         blur() {
             this.isFocused = false;
 
