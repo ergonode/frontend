@@ -10,6 +10,7 @@
         :is-submitting="isSubmitting"
         :is-proceeding="isProceeding"
         :errors="errors"
+        :change-values="changeValues"
         @proceed="onProceed"
         @submit="onSubmit">
         <template #body>
@@ -52,8 +53,8 @@
 
 <script>
 import PRIVILEGES from '@Channels/config/privileges';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import formActionsMixin from '@Core/mixins/form/formActionsMixin';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
 import {
     GRAPHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';

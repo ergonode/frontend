@@ -10,7 +10,7 @@
                 :is-submitting="isSubmitting"
                 :scope="scope"
                 :errors="errors"
-                :changed-values="changeValues"
+                :change-values="changeValues"
                 @submit="onSubmit" />
         </template>
     </CenterViewTemplate>
@@ -20,7 +20,7 @@
 import {
     ALERT_TYPE,
 } from '@Core/defaults/alerts';
-import tabFeedbackMixin from '@Core/mixins/tab/tabFeedbackMixin';
+import tabFeedbackMixin from '@Core/mixins/feedback/tabFeedbackMixin';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
 import UserForm from '@Users/components/Forms/UserForm';
 import {
@@ -61,7 +61,7 @@ export default {
         onUpdateSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('user.message.updateSuccess'),
+                message: this.$t('user.messages.updateSuccess'),
             });
 
             this.isSubmitting = false;

@@ -26,6 +26,15 @@
         <template #body>
             <Preloader v-if="isPrefetchingData" />
         </template>
+        <template #noDataPlaceholder>
+            <SideBarNoDataPlaceholder
+                :title="$t('attribute.sideBar.placeholderTitle')"
+                :subtitle="$t('attribute.sideBar.placeholderSubtitle')">
+                <template #action>
+                    <CreateAttributeButton />
+                </template>
+            </SideBarNoDataPlaceholder>
+        </template>
         <template #item="{ item, onExpand }">
             <AttributeSideBarGroupElement
                 v-if="item.rootId === null"
@@ -42,6 +51,7 @@
 </template>
 
 <script>
+import CreateAttributeButton from '@Attributes/components/Buttons/CreateAttributeButton';
 import AttributeSideBarElement from '@Attributes/components/SideBars/AttributeSideBarElement';
 import AttributeSideBarGroupElement from '@Attributes/components/SideBars/AttributeSideBarGroupElement';
 import {
@@ -52,6 +62,9 @@ import {
     UNASSIGNED_GROUP_ID,
 } from '@Core/defaults/list';
 import {
+    deepClone,
+} from '@Core/models/objectWrapper';
+import {
     getUUID,
 } from '@Core/models/stringWrapper';
 import {
@@ -61,6 +74,7 @@ import {
 import ListSearchSelectHeader from '@UI/components/List/ListSearchSelectHeader';
 import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
+import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
 import {
     mapActions,
     mapState,
@@ -69,6 +83,8 @@ import {
 export default {
     name: 'AttributesSideBar',
     components: {
+        CreateAttributeButton,
+        SideBarNoDataPlaceholder,
         AttributeSideBarGroupElement,
         SideBar,
         ListSearchSelectHeader,
@@ -87,7 +103,7 @@ export default {
         },
     },
     async fetch() {
-        await this.fetchAttributesForLanguage({
+        await this.getAttributesForLanguage({
             languageCode: this.defaultLanguageCode,
             limit: 0,
         });
@@ -103,6 +119,7 @@ export default {
             isPrefetchingData: true,
             isPrefetchingGroupData: {},
             groupedAttributes: {},
+            groupedAttributesBeforeSearch: {},
             expandedGroup: {},
             languageCode: '',
             searchValue: '',
@@ -140,7 +157,7 @@ export default {
             'setDisabledElements',
         ]),
         async onAttributeCreated() {
-            await this.fetchAttributesForLanguage({
+            await this.getAttributesForLanguage({
                 languageCode: this.languageCode,
             });
 
@@ -220,7 +237,7 @@ export default {
                 [groupId]: false,
             };
         },
-        async fetchAttributesForLanguage({
+        async getAttributesForLanguage({
             languageCode,
             limit = 99999,
         }) {
@@ -253,10 +270,24 @@ export default {
             groups,
             languageCode,
         }) {
-            this.groupedAttributes[languageCode] = [
-                ...groups,
-                ...this.groupedAttributes[languageCode],
-            ];
+            groups.forEach((group) => {
+                const addedGroupIndex = this.groupedAttributes[languageCode].findIndex(({
+                    id,
+                }) => id === group.id);
+
+                if (addedGroupIndex === -1) {
+                    this.groupedAttributes[languageCode].push(group);
+                } else {
+                    this.groupedAttributes[languageCode][addedGroupIndex] = group;
+                }
+            });
+
+            this.groupedAttributes = {
+                ...this.groupedAttributes,
+                [languageCode]: [
+                    ...this.groupedAttributes[languageCode],
+                ],
+            };
         },
         onFetchUnassignedGroupItemsSuccess({
             items,
@@ -291,27 +322,36 @@ export default {
             }
         },
         async onSearch(value) {
-            this.searchValue = value;
-
-            const params = {
-                limit: 99999,
-                offset: 0,
-                view: 'list',
-                field: 'code',
-                order: 'ASC',
-            };
-
-            if (this.searchValue !== '') {
-                params.filter = `code=${this.searchValue}`;
+            if (this.searchValue === '') {
+                this.groupedAttributesBeforeSearch = deepClone(this.groupedAttributes);
             }
 
-            await getItems({
-                $axios: this.$axios,
-                path: `${this.languageCode}/attributes`,
-                languageCode: this.languageCode,
-                params,
-                onSuccess: this.getAllGroupsItemsSuccess,
-            });
+            this.searchValue = value;
+
+            if (value !== '') {
+                const params = {
+                    limit: 99999,
+                    offset: 0,
+                    view: 'list',
+                    field: 'code',
+                    order: 'ASC',
+                };
+
+                if (this.searchValue !== '') {
+                    params.filter = `code=${this.searchValue}`;
+                }
+
+                await getItems({
+                    $axios: this.$axios,
+                    path: `${this.languageCode}/attributes`,
+                    languageCode: this.languageCode,
+                    params,
+                    onSuccess: this.getAllGroupsItemsSuccess,
+                });
+            } else {
+                this.groupedAttributes = deepClone(this.groupedAttributesBeforeSearch);
+                this.groupedAttributesBeforeSearch = {};
+            }
         },
         getAllGroupsItemsSuccess({
             items,
@@ -330,8 +370,11 @@ export default {
                     }) => groups.some(id => id === group.id));
                 }
 
-                this.groupedAttributes[languageCode][index].children = children;
-                this.groupedAttributes[languageCode][index].itemsCount = children.length;
+                this.groupedAttributes[languageCode][index] = {
+                    ...this.groupedAttributes[languageCode][index],
+                    children,
+                    itemsCount: children.length,
+                };
             });
 
             this.groupedAttributes = {
@@ -342,7 +385,7 @@ export default {
             if (typeof this.groupedAttributes[value] === 'undefined') {
                 this.isPrefetchingData = true;
 
-                await this.fetchAttributesForLanguage({
+                await this.getAttributesForLanguage({
                     languageCode: value,
                     limit: 0,
                 });

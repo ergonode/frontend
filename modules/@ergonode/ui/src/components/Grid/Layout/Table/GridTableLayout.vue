@@ -8,7 +8,8 @@
         ref="gridTableLayout"
         @focusin="onFocusInside"
         @focusout="onFocusOut">
-        <template v-if="orderedColumns.length">
+        <Preloader v-if="isPrefetchingData || !isLayoutResolved" />
+        <template v-else>
             <GridTableLayoutPinnedSection
                 v-if="isSelectColumn"
                 :pinned-state="pinnedState.LEFT"
@@ -138,6 +139,7 @@ import {
     COLUMN_WIDTH,
     DEFAULT_GRID_PAGINATION,
     GRID_ACTION,
+    GRID_LAYOUT,
     PINNED_COLUMN_STATE,
     ROW_HEIGHT,
 } from '@Core/defaults/grid';
@@ -154,6 +156,7 @@ import GridSelectRowColumn from '@UI/components/Grid/Layout/Table/Columns/GridSe
 import GridSentinelColumn from '@UI/components/Grid/Layout/Table/Columns/GridSentinelColumn';
 import GridTableLayoutColumnsSection from '@UI/components/Grid/Layout/Table/Sections/GridTableLayoutColumnsSection';
 import GridTableLayoutPinnedSection from '@UI/components/Grid/Layout/Table/Sections/GridTableLayoutPinnedSection';
+import Preloader from '@UI/components/Preloader/Preloader';
 import gridResizerCellMixin from '@UI/mixins/grid/gridResizerCellMixin';
 import {
     getPositionForBrowser,
@@ -163,6 +166,7 @@ import {
 export default {
     name: 'GridTableLayout',
     components: {
+        Preloader,
         DropZone,
         GridDraggableDataColumn,
         GridRowActionColumn,
@@ -244,6 +248,20 @@ export default {
         selectedRows: {
             type: Object,
             default: () => ({}),
+        },
+        /**
+         * Determines if data is loaded asynchronously
+         */
+        isPrefetchingData: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * Determines if layout is resolved
+         */
+        isLayoutResolved: {
+            type: Boolean,
+            default: false,
         },
         /**
          * Determinate if the component is being able to edit
@@ -369,10 +387,10 @@ export default {
     watch: {
         columns: {
             immediate: true,
-            handler() {
+            async handler() {
                 if (this.orderedColumns.length !== this.visibleColumns.length
                     || (this.rows.length && !Object.keys(this.actionCellComponents).length)) {
-                    this.initializeColumns();
+                    await this.initializeColumns();
                 }
             },
         },
@@ -558,8 +576,11 @@ export default {
             this.orderedColumns = orderedColumns;
             this.columnWidths = columnWidths;
 
-            if (requests.length) {
-                this.$emit('rendered');
+            if (!this.isLayoutResolved) {
+                this.$emit('resolved', {
+                    layout: GRID_LAYOUT.TABLE,
+                    isResolved: true,
+                });
             }
         },
         initialColumnWidths() {

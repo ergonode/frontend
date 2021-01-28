@@ -63,8 +63,8 @@ export default {
         onRemove() {
             this.$confirm({
                 type: MODAL_TYPE.DESTRUCTIVE,
-                title: this.$t('user.message.deleteTitle'),
-                applyTitle: this.$t('user.message.deleteConfirm'),
+                title: this.$t('user.messages.deleteTitle'),
+                applyTitle: this.$t('user.messages.deleteConfirm'),
                 action: () => this.removeUser({
                     onSuccess: this.onRemoveSuccess,
                     onError: this.onRemoveError,
@@ -74,7 +74,7 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({
                 type: ALERT_TYPE.SUCCESS,
-                message: this.$t('user.message.deleteSuccess'),
+                message: this.$t('user.messages.deleteSuccess'),
             });
             this.$router.push({
                 name: ROUTE_NAME.USERS_GRID,

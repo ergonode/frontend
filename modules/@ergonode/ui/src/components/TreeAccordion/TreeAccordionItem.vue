@@ -12,8 +12,12 @@
                 :size="size"
                 :key="position" />
             <IconArrowSingle
+                v-if="item.childrenLength > 0"
                 :state="iconState"
                 @click.native.stop="onExpand" />
+            <div
+                v-else
+                class="tree-accordion-item__extender" />
             <ListElementAction
                 v-if="multiselect"
                 :size="size">
@@ -26,6 +30,9 @@
                     :size="size"
                     :title="item.label || item.code" />
             </ListElementDescription>
+            <ListElementAction v-if="selectedNodesCount > 0">
+                <TreeAccordionItemBadge :number="selectedNodesCount" />
+            </ListElementAction>
         </div>
     </ListElement>
 </template>
@@ -43,11 +50,13 @@ import ListElement from '@UI/components/List/ListElement';
 import ListElementAction from '@UI/components/List/ListElementAction';
 import ListElementDescription from '@UI/components/List/ListElementDescription';
 import ListElementTitle from '@UI/components/List/ListElementTitle';
+import TreeAccordionItemBadge from '@UI/components/TreeAccordion/TreeAccordionItemBadge';
 import TreeAccordionItemNode from '@UI/components/TreeAccordion/TreeAccordionItemNode';
 
 export default {
     name: 'TreeAccordionItem',
     components: {
+        TreeAccordionItemBadge,
         TreeAccordionItemNode,
         ListElement,
         CheckBox,
@@ -71,6 +80,10 @@ export default {
                 SIZE.SMALL,
                 SIZE.REGULAR,
             ].indexOf(value) !== -1,
+        },
+        selectedNodesCount: {
+            type: Number,
+            default: 0,
         },
         /**
          * Determines if the component is multiple choice
@@ -108,6 +121,12 @@ export default {
 <style lang="scss" scoped>
 .tree-accordion-item {
     display: flex;
+    flex: 1;
     align-items: center;
+    padding-right: 4px;
+
+    &__extender {
+        width: 24px;
+    }
 }
 </style>

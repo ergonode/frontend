@@ -8,9 +8,11 @@
         :style="placeholderStyles">
         <div class="placeholder__description">
             <span
+                v-if="title"
                 class="placeholder__title"
                 v-text="title" />
             <span
+                v-if="subtitle"
                 class="placeholder__subtitle"
                 v-text="subtitle" />
         </div>
@@ -22,22 +24,36 @@
 
 <script>
 import {
-    LAYOUT_ORIENTATION,
+    ORIENTATION,
 } from '@Core/defaults/layout';
 import {
-    WHITESMOKE,
+    SIZE,
+} from '@Core/defaults/theme';
+import {
+    WHITE,
 } from '@UI/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'Placeholder',
     props: {
         /**
+         * The size of the component
+         */
+        size: {
+            type: String,
+            default: SIZE.REGULAR,
+            validator: value => [
+                SIZE.SMALL,
+                SIZE.REGULAR,
+            ].indexOf(value) !== -1,
+        },
+        /**
          * Determines position of body components; vertical / horizontal
          */
-        layoutOrientation: {
+        orientation: {
             type: String,
-            default: LAYOUT_ORIENTATION.VERTICAL,
-            validator: value => Object.values(LAYOUT_ORIENTATION).indexOf(value) !== -1,
+            default: ORIENTATION.VERTICAL,
+            validator: value => Object.values(ORIENTATION).indexOf(value) !== -1,
         },
         /**
          * The title of the component
@@ -58,14 +74,14 @@ export default {
          */
         bgUrl: {
             type: String,
-            required: true,
+            default: '',
         },
         /**
          * Color of background
          */
         color: {
             type: String,
-            default: WHITESMOKE,
+            default: WHITE,
             validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
         },
     },
@@ -73,7 +89,8 @@ export default {
         classes() {
             return [
                 'placeholder',
-                `placeholder--${this.layoutOrientation}`,
+                `placeholder--${this.size}`,
+                `placeholder--${this.orientation}`,
             ];
         },
         placeholderStyles() {
@@ -84,7 +101,7 @@ export default {
             }
 
             return {
-                background: `${this.color} url(${this.bgUrl}) no-repeat right bottom`,
+                background: `${this.color} url(${this.bgUrl}) no-repeat right top`,
             };
         },
     },
@@ -93,25 +110,41 @@ export default {
 
 <style lang="scss" scoped>
     .placeholder {
+        $placeholder: &;
+
         flex: 1;
         box-sizing: border-box;
-        background-color: $WHITESMOKE;
         color: $GRAPHITE_DARK;
-        overflow: auto;
 
-        &--vertical-layout {
+        &--small {
+            padding: 24px;
+
+            #{$placeholder}__title {
+                font: $FONT_SEMI_BOLD_20_24;
+            }
+
+            #{$placeholder}__description {
+                grid-template-columns: 228px;
+            }
+        }
+
+        &--regular {
+            padding: 40px 40px 0;
+
+            #{$placeholder}__title {
+                font: $FONT_SEMI_BOLD_24_32;
+            }
+
+            #{$placeholder}__description {
+                grid-template-columns: 272px;
+            }
+        }
+
+        &--vertical {
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 64px 0 0;
-        }
-
-        &--horizontal-layout {
-            padding: 40px 40px 0;
-        }
-
-        &__title {
-            font: $FONT_MEDIUM_24_32;
         }
 
         &__subtitle {
@@ -120,9 +153,9 @@ export default {
 
         &__description {
             display: grid;
-            grid-template-columns: 240px;
             grid-auto-flow: row;
             row-gap: 8px;
+            word-break: break-word;
         }
 
         &__action {

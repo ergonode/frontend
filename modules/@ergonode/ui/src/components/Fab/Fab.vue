@@ -7,6 +7,7 @@
         :style="floatingStyle"
         :class="classes"
         :disabled="disabled"
+        type="button"
         @mouseenter="onFocus"
         @mouseleave="onBlur"
         @focus="onFocus"

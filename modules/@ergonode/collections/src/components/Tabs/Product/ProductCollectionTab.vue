@@ -6,32 +6,32 @@
     <CenterViewTemplate :fixed="true">
         <template #centeredContent>
             <div class="product-collection-container">
-                <ProductCollection v-if="collections.length">
-                    <ExpandingCollection
-                        v-for="(collection, index) in collections"
-                        :key="collection.id"
-                        :index="index"
-                        :collection="collection"
-                        @fetch="fetchCollectionItems">
-                        <template #item="{ item }">
-                            <ProductCollectionItem :item="item" />
+                <Preloader v-if="isFetchingData" />
+                <template v-else>
+                    <ProductCollection v-if="collections.length">
+                        <ExpandingCollection
+                            v-for="(collection, index) in collections"
+                            :key="collection.id"
+                            :index="index"
+                            :collection="collection"
+                            @fetch="fetchCollectionItems">
+                            <template #item="{ item }">
+                                <ProductCollectionItem :item="item" />
+                            </template>
+                        </ExpandingCollection>
+                    </ProductCollection>
+                    <TabBarNoDataPlaceholder
+                        v-else
+                        title="Nothing to see here"
+                        subtitle="This product has not been added to any collection">
+                        <template #action>
+                            <Button
+                                title="GO TO COLLECTIONS"
+                                :size="smallSize"
+                                @click.native="onNavigateToCollections" />
                         </template>
-                    </ExpandingCollection>
-                </ProductCollection>
-                <ListPlaceholder
-                    v-else
-                    style="width: 560px;"
-                    title="Nothing to see here"
-                    subtitle="This product has not been added to any collection"
-                    :layout-orientation="horizontalOrientation"
-                    :bg-url="require('@UI/assets/images/placeholders/comments.svg')">
-                    <template #action>
-                        <Button
-                            title="GO TO COLLECTIONS"
-                            :size="smallSize"
-                            @click.native="onNavigateToCollections" />
-                    </template>
-                </ListPlaceholder>
+                    </TabBarNoDataPlaceholder>
+                </template>
             </div>
         </template>
     </CenterViewTemplate>
@@ -43,13 +43,14 @@ import ProductCollectionItem from '@Collections/components/ProductCollection/Pro
 import {
     ROUTE_NAME,
 } from '@Collections/config/routes';
-import {
-    LAYOUT_ORIENTATION,
-} from '@Core/defaults/layout';
+import ExpandingCollection from '@Core/components/ExpandingCollection/ExpandingCollection';
 import {
     SIZE,
 } from '@Core/defaults/theme';
+import Button from '@UI/components/Button/Button';
 import CenterViewTemplate from '@UI/components/Layout/Templates/CenterViewTemplate';
+import Preloader from '@UI/components/Preloader/Preloader';
+import TabBarNoDataPlaceholder from '@UI/components/TabBar/TabBarNoDataPlaceholder';
 import {
     mapActions,
 } from 'vuex';
@@ -57,22 +58,21 @@ import {
 export default {
     name: 'ProductCollectionTab',
     components: {
+        Preloader,
         CenterViewTemplate,
         ProductCollection,
         ProductCollectionItem,
-        ExpandingCollection: () => import('@Core/components/ExpandingCollection/ExpandingCollection'),
-        ListPlaceholder: () => import('@UI/components/List/ListPlaceholder'),
-        Button: () => import('@UI/components/Button/Button'),
+        TabBarNoDataPlaceholder,
+        ExpandingCollection,
+        Button,
     },
     data() {
         return {
             collections: [],
+            isFetchingData: true,
         };
     },
     computed: {
-        horizontalOrientation() {
-            return LAYOUT_ORIENTATION.HORIZONTAL;
-        },
         smallSize() {
             return SIZE.SMALL;
         },
@@ -118,6 +118,8 @@ export default {
                     items: [],
                 };
             });
+
+        this.isFetchingData = false;
     },
     methods: {
         ...mapActions('product', [

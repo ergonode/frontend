@@ -1,0 +1,38 @@
+{
+  "category": {
+    "page": {
+      "title": "Kategorie",
+      "head": "Kategorie - Ergonode",
+      "addButton": "NOWA KATEGORIA"
+    },
+    "form": {
+      "selectLabel": "Kategoria",
+      "expandFilterButton": "FILTRY",
+      "toggleVisibleToggler": "Pokaż tylko zaznaczone",
+      "selectVisibleCheckBox": "Zaznacz widoczne",
+      "showAllExpandNumericButton": "Pokaż wszystkie",
+      "searchPlaceholder": "Szukaj kategorii...",
+      "clearSearchButtonLabel": "Wyczyść widoczność kategorii",
+      "noVisibleCategoriesPlaceholderTitle": "Brak kategorii",
+      "noVisibleCategoriesPlaceholderSubtitle": "Nie ma zaznaczonych kategorii dla wybranych kryteriów."
+    },
+    "sideBar": {
+      "searchHeader": "Kategorie",
+      "placeholderTitle": "Brak kategorii",
+      "placeholderSubtitle": "W systemie nie ma kategorii, stwórz pierwszy."
+    },
+    "grid": {
+      "placeholderTitle": "Brak kategorii",
+      "placeholderSubtitle": "Brak kategorii w systemie, stwórz pierwszą."
+    },
+    "messages": {
+      "deleteTitle": "Czy jesteś pewien, że chcesz usunąć tą kategorię?",
+      "deleteConfirm": "TAK, USUŃ",
+      "deleteSuccess": "Kategoria usunięta"
+    },
+    "errors": {
+      "getRequest": "Kategoria nie została pobrana",
+      "deleteRequest": "Kategoria nie została usunięta"
+    }
+  }
+}

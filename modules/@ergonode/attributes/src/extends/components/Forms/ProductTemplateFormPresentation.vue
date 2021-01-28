@@ -73,7 +73,7 @@ import {
 import {
     SIZE,
 } from '@Core/defaults/theme';
-import formFeedbackMixin from '@Core/mixins/form/formFeedbackMixin';
+import formFeedbackMixin from '@Core/mixins/feedback/formFeedbackMixin';
 import Autocomplete from '@UI/components/Autocomplete/Autocomplete';
 import Button from '@UI/components/Button/Button';
 import FormSection from '@UI/components/Form/Section/FormSection';

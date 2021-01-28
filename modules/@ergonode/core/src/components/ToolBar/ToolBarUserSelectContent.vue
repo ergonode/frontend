@@ -24,10 +24,10 @@
 </template>
 
 <script>
-import ToolBarUserSelectContentHeader from '@Core/components/ToolBar/ToolBarUserSelectContentHeader';
 import {
     ROUTE_NAME,
-} from '@Core/config/routes';
+} from '@Authentication/config/routes';
+import ToolBarUserSelectContentHeader from '@Core/components/ToolBar/ToolBarUserSelectContentHeader';
 import {
     THEME,
 } from '@Core/defaults/theme';

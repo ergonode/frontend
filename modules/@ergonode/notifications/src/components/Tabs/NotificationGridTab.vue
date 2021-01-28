@@ -25,7 +25,7 @@
                 </List>
                 <ListPlaceholder
                     v-else
-                    :layout-orientation="horizontalOrientation"
+                    :orientation="horizontalOrientation"
                     title="Nothing to see here"
                     subtitle="Here you can see important notifications of product update"
                     :bg-url="require('@UI/assets/images/placeholders/notify.svg')" />
@@ -39,7 +39,7 @@ import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
 import {
-    LAYOUT_ORIENTATION,
+    ORIENTATION,
 } from '@Core/defaults/layout';
 import NotificationsListElement from '@Notifications/components/List/NotificationsListElement';
 import NotificationsListFooter from '@Notifications/components/List/NotificationsListFooter';
@@ -76,7 +76,7 @@ export default {
             'count',
         ]),
         horizontalOrientation() {
-            return LAYOUT_ORIENTATION.HORIZONTAL;
+            return ORIENTATION.HORIZONTAL;
         },
         buttonTitle() {
             const {

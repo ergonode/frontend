@@ -7,12 +7,16 @@
         title="Add products from list"
         @close="onClose">
         <template #body>
-            <ProductVariantsToAttachGrid />
+            <ProductVariantsToAttachGrid
+                :scope="scope"
+                :change-values="changeValues"
+                :errors="errors" />
         </template>
     </ModalGrid>
 </template>
 
 <script>
+import modalFeedbackMixin from '@Core/mixins/feedback/modalFeedbackMixin';
 import ProductVariantsToAttachGrid from '@Products/extends/components/Grids/ProductVariantsToAttachGrid';
 import ModalGrid from '@UI/components/Modal/ModalGrid';
 
@@ -22,8 +26,13 @@ export default {
         ModalGrid,
         ProductVariantsToAttachGrid,
     },
+    mixins: [
+        modalFeedbackMixin,
+    ],
     methods: {
         onClose() {
+            this.removeScopeData(this.scope);
+
             this.$emit('close');
         },
     },

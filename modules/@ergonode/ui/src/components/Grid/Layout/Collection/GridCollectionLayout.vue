@@ -3,28 +3,37 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        class="grid-collection-layout"
-        :style="gridTemplateColumns">
-        <GridCollectionCell
-            v-for="(element, index) in data"
-            :key="index"
-            :data="element"
-            :drafts="drafts"
-            :object-fit="objectFit"
-            :extended-data-cell="extendedComponents.dataCells
-                && extendedComponents.dataCells[element.type]"
-            @row-action="onRowAction"
-            @cell-value="onCellValueChange" />
+    <div :class="classes">
+        <Preloader v-if="isPrefetchingData || !isLayoutResolved" />
+        <div
+            v-else
+            :style="gridTemplateColumns"
+            class="grid-collection-layout__body">
+            <GridCollectionCell
+                v-for="(element, index) in data"
+                :key="index"
+                :data="element"
+                :drafts="drafts"
+                :object-fit="objectFit"
+                :extended-data-cell="extendedComponents.dataCells
+                    && extendedComponents.dataCells[element.type]"
+                @row-action="onRowAction"
+                @cell-value="onCellValueChange" />
+        </div>
     </div>
 </template>
 
 <script>
+import {
+    GRID_LAYOUT,
+} from '@Core/defaults/grid';
 import GridCollectionCell from '@UI/components/Grid/Layout/Collection/Cells/GridCollectionCell';
+import Preloader from '@UI/components/Preloader/Preloader';
 
 export default {
     name: 'GridCollectionLayout',
     components: {
+        Preloader,
         GridCollectionCell,
     },
     props: {
@@ -77,8 +86,30 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        /**
+         * Determines if data is loaded asynchronously
+         */
+        isPrefetchingData: {
+            type: Boolean,
+            default: false,
+        },
+        /**
+         * Determines if layout is resolved
+         */
+        isLayoutResolved: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
+        classes() {
+            return [
+                'grid-collection-layout',
+                {
+                    'grid-collection-layout--placeholder': this.rows.length === 0,
+                },
+            ];
+        },
         gridTemplateColumns() {
             return {
                 gridTemplateColumns: `repeat(${this.columnsNumber}, 1fr)`,
@@ -117,6 +148,12 @@ export default {
                 });
         },
     },
+    mounted() {
+        this.$emit('resolved', {
+            layout: GRID_LAYOUT.COLLECTION,
+            isResolved: true,
+        });
+    },
     methods: {
         onRowAction(payload) {
             this.$emit('row-action', payload);
@@ -130,12 +167,24 @@ export default {
 
 <style lang="scss" scoped>
     .grid-collection-layout {
-        display: grid;
-        grid-template-rows: 190px;
-        grid-gap: 24px;
-        padding: 24px;
-        box-sizing: border-box;
-        background-color: $WHITE;
-        overflow: auto;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+
+        &__body {
+            display: grid;
+            flex: 1 1 auto;
+            grid-template-rows: 190px;
+            grid-gap: 24px;
+            height: 0;
+            padding: 24px;
+            box-sizing: border-box;
+            overflow: auto;
+        }
+
+        &--placeholder {
+            flex: 0;
+            height: 0;
+        }
     }
 </style>

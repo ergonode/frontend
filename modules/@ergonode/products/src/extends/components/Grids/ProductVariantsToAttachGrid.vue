@@ -27,8 +27,16 @@
         <template #actionsHeader>
             <slot name="actionsHeader" />
         </template>
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                :title="$t('product.grid.productVariantsToAttachPlaceholderTitle')"
+                :subtitle="$t('product.grid.productVariantsToAttachPlaceholderSubtitle')" />
+        </template>
         <template #appendFooter>
             <UpdateProductsAttachmentButton
+                :scope="scope"
+                :errors="errors"
+                :change-values="changeValues"
                 :skus="skus"
                 @updated="onProductsAttachmentUpdated" />
         </template>
@@ -56,7 +64,9 @@ import {
 } from '@Core/services/grid/getGridData.service';
 import UpdateProductsAttachmentButton from '@Products/extends/components/Buttons/UpdateProductsAttachmentButton';
 import Grid from '@UI/components/Grid/Grid';
+import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -65,11 +75,26 @@ export default {
     components: {
         UpdateProductsAttachmentButton,
         Grid,
+        GridNoDataPlaceholder,
     },
     mixins: [
         gridDraftMixin,
         extendedGridComponentsMixin,
     ],
+    props: {
+        scope: {
+            type: String,
+            default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
+        errors: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     async fetch() {
         await Promise.all([
             this.getProductVariants(),
@@ -151,6 +176,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions('feedback', [
+            'onScopeValueChange',
+        ]),
         onPaginationChange(pagination) {
             this.pagination = pagination;
             this.localParams.limit = pagination.itemsPerPage;
@@ -324,6 +352,12 @@ export default {
             this.setDrafts({
                 ...this.drafts,
                 ...drafts,
+            });
+
+            this.onScopeValueChange({
+                scope: this.scope,
+                fieldKey: 'productVariantsToAttachGrid',
+                value: this.drafts,
             });
         },
     },

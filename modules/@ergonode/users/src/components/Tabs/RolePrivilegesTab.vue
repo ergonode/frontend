@@ -7,6 +7,7 @@
         <template #content>
             <RolePrivilegesGrid
                 :scope="scope"
+                :change-values="changeValues"
                 :errors="errors" />
         </template>
     </CenterViewTemplate>
@@ -26,6 +27,10 @@ export default {
         scope: {
             type: String,
             default: '',
+        },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
         },
         errors: {
             type: Object,

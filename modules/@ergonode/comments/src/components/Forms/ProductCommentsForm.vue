@@ -33,11 +33,9 @@
                 @close="closeForm" />
         </template>
         <template #placeholder>
-            <ListPlaceholder
-                :layout-orientation="horizontalOrientation"
+            <TabBarNoDataPlaceholder
                 title="No results"
-                subtitle="Here you can share information about the product with other people."
-                :bg-url="require('@UI/assets/images/placeholders/comments.svg')" />
+                subtitle="Here you can share information about the product with other people." />
         </template>
         <template
             v-if="isMoreButtonVisible"
@@ -66,15 +64,13 @@ import {
     DATA_LIMIT,
 } from '@Core/defaults/grid';
 import {
-    LAYOUT_ORIENTATION,
-} from '@Core/defaults/layout';
-import {
     SIZE,
 } from '@Core/defaults/theme';
 import PRIVILEGES from '@Products/config/privileges';
 import Button from '@UI/components/Button/Button';
 import IconAdd from '@UI/components/Icons/Actions/IconAdd';
 import IconSpinner from '@UI/components/Icons/Feedback/IconSpinner';
+import TabBarNoDataPlaceholder from '@UI/components/TabBar/TabBarNoDataPlaceholder';
 import {
     mapActions,
     mapState,
@@ -89,7 +85,7 @@ export default {
         CommentsList,
         CommentStateChanger,
         CommentEdit,
-        ListPlaceholder: () => import('@UI/components/List/ListPlaceholder'),
+        TabBarNoDataPlaceholder,
     },
     props: {
         scope: {
@@ -116,9 +112,6 @@ export default {
         }),
         smallSize() {
             return SIZE.SMALL;
-        },
-        horizontalOrientation() {
-            return LAYOUT_ORIENTATION.HORIZONTAL;
         },
         showMoreText() {
             const {

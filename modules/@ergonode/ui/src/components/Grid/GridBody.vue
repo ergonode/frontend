@@ -49,7 +49,7 @@ export default {
         flex-direction: column;
         justify-content: space-between;
         height: 0;
-        background-color: $WHITESMOKE;
+        background-color: $WHITE;
 
         &--disabled {
             pointer-events: none;

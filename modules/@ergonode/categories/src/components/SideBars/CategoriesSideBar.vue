@@ -12,6 +12,15 @@
         <template #body>
             <Preloader v-if="isPrefetchingData" />
         </template>
+        <template #noDataPlaceholder>
+            <SideBarNoDataPlaceholder
+                :title="$t('category.sideBar.placeholderTitle')"
+                :subtitle="$t('category.sideBar.placeholderSubtitle')">
+                <template #action>
+                    <CreateCategoryButton />
+                </template>
+            </SideBarNoDataPlaceholder>
+        </template>
         <template #item="{ item }">
             <CategorySideBarElement
                 :item="item"
@@ -22,16 +31,22 @@
 </template>
 
 <script>
+import CreateCategoryButton from '@Categories/components/Buttons/CreateCategoryButton';
 import CategorySideBarElement from '@Categories/components/SideBars/CategorySideBarElement';
 import {
     CATEGORY_CREATED_EVENT_NAME,
 } from '@Categories/defaults/attributes';
 import {
+    deepClone,
+} from '@Core/models/objectWrapper';
+import {
     getItems,
 } from '@Core/services/sidebar';
 import Preloader from '@UI/components/Preloader/Preloader';
 import SideBar from '@UI/components/SideBar/SideBar';
+import SideBarNoDataPlaceholder from '@UI/components/SideBar/SideBarNoDataPlaceholder';
 import {
+    mapActions,
     mapState,
 } from 'vuex';
 
@@ -39,6 +54,8 @@ export default {
     name: 'CategoriesSideBar',
     components: {
         Preloader,
+        SideBarNoDataPlaceholder,
+        CreateCategoryButton,
         CategorySideBarElement,
         SideBar,
     },
@@ -61,6 +78,7 @@ export default {
         return {
             isPrefetchingData: true,
             categories: {},
+            categoriesBeforeSearch: {},
             languageCode: '',
             searchValue: '',
         };
@@ -83,12 +101,17 @@ export default {
         );
     },
     beforeDestroy() {
+        this.setDisabledElements({});
+
         document.documentElement.removeEventListener(
             CATEGORY_CREATED_EVENT_NAME,
             this.onCategoryCreated,
         );
     },
     methods: {
+        ...mapActions('list', [
+            'setDisabledElements',
+        ]),
         async onCategoryCreated() {
             await this.getItems();
         },
@@ -123,9 +146,18 @@ export default {
             };
         },
         async onSearch(value) {
+            if (this.searchValue === '') {
+                this.categoriesBeforeSearch = deepClone(this.categories);
+            }
+
             this.searchValue = value;
 
-            await this.getItems();
+            if (value !== '') {
+                await this.getItems();
+            } else {
+                this.categories = deepClone(this.categoriesBeforeSearch);
+                this.categoriesBeforeSearch = {};
+            }
         },
         async onSelectLanguage(value) {
             this.languageCode = value;

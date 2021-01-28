@@ -32,7 +32,9 @@
         <template #appendFooter>
             <UpdateCollectionProductsVisibilityButton
                 :scope="scope"
+                :errors="errors"
                 :drafts="drafts"
+                :change-values="changeValues"
                 @updated="onCollectionProductsVisibilityUpdated" />
         </template>
     </Grid>
@@ -88,6 +90,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        changeValues: {
+            type: Object,
+            default: () => ({}),
+        },
     },
     async fetch() {
         await this.onFetchData();
@@ -125,7 +131,7 @@ export default {
         },
     },
     watch: {
-        $route(from, to) {
+        async $route(from, to) {
             if (from.name !== to.name) {
                 return;
             }
@@ -140,7 +146,9 @@ export default {
             this.pagination = pagination;
             this.sortOrder = sortOrder;
 
-            this.onFetchData();
+            await this.onFetchData();
+
+            this.isPrefetchingData = false;
         },
     },
     methods: {
@@ -229,6 +237,8 @@ export default {
                     page: DEFAULT_PAGE,
                 },
             });
+
+            this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
             this.$router.replace({

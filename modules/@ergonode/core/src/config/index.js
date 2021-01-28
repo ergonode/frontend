@@ -15,7 +15,7 @@ export default {
     ],
     plugins: [
         {
-            ssr: false,
+            ssr: true,
             src: './plugins/i18n',
         },
         {

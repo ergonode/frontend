@@ -10,7 +10,6 @@
         :sort-order="sortOrder"
         :filters="filterValues"
         :pagination="pagination"
-        :placeholder="noDataPlaceholder"
         :extended-components="extendedGridComponents"
         :is-editable="isAllowedToUpdate"
         :is-prefetching-data="isPrefetchingData"
@@ -22,7 +21,17 @@
         @pagination="onPaginationChange"
         @sort-column="onColumnSortChange"
         @filter="onFilterChange"
-        @remove-all-filters="onRemoveAllFilters" />
+        @remove-all-filters="onRemoveAllFilters">
+        <template #noDataPlaceholder>
+            <GridNoDataPlaceholder
+                :title="$t('categoryTree.grid.placeholderTitle')"
+                :subtitle="$t('categoryTree.grid.placeholderSubtitle')">
+                <template #action>
+                    <CreateCategoryTreeButton />
+                </template>
+            </GridNoDataPlaceholder>
+        </template>
+    </Grid>
 </template>
 
 <script>
@@ -41,6 +50,7 @@ import {
 import {
     getGridData,
 } from '@Core/services/grid/getGridData.service';
+import CreateCategoryTreeButton from '@Trees/components/Buttons/CreateCategoryTreeButton';
 import PRIVILEGES from '@Trees/config/privileges';
 import {
     ROUTE_NAME,
@@ -48,15 +58,15 @@ import {
 import {
     CATEGORY_TREE_CREATED_EVENT_NAME,
 } from '@Trees/defaults';
-import {
-    WHITESMOKE,
-} from '@UI/assets/scss/_js-variables/colors.scss';
 import Grid from '@UI/components/Grid/Grid';
+import GridNoDataPlaceholder from '@UI/components/Grid/GridNoDataPlaceholder';
 
 export default {
     name: 'CategoryTreesGrid',
     components: {
+        CreateCategoryTreeButton,
         Grid,
+        GridNoDataPlaceholder,
     },
     mixins: [
         extendedGridComponentsMixin,
@@ -84,14 +94,6 @@ export default {
         };
     },
     computed: {
-        noDataPlaceholder() {
-            return {
-                title: 'No category trees',
-                subtitle: 'There are no category trees in the system, you can create the first one.',
-                bgUrl: require('@UI/assets/images/placeholders/comments.svg'),
-                color: WHITESMOKE,
-            };
-        },
         isAllowedToUpdate() {
             return this.$hasAccess([
                 PRIVILEGES.CATEGORY_TREE.update,
@@ -99,7 +101,7 @@ export default {
         },
     },
     watch: {
-        $route(from, to) {
+        async $route(from, to) {
             if (from.name !== to.name) {
                 return;
             }
@@ -114,7 +116,9 @@ export default {
             this.pagination = pagination;
             this.sortOrder = sortOrder;
 
-            this.onFetchData();
+            await this.onFetchData();
+
+            this.isPrefetchingData = false;
         },
     },
     mounted() {
@@ -183,6 +187,8 @@ export default {
                     page: DEFAULT_PAGE,
                 },
             });
+
+            this.isPrefetchingData = true;
         },
         onFilterChange(filters) {
             this.$router.replace({

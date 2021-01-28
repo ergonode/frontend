@@ -92,11 +92,11 @@ export default {
                 attribute_code,
             } = this.properties;
 
-            if (!this.hasOptions) {
+            if (!this.hasOptions || !this.drafts[this.languageCode][attribute_code]) {
                 return '';
             }
 
-            const value = this.drafts[this.languageCode][attribute_code] || '';
+            const value = this.drafts[this.languageCode][attribute_code];
 
             return getMappedObjectOption({
                 option: {

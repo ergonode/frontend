@@ -1,0 +1,30 @@
+{
+  "categoryTree": {
+    "page": {
+      "title": "Drzewa kategorii",
+      "head": "Drzewa kategorii - Ergonode",
+      "addButton": "NOWE DRZEWO KATEGORII"
+    },
+    "form": {
+      "noCategoryTreeButton": "IDŹ DO DRZEWA KATEGORII",
+      "noVisibleCategoriesInTreePlaceholderTitle": "Brak kategorii",
+      "noVisibleCategoriesInTreePlaceholderSubtitle": "Nie ma zaznaczonych kategorii dla wybranych kryteriów."
+    },
+    "advancedFilter": {
+      "label": "Drzewo kategorii"
+    },
+    "grid": {
+      "placeholderTitle": "Brak drzew kategorii",
+      "placeholderSubtitle": "W systemie nie ma drzew kategorii, stwórz pierwsze."
+    },
+    "messages": {
+      "deleteTitle": "Czy jesteś pewien, że chcesz usunąć to drzewo kategorii?",
+      "deleteConfirm": "TAK, USUŃ",
+      "deleteSuccess": "Drzewo kategorie usunięte"
+    },
+    "errors": {
+      "getRequest": "Drzewo kategorii nie została pobrana",
+      "deleteRequest": "Drzewo kategorii nie została usunięte"
+    }
+  }
+}
